@@ -2,7 +2,30 @@ from typing import TypedDict, Literal, Any, Coroutine, Union, overload, Generato
 from typing_extensions import NotRequired
 from hfortix_fortios.models import FortiObject, FortiObjectList
 
-# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional via total=False)
+# ============================================================================
+# Nested TypedDicts for table field children (dict mode)
+# These MUST be defined before the Payload class to use them as type hints
+# ============================================================================
+
+class WtpSplittunnelingaclItem(TypedDict, total=False):
+    """Type hints for split-tunneling-acl table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: WtpSplittunnelingaclItem = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    
+    id: int  # ID. | Default: 0 | Min: 0 | Max: 4294967295
+    dest_ip: str  # Destination IP and mask for the split-tunneling su | Default: 0.0.0.0 0.0.0.0
+
+
+# ============================================================================
+# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional)
+# ============================================================================
 # NOTE: We intentionally DON'T use NotRequired wrapper because:
 # 1. total=False already makes all fields optional
 # 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
@@ -53,7 +76,7 @@ class WtpPayload(TypedDict, total=False):
     override_split_tunnel: Literal["enable", "disable"]  # Enable/disable overriding the WTP profile split tu | Default: disable
     split_tunneling_acl_path: Literal["tunnel", "local"]  # Split tunneling ACL path is local/tunnel. | Default: local
     split_tunneling_acl_local_ap_subnet: Literal["enable", "disable"]  # Enable/disable automatically adding local subnetwo | Default: disable
-    split_tunneling_acl: list[dict[str, Any]]  # Split tunneling ACL filter list.
+    split_tunneling_acl: list[WtpSplittunnelingaclItem]  # Split tunneling ACL filter list.
     override_lan: Literal["enable", "disable"]  # Enable to override the WTP profile LAN port settin | Default: disable
     lan: str  # WTP LAN port mapping.
     override_allowaccess: Literal["enable", "disable"]  # Enable to override the WTP profile management acce | Default: disable
@@ -73,20 +96,9 @@ class WtpPayload(TypedDict, total=False):
     coordinate_latitude: str  # WTP latitude coordinate. | MaxLen: 19
     coordinate_longitude: str  # WTP longitude coordinate. | MaxLen: 19
 
-# Nested TypedDicts for table field children (dict mode)
-
-class WtpSplittunnelingaclItem(TypedDict):
-    """Type hints for split-tunneling-acl table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    id: int  # ID. | Default: 0 | Min: 0 | Max: 4294967295
-    dest_ip: str  # Destination IP and mask for the split-tunneling su | Default: 0.0.0.0 0.0.0.0
-
-
-# Nested classes for table field children (object mode)
+# ============================================================================
+# Nested classes for table field children (object mode - for API responses)
+# ============================================================================
 
 @final
 class WtpSplittunnelingaclObject:
@@ -286,6 +298,9 @@ class WtpObject:
     # Common API response fields
     status: str
     http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
     vdom: str | None
     
     # Methods from FortiObject
@@ -543,7 +558,7 @@ class Wtp:
         override_split_tunnel: Literal["enable", "disable"] | None = ...,
         split_tunneling_acl_path: Literal["tunnel", "local"] | None = ...,
         split_tunneling_acl_local_ap_subnet: Literal["enable", "disable"] | None = ...,
-        split_tunneling_acl: str | list[str] | list[dict[str, Any]] | None = ...,
+        split_tunneling_acl: str | list[WtpSplittunnelingaclItem] | None = ...,
         override_lan: Literal["enable", "disable"] | None = ...,
         lan: str | None = ...,
         override_allowaccess: Literal["enable", "disable"] | None = ...,
@@ -597,7 +612,7 @@ class Wtp:
         override_split_tunnel: Literal["enable", "disable"] | None = ...,
         split_tunneling_acl_path: Literal["tunnel", "local"] | None = ...,
         split_tunneling_acl_local_ap_subnet: Literal["enable", "disable"] | None = ...,
-        split_tunneling_acl: str | list[str] | list[dict[str, Any]] | None = ...,
+        split_tunneling_acl: str | list[WtpSplittunnelingaclItem] | None = ...,
         override_lan: Literal["enable", "disable"] | None = ...,
         lan: str | None = ...,
         override_allowaccess: Literal["enable", "disable"] | None = ...,
@@ -652,7 +667,7 @@ class Wtp:
         override_split_tunnel: Literal["enable", "disable"] | None = ...,
         split_tunneling_acl_path: Literal["tunnel", "local"] | None = ...,
         split_tunneling_acl_local_ap_subnet: Literal["enable", "disable"] | None = ...,
-        split_tunneling_acl: str | list[str] | list[dict[str, Any]] | None = ...,
+        split_tunneling_acl: str | list[WtpSplittunnelingaclItem] | None = ...,
         override_lan: Literal["enable", "disable"] | None = ...,
         lan: str | None = ...,
         override_allowaccess: Literal["enable", "disable"] | None = ...,
@@ -705,7 +720,7 @@ class Wtp:
         override_split_tunnel: Literal["enable", "disable"] | None = ...,
         split_tunneling_acl_path: Literal["tunnel", "local"] | None = ...,
         split_tunneling_acl_local_ap_subnet: Literal["enable", "disable"] | None = ...,
-        split_tunneling_acl: str | list[str] | list[dict[str, Any]] | None = ...,
+        split_tunneling_acl: str | list[WtpSplittunnelingaclItem] | None = ...,
         override_lan: Literal["enable", "disable"] | None = ...,
         lan: str | None = ...,
         override_allowaccess: Literal["enable", "disable"] | None = ...,
@@ -760,7 +775,7 @@ class Wtp:
         override_split_tunnel: Literal["enable", "disable"] | None = ...,
         split_tunneling_acl_path: Literal["tunnel", "local"] | None = ...,
         split_tunneling_acl_local_ap_subnet: Literal["enable", "disable"] | None = ...,
-        split_tunneling_acl: str | list[str] | list[dict[str, Any]] | None = ...,
+        split_tunneling_acl: str | list[WtpSplittunnelingaclItem] | None = ...,
         override_lan: Literal["enable", "disable"] | None = ...,
         lan: str | None = ...,
         override_allowaccess: Literal["enable", "disable"] | None = ...,
@@ -814,7 +829,7 @@ class Wtp:
         override_split_tunnel: Literal["enable", "disable"] | None = ...,
         split_tunneling_acl_path: Literal["tunnel", "local"] | None = ...,
         split_tunneling_acl_local_ap_subnet: Literal["enable", "disable"] | None = ...,
-        split_tunneling_acl: str | list[str] | list[dict[str, Any]] | None = ...,
+        split_tunneling_acl: str | list[WtpSplittunnelingaclItem] | None = ...,
         override_lan: Literal["enable", "disable"] | None = ...,
         lan: str | None = ...,
         override_allowaccess: Literal["enable", "disable"] | None = ...,
@@ -869,7 +884,7 @@ class Wtp:
         override_split_tunnel: Literal["enable", "disable"] | None = ...,
         split_tunneling_acl_path: Literal["tunnel", "local"] | None = ...,
         split_tunneling_acl_local_ap_subnet: Literal["enable", "disable"] | None = ...,
-        split_tunneling_acl: str | list[str] | list[dict[str, Any]] | None = ...,
+        split_tunneling_acl: str | list[WtpSplittunnelingaclItem] | None = ...,
         override_lan: Literal["enable", "disable"] | None = ...,
         lan: str | None = ...,
         override_allowaccess: Literal["enable", "disable"] | None = ...,
@@ -922,7 +937,7 @@ class Wtp:
         override_split_tunnel: Literal["enable", "disable"] | None = ...,
         split_tunneling_acl_path: Literal["tunnel", "local"] | None = ...,
         split_tunneling_acl_local_ap_subnet: Literal["enable", "disable"] | None = ...,
-        split_tunneling_acl: str | list[str] | list[dict[str, Any]] | None = ...,
+        split_tunneling_acl: str | list[WtpSplittunnelingaclItem] | None = ...,
         override_lan: Literal["enable", "disable"] | None = ...,
         lan: str | None = ...,
         override_allowaccess: Literal["enable", "disable"] | None = ...,
@@ -1010,7 +1025,7 @@ class Wtp:
         override_split_tunnel: Literal["enable", "disable"] | None = ...,
         split_tunneling_acl_path: Literal["tunnel", "local"] | None = ...,
         split_tunneling_acl_local_ap_subnet: Literal["enable", "disable"] | None = ...,
-        split_tunneling_acl: str | list[str] | list[dict[str, Any]] | None = ...,
+        split_tunneling_acl: str | list[WtpSplittunnelingaclItem] | None = ...,
         override_lan: Literal["enable", "disable"] | None = ...,
         lan: str | None = ...,
         override_allowaccess: Literal["enable", "disable"] | None = ...,

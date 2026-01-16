@@ -2,7 +2,43 @@ from typing import TypedDict, Literal, Any, Coroutine, Union, overload, Generato
 from typing_extensions import NotRequired
 from hfortix_fortios.models import FortiObject, FortiObjectList
 
-# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional via total=False)
+# ============================================================================
+# Nested TypedDicts for table field children (dict mode)
+# These MUST be defined before the Payload class to use them as type hints
+# ============================================================================
+
+class ProfileRuleItem(TypedDict, total=False):
+    """Type hints for rule table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: ProfileRuleItem = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    
+    id: int  # ID. | Default: 0 | Min: 0 | Max: 4294967295
+    name: str  # Filter name. | MaxLen: 35
+    severity: Literal["info", "low", "medium", "high", "critical"]  # Select the severity or threat level that matches t | Default: medium
+    type: Literal["file", "message"]  # Select whether to check the content of messages | Default: file
+    proto: Literal["smtp", "pop3", "imap", "http-get", "http-post", "ftp", "nntp", "mapi", "ssh", "cifs"]  # Check messages or files over one or more of these
+    filter_by: Literal["sensor", "label", "fingerprint", "encrypted", "none"]  # Select the type of content to match. | Default: none
+    file_size: int  # Match files greater than or equal to this size | Default: 0 | Min: 0 | Max: 4193280
+    sensitivity: str  # Select a DLP file pattern sensitivity to match.
+    match_percentage: int  # Percentage of fingerprints in the fingerprint data | Default: 10 | Min: 1 | Max: 100
+    file_type: int  # Select the number of a DLP file pattern table to m | Default: 0 | Min: 0 | Max: 4294967295
+    sensor: str  # Select DLP sensors.
+    label: str  # Select DLP label. | MaxLen: 35
+    archive: Literal["disable", "enable"]  # Enable/disable DLP archiving. | Default: disable
+    action: Literal["allow", "log-only", "block", "quarantine-ip"]  # Action to take with content that this DLP profile | Default: allow
+    expiry: str  # Quarantine duration in days, hours, minutes | Default: 5m
+
+
+# ============================================================================
+# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional)
+# ============================================================================
 # NOTE: We intentionally DON'T use NotRequired wrapper because:
 # 1. total=False already makes all fields optional
 # 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
@@ -26,7 +62,7 @@ class ProfilePayload(TypedDict, total=False):
     comment: str  # Comment. | MaxLen: 255
     feature_set: Literal["flow", "proxy"]  # Flow/proxy feature set. | Default: flow
     replacemsg_group: str  # Replacement message group used by this DLP profile | MaxLen: 35
-    rule: list[dict[str, Any]]  # Set up DLP rules for this profile.
+    rule: list[ProfileRuleItem]  # Set up DLP rules for this profile.
     dlp_log: Literal["enable", "disable"]  # Enable/disable DLP logging. | Default: enable
     extended_log: Literal["enable", "disable"]  # Enable/disable extended logging for data loss prev | Default: disable
     nac_quar_log: Literal["enable", "disable"]  # Enable/disable NAC quarantine logging. | Default: disable
@@ -34,33 +70,9 @@ class ProfilePayload(TypedDict, total=False):
     summary_proto: Literal["smtp", "pop3", "imap", "http-get", "http-post", "ftp", "nntp", "mapi", "ssh", "cifs"]  # Protocols to always log summary.
     fortidata_error_action: Literal["log-only", "block", "ignore"]  # Action to take if FortiData query fails. | Default: block
 
-# Nested TypedDicts for table field children (dict mode)
-
-class ProfileRuleItem(TypedDict):
-    """Type hints for rule table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    id: int  # ID. | Default: 0 | Min: 0 | Max: 4294967295
-    name: str  # Filter name. | MaxLen: 35
-    severity: Literal["info", "low", "medium", "high", "critical"]  # Select the severity or threat level that matches t | Default: medium
-    type: Literal["file", "message"]  # Select whether to check the content of messages | Default: file
-    proto: Literal["smtp", "pop3", "imap", "http-get", "http-post", "ftp", "nntp", "mapi", "ssh", "cifs"]  # Check messages or files over one or more of these
-    filter_by: Literal["sensor", "label", "fingerprint", "encrypted", "none"]  # Select the type of content to match. | Default: none
-    file_size: int  # Match files greater than or equal to this size | Default: 0 | Min: 0 | Max: 4193280
-    sensitivity: str  # Select a DLP file pattern sensitivity to match.
-    match_percentage: int  # Percentage of fingerprints in the fingerprint data | Default: 10 | Min: 1 | Max: 100
-    file_type: int  # Select the number of a DLP file pattern table to m | Default: 0 | Min: 0 | Max: 4294967295
-    sensor: str  # Select DLP sensors.
-    label: str  # Select DLP label. | MaxLen: 35
-    archive: Literal["disable", "enable"]  # Enable/disable DLP archiving. | Default: disable
-    action: Literal["allow", "log-only", "block", "quarantine-ip"]  # Action to take with content that this DLP profile | Default: allow
-    expiry: str  # Quarantine duration in days, hours, minutes | Default: 5m
-
-
-# Nested classes for table field children (object mode)
+# ============================================================================
+# Nested classes for table field children (object mode - for API responses)
+# ============================================================================
 
 @final
 class ProfileRuleObject:
@@ -178,6 +190,9 @@ class ProfileObject:
     # Common API response fields
     status: str
     http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
     vdom: str | None
     
     # Methods from FortiObject
@@ -411,7 +426,7 @@ class Profile:
         comment: str | None = ...,
         feature_set: Literal["flow", "proxy"] | None = ...,
         replacemsg_group: str | None = ...,
-        rule: str | list[str] | list[dict[str, Any]] | None = ...,
+        rule: str | list[ProfileRuleItem] | None = ...,
         dlp_log: Literal["enable", "disable"] | None = ...,
         extended_log: Literal["enable", "disable"] | None = ...,
         nac_quar_log: Literal["enable", "disable"] | None = ...,
@@ -429,7 +444,7 @@ class Profile:
         comment: str | None = ...,
         feature_set: Literal["flow", "proxy"] | None = ...,
         replacemsg_group: str | None = ...,
-        rule: str | list[str] | list[dict[str, Any]] | None = ...,
+        rule: str | list[ProfileRuleItem] | None = ...,
         dlp_log: Literal["enable", "disable"] | None = ...,
         extended_log: Literal["enable", "disable"] | None = ...,
         nac_quar_log: Literal["enable", "disable"] | None = ...,
@@ -448,7 +463,7 @@ class Profile:
         comment: str | None = ...,
         feature_set: Literal["flow", "proxy"] | None = ...,
         replacemsg_group: str | None = ...,
-        rule: str | list[str] | list[dict[str, Any]] | None = ...,
+        rule: str | list[ProfileRuleItem] | None = ...,
         dlp_log: Literal["enable", "disable"] | None = ...,
         extended_log: Literal["enable", "disable"] | None = ...,
         nac_quar_log: Literal["enable", "disable"] | None = ...,
@@ -465,7 +480,7 @@ class Profile:
         comment: str | None = ...,
         feature_set: Literal["flow", "proxy"] | None = ...,
         replacemsg_group: str | None = ...,
-        rule: str | list[str] | list[dict[str, Any]] | None = ...,
+        rule: str | list[ProfileRuleItem] | None = ...,
         dlp_log: Literal["enable", "disable"] | None = ...,
         extended_log: Literal["enable", "disable"] | None = ...,
         nac_quar_log: Literal["enable", "disable"] | None = ...,
@@ -484,7 +499,7 @@ class Profile:
         comment: str | None = ...,
         feature_set: Literal["flow", "proxy"] | None = ...,
         replacemsg_group: str | None = ...,
-        rule: str | list[str] | list[dict[str, Any]] | None = ...,
+        rule: str | list[ProfileRuleItem] | None = ...,
         dlp_log: Literal["enable", "disable"] | None = ...,
         extended_log: Literal["enable", "disable"] | None = ...,
         nac_quar_log: Literal["enable", "disable"] | None = ...,
@@ -502,7 +517,7 @@ class Profile:
         comment: str | None = ...,
         feature_set: Literal["flow", "proxy"] | None = ...,
         replacemsg_group: str | None = ...,
-        rule: str | list[str] | list[dict[str, Any]] | None = ...,
+        rule: str | list[ProfileRuleItem] | None = ...,
         dlp_log: Literal["enable", "disable"] | None = ...,
         extended_log: Literal["enable", "disable"] | None = ...,
         nac_quar_log: Literal["enable", "disable"] | None = ...,
@@ -521,7 +536,7 @@ class Profile:
         comment: str | None = ...,
         feature_set: Literal["flow", "proxy"] | None = ...,
         replacemsg_group: str | None = ...,
-        rule: str | list[str] | list[dict[str, Any]] | None = ...,
+        rule: str | list[ProfileRuleItem] | None = ...,
         dlp_log: Literal["enable", "disable"] | None = ...,
         extended_log: Literal["enable", "disable"] | None = ...,
         nac_quar_log: Literal["enable", "disable"] | None = ...,
@@ -538,7 +553,7 @@ class Profile:
         comment: str | None = ...,
         feature_set: Literal["flow", "proxy"] | None = ...,
         replacemsg_group: str | None = ...,
-        rule: str | list[str] | list[dict[str, Any]] | None = ...,
+        rule: str | list[ProfileRuleItem] | None = ...,
         dlp_log: Literal["enable", "disable"] | None = ...,
         extended_log: Literal["enable", "disable"] | None = ...,
         nac_quar_log: Literal["enable", "disable"] | None = ...,
@@ -590,7 +605,7 @@ class Profile:
         comment: str | None = ...,
         feature_set: Literal["flow", "proxy"] | None = ...,
         replacemsg_group: str | None = ...,
-        rule: str | list[str] | list[dict[str, Any]] | None = ...,
+        rule: str | list[ProfileRuleItem] | None = ...,
         dlp_log: Literal["enable", "disable"] | None = ...,
         extended_log: Literal["enable", "disable"] | None = ...,
         nac_quar_log: Literal["enable", "disable"] | None = ...,

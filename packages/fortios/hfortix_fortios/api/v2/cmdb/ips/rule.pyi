@@ -2,7 +2,31 @@ from typing import TypedDict, Literal, Any, Coroutine, Union, overload, Generato
 from typing_extensions import NotRequired
 from hfortix_fortios.models import FortiObject, FortiObjectList
 
-# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional via total=False)
+# ============================================================================
+# Nested TypedDicts for table field children (dict mode)
+# These MUST be defined before the Payload class to use them as type hints
+# ============================================================================
+
+class RuleMetadataItem(TypedDict, total=False):
+    """Type hints for metadata table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: RuleMetadataItem = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    
+    id: int  # ID. | Default: 0 | Min: 0 | Max: 4294967295
+    metaid: int  # Meta ID. | Default: 0 | Min: 0 | Max: 4294967295
+    valueid: int  # Value ID. | Default: 0 | Min: 0 | Max: 4294967295
+
+
+# ============================================================================
+# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional)
+# ============================================================================
 # NOTE: We intentionally DON'T use NotRequired wrapper because:
 # 1. total=False already makes all fields optional
 # 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
@@ -31,23 +55,11 @@ class RulePayload(TypedDict, total=False):
     rule_id: int  # Rule ID. | Default: 0 | Min: 0 | Max: 4294967295
     rev: int  # Revision. | Default: 0 | Min: 0 | Max: 4294967295
     date: int  # Date. | Default: 0 | Min: 0 | Max: 4294967295
-    metadata: list[dict[str, Any]]  # Meta data.
+    metadata: list[RuleMetadataItem]  # Meta data.
 
-# Nested TypedDicts for table field children (dict mode)
-
-class RuleMetadataItem(TypedDict):
-    """Type hints for metadata table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    id: int  # ID. | Default: 0 | Min: 0 | Max: 4294967295
-    metaid: int  # Meta ID. | Default: 0 | Min: 0 | Max: 4294967295
-    valueid: int  # Value ID. | Default: 0 | Min: 0 | Max: 4294967295
-
-
-# Nested classes for table field children (object mode)
+# ============================================================================
+# Nested classes for table field children (object mode - for API responses)
+# ============================================================================
 
 @final
 class RuleMetadataObject:
@@ -153,6 +165,9 @@ class RuleObject:
     # Common API response fields
     status: str
     http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
     vdom: str | None
     
     # Methods from FortiObject
@@ -396,7 +411,7 @@ class Rule:
         rule_id: int | None = ...,
         rev: int | None = ...,
         date: int | None = ...,
-        metadata: str | list[str] | list[dict[str, Any]] | None = ...,
+        metadata: str | list[RuleMetadataItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> RuleObject: ...
     
@@ -418,7 +433,7 @@ class Rule:
         rule_id: int | None = ...,
         rev: int | None = ...,
         date: int | None = ...,
-        metadata: str | list[str] | list[dict[str, Any]] | None = ...,
+        metadata: str | list[RuleMetadataItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -441,7 +456,7 @@ class Rule:
         rule_id: int | None = ...,
         rev: int | None = ...,
         date: int | None = ...,
-        metadata: str | list[str] | list[dict[str, Any]] | None = ...,
+        metadata: str | list[RuleMetadataItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -462,7 +477,7 @@ class Rule:
         rule_id: int | None = ...,
         rev: int | None = ...,
         date: int | None = ...,
-        metadata: str | list[str] | list[dict[str, Any]] | None = ...,
+        metadata: str | list[RuleMetadataItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -485,7 +500,7 @@ class Rule:
         rule_id: int | None = ...,
         rev: int | None = ...,
         date: int | None = ...,
-        metadata: str | list[str] | list[dict[str, Any]] | None = ...,
+        metadata: str | list[RuleMetadataItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> RuleObject: ...
     
@@ -507,7 +522,7 @@ class Rule:
         rule_id: int | None = ...,
         rev: int | None = ...,
         date: int | None = ...,
-        metadata: str | list[str] | list[dict[str, Any]] | None = ...,
+        metadata: str | list[RuleMetadataItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -530,7 +545,7 @@ class Rule:
         rule_id: int | None = ...,
         rev: int | None = ...,
         date: int | None = ...,
-        metadata: str | list[str] | list[dict[str, Any]] | None = ...,
+        metadata: str | list[RuleMetadataItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -551,7 +566,7 @@ class Rule:
         rule_id: int | None = ...,
         rev: int | None = ...,
         date: int | None = ...,
-        metadata: str | list[str] | list[dict[str, Any]] | None = ...,
+        metadata: str | list[RuleMetadataItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -607,7 +622,7 @@ class Rule:
         rule_id: int | None = ...,
         rev: int | None = ...,
         date: int | None = ...,
-        metadata: str | list[str] | list[dict[str, Any]] | None = ...,
+        metadata: str | list[RuleMetadataItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     

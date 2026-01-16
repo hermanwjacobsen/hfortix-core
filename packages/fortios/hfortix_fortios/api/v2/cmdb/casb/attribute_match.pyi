@@ -2,7 +2,31 @@ from typing import TypedDict, Literal, Any, Coroutine, Union, overload, Generato
 from typing_extensions import NotRequired
 from hfortix_fortios.models import FortiObject, FortiObjectList
 
-# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional via total=False)
+# ============================================================================
+# Nested TypedDicts for table field children (dict mode)
+# These MUST be defined before the Payload class to use them as type hints
+# ============================================================================
+
+class AttributeMatchMatchItem(TypedDict, total=False):
+    """Type hints for match table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: AttributeMatchMatchItem = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    
+    id: int  # CASB attribute match rule ID. | Default: 0 | Min: 0 | Max: 4294967295
+    rule_strategy: Literal["and", "or"]  # CASB attribute match rule strategy. | Default: and
+    rule: str  # CASB attribute match rule.
+
+
+# ============================================================================
+# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional)
+# ============================================================================
 # NOTE: We intentionally DON'T use NotRequired wrapper because:
 # 1. total=False already makes all fields optional
 # 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
@@ -25,23 +49,11 @@ class AttributeMatchPayload(TypedDict, total=False):
     name: str  # CASB attribute match name. | MaxLen: 79
     application: str  # CASB attribute application name. | MaxLen: 79
     match_strategy: Literal["or", "and", "subset"]  # CASB attribute match strategy. | Default: or
-    match: list[dict[str, Any]]  # CASB tenant match rules.
+    match: list[AttributeMatchMatchItem]  # CASB tenant match rules.
 
-# Nested TypedDicts for table field children (dict mode)
-
-class AttributeMatchMatchItem(TypedDict):
-    """Type hints for match table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    id: int  # CASB attribute match rule ID. | Default: 0 | Min: 0 | Max: 4294967295
-    rule_strategy: Literal["and", "or"]  # CASB attribute match rule strategy. | Default: and
-    rule: str  # CASB attribute match rule.
-
-
-# Nested classes for table field children (object mode)
+# ============================================================================
+# Nested classes for table field children (object mode - for API responses)
+# ============================================================================
 
 @final
 class AttributeMatchMatchObject:
@@ -114,6 +126,9 @@ class AttributeMatchObject:
     # Common API response fields
     status: str
     http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
     vdom: str | None
     
     # Methods from FortiObject
@@ -346,7 +361,7 @@ class AttributeMatch:
         name: str | None = ...,
         application: str | None = ...,
         match_strategy: Literal["or", "and", "subset"] | None = ...,
-        match: str | list[str] | list[dict[str, Any]] | None = ...,
+        match: str | list[AttributeMatchMatchItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> AttributeMatchObject: ...
     
@@ -357,7 +372,7 @@ class AttributeMatch:
         name: str | None = ...,
         application: str | None = ...,
         match_strategy: Literal["or", "and", "subset"] | None = ...,
-        match: str | list[str] | list[dict[str, Any]] | None = ...,
+        match: str | list[AttributeMatchMatchItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -369,7 +384,7 @@ class AttributeMatch:
         name: str | None = ...,
         application: str | None = ...,
         match_strategy: Literal["or", "and", "subset"] | None = ...,
-        match: str | list[str] | list[dict[str, Any]] | None = ...,
+        match: str | list[AttributeMatchMatchItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -379,7 +394,7 @@ class AttributeMatch:
         name: str | None = ...,
         application: str | None = ...,
         match_strategy: Literal["or", "and", "subset"] | None = ...,
-        match: str | list[str] | list[dict[str, Any]] | None = ...,
+        match: str | list[AttributeMatchMatchItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -391,7 +406,7 @@ class AttributeMatch:
         name: str | None = ...,
         application: str | None = ...,
         match_strategy: Literal["or", "and", "subset"] | None = ...,
-        match: str | list[str] | list[dict[str, Any]] | None = ...,
+        match: str | list[AttributeMatchMatchItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> AttributeMatchObject: ...
     
@@ -402,7 +417,7 @@ class AttributeMatch:
         name: str | None = ...,
         application: str | None = ...,
         match_strategy: Literal["or", "and", "subset"] | None = ...,
-        match: str | list[str] | list[dict[str, Any]] | None = ...,
+        match: str | list[AttributeMatchMatchItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -414,7 +429,7 @@ class AttributeMatch:
         name: str | None = ...,
         application: str | None = ...,
         match_strategy: Literal["or", "and", "subset"] | None = ...,
-        match: str | list[str] | list[dict[str, Any]] | None = ...,
+        match: str | list[AttributeMatchMatchItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -424,7 +439,7 @@ class AttributeMatch:
         name: str | None = ...,
         application: str | None = ...,
         match_strategy: Literal["or", "and", "subset"] | None = ...,
-        match: str | list[str] | list[dict[str, Any]] | None = ...,
+        match: str | list[AttributeMatchMatchItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -469,7 +484,7 @@ class AttributeMatch:
         name: str | None = ...,
         application: str | None = ...,
         match_strategy: Literal["or", "and", "subset"] | None = ...,
-        match: str | list[str] | list[dict[str, Any]] | None = ...,
+        match: str | list[AttributeMatchMatchItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     

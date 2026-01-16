@@ -2,7 +2,47 @@ from typing import TypedDict, Literal, Any, Coroutine, Union, overload, Generato
 from typing_extensions import NotRequired
 from hfortix_fortios.models import FortiObject, FortiObjectList
 
-# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional via total=False)
+# ============================================================================
+# Nested TypedDicts for table field children (dict mode)
+# These MUST be defined before the Payload class to use them as type hints
+# ============================================================================
+
+class ApiUserVdomItem(TypedDict, total=False):
+    """Type hints for vdom table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: ApiUserVdomItem = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    
+    name: str  # Virtual domain name. | MaxLen: 79
+
+
+class ApiUserTrusthostItem(TypedDict, total=False):
+    """Type hints for trusthost table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: ApiUserTrusthostItem = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    
+    id: int  # ID. | Default: 0 | Min: 0 | Max: 4294967295
+    type: Literal["ipv4-trusthost", "ipv6-trusthost"]  # Trusthost type. | Default: ipv4-trusthost
+    ipv4_trusthost: str  # IPv4 trusted host address. | Default: 0.0.0.0 0.0.0.0
+    ipv6_trusthost: str  # IPv6 trusted host address. | Default: ::/0
+
+
+# ============================================================================
+# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional)
+# ============================================================================
 # NOTE: We intentionally DON'T use NotRequired wrapper because:
 # 1. total=False already makes all fields optional
 # 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
@@ -26,39 +66,16 @@ class ApiUserPayload(TypedDict, total=False):
     comments: str  # Comment. | MaxLen: 255
     api_key: str  # Admin user password. | MaxLen: 128
     accprofile: str  # Admin user access profile. | MaxLen: 35
-    vdom: list[dict[str, Any]]  # Virtual domains.
+    vdom: list[ApiUserVdomItem]  # Virtual domains.
     schedule: str  # Schedule name. | MaxLen: 35
     cors_allow_origin: str  # Value for Access-Control-Allow-Origin on API respo | MaxLen: 269
     peer_auth: Literal["enable", "disable"]  # Enable/disable peer authentication. | Default: disable
     peer_group: str  # Peer group name. | MaxLen: 35
-    trusthost: list[dict[str, Any]]  # Trusthost.
+    trusthost: list[ApiUserTrusthostItem]  # Trusthost.
 
-# Nested TypedDicts for table field children (dict mode)
-
-class ApiUserVdomItem(TypedDict):
-    """Type hints for vdom table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    name: str  # Virtual domain name. | MaxLen: 79
-
-
-class ApiUserTrusthostItem(TypedDict):
-    """Type hints for trusthost table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    id: int  # ID. | Default: 0 | Min: 0 | Max: 4294967295
-    type: Literal["ipv4-trusthost", "ipv6-trusthost"]  # Trusthost type. | Default: ipv4-trusthost
-    ipv4_trusthost: str  # IPv4 trusted host address. | Default: 0.0.0.0 0.0.0.0
-    ipv6_trusthost: str  # IPv6 trusted host address. | Default: ::/0
-
-
-# Nested classes for table field children (object mode)
+# ============================================================================
+# Nested classes for table field children (object mode - for API responses)
+# ============================================================================
 
 @final
 class ApiUserVdomObject:
@@ -183,6 +200,9 @@ class ApiUserObject:
     # Common API response fields
     status: str
     http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
     vdom: str | None
     
     # Methods from FortiObject
@@ -420,7 +440,7 @@ class ApiUser:
         cors_allow_origin: str | None = ...,
         peer_auth: Literal["enable", "disable"] | None = ...,
         peer_group: str | None = ...,
-        trusthost: str | list[str] | list[dict[str, Any]] | None = ...,
+        trusthost: str | list[ApiUserTrusthostItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> ApiUserObject: ...
     
@@ -436,7 +456,7 @@ class ApiUser:
         cors_allow_origin: str | None = ...,
         peer_auth: Literal["enable", "disable"] | None = ...,
         peer_group: str | None = ...,
-        trusthost: str | list[str] | list[dict[str, Any]] | None = ...,
+        trusthost: str | list[ApiUserTrusthostItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -453,7 +473,7 @@ class ApiUser:
         cors_allow_origin: str | None = ...,
         peer_auth: Literal["enable", "disable"] | None = ...,
         peer_group: str | None = ...,
-        trusthost: str | list[str] | list[dict[str, Any]] | None = ...,
+        trusthost: str | list[ApiUserTrusthostItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -468,7 +488,7 @@ class ApiUser:
         cors_allow_origin: str | None = ...,
         peer_auth: Literal["enable", "disable"] | None = ...,
         peer_group: str | None = ...,
-        trusthost: str | list[str] | list[dict[str, Any]] | None = ...,
+        trusthost: str | list[ApiUserTrusthostItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -485,7 +505,7 @@ class ApiUser:
         cors_allow_origin: str | None = ...,
         peer_auth: Literal["enable", "disable"] | None = ...,
         peer_group: str | None = ...,
-        trusthost: str | list[str] | list[dict[str, Any]] | None = ...,
+        trusthost: str | list[ApiUserTrusthostItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> ApiUserObject: ...
     
@@ -501,7 +521,7 @@ class ApiUser:
         cors_allow_origin: str | None = ...,
         peer_auth: Literal["enable", "disable"] | None = ...,
         peer_group: str | None = ...,
-        trusthost: str | list[str] | list[dict[str, Any]] | None = ...,
+        trusthost: str | list[ApiUserTrusthostItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -518,7 +538,7 @@ class ApiUser:
         cors_allow_origin: str | None = ...,
         peer_auth: Literal["enable", "disable"] | None = ...,
         peer_group: str | None = ...,
-        trusthost: str | list[str] | list[dict[str, Any]] | None = ...,
+        trusthost: str | list[ApiUserTrusthostItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -533,7 +553,7 @@ class ApiUser:
         cors_allow_origin: str | None = ...,
         peer_auth: Literal["enable", "disable"] | None = ...,
         peer_group: str | None = ...,
-        trusthost: str | list[str] | list[dict[str, Any]] | None = ...,
+        trusthost: str | list[ApiUserTrusthostItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -583,7 +603,7 @@ class ApiUser:
         cors_allow_origin: str | None = ...,
         peer_auth: Literal["enable", "disable"] | None = ...,
         peer_group: str | None = ...,
-        trusthost: str | list[str] | list[dict[str, Any]] | None = ...,
+        trusthost: str | list[ApiUserTrusthostItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     

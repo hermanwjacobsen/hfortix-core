@@ -2,7 +2,51 @@ from typing import TypedDict, Literal, Any, Coroutine, Union, overload, Generato
 from typing_extensions import NotRequired
 from hfortix_fortios.models import FortiObject, FortiObjectList
 
-# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional via total=False)
+# ============================================================================
+# Nested TypedDicts for table field children (dict mode)
+# These MUST be defined before the Payload class to use them as type hints
+# ============================================================================
+
+class AcmeInterfaceItem(TypedDict, total=False):
+    """Type hints for interface table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: AcmeInterfaceItem = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    
+    interface_name: str  # Interface name. | MaxLen: 79
+
+
+class AcmeAccountsItem(TypedDict, total=False):
+    """Type hints for accounts table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: AcmeAccountsItem = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    
+    id: str  # Account id. | MaxLen: 255
+    status: str  # Account status. | MaxLen: 127
+    url: str  # Account url. | MaxLen: 511
+    ca_url: str  # Account ca_url. | MaxLen: 255
+    email: str  # Account email. | MaxLen: 255
+    eab_key_id: str  # External Acccount Binding Key ID. | MaxLen: 255
+    eab_key_hmac: str  # External Acccount Binding Key HMAC. | MaxLen: 128
+    privatekey: str  # Account Private Key. | MaxLen: 8191
+
+
+# ============================================================================
+# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional)
+# ============================================================================
 # NOTE: We intentionally DON'T use NotRequired wrapper because:
 # 1. total=False already makes all fields optional
 # 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
@@ -17,44 +61,17 @@ class AcmePayload(TypedDict, total=False):
             "field": "value",  # <- autocomplete shows all fields
         }
     """
-    interface: list[dict[str, Any]]  # Interface(s) on which the ACME client will listen
+    interface: list[AcmeInterfaceItem]  # Interface(s) on which the ACME client will listen
     use_ha_direct: Literal["enable", "disable"]  # Enable the use of 'ha-mgmt' interface to connect t | Default: disable
     source_ip: str  # Source IPv4 address used to connect to the ACME se | Default: 0.0.0.0
     source_ip6: str  # Source IPv6 address used to connect to the ACME se | Default: ::
-    accounts: list[dict[str, Any]]  # ACME accounts list.
+    accounts: list[AcmeAccountsItem]  # ACME accounts list.
     acc_details: str  # Print Account information and decrypted key.
     status: str  # Print information about the current status of the
 
-# Nested TypedDicts for table field children (dict mode)
-
-class AcmeInterfaceItem(TypedDict):
-    """Type hints for interface table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    interface_name: str  # Interface name. | MaxLen: 79
-
-
-class AcmeAccountsItem(TypedDict):
-    """Type hints for accounts table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    id: str  # Account id. | MaxLen: 255
-    status: str  # Account status. | MaxLen: 127
-    url: str  # Account url. | MaxLen: 511
-    ca_url: str  # Account ca_url. | MaxLen: 255
-    email: str  # Account email. | MaxLen: 255
-    eab_key_id: str  # External Acccount Binding Key ID. | MaxLen: 255
-    eab_key_hmac: str  # External Acccount Binding Key HMAC. | MaxLen: 128
-    privatekey: str  # Account Private Key. | MaxLen: 8191
-
-
-# Nested classes for table field children (object mode)
+# ============================================================================
+# Nested classes for table field children (object mode - for API responses)
+# ============================================================================
 
 @final
 class AcmeInterfaceObject:
@@ -178,6 +195,9 @@ class AcmeObject:
     # Common API response fields
     status: str
     http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
     vdom: str | None
     
     # Methods from FortiObject
@@ -406,11 +426,11 @@ class Acme:
     def put(
         self,
         payload_dict: AcmePayload | None = ...,
-        interface: str | list[str] | list[dict[str, Any]] | None = ...,
+        interface: str | list[AcmeInterfaceItem] | None = ...,
         use_ha_direct: Literal["enable", "disable"] | None = ...,
         source_ip: str | None = ...,
         source_ip6: str | None = ...,
-        accounts: str | list[str] | list[dict[str, Any]] | None = ...,
+        accounts: str | list[AcmeAccountsItem] | None = ...,
         acc_details: str | None = ...,
         status: str | None = ...,
         vdom: str | bool | None = ...,
@@ -420,11 +440,11 @@ class Acme:
     def put(
         self,
         payload_dict: AcmePayload | None = ...,
-        interface: str | list[str] | list[dict[str, Any]] | None = ...,
+        interface: str | list[AcmeInterfaceItem] | None = ...,
         use_ha_direct: Literal["enable", "disable"] | None = ...,
         source_ip: str | None = ...,
         source_ip6: str | None = ...,
-        accounts: str | list[str] | list[dict[str, Any]] | None = ...,
+        accounts: str | list[AcmeAccountsItem] | None = ...,
         acc_details: str | None = ...,
         status: str | None = ...,
         vdom: str | bool | None = ...,
@@ -435,11 +455,11 @@ class Acme:
     def put(
         self,
         payload_dict: AcmePayload | None = ...,
-        interface: str | list[str] | list[dict[str, Any]] | None = ...,
+        interface: str | list[AcmeInterfaceItem] | None = ...,
         use_ha_direct: Literal["enable", "disable"] | None = ...,
         source_ip: str | None = ...,
         source_ip6: str | None = ...,
-        accounts: str | list[str] | list[dict[str, Any]] | None = ...,
+        accounts: str | list[AcmeAccountsItem] | None = ...,
         acc_details: str | None = ...,
         status: str | None = ...,
         vdom: str | bool | None = ...,
@@ -448,11 +468,11 @@ class Acme:
     def put(
         self,
         payload_dict: AcmePayload | None = ...,
-        interface: str | list[str] | list[dict[str, Any]] | None = ...,
+        interface: str | list[AcmeInterfaceItem] | None = ...,
         use_ha_direct: Literal["enable", "disable"] | None = ...,
         source_ip: str | None = ...,
         source_ip6: str | None = ...,
-        accounts: str | list[str] | list[dict[str, Any]] | None = ...,
+        accounts: str | list[AcmeAccountsItem] | None = ...,
         acc_details: str | None = ...,
         status: str | None = ...,
         vdom: str | bool | None = ...,
@@ -467,11 +487,11 @@ class Acme:
     def set(
         self,
         payload_dict: AcmePayload | None = ...,
-        interface: str | list[str] | list[dict[str, Any]] | None = ...,
+        interface: str | list[AcmeInterfaceItem] | None = ...,
         use_ha_direct: Literal["enable", "disable"] | None = ...,
         source_ip: str | None = ...,
         source_ip6: str | None = ...,
-        accounts: str | list[str] | list[dict[str, Any]] | None = ...,
+        accounts: str | list[AcmeAccountsItem] | None = ...,
         acc_details: str | None = ...,
         status: str | None = ...,
         vdom: str | bool | None = ...,

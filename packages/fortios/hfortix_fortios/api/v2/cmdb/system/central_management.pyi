@@ -2,7 +2,34 @@ from typing import TypedDict, Literal, Any, Coroutine, Union, overload, Generato
 from typing_extensions import NotRequired
 from hfortix_fortios.models import FortiObject, FortiObjectList
 
-# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional via total=False)
+# ============================================================================
+# Nested TypedDicts for table field children (dict mode)
+# These MUST be defined before the Payload class to use them as type hints
+# ============================================================================
+
+class CentralManagementServerlistItem(TypedDict, total=False):
+    """Type hints for server-list table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: CentralManagementServerlistItem = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    
+    id: int  # ID. | Default: 0 | Min: 0 | Max: 4294967295
+    server_type: Literal["update", "rating", "vpatch-query", "iot-collect"]  # FortiGuard service type.
+    addr_type: Literal["ipv4", "ipv6", "fqdn"]  # Indicate whether the FortiGate communicates with t | Default: ipv4
+    server_address: str  # IPv4 address of override server. | Default: 0.0.0.0
+    server_address6: str  # IPv6 address of override server. | Default: ::
+    fqdn: str  # FQDN address of override server. | MaxLen: 255
+
+
+# ============================================================================
+# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional)
+# ============================================================================
 # NOTE: We intentionally DON'T use NotRequired wrapper because:
 # 1. total=False already makes all fields optional
 # 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
@@ -42,7 +69,7 @@ class CentralManagementPayload(TypedDict, total=False):
     local_cert: str  # Certificate to be used by FGFM protocol. | MaxLen: 35
     ca_cert: str  # CA certificate to be used by FGFM protocol.
     vdom: str  # Virtual domain (VDOM) name to use when communicati | Default: root | MaxLen: 31
-    server_list: list[dict[str, Any]]  # Additional severs that the FortiGate can use for u
+    server_list: list[CentralManagementServerlistItem]  # Additional severs that the FortiGate can use for u
     fmg_update_port: Literal["8890", "443"]  # Port used to communicate with FortiManager that is | Default: 8890
     fmg_update_http_header: Literal["enable", "disable"]  # Enable/disable inclusion of HTTP header in update | Default: disable
     include_default_servers: Literal["enable", "disable"]  # Enable/disable inclusion of public FortiGuard serv | Default: enable
@@ -51,24 +78,9 @@ class CentralManagementPayload(TypedDict, total=False):
     interface: str  # Specify outgoing interface to reach server. | MaxLen: 15
     vrf_select: int  # VRF ID used for connection to server. | Default: 0 | Min: 0 | Max: 511
 
-# Nested TypedDicts for table field children (dict mode)
-
-class CentralManagementServerlistItem(TypedDict):
-    """Type hints for server-list table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    id: int  # ID. | Default: 0 | Min: 0 | Max: 4294967295
-    server_type: Literal["update", "rating", "vpatch-query", "iot-collect"]  # FortiGuard service type.
-    addr_type: Literal["ipv4", "ipv6", "fqdn"]  # Indicate whether the FortiGate communicates with t | Default: ipv4
-    server_address: str  # IPv4 address of override server. | Default: 0.0.0.0
-    server_address6: str  # IPv6 address of override server. | Default: ::
-    fqdn: str  # FQDN address of override server. | MaxLen: 255
-
-
-# Nested classes for table field children (object mode)
+# ============================================================================
+# Nested classes for table field children (object mode - for API responses)
+# ============================================================================
 
 @final
 class CentralManagementServerlistObject:
@@ -207,6 +219,9 @@ class CentralManagementObject:
     # Common API response fields
     status: str
     http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
     vdom: str | None
     
     # Methods from FortiObject
@@ -450,7 +465,7 @@ class CentralManagement:
         fmg_source_ip6: str | None = ...,
         local_cert: str | None = ...,
         ca_cert: str | None = ...,
-        server_list: str | list[str] | list[dict[str, Any]] | None = ...,
+        server_list: str | list[CentralManagementServerlistItem] | None = ...,
         fmg_update_port: Literal["8890", "443"] | None = ...,
         fmg_update_http_header: Literal["enable", "disable"] | None = ...,
         include_default_servers: Literal["enable", "disable"] | None = ...,
@@ -480,7 +495,7 @@ class CentralManagement:
         fmg_source_ip6: str | None = ...,
         local_cert: str | None = ...,
         ca_cert: str | None = ...,
-        server_list: str | list[str] | list[dict[str, Any]] | None = ...,
+        server_list: str | list[CentralManagementServerlistItem] | None = ...,
         fmg_update_port: Literal["8890", "443"] | None = ...,
         fmg_update_http_header: Literal["enable", "disable"] | None = ...,
         include_default_servers: Literal["enable", "disable"] | None = ...,
@@ -511,7 +526,7 @@ class CentralManagement:
         fmg_source_ip6: str | None = ...,
         local_cert: str | None = ...,
         ca_cert: str | None = ...,
-        server_list: str | list[str] | list[dict[str, Any]] | None = ...,
+        server_list: str | list[CentralManagementServerlistItem] | None = ...,
         fmg_update_port: Literal["8890", "443"] | None = ...,
         fmg_update_http_header: Literal["enable", "disable"] | None = ...,
         include_default_servers: Literal["enable", "disable"] | None = ...,
@@ -540,7 +555,7 @@ class CentralManagement:
         fmg_source_ip6: str | None = ...,
         local_cert: str | None = ...,
         ca_cert: str | None = ...,
-        server_list: str | list[str] | list[dict[str, Any]] | None = ...,
+        server_list: str | list[CentralManagementServerlistItem] | None = ...,
         fmg_update_port: Literal["8890", "443"] | None = ...,
         fmg_update_http_header: Literal["enable", "disable"] | None = ...,
         include_default_servers: Literal["enable", "disable"] | None = ...,
@@ -575,7 +590,7 @@ class CentralManagement:
         fmg_source_ip6: str | None = ...,
         local_cert: str | None = ...,
         ca_cert: str | None = ...,
-        server_list: str | list[str] | list[dict[str, Any]] | None = ...,
+        server_list: str | list[CentralManagementServerlistItem] | None = ...,
         fmg_update_port: Literal["8890", "443"] | None = ...,
         fmg_update_http_header: Literal["enable", "disable"] | None = ...,
         include_default_servers: Literal["enable", "disable"] | None = ...,

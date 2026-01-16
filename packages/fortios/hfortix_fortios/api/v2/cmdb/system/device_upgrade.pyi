@@ -2,7 +2,29 @@ from typing import TypedDict, Literal, Any, Coroutine, Union, overload, Generato
 from typing_extensions import NotRequired
 from hfortix_fortios.models import FortiObject, FortiObjectList
 
-# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional via total=False)
+# ============================================================================
+# Nested TypedDicts for table field children (dict mode)
+# These MUST be defined before the Payload class to use them as type hints
+# ============================================================================
+
+class DeviceUpgradeKnownhamembersItem(TypedDict, total=False):
+    """Type hints for known-ha-members table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: DeviceUpgradeKnownhamembersItem = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    
+    serial: str  # Serial number of HA member | MaxLen: 79
+
+
+# ============================================================================
+# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional)
+# ============================================================================
 # NOTE: We intentionally DON'T use NotRequired wrapper because:
 # 1. total=False already makes all fields optional
 # 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
@@ -26,7 +48,7 @@ class DeviceUpgradePayload(TypedDict, total=False):
     status: Literal["disabled", "initialized", "downloading", "device-disconnected", "ready", "coordinating", "staging", "final-check", "upgrade-devices", "cancelled", "confirmed", "done", "failed"]  # Current status of the upgrade. | Default: disabled
     ha_reboot_controller: str  # Serial number of the FortiGate unit that will cont | MaxLen: 79
     next_path_index: int  # The index of the next image to upgrade to. | Default: 0 | Min: 0 | Max: 10
-    known_ha_members: list[dict[str, Any]]  # Known members of the HA cluster. If a member is mi
+    known_ha_members: list[DeviceUpgradeKnownhamembersItem]  # Known members of the HA cluster. If a member is mi
     initial_version: str  # Firmware version when the upgrade was set up.
     starter_admin: str  # Admin that started the upgrade. | MaxLen: 64
     serial: str  # Serial number of the node to include. | MaxLen: 79
@@ -39,19 +61,9 @@ class DeviceUpgradePayload(TypedDict, total=False):
     allow_download: Literal["enable", "disable"]  # Enable/disable download firmware images. | Default: enable
     failure_reason: Literal["none", "internal", "timeout", "device-type-unsupported", "download-failed", "device-missing", "version-unavailable", "staging-failed", "reboot-failed", "device-not-reconnected", "node-not-ready", "no-final-confirmation", "no-confirmation-query", "config-error-log-nonempty", "csf-tree-not-supported", "firmware-changed", "node-failed", "image-missing"]  # Upgrade failure reason. | Default: none
 
-# Nested TypedDicts for table field children (dict mode)
-
-class DeviceUpgradeKnownhamembersItem(TypedDict):
-    """Type hints for known-ha-members table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    serial: str  # Serial number of HA member | MaxLen: 79
-
-
-# Nested classes for table field children (object mode)
+# ============================================================================
+# Nested classes for table field children (object mode - for API responses)
+# ============================================================================
 
 @final
 class DeviceUpgradeKnownhamembersObject:
@@ -156,6 +168,9 @@ class DeviceUpgradeObject:
     # Common API response fields
     status: str
     http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
     vdom: str | None
     
     # Methods from FortiObject
@@ -388,7 +403,7 @@ class DeviceUpgrade:
         status: Literal["disabled", "initialized", "downloading", "device-disconnected", "ready", "coordinating", "staging", "final-check", "upgrade-devices", "cancelled", "confirmed", "done", "failed"] | None = ...,
         ha_reboot_controller: str | None = ...,
         next_path_index: int | None = ...,
-        known_ha_members: str | list[str] | list[dict[str, Any]] | None = ...,
+        known_ha_members: str | list[DeviceUpgradeKnownhamembersItem] | None = ...,
         initial_version: str | None = ...,
         starter_admin: str | None = ...,
         serial: str | None = ...,
@@ -410,7 +425,7 @@ class DeviceUpgrade:
         status: Literal["disabled", "initialized", "downloading", "device-disconnected", "ready", "coordinating", "staging", "final-check", "upgrade-devices", "cancelled", "confirmed", "done", "failed"] | None = ...,
         ha_reboot_controller: str | None = ...,
         next_path_index: int | None = ...,
-        known_ha_members: str | list[str] | list[dict[str, Any]] | None = ...,
+        known_ha_members: str | list[DeviceUpgradeKnownhamembersItem] | None = ...,
         initial_version: str | None = ...,
         starter_admin: str | None = ...,
         serial: str | None = ...,
@@ -433,7 +448,7 @@ class DeviceUpgrade:
         status: Literal["disabled", "initialized", "downloading", "device-disconnected", "ready", "coordinating", "staging", "final-check", "upgrade-devices", "cancelled", "confirmed", "done", "failed"] | None = ...,
         ha_reboot_controller: str | None = ...,
         next_path_index: int | None = ...,
-        known_ha_members: str | list[str] | list[dict[str, Any]] | None = ...,
+        known_ha_members: str | list[DeviceUpgradeKnownhamembersItem] | None = ...,
         initial_version: str | None = ...,
         starter_admin: str | None = ...,
         serial: str | None = ...,
@@ -454,7 +469,7 @@ class DeviceUpgrade:
         status: Literal["disabled", "initialized", "downloading", "device-disconnected", "ready", "coordinating", "staging", "final-check", "upgrade-devices", "cancelled", "confirmed", "done", "failed"] | None = ...,
         ha_reboot_controller: str | None = ...,
         next_path_index: int | None = ...,
-        known_ha_members: str | list[str] | list[dict[str, Any]] | None = ...,
+        known_ha_members: str | list[DeviceUpgradeKnownhamembersItem] | None = ...,
         initial_version: str | None = ...,
         starter_admin: str | None = ...,
         serial: str | None = ...,
@@ -477,7 +492,7 @@ class DeviceUpgrade:
         status: Literal["disabled", "initialized", "downloading", "device-disconnected", "ready", "coordinating", "staging", "final-check", "upgrade-devices", "cancelled", "confirmed", "done", "failed"] | None = ...,
         ha_reboot_controller: str | None = ...,
         next_path_index: int | None = ...,
-        known_ha_members: str | list[str] | list[dict[str, Any]] | None = ...,
+        known_ha_members: str | list[DeviceUpgradeKnownhamembersItem] | None = ...,
         initial_version: str | None = ...,
         starter_admin: str | None = ...,
         serial: str | None = ...,
@@ -499,7 +514,7 @@ class DeviceUpgrade:
         status: Literal["disabled", "initialized", "downloading", "device-disconnected", "ready", "coordinating", "staging", "final-check", "upgrade-devices", "cancelled", "confirmed", "done", "failed"] | None = ...,
         ha_reboot_controller: str | None = ...,
         next_path_index: int | None = ...,
-        known_ha_members: str | list[str] | list[dict[str, Any]] | None = ...,
+        known_ha_members: str | list[DeviceUpgradeKnownhamembersItem] | None = ...,
         initial_version: str | None = ...,
         starter_admin: str | None = ...,
         serial: str | None = ...,
@@ -522,7 +537,7 @@ class DeviceUpgrade:
         status: Literal["disabled", "initialized", "downloading", "device-disconnected", "ready", "coordinating", "staging", "final-check", "upgrade-devices", "cancelled", "confirmed", "done", "failed"] | None = ...,
         ha_reboot_controller: str | None = ...,
         next_path_index: int | None = ...,
-        known_ha_members: str | list[str] | list[dict[str, Any]] | None = ...,
+        known_ha_members: str | list[DeviceUpgradeKnownhamembersItem] | None = ...,
         initial_version: str | None = ...,
         starter_admin: str | None = ...,
         serial: str | None = ...,
@@ -543,7 +558,7 @@ class DeviceUpgrade:
         status: Literal["disabled", "initialized", "downloading", "device-disconnected", "ready", "coordinating", "staging", "final-check", "upgrade-devices", "cancelled", "confirmed", "done", "failed"] | None = ...,
         ha_reboot_controller: str | None = ...,
         next_path_index: int | None = ...,
-        known_ha_members: str | list[str] | list[dict[str, Any]] | None = ...,
+        known_ha_members: str | list[DeviceUpgradeKnownhamembersItem] | None = ...,
         initial_version: str | None = ...,
         starter_admin: str | None = ...,
         serial: str | None = ...,
@@ -599,7 +614,7 @@ class DeviceUpgrade:
         status: Literal["disabled", "initialized", "downloading", "device-disconnected", "ready", "coordinating", "staging", "final-check", "upgrade-devices", "cancelled", "confirmed", "done", "failed"] | None = ...,
         ha_reboot_controller: str | None = ...,
         next_path_index: int | None = ...,
-        known_ha_members: str | list[str] | list[dict[str, Any]] | None = ...,
+        known_ha_members: str | list[DeviceUpgradeKnownhamembersItem] | None = ...,
         initial_version: str | None = ...,
         starter_admin: str | None = ...,
         serial: str | None = ...,

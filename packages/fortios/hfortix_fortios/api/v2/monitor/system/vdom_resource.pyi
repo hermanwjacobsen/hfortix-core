@@ -3,6 +3,121 @@ from typing_extensions import NotRequired
 from hfortix_fortios.models import FortiObject, FortiObjectList
 
 
+
+
+# Response TypedDict for GET returns (all fields present in API response)
+class VdomResourceResponse(TypedDict):
+    """
+    Type hints for system/vdom_resource API response fields.
+    
+    All fields are present in the response from the FortiGate API.
+    """
+    cpu: str
+    memory: str
+    setup_rate: str
+    is_deletable: bool
+    session: str
+    ipsec_phase1: str
+    ipsec_phase2: str
+    ipsec_phase1_interface: str
+    ipsec_phase2_interface: str
+    dialup_tunnel: str
+    firewall_policy: str
+    firewall_address: str
+    firewall_addrgrp: str
+    custom_service: str
+    service_group: str
+    onetime_schedule: str
+    recurring_schedule: str
+    user: str
+    user_group: str
+    sslvpn: str
+    proxy: str
+    log_disk_quota: str
+
+
+@final
+class VdomResourceObject:
+    """Typed FortiObject for system/vdom_resource with IDE autocomplete support.
+    
+    This is a typed wrapper that provides IDE autocomplete for API response fields.
+    At runtime, this is actually a FortiObject instance.
+    """
+    
+    # cpu
+    cpu: str
+    # memory
+    memory: str
+    # setup_rate
+    setup_rate: str
+    # is_deletable
+    is_deletable: bool
+    # session
+    session: str
+    # ipsec-phase1
+    ipsec_phase1: str
+    # ipsec-phase2
+    ipsec_phase2: str
+    # ipsec-phase1-interface
+    ipsec_phase1_interface: str
+    # ipsec-phase2-interface
+    ipsec_phase2_interface: str
+    # dialup-tunnel
+    dialup_tunnel: str
+    # firewall-policy
+    firewall_policy: str
+    # firewall-address
+    firewall_address: str
+    # firewall-addrgrp
+    firewall_addrgrp: str
+    # custom-service
+    custom_service: str
+    # service-group
+    service_group: str
+    # onetime-schedule
+    onetime_schedule: str
+    # recurring-schedule
+    recurring_schedule: str
+    # user
+    user: str
+    # user-group
+    user_group: str
+    # sslvpn
+    sslvpn: str
+    # proxy
+    proxy: str
+    # log-disk-quota
+    log_disk_quota: str
+    
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
+    
+    # Methods from FortiObject
+    @property
+    def dict(self) -> dict[str, Any]:
+        """Convert to dictionary."""
+        ...
+    @property
+    def json(self) -> str:
+        """Get pretty-printed JSON string."""
+        ...
+    @property
+    def raw(self) -> dict[str, Any]:
+        """Get raw API response data."""
+        ...
+    def get_full(self, name: str) -> Any: ...
+    def to_dict(self) -> VdomResourcePayload: ...
+    def keys(self) -> Any: ...
+    def values(self) -> Generator[Any, None, None]: ...
+    def items(self) -> Generator[tuple[str, Any], None, None]: ...
+    def get(self, key: str, default: Any = None) -> Any: ...
+
+
 class VdomResource:
     """
     Retrieve VDOM resource information, including CPU and memory usage.

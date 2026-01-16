@@ -2,7 +2,29 @@ from typing import TypedDict, Literal, Any, Coroutine, Union, overload, Generato
 from typing_extensions import NotRequired
 from hfortix_fortios.models import FortiObject, FortiObjectList
 
-# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional via total=False)
+# ============================================================================
+# Nested TypedDicts for table field children (dict mode)
+# These MUST be defined before the Payload class to use them as type hints
+# ============================================================================
+
+class SchemeUserdatabaseItem(TypedDict, total=False):
+    """Type hints for user-database table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: SchemeUserdatabaseItem = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    
+    name: str  # Authentication server name. | MaxLen: 79
+
+
+# ============================================================================
+# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional)
+# ============================================================================
 # NOTE: We intentionally DON'T use NotRequired wrapper because:
 # 1. total=False already makes all fields optional
 # 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
@@ -39,26 +61,16 @@ class SchemePayload(TypedDict, total=False):
     fsso_guest: Literal["enable", "disable"]  # Enable/disable user fsso-guest authentication | Default: disable
     user_cert: Literal["enable", "disable"]  # Enable/disable authentication with user certificat | Default: disable
     cert_http_header: Literal["enable", "disable"]  # Enable/disable authentication with user certificat | Default: disable
-    user_database: list[dict[str, Any]]  # Authentication server to contain user information;
+    user_database: list[SchemeUserdatabaseItem]  # Authentication server to contain user information;
     ssh_ca: str  # SSH CA name. | MaxLen: 35
     external_idp: str  # External identity provider configuration. | MaxLen: 35
     group_attr_type: Literal["display-name", "external-id"]  # Group attribute type used to match SCIM groups | Default: display-name
     digest_algo: Literal["md5", "sha-256"]  # Digest Authentication Algorithms. | Default: md5 sha-256
     digest_rfc2069: Literal["enable", "disable"]  # Enable/disable support for the deprecated RFC2069 | Default: disable
 
-# Nested TypedDicts for table field children (dict mode)
-
-class SchemeUserdatabaseItem(TypedDict):
-    """Type hints for user-database table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    name: str  # Authentication server name. | MaxLen: 79
-
-
-# Nested classes for table field children (object mode)
+# ============================================================================
+# Nested classes for table field children (object mode - for API responses)
+# ============================================================================
 
 @final
 class SchemeUserdatabaseObject:
@@ -169,6 +181,9 @@ class SchemeObject:
     # Common API response fields
     status: str
     http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
     vdom: str | None
     
     # Methods from FortiObject
@@ -410,7 +425,7 @@ class Scheme:
         fsso_guest: Literal["enable", "disable"] | None = ...,
         user_cert: Literal["enable", "disable"] | None = ...,
         cert_http_header: Literal["enable", "disable"] | None = ...,
-        user_database: str | list[str] | list[dict[str, Any]] | None = ...,
+        user_database: str | list[SchemeUserdatabaseItem] | None = ...,
         ssh_ca: str | None = ...,
         external_idp: str | None = ...,
         group_attr_type: Literal["display-name", "external-id"] | None = ...,
@@ -435,7 +450,7 @@ class Scheme:
         fsso_guest: Literal["enable", "disable"] | None = ...,
         user_cert: Literal["enable", "disable"] | None = ...,
         cert_http_header: Literal["enable", "disable"] | None = ...,
-        user_database: str | list[str] | list[dict[str, Any]] | None = ...,
+        user_database: str | list[SchemeUserdatabaseItem] | None = ...,
         ssh_ca: str | None = ...,
         external_idp: str | None = ...,
         group_attr_type: Literal["display-name", "external-id"] | None = ...,
@@ -461,7 +476,7 @@ class Scheme:
         fsso_guest: Literal["enable", "disable"] | None = ...,
         user_cert: Literal["enable", "disable"] | None = ...,
         cert_http_header: Literal["enable", "disable"] | None = ...,
-        user_database: str | list[str] | list[dict[str, Any]] | None = ...,
+        user_database: str | list[SchemeUserdatabaseItem] | None = ...,
         ssh_ca: str | None = ...,
         external_idp: str | None = ...,
         group_attr_type: Literal["display-name", "external-id"] | None = ...,
@@ -485,7 +500,7 @@ class Scheme:
         fsso_guest: Literal["enable", "disable"] | None = ...,
         user_cert: Literal["enable", "disable"] | None = ...,
         cert_http_header: Literal["enable", "disable"] | None = ...,
-        user_database: str | list[str] | list[dict[str, Any]] | None = ...,
+        user_database: str | list[SchemeUserdatabaseItem] | None = ...,
         ssh_ca: str | None = ...,
         external_idp: str | None = ...,
         group_attr_type: Literal["display-name", "external-id"] | None = ...,
@@ -511,7 +526,7 @@ class Scheme:
         fsso_guest: Literal["enable", "disable"] | None = ...,
         user_cert: Literal["enable", "disable"] | None = ...,
         cert_http_header: Literal["enable", "disable"] | None = ...,
-        user_database: str | list[str] | list[dict[str, Any]] | None = ...,
+        user_database: str | list[SchemeUserdatabaseItem] | None = ...,
         ssh_ca: str | None = ...,
         external_idp: str | None = ...,
         group_attr_type: Literal["display-name", "external-id"] | None = ...,
@@ -536,7 +551,7 @@ class Scheme:
         fsso_guest: Literal["enable", "disable"] | None = ...,
         user_cert: Literal["enable", "disable"] | None = ...,
         cert_http_header: Literal["enable", "disable"] | None = ...,
-        user_database: str | list[str] | list[dict[str, Any]] | None = ...,
+        user_database: str | list[SchemeUserdatabaseItem] | None = ...,
         ssh_ca: str | None = ...,
         external_idp: str | None = ...,
         group_attr_type: Literal["display-name", "external-id"] | None = ...,
@@ -562,7 +577,7 @@ class Scheme:
         fsso_guest: Literal["enable", "disable"] | None = ...,
         user_cert: Literal["enable", "disable"] | None = ...,
         cert_http_header: Literal["enable", "disable"] | None = ...,
-        user_database: str | list[str] | list[dict[str, Any]] | None = ...,
+        user_database: str | list[SchemeUserdatabaseItem] | None = ...,
         ssh_ca: str | None = ...,
         external_idp: str | None = ...,
         group_attr_type: Literal["display-name", "external-id"] | None = ...,
@@ -586,7 +601,7 @@ class Scheme:
         fsso_guest: Literal["enable", "disable"] | None = ...,
         user_cert: Literal["enable", "disable"] | None = ...,
         cert_http_header: Literal["enable", "disable"] | None = ...,
-        user_database: str | list[str] | list[dict[str, Any]] | None = ...,
+        user_database: str | list[SchemeUserdatabaseItem] | None = ...,
         ssh_ca: str | None = ...,
         external_idp: str | None = ...,
         group_attr_type: Literal["display-name", "external-id"] | None = ...,
@@ -645,7 +660,7 @@ class Scheme:
         fsso_guest: Literal["enable", "disable"] | None = ...,
         user_cert: Literal["enable", "disable"] | None = ...,
         cert_http_header: Literal["enable", "disable"] | None = ...,
-        user_database: str | list[str] | list[dict[str, Any]] | None = ...,
+        user_database: str | list[SchemeUserdatabaseItem] | None = ...,
         ssh_ca: str | None = ...,
         external_idp: str | None = ...,
         group_attr_type: Literal["display-name", "external-id"] | None = ...,

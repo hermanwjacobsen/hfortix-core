@@ -2,7 +2,29 @@ from typing import TypedDict, Literal, Any, Coroutine, Union, overload, Generato
 from typing_extensions import NotRequired
 from hfortix_fortios.models import FortiObject, FortiObjectList
 
-# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional via total=False)
+# ============================================================================
+# Nested TypedDicts for table field children (dict mode)
+# These MUST be defined before the Payload class to use them as type hints
+# ============================================================================
+
+class ProfileWispserversItem(TypedDict, total=False):
+    """Type hints for wisp-servers table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: ProfileWispserversItem = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    
+    name: str  # Server name. | MaxLen: 79
+
+
+# ============================================================================
+# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional)
+# ============================================================================
 # NOTE: We intentionally DON'T use NotRequired wrapper because:
 # 1. total=False already makes all fields optional
 # 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
@@ -36,7 +58,7 @@ class ProfilePayload(TypedDict, total=False):
     ftgd_wf: str  # FortiGuard Web Filter settings.
     antiphish: str  # AntiPhishing profile.
     wisp: Literal["enable", "disable"]  # Enable/disable web proxy WISP. | Default: disable
-    wisp_servers: list[dict[str, Any]]  # WISP servers.
+    wisp_servers: list[ProfileWispserversItem]  # WISP servers.
     wisp_algorithm: Literal["primary-secondary", "round-robin", "auto-learning"]  # WISP server selection algorithm. | Default: auto-learning
     log_all_url: Literal["enable", "disable"]  # Enable/disable logging all URLs visited. | Default: disable
     web_content_log: Literal["enable", "disable"]  # Enable/disable logging logging blocked web content | Default: enable
@@ -58,19 +80,9 @@ class ProfilePayload(TypedDict, total=False):
     web_extended_all_action_log: Literal["enable", "disable"]  # Enable/disable extended any filter action logging | Default: disable
     web_antiphishing_log: Literal["enable", "disable"]  # Enable/disable logging of AntiPhishing checks. | Default: enable
 
-# Nested TypedDicts for table field children (dict mode)
-
-class ProfileWispserversItem(TypedDict):
-    """Type hints for wisp-servers table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    name: str  # Server name. | MaxLen: 79
-
-
-# Nested classes for table field children (object mode)
+# ============================================================================
+# Nested classes for table field children (object mode - for API responses)
+# ============================================================================
 
 @final
 class ProfileWispserversObject:
@@ -232,6 +244,9 @@ class ProfileObject:
     # Common API response fields
     status: str
     http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
     vdom: str | None
     
     # Methods from FortiObject
@@ -475,7 +490,7 @@ class Profile:
         ftgd_wf: str | None = ...,
         antiphish: str | None = ...,
         wisp: Literal["enable", "disable"] | None = ...,
-        wisp_servers: str | list[str] | list[dict[str, Any]] | None = ...,
+        wisp_servers: str | list[ProfileWispserversItem] | None = ...,
         wisp_algorithm: Literal["primary-secondary", "round-robin", "auto-learning"] | None = ...,
         log_all_url: Literal["enable", "disable"] | None = ...,
         web_content_log: Literal["enable", "disable"] | None = ...,
@@ -517,7 +532,7 @@ class Profile:
         ftgd_wf: str | None = ...,
         antiphish: str | None = ...,
         wisp: Literal["enable", "disable"] | None = ...,
-        wisp_servers: str | list[str] | list[dict[str, Any]] | None = ...,
+        wisp_servers: str | list[ProfileWispserversItem] | None = ...,
         wisp_algorithm: Literal["primary-secondary", "round-robin", "auto-learning"] | None = ...,
         log_all_url: Literal["enable", "disable"] | None = ...,
         web_content_log: Literal["enable", "disable"] | None = ...,
@@ -560,7 +575,7 @@ class Profile:
         ftgd_wf: str | None = ...,
         antiphish: str | None = ...,
         wisp: Literal["enable", "disable"] | None = ...,
-        wisp_servers: str | list[str] | list[dict[str, Any]] | None = ...,
+        wisp_servers: str | list[ProfileWispserversItem] | None = ...,
         wisp_algorithm: Literal["primary-secondary", "round-robin", "auto-learning"] | None = ...,
         log_all_url: Literal["enable", "disable"] | None = ...,
         web_content_log: Literal["enable", "disable"] | None = ...,
@@ -601,7 +616,7 @@ class Profile:
         ftgd_wf: str | None = ...,
         antiphish: str | None = ...,
         wisp: Literal["enable", "disable"] | None = ...,
-        wisp_servers: str | list[str] | list[dict[str, Any]] | None = ...,
+        wisp_servers: str | list[ProfileWispserversItem] | None = ...,
         wisp_algorithm: Literal["primary-secondary", "round-robin", "auto-learning"] | None = ...,
         log_all_url: Literal["enable", "disable"] | None = ...,
         web_content_log: Literal["enable", "disable"] | None = ...,
@@ -644,7 +659,7 @@ class Profile:
         ftgd_wf: str | None = ...,
         antiphish: str | None = ...,
         wisp: Literal["enable", "disable"] | None = ...,
-        wisp_servers: str | list[str] | list[dict[str, Any]] | None = ...,
+        wisp_servers: str | list[ProfileWispserversItem] | None = ...,
         wisp_algorithm: Literal["primary-secondary", "round-robin", "auto-learning"] | None = ...,
         log_all_url: Literal["enable", "disable"] | None = ...,
         web_content_log: Literal["enable", "disable"] | None = ...,
@@ -686,7 +701,7 @@ class Profile:
         ftgd_wf: str | None = ...,
         antiphish: str | None = ...,
         wisp: Literal["enable", "disable"] | None = ...,
-        wisp_servers: str | list[str] | list[dict[str, Any]] | None = ...,
+        wisp_servers: str | list[ProfileWispserversItem] | None = ...,
         wisp_algorithm: Literal["primary-secondary", "round-robin", "auto-learning"] | None = ...,
         log_all_url: Literal["enable", "disable"] | None = ...,
         web_content_log: Literal["enable", "disable"] | None = ...,
@@ -729,7 +744,7 @@ class Profile:
         ftgd_wf: str | None = ...,
         antiphish: str | None = ...,
         wisp: Literal["enable", "disable"] | None = ...,
-        wisp_servers: str | list[str] | list[dict[str, Any]] | None = ...,
+        wisp_servers: str | list[ProfileWispserversItem] | None = ...,
         wisp_algorithm: Literal["primary-secondary", "round-robin", "auto-learning"] | None = ...,
         log_all_url: Literal["enable", "disable"] | None = ...,
         web_content_log: Literal["enable", "disable"] | None = ...,
@@ -770,7 +785,7 @@ class Profile:
         ftgd_wf: str | None = ...,
         antiphish: str | None = ...,
         wisp: Literal["enable", "disable"] | None = ...,
-        wisp_servers: str | list[str] | list[dict[str, Any]] | None = ...,
+        wisp_servers: str | list[ProfileWispserversItem] | None = ...,
         wisp_algorithm: Literal["primary-secondary", "round-robin", "auto-learning"] | None = ...,
         log_all_url: Literal["enable", "disable"] | None = ...,
         web_content_log: Literal["enable", "disable"] | None = ...,
@@ -846,7 +861,7 @@ class Profile:
         ftgd_wf: str | None = ...,
         antiphish: str | None = ...,
         wisp: Literal["enable", "disable"] | None = ...,
-        wisp_servers: str | list[str] | list[dict[str, Any]] | None = ...,
+        wisp_servers: str | list[ProfileWispserversItem] | None = ...,
         wisp_algorithm: Literal["primary-secondary", "round-robin", "auto-learning"] | None = ...,
         log_all_url: Literal["enable", "disable"] | None = ...,
         web_content_log: Literal["enable", "disable"] | None = ...,

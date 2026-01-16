@@ -2,7 +2,31 @@ from typing import TypedDict, Literal, Any, Coroutine, Union, overload, Generato
 from typing_extensions import NotRequired
 from hfortix_fortios.models import FortiObject, FortiObjectList
 
-# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional via total=False)
+# ============================================================================
+# Nested TypedDicts for table field children (dict mode)
+# These MUST be defined before the Payload class to use them as type hints
+# ============================================================================
+
+class MulticastAddress6TaggingItem(TypedDict, total=False):
+    """Type hints for tagging table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: MulticastAddress6TaggingItem = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    
+    name: str  # Tagging entry name. | MaxLen: 63
+    category: str  # Tag category. | MaxLen: 63
+    tags: str  # Tags.
+
+
+# ============================================================================
+# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional)
+# ============================================================================
 # NOTE: We intentionally DON'T use NotRequired wrapper because:
 # 1. total=False already makes all fields optional
 # 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
@@ -21,23 +45,11 @@ class MulticastAddress6Payload(TypedDict, total=False):
     ip6: str  # IPv6 address prefix | Default: ::/0
     comment: str  # Comment. | MaxLen: 255
     color: int  # Color of icon on the GUI. | Default: 0 | Min: 0 | Max: 32
-    tagging: list[dict[str, Any]]  # Config object tagging.
+    tagging: list[MulticastAddress6TaggingItem]  # Config object tagging.
 
-# Nested TypedDicts for table field children (dict mode)
-
-class MulticastAddress6TaggingItem(TypedDict):
-    """Type hints for tagging table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    name: str  # Tagging entry name. | MaxLen: 63
-    category: str  # Tag category. | MaxLen: 63
-    tags: str  # Tags.
-
-
-# Nested classes for table field children (object mode)
+# ============================================================================
+# Nested classes for table field children (object mode - for API responses)
+# ============================================================================
 
 @final
 class MulticastAddress6TaggingObject:
@@ -113,6 +125,9 @@ class MulticastAddress6Object:
     # Common API response fields
     status: str
     http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
     vdom: str | None
     
     # Methods from FortiObject
@@ -346,7 +361,7 @@ class MulticastAddress6:
         ip6: str | None = ...,
         comment: str | None = ...,
         color: int | None = ...,
-        tagging: str | list[str] | list[dict[str, Any]] | None = ...,
+        tagging: str | list[MulticastAddress6TaggingItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> MulticastAddress6Object: ...
     
@@ -358,7 +373,7 @@ class MulticastAddress6:
         ip6: str | None = ...,
         comment: str | None = ...,
         color: int | None = ...,
-        tagging: str | list[str] | list[dict[str, Any]] | None = ...,
+        tagging: str | list[MulticastAddress6TaggingItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -371,7 +386,7 @@ class MulticastAddress6:
         ip6: str | None = ...,
         comment: str | None = ...,
         color: int | None = ...,
-        tagging: str | list[str] | list[dict[str, Any]] | None = ...,
+        tagging: str | list[MulticastAddress6TaggingItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -382,7 +397,7 @@ class MulticastAddress6:
         ip6: str | None = ...,
         comment: str | None = ...,
         color: int | None = ...,
-        tagging: str | list[str] | list[dict[str, Any]] | None = ...,
+        tagging: str | list[MulticastAddress6TaggingItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -395,7 +410,7 @@ class MulticastAddress6:
         ip6: str | None = ...,
         comment: str | None = ...,
         color: int | None = ...,
-        tagging: str | list[str] | list[dict[str, Any]] | None = ...,
+        tagging: str | list[MulticastAddress6TaggingItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> MulticastAddress6Object: ...
     
@@ -407,7 +422,7 @@ class MulticastAddress6:
         ip6: str | None = ...,
         comment: str | None = ...,
         color: int | None = ...,
-        tagging: str | list[str] | list[dict[str, Any]] | None = ...,
+        tagging: str | list[MulticastAddress6TaggingItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -420,7 +435,7 @@ class MulticastAddress6:
         ip6: str | None = ...,
         comment: str | None = ...,
         color: int | None = ...,
-        tagging: str | list[str] | list[dict[str, Any]] | None = ...,
+        tagging: str | list[MulticastAddress6TaggingItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -431,7 +446,7 @@ class MulticastAddress6:
         ip6: str | None = ...,
         comment: str | None = ...,
         color: int | None = ...,
-        tagging: str | list[str] | list[dict[str, Any]] | None = ...,
+        tagging: str | list[MulticastAddress6TaggingItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -477,7 +492,7 @@ class MulticastAddress6:
         ip6: str | None = ...,
         comment: str | None = ...,
         color: int | None = ...,
-        tagging: str | list[str] | list[dict[str, Any]] | None = ...,
+        tagging: str | list[MulticastAddress6TaggingItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     

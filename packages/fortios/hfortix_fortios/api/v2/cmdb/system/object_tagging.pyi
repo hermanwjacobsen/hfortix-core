@@ -2,7 +2,29 @@ from typing import TypedDict, Literal, Any, Coroutine, Union, overload, Generato
 from typing_extensions import NotRequired
 from hfortix_fortios.models import FortiObject, FortiObjectList
 
-# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional via total=False)
+# ============================================================================
+# Nested TypedDicts for table field children (dict mode)
+# These MUST be defined before the Payload class to use them as type hints
+# ============================================================================
+
+class ObjectTaggingTagsItem(TypedDict, total=False):
+    """Type hints for tags table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: ObjectTaggingTagsItem = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    
+    name: str  # Tag name. | MaxLen: 79
+
+
+# ============================================================================
+# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional)
+# ============================================================================
 # NOTE: We intentionally DON'T use NotRequired wrapper because:
 # 1. total=False already makes all fields optional
 # 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
@@ -23,21 +45,11 @@ class ObjectTaggingPayload(TypedDict, total=False):
     interface: Literal["disable", "mandatory", "optional"]  # Interface. | Default: optional
     multiple: Literal["enable", "disable"]  # Allow multiple tag selection. | Default: enable
     color: int  # Color of icon on the GUI. | Default: 0 | Min: 0 | Max: 32
-    tags: list[dict[str, Any]]  # Tags.
+    tags: list[ObjectTaggingTagsItem]  # Tags.
 
-# Nested TypedDicts for table field children (dict mode)
-
-class ObjectTaggingTagsItem(TypedDict):
-    """Type hints for tags table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    name: str  # Tag name. | MaxLen: 79
-
-
-# Nested classes for table field children (object mode)
+# ============================================================================
+# Nested classes for table field children (object mode - for API responses)
+# ============================================================================
 
 @final
 class ObjectTaggingTagsObject:
@@ -115,6 +127,9 @@ class ObjectTaggingObject:
     # Common API response fields
     status: str
     http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
     vdom: str | None
     
     # Methods from FortiObject
@@ -350,7 +365,7 @@ class ObjectTagging:
         interface: Literal["disable", "mandatory", "optional"] | None = ...,
         multiple: Literal["enable", "disable"] | None = ...,
         color: int | None = ...,
-        tags: str | list[str] | list[dict[str, Any]] | None = ...,
+        tags: str | list[ObjectTaggingTagsItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> ObjectTaggingObject: ...
     
@@ -364,7 +379,7 @@ class ObjectTagging:
         interface: Literal["disable", "mandatory", "optional"] | None = ...,
         multiple: Literal["enable", "disable"] | None = ...,
         color: int | None = ...,
-        tags: str | list[str] | list[dict[str, Any]] | None = ...,
+        tags: str | list[ObjectTaggingTagsItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -379,7 +394,7 @@ class ObjectTagging:
         interface: Literal["disable", "mandatory", "optional"] | None = ...,
         multiple: Literal["enable", "disable"] | None = ...,
         color: int | None = ...,
-        tags: str | list[str] | list[dict[str, Any]] | None = ...,
+        tags: str | list[ObjectTaggingTagsItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -392,7 +407,7 @@ class ObjectTagging:
         interface: Literal["disable", "mandatory", "optional"] | None = ...,
         multiple: Literal["enable", "disable"] | None = ...,
         color: int | None = ...,
-        tags: str | list[str] | list[dict[str, Any]] | None = ...,
+        tags: str | list[ObjectTaggingTagsItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -407,7 +422,7 @@ class ObjectTagging:
         interface: Literal["disable", "mandatory", "optional"] | None = ...,
         multiple: Literal["enable", "disable"] | None = ...,
         color: int | None = ...,
-        tags: str | list[str] | list[dict[str, Any]] | None = ...,
+        tags: str | list[ObjectTaggingTagsItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> ObjectTaggingObject: ...
     
@@ -421,7 +436,7 @@ class ObjectTagging:
         interface: Literal["disable", "mandatory", "optional"] | None = ...,
         multiple: Literal["enable", "disable"] | None = ...,
         color: int | None = ...,
-        tags: str | list[str] | list[dict[str, Any]] | None = ...,
+        tags: str | list[ObjectTaggingTagsItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -436,7 +451,7 @@ class ObjectTagging:
         interface: Literal["disable", "mandatory", "optional"] | None = ...,
         multiple: Literal["enable", "disable"] | None = ...,
         color: int | None = ...,
-        tags: str | list[str] | list[dict[str, Any]] | None = ...,
+        tags: str | list[ObjectTaggingTagsItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -449,7 +464,7 @@ class ObjectTagging:
         interface: Literal["disable", "mandatory", "optional"] | None = ...,
         multiple: Literal["enable", "disable"] | None = ...,
         color: int | None = ...,
-        tags: str | list[str] | list[dict[str, Any]] | None = ...,
+        tags: str | list[ObjectTaggingTagsItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -497,7 +512,7 @@ class ObjectTagging:
         interface: Literal["disable", "mandatory", "optional"] | None = ...,
         multiple: Literal["enable", "disable"] | None = ...,
         color: int | None = ...,
-        tags: str | list[str] | list[dict[str, Any]] | None = ...,
+        tags: str | list[ObjectTaggingTagsItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     

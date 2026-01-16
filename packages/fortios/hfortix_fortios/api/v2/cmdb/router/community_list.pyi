@@ -2,7 +2,32 @@ from typing import TypedDict, Literal, Any, Coroutine, Union, overload, Generato
 from typing_extensions import NotRequired
 from hfortix_fortios.models import FortiObject, FortiObjectList
 
-# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional via total=False)
+# ============================================================================
+# Nested TypedDicts for table field children (dict mode)
+# These MUST be defined before the Payload class to use them as type hints
+# ============================================================================
+
+class CommunityListRuleItem(TypedDict, total=False):
+    """Type hints for rule table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: CommunityListRuleItem = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    
+    id: int  # ID. | Default: 0 | Min: 0 | Max: 4294967295
+    action: Literal["deny", "permit"]  # Permit or deny route-based operations, based on th
+    regexp: str  # Ordered list of COMMUNITY attributes as a regular | MaxLen: 255
+    match: str  # Community specifications for matching a reserved c | MaxLen: 255
+
+
+# ============================================================================
+# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional)
+# ============================================================================
 # NOTE: We intentionally DON'T use NotRequired wrapper because:
 # 1. total=False already makes all fields optional
 # 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
@@ -19,24 +44,11 @@ class CommunityListPayload(TypedDict, total=False):
     """
     name: str  # Community list name. | MaxLen: 35
     type: Literal["standard", "expanded"]  # Community list type (standard or expanded). | Default: standard
-    rule: list[dict[str, Any]]  # Community list rule.
+    rule: list[CommunityListRuleItem]  # Community list rule.
 
-# Nested TypedDicts for table field children (dict mode)
-
-class CommunityListRuleItem(TypedDict):
-    """Type hints for rule table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    id: int  # ID. | Default: 0 | Min: 0 | Max: 4294967295
-    action: Literal["deny", "permit"]  # Permit or deny route-based operations, based on th
-    regexp: str  # Ordered list of COMMUNITY attributes as a regular | MaxLen: 255
-    match: str  # Community specifications for matching a reserved c | MaxLen: 255
-
-
-# Nested classes for table field children (object mode)
+# ============================================================================
+# Nested classes for table field children (object mode - for API responses)
+# ============================================================================
 
 @final
 class CommunityListRuleObject:
@@ -108,6 +120,9 @@ class CommunityListObject:
     # Common API response fields
     status: str
     http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
     vdom: str | None
     
     # Methods from FortiObject
@@ -339,7 +354,7 @@ class CommunityList:
         payload_dict: CommunityListPayload | None = ...,
         name: str | None = ...,
         type: Literal["standard", "expanded"] | None = ...,
-        rule: str | list[str] | list[dict[str, Any]] | None = ...,
+        rule: str | list[CommunityListRuleItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> CommunityListObject: ...
     
@@ -349,7 +364,7 @@ class CommunityList:
         payload_dict: CommunityListPayload | None = ...,
         name: str | None = ...,
         type: Literal["standard", "expanded"] | None = ...,
-        rule: str | list[str] | list[dict[str, Any]] | None = ...,
+        rule: str | list[CommunityListRuleItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -360,7 +375,7 @@ class CommunityList:
         payload_dict: CommunityListPayload | None = ...,
         name: str | None = ...,
         type: Literal["standard", "expanded"] | None = ...,
-        rule: str | list[str] | list[dict[str, Any]] | None = ...,
+        rule: str | list[CommunityListRuleItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -369,7 +384,7 @@ class CommunityList:
         payload_dict: CommunityListPayload | None = ...,
         name: str | None = ...,
         type: Literal["standard", "expanded"] | None = ...,
-        rule: str | list[str] | list[dict[str, Any]] | None = ...,
+        rule: str | list[CommunityListRuleItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -380,7 +395,7 @@ class CommunityList:
         payload_dict: CommunityListPayload | None = ...,
         name: str | None = ...,
         type: Literal["standard", "expanded"] | None = ...,
-        rule: str | list[str] | list[dict[str, Any]] | None = ...,
+        rule: str | list[CommunityListRuleItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> CommunityListObject: ...
     
@@ -390,7 +405,7 @@ class CommunityList:
         payload_dict: CommunityListPayload | None = ...,
         name: str | None = ...,
         type: Literal["standard", "expanded"] | None = ...,
-        rule: str | list[str] | list[dict[str, Any]] | None = ...,
+        rule: str | list[CommunityListRuleItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -401,7 +416,7 @@ class CommunityList:
         payload_dict: CommunityListPayload | None = ...,
         name: str | None = ...,
         type: Literal["standard", "expanded"] | None = ...,
-        rule: str | list[str] | list[dict[str, Any]] | None = ...,
+        rule: str | list[CommunityListRuleItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -410,7 +425,7 @@ class CommunityList:
         payload_dict: CommunityListPayload | None = ...,
         name: str | None = ...,
         type: Literal["standard", "expanded"] | None = ...,
-        rule: str | list[str] | list[dict[str, Any]] | None = ...,
+        rule: str | list[CommunityListRuleItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -454,7 +469,7 @@ class CommunityList:
         payload_dict: CommunityListPayload | None = ...,
         name: str | None = ...,
         type: Literal["standard", "expanded"] | None = ...,
-        rule: str | list[str] | list[dict[str, Any]] | None = ...,
+        rule: str | list[CommunityListRuleItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     

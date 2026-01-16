@@ -2,7 +2,72 @@ from typing import TypedDict, Literal, Any, Coroutine, Union, overload, Generato
 from typing_extensions import NotRequired
 from hfortix_fortios.models import FortiObject, FortiObjectList
 
-# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional via total=False)
+# ============================================================================
+# Nested TypedDicts for table field children (dict mode)
+# These MUST be defined before the Payload class to use them as type hints
+# ============================================================================
+
+class ServerOptionsItem(TypedDict, total=False):
+    """Type hints for options table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: ServerOptionsItem = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    
+    id: int  # ID. | Default: 0 | Min: 0 | Max: 4294967295
+    code: int  # DHCPv6 option code. | Default: 0 | Min: 0 | Max: 255
+    type: Literal["hex", "string", "ip6", "fqdn"]  # DHCPv6 option type. | Default: hex
+    value: str  # DHCPv6 option value | MaxLen: 312
+    ip6: str  # DHCP option IP6s.
+    vci_match: Literal["disable", "enable"]  # Enable/disable vendor class option matching. When | Default: disable
+    vci_string: str  # One or more VCI strings in quotes separated by spa
+
+
+class ServerPrefixrangeItem(TypedDict, total=False):
+    """Type hints for prefix-range table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: ServerPrefixrangeItem = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    
+    id: int  # ID. | Default: 0 | Min: 0 | Max: 4294967295
+    start_prefix: str  # Start of prefix range. | Default: ::
+    end_prefix: str  # End of prefix range. | Default: ::
+    prefix_length: int  # Prefix length. | Default: 0 | Min: 1 | Max: 128
+
+
+class ServerIprangeItem(TypedDict, total=False):
+    """Type hints for ip-range table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: ServerIprangeItem = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    
+    id: int  # ID. | Default: 0 | Min: 0 | Max: 4294967295
+    start_ip: str  # Start of IP range. | Default: ::
+    end_ip: str  # End of IP range. | Default: ::
+    vci_match: Literal["disable", "enable"]  # Enable/disable vendor class option matching. When | Default: disable
+    vci_string: str  # One or more VCI strings in quotes separated by spa
+
+
+# ============================================================================
+# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional)
+# ============================================================================
 # NOTE: We intentionally DON'T use NotRequired wrapper because:
 # 1. total=False already makes all fields optional
 # 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
@@ -36,60 +101,17 @@ class ServerPayload(TypedDict, total=False):
     subnet: str  # Subnet or subnet-id if the IP mode is delegated. | Default: ::/0
     interface: str  # DHCP server can assign IP configurations to client | MaxLen: 15
     delegated_prefix_route: Literal["disable", "enable"]  # Enable/disable automatically adding of routing for | Default: disable
-    options: list[dict[str, Any]]  # DHCPv6 options.
+    options: list[ServerOptionsItem]  # DHCPv6 options.
     upstream_interface: str  # Interface name from where delegated information is | MaxLen: 15
     delegated_prefix_iaid: int  # IAID of obtained delegated-prefix from the upstrea | Default: 0 | Min: 0 | Max: 4294967295
     ip_mode: Literal["range", "delegated"]  # Method used to assign client IP. | Default: range
     prefix_mode: Literal["dhcp6", "ra"]  # Assigning a prefix from a DHCPv6 client or RA. | Default: dhcp6
-    prefix_range: list[dict[str, Any]]  # DHCP prefix configuration.
-    ip_range: list[dict[str, Any]]  # DHCP IP range configuration.
+    prefix_range: list[ServerPrefixrangeItem]  # DHCP prefix configuration.
+    ip_range: list[ServerIprangeItem]  # DHCP IP range configuration.
 
-# Nested TypedDicts for table field children (dict mode)
-
-class ServerOptionsItem(TypedDict):
-    """Type hints for options table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    id: int  # ID. | Default: 0 | Min: 0 | Max: 4294967295
-    code: int  # DHCPv6 option code. | Default: 0 | Min: 0 | Max: 255
-    type: Literal["hex", "string", "ip6", "fqdn"]  # DHCPv6 option type. | Default: hex
-    value: str  # DHCPv6 option value | MaxLen: 312
-    ip6: str  # DHCP option IP6s.
-    vci_match: Literal["disable", "enable"]  # Enable/disable vendor class option matching. When | Default: disable
-    vci_string: str  # One or more VCI strings in quotes separated by spa
-
-
-class ServerPrefixrangeItem(TypedDict):
-    """Type hints for prefix-range table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    id: int  # ID. | Default: 0 | Min: 0 | Max: 4294967295
-    start_prefix: str  # Start of prefix range. | Default: ::
-    end_prefix: str  # End of prefix range. | Default: ::
-    prefix_length: int  # Prefix length. | Default: 0 | Min: 1 | Max: 128
-
-
-class ServerIprangeItem(TypedDict):
-    """Type hints for ip-range table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    id: int  # ID. | Default: 0 | Min: 0 | Max: 4294967295
-    start_ip: str  # Start of IP range. | Default: ::
-    end_ip: str  # End of IP range. | Default: ::
-    vci_match: Literal["disable", "enable"]  # Enable/disable vendor class option matching. When | Default: disable
-    vci_string: str  # One or more VCI strings in quotes separated by spa
-
-
-# Nested classes for table field children (object mode)
+# ============================================================================
+# Nested classes for table field children (object mode - for API responses)
+# ============================================================================
 
 @final
 class ServerOptionsObject:
@@ -299,6 +321,9 @@ class ServerObject:
     # Common API response fields
     status: str
     http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
     vdom: str | None
     
     # Methods from FortiObject
@@ -542,13 +567,13 @@ class Server:
         subnet: str | None = ...,
         interface: str | None = ...,
         delegated_prefix_route: Literal["disable", "enable"] | None = ...,
-        options: str | list[str] | list[dict[str, Any]] | None = ...,
+        options: str | list[ServerOptionsItem] | None = ...,
         upstream_interface: str | None = ...,
         delegated_prefix_iaid: int | None = ...,
         ip_mode: Literal["range", "delegated"] | None = ...,
         prefix_mode: Literal["dhcp6", "ra"] | None = ...,
-        prefix_range: str | list[str] | list[dict[str, Any]] | None = ...,
-        ip_range: str | list[str] | list[dict[str, Any]] | None = ...,
+        prefix_range: str | list[ServerPrefixrangeItem] | None = ...,
+        ip_range: str | list[ServerIprangeItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> ServerObject: ...
     
@@ -570,13 +595,13 @@ class Server:
         subnet: str | None = ...,
         interface: str | None = ...,
         delegated_prefix_route: Literal["disable", "enable"] | None = ...,
-        options: str | list[str] | list[dict[str, Any]] | None = ...,
+        options: str | list[ServerOptionsItem] | None = ...,
         upstream_interface: str | None = ...,
         delegated_prefix_iaid: int | None = ...,
         ip_mode: Literal["range", "delegated"] | None = ...,
         prefix_mode: Literal["dhcp6", "ra"] | None = ...,
-        prefix_range: str | list[str] | list[dict[str, Any]] | None = ...,
-        ip_range: str | list[str] | list[dict[str, Any]] | None = ...,
+        prefix_range: str | list[ServerPrefixrangeItem] | None = ...,
+        ip_range: str | list[ServerIprangeItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -599,13 +624,13 @@ class Server:
         subnet: str | None = ...,
         interface: str | None = ...,
         delegated_prefix_route: Literal["disable", "enable"] | None = ...,
-        options: str | list[str] | list[dict[str, Any]] | None = ...,
+        options: str | list[ServerOptionsItem] | None = ...,
         upstream_interface: str | None = ...,
         delegated_prefix_iaid: int | None = ...,
         ip_mode: Literal["range", "delegated"] | None = ...,
         prefix_mode: Literal["dhcp6", "ra"] | None = ...,
-        prefix_range: str | list[str] | list[dict[str, Any]] | None = ...,
-        ip_range: str | list[str] | list[dict[str, Any]] | None = ...,
+        prefix_range: str | list[ServerPrefixrangeItem] | None = ...,
+        ip_range: str | list[ServerIprangeItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -626,13 +651,13 @@ class Server:
         subnet: str | None = ...,
         interface: str | None = ...,
         delegated_prefix_route: Literal["disable", "enable"] | None = ...,
-        options: str | list[str] | list[dict[str, Any]] | None = ...,
+        options: str | list[ServerOptionsItem] | None = ...,
         upstream_interface: str | None = ...,
         delegated_prefix_iaid: int | None = ...,
         ip_mode: Literal["range", "delegated"] | None = ...,
         prefix_mode: Literal["dhcp6", "ra"] | None = ...,
-        prefix_range: str | list[str] | list[dict[str, Any]] | None = ...,
-        ip_range: str | list[str] | list[dict[str, Any]] | None = ...,
+        prefix_range: str | list[ServerPrefixrangeItem] | None = ...,
+        ip_range: str | list[ServerIprangeItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -655,13 +680,13 @@ class Server:
         subnet: str | None = ...,
         interface: str | None = ...,
         delegated_prefix_route: Literal["disable", "enable"] | None = ...,
-        options: str | list[str] | list[dict[str, Any]] | None = ...,
+        options: str | list[ServerOptionsItem] | None = ...,
         upstream_interface: str | None = ...,
         delegated_prefix_iaid: int | None = ...,
         ip_mode: Literal["range", "delegated"] | None = ...,
         prefix_mode: Literal["dhcp6", "ra"] | None = ...,
-        prefix_range: str | list[str] | list[dict[str, Any]] | None = ...,
-        ip_range: str | list[str] | list[dict[str, Any]] | None = ...,
+        prefix_range: str | list[ServerPrefixrangeItem] | None = ...,
+        ip_range: str | list[ServerIprangeItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> ServerObject: ...
     
@@ -683,13 +708,13 @@ class Server:
         subnet: str | None = ...,
         interface: str | None = ...,
         delegated_prefix_route: Literal["disable", "enable"] | None = ...,
-        options: str | list[str] | list[dict[str, Any]] | None = ...,
+        options: str | list[ServerOptionsItem] | None = ...,
         upstream_interface: str | None = ...,
         delegated_prefix_iaid: int | None = ...,
         ip_mode: Literal["range", "delegated"] | None = ...,
         prefix_mode: Literal["dhcp6", "ra"] | None = ...,
-        prefix_range: str | list[str] | list[dict[str, Any]] | None = ...,
-        ip_range: str | list[str] | list[dict[str, Any]] | None = ...,
+        prefix_range: str | list[ServerPrefixrangeItem] | None = ...,
+        ip_range: str | list[ServerIprangeItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -712,13 +737,13 @@ class Server:
         subnet: str | None = ...,
         interface: str | None = ...,
         delegated_prefix_route: Literal["disable", "enable"] | None = ...,
-        options: str | list[str] | list[dict[str, Any]] | None = ...,
+        options: str | list[ServerOptionsItem] | None = ...,
         upstream_interface: str | None = ...,
         delegated_prefix_iaid: int | None = ...,
         ip_mode: Literal["range", "delegated"] | None = ...,
         prefix_mode: Literal["dhcp6", "ra"] | None = ...,
-        prefix_range: str | list[str] | list[dict[str, Any]] | None = ...,
-        ip_range: str | list[str] | list[dict[str, Any]] | None = ...,
+        prefix_range: str | list[ServerPrefixrangeItem] | None = ...,
+        ip_range: str | list[ServerIprangeItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -739,13 +764,13 @@ class Server:
         subnet: str | None = ...,
         interface: str | None = ...,
         delegated_prefix_route: Literal["disable", "enable"] | None = ...,
-        options: str | list[str] | list[dict[str, Any]] | None = ...,
+        options: str | list[ServerOptionsItem] | None = ...,
         upstream_interface: str | None = ...,
         delegated_prefix_iaid: int | None = ...,
         ip_mode: Literal["range", "delegated"] | None = ...,
         prefix_mode: Literal["dhcp6", "ra"] | None = ...,
-        prefix_range: str | list[str] | list[dict[str, Any]] | None = ...,
-        ip_range: str | list[str] | list[dict[str, Any]] | None = ...,
+        prefix_range: str | list[ServerPrefixrangeItem] | None = ...,
+        ip_range: str | list[ServerIprangeItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -801,13 +826,13 @@ class Server:
         subnet: str | None = ...,
         interface: str | None = ...,
         delegated_prefix_route: Literal["disable", "enable"] | None = ...,
-        options: str | list[str] | list[dict[str, Any]] | None = ...,
+        options: str | list[ServerOptionsItem] | None = ...,
         upstream_interface: str | None = ...,
         delegated_prefix_iaid: int | None = ...,
         ip_mode: Literal["range", "delegated"] | None = ...,
         prefix_mode: Literal["dhcp6", "ra"] | None = ...,
-        prefix_range: str | list[str] | list[dict[str, Any]] | None = ...,
-        ip_range: str | list[str] | list[dict[str, Any]] | None = ...,
+        prefix_range: str | list[ServerPrefixrangeItem] | None = ...,
+        ip_range: str | list[ServerIprangeItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     

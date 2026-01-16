@@ -2,7 +2,34 @@ from typing import TypedDict, Literal, Any, Coroutine, Union, overload, Generato
 from typing_extensions import NotRequired
 from hfortix_fortios.models import FortiObject, FortiObjectList
 
-# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional via total=False)
+# ============================================================================
+# Nested TypedDicts for table field children (dict mode)
+# These MUST be defined before the Payload class to use them as type hints
+# ============================================================================
+
+class VdomSflowCollectorsItem(TypedDict, total=False):
+    """Type hints for collectors table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: VdomSflowCollectorsItem = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    
+    id: int  # ID. | Default: 0 | Min: 0 | Max: 4294967295
+    collector_ip: str  # IP addresses of the sFlow collectors that sFlow ag | Default: 0.0.0.0
+    collector_port: int  # UDP port number used for sending sFlow datagrams | Default: 6343 | Min: 0 | Max: 65535
+    source_ip: str  # Source IP address for sFlow agent. | Default: 0.0.0.0
+    interface_select_method: Literal["auto", "sdwan", "specify"]  # Specify how to select outgoing interface to reach | Default: auto
+    interface: str  # Specify outgoing interface to reach server. | MaxLen: 15
+
+
+# ============================================================================
+# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional)
+# ============================================================================
 # NOTE: We intentionally DON'T use NotRequired wrapper because:
 # 1. total=False already makes all fields optional
 # 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
@@ -18,26 +45,11 @@ class VdomSflowPayload(TypedDict, total=False):
         }
     """
     vdom_sflow: Literal["enable", "disable"]  # Enable/disable the sFlow configuration for the cur | Default: disable
-    collectors: list[dict[str, Any]]  # sFlow collectors.
+    collectors: list[VdomSflowCollectorsItem]  # sFlow collectors.
 
-# Nested TypedDicts for table field children (dict mode)
-
-class VdomSflowCollectorsItem(TypedDict):
-    """Type hints for collectors table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    id: int  # ID. | Default: 0 | Min: 0 | Max: 4294967295
-    collector_ip: str  # IP addresses of the sFlow collectors that sFlow ag | Default: 0.0.0.0
-    collector_port: int  # UDP port number used for sending sFlow datagrams | Default: 6343 | Min: 0 | Max: 65535
-    source_ip: str  # Source IP address for sFlow agent. | Default: 0.0.0.0
-    interface_select_method: Literal["auto", "sdwan", "specify"]  # Specify how to select outgoing interface to reach | Default: auto
-    interface: str  # Specify outgoing interface to reach server. | MaxLen: 15
-
-
-# Nested classes for table field children (object mode)
+# ============================================================================
+# Nested classes for table field children (object mode - for API responses)
+# ============================================================================
 
 @final
 class VdomSflowCollectorsObject:
@@ -110,6 +122,9 @@ class VdomSflowObject:
     # Common API response fields
     status: str
     http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
     vdom: str | None
     
     # Methods from FortiObject
@@ -339,7 +354,7 @@ class VdomSflow:
         self,
         payload_dict: VdomSflowPayload | None = ...,
         vdom_sflow: Literal["enable", "disable"] | None = ...,
-        collectors: str | list[str] | list[dict[str, Any]] | None = ...,
+        collectors: str | list[VdomSflowCollectorsItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> VdomSflowObject: ...
     
@@ -348,7 +363,7 @@ class VdomSflow:
         self,
         payload_dict: VdomSflowPayload | None = ...,
         vdom_sflow: Literal["enable", "disable"] | None = ...,
-        collectors: str | list[str] | list[dict[str, Any]] | None = ...,
+        collectors: str | list[VdomSflowCollectorsItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -358,7 +373,7 @@ class VdomSflow:
         self,
         payload_dict: VdomSflowPayload | None = ...,
         vdom_sflow: Literal["enable", "disable"] | None = ...,
-        collectors: str | list[str] | list[dict[str, Any]] | None = ...,
+        collectors: str | list[VdomSflowCollectorsItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -366,7 +381,7 @@ class VdomSflow:
         self,
         payload_dict: VdomSflowPayload | None = ...,
         vdom_sflow: Literal["enable", "disable"] | None = ...,
-        collectors: str | list[str] | list[dict[str, Any]] | None = ...,
+        collectors: str | list[VdomSflowCollectorsItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -380,7 +395,7 @@ class VdomSflow:
         self,
         payload_dict: VdomSflowPayload | None = ...,
         vdom_sflow: Literal["enable", "disable"] | None = ...,
-        collectors: str | list[str] | list[dict[str, Any]] | None = ...,
+        collectors: str | list[VdomSflowCollectorsItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     

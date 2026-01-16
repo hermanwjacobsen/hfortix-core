@@ -2,7 +2,48 @@ from typing import TypedDict, Literal, Any, Coroutine, Union, overload, Generato
 from typing_extensions import NotRequired
 from hfortix_fortios.models import FortiObject, FortiObjectList
 
-# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional via total=False)
+# ============================================================================
+# Nested TypedDicts for table field children (dict mode)
+# These MUST be defined before the Payload class to use them as type hints
+# ============================================================================
+
+class DomainControllerExtraserverItem(TypedDict, total=False):
+    """Type hints for extra-server table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: DomainControllerExtraserverItem = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    
+    id: int  # Server ID. | Default: 0 | Min: 1 | Max: 100
+    ip_address: str  # Domain controller IP address. | Default: 0.0.0.0
+    port: int  # Port to be used for communication with the domain | Default: 445 | Min: 0 | Max: 65535
+    source_ip_address: str  # FortiGate IPv4 address to be used for communicatio | Default: 0.0.0.0
+    source_port: int  # Source port to be used for communication with the | Default: 0 | Min: 0 | Max: 65535
+
+
+class DomainControllerLdapserverItem(TypedDict, total=False):
+    """Type hints for ldap-server table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: DomainControllerLdapserverItem = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    
+    name: str  # LDAP server name. | MaxLen: 79
+
+
+# ============================================================================
+# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional)
+# ============================================================================
 # NOTE: We intentionally DON'T use NotRequired wrapper because:
 # 1. total=False already makes all fields optional
 # 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
@@ -35,10 +76,10 @@ class DomainControllerPayload(TypedDict, total=False):
     source_port: int  # Source port to be used for communication with the | Default: 0 | Min: 0 | Max: 65535
     interface_select_method: Literal["auto", "sdwan", "specify"]  # Specify how to select outgoing interface to reach | Default: auto
     interface: str  # Specify outgoing interface to reach server. | MaxLen: 15
-    extra_server: list[dict[str, Any]]  # Extra servers.
+    extra_server: list[DomainControllerExtraserverItem]  # Extra servers.
     domain_name: str  # Domain DNS name. | MaxLen: 255
     replication_port: int  # Port to be used for communication with the domain | Default: 0 | Min: 0 | Max: 65535
-    ldap_server: list[dict[str, Any]]  # LDAP server name(s).
+    ldap_server: list[DomainControllerLdapserverItem]  # LDAP server name(s).
     change_detection: Literal["enable", "disable"]  # Enable/disable detection of a configuration change | Default: disable
     change_detection_period: int  # Minutes to detect a configuration change in the Ac | Default: 60 | Min: 5 | Max: 10080
     dns_srv_lookup: Literal["enable", "disable"]  # Enable/disable DNS service lookup. | Default: disable
@@ -47,33 +88,9 @@ class DomainControllerPayload(TypedDict, total=False):
     adlds_ip6: str  # AD LDS IPv6 address. | Default: ::
     adlds_port: int  # Port number of AD LDS service (default = 389). | Default: 389 | Min: 0 | Max: 65535
 
-# Nested TypedDicts for table field children (dict mode)
-
-class DomainControllerExtraserverItem(TypedDict):
-    """Type hints for extra-server table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    id: int  # Server ID. | Default: 0 | Min: 1 | Max: 100
-    ip_address: str  # Domain controller IP address. | Default: 0.0.0.0
-    port: int  # Port to be used for communication with the domain | Default: 445 | Min: 0 | Max: 65535
-    source_ip_address: str  # FortiGate IPv4 address to be used for communicatio | Default: 0.0.0.0
-    source_port: int  # Source port to be used for communication with the | Default: 0 | Min: 0 | Max: 65535
-
-
-class DomainControllerLdapserverItem(TypedDict):
-    """Type hints for ldap-server table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    name: str  # LDAP server name. | MaxLen: 79
-
-
-# Nested classes for table field children (object mode)
+# ============================================================================
+# Nested classes for table field children (object mode - for API responses)
+# ============================================================================
 
 @final
 class DomainControllerExtraserverObject:
@@ -242,6 +259,9 @@ class DomainControllerObject:
     # Common API response fields
     status: str
     http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
     vdom: str | None
     
     # Methods from FortiObject
@@ -484,10 +504,10 @@ class DomainController:
         source_port: int | None = ...,
         interface_select_method: Literal["auto", "sdwan", "specify"] | None = ...,
         interface: str | None = ...,
-        extra_server: str | list[str] | list[dict[str, Any]] | None = ...,
+        extra_server: str | list[DomainControllerExtraserverItem] | None = ...,
         domain_name: str | None = ...,
         replication_port: int | None = ...,
-        ldap_server: str | list[str] | list[dict[str, Any]] | None = ...,
+        ldap_server: str | list[DomainControllerLdapserverItem] | None = ...,
         change_detection: Literal["enable", "disable"] | None = ...,
         change_detection_period: int | None = ...,
         dns_srv_lookup: Literal["enable", "disable"] | None = ...,
@@ -515,10 +535,10 @@ class DomainController:
         source_port: int | None = ...,
         interface_select_method: Literal["auto", "sdwan", "specify"] | None = ...,
         interface: str | None = ...,
-        extra_server: str | list[str] | list[dict[str, Any]] | None = ...,
+        extra_server: str | list[DomainControllerExtraserverItem] | None = ...,
         domain_name: str | None = ...,
         replication_port: int | None = ...,
-        ldap_server: str | list[str] | list[dict[str, Any]] | None = ...,
+        ldap_server: str | list[DomainControllerLdapserverItem] | None = ...,
         change_detection: Literal["enable", "disable"] | None = ...,
         change_detection_period: int | None = ...,
         dns_srv_lookup: Literal["enable", "disable"] | None = ...,
@@ -547,10 +567,10 @@ class DomainController:
         source_port: int | None = ...,
         interface_select_method: Literal["auto", "sdwan", "specify"] | None = ...,
         interface: str | None = ...,
-        extra_server: str | list[str] | list[dict[str, Any]] | None = ...,
+        extra_server: str | list[DomainControllerExtraserverItem] | None = ...,
         domain_name: str | None = ...,
         replication_port: int | None = ...,
-        ldap_server: str | list[str] | list[dict[str, Any]] | None = ...,
+        ldap_server: str | list[DomainControllerLdapserverItem] | None = ...,
         change_detection: Literal["enable", "disable"] | None = ...,
         change_detection_period: int | None = ...,
         dns_srv_lookup: Literal["enable", "disable"] | None = ...,
@@ -577,10 +597,10 @@ class DomainController:
         source_port: int | None = ...,
         interface_select_method: Literal["auto", "sdwan", "specify"] | None = ...,
         interface: str | None = ...,
-        extra_server: str | list[str] | list[dict[str, Any]] | None = ...,
+        extra_server: str | list[DomainControllerExtraserverItem] | None = ...,
         domain_name: str | None = ...,
         replication_port: int | None = ...,
-        ldap_server: str | list[str] | list[dict[str, Any]] | None = ...,
+        ldap_server: str | list[DomainControllerLdapserverItem] | None = ...,
         change_detection: Literal["enable", "disable"] | None = ...,
         change_detection_period: int | None = ...,
         dns_srv_lookup: Literal["enable", "disable"] | None = ...,
@@ -609,10 +629,10 @@ class DomainController:
         source_port: int | None = ...,
         interface_select_method: Literal["auto", "sdwan", "specify"] | None = ...,
         interface: str | None = ...,
-        extra_server: str | list[str] | list[dict[str, Any]] | None = ...,
+        extra_server: str | list[DomainControllerExtraserverItem] | None = ...,
         domain_name: str | None = ...,
         replication_port: int | None = ...,
-        ldap_server: str | list[str] | list[dict[str, Any]] | None = ...,
+        ldap_server: str | list[DomainControllerLdapserverItem] | None = ...,
         change_detection: Literal["enable", "disable"] | None = ...,
         change_detection_period: int | None = ...,
         dns_srv_lookup: Literal["enable", "disable"] | None = ...,
@@ -640,10 +660,10 @@ class DomainController:
         source_port: int | None = ...,
         interface_select_method: Literal["auto", "sdwan", "specify"] | None = ...,
         interface: str | None = ...,
-        extra_server: str | list[str] | list[dict[str, Any]] | None = ...,
+        extra_server: str | list[DomainControllerExtraserverItem] | None = ...,
         domain_name: str | None = ...,
         replication_port: int | None = ...,
-        ldap_server: str | list[str] | list[dict[str, Any]] | None = ...,
+        ldap_server: str | list[DomainControllerLdapserverItem] | None = ...,
         change_detection: Literal["enable", "disable"] | None = ...,
         change_detection_period: int | None = ...,
         dns_srv_lookup: Literal["enable", "disable"] | None = ...,
@@ -672,10 +692,10 @@ class DomainController:
         source_port: int | None = ...,
         interface_select_method: Literal["auto", "sdwan", "specify"] | None = ...,
         interface: str | None = ...,
-        extra_server: str | list[str] | list[dict[str, Any]] | None = ...,
+        extra_server: str | list[DomainControllerExtraserverItem] | None = ...,
         domain_name: str | None = ...,
         replication_port: int | None = ...,
-        ldap_server: str | list[str] | list[dict[str, Any]] | None = ...,
+        ldap_server: str | list[DomainControllerLdapserverItem] | None = ...,
         change_detection: Literal["enable", "disable"] | None = ...,
         change_detection_period: int | None = ...,
         dns_srv_lookup: Literal["enable", "disable"] | None = ...,
@@ -702,10 +722,10 @@ class DomainController:
         source_port: int | None = ...,
         interface_select_method: Literal["auto", "sdwan", "specify"] | None = ...,
         interface: str | None = ...,
-        extra_server: str | list[str] | list[dict[str, Any]] | None = ...,
+        extra_server: str | list[DomainControllerExtraserverItem] | None = ...,
         domain_name: str | None = ...,
         replication_port: int | None = ...,
-        ldap_server: str | list[str] | list[dict[str, Any]] | None = ...,
+        ldap_server: str | list[DomainControllerLdapserverItem] | None = ...,
         change_detection: Literal["enable", "disable"] | None = ...,
         change_detection_period: int | None = ...,
         dns_srv_lookup: Literal["enable", "disable"] | None = ...,
@@ -767,10 +787,10 @@ class DomainController:
         source_port: int | None = ...,
         interface_select_method: Literal["auto", "sdwan", "specify"] | None = ...,
         interface: str | None = ...,
-        extra_server: str | list[str] | list[dict[str, Any]] | None = ...,
+        extra_server: str | list[DomainControllerExtraserverItem] | None = ...,
         domain_name: str | None = ...,
         replication_port: int | None = ...,
-        ldap_server: str | list[str] | list[dict[str, Any]] | None = ...,
+        ldap_server: str | list[DomainControllerLdapserverItem] | None = ...,
         change_detection: Literal["enable", "disable"] | None = ...,
         change_detection_period: int | None = ...,
         dns_srv_lookup: Literal["enable", "disable"] | None = ...,

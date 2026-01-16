@@ -2,7 +2,74 @@ from typing import TypedDict, Literal, Any, Coroutine, Union, overload, Generato
 from typing_extensions import NotRequired
 from hfortix_fortios.models import FortiObject, FortiObjectList
 
-# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional via total=False)
+# ============================================================================
+# Nested TypedDicts for table field children (dict mode)
+# These MUST be defined before the Payload class to use them as type hints
+# ============================================================================
+
+class QosProfileDscpwmmvoItem(TypedDict, total=False):
+    """Type hints for dscp-wmm-vo table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: QosProfileDscpwmmvoItem = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    
+    id: int  # DSCP WMM mapping numbers (0 - 63). | Default: 0 | Min: 0 | Max: 63
+
+
+class QosProfileDscpwmmviItem(TypedDict, total=False):
+    """Type hints for dscp-wmm-vi table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: QosProfileDscpwmmviItem = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    
+    id: int  # DSCP WMM mapping numbers (0 - 63). | Default: 0 | Min: 0 | Max: 63
+
+
+class QosProfileDscpwmmbeItem(TypedDict, total=False):
+    """Type hints for dscp-wmm-be table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: QosProfileDscpwmmbeItem = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    
+    id: int  # DSCP WMM mapping numbers (0 - 63). | Default: 0 | Min: 0 | Max: 63
+
+
+class QosProfileDscpwmmbkItem(TypedDict, total=False):
+    """Type hints for dscp-wmm-bk table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: QosProfileDscpwmmbkItem = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    
+    id: int  # DSCP WMM mapping numbers (0 - 63). | Default: 0 | Min: 0 | Max: 63
+
+
+# ============================================================================
+# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional)
+# ============================================================================
 # NOTE: We intentionally DON'T use NotRequired wrapper because:
 # 1. total=False already makes all fields optional
 # 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
@@ -31,59 +98,19 @@ class QosProfilePayload(TypedDict, total=False):
     bandwidth_admission_control: Literal["enable", "disable"]  # Enable/disable WMM bandwidth admission control. | Default: disable
     bandwidth_capacity: int  # Maximum bandwidth capacity allowed | Default: 2000 | Min: 1 | Max: 600000
     dscp_wmm_mapping: Literal["enable", "disable"]  # Enable/disable Differentiated Services Code Point | Default: disable
-    dscp_wmm_vo: list[dict[str, Any]]  # DSCP mapping for voice access (default = 48 56).
-    dscp_wmm_vi: list[dict[str, Any]]  # DSCP mapping for video access (default = 32 40).
-    dscp_wmm_be: list[dict[str, Any]]  # DSCP mapping for best effort access
-    dscp_wmm_bk: list[dict[str, Any]]  # DSCP mapping for background access
+    dscp_wmm_vo: list[QosProfileDscpwmmvoItem]  # DSCP mapping for voice access (default = 48 56).
+    dscp_wmm_vi: list[QosProfileDscpwmmviItem]  # DSCP mapping for video access (default = 32 40).
+    dscp_wmm_be: list[QosProfileDscpwmmbeItem]  # DSCP mapping for best effort access
+    dscp_wmm_bk: list[QosProfileDscpwmmbkItem]  # DSCP mapping for background access
     wmm_dscp_marking: Literal["enable", "disable"]  # Enable/disable WMM Differentiated Services Code Po | Default: disable
     wmm_vo_dscp: int  # DSCP marking for voice access (default = 48). | Default: 48 | Min: 0 | Max: 63
     wmm_vi_dscp: int  # DSCP marking for video access (default = 32). | Default: 32 | Min: 0 | Max: 63
     wmm_be_dscp: int  # DSCP marking for best effort access (default = 0). | Default: 0 | Min: 0 | Max: 63
     wmm_bk_dscp: int  # DSCP marking for background access (default = 8). | Default: 8 | Min: 0 | Max: 63
 
-# Nested TypedDicts for table field children (dict mode)
-
-class QosProfileDscpwmmvoItem(TypedDict):
-    """Type hints for dscp-wmm-vo table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    id: int  # DSCP WMM mapping numbers (0 - 63). | Default: 0 | Min: 0 | Max: 63
-
-
-class QosProfileDscpwmmviItem(TypedDict):
-    """Type hints for dscp-wmm-vi table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    id: int  # DSCP WMM mapping numbers (0 - 63). | Default: 0 | Min: 0 | Max: 63
-
-
-class QosProfileDscpwmmbeItem(TypedDict):
-    """Type hints for dscp-wmm-be table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    id: int  # DSCP WMM mapping numbers (0 - 63). | Default: 0 | Min: 0 | Max: 63
-
-
-class QosProfileDscpwmmbkItem(TypedDict):
-    """Type hints for dscp-wmm-bk table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    id: int  # DSCP WMM mapping numbers (0 - 63). | Default: 0 | Min: 0 | Max: 63
-
-
-# Nested classes for table field children (object mode)
+# ============================================================================
+# Nested classes for table field children (object mode - for API responses)
+# ============================================================================
 
 @final
 class QosProfileDscpwmmvoObject:
@@ -305,6 +332,9 @@ class QosProfileObject:
     # Common API response fields
     status: str
     http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
     vdom: str | None
     
     # Methods from FortiObject
@@ -548,10 +578,10 @@ class QosProfile:
         bandwidth_admission_control: Literal["enable", "disable"] | None = ...,
         bandwidth_capacity: int | None = ...,
         dscp_wmm_mapping: Literal["enable", "disable"] | None = ...,
-        dscp_wmm_vo: str | list[str] | list[dict[str, Any]] | None = ...,
-        dscp_wmm_vi: str | list[str] | list[dict[str, Any]] | None = ...,
-        dscp_wmm_be: str | list[str] | list[dict[str, Any]] | None = ...,
-        dscp_wmm_bk: str | list[str] | list[dict[str, Any]] | None = ...,
+        dscp_wmm_vo: str | list[QosProfileDscpwmmvoItem] | None = ...,
+        dscp_wmm_vi: str | list[QosProfileDscpwmmviItem] | None = ...,
+        dscp_wmm_be: str | list[QosProfileDscpwmmbeItem] | None = ...,
+        dscp_wmm_bk: str | list[QosProfileDscpwmmbkItem] | None = ...,
         wmm_dscp_marking: Literal["enable", "disable"] | None = ...,
         wmm_vo_dscp: int | None = ...,
         wmm_vi_dscp: int | None = ...,
@@ -578,10 +608,10 @@ class QosProfile:
         bandwidth_admission_control: Literal["enable", "disable"] | None = ...,
         bandwidth_capacity: int | None = ...,
         dscp_wmm_mapping: Literal["enable", "disable"] | None = ...,
-        dscp_wmm_vo: str | list[str] | list[dict[str, Any]] | None = ...,
-        dscp_wmm_vi: str | list[str] | list[dict[str, Any]] | None = ...,
-        dscp_wmm_be: str | list[str] | list[dict[str, Any]] | None = ...,
-        dscp_wmm_bk: str | list[str] | list[dict[str, Any]] | None = ...,
+        dscp_wmm_vo: str | list[QosProfileDscpwmmvoItem] | None = ...,
+        dscp_wmm_vi: str | list[QosProfileDscpwmmviItem] | None = ...,
+        dscp_wmm_be: str | list[QosProfileDscpwmmbeItem] | None = ...,
+        dscp_wmm_bk: str | list[QosProfileDscpwmmbkItem] | None = ...,
         wmm_dscp_marking: Literal["enable", "disable"] | None = ...,
         wmm_vo_dscp: int | None = ...,
         wmm_vi_dscp: int | None = ...,
@@ -609,10 +639,10 @@ class QosProfile:
         bandwidth_admission_control: Literal["enable", "disable"] | None = ...,
         bandwidth_capacity: int | None = ...,
         dscp_wmm_mapping: Literal["enable", "disable"] | None = ...,
-        dscp_wmm_vo: str | list[str] | list[dict[str, Any]] | None = ...,
-        dscp_wmm_vi: str | list[str] | list[dict[str, Any]] | None = ...,
-        dscp_wmm_be: str | list[str] | list[dict[str, Any]] | None = ...,
-        dscp_wmm_bk: str | list[str] | list[dict[str, Any]] | None = ...,
+        dscp_wmm_vo: str | list[QosProfileDscpwmmvoItem] | None = ...,
+        dscp_wmm_vi: str | list[QosProfileDscpwmmviItem] | None = ...,
+        dscp_wmm_be: str | list[QosProfileDscpwmmbeItem] | None = ...,
+        dscp_wmm_bk: str | list[QosProfileDscpwmmbkItem] | None = ...,
         wmm_dscp_marking: Literal["enable", "disable"] | None = ...,
         wmm_vo_dscp: int | None = ...,
         wmm_vi_dscp: int | None = ...,
@@ -638,10 +668,10 @@ class QosProfile:
         bandwidth_admission_control: Literal["enable", "disable"] | None = ...,
         bandwidth_capacity: int | None = ...,
         dscp_wmm_mapping: Literal["enable", "disable"] | None = ...,
-        dscp_wmm_vo: str | list[str] | list[dict[str, Any]] | None = ...,
-        dscp_wmm_vi: str | list[str] | list[dict[str, Any]] | None = ...,
-        dscp_wmm_be: str | list[str] | list[dict[str, Any]] | None = ...,
-        dscp_wmm_bk: str | list[str] | list[dict[str, Any]] | None = ...,
+        dscp_wmm_vo: str | list[QosProfileDscpwmmvoItem] | None = ...,
+        dscp_wmm_vi: str | list[QosProfileDscpwmmviItem] | None = ...,
+        dscp_wmm_be: str | list[QosProfileDscpwmmbeItem] | None = ...,
+        dscp_wmm_bk: str | list[QosProfileDscpwmmbkItem] | None = ...,
         wmm_dscp_marking: Literal["enable", "disable"] | None = ...,
         wmm_vo_dscp: int | None = ...,
         wmm_vi_dscp: int | None = ...,
@@ -669,10 +699,10 @@ class QosProfile:
         bandwidth_admission_control: Literal["enable", "disable"] | None = ...,
         bandwidth_capacity: int | None = ...,
         dscp_wmm_mapping: Literal["enable", "disable"] | None = ...,
-        dscp_wmm_vo: str | list[str] | list[dict[str, Any]] | None = ...,
-        dscp_wmm_vi: str | list[str] | list[dict[str, Any]] | None = ...,
-        dscp_wmm_be: str | list[str] | list[dict[str, Any]] | None = ...,
-        dscp_wmm_bk: str | list[str] | list[dict[str, Any]] | None = ...,
+        dscp_wmm_vo: str | list[QosProfileDscpwmmvoItem] | None = ...,
+        dscp_wmm_vi: str | list[QosProfileDscpwmmviItem] | None = ...,
+        dscp_wmm_be: str | list[QosProfileDscpwmmbeItem] | None = ...,
+        dscp_wmm_bk: str | list[QosProfileDscpwmmbkItem] | None = ...,
         wmm_dscp_marking: Literal["enable", "disable"] | None = ...,
         wmm_vo_dscp: int | None = ...,
         wmm_vi_dscp: int | None = ...,
@@ -699,10 +729,10 @@ class QosProfile:
         bandwidth_admission_control: Literal["enable", "disable"] | None = ...,
         bandwidth_capacity: int | None = ...,
         dscp_wmm_mapping: Literal["enable", "disable"] | None = ...,
-        dscp_wmm_vo: str | list[str] | list[dict[str, Any]] | None = ...,
-        dscp_wmm_vi: str | list[str] | list[dict[str, Any]] | None = ...,
-        dscp_wmm_be: str | list[str] | list[dict[str, Any]] | None = ...,
-        dscp_wmm_bk: str | list[str] | list[dict[str, Any]] | None = ...,
+        dscp_wmm_vo: str | list[QosProfileDscpwmmvoItem] | None = ...,
+        dscp_wmm_vi: str | list[QosProfileDscpwmmviItem] | None = ...,
+        dscp_wmm_be: str | list[QosProfileDscpwmmbeItem] | None = ...,
+        dscp_wmm_bk: str | list[QosProfileDscpwmmbkItem] | None = ...,
         wmm_dscp_marking: Literal["enable", "disable"] | None = ...,
         wmm_vo_dscp: int | None = ...,
         wmm_vi_dscp: int | None = ...,
@@ -730,10 +760,10 @@ class QosProfile:
         bandwidth_admission_control: Literal["enable", "disable"] | None = ...,
         bandwidth_capacity: int | None = ...,
         dscp_wmm_mapping: Literal["enable", "disable"] | None = ...,
-        dscp_wmm_vo: str | list[str] | list[dict[str, Any]] | None = ...,
-        dscp_wmm_vi: str | list[str] | list[dict[str, Any]] | None = ...,
-        dscp_wmm_be: str | list[str] | list[dict[str, Any]] | None = ...,
-        dscp_wmm_bk: str | list[str] | list[dict[str, Any]] | None = ...,
+        dscp_wmm_vo: str | list[QosProfileDscpwmmvoItem] | None = ...,
+        dscp_wmm_vi: str | list[QosProfileDscpwmmviItem] | None = ...,
+        dscp_wmm_be: str | list[QosProfileDscpwmmbeItem] | None = ...,
+        dscp_wmm_bk: str | list[QosProfileDscpwmmbkItem] | None = ...,
         wmm_dscp_marking: Literal["enable", "disable"] | None = ...,
         wmm_vo_dscp: int | None = ...,
         wmm_vi_dscp: int | None = ...,
@@ -759,10 +789,10 @@ class QosProfile:
         bandwidth_admission_control: Literal["enable", "disable"] | None = ...,
         bandwidth_capacity: int | None = ...,
         dscp_wmm_mapping: Literal["enable", "disable"] | None = ...,
-        dscp_wmm_vo: str | list[str] | list[dict[str, Any]] | None = ...,
-        dscp_wmm_vi: str | list[str] | list[dict[str, Any]] | None = ...,
-        dscp_wmm_be: str | list[str] | list[dict[str, Any]] | None = ...,
-        dscp_wmm_bk: str | list[str] | list[dict[str, Any]] | None = ...,
+        dscp_wmm_vo: str | list[QosProfileDscpwmmvoItem] | None = ...,
+        dscp_wmm_vi: str | list[QosProfileDscpwmmviItem] | None = ...,
+        dscp_wmm_be: str | list[QosProfileDscpwmmbeItem] | None = ...,
+        dscp_wmm_bk: str | list[QosProfileDscpwmmbkItem] | None = ...,
         wmm_dscp_marking: Literal["enable", "disable"] | None = ...,
         wmm_vo_dscp: int | None = ...,
         wmm_vi_dscp: int | None = ...,
@@ -823,10 +853,10 @@ class QosProfile:
         bandwidth_admission_control: Literal["enable", "disable"] | None = ...,
         bandwidth_capacity: int | None = ...,
         dscp_wmm_mapping: Literal["enable", "disable"] | None = ...,
-        dscp_wmm_vo: str | list[str] | list[dict[str, Any]] | None = ...,
-        dscp_wmm_vi: str | list[str] | list[dict[str, Any]] | None = ...,
-        dscp_wmm_be: str | list[str] | list[dict[str, Any]] | None = ...,
-        dscp_wmm_bk: str | list[str] | list[dict[str, Any]] | None = ...,
+        dscp_wmm_vo: str | list[QosProfileDscpwmmvoItem] | None = ...,
+        dscp_wmm_vi: str | list[QosProfileDscpwmmviItem] | None = ...,
+        dscp_wmm_be: str | list[QosProfileDscpwmmbeItem] | None = ...,
+        dscp_wmm_bk: str | list[QosProfileDscpwmmbkItem] | None = ...,
         wmm_dscp_marking: Literal["enable", "disable"] | None = ...,
         wmm_vo_dscp: int | None = ...,
         wmm_vi_dscp: int | None = ...,

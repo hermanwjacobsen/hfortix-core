@@ -2,7 +2,32 @@ from typing import TypedDict, Literal, Any, Coroutine, Union, overload, Generato
 from typing_extensions import NotRequired
 from hfortix_fortios.models import FortiObject, FortiObjectList
 
-# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional via total=False)
+# ============================================================================
+# Nested TypedDicts for table field children (dict mode)
+# These MUST be defined before the Payload class to use them as type hints
+# ============================================================================
+
+class AccessProxySshClientCertCertextensionItem(TypedDict, total=False):
+    """Type hints for cert-extension table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: AccessProxySshClientCertCertextensionItem = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    
+    name: str  # Name of certificate extension. | MaxLen: 127
+    critical: Literal["no", "yes"]  # Critical option. | Default: no
+    type: Literal["fixed", "user"]  # Type of certificate extension. | Default: fixed
+    data: str  # Data of certificate extension. | MaxLen: 127
+
+
+# ============================================================================
+# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional)
+# ============================================================================
 # NOTE: We intentionally DON'T use NotRequired wrapper because:
 # 1. total=False already makes all fields optional
 # 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
@@ -29,25 +54,12 @@ class AccessProxySshClientCertPayload(TypedDict, total=False):
     permit_port_forwarding: Literal["enable", "disable"]  # Enable/disable appending permit-port-forwarding ce | Default: enable
     permit_pty: Literal["enable", "disable"]  # Enable/disable appending permit-pty certificate ex | Default: enable
     permit_user_rc: Literal["enable", "disable"]  # Enable/disable appending permit-user-rc certificat | Default: enable
-    cert_extension: list[dict[str, Any]]  # Configure certificate extension for user certifica
+    cert_extension: list[AccessProxySshClientCertCertextensionItem]  # Configure certificate extension for user certifica
     auth_ca: str  # Name of the SSH server public key authentication C | MaxLen: 79
 
-# Nested TypedDicts for table field children (dict mode)
-
-class AccessProxySshClientCertCertextensionItem(TypedDict):
-    """Type hints for cert-extension table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    name: str  # Name of certificate extension. | MaxLen: 127
-    critical: Literal["no", "yes"]  # Critical option. | Default: no
-    type: Literal["fixed", "user"]  # Type of certificate extension. | Default: fixed
-    data: str  # Data of certificate extension. | MaxLen: 127
-
-
-# Nested classes for table field children (object mode)
+# ============================================================================
+# Nested classes for table field children (object mode - for API responses)
+# ============================================================================
 
 @final
 class AccessProxySshClientCertCertextensionObject:
@@ -137,6 +149,9 @@ class AccessProxySshClientCertObject:
     # Common API response fields
     status: str
     http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
     vdom: str | None
     
     # Methods from FortiObject
@@ -373,7 +388,7 @@ class AccessProxySshClientCert:
         permit_port_forwarding: Literal["enable", "disable"] | None = ...,
         permit_pty: Literal["enable", "disable"] | None = ...,
         permit_user_rc: Literal["enable", "disable"] | None = ...,
-        cert_extension: str | list[str] | list[dict[str, Any]] | None = ...,
+        cert_extension: str | list[AccessProxySshClientCertCertextensionItem] | None = ...,
         auth_ca: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> AccessProxySshClientCertObject: ...
@@ -389,7 +404,7 @@ class AccessProxySshClientCert:
         permit_port_forwarding: Literal["enable", "disable"] | None = ...,
         permit_pty: Literal["enable", "disable"] | None = ...,
         permit_user_rc: Literal["enable", "disable"] | None = ...,
-        cert_extension: str | list[str] | list[dict[str, Any]] | None = ...,
+        cert_extension: str | list[AccessProxySshClientCertCertextensionItem] | None = ...,
         auth_ca: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
@@ -406,7 +421,7 @@ class AccessProxySshClientCert:
         permit_port_forwarding: Literal["enable", "disable"] | None = ...,
         permit_pty: Literal["enable", "disable"] | None = ...,
         permit_user_rc: Literal["enable", "disable"] | None = ...,
-        cert_extension: str | list[str] | list[dict[str, Any]] | None = ...,
+        cert_extension: str | list[AccessProxySshClientCertCertextensionItem] | None = ...,
         auth_ca: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
@@ -421,7 +436,7 @@ class AccessProxySshClientCert:
         permit_port_forwarding: Literal["enable", "disable"] | None = ...,
         permit_pty: Literal["enable", "disable"] | None = ...,
         permit_user_rc: Literal["enable", "disable"] | None = ...,
-        cert_extension: str | list[str] | list[dict[str, Any]] | None = ...,
+        cert_extension: str | list[AccessProxySshClientCertCertextensionItem] | None = ...,
         auth_ca: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
@@ -438,7 +453,7 @@ class AccessProxySshClientCert:
         permit_port_forwarding: Literal["enable", "disable"] | None = ...,
         permit_pty: Literal["enable", "disable"] | None = ...,
         permit_user_rc: Literal["enable", "disable"] | None = ...,
-        cert_extension: str | list[str] | list[dict[str, Any]] | None = ...,
+        cert_extension: str | list[AccessProxySshClientCertCertextensionItem] | None = ...,
         auth_ca: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> AccessProxySshClientCertObject: ...
@@ -454,7 +469,7 @@ class AccessProxySshClientCert:
         permit_port_forwarding: Literal["enable", "disable"] | None = ...,
         permit_pty: Literal["enable", "disable"] | None = ...,
         permit_user_rc: Literal["enable", "disable"] | None = ...,
-        cert_extension: str | list[str] | list[dict[str, Any]] | None = ...,
+        cert_extension: str | list[AccessProxySshClientCertCertextensionItem] | None = ...,
         auth_ca: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
@@ -471,7 +486,7 @@ class AccessProxySshClientCert:
         permit_port_forwarding: Literal["enable", "disable"] | None = ...,
         permit_pty: Literal["enable", "disable"] | None = ...,
         permit_user_rc: Literal["enable", "disable"] | None = ...,
-        cert_extension: str | list[str] | list[dict[str, Any]] | None = ...,
+        cert_extension: str | list[AccessProxySshClientCertCertextensionItem] | None = ...,
         auth_ca: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
@@ -486,7 +501,7 @@ class AccessProxySshClientCert:
         permit_port_forwarding: Literal["enable", "disable"] | None = ...,
         permit_pty: Literal["enable", "disable"] | None = ...,
         permit_user_rc: Literal["enable", "disable"] | None = ...,
-        cert_extension: str | list[str] | list[dict[str, Any]] | None = ...,
+        cert_extension: str | list[AccessProxySshClientCertCertextensionItem] | None = ...,
         auth_ca: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
@@ -536,7 +551,7 @@ class AccessProxySshClientCert:
         permit_port_forwarding: Literal["enable", "disable"] | None = ...,
         permit_pty: Literal["enable", "disable"] | None = ...,
         permit_user_rc: Literal["enable", "disable"] | None = ...,
-        cert_extension: str | list[str] | list[dict[str, Any]] | None = ...,
+        cert_extension: str | list[AccessProxySshClientCertCertextensionItem] | None = ...,
         auth_ca: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...

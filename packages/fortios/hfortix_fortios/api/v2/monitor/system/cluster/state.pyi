@@ -3,6 +3,70 @@ from typing_extensions import NotRequired
 from hfortix_fortios.models import FortiObject, FortiObjectList
 
 
+
+
+# Response TypedDict for GET returns (all fields present in API response)
+class StateResponse(TypedDict):
+    """
+    Type hints for system/cluster/state API response fields.
+    
+    All fields are present in the response from the FortiGate API.
+    """
+    chassis_id: int
+    svcgrp_id: int
+    slot_id: int
+    slots: str
+    workers: str
+
+
+@final
+class StateObject:
+    """Typed FortiObject for system/cluster/state with IDE autocomplete support.
+    
+    This is a typed wrapper that provides IDE autocomplete for API response fields.
+    At runtime, this is actually a FortiObject instance.
+    """
+    
+    # chassis_id
+    chassis_id: int
+    # svcgrp_id
+    svcgrp_id: int
+    # slot_id
+    slot_id: int
+    # slots
+    slots: str
+    # workers
+    workers: str
+    
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
+    
+    # Methods from FortiObject
+    @property
+    def dict(self) -> dict[str, Any]:
+        """Convert to dictionary."""
+        ...
+    @property
+    def json(self) -> str:
+        """Get pretty-printed JSON string."""
+        ...
+    @property
+    def raw(self) -> dict[str, Any]:
+        """Get raw API response data."""
+        ...
+    def get_full(self, name: str) -> Any: ...
+    def to_dict(self) -> StatePayload: ...
+    def keys(self) -> Any: ...
+    def values(self) -> Generator[Any, None, None]: ...
+    def items(self) -> Generator[tuple[str, Any], None, None]: ...
+    def get(self, key: str, default: Any = None) -> Any: ...
+
+
 class State:
     """
     Get state of SLBC cluster slots.

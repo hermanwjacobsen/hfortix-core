@@ -2,7 +2,69 @@ from typing import TypedDict, Literal, Any, Coroutine, Union, overload, Generato
 from typing_extensions import NotRequired
 from hfortix_fortios.models import FortiObject, FortiObjectList
 
-# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional via total=False)
+# ============================================================================
+# Nested TypedDicts for table field children (dict mode)
+# These MUST be defined before the Payload class to use them as type hints
+# ============================================================================
+
+class LldpProfileMednetworkpolicyItem(TypedDict, total=False):
+    """Type hints for med-network-policy table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: LldpProfileMednetworkpolicyItem = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    
+    name: str  # Policy type name. | MaxLen: 63
+    status: Literal["disable", "enable"]  # Enable or disable this TLV. | Default: disable
+    vlan_intf: str  # VLAN interface to advertise; if configured on port | MaxLen: 15
+    assign_vlan: Literal["disable", "enable"]  # Enable/disable VLAN assignment when this profile i | Default: disable
+    priority: int  # Advertised Layer 2 priority | Default: 0 | Min: 0 | Max: 7
+    dscp: int  # Advertised Differentiated Services Code Point | Default: 0 | Min: 0 | Max: 63
+
+
+class LldpProfileMedlocationserviceItem(TypedDict, total=False):
+    """Type hints for med-location-service table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: LldpProfileMedlocationserviceItem = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    
+    name: str  # Location service type name. | MaxLen: 63
+    status: Literal["disable", "enable"]  # Enable or disable this TLV. | Default: disable
+    sys_location_id: str  # Location service ID. | MaxLen: 63
+
+
+class LldpProfileCustomtlvsItem(TypedDict, total=False):
+    """Type hints for custom-tlvs table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: LldpProfileCustomtlvsItem = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    
+    name: str  # TLV name (not sent). | MaxLen: 63
+    oui: str  # Organizationally unique identifier (OUI), a 3-byte | Default: 000000
+    subtype: int  # Organizationally defined subtype (0 - 255). | Default: 0 | Min: 0 | Max: 255
+    information_string: str  # Organizationally defined information string
+
+
+# ============================================================================
+# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional)
+# ============================================================================
 # NOTE: We intentionally DON'T use NotRequired wrapper because:
 # 1. total=False already makes all fields optional
 # 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
@@ -32,53 +94,13 @@ class LldpProfilePayload(TypedDict, total=False):
     auto_isl_auth_reauth: int  # Auto inter-switch LAG authentication reauth period | Default: 3600 | Min: 180 | Max: 3600
     auto_isl_auth_encrypt: Literal["none", "mixed", "must"]  # Auto inter-switch LAG encryption mode. | Default: none
     auto_isl_auth_macsec_profile: str  # Auto inter-switch LAG macsec profile for encryptio | MaxLen: 63
-    med_network_policy: list[dict[str, Any]]  # Configuration method to edit Media Endpoint Discov
-    med_location_service: list[dict[str, Any]]  # Configuration method to edit Media Endpoint Discov
-    custom_tlvs: list[dict[str, Any]]  # Configuration method to edit custom TLV entries.
+    med_network_policy: list[LldpProfileMednetworkpolicyItem]  # Configuration method to edit Media Endpoint Discov
+    med_location_service: list[LldpProfileMedlocationserviceItem]  # Configuration method to edit Media Endpoint Discov
+    custom_tlvs: list[LldpProfileCustomtlvsItem]  # Configuration method to edit custom TLV entries.
 
-# Nested TypedDicts for table field children (dict mode)
-
-class LldpProfileMednetworkpolicyItem(TypedDict):
-    """Type hints for med-network-policy table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    name: str  # Policy type name. | MaxLen: 63
-    status: Literal["disable", "enable"]  # Enable or disable this TLV. | Default: disable
-    vlan_intf: str  # VLAN interface to advertise; if configured on port | MaxLen: 15
-    assign_vlan: Literal["disable", "enable"]  # Enable/disable VLAN assignment when this profile i | Default: disable
-    priority: int  # Advertised Layer 2 priority | Default: 0 | Min: 0 | Max: 7
-    dscp: int  # Advertised Differentiated Services Code Point | Default: 0 | Min: 0 | Max: 63
-
-
-class LldpProfileMedlocationserviceItem(TypedDict):
-    """Type hints for med-location-service table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    name: str  # Location service type name. | MaxLen: 63
-    status: Literal["disable", "enable"]  # Enable or disable this TLV. | Default: disable
-    sys_location_id: str  # Location service ID. | MaxLen: 63
-
-
-class LldpProfileCustomtlvsItem(TypedDict):
-    """Type hints for custom-tlvs table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    name: str  # TLV name (not sent). | MaxLen: 63
-    oui: str  # Organizationally unique identifier (OUI), a 3-byte | Default: 000000
-    subtype: int  # Organizationally defined subtype (0 - 255). | Default: 0 | Min: 0 | Max: 255
-    information_string: str  # Organizationally defined information string
-
-
-# Nested classes for table field children (object mode)
+# ============================================================================
+# Nested classes for table field children (object mode - for API responses)
+# ============================================================================
 
 @final
 class LldpProfileMednetworkpolicyObject:
@@ -273,6 +295,9 @@ class LldpProfileObject:
     # Common API response fields
     status: str
     http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
     vdom: str | None
     
     # Methods from FortiObject
@@ -517,9 +542,9 @@ class LldpProfile:
         auto_isl_auth_reauth: int | None = ...,
         auto_isl_auth_encrypt: Literal["none", "mixed", "must"] | None = ...,
         auto_isl_auth_macsec_profile: str | None = ...,
-        med_network_policy: str | list[str] | list[dict[str, Any]] | None = ...,
-        med_location_service: str | list[str] | list[dict[str, Any]] | None = ...,
-        custom_tlvs: str | list[str] | list[dict[str, Any]] | None = ...,
+        med_network_policy: str | list[LldpProfileMednetworkpolicyItem] | None = ...,
+        med_location_service: str | list[LldpProfileMedlocationserviceItem] | None = ...,
+        custom_tlvs: str | list[LldpProfileCustomtlvsItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> LldpProfileObject: ...
     
@@ -542,9 +567,9 @@ class LldpProfile:
         auto_isl_auth_reauth: int | None = ...,
         auto_isl_auth_encrypt: Literal["none", "mixed", "must"] | None = ...,
         auto_isl_auth_macsec_profile: str | None = ...,
-        med_network_policy: str | list[str] | list[dict[str, Any]] | None = ...,
-        med_location_service: str | list[str] | list[dict[str, Any]] | None = ...,
-        custom_tlvs: str | list[str] | list[dict[str, Any]] | None = ...,
+        med_network_policy: str | list[LldpProfileMednetworkpolicyItem] | None = ...,
+        med_location_service: str | list[LldpProfileMedlocationserviceItem] | None = ...,
+        custom_tlvs: str | list[LldpProfileCustomtlvsItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -568,9 +593,9 @@ class LldpProfile:
         auto_isl_auth_reauth: int | None = ...,
         auto_isl_auth_encrypt: Literal["none", "mixed", "must"] | None = ...,
         auto_isl_auth_macsec_profile: str | None = ...,
-        med_network_policy: str | list[str] | list[dict[str, Any]] | None = ...,
-        med_location_service: str | list[str] | list[dict[str, Any]] | None = ...,
-        custom_tlvs: str | list[str] | list[dict[str, Any]] | None = ...,
+        med_network_policy: str | list[LldpProfileMednetworkpolicyItem] | None = ...,
+        med_location_service: str | list[LldpProfileMedlocationserviceItem] | None = ...,
+        custom_tlvs: str | list[LldpProfileCustomtlvsItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -592,9 +617,9 @@ class LldpProfile:
         auto_isl_auth_reauth: int | None = ...,
         auto_isl_auth_encrypt: Literal["none", "mixed", "must"] | None = ...,
         auto_isl_auth_macsec_profile: str | None = ...,
-        med_network_policy: str | list[str] | list[dict[str, Any]] | None = ...,
-        med_location_service: str | list[str] | list[dict[str, Any]] | None = ...,
-        custom_tlvs: str | list[str] | list[dict[str, Any]] | None = ...,
+        med_network_policy: str | list[LldpProfileMednetworkpolicyItem] | None = ...,
+        med_location_service: str | list[LldpProfileMedlocationserviceItem] | None = ...,
+        custom_tlvs: str | list[LldpProfileCustomtlvsItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -618,9 +643,9 @@ class LldpProfile:
         auto_isl_auth_reauth: int | None = ...,
         auto_isl_auth_encrypt: Literal["none", "mixed", "must"] | None = ...,
         auto_isl_auth_macsec_profile: str | None = ...,
-        med_network_policy: str | list[str] | list[dict[str, Any]] | None = ...,
-        med_location_service: str | list[str] | list[dict[str, Any]] | None = ...,
-        custom_tlvs: str | list[str] | list[dict[str, Any]] | None = ...,
+        med_network_policy: str | list[LldpProfileMednetworkpolicyItem] | None = ...,
+        med_location_service: str | list[LldpProfileMedlocationserviceItem] | None = ...,
+        custom_tlvs: str | list[LldpProfileCustomtlvsItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> LldpProfileObject: ...
     
@@ -643,9 +668,9 @@ class LldpProfile:
         auto_isl_auth_reauth: int | None = ...,
         auto_isl_auth_encrypt: Literal["none", "mixed", "must"] | None = ...,
         auto_isl_auth_macsec_profile: str | None = ...,
-        med_network_policy: str | list[str] | list[dict[str, Any]] | None = ...,
-        med_location_service: str | list[str] | list[dict[str, Any]] | None = ...,
-        custom_tlvs: str | list[str] | list[dict[str, Any]] | None = ...,
+        med_network_policy: str | list[LldpProfileMednetworkpolicyItem] | None = ...,
+        med_location_service: str | list[LldpProfileMedlocationserviceItem] | None = ...,
+        custom_tlvs: str | list[LldpProfileCustomtlvsItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -669,9 +694,9 @@ class LldpProfile:
         auto_isl_auth_reauth: int | None = ...,
         auto_isl_auth_encrypt: Literal["none", "mixed", "must"] | None = ...,
         auto_isl_auth_macsec_profile: str | None = ...,
-        med_network_policy: str | list[str] | list[dict[str, Any]] | None = ...,
-        med_location_service: str | list[str] | list[dict[str, Any]] | None = ...,
-        custom_tlvs: str | list[str] | list[dict[str, Any]] | None = ...,
+        med_network_policy: str | list[LldpProfileMednetworkpolicyItem] | None = ...,
+        med_location_service: str | list[LldpProfileMedlocationserviceItem] | None = ...,
+        custom_tlvs: str | list[LldpProfileCustomtlvsItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -693,9 +718,9 @@ class LldpProfile:
         auto_isl_auth_reauth: int | None = ...,
         auto_isl_auth_encrypt: Literal["none", "mixed", "must"] | None = ...,
         auto_isl_auth_macsec_profile: str | None = ...,
-        med_network_policy: str | list[str] | list[dict[str, Any]] | None = ...,
-        med_location_service: str | list[str] | list[dict[str, Any]] | None = ...,
-        custom_tlvs: str | list[str] | list[dict[str, Any]] | None = ...,
+        med_network_policy: str | list[LldpProfileMednetworkpolicyItem] | None = ...,
+        med_location_service: str | list[LldpProfileMedlocationserviceItem] | None = ...,
+        custom_tlvs: str | list[LldpProfileCustomtlvsItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -752,9 +777,9 @@ class LldpProfile:
         auto_isl_auth_reauth: int | None = ...,
         auto_isl_auth_encrypt: Literal["none", "mixed", "must"] | None = ...,
         auto_isl_auth_macsec_profile: str | None = ...,
-        med_network_policy: str | list[str] | list[dict[str, Any]] | None = ...,
-        med_location_service: str | list[str] | list[dict[str, Any]] | None = ...,
-        custom_tlvs: str | list[str] | list[dict[str, Any]] | None = ...,
+        med_network_policy: str | list[LldpProfileMednetworkpolicyItem] | None = ...,
+        med_location_service: str | list[LldpProfileMedlocationserviceItem] | None = ...,
+        custom_tlvs: str | list[LldpProfileCustomtlvsItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     

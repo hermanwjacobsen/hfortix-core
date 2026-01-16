@@ -2,7 +2,29 @@ from typing import TypedDict, Literal, Any, Coroutine, Union, overload, Generato
 from typing_extensions import NotRequired
 from hfortix_fortios.models import FortiObject, FortiObjectList
 
-# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional via total=False)
+# ============================================================================
+# Nested TypedDicts for table field children (dict mode)
+# These MUST be defined before the Payload class to use them as type hints
+# ============================================================================
+
+class SettingCustomlogfieldsItem(TypedDict, total=False):
+    """Type hints for custom-log-fields table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: SettingCustomlogfieldsItem = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    
+    field_id: str  # Custom log field. | MaxLen: 35
+
+
+# ============================================================================
+# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional)
+# ============================================================================
 # NOTE: We intentionally DON'T use NotRequired wrapper because:
 # 1. total=False already makes all fields optional
 # 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
@@ -44,22 +66,12 @@ class SettingPayload(TypedDict, total=False):
     extended_utm_log: Literal["enable", "disable"]  # Enable/disable extended UTM logging. | Default: disable
     zone_name: Literal["enable", "disable"]  # Enable/disable zone name logging. | Default: disable
     web_svc_perf: Literal["enable", "disable"]  # Enable/disable web-svc performance logging. | Default: disable
-    custom_log_fields: list[dict[str, Any]]  # Custom fields to append to all log messages.
+    custom_log_fields: list[SettingCustomlogfieldsItem]  # Custom fields to append to all log messages.
     anonymization_hash: str  # User name anonymization hash salt. | MaxLen: 32
 
-# Nested TypedDicts for table field children (dict mode)
-
-class SettingCustomlogfieldsItem(TypedDict):
-    """Type hints for custom-log-fields table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    field_id: str  # Custom log field. | MaxLen: 35
-
-
-# Nested classes for table field children (object mode)
+# ============================================================================
+# Nested classes for table field children (object mode - for API responses)
+# ============================================================================
 
 @final
 class SettingCustomlogfieldsObject:
@@ -203,6 +215,9 @@ class SettingObject:
     # Common API response fields
     status: str
     http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
     vdom: str | None
     
     # Methods from FortiObject
@@ -458,7 +473,7 @@ class Setting:
         extended_utm_log: Literal["enable", "disable"] | None = ...,
         zone_name: Literal["enable", "disable"] | None = ...,
         web_svc_perf: Literal["enable", "disable"] | None = ...,
-        custom_log_fields: str | list[str] | list[dict[str, Any]] | None = ...,
+        custom_log_fields: str | list[SettingCustomlogfieldsItem] | None = ...,
         anonymization_hash: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> SettingObject: ...
@@ -494,7 +509,7 @@ class Setting:
         extended_utm_log: Literal["enable", "disable"] | None = ...,
         zone_name: Literal["enable", "disable"] | None = ...,
         web_svc_perf: Literal["enable", "disable"] | None = ...,
-        custom_log_fields: str | list[str] | list[dict[str, Any]] | None = ...,
+        custom_log_fields: str | list[SettingCustomlogfieldsItem] | None = ...,
         anonymization_hash: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
@@ -531,7 +546,7 @@ class Setting:
         extended_utm_log: Literal["enable", "disable"] | None = ...,
         zone_name: Literal["enable", "disable"] | None = ...,
         web_svc_perf: Literal["enable", "disable"] | None = ...,
-        custom_log_fields: str | list[str] | list[dict[str, Any]] | None = ...,
+        custom_log_fields: str | list[SettingCustomlogfieldsItem] | None = ...,
         anonymization_hash: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
@@ -566,7 +581,7 @@ class Setting:
         extended_utm_log: Literal["enable", "disable"] | None = ...,
         zone_name: Literal["enable", "disable"] | None = ...,
         web_svc_perf: Literal["enable", "disable"] | None = ...,
-        custom_log_fields: str | list[str] | list[dict[str, Any]] | None = ...,
+        custom_log_fields: str | list[SettingCustomlogfieldsItem] | None = ...,
         anonymization_hash: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
@@ -607,7 +622,7 @@ class Setting:
         extended_utm_log: Literal["enable", "disable"] | None = ...,
         zone_name: Literal["enable", "disable"] | None = ...,
         web_svc_perf: Literal["enable", "disable"] | None = ...,
-        custom_log_fields: str | list[str] | list[dict[str, Any]] | None = ...,
+        custom_log_fields: str | list[SettingCustomlogfieldsItem] | None = ...,
         anonymization_hash: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...

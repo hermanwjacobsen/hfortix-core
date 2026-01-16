@@ -2,7 +2,33 @@ from typing import TypedDict, Literal, Any, Coroutine, Union, overload, Generato
 from typing_extensions import NotRequired
 from hfortix_fortios.models import FortiObject, FortiObjectList
 
-# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional via total=False)
+# ============================================================================
+# Nested TypedDicts for table field children (dict mode)
+# These MUST be defined before the Payload class to use them as type hints
+# ============================================================================
+
+class KmipServerServerlistItem(TypedDict, total=False):
+    """Type hints for server-list table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: KmipServerServerlistItem = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    
+    id: int  # ID | Default: 0 | Min: 0 | Max: 4294967295
+    status: Literal["enable", "disable"]  # Enable/disable KMIP server. | Default: enable
+    server: str  # KMIP server FQDN or IP address. | MaxLen: 63
+    port: int  # KMIP server port. | Default: 5696 | Min: 0 | Max: 65535
+    cert: str  # Client certificate to use for connectivity to the | MaxLen: 35
+
+
+# ============================================================================
+# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional)
+# ============================================================================
 # NOTE: We intentionally DON'T use NotRequired wrapper because:
 # 1. total=False already makes all fields optional
 # 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
@@ -23,7 +49,7 @@ class KmipServerPayload(TypedDict, total=False):
         }
     """
     name: str  # KMIP server entry name. | MaxLen: 35
-    server_list: list[dict[str, Any]]  # KMIP server list.
+    server_list: list[KmipServerServerlistItem]  # KMIP server list.
     username: str  # User name to use for connectivity to the KMIP serv | MaxLen: 63
     password: str  # Password to use for connectivity to the KMIP serve | MaxLen: 128
     ssl_min_proto_version: Literal["default", "SSLv3", "TLSv1", "TLSv1-1", "TLSv1-2", "TLSv1-3"]  # Minimum supported protocol version for SSL/TLS con | Default: default
@@ -33,23 +59,9 @@ class KmipServerPayload(TypedDict, total=False):
     vrf_select: int  # VRF ID used for connection to server. | Default: 0 | Min: 0 | Max: 511
     source_ip: str  # FortiGate IP address to be used for communication | MaxLen: 63
 
-# Nested TypedDicts for table field children (dict mode)
-
-class KmipServerServerlistItem(TypedDict):
-    """Type hints for server-list table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    id: int  # ID | Default: 0 | Min: 0 | Max: 4294967295
-    status: Literal["enable", "disable"]  # Enable/disable KMIP server. | Default: enable
-    server: str  # KMIP server FQDN or IP address. | MaxLen: 63
-    port: int  # KMIP server port. | Default: 5696 | Min: 0 | Max: 65535
-    cert: str  # Client certificate to use for connectivity to the | MaxLen: 35
-
-
-# Nested classes for table field children (object mode)
+# ============================================================================
+# Nested classes for table field children (object mode - for API responses)
+# ============================================================================
 
 @final
 class KmipServerServerlistObject:
@@ -144,6 +156,9 @@ class KmipServerObject:
     # Common API response fields
     status: str
     http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
     vdom: str | None
     
     # Methods from FortiObject
@@ -374,7 +389,7 @@ class KmipServer:
         self,
         payload_dict: KmipServerPayload | None = ...,
         name: str | None = ...,
-        server_list: str | list[str] | list[dict[str, Any]] | None = ...,
+        server_list: str | list[KmipServerServerlistItem] | None = ...,
         username: str | None = ...,
         password: str | None = ...,
         ssl_min_proto_version: Literal["default", "SSLv3", "TLSv1", "TLSv1-1", "TLSv1-2", "TLSv1-3"] | None = ...,
@@ -391,7 +406,7 @@ class KmipServer:
         self,
         payload_dict: KmipServerPayload | None = ...,
         name: str | None = ...,
-        server_list: str | list[str] | list[dict[str, Any]] | None = ...,
+        server_list: str | list[KmipServerServerlistItem] | None = ...,
         username: str | None = ...,
         password: str | None = ...,
         ssl_min_proto_version: Literal["default", "SSLv3", "TLSv1", "TLSv1-1", "TLSv1-2", "TLSv1-3"] | None = ...,
@@ -409,7 +424,7 @@ class KmipServer:
         self,
         payload_dict: KmipServerPayload | None = ...,
         name: str | None = ...,
-        server_list: str | list[str] | list[dict[str, Any]] | None = ...,
+        server_list: str | list[KmipServerServerlistItem] | None = ...,
         username: str | None = ...,
         password: str | None = ...,
         ssl_min_proto_version: Literal["default", "SSLv3", "TLSv1", "TLSv1-1", "TLSv1-2", "TLSv1-3"] | None = ...,
@@ -425,7 +440,7 @@ class KmipServer:
         self,
         payload_dict: KmipServerPayload | None = ...,
         name: str | None = ...,
-        server_list: str | list[str] | list[dict[str, Any]] | None = ...,
+        server_list: str | list[KmipServerServerlistItem] | None = ...,
         username: str | None = ...,
         password: str | None = ...,
         ssl_min_proto_version: Literal["default", "SSLv3", "TLSv1", "TLSv1-1", "TLSv1-2", "TLSv1-3"] | None = ...,
@@ -443,7 +458,7 @@ class KmipServer:
         self,
         payload_dict: KmipServerPayload | None = ...,
         name: str | None = ...,
-        server_list: str | list[str] | list[dict[str, Any]] | None = ...,
+        server_list: str | list[KmipServerServerlistItem] | None = ...,
         username: str | None = ...,
         password: str | None = ...,
         ssl_min_proto_version: Literal["default", "SSLv3", "TLSv1", "TLSv1-1", "TLSv1-2", "TLSv1-3"] | None = ...,
@@ -460,7 +475,7 @@ class KmipServer:
         self,
         payload_dict: KmipServerPayload | None = ...,
         name: str | None = ...,
-        server_list: str | list[str] | list[dict[str, Any]] | None = ...,
+        server_list: str | list[KmipServerServerlistItem] | None = ...,
         username: str | None = ...,
         password: str | None = ...,
         ssl_min_proto_version: Literal["default", "SSLv3", "TLSv1", "TLSv1-1", "TLSv1-2", "TLSv1-3"] | None = ...,
@@ -478,7 +493,7 @@ class KmipServer:
         self,
         payload_dict: KmipServerPayload | None = ...,
         name: str | None = ...,
-        server_list: str | list[str] | list[dict[str, Any]] | None = ...,
+        server_list: str | list[KmipServerServerlistItem] | None = ...,
         username: str | None = ...,
         password: str | None = ...,
         ssl_min_proto_version: Literal["default", "SSLv3", "TLSv1", "TLSv1-1", "TLSv1-2", "TLSv1-3"] | None = ...,
@@ -494,7 +509,7 @@ class KmipServer:
         self,
         payload_dict: KmipServerPayload | None = ...,
         name: str | None = ...,
-        server_list: str | list[str] | list[dict[str, Any]] | None = ...,
+        server_list: str | list[KmipServerServerlistItem] | None = ...,
         username: str | None = ...,
         password: str | None = ...,
         ssl_min_proto_version: Literal["default", "SSLv3", "TLSv1", "TLSv1-1", "TLSv1-2", "TLSv1-3"] | None = ...,
@@ -545,7 +560,7 @@ class KmipServer:
         self,
         payload_dict: KmipServerPayload | None = ...,
         name: str | None = ...,
-        server_list: str | list[str] | list[dict[str, Any]] | None = ...,
+        server_list: str | list[KmipServerServerlistItem] | None = ...,
         username: str | None = ...,
         password: str | None = ...,
         ssl_min_proto_version: Literal["default", "SSLv3", "TLSv1", "TLSv1-1", "TLSv1-2", "TLSv1-3"] | None = ...,

@@ -2,7 +2,30 @@ from typing import TypedDict, Literal, Any, Coroutine, Union, overload, Generato
 from typing_extensions import NotRequired
 from hfortix_fortios.models import FortiObject, FortiObjectList
 
-# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional via total=False)
+# ============================================================================
+# Nested TypedDicts for table field children (dict mode)
+# These MUST be defined before the Payload class to use them as type hints
+# ============================================================================
+
+class DecoderParameterItem(TypedDict, total=False):
+    """Type hints for parameter table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: DecoderParameterItem = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    
+    name: str  # Parameter name. | MaxLen: 31
+    value: str  # Parameter value. | MaxLen: 199
+
+
+# ============================================================================
+# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional)
+# ============================================================================
 # NOTE: We intentionally DON'T use NotRequired wrapper because:
 # 1. total=False already makes all fields optional
 # 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
@@ -18,23 +41,12 @@ class DecoderPayload(TypedDict, total=False):
         }
     """
     name: str  # Decoder name. | MaxLen: 63
-    parameter: list[dict[str, Any]]  # IPS group parameters.
+    parameter: list[DecoderParameterItem]  # IPS group parameters.
     status: str  # print all ips decoder status information
 
-# Nested TypedDicts for table field children (dict mode)
-
-class DecoderParameterItem(TypedDict):
-    """Type hints for parameter table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    name: str  # Parameter name. | MaxLen: 31
-    value: str  # Parameter value. | MaxLen: 199
-
-
-# Nested classes for table field children (object mode)
+# ============================================================================
+# Nested classes for table field children (object mode - for API responses)
+# ============================================================================
 
 @final
 class DecoderParameterObject:
@@ -102,6 +114,9 @@ class DecoderObject:
     # Common API response fields
     status: str
     http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
     vdom: str | None
     
     # Methods from FortiObject
@@ -332,7 +347,7 @@ class Decoder:
         self,
         payload_dict: DecoderPayload | None = ...,
         name: str | None = ...,
-        parameter: str | list[str] | list[dict[str, Any]] | None = ...,
+        parameter: str | list[DecoderParameterItem] | None = ...,
         status: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> DecoderObject: ...
@@ -342,7 +357,7 @@ class Decoder:
         self,
         payload_dict: DecoderPayload | None = ...,
         name: str | None = ...,
-        parameter: str | list[str] | list[dict[str, Any]] | None = ...,
+        parameter: str | list[DecoderParameterItem] | None = ...,
         status: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
@@ -353,7 +368,7 @@ class Decoder:
         self,
         payload_dict: DecoderPayload | None = ...,
         name: str | None = ...,
-        parameter: str | list[str] | list[dict[str, Any]] | None = ...,
+        parameter: str | list[DecoderParameterItem] | None = ...,
         status: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
@@ -362,7 +377,7 @@ class Decoder:
         self,
         payload_dict: DecoderPayload | None = ...,
         name: str | None = ...,
-        parameter: str | list[str] | list[dict[str, Any]] | None = ...,
+        parameter: str | list[DecoderParameterItem] | None = ...,
         status: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
@@ -373,7 +388,7 @@ class Decoder:
         self,
         payload_dict: DecoderPayload | None = ...,
         name: str | None = ...,
-        parameter: str | list[str] | list[dict[str, Any]] | None = ...,
+        parameter: str | list[DecoderParameterItem] | None = ...,
         status: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> DecoderObject: ...
@@ -383,7 +398,7 @@ class Decoder:
         self,
         payload_dict: DecoderPayload | None = ...,
         name: str | None = ...,
-        parameter: str | list[str] | list[dict[str, Any]] | None = ...,
+        parameter: str | list[DecoderParameterItem] | None = ...,
         status: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
@@ -394,7 +409,7 @@ class Decoder:
         self,
         payload_dict: DecoderPayload | None = ...,
         name: str | None = ...,
-        parameter: str | list[str] | list[dict[str, Any]] | None = ...,
+        parameter: str | list[DecoderParameterItem] | None = ...,
         status: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
@@ -403,7 +418,7 @@ class Decoder:
         self,
         payload_dict: DecoderPayload | None = ...,
         name: str | None = ...,
-        parameter: str | list[str] | list[dict[str, Any]] | None = ...,
+        parameter: str | list[DecoderParameterItem] | None = ...,
         status: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
@@ -447,7 +462,7 @@ class Decoder:
         self,
         payload_dict: DecoderPayload | None = ...,
         name: str | None = ...,
-        parameter: str | list[str] | list[dict[str, Any]] | None = ...,
+        parameter: str | list[DecoderParameterItem] | None = ...,
         status: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...

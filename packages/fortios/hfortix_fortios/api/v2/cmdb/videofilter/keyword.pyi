@@ -2,7 +2,32 @@ from typing import TypedDict, Literal, Any, Coroutine, Union, overload, Generato
 from typing_extensions import NotRequired
 from hfortix_fortios.models import FortiObject, FortiObjectList
 
-# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional via total=False)
+# ============================================================================
+# Nested TypedDicts for table field children (dict mode)
+# These MUST be defined before the Payload class to use them as type hints
+# ============================================================================
+
+class KeywordWordItem(TypedDict, total=False):
+    """Type hints for word table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: KeywordWordItem = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    
+    name: str  # Name. | MaxLen: 79
+    comment: str  # Comment. | MaxLen: 255
+    pattern_type: Literal["wildcard", "regex"]  # Pattern type. | Default: wildcard
+    status: Literal["enable", "disable"]  # Enable(consider)/disable(ignore) this keyword. | Default: enable
+
+
+# ============================================================================
+# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional)
+# ============================================================================
 # NOTE: We intentionally DON'T use NotRequired wrapper because:
 # 1. total=False already makes all fields optional
 # 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
@@ -21,24 +46,11 @@ class KeywordPayload(TypedDict, total=False):
     name: str  # Name. | MaxLen: 35
     comment: str  # Comment. | MaxLen: 255
     match: Literal["or", "and"]  # Keyword matching logic. | Default: or
-    word: list[dict[str, Any]]  # List of keywords.
+    word: list[KeywordWordItem]  # List of keywords.
 
-# Nested TypedDicts for table field children (dict mode)
-
-class KeywordWordItem(TypedDict):
-    """Type hints for word table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    name: str  # Name. | MaxLen: 79
-    comment: str  # Comment. | MaxLen: 255
-    pattern_type: Literal["wildcard", "regex"]  # Pattern type. | Default: wildcard
-    status: Literal["enable", "disable"]  # Enable(consider)/disable(ignore) this keyword. | Default: enable
-
-
-# Nested classes for table field children (object mode)
+# ============================================================================
+# Nested classes for table field children (object mode - for API responses)
+# ============================================================================
 
 @final
 class KeywordWordObject:
@@ -116,6 +128,9 @@ class KeywordObject:
     # Common API response fields
     status: str
     http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
     vdom: str | None
     
     # Methods from FortiObject
@@ -349,7 +364,7 @@ class Keyword:
         name: str | None = ...,
         comment: str | None = ...,
         match: Literal["or", "and"] | None = ...,
-        word: str | list[str] | list[dict[str, Any]] | None = ...,
+        word: str | list[KeywordWordItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> KeywordObject: ...
     
@@ -361,7 +376,7 @@ class Keyword:
         name: str | None = ...,
         comment: str | None = ...,
         match: Literal["or", "and"] | None = ...,
-        word: str | list[str] | list[dict[str, Any]] | None = ...,
+        word: str | list[KeywordWordItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -374,7 +389,7 @@ class Keyword:
         name: str | None = ...,
         comment: str | None = ...,
         match: Literal["or", "and"] | None = ...,
-        word: str | list[str] | list[dict[str, Any]] | None = ...,
+        word: str | list[KeywordWordItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -385,7 +400,7 @@ class Keyword:
         name: str | None = ...,
         comment: str | None = ...,
         match: Literal["or", "and"] | None = ...,
-        word: str | list[str] | list[dict[str, Any]] | None = ...,
+        word: str | list[KeywordWordItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -398,7 +413,7 @@ class Keyword:
         name: str | None = ...,
         comment: str | None = ...,
         match: Literal["or", "and"] | None = ...,
-        word: str | list[str] | list[dict[str, Any]] | None = ...,
+        word: str | list[KeywordWordItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> KeywordObject: ...
     
@@ -410,7 +425,7 @@ class Keyword:
         name: str | None = ...,
         comment: str | None = ...,
         match: Literal["or", "and"] | None = ...,
-        word: str | list[str] | list[dict[str, Any]] | None = ...,
+        word: str | list[KeywordWordItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -423,7 +438,7 @@ class Keyword:
         name: str | None = ...,
         comment: str | None = ...,
         match: Literal["or", "and"] | None = ...,
-        word: str | list[str] | list[dict[str, Any]] | None = ...,
+        word: str | list[KeywordWordItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -434,7 +449,7 @@ class Keyword:
         name: str | None = ...,
         comment: str | None = ...,
         match: Literal["or", "and"] | None = ...,
-        word: str | list[str] | list[dict[str, Any]] | None = ...,
+        word: str | list[KeywordWordItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -480,7 +495,7 @@ class Keyword:
         name: str | None = ...,
         comment: str | None = ...,
         match: Literal["or", "and"] | None = ...,
-        word: str | list[str] | list[dict[str, Any]] | None = ...,
+        word: str | list[KeywordWordItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     

@@ -2,7 +2,46 @@ from typing import TypedDict, Literal, Any, Coroutine, Union, overload, Generato
 from typing_extensions import NotRequired
 from hfortix_fortios.models import FortiObject, FortiObjectList
 
-# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional via total=False)
+# ============================================================================
+# Nested TypedDicts for table field children (dict mode)
+# These MUST be defined before the Payload class to use them as type hints
+# ============================================================================
+
+class SettingAuthportsItem(TypedDict, total=False):
+    """Type hints for auth-ports table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: SettingAuthportsItem = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    
+    id: int  # ID. | Default: 0 | Min: 0 | Max: 4294967295
+    type: Literal["http", "https", "ftp", "telnet"]  # Service type. | Default: http
+    port: int  # Non-standard port for firewall user authentication | Default: 1024 | Min: 1 | Max: 65535
+
+
+class SettingCorsallowedoriginsItem(TypedDict, total=False):
+    """Type hints for cors-allowed-origins table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: SettingCorsallowedoriginsItem = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    
+    name: str  # Allowed origin for CORS. | MaxLen: 79
+
+
+# ============================================================================
+# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional)
+# ============================================================================
 # NOTE: We intentionally DON'T use NotRequired wrapper because:
 # 1. total=False already makes all fields optional
 # 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
@@ -40,39 +79,17 @@ class SettingPayload(TypedDict, total=False):
     auth_lockout_threshold: int  # Maximum number of failed login attempts before log | Default: 3 | Min: 1 | Max: 10
     auth_lockout_duration: int  # Lockout period in seconds after too many login fai | Default: 0 | Min: 0 | Max: 4294967295
     per_policy_disclaimer: Literal["enable", "disable"]  # Enable/disable per policy disclaimer. | Default: disable
-    auth_ports: list[dict[str, Any]]  # Set up non-standard ports for authentication with
+    auth_ports: list[SettingAuthportsItem]  # Set up non-standard ports for authentication with
     auth_ssl_min_proto_version: Literal["default", "SSLv3", "TLSv1", "TLSv1-1", "TLSv1-2", "TLSv1-3"]  # Minimum supported protocol version for SSL/TLS con | Default: default
     auth_ssl_max_proto_version: Literal["sslv3", "tlsv1", "tlsv1-1", "tlsv1-2", "tlsv1-3"]  # Maximum supported protocol version for SSL/TLS con
     auth_ssl_sigalgs: Literal["no-rsa-pss", "all"]  # Set signature algorithms related to HTTPS authenti | Default: all
     default_user_password_policy: str  # Default password policy to apply to all local user | MaxLen: 35
     cors: Literal["disable", "enable"]  # Enable/disable allowed origins white list for CORS | Default: disable
-    cors_allowed_origins: list[dict[str, Any]]  # Allowed origins white list for CORS.
+    cors_allowed_origins: list[SettingCorsallowedoriginsItem]  # Allowed origins white list for CORS.
 
-# Nested TypedDicts for table field children (dict mode)
-
-class SettingAuthportsItem(TypedDict):
-    """Type hints for auth-ports table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    id: int  # ID. | Default: 0 | Min: 0 | Max: 4294967295
-    type: Literal["http", "https", "ftp", "telnet"]  # Service type. | Default: http
-    port: int  # Non-standard port for firewall user authentication | Default: 1024 | Min: 1 | Max: 65535
-
-
-class SettingCorsallowedoriginsItem(TypedDict):
-    """Type hints for cors-allowed-origins table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    name: str  # Allowed origin for CORS. | MaxLen: 79
-
-
-# Nested classes for table field children (object mode)
+# ============================================================================
+# Nested classes for table field children (object mode - for API responses)
+# ============================================================================
 
 @final
 class SettingAuthportsObject:
@@ -237,6 +254,9 @@ class SettingObject:
     # Common API response fields
     status: str
     http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
     vdom: str | None
     
     # Methods from FortiObject
@@ -482,13 +502,13 @@ class Setting:
         auth_lockout_threshold: int | None = ...,
         auth_lockout_duration: int | None = ...,
         per_policy_disclaimer: Literal["enable", "disable"] | None = ...,
-        auth_ports: str | list[str] | list[dict[str, Any]] | None = ...,
+        auth_ports: str | list[SettingAuthportsItem] | None = ...,
         auth_ssl_min_proto_version: Literal["default", "SSLv3", "TLSv1", "TLSv1-1", "TLSv1-2", "TLSv1-3"] | None = ...,
         auth_ssl_max_proto_version: Literal["sslv3", "tlsv1", "tlsv1-1", "tlsv1-2", "tlsv1-3"] | None = ...,
         auth_ssl_sigalgs: Literal["no-rsa-pss", "all"] | None = ...,
         default_user_password_policy: str | None = ...,
         cors: Literal["disable", "enable"] | None = ...,
-        cors_allowed_origins: str | list[str] | list[dict[str, Any]] | None = ...,
+        cors_allowed_origins: str | list[SettingCorsallowedoriginsItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> SettingObject: ...
     
@@ -513,13 +533,13 @@ class Setting:
         auth_lockout_threshold: int | None = ...,
         auth_lockout_duration: int | None = ...,
         per_policy_disclaimer: Literal["enable", "disable"] | None = ...,
-        auth_ports: str | list[str] | list[dict[str, Any]] | None = ...,
+        auth_ports: str | list[SettingAuthportsItem] | None = ...,
         auth_ssl_min_proto_version: Literal["default", "SSLv3", "TLSv1", "TLSv1-1", "TLSv1-2", "TLSv1-3"] | None = ...,
         auth_ssl_max_proto_version: Literal["sslv3", "tlsv1", "tlsv1-1", "tlsv1-2", "tlsv1-3"] | None = ...,
         auth_ssl_sigalgs: Literal["no-rsa-pss", "all"] | None = ...,
         default_user_password_policy: str | None = ...,
         cors: Literal["disable", "enable"] | None = ...,
-        cors_allowed_origins: str | list[str] | list[dict[str, Any]] | None = ...,
+        cors_allowed_origins: str | list[SettingCorsallowedoriginsItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -545,13 +565,13 @@ class Setting:
         auth_lockout_threshold: int | None = ...,
         auth_lockout_duration: int | None = ...,
         per_policy_disclaimer: Literal["enable", "disable"] | None = ...,
-        auth_ports: str | list[str] | list[dict[str, Any]] | None = ...,
+        auth_ports: str | list[SettingAuthportsItem] | None = ...,
         auth_ssl_min_proto_version: Literal["default", "SSLv3", "TLSv1", "TLSv1-1", "TLSv1-2", "TLSv1-3"] | None = ...,
         auth_ssl_max_proto_version: Literal["sslv3", "tlsv1", "tlsv1-1", "tlsv1-2", "tlsv1-3"] | None = ...,
         auth_ssl_sigalgs: Literal["no-rsa-pss", "all"] | None = ...,
         default_user_password_policy: str | None = ...,
         cors: Literal["disable", "enable"] | None = ...,
-        cors_allowed_origins: str | list[str] | list[dict[str, Any]] | None = ...,
+        cors_allowed_origins: str | list[SettingCorsallowedoriginsItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -575,13 +595,13 @@ class Setting:
         auth_lockout_threshold: int | None = ...,
         auth_lockout_duration: int | None = ...,
         per_policy_disclaimer: Literal["enable", "disable"] | None = ...,
-        auth_ports: str | list[str] | list[dict[str, Any]] | None = ...,
+        auth_ports: str | list[SettingAuthportsItem] | None = ...,
         auth_ssl_min_proto_version: Literal["default", "SSLv3", "TLSv1", "TLSv1-1", "TLSv1-2", "TLSv1-3"] | None = ...,
         auth_ssl_max_proto_version: Literal["sslv3", "tlsv1", "tlsv1-1", "tlsv1-2", "tlsv1-3"] | None = ...,
         auth_ssl_sigalgs: Literal["no-rsa-pss", "all"] | None = ...,
         default_user_password_policy: str | None = ...,
         cors: Literal["disable", "enable"] | None = ...,
-        cors_allowed_origins: str | list[str] | list[dict[str, Any]] | None = ...,
+        cors_allowed_origins: str | list[SettingCorsallowedoriginsItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -611,13 +631,13 @@ class Setting:
         auth_lockout_threshold: int | None = ...,
         auth_lockout_duration: int | None = ...,
         per_policy_disclaimer: Literal["enable", "disable"] | None = ...,
-        auth_ports: str | list[str] | list[dict[str, Any]] | None = ...,
+        auth_ports: str | list[SettingAuthportsItem] | None = ...,
         auth_ssl_min_proto_version: Literal["default", "SSLv3", "TLSv1", "TLSv1-1", "TLSv1-2", "TLSv1-3"] | None = ...,
         auth_ssl_max_proto_version: Literal["sslv3", "tlsv1", "tlsv1-1", "tlsv1-2", "tlsv1-3"] | None = ...,
         auth_ssl_sigalgs: Literal["no-rsa-pss", "all"] | None = ...,
         default_user_password_policy: str | None = ...,
         cors: Literal["disable", "enable"] | None = ...,
-        cors_allowed_origins: str | list[str] | list[dict[str, Any]] | None = ...,
+        cors_allowed_origins: str | list[SettingCorsallowedoriginsItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     

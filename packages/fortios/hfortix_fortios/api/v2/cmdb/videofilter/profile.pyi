@@ -2,7 +2,36 @@ from typing import TypedDict, Literal, Any, Coroutine, Union, overload, Generato
 from typing_extensions import NotRequired
 from hfortix_fortios.models import FortiObject, FortiObjectList
 
-# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional via total=False)
+# ============================================================================
+# Nested TypedDicts for table field children (dict mode)
+# These MUST be defined before the Payload class to use them as type hints
+# ============================================================================
+
+class ProfileFiltersItem(TypedDict, total=False):
+    """Type hints for filters table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: ProfileFiltersItem = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    
+    id: int  # ID. | Default: 0 | Min: 0 | Max: 4294967295
+    comment: str  # Comment. | MaxLen: 255
+    type: Literal["category", "channel", "title", "description"]  # Filter type. | Default: category
+    keyword: int  # Video filter keyword ID. | Default: 0 | Min: 0 | Max: 4294967295
+    category: str  # FortiGuard category ID. | MaxLen: 7
+    channel: str  # Channel ID. | MaxLen: 255
+    action: Literal["allow", "monitor", "block"]  # Video filter action. | Default: monitor
+    log: Literal["enable", "disable"]  # Enable/disable logging. | Default: enable
+
+
+# ============================================================================
+# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional)
+# ============================================================================
 # NOTE: We intentionally DON'T use NotRequired wrapper because:
 # 1. total=False already makes all fields optional
 # 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
@@ -24,32 +53,15 @@ class ProfilePayload(TypedDict, total=False):
     """
     name: str  # Name. | MaxLen: 47
     comment: str  # Comment. | MaxLen: 255
-    filters: list[dict[str, Any]]  # YouTube filter entries.
+    filters: list[ProfileFiltersItem]  # YouTube filter entries.
     youtube: Literal["enable", "disable"]  # Enable/disable YouTube video source. | Default: enable
     vimeo: Literal["enable", "disable"]  # Enable/disable Vimeo video source. | Default: enable
     dailymotion: Literal["enable", "disable"]  # Enable/disable Dailymotion video source. | Default: enable
     replacemsg_group: str  # Replacement message group. | MaxLen: 35
 
-# Nested TypedDicts for table field children (dict mode)
-
-class ProfileFiltersItem(TypedDict):
-    """Type hints for filters table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    id: int  # ID. | Default: 0 | Min: 0 | Max: 4294967295
-    comment: str  # Comment. | MaxLen: 255
-    type: Literal["category", "channel", "title", "description"]  # Filter type. | Default: category
-    keyword: int  # Video filter keyword ID. | Default: 0 | Min: 0 | Max: 4294967295
-    category: str  # FortiGuard category ID. | MaxLen: 7
-    channel: str  # Channel ID. | MaxLen: 255
-    action: Literal["allow", "monitor", "block"]  # Video filter action. | Default: monitor
-    log: Literal["enable", "disable"]  # Enable/disable logging. | Default: enable
-
-
-# Nested classes for table field children (object mode)
+# ============================================================================
+# Nested classes for table field children (object mode - for API responses)
+# ============================================================================
 
 @final
 class ProfileFiltersObject:
@@ -141,6 +153,9 @@ class ProfileObject:
     # Common API response fields
     status: str
     http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
     vdom: str | None
     
     # Methods from FortiObject
@@ -372,7 +387,7 @@ class Profile:
         payload_dict: ProfilePayload | None = ...,
         name: str | None = ...,
         comment: str | None = ...,
-        filters: str | list[str] | list[dict[str, Any]] | None = ...,
+        filters: str | list[ProfileFiltersItem] | None = ...,
         youtube: Literal["enable", "disable"] | None = ...,
         vimeo: Literal["enable", "disable"] | None = ...,
         dailymotion: Literal["enable", "disable"] | None = ...,
@@ -386,7 +401,7 @@ class Profile:
         payload_dict: ProfilePayload | None = ...,
         name: str | None = ...,
         comment: str | None = ...,
-        filters: str | list[str] | list[dict[str, Any]] | None = ...,
+        filters: str | list[ProfileFiltersItem] | None = ...,
         youtube: Literal["enable", "disable"] | None = ...,
         vimeo: Literal["enable", "disable"] | None = ...,
         dailymotion: Literal["enable", "disable"] | None = ...,
@@ -401,7 +416,7 @@ class Profile:
         payload_dict: ProfilePayload | None = ...,
         name: str | None = ...,
         comment: str | None = ...,
-        filters: str | list[str] | list[dict[str, Any]] | None = ...,
+        filters: str | list[ProfileFiltersItem] | None = ...,
         youtube: Literal["enable", "disable"] | None = ...,
         vimeo: Literal["enable", "disable"] | None = ...,
         dailymotion: Literal["enable", "disable"] | None = ...,
@@ -414,7 +429,7 @@ class Profile:
         payload_dict: ProfilePayload | None = ...,
         name: str | None = ...,
         comment: str | None = ...,
-        filters: str | list[str] | list[dict[str, Any]] | None = ...,
+        filters: str | list[ProfileFiltersItem] | None = ...,
         youtube: Literal["enable", "disable"] | None = ...,
         vimeo: Literal["enable", "disable"] | None = ...,
         dailymotion: Literal["enable", "disable"] | None = ...,
@@ -429,7 +444,7 @@ class Profile:
         payload_dict: ProfilePayload | None = ...,
         name: str | None = ...,
         comment: str | None = ...,
-        filters: str | list[str] | list[dict[str, Any]] | None = ...,
+        filters: str | list[ProfileFiltersItem] | None = ...,
         youtube: Literal["enable", "disable"] | None = ...,
         vimeo: Literal["enable", "disable"] | None = ...,
         dailymotion: Literal["enable", "disable"] | None = ...,
@@ -443,7 +458,7 @@ class Profile:
         payload_dict: ProfilePayload | None = ...,
         name: str | None = ...,
         comment: str | None = ...,
-        filters: str | list[str] | list[dict[str, Any]] | None = ...,
+        filters: str | list[ProfileFiltersItem] | None = ...,
         youtube: Literal["enable", "disable"] | None = ...,
         vimeo: Literal["enable", "disable"] | None = ...,
         dailymotion: Literal["enable", "disable"] | None = ...,
@@ -458,7 +473,7 @@ class Profile:
         payload_dict: ProfilePayload | None = ...,
         name: str | None = ...,
         comment: str | None = ...,
-        filters: str | list[str] | list[dict[str, Any]] | None = ...,
+        filters: str | list[ProfileFiltersItem] | None = ...,
         youtube: Literal["enable", "disable"] | None = ...,
         vimeo: Literal["enable", "disable"] | None = ...,
         dailymotion: Literal["enable", "disable"] | None = ...,
@@ -471,7 +486,7 @@ class Profile:
         payload_dict: ProfilePayload | None = ...,
         name: str | None = ...,
         comment: str | None = ...,
-        filters: str | list[str] | list[dict[str, Any]] | None = ...,
+        filters: str | list[ProfileFiltersItem] | None = ...,
         youtube: Literal["enable", "disable"] | None = ...,
         vimeo: Literal["enable", "disable"] | None = ...,
         dailymotion: Literal["enable", "disable"] | None = ...,
@@ -519,7 +534,7 @@ class Profile:
         payload_dict: ProfilePayload | None = ...,
         name: str | None = ...,
         comment: str | None = ...,
-        filters: str | list[str] | list[dict[str, Any]] | None = ...,
+        filters: str | list[ProfileFiltersItem] | None = ...,
         youtube: Literal["enable", "disable"] | None = ...,
         vimeo: Literal["enable", "disable"] | None = ...,
         dailymotion: Literal["enable", "disable"] | None = ...,

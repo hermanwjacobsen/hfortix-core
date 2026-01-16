@@ -2,7 +2,44 @@ from typing import TypedDict, Literal, Any, Coroutine, Union, overload, Generato
 from typing_extensions import NotRequired
 from hfortix_fortios.models import FortiObject, FortiObjectList
 
-# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional via total=False)
+# ============================================================================
+# Nested TypedDicts for table field children (dict mode)
+# These MUST be defined before the Payload class to use them as type hints
+# ============================================================================
+
+class DnsServerhostnameItem(TypedDict, total=False):
+    """Type hints for server-hostname table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: DnsServerhostnameItem = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    
+    hostname: str  # DNS server host name list separated by space | MaxLen: 127
+
+
+class DnsDomainItem(TypedDict, total=False):
+    """Type hints for domain table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: DnsDomainItem = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    
+    domain: str  # DNS search domain list separated by space | MaxLen: 127
+
+
+# ============================================================================
+# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional)
+# ============================================================================
 # NOTE: We intentionally DON'T use NotRequired wrapper because:
 # 1. total=False already makes all fields optional
 # 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
@@ -27,8 +64,8 @@ class DnsPayload(TypedDict, total=False):
     secondary: str  # Secondary DNS server IP address. | Default: 0.0.0.0
     protocol: Literal["cleartext", "dot", "doh"]  # DNS transport protocols. | Default: cleartext
     ssl_certificate: str  # Name of local certificate for SSL connections. | Default: Fortinet_Factory | MaxLen: 35
-    server_hostname: list[dict[str, Any]]  # DNS server host name list.
-    domain: list[dict[str, Any]]  # Search suffix list for hostname lookup.
+    server_hostname: list[DnsServerhostnameItem]  # DNS server host name list.
+    domain: list[DnsDomainItem]  # Search suffix list for hostname lookup.
     ip6_primary: str  # Primary DNS server IPv6 address. | Default: ::
     ip6_secondary: str  # Secondary DNS server IPv6 address. | Default: ::
     timeout: int  # DNS query timeout interval in seconds (1 - 10). | Default: 5 | Min: 1 | Max: 10
@@ -52,29 +89,9 @@ class DnsPayload(TypedDict, total=False):
     hostname_ttl: int  # TTL of hostname table entries (60 - 86400). | Default: 86400 | Min: 60 | Max: 86400
     hostname_limit: int  # Limit of the number of hostname table entries | Default: 5000 | Min: 0 | Max: 50000
 
-# Nested TypedDicts for table field children (dict mode)
-
-class DnsServerhostnameItem(TypedDict):
-    """Type hints for server-hostname table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    hostname: str  # DNS server host name list separated by space | MaxLen: 127
-
-
-class DnsDomainItem(TypedDict):
-    """Type hints for domain table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    domain: str  # DNS search domain list separated by space | MaxLen: 127
-
-
-# Nested classes for table field children (object mode)
+# ============================================================================
+# Nested classes for table field children (object mode - for API responses)
+# ============================================================================
 
 @final
 class DnsServerhostnameObject:
@@ -247,6 +264,9 @@ class DnsObject:
     # Common API response fields
     status: str
     http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
     vdom: str | None
     
     # Methods from FortiObject
@@ -479,8 +499,8 @@ class Dns:
         secondary: str | None = ...,
         protocol: Literal["cleartext", "dot", "doh"] | list[str] | None = ...,
         ssl_certificate: str | None = ...,
-        server_hostname: str | list[str] | list[dict[str, Any]] | None = ...,
-        domain: str | list[str] | list[dict[str, Any]] | None = ...,
+        server_hostname: str | list[DnsServerhostnameItem] | None = ...,
+        domain: str | list[DnsDomainItem] | None = ...,
         ip6_primary: str | None = ...,
         ip6_secondary: str | None = ...,
         timeout: int | None = ...,
@@ -514,8 +534,8 @@ class Dns:
         secondary: str | None = ...,
         protocol: Literal["cleartext", "dot", "doh"] | list[str] | None = ...,
         ssl_certificate: str | None = ...,
-        server_hostname: str | list[str] | list[dict[str, Any]] | None = ...,
-        domain: str | list[str] | list[dict[str, Any]] | None = ...,
+        server_hostname: str | list[DnsServerhostnameItem] | None = ...,
+        domain: str | list[DnsDomainItem] | None = ...,
         ip6_primary: str | None = ...,
         ip6_secondary: str | None = ...,
         timeout: int | None = ...,
@@ -550,8 +570,8 @@ class Dns:
         secondary: str | None = ...,
         protocol: Literal["cleartext", "dot", "doh"] | list[str] | None = ...,
         ssl_certificate: str | None = ...,
-        server_hostname: str | list[str] | list[dict[str, Any]] | None = ...,
-        domain: str | list[str] | list[dict[str, Any]] | None = ...,
+        server_hostname: str | list[DnsServerhostnameItem] | None = ...,
+        domain: str | list[DnsDomainItem] | None = ...,
         ip6_primary: str | None = ...,
         ip6_secondary: str | None = ...,
         timeout: int | None = ...,
@@ -584,8 +604,8 @@ class Dns:
         secondary: str | None = ...,
         protocol: Literal["cleartext", "dot", "doh"] | list[str] | None = ...,
         ssl_certificate: str | None = ...,
-        server_hostname: str | list[str] | list[dict[str, Any]] | None = ...,
-        domain: str | list[str] | list[dict[str, Any]] | None = ...,
+        server_hostname: str | list[DnsServerhostnameItem] | None = ...,
+        domain: str | list[DnsDomainItem] | None = ...,
         ip6_primary: str | None = ...,
         ip6_secondary: str | None = ...,
         timeout: int | None = ...,
@@ -624,8 +644,8 @@ class Dns:
         secondary: str | None = ...,
         protocol: Literal["cleartext", "dot", "doh"] | list[str] | None = ...,
         ssl_certificate: str | None = ...,
-        server_hostname: str | list[str] | list[dict[str, Any]] | None = ...,
-        domain: str | list[str] | list[dict[str, Any]] | None = ...,
+        server_hostname: str | list[DnsServerhostnameItem] | None = ...,
+        domain: str | list[DnsDomainItem] | None = ...,
         ip6_primary: str | None = ...,
         ip6_secondary: str | None = ...,
         timeout: int | None = ...,

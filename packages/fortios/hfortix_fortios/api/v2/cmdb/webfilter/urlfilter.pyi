@@ -2,7 +2,39 @@ from typing import TypedDict, Literal, Any, Coroutine, Union, overload, Generato
 from typing_extensions import NotRequired
 from hfortix_fortios.models import FortiObject, FortiObjectList
 
-# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional via total=False)
+# ============================================================================
+# Nested TypedDicts for table field children (dict mode)
+# These MUST be defined before the Payload class to use them as type hints
+# ============================================================================
+
+class UrlfilterEntriesItem(TypedDict, total=False):
+    """Type hints for entries table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: UrlfilterEntriesItem = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    
+    id: int  # Id. | Default: 0 | Min: 0 | Max: 4294967295
+    url: str  # URL to be filtered. | MaxLen: 511
+    type: Literal["simple", "regex", "wildcard"]  # Filter type (simple, regex, or wildcard). | Default: simple
+    action: Literal["exempt", "block", "allow", "monitor"]  # Action to take for URL filter matches. | Default: exempt
+    antiphish_action: Literal["block", "log"]  # Action to take for AntiPhishing matches. | Default: block
+    status: Literal["enable", "disable"]  # Enable/disable this URL filter. | Default: enable
+    exempt: Literal["av", "web-content", "activex-java-cookie", "dlp", "fortiguard", "range-block", "pass", "antiphish", "all"]  # If action is set to exempt, select the security pr | Default: av web-content activex-java-cookie dlp fortiguard range-block antiphish all
+    web_proxy_profile: str  # Web proxy profile. | MaxLen: 63
+    referrer_host: str  # Referrer host name. | MaxLen: 255
+    dns_address_family: Literal["ipv4", "ipv6", "both"]  # Resolve IPv4 address, IPv6 address, or both from D | Default: ipv4
+    comment: str  # Comment. | MaxLen: 255
+
+
+# ============================================================================
+# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional)
+# ============================================================================
 # NOTE: We intentionally DON'T use NotRequired wrapper because:
 # 1. total=False already makes all fields optional
 # 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
@@ -24,31 +56,11 @@ class UrlfilterPayload(TypedDict, total=False):
     ip_addr_block: Literal["enable", "disable"]  # Enable/disable blocking URLs when the hostname app | Default: disable
     ip4_mapped_ip6: Literal["enable", "disable"]  # Enable/disable matching of IPv4 mapped IPv6 URLs. | Default: disable
     include_subdomains: Literal["enable", "disable"]  # Enable/disable matching subdomains. Applies only t | Default: enable
-    entries: list[dict[str, Any]]  # URL filter entries.
+    entries: list[UrlfilterEntriesItem]  # URL filter entries.
 
-# Nested TypedDicts for table field children (dict mode)
-
-class UrlfilterEntriesItem(TypedDict):
-    """Type hints for entries table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    id: int  # Id. | Default: 0 | Min: 0 | Max: 4294967295
-    url: str  # URL to be filtered. | MaxLen: 511
-    type: Literal["simple", "regex", "wildcard"]  # Filter type (simple, regex, or wildcard). | Default: simple
-    action: Literal["exempt", "block", "allow", "monitor"]  # Action to take for URL filter matches. | Default: exempt
-    antiphish_action: Literal["block", "log"]  # Action to take for AntiPhishing matches. | Default: block
-    status: Literal["enable", "disable"]  # Enable/disable this URL filter. | Default: enable
-    exempt: Literal["av", "web-content", "activex-java-cookie", "dlp", "fortiguard", "range-block", "pass", "antiphish", "all"]  # If action is set to exempt, select the security pr | Default: av web-content activex-java-cookie dlp fortiguard range-block antiphish all
-    web_proxy_profile: str  # Web proxy profile. | MaxLen: 63
-    referrer_host: str  # Referrer host name. | MaxLen: 255
-    dns_address_family: Literal["ipv4", "ipv6", "both"]  # Resolve IPv4 address, IPv6 address, or both from D | Default: ipv4
-    comment: str  # Comment. | MaxLen: 255
-
-
-# Nested classes for table field children (object mode)
+# ============================================================================
+# Nested classes for table field children (object mode - for API responses)
+# ============================================================================
 
 @final
 class UrlfilterEntriesObject:
@@ -149,6 +161,9 @@ class UrlfilterObject:
     # Common API response fields
     status: str
     http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
     vdom: str | None
     
     # Methods from FortiObject
@@ -385,7 +400,7 @@ class Urlfilter:
         ip_addr_block: Literal["enable", "disable"] | None = ...,
         ip4_mapped_ip6: Literal["enable", "disable"] | None = ...,
         include_subdomains: Literal["enable", "disable"] | None = ...,
-        entries: str | list[str] | list[dict[str, Any]] | None = ...,
+        entries: str | list[UrlfilterEntriesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> UrlfilterObject: ...
     
@@ -400,7 +415,7 @@ class Urlfilter:
         ip_addr_block: Literal["enable", "disable"] | None = ...,
         ip4_mapped_ip6: Literal["enable", "disable"] | None = ...,
         include_subdomains: Literal["enable", "disable"] | None = ...,
-        entries: str | list[str] | list[dict[str, Any]] | None = ...,
+        entries: str | list[UrlfilterEntriesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -416,7 +431,7 @@ class Urlfilter:
         ip_addr_block: Literal["enable", "disable"] | None = ...,
         ip4_mapped_ip6: Literal["enable", "disable"] | None = ...,
         include_subdomains: Literal["enable", "disable"] | None = ...,
-        entries: str | list[str] | list[dict[str, Any]] | None = ...,
+        entries: str | list[UrlfilterEntriesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -430,7 +445,7 @@ class Urlfilter:
         ip_addr_block: Literal["enable", "disable"] | None = ...,
         ip4_mapped_ip6: Literal["enable", "disable"] | None = ...,
         include_subdomains: Literal["enable", "disable"] | None = ...,
-        entries: str | list[str] | list[dict[str, Any]] | None = ...,
+        entries: str | list[UrlfilterEntriesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -446,7 +461,7 @@ class Urlfilter:
         ip_addr_block: Literal["enable", "disable"] | None = ...,
         ip4_mapped_ip6: Literal["enable", "disable"] | None = ...,
         include_subdomains: Literal["enable", "disable"] | None = ...,
-        entries: str | list[str] | list[dict[str, Any]] | None = ...,
+        entries: str | list[UrlfilterEntriesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> UrlfilterObject: ...
     
@@ -461,7 +476,7 @@ class Urlfilter:
         ip_addr_block: Literal["enable", "disable"] | None = ...,
         ip4_mapped_ip6: Literal["enable", "disable"] | None = ...,
         include_subdomains: Literal["enable", "disable"] | None = ...,
-        entries: str | list[str] | list[dict[str, Any]] | None = ...,
+        entries: str | list[UrlfilterEntriesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -477,7 +492,7 @@ class Urlfilter:
         ip_addr_block: Literal["enable", "disable"] | None = ...,
         ip4_mapped_ip6: Literal["enable", "disable"] | None = ...,
         include_subdomains: Literal["enable", "disable"] | None = ...,
-        entries: str | list[str] | list[dict[str, Any]] | None = ...,
+        entries: str | list[UrlfilterEntriesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -491,7 +506,7 @@ class Urlfilter:
         ip_addr_block: Literal["enable", "disable"] | None = ...,
         ip4_mapped_ip6: Literal["enable", "disable"] | None = ...,
         include_subdomains: Literal["enable", "disable"] | None = ...,
-        entries: str | list[str] | list[dict[str, Any]] | None = ...,
+        entries: str | list[UrlfilterEntriesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -540,7 +555,7 @@ class Urlfilter:
         ip_addr_block: Literal["enable", "disable"] | None = ...,
         ip4_mapped_ip6: Literal["enable", "disable"] | None = ...,
         include_subdomains: Literal["enable", "disable"] | None = ...,
-        entries: str | list[str] | list[dict[str, Any]] | None = ...,
+        entries: str | list[UrlfilterEntriesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     

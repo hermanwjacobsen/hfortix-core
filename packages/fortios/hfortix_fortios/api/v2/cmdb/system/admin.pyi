@@ -2,7 +2,44 @@ from typing import TypedDict, Literal, Any, Coroutine, Union, overload, Generato
 from typing_extensions import NotRequired
 from hfortix_fortios.models import FortiObject, FortiObjectList
 
-# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional via total=False)
+# ============================================================================
+# Nested TypedDicts for table field children (dict mode)
+# These MUST be defined before the Payload class to use them as type hints
+# ============================================================================
+
+class AdminVdomItem(TypedDict, total=False):
+    """Type hints for vdom table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: AdminVdomItem = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    
+    name: str  # Virtual domain name. | MaxLen: 79
+
+
+class AdminGuestusergroupsItem(TypedDict, total=False):
+    """Type hints for guest-usergroups table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: AdminGuestusergroupsItem = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    
+    name: str  # Select guest user groups. | MaxLen: 79
+
+
+# ============================================================================
+# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional)
+# ============================================================================
 # NOTE: We intentionally DON'T use NotRequired wrapper because:
 # 1. total=False already makes all fields optional
 # 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
@@ -26,7 +63,7 @@ class AdminPayload(TypedDict, total=False):
         }
     """
     name: str  # User name. | MaxLen: 64
-    vdom: list[dict[str, Any]]  # Virtual domain(s) that the administrator can acces
+    vdom: list[AdminVdomItem]  # Virtual domain(s) that the administrator can acces
     remote_auth: Literal["enable", "disable"]  # Enable/disable authentication using a remote RADIU | Default: disable
     remote_group: str  # User group name used for remote auth. | MaxLen: 35
     wildcard: Literal["enable", "disable"]  # Enable/disable wildcard RADIUS authentication. | Default: disable
@@ -74,34 +111,14 @@ class AdminPayload(TypedDict, total=False):
     sms_custom_server: str  # Custom SMS server to send SMS messages to. | MaxLen: 35
     sms_phone: str  # Phone number on which the administrator receives S | MaxLen: 15
     guest_auth: Literal["disable", "enable"]  # Enable/disable guest authentication. | Default: disable
-    guest_usergroups: list[dict[str, Any]]  # Select guest user groups.
+    guest_usergroups: list[AdminGuestusergroupsItem]  # Select guest user groups.
     guest_lang: str  # Guest management portal language. | MaxLen: 35
     status: str  # print admin status information
     list: str  # print admin list information
 
-# Nested TypedDicts for table field children (dict mode)
-
-class AdminVdomItem(TypedDict):
-    """Type hints for vdom table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    name: str  # Virtual domain name. | MaxLen: 79
-
-
-class AdminGuestusergroupsItem(TypedDict):
-    """Type hints for guest-usergroups table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    name: str  # Select guest user groups. | MaxLen: 79
-
-
-# Nested classes for table field children (object mode)
+# ============================================================================
+# Nested classes for table field children (object mode - for API responses)
+# ============================================================================
 
 @final
 class AdminVdomObject:
@@ -349,6 +366,9 @@ class AdminObject:
     # Common API response fields
     status: str
     http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
     vdom: str | None
     
     # Methods from FortiObject
@@ -626,7 +646,7 @@ class Admin:
         sms_custom_server: str | None = ...,
         sms_phone: str | None = ...,
         guest_auth: Literal["disable", "enable"] | None = ...,
-        guest_usergroups: str | list[str] | list[dict[str, Any]] | None = ...,
+        guest_usergroups: str | list[AdminGuestusergroupsItem] | None = ...,
         guest_lang: str | None = ...,
         status: str | None = ...,
         list: str | None = ...,
@@ -685,7 +705,7 @@ class Admin:
         sms_custom_server: str | None = ...,
         sms_phone: str | None = ...,
         guest_auth: Literal["disable", "enable"] | None = ...,
-        guest_usergroups: str | list[str] | list[dict[str, Any]] | None = ...,
+        guest_usergroups: str | list[AdminGuestusergroupsItem] | None = ...,
         guest_lang: str | None = ...,
         status: str | None = ...,
         list: str | None = ...,
@@ -745,7 +765,7 @@ class Admin:
         sms_custom_server: str | None = ...,
         sms_phone: str | None = ...,
         guest_auth: Literal["disable", "enable"] | None = ...,
-        guest_usergroups: str | list[str] | list[dict[str, Any]] | None = ...,
+        guest_usergroups: str | list[AdminGuestusergroupsItem] | None = ...,
         guest_lang: str | None = ...,
         status: str | None = ...,
         list: str | None = ...,
@@ -803,7 +823,7 @@ class Admin:
         sms_custom_server: str | None = ...,
         sms_phone: str | None = ...,
         guest_auth: Literal["disable", "enable"] | None = ...,
-        guest_usergroups: str | list[str] | list[dict[str, Any]] | None = ...,
+        guest_usergroups: str | list[AdminGuestusergroupsItem] | None = ...,
         guest_lang: str | None = ...,
         status: str | None = ...,
         list: str | None = ...,
@@ -863,7 +883,7 @@ class Admin:
         sms_custom_server: str | None = ...,
         sms_phone: str | None = ...,
         guest_auth: Literal["disable", "enable"] | None = ...,
-        guest_usergroups: str | list[str] | list[dict[str, Any]] | None = ...,
+        guest_usergroups: str | list[AdminGuestusergroupsItem] | None = ...,
         guest_lang: str | None = ...,
         status: str | None = ...,
         list: str | None = ...,
@@ -922,7 +942,7 @@ class Admin:
         sms_custom_server: str | None = ...,
         sms_phone: str | None = ...,
         guest_auth: Literal["disable", "enable"] | None = ...,
-        guest_usergroups: str | list[str] | list[dict[str, Any]] | None = ...,
+        guest_usergroups: str | list[AdminGuestusergroupsItem] | None = ...,
         guest_lang: str | None = ...,
         status: str | None = ...,
         list: str | None = ...,
@@ -982,7 +1002,7 @@ class Admin:
         sms_custom_server: str | None = ...,
         sms_phone: str | None = ...,
         guest_auth: Literal["disable", "enable"] | None = ...,
-        guest_usergroups: str | list[str] | list[dict[str, Any]] | None = ...,
+        guest_usergroups: str | list[AdminGuestusergroupsItem] | None = ...,
         guest_lang: str | None = ...,
         status: str | None = ...,
         list: str | None = ...,
@@ -1040,7 +1060,7 @@ class Admin:
         sms_custom_server: str | None = ...,
         sms_phone: str | None = ...,
         guest_auth: Literal["disable", "enable"] | None = ...,
-        guest_usergroups: str | list[str] | list[dict[str, Any]] | None = ...,
+        guest_usergroups: str | list[AdminGuestusergroupsItem] | None = ...,
         guest_lang: str | None = ...,
         status: str | None = ...,
         list: str | None = ...,
@@ -1133,7 +1153,7 @@ class Admin:
         sms_custom_server: str | None = ...,
         sms_phone: str | None = ...,
         guest_auth: Literal["disable", "enable"] | None = ...,
-        guest_usergroups: str | list[str] | list[dict[str, Any]] | None = ...,
+        guest_usergroups: str | list[AdminGuestusergroupsItem] | None = ...,
         guest_lang: str | None = ...,
         status: str | None = ...,
         list: str | None = ...,

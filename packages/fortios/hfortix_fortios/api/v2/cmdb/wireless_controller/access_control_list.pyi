@@ -2,7 +2,58 @@ from typing import TypedDict, Literal, Any, Coroutine, Union, overload, Generato
 from typing_extensions import NotRequired
 from hfortix_fortios.models import FortiObject, FortiObjectList
 
-# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional via total=False)
+# ============================================================================
+# Nested TypedDicts for table field children (dict mode)
+# These MUST be defined before the Payload class to use them as type hints
+# ============================================================================
+
+class AccessControlListLayer3ipv4rulesItem(TypedDict, total=False):
+    """Type hints for layer3-ipv4-rules table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: AccessControlListLayer3ipv4rulesItem = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    
+    rule_id: int  # Rule ID (1 - 65535). | Default: 0 | Min: 1 | Max: 65535
+    comment: str  # Description. | MaxLen: 63
+    srcaddr: str  # Source IP address
+    srcport: int  # Source port (0 - 65535, default = 0, meaning any). | Default: 0 | Min: 0 | Max: 65535
+    dstaddr: str  # Destination IP address
+    dstport: int  # Destination port | Default: 0 | Min: 0 | Max: 65535
+    protocol: int  # Protocol type as defined by IANA | Default: 255 | Min: 0 | Max: 255
+    action: Literal["allow", "deny"]  # Policy action (allow | deny).
+
+
+class AccessControlListLayer3ipv6rulesItem(TypedDict, total=False):
+    """Type hints for layer3-ipv6-rules table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: AccessControlListLayer3ipv6rulesItem = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    
+    rule_id: int  # Rule ID (1 - 65535). | Default: 0 | Min: 1 | Max: 65535
+    comment: str  # Description. | MaxLen: 63
+    srcaddr: str  # Source IPv6 address
+    srcport: int  # Source port (0 - 65535, default = 0, meaning any). | Default: 0 | Min: 0 | Max: 65535
+    dstaddr: str  # Destination IPv6 address
+    dstport: int  # Destination port | Default: 0 | Min: 0 | Max: 65535
+    protocol: int  # Protocol type as defined by IANA | Default: 255 | Min: 0 | Max: 255
+    action: Literal["allow", "deny"]  # Policy action (allow | deny).
+
+
+# ============================================================================
+# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional)
+# ============================================================================
 # NOTE: We intentionally DON'T use NotRequired wrapper because:
 # 1. total=False already makes all fields optional
 # 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
@@ -19,46 +70,12 @@ class AccessControlListPayload(TypedDict, total=False):
     """
     name: str  # AP access control list name. | MaxLen: 35
     comment: str  # Description. | MaxLen: 63
-    layer3_ipv4_rules: list[dict[str, Any]]  # AP ACL layer3 ipv4 rule list.
-    layer3_ipv6_rules: list[dict[str, Any]]  # AP ACL layer3 ipv6 rule list.
+    layer3_ipv4_rules: list[AccessControlListLayer3ipv4rulesItem]  # AP ACL layer3 ipv4 rule list.
+    layer3_ipv6_rules: list[AccessControlListLayer3ipv6rulesItem]  # AP ACL layer3 ipv6 rule list.
 
-# Nested TypedDicts for table field children (dict mode)
-
-class AccessControlListLayer3ipv4rulesItem(TypedDict):
-    """Type hints for layer3-ipv4-rules table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    rule_id: int  # Rule ID (1 - 65535). | Default: 0 | Min: 1 | Max: 65535
-    comment: str  # Description. | MaxLen: 63
-    srcaddr: str  # Source IP address
-    srcport: int  # Source port (0 - 65535, default = 0, meaning any). | Default: 0 | Min: 0 | Max: 65535
-    dstaddr: str  # Destination IP address
-    dstport: int  # Destination port | Default: 0 | Min: 0 | Max: 65535
-    protocol: int  # Protocol type as defined by IANA | Default: 255 | Min: 0 | Max: 255
-    action: Literal["allow", "deny"]  # Policy action (allow | deny).
-
-
-class AccessControlListLayer3ipv6rulesItem(TypedDict):
-    """Type hints for layer3-ipv6-rules table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    rule_id: int  # Rule ID (1 - 65535). | Default: 0 | Min: 1 | Max: 65535
-    comment: str  # Description. | MaxLen: 63
-    srcaddr: str  # Source IPv6 address
-    srcport: int  # Source port (0 - 65535, default = 0, meaning any). | Default: 0 | Min: 0 | Max: 65535
-    dstaddr: str  # Destination IPv6 address
-    dstport: int  # Destination port | Default: 0 | Min: 0 | Max: 65535
-    protocol: int  # Protocol type as defined by IANA | Default: 255 | Min: 0 | Max: 255
-    action: Literal["allow", "deny"]  # Policy action (allow | deny).
-
-
-# Nested classes for table field children (object mode)
+# ============================================================================
+# Nested classes for table field children (object mode - for API responses)
+# ============================================================================
 
 @final
 class AccessControlListLayer3ipv4rulesObject:
@@ -187,6 +204,9 @@ class AccessControlListObject:
     # Common API response fields
     status: str
     http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
     vdom: str | None
     
     # Methods from FortiObject
@@ -418,8 +438,8 @@ class AccessControlList:
         payload_dict: AccessControlListPayload | None = ...,
         name: str | None = ...,
         comment: str | None = ...,
-        layer3_ipv4_rules: str | list[str] | list[dict[str, Any]] | None = ...,
-        layer3_ipv6_rules: str | list[str] | list[dict[str, Any]] | None = ...,
+        layer3_ipv4_rules: str | list[AccessControlListLayer3ipv4rulesItem] | None = ...,
+        layer3_ipv6_rules: str | list[AccessControlListLayer3ipv6rulesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> AccessControlListObject: ...
     
@@ -429,8 +449,8 @@ class AccessControlList:
         payload_dict: AccessControlListPayload | None = ...,
         name: str | None = ...,
         comment: str | None = ...,
-        layer3_ipv4_rules: str | list[str] | list[dict[str, Any]] | None = ...,
-        layer3_ipv6_rules: str | list[str] | list[dict[str, Any]] | None = ...,
+        layer3_ipv4_rules: str | list[AccessControlListLayer3ipv4rulesItem] | None = ...,
+        layer3_ipv6_rules: str | list[AccessControlListLayer3ipv6rulesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -441,8 +461,8 @@ class AccessControlList:
         payload_dict: AccessControlListPayload | None = ...,
         name: str | None = ...,
         comment: str | None = ...,
-        layer3_ipv4_rules: str | list[str] | list[dict[str, Any]] | None = ...,
-        layer3_ipv6_rules: str | list[str] | list[dict[str, Any]] | None = ...,
+        layer3_ipv4_rules: str | list[AccessControlListLayer3ipv4rulesItem] | None = ...,
+        layer3_ipv6_rules: str | list[AccessControlListLayer3ipv6rulesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -451,8 +471,8 @@ class AccessControlList:
         payload_dict: AccessControlListPayload | None = ...,
         name: str | None = ...,
         comment: str | None = ...,
-        layer3_ipv4_rules: str | list[str] | list[dict[str, Any]] | None = ...,
-        layer3_ipv6_rules: str | list[str] | list[dict[str, Any]] | None = ...,
+        layer3_ipv4_rules: str | list[AccessControlListLayer3ipv4rulesItem] | None = ...,
+        layer3_ipv6_rules: str | list[AccessControlListLayer3ipv6rulesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -463,8 +483,8 @@ class AccessControlList:
         payload_dict: AccessControlListPayload | None = ...,
         name: str | None = ...,
         comment: str | None = ...,
-        layer3_ipv4_rules: str | list[str] | list[dict[str, Any]] | None = ...,
-        layer3_ipv6_rules: str | list[str] | list[dict[str, Any]] | None = ...,
+        layer3_ipv4_rules: str | list[AccessControlListLayer3ipv4rulesItem] | None = ...,
+        layer3_ipv6_rules: str | list[AccessControlListLayer3ipv6rulesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> AccessControlListObject: ...
     
@@ -474,8 +494,8 @@ class AccessControlList:
         payload_dict: AccessControlListPayload | None = ...,
         name: str | None = ...,
         comment: str | None = ...,
-        layer3_ipv4_rules: str | list[str] | list[dict[str, Any]] | None = ...,
-        layer3_ipv6_rules: str | list[str] | list[dict[str, Any]] | None = ...,
+        layer3_ipv4_rules: str | list[AccessControlListLayer3ipv4rulesItem] | None = ...,
+        layer3_ipv6_rules: str | list[AccessControlListLayer3ipv6rulesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -486,8 +506,8 @@ class AccessControlList:
         payload_dict: AccessControlListPayload | None = ...,
         name: str | None = ...,
         comment: str | None = ...,
-        layer3_ipv4_rules: str | list[str] | list[dict[str, Any]] | None = ...,
-        layer3_ipv6_rules: str | list[str] | list[dict[str, Any]] | None = ...,
+        layer3_ipv4_rules: str | list[AccessControlListLayer3ipv4rulesItem] | None = ...,
+        layer3_ipv6_rules: str | list[AccessControlListLayer3ipv6rulesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -496,8 +516,8 @@ class AccessControlList:
         payload_dict: AccessControlListPayload | None = ...,
         name: str | None = ...,
         comment: str | None = ...,
-        layer3_ipv4_rules: str | list[str] | list[dict[str, Any]] | None = ...,
-        layer3_ipv6_rules: str | list[str] | list[dict[str, Any]] | None = ...,
+        layer3_ipv4_rules: str | list[AccessControlListLayer3ipv4rulesItem] | None = ...,
+        layer3_ipv6_rules: str | list[AccessControlListLayer3ipv6rulesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -541,8 +561,8 @@ class AccessControlList:
         payload_dict: AccessControlListPayload | None = ...,
         name: str | None = ...,
         comment: str | None = ...,
-        layer3_ipv4_rules: str | list[str] | list[dict[str, Any]] | None = ...,
-        layer3_ipv6_rules: str | list[str] | list[dict[str, Any]] | None = ...,
+        layer3_ipv4_rules: str | list[AccessControlListLayer3ipv4rulesItem] | None = ...,
+        layer3_ipv6_rules: str | list[AccessControlListLayer3ipv6rulesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     

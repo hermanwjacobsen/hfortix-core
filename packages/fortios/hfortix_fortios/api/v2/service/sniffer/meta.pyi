@@ -3,6 +3,67 @@ from typing_extensions import NotRequired
 from hfortix_fortios.models import FortiObject, FortiObjectList
 
 
+
+
+# Response TypedDict for GET returns (all fields present in API response)
+class MetaResponse(TypedDict):
+    """
+    Type hints for sniffer/meta API response fields.
+    
+    All fields are present in the response from the FortiGate API.
+    """
+    max_packet_captures: str
+    max_packet_count: str
+    default_packet_count: str
+    has_disk: str
+
+
+@final
+class MetaObject:
+    """Typed FortiObject for sniffer/meta with IDE autocomplete support.
+    
+    This is a typed wrapper that provides IDE autocomplete for API response fields.
+    At runtime, this is actually a FortiObject instance.
+    """
+    
+    # max_packet_captures
+    max_packet_captures: str
+    # max_packet_count
+    max_packet_count: str
+    # default_packet_count
+    default_packet_count: str
+    # has_disk
+    has_disk: str
+    
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
+    
+    # Methods from FortiObject
+    @property
+    def dict(self) -> dict[str, Any]:
+        """Convert to dictionary."""
+        ...
+    @property
+    def json(self) -> str:
+        """Get pretty-printed JSON string."""
+        ...
+    @property
+    def raw(self) -> dict[str, Any]:
+        """Get raw API response data."""
+        ...
+    def get_full(self, name: str) -> Any: ...
+    def to_dict(self) -> MetaPayload: ...
+    def keys(self) -> Any: ...
+    def values(self) -> Generator[Any, None, None]: ...
+    def items(self) -> Generator[tuple[str, Any], None, None]: ...
+    def get(self, key: str, default: Any = None) -> Any: ...
+
+
 class Meta:
     """
     Returns system limitations & meta information of packet capture feature.

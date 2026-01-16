@@ -2,7 +2,33 @@ from typing import TypedDict, Literal, Any, Coroutine, Union, overload, Generato
 from typing_extensions import NotRequired
 from hfortix_fortios.models import FortiObject, FortiObjectList
 
-# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional via total=False)
+# ============================================================================
+# Nested TypedDicts for table field children (dict mode)
+# These MUST be defined before the Payload class to use them as type hints
+# ============================================================================
+
+class KeyChainKeyItem(TypedDict, total=False):
+    """Type hints for key table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: KeyChainKeyItem = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    
+    id: str  # Key ID (0 - 2147483647). | MaxLen: 10
+    accept_lifetime: str  # Lifetime of received authentication key
+    send_lifetime: str  # Lifetime of sent authentication key
+    key_string: str  # Password for the key (maximum = 64 characters). | MaxLen: 60
+    algorithm: Literal["md5", "hmac-sha1", "hmac-sha256", "hmac-sha384", "hmac-sha512", "cmac-aes128"]  # Cryptographic algorithm. | Default: md5
+
+
+# ============================================================================
+# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional)
+# ============================================================================
 # NOTE: We intentionally DON'T use NotRequired wrapper because:
 # 1. total=False already makes all fields optional
 # 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
@@ -18,25 +44,11 @@ class KeyChainPayload(TypedDict, total=False):
         }
     """
     name: str  # Key-chain name. | MaxLen: 35
-    key: list[dict[str, Any]]  # Configuration method to edit key settings.
+    key: list[KeyChainKeyItem]  # Configuration method to edit key settings.
 
-# Nested TypedDicts for table field children (dict mode)
-
-class KeyChainKeyItem(TypedDict):
-    """Type hints for key table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    id: str  # Key ID (0 - 2147483647). | MaxLen: 10
-    accept_lifetime: str  # Lifetime of received authentication key
-    send_lifetime: str  # Lifetime of sent authentication key
-    key_string: str  # Password for the key (maximum = 64 characters). | MaxLen: 60
-    algorithm: Literal["md5", "hmac-sha1", "hmac-sha256", "hmac-sha384", "hmac-sha512", "cmac-aes128"]  # Cryptographic algorithm. | Default: md5
-
-
-# Nested classes for table field children (object mode)
+# ============================================================================
+# Nested classes for table field children (object mode - for API responses)
+# ============================================================================
 
 @final
 class KeyChainKeyObject:
@@ -107,6 +119,9 @@ class KeyChainObject:
     # Common API response fields
     status: str
     http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
     vdom: str | None
     
     # Methods from FortiObject
@@ -337,7 +352,7 @@ class KeyChain:
         self,
         payload_dict: KeyChainPayload | None = ...,
         name: str | None = ...,
-        key: str | list[str] | list[dict[str, Any]] | None = ...,
+        key: str | list[KeyChainKeyItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> KeyChainObject: ...
     
@@ -346,7 +361,7 @@ class KeyChain:
         self,
         payload_dict: KeyChainPayload | None = ...,
         name: str | None = ...,
-        key: str | list[str] | list[dict[str, Any]] | None = ...,
+        key: str | list[KeyChainKeyItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -356,7 +371,7 @@ class KeyChain:
         self,
         payload_dict: KeyChainPayload | None = ...,
         name: str | None = ...,
-        key: str | list[str] | list[dict[str, Any]] | None = ...,
+        key: str | list[KeyChainKeyItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -364,7 +379,7 @@ class KeyChain:
         self,
         payload_dict: KeyChainPayload | None = ...,
         name: str | None = ...,
-        key: str | list[str] | list[dict[str, Any]] | None = ...,
+        key: str | list[KeyChainKeyItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -374,7 +389,7 @@ class KeyChain:
         self,
         payload_dict: KeyChainPayload | None = ...,
         name: str | None = ...,
-        key: str | list[str] | list[dict[str, Any]] | None = ...,
+        key: str | list[KeyChainKeyItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> KeyChainObject: ...
     
@@ -383,7 +398,7 @@ class KeyChain:
         self,
         payload_dict: KeyChainPayload | None = ...,
         name: str | None = ...,
-        key: str | list[str] | list[dict[str, Any]] | None = ...,
+        key: str | list[KeyChainKeyItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -393,7 +408,7 @@ class KeyChain:
         self,
         payload_dict: KeyChainPayload | None = ...,
         name: str | None = ...,
-        key: str | list[str] | list[dict[str, Any]] | None = ...,
+        key: str | list[KeyChainKeyItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -401,7 +416,7 @@ class KeyChain:
         self,
         payload_dict: KeyChainPayload | None = ...,
         name: str | None = ...,
-        key: str | list[str] | list[dict[str, Any]] | None = ...,
+        key: str | list[KeyChainKeyItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -444,7 +459,7 @@ class KeyChain:
         self,
         payload_dict: KeyChainPayload | None = ...,
         name: str | None = ...,
-        key: str | list[str] | list[dict[str, Any]] | None = ...,
+        key: str | list[KeyChainKeyItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     

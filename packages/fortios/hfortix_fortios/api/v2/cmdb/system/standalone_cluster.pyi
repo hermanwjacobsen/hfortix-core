@@ -2,7 +2,86 @@ from typing import TypedDict, Literal, Any, Coroutine, Union, overload, Generato
 from typing_extensions import NotRequired
 from hfortix_fortios.models import FortiObject, FortiObjectList
 
-# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional via total=False)
+# ============================================================================
+# Nested TypedDicts for table field children (dict mode)
+# These MUST be defined before the Payload class to use them as type hints
+# ============================================================================
+
+class StandaloneClusterClusterpeerItem(TypedDict, total=False):
+    """Type hints for cluster-peer table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: StandaloneClusterClusterpeerItem = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    
+    sync_id: int  # Sync ID. | Default: 0 | Min: 0 | Max: 4294967295
+    peervd: str  # VDOM that contains the session synchronization lin | Default: root | MaxLen: 31
+    peerip: str  # IP address of the interface on the peer unit that | Default: 0.0.0.0
+    syncvd: str  # Sessions from these VDOMs are synchronized using t
+    down_intfs_before_sess_sync: str  # List of interfaces to be turned down before sessio
+    hb_interval: int  # Heartbeat interval (1 - 20 | Default: 2 | Min: 1 | Max: 20
+    hb_lost_threshold: int  # Lost heartbeat threshold (1 - 60). Increase to red | Default: 10 | Min: 1 | Max: 60
+    ipsec_tunnel_sync: Literal["enable", "disable"]  # Enable/disable IPsec tunnel synchronization. | Default: enable
+    secondary_add_ipsec_routes: Literal["enable", "disable"]  # Enable/disable IKE route announcement on the backu | Default: enable
+    session_sync_filter: str  # Add one or more filters if you only want to synchr
+
+
+class StandaloneClusterMonitorinterfaceItem(TypedDict, total=False):
+    """Type hints for monitor-interface table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: StandaloneClusterMonitorinterfaceItem = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    
+    name: str  # Interface name. | MaxLen: 79
+
+
+class StandaloneClusterPingsvrmonitorinterfaceItem(TypedDict, total=False):
+    """Type hints for pingsvr-monitor-interface table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: StandaloneClusterPingsvrmonitorinterfaceItem = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    
+    name: str  # Interface name. | MaxLen: 79
+
+
+class StandaloneClusterMonitorprefixItem(TypedDict, total=False):
+    """Type hints for monitor-prefix table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: StandaloneClusterMonitorprefixItem = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    
+    id: int  # ID. | Default: 0 | Min: 0 | Max: 4294967295
+    vdom: str  # VDOM name. | MaxLen: 31
+    vrf: int  # VRF ID. | Default: 0 | Min: 0 | Max: 511
+    prefix: str  # Prefix. | Default: 0.0.0.0 0.0.0.0
+
+
+# ============================================================================
+# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional)
+# ============================================================================
 # NOTE: We intentionally DON'T use NotRequired wrapper because:
 # 1. total=False already makes all fields optional
 # 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
@@ -29,68 +108,16 @@ class StandaloneClusterPayload(TypedDict, total=False):
     encryption: Literal["enable", "disable"]  # Enable/disable encryption when synchronizing sessi | Default: disable
     psksecret: str  # Pre-shared secret for session synchronization
     asymmetric_traffic_control: Literal["cps-preferred", "strict-anti-replay"]  # Asymmetric traffic control mode. | Default: cps-preferred
-    cluster_peer: list[dict[str, Any]]  # Configure FortiGate Session Life Support Protocol
-    monitor_interface: list[dict[str, Any]]  # Configure a list of interfaces on which to monitor
-    pingsvr_monitor_interface: list[dict[str, Any]]  # List of pingsvr monitor interface to check for rem
-    monitor_prefix: list[dict[str, Any]]  # Configure a list of routing prefixes to monitor.
+    cluster_peer: list[StandaloneClusterClusterpeerItem]  # Configure FortiGate Session Life Support Protocol
+    monitor_interface: list[StandaloneClusterMonitorinterfaceItem]  # Configure a list of interfaces on which to monitor
+    pingsvr_monitor_interface: list[StandaloneClusterPingsvrmonitorinterfaceItem]  # List of pingsvr monitor interface to check for rem
+    monitor_prefix: list[StandaloneClusterMonitorprefixItem]  # Configure a list of routing prefixes to monitor.
     helper_traffic_bounce: Literal["enable", "disable"]  # Enable/disable helper related traffic bounce. | Default: enable
     utm_traffic_bounce: Literal["enable", "disable"]  # Enable/disable UTM related traffic bounce. | Default: enable
 
-# Nested TypedDicts for table field children (dict mode)
-
-class StandaloneClusterClusterpeerItem(TypedDict):
-    """Type hints for cluster-peer table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    sync_id: int  # Sync ID. | Default: 0 | Min: 0 | Max: 4294967295
-    peervd: str  # VDOM that contains the session synchronization lin | Default: root | MaxLen: 31
-    peerip: str  # IP address of the interface on the peer unit that | Default: 0.0.0.0
-    syncvd: str  # Sessions from these VDOMs are synchronized using t
-    down_intfs_before_sess_sync: str  # List of interfaces to be turned down before sessio
-    hb_interval: int  # Heartbeat interval (1 - 20 | Default: 2 | Min: 1 | Max: 20
-    hb_lost_threshold: int  # Lost heartbeat threshold (1 - 60). Increase to red | Default: 10 | Min: 1 | Max: 60
-    ipsec_tunnel_sync: Literal["enable", "disable"]  # Enable/disable IPsec tunnel synchronization. | Default: enable
-    secondary_add_ipsec_routes: Literal["enable", "disable"]  # Enable/disable IKE route announcement on the backu | Default: enable
-    session_sync_filter: str  # Add one or more filters if you only want to synchr
-
-
-class StandaloneClusterMonitorinterfaceItem(TypedDict):
-    """Type hints for monitor-interface table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    name: str  # Interface name. | MaxLen: 79
-
-
-class StandaloneClusterPingsvrmonitorinterfaceItem(TypedDict):
-    """Type hints for pingsvr-monitor-interface table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    name: str  # Interface name. | MaxLen: 79
-
-
-class StandaloneClusterMonitorprefixItem(TypedDict):
-    """Type hints for monitor-prefix table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    id: int  # ID. | Default: 0 | Min: 0 | Max: 4294967295
-    vdom: str  # VDOM name. | MaxLen: 31
-    vrf: int  # VRF ID. | Default: 0 | Min: 0 | Max: 511
-    prefix: str  # Prefix. | Default: 0.0.0.0 0.0.0.0
-
-
-# Nested classes for table field children (object mode)
+# ============================================================================
+# Nested classes for table field children (object mode - for API responses)
+# ============================================================================
 
 @final
 class StandaloneClusterClusterpeerObject:
@@ -306,6 +333,9 @@ class StandaloneClusterObject:
     # Common API response fields
     status: str
     http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
     vdom: str | None
     
     # Methods from FortiObject
@@ -541,10 +571,10 @@ class StandaloneCluster:
         encryption: Literal["enable", "disable"] | None = ...,
         psksecret: str | None = ...,
         asymmetric_traffic_control: Literal["cps-preferred", "strict-anti-replay"] | None = ...,
-        cluster_peer: str | list[str] | list[dict[str, Any]] | None = ...,
-        monitor_interface: str | list[str] | list[dict[str, Any]] | None = ...,
-        pingsvr_monitor_interface: str | list[str] | list[dict[str, Any]] | None = ...,
-        monitor_prefix: str | list[str] | list[dict[str, Any]] | None = ...,
+        cluster_peer: str | list[StandaloneClusterClusterpeerItem] | None = ...,
+        monitor_interface: str | list[StandaloneClusterMonitorinterfaceItem] | None = ...,
+        pingsvr_monitor_interface: str | list[StandaloneClusterPingsvrmonitorinterfaceItem] | None = ...,
+        monitor_prefix: str | list[StandaloneClusterMonitorprefixItem] | None = ...,
         helper_traffic_bounce: Literal["enable", "disable"] | None = ...,
         utm_traffic_bounce: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
@@ -561,10 +591,10 @@ class StandaloneCluster:
         encryption: Literal["enable", "disable"] | None = ...,
         psksecret: str | None = ...,
         asymmetric_traffic_control: Literal["cps-preferred", "strict-anti-replay"] | None = ...,
-        cluster_peer: str | list[str] | list[dict[str, Any]] | None = ...,
-        monitor_interface: str | list[str] | list[dict[str, Any]] | None = ...,
-        pingsvr_monitor_interface: str | list[str] | list[dict[str, Any]] | None = ...,
-        monitor_prefix: str | list[str] | list[dict[str, Any]] | None = ...,
+        cluster_peer: str | list[StandaloneClusterClusterpeerItem] | None = ...,
+        monitor_interface: str | list[StandaloneClusterMonitorinterfaceItem] | None = ...,
+        pingsvr_monitor_interface: str | list[StandaloneClusterPingsvrmonitorinterfaceItem] | None = ...,
+        monitor_prefix: str | list[StandaloneClusterMonitorprefixItem] | None = ...,
         helper_traffic_bounce: Literal["enable", "disable"] | None = ...,
         utm_traffic_bounce: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
@@ -582,10 +612,10 @@ class StandaloneCluster:
         encryption: Literal["enable", "disable"] | None = ...,
         psksecret: str | None = ...,
         asymmetric_traffic_control: Literal["cps-preferred", "strict-anti-replay"] | None = ...,
-        cluster_peer: str | list[str] | list[dict[str, Any]] | None = ...,
-        monitor_interface: str | list[str] | list[dict[str, Any]] | None = ...,
-        pingsvr_monitor_interface: str | list[str] | list[dict[str, Any]] | None = ...,
-        monitor_prefix: str | list[str] | list[dict[str, Any]] | None = ...,
+        cluster_peer: str | list[StandaloneClusterClusterpeerItem] | None = ...,
+        monitor_interface: str | list[StandaloneClusterMonitorinterfaceItem] | None = ...,
+        pingsvr_monitor_interface: str | list[StandaloneClusterPingsvrmonitorinterfaceItem] | None = ...,
+        monitor_prefix: str | list[StandaloneClusterMonitorprefixItem] | None = ...,
         helper_traffic_bounce: Literal["enable", "disable"] | None = ...,
         utm_traffic_bounce: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
@@ -601,10 +631,10 @@ class StandaloneCluster:
         encryption: Literal["enable", "disable"] | None = ...,
         psksecret: str | None = ...,
         asymmetric_traffic_control: Literal["cps-preferred", "strict-anti-replay"] | None = ...,
-        cluster_peer: str | list[str] | list[dict[str, Any]] | None = ...,
-        monitor_interface: str | list[str] | list[dict[str, Any]] | None = ...,
-        pingsvr_monitor_interface: str | list[str] | list[dict[str, Any]] | None = ...,
-        monitor_prefix: str | list[str] | list[dict[str, Any]] | None = ...,
+        cluster_peer: str | list[StandaloneClusterClusterpeerItem] | None = ...,
+        monitor_interface: str | list[StandaloneClusterMonitorinterfaceItem] | None = ...,
+        pingsvr_monitor_interface: str | list[StandaloneClusterPingsvrmonitorinterfaceItem] | None = ...,
+        monitor_prefix: str | list[StandaloneClusterMonitorprefixItem] | None = ...,
         helper_traffic_bounce: Literal["enable", "disable"] | None = ...,
         utm_traffic_bounce: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
@@ -626,10 +656,10 @@ class StandaloneCluster:
         encryption: Literal["enable", "disable"] | None = ...,
         psksecret: str | None = ...,
         asymmetric_traffic_control: Literal["cps-preferred", "strict-anti-replay"] | None = ...,
-        cluster_peer: str | list[str] | list[dict[str, Any]] | None = ...,
-        monitor_interface: str | list[str] | list[dict[str, Any]] | None = ...,
-        pingsvr_monitor_interface: str | list[str] | list[dict[str, Any]] | None = ...,
-        monitor_prefix: str | list[str] | list[dict[str, Any]] | None = ...,
+        cluster_peer: str | list[StandaloneClusterClusterpeerItem] | None = ...,
+        monitor_interface: str | list[StandaloneClusterMonitorinterfaceItem] | None = ...,
+        pingsvr_monitor_interface: str | list[StandaloneClusterPingsvrmonitorinterfaceItem] | None = ...,
+        monitor_prefix: str | list[StandaloneClusterMonitorprefixItem] | None = ...,
         helper_traffic_bounce: Literal["enable", "disable"] | None = ...,
         utm_traffic_bounce: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,

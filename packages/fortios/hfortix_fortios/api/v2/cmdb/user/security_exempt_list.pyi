@@ -2,7 +2,32 @@ from typing import TypedDict, Literal, Any, Coroutine, Union, overload, Generato
 from typing_extensions import NotRequired
 from hfortix_fortios.models import FortiObject, FortiObjectList
 
-# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional via total=False)
+# ============================================================================
+# Nested TypedDicts for table field children (dict mode)
+# These MUST be defined before the Payload class to use them as type hints
+# ============================================================================
+
+class SecurityExemptListRuleItem(TypedDict, total=False):
+    """Type hints for rule table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: SecurityExemptListRuleItem = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    
+    id: int  # ID. | Default: 0 | Min: 0 | Max: 4294967295
+    srcaddr: str  # Source addresses or address groups.
+    dstaddr: str  # Destination addresses or address groups.
+    service: str  # Destination services.
+
+
+# ============================================================================
+# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional)
+# ============================================================================
 # NOTE: We intentionally DON'T use NotRequired wrapper because:
 # 1. total=False already makes all fields optional
 # 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
@@ -19,24 +44,11 @@ class SecurityExemptListPayload(TypedDict, total=False):
     """
     name: str  # Name of the exempt list. | MaxLen: 35
     description: str  # Description. | MaxLen: 127
-    rule: list[dict[str, Any]]  # Configure rules for exempting users from captive p
+    rule: list[SecurityExemptListRuleItem]  # Configure rules for exempting users from captive p
 
-# Nested TypedDicts for table field children (dict mode)
-
-class SecurityExemptListRuleItem(TypedDict):
-    """Type hints for rule table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    id: int  # ID. | Default: 0 | Min: 0 | Max: 4294967295
-    srcaddr: str  # Source addresses or address groups.
-    dstaddr: str  # Destination addresses or address groups.
-    service: str  # Destination services.
-
-
-# Nested classes for table field children (object mode)
+# ============================================================================
+# Nested classes for table field children (object mode - for API responses)
+# ============================================================================
 
 @final
 class SecurityExemptListRuleObject:
@@ -108,6 +120,9 @@ class SecurityExemptListObject:
     # Common API response fields
     status: str
     http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
     vdom: str | None
     
     # Methods from FortiObject
@@ -339,7 +354,7 @@ class SecurityExemptList:
         payload_dict: SecurityExemptListPayload | None = ...,
         name: str | None = ...,
         description: str | None = ...,
-        rule: str | list[str] | list[dict[str, Any]] | None = ...,
+        rule: str | list[SecurityExemptListRuleItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> SecurityExemptListObject: ...
     
@@ -349,7 +364,7 @@ class SecurityExemptList:
         payload_dict: SecurityExemptListPayload | None = ...,
         name: str | None = ...,
         description: str | None = ...,
-        rule: str | list[str] | list[dict[str, Any]] | None = ...,
+        rule: str | list[SecurityExemptListRuleItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -360,7 +375,7 @@ class SecurityExemptList:
         payload_dict: SecurityExemptListPayload | None = ...,
         name: str | None = ...,
         description: str | None = ...,
-        rule: str | list[str] | list[dict[str, Any]] | None = ...,
+        rule: str | list[SecurityExemptListRuleItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -369,7 +384,7 @@ class SecurityExemptList:
         payload_dict: SecurityExemptListPayload | None = ...,
         name: str | None = ...,
         description: str | None = ...,
-        rule: str | list[str] | list[dict[str, Any]] | None = ...,
+        rule: str | list[SecurityExemptListRuleItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -380,7 +395,7 @@ class SecurityExemptList:
         payload_dict: SecurityExemptListPayload | None = ...,
         name: str | None = ...,
         description: str | None = ...,
-        rule: str | list[str] | list[dict[str, Any]] | None = ...,
+        rule: str | list[SecurityExemptListRuleItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> SecurityExemptListObject: ...
     
@@ -390,7 +405,7 @@ class SecurityExemptList:
         payload_dict: SecurityExemptListPayload | None = ...,
         name: str | None = ...,
         description: str | None = ...,
-        rule: str | list[str] | list[dict[str, Any]] | None = ...,
+        rule: str | list[SecurityExemptListRuleItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -401,7 +416,7 @@ class SecurityExemptList:
         payload_dict: SecurityExemptListPayload | None = ...,
         name: str | None = ...,
         description: str | None = ...,
-        rule: str | list[str] | list[dict[str, Any]] | None = ...,
+        rule: str | list[SecurityExemptListRuleItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -410,7 +425,7 @@ class SecurityExemptList:
         payload_dict: SecurityExemptListPayload | None = ...,
         name: str | None = ...,
         description: str | None = ...,
-        rule: str | list[str] | list[dict[str, Any]] | None = ...,
+        rule: str | list[SecurityExemptListRuleItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -454,7 +469,7 @@ class SecurityExemptList:
         payload_dict: SecurityExemptListPayload | None = ...,
         name: str | None = ...,
         description: str | None = ...,
-        rule: str | list[str] | list[dict[str, Any]] | None = ...,
+        rule: str | list[SecurityExemptListRuleItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     

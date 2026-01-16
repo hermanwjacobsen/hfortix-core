@@ -2,7 +2,64 @@ from typing import TypedDict, Literal, Any, Coroutine, Union, overload, Generato
 from typing_extensions import NotRequired
 from hfortix_fortios.models import FortiObject, FortiObjectList
 
-# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional via total=False)
+# ============================================================================
+# Nested TypedDicts for table field children (dict mode)
+# These MUST be defined before the Payload class to use them as type hints
+# ============================================================================
+
+class TrafficSnifferTargetmacItem(TypedDict, total=False):
+    """Type hints for target-mac table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: TrafficSnifferTargetmacItem = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    
+    mac: str  # Sniffer MAC. | Default: 00:00:00:00:00:00
+    description: str  # Description for the sniffer MAC. | MaxLen: 63
+
+
+class TrafficSnifferTargetipItem(TypedDict, total=False):
+    """Type hints for target-ip table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: TrafficSnifferTargetipItem = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    
+    ip: str  # Sniffer IP. | Default: 0.0.0.0
+    description: str  # Description for the sniffer IP. | MaxLen: 63
+
+
+class TrafficSnifferTargetportItem(TypedDict, total=False):
+    """Type hints for target-port table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: TrafficSnifferTargetportItem = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    
+    switch_id: str  # Managed-switch ID. | MaxLen: 35
+    description: str  # Description for the sniffer port entry. | MaxLen: 63
+    in_ports: str  # Configure source ingress port interfaces.
+    out_ports: str  # Configure source egress port interfaces.
+
+
+# ============================================================================
+# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional)
+# ============================================================================
 # NOTE: We intentionally DON'T use NotRequired wrapper because:
 # 1. total=False already makes all fields optional
 # 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
@@ -19,48 +76,13 @@ class TrafficSnifferPayload(TypedDict, total=False):
     """
     mode: Literal["erspan-auto", "rspan", "none"]  # Configure traffic sniffer mode. | Default: erspan-auto
     erspan_ip: str  # Configure ERSPAN collector IP address. | Default: 0.0.0.0
-    target_mac: list[dict[str, Any]]  # Sniffer MACs to filter.
-    target_ip: list[dict[str, Any]]  # Sniffer IPs to filter.
-    target_port: list[dict[str, Any]]  # Sniffer ports to filter.
+    target_mac: list[TrafficSnifferTargetmacItem]  # Sniffer MACs to filter.
+    target_ip: list[TrafficSnifferTargetipItem]  # Sniffer IPs to filter.
+    target_port: list[TrafficSnifferTargetportItem]  # Sniffer ports to filter.
 
-# Nested TypedDicts for table field children (dict mode)
-
-class TrafficSnifferTargetmacItem(TypedDict):
-    """Type hints for target-mac table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    mac: str  # Sniffer MAC. | Default: 00:00:00:00:00:00
-    description: str  # Description for the sniffer MAC. | MaxLen: 63
-
-
-class TrafficSnifferTargetipItem(TypedDict):
-    """Type hints for target-ip table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    ip: str  # Sniffer IP. | Default: 0.0.0.0
-    description: str  # Description for the sniffer IP. | MaxLen: 63
-
-
-class TrafficSnifferTargetportItem(TypedDict):
-    """Type hints for target-port table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    switch_id: str  # Managed-switch ID. | MaxLen: 35
-    description: str  # Description for the sniffer port entry. | MaxLen: 63
-    in_ports: str  # Configure source ingress port interfaces.
-    out_ports: str  # Configure source egress port interfaces.
-
-
-# Nested classes for table field children (object mode)
+# ============================================================================
+# Nested classes for table field children (object mode - for API responses)
+# ============================================================================
 
 @final
 class TrafficSnifferTargetmacObject:
@@ -206,6 +228,9 @@ class TrafficSnifferObject:
     # Common API response fields
     status: str
     http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
     vdom: str | None
     
     # Methods from FortiObject
@@ -436,9 +461,9 @@ class TrafficSniffer:
         payload_dict: TrafficSnifferPayload | None = ...,
         mode: Literal["erspan-auto", "rspan", "none"] | None = ...,
         erspan_ip: str | None = ...,
-        target_mac: str | list[str] | list[dict[str, Any]] | None = ...,
-        target_ip: str | list[str] | list[dict[str, Any]] | None = ...,
-        target_port: str | list[str] | list[dict[str, Any]] | None = ...,
+        target_mac: str | list[TrafficSnifferTargetmacItem] | None = ...,
+        target_ip: str | list[TrafficSnifferTargetipItem] | None = ...,
+        target_port: str | list[TrafficSnifferTargetportItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> TrafficSnifferObject: ...
     
@@ -448,9 +473,9 @@ class TrafficSniffer:
         payload_dict: TrafficSnifferPayload | None = ...,
         mode: Literal["erspan-auto", "rspan", "none"] | None = ...,
         erspan_ip: str | None = ...,
-        target_mac: str | list[str] | list[dict[str, Any]] | None = ...,
-        target_ip: str | list[str] | list[dict[str, Any]] | None = ...,
-        target_port: str | list[str] | list[dict[str, Any]] | None = ...,
+        target_mac: str | list[TrafficSnifferTargetmacItem] | None = ...,
+        target_ip: str | list[TrafficSnifferTargetipItem] | None = ...,
+        target_port: str | list[TrafficSnifferTargetportItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -461,9 +486,9 @@ class TrafficSniffer:
         payload_dict: TrafficSnifferPayload | None = ...,
         mode: Literal["erspan-auto", "rspan", "none"] | None = ...,
         erspan_ip: str | None = ...,
-        target_mac: str | list[str] | list[dict[str, Any]] | None = ...,
-        target_ip: str | list[str] | list[dict[str, Any]] | None = ...,
-        target_port: str | list[str] | list[dict[str, Any]] | None = ...,
+        target_mac: str | list[TrafficSnifferTargetmacItem] | None = ...,
+        target_ip: str | list[TrafficSnifferTargetipItem] | None = ...,
+        target_port: str | list[TrafficSnifferTargetportItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -472,9 +497,9 @@ class TrafficSniffer:
         payload_dict: TrafficSnifferPayload | None = ...,
         mode: Literal["erspan-auto", "rspan", "none"] | None = ...,
         erspan_ip: str | None = ...,
-        target_mac: str | list[str] | list[dict[str, Any]] | None = ...,
-        target_ip: str | list[str] | list[dict[str, Any]] | None = ...,
-        target_port: str | list[str] | list[dict[str, Any]] | None = ...,
+        target_mac: str | list[TrafficSnifferTargetmacItem] | None = ...,
+        target_ip: str | list[TrafficSnifferTargetipItem] | None = ...,
+        target_port: str | list[TrafficSnifferTargetportItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -489,9 +514,9 @@ class TrafficSniffer:
         payload_dict: TrafficSnifferPayload | None = ...,
         mode: Literal["erspan-auto", "rspan", "none"] | None = ...,
         erspan_ip: str | None = ...,
-        target_mac: str | list[str] | list[dict[str, Any]] | None = ...,
-        target_ip: str | list[str] | list[dict[str, Any]] | None = ...,
-        target_port: str | list[str] | list[dict[str, Any]] | None = ...,
+        target_mac: str | list[TrafficSnifferTargetmacItem] | None = ...,
+        target_ip: str | list[TrafficSnifferTargetipItem] | None = ...,
+        target_port: str | list[TrafficSnifferTargetportItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     

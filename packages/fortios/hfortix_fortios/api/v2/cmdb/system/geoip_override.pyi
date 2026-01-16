@@ -2,7 +2,48 @@ from typing import TypedDict, Literal, Any, Coroutine, Union, overload, Generato
 from typing_extensions import NotRequired
 from hfortix_fortios.models import FortiObject, FortiObjectList
 
-# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional via total=False)
+# ============================================================================
+# Nested TypedDicts for table field children (dict mode)
+# These MUST be defined before the Payload class to use them as type hints
+# ============================================================================
+
+class GeoipOverrideIprangeItem(TypedDict, total=False):
+    """Type hints for ip-range table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: GeoipOverrideIprangeItem = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    
+    id: int  # ID of individual entry in the IP range table. | Default: 0 | Min: 0 | Max: 65535
+    start_ip: str  # Starting IP address, inclusive, of the address ran | Default: 0.0.0.0
+    end_ip: str  # Ending IP address, inclusive, of the address range | Default: 0.0.0.0
+
+
+class GeoipOverrideIp6rangeItem(TypedDict, total=False):
+    """Type hints for ip6-range table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: GeoipOverrideIp6rangeItem = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    
+    id: int  # ID of individual entry in the IPv6 range table. | Default: 0 | Min: 0 | Max: 65535
+    start_ip: str  # Starting IP address, inclusive, of the address ran | Default: ::
+    end_ip: str  # Ending IP address, inclusive, of the address range | Default: ::
+
+
+# ============================================================================
+# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional)
+# ============================================================================
 # NOTE: We intentionally DON'T use NotRequired wrapper because:
 # 1. total=False already makes all fields optional
 # 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
@@ -20,36 +61,12 @@ class GeoipOverridePayload(TypedDict, total=False):
     name: str  # Location name. | MaxLen: 63
     description: str  # Description. | MaxLen: 127
     country_id: str  # Two character Country ID code. | MaxLen: 2
-    ip_range: list[dict[str, Any]]  # Table of IP ranges assigned to country.
-    ip6_range: list[dict[str, Any]]  # Table of IPv6 ranges assigned to country.
+    ip_range: list[GeoipOverrideIprangeItem]  # Table of IP ranges assigned to country.
+    ip6_range: list[GeoipOverrideIp6rangeItem]  # Table of IPv6 ranges assigned to country.
 
-# Nested TypedDicts for table field children (dict mode)
-
-class GeoipOverrideIprangeItem(TypedDict):
-    """Type hints for ip-range table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    id: int  # ID of individual entry in the IP range table. | Default: 0 | Min: 0 | Max: 65535
-    start_ip: str  # Starting IP address, inclusive, of the address ran | Default: 0.0.0.0
-    end_ip: str  # Ending IP address, inclusive, of the address range | Default: 0.0.0.0
-
-
-class GeoipOverrideIp6rangeItem(TypedDict):
-    """Type hints for ip6-range table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    id: int  # ID of individual entry in the IPv6 range table. | Default: 0 | Min: 0 | Max: 65535
-    start_ip: str  # Starting IP address, inclusive, of the address ran | Default: ::
-    end_ip: str  # Ending IP address, inclusive, of the address range | Default: ::
-
-
-# Nested classes for table field children (object mode)
+# ============================================================================
+# Nested classes for table field children (object mode - for API responses)
+# ============================================================================
 
 @final
 class GeoipOverrideIprangeObject:
@@ -161,6 +178,9 @@ class GeoipOverrideObject:
     # Common API response fields
     status: str
     http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
     vdom: str | None
     
     # Methods from FortiObject
@@ -393,8 +413,8 @@ class GeoipOverride:
         name: str | None = ...,
         description: str | None = ...,
         country_id: str | None = ...,
-        ip_range: str | list[str] | list[dict[str, Any]] | None = ...,
-        ip6_range: str | list[str] | list[dict[str, Any]] | None = ...,
+        ip_range: str | list[GeoipOverrideIprangeItem] | None = ...,
+        ip6_range: str | list[GeoipOverrideIp6rangeItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> GeoipOverrideObject: ...
     
@@ -405,8 +425,8 @@ class GeoipOverride:
         name: str | None = ...,
         description: str | None = ...,
         country_id: str | None = ...,
-        ip_range: str | list[str] | list[dict[str, Any]] | None = ...,
-        ip6_range: str | list[str] | list[dict[str, Any]] | None = ...,
+        ip_range: str | list[GeoipOverrideIprangeItem] | None = ...,
+        ip6_range: str | list[GeoipOverrideIp6rangeItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -418,8 +438,8 @@ class GeoipOverride:
         name: str | None = ...,
         description: str | None = ...,
         country_id: str | None = ...,
-        ip_range: str | list[str] | list[dict[str, Any]] | None = ...,
-        ip6_range: str | list[str] | list[dict[str, Any]] | None = ...,
+        ip_range: str | list[GeoipOverrideIprangeItem] | None = ...,
+        ip6_range: str | list[GeoipOverrideIp6rangeItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -429,8 +449,8 @@ class GeoipOverride:
         name: str | None = ...,
         description: str | None = ...,
         country_id: str | None = ...,
-        ip_range: str | list[str] | list[dict[str, Any]] | None = ...,
-        ip6_range: str | list[str] | list[dict[str, Any]] | None = ...,
+        ip_range: str | list[GeoipOverrideIprangeItem] | None = ...,
+        ip6_range: str | list[GeoipOverrideIp6rangeItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -442,8 +462,8 @@ class GeoipOverride:
         name: str | None = ...,
         description: str | None = ...,
         country_id: str | None = ...,
-        ip_range: str | list[str] | list[dict[str, Any]] | None = ...,
-        ip6_range: str | list[str] | list[dict[str, Any]] | None = ...,
+        ip_range: str | list[GeoipOverrideIprangeItem] | None = ...,
+        ip6_range: str | list[GeoipOverrideIp6rangeItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> GeoipOverrideObject: ...
     
@@ -454,8 +474,8 @@ class GeoipOverride:
         name: str | None = ...,
         description: str | None = ...,
         country_id: str | None = ...,
-        ip_range: str | list[str] | list[dict[str, Any]] | None = ...,
-        ip6_range: str | list[str] | list[dict[str, Any]] | None = ...,
+        ip_range: str | list[GeoipOverrideIprangeItem] | None = ...,
+        ip6_range: str | list[GeoipOverrideIp6rangeItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -467,8 +487,8 @@ class GeoipOverride:
         name: str | None = ...,
         description: str | None = ...,
         country_id: str | None = ...,
-        ip_range: str | list[str] | list[dict[str, Any]] | None = ...,
-        ip6_range: str | list[str] | list[dict[str, Any]] | None = ...,
+        ip_range: str | list[GeoipOverrideIprangeItem] | None = ...,
+        ip6_range: str | list[GeoipOverrideIp6rangeItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -478,8 +498,8 @@ class GeoipOverride:
         name: str | None = ...,
         description: str | None = ...,
         country_id: str | None = ...,
-        ip_range: str | list[str] | list[dict[str, Any]] | None = ...,
-        ip6_range: str | list[str] | list[dict[str, Any]] | None = ...,
+        ip_range: str | list[GeoipOverrideIprangeItem] | None = ...,
+        ip6_range: str | list[GeoipOverrideIp6rangeItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -524,8 +544,8 @@ class GeoipOverride:
         name: str | None = ...,
         description: str | None = ...,
         country_id: str | None = ...,
-        ip_range: str | list[str] | list[dict[str, Any]] | None = ...,
-        ip6_range: str | list[str] | list[dict[str, Any]] | None = ...,
+        ip_range: str | list[GeoipOverrideIprangeItem] | None = ...,
+        ip6_range: str | list[GeoipOverrideIp6rangeItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     

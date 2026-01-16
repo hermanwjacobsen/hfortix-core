@@ -3,6 +3,76 @@ from typing_extensions import NotRequired
 from hfortix_fortios.models import FortiObject, FortiObjectList
 
 
+
+
+# Response TypedDict for GET returns (all fields present in API response)
+class MetaResponse(TypedDict):
+    """
+    Type hints for wifi/meta API response fields.
+    
+    All fields are present in the response from the FortiGate API.
+    """
+    wtp_total_size: int
+    wtp_normal_size: int
+    fapc_supported_countries: str
+    security_types: str
+    encryption_types: str
+    band_spectrum_map: str
+    signal_strength_scale: str
+
+
+@final
+class MetaObject:
+    """Typed FortiObject for wifi/meta with IDE autocomplete support.
+    
+    This is a typed wrapper that provides IDE autocomplete for API response fields.
+    At runtime, this is actually a FortiObject instance.
+    """
+    
+    # wtp_total_size
+    wtp_total_size: int
+    # wtp_normal_size
+    wtp_normal_size: int
+    # fapc_supported_countries
+    fapc_supported_countries: str
+    # security_types
+    security_types: str
+    # encryption_types
+    encryption_types: str
+    # band_spectrum_map
+    band_spectrum_map: str
+    # signal_strength_scale
+    signal_strength_scale: str
+    
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
+    
+    # Methods from FortiObject
+    @property
+    def dict(self) -> dict[str, Any]:
+        """Convert to dictionary."""
+        ...
+    @property
+    def json(self) -> str:
+        """Get pretty-printed JSON string."""
+        ...
+    @property
+    def raw(self) -> dict[str, Any]:
+        """Get raw API response data."""
+        ...
+    def get_full(self, name: str) -> Any: ...
+    def to_dict(self) -> MetaPayload: ...
+    def keys(self) -> Any: ...
+    def values(self) -> Generator[Any, None, None]: ...
+    def items(self) -> Generator[tuple[str, Any], None, None]: ...
+    def get(self, key: str, default: Any = None) -> Any: ...
+
+
 class Meta:
     """
     Retrieve WiFi related meta data.

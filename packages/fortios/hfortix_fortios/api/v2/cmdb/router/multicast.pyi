@@ -2,35 +2,21 @@ from typing import TypedDict, Literal, Any, Coroutine, Union, overload, Generato
 from typing_extensions import NotRequired
 from hfortix_fortios.models import FortiObject, FortiObjectList
 
-# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional via total=False)
-# NOTE: We intentionally DON'T use NotRequired wrapper because:
-# 1. total=False already makes all fields optional
-# 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
-class MulticastPayload(TypedDict, total=False):
-    """
-    Type hints for router/multicast payload fields.
-    
-    Configure router multicast.
-    
-    **Usage:**
-        payload: MulticastPayload = {
-            "field": "value",  # <- autocomplete shows all fields
-        }
-    """
-    route_threshold: int  # Generate warnings when the number of multicast rou | Min: 1 | Max: 2147483647
-    route_limit: int  # Maximum number of multicast routes. | Default: 2147483647 | Min: 1 | Max: 2147483647
-    multicast_routing: Literal["enable", "disable"]  # Enable/disable IP multicast routing. | Default: disable
-    pim_sm_global: str  # PIM sparse-mode global settings.
-    pim_sm_global_vrf: list[dict[str, Any]]  # per-VRF PIM sparse-mode global settings.
-    interface: list[dict[str, Any]]  # PIM interfaces.
-
+# ============================================================================
 # Nested TypedDicts for table field children (dict mode)
+# These MUST be defined before the Payload class to use them as type hints
+# ============================================================================
 
-class MulticastPimsmglobalvrfItem(TypedDict):
+class MulticastPimsmglobalvrfItem(TypedDict, total=False):
     """Type hints for pim-sm-global-vrf table item fields (dict mode).
     
     Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: MulticastPimsmglobalvrfItem = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
     """
     
     vrf: int  # VRF ID. | Default: 0 | Min: 1 | Max: 511
@@ -43,11 +29,16 @@ class MulticastPimsmglobalvrfItem(TypedDict):
     rp_address: str  # Statically configure RP addresses.
 
 
-class MulticastInterfaceItem(TypedDict):
+class MulticastInterfaceItem(TypedDict, total=False):
     """Type hints for interface table item fields (dict mode).
     
     Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: MulticastInterfaceItem = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
     """
     
     name: str  # Interface name. | MaxLen: 15
@@ -74,7 +65,33 @@ class MulticastInterfaceItem(TypedDict):
     igmp: str  # IGMP configuration options.
 
 
-# Nested classes for table field children (object mode)
+# ============================================================================
+# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional)
+# ============================================================================
+# NOTE: We intentionally DON'T use NotRequired wrapper because:
+# 1. total=False already makes all fields optional
+# 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
+class MulticastPayload(TypedDict, total=False):
+    """
+    Type hints for router/multicast payload fields.
+    
+    Configure router multicast.
+    
+    **Usage:**
+        payload: MulticastPayload = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    route_threshold: int  # Generate warnings when the number of multicast rou | Min: 1 | Max: 2147483647
+    route_limit: int  # Maximum number of multicast routes. | Default: 2147483647 | Min: 1 | Max: 2147483647
+    multicast_routing: Literal["enable", "disable"]  # Enable/disable IP multicast routing. | Default: disable
+    pim_sm_global: str  # PIM sparse-mode global settings.
+    pim_sm_global_vrf: list[MulticastPimsmglobalvrfItem]  # per-VRF PIM sparse-mode global settings.
+    interface: list[MulticastInterfaceItem]  # PIM interfaces.
+
+# ============================================================================
+# Nested classes for table field children (object mode - for API responses)
+# ============================================================================
 
 @final
 class MulticastPimsmglobalvrfObject:
@@ -237,6 +254,9 @@ class MulticastObject:
     # Common API response fields
     status: str
     http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
     vdom: str | None
     
     # Methods from FortiObject
@@ -469,8 +489,8 @@ class Multicast:
         route_limit: int | None = ...,
         multicast_routing: Literal["enable", "disable"] | None = ...,
         pim_sm_global: str | None = ...,
-        pim_sm_global_vrf: str | list[str] | list[dict[str, Any]] | None = ...,
-        interface: str | list[str] | list[dict[str, Any]] | None = ...,
+        pim_sm_global_vrf: str | list[MulticastPimsmglobalvrfItem] | None = ...,
+        interface: str | list[MulticastInterfaceItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> MulticastObject: ...
     
@@ -482,8 +502,8 @@ class Multicast:
         route_limit: int | None = ...,
         multicast_routing: Literal["enable", "disable"] | None = ...,
         pim_sm_global: str | None = ...,
-        pim_sm_global_vrf: str | list[str] | list[dict[str, Any]] | None = ...,
-        interface: str | list[str] | list[dict[str, Any]] | None = ...,
+        pim_sm_global_vrf: str | list[MulticastPimsmglobalvrfItem] | None = ...,
+        interface: str | list[MulticastInterfaceItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -496,8 +516,8 @@ class Multicast:
         route_limit: int | None = ...,
         multicast_routing: Literal["enable", "disable"] | None = ...,
         pim_sm_global: str | None = ...,
-        pim_sm_global_vrf: str | list[str] | list[dict[str, Any]] | None = ...,
-        interface: str | list[str] | list[dict[str, Any]] | None = ...,
+        pim_sm_global_vrf: str | list[MulticastPimsmglobalvrfItem] | None = ...,
+        interface: str | list[MulticastInterfaceItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -508,8 +528,8 @@ class Multicast:
         route_limit: int | None = ...,
         multicast_routing: Literal["enable", "disable"] | None = ...,
         pim_sm_global: str | None = ...,
-        pim_sm_global_vrf: str | list[str] | list[dict[str, Any]] | None = ...,
-        interface: str | list[str] | list[dict[str, Any]] | None = ...,
+        pim_sm_global_vrf: str | list[MulticastPimsmglobalvrfItem] | None = ...,
+        interface: str | list[MulticastInterfaceItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -526,8 +546,8 @@ class Multicast:
         route_limit: int | None = ...,
         multicast_routing: Literal["enable", "disable"] | None = ...,
         pim_sm_global: str | None = ...,
-        pim_sm_global_vrf: str | list[str] | list[dict[str, Any]] | None = ...,
-        interface: str | list[str] | list[dict[str, Any]] | None = ...,
+        pim_sm_global_vrf: str | list[MulticastPimsmglobalvrfItem] | None = ...,
+        interface: str | list[MulticastInterfaceItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     

@@ -2,7 +2,54 @@ from typing import TypedDict, Literal, Any, Coroutine, Union, overload, Generato
 from typing_extensions import NotRequired
 from hfortix_fortios.models import FortiObject, FortiObjectList
 
-# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional via total=False)
+# ============================================================================
+# Nested TypedDicts for table field children (dict mode)
+# These MUST be defined before the Payload class to use them as type hints
+# ============================================================================
+
+class NtpNtpserverItem(TypedDict, total=False):
+    """Type hints for ntpserver table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: NtpNtpserverItem = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    
+    id: int  # NTP server ID. | Default: 0 | Min: 0 | Max: 4294967295
+    server: str  # IP address or hostname of the NTP Server. | MaxLen: 63
+    ntpv3: Literal["enable", "disable"]  # Enable to use NTPv3 instead of NTPv4. | Default: disable
+    authentication: Literal["enable", "disable"]  # Enable/disable authentication. | Default: disable
+    key_type: Literal["MD5", "SHA1", "SHA256"]  # Select NTP authentication type. | Default: MD5
+    key: str  # Key for MD5(NTPv3)/SHA1(NTPv4)/SHA256(NTPv4) authe | MaxLen: 64
+    key_id: int  # Key ID for authentication. | Default: 0 | Min: 0 | Max: 4294967295
+    ip_type: Literal["IPv6", "IPv4", "Both"]  # Choose to connect to IPv4 or/and IPv6 NTP server. | Default: Both
+    interface_select_method: Literal["auto", "sdwan", "specify"]  # Specify how to select outgoing interface to reach | Default: auto
+    interface: str  # Specify outgoing interface to reach server. | MaxLen: 15
+    vrf_select: int  # VRF ID used for connection to server. | Default: 0 | Min: 0 | Max: 511
+
+
+class NtpInterfaceItem(TypedDict, total=False):
+    """Type hints for interface table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: NtpInterfaceItem = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    
+    interface_name: str  # Interface name. | MaxLen: 79
+
+
+# ============================================================================
+# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional)
+# ============================================================================
 # NOTE: We intentionally DON'T use NotRequired wrapper because:
 # 1. total=False already makes all fields optional
 # 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
@@ -20,7 +67,7 @@ class NtpPayload(TypedDict, total=False):
     ntpsync: Literal["enable", "disable"]  # Enable/disable setting the FortiGate system time b | Default: disable
     type: Literal["fortiguard", "custom"]  # Use the FortiGuard NTP server or any other availab | Default: fortiguard
     syncinterval: int  # NTP synchronization interval (1 - 1440 min). | Default: 60 | Min: 1 | Max: 1440
-    ntpserver: list[dict[str, Any]]  # Configure the FortiGate to connect to any availabl
+    ntpserver: list[NtpNtpserverItem]  # Configure the FortiGate to connect to any availabl
     source_ip: str  # Source IP address for communication to the NTP ser | Default: 0.0.0.0
     source_ip6: str  # Source IPv6 address for communication to the NTP s | Default: ::
     server_mode: Literal["enable", "disable"]  # Enable/disable FortiGate NTP Server Mode. Your For | Default: disable
@@ -28,41 +75,11 @@ class NtpPayload(TypedDict, total=False):
     key_type: Literal["MD5", "SHA1", "SHA256"]  # Key type for authentication (MD5, SHA1, SHA256). | Default: MD5
     key: str  # Key for authentication. | MaxLen: 64
     key_id: int  # Key ID for authentication. | Default: 0 | Min: 0 | Max: 4294967295
-    interface: list[dict[str, Any]]  # FortiGate interface(s) with NTP server mode enable
+    interface: list[NtpInterfaceItem]  # FortiGate interface(s) with NTP server mode enable
 
-# Nested TypedDicts for table field children (dict mode)
-
-class NtpNtpserverItem(TypedDict):
-    """Type hints for ntpserver table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    id: int  # NTP server ID. | Default: 0 | Min: 0 | Max: 4294967295
-    server: str  # IP address or hostname of the NTP Server. | MaxLen: 63
-    ntpv3: Literal["enable", "disable"]  # Enable to use NTPv3 instead of NTPv4. | Default: disable
-    authentication: Literal["enable", "disable"]  # Enable/disable authentication. | Default: disable
-    key_type: Literal["MD5", "SHA1", "SHA256"]  # Select NTP authentication type. | Default: MD5
-    key: str  # Key for MD5(NTPv3)/SHA1(NTPv4)/SHA256(NTPv4) authe | MaxLen: 64
-    key_id: int  # Key ID for authentication. | Default: 0 | Min: 0 | Max: 4294967295
-    ip_type: Literal["IPv6", "IPv4", "Both"]  # Choose to connect to IPv4 or/and IPv6 NTP server. | Default: Both
-    interface_select_method: Literal["auto", "sdwan", "specify"]  # Specify how to select outgoing interface to reach | Default: auto
-    interface: str  # Specify outgoing interface to reach server. | MaxLen: 15
-    vrf_select: int  # VRF ID used for connection to server. | Default: 0 | Min: 0 | Max: 511
-
-
-class NtpInterfaceItem(TypedDict):
-    """Type hints for interface table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    interface_name: str  # Interface name. | MaxLen: 79
-
-
-# Nested classes for table field children (object mode)
+# ============================================================================
+# Nested classes for table field children (object mode - for API responses)
+# ============================================================================
 
 @final
 class NtpNtpserverObject:
@@ -207,6 +224,9 @@ class NtpObject:
     # Common API response fields
     status: str
     http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
     vdom: str | None
     
     # Methods from FortiObject
@@ -438,7 +458,7 @@ class Ntp:
         ntpsync: Literal["enable", "disable"] | None = ...,
         type: Literal["fortiguard", "custom"] | None = ...,
         syncinterval: int | None = ...,
-        ntpserver: str | list[str] | list[dict[str, Any]] | None = ...,
+        ntpserver: str | list[NtpNtpserverItem] | None = ...,
         source_ip: str | None = ...,
         source_ip6: str | None = ...,
         server_mode: Literal["enable", "disable"] | None = ...,
@@ -446,7 +466,7 @@ class Ntp:
         key_type: Literal["MD5", "SHA1", "SHA256"] | None = ...,
         key: str | None = ...,
         key_id: int | None = ...,
-        interface: str | list[str] | list[dict[str, Any]] | None = ...,
+        interface: str | list[NtpInterfaceItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> NtpObject: ...
     
@@ -457,7 +477,7 @@ class Ntp:
         ntpsync: Literal["enable", "disable"] | None = ...,
         type: Literal["fortiguard", "custom"] | None = ...,
         syncinterval: int | None = ...,
-        ntpserver: str | list[str] | list[dict[str, Any]] | None = ...,
+        ntpserver: str | list[NtpNtpserverItem] | None = ...,
         source_ip: str | None = ...,
         source_ip6: str | None = ...,
         server_mode: Literal["enable", "disable"] | None = ...,
@@ -465,7 +485,7 @@ class Ntp:
         key_type: Literal["MD5", "SHA1", "SHA256"] | None = ...,
         key: str | None = ...,
         key_id: int | None = ...,
-        interface: str | list[str] | list[dict[str, Any]] | None = ...,
+        interface: str | list[NtpInterfaceItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -477,7 +497,7 @@ class Ntp:
         ntpsync: Literal["enable", "disable"] | None = ...,
         type: Literal["fortiguard", "custom"] | None = ...,
         syncinterval: int | None = ...,
-        ntpserver: str | list[str] | list[dict[str, Any]] | None = ...,
+        ntpserver: str | list[NtpNtpserverItem] | None = ...,
         source_ip: str | None = ...,
         source_ip6: str | None = ...,
         server_mode: Literal["enable", "disable"] | None = ...,
@@ -485,7 +505,7 @@ class Ntp:
         key_type: Literal["MD5", "SHA1", "SHA256"] | None = ...,
         key: str | None = ...,
         key_id: int | None = ...,
-        interface: str | list[str] | list[dict[str, Any]] | None = ...,
+        interface: str | list[NtpInterfaceItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -495,7 +515,7 @@ class Ntp:
         ntpsync: Literal["enable", "disable"] | None = ...,
         type: Literal["fortiguard", "custom"] | None = ...,
         syncinterval: int | None = ...,
-        ntpserver: str | list[str] | list[dict[str, Any]] | None = ...,
+        ntpserver: str | list[NtpNtpserverItem] | None = ...,
         source_ip: str | None = ...,
         source_ip6: str | None = ...,
         server_mode: Literal["enable", "disable"] | None = ...,
@@ -503,7 +523,7 @@ class Ntp:
         key_type: Literal["MD5", "SHA1", "SHA256"] | None = ...,
         key: str | None = ...,
         key_id: int | None = ...,
-        interface: str | list[str] | list[dict[str, Any]] | None = ...,
+        interface: str | list[NtpInterfaceItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -519,7 +539,7 @@ class Ntp:
         ntpsync: Literal["enable", "disable"] | None = ...,
         type: Literal["fortiguard", "custom"] | None = ...,
         syncinterval: int | None = ...,
-        ntpserver: str | list[str] | list[dict[str, Any]] | None = ...,
+        ntpserver: str | list[NtpNtpserverItem] | None = ...,
         source_ip: str | None = ...,
         source_ip6: str | None = ...,
         server_mode: Literal["enable", "disable"] | None = ...,
@@ -527,7 +547,7 @@ class Ntp:
         key_type: Literal["MD5", "SHA1", "SHA256"] | None = ...,
         key: str | None = ...,
         key_id: int | None = ...,
-        interface: str | list[str] | list[dict[str, Any]] | None = ...,
+        interface: str | list[NtpInterfaceItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     

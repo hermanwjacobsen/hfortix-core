@@ -2,7 +2,33 @@ from typing import TypedDict, Literal, Any, Coroutine, Union, overload, Generato
 from typing_extensions import NotRequired
 from hfortix_fortios.models import FortiObject, FortiObjectList
 
-# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional via total=False)
+# ============================================================================
+# Nested TypedDicts for table field children (dict mode)
+# These MUST be defined before the Payload class to use them as type hints
+# ============================================================================
+
+class AccessListRuleItem(TypedDict, total=False):
+    """Type hints for rule table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: AccessListRuleItem = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    
+    id: int  # Rule ID. | Default: 0 | Min: 0 | Max: 4294967295
+    action: Literal["permit", "deny"]  # Permit or deny this IP address and netmask prefix. | Default: permit
+    prefix: str  # IPv4 prefix to define regular filter criteria, suc
+    wildcard: str  # Wildcard to define Cisco-style wildcard filter cri
+    exact_match: Literal["enable", "disable"]  # Enable/disable exact match. | Default: disable
+
+
+# ============================================================================
+# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional)
+# ============================================================================
 # NOTE: We intentionally DON'T use NotRequired wrapper because:
 # 1. total=False already makes all fields optional
 # 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
@@ -19,25 +45,11 @@ class AccessListPayload(TypedDict, total=False):
     """
     name: str  # Name. | MaxLen: 35
     comments: str  # Comment. | MaxLen: 127
-    rule: list[dict[str, Any]]  # Rule.
+    rule: list[AccessListRuleItem]  # Rule.
 
-# Nested TypedDicts for table field children (dict mode)
-
-class AccessListRuleItem(TypedDict):
-    """Type hints for rule table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    id: int  # Rule ID. | Default: 0 | Min: 0 | Max: 4294967295
-    action: Literal["permit", "deny"]  # Permit or deny this IP address and netmask prefix. | Default: permit
-    prefix: str  # IPv4 prefix to define regular filter criteria, suc
-    wildcard: str  # Wildcard to define Cisco-style wildcard filter cri
-    exact_match: Literal["enable", "disable"]  # Enable/disable exact match. | Default: disable
-
-
-# Nested classes for table field children (object mode)
+# ============================================================================
+# Nested classes for table field children (object mode - for API responses)
+# ============================================================================
 
 @final
 class AccessListRuleObject:
@@ -111,6 +123,9 @@ class AccessListObject:
     # Common API response fields
     status: str
     http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
     vdom: str | None
     
     # Methods from FortiObject
@@ -342,7 +357,7 @@ class AccessList:
         payload_dict: AccessListPayload | None = ...,
         name: str | None = ...,
         comments: str | None = ...,
-        rule: str | list[str] | list[dict[str, Any]] | None = ...,
+        rule: str | list[AccessListRuleItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> AccessListObject: ...
     
@@ -352,7 +367,7 @@ class AccessList:
         payload_dict: AccessListPayload | None = ...,
         name: str | None = ...,
         comments: str | None = ...,
-        rule: str | list[str] | list[dict[str, Any]] | None = ...,
+        rule: str | list[AccessListRuleItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -363,7 +378,7 @@ class AccessList:
         payload_dict: AccessListPayload | None = ...,
         name: str | None = ...,
         comments: str | None = ...,
-        rule: str | list[str] | list[dict[str, Any]] | None = ...,
+        rule: str | list[AccessListRuleItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -372,7 +387,7 @@ class AccessList:
         payload_dict: AccessListPayload | None = ...,
         name: str | None = ...,
         comments: str | None = ...,
-        rule: str | list[str] | list[dict[str, Any]] | None = ...,
+        rule: str | list[AccessListRuleItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -383,7 +398,7 @@ class AccessList:
         payload_dict: AccessListPayload | None = ...,
         name: str | None = ...,
         comments: str | None = ...,
-        rule: str | list[str] | list[dict[str, Any]] | None = ...,
+        rule: str | list[AccessListRuleItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> AccessListObject: ...
     
@@ -393,7 +408,7 @@ class AccessList:
         payload_dict: AccessListPayload | None = ...,
         name: str | None = ...,
         comments: str | None = ...,
-        rule: str | list[str] | list[dict[str, Any]] | None = ...,
+        rule: str | list[AccessListRuleItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -404,7 +419,7 @@ class AccessList:
         payload_dict: AccessListPayload | None = ...,
         name: str | None = ...,
         comments: str | None = ...,
-        rule: str | list[str] | list[dict[str, Any]] | None = ...,
+        rule: str | list[AccessListRuleItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -413,7 +428,7 @@ class AccessList:
         payload_dict: AccessListPayload | None = ...,
         name: str | None = ...,
         comments: str | None = ...,
-        rule: str | list[str] | list[dict[str, Any]] | None = ...,
+        rule: str | list[AccessListRuleItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -457,7 +472,7 @@ class AccessList:
         payload_dict: AccessListPayload | None = ...,
         name: str | None = ...,
         comments: str | None = ...,
-        rule: str | list[str] | list[dict[str, Any]] | None = ...,
+        rule: str | list[AccessListRuleItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     

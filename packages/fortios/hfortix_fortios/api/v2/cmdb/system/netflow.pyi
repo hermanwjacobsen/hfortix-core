@@ -2,7 +2,56 @@ from typing import TypedDict, Literal, Any, Coroutine, Union, overload, Generato
 from typing_extensions import NotRequired
 from hfortix_fortios.models import FortiObject, FortiObjectList
 
-# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional via total=False)
+# ============================================================================
+# Nested TypedDicts for table field children (dict mode)
+# These MUST be defined before the Payload class to use them as type hints
+# ============================================================================
+
+class NetflowExclusionfiltersItem(TypedDict, total=False):
+    """Type hints for exclusion-filters table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: NetflowExclusionfiltersItem = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    
+    id: int  # Filter ID. | Default: 0 | Min: 0 | Max: 4294967295
+    source_ip: str  # Session source address.
+    destination_ip: str  # Session destination address.
+    source_port: str  # Session source port number or range.
+    destination_port: str  # Session destination port number or range.
+    protocol: int  # Session IP protocol | Default: 255 | Min: 0 | Max: 255
+
+
+class NetflowCollectorsItem(TypedDict, total=False):
+    """Type hints for collectors table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: NetflowCollectorsItem = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    
+    id: int  # ID. | Default: 0 | Min: 1 | Max: 6
+    collector_ip: str  # Collector IP. | MaxLen: 63
+    collector_port: int  # NetFlow collector port number. | Default: 2055 | Min: 0 | Max: 65535
+    source_ip: str  # Source IP address for communication with the NetFl | MaxLen: 63
+    source_ip_interface: str  # Name of the interface used to determine the source | MaxLen: 15
+    interface_select_method: Literal["auto", "sdwan", "specify"]  # Specify how to select outgoing interface to reach | Default: auto
+    interface: str  # Specify outgoing interface to reach server. | MaxLen: 15
+    vrf_select: int  # VRF ID used for connection to server. | Default: 0 | Min: 0 | Max: 511
+
+
+# ============================================================================
+# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional)
+# ============================================================================
 # NOTE: We intentionally DON'T use NotRequired wrapper because:
 # 1. total=False already makes all fields optional
 # 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
@@ -22,44 +71,12 @@ class NetflowPayload(TypedDict, total=False):
     template_tx_timeout: int  # Timeout for periodic template flowset transmission | Default: 1800 | Min: 60 | Max: 86400
     template_tx_counter: int  # Counter of flowset records before resending a temp | Default: 20 | Min: 10 | Max: 6000
     session_cache_size: Literal["min", "default", "max"]  # Maximum RAM usage allowed for Netflow session cach | Default: default
-    exclusion_filters: list[dict[str, Any]]  # Exclusion filters
-    collectors: list[dict[str, Any]]  # Netflow collectors.
+    exclusion_filters: list[NetflowExclusionfiltersItem]  # Exclusion filters
+    collectors: list[NetflowCollectorsItem]  # Netflow collectors.
 
-# Nested TypedDicts for table field children (dict mode)
-
-class NetflowExclusionfiltersItem(TypedDict):
-    """Type hints for exclusion-filters table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    id: int  # Filter ID. | Default: 0 | Min: 0 | Max: 4294967295
-    source_ip: str  # Session source address.
-    destination_ip: str  # Session destination address.
-    source_port: str  # Session source port number or range.
-    destination_port: str  # Session destination port number or range.
-    protocol: int  # Session IP protocol | Default: 255 | Min: 0 | Max: 255
-
-
-class NetflowCollectorsItem(TypedDict):
-    """Type hints for collectors table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    id: int  # ID. | Default: 0 | Min: 1 | Max: 6
-    collector_ip: str  # Collector IP. | MaxLen: 63
-    collector_port: int  # NetFlow collector port number. | Default: 2055 | Min: 0 | Max: 65535
-    source_ip: str  # Source IP address for communication with the NetFl | MaxLen: 63
-    source_ip_interface: str  # Name of the interface used to determine the source | MaxLen: 15
-    interface_select_method: Literal["auto", "sdwan", "specify"]  # Specify how to select outgoing interface to reach | Default: auto
-    interface: str  # Specify outgoing interface to reach server. | MaxLen: 15
-    vrf_select: int  # VRF ID used for connection to server. | Default: 0 | Min: 0 | Max: 511
-
-
-# Nested classes for table field children (object mode)
+# ============================================================================
+# Nested classes for table field children (object mode - for API responses)
+# ============================================================================
 
 @final
 class NetflowExclusionfiltersObject:
@@ -193,6 +210,9 @@ class NetflowObject:
     # Common API response fields
     status: str
     http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
     vdom: str | None
     
     # Methods from FortiObject
@@ -426,8 +446,8 @@ class Netflow:
         template_tx_timeout: int | None = ...,
         template_tx_counter: int | None = ...,
         session_cache_size: Literal["min", "default", "max"] | None = ...,
-        exclusion_filters: str | list[str] | list[dict[str, Any]] | None = ...,
-        collectors: str | list[str] | list[dict[str, Any]] | None = ...,
+        exclusion_filters: str | list[NetflowExclusionfiltersItem] | None = ...,
+        collectors: str | list[NetflowCollectorsItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> NetflowObject: ...
     
@@ -440,8 +460,8 @@ class Netflow:
         template_tx_timeout: int | None = ...,
         template_tx_counter: int | None = ...,
         session_cache_size: Literal["min", "default", "max"] | None = ...,
-        exclusion_filters: str | list[str] | list[dict[str, Any]] | None = ...,
-        collectors: str | list[str] | list[dict[str, Any]] | None = ...,
+        exclusion_filters: str | list[NetflowExclusionfiltersItem] | None = ...,
+        collectors: str | list[NetflowCollectorsItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -455,8 +475,8 @@ class Netflow:
         template_tx_timeout: int | None = ...,
         template_tx_counter: int | None = ...,
         session_cache_size: Literal["min", "default", "max"] | None = ...,
-        exclusion_filters: str | list[str] | list[dict[str, Any]] | None = ...,
-        collectors: str | list[str] | list[dict[str, Any]] | None = ...,
+        exclusion_filters: str | list[NetflowExclusionfiltersItem] | None = ...,
+        collectors: str | list[NetflowCollectorsItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -468,8 +488,8 @@ class Netflow:
         template_tx_timeout: int | None = ...,
         template_tx_counter: int | None = ...,
         session_cache_size: Literal["min", "default", "max"] | None = ...,
-        exclusion_filters: str | list[str] | list[dict[str, Any]] | None = ...,
-        collectors: str | list[str] | list[dict[str, Any]] | None = ...,
+        exclusion_filters: str | list[NetflowExclusionfiltersItem] | None = ...,
+        collectors: str | list[NetflowCollectorsItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -487,8 +507,8 @@ class Netflow:
         template_tx_timeout: int | None = ...,
         template_tx_counter: int | None = ...,
         session_cache_size: Literal["min", "default", "max"] | None = ...,
-        exclusion_filters: str | list[str] | list[dict[str, Any]] | None = ...,
-        collectors: str | list[str] | list[dict[str, Any]] | None = ...,
+        exclusion_filters: str | list[NetflowExclusionfiltersItem] | None = ...,
+        collectors: str | list[NetflowCollectorsItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     

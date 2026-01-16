@@ -2,7 +2,31 @@ from typing import TypedDict, Literal, Any, Coroutine, Union, overload, Generato
 from typing_extensions import NotRequired
 from hfortix_fortios.models import FortiObject, FortiObjectList
 
-# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional via total=False)
+# ============================================================================
+# Nested TypedDicts for table field children (dict mode)
+# These MUST be defined before the Payload class to use them as type hints
+# ============================================================================
+
+class Multicast6InterfaceItem(TypedDict, total=False):
+    """Type hints for interface table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: Multicast6InterfaceItem = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    
+    name: str  # Interface name. | MaxLen: 15
+    hello_interval: int  # Interval between sending PIM hello messages in sec | Default: 30 | Min: 1 | Max: 65535
+    hello_holdtime: int  # Time before old neighbor information expires in se | Min: 1 | Max: 65535
+
+
+# ============================================================================
+# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional)
+# ============================================================================
 # NOTE: We intentionally DON'T use NotRequired wrapper because:
 # 1. total=False already makes all fields optional
 # 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
@@ -19,24 +43,12 @@ class Multicast6Payload(TypedDict, total=False):
     """
     multicast_routing: Literal["enable", "disable"]  # Enable/disable IPv6 multicast routing. | Default: disable
     multicast_pmtu: Literal["enable", "disable"]  # Enable/disable PMTU for IPv6 multicast. | Default: disable
-    interface: list[dict[str, Any]]  # Protocol Independent Multicast (PIM) interfaces.
+    interface: list[Multicast6InterfaceItem]  # Protocol Independent Multicast (PIM) interfaces.
     pim_sm_global: str  # PIM sparse-mode global settings.
 
-# Nested TypedDicts for table field children (dict mode)
-
-class Multicast6InterfaceItem(TypedDict):
-    """Type hints for interface table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    name: str  # Interface name. | MaxLen: 15
-    hello_interval: int  # Interval between sending PIM hello messages in sec | Default: 30 | Min: 1 | Max: 65535
-    hello_holdtime: int  # Time before old neighbor information expires in se | Min: 1 | Max: 65535
-
-
-# Nested classes for table field children (object mode)
+# ============================================================================
+# Nested classes for table field children (object mode - for API responses)
+# ============================================================================
 
 @final
 class Multicast6InterfaceObject:
@@ -109,6 +121,9 @@ class Multicast6Object:
     # Common API response fields
     status: str
     http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
     vdom: str | None
     
     # Methods from FortiObject
@@ -339,7 +354,7 @@ class Multicast6:
         payload_dict: Multicast6Payload | None = ...,
         multicast_routing: Literal["enable", "disable"] | None = ...,
         multicast_pmtu: Literal["enable", "disable"] | None = ...,
-        interface: str | list[str] | list[dict[str, Any]] | None = ...,
+        interface: str | list[Multicast6InterfaceItem] | None = ...,
         pim_sm_global: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> Multicast6Object: ...
@@ -350,7 +365,7 @@ class Multicast6:
         payload_dict: Multicast6Payload | None = ...,
         multicast_routing: Literal["enable", "disable"] | None = ...,
         multicast_pmtu: Literal["enable", "disable"] | None = ...,
-        interface: str | list[str] | list[dict[str, Any]] | None = ...,
+        interface: str | list[Multicast6InterfaceItem] | None = ...,
         pim_sm_global: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
@@ -362,7 +377,7 @@ class Multicast6:
         payload_dict: Multicast6Payload | None = ...,
         multicast_routing: Literal["enable", "disable"] | None = ...,
         multicast_pmtu: Literal["enable", "disable"] | None = ...,
-        interface: str | list[str] | list[dict[str, Any]] | None = ...,
+        interface: str | list[Multicast6InterfaceItem] | None = ...,
         pim_sm_global: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
@@ -372,7 +387,7 @@ class Multicast6:
         payload_dict: Multicast6Payload | None = ...,
         multicast_routing: Literal["enable", "disable"] | None = ...,
         multicast_pmtu: Literal["enable", "disable"] | None = ...,
-        interface: str | list[str] | list[dict[str, Any]] | None = ...,
+        interface: str | list[Multicast6InterfaceItem] | None = ...,
         pim_sm_global: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
@@ -388,7 +403,7 @@ class Multicast6:
         payload_dict: Multicast6Payload | None = ...,
         multicast_routing: Literal["enable", "disable"] | None = ...,
         multicast_pmtu: Literal["enable", "disable"] | None = ...,
-        interface: str | list[str] | list[dict[str, Any]] | None = ...,
+        interface: str | list[Multicast6InterfaceItem] | None = ...,
         pim_sm_global: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...

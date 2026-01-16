@@ -2,7 +2,30 @@ from typing import TypedDict, Literal, Any, Coroutine, Union, overload, Generato
 from typing_extensions import NotRequired
 from hfortix_fortios.models import FortiObject, FortiObjectList
 
-# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional via total=False)
+# ============================================================================
+# Nested TypedDicts for table field children (dict mode)
+# These MUST be defined before the Payload class to use them as type hints
+# ============================================================================
+
+class SnmpCommunityHostsItem(TypedDict, total=False):
+    """Type hints for hosts table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: SnmpCommunityHostsItem = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    
+    id: int  # Host entry ID. | Default: 0 | Min: 0 | Max: 4294967295
+    ip: str  # IPv4 address of the SNMP manager (host).
+
+
+# ============================================================================
+# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional)
+# ============================================================================
 # NOTE: We intentionally DON'T use NotRequired wrapper because:
 # 1. total=False already makes all fields optional
 # 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
@@ -20,7 +43,7 @@ class SnmpCommunityPayload(TypedDict, total=False):
     id: int  # SNMP community ID. | Default: 0 | Min: 0 | Max: 4294967295
     name: str  # SNMP community name. | MaxLen: 35
     status: Literal["disable", "enable"]  # Enable/disable this SNMP community. | Default: enable
-    hosts: list[dict[str, Any]]  # Configure IPv4 SNMP managers (hosts).
+    hosts: list[SnmpCommunityHostsItem]  # Configure IPv4 SNMP managers (hosts).
     query_v1_status: Literal["disable", "enable"]  # Enable/disable SNMP v1 queries. | Default: enable
     query_v1_port: int  # SNMP v1 query port (default = 161). | Default: 161 | Min: 0 | Max: 65535
     query_v2c_status: Literal["disable", "enable"]  # Enable/disable SNMP v2c queries. | Default: enable
@@ -33,20 +56,9 @@ class SnmpCommunityPayload(TypedDict, total=False):
     trap_v2c_rport: int  # SNMP v2c trap remote port (default = 162). | Default: 162 | Min: 0 | Max: 65535
     events: Literal["cpu-high", "mem-low", "log-full", "intf-ip", "ent-conf-change", "l2mac"]  # SNMP notifications (traps) to send. | Default: cpu-high mem-low log-full intf-ip ent-conf-change l2mac
 
-# Nested TypedDicts for table field children (dict mode)
-
-class SnmpCommunityHostsItem(TypedDict):
-    """Type hints for hosts table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    id: int  # Host entry ID. | Default: 0 | Min: 0 | Max: 4294967295
-    ip: str  # IPv4 address of the SNMP manager (host).
-
-
-# Nested classes for table field children (object mode)
+# ============================================================================
+# Nested classes for table field children (object mode - for API responses)
+# ============================================================================
 
 @final
 class SnmpCommunityHostsObject:
@@ -150,6 +162,9 @@ class SnmpCommunityObject:
     # Common API response fields
     status: str
     http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
     vdom: str | None
     
     # Methods from FortiObject
@@ -382,7 +397,7 @@ class SnmpCommunity:
         id: int | None = ...,
         name: str | None = ...,
         status: Literal["disable", "enable"] | None = ...,
-        hosts: str | list[str] | list[dict[str, Any]] | None = ...,
+        hosts: str | list[SnmpCommunityHostsItem] | None = ...,
         query_v1_status: Literal["disable", "enable"] | None = ...,
         query_v1_port: int | None = ...,
         query_v2c_status: Literal["disable", "enable"] | None = ...,
@@ -404,7 +419,7 @@ class SnmpCommunity:
         id: int | None = ...,
         name: str | None = ...,
         status: Literal["disable", "enable"] | None = ...,
-        hosts: str | list[str] | list[dict[str, Any]] | None = ...,
+        hosts: str | list[SnmpCommunityHostsItem] | None = ...,
         query_v1_status: Literal["disable", "enable"] | None = ...,
         query_v1_port: int | None = ...,
         query_v2c_status: Literal["disable", "enable"] | None = ...,
@@ -427,7 +442,7 @@ class SnmpCommunity:
         id: int | None = ...,
         name: str | None = ...,
         status: Literal["disable", "enable"] | None = ...,
-        hosts: str | list[str] | list[dict[str, Any]] | None = ...,
+        hosts: str | list[SnmpCommunityHostsItem] | None = ...,
         query_v1_status: Literal["disable", "enable"] | None = ...,
         query_v1_port: int | None = ...,
         query_v2c_status: Literal["disable", "enable"] | None = ...,
@@ -448,7 +463,7 @@ class SnmpCommunity:
         id: int | None = ...,
         name: str | None = ...,
         status: Literal["disable", "enable"] | None = ...,
-        hosts: str | list[str] | list[dict[str, Any]] | None = ...,
+        hosts: str | list[SnmpCommunityHostsItem] | None = ...,
         query_v1_status: Literal["disable", "enable"] | None = ...,
         query_v1_port: int | None = ...,
         query_v2c_status: Literal["disable", "enable"] | None = ...,
@@ -471,7 +486,7 @@ class SnmpCommunity:
         id: int | None = ...,
         name: str | None = ...,
         status: Literal["disable", "enable"] | None = ...,
-        hosts: str | list[str] | list[dict[str, Any]] | None = ...,
+        hosts: str | list[SnmpCommunityHostsItem] | None = ...,
         query_v1_status: Literal["disable", "enable"] | None = ...,
         query_v1_port: int | None = ...,
         query_v2c_status: Literal["disable", "enable"] | None = ...,
@@ -493,7 +508,7 @@ class SnmpCommunity:
         id: int | None = ...,
         name: str | None = ...,
         status: Literal["disable", "enable"] | None = ...,
-        hosts: str | list[str] | list[dict[str, Any]] | None = ...,
+        hosts: str | list[SnmpCommunityHostsItem] | None = ...,
         query_v1_status: Literal["disable", "enable"] | None = ...,
         query_v1_port: int | None = ...,
         query_v2c_status: Literal["disable", "enable"] | None = ...,
@@ -516,7 +531,7 @@ class SnmpCommunity:
         id: int | None = ...,
         name: str | None = ...,
         status: Literal["disable", "enable"] | None = ...,
-        hosts: str | list[str] | list[dict[str, Any]] | None = ...,
+        hosts: str | list[SnmpCommunityHostsItem] | None = ...,
         query_v1_status: Literal["disable", "enable"] | None = ...,
         query_v1_port: int | None = ...,
         query_v2c_status: Literal["disable", "enable"] | None = ...,
@@ -537,7 +552,7 @@ class SnmpCommunity:
         id: int | None = ...,
         name: str | None = ...,
         status: Literal["disable", "enable"] | None = ...,
-        hosts: str | list[str] | list[dict[str, Any]] | None = ...,
+        hosts: str | list[SnmpCommunityHostsItem] | None = ...,
         query_v1_status: Literal["disable", "enable"] | None = ...,
         query_v1_port: int | None = ...,
         query_v2c_status: Literal["disable", "enable"] | None = ...,
@@ -593,7 +608,7 @@ class SnmpCommunity:
         id: int | None = ...,
         name: str | None = ...,
         status: Literal["disable", "enable"] | None = ...,
-        hosts: str | list[str] | list[dict[str, Any]] | None = ...,
+        hosts: str | list[SnmpCommunityHostsItem] | None = ...,
         query_v1_status: Literal["disable", "enable"] | None = ...,
         query_v1_port: int | None = ...,
         query_v2c_status: Literal["disable", "enable"] | None = ...,

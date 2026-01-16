@@ -2,7 +2,33 @@ from typing import TypedDict, Literal, Any, Coroutine, Union, overload, Generato
 from typing_extensions import NotRequired
 from hfortix_fortios.models import FortiObject, FortiObjectList
 
-# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional via total=False)
+# ============================================================================
+# Nested TypedDicts for table field children (dict mode)
+# These MUST be defined before the Payload class to use them as type hints
+# ============================================================================
+
+class Address6TemplateSubnetsegmentItem(TypedDict, total=False):
+    """Type hints for subnet-segment table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: Address6TemplateSubnetsegmentItem = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    
+    id: int  # Subnet segment ID. | Default: 0 | Min: 0 | Max: 4294967295
+    name: str  # Subnet segment name. | MaxLen: 63
+    bits: int  # Number of bits. | Default: 0 | Min: 1 | Max: 16
+    exclusive: Literal["enable", "disable"]  # Enable/disable exclusive value. | Default: disable
+    values: str  # Subnet segment values.
+
+
+# ============================================================================
+# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional)
+# ============================================================================
 # NOTE: We intentionally DON'T use NotRequired wrapper because:
 # 1. total=False already makes all fields optional
 # 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
@@ -21,26 +47,12 @@ class Address6TemplatePayload(TypedDict, total=False):
     uuid: str  # Universally Unique Identifier | Default: 00000000-0000-0000-0000-000000000000
     ip6: str  # IPv6 address prefix. | Default: ::/0
     subnet_segment_count: int  # Number of IPv6 subnet segments. | Default: 0 | Min: 1 | Max: 6
-    subnet_segment: list[dict[str, Any]]  # IPv6 subnet segments.
+    subnet_segment: list[Address6TemplateSubnetsegmentItem]  # IPv6 subnet segments.
     fabric_object: Literal["enable", "disable"]  # Security Fabric global object setting. | Default: disable
 
-# Nested TypedDicts for table field children (dict mode)
-
-class Address6TemplateSubnetsegmentItem(TypedDict):
-    """Type hints for subnet-segment table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    id: int  # Subnet segment ID. | Default: 0 | Min: 0 | Max: 4294967295
-    name: str  # Subnet segment name. | MaxLen: 63
-    bits: int  # Number of bits. | Default: 0 | Min: 1 | Max: 16
-    exclusive: Literal["enable", "disable"]  # Enable/disable exclusive value. | Default: disable
-    values: str  # Subnet segment values.
-
-
-# Nested classes for table field children (object mode)
+# ============================================================================
+# Nested classes for table field children (object mode - for API responses)
+# ============================================================================
 
 @final
 class Address6TemplateSubnetsegmentObject:
@@ -123,6 +135,9 @@ class Address6TemplateObject:
     # Common API response fields
     status: str
     http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
     vdom: str | None
     
     # Methods from FortiObject
@@ -356,7 +371,7 @@ class Address6Template:
         uuid: str | None = ...,
         ip6: str | None = ...,
         subnet_segment_count: int | None = ...,
-        subnet_segment: str | list[str] | list[dict[str, Any]] | None = ...,
+        subnet_segment: str | list[Address6TemplateSubnetsegmentItem] | None = ...,
         fabric_object: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
     ) -> Address6TemplateObject: ...
@@ -369,7 +384,7 @@ class Address6Template:
         uuid: str | None = ...,
         ip6: str | None = ...,
         subnet_segment_count: int | None = ...,
-        subnet_segment: str | list[str] | list[dict[str, Any]] | None = ...,
+        subnet_segment: str | list[Address6TemplateSubnetsegmentItem] | None = ...,
         fabric_object: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
@@ -383,7 +398,7 @@ class Address6Template:
         uuid: str | None = ...,
         ip6: str | None = ...,
         subnet_segment_count: int | None = ...,
-        subnet_segment: str | list[str] | list[dict[str, Any]] | None = ...,
+        subnet_segment: str | list[Address6TemplateSubnetsegmentItem] | None = ...,
         fabric_object: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
@@ -395,7 +410,7 @@ class Address6Template:
         uuid: str | None = ...,
         ip6: str | None = ...,
         subnet_segment_count: int | None = ...,
-        subnet_segment: str | list[str] | list[dict[str, Any]] | None = ...,
+        subnet_segment: str | list[Address6TemplateSubnetsegmentItem] | None = ...,
         fabric_object: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
@@ -409,7 +424,7 @@ class Address6Template:
         uuid: str | None = ...,
         ip6: str | None = ...,
         subnet_segment_count: int | None = ...,
-        subnet_segment: str | list[str] | list[dict[str, Any]] | None = ...,
+        subnet_segment: str | list[Address6TemplateSubnetsegmentItem] | None = ...,
         fabric_object: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
     ) -> Address6TemplateObject: ...
@@ -422,7 +437,7 @@ class Address6Template:
         uuid: str | None = ...,
         ip6: str | None = ...,
         subnet_segment_count: int | None = ...,
-        subnet_segment: str | list[str] | list[dict[str, Any]] | None = ...,
+        subnet_segment: str | list[Address6TemplateSubnetsegmentItem] | None = ...,
         fabric_object: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
@@ -436,7 +451,7 @@ class Address6Template:
         uuid: str | None = ...,
         ip6: str | None = ...,
         subnet_segment_count: int | None = ...,
-        subnet_segment: str | list[str] | list[dict[str, Any]] | None = ...,
+        subnet_segment: str | list[Address6TemplateSubnetsegmentItem] | None = ...,
         fabric_object: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
@@ -448,7 +463,7 @@ class Address6Template:
         uuid: str | None = ...,
         ip6: str | None = ...,
         subnet_segment_count: int | None = ...,
-        subnet_segment: str | list[str] | list[dict[str, Any]] | None = ...,
+        subnet_segment: str | list[Address6TemplateSubnetsegmentItem] | None = ...,
         fabric_object: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
@@ -495,7 +510,7 @@ class Address6Template:
         uuid: str | None = ...,
         ip6: str | None = ...,
         subnet_segment_count: int | None = ...,
-        subnet_segment: str | list[str] | list[dict[str, Any]] | None = ...,
+        subnet_segment: str | list[Address6TemplateSubnetsegmentItem] | None = ...,
         fabric_object: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...

@@ -2,7 +2,36 @@ from typing import TypedDict, Literal, Any, Coroutine, Union, overload, Generato
 from typing_extensions import NotRequired
 from hfortix_fortios.models import FortiObject, FortiObjectList
 
-# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional via total=False)
+# ============================================================================
+# Nested TypedDicts for table field children (dict mode)
+# These MUST be defined before the Payload class to use them as type hints
+# ============================================================================
+
+class BwordEntriesItem(TypedDict, total=False):
+    """Type hints for entries table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: BwordEntriesItem = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    
+    status: Literal["enable", "disable"]  # Enable/disable status. | Default: enable
+    id: int  # Banned word entry ID. | Default: 0 | Min: 0 | Max: 4294967295
+    pattern: str  # Pattern for the banned word. | MaxLen: 127
+    pattern_type: Literal["wildcard", "regexp"]  # Wildcard pattern or regular expression. | Default: wildcard
+    action: Literal["spam", "clear"]  # Mark spam or good. | Default: spam
+    where: Literal["subject", "body", "all"]  # Component of the email to be scanned. | Default: all
+    language: Literal["western", "simch", "trach", "japanese", "korean", "french", "thai", "spanish"]  # Language for the banned word. | Default: western
+    score: int  # Score value. | Default: 10 | Min: 1 | Max: 99999
+
+
+# ============================================================================
+# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional)
+# ============================================================================
 # NOTE: We intentionally DON'T use NotRequired wrapper because:
 # 1. total=False already makes all fields optional
 # 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
@@ -20,28 +49,11 @@ class BwordPayload(TypedDict, total=False):
     id: int  # ID. | Default: 0 | Min: 0 | Max: 4294967295
     name: str  # Name of table. | MaxLen: 63
     comment: str  # Optional comments. | MaxLen: 255
-    entries: list[dict[str, Any]]  # Spam filter banned word.
+    entries: list[BwordEntriesItem]  # Spam filter banned word.
 
-# Nested TypedDicts for table field children (dict mode)
-
-class BwordEntriesItem(TypedDict):
-    """Type hints for entries table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    status: Literal["enable", "disable"]  # Enable/disable status. | Default: enable
-    id: int  # Banned word entry ID. | Default: 0 | Min: 0 | Max: 4294967295
-    pattern: str  # Pattern for the banned word. | MaxLen: 127
-    pattern_type: Literal["wildcard", "regexp"]  # Wildcard pattern or regular expression. | Default: wildcard
-    action: Literal["spam", "clear"]  # Mark spam or good. | Default: spam
-    where: Literal["subject", "body", "all"]  # Component of the email to be scanned. | Default: all
-    language: Literal["western", "simch", "trach", "japanese", "korean", "french", "thai", "spanish"]  # Language for the banned word. | Default: western
-    score: int  # Score value. | Default: 10 | Min: 1 | Max: 99999
-
-
-# Nested classes for table field children (object mode)
+# ============================================================================
+# Nested classes for table field children (object mode - for API responses)
+# ============================================================================
 
 @final
 class BwordEntriesObject:
@@ -124,6 +136,9 @@ class BwordObject:
     # Common API response fields
     status: str
     http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
     vdom: str | None
     
     # Methods from FortiObject
@@ -356,7 +371,7 @@ class Bword:
         id: int | None = ...,
         name: str | None = ...,
         comment: str | None = ...,
-        entries: str | list[str] | list[dict[str, Any]] | None = ...,
+        entries: str | list[BwordEntriesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> BwordObject: ...
     
@@ -367,7 +382,7 @@ class Bword:
         id: int | None = ...,
         name: str | None = ...,
         comment: str | None = ...,
-        entries: str | list[str] | list[dict[str, Any]] | None = ...,
+        entries: str | list[BwordEntriesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -379,7 +394,7 @@ class Bword:
         id: int | None = ...,
         name: str | None = ...,
         comment: str | None = ...,
-        entries: str | list[str] | list[dict[str, Any]] | None = ...,
+        entries: str | list[BwordEntriesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -389,7 +404,7 @@ class Bword:
         id: int | None = ...,
         name: str | None = ...,
         comment: str | None = ...,
-        entries: str | list[str] | list[dict[str, Any]] | None = ...,
+        entries: str | list[BwordEntriesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -401,7 +416,7 @@ class Bword:
         id: int | None = ...,
         name: str | None = ...,
         comment: str | None = ...,
-        entries: str | list[str] | list[dict[str, Any]] | None = ...,
+        entries: str | list[BwordEntriesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> BwordObject: ...
     
@@ -412,7 +427,7 @@ class Bword:
         id: int | None = ...,
         name: str | None = ...,
         comment: str | None = ...,
-        entries: str | list[str] | list[dict[str, Any]] | None = ...,
+        entries: str | list[BwordEntriesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -424,7 +439,7 @@ class Bword:
         id: int | None = ...,
         name: str | None = ...,
         comment: str | None = ...,
-        entries: str | list[str] | list[dict[str, Any]] | None = ...,
+        entries: str | list[BwordEntriesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -434,7 +449,7 @@ class Bword:
         id: int | None = ...,
         name: str | None = ...,
         comment: str | None = ...,
-        entries: str | list[str] | list[dict[str, Any]] | None = ...,
+        entries: str | list[BwordEntriesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -479,7 +494,7 @@ class Bword:
         id: int | None = ...,
         name: str | None = ...,
         comment: str | None = ...,
-        entries: str | list[str] | list[dict[str, Any]] | None = ...,
+        entries: str | list[BwordEntriesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     

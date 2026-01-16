@@ -2,7 +2,32 @@ from typing import TypedDict, Literal, Any, Coroutine, Union, overload, Generato
 from typing_extensions import NotRequired
 from hfortix_fortios.models import FortiObject, FortiObjectList
 
-# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional via total=False)
+# ============================================================================
+# Nested TypedDicts for table field children (dict mode)
+# These MUST be defined before the Payload class to use them as type hints
+# ============================================================================
+
+class InterControllerIntercontrollerpeerItem(TypedDict, total=False):
+    """Type hints for inter-controller-peer table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: InterControllerIntercontrollerpeerItem = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    
+    id: int  # ID. | Default: 0 | Min: 0 | Max: 4294967295
+    peer_ip: str  # Peer wireless controller's IP address. | Default: 0.0.0.0
+    peer_port: int  # Port used by the wireless controller's for inter-c | Default: 5246 | Min: 1024 | Max: 49150
+    peer_priority: Literal["primary", "secondary"]  # Peer wireless controller's priority | Default: primary
+
+
+# ============================================================================
+# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional)
+# ============================================================================
 # NOTE: We intentionally DON'T use NotRequired wrapper because:
 # 1. total=False already makes all fields optional
 # 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
@@ -23,24 +48,11 @@ class InterControllerPayload(TypedDict, total=False):
     inter_controller_pri: Literal["primary", "secondary"]  # Configure inter-controller's priority | Default: primary
     fast_failover_max: int  # Maximum number of retransmissions for fast failove | Default: 10 | Min: 3 | Max: 64
     fast_failover_wait: int  # Minimum wait time before an AP transitions from se | Default: 10 | Min: 10 | Max: 86400
-    inter_controller_peer: list[dict[str, Any]]  # Fast failover peer wireless controller list.
+    inter_controller_peer: list[InterControllerIntercontrollerpeerItem]  # Fast failover peer wireless controller list.
 
-# Nested TypedDicts for table field children (dict mode)
-
-class InterControllerIntercontrollerpeerItem(TypedDict):
-    """Type hints for inter-controller-peer table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    id: int  # ID. | Default: 0 | Min: 0 | Max: 4294967295
-    peer_ip: str  # Peer wireless controller's IP address. | Default: 0.0.0.0
-    peer_port: int  # Port used by the wireless controller's for inter-c | Default: 5246 | Min: 1024 | Max: 49150
-    peer_priority: Literal["primary", "secondary"]  # Peer wireless controller's priority | Default: primary
-
-
-# Nested classes for table field children (object mode)
+# ============================================================================
+# Nested classes for table field children (object mode - for API responses)
+# ============================================================================
 
 @final
 class InterControllerIntercontrollerpeerObject:
@@ -124,6 +136,9 @@ class InterControllerObject:
     # Common API response fields
     status: str
     http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
     vdom: str | None
     
     # Methods from FortiObject
@@ -358,7 +373,7 @@ class InterController:
         inter_controller_pri: Literal["primary", "secondary"] | None = ...,
         fast_failover_max: int | None = ...,
         fast_failover_wait: int | None = ...,
-        inter_controller_peer: str | list[str] | list[dict[str, Any]] | None = ...,
+        inter_controller_peer: str | list[InterControllerIntercontrollerpeerItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> InterControllerObject: ...
     
@@ -372,7 +387,7 @@ class InterController:
         inter_controller_pri: Literal["primary", "secondary"] | None = ...,
         fast_failover_max: int | None = ...,
         fast_failover_wait: int | None = ...,
-        inter_controller_peer: str | list[str] | list[dict[str, Any]] | None = ...,
+        inter_controller_peer: str | list[InterControllerIntercontrollerpeerItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -387,7 +402,7 @@ class InterController:
         inter_controller_pri: Literal["primary", "secondary"] | None = ...,
         fast_failover_max: int | None = ...,
         fast_failover_wait: int | None = ...,
-        inter_controller_peer: str | list[str] | list[dict[str, Any]] | None = ...,
+        inter_controller_peer: str | list[InterControllerIntercontrollerpeerItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -400,7 +415,7 @@ class InterController:
         inter_controller_pri: Literal["primary", "secondary"] | None = ...,
         fast_failover_max: int | None = ...,
         fast_failover_wait: int | None = ...,
-        inter_controller_peer: str | list[str] | list[dict[str, Any]] | None = ...,
+        inter_controller_peer: str | list[InterControllerIntercontrollerpeerItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -419,7 +434,7 @@ class InterController:
         inter_controller_pri: Literal["primary", "secondary"] | None = ...,
         fast_failover_max: int | None = ...,
         fast_failover_wait: int | None = ...,
-        inter_controller_peer: str | list[str] | list[dict[str, Any]] | None = ...,
+        inter_controller_peer: str | list[InterControllerIntercontrollerpeerItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     

@@ -2,7 +2,29 @@ from typing import TypedDict, Literal, Any, Coroutine, Union, overload, Generato
 from typing_extensions import NotRequired
 from hfortix_fortios.models import FortiObject, FortiObjectList
 
-# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional via total=False)
+# ============================================================================
+# Nested TypedDicts for table field children (dict mode)
+# These MUST be defined before the Payload class to use them as type hints
+# ============================================================================
+
+class GroupMemberItem(TypedDict, total=False):
+    """Type hints for member table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: GroupMemberItem = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    
+    name: str  # Address name. | MaxLen: 79
+
+
+# ============================================================================
+# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional)
+# ============================================================================
 # NOTE: We intentionally DON'T use NotRequired wrapper because:
 # 1. total=False already makes all fields optional
 # 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
@@ -19,23 +41,13 @@ class GroupPayload(TypedDict, total=False):
     """
     name: str  # Address group name. | MaxLen: 79
     uuid: str  # Universally Unique Identifier | Default: 00000000-0000-0000-0000-000000000000
-    member: list[dict[str, Any]]  # Address group members.
+    member: list[GroupMemberItem]  # Address group members.
     color: int  # GUI icon color. | Default: 0 | Min: 0 | Max: 32
     comment: str  # Comment. | MaxLen: 255
 
-# Nested TypedDicts for table field children (dict mode)
-
-class GroupMemberItem(TypedDict):
-    """Type hints for member table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    name: str  # Address name. | MaxLen: 79
-
-
-# Nested classes for table field children (object mode)
+# ============================================================================
+# Nested classes for table field children (object mode - for API responses)
+# ============================================================================
 
 @final
 class GroupMemberObject:
@@ -107,6 +119,9 @@ class GroupObject:
     # Common API response fields
     status: str
     http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
     vdom: str | None
     
     # Methods from FortiObject
@@ -338,7 +353,7 @@ class Group:
         payload_dict: GroupPayload | None = ...,
         name: str | None = ...,
         uuid: str | None = ...,
-        member: str | list[str] | list[dict[str, Any]] | None = ...,
+        member: str | list[GroupMemberItem] | None = ...,
         color: int | None = ...,
         comment: str | None = ...,
         vdom: str | bool | None = ...,
@@ -350,7 +365,7 @@ class Group:
         payload_dict: GroupPayload | None = ...,
         name: str | None = ...,
         uuid: str | None = ...,
-        member: str | list[str] | list[dict[str, Any]] | None = ...,
+        member: str | list[GroupMemberItem] | None = ...,
         color: int | None = ...,
         comment: str | None = ...,
         vdom: str | bool | None = ...,
@@ -363,7 +378,7 @@ class Group:
         payload_dict: GroupPayload | None = ...,
         name: str | None = ...,
         uuid: str | None = ...,
-        member: str | list[str] | list[dict[str, Any]] | None = ...,
+        member: str | list[GroupMemberItem] | None = ...,
         color: int | None = ...,
         comment: str | None = ...,
         vdom: str | bool | None = ...,
@@ -374,7 +389,7 @@ class Group:
         payload_dict: GroupPayload | None = ...,
         name: str | None = ...,
         uuid: str | None = ...,
-        member: str | list[str] | list[dict[str, Any]] | None = ...,
+        member: str | list[GroupMemberItem] | None = ...,
         color: int | None = ...,
         comment: str | None = ...,
         vdom: str | bool | None = ...,
@@ -387,7 +402,7 @@ class Group:
         payload_dict: GroupPayload | None = ...,
         name: str | None = ...,
         uuid: str | None = ...,
-        member: str | list[str] | list[dict[str, Any]] | None = ...,
+        member: str | list[GroupMemberItem] | None = ...,
         color: int | None = ...,
         comment: str | None = ...,
         vdom: str | bool | None = ...,
@@ -399,7 +414,7 @@ class Group:
         payload_dict: GroupPayload | None = ...,
         name: str | None = ...,
         uuid: str | None = ...,
-        member: str | list[str] | list[dict[str, Any]] | None = ...,
+        member: str | list[GroupMemberItem] | None = ...,
         color: int | None = ...,
         comment: str | None = ...,
         vdom: str | bool | None = ...,
@@ -412,7 +427,7 @@ class Group:
         payload_dict: GroupPayload | None = ...,
         name: str | None = ...,
         uuid: str | None = ...,
-        member: str | list[str] | list[dict[str, Any]] | None = ...,
+        member: str | list[GroupMemberItem] | None = ...,
         color: int | None = ...,
         comment: str | None = ...,
         vdom: str | bool | None = ...,
@@ -423,7 +438,7 @@ class Group:
         payload_dict: GroupPayload | None = ...,
         name: str | None = ...,
         uuid: str | None = ...,
-        member: str | list[str] | list[dict[str, Any]] | None = ...,
+        member: str | list[GroupMemberItem] | None = ...,
         color: int | None = ...,
         comment: str | None = ...,
         vdom: str | bool | None = ...,
@@ -469,7 +484,7 @@ class Group:
         payload_dict: GroupPayload | None = ...,
         name: str | None = ...,
         uuid: str | None = ...,
-        member: str | list[str] | list[dict[str, Any]] | None = ...,
+        member: str | list[GroupMemberItem] | None = ...,
         color: int | None = ...,
         comment: str | None = ...,
         vdom: str | bool | None = ...,

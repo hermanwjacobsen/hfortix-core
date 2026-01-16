@@ -2,7 +2,29 @@ from typing import TypedDict, Literal, Any, Coroutine, Union, overload, Generato
 from typing_extensions import NotRequired
 from hfortix_fortios.models import FortiObject, FortiObjectList
 
-# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional via total=False)
+# ============================================================================
+# Nested TypedDicts for table field children (dict mode)
+# These MUST be defined before the Payload class to use them as type hints
+# ============================================================================
+
+class VdomDnsServerhostnameItem(TypedDict, total=False):
+    """Type hints for server-hostname table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: VdomDnsServerhostnameItem = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    
+    hostname: str  # DNS server host name list separated by space | MaxLen: 127
+
+
+# ============================================================================
+# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional)
+# ============================================================================
 # NOTE: We intentionally DON'T use NotRequired wrapper because:
 # 1. total=False already makes all fields optional
 # 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
@@ -28,7 +50,7 @@ class VdomDnsPayload(TypedDict, total=False):
     secondary: str  # Secondary DNS server IP address for the VDOM. | Default: 0.0.0.0
     protocol: Literal["cleartext", "dot", "doh"]  # DNS transport protocols. | Default: cleartext
     ssl_certificate: str  # Name of local certificate for SSL connections. | MaxLen: 35
-    server_hostname: list[dict[str, Any]]  # DNS server host name list.
+    server_hostname: list[VdomDnsServerhostnameItem]  # DNS server host name list.
     ip6_primary: str  # Primary IPv6 DNS server IP address for the VDOM. | Default: ::
     ip6_secondary: str  # Secondary IPv6 DNS server IP address for the VDOM. | Default: ::
     source_ip: str  # Source IP for communications with the DNS server. | Default: 0.0.0.0
@@ -40,19 +62,9 @@ class VdomDnsPayload(TypedDict, total=False):
     alt_primary: str  # Alternate primary DNS server. This is not used as | Default: 0.0.0.0
     alt_secondary: str  # Alternate secondary DNS server. This is not used a | Default: 0.0.0.0
 
-# Nested TypedDicts for table field children (dict mode)
-
-class VdomDnsServerhostnameItem(TypedDict):
-    """Type hints for server-hostname table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    hostname: str  # DNS server host name list separated by space | MaxLen: 127
-
-
-# Nested classes for table field children (object mode)
+# ============================================================================
+# Nested classes for table field children (object mode - for API responses)
+# ============================================================================
 
 @final
 class VdomDnsServerhostnameObject:
@@ -157,6 +169,9 @@ class VdomDnsObject:
     # Common API response fields
     status: str
     http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
     vdom: str | None
     
     # Methods from FortiObject
@@ -390,7 +405,7 @@ class VdomDns:
         secondary: str | None = ...,
         protocol: Literal["cleartext", "dot", "doh"] | list[str] | None = ...,
         ssl_certificate: str | None = ...,
-        server_hostname: str | list[str] | list[dict[str, Any]] | None = ...,
+        server_hostname: str | list[VdomDnsServerhostnameItem] | None = ...,
         ip6_primary: str | None = ...,
         ip6_secondary: str | None = ...,
         source_ip: str | None = ...,
@@ -413,7 +428,7 @@ class VdomDns:
         secondary: str | None = ...,
         protocol: Literal["cleartext", "dot", "doh"] | list[str] | None = ...,
         ssl_certificate: str | None = ...,
-        server_hostname: str | list[str] | list[dict[str, Any]] | None = ...,
+        server_hostname: str | list[VdomDnsServerhostnameItem] | None = ...,
         ip6_primary: str | None = ...,
         ip6_secondary: str | None = ...,
         source_ip: str | None = ...,
@@ -437,7 +452,7 @@ class VdomDns:
         secondary: str | None = ...,
         protocol: Literal["cleartext", "dot", "doh"] | list[str] | None = ...,
         ssl_certificate: str | None = ...,
-        server_hostname: str | list[str] | list[dict[str, Any]] | None = ...,
+        server_hostname: str | list[VdomDnsServerhostnameItem] | None = ...,
         ip6_primary: str | None = ...,
         ip6_secondary: str | None = ...,
         source_ip: str | None = ...,
@@ -459,7 +474,7 @@ class VdomDns:
         secondary: str | None = ...,
         protocol: Literal["cleartext", "dot", "doh"] | list[str] | None = ...,
         ssl_certificate: str | None = ...,
-        server_hostname: str | list[str] | list[dict[str, Any]] | None = ...,
+        server_hostname: str | list[VdomDnsServerhostnameItem] | None = ...,
         ip6_primary: str | None = ...,
         ip6_secondary: str | None = ...,
         source_ip: str | None = ...,
@@ -487,7 +502,7 @@ class VdomDns:
         secondary: str | None = ...,
         protocol: Literal["cleartext", "dot", "doh"] | list[str] | None = ...,
         ssl_certificate: str | None = ...,
-        server_hostname: str | list[str] | list[dict[str, Any]] | None = ...,
+        server_hostname: str | list[VdomDnsServerhostnameItem] | None = ...,
         ip6_primary: str | None = ...,
         ip6_secondary: str | None = ...,
         source_ip: str | None = ...,

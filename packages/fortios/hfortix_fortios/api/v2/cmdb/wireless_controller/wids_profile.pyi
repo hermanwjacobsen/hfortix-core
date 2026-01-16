@@ -2,7 +2,59 @@ from typing import TypedDict, Literal, Any, Coroutine, Union, overload, Generato
 from typing_extensions import NotRequired
 from hfortix_fortios.models import FortiObject, FortiObjectList
 
-# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional via total=False)
+# ============================================================================
+# Nested TypedDicts for table field children (dict mode)
+# These MUST be defined before the Payload class to use them as type hints
+# ============================================================================
+
+class WidsProfileApscanchannellist2g5gItem(TypedDict, total=False):
+    """Type hints for ap-scan-channel-list-2G-5G table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: WidsProfileApscanchannellist2g5gItem = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    
+    chan: str  # Channel number. | MaxLen: 3
+
+
+class WidsProfileApscanchannellist6gItem(TypedDict, total=False):
+    """Type hints for ap-scan-channel-list-6G table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: WidsProfileApscanchannellist6gItem = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    
+    chan: str  # Channel 6g number. | MaxLen: 3
+
+
+class WidsProfileApbgscandisableschedulesItem(TypedDict, total=False):
+    """Type hints for ap-bgscan-disable-schedules table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: WidsProfileApbgscandisableschedulesItem = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    
+    name: str  # Schedule name. | MaxLen: 35
+
+
+# ============================================================================
+# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional)
+# ============================================================================
 # NOTE: We intentionally DON'T use NotRequired wrapper because:
 # 1. total=False already makes all fields optional
 # 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
@@ -21,14 +73,14 @@ class WidsProfilePayload(TypedDict, total=False):
     comment: str  # Comment. | MaxLen: 63
     sensor_mode: Literal["disable", "foreign", "both"]  # Scan nearby WiFi stations (default = disable). | Default: disable
     ap_scan: Literal["disable", "enable"]  # Enable/disable rogue AP detection. | Default: disable
-    ap_scan_channel_list_2G_5G: list[dict[str, Any]]  # Selected ap scan channel list for 2.4G and 5G band
-    ap_scan_channel_list_6G: list[dict[str, Any]]  # Selected ap scan channel list for 6G band.
+    ap_scan_channel_list_2G_5G: list[WidsProfileApscanchannellist2g5gItem]  # Selected ap scan channel list for 2.4G and 5G band
+    ap_scan_channel_list_6G: list[WidsProfileApscanchannellist6gItem]  # Selected ap scan channel list for 6G band.
     ap_bgscan_period: int  # Period between background scans | Default: 600 | Min: 10 | Max: 3600
     ap_bgscan_intv: int  # Period between successive channel scans | Default: 3 | Min: 1 | Max: 600
     ap_bgscan_duration: int  # Listen time on scanning a channel | Default: 30 | Min: 10 | Max: 1000
     ap_bgscan_idle: int  # Wait time for channel inactivity before scanning t | Default: 20 | Min: 0 | Max: 1000
     ap_bgscan_report_intv: int  # Period between background scan reports | Default: 30 | Min: 15 | Max: 600
-    ap_bgscan_disable_schedules: list[dict[str, Any]]  # Firewall schedules for turning off FortiAP radio b
+    ap_bgscan_disable_schedules: list[WidsProfileApbgscandisableschedulesItem]  # Firewall schedules for turning off FortiAP radio b
     ap_fgscan_report_intv: int  # Period between foreground scan reports | Default: 15 | Min: 15 | Max: 600
     ap_scan_passive: Literal["enable", "disable"]  # Enable/disable passive scanning. Enable means do n | Default: disable
     ap_scan_threshold: str  # Minimum signal level/threshold in dBm required for | Default: -90 | MaxLen: 7
@@ -128,39 +180,9 @@ class WidsProfilePayload(TypedDict, total=False):
     air_jack: Literal["enable", "disable"]  # Enable/disable AirJack detection | Default: disable
     wpa_ft_attack: Literal["enable", "disable"]  # Enable/disable WPA FT attack detection | Default: disable
 
-# Nested TypedDicts for table field children (dict mode)
-
-class WidsProfileApscanchannellist2g5gItem(TypedDict):
-    """Type hints for ap-scan-channel-list-2G-5G table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    chan: str  # Channel number. | MaxLen: 3
-
-
-class WidsProfileApscanchannellist6gItem(TypedDict):
-    """Type hints for ap-scan-channel-list-6G table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    chan: str  # Channel 6g number. | MaxLen: 3
-
-
-class WidsProfileApbgscandisableschedulesItem(TypedDict):
-    """Type hints for ap-bgscan-disable-schedules table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    name: str  # Schedule name. | MaxLen: 35
-
-
-# Nested classes for table field children (object mode)
+# ============================================================================
+# Nested classes for table field children (object mode - for API responses)
+# ============================================================================
 
 @final
 class WidsProfileApscanchannellist2g5gObject:
@@ -611,6 +633,9 @@ class WidsProfileObject:
     # Common API response fields
     status: str
     http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
     vdom: str | None
     
     # Methods from FortiObject
@@ -844,14 +869,14 @@ class WidsProfile:
         comment: str | None = ...,
         sensor_mode: Literal["disable", "foreign", "both"] | None = ...,
         ap_scan: Literal["disable", "enable"] | None = ...,
-        ap_scan_channel_list_2G_5G: str | list[str] | list[dict[str, Any]] | None = ...,
-        ap_scan_channel_list_6G: str | list[str] | list[dict[str, Any]] | None = ...,
+        ap_scan_channel_list_2G_5G: str | list[WidsProfileApscanchannellist2g5gItem] | None = ...,
+        ap_scan_channel_list_6G: str | list[WidsProfileApscanchannellist6gItem] | None = ...,
         ap_bgscan_period: int | None = ...,
         ap_bgscan_intv: int | None = ...,
         ap_bgscan_duration: int | None = ...,
         ap_bgscan_idle: int | None = ...,
         ap_bgscan_report_intv: int | None = ...,
-        ap_bgscan_disable_schedules: str | list[str] | list[dict[str, Any]] | None = ...,
+        ap_bgscan_disable_schedules: str | list[WidsProfileApbgscandisableschedulesItem] | None = ...,
         ap_fgscan_report_intv: int | None = ...,
         ap_scan_passive: Literal["enable", "disable"] | None = ...,
         ap_scan_threshold: str | None = ...,
@@ -961,14 +986,14 @@ class WidsProfile:
         comment: str | None = ...,
         sensor_mode: Literal["disable", "foreign", "both"] | None = ...,
         ap_scan: Literal["disable", "enable"] | None = ...,
-        ap_scan_channel_list_2G_5G: str | list[str] | list[dict[str, Any]] | None = ...,
-        ap_scan_channel_list_6G: str | list[str] | list[dict[str, Any]] | None = ...,
+        ap_scan_channel_list_2G_5G: str | list[WidsProfileApscanchannellist2g5gItem] | None = ...,
+        ap_scan_channel_list_6G: str | list[WidsProfileApscanchannellist6gItem] | None = ...,
         ap_bgscan_period: int | None = ...,
         ap_bgscan_intv: int | None = ...,
         ap_bgscan_duration: int | None = ...,
         ap_bgscan_idle: int | None = ...,
         ap_bgscan_report_intv: int | None = ...,
-        ap_bgscan_disable_schedules: str | list[str] | list[dict[str, Any]] | None = ...,
+        ap_bgscan_disable_schedules: str | list[WidsProfileApbgscandisableschedulesItem] | None = ...,
         ap_fgscan_report_intv: int | None = ...,
         ap_scan_passive: Literal["enable", "disable"] | None = ...,
         ap_scan_threshold: str | None = ...,
@@ -1079,14 +1104,14 @@ class WidsProfile:
         comment: str | None = ...,
         sensor_mode: Literal["disable", "foreign", "both"] | None = ...,
         ap_scan: Literal["disable", "enable"] | None = ...,
-        ap_scan_channel_list_2G_5G: str | list[str] | list[dict[str, Any]] | None = ...,
-        ap_scan_channel_list_6G: str | list[str] | list[dict[str, Any]] | None = ...,
+        ap_scan_channel_list_2G_5G: str | list[WidsProfileApscanchannellist2g5gItem] | None = ...,
+        ap_scan_channel_list_6G: str | list[WidsProfileApscanchannellist6gItem] | None = ...,
         ap_bgscan_period: int | None = ...,
         ap_bgscan_intv: int | None = ...,
         ap_bgscan_duration: int | None = ...,
         ap_bgscan_idle: int | None = ...,
         ap_bgscan_report_intv: int | None = ...,
-        ap_bgscan_disable_schedules: str | list[str] | list[dict[str, Any]] | None = ...,
+        ap_bgscan_disable_schedules: str | list[WidsProfileApbgscandisableschedulesItem] | None = ...,
         ap_fgscan_report_intv: int | None = ...,
         ap_scan_passive: Literal["enable", "disable"] | None = ...,
         ap_scan_threshold: str | None = ...,
@@ -1195,14 +1220,14 @@ class WidsProfile:
         comment: str | None = ...,
         sensor_mode: Literal["disable", "foreign", "both"] | None = ...,
         ap_scan: Literal["disable", "enable"] | None = ...,
-        ap_scan_channel_list_2G_5G: str | list[str] | list[dict[str, Any]] | None = ...,
-        ap_scan_channel_list_6G: str | list[str] | list[dict[str, Any]] | None = ...,
+        ap_scan_channel_list_2G_5G: str | list[WidsProfileApscanchannellist2g5gItem] | None = ...,
+        ap_scan_channel_list_6G: str | list[WidsProfileApscanchannellist6gItem] | None = ...,
         ap_bgscan_period: int | None = ...,
         ap_bgscan_intv: int | None = ...,
         ap_bgscan_duration: int | None = ...,
         ap_bgscan_idle: int | None = ...,
         ap_bgscan_report_intv: int | None = ...,
-        ap_bgscan_disable_schedules: str | list[str] | list[dict[str, Any]] | None = ...,
+        ap_bgscan_disable_schedules: str | list[WidsProfileApbgscandisableschedulesItem] | None = ...,
         ap_fgscan_report_intv: int | None = ...,
         ap_scan_passive: Literal["enable", "disable"] | None = ...,
         ap_scan_threshold: str | None = ...,
@@ -1313,14 +1338,14 @@ class WidsProfile:
         comment: str | None = ...,
         sensor_mode: Literal["disable", "foreign", "both"] | None = ...,
         ap_scan: Literal["disable", "enable"] | None = ...,
-        ap_scan_channel_list_2G_5G: str | list[str] | list[dict[str, Any]] | None = ...,
-        ap_scan_channel_list_6G: str | list[str] | list[dict[str, Any]] | None = ...,
+        ap_scan_channel_list_2G_5G: str | list[WidsProfileApscanchannellist2g5gItem] | None = ...,
+        ap_scan_channel_list_6G: str | list[WidsProfileApscanchannellist6gItem] | None = ...,
         ap_bgscan_period: int | None = ...,
         ap_bgscan_intv: int | None = ...,
         ap_bgscan_duration: int | None = ...,
         ap_bgscan_idle: int | None = ...,
         ap_bgscan_report_intv: int | None = ...,
-        ap_bgscan_disable_schedules: str | list[str] | list[dict[str, Any]] | None = ...,
+        ap_bgscan_disable_schedules: str | list[WidsProfileApbgscandisableschedulesItem] | None = ...,
         ap_fgscan_report_intv: int | None = ...,
         ap_scan_passive: Literal["enable", "disable"] | None = ...,
         ap_scan_threshold: str | None = ...,
@@ -1430,14 +1455,14 @@ class WidsProfile:
         comment: str | None = ...,
         sensor_mode: Literal["disable", "foreign", "both"] | None = ...,
         ap_scan: Literal["disable", "enable"] | None = ...,
-        ap_scan_channel_list_2G_5G: str | list[str] | list[dict[str, Any]] | None = ...,
-        ap_scan_channel_list_6G: str | list[str] | list[dict[str, Any]] | None = ...,
+        ap_scan_channel_list_2G_5G: str | list[WidsProfileApscanchannellist2g5gItem] | None = ...,
+        ap_scan_channel_list_6G: str | list[WidsProfileApscanchannellist6gItem] | None = ...,
         ap_bgscan_period: int | None = ...,
         ap_bgscan_intv: int | None = ...,
         ap_bgscan_duration: int | None = ...,
         ap_bgscan_idle: int | None = ...,
         ap_bgscan_report_intv: int | None = ...,
-        ap_bgscan_disable_schedules: str | list[str] | list[dict[str, Any]] | None = ...,
+        ap_bgscan_disable_schedules: str | list[WidsProfileApbgscandisableschedulesItem] | None = ...,
         ap_fgscan_report_intv: int | None = ...,
         ap_scan_passive: Literal["enable", "disable"] | None = ...,
         ap_scan_threshold: str | None = ...,
@@ -1548,14 +1573,14 @@ class WidsProfile:
         comment: str | None = ...,
         sensor_mode: Literal["disable", "foreign", "both"] | None = ...,
         ap_scan: Literal["disable", "enable"] | None = ...,
-        ap_scan_channel_list_2G_5G: str | list[str] | list[dict[str, Any]] | None = ...,
-        ap_scan_channel_list_6G: str | list[str] | list[dict[str, Any]] | None = ...,
+        ap_scan_channel_list_2G_5G: str | list[WidsProfileApscanchannellist2g5gItem] | None = ...,
+        ap_scan_channel_list_6G: str | list[WidsProfileApscanchannellist6gItem] | None = ...,
         ap_bgscan_period: int | None = ...,
         ap_bgscan_intv: int | None = ...,
         ap_bgscan_duration: int | None = ...,
         ap_bgscan_idle: int | None = ...,
         ap_bgscan_report_intv: int | None = ...,
-        ap_bgscan_disable_schedules: str | list[str] | list[dict[str, Any]] | None = ...,
+        ap_bgscan_disable_schedules: str | list[WidsProfileApbgscandisableschedulesItem] | None = ...,
         ap_fgscan_report_intv: int | None = ...,
         ap_scan_passive: Literal["enable", "disable"] | None = ...,
         ap_scan_threshold: str | None = ...,
@@ -1664,14 +1689,14 @@ class WidsProfile:
         comment: str | None = ...,
         sensor_mode: Literal["disable", "foreign", "both"] | None = ...,
         ap_scan: Literal["disable", "enable"] | None = ...,
-        ap_scan_channel_list_2G_5G: str | list[str] | list[dict[str, Any]] | None = ...,
-        ap_scan_channel_list_6G: str | list[str] | list[dict[str, Any]] | None = ...,
+        ap_scan_channel_list_2G_5G: str | list[WidsProfileApscanchannellist2g5gItem] | None = ...,
+        ap_scan_channel_list_6G: str | list[WidsProfileApscanchannellist6gItem] | None = ...,
         ap_bgscan_period: int | None = ...,
         ap_bgscan_intv: int | None = ...,
         ap_bgscan_duration: int | None = ...,
         ap_bgscan_idle: int | None = ...,
         ap_bgscan_report_intv: int | None = ...,
-        ap_bgscan_disable_schedules: str | list[str] | list[dict[str, Any]] | None = ...,
+        ap_bgscan_disable_schedules: str | list[WidsProfileApbgscandisableschedulesItem] | None = ...,
         ap_fgscan_report_intv: int | None = ...,
         ap_scan_passive: Literal["enable", "disable"] | None = ...,
         ap_scan_threshold: str | None = ...,
@@ -1815,14 +1840,14 @@ class WidsProfile:
         comment: str | None = ...,
         sensor_mode: Literal["disable", "foreign", "both"] | None = ...,
         ap_scan: Literal["disable", "enable"] | None = ...,
-        ap_scan_channel_list_2G_5G: str | list[str] | list[dict[str, Any]] | None = ...,
-        ap_scan_channel_list_6G: str | list[str] | list[dict[str, Any]] | None = ...,
+        ap_scan_channel_list_2G_5G: str | list[WidsProfileApscanchannellist2g5gItem] | None = ...,
+        ap_scan_channel_list_6G: str | list[WidsProfileApscanchannellist6gItem] | None = ...,
         ap_bgscan_period: int | None = ...,
         ap_bgscan_intv: int | None = ...,
         ap_bgscan_duration: int | None = ...,
         ap_bgscan_idle: int | None = ...,
         ap_bgscan_report_intv: int | None = ...,
-        ap_bgscan_disable_schedules: str | list[str] | list[dict[str, Any]] | None = ...,
+        ap_bgscan_disable_schedules: str | list[WidsProfileApbgscandisableschedulesItem] | None = ...,
         ap_fgscan_report_intv: int | None = ...,
         ap_scan_passive: Literal["enable", "disable"] | None = ...,
         ap_scan_threshold: str | None = ...,

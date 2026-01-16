@@ -2,7 +2,104 @@ from typing import TypedDict, Literal, Any, Coroutine, Union, overload, Generato
 from typing_extensions import NotRequired
 from hfortix_fortios.models import FortiObject, FortiObjectList
 
-# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional via total=False)
+# ============================================================================
+# Nested TypedDicts for table field children (dict mode)
+# These MUST be defined before the Payload class to use them as type hints
+# ============================================================================
+
+class HaAutovirtualmacinterfaceItem(TypedDict, total=False):
+    """Type hints for auto-virtual-mac-interface table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: HaAutovirtualmacinterfaceItem = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    
+    interface_name: str  # Interface name. | MaxLen: 15
+
+
+class HaBackuphbdevItem(TypedDict, total=False):
+    """Type hints for backup-hbdev table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: HaBackuphbdevItem = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    
+    name: str  # Interface name. | MaxLen: 79
+
+
+class HaHamgmtinterfacesItem(TypedDict, total=False):
+    """Type hints for ha-mgmt-interfaces table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: HaHamgmtinterfacesItem = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    
+    id: int  # Table ID. | Default: 0 | Min: 0 | Max: 4294967295
+    interface: str  # Interface to reserve for HA management. | MaxLen: 15
+    dst: str  # Default route destination for reserved HA manageme | Default: 0.0.0.0 0.0.0.0
+    gateway: str  # Default route gateway for reserved HA management i | Default: 0.0.0.0
+    dst6: str  # Default IPv6 destination for reserved HA managemen | Default: ::/0
+    gateway6: str  # Default IPv6 gateway for reserved HA management in | Default: ::
+
+
+class HaUnicastpeersItem(TypedDict, total=False):
+    """Type hints for unicast-peers table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: HaUnicastpeersItem = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    
+    id: int  # Table ID. | Default: 0 | Min: 0 | Max: 4294967295
+    peer_ip: str  # Unicast peer IP. | Default: 0.0.0.0
+
+
+class HaVclusterItem(TypedDict, total=False):
+    """Type hints for vcluster table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: HaVclusterItem = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    
+    vcluster_id: int  # ID. | Default: 1 | Min: 1 | Max: 30
+    override: Literal["enable", "disable"]  # Enable and increase the priority of the unit that | Default: disable
+    priority: int  # Increase the priority to select the primary unit | Default: 128 | Min: 0 | Max: 255
+    override_wait_time: int  # Delay negotiating if override is enabled | Default: 0 | Min: 0 | Max: 3600
+    monitor: str  # Interfaces to check for port monitoring
+    pingserver_monitor_interface: str  # Interfaces to check for remote IP monitoring.
+    pingserver_failover_threshold: int  # Remote IP monitoring failover threshold (0 - 50). | Default: 0 | Min: 0 | Max: 50
+    pingserver_secondary_force_reset: Literal["enable", "disable"]  # Enable to force the cluster to negotiate after a r | Default: enable
+    pingserver_flip_timeout: int  # Time to wait in minutes before renegotiating after | Default: 60 | Min: 6 | Max: 2147483647
+    vdom: str  # Virtual domain(s) in the virtual cluster.
+
+
+# ============================================================================
+# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional)
+# ============================================================================
 # NOTE: We intentionally DON'T use NotRequired wrapper because:
 # 1. total=False already makes all fields optional
 # 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
@@ -29,8 +126,8 @@ class HaPayload(TypedDict, total=False):
     password: str  # Cluster password. Must be the same for all members | MaxLen: 128
     key: str  # Key. | MaxLen: 16
     hbdev: list[dict[str, Any]]  # Heartbeat interfaces. Must be the same for all mem
-    auto_virtual_mac_interface: list[dict[str, Any]]  # The physical interface that will be assigned an au
-    backup_hbdev: list[dict[str, Any]]  # Backup heartbeat interfaces. Must be the same for
+    auto_virtual_mac_interface: list[HaAutovirtualmacinterfaceItem]  # The physical interface that will be assigned an au
+    backup_hbdev: list[HaBackuphbdevItem]  # Backup heartbeat interfaces. Must be the same for
     unicast_hb: Literal["enable", "disable"]  # Enable/disable unicast heartbeat. | Default: disable
     unicast_hb_peerip: str  # Unicast heartbeat peer IP. | Default: 0.0.0.0
     unicast_hb_netmask: str  # Unicast heartbeat netmask. | Default: 0.0.0.0
@@ -61,7 +158,7 @@ class HaPayload(TypedDict, total=False):
     uninterruptible_primary_wait: int  # Number of minutes the primary HA unit waits before | Default: 30 | Min: 15 | Max: 300
     standalone_mgmt_vdom: Literal["enable", "disable"]  # Enable/disable standalone management VDOM. | Default: disable
     ha_mgmt_status: Literal["enable", "disable"]  # Enable to reserve interfaces to manage individual | Default: disable
-    ha_mgmt_interfaces: list[dict[str, Any]]  # Reserve interfaces to manage individual cluster un
+    ha_mgmt_interfaces: list[HaHamgmtinterfacesItem]  # Reserve interfaces to manage individual cluster un
     ha_eth_type: str  # HA heartbeat packet Ethertype (4-digit hex). | Default: 8890 | MaxLen: 4
     hc_eth_type: str  # Transparent mode HA heartbeat packet Ethertype | Default: 8891 | MaxLen: 4
     l2ep_eth_type: str  # Telnet session HA heartbeat packet Ethertype | Default: 8893 | MaxLen: 4
@@ -69,7 +166,7 @@ class HaPayload(TypedDict, total=False):
     standalone_config_sync: Literal["enable", "disable"]  # Enable/disable FGSP configuration synchronization. | Default: disable
     unicast_status: Literal["enable", "disable"]  # Enable/disable unicast connection. | Default: disable
     unicast_gateway: str  # Default route gateway for unicast interface. | Default: 0.0.0.0
-    unicast_peers: list[dict[str, Any]]  # Number of unicast peers.
+    unicast_peers: list[HaUnicastpeersItem]  # Number of unicast peers.
     schedule: Literal["none", "leastconnection", "round-robin", "weight-round-robin", "random", "ip", "ipport"]  # Type of A-A load balancing. Use none if you have e | Default: round-robin
     weight: str  # Weight-round-robin weight for each cluster unit. S | Default: 0 40
     cpu_threshold: str  # Dynamic weighted load balancing CPU usage weight a
@@ -89,7 +186,7 @@ class HaPayload(TypedDict, total=False):
     pingserver_secondary_force_reset: Literal["enable", "disable"]  # Enable to force the cluster to negotiate after a r | Default: enable
     pingserver_flip_timeout: int  # Time to wait in minutes before renegotiating after | Default: 60 | Min: 6 | Max: 2147483647
     vcluster_status: Literal["enable", "disable"]  # Enable/disable virtual cluster for virtual cluster | Default: disable
-    vcluster: list[dict[str, Any]]  # Virtual cluster table.
+    vcluster: list[HaVclusterItem]  # Virtual cluster table.
     ha_direct: Literal["enable", "disable"]  # Enable/disable using ha-mgmt interface for syslog, | Default: disable
     ssd_failover: Literal["enable", "disable"]  # Enable/disable automatic HA failover on SSD disk f | Default: disable
     memory_compatible_mode: Literal["enable", "disable"]  # Enable/disable memory compatible mode. | Default: disable
@@ -104,74 +201,9 @@ class HaPayload(TypedDict, total=False):
     bounce_intf_upon_failover: Literal["enable", "disable"]  # Enable/disable notification of kernel to bring dow | Default: disable
     status: str  # list ha status information
 
-# Nested TypedDicts for table field children (dict mode)
-
-class HaAutovirtualmacinterfaceItem(TypedDict):
-    """Type hints for auto-virtual-mac-interface table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    interface_name: str  # Interface name. | MaxLen: 15
-
-
-class HaBackuphbdevItem(TypedDict):
-    """Type hints for backup-hbdev table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    name: str  # Interface name. | MaxLen: 79
-
-
-class HaHamgmtinterfacesItem(TypedDict):
-    """Type hints for ha-mgmt-interfaces table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    id: int  # Table ID. | Default: 0 | Min: 0 | Max: 4294967295
-    interface: str  # Interface to reserve for HA management. | MaxLen: 15
-    dst: str  # Default route destination for reserved HA manageme | Default: 0.0.0.0 0.0.0.0
-    gateway: str  # Default route gateway for reserved HA management i | Default: 0.0.0.0
-    dst6: str  # Default IPv6 destination for reserved HA managemen | Default: ::/0
-    gateway6: str  # Default IPv6 gateway for reserved HA management in | Default: ::
-
-
-class HaUnicastpeersItem(TypedDict):
-    """Type hints for unicast-peers table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    id: int  # Table ID. | Default: 0 | Min: 0 | Max: 4294967295
-    peer_ip: str  # Unicast peer IP. | Default: 0.0.0.0
-
-
-class HaVclusterItem(TypedDict):
-    """Type hints for vcluster table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    vcluster_id: int  # ID. | Default: 1 | Min: 1 | Max: 30
-    override: Literal["enable", "disable"]  # Enable and increase the priority of the unit that | Default: disable
-    priority: int  # Increase the priority to select the primary unit | Default: 128 | Min: 0 | Max: 255
-    override_wait_time: int  # Delay negotiating if override is enabled | Default: 0 | Min: 0 | Max: 3600
-    monitor: str  # Interfaces to check for port monitoring
-    pingserver_monitor_interface: str  # Interfaces to check for remote IP monitoring.
-    pingserver_failover_threshold: int  # Remote IP monitoring failover threshold (0 - 50). | Default: 0 | Min: 0 | Max: 50
-    pingserver_secondary_force_reset: Literal["enable", "disable"]  # Enable to force the cluster to negotiate after a r | Default: enable
-    pingserver_flip_timeout: int  # Time to wait in minutes before renegotiating after | Default: 60 | Min: 6 | Max: 2147483647
-    vdom: str  # Virtual domain(s) in the virtual cluster.
-
-
-# Nested classes for table field children (object mode)
+# ============================================================================
+# Nested classes for table field children (object mode - for API responses)
+# ============================================================================
 
 @final
 class HaAutovirtualmacinterfaceObject:
@@ -629,6 +661,9 @@ class HaObject:
     # Common API response fields
     status: str
     http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
     vdom: str | None
     
     # Methods from FortiObject
@@ -864,8 +899,8 @@ class Ha:
         password: str | None = ...,
         key: str | None = ...,
         hbdev: str | list[str] | None = ...,
-        auto_virtual_mac_interface: str | list[str] | list[dict[str, Any]] | None = ...,
-        backup_hbdev: str | list[str] | list[dict[str, Any]] | None = ...,
+        auto_virtual_mac_interface: str | list[HaAutovirtualmacinterfaceItem] | None = ...,
+        backup_hbdev: str | list[HaBackuphbdevItem] | None = ...,
         unicast_hb: Literal["enable", "disable"] | None = ...,
         unicast_hb_peerip: str | None = ...,
         unicast_hb_netmask: str | None = ...,
@@ -896,7 +931,7 @@ class Ha:
         uninterruptible_primary_wait: int | None = ...,
         standalone_mgmt_vdom: Literal["enable", "disable"] | None = ...,
         ha_mgmt_status: Literal["enable", "disable"] | None = ...,
-        ha_mgmt_interfaces: str | list[str] | list[dict[str, Any]] | None = ...,
+        ha_mgmt_interfaces: str | list[HaHamgmtinterfacesItem] | None = ...,
         ha_eth_type: str | None = ...,
         hc_eth_type: str | None = ...,
         l2ep_eth_type: str | None = ...,
@@ -904,7 +939,7 @@ class Ha:
         standalone_config_sync: Literal["enable", "disable"] | None = ...,
         unicast_status: Literal["enable", "disable"] | None = ...,
         unicast_gateway: str | None = ...,
-        unicast_peers: str | list[str] | list[dict[str, Any]] | None = ...,
+        unicast_peers: str | list[HaUnicastpeersItem] | None = ...,
         schedule: Literal["none", "leastconnection", "round-robin", "weight-round-robin", "random", "ip", "ipport"] | None = ...,
         weight: str | None = ...,
         cpu_threshold: str | None = ...,
@@ -924,7 +959,7 @@ class Ha:
         pingserver_secondary_force_reset: Literal["enable", "disable"] | None = ...,
         pingserver_flip_timeout: int | None = ...,
         vcluster_status: Literal["enable", "disable"] | None = ...,
-        vcluster: str | list[str] | list[dict[str, Any]] | None = ...,
+        vcluster: str | list[HaVclusterItem] | None = ...,
         ha_direct: Literal["enable", "disable"] | None = ...,
         ssd_failover: Literal["enable", "disable"] | None = ...,
         memory_compatible_mode: Literal["enable", "disable"] | None = ...,
@@ -952,8 +987,8 @@ class Ha:
         password: str | None = ...,
         key: str | None = ...,
         hbdev: str | list[str] | None = ...,
-        auto_virtual_mac_interface: str | list[str] | list[dict[str, Any]] | None = ...,
-        backup_hbdev: str | list[str] | list[dict[str, Any]] | None = ...,
+        auto_virtual_mac_interface: str | list[HaAutovirtualmacinterfaceItem] | None = ...,
+        backup_hbdev: str | list[HaBackuphbdevItem] | None = ...,
         unicast_hb: Literal["enable", "disable"] | None = ...,
         unicast_hb_peerip: str | None = ...,
         unicast_hb_netmask: str | None = ...,
@@ -984,7 +1019,7 @@ class Ha:
         uninterruptible_primary_wait: int | None = ...,
         standalone_mgmt_vdom: Literal["enable", "disable"] | None = ...,
         ha_mgmt_status: Literal["enable", "disable"] | None = ...,
-        ha_mgmt_interfaces: str | list[str] | list[dict[str, Any]] | None = ...,
+        ha_mgmt_interfaces: str | list[HaHamgmtinterfacesItem] | None = ...,
         ha_eth_type: str | None = ...,
         hc_eth_type: str | None = ...,
         l2ep_eth_type: str | None = ...,
@@ -992,7 +1027,7 @@ class Ha:
         standalone_config_sync: Literal["enable", "disable"] | None = ...,
         unicast_status: Literal["enable", "disable"] | None = ...,
         unicast_gateway: str | None = ...,
-        unicast_peers: str | list[str] | list[dict[str, Any]] | None = ...,
+        unicast_peers: str | list[HaUnicastpeersItem] | None = ...,
         schedule: Literal["none", "leastconnection", "round-robin", "weight-round-robin", "random", "ip", "ipport"] | None = ...,
         weight: str | None = ...,
         cpu_threshold: str | None = ...,
@@ -1012,7 +1047,7 @@ class Ha:
         pingserver_secondary_force_reset: Literal["enable", "disable"] | None = ...,
         pingserver_flip_timeout: int | None = ...,
         vcluster_status: Literal["enable", "disable"] | None = ...,
-        vcluster: str | list[str] | list[dict[str, Any]] | None = ...,
+        vcluster: str | list[HaVclusterItem] | None = ...,
         ha_direct: Literal["enable", "disable"] | None = ...,
         ssd_failover: Literal["enable", "disable"] | None = ...,
         memory_compatible_mode: Literal["enable", "disable"] | None = ...,
@@ -1041,8 +1076,8 @@ class Ha:
         password: str | None = ...,
         key: str | None = ...,
         hbdev: str | list[str] | None = ...,
-        auto_virtual_mac_interface: str | list[str] | list[dict[str, Any]] | None = ...,
-        backup_hbdev: str | list[str] | list[dict[str, Any]] | None = ...,
+        auto_virtual_mac_interface: str | list[HaAutovirtualmacinterfaceItem] | None = ...,
+        backup_hbdev: str | list[HaBackuphbdevItem] | None = ...,
         unicast_hb: Literal["enable", "disable"] | None = ...,
         unicast_hb_peerip: str | None = ...,
         unicast_hb_netmask: str | None = ...,
@@ -1073,7 +1108,7 @@ class Ha:
         uninterruptible_primary_wait: int | None = ...,
         standalone_mgmt_vdom: Literal["enable", "disable"] | None = ...,
         ha_mgmt_status: Literal["enable", "disable"] | None = ...,
-        ha_mgmt_interfaces: str | list[str] | list[dict[str, Any]] | None = ...,
+        ha_mgmt_interfaces: str | list[HaHamgmtinterfacesItem] | None = ...,
         ha_eth_type: str | None = ...,
         hc_eth_type: str | None = ...,
         l2ep_eth_type: str | None = ...,
@@ -1081,7 +1116,7 @@ class Ha:
         standalone_config_sync: Literal["enable", "disable"] | None = ...,
         unicast_status: Literal["enable", "disable"] | None = ...,
         unicast_gateway: str | None = ...,
-        unicast_peers: str | list[str] | list[dict[str, Any]] | None = ...,
+        unicast_peers: str | list[HaUnicastpeersItem] | None = ...,
         schedule: Literal["none", "leastconnection", "round-robin", "weight-round-robin", "random", "ip", "ipport"] | None = ...,
         weight: str | None = ...,
         cpu_threshold: str | None = ...,
@@ -1101,7 +1136,7 @@ class Ha:
         pingserver_secondary_force_reset: Literal["enable", "disable"] | None = ...,
         pingserver_flip_timeout: int | None = ...,
         vcluster_status: Literal["enable", "disable"] | None = ...,
-        vcluster: str | list[str] | list[dict[str, Any]] | None = ...,
+        vcluster: str | list[HaVclusterItem] | None = ...,
         ha_direct: Literal["enable", "disable"] | None = ...,
         ssd_failover: Literal["enable", "disable"] | None = ...,
         memory_compatible_mode: Literal["enable", "disable"] | None = ...,
@@ -1128,8 +1163,8 @@ class Ha:
         password: str | None = ...,
         key: str | None = ...,
         hbdev: str | list[str] | None = ...,
-        auto_virtual_mac_interface: str | list[str] | list[dict[str, Any]] | None = ...,
-        backup_hbdev: str | list[str] | list[dict[str, Any]] | None = ...,
+        auto_virtual_mac_interface: str | list[HaAutovirtualmacinterfaceItem] | None = ...,
+        backup_hbdev: str | list[HaBackuphbdevItem] | None = ...,
         unicast_hb: Literal["enable", "disable"] | None = ...,
         unicast_hb_peerip: str | None = ...,
         unicast_hb_netmask: str | None = ...,
@@ -1160,7 +1195,7 @@ class Ha:
         uninterruptible_primary_wait: int | None = ...,
         standalone_mgmt_vdom: Literal["enable", "disable"] | None = ...,
         ha_mgmt_status: Literal["enable", "disable"] | None = ...,
-        ha_mgmt_interfaces: str | list[str] | list[dict[str, Any]] | None = ...,
+        ha_mgmt_interfaces: str | list[HaHamgmtinterfacesItem] | None = ...,
         ha_eth_type: str | None = ...,
         hc_eth_type: str | None = ...,
         l2ep_eth_type: str | None = ...,
@@ -1168,7 +1203,7 @@ class Ha:
         standalone_config_sync: Literal["enable", "disable"] | None = ...,
         unicast_status: Literal["enable", "disable"] | None = ...,
         unicast_gateway: str | None = ...,
-        unicast_peers: str | list[str] | list[dict[str, Any]] | None = ...,
+        unicast_peers: str | list[HaUnicastpeersItem] | None = ...,
         schedule: Literal["none", "leastconnection", "round-robin", "weight-round-robin", "random", "ip", "ipport"] | None = ...,
         weight: str | None = ...,
         cpu_threshold: str | None = ...,
@@ -1188,7 +1223,7 @@ class Ha:
         pingserver_secondary_force_reset: Literal["enable", "disable"] | None = ...,
         pingserver_flip_timeout: int | None = ...,
         vcluster_status: Literal["enable", "disable"] | None = ...,
-        vcluster: str | list[str] | list[dict[str, Any]] | None = ...,
+        vcluster: str | list[HaVclusterItem] | None = ...,
         ha_direct: Literal["enable", "disable"] | None = ...,
         ssd_failover: Literal["enable", "disable"] | None = ...,
         memory_compatible_mode: Literal["enable", "disable"] | None = ...,
@@ -1221,8 +1256,8 @@ class Ha:
         password: str | None = ...,
         key: str | None = ...,
         hbdev: str | list[str] | None = ...,
-        auto_virtual_mac_interface: str | list[str] | list[dict[str, Any]] | None = ...,
-        backup_hbdev: str | list[str] | list[dict[str, Any]] | None = ...,
+        auto_virtual_mac_interface: str | list[HaAutovirtualmacinterfaceItem] | None = ...,
+        backup_hbdev: str | list[HaBackuphbdevItem] | None = ...,
         unicast_hb: Literal["enable", "disable"] | None = ...,
         unicast_hb_peerip: str | None = ...,
         unicast_hb_netmask: str | None = ...,
@@ -1253,7 +1288,7 @@ class Ha:
         uninterruptible_primary_wait: int | None = ...,
         standalone_mgmt_vdom: Literal["enable", "disable"] | None = ...,
         ha_mgmt_status: Literal["enable", "disable"] | None = ...,
-        ha_mgmt_interfaces: str | list[str] | list[dict[str, Any]] | None = ...,
+        ha_mgmt_interfaces: str | list[HaHamgmtinterfacesItem] | None = ...,
         ha_eth_type: str | None = ...,
         hc_eth_type: str | None = ...,
         l2ep_eth_type: str | None = ...,
@@ -1261,7 +1296,7 @@ class Ha:
         standalone_config_sync: Literal["enable", "disable"] | None = ...,
         unicast_status: Literal["enable", "disable"] | None = ...,
         unicast_gateway: str | None = ...,
-        unicast_peers: str | list[str] | list[dict[str, Any]] | None = ...,
+        unicast_peers: str | list[HaUnicastpeersItem] | None = ...,
         schedule: Literal["none", "leastconnection", "round-robin", "weight-round-robin", "random", "ip", "ipport"] | None = ...,
         weight: str | None = ...,
         cpu_threshold: str | None = ...,
@@ -1281,7 +1316,7 @@ class Ha:
         pingserver_secondary_force_reset: Literal["enable", "disable"] | None = ...,
         pingserver_flip_timeout: int | None = ...,
         vcluster_status: Literal["enable", "disable"] | None = ...,
-        vcluster: str | list[str] | list[dict[str, Any]] | None = ...,
+        vcluster: str | list[HaVclusterItem] | None = ...,
         ha_direct: Literal["enable", "disable"] | None = ...,
         ssd_failover: Literal["enable", "disable"] | None = ...,
         memory_compatible_mode: Literal["enable", "disable"] | None = ...,

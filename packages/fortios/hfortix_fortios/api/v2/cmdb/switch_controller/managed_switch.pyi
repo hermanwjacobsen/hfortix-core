@@ -2,127 +2,53 @@ from typing import TypedDict, Literal, Any, Coroutine, Union, overload, Generato
 from typing_extensions import NotRequired
 from hfortix_fortios.models import FortiObject, FortiObjectList
 
-# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional via total=False)
-# NOTE: We intentionally DON'T use NotRequired wrapper because:
-# 1. total=False already makes all fields optional
-# 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
-class ManagedSwitchPayload(TypedDict, total=False):
-    """
-    Type hints for switch_controller/managed_switch payload fields.
-    
-    Configure FortiSwitch devices that are managed by this FortiGate.
-    
-    **Related Resources:**
-
-    Dependencies (resources this endpoint references):
-        - :class:`~.switch-controller.ptp.profile.ProfileEndpoint` (via: ptp-profile)
-        - :class:`~.switch-controller.security-policy.local-access.LocalAccessEndpoint` (via: access-profile)
-        - :class:`~.switch-controller.switch-profile.SwitchProfileEndpoint` (via: switch-profile)
-        - :class:`~.system.interface.InterfaceEndpoint` (via: fsw-wan1-peer)
-
-    **Usage:**
-        payload: ManagedSwitchPayload = {
-            "field": "value",  # <- autocomplete shows all fields
-        }
-    """
-    switch_id: str  # Managed-switch name. | MaxLen: 35
-    sn: str  # Managed-switch serial number. | MaxLen: 16
-    description: str  # Description. | MaxLen: 63
-    switch_profile: str  # FortiSwitch profile. | Default: default | MaxLen: 35
-    access_profile: str  # FortiSwitch access profile. | Default: default | MaxLen: 31
-    purdue_level: Literal["1", "1.5", "2", "2.5", "3", "3.5", "4", "5", "5.5"]  # Purdue Level of this FortiSwitch. | Default: 3
-    fsw_wan1_peer: str  # FortiSwitch WAN1 peer port. | MaxLen: 35
-    fsw_wan1_admin: Literal["discovered", "disable", "enable"]  # FortiSwitch WAN1 admin status; enable to authorize | Default: discovered
-    poe_pre_standard_detection: Literal["enable", "disable"]  # Enable/disable PoE pre-standard detection. | Default: disable
-    dhcp_server_access_list: Literal["global", "enable", "disable"]  # DHCP snooping server access list. | Default: global
-    poe_detection_type: int  # PoE detection type for FortiSwitch. | Default: 0 | Min: 0 | Max: 255
-    max_poe_budget: int  # Max PoE budget for FortiSwitch. | Default: 0 | Min: 0 | Max: 65535
-    directly_connected: int  # Directly connected FortiSwitch. | Default: 0 | Min: 0 | Max: 1
-    version: int  # FortiSwitch version. | Default: 0 | Min: 0 | Max: 255
-    max_allowed_trunk_members: int  # FortiSwitch maximum allowed trunk members. | Default: 0 | Min: 0 | Max: 255
-    pre_provisioned: int  # Pre-provisioned managed switch. | Default: 0 | Min: 0 | Max: 255
-    l3_discovered: int  # Layer 3 management discovered. | Default: 0 | Min: 0 | Max: 1
-    mgmt_mode: int  # FortiLink management mode. | Default: 0 | Min: 0 | Max: 255
-    tunnel_discovered: int  # SOCKS tunnel management discovered. | Default: 0 | Min: 0 | Max: 1
-    tdr_supported: str  # TDR supported. | MaxLen: 31
-    dynamic_capability: str  # List of features this FortiSwitch supports | Default: 0x00000000000000000000000000000000
-    switch_device_tag: str  # User definable label/tag. | MaxLen: 32
-    switch_dhcp_opt43_key: str  # DHCP option43 key. | MaxLen: 63
-    mclag_igmp_snooping_aware: Literal["enable", "disable"]  # Enable/disable MCLAG IGMP-snooping awareness. | Default: enable
-    dynamically_discovered: int  # Dynamically discovered FortiSwitch. | Default: 0 | Min: 0 | Max: 1
-    ptp_status: Literal["disable", "enable"]  # Enable/disable PTP profile on this FortiSwitch. | Default: disable
-    ptp_profile: str  # PTP profile configuration. | Default: default | MaxLen: 63
-    radius_nas_ip_override: Literal["disable", "enable"]  # Use locally defined NAS-IP. | Default: disable
-    radius_nas_ip: str  # NAS-IP address. | Default: 0.0.0.0
-    route_offload: Literal["disable", "enable"]  # Enable/disable route offload on this FortiSwitch. | Default: disable
-    route_offload_mclag: Literal["disable", "enable"]  # Enable/disable route offload MCLAG on this FortiSw | Default: disable
-    route_offload_router: list[dict[str, Any]]  # Configure route offload MCLAG IP address.
-    vlan: list[dict[str, Any]]  # Configure VLAN assignment priority.
-    type: Literal["virtual", "physical"]  # Indication of switch type, physical or virtual. | Default: physical
-    owner_vdom: str  # VDOM which owner of port belongs to. | MaxLen: 31
-    flow_identity: str  # Flow-tracking netflow ipfix switch identity in hex | Default: 00000000
-    staged_image_version: str  # Staged image version for FortiSwitch. | MaxLen: 127
-    delayed_restart_trigger: int  # Delayed restart triggered for this FortiSwitch. | Default: 0 | Min: 0 | Max: 255
-    firmware_provision: Literal["enable", "disable"]  # Enable/disable provisioning of firmware to FortiSw | Default: disable
-    firmware_provision_version: str  # Firmware version to provision to this FortiSwitch | MaxLen: 35
-    firmware_provision_latest: Literal["disable", "once"]  # Enable/disable one-time automatic provisioning of | Default: disable
-    ports: list[dict[str, Any]]  # Managed-switch port list.
-    ip_source_guard: list[dict[str, Any]]  # IP source guard.
-    stp_settings: str  # Configuration method to edit Spanning Tree Protoco
-    stp_instance: list[dict[str, Any]]  # Configuration method to edit Spanning Tree Protoco
-    override_snmp_sysinfo: Literal["disable", "enable"]  # Enable/disable overriding the global SNMP system i | Default: disable
-    snmp_sysinfo: str  # Configuration method to edit Simple Network Manage
-    override_snmp_trap_threshold: Literal["enable", "disable"]  # Enable/disable overriding the global SNMP trap thr | Default: disable
-    snmp_trap_threshold: str  # Configuration method to edit Simple Network Manage
-    override_snmp_community: Literal["enable", "disable"]  # Enable/disable overriding the global SNMP communit | Default: disable
-    snmp_community: list[dict[str, Any]]  # Configuration method to edit Simple Network Manage
-    override_snmp_user: Literal["enable", "disable"]  # Enable/disable overriding the global SNMP users. | Default: disable
-    snmp_user: list[dict[str, Any]]  # Configuration method to edit Simple Network Manage
-    qos_drop_policy: Literal["taildrop", "random-early-detection"]  # Set QoS drop-policy. | Default: taildrop
-    qos_red_probability: int  # Set QoS RED/WRED drop probability. | Default: 12 | Min: 0 | Max: 100
-    switch_log: str  # Configuration method to edit FortiSwitch logging s
-    remote_log: list[dict[str, Any]]  # Configure logging by FortiSwitch device to a remot
-    storm_control: str  # Configuration method to edit FortiSwitch storm con
-    mirror: list[dict[str, Any]]  # Configuration method to edit FortiSwitch packet mi
-    static_mac: list[dict[str, Any]]  # Configuration method to edit FortiSwitch Static an
-    custom_command: list[dict[str, Any]]  # Configuration method to edit FortiSwitch commands
-    dhcp_snooping_static_client: list[dict[str, Any]]  # Configure FortiSwitch DHCP snooping static clients
-    igmp_snooping: str  # Configure FortiSwitch IGMP snooping global setting
-    x802_1X_settings: str  # Configuration method to edit FortiSwitch 802.1X gl
-    router_vrf: list[dict[str, Any]]  # Configure VRF.
-    system_interface: list[dict[str, Any]]  # Configure system interface on FortiSwitch.
-    router_static: list[dict[str, Any]]  # Configure static routes.
-    system_dhcp_server: list[dict[str, Any]]  # Configure DHCP servers.
-
+# ============================================================================
 # Nested TypedDicts for table field children (dict mode)
+# These MUST be defined before the Payload class to use them as type hints
+# ============================================================================
 
-class ManagedSwitchRouteoffloadrouterItem(TypedDict):
+class ManagedSwitchRouteoffloadrouterItem(TypedDict, total=False):
     """Type hints for route-offload-router table item fields (dict mode).
     
     Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: ManagedSwitchRouteoffloadrouterItem = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
     """
     
     vlan_name: str  # VLAN name. | MaxLen: 15
     router_ip: str  # Router IP address. | Default: 0.0.0.0
 
 
-class ManagedSwitchVlanItem(TypedDict):
+class ManagedSwitchVlanItem(TypedDict, total=False):
     """Type hints for vlan table item fields (dict mode).
     
     Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: ManagedSwitchVlanItem = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
     """
     
     vlan_name: str  # VLAN name. | MaxLen: 15
     assignment_priority: int  # 802.1x Radius (Tunnel-Private-Group-Id) VLANID ass | Default: 128 | Min: 1 | Max: 255
 
 
-class ManagedSwitchPortsItem(TypedDict):
+class ManagedSwitchPortsItem(TypedDict, total=False):
     """Type hints for ports table item fields (dict mode).
     
     Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: ManagedSwitchPortsItem = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
     """
     
     port_name: str  # Switch port name. | MaxLen: 15
@@ -228,11 +154,16 @@ class ManagedSwitchPortsItem(TypedDict):
     fallback_port: str  # LACP fallback port. | MaxLen: 79
 
 
-class ManagedSwitchIpsourceguardItem(TypedDict):
+class ManagedSwitchIpsourceguardItem(TypedDict, total=False):
     """Type hints for ip-source-guard table item fields (dict mode).
     
     Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: ManagedSwitchIpsourceguardItem = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
     """
     
     port: str  # Ingress interface to which source guard is bound. | MaxLen: 15
@@ -240,22 +171,32 @@ class ManagedSwitchIpsourceguardItem(TypedDict):
     binding_entry: str  # IP and MAC address configuration.
 
 
-class ManagedSwitchStpinstanceItem(TypedDict):
+class ManagedSwitchStpinstanceItem(TypedDict, total=False):
     """Type hints for stp-instance table item fields (dict mode).
     
     Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: ManagedSwitchStpinstanceItem = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
     """
     
     id: str  # Instance ID. | MaxLen: 2
     priority: Literal["0", "4096", "8192", "12288", "16384", "20480", "24576", "28672", "32768", "36864", "40960", "45056", "49152", "53248", "57344", "61440"]  # Priority. | Default: 32768
 
 
-class ManagedSwitchSnmpcommunityItem(TypedDict):
+class ManagedSwitchSnmpcommunityItem(TypedDict, total=False):
     """Type hints for snmp-community table item fields (dict mode).
     
     Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: ManagedSwitchSnmpcommunityItem = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
     """
     
     id: int  # SNMP community ID. | Default: 0 | Min: 0 | Max: 4294967295
@@ -275,11 +216,16 @@ class ManagedSwitchSnmpcommunityItem(TypedDict):
     events: Literal["cpu-high", "mem-low", "log-full", "intf-ip", "ent-conf-change", "l2mac"]  # SNMP notifications (traps) to send. | Default: cpu-high mem-low log-full intf-ip ent-conf-change l2mac
 
 
-class ManagedSwitchSnmpuserItem(TypedDict):
+class ManagedSwitchSnmpuserItem(TypedDict, total=False):
     """Type hints for snmp-user table item fields (dict mode).
     
     Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: ManagedSwitchSnmpuserItem = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
     """
     
     name: str  # SNMP user name. | MaxLen: 32
@@ -292,11 +238,16 @@ class ManagedSwitchSnmpuserItem(TypedDict):
     priv_pwd: str  # Password for privacy (encryption) protocol. | MaxLen: 128
 
 
-class ManagedSwitchRemotelogItem(TypedDict):
+class ManagedSwitchRemotelogItem(TypedDict, total=False):
     """Type hints for remote-log table item fields (dict mode).
     
     Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: ManagedSwitchRemotelogItem = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
     """
     
     name: str  # Remote log name. | MaxLen: 35
@@ -308,11 +259,16 @@ class ManagedSwitchRemotelogItem(TypedDict):
     facility: Literal["kernel", "user", "mail", "daemon", "auth", "syslog", "lpr", "news", "uucp", "cron", "authpriv", "ftp", "ntp", "audit", "alert", "clock", "local0", "local1", "local2", "local3", "local4", "local5", "local6", "local7"]  # Facility to log to remote syslog server. | Default: local7
 
 
-class ManagedSwitchMirrorItem(TypedDict):
+class ManagedSwitchMirrorItem(TypedDict, total=False):
     """Type hints for mirror table item fields (dict mode).
     
     Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: ManagedSwitchMirrorItem = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
     """
     
     name: str  # Mirror name. | MaxLen: 63
@@ -323,11 +279,16 @@ class ManagedSwitchMirrorItem(TypedDict):
     src_egress: str  # Source egress interfaces.
 
 
-class ManagedSwitchStaticmacItem(TypedDict):
+class ManagedSwitchStaticmacItem(TypedDict, total=False):
     """Type hints for static-mac table item fields (dict mode).
     
     Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: ManagedSwitchStaticmacItem = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
     """
     
     id: int  # ID. | Default: 0 | Min: 0 | Max: 4294967295
@@ -338,22 +299,32 @@ class ManagedSwitchStaticmacItem(TypedDict):
     description: str  # Description. | MaxLen: 63
 
 
-class ManagedSwitchCustomcommandItem(TypedDict):
+class ManagedSwitchCustomcommandItem(TypedDict, total=False):
     """Type hints for custom-command table item fields (dict mode).
     
     Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: ManagedSwitchCustomcommandItem = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
     """
     
     command_entry: str  # List of FortiSwitch commands. | MaxLen: 35
     command_name: str  # Names of commands to be pushed to this FortiSwitch | MaxLen: 35
 
 
-class ManagedSwitchDhcpsnoopingstaticclientItem(TypedDict):
+class ManagedSwitchDhcpsnoopingstaticclientItem(TypedDict, total=False):
     """Type hints for dhcp-snooping-static-client table item fields (dict mode).
     
     Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: ManagedSwitchDhcpsnoopingstaticclientItem = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
     """
     
     name: str  # Client name. | MaxLen: 35
@@ -363,11 +334,16 @@ class ManagedSwitchDhcpsnoopingstaticclientItem(TypedDict):
     port: str  # Interface name. | MaxLen: 15
 
 
-class ManagedSwitchRoutervrfItem(TypedDict):
+class ManagedSwitchRoutervrfItem(TypedDict, total=False):
     """Type hints for router-vrf table item fields (dict mode).
     
     Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: ManagedSwitchRoutervrfItem = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
     """
     
     name: str  # VRF entry name. | MaxLen: 35
@@ -375,11 +351,16 @@ class ManagedSwitchRoutervrfItem(TypedDict):
     vrfid: int  # VRF ID. | Default: 0 | Min: 0 | Max: 1023
 
 
-class ManagedSwitchSysteminterfaceItem(TypedDict):
+class ManagedSwitchSysteminterfaceItem(TypedDict, total=False):
     """Type hints for system-interface table item fields (dict mode).
     
     Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: ManagedSwitchSysteminterfaceItem = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
     """
     
     name: str  # Interface name. | MaxLen: 15
@@ -394,11 +375,16 @@ class ManagedSwitchSysteminterfaceItem(TypedDict):
     vrf: str  # VRF for this route. | MaxLen: 63
 
 
-class ManagedSwitchRouterstaticItem(TypedDict):
+class ManagedSwitchRouterstaticItem(TypedDict, total=False):
     """Type hints for router-static table item fields (dict mode).
     
     Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: ManagedSwitchRouterstaticItem = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
     """
     
     id: int  # Entry sequence number. | Default: 0 | Min: 0 | Max: 4294967295
@@ -414,11 +400,16 @@ class ManagedSwitchRouterstaticItem(TypedDict):
     vrf: str  # VRF for this route. | MaxLen: 35
 
 
-class ManagedSwitchSystemdhcpserverItem(TypedDict):
+class ManagedSwitchSystemdhcpserverItem(TypedDict, total=False):
     """Type hints for system-dhcp-server table item fields (dict mode).
     
     Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: ManagedSwitchSystemdhcpserverItem = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
     """
     
     id: int  # ID. | Default: 0 | Min: 0 | Max: 4294967295
@@ -440,7 +431,103 @@ class ManagedSwitchSystemdhcpserverItem(TypedDict):
     options: str  # DHCP options.
 
 
-# Nested classes for table field children (object mode)
+# ============================================================================
+# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional)
+# ============================================================================
+# NOTE: We intentionally DON'T use NotRequired wrapper because:
+# 1. total=False already makes all fields optional
+# 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
+class ManagedSwitchPayload(TypedDict, total=False):
+    """
+    Type hints for switch_controller/managed_switch payload fields.
+    
+    Configure FortiSwitch devices that are managed by this FortiGate.
+    
+    **Related Resources:**
+
+    Dependencies (resources this endpoint references):
+        - :class:`~.switch-controller.ptp.profile.ProfileEndpoint` (via: ptp-profile)
+        - :class:`~.switch-controller.security-policy.local-access.LocalAccessEndpoint` (via: access-profile)
+        - :class:`~.switch-controller.switch-profile.SwitchProfileEndpoint` (via: switch-profile)
+        - :class:`~.system.interface.InterfaceEndpoint` (via: fsw-wan1-peer)
+
+    **Usage:**
+        payload: ManagedSwitchPayload = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    switch_id: str  # Managed-switch name. | MaxLen: 35
+    sn: str  # Managed-switch serial number. | MaxLen: 16
+    description: str  # Description. | MaxLen: 63
+    switch_profile: str  # FortiSwitch profile. | Default: default | MaxLen: 35
+    access_profile: str  # FortiSwitch access profile. | Default: default | MaxLen: 31
+    purdue_level: Literal["1", "1.5", "2", "2.5", "3", "3.5", "4", "5", "5.5"]  # Purdue Level of this FortiSwitch. | Default: 3
+    fsw_wan1_peer: str  # FortiSwitch WAN1 peer port. | MaxLen: 35
+    fsw_wan1_admin: Literal["discovered", "disable", "enable"]  # FortiSwitch WAN1 admin status; enable to authorize | Default: discovered
+    poe_pre_standard_detection: Literal["enable", "disable"]  # Enable/disable PoE pre-standard detection. | Default: disable
+    dhcp_server_access_list: Literal["global", "enable", "disable"]  # DHCP snooping server access list. | Default: global
+    poe_detection_type: int  # PoE detection type for FortiSwitch. | Default: 0 | Min: 0 | Max: 255
+    max_poe_budget: int  # Max PoE budget for FortiSwitch. | Default: 0 | Min: 0 | Max: 65535
+    directly_connected: int  # Directly connected FortiSwitch. | Default: 0 | Min: 0 | Max: 1
+    version: int  # FortiSwitch version. | Default: 0 | Min: 0 | Max: 255
+    max_allowed_trunk_members: int  # FortiSwitch maximum allowed trunk members. | Default: 0 | Min: 0 | Max: 255
+    pre_provisioned: int  # Pre-provisioned managed switch. | Default: 0 | Min: 0 | Max: 255
+    l3_discovered: int  # Layer 3 management discovered. | Default: 0 | Min: 0 | Max: 1
+    mgmt_mode: int  # FortiLink management mode. | Default: 0 | Min: 0 | Max: 255
+    tunnel_discovered: int  # SOCKS tunnel management discovered. | Default: 0 | Min: 0 | Max: 1
+    tdr_supported: str  # TDR supported. | MaxLen: 31
+    dynamic_capability: str  # List of features this FortiSwitch supports | Default: 0x00000000000000000000000000000000
+    switch_device_tag: str  # User definable label/tag. | MaxLen: 32
+    switch_dhcp_opt43_key: str  # DHCP option43 key. | MaxLen: 63
+    mclag_igmp_snooping_aware: Literal["enable", "disable"]  # Enable/disable MCLAG IGMP-snooping awareness. | Default: enable
+    dynamically_discovered: int  # Dynamically discovered FortiSwitch. | Default: 0 | Min: 0 | Max: 1
+    ptp_status: Literal["disable", "enable"]  # Enable/disable PTP profile on this FortiSwitch. | Default: disable
+    ptp_profile: str  # PTP profile configuration. | Default: default | MaxLen: 63
+    radius_nas_ip_override: Literal["disable", "enable"]  # Use locally defined NAS-IP. | Default: disable
+    radius_nas_ip: str  # NAS-IP address. | Default: 0.0.0.0
+    route_offload: Literal["disable", "enable"]  # Enable/disable route offload on this FortiSwitch. | Default: disable
+    route_offload_mclag: Literal["disable", "enable"]  # Enable/disable route offload MCLAG on this FortiSw | Default: disable
+    route_offload_router: list[ManagedSwitchRouteoffloadrouterItem]  # Configure route offload MCLAG IP address.
+    vlan: list[ManagedSwitchVlanItem]  # Configure VLAN assignment priority.
+    type: Literal["virtual", "physical"]  # Indication of switch type, physical or virtual. | Default: physical
+    owner_vdom: str  # VDOM which owner of port belongs to. | MaxLen: 31
+    flow_identity: str  # Flow-tracking netflow ipfix switch identity in hex | Default: 00000000
+    staged_image_version: str  # Staged image version for FortiSwitch. | MaxLen: 127
+    delayed_restart_trigger: int  # Delayed restart triggered for this FortiSwitch. | Default: 0 | Min: 0 | Max: 255
+    firmware_provision: Literal["enable", "disable"]  # Enable/disable provisioning of firmware to FortiSw | Default: disable
+    firmware_provision_version: str  # Firmware version to provision to this FortiSwitch | MaxLen: 35
+    firmware_provision_latest: Literal["disable", "once"]  # Enable/disable one-time automatic provisioning of | Default: disable
+    ports: list[ManagedSwitchPortsItem]  # Managed-switch port list.
+    ip_source_guard: list[ManagedSwitchIpsourceguardItem]  # IP source guard.
+    stp_settings: str  # Configuration method to edit Spanning Tree Protoco
+    stp_instance: list[ManagedSwitchStpinstanceItem]  # Configuration method to edit Spanning Tree Protoco
+    override_snmp_sysinfo: Literal["disable", "enable"]  # Enable/disable overriding the global SNMP system i | Default: disable
+    snmp_sysinfo: str  # Configuration method to edit Simple Network Manage
+    override_snmp_trap_threshold: Literal["enable", "disable"]  # Enable/disable overriding the global SNMP trap thr | Default: disable
+    snmp_trap_threshold: str  # Configuration method to edit Simple Network Manage
+    override_snmp_community: Literal["enable", "disable"]  # Enable/disable overriding the global SNMP communit | Default: disable
+    snmp_community: list[ManagedSwitchSnmpcommunityItem]  # Configuration method to edit Simple Network Manage
+    override_snmp_user: Literal["enable", "disable"]  # Enable/disable overriding the global SNMP users. | Default: disable
+    snmp_user: list[ManagedSwitchSnmpuserItem]  # Configuration method to edit Simple Network Manage
+    qos_drop_policy: Literal["taildrop", "random-early-detection"]  # Set QoS drop-policy. | Default: taildrop
+    qos_red_probability: int  # Set QoS RED/WRED drop probability. | Default: 12 | Min: 0 | Max: 100
+    switch_log: str  # Configuration method to edit FortiSwitch logging s
+    remote_log: list[ManagedSwitchRemotelogItem]  # Configure logging by FortiSwitch device to a remot
+    storm_control: str  # Configuration method to edit FortiSwitch storm con
+    mirror: list[ManagedSwitchMirrorItem]  # Configuration method to edit FortiSwitch packet mi
+    static_mac: list[ManagedSwitchStaticmacItem]  # Configuration method to edit FortiSwitch Static an
+    custom_command: list[ManagedSwitchCustomcommandItem]  # Configuration method to edit FortiSwitch commands
+    dhcp_snooping_static_client: list[ManagedSwitchDhcpsnoopingstaticclientItem]  # Configure FortiSwitch DHCP snooping static clients
+    igmp_snooping: str  # Configure FortiSwitch IGMP snooping global setting
+    x802_1X_settings: str  # Configuration method to edit FortiSwitch 802.1X gl
+    router_vrf: list[ManagedSwitchRoutervrfItem]  # Configure VRF.
+    system_interface: list[ManagedSwitchSysteminterfaceItem]  # Configure system interface on FortiSwitch.
+    router_static: list[ManagedSwitchRouterstaticItem]  # Configure static routes.
+    system_dhcp_server: list[ManagedSwitchSystemdhcpserverItem]  # Configure DHCP servers.
+
+# ============================================================================
+# Nested classes for table field children (object mode - for API responses)
+# ============================================================================
 
 @final
 class ManagedSwitchRouteoffloadrouterObject:
@@ -1549,6 +1636,9 @@ class ManagedSwitchObject:
     # Common API response fields
     status: str
     http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
     vdom: str | None
     
     # Methods from FortiObject
@@ -1809,8 +1899,8 @@ class ManagedSwitch:
         radius_nas_ip: str | None = ...,
         route_offload: Literal["disable", "enable"] | None = ...,
         route_offload_mclag: Literal["disable", "enable"] | None = ...,
-        route_offload_router: str | list[str] | list[dict[str, Any]] | None = ...,
-        vlan: str | list[str] | list[dict[str, Any]] | None = ...,
+        route_offload_router: str | list[ManagedSwitchRouteoffloadrouterItem] | None = ...,
+        vlan: str | list[ManagedSwitchVlanItem] | None = ...,
         type: Literal["virtual", "physical"] | None = ...,
         owner_vdom: str | None = ...,
         flow_identity: str | None = ...,
@@ -1819,33 +1909,33 @@ class ManagedSwitch:
         firmware_provision: Literal["enable", "disable"] | None = ...,
         firmware_provision_version: str | None = ...,
         firmware_provision_latest: Literal["disable", "once"] | None = ...,
-        ports: str | list[str] | list[dict[str, Any]] | None = ...,
-        ip_source_guard: str | list[str] | list[dict[str, Any]] | None = ...,
+        ports: str | list[ManagedSwitchPortsItem] | None = ...,
+        ip_source_guard: str | list[ManagedSwitchIpsourceguardItem] | None = ...,
         stp_settings: str | None = ...,
-        stp_instance: str | list[str] | list[dict[str, Any]] | None = ...,
+        stp_instance: str | list[ManagedSwitchStpinstanceItem] | None = ...,
         override_snmp_sysinfo: Literal["disable", "enable"] | None = ...,
         snmp_sysinfo: str | None = ...,
         override_snmp_trap_threshold: Literal["enable", "disable"] | None = ...,
         snmp_trap_threshold: str | None = ...,
         override_snmp_community: Literal["enable", "disable"] | None = ...,
-        snmp_community: str | list[str] | list[dict[str, Any]] | None = ...,
+        snmp_community: str | list[ManagedSwitchSnmpcommunityItem] | None = ...,
         override_snmp_user: Literal["enable", "disable"] | None = ...,
-        snmp_user: str | list[str] | list[dict[str, Any]] | None = ...,
+        snmp_user: str | list[ManagedSwitchSnmpuserItem] | None = ...,
         qos_drop_policy: Literal["taildrop", "random-early-detection"] | None = ...,
         qos_red_probability: int | None = ...,
         switch_log: str | None = ...,
-        remote_log: str | list[str] | list[dict[str, Any]] | None = ...,
+        remote_log: str | list[ManagedSwitchRemotelogItem] | None = ...,
         storm_control: str | None = ...,
-        mirror: str | list[str] | list[dict[str, Any]] | None = ...,
-        static_mac: str | list[str] | list[dict[str, Any]] | None = ...,
-        custom_command: str | list[str] | list[dict[str, Any]] | None = ...,
-        dhcp_snooping_static_client: str | list[str] | list[dict[str, Any]] | None = ...,
+        mirror: str | list[ManagedSwitchMirrorItem] | None = ...,
+        static_mac: str | list[ManagedSwitchStaticmacItem] | None = ...,
+        custom_command: str | list[ManagedSwitchCustomcommandItem] | None = ...,
+        dhcp_snooping_static_client: str | list[ManagedSwitchDhcpsnoopingstaticclientItem] | None = ...,
         igmp_snooping: str | None = ...,
         x802_1X_settings: str | None = ...,
-        router_vrf: str | list[str] | list[dict[str, Any]] | None = ...,
-        system_interface: str | list[str] | list[dict[str, Any]] | None = ...,
-        router_static: str | list[str] | list[dict[str, Any]] | None = ...,
-        system_dhcp_server: str | list[str] | list[dict[str, Any]] | None = ...,
+        router_vrf: str | list[ManagedSwitchRoutervrfItem] | None = ...,
+        system_interface: str | list[ManagedSwitchSysteminterfaceItem] | None = ...,
+        router_static: str | list[ManagedSwitchRouterstaticItem] | None = ...,
+        system_dhcp_server: str | list[ManagedSwitchSystemdhcpserverItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> ManagedSwitchObject: ...
     
@@ -1884,8 +1974,8 @@ class ManagedSwitch:
         radius_nas_ip: str | None = ...,
         route_offload: Literal["disable", "enable"] | None = ...,
         route_offload_mclag: Literal["disable", "enable"] | None = ...,
-        route_offload_router: str | list[str] | list[dict[str, Any]] | None = ...,
-        vlan: str | list[str] | list[dict[str, Any]] | None = ...,
+        route_offload_router: str | list[ManagedSwitchRouteoffloadrouterItem] | None = ...,
+        vlan: str | list[ManagedSwitchVlanItem] | None = ...,
         type: Literal["virtual", "physical"] | None = ...,
         owner_vdom: str | None = ...,
         flow_identity: str | None = ...,
@@ -1894,33 +1984,33 @@ class ManagedSwitch:
         firmware_provision: Literal["enable", "disable"] | None = ...,
         firmware_provision_version: str | None = ...,
         firmware_provision_latest: Literal["disable", "once"] | None = ...,
-        ports: str | list[str] | list[dict[str, Any]] | None = ...,
-        ip_source_guard: str | list[str] | list[dict[str, Any]] | None = ...,
+        ports: str | list[ManagedSwitchPortsItem] | None = ...,
+        ip_source_guard: str | list[ManagedSwitchIpsourceguardItem] | None = ...,
         stp_settings: str | None = ...,
-        stp_instance: str | list[str] | list[dict[str, Any]] | None = ...,
+        stp_instance: str | list[ManagedSwitchStpinstanceItem] | None = ...,
         override_snmp_sysinfo: Literal["disable", "enable"] | None = ...,
         snmp_sysinfo: str | None = ...,
         override_snmp_trap_threshold: Literal["enable", "disable"] | None = ...,
         snmp_trap_threshold: str | None = ...,
         override_snmp_community: Literal["enable", "disable"] | None = ...,
-        snmp_community: str | list[str] | list[dict[str, Any]] | None = ...,
+        snmp_community: str | list[ManagedSwitchSnmpcommunityItem] | None = ...,
         override_snmp_user: Literal["enable", "disable"] | None = ...,
-        snmp_user: str | list[str] | list[dict[str, Any]] | None = ...,
+        snmp_user: str | list[ManagedSwitchSnmpuserItem] | None = ...,
         qos_drop_policy: Literal["taildrop", "random-early-detection"] | None = ...,
         qos_red_probability: int | None = ...,
         switch_log: str | None = ...,
-        remote_log: str | list[str] | list[dict[str, Any]] | None = ...,
+        remote_log: str | list[ManagedSwitchRemotelogItem] | None = ...,
         storm_control: str | None = ...,
-        mirror: str | list[str] | list[dict[str, Any]] | None = ...,
-        static_mac: str | list[str] | list[dict[str, Any]] | None = ...,
-        custom_command: str | list[str] | list[dict[str, Any]] | None = ...,
-        dhcp_snooping_static_client: str | list[str] | list[dict[str, Any]] | None = ...,
+        mirror: str | list[ManagedSwitchMirrorItem] | None = ...,
+        static_mac: str | list[ManagedSwitchStaticmacItem] | None = ...,
+        custom_command: str | list[ManagedSwitchCustomcommandItem] | None = ...,
+        dhcp_snooping_static_client: str | list[ManagedSwitchDhcpsnoopingstaticclientItem] | None = ...,
         igmp_snooping: str | None = ...,
         x802_1X_settings: str | None = ...,
-        router_vrf: str | list[str] | list[dict[str, Any]] | None = ...,
-        system_interface: str | list[str] | list[dict[str, Any]] | None = ...,
-        router_static: str | list[str] | list[dict[str, Any]] | None = ...,
-        system_dhcp_server: str | list[str] | list[dict[str, Any]] | None = ...,
+        router_vrf: str | list[ManagedSwitchRoutervrfItem] | None = ...,
+        system_interface: str | list[ManagedSwitchSysteminterfaceItem] | None = ...,
+        router_static: str | list[ManagedSwitchRouterstaticItem] | None = ...,
+        system_dhcp_server: str | list[ManagedSwitchSystemdhcpserverItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -1960,8 +2050,8 @@ class ManagedSwitch:
         radius_nas_ip: str | None = ...,
         route_offload: Literal["disable", "enable"] | None = ...,
         route_offload_mclag: Literal["disable", "enable"] | None = ...,
-        route_offload_router: str | list[str] | list[dict[str, Any]] | None = ...,
-        vlan: str | list[str] | list[dict[str, Any]] | None = ...,
+        route_offload_router: str | list[ManagedSwitchRouteoffloadrouterItem] | None = ...,
+        vlan: str | list[ManagedSwitchVlanItem] | None = ...,
         type: Literal["virtual", "physical"] | None = ...,
         owner_vdom: str | None = ...,
         flow_identity: str | None = ...,
@@ -1970,33 +2060,33 @@ class ManagedSwitch:
         firmware_provision: Literal["enable", "disable"] | None = ...,
         firmware_provision_version: str | None = ...,
         firmware_provision_latest: Literal["disable", "once"] | None = ...,
-        ports: str | list[str] | list[dict[str, Any]] | None = ...,
-        ip_source_guard: str | list[str] | list[dict[str, Any]] | None = ...,
+        ports: str | list[ManagedSwitchPortsItem] | None = ...,
+        ip_source_guard: str | list[ManagedSwitchIpsourceguardItem] | None = ...,
         stp_settings: str | None = ...,
-        stp_instance: str | list[str] | list[dict[str, Any]] | None = ...,
+        stp_instance: str | list[ManagedSwitchStpinstanceItem] | None = ...,
         override_snmp_sysinfo: Literal["disable", "enable"] | None = ...,
         snmp_sysinfo: str | None = ...,
         override_snmp_trap_threshold: Literal["enable", "disable"] | None = ...,
         snmp_trap_threshold: str | None = ...,
         override_snmp_community: Literal["enable", "disable"] | None = ...,
-        snmp_community: str | list[str] | list[dict[str, Any]] | None = ...,
+        snmp_community: str | list[ManagedSwitchSnmpcommunityItem] | None = ...,
         override_snmp_user: Literal["enable", "disable"] | None = ...,
-        snmp_user: str | list[str] | list[dict[str, Any]] | None = ...,
+        snmp_user: str | list[ManagedSwitchSnmpuserItem] | None = ...,
         qos_drop_policy: Literal["taildrop", "random-early-detection"] | None = ...,
         qos_red_probability: int | None = ...,
         switch_log: str | None = ...,
-        remote_log: str | list[str] | list[dict[str, Any]] | None = ...,
+        remote_log: str | list[ManagedSwitchRemotelogItem] | None = ...,
         storm_control: str | None = ...,
-        mirror: str | list[str] | list[dict[str, Any]] | None = ...,
-        static_mac: str | list[str] | list[dict[str, Any]] | None = ...,
-        custom_command: str | list[str] | list[dict[str, Any]] | None = ...,
-        dhcp_snooping_static_client: str | list[str] | list[dict[str, Any]] | None = ...,
+        mirror: str | list[ManagedSwitchMirrorItem] | None = ...,
+        static_mac: str | list[ManagedSwitchStaticmacItem] | None = ...,
+        custom_command: str | list[ManagedSwitchCustomcommandItem] | None = ...,
+        dhcp_snooping_static_client: str | list[ManagedSwitchDhcpsnoopingstaticclientItem] | None = ...,
         igmp_snooping: str | None = ...,
         x802_1X_settings: str | None = ...,
-        router_vrf: str | list[str] | list[dict[str, Any]] | None = ...,
-        system_interface: str | list[str] | list[dict[str, Any]] | None = ...,
-        router_static: str | list[str] | list[dict[str, Any]] | None = ...,
-        system_dhcp_server: str | list[str] | list[dict[str, Any]] | None = ...,
+        router_vrf: str | list[ManagedSwitchRoutervrfItem] | None = ...,
+        system_interface: str | list[ManagedSwitchSysteminterfaceItem] | None = ...,
+        router_static: str | list[ManagedSwitchRouterstaticItem] | None = ...,
+        system_dhcp_server: str | list[ManagedSwitchSystemdhcpserverItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -2034,8 +2124,8 @@ class ManagedSwitch:
         radius_nas_ip: str | None = ...,
         route_offload: Literal["disable", "enable"] | None = ...,
         route_offload_mclag: Literal["disable", "enable"] | None = ...,
-        route_offload_router: str | list[str] | list[dict[str, Any]] | None = ...,
-        vlan: str | list[str] | list[dict[str, Any]] | None = ...,
+        route_offload_router: str | list[ManagedSwitchRouteoffloadrouterItem] | None = ...,
+        vlan: str | list[ManagedSwitchVlanItem] | None = ...,
         type: Literal["virtual", "physical"] | None = ...,
         owner_vdom: str | None = ...,
         flow_identity: str | None = ...,
@@ -2044,33 +2134,33 @@ class ManagedSwitch:
         firmware_provision: Literal["enable", "disable"] | None = ...,
         firmware_provision_version: str | None = ...,
         firmware_provision_latest: Literal["disable", "once"] | None = ...,
-        ports: str | list[str] | list[dict[str, Any]] | None = ...,
-        ip_source_guard: str | list[str] | list[dict[str, Any]] | None = ...,
+        ports: str | list[ManagedSwitchPortsItem] | None = ...,
+        ip_source_guard: str | list[ManagedSwitchIpsourceguardItem] | None = ...,
         stp_settings: str | None = ...,
-        stp_instance: str | list[str] | list[dict[str, Any]] | None = ...,
+        stp_instance: str | list[ManagedSwitchStpinstanceItem] | None = ...,
         override_snmp_sysinfo: Literal["disable", "enable"] | None = ...,
         snmp_sysinfo: str | None = ...,
         override_snmp_trap_threshold: Literal["enable", "disable"] | None = ...,
         snmp_trap_threshold: str | None = ...,
         override_snmp_community: Literal["enable", "disable"] | None = ...,
-        snmp_community: str | list[str] | list[dict[str, Any]] | None = ...,
+        snmp_community: str | list[ManagedSwitchSnmpcommunityItem] | None = ...,
         override_snmp_user: Literal["enable", "disable"] | None = ...,
-        snmp_user: str | list[str] | list[dict[str, Any]] | None = ...,
+        snmp_user: str | list[ManagedSwitchSnmpuserItem] | None = ...,
         qos_drop_policy: Literal["taildrop", "random-early-detection"] | None = ...,
         qos_red_probability: int | None = ...,
         switch_log: str | None = ...,
-        remote_log: str | list[str] | list[dict[str, Any]] | None = ...,
+        remote_log: str | list[ManagedSwitchRemotelogItem] | None = ...,
         storm_control: str | None = ...,
-        mirror: str | list[str] | list[dict[str, Any]] | None = ...,
-        static_mac: str | list[str] | list[dict[str, Any]] | None = ...,
-        custom_command: str | list[str] | list[dict[str, Any]] | None = ...,
-        dhcp_snooping_static_client: str | list[str] | list[dict[str, Any]] | None = ...,
+        mirror: str | list[ManagedSwitchMirrorItem] | None = ...,
+        static_mac: str | list[ManagedSwitchStaticmacItem] | None = ...,
+        custom_command: str | list[ManagedSwitchCustomcommandItem] | None = ...,
+        dhcp_snooping_static_client: str | list[ManagedSwitchDhcpsnoopingstaticclientItem] | None = ...,
         igmp_snooping: str | None = ...,
         x802_1X_settings: str | None = ...,
-        router_vrf: str | list[str] | list[dict[str, Any]] | None = ...,
-        system_interface: str | list[str] | list[dict[str, Any]] | None = ...,
-        router_static: str | list[str] | list[dict[str, Any]] | None = ...,
-        system_dhcp_server: str | list[str] | list[dict[str, Any]] | None = ...,
+        router_vrf: str | list[ManagedSwitchRoutervrfItem] | None = ...,
+        system_interface: str | list[ManagedSwitchSysteminterfaceItem] | None = ...,
+        router_static: str | list[ManagedSwitchRouterstaticItem] | None = ...,
+        system_dhcp_server: str | list[ManagedSwitchSystemdhcpserverItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -2110,8 +2200,8 @@ class ManagedSwitch:
         radius_nas_ip: str | None = ...,
         route_offload: Literal["disable", "enable"] | None = ...,
         route_offload_mclag: Literal["disable", "enable"] | None = ...,
-        route_offload_router: str | list[str] | list[dict[str, Any]] | None = ...,
-        vlan: str | list[str] | list[dict[str, Any]] | None = ...,
+        route_offload_router: str | list[ManagedSwitchRouteoffloadrouterItem] | None = ...,
+        vlan: str | list[ManagedSwitchVlanItem] | None = ...,
         type: Literal["virtual", "physical"] | None = ...,
         owner_vdom: str | None = ...,
         flow_identity: str | None = ...,
@@ -2120,33 +2210,33 @@ class ManagedSwitch:
         firmware_provision: Literal["enable", "disable"] | None = ...,
         firmware_provision_version: str | None = ...,
         firmware_provision_latest: Literal["disable", "once"] | None = ...,
-        ports: str | list[str] | list[dict[str, Any]] | None = ...,
-        ip_source_guard: str | list[str] | list[dict[str, Any]] | None = ...,
+        ports: str | list[ManagedSwitchPortsItem] | None = ...,
+        ip_source_guard: str | list[ManagedSwitchIpsourceguardItem] | None = ...,
         stp_settings: str | None = ...,
-        stp_instance: str | list[str] | list[dict[str, Any]] | None = ...,
+        stp_instance: str | list[ManagedSwitchStpinstanceItem] | None = ...,
         override_snmp_sysinfo: Literal["disable", "enable"] | None = ...,
         snmp_sysinfo: str | None = ...,
         override_snmp_trap_threshold: Literal["enable", "disable"] | None = ...,
         snmp_trap_threshold: str | None = ...,
         override_snmp_community: Literal["enable", "disable"] | None = ...,
-        snmp_community: str | list[str] | list[dict[str, Any]] | None = ...,
+        snmp_community: str | list[ManagedSwitchSnmpcommunityItem] | None = ...,
         override_snmp_user: Literal["enable", "disable"] | None = ...,
-        snmp_user: str | list[str] | list[dict[str, Any]] | None = ...,
+        snmp_user: str | list[ManagedSwitchSnmpuserItem] | None = ...,
         qos_drop_policy: Literal["taildrop", "random-early-detection"] | None = ...,
         qos_red_probability: int | None = ...,
         switch_log: str | None = ...,
-        remote_log: str | list[str] | list[dict[str, Any]] | None = ...,
+        remote_log: str | list[ManagedSwitchRemotelogItem] | None = ...,
         storm_control: str | None = ...,
-        mirror: str | list[str] | list[dict[str, Any]] | None = ...,
-        static_mac: str | list[str] | list[dict[str, Any]] | None = ...,
-        custom_command: str | list[str] | list[dict[str, Any]] | None = ...,
-        dhcp_snooping_static_client: str | list[str] | list[dict[str, Any]] | None = ...,
+        mirror: str | list[ManagedSwitchMirrorItem] | None = ...,
+        static_mac: str | list[ManagedSwitchStaticmacItem] | None = ...,
+        custom_command: str | list[ManagedSwitchCustomcommandItem] | None = ...,
+        dhcp_snooping_static_client: str | list[ManagedSwitchDhcpsnoopingstaticclientItem] | None = ...,
         igmp_snooping: str | None = ...,
         x802_1X_settings: str | None = ...,
-        router_vrf: str | list[str] | list[dict[str, Any]] | None = ...,
-        system_interface: str | list[str] | list[dict[str, Any]] | None = ...,
-        router_static: str | list[str] | list[dict[str, Any]] | None = ...,
-        system_dhcp_server: str | list[str] | list[dict[str, Any]] | None = ...,
+        router_vrf: str | list[ManagedSwitchRoutervrfItem] | None = ...,
+        system_interface: str | list[ManagedSwitchSysteminterfaceItem] | None = ...,
+        router_static: str | list[ManagedSwitchRouterstaticItem] | None = ...,
+        system_dhcp_server: str | list[ManagedSwitchSystemdhcpserverItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> ManagedSwitchObject: ...
     
@@ -2185,8 +2275,8 @@ class ManagedSwitch:
         radius_nas_ip: str | None = ...,
         route_offload: Literal["disable", "enable"] | None = ...,
         route_offload_mclag: Literal["disable", "enable"] | None = ...,
-        route_offload_router: str | list[str] | list[dict[str, Any]] | None = ...,
-        vlan: str | list[str] | list[dict[str, Any]] | None = ...,
+        route_offload_router: str | list[ManagedSwitchRouteoffloadrouterItem] | None = ...,
+        vlan: str | list[ManagedSwitchVlanItem] | None = ...,
         type: Literal["virtual", "physical"] | None = ...,
         owner_vdom: str | None = ...,
         flow_identity: str | None = ...,
@@ -2195,33 +2285,33 @@ class ManagedSwitch:
         firmware_provision: Literal["enable", "disable"] | None = ...,
         firmware_provision_version: str | None = ...,
         firmware_provision_latest: Literal["disable", "once"] | None = ...,
-        ports: str | list[str] | list[dict[str, Any]] | None = ...,
-        ip_source_guard: str | list[str] | list[dict[str, Any]] | None = ...,
+        ports: str | list[ManagedSwitchPortsItem] | None = ...,
+        ip_source_guard: str | list[ManagedSwitchIpsourceguardItem] | None = ...,
         stp_settings: str | None = ...,
-        stp_instance: str | list[str] | list[dict[str, Any]] | None = ...,
+        stp_instance: str | list[ManagedSwitchStpinstanceItem] | None = ...,
         override_snmp_sysinfo: Literal["disable", "enable"] | None = ...,
         snmp_sysinfo: str | None = ...,
         override_snmp_trap_threshold: Literal["enable", "disable"] | None = ...,
         snmp_trap_threshold: str | None = ...,
         override_snmp_community: Literal["enable", "disable"] | None = ...,
-        snmp_community: str | list[str] | list[dict[str, Any]] | None = ...,
+        snmp_community: str | list[ManagedSwitchSnmpcommunityItem] | None = ...,
         override_snmp_user: Literal["enable", "disable"] | None = ...,
-        snmp_user: str | list[str] | list[dict[str, Any]] | None = ...,
+        snmp_user: str | list[ManagedSwitchSnmpuserItem] | None = ...,
         qos_drop_policy: Literal["taildrop", "random-early-detection"] | None = ...,
         qos_red_probability: int | None = ...,
         switch_log: str | None = ...,
-        remote_log: str | list[str] | list[dict[str, Any]] | None = ...,
+        remote_log: str | list[ManagedSwitchRemotelogItem] | None = ...,
         storm_control: str | None = ...,
-        mirror: str | list[str] | list[dict[str, Any]] | None = ...,
-        static_mac: str | list[str] | list[dict[str, Any]] | None = ...,
-        custom_command: str | list[str] | list[dict[str, Any]] | None = ...,
-        dhcp_snooping_static_client: str | list[str] | list[dict[str, Any]] | None = ...,
+        mirror: str | list[ManagedSwitchMirrorItem] | None = ...,
+        static_mac: str | list[ManagedSwitchStaticmacItem] | None = ...,
+        custom_command: str | list[ManagedSwitchCustomcommandItem] | None = ...,
+        dhcp_snooping_static_client: str | list[ManagedSwitchDhcpsnoopingstaticclientItem] | None = ...,
         igmp_snooping: str | None = ...,
         x802_1X_settings: str | None = ...,
-        router_vrf: str | list[str] | list[dict[str, Any]] | None = ...,
-        system_interface: str | list[str] | list[dict[str, Any]] | None = ...,
-        router_static: str | list[str] | list[dict[str, Any]] | None = ...,
-        system_dhcp_server: str | list[str] | list[dict[str, Any]] | None = ...,
+        router_vrf: str | list[ManagedSwitchRoutervrfItem] | None = ...,
+        system_interface: str | list[ManagedSwitchSysteminterfaceItem] | None = ...,
+        router_static: str | list[ManagedSwitchRouterstaticItem] | None = ...,
+        system_dhcp_server: str | list[ManagedSwitchSystemdhcpserverItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -2261,8 +2351,8 @@ class ManagedSwitch:
         radius_nas_ip: str | None = ...,
         route_offload: Literal["disable", "enable"] | None = ...,
         route_offload_mclag: Literal["disable", "enable"] | None = ...,
-        route_offload_router: str | list[str] | list[dict[str, Any]] | None = ...,
-        vlan: str | list[str] | list[dict[str, Any]] | None = ...,
+        route_offload_router: str | list[ManagedSwitchRouteoffloadrouterItem] | None = ...,
+        vlan: str | list[ManagedSwitchVlanItem] | None = ...,
         type: Literal["virtual", "physical"] | None = ...,
         owner_vdom: str | None = ...,
         flow_identity: str | None = ...,
@@ -2271,33 +2361,33 @@ class ManagedSwitch:
         firmware_provision: Literal["enable", "disable"] | None = ...,
         firmware_provision_version: str | None = ...,
         firmware_provision_latest: Literal["disable", "once"] | None = ...,
-        ports: str | list[str] | list[dict[str, Any]] | None = ...,
-        ip_source_guard: str | list[str] | list[dict[str, Any]] | None = ...,
+        ports: str | list[ManagedSwitchPortsItem] | None = ...,
+        ip_source_guard: str | list[ManagedSwitchIpsourceguardItem] | None = ...,
         stp_settings: str | None = ...,
-        stp_instance: str | list[str] | list[dict[str, Any]] | None = ...,
+        stp_instance: str | list[ManagedSwitchStpinstanceItem] | None = ...,
         override_snmp_sysinfo: Literal["disable", "enable"] | None = ...,
         snmp_sysinfo: str | None = ...,
         override_snmp_trap_threshold: Literal["enable", "disable"] | None = ...,
         snmp_trap_threshold: str | None = ...,
         override_snmp_community: Literal["enable", "disable"] | None = ...,
-        snmp_community: str | list[str] | list[dict[str, Any]] | None = ...,
+        snmp_community: str | list[ManagedSwitchSnmpcommunityItem] | None = ...,
         override_snmp_user: Literal["enable", "disable"] | None = ...,
-        snmp_user: str | list[str] | list[dict[str, Any]] | None = ...,
+        snmp_user: str | list[ManagedSwitchSnmpuserItem] | None = ...,
         qos_drop_policy: Literal["taildrop", "random-early-detection"] | None = ...,
         qos_red_probability: int | None = ...,
         switch_log: str | None = ...,
-        remote_log: str | list[str] | list[dict[str, Any]] | None = ...,
+        remote_log: str | list[ManagedSwitchRemotelogItem] | None = ...,
         storm_control: str | None = ...,
-        mirror: str | list[str] | list[dict[str, Any]] | None = ...,
-        static_mac: str | list[str] | list[dict[str, Any]] | None = ...,
-        custom_command: str | list[str] | list[dict[str, Any]] | None = ...,
-        dhcp_snooping_static_client: str | list[str] | list[dict[str, Any]] | None = ...,
+        mirror: str | list[ManagedSwitchMirrorItem] | None = ...,
+        static_mac: str | list[ManagedSwitchStaticmacItem] | None = ...,
+        custom_command: str | list[ManagedSwitchCustomcommandItem] | None = ...,
+        dhcp_snooping_static_client: str | list[ManagedSwitchDhcpsnoopingstaticclientItem] | None = ...,
         igmp_snooping: str | None = ...,
         x802_1X_settings: str | None = ...,
-        router_vrf: str | list[str] | list[dict[str, Any]] | None = ...,
-        system_interface: str | list[str] | list[dict[str, Any]] | None = ...,
-        router_static: str | list[str] | list[dict[str, Any]] | None = ...,
-        system_dhcp_server: str | list[str] | list[dict[str, Any]] | None = ...,
+        router_vrf: str | list[ManagedSwitchRoutervrfItem] | None = ...,
+        system_interface: str | list[ManagedSwitchSysteminterfaceItem] | None = ...,
+        router_static: str | list[ManagedSwitchRouterstaticItem] | None = ...,
+        system_dhcp_server: str | list[ManagedSwitchSystemdhcpserverItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -2335,8 +2425,8 @@ class ManagedSwitch:
         radius_nas_ip: str | None = ...,
         route_offload: Literal["disable", "enable"] | None = ...,
         route_offload_mclag: Literal["disable", "enable"] | None = ...,
-        route_offload_router: str | list[str] | list[dict[str, Any]] | None = ...,
-        vlan: str | list[str] | list[dict[str, Any]] | None = ...,
+        route_offload_router: str | list[ManagedSwitchRouteoffloadrouterItem] | None = ...,
+        vlan: str | list[ManagedSwitchVlanItem] | None = ...,
         type: Literal["virtual", "physical"] | None = ...,
         owner_vdom: str | None = ...,
         flow_identity: str | None = ...,
@@ -2345,33 +2435,33 @@ class ManagedSwitch:
         firmware_provision: Literal["enable", "disable"] | None = ...,
         firmware_provision_version: str | None = ...,
         firmware_provision_latest: Literal["disable", "once"] | None = ...,
-        ports: str | list[str] | list[dict[str, Any]] | None = ...,
-        ip_source_guard: str | list[str] | list[dict[str, Any]] | None = ...,
+        ports: str | list[ManagedSwitchPortsItem] | None = ...,
+        ip_source_guard: str | list[ManagedSwitchIpsourceguardItem] | None = ...,
         stp_settings: str | None = ...,
-        stp_instance: str | list[str] | list[dict[str, Any]] | None = ...,
+        stp_instance: str | list[ManagedSwitchStpinstanceItem] | None = ...,
         override_snmp_sysinfo: Literal["disable", "enable"] | None = ...,
         snmp_sysinfo: str | None = ...,
         override_snmp_trap_threshold: Literal["enable", "disable"] | None = ...,
         snmp_trap_threshold: str | None = ...,
         override_snmp_community: Literal["enable", "disable"] | None = ...,
-        snmp_community: str | list[str] | list[dict[str, Any]] | None = ...,
+        snmp_community: str | list[ManagedSwitchSnmpcommunityItem] | None = ...,
         override_snmp_user: Literal["enable", "disable"] | None = ...,
-        snmp_user: str | list[str] | list[dict[str, Any]] | None = ...,
+        snmp_user: str | list[ManagedSwitchSnmpuserItem] | None = ...,
         qos_drop_policy: Literal["taildrop", "random-early-detection"] | None = ...,
         qos_red_probability: int | None = ...,
         switch_log: str | None = ...,
-        remote_log: str | list[str] | list[dict[str, Any]] | None = ...,
+        remote_log: str | list[ManagedSwitchRemotelogItem] | None = ...,
         storm_control: str | None = ...,
-        mirror: str | list[str] | list[dict[str, Any]] | None = ...,
-        static_mac: str | list[str] | list[dict[str, Any]] | None = ...,
-        custom_command: str | list[str] | list[dict[str, Any]] | None = ...,
-        dhcp_snooping_static_client: str | list[str] | list[dict[str, Any]] | None = ...,
+        mirror: str | list[ManagedSwitchMirrorItem] | None = ...,
+        static_mac: str | list[ManagedSwitchStaticmacItem] | None = ...,
+        custom_command: str | list[ManagedSwitchCustomcommandItem] | None = ...,
+        dhcp_snooping_static_client: str | list[ManagedSwitchDhcpsnoopingstaticclientItem] | None = ...,
         igmp_snooping: str | None = ...,
         x802_1X_settings: str | None = ...,
-        router_vrf: str | list[str] | list[dict[str, Any]] | None = ...,
-        system_interface: str | list[str] | list[dict[str, Any]] | None = ...,
-        router_static: str | list[str] | list[dict[str, Any]] | None = ...,
-        system_dhcp_server: str | list[str] | list[dict[str, Any]] | None = ...,
+        router_vrf: str | list[ManagedSwitchRoutervrfItem] | None = ...,
+        system_interface: str | list[ManagedSwitchSysteminterfaceItem] | None = ...,
+        router_static: str | list[ManagedSwitchRouterstaticItem] | None = ...,
+        system_dhcp_server: str | list[ManagedSwitchSystemdhcpserverItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -2444,8 +2534,8 @@ class ManagedSwitch:
         radius_nas_ip: str | None = ...,
         route_offload: Literal["disable", "enable"] | None = ...,
         route_offload_mclag: Literal["disable", "enable"] | None = ...,
-        route_offload_router: str | list[str] | list[dict[str, Any]] | None = ...,
-        vlan: str | list[str] | list[dict[str, Any]] | None = ...,
+        route_offload_router: str | list[ManagedSwitchRouteoffloadrouterItem] | None = ...,
+        vlan: str | list[ManagedSwitchVlanItem] | None = ...,
         type: Literal["virtual", "physical"] | None = ...,
         owner_vdom: str | None = ...,
         flow_identity: str | None = ...,
@@ -2454,33 +2544,33 @@ class ManagedSwitch:
         firmware_provision: Literal["enable", "disable"] | None = ...,
         firmware_provision_version: str | None = ...,
         firmware_provision_latest: Literal["disable", "once"] | None = ...,
-        ports: str | list[str] | list[dict[str, Any]] | None = ...,
-        ip_source_guard: str | list[str] | list[dict[str, Any]] | None = ...,
+        ports: str | list[ManagedSwitchPortsItem] | None = ...,
+        ip_source_guard: str | list[ManagedSwitchIpsourceguardItem] | None = ...,
         stp_settings: str | None = ...,
-        stp_instance: str | list[str] | list[dict[str, Any]] | None = ...,
+        stp_instance: str | list[ManagedSwitchStpinstanceItem] | None = ...,
         override_snmp_sysinfo: Literal["disable", "enable"] | None = ...,
         snmp_sysinfo: str | None = ...,
         override_snmp_trap_threshold: Literal["enable", "disable"] | None = ...,
         snmp_trap_threshold: str | None = ...,
         override_snmp_community: Literal["enable", "disable"] | None = ...,
-        snmp_community: str | list[str] | list[dict[str, Any]] | None = ...,
+        snmp_community: str | list[ManagedSwitchSnmpcommunityItem] | None = ...,
         override_snmp_user: Literal["enable", "disable"] | None = ...,
-        snmp_user: str | list[str] | list[dict[str, Any]] | None = ...,
+        snmp_user: str | list[ManagedSwitchSnmpuserItem] | None = ...,
         qos_drop_policy: Literal["taildrop", "random-early-detection"] | None = ...,
         qos_red_probability: int | None = ...,
         switch_log: str | None = ...,
-        remote_log: str | list[str] | list[dict[str, Any]] | None = ...,
+        remote_log: str | list[ManagedSwitchRemotelogItem] | None = ...,
         storm_control: str | None = ...,
-        mirror: str | list[str] | list[dict[str, Any]] | None = ...,
-        static_mac: str | list[str] | list[dict[str, Any]] | None = ...,
-        custom_command: str | list[str] | list[dict[str, Any]] | None = ...,
-        dhcp_snooping_static_client: str | list[str] | list[dict[str, Any]] | None = ...,
+        mirror: str | list[ManagedSwitchMirrorItem] | None = ...,
+        static_mac: str | list[ManagedSwitchStaticmacItem] | None = ...,
+        custom_command: str | list[ManagedSwitchCustomcommandItem] | None = ...,
+        dhcp_snooping_static_client: str | list[ManagedSwitchDhcpsnoopingstaticclientItem] | None = ...,
         igmp_snooping: str | None = ...,
         x802_1X_settings: str | None = ...,
-        router_vrf: str | list[str] | list[dict[str, Any]] | None = ...,
-        system_interface: str | list[str] | list[dict[str, Any]] | None = ...,
-        router_static: str | list[str] | list[dict[str, Any]] | None = ...,
-        system_dhcp_server: str | list[str] | list[dict[str, Any]] | None = ...,
+        router_vrf: str | list[ManagedSwitchRoutervrfItem] | None = ...,
+        system_interface: str | list[ManagedSwitchSysteminterfaceItem] | None = ...,
+        router_static: str | list[ManagedSwitchRouterstaticItem] | None = ...,
+        system_dhcp_server: str | list[ManagedSwitchSystemdhcpserverItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     

@@ -2,7 +2,44 @@ from typing import TypedDict, Literal, Any, Coroutine, Union, overload, Generato
 from typing_extensions import NotRequired
 from hfortix_fortios.models import FortiObject, FortiObjectList
 
-# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional via total=False)
+# ============================================================================
+# Nested TypedDicts for table field children (dict mode)
+# These MUST be defined before the Payload class to use them as type hints
+# ============================================================================
+
+class SettingUsercertcaItem(TypedDict, total=False):
+    """Type hints for user-cert-ca table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: SettingUsercertcaItem = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    
+    name: str  # CA certificate list. | MaxLen: 79
+
+
+class SettingDevrangeItem(TypedDict, total=False):
+    """Type hints for dev-range table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: SettingDevrangeItem = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    
+    name: str  # Address name. | MaxLen: 79
+
+
+# ============================================================================
+# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional)
+# ============================================================================
 # NOTE: We intentionally DON'T use NotRequired wrapper because:
 # 1. total=False already makes all fields optional
 # 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
@@ -43,32 +80,12 @@ class SettingPayload(TypedDict, total=False):
     captive_portal_port: int  # Captive portal port number | Default: 7830 | Min: 1 | Max: 65535
     auth_https: Literal["enable", "disable"]  # Enable/disable redirecting HTTP user authenticatio | Default: enable
     captive_portal_ssl_port: int  # Captive portal SSL port number | Default: 7831 | Min: 1 | Max: 65535
-    user_cert_ca: list[dict[str, Any]]  # CA certificate used for client certificate verific
-    dev_range: list[dict[str, Any]]  # Address range for the IP based device query.
+    user_cert_ca: list[SettingUsercertcaItem]  # CA certificate used for client certificate verific
+    dev_range: list[SettingDevrangeItem]  # Address range for the IP based device query.
 
-# Nested TypedDicts for table field children (dict mode)
-
-class SettingUsercertcaItem(TypedDict):
-    """Type hints for user-cert-ca table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    name: str  # CA certificate list. | MaxLen: 79
-
-
-class SettingDevrangeItem(TypedDict):
-    """Type hints for dev-range table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    name: str  # Address name. | MaxLen: 79
-
-
-# Nested classes for table field children (object mode)
+# ============================================================================
+# Nested classes for table field children (object mode - for API responses)
+# ============================================================================
 
 @final
 class SettingUsercertcaObject:
@@ -220,6 +237,9 @@ class SettingObject:
     # Common API response fields
     status: str
     http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
     vdom: str | None
     
     # Methods from FortiObject
@@ -467,8 +487,8 @@ class Setting:
         captive_portal_port: int | None = ...,
         auth_https: Literal["enable", "disable"] | None = ...,
         captive_portal_ssl_port: int | None = ...,
-        user_cert_ca: str | list[str] | list[dict[str, Any]] | None = ...,
-        dev_range: str | list[str] | list[dict[str, Any]] | None = ...,
+        user_cert_ca: str | list[SettingUsercertcaItem] | None = ...,
+        dev_range: str | list[SettingDevrangeItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> SettingObject: ...
     
@@ -495,8 +515,8 @@ class Setting:
         captive_portal_port: int | None = ...,
         auth_https: Literal["enable", "disable"] | None = ...,
         captive_portal_ssl_port: int | None = ...,
-        user_cert_ca: str | list[str] | list[dict[str, Any]] | None = ...,
-        dev_range: str | list[str] | list[dict[str, Any]] | None = ...,
+        user_cert_ca: str | list[SettingUsercertcaItem] | None = ...,
+        dev_range: str | list[SettingDevrangeItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -524,8 +544,8 @@ class Setting:
         captive_portal_port: int | None = ...,
         auth_https: Literal["enable", "disable"] | None = ...,
         captive_portal_ssl_port: int | None = ...,
-        user_cert_ca: str | list[str] | list[dict[str, Any]] | None = ...,
-        dev_range: str | list[str] | list[dict[str, Any]] | None = ...,
+        user_cert_ca: str | list[SettingUsercertcaItem] | None = ...,
+        dev_range: str | list[SettingDevrangeItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -551,8 +571,8 @@ class Setting:
         captive_portal_port: int | None = ...,
         auth_https: Literal["enable", "disable"] | None = ...,
         captive_portal_ssl_port: int | None = ...,
-        user_cert_ca: str | list[str] | list[dict[str, Any]] | None = ...,
-        dev_range: str | list[str] | list[dict[str, Any]] | None = ...,
+        user_cert_ca: str | list[SettingUsercertcaItem] | None = ...,
+        dev_range: str | list[SettingDevrangeItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -584,8 +604,8 @@ class Setting:
         captive_portal_port: int | None = ...,
         auth_https: Literal["enable", "disable"] | None = ...,
         captive_portal_ssl_port: int | None = ...,
-        user_cert_ca: str | list[str] | list[dict[str, Any]] | None = ...,
-        dev_range: str | list[str] | list[dict[str, Any]] | None = ...,
+        user_cert_ca: str | list[SettingUsercertcaItem] | None = ...,
+        dev_range: str | list[SettingDevrangeItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     

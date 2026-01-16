@@ -2,7 +2,33 @@ from typing import TypedDict, Literal, Any, Coroutine, Union, overload, Generato
 from typing_extensions import NotRequired
 from hfortix_fortios.models import FortiObject, FortiObjectList
 
-# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional via total=False)
+# ============================================================================
+# Nested TypedDicts for table field children (dict mode)
+# These MUST be defined before the Payload class to use them as type hints
+# ============================================================================
+
+class BonjourProfilePolicylistItem(TypedDict, total=False):
+    """Type hints for policy-list table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: BonjourProfilePolicylistItem = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    
+    policy_id: int  # Policy ID. | Default: 0 | Min: 1 | Max: 65535
+    description: str  # Description. | MaxLen: 63
+    from_vlan: str  # VLAN ID from which the Bonjour service is advertis | Default: 0 | MaxLen: 63
+    to_vlan: str  # VLAN ID to which the Bonjour service is made avail | Default: all | MaxLen: 63
+    services: Literal["all", "airplay", "afp", "bit-torrent", "ftp", "ichat", "itunes", "printers", "samba", "scanners", "ssh", "chromecast", "miracast"]  # Bonjour services for the VLAN connecting to the Bo | Default: all
+
+
+# ============================================================================
+# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional)
+# ============================================================================
 # NOTE: We intentionally DON'T use NotRequired wrapper because:
 # 1. total=False already makes all fields optional
 # 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
@@ -20,25 +46,11 @@ class BonjourProfilePayload(TypedDict, total=False):
     name: str  # Bonjour profile name. | MaxLen: 35
     comment: str  # Comment. | MaxLen: 63
     micro_location: Literal["enable", "disable"]  # Enable/disable Micro location for Bonjour profile | Default: disable
-    policy_list: list[dict[str, Any]]  # Bonjour policy list.
+    policy_list: list[BonjourProfilePolicylistItem]  # Bonjour policy list.
 
-# Nested TypedDicts for table field children (dict mode)
-
-class BonjourProfilePolicylistItem(TypedDict):
-    """Type hints for policy-list table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    policy_id: int  # Policy ID. | Default: 0 | Min: 1 | Max: 65535
-    description: str  # Description. | MaxLen: 63
-    from_vlan: str  # VLAN ID from which the Bonjour service is advertis | Default: 0 | MaxLen: 63
-    to_vlan: str  # VLAN ID to which the Bonjour service is made avail | Default: all | MaxLen: 63
-    services: Literal["all", "airplay", "afp", "bit-torrent", "ftp", "ichat", "itunes", "printers", "samba", "scanners", "ssh", "chromecast", "miracast"]  # Bonjour services for the VLAN connecting to the Bo | Default: all
-
-
-# Nested classes for table field children (object mode)
+# ============================================================================
+# Nested classes for table field children (object mode - for API responses)
+# ============================================================================
 
 @final
 class BonjourProfilePolicylistObject:
@@ -115,6 +127,9 @@ class BonjourProfileObject:
     # Common API response fields
     status: str
     http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
     vdom: str | None
     
     # Methods from FortiObject
@@ -347,7 +362,7 @@ class BonjourProfile:
         name: str | None = ...,
         comment: str | None = ...,
         micro_location: Literal["enable", "disable"] | None = ...,
-        policy_list: str | list[str] | list[dict[str, Any]] | None = ...,
+        policy_list: str | list[BonjourProfilePolicylistItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> BonjourProfileObject: ...
     
@@ -358,7 +373,7 @@ class BonjourProfile:
         name: str | None = ...,
         comment: str | None = ...,
         micro_location: Literal["enable", "disable"] | None = ...,
-        policy_list: str | list[str] | list[dict[str, Any]] | None = ...,
+        policy_list: str | list[BonjourProfilePolicylistItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -370,7 +385,7 @@ class BonjourProfile:
         name: str | None = ...,
         comment: str | None = ...,
         micro_location: Literal["enable", "disable"] | None = ...,
-        policy_list: str | list[str] | list[dict[str, Any]] | None = ...,
+        policy_list: str | list[BonjourProfilePolicylistItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -380,7 +395,7 @@ class BonjourProfile:
         name: str | None = ...,
         comment: str | None = ...,
         micro_location: Literal["enable", "disable"] | None = ...,
-        policy_list: str | list[str] | list[dict[str, Any]] | None = ...,
+        policy_list: str | list[BonjourProfilePolicylistItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -392,7 +407,7 @@ class BonjourProfile:
         name: str | None = ...,
         comment: str | None = ...,
         micro_location: Literal["enable", "disable"] | None = ...,
-        policy_list: str | list[str] | list[dict[str, Any]] | None = ...,
+        policy_list: str | list[BonjourProfilePolicylistItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> BonjourProfileObject: ...
     
@@ -403,7 +418,7 @@ class BonjourProfile:
         name: str | None = ...,
         comment: str | None = ...,
         micro_location: Literal["enable", "disable"] | None = ...,
-        policy_list: str | list[str] | list[dict[str, Any]] | None = ...,
+        policy_list: str | list[BonjourProfilePolicylistItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -415,7 +430,7 @@ class BonjourProfile:
         name: str | None = ...,
         comment: str | None = ...,
         micro_location: Literal["enable", "disable"] | None = ...,
-        policy_list: str | list[str] | list[dict[str, Any]] | None = ...,
+        policy_list: str | list[BonjourProfilePolicylistItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -425,7 +440,7 @@ class BonjourProfile:
         name: str | None = ...,
         comment: str | None = ...,
         micro_location: Literal["enable", "disable"] | None = ...,
-        policy_list: str | list[str] | list[dict[str, Any]] | None = ...,
+        policy_list: str | list[BonjourProfilePolicylistItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -470,7 +485,7 @@ class BonjourProfile:
         name: str | None = ...,
         comment: str | None = ...,
         micro_location: Literal["enable", "disable"] | None = ...,
-        policy_list: str | list[str] | list[dict[str, Any]] | None = ...,
+        policy_list: str | list[BonjourProfilePolicylistItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     

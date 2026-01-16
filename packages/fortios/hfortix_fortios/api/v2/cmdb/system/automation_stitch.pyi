@@ -2,7 +2,62 @@ from typing import TypedDict, Literal, Any, Coroutine, Union, overload, Generato
 from typing_extensions import NotRequired
 from hfortix_fortios.models import FortiObject, FortiObjectList
 
-# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional via total=False)
+# ============================================================================
+# Nested TypedDicts for table field children (dict mode)
+# These MUST be defined before the Payload class to use them as type hints
+# ============================================================================
+
+class AutomationStitchConditionItem(TypedDict, total=False):
+    """Type hints for condition table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: AutomationStitchConditionItem = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    
+    name: str  # Condition name. | MaxLen: 79
+
+
+class AutomationStitchActionsItem(TypedDict, total=False):
+    """Type hints for actions table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: AutomationStitchActionsItem = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    
+    id: int  # Entry ID. | Default: 0 | Min: 0 | Max: 4294967295
+    action: str  # Action name. | MaxLen: 64
+    delay: int  # Delay before execution (in seconds). | Default: 0 | Min: 0 | Max: 3600
+    required: Literal["enable", "disable"]  # Required in action chain. | Default: disable
+
+
+class AutomationStitchDestinationItem(TypedDict, total=False):
+    """Type hints for destination table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: AutomationStitchDestinationItem = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    
+    name: str  # Destination name. | MaxLen: 79
+
+
+# ============================================================================
+# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional)
+# ============================================================================
 # NOTE: We intentionally DON'T use NotRequired wrapper because:
 # 1. total=False already makes all fields optional
 # 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
@@ -26,47 +81,14 @@ class AutomationStitchPayload(TypedDict, total=False):
     description: str  # Description. | MaxLen: 255
     status: Literal["enable", "disable"]  # Enable/disable this stitch. | Default: enable
     trigger: str  # Trigger name. | MaxLen: 35
-    condition: list[dict[str, Any]]  # Automation conditions.
+    condition: list[AutomationStitchConditionItem]  # Automation conditions.
     condition_logic: Literal["and", "or"]  # Apply AND/OR logic to the specified automation con | Default: and
-    actions: list[dict[str, Any]]  # Configure stitch actions.
-    destination: list[dict[str, Any]]  # Serial number/HA group-name of destination devices
+    actions: list[AutomationStitchActionsItem]  # Configure stitch actions.
+    destination: list[AutomationStitchDestinationItem]  # Serial number/HA group-name of destination devices
 
-# Nested TypedDicts for table field children (dict mode)
-
-class AutomationStitchConditionItem(TypedDict):
-    """Type hints for condition table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    name: str  # Condition name. | MaxLen: 79
-
-
-class AutomationStitchActionsItem(TypedDict):
-    """Type hints for actions table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    id: int  # Entry ID. | Default: 0 | Min: 0 | Max: 4294967295
-    action: str  # Action name. | MaxLen: 64
-    delay: int  # Delay before execution (in seconds). | Default: 0 | Min: 0 | Max: 3600
-    required: Literal["enable", "disable"]  # Required in action chain. | Default: disable
-
-
-class AutomationStitchDestinationItem(TypedDict):
-    """Type hints for destination table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    name: str  # Destination name. | MaxLen: 79
-
-
-# Nested classes for table field children (object mode)
+# ============================================================================
+# Nested classes for table field children (object mode - for API responses)
+# ============================================================================
 
 @final
 class AutomationStitchConditionObject:
@@ -217,6 +239,9 @@ class AutomationStitchObject:
     # Common API response fields
     status: str
     http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
     vdom: str | None
     
     # Methods from FortiObject
@@ -450,10 +475,10 @@ class AutomationStitch:
         description: str | None = ...,
         status: Literal["enable", "disable"] | None = ...,
         trigger: str | None = ...,
-        condition: str | list[str] | list[dict[str, Any]] | None = ...,
+        condition: str | list[AutomationStitchConditionItem] | None = ...,
         condition_logic: Literal["and", "or"] | None = ...,
-        actions: str | list[str] | list[dict[str, Any]] | None = ...,
-        destination: str | list[str] | list[dict[str, Any]] | None = ...,
+        actions: str | list[AutomationStitchActionsItem] | None = ...,
+        destination: str | list[AutomationStitchDestinationItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> AutomationStitchObject: ...
     
@@ -465,10 +490,10 @@ class AutomationStitch:
         description: str | None = ...,
         status: Literal["enable", "disable"] | None = ...,
         trigger: str | None = ...,
-        condition: str | list[str] | list[dict[str, Any]] | None = ...,
+        condition: str | list[AutomationStitchConditionItem] | None = ...,
         condition_logic: Literal["and", "or"] | None = ...,
-        actions: str | list[str] | list[dict[str, Any]] | None = ...,
-        destination: str | list[str] | list[dict[str, Any]] | None = ...,
+        actions: str | list[AutomationStitchActionsItem] | None = ...,
+        destination: str | list[AutomationStitchDestinationItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -481,10 +506,10 @@ class AutomationStitch:
         description: str | None = ...,
         status: Literal["enable", "disable"] | None = ...,
         trigger: str | None = ...,
-        condition: str | list[str] | list[dict[str, Any]] | None = ...,
+        condition: str | list[AutomationStitchConditionItem] | None = ...,
         condition_logic: Literal["and", "or"] | None = ...,
-        actions: str | list[str] | list[dict[str, Any]] | None = ...,
-        destination: str | list[str] | list[dict[str, Any]] | None = ...,
+        actions: str | list[AutomationStitchActionsItem] | None = ...,
+        destination: str | list[AutomationStitchDestinationItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -495,10 +520,10 @@ class AutomationStitch:
         description: str | None = ...,
         status: Literal["enable", "disable"] | None = ...,
         trigger: str | None = ...,
-        condition: str | list[str] | list[dict[str, Any]] | None = ...,
+        condition: str | list[AutomationStitchConditionItem] | None = ...,
         condition_logic: Literal["and", "or"] | None = ...,
-        actions: str | list[str] | list[dict[str, Any]] | None = ...,
-        destination: str | list[str] | list[dict[str, Any]] | None = ...,
+        actions: str | list[AutomationStitchActionsItem] | None = ...,
+        destination: str | list[AutomationStitchDestinationItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -511,10 +536,10 @@ class AutomationStitch:
         description: str | None = ...,
         status: Literal["enable", "disable"] | None = ...,
         trigger: str | None = ...,
-        condition: str | list[str] | list[dict[str, Any]] | None = ...,
+        condition: str | list[AutomationStitchConditionItem] | None = ...,
         condition_logic: Literal["and", "or"] | None = ...,
-        actions: str | list[str] | list[dict[str, Any]] | None = ...,
-        destination: str | list[str] | list[dict[str, Any]] | None = ...,
+        actions: str | list[AutomationStitchActionsItem] | None = ...,
+        destination: str | list[AutomationStitchDestinationItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> AutomationStitchObject: ...
     
@@ -526,10 +551,10 @@ class AutomationStitch:
         description: str | None = ...,
         status: Literal["enable", "disable"] | None = ...,
         trigger: str | None = ...,
-        condition: str | list[str] | list[dict[str, Any]] | None = ...,
+        condition: str | list[AutomationStitchConditionItem] | None = ...,
         condition_logic: Literal["and", "or"] | None = ...,
-        actions: str | list[str] | list[dict[str, Any]] | None = ...,
-        destination: str | list[str] | list[dict[str, Any]] | None = ...,
+        actions: str | list[AutomationStitchActionsItem] | None = ...,
+        destination: str | list[AutomationStitchDestinationItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -542,10 +567,10 @@ class AutomationStitch:
         description: str | None = ...,
         status: Literal["enable", "disable"] | None = ...,
         trigger: str | None = ...,
-        condition: str | list[str] | list[dict[str, Any]] | None = ...,
+        condition: str | list[AutomationStitchConditionItem] | None = ...,
         condition_logic: Literal["and", "or"] | None = ...,
-        actions: str | list[str] | list[dict[str, Any]] | None = ...,
-        destination: str | list[str] | list[dict[str, Any]] | None = ...,
+        actions: str | list[AutomationStitchActionsItem] | None = ...,
+        destination: str | list[AutomationStitchDestinationItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -556,10 +581,10 @@ class AutomationStitch:
         description: str | None = ...,
         status: Literal["enable", "disable"] | None = ...,
         trigger: str | None = ...,
-        condition: str | list[str] | list[dict[str, Any]] | None = ...,
+        condition: str | list[AutomationStitchConditionItem] | None = ...,
         condition_logic: Literal["and", "or"] | None = ...,
-        actions: str | list[str] | list[dict[str, Any]] | None = ...,
-        destination: str | list[str] | list[dict[str, Any]] | None = ...,
+        actions: str | list[AutomationStitchActionsItem] | None = ...,
+        destination: str | list[AutomationStitchDestinationItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -605,10 +630,10 @@ class AutomationStitch:
         description: str | None = ...,
         status: Literal["enable", "disable"] | None = ...,
         trigger: str | None = ...,
-        condition: str | list[str] | list[dict[str, Any]] | None = ...,
+        condition: str | list[AutomationStitchConditionItem] | None = ...,
         condition_logic: Literal["and", "or"] | None = ...,
-        actions: str | list[str] | list[dict[str, Any]] | None = ...,
-        destination: str | list[str] | list[dict[str, Any]] | None = ...,
+        actions: str | list[AutomationStitchActionsItem] | None = ...,
+        destination: str | list[AutomationStitchDestinationItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     

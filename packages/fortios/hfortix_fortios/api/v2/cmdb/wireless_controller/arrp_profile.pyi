@@ -2,7 +2,29 @@ from typing import TypedDict, Literal, Any, Coroutine, Union, overload, Generato
 from typing_extensions import NotRequired
 from hfortix_fortios.models import FortiObject, FortiObjectList
 
-# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional via total=False)
+# ============================================================================
+# Nested TypedDicts for table field children (dict mode)
+# These MUST be defined before the Payload class to use them as type hints
+# ============================================================================
+
+class ArrpProfileDarrpoptimizeschedulesItem(TypedDict, total=False):
+    """Type hints for darrp-optimize-schedules table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: ArrpProfileDarrpoptimizeschedulesItem = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    
+    name: str  # Schedule name. | MaxLen: 35
+
+
+# ============================================================================
+# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional)
+# ============================================================================
 # NOTE: We intentionally DON'T use NotRequired wrapper because:
 # 1. total=False already makes all fields optional
 # 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
@@ -38,21 +60,11 @@ class ArrpProfilePayload(TypedDict, total=False):
     include_dfs_channel: Literal["enable", "disable"]  # Enable/disable use of DFS channel in DARRP channel | Default: enable
     override_darrp_optimize: Literal["enable", "disable"]  # Enable to override setting darrp-optimize and darr | Default: disable
     darrp_optimize: int  # Time for running Distributed Automatic Radio Resou | Default: 86400 | Min: 0 | Max: 86400
-    darrp_optimize_schedules: list[dict[str, Any]]  # Firewall schedules for DARRP running time. DARRP w
+    darrp_optimize_schedules: list[ArrpProfileDarrpoptimizeschedulesItem]  # Firewall schedules for DARRP running time. DARRP w
 
-# Nested TypedDicts for table field children (dict mode)
-
-class ArrpProfileDarrpoptimizeschedulesItem(TypedDict):
-    """Type hints for darrp-optimize-schedules table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    name: str  # Schedule name. | MaxLen: 35
-
-
-# Nested classes for table field children (object mode)
+# ============================================================================
+# Nested classes for table field children (object mode - for API responses)
+# ============================================================================
 
 @final
 class ArrpProfileDarrpoptimizeschedulesObject:
@@ -175,6 +187,9 @@ class ArrpProfileObject:
     # Common API response fields
     status: str
     http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
     vdom: str | None
     
     # Methods from FortiObject
@@ -425,7 +440,7 @@ class ArrpProfile:
         include_dfs_channel: Literal["enable", "disable"] | None = ...,
         override_darrp_optimize: Literal["enable", "disable"] | None = ...,
         darrp_optimize: int | None = ...,
-        darrp_optimize_schedules: str | list[str] | list[dict[str, Any]] | None = ...,
+        darrp_optimize_schedules: str | list[ArrpProfileDarrpoptimizeschedulesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> ArrpProfileObject: ...
     
@@ -454,7 +469,7 @@ class ArrpProfile:
         include_dfs_channel: Literal["enable", "disable"] | None = ...,
         override_darrp_optimize: Literal["enable", "disable"] | None = ...,
         darrp_optimize: int | None = ...,
-        darrp_optimize_schedules: str | list[str] | list[dict[str, Any]] | None = ...,
+        darrp_optimize_schedules: str | list[ArrpProfileDarrpoptimizeschedulesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -484,7 +499,7 @@ class ArrpProfile:
         include_dfs_channel: Literal["enable", "disable"] | None = ...,
         override_darrp_optimize: Literal["enable", "disable"] | None = ...,
         darrp_optimize: int | None = ...,
-        darrp_optimize_schedules: str | list[str] | list[dict[str, Any]] | None = ...,
+        darrp_optimize_schedules: str | list[ArrpProfileDarrpoptimizeschedulesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -512,7 +527,7 @@ class ArrpProfile:
         include_dfs_channel: Literal["enable", "disable"] | None = ...,
         override_darrp_optimize: Literal["enable", "disable"] | None = ...,
         darrp_optimize: int | None = ...,
-        darrp_optimize_schedules: str | list[str] | list[dict[str, Any]] | None = ...,
+        darrp_optimize_schedules: str | list[ArrpProfileDarrpoptimizeschedulesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -542,7 +557,7 @@ class ArrpProfile:
         include_dfs_channel: Literal["enable", "disable"] | None = ...,
         override_darrp_optimize: Literal["enable", "disable"] | None = ...,
         darrp_optimize: int | None = ...,
-        darrp_optimize_schedules: str | list[str] | list[dict[str, Any]] | None = ...,
+        darrp_optimize_schedules: str | list[ArrpProfileDarrpoptimizeschedulesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> ArrpProfileObject: ...
     
@@ -571,7 +586,7 @@ class ArrpProfile:
         include_dfs_channel: Literal["enable", "disable"] | None = ...,
         override_darrp_optimize: Literal["enable", "disable"] | None = ...,
         darrp_optimize: int | None = ...,
-        darrp_optimize_schedules: str | list[str] | list[dict[str, Any]] | None = ...,
+        darrp_optimize_schedules: str | list[ArrpProfileDarrpoptimizeschedulesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -601,7 +616,7 @@ class ArrpProfile:
         include_dfs_channel: Literal["enable", "disable"] | None = ...,
         override_darrp_optimize: Literal["enable", "disable"] | None = ...,
         darrp_optimize: int | None = ...,
-        darrp_optimize_schedules: str | list[str] | list[dict[str, Any]] | None = ...,
+        darrp_optimize_schedules: str | list[ArrpProfileDarrpoptimizeschedulesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -629,7 +644,7 @@ class ArrpProfile:
         include_dfs_channel: Literal["enable", "disable"] | None = ...,
         override_darrp_optimize: Literal["enable", "disable"] | None = ...,
         darrp_optimize: int | None = ...,
-        darrp_optimize_schedules: str | list[str] | list[dict[str, Any]] | None = ...,
+        darrp_optimize_schedules: str | list[ArrpProfileDarrpoptimizeschedulesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -692,7 +707,7 @@ class ArrpProfile:
         include_dfs_channel: Literal["enable", "disable"] | None = ...,
         override_darrp_optimize: Literal["enable", "disable"] | None = ...,
         darrp_optimize: int | None = ...,
-        darrp_optimize_schedules: str | list[str] | list[dict[str, Any]] | None = ...,
+        darrp_optimize_schedules: str | list[ArrpProfileDarrpoptimizeschedulesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     

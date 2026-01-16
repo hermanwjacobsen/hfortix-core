@@ -2,7 +2,32 @@ from typing import TypedDict, Literal, Any, Coroutine, Union, overload, Generato
 from typing_extensions import NotRequired
 from hfortix_fortios.models import FortiObject, FortiObjectList
 
-# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional via total=False)
+# ============================================================================
+# Nested TypedDicts for table field children (dict mode)
+# These MUST be defined before the Payload class to use them as type hints
+# ============================================================================
+
+class SensorEntriesItem(TypedDict, total=False):
+    """Type hints for entries table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: SensorEntriesItem = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    
+    id: int  # ID. | Default: 0 | Min: 1 | Max: 32
+    dictionary: str  # Select a DLP dictionary or exact-data-match. | MaxLen: 35
+    count: int  # Count of dictionary matches to trigger sensor entr | Default: 1 | Min: 1 | Max: 255
+    status: Literal["enable", "disable"]  # Enable/disable this entry. | Default: enable
+
+
+# ============================================================================
+# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional)
+# ============================================================================
 # NOTE: We intentionally DON'T use NotRequired wrapper because:
 # 1. total=False already makes all fields optional
 # 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
@@ -21,24 +46,11 @@ class SensorPayload(TypedDict, total=False):
     match_type: Literal["match-all", "match-any", "match-eval"]  # Logical relation between entries | Default: match-any
     eval: str  # Expression to evaluate. | MaxLen: 255
     comment: str  # Optional comments. | MaxLen: 255
-    entries: list[dict[str, Any]]  # DLP sensor entries.
+    entries: list[SensorEntriesItem]  # DLP sensor entries.
 
-# Nested TypedDicts for table field children (dict mode)
-
-class SensorEntriesItem(TypedDict):
-    """Type hints for entries table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    id: int  # ID. | Default: 0 | Min: 1 | Max: 32
-    dictionary: str  # Select a DLP dictionary or exact-data-match. | MaxLen: 35
-    count: int  # Count of dictionary matches to trigger sensor entr | Default: 1 | Min: 1 | Max: 255
-    status: Literal["enable", "disable"]  # Enable/disable this entry. | Default: enable
-
-
-# Nested classes for table field children (object mode)
+# ============================================================================
+# Nested classes for table field children (object mode - for API responses)
+# ============================================================================
 
 @final
 class SensorEntriesObject:
@@ -116,6 +128,9 @@ class SensorObject:
     # Common API response fields
     status: str
     http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
     vdom: str | None
     
     # Methods from FortiObject
@@ -349,7 +364,7 @@ class Sensor:
         match_type: Literal["match-all", "match-any", "match-eval"] | None = ...,
         eval: str | None = ...,
         comment: str | None = ...,
-        entries: str | list[str] | list[dict[str, Any]] | None = ...,
+        entries: str | list[SensorEntriesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> SensorObject: ...
     
@@ -361,7 +376,7 @@ class Sensor:
         match_type: Literal["match-all", "match-any", "match-eval"] | None = ...,
         eval: str | None = ...,
         comment: str | None = ...,
-        entries: str | list[str] | list[dict[str, Any]] | None = ...,
+        entries: str | list[SensorEntriesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -374,7 +389,7 @@ class Sensor:
         match_type: Literal["match-all", "match-any", "match-eval"] | None = ...,
         eval: str | None = ...,
         comment: str | None = ...,
-        entries: str | list[str] | list[dict[str, Any]] | None = ...,
+        entries: str | list[SensorEntriesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -385,7 +400,7 @@ class Sensor:
         match_type: Literal["match-all", "match-any", "match-eval"] | None = ...,
         eval: str | None = ...,
         comment: str | None = ...,
-        entries: str | list[str] | list[dict[str, Any]] | None = ...,
+        entries: str | list[SensorEntriesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -398,7 +413,7 @@ class Sensor:
         match_type: Literal["match-all", "match-any", "match-eval"] | None = ...,
         eval: str | None = ...,
         comment: str | None = ...,
-        entries: str | list[str] | list[dict[str, Any]] | None = ...,
+        entries: str | list[SensorEntriesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> SensorObject: ...
     
@@ -410,7 +425,7 @@ class Sensor:
         match_type: Literal["match-all", "match-any", "match-eval"] | None = ...,
         eval: str | None = ...,
         comment: str | None = ...,
-        entries: str | list[str] | list[dict[str, Any]] | None = ...,
+        entries: str | list[SensorEntriesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -423,7 +438,7 @@ class Sensor:
         match_type: Literal["match-all", "match-any", "match-eval"] | None = ...,
         eval: str | None = ...,
         comment: str | None = ...,
-        entries: str | list[str] | list[dict[str, Any]] | None = ...,
+        entries: str | list[SensorEntriesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -434,7 +449,7 @@ class Sensor:
         match_type: Literal["match-all", "match-any", "match-eval"] | None = ...,
         eval: str | None = ...,
         comment: str | None = ...,
-        entries: str | list[str] | list[dict[str, Any]] | None = ...,
+        entries: str | list[SensorEntriesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -480,7 +495,7 @@ class Sensor:
         match_type: Literal["match-all", "match-any", "match-eval"] | None = ...,
         eval: str | None = ...,
         comment: str | None = ...,
-        entries: str | list[str] | list[dict[str, Any]] | None = ...,
+        entries: str | list[SensorEntriesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     

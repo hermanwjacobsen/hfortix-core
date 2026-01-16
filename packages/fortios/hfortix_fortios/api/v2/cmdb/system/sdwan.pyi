@@ -2,56 +2,36 @@ from typing import TypedDict, Literal, Any, Coroutine, Union, overload, Generato
 from typing_extensions import NotRequired
 from hfortix_fortios.models import FortiObject, FortiObjectList
 
-# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional via total=False)
-# NOTE: We intentionally DON'T use NotRequired wrapper because:
-# 1. total=False already makes all fields optional
-# 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
-class SdwanPayload(TypedDict, total=False):
-    """
-    Type hints for system/sdwan payload fields.
-    
-    Configure redundant Internet connections with multiple outbound links and health-check profiles.
-    
-    **Usage:**
-        payload: SdwanPayload = {
-            "field": "value",  # <- autocomplete shows all fields
-        }
-    """
-    status: Literal["disable", "enable"]  # Enable/disable SD-WAN. | Default: disable
-    load_balance_mode: Literal["source-ip-based", "weight-based", "usage-based", "source-dest-ip-based", "measured-volume-based"]  # Algorithm or mode to use for load balancing Intern | Default: source-ip-based
-    speedtest_bypass_routing: Literal["disable", "enable"]  # Enable/disable bypass routing when speedtest on a | Default: disable
-    duplication_max_num: int  # Maximum number of interface members a packet is du | Default: 2 | Min: 2 | Max: 4
-    duplication_max_discrepancy: int  # Maximum discrepancy between two packets for dedupl | Default: 250 | Min: 250 | Max: 1000
-    neighbor_hold_down: Literal["enable", "disable"]  # Enable/disable hold switching from the secondary n | Default: disable
-    neighbor_hold_down_time: int  # Waiting period in seconds when switching from the | Default: 0 | Min: 0 | Max: 10000000
-    app_perf_log_period: int  # Time interval in seconds that application performa | Default: 0 | Min: 0 | Max: 3600
-    neighbor_hold_boot_time: int  # Waiting period in seconds when switching from the | Default: 0 | Min: 0 | Max: 10000000
-    fail_detect: Literal["enable", "disable"]  # Enable/disable SD-WAN Internet connection status c | Default: disable
-    fail_alert_interfaces: list[dict[str, Any]]  # Physical interfaces that will be alerted.
-    zone: list[dict[str, Any]]  # Configure SD-WAN zones.
-    members: list[dict[str, Any]]  # FortiGate interfaces added to the SD-WAN.
-    health_check: list[dict[str, Any]]  # SD-WAN status checking or health checking. Identif
-    service: list[dict[str, Any]]  # Create SD-WAN rules (also called services) to cont
-    neighbor: list[dict[str, Any]]  # Create SD-WAN neighbor from BGP neighbor table to
-    duplication: list[dict[str, Any]]  # Create SD-WAN duplication rule.
-
+# ============================================================================
 # Nested TypedDicts for table field children (dict mode)
+# These MUST be defined before the Payload class to use them as type hints
+# ============================================================================
 
-class SdwanFailalertinterfacesItem(TypedDict):
+class SdwanFailalertinterfacesItem(TypedDict, total=False):
     """Type hints for fail-alert-interfaces table item fields (dict mode).
     
     Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: SdwanFailalertinterfacesItem = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
     """
     
     name: str  # Physical interface name. | MaxLen: 79
 
 
-class SdwanZoneItem(TypedDict):
+class SdwanZoneItem(TypedDict, total=False):
     """Type hints for zone table item fields (dict mode).
     
     Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: SdwanZoneItem = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
     """
     
     name: str  # Zone name. | MaxLen: 35
@@ -61,11 +41,16 @@ class SdwanZoneItem(TypedDict):
     minimum_sla_meet_members: int  # Minimum number of members which meet SLA when the | Default: 1 | Min: 1 | Max: 255
 
 
-class SdwanMembersItem(TypedDict):
+class SdwanMembersItem(TypedDict, total=False):
     """Type hints for members table item fields (dict mode).
     
     Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: SdwanMembersItem = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
     """
     
     seq_num: int  # Sequence number(1-512). | Default: 0 | Min: 0 | Max: 512
@@ -90,11 +75,16 @@ class SdwanMembersItem(TypedDict):
     comment: str  # Comments. | MaxLen: 255
 
 
-class SdwanHealthcheckItem(TypedDict):
+class SdwanHealthcheckItem(TypedDict, total=False):
     """Type hints for health-check table item fields (dict mode).
     
     Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: SdwanHealthcheckItem = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
     """
     
     name: str  # Status check or health check name. | MaxLen: 35
@@ -154,11 +144,16 @@ class SdwanHealthcheckItem(TypedDict):
     sla: str  # Service level agreement (SLA).
 
 
-class SdwanServiceItem(TypedDict):
+class SdwanServiceItem(TypedDict, total=False):
     """Type hints for service table item fields (dict mode).
     
     Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: SdwanServiceItem = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
     """
     
     id: int  # SD-WAN rule ID (1 - 4000). | Default: 0 | Min: 1 | Max: 4000
@@ -229,11 +224,16 @@ class SdwanServiceItem(TypedDict):
     comment: str  # Comments. | MaxLen: 255
 
 
-class SdwanNeighborItem(TypedDict):
+class SdwanNeighborItem(TypedDict, total=False):
     """Type hints for neighbor table item fields (dict mode).
     
     Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: SdwanNeighborItem = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
     """
     
     ip: str  # IP/IPv6 address of neighbor or neighbor-group name | MaxLen: 45
@@ -247,11 +247,16 @@ class SdwanNeighborItem(TypedDict):
     sla_id: int  # SLA ID. | Default: 0 | Min: 0 | Max: 4294967295
 
 
-class SdwanDuplicationItem(TypedDict):
+class SdwanDuplicationItem(TypedDict, total=False):
     """Type hints for duplication table item fields (dict mode).
     
     Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: SdwanDuplicationItem = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
     """
     
     id: int  # Duplication rule ID (1 - 255). | Default: 0 | Min: 1 | Max: 255
@@ -268,7 +273,44 @@ class SdwanDuplicationItem(TypedDict):
     packet_de_duplication: Literal["enable", "disable"]  # Enable/disable discarding of packets that have bee | Default: disable
 
 
-# Nested classes for table field children (object mode)
+# ============================================================================
+# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional)
+# ============================================================================
+# NOTE: We intentionally DON'T use NotRequired wrapper because:
+# 1. total=False already makes all fields optional
+# 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
+class SdwanPayload(TypedDict, total=False):
+    """
+    Type hints for system/sdwan payload fields.
+    
+    Configure redundant Internet connections with multiple outbound links and health-check profiles.
+    
+    **Usage:**
+        payload: SdwanPayload = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    status: Literal["disable", "enable"]  # Enable/disable SD-WAN. | Default: disable
+    load_balance_mode: Literal["source-ip-based", "weight-based", "usage-based", "source-dest-ip-based", "measured-volume-based"]  # Algorithm or mode to use for load balancing Intern | Default: source-ip-based
+    speedtest_bypass_routing: Literal["disable", "enable"]  # Enable/disable bypass routing when speedtest on a | Default: disable
+    duplication_max_num: int  # Maximum number of interface members a packet is du | Default: 2 | Min: 2 | Max: 4
+    duplication_max_discrepancy: int  # Maximum discrepancy between two packets for dedupl | Default: 250 | Min: 250 | Max: 1000
+    neighbor_hold_down: Literal["enable", "disable"]  # Enable/disable hold switching from the secondary n | Default: disable
+    neighbor_hold_down_time: int  # Waiting period in seconds when switching from the | Default: 0 | Min: 0 | Max: 10000000
+    app_perf_log_period: int  # Time interval in seconds that application performa | Default: 0 | Min: 0 | Max: 3600
+    neighbor_hold_boot_time: int  # Waiting period in seconds when switching from the | Default: 0 | Min: 0 | Max: 10000000
+    fail_detect: Literal["enable", "disable"]  # Enable/disable SD-WAN Internet connection status c | Default: disable
+    fail_alert_interfaces: list[SdwanFailalertinterfacesItem]  # Physical interfaces that will be alerted.
+    zone: list[SdwanZoneItem]  # Configure SD-WAN zones.
+    members: list[SdwanMembersItem]  # FortiGate interfaces added to the SD-WAN.
+    health_check: list[SdwanHealthcheckItem]  # SD-WAN status checking or health checking. Identif
+    service: list[SdwanServiceItem]  # Create SD-WAN rules (also called services) to cont
+    neighbor: list[SdwanNeighborItem]  # Create SD-WAN neighbor from BGP neighbor table to
+    duplication: list[SdwanDuplicationItem]  # Create SD-WAN duplication rule.
+
+# ============================================================================
+# Nested classes for table field children (object mode - for API responses)
+# ============================================================================
 
 @final
 class SdwanFailalertinterfacesObject:
@@ -890,6 +932,9 @@ class SdwanObject:
     # Common API response fields
     status: str
     http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
     vdom: str | None
     
     # Methods from FortiObject
@@ -1128,13 +1173,13 @@ class Sdwan:
         app_perf_log_period: int | None = ...,
         neighbor_hold_boot_time: int | None = ...,
         fail_detect: Literal["enable", "disable"] | None = ...,
-        fail_alert_interfaces: str | list[str] | list[dict[str, Any]] | None = ...,
-        zone: str | list[str] | list[dict[str, Any]] | None = ...,
-        members: str | list[str] | list[dict[str, Any]] | None = ...,
-        health_check: str | list[str] | list[dict[str, Any]] | None = ...,
-        service: str | list[str] | list[dict[str, Any]] | None = ...,
-        neighbor: str | list[str] | list[dict[str, Any]] | None = ...,
-        duplication: str | list[str] | list[dict[str, Any]] | None = ...,
+        fail_alert_interfaces: str | list[SdwanFailalertinterfacesItem] | None = ...,
+        zone: str | list[SdwanZoneItem] | None = ...,
+        members: str | list[SdwanMembersItem] | None = ...,
+        health_check: str | list[SdwanHealthcheckItem] | None = ...,
+        service: str | list[SdwanServiceItem] | None = ...,
+        neighbor: str | list[SdwanNeighborItem] | None = ...,
+        duplication: str | list[SdwanDuplicationItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> SdwanObject: ...
     
@@ -1152,13 +1197,13 @@ class Sdwan:
         app_perf_log_period: int | None = ...,
         neighbor_hold_boot_time: int | None = ...,
         fail_detect: Literal["enable", "disable"] | None = ...,
-        fail_alert_interfaces: str | list[str] | list[dict[str, Any]] | None = ...,
-        zone: str | list[str] | list[dict[str, Any]] | None = ...,
-        members: str | list[str] | list[dict[str, Any]] | None = ...,
-        health_check: str | list[str] | list[dict[str, Any]] | None = ...,
-        service: str | list[str] | list[dict[str, Any]] | None = ...,
-        neighbor: str | list[str] | list[dict[str, Any]] | None = ...,
-        duplication: str | list[str] | list[dict[str, Any]] | None = ...,
+        fail_alert_interfaces: str | list[SdwanFailalertinterfacesItem] | None = ...,
+        zone: str | list[SdwanZoneItem] | None = ...,
+        members: str | list[SdwanMembersItem] | None = ...,
+        health_check: str | list[SdwanHealthcheckItem] | None = ...,
+        service: str | list[SdwanServiceItem] | None = ...,
+        neighbor: str | list[SdwanNeighborItem] | None = ...,
+        duplication: str | list[SdwanDuplicationItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -1177,13 +1222,13 @@ class Sdwan:
         app_perf_log_period: int | None = ...,
         neighbor_hold_boot_time: int | None = ...,
         fail_detect: Literal["enable", "disable"] | None = ...,
-        fail_alert_interfaces: str | list[str] | list[dict[str, Any]] | None = ...,
-        zone: str | list[str] | list[dict[str, Any]] | None = ...,
-        members: str | list[str] | list[dict[str, Any]] | None = ...,
-        health_check: str | list[str] | list[dict[str, Any]] | None = ...,
-        service: str | list[str] | list[dict[str, Any]] | None = ...,
-        neighbor: str | list[str] | list[dict[str, Any]] | None = ...,
-        duplication: str | list[str] | list[dict[str, Any]] | None = ...,
+        fail_alert_interfaces: str | list[SdwanFailalertinterfacesItem] | None = ...,
+        zone: str | list[SdwanZoneItem] | None = ...,
+        members: str | list[SdwanMembersItem] | None = ...,
+        health_check: str | list[SdwanHealthcheckItem] | None = ...,
+        service: str | list[SdwanServiceItem] | None = ...,
+        neighbor: str | list[SdwanNeighborItem] | None = ...,
+        duplication: str | list[SdwanDuplicationItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -1200,13 +1245,13 @@ class Sdwan:
         app_perf_log_period: int | None = ...,
         neighbor_hold_boot_time: int | None = ...,
         fail_detect: Literal["enable", "disable"] | None = ...,
-        fail_alert_interfaces: str | list[str] | list[dict[str, Any]] | None = ...,
-        zone: str | list[str] | list[dict[str, Any]] | None = ...,
-        members: str | list[str] | list[dict[str, Any]] | None = ...,
-        health_check: str | list[str] | list[dict[str, Any]] | None = ...,
-        service: str | list[str] | list[dict[str, Any]] | None = ...,
-        neighbor: str | list[str] | list[dict[str, Any]] | None = ...,
-        duplication: str | list[str] | list[dict[str, Any]] | None = ...,
+        fail_alert_interfaces: str | list[SdwanFailalertinterfacesItem] | None = ...,
+        zone: str | list[SdwanZoneItem] | None = ...,
+        members: str | list[SdwanMembersItem] | None = ...,
+        health_check: str | list[SdwanHealthcheckItem] | None = ...,
+        service: str | list[SdwanServiceItem] | None = ...,
+        neighbor: str | list[SdwanNeighborItem] | None = ...,
+        duplication: str | list[SdwanDuplicationItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -1229,13 +1274,13 @@ class Sdwan:
         app_perf_log_period: int | None = ...,
         neighbor_hold_boot_time: int | None = ...,
         fail_detect: Literal["enable", "disable"] | None = ...,
-        fail_alert_interfaces: str | list[str] | list[dict[str, Any]] | None = ...,
-        zone: str | list[str] | list[dict[str, Any]] | None = ...,
-        members: str | list[str] | list[dict[str, Any]] | None = ...,
-        health_check: str | list[str] | list[dict[str, Any]] | None = ...,
-        service: str | list[str] | list[dict[str, Any]] | None = ...,
-        neighbor: str | list[str] | list[dict[str, Any]] | None = ...,
-        duplication: str | list[str] | list[dict[str, Any]] | None = ...,
+        fail_alert_interfaces: str | list[SdwanFailalertinterfacesItem] | None = ...,
+        zone: str | list[SdwanZoneItem] | None = ...,
+        members: str | list[SdwanMembersItem] | None = ...,
+        health_check: str | list[SdwanHealthcheckItem] | None = ...,
+        service: str | list[SdwanServiceItem] | None = ...,
+        neighbor: str | list[SdwanNeighborItem] | None = ...,
+        duplication: str | list[SdwanDuplicationItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     

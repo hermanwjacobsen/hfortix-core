@@ -2,7 +2,29 @@ from typing import TypedDict, Literal, Any, Coroutine, Union, overload, Generato
 from typing_extensions import NotRequired
 from hfortix_fortios.models import FortiObject, FortiObjectList
 
-# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional via total=False)
+# ============================================================================
+# Nested TypedDicts for table field children (dict mode)
+# These MUST be defined before the Payload class to use them as type hints
+# ============================================================================
+
+class ConcentratorMemberItem(TypedDict, total=False):
+    """Type hints for member table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: ConcentratorMemberItem = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    
+    name: str  # Member name. | MaxLen: 79
+
+
+# ============================================================================
+# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional)
+# ============================================================================
 # NOTE: We intentionally DON'T use NotRequired wrapper because:
 # 1. total=False already makes all fields optional
 # 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
@@ -20,21 +42,11 @@ class ConcentratorPayload(TypedDict, total=False):
     id: int  # Concentrator ID (1 - 65535). | Default: 0 | Min: 1 | Max: 65535
     name: str  # Concentrator name. | MaxLen: 35
     src_check: Literal["disable", "enable"]  # Enable to check source address of phase 2 selector | Default: disable
-    member: list[dict[str, Any]]  # Names of up to 3 VPN tunnels to add to the concent
+    member: list[ConcentratorMemberItem]  # Names of up to 3 VPN tunnels to add to the concent
 
-# Nested TypedDicts for table field children (dict mode)
-
-class ConcentratorMemberItem(TypedDict):
-    """Type hints for member table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    name: str  # Member name. | MaxLen: 79
-
-
-# Nested classes for table field children (object mode)
+# ============================================================================
+# Nested classes for table field children (object mode - for API responses)
+# ============================================================================
 
 @final
 class ConcentratorMemberObject:
@@ -103,6 +115,9 @@ class ConcentratorObject:
     # Common API response fields
     status: str
     http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
     vdom: str | None
     
     # Methods from FortiObject
@@ -335,7 +350,7 @@ class Concentrator:
         id: int | None = ...,
         name: str | None = ...,
         src_check: Literal["disable", "enable"] | None = ...,
-        member: str | list[str] | list[dict[str, Any]] | None = ...,
+        member: str | list[ConcentratorMemberItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> ConcentratorObject: ...
     
@@ -346,7 +361,7 @@ class Concentrator:
         id: int | None = ...,
         name: str | None = ...,
         src_check: Literal["disable", "enable"] | None = ...,
-        member: str | list[str] | list[dict[str, Any]] | None = ...,
+        member: str | list[ConcentratorMemberItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -358,7 +373,7 @@ class Concentrator:
         id: int | None = ...,
         name: str | None = ...,
         src_check: Literal["disable", "enable"] | None = ...,
-        member: str | list[str] | list[dict[str, Any]] | None = ...,
+        member: str | list[ConcentratorMemberItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -368,7 +383,7 @@ class Concentrator:
         id: int | None = ...,
         name: str | None = ...,
         src_check: Literal["disable", "enable"] | None = ...,
-        member: str | list[str] | list[dict[str, Any]] | None = ...,
+        member: str | list[ConcentratorMemberItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -380,7 +395,7 @@ class Concentrator:
         id: int | None = ...,
         name: str | None = ...,
         src_check: Literal["disable", "enable"] | None = ...,
-        member: str | list[str] | list[dict[str, Any]] | None = ...,
+        member: str | list[ConcentratorMemberItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> ConcentratorObject: ...
     
@@ -391,7 +406,7 @@ class Concentrator:
         id: int | None = ...,
         name: str | None = ...,
         src_check: Literal["disable", "enable"] | None = ...,
-        member: str | list[str] | list[dict[str, Any]] | None = ...,
+        member: str | list[ConcentratorMemberItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -403,7 +418,7 @@ class Concentrator:
         id: int | None = ...,
         name: str | None = ...,
         src_check: Literal["disable", "enable"] | None = ...,
-        member: str | list[str] | list[dict[str, Any]] | None = ...,
+        member: str | list[ConcentratorMemberItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -413,7 +428,7 @@ class Concentrator:
         id: int | None = ...,
         name: str | None = ...,
         src_check: Literal["disable", "enable"] | None = ...,
-        member: str | list[str] | list[dict[str, Any]] | None = ...,
+        member: str | list[ConcentratorMemberItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -458,7 +473,7 @@ class Concentrator:
         id: int | None = ...,
         name: str | None = ...,
         src_check: Literal["disable", "enable"] | None = ...,
-        member: str | list[str] | list[dict[str, Any]] | None = ...,
+        member: str | list[ConcentratorMemberItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     

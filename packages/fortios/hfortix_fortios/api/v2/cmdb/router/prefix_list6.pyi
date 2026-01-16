@@ -2,7 +2,34 @@ from typing import TypedDict, Literal, Any, Coroutine, Union, overload, Generato
 from typing_extensions import NotRequired
 from hfortix_fortios.models import FortiObject, FortiObjectList
 
-# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional via total=False)
+# ============================================================================
+# Nested TypedDicts for table field children (dict mode)
+# These MUST be defined before the Payload class to use them as type hints
+# ============================================================================
+
+class PrefixList6RuleItem(TypedDict, total=False):
+    """Type hints for rule table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: PrefixList6RuleItem = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    
+    id: int  # Rule ID. | Default: 0 | Min: 0 | Max: 4294967295
+    action: Literal["permit", "deny"]  # Permit or deny packets that match this rule. | Default: permit
+    prefix6: str  # IPv6 prefix to define regular filter criteria, suc
+    ge: int  # Minimum prefix length to be matched (0 - 128). | Min: 0 | Max: 128
+    le: int  # Maximum prefix length to be matched (0 - 128). | Min: 0 | Max: 128
+    flags: int  # Flags. | Default: 0 | Min: 0 | Max: 4294967295
+
+
+# ============================================================================
+# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional)
+# ============================================================================
 # NOTE: We intentionally DON'T use NotRequired wrapper because:
 # 1. total=False already makes all fields optional
 # 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
@@ -19,26 +46,11 @@ class PrefixList6Payload(TypedDict, total=False):
     """
     name: str  # Name. | MaxLen: 35
     comments: str  # Comment. | MaxLen: 127
-    rule: list[dict[str, Any]]  # IPv6 prefix list rule.
+    rule: list[PrefixList6RuleItem]  # IPv6 prefix list rule.
 
-# Nested TypedDicts for table field children (dict mode)
-
-class PrefixList6RuleItem(TypedDict):
-    """Type hints for rule table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    id: int  # Rule ID. | Default: 0 | Min: 0 | Max: 4294967295
-    action: Literal["permit", "deny"]  # Permit or deny packets that match this rule. | Default: permit
-    prefix6: str  # IPv6 prefix to define regular filter criteria, suc
-    ge: int  # Minimum prefix length to be matched (0 - 128). | Min: 0 | Max: 128
-    le: int  # Maximum prefix length to be matched (0 - 128). | Min: 0 | Max: 128
-    flags: int  # Flags. | Default: 0 | Min: 0 | Max: 4294967295
-
-
-# Nested classes for table field children (object mode)
+# ============================================================================
+# Nested classes for table field children (object mode - for API responses)
+# ============================================================================
 
 @final
 class PrefixList6RuleObject:
@@ -114,6 +126,9 @@ class PrefixList6Object:
     # Common API response fields
     status: str
     http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
     vdom: str | None
     
     # Methods from FortiObject
@@ -345,7 +360,7 @@ class PrefixList6:
         payload_dict: PrefixList6Payload | None = ...,
         name: str | None = ...,
         comments: str | None = ...,
-        rule: str | list[str] | list[dict[str, Any]] | None = ...,
+        rule: str | list[PrefixList6RuleItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> PrefixList6Object: ...
     
@@ -355,7 +370,7 @@ class PrefixList6:
         payload_dict: PrefixList6Payload | None = ...,
         name: str | None = ...,
         comments: str | None = ...,
-        rule: str | list[str] | list[dict[str, Any]] | None = ...,
+        rule: str | list[PrefixList6RuleItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -366,7 +381,7 @@ class PrefixList6:
         payload_dict: PrefixList6Payload | None = ...,
         name: str | None = ...,
         comments: str | None = ...,
-        rule: str | list[str] | list[dict[str, Any]] | None = ...,
+        rule: str | list[PrefixList6RuleItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -375,7 +390,7 @@ class PrefixList6:
         payload_dict: PrefixList6Payload | None = ...,
         name: str | None = ...,
         comments: str | None = ...,
-        rule: str | list[str] | list[dict[str, Any]] | None = ...,
+        rule: str | list[PrefixList6RuleItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -386,7 +401,7 @@ class PrefixList6:
         payload_dict: PrefixList6Payload | None = ...,
         name: str | None = ...,
         comments: str | None = ...,
-        rule: str | list[str] | list[dict[str, Any]] | None = ...,
+        rule: str | list[PrefixList6RuleItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> PrefixList6Object: ...
     
@@ -396,7 +411,7 @@ class PrefixList6:
         payload_dict: PrefixList6Payload | None = ...,
         name: str | None = ...,
         comments: str | None = ...,
-        rule: str | list[str] | list[dict[str, Any]] | None = ...,
+        rule: str | list[PrefixList6RuleItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -407,7 +422,7 @@ class PrefixList6:
         payload_dict: PrefixList6Payload | None = ...,
         name: str | None = ...,
         comments: str | None = ...,
-        rule: str | list[str] | list[dict[str, Any]] | None = ...,
+        rule: str | list[PrefixList6RuleItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -416,7 +431,7 @@ class PrefixList6:
         payload_dict: PrefixList6Payload | None = ...,
         name: str | None = ...,
         comments: str | None = ...,
-        rule: str | list[str] | list[dict[str, Any]] | None = ...,
+        rule: str | list[PrefixList6RuleItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -460,7 +475,7 @@ class PrefixList6:
         payload_dict: PrefixList6Payload | None = ...,
         name: str | None = ...,
         comments: str | None = ...,
-        rule: str | list[str] | list[dict[str, Any]] | None = ...,
+        rule: str | list[PrefixList6RuleItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     

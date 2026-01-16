@@ -2,7 +2,59 @@ from typing import TypedDict, Literal, Any, Coroutine, Union, overload, Generato
 from typing_extensions import NotRequired
 from hfortix_fortios.models import FortiObject, FortiObjectList
 
-# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional via total=False)
+# ============================================================================
+# Nested TypedDicts for table field children (dict mode)
+# These MUST be defined before the Payload class to use them as type hints
+# ============================================================================
+
+class GroupApplicationItem(TypedDict, total=False):
+    """Type hints for application table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: GroupApplicationItem = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    
+    id: int  # Application IDs. | Default: 0 | Min: 0 | Max: 4294967295
+
+
+class GroupCategoryItem(TypedDict, total=False):
+    """Type hints for category table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: GroupCategoryItem = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    
+    id: int  # Category IDs. | Default: 0 | Min: 0 | Max: 4294967295
+
+
+class GroupRiskItem(TypedDict, total=False):
+    """Type hints for risk table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: GroupRiskItem = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    
+    level: int  # Risk, or impact, of allowing traffic from this app | Default: 0 | Min: 0 | Max: 4294967295
+
+
+# ============================================================================
+# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional)
+# ============================================================================
 # NOTE: We intentionally DON'T use NotRequired wrapper because:
 # 1. total=False already makes all fields optional
 # 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
@@ -20,48 +72,18 @@ class GroupPayload(TypedDict, total=False):
     name: str  # Application group name. | MaxLen: 63
     comment: str  # Comments. | MaxLen: 255
     type: Literal["application", "filter"]  # Application group type. | Default: application
-    application: list[dict[str, Any]]  # Application ID list.
-    category: list[dict[str, Any]]  # Application category ID list.
-    risk: list[dict[str, Any]]  # Risk, or impact, of allowing traffic from this app
+    application: list[GroupApplicationItem]  # Application ID list.
+    category: list[GroupCategoryItem]  # Application category ID list.
+    risk: list[GroupRiskItem]  # Risk, or impact, of allowing traffic from this app
     protocols: list[dict[str, Any]]  # Application protocol filter. | Default: all
     vendor: list[dict[str, Any]]  # Application vendor filter. | Default: all
     technology: list[dict[str, Any]]  # Application technology filter. | Default: all
     behavior: list[dict[str, Any]]  # Application behavior filter. | Default: all
     popularity: Literal["1", "2", "3", "4", "5"]  # Application popularity filter | Default: 1 2 3 4 5
 
-# Nested TypedDicts for table field children (dict mode)
-
-class GroupApplicationItem(TypedDict):
-    """Type hints for application table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    id: int  # Application IDs. | Default: 0 | Min: 0 | Max: 4294967295
-
-
-class GroupCategoryItem(TypedDict):
-    """Type hints for category table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    id: int  # Category IDs. | Default: 0 | Min: 0 | Max: 4294967295
-
-
-class GroupRiskItem(TypedDict):
-    """Type hints for risk table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    level: int  # Risk, or impact, of allowing traffic from this app | Default: 0 | Min: 0 | Max: 4294967295
-
-
-# Nested classes for table field children (object mode)
+# ============================================================================
+# Nested classes for table field children (object mode - for API responses)
+# ============================================================================
 
 @final
 class GroupApplicationObject:
@@ -215,6 +237,9 @@ class GroupObject:
     # Common API response fields
     status: str
     http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
     vdom: str | None
     
     # Methods from FortiObject
@@ -447,9 +472,9 @@ class Group:
         name: str | None = ...,
         comment: str | None = ...,
         type: Literal["application", "filter"] | None = ...,
-        application: str | list[str] | list[dict[str, Any]] | None = ...,
-        category: str | list[str] | list[dict[str, Any]] | None = ...,
-        risk: str | list[str] | list[dict[str, Any]] | None = ...,
+        application: str | list[GroupApplicationItem] | None = ...,
+        category: str | list[GroupCategoryItem] | None = ...,
+        risk: str | list[GroupRiskItem] | None = ...,
         protocols: str | list[str] | None = ...,
         vendor: str | list[str] | None = ...,
         technology: str | list[str] | None = ...,
@@ -465,9 +490,9 @@ class Group:
         name: str | None = ...,
         comment: str | None = ...,
         type: Literal["application", "filter"] | None = ...,
-        application: str | list[str] | list[dict[str, Any]] | None = ...,
-        category: str | list[str] | list[dict[str, Any]] | None = ...,
-        risk: str | list[str] | list[dict[str, Any]] | None = ...,
+        application: str | list[GroupApplicationItem] | None = ...,
+        category: str | list[GroupCategoryItem] | None = ...,
+        risk: str | list[GroupRiskItem] | None = ...,
         protocols: str | list[str] | None = ...,
         vendor: str | list[str] | None = ...,
         technology: str | list[str] | None = ...,
@@ -484,9 +509,9 @@ class Group:
         name: str | None = ...,
         comment: str | None = ...,
         type: Literal["application", "filter"] | None = ...,
-        application: str | list[str] | list[dict[str, Any]] | None = ...,
-        category: str | list[str] | list[dict[str, Any]] | None = ...,
-        risk: str | list[str] | list[dict[str, Any]] | None = ...,
+        application: str | list[GroupApplicationItem] | None = ...,
+        category: str | list[GroupCategoryItem] | None = ...,
+        risk: str | list[GroupRiskItem] | None = ...,
         protocols: str | list[str] | None = ...,
         vendor: str | list[str] | None = ...,
         technology: str | list[str] | None = ...,
@@ -501,9 +526,9 @@ class Group:
         name: str | None = ...,
         comment: str | None = ...,
         type: Literal["application", "filter"] | None = ...,
-        application: str | list[str] | list[dict[str, Any]] | None = ...,
-        category: str | list[str] | list[dict[str, Any]] | None = ...,
-        risk: str | list[str] | list[dict[str, Any]] | None = ...,
+        application: str | list[GroupApplicationItem] | None = ...,
+        category: str | list[GroupCategoryItem] | None = ...,
+        risk: str | list[GroupRiskItem] | None = ...,
         protocols: str | list[str] | None = ...,
         vendor: str | list[str] | None = ...,
         technology: str | list[str] | None = ...,
@@ -520,9 +545,9 @@ class Group:
         name: str | None = ...,
         comment: str | None = ...,
         type: Literal["application", "filter"] | None = ...,
-        application: str | list[str] | list[dict[str, Any]] | None = ...,
-        category: str | list[str] | list[dict[str, Any]] | None = ...,
-        risk: str | list[str] | list[dict[str, Any]] | None = ...,
+        application: str | list[GroupApplicationItem] | None = ...,
+        category: str | list[GroupCategoryItem] | None = ...,
+        risk: str | list[GroupRiskItem] | None = ...,
         protocols: str | list[str] | None = ...,
         vendor: str | list[str] | None = ...,
         technology: str | list[str] | None = ...,
@@ -538,9 +563,9 @@ class Group:
         name: str | None = ...,
         comment: str | None = ...,
         type: Literal["application", "filter"] | None = ...,
-        application: str | list[str] | list[dict[str, Any]] | None = ...,
-        category: str | list[str] | list[dict[str, Any]] | None = ...,
-        risk: str | list[str] | list[dict[str, Any]] | None = ...,
+        application: str | list[GroupApplicationItem] | None = ...,
+        category: str | list[GroupCategoryItem] | None = ...,
+        risk: str | list[GroupRiskItem] | None = ...,
         protocols: str | list[str] | None = ...,
         vendor: str | list[str] | None = ...,
         technology: str | list[str] | None = ...,
@@ -557,9 +582,9 @@ class Group:
         name: str | None = ...,
         comment: str | None = ...,
         type: Literal["application", "filter"] | None = ...,
-        application: str | list[str] | list[dict[str, Any]] | None = ...,
-        category: str | list[str] | list[dict[str, Any]] | None = ...,
-        risk: str | list[str] | list[dict[str, Any]] | None = ...,
+        application: str | list[GroupApplicationItem] | None = ...,
+        category: str | list[GroupCategoryItem] | None = ...,
+        risk: str | list[GroupRiskItem] | None = ...,
         protocols: str | list[str] | None = ...,
         vendor: str | list[str] | None = ...,
         technology: str | list[str] | None = ...,
@@ -574,9 +599,9 @@ class Group:
         name: str | None = ...,
         comment: str | None = ...,
         type: Literal["application", "filter"] | None = ...,
-        application: str | list[str] | list[dict[str, Any]] | None = ...,
-        category: str | list[str] | list[dict[str, Any]] | None = ...,
-        risk: str | list[str] | list[dict[str, Any]] | None = ...,
+        application: str | list[GroupApplicationItem] | None = ...,
+        category: str | list[GroupCategoryItem] | None = ...,
+        risk: str | list[GroupRiskItem] | None = ...,
         protocols: str | list[str] | None = ...,
         vendor: str | list[str] | None = ...,
         technology: str | list[str] | None = ...,
@@ -626,9 +651,9 @@ class Group:
         name: str | None = ...,
         comment: str | None = ...,
         type: Literal["application", "filter"] | None = ...,
-        application: str | list[str] | list[dict[str, Any]] | None = ...,
-        category: str | list[str] | list[dict[str, Any]] | None = ...,
-        risk: str | list[str] | list[dict[str, Any]] | None = ...,
+        application: str | list[GroupApplicationItem] | None = ...,
+        category: str | list[GroupCategoryItem] | None = ...,
+        risk: str | list[GroupRiskItem] | None = ...,
         protocols: str | list[str] | None = ...,
         vendor: str | list[str] | None = ...,
         technology: str | list[str] | None = ...,

@@ -2,7 +2,88 @@ from typing import TypedDict, Literal, Any, Coroutine, Union, overload, Generato
 from typing_extensions import NotRequired
 from hfortix_fortios.models import FortiObject, FortiObjectList
 
-# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional via total=False)
+# ============================================================================
+# Nested TypedDicts for table field children (dict mode)
+# These MUST be defined before the Payload class to use them as type hints
+# ============================================================================
+
+class SslSshProfileSslexemptItem(TypedDict, total=False):
+    """Type hints for ssl-exempt table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: SslSshProfileSslexemptItem = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    
+    id: int  # ID number. | Default: 0 | Min: 0 | Max: 512
+    type: Literal["fortiguard-category", "address", "address6", "wildcard-fqdn", "regex"]  # Type of address object (IPv4 or IPv6) or FortiGuar | Default: fortiguard-category
+    fortiguard_category: int  # FortiGuard category ID. | Default: 0 | Min: 0 | Max: 255
+    address: str  # IPv4 address object. | MaxLen: 79
+    address6: str  # IPv6 address object. | MaxLen: 79
+    wildcard_fqdn: str  # Exempt servers by wildcard FQDN. | MaxLen: 79
+    regex: str  # Exempt servers by regular expression. | MaxLen: 255
+
+
+class SslSshProfileEchoutersniItem(TypedDict, total=False):
+    """Type hints for ech-outer-sni table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: SslSshProfileEchoutersniItem = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    
+    name: str  # ClientHelloOuter SNI name. | MaxLen: 79
+    sni: str  # ClientHelloOuter SNI to be blocked. | MaxLen: 255
+
+
+class SslSshProfileServercertItem(TypedDict, total=False):
+    """Type hints for server-cert table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: SslSshProfileServercertItem = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    
+    name: str  # Certificate list. | Default: Fortinet_SSL | MaxLen: 79
+
+
+class SslSshProfileSslserverItem(TypedDict, total=False):
+    """Type hints for ssl-server table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: SslSshProfileSslserverItem = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    
+    id: int  # SSL server ID. | Default: 0 | Min: 0 | Max: 4294967295
+    ip: str  # IPv4 address of the SSL server. | Default: 0.0.0.0
+    https_client_certificate: Literal["bypass", "inspect", "block"]  # Action based on received client certificate during | Default: bypass
+    smtps_client_certificate: Literal["bypass", "inspect", "block"]  # Action based on received client certificate during | Default: bypass
+    pop3s_client_certificate: Literal["bypass", "inspect", "block"]  # Action based on received client certificate during | Default: bypass
+    imaps_client_certificate: Literal["bypass", "inspect", "block"]  # Action based on received client certificate during | Default: bypass
+    ftps_client_certificate: Literal["bypass", "inspect", "block"]  # Action based on received client certificate during | Default: bypass
+    ssl_other_client_certificate: Literal["bypass", "inspect", "block"]  # Action based on received client certificate during | Default: bypass
+
+
+# ============================================================================
+# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional)
+# ============================================================================
 # NOTE: We intentionally DON'T use NotRequired wrapper because:
 # 1. total=False already makes all fields optional
 # 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
@@ -35,14 +116,14 @@ class SslSshProfilePayload(TypedDict, total=False):
     dot: str  # Configure DNS over TLS options.
     allowlist: Literal["enable", "disable"]  # Enable/disable exempting servers by FortiGuard all | Default: disable
     block_blocklisted_certificates: Literal["disable", "enable"]  # Enable/disable blocking SSL-based botnet communica | Default: enable
-    ssl_exempt: list[dict[str, Any]]  # Servers to exempt from SSL inspection.
-    ech_outer_sni: list[dict[str, Any]]  # ClientHelloOuter SNIs to be blocked.
+    ssl_exempt: list[SslSshProfileSslexemptItem]  # Servers to exempt from SSL inspection.
+    ech_outer_sni: list[SslSshProfileEchoutersniItem]  # ClientHelloOuter SNIs to be blocked.
     server_cert_mode: Literal["re-sign", "replace"]  # Re-sign or replace the server's certificate. | Default: re-sign
     use_ssl_server: Literal["disable", "enable"]  # Enable/disable the use of SSL server table for SSL | Default: disable
     caname: str  # CA certificate used by SSL Inspection. | Default: Fortinet_CA_SSL | MaxLen: 35
     untrusted_caname: str  # Untrusted CA certificate used by SSL Inspection. | Default: Fortinet_CA_Untrusted | MaxLen: 35
-    server_cert: list[dict[str, Any]]  # Certificate used by SSL Inspection to replace serv
-    ssl_server: list[dict[str, Any]]  # SSL server settings used for client certificate re
+    server_cert: list[SslSshProfileServercertItem]  # Certificate used by SSL Inspection to replace serv
+    ssl_server: list[SslSshProfileSslserverItem]  # SSL server settings used for client certificate re
     ssl_exemption_ip_rating: Literal["enable", "disable"]  # Enable/disable IP based URL rating. | Default: enable
     ssl_exemption_log: Literal["disable", "enable"]  # Enable/disable logging of SSL exemptions. | Default: disable
     ssl_anomaly_log: Literal["disable", "enable"]  # Enable/disable logging of SSL anomalies. | Default: enable
@@ -53,63 +134,9 @@ class SslSshProfilePayload(TypedDict, total=False):
     mapi_over_https: Literal["enable", "disable"]  # Enable/disable inspection of MAPI over HTTPS. | Default: disable
     supported_alpn: Literal["http1-1", "http2", "all", "none"]  # Configure ALPN option. | Default: all
 
-# Nested TypedDicts for table field children (dict mode)
-
-class SslSshProfileSslexemptItem(TypedDict):
-    """Type hints for ssl-exempt table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    id: int  # ID number. | Default: 0 | Min: 0 | Max: 512
-    type: Literal["fortiguard-category", "address", "address6", "wildcard-fqdn", "regex"]  # Type of address object (IPv4 or IPv6) or FortiGuar | Default: fortiguard-category
-    fortiguard_category: int  # FortiGuard category ID. | Default: 0 | Min: 0 | Max: 255
-    address: str  # IPv4 address object. | MaxLen: 79
-    address6: str  # IPv6 address object. | MaxLen: 79
-    wildcard_fqdn: str  # Exempt servers by wildcard FQDN. | MaxLen: 79
-    regex: str  # Exempt servers by regular expression. | MaxLen: 255
-
-
-class SslSshProfileEchoutersniItem(TypedDict):
-    """Type hints for ech-outer-sni table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    name: str  # ClientHelloOuter SNI name. | MaxLen: 79
-    sni: str  # ClientHelloOuter SNI to be blocked. | MaxLen: 255
-
-
-class SslSshProfileServercertItem(TypedDict):
-    """Type hints for server-cert table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    name: str  # Certificate list. | Default: Fortinet_SSL | MaxLen: 79
-
-
-class SslSshProfileSslserverItem(TypedDict):
-    """Type hints for ssl-server table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    id: int  # SSL server ID. | Default: 0 | Min: 0 | Max: 4294967295
-    ip: str  # IPv4 address of the SSL server. | Default: 0.0.0.0
-    https_client_certificate: Literal["bypass", "inspect", "block"]  # Action based on received client certificate during | Default: bypass
-    smtps_client_certificate: Literal["bypass", "inspect", "block"]  # Action based on received client certificate during | Default: bypass
-    pop3s_client_certificate: Literal["bypass", "inspect", "block"]  # Action based on received client certificate during | Default: bypass
-    imaps_client_certificate: Literal["bypass", "inspect", "block"]  # Action based on received client certificate during | Default: bypass
-    ftps_client_certificate: Literal["bypass", "inspect", "block"]  # Action based on received client certificate during | Default: bypass
-    ssl_other_client_certificate: Literal["bypass", "inspect", "block"]  # Action based on received client certificate during | Default: bypass
-
-
-# Nested classes for table field children (object mode)
+# ============================================================================
+# Nested classes for table field children (object mode - for API responses)
+# ============================================================================
 
 @final
 class SslSshProfileSslexemptObject:
@@ -377,6 +404,9 @@ class SslSshProfileObject:
     # Common API response fields
     status: str
     http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
     vdom: str | None
     
     # Methods from FortiObject
@@ -618,14 +648,14 @@ class SslSshProfile:
         dot: str | None = ...,
         allowlist: Literal["enable", "disable"] | None = ...,
         block_blocklisted_certificates: Literal["disable", "enable"] | None = ...,
-        ssl_exempt: str | list[str] | list[dict[str, Any]] | None = ...,
-        ech_outer_sni: str | list[str] | list[dict[str, Any]] | None = ...,
+        ssl_exempt: str | list[SslSshProfileSslexemptItem] | None = ...,
+        ech_outer_sni: str | list[SslSshProfileEchoutersniItem] | None = ...,
         server_cert_mode: Literal["re-sign", "replace"] | None = ...,
         use_ssl_server: Literal["disable", "enable"] | None = ...,
         caname: str | None = ...,
         untrusted_caname: str | None = ...,
-        server_cert: str | list[str] | list[dict[str, Any]] | None = ...,
-        ssl_server: str | list[str] | list[dict[str, Any]] | None = ...,
+        server_cert: str | list[SslSshProfileServercertItem] | None = ...,
+        ssl_server: str | list[SslSshProfileSslserverItem] | None = ...,
         ssl_exemption_ip_rating: Literal["enable", "disable"] | None = ...,
         ssl_exemption_log: Literal["disable", "enable"] | None = ...,
         ssl_anomaly_log: Literal["disable", "enable"] | None = ...,
@@ -654,14 +684,14 @@ class SslSshProfile:
         dot: str | None = ...,
         allowlist: Literal["enable", "disable"] | None = ...,
         block_blocklisted_certificates: Literal["disable", "enable"] | None = ...,
-        ssl_exempt: str | list[str] | list[dict[str, Any]] | None = ...,
-        ech_outer_sni: str | list[str] | list[dict[str, Any]] | None = ...,
+        ssl_exempt: str | list[SslSshProfileSslexemptItem] | None = ...,
+        ech_outer_sni: str | list[SslSshProfileEchoutersniItem] | None = ...,
         server_cert_mode: Literal["re-sign", "replace"] | None = ...,
         use_ssl_server: Literal["disable", "enable"] | None = ...,
         caname: str | None = ...,
         untrusted_caname: str | None = ...,
-        server_cert: str | list[str] | list[dict[str, Any]] | None = ...,
-        ssl_server: str | list[str] | list[dict[str, Any]] | None = ...,
+        server_cert: str | list[SslSshProfileServercertItem] | None = ...,
+        ssl_server: str | list[SslSshProfileSslserverItem] | None = ...,
         ssl_exemption_ip_rating: Literal["enable", "disable"] | None = ...,
         ssl_exemption_log: Literal["disable", "enable"] | None = ...,
         ssl_anomaly_log: Literal["disable", "enable"] | None = ...,
@@ -691,14 +721,14 @@ class SslSshProfile:
         dot: str | None = ...,
         allowlist: Literal["enable", "disable"] | None = ...,
         block_blocklisted_certificates: Literal["disable", "enable"] | None = ...,
-        ssl_exempt: str | list[str] | list[dict[str, Any]] | None = ...,
-        ech_outer_sni: str | list[str] | list[dict[str, Any]] | None = ...,
+        ssl_exempt: str | list[SslSshProfileSslexemptItem] | None = ...,
+        ech_outer_sni: str | list[SslSshProfileEchoutersniItem] | None = ...,
         server_cert_mode: Literal["re-sign", "replace"] | None = ...,
         use_ssl_server: Literal["disable", "enable"] | None = ...,
         caname: str | None = ...,
         untrusted_caname: str | None = ...,
-        server_cert: str | list[str] | list[dict[str, Any]] | None = ...,
-        ssl_server: str | list[str] | list[dict[str, Any]] | None = ...,
+        server_cert: str | list[SslSshProfileServercertItem] | None = ...,
+        ssl_server: str | list[SslSshProfileSslserverItem] | None = ...,
         ssl_exemption_ip_rating: Literal["enable", "disable"] | None = ...,
         ssl_exemption_log: Literal["disable", "enable"] | None = ...,
         ssl_anomaly_log: Literal["disable", "enable"] | None = ...,
@@ -726,14 +756,14 @@ class SslSshProfile:
         dot: str | None = ...,
         allowlist: Literal["enable", "disable"] | None = ...,
         block_blocklisted_certificates: Literal["disable", "enable"] | None = ...,
-        ssl_exempt: str | list[str] | list[dict[str, Any]] | None = ...,
-        ech_outer_sni: str | list[str] | list[dict[str, Any]] | None = ...,
+        ssl_exempt: str | list[SslSshProfileSslexemptItem] | None = ...,
+        ech_outer_sni: str | list[SslSshProfileEchoutersniItem] | None = ...,
         server_cert_mode: Literal["re-sign", "replace"] | None = ...,
         use_ssl_server: Literal["disable", "enable"] | None = ...,
         caname: str | None = ...,
         untrusted_caname: str | None = ...,
-        server_cert: str | list[str] | list[dict[str, Any]] | None = ...,
-        ssl_server: str | list[str] | list[dict[str, Any]] | None = ...,
+        server_cert: str | list[SslSshProfileServercertItem] | None = ...,
+        ssl_server: str | list[SslSshProfileSslserverItem] | None = ...,
         ssl_exemption_ip_rating: Literal["enable", "disable"] | None = ...,
         ssl_exemption_log: Literal["disable", "enable"] | None = ...,
         ssl_anomaly_log: Literal["disable", "enable"] | None = ...,
@@ -763,14 +793,14 @@ class SslSshProfile:
         dot: str | None = ...,
         allowlist: Literal["enable", "disable"] | None = ...,
         block_blocklisted_certificates: Literal["disable", "enable"] | None = ...,
-        ssl_exempt: str | list[str] | list[dict[str, Any]] | None = ...,
-        ech_outer_sni: str | list[str] | list[dict[str, Any]] | None = ...,
+        ssl_exempt: str | list[SslSshProfileSslexemptItem] | None = ...,
+        ech_outer_sni: str | list[SslSshProfileEchoutersniItem] | None = ...,
         server_cert_mode: Literal["re-sign", "replace"] | None = ...,
         use_ssl_server: Literal["disable", "enable"] | None = ...,
         caname: str | None = ...,
         untrusted_caname: str | None = ...,
-        server_cert: str | list[str] | list[dict[str, Any]] | None = ...,
-        ssl_server: str | list[str] | list[dict[str, Any]] | None = ...,
+        server_cert: str | list[SslSshProfileServercertItem] | None = ...,
+        ssl_server: str | list[SslSshProfileSslserverItem] | None = ...,
         ssl_exemption_ip_rating: Literal["enable", "disable"] | None = ...,
         ssl_exemption_log: Literal["disable", "enable"] | None = ...,
         ssl_anomaly_log: Literal["disable", "enable"] | None = ...,
@@ -799,14 +829,14 @@ class SslSshProfile:
         dot: str | None = ...,
         allowlist: Literal["enable", "disable"] | None = ...,
         block_blocklisted_certificates: Literal["disable", "enable"] | None = ...,
-        ssl_exempt: str | list[str] | list[dict[str, Any]] | None = ...,
-        ech_outer_sni: str | list[str] | list[dict[str, Any]] | None = ...,
+        ssl_exempt: str | list[SslSshProfileSslexemptItem] | None = ...,
+        ech_outer_sni: str | list[SslSshProfileEchoutersniItem] | None = ...,
         server_cert_mode: Literal["re-sign", "replace"] | None = ...,
         use_ssl_server: Literal["disable", "enable"] | None = ...,
         caname: str | None = ...,
         untrusted_caname: str | None = ...,
-        server_cert: str | list[str] | list[dict[str, Any]] | None = ...,
-        ssl_server: str | list[str] | list[dict[str, Any]] | None = ...,
+        server_cert: str | list[SslSshProfileServercertItem] | None = ...,
+        ssl_server: str | list[SslSshProfileSslserverItem] | None = ...,
         ssl_exemption_ip_rating: Literal["enable", "disable"] | None = ...,
         ssl_exemption_log: Literal["disable", "enable"] | None = ...,
         ssl_anomaly_log: Literal["disable", "enable"] | None = ...,
@@ -836,14 +866,14 @@ class SslSshProfile:
         dot: str | None = ...,
         allowlist: Literal["enable", "disable"] | None = ...,
         block_blocklisted_certificates: Literal["disable", "enable"] | None = ...,
-        ssl_exempt: str | list[str] | list[dict[str, Any]] | None = ...,
-        ech_outer_sni: str | list[str] | list[dict[str, Any]] | None = ...,
+        ssl_exempt: str | list[SslSshProfileSslexemptItem] | None = ...,
+        ech_outer_sni: str | list[SslSshProfileEchoutersniItem] | None = ...,
         server_cert_mode: Literal["re-sign", "replace"] | None = ...,
         use_ssl_server: Literal["disable", "enable"] | None = ...,
         caname: str | None = ...,
         untrusted_caname: str | None = ...,
-        server_cert: str | list[str] | list[dict[str, Any]] | None = ...,
-        ssl_server: str | list[str] | list[dict[str, Any]] | None = ...,
+        server_cert: str | list[SslSshProfileServercertItem] | None = ...,
+        ssl_server: str | list[SslSshProfileSslserverItem] | None = ...,
         ssl_exemption_ip_rating: Literal["enable", "disable"] | None = ...,
         ssl_exemption_log: Literal["disable", "enable"] | None = ...,
         ssl_anomaly_log: Literal["disable", "enable"] | None = ...,
@@ -871,14 +901,14 @@ class SslSshProfile:
         dot: str | None = ...,
         allowlist: Literal["enable", "disable"] | None = ...,
         block_blocklisted_certificates: Literal["disable", "enable"] | None = ...,
-        ssl_exempt: str | list[str] | list[dict[str, Any]] | None = ...,
-        ech_outer_sni: str | list[str] | list[dict[str, Any]] | None = ...,
+        ssl_exempt: str | list[SslSshProfileSslexemptItem] | None = ...,
+        ech_outer_sni: str | list[SslSshProfileEchoutersniItem] | None = ...,
         server_cert_mode: Literal["re-sign", "replace"] | None = ...,
         use_ssl_server: Literal["disable", "enable"] | None = ...,
         caname: str | None = ...,
         untrusted_caname: str | None = ...,
-        server_cert: str | list[str] | list[dict[str, Any]] | None = ...,
-        ssl_server: str | list[str] | list[dict[str, Any]] | None = ...,
+        server_cert: str | list[SslSshProfileServercertItem] | None = ...,
+        ssl_server: str | list[SslSshProfileSslserverItem] | None = ...,
         ssl_exemption_ip_rating: Literal["enable", "disable"] | None = ...,
         ssl_exemption_log: Literal["disable", "enable"] | None = ...,
         ssl_anomaly_log: Literal["disable", "enable"] | None = ...,
@@ -941,14 +971,14 @@ class SslSshProfile:
         dot: str | None = ...,
         allowlist: Literal["enable", "disable"] | None = ...,
         block_blocklisted_certificates: Literal["disable", "enable"] | None = ...,
-        ssl_exempt: str | list[str] | list[dict[str, Any]] | None = ...,
-        ech_outer_sni: str | list[str] | list[dict[str, Any]] | None = ...,
+        ssl_exempt: str | list[SslSshProfileSslexemptItem] | None = ...,
+        ech_outer_sni: str | list[SslSshProfileEchoutersniItem] | None = ...,
         server_cert_mode: Literal["re-sign", "replace"] | None = ...,
         use_ssl_server: Literal["disable", "enable"] | None = ...,
         caname: str | None = ...,
         untrusted_caname: str | None = ...,
-        server_cert: str | list[str] | list[dict[str, Any]] | None = ...,
-        ssl_server: str | list[str] | list[dict[str, Any]] | None = ...,
+        server_cert: str | list[SslSshProfileServercertItem] | None = ...,
+        ssl_server: str | list[SslSshProfileSslserverItem] | None = ...,
         ssl_exemption_ip_rating: Literal["enable", "disable"] | None = ...,
         ssl_exemption_log: Literal["disable", "enable"] | None = ...,
         ssl_anomaly_log: Literal["disable", "enable"] | None = ...,

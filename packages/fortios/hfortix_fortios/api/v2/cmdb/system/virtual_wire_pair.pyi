@@ -2,7 +2,29 @@ from typing import TypedDict, Literal, Any, Coroutine, Union, overload, Generato
 from typing_extensions import NotRequired
 from hfortix_fortios.models import FortiObject, FortiObjectList
 
-# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional via total=False)
+# ============================================================================
+# Nested TypedDicts for table field children (dict mode)
+# These MUST be defined before the Payload class to use them as type hints
+# ============================================================================
+
+class VirtualWirePairMemberItem(TypedDict, total=False):
+    """Type hints for member table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: VirtualWirePairMemberItem = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    
+    interface_name: str  # Interface name. | MaxLen: 79
+
+
+# ============================================================================
+# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional)
+# ============================================================================
 # NOTE: We intentionally DON'T use NotRequired wrapper because:
 # 1. total=False already makes all fields optional
 # 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
@@ -18,23 +40,13 @@ class VirtualWirePairPayload(TypedDict, total=False):
         }
     """
     name: str  # Virtual-wire-pair name. Must be a unique interface | MaxLen: 11
-    member: list[dict[str, Any]]  # Interfaces belong to the virtual-wire-pair.
+    member: list[VirtualWirePairMemberItem]  # Interfaces belong to the virtual-wire-pair.
     wildcard_vlan: Literal["enable", "disable"]  # Enable/disable wildcard VLAN. | Default: disable
     vlan_filter: str  # VLAN ranges to allow
 
-# Nested TypedDicts for table field children (dict mode)
-
-class VirtualWirePairMemberItem(TypedDict):
-    """Type hints for member table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    interface_name: str  # Interface name. | MaxLen: 79
-
-
-# Nested classes for table field children (object mode)
+# ============================================================================
+# Nested classes for table field children (object mode - for API responses)
+# ============================================================================
 
 @final
 class VirtualWirePairMemberObject:
@@ -103,6 +115,9 @@ class VirtualWirePairObject:
     # Common API response fields
     status: str
     http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
     vdom: str | None
     
     # Methods from FortiObject
@@ -333,7 +348,7 @@ class VirtualWirePair:
         self,
         payload_dict: VirtualWirePairPayload | None = ...,
         name: str | None = ...,
-        member: str | list[str] | list[dict[str, Any]] | None = ...,
+        member: str | list[VirtualWirePairMemberItem] | None = ...,
         wildcard_vlan: Literal["enable", "disable"] | None = ...,
         vlan_filter: str | None = ...,
         vdom: str | bool | None = ...,
@@ -344,7 +359,7 @@ class VirtualWirePair:
         self,
         payload_dict: VirtualWirePairPayload | None = ...,
         name: str | None = ...,
-        member: str | list[str] | list[dict[str, Any]] | None = ...,
+        member: str | list[VirtualWirePairMemberItem] | None = ...,
         wildcard_vlan: Literal["enable", "disable"] | None = ...,
         vlan_filter: str | None = ...,
         vdom: str | bool | None = ...,
@@ -356,7 +371,7 @@ class VirtualWirePair:
         self,
         payload_dict: VirtualWirePairPayload | None = ...,
         name: str | None = ...,
-        member: str | list[str] | list[dict[str, Any]] | None = ...,
+        member: str | list[VirtualWirePairMemberItem] | None = ...,
         wildcard_vlan: Literal["enable", "disable"] | None = ...,
         vlan_filter: str | None = ...,
         vdom: str | bool | None = ...,
@@ -366,7 +381,7 @@ class VirtualWirePair:
         self,
         payload_dict: VirtualWirePairPayload | None = ...,
         name: str | None = ...,
-        member: str | list[str] | list[dict[str, Any]] | None = ...,
+        member: str | list[VirtualWirePairMemberItem] | None = ...,
         wildcard_vlan: Literal["enable", "disable"] | None = ...,
         vlan_filter: str | None = ...,
         vdom: str | bool | None = ...,
@@ -378,7 +393,7 @@ class VirtualWirePair:
         self,
         payload_dict: VirtualWirePairPayload | None = ...,
         name: str | None = ...,
-        member: str | list[str] | list[dict[str, Any]] | None = ...,
+        member: str | list[VirtualWirePairMemberItem] | None = ...,
         wildcard_vlan: Literal["enable", "disable"] | None = ...,
         vlan_filter: str | None = ...,
         vdom: str | bool | None = ...,
@@ -389,7 +404,7 @@ class VirtualWirePair:
         self,
         payload_dict: VirtualWirePairPayload | None = ...,
         name: str | None = ...,
-        member: str | list[str] | list[dict[str, Any]] | None = ...,
+        member: str | list[VirtualWirePairMemberItem] | None = ...,
         wildcard_vlan: Literal["enable", "disable"] | None = ...,
         vlan_filter: str | None = ...,
         vdom: str | bool | None = ...,
@@ -401,7 +416,7 @@ class VirtualWirePair:
         self,
         payload_dict: VirtualWirePairPayload | None = ...,
         name: str | None = ...,
-        member: str | list[str] | list[dict[str, Any]] | None = ...,
+        member: str | list[VirtualWirePairMemberItem] | None = ...,
         wildcard_vlan: Literal["enable", "disable"] | None = ...,
         vlan_filter: str | None = ...,
         vdom: str | bool | None = ...,
@@ -411,7 +426,7 @@ class VirtualWirePair:
         self,
         payload_dict: VirtualWirePairPayload | None = ...,
         name: str | None = ...,
-        member: str | list[str] | list[dict[str, Any]] | None = ...,
+        member: str | list[VirtualWirePairMemberItem] | None = ...,
         wildcard_vlan: Literal["enable", "disable"] | None = ...,
         vlan_filter: str | None = ...,
         vdom: str | bool | None = ...,
@@ -456,7 +471,7 @@ class VirtualWirePair:
         self,
         payload_dict: VirtualWirePairPayload | None = ...,
         name: str | None = ...,
-        member: str | list[str] | list[dict[str, Any]] | None = ...,
+        member: str | list[VirtualWirePairMemberItem] | None = ...,
         wildcard_vlan: Literal["enable", "disable"] | None = ...,
         vlan_filter: str | None = ...,
         vdom: str | bool | None = ...,

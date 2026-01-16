@@ -2,7 +2,79 @@ from typing import TypedDict, Literal, Any, Coroutine, Union, overload, Generato
 from typing_extensions import NotRequired
 from hfortix_fortios.models import FortiObject, FortiObjectList
 
-# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional via total=False)
+# ============================================================================
+# Nested TypedDicts for table field children (dict mode)
+# These MUST be defined before the Payload class to use them as type hints
+# ============================================================================
+
+class ProxyAddressCategoryItem(TypedDict, total=False):
+    """Type hints for category table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: ProxyAddressCategoryItem = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    
+    id: int  # FortiGuard category ID. | Default: 0 | Min: 0 | Max: 4294967295
+
+
+class ProxyAddressHeadergroupItem(TypedDict, total=False):
+    """Type hints for header-group table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: ProxyAddressHeadergroupItem = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    
+    id: int  # ID. | Default: 0 | Min: 0 | Max: 4294967295
+    header_name: str  # HTTP header. | MaxLen: 79
+    header: str  # HTTP header regular expression. | MaxLen: 255
+    case_sensitivity: Literal["disable", "enable"]  # Case sensitivity in pattern. | Default: disable
+
+
+class ProxyAddressTaggingItem(TypedDict, total=False):
+    """Type hints for tagging table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: ProxyAddressTaggingItem = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    
+    name: str  # Tagging entry name. | MaxLen: 63
+    category: str  # Tag category. | MaxLen: 63
+    tags: str  # Tags.
+
+
+class ProxyAddressApplicationItem(TypedDict, total=False):
+    """Type hints for application table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: ProxyAddressApplicationItem = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    
+    name: str  # SaaS application name. | MaxLen: 79
+
+
+# ============================================================================
+# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional)
+# ============================================================================
 # NOTE: We intentionally DON'T use NotRequired wrapper because:
 # 1. total=False already makes all fields optional
 # 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
@@ -34,7 +106,7 @@ class ProxyAddressPayload(TypedDict, total=False):
     path: str  # URL path as a regular expression. | MaxLen: 255
     query: str  # Match the query part of the URL as a regular expre | MaxLen: 255
     referrer: Literal["enable", "disable"]  # Enable/disable use of referrer field in the HTTP h | Default: disable
-    category: list[dict[str, Any]]  # FortiGuard category ID.
+    category: list[ProxyAddressCategoryItem]  # FortiGuard category ID.
     method: Literal["get", "post", "put", "head", "connect", "trace", "options", "delete", "update", "patch", "other"]  # HTTP request methods to be used.
     ua: Literal["chrome", "ms", "firefox", "safari", "ie", "edge", "other"]  # Names of browsers to be used as user agent.
     ua_min_ver: str  # Minimum version of the user agent specified in dot | MaxLen: 63
@@ -42,60 +114,15 @@ class ProxyAddressPayload(TypedDict, total=False):
     header_name: str  # Name of HTTP header. | MaxLen: 79
     header: str  # HTTP header name as a regular expression. | MaxLen: 255
     case_sensitivity: Literal["disable", "enable"]  # Enable to make the pattern case sensitive. | Default: disable
-    header_group: list[dict[str, Any]]  # HTTP header group.
+    header_group: list[ProxyAddressHeadergroupItem]  # HTTP header group.
     color: int  # Integer value to determine the color of the icon i | Default: 0 | Min: 0 | Max: 32
-    tagging: list[dict[str, Any]]  # Config object tagging.
+    tagging: list[ProxyAddressTaggingItem]  # Config object tagging.
     comment: str  # Optional comments. | MaxLen: 255
-    application: list[dict[str, Any]]  # SaaS application.
+    application: list[ProxyAddressApplicationItem]  # SaaS application.
 
-# Nested TypedDicts for table field children (dict mode)
-
-class ProxyAddressCategoryItem(TypedDict):
-    """Type hints for category table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    id: int  # FortiGuard category ID. | Default: 0 | Min: 0 | Max: 4294967295
-
-
-class ProxyAddressHeadergroupItem(TypedDict):
-    """Type hints for header-group table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    id: int  # ID. | Default: 0 | Min: 0 | Max: 4294967295
-    header_name: str  # HTTP header. | MaxLen: 79
-    header: str  # HTTP header regular expression. | MaxLen: 255
-    case_sensitivity: Literal["disable", "enable"]  # Case sensitivity in pattern. | Default: disable
-
-
-class ProxyAddressTaggingItem(TypedDict):
-    """Type hints for tagging table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    name: str  # Tagging entry name. | MaxLen: 63
-    category: str  # Tag category. | MaxLen: 63
-    tags: str  # Tags.
-
-
-class ProxyAddressApplicationItem(TypedDict):
-    """Type hints for application table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    name: str  # SaaS application name. | MaxLen: 79
-
-
-# Nested classes for table field children (object mode)
+# ============================================================================
+# Nested classes for table field children (object mode - for API responses)
+# ============================================================================
 
 @final
 class ProxyAddressCategoryObject:
@@ -321,6 +348,9 @@ class ProxyAddressObject:
     # Common API response fields
     status: str
     http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
     vdom: str | None
     
     # Methods from FortiObject
@@ -558,7 +588,7 @@ class ProxyAddress:
         path: str | None = ...,
         query: str | None = ...,
         referrer: Literal["enable", "disable"] | None = ...,
-        category: str | list[str] | list[dict[str, Any]] | None = ...,
+        category: str | list[ProxyAddressCategoryItem] | None = ...,
         method: Literal["get", "post", "put", "head", "connect", "trace", "options", "delete", "update", "patch", "other"] | list[str] | None = ...,
         ua: Literal["chrome", "ms", "firefox", "safari", "ie", "edge", "other"] | list[str] | None = ...,
         ua_min_ver: str | None = ...,
@@ -566,11 +596,11 @@ class ProxyAddress:
         header_name: str | None = ...,
         header: str | None = ...,
         case_sensitivity: Literal["disable", "enable"] | None = ...,
-        header_group: str | list[str] | list[dict[str, Any]] | None = ...,
+        header_group: str | list[ProxyAddressHeadergroupItem] | None = ...,
         color: int | None = ...,
-        tagging: str | list[str] | list[dict[str, Any]] | None = ...,
+        tagging: str | list[ProxyAddressTaggingItem] | None = ...,
         comment: str | None = ...,
-        application: str | list[str] | list[dict[str, Any]] | None = ...,
+        application: str | list[ProxyAddressApplicationItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> ProxyAddressObject: ...
     
@@ -586,7 +616,7 @@ class ProxyAddress:
         path: str | None = ...,
         query: str | None = ...,
         referrer: Literal["enable", "disable"] | None = ...,
-        category: str | list[str] | list[dict[str, Any]] | None = ...,
+        category: str | list[ProxyAddressCategoryItem] | None = ...,
         method: Literal["get", "post", "put", "head", "connect", "trace", "options", "delete", "update", "patch", "other"] | list[str] | None = ...,
         ua: Literal["chrome", "ms", "firefox", "safari", "ie", "edge", "other"] | list[str] | None = ...,
         ua_min_ver: str | None = ...,
@@ -594,11 +624,11 @@ class ProxyAddress:
         header_name: str | None = ...,
         header: str | None = ...,
         case_sensitivity: Literal["disable", "enable"] | None = ...,
-        header_group: str | list[str] | list[dict[str, Any]] | None = ...,
+        header_group: str | list[ProxyAddressHeadergroupItem] | None = ...,
         color: int | None = ...,
-        tagging: str | list[str] | list[dict[str, Any]] | None = ...,
+        tagging: str | list[ProxyAddressTaggingItem] | None = ...,
         comment: str | None = ...,
-        application: str | list[str] | list[dict[str, Any]] | None = ...,
+        application: str | list[ProxyAddressApplicationItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -615,7 +645,7 @@ class ProxyAddress:
         path: str | None = ...,
         query: str | None = ...,
         referrer: Literal["enable", "disable"] | None = ...,
-        category: str | list[str] | list[dict[str, Any]] | None = ...,
+        category: str | list[ProxyAddressCategoryItem] | None = ...,
         method: Literal["get", "post", "put", "head", "connect", "trace", "options", "delete", "update", "patch", "other"] | list[str] | None = ...,
         ua: Literal["chrome", "ms", "firefox", "safari", "ie", "edge", "other"] | list[str] | None = ...,
         ua_min_ver: str | None = ...,
@@ -623,11 +653,11 @@ class ProxyAddress:
         header_name: str | None = ...,
         header: str | None = ...,
         case_sensitivity: Literal["disable", "enable"] | None = ...,
-        header_group: str | list[str] | list[dict[str, Any]] | None = ...,
+        header_group: str | list[ProxyAddressHeadergroupItem] | None = ...,
         color: int | None = ...,
-        tagging: str | list[str] | list[dict[str, Any]] | None = ...,
+        tagging: str | list[ProxyAddressTaggingItem] | None = ...,
         comment: str | None = ...,
-        application: str | list[str] | list[dict[str, Any]] | None = ...,
+        application: str | list[ProxyAddressApplicationItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -642,7 +672,7 @@ class ProxyAddress:
         path: str | None = ...,
         query: str | None = ...,
         referrer: Literal["enable", "disable"] | None = ...,
-        category: str | list[str] | list[dict[str, Any]] | None = ...,
+        category: str | list[ProxyAddressCategoryItem] | None = ...,
         method: Literal["get", "post", "put", "head", "connect", "trace", "options", "delete", "update", "patch", "other"] | list[str] | None = ...,
         ua: Literal["chrome", "ms", "firefox", "safari", "ie", "edge", "other"] | list[str] | None = ...,
         ua_min_ver: str | None = ...,
@@ -650,11 +680,11 @@ class ProxyAddress:
         header_name: str | None = ...,
         header: str | None = ...,
         case_sensitivity: Literal["disable", "enable"] | None = ...,
-        header_group: str | list[str] | list[dict[str, Any]] | None = ...,
+        header_group: str | list[ProxyAddressHeadergroupItem] | None = ...,
         color: int | None = ...,
-        tagging: str | list[str] | list[dict[str, Any]] | None = ...,
+        tagging: str | list[ProxyAddressTaggingItem] | None = ...,
         comment: str | None = ...,
-        application: str | list[str] | list[dict[str, Any]] | None = ...,
+        application: str | list[ProxyAddressApplicationItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -671,7 +701,7 @@ class ProxyAddress:
         path: str | None = ...,
         query: str | None = ...,
         referrer: Literal["enable", "disable"] | None = ...,
-        category: str | list[str] | list[dict[str, Any]] | None = ...,
+        category: str | list[ProxyAddressCategoryItem] | None = ...,
         method: Literal["get", "post", "put", "head", "connect", "trace", "options", "delete", "update", "patch", "other"] | list[str] | None = ...,
         ua: Literal["chrome", "ms", "firefox", "safari", "ie", "edge", "other"] | list[str] | None = ...,
         ua_min_ver: str | None = ...,
@@ -679,11 +709,11 @@ class ProxyAddress:
         header_name: str | None = ...,
         header: str | None = ...,
         case_sensitivity: Literal["disable", "enable"] | None = ...,
-        header_group: str | list[str] | list[dict[str, Any]] | None = ...,
+        header_group: str | list[ProxyAddressHeadergroupItem] | None = ...,
         color: int | None = ...,
-        tagging: str | list[str] | list[dict[str, Any]] | None = ...,
+        tagging: str | list[ProxyAddressTaggingItem] | None = ...,
         comment: str | None = ...,
-        application: str | list[str] | list[dict[str, Any]] | None = ...,
+        application: str | list[ProxyAddressApplicationItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> ProxyAddressObject: ...
     
@@ -699,7 +729,7 @@ class ProxyAddress:
         path: str | None = ...,
         query: str | None = ...,
         referrer: Literal["enable", "disable"] | None = ...,
-        category: str | list[str] | list[dict[str, Any]] | None = ...,
+        category: str | list[ProxyAddressCategoryItem] | None = ...,
         method: Literal["get", "post", "put", "head", "connect", "trace", "options", "delete", "update", "patch", "other"] | list[str] | None = ...,
         ua: Literal["chrome", "ms", "firefox", "safari", "ie", "edge", "other"] | list[str] | None = ...,
         ua_min_ver: str | None = ...,
@@ -707,11 +737,11 @@ class ProxyAddress:
         header_name: str | None = ...,
         header: str | None = ...,
         case_sensitivity: Literal["disable", "enable"] | None = ...,
-        header_group: str | list[str] | list[dict[str, Any]] | None = ...,
+        header_group: str | list[ProxyAddressHeadergroupItem] | None = ...,
         color: int | None = ...,
-        tagging: str | list[str] | list[dict[str, Any]] | None = ...,
+        tagging: str | list[ProxyAddressTaggingItem] | None = ...,
         comment: str | None = ...,
-        application: str | list[str] | list[dict[str, Any]] | None = ...,
+        application: str | list[ProxyAddressApplicationItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -728,7 +758,7 @@ class ProxyAddress:
         path: str | None = ...,
         query: str | None = ...,
         referrer: Literal["enable", "disable"] | None = ...,
-        category: str | list[str] | list[dict[str, Any]] | None = ...,
+        category: str | list[ProxyAddressCategoryItem] | None = ...,
         method: Literal["get", "post", "put", "head", "connect", "trace", "options", "delete", "update", "patch", "other"] | list[str] | None = ...,
         ua: Literal["chrome", "ms", "firefox", "safari", "ie", "edge", "other"] | list[str] | None = ...,
         ua_min_ver: str | None = ...,
@@ -736,11 +766,11 @@ class ProxyAddress:
         header_name: str | None = ...,
         header: str | None = ...,
         case_sensitivity: Literal["disable", "enable"] | None = ...,
-        header_group: str | list[str] | list[dict[str, Any]] | None = ...,
+        header_group: str | list[ProxyAddressHeadergroupItem] | None = ...,
         color: int | None = ...,
-        tagging: str | list[str] | list[dict[str, Any]] | None = ...,
+        tagging: str | list[ProxyAddressTaggingItem] | None = ...,
         comment: str | None = ...,
-        application: str | list[str] | list[dict[str, Any]] | None = ...,
+        application: str | list[ProxyAddressApplicationItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -755,7 +785,7 @@ class ProxyAddress:
         path: str | None = ...,
         query: str | None = ...,
         referrer: Literal["enable", "disable"] | None = ...,
-        category: str | list[str] | list[dict[str, Any]] | None = ...,
+        category: str | list[ProxyAddressCategoryItem] | None = ...,
         method: Literal["get", "post", "put", "head", "connect", "trace", "options", "delete", "update", "patch", "other"] | list[str] | None = ...,
         ua: Literal["chrome", "ms", "firefox", "safari", "ie", "edge", "other"] | list[str] | None = ...,
         ua_min_ver: str | None = ...,
@@ -763,11 +793,11 @@ class ProxyAddress:
         header_name: str | None = ...,
         header: str | None = ...,
         case_sensitivity: Literal["disable", "enable"] | None = ...,
-        header_group: str | list[str] | list[dict[str, Any]] | None = ...,
+        header_group: str | list[ProxyAddressHeadergroupItem] | None = ...,
         color: int | None = ...,
-        tagging: str | list[str] | list[dict[str, Any]] | None = ...,
+        tagging: str | list[ProxyAddressTaggingItem] | None = ...,
         comment: str | None = ...,
-        application: str | list[str] | list[dict[str, Any]] | None = ...,
+        application: str | list[ProxyAddressApplicationItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -817,7 +847,7 @@ class ProxyAddress:
         path: str | None = ...,
         query: str | None = ...,
         referrer: Literal["enable", "disable"] | None = ...,
-        category: str | list[str] | list[dict[str, Any]] | None = ...,
+        category: str | list[ProxyAddressCategoryItem] | None = ...,
         method: Literal["get", "post", "put", "head", "connect", "trace", "options", "delete", "update", "patch", "other"] | list[str] | None = ...,
         ua: Literal["chrome", "ms", "firefox", "safari", "ie", "edge", "other"] | list[str] | None = ...,
         ua_min_ver: str | None = ...,
@@ -825,11 +855,11 @@ class ProxyAddress:
         header_name: str | None = ...,
         header: str | None = ...,
         case_sensitivity: Literal["disable", "enable"] | None = ...,
-        header_group: str | list[str] | list[dict[str, Any]] | None = ...,
+        header_group: str | list[ProxyAddressHeadergroupItem] | None = ...,
         color: int | None = ...,
-        tagging: str | list[str] | list[dict[str, Any]] | None = ...,
+        tagging: str | list[ProxyAddressTaggingItem] | None = ...,
         comment: str | None = ...,
-        application: str | list[str] | list[dict[str, Any]] | None = ...,
+        application: str | list[ProxyAddressApplicationItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     

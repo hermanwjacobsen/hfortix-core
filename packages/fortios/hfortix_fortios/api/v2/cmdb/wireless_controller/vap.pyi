@@ -2,7 +2,106 @@ from typing import TypedDict, Literal, Any, Coroutine, Union, overload, Generato
 from typing_extensions import NotRequired
 from hfortix_fortios.models import FortiObject, FortiObjectList
 
-# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional via total=False)
+# ============================================================================
+# Nested TypedDicts for table field children (dict mode)
+# These MUST be defined before the Payload class to use them as type hints
+# ============================================================================
+
+class VapRadiusmacauthusergroupsItem(TypedDict, total=False):
+    """Type hints for radius-mac-auth-usergroups table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: VapRadiusmacauthusergroupsItem = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    
+    name: str  # User group name. | MaxLen: 79
+
+
+class VapUsergroupItem(TypedDict, total=False):
+    """Type hints for usergroup table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: VapUsergroupItem = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    
+    name: str  # User group name. | MaxLen: 79
+
+
+class VapSelectedusergroupsItem(TypedDict, total=False):
+    """Type hints for selected-usergroups table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: VapSelectedusergroupsItem = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    
+    name: str  # User group name. | MaxLen: 79
+
+
+class VapScheduleItem(TypedDict, total=False):
+    """Type hints for schedule table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: VapScheduleItem = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    
+    name: str  # Schedule name. | MaxLen: 35
+
+
+class VapVlannameItem(TypedDict, total=False):
+    """Type hints for vlan-name table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: VapVlannameItem = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    
+    name: str  # VLAN name. | MaxLen: 35
+    vlan_id: int  # VLAN IDs (maximum 8 VLAN IDs). | Min: 0 | Max: 4094
+
+
+class VapVlanpoolItem(TypedDict, total=False):
+    """Type hints for vlan-pool table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: VapVlanpoolItem = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    
+    id: int  # ID. | Default: 0 | Min: 0 | Max: 4094
+    wtp_group: str  # WTP group name. | MaxLen: 35
+
+
+# ============================================================================
+# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional)
+# ============================================================================
 # NOTE: We intentionally DON'T use NotRequired wrapper because:
 # 1. total=False already makes all fields optional
 # 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
@@ -80,7 +179,7 @@ class VapPayload(TypedDict, total=False):
     radius_mac_auth_block_interval: int  # Don't send RADIUS MAC auth request again if the cl | Default: 0 | Min: 30 | Max: 864000
     radius_mac_mpsk_auth: Literal["enable", "disable"]  # Enable/disable RADIUS-based MAC authentication of | Default: disable
     radius_mac_mpsk_timeout: int  # RADIUS MAC MPSK cache timeout interval | Default: 86400 | Min: 300 | Max: 864000
-    radius_mac_auth_usergroups: list[dict[str, Any]]  # Selective user groups that are permitted for RADIU
+    radius_mac_auth_usergroups: list[VapRadiusmacauthusergroupsItem]  # Selective user groups that are permitted for RADIU
     auth: Literal["radius", "usergroup"]  # Authentication protocol.
     encrypt: Literal["TKIP", "AES", "TKIP-AES"]  # Encryption protocol to use | Default: AES
     keyindex: int  # WEP key index (1 - 4). | Default: 1 | Min: 1 | Max: 4
@@ -106,19 +205,19 @@ class VapPayload(TypedDict, total=False):
     local_bridging: Literal["enable", "disable"]  # Enable/disable bridging of wireless and Ethernet i | Default: disable
     local_lan: Literal["allow", "deny"]  # Allow/deny traffic destined for a Class A, B, or C | Default: allow
     local_authentication: Literal["enable", "disable"]  # Enable/disable AP local authentication. | Default: disable
-    usergroup: list[dict[str, Any]]  # Firewall user group to be used to authenticate WiF
+    usergroup: list[VapUsergroupItem]  # Firewall user group to be used to authenticate WiF
     captive_portal: Literal["enable", "disable"]  # Enable/disable captive portal. | Default: disable
     captive_network_assistant_bypass: Literal["enable", "disable"]  # Enable/disable Captive Network Assistant bypass. | Default: disable
     portal_message_override_group: str  # Replacement message group for this VAP | MaxLen: 35
     portal_message_overrides: str  # Individual message overrides.
     portal_type: Literal["auth", "auth+disclaimer", "disclaimer", "email-collect", "cmcc", "cmcc-macauth", "auth-mac", "external-auth", "external-macauth"]  # Captive portal functionality. Configure how the ca | Default: auth
-    selected_usergroups: list[dict[str, Any]]  # Selective user groups that are permitted to authen
+    selected_usergroups: list[VapSelectedusergroupsItem]  # Selective user groups that are permitted to authen
     security_exempt_list: str  # Optional security exempt list for captive portal a | MaxLen: 35
     security_redirect_url: str  # Optional URL for redirecting users after they pass | MaxLen: 1023
     auth_cert: str  # HTTPS server certificate. | MaxLen: 35
     auth_portal_addr: str  # Address of captive portal. | MaxLen: 63
     intra_vap_privacy: Literal["enable", "disable"]  # Enable/disable blocking communication between clie | Default: disable
-    schedule: list[dict[str, Any]]  # Firewall schedules for enabling this VAP on the Fo
+    schedule: list[VapScheduleItem]  # Firewall schedules for enabling this VAP on the Fo
     ldpc: Literal["disable", "rx", "tx", "rxtx"]  # VAP low-density parity-check (LDPC) coding configu | Default: rxtx
     high_efficiency: Literal["enable", "disable"]  # Enable/disable 802.11ax high efficiency | Default: enable
     target_wake_time: Literal["enable", "disable"]  # Enable/disable 802.11ax target wake time | Default: enable
@@ -150,9 +249,9 @@ class VapPayload(TypedDict, total=False):
     quarantine: Literal["enable", "disable"]  # Enable/disable station quarantine | Default: disable
     radio_5g_threshold: str  # Minimum signal level/threshold in dBm required for | Default: -76 | MaxLen: 7
     radio_2g_threshold: str  # Minimum signal level/threshold in dBm required for | Default: -79 | MaxLen: 7
-    vlan_name: list[dict[str, Any]]  # Table for mapping VLAN name to VLAN ID.
+    vlan_name: list[VapVlannameItem]  # Table for mapping VLAN name to VLAN ID.
     vlan_pooling: Literal["wtp-group", "round-robin", "hash", "disable"]  # Enable/disable VLAN pooling, to allow grouping of | Default: disable
-    vlan_pool: list[dict[str, Any]]  # VLAN pool.
+    vlan_pool: list[VapVlanpoolItem]  # VLAN pool.
     dhcp_option43_insertion: Literal["enable", "disable"]  # Enable/disable insertion of DHCP option 43 | Default: enable
     dhcp_option82_insertion: Literal["enable", "disable"]  # Enable/disable DHCP option 82 insert | Default: disable
     dhcp_option82_circuit_id_insertion: Literal["style-1", "style-2", "style-3", "disable"]  # Enable/disable DHCP option 82 circuit-id insert | Default: disable
@@ -205,71 +304,9 @@ class VapPayload(TypedDict, total=False):
     l3_roaming: Literal["enable", "disable"]  # Enable/disable layer 3 roaming (default = disable) | Default: disable
     l3_roaming_mode: Literal["direct", "indirect"]  # Select the way that layer 3 roaming traffic is pas | Default: direct
 
-# Nested TypedDicts for table field children (dict mode)
-
-class VapRadiusmacauthusergroupsItem(TypedDict):
-    """Type hints for radius-mac-auth-usergroups table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    name: str  # User group name. | MaxLen: 79
-
-
-class VapUsergroupItem(TypedDict):
-    """Type hints for usergroup table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    name: str  # User group name. | MaxLen: 79
-
-
-class VapSelectedusergroupsItem(TypedDict):
-    """Type hints for selected-usergroups table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    name: str  # User group name. | MaxLen: 79
-
-
-class VapScheduleItem(TypedDict):
-    """Type hints for schedule table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    name: str  # Schedule name. | MaxLen: 35
-
-
-class VapVlannameItem(TypedDict):
-    """Type hints for vlan-name table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    name: str  # VLAN name. | MaxLen: 35
-    vlan_id: int  # VLAN IDs (maximum 8 VLAN IDs). | Min: 0 | Max: 4094
-
-
-class VapVlanpoolItem(TypedDict):
-    """Type hints for vlan-pool table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    id: int  # ID. | Default: 0 | Min: 0 | Max: 4094
-    wtp_group: str  # WTP group name. | MaxLen: 35
-
-
-# Nested classes for table field children (object mode)
+# ============================================================================
+# Nested classes for table field children (object mode - for API responses)
+# ============================================================================
 
 @final
 class VapRadiusmacauthusergroupsObject:
@@ -1006,6 +1043,9 @@ class VapObject:
     # Common API response fields
     status: str
     http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
     vdom: str | None
     
     # Methods from FortiObject
@@ -1283,7 +1323,7 @@ class Vap:
         radius_mac_auth_block_interval: int | None = ...,
         radius_mac_mpsk_auth: Literal["enable", "disable"] | None = ...,
         radius_mac_mpsk_timeout: int | None = ...,
-        radius_mac_auth_usergroups: str | list[str] | list[dict[str, Any]] | None = ...,
+        radius_mac_auth_usergroups: str | list[VapRadiusmacauthusergroupsItem] | None = ...,
         auth: Literal["radius", "usergroup"] | None = ...,
         encrypt: Literal["TKIP", "AES", "TKIP-AES"] | None = ...,
         keyindex: int | None = ...,
@@ -1309,19 +1349,19 @@ class Vap:
         local_bridging: Literal["enable", "disable"] | None = ...,
         local_lan: Literal["allow", "deny"] | None = ...,
         local_authentication: Literal["enable", "disable"] | None = ...,
-        usergroup: str | list[str] | list[dict[str, Any]] | None = ...,
+        usergroup: str | list[VapUsergroupItem] | None = ...,
         captive_portal: Literal["enable", "disable"] | None = ...,
         captive_network_assistant_bypass: Literal["enable", "disable"] | None = ...,
         portal_message_override_group: str | None = ...,
         portal_message_overrides: str | None = ...,
         portal_type: Literal["auth", "auth+disclaimer", "disclaimer", "email-collect", "cmcc", "cmcc-macauth", "auth-mac", "external-auth", "external-macauth"] | None = ...,
-        selected_usergroups: str | list[str] | list[dict[str, Any]] | None = ...,
+        selected_usergroups: str | list[VapSelectedusergroupsItem] | None = ...,
         security_exempt_list: str | None = ...,
         security_redirect_url: str | None = ...,
         auth_cert: str | None = ...,
         auth_portal_addr: str | None = ...,
         intra_vap_privacy: Literal["enable", "disable"] | None = ...,
-        schedule: str | list[str] | list[dict[str, Any]] | None = ...,
+        schedule: str | list[VapScheduleItem] | None = ...,
         ldpc: Literal["disable", "rx", "tx", "rxtx"] | None = ...,
         high_efficiency: Literal["enable", "disable"] | None = ...,
         target_wake_time: Literal["enable", "disable"] | None = ...,
@@ -1353,9 +1393,9 @@ class Vap:
         quarantine: Literal["enable", "disable"] | None = ...,
         radio_5g_threshold: str | None = ...,
         radio_2g_threshold: str | None = ...,
-        vlan_name: str | list[str] | list[dict[str, Any]] | None = ...,
+        vlan_name: str | list[VapVlannameItem] | None = ...,
         vlan_pooling: Literal["wtp-group", "round-robin", "hash", "disable"] | None = ...,
-        vlan_pool: str | list[str] | list[dict[str, Any]] | None = ...,
+        vlan_pool: str | list[VapVlanpoolItem] | None = ...,
         dhcp_option43_insertion: Literal["enable", "disable"] | None = ...,
         dhcp_option82_insertion: Literal["enable", "disable"] | None = ...,
         dhcp_option82_circuit_id_insertion: Literal["style-1", "style-2", "style-3", "disable"] | None = ...,
@@ -1462,7 +1502,7 @@ class Vap:
         radius_mac_auth_block_interval: int | None = ...,
         radius_mac_mpsk_auth: Literal["enable", "disable"] | None = ...,
         radius_mac_mpsk_timeout: int | None = ...,
-        radius_mac_auth_usergroups: str | list[str] | list[dict[str, Any]] | None = ...,
+        radius_mac_auth_usergroups: str | list[VapRadiusmacauthusergroupsItem] | None = ...,
         auth: Literal["radius", "usergroup"] | None = ...,
         encrypt: Literal["TKIP", "AES", "TKIP-AES"] | None = ...,
         keyindex: int | None = ...,
@@ -1488,19 +1528,19 @@ class Vap:
         local_bridging: Literal["enable", "disable"] | None = ...,
         local_lan: Literal["allow", "deny"] | None = ...,
         local_authentication: Literal["enable", "disable"] | None = ...,
-        usergroup: str | list[str] | list[dict[str, Any]] | None = ...,
+        usergroup: str | list[VapUsergroupItem] | None = ...,
         captive_portal: Literal["enable", "disable"] | None = ...,
         captive_network_assistant_bypass: Literal["enable", "disable"] | None = ...,
         portal_message_override_group: str | None = ...,
         portal_message_overrides: str | None = ...,
         portal_type: Literal["auth", "auth+disclaimer", "disclaimer", "email-collect", "cmcc", "cmcc-macauth", "auth-mac", "external-auth", "external-macauth"] | None = ...,
-        selected_usergroups: str | list[str] | list[dict[str, Any]] | None = ...,
+        selected_usergroups: str | list[VapSelectedusergroupsItem] | None = ...,
         security_exempt_list: str | None = ...,
         security_redirect_url: str | None = ...,
         auth_cert: str | None = ...,
         auth_portal_addr: str | None = ...,
         intra_vap_privacy: Literal["enable", "disable"] | None = ...,
-        schedule: str | list[str] | list[dict[str, Any]] | None = ...,
+        schedule: str | list[VapScheduleItem] | None = ...,
         ldpc: Literal["disable", "rx", "tx", "rxtx"] | None = ...,
         high_efficiency: Literal["enable", "disable"] | None = ...,
         target_wake_time: Literal["enable", "disable"] | None = ...,
@@ -1532,9 +1572,9 @@ class Vap:
         quarantine: Literal["enable", "disable"] | None = ...,
         radio_5g_threshold: str | None = ...,
         radio_2g_threshold: str | None = ...,
-        vlan_name: str | list[str] | list[dict[str, Any]] | None = ...,
+        vlan_name: str | list[VapVlannameItem] | None = ...,
         vlan_pooling: Literal["wtp-group", "round-robin", "hash", "disable"] | None = ...,
-        vlan_pool: str | list[str] | list[dict[str, Any]] | None = ...,
+        vlan_pool: str | list[VapVlanpoolItem] | None = ...,
         dhcp_option43_insertion: Literal["enable", "disable"] | None = ...,
         dhcp_option82_insertion: Literal["enable", "disable"] | None = ...,
         dhcp_option82_circuit_id_insertion: Literal["style-1", "style-2", "style-3", "disable"] | None = ...,
@@ -1642,7 +1682,7 @@ class Vap:
         radius_mac_auth_block_interval: int | None = ...,
         radius_mac_mpsk_auth: Literal["enable", "disable"] | None = ...,
         radius_mac_mpsk_timeout: int | None = ...,
-        radius_mac_auth_usergroups: str | list[str] | list[dict[str, Any]] | None = ...,
+        radius_mac_auth_usergroups: str | list[VapRadiusmacauthusergroupsItem] | None = ...,
         auth: Literal["radius", "usergroup"] | None = ...,
         encrypt: Literal["TKIP", "AES", "TKIP-AES"] | None = ...,
         keyindex: int | None = ...,
@@ -1668,19 +1708,19 @@ class Vap:
         local_bridging: Literal["enable", "disable"] | None = ...,
         local_lan: Literal["allow", "deny"] | None = ...,
         local_authentication: Literal["enable", "disable"] | None = ...,
-        usergroup: str | list[str] | list[dict[str, Any]] | None = ...,
+        usergroup: str | list[VapUsergroupItem] | None = ...,
         captive_portal: Literal["enable", "disable"] | None = ...,
         captive_network_assistant_bypass: Literal["enable", "disable"] | None = ...,
         portal_message_override_group: str | None = ...,
         portal_message_overrides: str | None = ...,
         portal_type: Literal["auth", "auth+disclaimer", "disclaimer", "email-collect", "cmcc", "cmcc-macauth", "auth-mac", "external-auth", "external-macauth"] | None = ...,
-        selected_usergroups: str | list[str] | list[dict[str, Any]] | None = ...,
+        selected_usergroups: str | list[VapSelectedusergroupsItem] | None = ...,
         security_exempt_list: str | None = ...,
         security_redirect_url: str | None = ...,
         auth_cert: str | None = ...,
         auth_portal_addr: str | None = ...,
         intra_vap_privacy: Literal["enable", "disable"] | None = ...,
-        schedule: str | list[str] | list[dict[str, Any]] | None = ...,
+        schedule: str | list[VapScheduleItem] | None = ...,
         ldpc: Literal["disable", "rx", "tx", "rxtx"] | None = ...,
         high_efficiency: Literal["enable", "disable"] | None = ...,
         target_wake_time: Literal["enable", "disable"] | None = ...,
@@ -1712,9 +1752,9 @@ class Vap:
         quarantine: Literal["enable", "disable"] | None = ...,
         radio_5g_threshold: str | None = ...,
         radio_2g_threshold: str | None = ...,
-        vlan_name: str | list[str] | list[dict[str, Any]] | None = ...,
+        vlan_name: str | list[VapVlannameItem] | None = ...,
         vlan_pooling: Literal["wtp-group", "round-robin", "hash", "disable"] | None = ...,
-        vlan_pool: str | list[str] | list[dict[str, Any]] | None = ...,
+        vlan_pool: str | list[VapVlanpoolItem] | None = ...,
         dhcp_option43_insertion: Literal["enable", "disable"] | None = ...,
         dhcp_option82_insertion: Literal["enable", "disable"] | None = ...,
         dhcp_option82_circuit_id_insertion: Literal["style-1", "style-2", "style-3", "disable"] | None = ...,
@@ -1820,7 +1860,7 @@ class Vap:
         radius_mac_auth_block_interval: int | None = ...,
         radius_mac_mpsk_auth: Literal["enable", "disable"] | None = ...,
         radius_mac_mpsk_timeout: int | None = ...,
-        radius_mac_auth_usergroups: str | list[str] | list[dict[str, Any]] | None = ...,
+        radius_mac_auth_usergroups: str | list[VapRadiusmacauthusergroupsItem] | None = ...,
         auth: Literal["radius", "usergroup"] | None = ...,
         encrypt: Literal["TKIP", "AES", "TKIP-AES"] | None = ...,
         keyindex: int | None = ...,
@@ -1846,19 +1886,19 @@ class Vap:
         local_bridging: Literal["enable", "disable"] | None = ...,
         local_lan: Literal["allow", "deny"] | None = ...,
         local_authentication: Literal["enable", "disable"] | None = ...,
-        usergroup: str | list[str] | list[dict[str, Any]] | None = ...,
+        usergroup: str | list[VapUsergroupItem] | None = ...,
         captive_portal: Literal["enable", "disable"] | None = ...,
         captive_network_assistant_bypass: Literal["enable", "disable"] | None = ...,
         portal_message_override_group: str | None = ...,
         portal_message_overrides: str | None = ...,
         portal_type: Literal["auth", "auth+disclaimer", "disclaimer", "email-collect", "cmcc", "cmcc-macauth", "auth-mac", "external-auth", "external-macauth"] | None = ...,
-        selected_usergroups: str | list[str] | list[dict[str, Any]] | None = ...,
+        selected_usergroups: str | list[VapSelectedusergroupsItem] | None = ...,
         security_exempt_list: str | None = ...,
         security_redirect_url: str | None = ...,
         auth_cert: str | None = ...,
         auth_portal_addr: str | None = ...,
         intra_vap_privacy: Literal["enable", "disable"] | None = ...,
-        schedule: str | list[str] | list[dict[str, Any]] | None = ...,
+        schedule: str | list[VapScheduleItem] | None = ...,
         ldpc: Literal["disable", "rx", "tx", "rxtx"] | None = ...,
         high_efficiency: Literal["enable", "disable"] | None = ...,
         target_wake_time: Literal["enable", "disable"] | None = ...,
@@ -1890,9 +1930,9 @@ class Vap:
         quarantine: Literal["enable", "disable"] | None = ...,
         radio_5g_threshold: str | None = ...,
         radio_2g_threshold: str | None = ...,
-        vlan_name: str | list[str] | list[dict[str, Any]] | None = ...,
+        vlan_name: str | list[VapVlannameItem] | None = ...,
         vlan_pooling: Literal["wtp-group", "round-robin", "hash", "disable"] | None = ...,
-        vlan_pool: str | list[str] | list[dict[str, Any]] | None = ...,
+        vlan_pool: str | list[VapVlanpoolItem] | None = ...,
         dhcp_option43_insertion: Literal["enable", "disable"] | None = ...,
         dhcp_option82_insertion: Literal["enable", "disable"] | None = ...,
         dhcp_option82_circuit_id_insertion: Literal["style-1", "style-2", "style-3", "disable"] | None = ...,
@@ -2000,7 +2040,7 @@ class Vap:
         radius_mac_auth_block_interval: int | None = ...,
         radius_mac_mpsk_auth: Literal["enable", "disable"] | None = ...,
         radius_mac_mpsk_timeout: int | None = ...,
-        radius_mac_auth_usergroups: str | list[str] | list[dict[str, Any]] | None = ...,
+        radius_mac_auth_usergroups: str | list[VapRadiusmacauthusergroupsItem] | None = ...,
         auth: Literal["radius", "usergroup"] | None = ...,
         encrypt: Literal["TKIP", "AES", "TKIP-AES"] | None = ...,
         keyindex: int | None = ...,
@@ -2026,19 +2066,19 @@ class Vap:
         local_bridging: Literal["enable", "disable"] | None = ...,
         local_lan: Literal["allow", "deny"] | None = ...,
         local_authentication: Literal["enable", "disable"] | None = ...,
-        usergroup: str | list[str] | list[dict[str, Any]] | None = ...,
+        usergroup: str | list[VapUsergroupItem] | None = ...,
         captive_portal: Literal["enable", "disable"] | None = ...,
         captive_network_assistant_bypass: Literal["enable", "disable"] | None = ...,
         portal_message_override_group: str | None = ...,
         portal_message_overrides: str | None = ...,
         portal_type: Literal["auth", "auth+disclaimer", "disclaimer", "email-collect", "cmcc", "cmcc-macauth", "auth-mac", "external-auth", "external-macauth"] | None = ...,
-        selected_usergroups: str | list[str] | list[dict[str, Any]] | None = ...,
+        selected_usergroups: str | list[VapSelectedusergroupsItem] | None = ...,
         security_exempt_list: str | None = ...,
         security_redirect_url: str | None = ...,
         auth_cert: str | None = ...,
         auth_portal_addr: str | None = ...,
         intra_vap_privacy: Literal["enable", "disable"] | None = ...,
-        schedule: str | list[str] | list[dict[str, Any]] | None = ...,
+        schedule: str | list[VapScheduleItem] | None = ...,
         ldpc: Literal["disable", "rx", "tx", "rxtx"] | None = ...,
         high_efficiency: Literal["enable", "disable"] | None = ...,
         target_wake_time: Literal["enable", "disable"] | None = ...,
@@ -2070,9 +2110,9 @@ class Vap:
         quarantine: Literal["enable", "disable"] | None = ...,
         radio_5g_threshold: str | None = ...,
         radio_2g_threshold: str | None = ...,
-        vlan_name: str | list[str] | list[dict[str, Any]] | None = ...,
+        vlan_name: str | list[VapVlannameItem] | None = ...,
         vlan_pooling: Literal["wtp-group", "round-robin", "hash", "disable"] | None = ...,
-        vlan_pool: str | list[str] | list[dict[str, Any]] | None = ...,
+        vlan_pool: str | list[VapVlanpoolItem] | None = ...,
         dhcp_option43_insertion: Literal["enable", "disable"] | None = ...,
         dhcp_option82_insertion: Literal["enable", "disable"] | None = ...,
         dhcp_option82_circuit_id_insertion: Literal["style-1", "style-2", "style-3", "disable"] | None = ...,
@@ -2179,7 +2219,7 @@ class Vap:
         radius_mac_auth_block_interval: int | None = ...,
         radius_mac_mpsk_auth: Literal["enable", "disable"] | None = ...,
         radius_mac_mpsk_timeout: int | None = ...,
-        radius_mac_auth_usergroups: str | list[str] | list[dict[str, Any]] | None = ...,
+        radius_mac_auth_usergroups: str | list[VapRadiusmacauthusergroupsItem] | None = ...,
         auth: Literal["radius", "usergroup"] | None = ...,
         encrypt: Literal["TKIP", "AES", "TKIP-AES"] | None = ...,
         keyindex: int | None = ...,
@@ -2205,19 +2245,19 @@ class Vap:
         local_bridging: Literal["enable", "disable"] | None = ...,
         local_lan: Literal["allow", "deny"] | None = ...,
         local_authentication: Literal["enable", "disable"] | None = ...,
-        usergroup: str | list[str] | list[dict[str, Any]] | None = ...,
+        usergroup: str | list[VapUsergroupItem] | None = ...,
         captive_portal: Literal["enable", "disable"] | None = ...,
         captive_network_assistant_bypass: Literal["enable", "disable"] | None = ...,
         portal_message_override_group: str | None = ...,
         portal_message_overrides: str | None = ...,
         portal_type: Literal["auth", "auth+disclaimer", "disclaimer", "email-collect", "cmcc", "cmcc-macauth", "auth-mac", "external-auth", "external-macauth"] | None = ...,
-        selected_usergroups: str | list[str] | list[dict[str, Any]] | None = ...,
+        selected_usergroups: str | list[VapSelectedusergroupsItem] | None = ...,
         security_exempt_list: str | None = ...,
         security_redirect_url: str | None = ...,
         auth_cert: str | None = ...,
         auth_portal_addr: str | None = ...,
         intra_vap_privacy: Literal["enable", "disable"] | None = ...,
-        schedule: str | list[str] | list[dict[str, Any]] | None = ...,
+        schedule: str | list[VapScheduleItem] | None = ...,
         ldpc: Literal["disable", "rx", "tx", "rxtx"] | None = ...,
         high_efficiency: Literal["enable", "disable"] | None = ...,
         target_wake_time: Literal["enable", "disable"] | None = ...,
@@ -2249,9 +2289,9 @@ class Vap:
         quarantine: Literal["enable", "disable"] | None = ...,
         radio_5g_threshold: str | None = ...,
         radio_2g_threshold: str | None = ...,
-        vlan_name: str | list[str] | list[dict[str, Any]] | None = ...,
+        vlan_name: str | list[VapVlannameItem] | None = ...,
         vlan_pooling: Literal["wtp-group", "round-robin", "hash", "disable"] | None = ...,
-        vlan_pool: str | list[str] | list[dict[str, Any]] | None = ...,
+        vlan_pool: str | list[VapVlanpoolItem] | None = ...,
         dhcp_option43_insertion: Literal["enable", "disable"] | None = ...,
         dhcp_option82_insertion: Literal["enable", "disable"] | None = ...,
         dhcp_option82_circuit_id_insertion: Literal["style-1", "style-2", "style-3", "disable"] | None = ...,
@@ -2359,7 +2399,7 @@ class Vap:
         radius_mac_auth_block_interval: int | None = ...,
         radius_mac_mpsk_auth: Literal["enable", "disable"] | None = ...,
         radius_mac_mpsk_timeout: int | None = ...,
-        radius_mac_auth_usergroups: str | list[str] | list[dict[str, Any]] | None = ...,
+        radius_mac_auth_usergroups: str | list[VapRadiusmacauthusergroupsItem] | None = ...,
         auth: Literal["radius", "usergroup"] | None = ...,
         encrypt: Literal["TKIP", "AES", "TKIP-AES"] | None = ...,
         keyindex: int | None = ...,
@@ -2385,19 +2425,19 @@ class Vap:
         local_bridging: Literal["enable", "disable"] | None = ...,
         local_lan: Literal["allow", "deny"] | None = ...,
         local_authentication: Literal["enable", "disable"] | None = ...,
-        usergroup: str | list[str] | list[dict[str, Any]] | None = ...,
+        usergroup: str | list[VapUsergroupItem] | None = ...,
         captive_portal: Literal["enable", "disable"] | None = ...,
         captive_network_assistant_bypass: Literal["enable", "disable"] | None = ...,
         portal_message_override_group: str | None = ...,
         portal_message_overrides: str | None = ...,
         portal_type: Literal["auth", "auth+disclaimer", "disclaimer", "email-collect", "cmcc", "cmcc-macauth", "auth-mac", "external-auth", "external-macauth"] | None = ...,
-        selected_usergroups: str | list[str] | list[dict[str, Any]] | None = ...,
+        selected_usergroups: str | list[VapSelectedusergroupsItem] | None = ...,
         security_exempt_list: str | None = ...,
         security_redirect_url: str | None = ...,
         auth_cert: str | None = ...,
         auth_portal_addr: str | None = ...,
         intra_vap_privacy: Literal["enable", "disable"] | None = ...,
-        schedule: str | list[str] | list[dict[str, Any]] | None = ...,
+        schedule: str | list[VapScheduleItem] | None = ...,
         ldpc: Literal["disable", "rx", "tx", "rxtx"] | None = ...,
         high_efficiency: Literal["enable", "disable"] | None = ...,
         target_wake_time: Literal["enable", "disable"] | None = ...,
@@ -2429,9 +2469,9 @@ class Vap:
         quarantine: Literal["enable", "disable"] | None = ...,
         radio_5g_threshold: str | None = ...,
         radio_2g_threshold: str | None = ...,
-        vlan_name: str | list[str] | list[dict[str, Any]] | None = ...,
+        vlan_name: str | list[VapVlannameItem] | None = ...,
         vlan_pooling: Literal["wtp-group", "round-robin", "hash", "disable"] | None = ...,
-        vlan_pool: str | list[str] | list[dict[str, Any]] | None = ...,
+        vlan_pool: str | list[VapVlanpoolItem] | None = ...,
         dhcp_option43_insertion: Literal["enable", "disable"] | None = ...,
         dhcp_option82_insertion: Literal["enable", "disable"] | None = ...,
         dhcp_option82_circuit_id_insertion: Literal["style-1", "style-2", "style-3", "disable"] | None = ...,
@@ -2537,7 +2577,7 @@ class Vap:
         radius_mac_auth_block_interval: int | None = ...,
         radius_mac_mpsk_auth: Literal["enable", "disable"] | None = ...,
         radius_mac_mpsk_timeout: int | None = ...,
-        radius_mac_auth_usergroups: str | list[str] | list[dict[str, Any]] | None = ...,
+        radius_mac_auth_usergroups: str | list[VapRadiusmacauthusergroupsItem] | None = ...,
         auth: Literal["radius", "usergroup"] | None = ...,
         encrypt: Literal["TKIP", "AES", "TKIP-AES"] | None = ...,
         keyindex: int | None = ...,
@@ -2563,19 +2603,19 @@ class Vap:
         local_bridging: Literal["enable", "disable"] | None = ...,
         local_lan: Literal["allow", "deny"] | None = ...,
         local_authentication: Literal["enable", "disable"] | None = ...,
-        usergroup: str | list[str] | list[dict[str, Any]] | None = ...,
+        usergroup: str | list[VapUsergroupItem] | None = ...,
         captive_portal: Literal["enable", "disable"] | None = ...,
         captive_network_assistant_bypass: Literal["enable", "disable"] | None = ...,
         portal_message_override_group: str | None = ...,
         portal_message_overrides: str | None = ...,
         portal_type: Literal["auth", "auth+disclaimer", "disclaimer", "email-collect", "cmcc", "cmcc-macauth", "auth-mac", "external-auth", "external-macauth"] | None = ...,
-        selected_usergroups: str | list[str] | list[dict[str, Any]] | None = ...,
+        selected_usergroups: str | list[VapSelectedusergroupsItem] | None = ...,
         security_exempt_list: str | None = ...,
         security_redirect_url: str | None = ...,
         auth_cert: str | None = ...,
         auth_portal_addr: str | None = ...,
         intra_vap_privacy: Literal["enable", "disable"] | None = ...,
-        schedule: str | list[str] | list[dict[str, Any]] | None = ...,
+        schedule: str | list[VapScheduleItem] | None = ...,
         ldpc: Literal["disable", "rx", "tx", "rxtx"] | None = ...,
         high_efficiency: Literal["enable", "disable"] | None = ...,
         target_wake_time: Literal["enable", "disable"] | None = ...,
@@ -2607,9 +2647,9 @@ class Vap:
         quarantine: Literal["enable", "disable"] | None = ...,
         radio_5g_threshold: str | None = ...,
         radio_2g_threshold: str | None = ...,
-        vlan_name: str | list[str] | list[dict[str, Any]] | None = ...,
+        vlan_name: str | list[VapVlannameItem] | None = ...,
         vlan_pooling: Literal["wtp-group", "round-robin", "hash", "disable"] | None = ...,
-        vlan_pool: str | list[str] | list[dict[str, Any]] | None = ...,
+        vlan_pool: str | list[VapVlanpoolItem] | None = ...,
         dhcp_option43_insertion: Literal["enable", "disable"] | None = ...,
         dhcp_option82_insertion: Literal["enable", "disable"] | None = ...,
         dhcp_option82_circuit_id_insertion: Literal["style-1", "style-2", "style-3", "disable"] | None = ...,
@@ -2750,7 +2790,7 @@ class Vap:
         radius_mac_auth_block_interval: int | None = ...,
         radius_mac_mpsk_auth: Literal["enable", "disable"] | None = ...,
         radius_mac_mpsk_timeout: int | None = ...,
-        radius_mac_auth_usergroups: str | list[str] | list[dict[str, Any]] | None = ...,
+        radius_mac_auth_usergroups: str | list[VapRadiusmacauthusergroupsItem] | None = ...,
         auth: Literal["radius", "usergroup"] | None = ...,
         encrypt: Literal["TKIP", "AES", "TKIP-AES"] | None = ...,
         keyindex: int | None = ...,
@@ -2776,19 +2816,19 @@ class Vap:
         local_bridging: Literal["enable", "disable"] | None = ...,
         local_lan: Literal["allow", "deny"] | None = ...,
         local_authentication: Literal["enable", "disable"] | None = ...,
-        usergroup: str | list[str] | list[dict[str, Any]] | None = ...,
+        usergroup: str | list[VapUsergroupItem] | None = ...,
         captive_portal: Literal["enable", "disable"] | None = ...,
         captive_network_assistant_bypass: Literal["enable", "disable"] | None = ...,
         portal_message_override_group: str | None = ...,
         portal_message_overrides: str | None = ...,
         portal_type: Literal["auth", "auth+disclaimer", "disclaimer", "email-collect", "cmcc", "cmcc-macauth", "auth-mac", "external-auth", "external-macauth"] | None = ...,
-        selected_usergroups: str | list[str] | list[dict[str, Any]] | None = ...,
+        selected_usergroups: str | list[VapSelectedusergroupsItem] | None = ...,
         security_exempt_list: str | None = ...,
         security_redirect_url: str | None = ...,
         auth_cert: str | None = ...,
         auth_portal_addr: str | None = ...,
         intra_vap_privacy: Literal["enable", "disable"] | None = ...,
-        schedule: str | list[str] | list[dict[str, Any]] | None = ...,
+        schedule: str | list[VapScheduleItem] | None = ...,
         ldpc: Literal["disable", "rx", "tx", "rxtx"] | None = ...,
         high_efficiency: Literal["enable", "disable"] | None = ...,
         target_wake_time: Literal["enable", "disable"] | None = ...,
@@ -2820,9 +2860,9 @@ class Vap:
         quarantine: Literal["enable", "disable"] | None = ...,
         radio_5g_threshold: str | None = ...,
         radio_2g_threshold: str | None = ...,
-        vlan_name: str | list[str] | list[dict[str, Any]] | None = ...,
+        vlan_name: str | list[VapVlannameItem] | None = ...,
         vlan_pooling: Literal["wtp-group", "round-robin", "hash", "disable"] | None = ...,
-        vlan_pool: str | list[str] | list[dict[str, Any]] | None = ...,
+        vlan_pool: str | list[VapVlanpoolItem] | None = ...,
         dhcp_option43_insertion: Literal["enable", "disable"] | None = ...,
         dhcp_option82_insertion: Literal["enable", "disable"] | None = ...,
         dhcp_option82_circuit_id_insertion: Literal["style-1", "style-2", "style-3", "disable"] | None = ...,

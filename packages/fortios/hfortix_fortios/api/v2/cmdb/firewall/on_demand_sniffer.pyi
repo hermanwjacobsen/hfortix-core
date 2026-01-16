@@ -2,7 +2,59 @@ from typing import TypedDict, Literal, Any, Coroutine, Union, overload, Generato
 from typing_extensions import NotRequired
 from hfortix_fortios.models import FortiObject, FortiObjectList
 
-# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional via total=False)
+# ============================================================================
+# Nested TypedDicts for table field children (dict mode)
+# These MUST be defined before the Payload class to use them as type hints
+# ============================================================================
+
+class OnDemandSnifferHostsItem(TypedDict, total=False):
+    """Type hints for hosts table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: OnDemandSnifferHostsItem = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    
+    host: str  # IPv4 or IPv6 host. | MaxLen: 255
+
+
+class OnDemandSnifferPortsItem(TypedDict, total=False):
+    """Type hints for ports table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: OnDemandSnifferPortsItem = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    
+    port: int  # Port to filter in this traffic sniffer. | Default: 0 | Min: 1 | Max: 65536
+
+
+class OnDemandSnifferProtocolsItem(TypedDict, total=False):
+    """Type hints for protocols table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: OnDemandSnifferProtocolsItem = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    
+    protocol: int  # Integer value for the protocol type as defined by | Default: 0 | Min: 0 | Max: 255
+
+
+# ============================================================================
+# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional)
+# ============================================================================
 # NOTE: We intentionally DON'T use NotRequired wrapper because:
 # 1. total=False already makes all fields optional
 # 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
@@ -25,45 +77,15 @@ class OnDemandSnifferPayload(TypedDict, total=False):
     name: str  # On-demand packet sniffer name. | MaxLen: 35
     interface: str  # Interface name that on-demand packet sniffer will | MaxLen: 35
     max_packet_count: int  # Maximum number of packets to capture per on-demand | Default: 0 | Min: 1 | Max: 20000
-    hosts: list[dict[str, Any]]  # IPv4 or IPv6 hosts to filter in this traffic sniff
-    ports: list[dict[str, Any]]  # Ports to filter for in this traffic sniffer.
-    protocols: list[dict[str, Any]]  # Protocols to filter in this traffic sniffer.
+    hosts: list[OnDemandSnifferHostsItem]  # IPv4 or IPv6 hosts to filter in this traffic sniff
+    ports: list[OnDemandSnifferPortsItem]  # Ports to filter for in this traffic sniffer.
+    protocols: list[OnDemandSnifferProtocolsItem]  # Protocols to filter in this traffic sniffer.
     non_ip_packet: Literal["enable", "disable"]  # Include non-IP packets. | Default: disable
     advanced_filter: str  # Advanced freeform filter that will be used over ex | MaxLen: 255
 
-# Nested TypedDicts for table field children (dict mode)
-
-class OnDemandSnifferHostsItem(TypedDict):
-    """Type hints for hosts table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    host: str  # IPv4 or IPv6 host. | MaxLen: 255
-
-
-class OnDemandSnifferPortsItem(TypedDict):
-    """Type hints for ports table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    port: int  # Port to filter in this traffic sniffer. | Default: 0 | Min: 1 | Max: 65536
-
-
-class OnDemandSnifferProtocolsItem(TypedDict):
-    """Type hints for protocols table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    protocol: int  # Integer value for the protocol type as defined by | Default: 0 | Min: 0 | Max: 255
-
-
-# Nested classes for table field children (object mode)
+# ============================================================================
+# Nested classes for table field children (object mode - for API responses)
+# ============================================================================
 
 @final
 class OnDemandSnifferHostsObject:
@@ -208,6 +230,9 @@ class OnDemandSnifferObject:
     # Common API response fields
     status: str
     http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
     vdom: str | None
     
     # Methods from FortiObject
@@ -440,9 +465,9 @@ class OnDemandSniffer:
         name: str | None = ...,
         interface: str | None = ...,
         max_packet_count: int | None = ...,
-        hosts: str | list[str] | list[dict[str, Any]] | None = ...,
-        ports: str | list[str] | list[dict[str, Any]] | None = ...,
-        protocols: str | list[str] | list[dict[str, Any]] | None = ...,
+        hosts: str | list[OnDemandSnifferHostsItem] | None = ...,
+        ports: str | list[OnDemandSnifferPortsItem] | None = ...,
+        protocols: str | list[OnDemandSnifferProtocolsItem] | None = ...,
         non_ip_packet: Literal["enable", "disable"] | None = ...,
         advanced_filter: str | None = ...,
         vdom: str | bool | None = ...,
@@ -455,9 +480,9 @@ class OnDemandSniffer:
         name: str | None = ...,
         interface: str | None = ...,
         max_packet_count: int | None = ...,
-        hosts: str | list[str] | list[dict[str, Any]] | None = ...,
-        ports: str | list[str] | list[dict[str, Any]] | None = ...,
-        protocols: str | list[str] | list[dict[str, Any]] | None = ...,
+        hosts: str | list[OnDemandSnifferHostsItem] | None = ...,
+        ports: str | list[OnDemandSnifferPortsItem] | None = ...,
+        protocols: str | list[OnDemandSnifferProtocolsItem] | None = ...,
         non_ip_packet: Literal["enable", "disable"] | None = ...,
         advanced_filter: str | None = ...,
         vdom: str | bool | None = ...,
@@ -471,9 +496,9 @@ class OnDemandSniffer:
         name: str | None = ...,
         interface: str | None = ...,
         max_packet_count: int | None = ...,
-        hosts: str | list[str] | list[dict[str, Any]] | None = ...,
-        ports: str | list[str] | list[dict[str, Any]] | None = ...,
-        protocols: str | list[str] | list[dict[str, Any]] | None = ...,
+        hosts: str | list[OnDemandSnifferHostsItem] | None = ...,
+        ports: str | list[OnDemandSnifferPortsItem] | None = ...,
+        protocols: str | list[OnDemandSnifferProtocolsItem] | None = ...,
         non_ip_packet: Literal["enable", "disable"] | None = ...,
         advanced_filter: str | None = ...,
         vdom: str | bool | None = ...,
@@ -485,9 +510,9 @@ class OnDemandSniffer:
         name: str | None = ...,
         interface: str | None = ...,
         max_packet_count: int | None = ...,
-        hosts: str | list[str] | list[dict[str, Any]] | None = ...,
-        ports: str | list[str] | list[dict[str, Any]] | None = ...,
-        protocols: str | list[str] | list[dict[str, Any]] | None = ...,
+        hosts: str | list[OnDemandSnifferHostsItem] | None = ...,
+        ports: str | list[OnDemandSnifferPortsItem] | None = ...,
+        protocols: str | list[OnDemandSnifferProtocolsItem] | None = ...,
         non_ip_packet: Literal["enable", "disable"] | None = ...,
         advanced_filter: str | None = ...,
         vdom: str | bool | None = ...,
@@ -501,9 +526,9 @@ class OnDemandSniffer:
         name: str | None = ...,
         interface: str | None = ...,
         max_packet_count: int | None = ...,
-        hosts: str | list[str] | list[dict[str, Any]] | None = ...,
-        ports: str | list[str] | list[dict[str, Any]] | None = ...,
-        protocols: str | list[str] | list[dict[str, Any]] | None = ...,
+        hosts: str | list[OnDemandSnifferHostsItem] | None = ...,
+        ports: str | list[OnDemandSnifferPortsItem] | None = ...,
+        protocols: str | list[OnDemandSnifferProtocolsItem] | None = ...,
         non_ip_packet: Literal["enable", "disable"] | None = ...,
         advanced_filter: str | None = ...,
         vdom: str | bool | None = ...,
@@ -516,9 +541,9 @@ class OnDemandSniffer:
         name: str | None = ...,
         interface: str | None = ...,
         max_packet_count: int | None = ...,
-        hosts: str | list[str] | list[dict[str, Any]] | None = ...,
-        ports: str | list[str] | list[dict[str, Any]] | None = ...,
-        protocols: str | list[str] | list[dict[str, Any]] | None = ...,
+        hosts: str | list[OnDemandSnifferHostsItem] | None = ...,
+        ports: str | list[OnDemandSnifferPortsItem] | None = ...,
+        protocols: str | list[OnDemandSnifferProtocolsItem] | None = ...,
         non_ip_packet: Literal["enable", "disable"] | None = ...,
         advanced_filter: str | None = ...,
         vdom: str | bool | None = ...,
@@ -532,9 +557,9 @@ class OnDemandSniffer:
         name: str | None = ...,
         interface: str | None = ...,
         max_packet_count: int | None = ...,
-        hosts: str | list[str] | list[dict[str, Any]] | None = ...,
-        ports: str | list[str] | list[dict[str, Any]] | None = ...,
-        protocols: str | list[str] | list[dict[str, Any]] | None = ...,
+        hosts: str | list[OnDemandSnifferHostsItem] | None = ...,
+        ports: str | list[OnDemandSnifferPortsItem] | None = ...,
+        protocols: str | list[OnDemandSnifferProtocolsItem] | None = ...,
         non_ip_packet: Literal["enable", "disable"] | None = ...,
         advanced_filter: str | None = ...,
         vdom: str | bool | None = ...,
@@ -546,9 +571,9 @@ class OnDemandSniffer:
         name: str | None = ...,
         interface: str | None = ...,
         max_packet_count: int | None = ...,
-        hosts: str | list[str] | list[dict[str, Any]] | None = ...,
-        ports: str | list[str] | list[dict[str, Any]] | None = ...,
-        protocols: str | list[str] | list[dict[str, Any]] | None = ...,
+        hosts: str | list[OnDemandSnifferHostsItem] | None = ...,
+        ports: str | list[OnDemandSnifferPortsItem] | None = ...,
+        protocols: str | list[OnDemandSnifferProtocolsItem] | None = ...,
         non_ip_packet: Literal["enable", "disable"] | None = ...,
         advanced_filter: str | None = ...,
         vdom: str | bool | None = ...,
@@ -595,9 +620,9 @@ class OnDemandSniffer:
         name: str | None = ...,
         interface: str | None = ...,
         max_packet_count: int | None = ...,
-        hosts: str | list[str] | list[dict[str, Any]] | None = ...,
-        ports: str | list[str] | list[dict[str, Any]] | None = ...,
-        protocols: str | list[str] | list[dict[str, Any]] | None = ...,
+        hosts: str | list[OnDemandSnifferHostsItem] | None = ...,
+        ports: str | list[OnDemandSnifferPortsItem] | None = ...,
+        protocols: str | list[OnDemandSnifferProtocolsItem] | None = ...,
         non_ip_packet: Literal["enable", "disable"] | None = ...,
         advanced_filter: str | None = ...,
         vdom: str | bool | None = ...,

@@ -2,7 +2,135 @@ from typing import TypedDict, Literal, Any, Coroutine, Union, overload, Generato
 from typing_extensions import NotRequired
 from hfortix_fortios.models import FortiObject, FortiObjectList
 
-# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional via total=False)
+# ============================================================================
+# Nested TypedDicts for table field children (dict mode)
+# These MUST be defined before the Payload class to use them as type hints
+# ============================================================================
+
+class ServerIprangeItem(TypedDict, total=False):
+    """Type hints for ip-range table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: ServerIprangeItem = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    
+    id: int  # ID. | Default: 0 | Min: 0 | Max: 4294967295
+    start_ip: str  # Start of IP range. | Default: 0.0.0.0
+    end_ip: str  # End of IP range. | Default: 0.0.0.0
+    vci_match: Literal["disable", "enable"]  # Enable/disable vendor class identifier (VCI) match | Default: disable
+    vci_string: str  # One or more VCI strings in quotes separated by spa
+    uci_match: Literal["disable", "enable"]  # Enable/disable user class identifier (UCI) matchin | Default: disable
+    uci_string: str  # One or more UCI strings in quotes separated by spa
+    lease_time: int  # Lease time in seconds, 0 means default lease time. | Default: 0 | Min: 300 | Max: 8640000
+
+
+class ServerTftpserverItem(TypedDict, total=False):
+    """Type hints for tftp-server table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: ServerTftpserverItem = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    
+    tftp_server: str  # TFTP server. | MaxLen: 63
+
+
+class ServerOptionsItem(TypedDict, total=False):
+    """Type hints for options table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: ServerOptionsItem = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    
+    id: int  # ID. | Default: 0 | Min: 0 | Max: 4294967295
+    code: int  # DHCP option code. | Default: 0 | Min: 0 | Max: 255
+    type: Literal["hex", "string", "ip", "fqdn"]  # DHCP option type. | Default: hex
+    value: str  # DHCP option value. | MaxLen: 312
+    ip: str  # DHCP option IPs.
+    vci_match: Literal["disable", "enable"]  # Enable/disable vendor class identifier (VCI) match | Default: disable
+    vci_string: str  # One or more VCI strings in quotes separated by spa
+    uci_match: Literal["disable", "enable"]  # Enable/disable user class identifier (UCI) matchin | Default: disable
+    uci_string: str  # One or more UCI strings in quotes separated by spa
+
+
+class ServerVcistringItem(TypedDict, total=False):
+    """Type hints for vci-string table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: ServerVcistringItem = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    
+    vci_string: str  # VCI strings. | MaxLen: 255
+
+
+class ServerExcluderangeItem(TypedDict, total=False):
+    """Type hints for exclude-range table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: ServerExcluderangeItem = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    
+    id: int  # ID. | Default: 0 | Min: 0 | Max: 4294967295
+    start_ip: str  # Start of IP range. | Default: 0.0.0.0
+    end_ip: str  # End of IP range. | Default: 0.0.0.0
+    vci_match: Literal["disable", "enable"]  # Enable/disable vendor class identifier (VCI) match | Default: disable
+    vci_string: str  # One or more VCI strings in quotes separated by spa
+    uci_match: Literal["disable", "enable"]  # Enable/disable user class identifier (UCI) matchin | Default: disable
+    uci_string: str  # One or more UCI strings in quotes separated by spa
+    lease_time: int  # Lease time in seconds, 0 means default lease time. | Default: 0 | Min: 300 | Max: 8640000
+
+
+class ServerReservedaddressItem(TypedDict, total=False):
+    """Type hints for reserved-address table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: ServerReservedaddressItem = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    
+    id: int  # ID. | Default: 0 | Min: 0 | Max: 4294967295
+    type: Literal["mac", "option82"]  # DHCP reserved-address type. | Default: mac
+    ip: str  # IP address to be reserved for the MAC address. | Default: 0.0.0.0
+    mac: str  # MAC address of the client that will get the reserv | Default: 00:00:00:00:00:00
+    action: Literal["assign", "block", "reserved"]  # Options for the DHCP server to configure the clien | Default: reserved
+    circuit_id_type: Literal["hex", "string"]  # DHCP option type. | Default: string
+    circuit_id: str  # Option 82 circuit-ID of the client that will get t | MaxLen: 312
+    remote_id_type: Literal["hex", "string"]  # DHCP option type. | Default: string
+    remote_id: str  # Option 82 remote-ID of the client that will get th | MaxLen: 312
+    description: str  # Description. | MaxLen: 255
+
+
+# ============================================================================
+# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional)
+# ============================================================================
 # NOTE: We intentionally DON'T use NotRequired wrapper because:
 # 1. total=False already makes all fields optional
 # 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
@@ -48,12 +176,12 @@ class ServerPayload(TypedDict, total=False):
     next_server: str  # IP address of a server (for example, a TFTP sever) | Default: 0.0.0.0
     netmask: str  # Netmask assigned by the DHCP server. | Default: 0.0.0.0
     interface: str  # DHCP server can assign IP configurations to client | MaxLen: 15
-    ip_range: list[dict[str, Any]]  # DHCP IP range configuration.
+    ip_range: list[ServerIprangeItem]  # DHCP IP range configuration.
     timezone_option: Literal["disable", "default", "specify"]  # Options for the DHCP server to set the client's ti | Default: disable
     timezone: str  # Select the time zone to be assigned to DHCP client | MaxLen: 63
-    tftp_server: list[dict[str, Any]]  # One or more hostnames or IP addresses of the TFTP
+    tftp_server: list[ServerTftpserverItem]  # One or more hostnames or IP addresses of the TFTP
     filename: str  # Name of the boot file on the TFTP server. | MaxLen: 127
-    options: list[dict[str, Any]]  # DHCP options.
+    options: list[ServerOptionsItem]  # DHCP options.
     server_type: Literal["regular", "ipsec"]  # DHCP server can be a normal DHCP server or an IPse | Default: regular
     ip_mode: Literal["range", "usrgrp"]  # Method used to assign client IP. | Default: range
     conflicted_ip_timeout: int  # Time in seconds to wait after a conflicted IP addr | Default: 1800 | Min: 60 | Max: 8640000
@@ -70,106 +198,15 @@ class ServerPayload(TypedDict, total=False):
     ddns_key: str  # DDNS update key (base 64 encoding).
     ddns_ttl: int  # TTL. | Default: 300 | Min: 60 | Max: 86400
     vci_match: Literal["disable", "enable"]  # Enable/disable vendor class identifier (VCI) match | Default: disable
-    vci_string: list[dict[str, Any]]  # One or more VCI strings in quotes separated by spa
-    exclude_range: list[dict[str, Any]]  # Exclude one or more ranges of IP addresses from be
+    vci_string: list[ServerVcistringItem]  # One or more VCI strings in quotes separated by spa
+    exclude_range: list[ServerExcluderangeItem]  # Exclude one or more ranges of IP addresses from be
     shared_subnet: Literal["disable", "enable"]  # Enable/disable shared subnet. | Default: disable
     relay_agent: str  # Relay agent IP. | Default: 0.0.0.0
-    reserved_address: list[dict[str, Any]]  # Options for the DHCP server to assign IP settings
+    reserved_address: list[ServerReservedaddressItem]  # Options for the DHCP server to assign IP settings
 
-# Nested TypedDicts for table field children (dict mode)
-
-class ServerIprangeItem(TypedDict):
-    """Type hints for ip-range table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    id: int  # ID. | Default: 0 | Min: 0 | Max: 4294967295
-    start_ip: str  # Start of IP range. | Default: 0.0.0.0
-    end_ip: str  # End of IP range. | Default: 0.0.0.0
-    vci_match: Literal["disable", "enable"]  # Enable/disable vendor class identifier (VCI) match | Default: disable
-    vci_string: str  # One or more VCI strings in quotes separated by spa
-    uci_match: Literal["disable", "enable"]  # Enable/disable user class identifier (UCI) matchin | Default: disable
-    uci_string: str  # One or more UCI strings in quotes separated by spa
-    lease_time: int  # Lease time in seconds, 0 means default lease time. | Default: 0 | Min: 300 | Max: 8640000
-
-
-class ServerTftpserverItem(TypedDict):
-    """Type hints for tftp-server table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    tftp_server: str  # TFTP server. | MaxLen: 63
-
-
-class ServerOptionsItem(TypedDict):
-    """Type hints for options table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    id: int  # ID. | Default: 0 | Min: 0 | Max: 4294967295
-    code: int  # DHCP option code. | Default: 0 | Min: 0 | Max: 255
-    type: Literal["hex", "string", "ip", "fqdn"]  # DHCP option type. | Default: hex
-    value: str  # DHCP option value. | MaxLen: 312
-    ip: str  # DHCP option IPs.
-    vci_match: Literal["disable", "enable"]  # Enable/disable vendor class identifier (VCI) match | Default: disable
-    vci_string: str  # One or more VCI strings in quotes separated by spa
-    uci_match: Literal["disable", "enable"]  # Enable/disable user class identifier (UCI) matchin | Default: disable
-    uci_string: str  # One or more UCI strings in quotes separated by spa
-
-
-class ServerVcistringItem(TypedDict):
-    """Type hints for vci-string table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    vci_string: str  # VCI strings. | MaxLen: 255
-
-
-class ServerExcluderangeItem(TypedDict):
-    """Type hints for exclude-range table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    id: int  # ID. | Default: 0 | Min: 0 | Max: 4294967295
-    start_ip: str  # Start of IP range. | Default: 0.0.0.0
-    end_ip: str  # End of IP range. | Default: 0.0.0.0
-    vci_match: Literal["disable", "enable"]  # Enable/disable vendor class identifier (VCI) match | Default: disable
-    vci_string: str  # One or more VCI strings in quotes separated by spa
-    uci_match: Literal["disable", "enable"]  # Enable/disable user class identifier (UCI) matchin | Default: disable
-    uci_string: str  # One or more UCI strings in quotes separated by spa
-    lease_time: int  # Lease time in seconds, 0 means default lease time. | Default: 0 | Min: 300 | Max: 8640000
-
-
-class ServerReservedaddressItem(TypedDict):
-    """Type hints for reserved-address table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    id: int  # ID. | Default: 0 | Min: 0 | Max: 4294967295
-    type: Literal["mac", "option82"]  # DHCP reserved-address type. | Default: mac
-    ip: str  # IP address to be reserved for the MAC address. | Default: 0.0.0.0
-    mac: str  # MAC address of the client that will get the reserv | Default: 00:00:00:00:00:00
-    action: Literal["assign", "block", "reserved"]  # Options for the DHCP server to configure the clien | Default: reserved
-    circuit_id_type: Literal["hex", "string"]  # DHCP option type. | Default: string
-    circuit_id: str  # Option 82 circuit-ID of the client that will get t | MaxLen: 312
-    remote_id_type: Literal["hex", "string"]  # DHCP option type. | Default: string
-    remote_id: str  # Option 82 remote-ID of the client that will get th | MaxLen: 312
-    description: str  # Description. | MaxLen: 255
-
-
-# Nested classes for table field children (object mode)
+# ============================================================================
+# Nested classes for table field children (object mode - for API responses)
+# ============================================================================
 
 @final
 class ServerIprangeObject:
@@ -604,6 +641,9 @@ class ServerObject:
     # Common API response fields
     status: str
     http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
     vdom: str | None
     
     # Methods from FortiObject
@@ -858,12 +898,12 @@ class Server:
         next_server: str | None = ...,
         netmask: str | None = ...,
         interface: str | None = ...,
-        ip_range: str | list[str] | list[dict[str, Any]] | None = ...,
+        ip_range: str | list[ServerIprangeItem] | None = ...,
         timezone_option: Literal["disable", "default", "specify"] | None = ...,
         timezone: str | None = ...,
-        tftp_server: str | list[str] | list[dict[str, Any]] | None = ...,
+        tftp_server: str | list[ServerTftpserverItem] | None = ...,
         filename: str | None = ...,
-        options: str | list[str] | list[dict[str, Any]] | None = ...,
+        options: str | list[ServerOptionsItem] | None = ...,
         server_type: Literal["regular", "ipsec"] | None = ...,
         ip_mode: Literal["range", "usrgrp"] | None = ...,
         conflicted_ip_timeout: int | None = ...,
@@ -880,11 +920,11 @@ class Server:
         ddns_key: str | None = ...,
         ddns_ttl: int | None = ...,
         vci_match: Literal["disable", "enable"] | None = ...,
-        vci_string: str | list[str] | list[dict[str, Any]] | None = ...,
-        exclude_range: str | list[str] | list[dict[str, Any]] | None = ...,
+        vci_string: str | list[ServerVcistringItem] | None = ...,
+        exclude_range: str | list[ServerExcluderangeItem] | None = ...,
         shared_subnet: Literal["disable", "enable"] | None = ...,
         relay_agent: str | None = ...,
-        reserved_address: str | list[str] | list[dict[str, Any]] | None = ...,
+        reserved_address: str | list[ServerReservedaddressItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> ServerObject: ...
     
@@ -917,12 +957,12 @@ class Server:
         next_server: str | None = ...,
         netmask: str | None = ...,
         interface: str | None = ...,
-        ip_range: str | list[str] | list[dict[str, Any]] | None = ...,
+        ip_range: str | list[ServerIprangeItem] | None = ...,
         timezone_option: Literal["disable", "default", "specify"] | None = ...,
         timezone: str | None = ...,
-        tftp_server: str | list[str] | list[dict[str, Any]] | None = ...,
+        tftp_server: str | list[ServerTftpserverItem] | None = ...,
         filename: str | None = ...,
-        options: str | list[str] | list[dict[str, Any]] | None = ...,
+        options: str | list[ServerOptionsItem] | None = ...,
         server_type: Literal["regular", "ipsec"] | None = ...,
         ip_mode: Literal["range", "usrgrp"] | None = ...,
         conflicted_ip_timeout: int | None = ...,
@@ -939,11 +979,11 @@ class Server:
         ddns_key: str | None = ...,
         ddns_ttl: int | None = ...,
         vci_match: Literal["disable", "enable"] | None = ...,
-        vci_string: str | list[str] | list[dict[str, Any]] | None = ...,
-        exclude_range: str | list[str] | list[dict[str, Any]] | None = ...,
+        vci_string: str | list[ServerVcistringItem] | None = ...,
+        exclude_range: str | list[ServerExcluderangeItem] | None = ...,
         shared_subnet: Literal["disable", "enable"] | None = ...,
         relay_agent: str | None = ...,
-        reserved_address: str | list[str] | list[dict[str, Any]] | None = ...,
+        reserved_address: str | list[ServerReservedaddressItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -977,12 +1017,12 @@ class Server:
         next_server: str | None = ...,
         netmask: str | None = ...,
         interface: str | None = ...,
-        ip_range: str | list[str] | list[dict[str, Any]] | None = ...,
+        ip_range: str | list[ServerIprangeItem] | None = ...,
         timezone_option: Literal["disable", "default", "specify"] | None = ...,
         timezone: str | None = ...,
-        tftp_server: str | list[str] | list[dict[str, Any]] | None = ...,
+        tftp_server: str | list[ServerTftpserverItem] | None = ...,
         filename: str | None = ...,
-        options: str | list[str] | list[dict[str, Any]] | None = ...,
+        options: str | list[ServerOptionsItem] | None = ...,
         server_type: Literal["regular", "ipsec"] | None = ...,
         ip_mode: Literal["range", "usrgrp"] | None = ...,
         conflicted_ip_timeout: int | None = ...,
@@ -999,11 +1039,11 @@ class Server:
         ddns_key: str | None = ...,
         ddns_ttl: int | None = ...,
         vci_match: Literal["disable", "enable"] | None = ...,
-        vci_string: str | list[str] | list[dict[str, Any]] | None = ...,
-        exclude_range: str | list[str] | list[dict[str, Any]] | None = ...,
+        vci_string: str | list[ServerVcistringItem] | None = ...,
+        exclude_range: str | list[ServerExcluderangeItem] | None = ...,
         shared_subnet: Literal["disable", "enable"] | None = ...,
         relay_agent: str | None = ...,
-        reserved_address: str | list[str] | list[dict[str, Any]] | None = ...,
+        reserved_address: str | list[ServerReservedaddressItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -1035,12 +1075,12 @@ class Server:
         next_server: str | None = ...,
         netmask: str | None = ...,
         interface: str | None = ...,
-        ip_range: str | list[str] | list[dict[str, Any]] | None = ...,
+        ip_range: str | list[ServerIprangeItem] | None = ...,
         timezone_option: Literal["disable", "default", "specify"] | None = ...,
         timezone: str | None = ...,
-        tftp_server: str | list[str] | list[dict[str, Any]] | None = ...,
+        tftp_server: str | list[ServerTftpserverItem] | None = ...,
         filename: str | None = ...,
-        options: str | list[str] | list[dict[str, Any]] | None = ...,
+        options: str | list[ServerOptionsItem] | None = ...,
         server_type: Literal["regular", "ipsec"] | None = ...,
         ip_mode: Literal["range", "usrgrp"] | None = ...,
         conflicted_ip_timeout: int | None = ...,
@@ -1057,11 +1097,11 @@ class Server:
         ddns_key: str | None = ...,
         ddns_ttl: int | None = ...,
         vci_match: Literal["disable", "enable"] | None = ...,
-        vci_string: str | list[str] | list[dict[str, Any]] | None = ...,
-        exclude_range: str | list[str] | list[dict[str, Any]] | None = ...,
+        vci_string: str | list[ServerVcistringItem] | None = ...,
+        exclude_range: str | list[ServerExcluderangeItem] | None = ...,
         shared_subnet: Literal["disable", "enable"] | None = ...,
         relay_agent: str | None = ...,
-        reserved_address: str | list[str] | list[dict[str, Any]] | None = ...,
+        reserved_address: str | list[ServerReservedaddressItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -1095,12 +1135,12 @@ class Server:
         next_server: str | None = ...,
         netmask: str | None = ...,
         interface: str | None = ...,
-        ip_range: str | list[str] | list[dict[str, Any]] | None = ...,
+        ip_range: str | list[ServerIprangeItem] | None = ...,
         timezone_option: Literal["disable", "default", "specify"] | None = ...,
         timezone: str | None = ...,
-        tftp_server: str | list[str] | list[dict[str, Any]] | None = ...,
+        tftp_server: str | list[ServerTftpserverItem] | None = ...,
         filename: str | None = ...,
-        options: str | list[str] | list[dict[str, Any]] | None = ...,
+        options: str | list[ServerOptionsItem] | None = ...,
         server_type: Literal["regular", "ipsec"] | None = ...,
         ip_mode: Literal["range", "usrgrp"] | None = ...,
         conflicted_ip_timeout: int | None = ...,
@@ -1117,11 +1157,11 @@ class Server:
         ddns_key: str | None = ...,
         ddns_ttl: int | None = ...,
         vci_match: Literal["disable", "enable"] | None = ...,
-        vci_string: str | list[str] | list[dict[str, Any]] | None = ...,
-        exclude_range: str | list[str] | list[dict[str, Any]] | None = ...,
+        vci_string: str | list[ServerVcistringItem] | None = ...,
+        exclude_range: str | list[ServerExcluderangeItem] | None = ...,
         shared_subnet: Literal["disable", "enable"] | None = ...,
         relay_agent: str | None = ...,
-        reserved_address: str | list[str] | list[dict[str, Any]] | None = ...,
+        reserved_address: str | list[ServerReservedaddressItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> ServerObject: ...
     
@@ -1154,12 +1194,12 @@ class Server:
         next_server: str | None = ...,
         netmask: str | None = ...,
         interface: str | None = ...,
-        ip_range: str | list[str] | list[dict[str, Any]] | None = ...,
+        ip_range: str | list[ServerIprangeItem] | None = ...,
         timezone_option: Literal["disable", "default", "specify"] | None = ...,
         timezone: str | None = ...,
-        tftp_server: str | list[str] | list[dict[str, Any]] | None = ...,
+        tftp_server: str | list[ServerTftpserverItem] | None = ...,
         filename: str | None = ...,
-        options: str | list[str] | list[dict[str, Any]] | None = ...,
+        options: str | list[ServerOptionsItem] | None = ...,
         server_type: Literal["regular", "ipsec"] | None = ...,
         ip_mode: Literal["range", "usrgrp"] | None = ...,
         conflicted_ip_timeout: int | None = ...,
@@ -1176,11 +1216,11 @@ class Server:
         ddns_key: str | None = ...,
         ddns_ttl: int | None = ...,
         vci_match: Literal["disable", "enable"] | None = ...,
-        vci_string: str | list[str] | list[dict[str, Any]] | None = ...,
-        exclude_range: str | list[str] | list[dict[str, Any]] | None = ...,
+        vci_string: str | list[ServerVcistringItem] | None = ...,
+        exclude_range: str | list[ServerExcluderangeItem] | None = ...,
         shared_subnet: Literal["disable", "enable"] | None = ...,
         relay_agent: str | None = ...,
-        reserved_address: str | list[str] | list[dict[str, Any]] | None = ...,
+        reserved_address: str | list[ServerReservedaddressItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -1214,12 +1254,12 @@ class Server:
         next_server: str | None = ...,
         netmask: str | None = ...,
         interface: str | None = ...,
-        ip_range: str | list[str] | list[dict[str, Any]] | None = ...,
+        ip_range: str | list[ServerIprangeItem] | None = ...,
         timezone_option: Literal["disable", "default", "specify"] | None = ...,
         timezone: str | None = ...,
-        tftp_server: str | list[str] | list[dict[str, Any]] | None = ...,
+        tftp_server: str | list[ServerTftpserverItem] | None = ...,
         filename: str | None = ...,
-        options: str | list[str] | list[dict[str, Any]] | None = ...,
+        options: str | list[ServerOptionsItem] | None = ...,
         server_type: Literal["regular", "ipsec"] | None = ...,
         ip_mode: Literal["range", "usrgrp"] | None = ...,
         conflicted_ip_timeout: int | None = ...,
@@ -1236,11 +1276,11 @@ class Server:
         ddns_key: str | None = ...,
         ddns_ttl: int | None = ...,
         vci_match: Literal["disable", "enable"] | None = ...,
-        vci_string: str | list[str] | list[dict[str, Any]] | None = ...,
-        exclude_range: str | list[str] | list[dict[str, Any]] | None = ...,
+        vci_string: str | list[ServerVcistringItem] | None = ...,
+        exclude_range: str | list[ServerExcluderangeItem] | None = ...,
         shared_subnet: Literal["disable", "enable"] | None = ...,
         relay_agent: str | None = ...,
-        reserved_address: str | list[str] | list[dict[str, Any]] | None = ...,
+        reserved_address: str | list[ServerReservedaddressItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -1272,12 +1312,12 @@ class Server:
         next_server: str | None = ...,
         netmask: str | None = ...,
         interface: str | None = ...,
-        ip_range: str | list[str] | list[dict[str, Any]] | None = ...,
+        ip_range: str | list[ServerIprangeItem] | None = ...,
         timezone_option: Literal["disable", "default", "specify"] | None = ...,
         timezone: str | None = ...,
-        tftp_server: str | list[str] | list[dict[str, Any]] | None = ...,
+        tftp_server: str | list[ServerTftpserverItem] | None = ...,
         filename: str | None = ...,
-        options: str | list[str] | list[dict[str, Any]] | None = ...,
+        options: str | list[ServerOptionsItem] | None = ...,
         server_type: Literal["regular", "ipsec"] | None = ...,
         ip_mode: Literal["range", "usrgrp"] | None = ...,
         conflicted_ip_timeout: int | None = ...,
@@ -1294,11 +1334,11 @@ class Server:
         ddns_key: str | None = ...,
         ddns_ttl: int | None = ...,
         vci_match: Literal["disable", "enable"] | None = ...,
-        vci_string: str | list[str] | list[dict[str, Any]] | None = ...,
-        exclude_range: str | list[str] | list[dict[str, Any]] | None = ...,
+        vci_string: str | list[ServerVcistringItem] | None = ...,
+        exclude_range: str | list[ServerExcluderangeItem] | None = ...,
         shared_subnet: Literal["disable", "enable"] | None = ...,
         relay_agent: str | None = ...,
-        reserved_address: str | list[str] | list[dict[str, Any]] | None = ...,
+        reserved_address: str | list[ServerReservedaddressItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -1365,12 +1405,12 @@ class Server:
         next_server: str | None = ...,
         netmask: str | None = ...,
         interface: str | None = ...,
-        ip_range: str | list[str] | list[dict[str, Any]] | None = ...,
+        ip_range: str | list[ServerIprangeItem] | None = ...,
         timezone_option: Literal["disable", "default", "specify"] | None = ...,
         timezone: str | None = ...,
-        tftp_server: str | list[str] | list[dict[str, Any]] | None = ...,
+        tftp_server: str | list[ServerTftpserverItem] | None = ...,
         filename: str | None = ...,
-        options: str | list[str] | list[dict[str, Any]] | None = ...,
+        options: str | list[ServerOptionsItem] | None = ...,
         server_type: Literal["regular", "ipsec"] | None = ...,
         ip_mode: Literal["range", "usrgrp"] | None = ...,
         conflicted_ip_timeout: int | None = ...,
@@ -1387,11 +1427,11 @@ class Server:
         ddns_key: str | None = ...,
         ddns_ttl: int | None = ...,
         vci_match: Literal["disable", "enable"] | None = ...,
-        vci_string: str | list[str] | list[dict[str, Any]] | None = ...,
-        exclude_range: str | list[str] | list[dict[str, Any]] | None = ...,
+        vci_string: str | list[ServerVcistringItem] | None = ...,
+        exclude_range: str | list[ServerExcluderangeItem] | None = ...,
         shared_subnet: Literal["disable", "enable"] | None = ...,
         relay_agent: str | None = ...,
-        reserved_address: str | list[str] | list[dict[str, Any]] | None = ...,
+        reserved_address: str | list[ServerReservedaddressItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     

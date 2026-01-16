@@ -2,7 +2,39 @@ from typing import TypedDict, Literal, Any, Coroutine, Union, overload, Generato
 from typing_extensions import NotRequired
 from hfortix_fortios.models import FortiObject, FortiObjectList
 
-# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional via total=False)
+# ============================================================================
+# Nested TypedDicts for table field children (dict mode)
+# These MUST be defined before the Payload class to use them as type hints
+# ============================================================================
+
+class ShapingProfileShapingentriesItem(TypedDict, total=False):
+    """Type hints for shaping-entries table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: ShapingProfileShapingentriesItem = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    
+    id: int  # ID number. | Default: 0 | Min: 0 | Max: 4294967295
+    class_id: int  # Class ID. | Default: 0 | Min: 0 | Max: 4294967295
+    priority: Literal["top", "critical", "high", "medium", "low"]  # Priority. | Default: high
+    guaranteed_bandwidth_percentage: int  # Guaranteed bandwidth in percentage. | Default: 0 | Min: 0 | Max: 100
+    maximum_bandwidth_percentage: int  # Maximum bandwidth in percentage. | Default: 1 | Min: 1 | Max: 100
+    limit: int  # Hard limit on the real queue size in packets. | Default: 100 | Min: 5 | Max: 10000
+    burst_in_msec: int  # Number of bytes that can be burst at maximum-bandw | Default: 0 | Min: 0 | Max: 2000
+    cburst_in_msec: int  # Number of bytes that can be burst as fast as the i | Default: 0 | Min: 0 | Max: 2000
+    red_probability: int  # Maximum probability (in percentage) for RED markin | Default: 0 | Min: 0 | Max: 20
+    min: int  # Average queue size in packets at which RED drop be | Default: 83 | Min: 3 | Max: 3000
+    max: int  # Average queue size in packets at which RED drop pr | Default: 250 | Min: 3 | Max: 3000
+
+
+# ============================================================================
+# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional)
+# ============================================================================
 # NOTE: We intentionally DON'T use NotRequired wrapper because:
 # 1. total=False already makes all fields optional
 # 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
@@ -27,31 +59,11 @@ class ShapingProfilePayload(TypedDict, total=False):
     type: Literal["policing", "queuing"]  # Select shaping profile type: policing / queuing. | Default: policing
     npu_offloading: Literal["disable", "enable"]  # Enable/disable NPU offloading. | Default: enable
     default_class_id: int  # Default class ID to handle unclassified packets | Default: 0 | Min: 0 | Max: 4294967295
-    shaping_entries: list[dict[str, Any]]  # Define shaping entries of this shaping profile.
+    shaping_entries: list[ShapingProfileShapingentriesItem]  # Define shaping entries of this shaping profile.
 
-# Nested TypedDicts for table field children (dict mode)
-
-class ShapingProfileShapingentriesItem(TypedDict):
-    """Type hints for shaping-entries table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    id: int  # ID number. | Default: 0 | Min: 0 | Max: 4294967295
-    class_id: int  # Class ID. | Default: 0 | Min: 0 | Max: 4294967295
-    priority: Literal["top", "critical", "high", "medium", "low"]  # Priority. | Default: high
-    guaranteed_bandwidth_percentage: int  # Guaranteed bandwidth in percentage. | Default: 0 | Min: 0 | Max: 100
-    maximum_bandwidth_percentage: int  # Maximum bandwidth in percentage. | Default: 1 | Min: 1 | Max: 100
-    limit: int  # Hard limit on the real queue size in packets. | Default: 100 | Min: 5 | Max: 10000
-    burst_in_msec: int  # Number of bytes that can be burst at maximum-bandw | Default: 0 | Min: 0 | Max: 2000
-    cburst_in_msec: int  # Number of bytes that can be burst as fast as the i | Default: 0 | Min: 0 | Max: 2000
-    red_probability: int  # Maximum probability (in percentage) for RED markin | Default: 0 | Min: 0 | Max: 20
-    min: int  # Average queue size in packets at which RED drop be | Default: 83 | Min: 3 | Max: 3000
-    max: int  # Average queue size in packets at which RED drop pr | Default: 250 | Min: 3 | Max: 3000
-
-
-# Nested classes for table field children (object mode)
+# ============================================================================
+# Nested classes for table field children (object mode - for API responses)
+# ============================================================================
 
 @final
 class ShapingProfileShapingentriesObject:
@@ -146,6 +158,9 @@ class ShapingProfileObject:
     # Common API response fields
     status: str
     http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
     vdom: str | None
     
     # Methods from FortiObject
@@ -380,7 +395,7 @@ class ShapingProfile:
         type: Literal["policing", "queuing"] | None = ...,
         npu_offloading: Literal["disable", "enable"] | None = ...,
         default_class_id: int | None = ...,
-        shaping_entries: str | list[str] | list[dict[str, Any]] | None = ...,
+        shaping_entries: str | list[ShapingProfileShapingentriesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> ShapingProfileObject: ...
     
@@ -393,7 +408,7 @@ class ShapingProfile:
         type: Literal["policing", "queuing"] | None = ...,
         npu_offloading: Literal["disable", "enable"] | None = ...,
         default_class_id: int | None = ...,
-        shaping_entries: str | list[str] | list[dict[str, Any]] | None = ...,
+        shaping_entries: str | list[ShapingProfileShapingentriesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -407,7 +422,7 @@ class ShapingProfile:
         type: Literal["policing", "queuing"] | None = ...,
         npu_offloading: Literal["disable", "enable"] | None = ...,
         default_class_id: int | None = ...,
-        shaping_entries: str | list[str] | list[dict[str, Any]] | None = ...,
+        shaping_entries: str | list[ShapingProfileShapingentriesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -419,7 +434,7 @@ class ShapingProfile:
         type: Literal["policing", "queuing"] | None = ...,
         npu_offloading: Literal["disable", "enable"] | None = ...,
         default_class_id: int | None = ...,
-        shaping_entries: str | list[str] | list[dict[str, Any]] | None = ...,
+        shaping_entries: str | list[ShapingProfileShapingentriesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -433,7 +448,7 @@ class ShapingProfile:
         type: Literal["policing", "queuing"] | None = ...,
         npu_offloading: Literal["disable", "enable"] | None = ...,
         default_class_id: int | None = ...,
-        shaping_entries: str | list[str] | list[dict[str, Any]] | None = ...,
+        shaping_entries: str | list[ShapingProfileShapingentriesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> ShapingProfileObject: ...
     
@@ -446,7 +461,7 @@ class ShapingProfile:
         type: Literal["policing", "queuing"] | None = ...,
         npu_offloading: Literal["disable", "enable"] | None = ...,
         default_class_id: int | None = ...,
-        shaping_entries: str | list[str] | list[dict[str, Any]] | None = ...,
+        shaping_entries: str | list[ShapingProfileShapingentriesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -460,7 +475,7 @@ class ShapingProfile:
         type: Literal["policing", "queuing"] | None = ...,
         npu_offloading: Literal["disable", "enable"] | None = ...,
         default_class_id: int | None = ...,
-        shaping_entries: str | list[str] | list[dict[str, Any]] | None = ...,
+        shaping_entries: str | list[ShapingProfileShapingentriesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -472,7 +487,7 @@ class ShapingProfile:
         type: Literal["policing", "queuing"] | None = ...,
         npu_offloading: Literal["disable", "enable"] | None = ...,
         default_class_id: int | None = ...,
-        shaping_entries: str | list[str] | list[dict[str, Any]] | None = ...,
+        shaping_entries: str | list[ShapingProfileShapingentriesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -519,7 +534,7 @@ class ShapingProfile:
         type: Literal["policing", "queuing"] | None = ...,
         npu_offloading: Literal["disable", "enable"] | None = ...,
         default_class_id: int | None = ...,
-        shaping_entries: str | list[str] | list[dict[str, Any]] | None = ...,
+        shaping_entries: str | list[ShapingProfileShapingentriesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     

@@ -2,7 +2,34 @@ from typing import TypedDict, Literal, Any, Coroutine, Union, overload, Generato
 from typing_extensions import NotRequired
 from hfortix_fortios.models import FortiObject, FortiObjectList
 
-# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional via total=False)
+# ============================================================================
+# Nested TypedDicts for table field children (dict mode)
+# These MUST be defined before the Payload class to use them as type hints
+# ============================================================================
+
+class MheaderEntriesItem(TypedDict, total=False):
+    """Type hints for entries table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: MheaderEntriesItem = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    
+    status: Literal["enable", "disable"]  # Enable/disable status. | Default: enable
+    id: int  # Mime header entry ID. | Default: 0 | Min: 0 | Max: 4294967295
+    fieldname: str  # Pattern for header field name. | MaxLen: 63
+    fieldbody: str  # Pattern for the header field body. | MaxLen: 127
+    pattern_type: Literal["wildcard", "regexp"]  # Wildcard pattern or regular expression. | Default: wildcard
+    action: Literal["spam", "clear"]  # Mark spam or good. | Default: spam
+
+
+# ============================================================================
+# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional)
+# ============================================================================
 # NOTE: We intentionally DON'T use NotRequired wrapper because:
 # 1. total=False already makes all fields optional
 # 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
@@ -20,26 +47,11 @@ class MheaderPayload(TypedDict, total=False):
     id: int  # ID. | Default: 0 | Min: 0 | Max: 4294967295
     name: str  # Name of table. | MaxLen: 63
     comment: str  # Optional comments. | MaxLen: 255
-    entries: list[dict[str, Any]]  # Spam filter mime header content.
+    entries: list[MheaderEntriesItem]  # Spam filter mime header content.
 
-# Nested TypedDicts for table field children (dict mode)
-
-class MheaderEntriesItem(TypedDict):
-    """Type hints for entries table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    status: Literal["enable", "disable"]  # Enable/disable status. | Default: enable
-    id: int  # Mime header entry ID. | Default: 0 | Min: 0 | Max: 4294967295
-    fieldname: str  # Pattern for header field name. | MaxLen: 63
-    fieldbody: str  # Pattern for the header field body. | MaxLen: 127
-    pattern_type: Literal["wildcard", "regexp"]  # Wildcard pattern or regular expression. | Default: wildcard
-    action: Literal["spam", "clear"]  # Mark spam or good. | Default: spam
-
-
-# Nested classes for table field children (object mode)
+# ============================================================================
+# Nested classes for table field children (object mode - for API responses)
+# ============================================================================
 
 @final
 class MheaderEntriesObject:
@@ -118,6 +130,9 @@ class MheaderObject:
     # Common API response fields
     status: str
     http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
     vdom: str | None
     
     # Methods from FortiObject
@@ -350,7 +365,7 @@ class Mheader:
         id: int | None = ...,
         name: str | None = ...,
         comment: str | None = ...,
-        entries: str | list[str] | list[dict[str, Any]] | None = ...,
+        entries: str | list[MheaderEntriesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> MheaderObject: ...
     
@@ -361,7 +376,7 @@ class Mheader:
         id: int | None = ...,
         name: str | None = ...,
         comment: str | None = ...,
-        entries: str | list[str] | list[dict[str, Any]] | None = ...,
+        entries: str | list[MheaderEntriesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -373,7 +388,7 @@ class Mheader:
         id: int | None = ...,
         name: str | None = ...,
         comment: str | None = ...,
-        entries: str | list[str] | list[dict[str, Any]] | None = ...,
+        entries: str | list[MheaderEntriesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -383,7 +398,7 @@ class Mheader:
         id: int | None = ...,
         name: str | None = ...,
         comment: str | None = ...,
-        entries: str | list[str] | list[dict[str, Any]] | None = ...,
+        entries: str | list[MheaderEntriesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -395,7 +410,7 @@ class Mheader:
         id: int | None = ...,
         name: str | None = ...,
         comment: str | None = ...,
-        entries: str | list[str] | list[dict[str, Any]] | None = ...,
+        entries: str | list[MheaderEntriesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> MheaderObject: ...
     
@@ -406,7 +421,7 @@ class Mheader:
         id: int | None = ...,
         name: str | None = ...,
         comment: str | None = ...,
-        entries: str | list[str] | list[dict[str, Any]] | None = ...,
+        entries: str | list[MheaderEntriesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -418,7 +433,7 @@ class Mheader:
         id: int | None = ...,
         name: str | None = ...,
         comment: str | None = ...,
-        entries: str | list[str] | list[dict[str, Any]] | None = ...,
+        entries: str | list[MheaderEntriesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -428,7 +443,7 @@ class Mheader:
         id: int | None = ...,
         name: str | None = ...,
         comment: str | None = ...,
-        entries: str | list[str] | list[dict[str, Any]] | None = ...,
+        entries: str | list[MheaderEntriesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -473,7 +488,7 @@ class Mheader:
         id: int | None = ...,
         name: str | None = ...,
         comment: str | None = ...,
-        entries: str | list[str] | list[dict[str, Any]] | None = ...,
+        entries: str | list[MheaderEntriesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     

@@ -2,7 +2,29 @@ from typing import TypedDict, Literal, Any, Coroutine, Union, overload, Generato
 from typing_extensions import NotRequired
 from hfortix_fortios.models import FortiObject, FortiObjectList
 
-# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional via total=False)
+# ============================================================================
+# Nested TypedDicts for table field children (dict mode)
+# These MUST be defined before the Payload class to use them as type hints
+# ============================================================================
+
+class StaticSdwanzoneItem(TypedDict, total=False):
+    """Type hints for sdwan-zone table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: StaticSdwanzoneItem = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    
+    name: str  # SD-WAN zone name. | MaxLen: 79
+
+
+# ============================================================================
+# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional)
+# ============================================================================
 # NOTE: We intentionally DON'T use NotRequired wrapper because:
 # 1. total=False already makes all fields optional
 # 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
@@ -40,7 +62,7 @@ class StaticPayload(TypedDict, total=False):
     comment: str  # Optional comments. | MaxLen: 255
     blackhole: Literal["enable", "disable"]  # Enable/disable black hole. | Default: disable
     dynamic_gateway: Literal["enable", "disable"]  # Enable use of dynamic gateway retrieved from a DHC | Default: disable
-    sdwan_zone: list[dict[str, Any]]  # Choose SD-WAN Zone.
+    sdwan_zone: list[StaticSdwanzoneItem]  # Choose SD-WAN Zone.
     dstaddr: str  # Name of firewall address or address group. | MaxLen: 79
     internet_service: int  # Application ID in the Internet service database. | Default: 0 | Min: 0 | Max: 4294967295
     internet_service_custom: str  # Application name in the Internet service custom da | MaxLen: 64
@@ -50,19 +72,9 @@ class StaticPayload(TypedDict, total=False):
     vrf: int  # Virtual Routing Forwarding ID. | Default: unspecified | Min: 0 | Max: 511
     bfd: Literal["enable", "disable"]  # Enable/disable Bidirectional Forwarding Detection | Default: disable
 
-# Nested TypedDicts for table field children (dict mode)
-
-class StaticSdwanzoneItem(TypedDict):
-    """Type hints for sdwan-zone table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    name: str  # SD-WAN zone name. | MaxLen: 79
-
-
-# Nested classes for table field children (object mode)
+# ============================================================================
+# Nested classes for table field children (object mode - for API responses)
+# ============================================================================
 
 @final
 class StaticSdwanzoneObject:
@@ -185,6 +197,9 @@ class StaticObject:
     # Common API response fields
     status: str
     http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
     vdom: str | None
     
     # Methods from FortiObject
@@ -427,7 +442,7 @@ class Static:
         comment: str | None = ...,
         blackhole: Literal["enable", "disable"] | None = ...,
         dynamic_gateway: Literal["enable", "disable"] | None = ...,
-        sdwan_zone: str | list[str] | list[dict[str, Any]] | None = ...,
+        sdwan_zone: str | list[StaticSdwanzoneItem] | None = ...,
         dstaddr: str | None = ...,
         internet_service: int | None = ...,
         internet_service_custom: str | None = ...,
@@ -456,7 +471,7 @@ class Static:
         comment: str | None = ...,
         blackhole: Literal["enable", "disable"] | None = ...,
         dynamic_gateway: Literal["enable", "disable"] | None = ...,
-        sdwan_zone: str | list[str] | list[dict[str, Any]] | None = ...,
+        sdwan_zone: str | list[StaticSdwanzoneItem] | None = ...,
         dstaddr: str | None = ...,
         internet_service: int | None = ...,
         internet_service_custom: str | None = ...,
@@ -486,7 +501,7 @@ class Static:
         comment: str | None = ...,
         blackhole: Literal["enable", "disable"] | None = ...,
         dynamic_gateway: Literal["enable", "disable"] | None = ...,
-        sdwan_zone: str | list[str] | list[dict[str, Any]] | None = ...,
+        sdwan_zone: str | list[StaticSdwanzoneItem] | None = ...,
         dstaddr: str | None = ...,
         internet_service: int | None = ...,
         internet_service_custom: str | None = ...,
@@ -514,7 +529,7 @@ class Static:
         comment: str | None = ...,
         blackhole: Literal["enable", "disable"] | None = ...,
         dynamic_gateway: Literal["enable", "disable"] | None = ...,
-        sdwan_zone: str | list[str] | list[dict[str, Any]] | None = ...,
+        sdwan_zone: str | list[StaticSdwanzoneItem] | None = ...,
         dstaddr: str | None = ...,
         internet_service: int | None = ...,
         internet_service_custom: str | None = ...,
@@ -544,7 +559,7 @@ class Static:
         comment: str | None = ...,
         blackhole: Literal["enable", "disable"] | None = ...,
         dynamic_gateway: Literal["enable", "disable"] | None = ...,
-        sdwan_zone: str | list[str] | list[dict[str, Any]] | None = ...,
+        sdwan_zone: str | list[StaticSdwanzoneItem] | None = ...,
         dstaddr: str | None = ...,
         internet_service: int | None = ...,
         internet_service_custom: str | None = ...,
@@ -573,7 +588,7 @@ class Static:
         comment: str | None = ...,
         blackhole: Literal["enable", "disable"] | None = ...,
         dynamic_gateway: Literal["enable", "disable"] | None = ...,
-        sdwan_zone: str | list[str] | list[dict[str, Any]] | None = ...,
+        sdwan_zone: str | list[StaticSdwanzoneItem] | None = ...,
         dstaddr: str | None = ...,
         internet_service: int | None = ...,
         internet_service_custom: str | None = ...,
@@ -603,7 +618,7 @@ class Static:
         comment: str | None = ...,
         blackhole: Literal["enable", "disable"] | None = ...,
         dynamic_gateway: Literal["enable", "disable"] | None = ...,
-        sdwan_zone: str | list[str] | list[dict[str, Any]] | None = ...,
+        sdwan_zone: str | list[StaticSdwanzoneItem] | None = ...,
         dstaddr: str | None = ...,
         internet_service: int | None = ...,
         internet_service_custom: str | None = ...,
@@ -631,7 +646,7 @@ class Static:
         comment: str | None = ...,
         blackhole: Literal["enable", "disable"] | None = ...,
         dynamic_gateway: Literal["enable", "disable"] | None = ...,
-        sdwan_zone: str | list[str] | list[dict[str, Any]] | None = ...,
+        sdwan_zone: str | list[StaticSdwanzoneItem] | None = ...,
         dstaddr: str | None = ...,
         internet_service: int | None = ...,
         internet_service_custom: str | None = ...,
@@ -694,7 +709,7 @@ class Static:
         comment: str | None = ...,
         blackhole: Literal["enable", "disable"] | None = ...,
         dynamic_gateway: Literal["enable", "disable"] | None = ...,
-        sdwan_zone: str | list[str] | list[dict[str, Any]] | None = ...,
+        sdwan_zone: str | list[StaticSdwanzoneItem] | None = ...,
         dstaddr: str | None = ...,
         internet_service: int | None = ...,
         internet_service_custom: str | None = ...,

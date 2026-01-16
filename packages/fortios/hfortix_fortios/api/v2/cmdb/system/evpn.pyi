@@ -2,7 +2,44 @@ from typing import TypedDict, Literal, Any, Coroutine, Union, overload, Generato
 from typing_extensions import NotRequired
 from hfortix_fortios.models import FortiObject, FortiObjectList
 
-# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional via total=False)
+# ============================================================================
+# Nested TypedDicts for table field children (dict mode)
+# These MUST be defined before the Payload class to use them as type hints
+# ============================================================================
+
+class EvpnImportrtItem(TypedDict, total=False):
+    """Type hints for import-rt table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: EvpnImportrtItem = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    
+    route_target: str  # Route target: AA:NN|A.B.C.D:NN. | MaxLen: 79
+
+
+class EvpnExportrtItem(TypedDict, total=False):
+    """Type hints for export-rt table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: EvpnExportrtItem = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    
+    route_target: str  # Route target: AA:NN|A.B.C.D:NN. | MaxLen: 79
+
+
+# ============================================================================
+# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional)
+# ============================================================================
 # NOTE: We intentionally DON'T use NotRequired wrapper because:
 # 1. total=False already makes all fields optional
 # 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
@@ -19,34 +56,14 @@ class EvpnPayload(TypedDict, total=False):
     """
     id: int  # ID. | Default: 0 | Min: 1 | Max: 65535
     rd: str  # Route Distinguisher: AA:NN|A.B.C.D:NN. | MaxLen: 79
-    import_rt: list[dict[str, Any]]  # List of import route targets.
-    export_rt: list[dict[str, Any]]  # List of export route targets.
+    import_rt: list[EvpnImportrtItem]  # List of import route targets.
+    export_rt: list[EvpnExportrtItem]  # List of export route targets.
     ip_local_learning: Literal["enable", "disable"]  # Enable/disable IP address local learning. | Default: disable
     arp_suppression: Literal["enable", "disable"]  # Enable/disable ARP suppression. | Default: disable
 
-# Nested TypedDicts for table field children (dict mode)
-
-class EvpnImportrtItem(TypedDict):
-    """Type hints for import-rt table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    route_target: str  # Route target: AA:NN|A.B.C.D:NN. | MaxLen: 79
-
-
-class EvpnExportrtItem(TypedDict):
-    """Type hints for export-rt table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    route_target: str  # Route target: AA:NN|A.B.C.D:NN. | MaxLen: 79
-
-
-# Nested classes for table field children (object mode)
+# ============================================================================
+# Nested classes for table field children (object mode - for API responses)
+# ============================================================================
 
 @final
 class EvpnImportrtObject:
@@ -153,6 +170,9 @@ class EvpnObject:
     # Common API response fields
     status: str
     http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
     vdom: str | None
     
     # Methods from FortiObject
@@ -384,8 +404,8 @@ class Evpn:
         payload_dict: EvpnPayload | None = ...,
         id: int | None = ...,
         rd: str | None = ...,
-        import_rt: str | list[str] | list[dict[str, Any]] | None = ...,
-        export_rt: str | list[str] | list[dict[str, Any]] | None = ...,
+        import_rt: str | list[EvpnImportrtItem] | None = ...,
+        export_rt: str | list[EvpnExportrtItem] | None = ...,
         ip_local_learning: Literal["enable", "disable"] | None = ...,
         arp_suppression: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
@@ -397,8 +417,8 @@ class Evpn:
         payload_dict: EvpnPayload | None = ...,
         id: int | None = ...,
         rd: str | None = ...,
-        import_rt: str | list[str] | list[dict[str, Any]] | None = ...,
-        export_rt: str | list[str] | list[dict[str, Any]] | None = ...,
+        import_rt: str | list[EvpnImportrtItem] | None = ...,
+        export_rt: str | list[EvpnExportrtItem] | None = ...,
         ip_local_learning: Literal["enable", "disable"] | None = ...,
         arp_suppression: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
@@ -411,8 +431,8 @@ class Evpn:
         payload_dict: EvpnPayload | None = ...,
         id: int | None = ...,
         rd: str | None = ...,
-        import_rt: str | list[str] | list[dict[str, Any]] | None = ...,
-        export_rt: str | list[str] | list[dict[str, Any]] | None = ...,
+        import_rt: str | list[EvpnImportrtItem] | None = ...,
+        export_rt: str | list[EvpnExportrtItem] | None = ...,
         ip_local_learning: Literal["enable", "disable"] | None = ...,
         arp_suppression: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
@@ -423,8 +443,8 @@ class Evpn:
         payload_dict: EvpnPayload | None = ...,
         id: int | None = ...,
         rd: str | None = ...,
-        import_rt: str | list[str] | list[dict[str, Any]] | None = ...,
-        export_rt: str | list[str] | list[dict[str, Any]] | None = ...,
+        import_rt: str | list[EvpnImportrtItem] | None = ...,
+        export_rt: str | list[EvpnExportrtItem] | None = ...,
         ip_local_learning: Literal["enable", "disable"] | None = ...,
         arp_suppression: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
@@ -437,8 +457,8 @@ class Evpn:
         payload_dict: EvpnPayload | None = ...,
         id: int | None = ...,
         rd: str | None = ...,
-        import_rt: str | list[str] | list[dict[str, Any]] | None = ...,
-        export_rt: str | list[str] | list[dict[str, Any]] | None = ...,
+        import_rt: str | list[EvpnImportrtItem] | None = ...,
+        export_rt: str | list[EvpnExportrtItem] | None = ...,
         ip_local_learning: Literal["enable", "disable"] | None = ...,
         arp_suppression: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
@@ -450,8 +470,8 @@ class Evpn:
         payload_dict: EvpnPayload | None = ...,
         id: int | None = ...,
         rd: str | None = ...,
-        import_rt: str | list[str] | list[dict[str, Any]] | None = ...,
-        export_rt: str | list[str] | list[dict[str, Any]] | None = ...,
+        import_rt: str | list[EvpnImportrtItem] | None = ...,
+        export_rt: str | list[EvpnExportrtItem] | None = ...,
         ip_local_learning: Literal["enable", "disable"] | None = ...,
         arp_suppression: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
@@ -464,8 +484,8 @@ class Evpn:
         payload_dict: EvpnPayload | None = ...,
         id: int | None = ...,
         rd: str | None = ...,
-        import_rt: str | list[str] | list[dict[str, Any]] | None = ...,
-        export_rt: str | list[str] | list[dict[str, Any]] | None = ...,
+        import_rt: str | list[EvpnImportrtItem] | None = ...,
+        export_rt: str | list[EvpnExportrtItem] | None = ...,
         ip_local_learning: Literal["enable", "disable"] | None = ...,
         arp_suppression: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
@@ -476,8 +496,8 @@ class Evpn:
         payload_dict: EvpnPayload | None = ...,
         id: int | None = ...,
         rd: str | None = ...,
-        import_rt: str | list[str] | list[dict[str, Any]] | None = ...,
-        export_rt: str | list[str] | list[dict[str, Any]] | None = ...,
+        import_rt: str | list[EvpnImportrtItem] | None = ...,
+        export_rt: str | list[EvpnExportrtItem] | None = ...,
         ip_local_learning: Literal["enable", "disable"] | None = ...,
         arp_suppression: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
@@ -523,8 +543,8 @@ class Evpn:
         payload_dict: EvpnPayload | None = ...,
         id: int | None = ...,
         rd: str | None = ...,
-        import_rt: str | list[str] | list[dict[str, Any]] | None = ...,
-        export_rt: str | list[str] | list[dict[str, Any]] | None = ...,
+        import_rt: str | list[EvpnImportrtItem] | None = ...,
+        export_rt: str | list[EvpnExportrtItem] | None = ...,
         ip_local_learning: Literal["enable", "disable"] | None = ...,
         arp_suppression: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,

@@ -2,7 +2,89 @@ from typing import TypedDict, Literal, Any, Coroutine, Union, overload, Generato
 from typing_extensions import NotRequired
 from hfortix_fortios.models import FortiObject, FortiObjectList
 
-# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional via total=False)
+# ============================================================================
+# Nested TypedDicts for table field children (dict mode)
+# These MUST be defined before the Payload class to use them as type hints
+# ============================================================================
+
+class RuleSrcintfItem(TypedDict, total=False):
+    """Type hints for srcintf table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: RuleSrcintfItem = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    
+    name: str  # Interface name. | MaxLen: 79
+
+
+class RuleSrcaddrItem(TypedDict, total=False):
+    """Type hints for srcaddr table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: RuleSrcaddrItem = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    
+    name: str  # Address name. | MaxLen: 79
+
+
+class RuleDstaddrItem(TypedDict, total=False):
+    """Type hints for dstaddr table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: RuleDstaddrItem = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    
+    name: str  # Address name. | MaxLen: 79
+
+
+class RuleSrcaddr6Item(TypedDict, total=False):
+    """Type hints for srcaddr6 table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: RuleSrcaddr6Item = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    
+    name: str  # Address name. | MaxLen: 79
+
+
+class RuleDstaddr6Item(TypedDict, total=False):
+    """Type hints for dstaddr6 table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: RuleDstaddr6Item = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    
+    name: str  # Address name. | MaxLen: 79
+
+
+# ============================================================================
+# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional)
+# ============================================================================
 # NOTE: We intentionally DON'T use NotRequired wrapper because:
 # 1. total=False already makes all fields optional
 # 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
@@ -25,11 +107,11 @@ class RulePayload(TypedDict, total=False):
     name: str  # Authentication rule name. | MaxLen: 35
     status: Literal["enable", "disable"]  # Enable/disable this authentication rule. | Default: enable
     protocol: Literal["http", "ftp", "socks", "ssh", "ztna-portal"]  # Authentication is required for the selected protoc | Default: http
-    srcintf: list[dict[str, Any]]  # Incoming (ingress) interface.
-    srcaddr: list[dict[str, Any]]  # Authentication is required for the selected IPv4 s
-    dstaddr: list[dict[str, Any]]  # Select an IPv4 destination address from available
-    srcaddr6: list[dict[str, Any]]  # Authentication is required for the selected IPv6 s
-    dstaddr6: list[dict[str, Any]]  # Select an IPv6 destination address from available
+    srcintf: list[RuleSrcintfItem]  # Incoming (ingress) interface.
+    srcaddr: list[RuleSrcaddrItem]  # Authentication is required for the selected IPv4 s
+    dstaddr: list[RuleDstaddrItem]  # Select an IPv4 destination address from available
+    srcaddr6: list[RuleSrcaddr6Item]  # Authentication is required for the selected IPv6 s
+    dstaddr6: list[RuleDstaddr6Item]  # Select an IPv6 destination address from available
     ip_based: Literal["enable", "disable"]  # Enable/disable IP-based authentication. When enabl | Default: enable
     active_auth_method: str  # Select an active authentication method. | MaxLen: 35
     sso_auth_method: str  # Select a single-sign on (SSO) authentication metho | MaxLen: 35
@@ -42,59 +124,9 @@ class RulePayload(TypedDict, total=False):
     comments: str  # Comment. | MaxLen: 1023
     session_logout: Literal["enable", "disable"]  # Enable/disable logout of a user from the current s | Default: disable
 
-# Nested TypedDicts for table field children (dict mode)
-
-class RuleSrcintfItem(TypedDict):
-    """Type hints for srcintf table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    name: str  # Interface name. | MaxLen: 79
-
-
-class RuleSrcaddrItem(TypedDict):
-    """Type hints for srcaddr table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    name: str  # Address name. | MaxLen: 79
-
-
-class RuleDstaddrItem(TypedDict):
-    """Type hints for dstaddr table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    name: str  # Address name. | MaxLen: 79
-
-
-class RuleSrcaddr6Item(TypedDict):
-    """Type hints for srcaddr6 table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    name: str  # Address name. | MaxLen: 79
-
-
-class RuleDstaddr6Item(TypedDict):
-    """Type hints for dstaddr6 table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    name: str  # Address name. | MaxLen: 79
-
-
-# Nested classes for table field children (object mode)
+# ============================================================================
+# Nested classes for table field children (object mode - for API responses)
+# ============================================================================
 
 @final
 class RuleSrcintfObject:
@@ -336,6 +368,9 @@ class RuleObject:
     # Common API response fields
     status: str
     http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
     vdom: str | None
     
     # Methods from FortiObject
@@ -568,11 +603,11 @@ class Rule:
         name: str | None = ...,
         status: Literal["enable", "disable"] | None = ...,
         protocol: Literal["http", "ftp", "socks", "ssh", "ztna-portal"] | None = ...,
-        srcintf: str | list[str] | list[dict[str, Any]] | None = ...,
-        srcaddr: str | list[str] | list[dict[str, Any]] | None = ...,
-        dstaddr: str | list[str] | list[dict[str, Any]] | None = ...,
-        srcaddr6: str | list[str] | list[dict[str, Any]] | None = ...,
-        dstaddr6: str | list[str] | list[dict[str, Any]] | None = ...,
+        srcintf: str | list[RuleSrcintfItem] | None = ...,
+        srcaddr: str | list[RuleSrcaddrItem] | None = ...,
+        dstaddr: str | list[RuleDstaddrItem] | None = ...,
+        srcaddr6: str | list[RuleSrcaddr6Item] | None = ...,
+        dstaddr6: str | list[RuleDstaddr6Item] | None = ...,
         ip_based: Literal["enable", "disable"] | None = ...,
         active_auth_method: str | None = ...,
         sso_auth_method: str | None = ...,
@@ -594,11 +629,11 @@ class Rule:
         name: str | None = ...,
         status: Literal["enable", "disable"] | None = ...,
         protocol: Literal["http", "ftp", "socks", "ssh", "ztna-portal"] | None = ...,
-        srcintf: str | list[str] | list[dict[str, Any]] | None = ...,
-        srcaddr: str | list[str] | list[dict[str, Any]] | None = ...,
-        dstaddr: str | list[str] | list[dict[str, Any]] | None = ...,
-        srcaddr6: str | list[str] | list[dict[str, Any]] | None = ...,
-        dstaddr6: str | list[str] | list[dict[str, Any]] | None = ...,
+        srcintf: str | list[RuleSrcintfItem] | None = ...,
+        srcaddr: str | list[RuleSrcaddrItem] | None = ...,
+        dstaddr: str | list[RuleDstaddrItem] | None = ...,
+        srcaddr6: str | list[RuleSrcaddr6Item] | None = ...,
+        dstaddr6: str | list[RuleDstaddr6Item] | None = ...,
         ip_based: Literal["enable", "disable"] | None = ...,
         active_auth_method: str | None = ...,
         sso_auth_method: str | None = ...,
@@ -621,11 +656,11 @@ class Rule:
         name: str | None = ...,
         status: Literal["enable", "disable"] | None = ...,
         protocol: Literal["http", "ftp", "socks", "ssh", "ztna-portal"] | None = ...,
-        srcintf: str | list[str] | list[dict[str, Any]] | None = ...,
-        srcaddr: str | list[str] | list[dict[str, Any]] | None = ...,
-        dstaddr: str | list[str] | list[dict[str, Any]] | None = ...,
-        srcaddr6: str | list[str] | list[dict[str, Any]] | None = ...,
-        dstaddr6: str | list[str] | list[dict[str, Any]] | None = ...,
+        srcintf: str | list[RuleSrcintfItem] | None = ...,
+        srcaddr: str | list[RuleSrcaddrItem] | None = ...,
+        dstaddr: str | list[RuleDstaddrItem] | None = ...,
+        srcaddr6: str | list[RuleSrcaddr6Item] | None = ...,
+        dstaddr6: str | list[RuleDstaddr6Item] | None = ...,
         ip_based: Literal["enable", "disable"] | None = ...,
         active_auth_method: str | None = ...,
         sso_auth_method: str | None = ...,
@@ -646,11 +681,11 @@ class Rule:
         name: str | None = ...,
         status: Literal["enable", "disable"] | None = ...,
         protocol: Literal["http", "ftp", "socks", "ssh", "ztna-portal"] | None = ...,
-        srcintf: str | list[str] | list[dict[str, Any]] | None = ...,
-        srcaddr: str | list[str] | list[dict[str, Any]] | None = ...,
-        dstaddr: str | list[str] | list[dict[str, Any]] | None = ...,
-        srcaddr6: str | list[str] | list[dict[str, Any]] | None = ...,
-        dstaddr6: str | list[str] | list[dict[str, Any]] | None = ...,
+        srcintf: str | list[RuleSrcintfItem] | None = ...,
+        srcaddr: str | list[RuleSrcaddrItem] | None = ...,
+        dstaddr: str | list[RuleDstaddrItem] | None = ...,
+        srcaddr6: str | list[RuleSrcaddr6Item] | None = ...,
+        dstaddr6: str | list[RuleDstaddr6Item] | None = ...,
         ip_based: Literal["enable", "disable"] | None = ...,
         active_auth_method: str | None = ...,
         sso_auth_method: str | None = ...,
@@ -673,11 +708,11 @@ class Rule:
         name: str | None = ...,
         status: Literal["enable", "disable"] | None = ...,
         protocol: Literal["http", "ftp", "socks", "ssh", "ztna-portal"] | None = ...,
-        srcintf: str | list[str] | list[dict[str, Any]] | None = ...,
-        srcaddr: str | list[str] | list[dict[str, Any]] | None = ...,
-        dstaddr: str | list[str] | list[dict[str, Any]] | None = ...,
-        srcaddr6: str | list[str] | list[dict[str, Any]] | None = ...,
-        dstaddr6: str | list[str] | list[dict[str, Any]] | None = ...,
+        srcintf: str | list[RuleSrcintfItem] | None = ...,
+        srcaddr: str | list[RuleSrcaddrItem] | None = ...,
+        dstaddr: str | list[RuleDstaddrItem] | None = ...,
+        srcaddr6: str | list[RuleSrcaddr6Item] | None = ...,
+        dstaddr6: str | list[RuleDstaddr6Item] | None = ...,
         ip_based: Literal["enable", "disable"] | None = ...,
         active_auth_method: str | None = ...,
         sso_auth_method: str | None = ...,
@@ -699,11 +734,11 @@ class Rule:
         name: str | None = ...,
         status: Literal["enable", "disable"] | None = ...,
         protocol: Literal["http", "ftp", "socks", "ssh", "ztna-portal"] | None = ...,
-        srcintf: str | list[str] | list[dict[str, Any]] | None = ...,
-        srcaddr: str | list[str] | list[dict[str, Any]] | None = ...,
-        dstaddr: str | list[str] | list[dict[str, Any]] | None = ...,
-        srcaddr6: str | list[str] | list[dict[str, Any]] | None = ...,
-        dstaddr6: str | list[str] | list[dict[str, Any]] | None = ...,
+        srcintf: str | list[RuleSrcintfItem] | None = ...,
+        srcaddr: str | list[RuleSrcaddrItem] | None = ...,
+        dstaddr: str | list[RuleDstaddrItem] | None = ...,
+        srcaddr6: str | list[RuleSrcaddr6Item] | None = ...,
+        dstaddr6: str | list[RuleDstaddr6Item] | None = ...,
         ip_based: Literal["enable", "disable"] | None = ...,
         active_auth_method: str | None = ...,
         sso_auth_method: str | None = ...,
@@ -726,11 +761,11 @@ class Rule:
         name: str | None = ...,
         status: Literal["enable", "disable"] | None = ...,
         protocol: Literal["http", "ftp", "socks", "ssh", "ztna-portal"] | None = ...,
-        srcintf: str | list[str] | list[dict[str, Any]] | None = ...,
-        srcaddr: str | list[str] | list[dict[str, Any]] | None = ...,
-        dstaddr: str | list[str] | list[dict[str, Any]] | None = ...,
-        srcaddr6: str | list[str] | list[dict[str, Any]] | None = ...,
-        dstaddr6: str | list[str] | list[dict[str, Any]] | None = ...,
+        srcintf: str | list[RuleSrcintfItem] | None = ...,
+        srcaddr: str | list[RuleSrcaddrItem] | None = ...,
+        dstaddr: str | list[RuleDstaddrItem] | None = ...,
+        srcaddr6: str | list[RuleSrcaddr6Item] | None = ...,
+        dstaddr6: str | list[RuleDstaddr6Item] | None = ...,
         ip_based: Literal["enable", "disable"] | None = ...,
         active_auth_method: str | None = ...,
         sso_auth_method: str | None = ...,
@@ -751,11 +786,11 @@ class Rule:
         name: str | None = ...,
         status: Literal["enable", "disable"] | None = ...,
         protocol: Literal["http", "ftp", "socks", "ssh", "ztna-portal"] | None = ...,
-        srcintf: str | list[str] | list[dict[str, Any]] | None = ...,
-        srcaddr: str | list[str] | list[dict[str, Any]] | None = ...,
-        dstaddr: str | list[str] | list[dict[str, Any]] | None = ...,
-        srcaddr6: str | list[str] | list[dict[str, Any]] | None = ...,
-        dstaddr6: str | list[str] | list[dict[str, Any]] | None = ...,
+        srcintf: str | list[RuleSrcintfItem] | None = ...,
+        srcaddr: str | list[RuleSrcaddrItem] | None = ...,
+        dstaddr: str | list[RuleDstaddrItem] | None = ...,
+        srcaddr6: str | list[RuleSrcaddr6Item] | None = ...,
+        dstaddr6: str | list[RuleDstaddr6Item] | None = ...,
         ip_based: Literal["enable", "disable"] | None = ...,
         active_auth_method: str | None = ...,
         sso_auth_method: str | None = ...,
@@ -811,11 +846,11 @@ class Rule:
         name: str | None = ...,
         status: Literal["enable", "disable"] | None = ...,
         protocol: Literal["http", "ftp", "socks", "ssh", "ztna-portal"] | None = ...,
-        srcintf: str | list[str] | list[dict[str, Any]] | None = ...,
-        srcaddr: str | list[str] | list[dict[str, Any]] | None = ...,
-        dstaddr: str | list[str] | list[dict[str, Any]] | None = ...,
-        srcaddr6: str | list[str] | list[dict[str, Any]] | None = ...,
-        dstaddr6: str | list[str] | list[dict[str, Any]] | None = ...,
+        srcintf: str | list[RuleSrcintfItem] | None = ...,
+        srcaddr: str | list[RuleSrcaddrItem] | None = ...,
+        dstaddr: str | list[RuleDstaddrItem] | None = ...,
+        srcaddr6: str | list[RuleSrcaddr6Item] | None = ...,
+        dstaddr6: str | list[RuleDstaddr6Item] | None = ...,
         ip_based: Literal["enable", "disable"] | None = ...,
         active_auth_method: str | None = ...,
         sso_auth_method: str | None = ...,

@@ -2,7 +2,45 @@ from typing import TypedDict, Literal, Any, Coroutine, Union, overload, Generato
 from typing_extensions import NotRequired
 from hfortix_fortios.models import FortiObject, FortiObjectList
 
-# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional via total=False)
+# ============================================================================
+# Nested TypedDicts for table field children (dict mode)
+# These MUST be defined before the Payload class to use them as type hints
+# ============================================================================
+
+class GlobalDisablediscoveryItem(TypedDict, total=False):
+    """Type hints for disable-discovery table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: GlobalDisablediscoveryItem = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    
+    name: str  # FortiSwitch Serial-number. | MaxLen: 79
+
+
+class GlobalCustomcommandItem(TypedDict, total=False):
+    """Type hints for custom-command table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: GlobalCustomcommandItem = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    
+    command_entry: str  # List of FortiSwitch commands. | MaxLen: 35
+    command_name: str  # Name of custom command to push to all FortiSwitche | MaxLen: 35
+
+
+# ============================================================================
+# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional)
+# ============================================================================
 # NOTE: We intentionally DON'T use NotRequired wrapper because:
 # 1. total=False already makes all fields optional
 # 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
@@ -27,7 +65,7 @@ class GlobalPayload(TypedDict, total=False):
     vlan_all_mode: Literal["all", "defined"]  # VLAN configuration mode, user-defined-vlans or all | Default: defined
     vlan_optimization: Literal["prune", "configured", "none"]  # FortiLink VLAN optimization. | Default: configured
     vlan_identity: Literal["description", "name"]  # Identity of the VLAN. Commonly used for RADIUS Tun | Default: name
-    disable_discovery: list[dict[str, Any]]  # Prevent this FortiSwitch from discovering.
+    disable_discovery: list[GlobalDisablediscoveryItem]  # Prevent this FortiSwitch from discovering.
     mac_retention_period: int  # Time in hours after which an inactive MAC is remov | Default: 24 | Min: 0 | Max: 168
     default_virtual_switch_vlan: str  # Default VLAN for ports when added to the virtual-s | MaxLen: 15
     dhcp_server_access_list: Literal["enable", "disable"]  # Enable/disable DHCP snooping server access list. | Default: disable
@@ -44,36 +82,15 @@ class GlobalPayload(TypedDict, total=False):
     bounce_quarantined_link: Literal["disable", "enable"]  # Enable/disable bouncing | Default: disable
     quarantine_mode: Literal["by-vlan", "by-redirect"]  # Quarantine mode. | Default: by-vlan
     update_user_device: Literal["mac-cache", "lldp", "dhcp-snooping", "l2-db", "l3-db"]  # Control which sources update the device user list. | Default: mac-cache lldp dhcp-snooping l2-db l3-db
-    custom_command: list[dict[str, Any]]  # List of custom commands to be pushed to all FortiS
+    custom_command: list[GlobalCustomcommandItem]  # List of custom commands to be pushed to all FortiS
     fips_enforce: Literal["disable", "enable"]  # Enable/disable enforcement of FIPS on managed Fort | Default: enable
     firmware_provision_on_authorization: Literal["enable", "disable"]  # Enable/disable automatic provisioning of latest fi | Default: disable
     switch_on_deauth: Literal["no-op", "factory-reset"]  # No-operation/Factory-reset the managed FortiSwitch | Default: no-op
     firewall_auth_user_hold_period: int  # Time period in minutes to hold firewall authentica | Default: 5 | Min: 5 | Max: 1440
 
-# Nested TypedDicts for table field children (dict mode)
-
-class GlobalDisablediscoveryItem(TypedDict):
-    """Type hints for disable-discovery table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    name: str  # FortiSwitch Serial-number. | MaxLen: 79
-
-
-class GlobalCustomcommandItem(TypedDict):
-    """Type hints for custom-command table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    command_entry: str  # List of FortiSwitch commands. | MaxLen: 35
-    command_name: str  # Name of custom command to push to all FortiSwitche | MaxLen: 35
-
-
-# Nested classes for table field children (object mode)
+# ============================================================================
+# Nested classes for table field children (object mode - for API responses)
+# ============================================================================
 
 @final
 class GlobalDisablediscoveryObject:
@@ -245,6 +262,9 @@ class GlobalObject:
     # Common API response fields
     status: str
     http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
     vdom: str | None
     
     # Methods from FortiObject
@@ -478,7 +498,7 @@ class Global:
         vlan_all_mode: Literal["all", "defined"] | None = ...,
         vlan_optimization: Literal["prune", "configured", "none"] | None = ...,
         vlan_identity: Literal["description", "name"] | None = ...,
-        disable_discovery: str | list[str] | list[dict[str, Any]] | None = ...,
+        disable_discovery: str | list[GlobalDisablediscoveryItem] | None = ...,
         mac_retention_period: int | None = ...,
         default_virtual_switch_vlan: str | None = ...,
         dhcp_server_access_list: Literal["enable", "disable"] | None = ...,
@@ -495,7 +515,7 @@ class Global:
         bounce_quarantined_link: Literal["disable", "enable"] | None = ...,
         quarantine_mode: Literal["by-vlan", "by-redirect"] | None = ...,
         update_user_device: Literal["mac-cache", "lldp", "dhcp-snooping", "l2-db", "l3-db"] | list[str] | None = ...,
-        custom_command: str | list[str] | list[dict[str, Any]] | None = ...,
+        custom_command: str | list[GlobalCustomcommandItem] | None = ...,
         fips_enforce: Literal["disable", "enable"] | None = ...,
         firmware_provision_on_authorization: Literal["enable", "disable"] | None = ...,
         switch_on_deauth: Literal["no-op", "factory-reset"] | None = ...,
@@ -512,7 +532,7 @@ class Global:
         vlan_all_mode: Literal["all", "defined"] | None = ...,
         vlan_optimization: Literal["prune", "configured", "none"] | None = ...,
         vlan_identity: Literal["description", "name"] | None = ...,
-        disable_discovery: str | list[str] | list[dict[str, Any]] | None = ...,
+        disable_discovery: str | list[GlobalDisablediscoveryItem] | None = ...,
         mac_retention_period: int | None = ...,
         default_virtual_switch_vlan: str | None = ...,
         dhcp_server_access_list: Literal["enable", "disable"] | None = ...,
@@ -529,7 +549,7 @@ class Global:
         bounce_quarantined_link: Literal["disable", "enable"] | None = ...,
         quarantine_mode: Literal["by-vlan", "by-redirect"] | None = ...,
         update_user_device: Literal["mac-cache", "lldp", "dhcp-snooping", "l2-db", "l3-db"] | list[str] | None = ...,
-        custom_command: str | list[str] | list[dict[str, Any]] | None = ...,
+        custom_command: str | list[GlobalCustomcommandItem] | None = ...,
         fips_enforce: Literal["disable", "enable"] | None = ...,
         firmware_provision_on_authorization: Literal["enable", "disable"] | None = ...,
         switch_on_deauth: Literal["no-op", "factory-reset"] | None = ...,
@@ -547,7 +567,7 @@ class Global:
         vlan_all_mode: Literal["all", "defined"] | None = ...,
         vlan_optimization: Literal["prune", "configured", "none"] | None = ...,
         vlan_identity: Literal["description", "name"] | None = ...,
-        disable_discovery: str | list[str] | list[dict[str, Any]] | None = ...,
+        disable_discovery: str | list[GlobalDisablediscoveryItem] | None = ...,
         mac_retention_period: int | None = ...,
         default_virtual_switch_vlan: str | None = ...,
         dhcp_server_access_list: Literal["enable", "disable"] | None = ...,
@@ -564,7 +584,7 @@ class Global:
         bounce_quarantined_link: Literal["disable", "enable"] | None = ...,
         quarantine_mode: Literal["by-vlan", "by-redirect"] | None = ...,
         update_user_device: Literal["mac-cache", "lldp", "dhcp-snooping", "l2-db", "l3-db"] | list[str] | None = ...,
-        custom_command: str | list[str] | list[dict[str, Any]] | None = ...,
+        custom_command: str | list[GlobalCustomcommandItem] | None = ...,
         fips_enforce: Literal["disable", "enable"] | None = ...,
         firmware_provision_on_authorization: Literal["enable", "disable"] | None = ...,
         switch_on_deauth: Literal["no-op", "factory-reset"] | None = ...,
@@ -580,7 +600,7 @@ class Global:
         vlan_all_mode: Literal["all", "defined"] | None = ...,
         vlan_optimization: Literal["prune", "configured", "none"] | None = ...,
         vlan_identity: Literal["description", "name"] | None = ...,
-        disable_discovery: str | list[str] | list[dict[str, Any]] | None = ...,
+        disable_discovery: str | list[GlobalDisablediscoveryItem] | None = ...,
         mac_retention_period: int | None = ...,
         default_virtual_switch_vlan: str | None = ...,
         dhcp_server_access_list: Literal["enable", "disable"] | None = ...,
@@ -597,7 +617,7 @@ class Global:
         bounce_quarantined_link: Literal["disable", "enable"] | None = ...,
         quarantine_mode: Literal["by-vlan", "by-redirect"] | None = ...,
         update_user_device: Literal["mac-cache", "lldp", "dhcp-snooping", "l2-db", "l3-db"] | list[str] | None = ...,
-        custom_command: str | list[str] | list[dict[str, Any]] | None = ...,
+        custom_command: str | list[GlobalCustomcommandItem] | None = ...,
         fips_enforce: Literal["disable", "enable"] | None = ...,
         firmware_provision_on_authorization: Literal["enable", "disable"] | None = ...,
         switch_on_deauth: Literal["no-op", "factory-reset"] | None = ...,
@@ -619,7 +639,7 @@ class Global:
         vlan_all_mode: Literal["all", "defined"] | None = ...,
         vlan_optimization: Literal["prune", "configured", "none"] | None = ...,
         vlan_identity: Literal["description", "name"] | None = ...,
-        disable_discovery: str | list[str] | list[dict[str, Any]] | None = ...,
+        disable_discovery: str | list[GlobalDisablediscoveryItem] | None = ...,
         mac_retention_period: int | None = ...,
         default_virtual_switch_vlan: str | None = ...,
         dhcp_server_access_list: Literal["enable", "disable"] | None = ...,
@@ -636,7 +656,7 @@ class Global:
         bounce_quarantined_link: Literal["disable", "enable"] | None = ...,
         quarantine_mode: Literal["by-vlan", "by-redirect"] | None = ...,
         update_user_device: Literal["mac-cache", "lldp", "dhcp-snooping", "l2-db", "l3-db"] | list[str] | None = ...,
-        custom_command: str | list[str] | list[dict[str, Any]] | None = ...,
+        custom_command: str | list[GlobalCustomcommandItem] | None = ...,
         fips_enforce: Literal["disable", "enable"] | None = ...,
         firmware_provision_on_authorization: Literal["enable", "disable"] | None = ...,
         switch_on_deauth: Literal["no-op", "factory-reset"] | None = ...,

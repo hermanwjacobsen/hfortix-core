@@ -2,7 +2,32 @@ from typing import TypedDict, Literal, Any, Coroutine, Union, overload, Generato
 from typing_extensions import NotRequired
 from hfortix_fortios.models import FortiObject, FortiObjectList
 
-# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional via total=False)
+# ============================================================================
+# Nested TypedDicts for table field children (dict mode)
+# These MUST be defined before the Payload class to use them as type hints
+# ============================================================================
+
+class MpskProfileMpskgroupItem(TypedDict, total=False):
+    """Type hints for mpsk-group table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: MpskProfileMpskgroupItem = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    
+    name: str  # MPSK group name. | MaxLen: 35
+    vlan_type: Literal["no-vlan", "fixed-vlan"]  # MPSK group VLAN options. | Default: no-vlan
+    vlan_id: int  # Optional VLAN ID. | Default: 0 | Min: 1 | Max: 4094
+    mpsk_key: str  # List of multiple PSK entries.
+
+
+# ============================================================================
+# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional)
+# ============================================================================
 # NOTE: We intentionally DON'T use NotRequired wrapper because:
 # 1. total=False already makes all fields optional
 # 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
@@ -27,24 +52,11 @@ class MpskProfilePayload(TypedDict, total=False):
     mpsk_external_server_auth: Literal["enable", "disable"]  # Enable/Disable MPSK external server authentication | Default: disable
     mpsk_external_server: str  # RADIUS server to be used to authenticate MPSK user | MaxLen: 35
     mpsk_type: Literal["wpa2-personal", "wpa3-sae", "wpa3-sae-transition"]  # Select the security type of keys for this profile. | Default: wpa2-personal
-    mpsk_group: list[dict[str, Any]]  # List of multiple PSK groups.
+    mpsk_group: list[MpskProfileMpskgroupItem]  # List of multiple PSK groups.
 
-# Nested TypedDicts for table field children (dict mode)
-
-class MpskProfileMpskgroupItem(TypedDict):
-    """Type hints for mpsk-group table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    name: str  # MPSK group name. | MaxLen: 35
-    vlan_type: Literal["no-vlan", "fixed-vlan"]  # MPSK group VLAN options. | Default: no-vlan
-    vlan_id: int  # Optional VLAN ID. | Default: 0 | Min: 1 | Max: 4094
-    mpsk_key: str  # List of multiple PSK entries.
-
-
-# Nested classes for table field children (object mode)
+# ============================================================================
+# Nested classes for table field children (object mode - for API responses)
+# ============================================================================
 
 @final
 class MpskProfileMpskgroupObject:
@@ -125,6 +137,9 @@ class MpskProfileObject:
     # Common API response fields
     status: str
     http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
     vdom: str | None
     
     # Methods from FortiObject
@@ -359,7 +374,7 @@ class MpskProfile:
         mpsk_external_server_auth: Literal["enable", "disable"] | None = ...,
         mpsk_external_server: str | None = ...,
         mpsk_type: Literal["wpa2-personal", "wpa3-sae", "wpa3-sae-transition"] | None = ...,
-        mpsk_group: str | list[str] | list[dict[str, Any]] | None = ...,
+        mpsk_group: str | list[MpskProfileMpskgroupItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> MpskProfileObject: ...
     
@@ -372,7 +387,7 @@ class MpskProfile:
         mpsk_external_server_auth: Literal["enable", "disable"] | None = ...,
         mpsk_external_server: str | None = ...,
         mpsk_type: Literal["wpa2-personal", "wpa3-sae", "wpa3-sae-transition"] | None = ...,
-        mpsk_group: str | list[str] | list[dict[str, Any]] | None = ...,
+        mpsk_group: str | list[MpskProfileMpskgroupItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -386,7 +401,7 @@ class MpskProfile:
         mpsk_external_server_auth: Literal["enable", "disable"] | None = ...,
         mpsk_external_server: str | None = ...,
         mpsk_type: Literal["wpa2-personal", "wpa3-sae", "wpa3-sae-transition"] | None = ...,
-        mpsk_group: str | list[str] | list[dict[str, Any]] | None = ...,
+        mpsk_group: str | list[MpskProfileMpskgroupItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -398,7 +413,7 @@ class MpskProfile:
         mpsk_external_server_auth: Literal["enable", "disable"] | None = ...,
         mpsk_external_server: str | None = ...,
         mpsk_type: Literal["wpa2-personal", "wpa3-sae", "wpa3-sae-transition"] | None = ...,
-        mpsk_group: str | list[str] | list[dict[str, Any]] | None = ...,
+        mpsk_group: str | list[MpskProfileMpskgroupItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -412,7 +427,7 @@ class MpskProfile:
         mpsk_external_server_auth: Literal["enable", "disable"] | None = ...,
         mpsk_external_server: str | None = ...,
         mpsk_type: Literal["wpa2-personal", "wpa3-sae", "wpa3-sae-transition"] | None = ...,
-        mpsk_group: str | list[str] | list[dict[str, Any]] | None = ...,
+        mpsk_group: str | list[MpskProfileMpskgroupItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> MpskProfileObject: ...
     
@@ -425,7 +440,7 @@ class MpskProfile:
         mpsk_external_server_auth: Literal["enable", "disable"] | None = ...,
         mpsk_external_server: str | None = ...,
         mpsk_type: Literal["wpa2-personal", "wpa3-sae", "wpa3-sae-transition"] | None = ...,
-        mpsk_group: str | list[str] | list[dict[str, Any]] | None = ...,
+        mpsk_group: str | list[MpskProfileMpskgroupItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -439,7 +454,7 @@ class MpskProfile:
         mpsk_external_server_auth: Literal["enable", "disable"] | None = ...,
         mpsk_external_server: str | None = ...,
         mpsk_type: Literal["wpa2-personal", "wpa3-sae", "wpa3-sae-transition"] | None = ...,
-        mpsk_group: str | list[str] | list[dict[str, Any]] | None = ...,
+        mpsk_group: str | list[MpskProfileMpskgroupItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -451,7 +466,7 @@ class MpskProfile:
         mpsk_external_server_auth: Literal["enable", "disable"] | None = ...,
         mpsk_external_server: str | None = ...,
         mpsk_type: Literal["wpa2-personal", "wpa3-sae", "wpa3-sae-transition"] | None = ...,
-        mpsk_group: str | list[str] | list[dict[str, Any]] | None = ...,
+        mpsk_group: str | list[MpskProfileMpskgroupItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -498,7 +513,7 @@ class MpskProfile:
         mpsk_external_server_auth: Literal["enable", "disable"] | None = ...,
         mpsk_external_server: str | None = ...,
         mpsk_type: Literal["wpa2-personal", "wpa3-sae", "wpa3-sae-transition"] | None = ...,
-        mpsk_group: str | list[str] | list[dict[str, Any]] | None = ...,
+        mpsk_group: str | list[MpskProfileMpskgroupItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     

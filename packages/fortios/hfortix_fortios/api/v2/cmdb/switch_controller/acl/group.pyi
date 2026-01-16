@@ -2,7 +2,29 @@ from typing import TypedDict, Literal, Any, Coroutine, Union, overload, Generato
 from typing_extensions import NotRequired
 from hfortix_fortios.models import FortiObject, FortiObjectList
 
-# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional via total=False)
+# ============================================================================
+# Nested TypedDicts for table field children (dict mode)
+# These MUST be defined before the Payload class to use them as type hints
+# ============================================================================
+
+class GroupIngressItem(TypedDict, total=False):
+    """Type hints for ingress table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: GroupIngressItem = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    
+    id: int  # ACL ID. | Default: 0 | Min: 0 | Max: 4294967295
+
+
+# ============================================================================
+# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional)
+# ============================================================================
 # NOTE: We intentionally DON'T use NotRequired wrapper because:
 # 1. total=False already makes all fields optional
 # 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
@@ -18,21 +40,11 @@ class GroupPayload(TypedDict, total=False):
         }
     """
     name: str  # Group name. | MaxLen: 63
-    ingress: list[dict[str, Any]]  # Configure ingress ACL policies in group.
+    ingress: list[GroupIngressItem]  # Configure ingress ACL policies in group.
 
-# Nested TypedDicts for table field children (dict mode)
-
-class GroupIngressItem(TypedDict):
-    """Type hints for ingress table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    id: int  # ACL ID. | Default: 0 | Min: 0 | Max: 4294967295
-
-
-# Nested classes for table field children (object mode)
+# ============================================================================
+# Nested classes for table field children (object mode - for API responses)
+# ============================================================================
 
 @final
 class GroupIngressObject:
@@ -95,6 +107,9 @@ class GroupObject:
     # Common API response fields
     status: str
     http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
     vdom: str | None
     
     # Methods from FortiObject
@@ -325,7 +340,7 @@ class Group:
         self,
         payload_dict: GroupPayload | None = ...,
         name: str | None = ...,
-        ingress: str | list[str] | list[dict[str, Any]] | None = ...,
+        ingress: str | list[GroupIngressItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> GroupObject: ...
     
@@ -334,7 +349,7 @@ class Group:
         self,
         payload_dict: GroupPayload | None = ...,
         name: str | None = ...,
-        ingress: str | list[str] | list[dict[str, Any]] | None = ...,
+        ingress: str | list[GroupIngressItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -344,7 +359,7 @@ class Group:
         self,
         payload_dict: GroupPayload | None = ...,
         name: str | None = ...,
-        ingress: str | list[str] | list[dict[str, Any]] | None = ...,
+        ingress: str | list[GroupIngressItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -352,7 +367,7 @@ class Group:
         self,
         payload_dict: GroupPayload | None = ...,
         name: str | None = ...,
-        ingress: str | list[str] | list[dict[str, Any]] | None = ...,
+        ingress: str | list[GroupIngressItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -362,7 +377,7 @@ class Group:
         self,
         payload_dict: GroupPayload | None = ...,
         name: str | None = ...,
-        ingress: str | list[str] | list[dict[str, Any]] | None = ...,
+        ingress: str | list[GroupIngressItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> GroupObject: ...
     
@@ -371,7 +386,7 @@ class Group:
         self,
         payload_dict: GroupPayload | None = ...,
         name: str | None = ...,
-        ingress: str | list[str] | list[dict[str, Any]] | None = ...,
+        ingress: str | list[GroupIngressItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -381,7 +396,7 @@ class Group:
         self,
         payload_dict: GroupPayload | None = ...,
         name: str | None = ...,
-        ingress: str | list[str] | list[dict[str, Any]] | None = ...,
+        ingress: str | list[GroupIngressItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -389,7 +404,7 @@ class Group:
         self,
         payload_dict: GroupPayload | None = ...,
         name: str | None = ...,
-        ingress: str | list[str] | list[dict[str, Any]] | None = ...,
+        ingress: str | list[GroupIngressItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -432,7 +447,7 @@ class Group:
         self,
         payload_dict: GroupPayload | None = ...,
         name: str | None = ...,
-        ingress: str | list[str] | list[dict[str, Any]] | None = ...,
+        ingress: str | list[GroupIngressItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     

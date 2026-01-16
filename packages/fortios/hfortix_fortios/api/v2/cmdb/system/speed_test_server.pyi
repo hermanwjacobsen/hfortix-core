@@ -2,7 +2,36 @@ from typing import TypedDict, Literal, Any, Coroutine, Union, overload, Generato
 from typing_extensions import NotRequired
 from hfortix_fortios.models import FortiObject, FortiObjectList
 
-# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional via total=False)
+# ============================================================================
+# Nested TypedDicts for table field children (dict mode)
+# These MUST be defined before the Payload class to use them as type hints
+# ============================================================================
+
+class SpeedTestServerHostItem(TypedDict, total=False):
+    """Type hints for host table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: SpeedTestServerHostItem = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    
+    id: int  # Server host ID. | Default: 0 | Min: 0 | Max: 4294967295
+    ip: str  # Server host IPv4 address. | Default: 0.0.0.0
+    port: int  # Server host port number to communicate with client | Default: 5204 | Min: 1 | Max: 65535
+    user: str  # Speed test host user name. | MaxLen: 64
+    password: str  # Speed test host password. | MaxLen: 128
+    longitude: str  # Speed test host longitude. | MaxLen: 7
+    latitude: str  # Speed test host latitude. | MaxLen: 7
+    distance: int  # Speed test host distance. | Default: 0 | Min: 0 | Max: 4294967295
+
+
+# ============================================================================
+# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional)
+# ============================================================================
 # NOTE: We intentionally DON'T use NotRequired wrapper because:
 # 1. total=False already makes all fields optional
 # 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
@@ -19,28 +48,11 @@ class SpeedTestServerPayload(TypedDict, total=False):
     """
     name: str  # Speed test server name. | MaxLen: 35
     timestamp: int  # Speed test server timestamp. | Default: 0 | Min: 0 | Max: 4294967295
-    host: list[dict[str, Any]]  # Hosts of the server.
+    host: list[SpeedTestServerHostItem]  # Hosts of the server.
 
-# Nested TypedDicts for table field children (dict mode)
-
-class SpeedTestServerHostItem(TypedDict):
-    """Type hints for host table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    id: int  # Server host ID. | Default: 0 | Min: 0 | Max: 4294967295
-    ip: str  # Server host IPv4 address. | Default: 0.0.0.0
-    port: int  # Server host port number to communicate with client | Default: 5204 | Min: 1 | Max: 65535
-    user: str  # Speed test host user name. | MaxLen: 64
-    password: str  # Speed test host password. | MaxLen: 128
-    longitude: str  # Speed test host longitude. | MaxLen: 7
-    latitude: str  # Speed test host latitude. | MaxLen: 7
-    distance: int  # Speed test host distance. | Default: 0 | Min: 0 | Max: 4294967295
-
-
-# Nested classes for table field children (object mode)
+# ============================================================================
+# Nested classes for table field children (object mode - for API responses)
+# ============================================================================
 
 @final
 class SpeedTestServerHostObject:
@@ -120,6 +132,9 @@ class SpeedTestServerObject:
     # Common API response fields
     status: str
     http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
     vdom: str | None
     
     # Methods from FortiObject
@@ -351,7 +366,7 @@ class SpeedTestServer:
         payload_dict: SpeedTestServerPayload | None = ...,
         name: str | None = ...,
         timestamp: int | None = ...,
-        host: str | list[str] | list[dict[str, Any]] | None = ...,
+        host: str | list[SpeedTestServerHostItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> SpeedTestServerObject: ...
     
@@ -361,7 +376,7 @@ class SpeedTestServer:
         payload_dict: SpeedTestServerPayload | None = ...,
         name: str | None = ...,
         timestamp: int | None = ...,
-        host: str | list[str] | list[dict[str, Any]] | None = ...,
+        host: str | list[SpeedTestServerHostItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -372,7 +387,7 @@ class SpeedTestServer:
         payload_dict: SpeedTestServerPayload | None = ...,
         name: str | None = ...,
         timestamp: int | None = ...,
-        host: str | list[str] | list[dict[str, Any]] | None = ...,
+        host: str | list[SpeedTestServerHostItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -381,7 +396,7 @@ class SpeedTestServer:
         payload_dict: SpeedTestServerPayload | None = ...,
         name: str | None = ...,
         timestamp: int | None = ...,
-        host: str | list[str] | list[dict[str, Any]] | None = ...,
+        host: str | list[SpeedTestServerHostItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -392,7 +407,7 @@ class SpeedTestServer:
         payload_dict: SpeedTestServerPayload | None = ...,
         name: str | None = ...,
         timestamp: int | None = ...,
-        host: str | list[str] | list[dict[str, Any]] | None = ...,
+        host: str | list[SpeedTestServerHostItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> SpeedTestServerObject: ...
     
@@ -402,7 +417,7 @@ class SpeedTestServer:
         payload_dict: SpeedTestServerPayload | None = ...,
         name: str | None = ...,
         timestamp: int | None = ...,
-        host: str | list[str] | list[dict[str, Any]] | None = ...,
+        host: str | list[SpeedTestServerHostItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -413,7 +428,7 @@ class SpeedTestServer:
         payload_dict: SpeedTestServerPayload | None = ...,
         name: str | None = ...,
         timestamp: int | None = ...,
-        host: str | list[str] | list[dict[str, Any]] | None = ...,
+        host: str | list[SpeedTestServerHostItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -422,7 +437,7 @@ class SpeedTestServer:
         payload_dict: SpeedTestServerPayload | None = ...,
         name: str | None = ...,
         timestamp: int | None = ...,
-        host: str | list[str] | list[dict[str, Any]] | None = ...,
+        host: str | list[SpeedTestServerHostItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -466,7 +481,7 @@ class SpeedTestServer:
         payload_dict: SpeedTestServerPayload | None = ...,
         name: str | None = ...,
         timestamp: int | None = ...,
-        host: str | list[str] | list[dict[str, Any]] | None = ...,
+        host: str | list[SpeedTestServerHostItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     

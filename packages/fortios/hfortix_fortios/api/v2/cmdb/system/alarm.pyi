@@ -2,32 +2,21 @@ from typing import TypedDict, Literal, Any, Coroutine, Union, overload, Generato
 from typing_extensions import NotRequired
 from hfortix_fortios.models import FortiObject, FortiObjectList
 
-# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional via total=False)
-# NOTE: We intentionally DON'T use NotRequired wrapper because:
-# 1. total=False already makes all fields optional
-# 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
-class AlarmPayload(TypedDict, total=False):
-    """
-    Type hints for system/alarm payload fields.
-    
-    Configure alarm.
-    
-    **Usage:**
-        payload: AlarmPayload = {
-            "field": "value",  # <- autocomplete shows all fields
-        }
-    """
-    status: Literal["enable", "disable"]  # Enable/disable alarm. | Default: disable
-    audible: Literal["enable", "disable"]  # Enable/disable audible alarm. | Default: disable
-    groups: list[dict[str, Any]]  # Alarm groups.
-
+# ============================================================================
 # Nested TypedDicts for table field children (dict mode)
+# These MUST be defined before the Payload class to use them as type hints
+# ============================================================================
 
-class AlarmGroupsItem(TypedDict):
+class AlarmGroupsItem(TypedDict, total=False):
     """Type hints for groups table item fields (dict mode).
     
     Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: AlarmGroupsItem = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
     """
     
     id: int  # Group ID. | Default: 0 | Min: 0 | Max: 4294967295
@@ -46,7 +35,30 @@ class AlarmGroupsItem(TypedDict):
     fw_policy_id_threshold: int  # Firewall policy ID threshold. | Default: 0 | Min: 0 | Max: 1024
 
 
-# Nested classes for table field children (object mode)
+# ============================================================================
+# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional)
+# ============================================================================
+# NOTE: We intentionally DON'T use NotRequired wrapper because:
+# 1. total=False already makes all fields optional
+# 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
+class AlarmPayload(TypedDict, total=False):
+    """
+    Type hints for system/alarm payload fields.
+    
+    Configure alarm.
+    
+    **Usage:**
+        payload: AlarmPayload = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    status: Literal["enable", "disable"]  # Enable/disable alarm. | Default: disable
+    audible: Literal["enable", "disable"]  # Enable/disable audible alarm. | Default: disable
+    groups: list[AlarmGroupsItem]  # Alarm groups.
+
+# ============================================================================
+# Nested classes for table field children (object mode - for API responses)
+# ============================================================================
 
 @final
 class AlarmGroupsObject:
@@ -138,6 +150,9 @@ class AlarmObject:
     # Common API response fields
     status: str
     http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
     vdom: str | None
     
     # Methods from FortiObject
@@ -368,7 +383,7 @@ class Alarm:
         payload_dict: AlarmPayload | None = ...,
         status: Literal["enable", "disable"] | None = ...,
         audible: Literal["enable", "disable"] | None = ...,
-        groups: str | list[str] | list[dict[str, Any]] | None = ...,
+        groups: str | list[AlarmGroupsItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> AlarmObject: ...
     
@@ -378,7 +393,7 @@ class Alarm:
         payload_dict: AlarmPayload | None = ...,
         status: Literal["enable", "disable"] | None = ...,
         audible: Literal["enable", "disable"] | None = ...,
-        groups: str | list[str] | list[dict[str, Any]] | None = ...,
+        groups: str | list[AlarmGroupsItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -389,7 +404,7 @@ class Alarm:
         payload_dict: AlarmPayload | None = ...,
         status: Literal["enable", "disable"] | None = ...,
         audible: Literal["enable", "disable"] | None = ...,
-        groups: str | list[str] | list[dict[str, Any]] | None = ...,
+        groups: str | list[AlarmGroupsItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -398,7 +413,7 @@ class Alarm:
         payload_dict: AlarmPayload | None = ...,
         status: Literal["enable", "disable"] | None = ...,
         audible: Literal["enable", "disable"] | None = ...,
-        groups: str | list[str] | list[dict[str, Any]] | None = ...,
+        groups: str | list[AlarmGroupsItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -413,7 +428,7 @@ class Alarm:
         payload_dict: AlarmPayload | None = ...,
         status: Literal["enable", "disable"] | None = ...,
         audible: Literal["enable", "disable"] | None = ...,
-        groups: str | list[str] | list[dict[str, Any]] | None = ...,
+        groups: str | list[AlarmGroupsItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     

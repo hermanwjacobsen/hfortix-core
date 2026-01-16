@@ -2,31 +2,21 @@ from typing import TypedDict, Literal, Any, Coroutine, Union, overload, Generato
 from typing_extensions import NotRequired
 from hfortix_fortios.models import FortiObject, FortiObjectList
 
-# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional via total=False)
-# NOTE: We intentionally DON'T use NotRequired wrapper because:
-# 1. total=False already makes all fields optional
-# 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
-class PcpServerPayload(TypedDict, total=False):
-    """
-    Type hints for system/pcp_server payload fields.
-    
-    Configure PCP server information.
-    
-    **Usage:**
-        payload: PcpServerPayload = {
-            "field": "value",  # <- autocomplete shows all fields
-        }
-    """
-    status: Literal["enable", "disable"]  # Enable/disable PCP server. | Default: disable
-    pools: list[dict[str, Any]]  # Configure PCP pools.
-
+# ============================================================================
 # Nested TypedDicts for table field children (dict mode)
+# These MUST be defined before the Payload class to use them as type hints
+# ============================================================================
 
-class PcpServerPoolsItem(TypedDict):
+class PcpServerPoolsItem(TypedDict, total=False):
     """Type hints for pools table item fields (dict mode).
     
     Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: PcpServerPoolsItem = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
     """
     
     name: str  # PCP pool name. | MaxLen: 79
@@ -50,7 +40,29 @@ class PcpServerPoolsItem(TypedDict):
     recycle_delay: int  # Minimum delay (in seconds) the PCP Server will wai | Default: 0 | Min: 0 | Max: 3600
 
 
-# Nested classes for table field children (object mode)
+# ============================================================================
+# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional)
+# ============================================================================
+# NOTE: We intentionally DON'T use NotRequired wrapper because:
+# 1. total=False already makes all fields optional
+# 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
+class PcpServerPayload(TypedDict, total=False):
+    """
+    Type hints for system/pcp_server payload fields.
+    
+    Configure PCP server information.
+    
+    **Usage:**
+        payload: PcpServerPayload = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    status: Literal["enable", "disable"]  # Enable/disable PCP server. | Default: disable
+    pools: list[PcpServerPoolsItem]  # Configure PCP pools.
+
+# ============================================================================
+# Nested classes for table field children (object mode - for API responses)
+# ============================================================================
 
 @final
 class PcpServerPoolsObject:
@@ -149,6 +161,9 @@ class PcpServerObject:
     # Common API response fields
     status: str
     http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
     vdom: str | None
     
     # Methods from FortiObject
@@ -378,7 +393,7 @@ class PcpServer:
         self,
         payload_dict: PcpServerPayload | None = ...,
         status: Literal["enable", "disable"] | None = ...,
-        pools: str | list[str] | list[dict[str, Any]] | None = ...,
+        pools: str | list[PcpServerPoolsItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> PcpServerObject: ...
     
@@ -387,7 +402,7 @@ class PcpServer:
         self,
         payload_dict: PcpServerPayload | None = ...,
         status: Literal["enable", "disable"] | None = ...,
-        pools: str | list[str] | list[dict[str, Any]] | None = ...,
+        pools: str | list[PcpServerPoolsItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -397,7 +412,7 @@ class PcpServer:
         self,
         payload_dict: PcpServerPayload | None = ...,
         status: Literal["enable", "disable"] | None = ...,
-        pools: str | list[str] | list[dict[str, Any]] | None = ...,
+        pools: str | list[PcpServerPoolsItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -405,7 +420,7 @@ class PcpServer:
         self,
         payload_dict: PcpServerPayload | None = ...,
         status: Literal["enable", "disable"] | None = ...,
-        pools: str | list[str] | list[dict[str, Any]] | None = ...,
+        pools: str | list[PcpServerPoolsItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -419,7 +434,7 @@ class PcpServer:
         self,
         payload_dict: PcpServerPayload | None = ...,
         status: Literal["enable", "disable"] | None = ...,
-        pools: str | list[str] | list[dict[str, Any]] | None = ...,
+        pools: str | list[PcpServerPoolsItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     

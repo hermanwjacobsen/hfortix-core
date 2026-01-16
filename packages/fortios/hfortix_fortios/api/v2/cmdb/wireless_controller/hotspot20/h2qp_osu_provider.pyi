@@ -2,7 +2,48 @@ from typing import TypedDict, Literal, Any, Coroutine, Union, overload, Generato
 from typing_extensions import NotRequired
 from hfortix_fortios.models import FortiObject, FortiObjectList
 
-# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional via total=False)
+# ============================================================================
+# Nested TypedDicts for table field children (dict mode)
+# These MUST be defined before the Payload class to use them as type hints
+# ============================================================================
+
+class H2qpOsuProviderFriendlynameItem(TypedDict, total=False):
+    """Type hints for friendly-name table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: H2qpOsuProviderFriendlynameItem = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    
+    index: int  # OSU provider friendly name index. | Default: 0 | Min: 1 | Max: 10
+    lang: str  # Language code. | Default: eng | MaxLen: 3
+    friendly_name: str  # OSU provider friendly name. | MaxLen: 252
+
+
+class H2qpOsuProviderServicedescriptionItem(TypedDict, total=False):
+    """Type hints for service-description table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: H2qpOsuProviderServicedescriptionItem = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    
+    service_id: int  # OSU service ID. | Default: 0 | Min: 0 | Max: 4294967295
+    lang: str  # Language code. | Default: eng | MaxLen: 3
+    service_description: str  # Service description. | MaxLen: 252
+
+
+# ============================================================================
+# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional)
+# ============================================================================
 # NOTE: We intentionally DON'T use NotRequired wrapper because:
 # 1. total=False already makes all fields optional
 # 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
@@ -23,40 +64,16 @@ class H2qpOsuProviderPayload(TypedDict, total=False):
         }
     """
     name: str  # OSU provider ID. | MaxLen: 35
-    friendly_name: list[dict[str, Any]]  # OSU provider friendly name.
+    friendly_name: list[H2qpOsuProviderFriendlynameItem]  # OSU provider friendly name.
     server_uri: str  # Server URI. | MaxLen: 255
     osu_method: Literal["oma-dm", "soap-xml-spp", "reserved"]  # OSU method list.
     osu_nai: str  # OSU NAI. | MaxLen: 255
-    service_description: list[dict[str, Any]]  # OSU service name.
+    service_description: list[H2qpOsuProviderServicedescriptionItem]  # OSU service name.
     icon: str  # OSU provider icon. | MaxLen: 35
 
-# Nested TypedDicts for table field children (dict mode)
-
-class H2qpOsuProviderFriendlynameItem(TypedDict):
-    """Type hints for friendly-name table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    index: int  # OSU provider friendly name index. | Default: 0 | Min: 1 | Max: 10
-    lang: str  # Language code. | Default: eng | MaxLen: 3
-    friendly_name: str  # OSU provider friendly name. | MaxLen: 252
-
-
-class H2qpOsuProviderServicedescriptionItem(TypedDict):
-    """Type hints for service-description table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    service_id: int  # OSU service ID. | Default: 0 | Min: 0 | Max: 4294967295
-    lang: str  # Language code. | Default: eng | MaxLen: 3
-    service_description: str  # Service description. | MaxLen: 252
-
-
-# Nested classes for table field children (object mode)
+# ============================================================================
+# Nested classes for table field children (object mode - for API responses)
+# ============================================================================
 
 @final
 class H2qpOsuProviderFriendlynameObject:
@@ -174,6 +191,9 @@ class H2qpOsuProviderObject:
     # Common API response fields
     status: str
     http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
     vdom: str | None
     
     # Methods from FortiObject
@@ -404,11 +424,11 @@ class H2qpOsuProvider:
         self,
         payload_dict: H2qpOsuProviderPayload | None = ...,
         name: str | None = ...,
-        friendly_name: str | list[str] | list[dict[str, Any]] | None = ...,
+        friendly_name: str | list[H2qpOsuProviderFriendlynameItem] | None = ...,
         server_uri: str | None = ...,
         osu_method: Literal["oma-dm", "soap-xml-spp", "reserved"] | list[str] | None = ...,
         osu_nai: str | None = ...,
-        service_description: str | list[str] | list[dict[str, Any]] | None = ...,
+        service_description: str | list[H2qpOsuProviderServicedescriptionItem] | None = ...,
         icon: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> H2qpOsuProviderObject: ...
@@ -418,11 +438,11 @@ class H2qpOsuProvider:
         self,
         payload_dict: H2qpOsuProviderPayload | None = ...,
         name: str | None = ...,
-        friendly_name: str | list[str] | list[dict[str, Any]] | None = ...,
+        friendly_name: str | list[H2qpOsuProviderFriendlynameItem] | None = ...,
         server_uri: str | None = ...,
         osu_method: Literal["oma-dm", "soap-xml-spp", "reserved"] | list[str] | None = ...,
         osu_nai: str | None = ...,
-        service_description: str | list[str] | list[dict[str, Any]] | None = ...,
+        service_description: str | list[H2qpOsuProviderServicedescriptionItem] | None = ...,
         icon: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
@@ -433,11 +453,11 @@ class H2qpOsuProvider:
         self,
         payload_dict: H2qpOsuProviderPayload | None = ...,
         name: str | None = ...,
-        friendly_name: str | list[str] | list[dict[str, Any]] | None = ...,
+        friendly_name: str | list[H2qpOsuProviderFriendlynameItem] | None = ...,
         server_uri: str | None = ...,
         osu_method: Literal["oma-dm", "soap-xml-spp", "reserved"] | list[str] | None = ...,
         osu_nai: str | None = ...,
-        service_description: str | list[str] | list[dict[str, Any]] | None = ...,
+        service_description: str | list[H2qpOsuProviderServicedescriptionItem] | None = ...,
         icon: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
@@ -446,11 +466,11 @@ class H2qpOsuProvider:
         self,
         payload_dict: H2qpOsuProviderPayload | None = ...,
         name: str | None = ...,
-        friendly_name: str | list[str] | list[dict[str, Any]] | None = ...,
+        friendly_name: str | list[H2qpOsuProviderFriendlynameItem] | None = ...,
         server_uri: str | None = ...,
         osu_method: Literal["oma-dm", "soap-xml-spp", "reserved"] | list[str] | None = ...,
         osu_nai: str | None = ...,
-        service_description: str | list[str] | list[dict[str, Any]] | None = ...,
+        service_description: str | list[H2qpOsuProviderServicedescriptionItem] | None = ...,
         icon: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
@@ -461,11 +481,11 @@ class H2qpOsuProvider:
         self,
         payload_dict: H2qpOsuProviderPayload | None = ...,
         name: str | None = ...,
-        friendly_name: str | list[str] | list[dict[str, Any]] | None = ...,
+        friendly_name: str | list[H2qpOsuProviderFriendlynameItem] | None = ...,
         server_uri: str | None = ...,
         osu_method: Literal["oma-dm", "soap-xml-spp", "reserved"] | list[str] | None = ...,
         osu_nai: str | None = ...,
-        service_description: str | list[str] | list[dict[str, Any]] | None = ...,
+        service_description: str | list[H2qpOsuProviderServicedescriptionItem] | None = ...,
         icon: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> H2qpOsuProviderObject: ...
@@ -475,11 +495,11 @@ class H2qpOsuProvider:
         self,
         payload_dict: H2qpOsuProviderPayload | None = ...,
         name: str | None = ...,
-        friendly_name: str | list[str] | list[dict[str, Any]] | None = ...,
+        friendly_name: str | list[H2qpOsuProviderFriendlynameItem] | None = ...,
         server_uri: str | None = ...,
         osu_method: Literal["oma-dm", "soap-xml-spp", "reserved"] | list[str] | None = ...,
         osu_nai: str | None = ...,
-        service_description: str | list[str] | list[dict[str, Any]] | None = ...,
+        service_description: str | list[H2qpOsuProviderServicedescriptionItem] | None = ...,
         icon: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
@@ -490,11 +510,11 @@ class H2qpOsuProvider:
         self,
         payload_dict: H2qpOsuProviderPayload | None = ...,
         name: str | None = ...,
-        friendly_name: str | list[str] | list[dict[str, Any]] | None = ...,
+        friendly_name: str | list[H2qpOsuProviderFriendlynameItem] | None = ...,
         server_uri: str | None = ...,
         osu_method: Literal["oma-dm", "soap-xml-spp", "reserved"] | list[str] | None = ...,
         osu_nai: str | None = ...,
-        service_description: str | list[str] | list[dict[str, Any]] | None = ...,
+        service_description: str | list[H2qpOsuProviderServicedescriptionItem] | None = ...,
         icon: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
@@ -503,11 +523,11 @@ class H2qpOsuProvider:
         self,
         payload_dict: H2qpOsuProviderPayload | None = ...,
         name: str | None = ...,
-        friendly_name: str | list[str] | list[dict[str, Any]] | None = ...,
+        friendly_name: str | list[H2qpOsuProviderFriendlynameItem] | None = ...,
         server_uri: str | None = ...,
         osu_method: Literal["oma-dm", "soap-xml-spp", "reserved"] | list[str] | None = ...,
         osu_nai: str | None = ...,
-        service_description: str | list[str] | list[dict[str, Any]] | None = ...,
+        service_description: str | list[H2qpOsuProviderServicedescriptionItem] | None = ...,
         icon: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
@@ -551,11 +571,11 @@ class H2qpOsuProvider:
         self,
         payload_dict: H2qpOsuProviderPayload | None = ...,
         name: str | None = ...,
-        friendly_name: str | list[str] | list[dict[str, Any]] | None = ...,
+        friendly_name: str | list[H2qpOsuProviderFriendlynameItem] | None = ...,
         server_uri: str | None = ...,
         osu_method: Literal["oma-dm", "soap-xml-spp", "reserved"] | list[str] | None = ...,
         osu_nai: str | None = ...,
-        service_description: str | list[str] | list[dict[str, Any]] | None = ...,
+        service_description: str | list[H2qpOsuProviderServicedescriptionItem] | None = ...,
         icon: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...

@@ -2,7 +2,31 @@ from typing import TypedDict, Literal, Any, Coroutine, Union, overload, Generato
 from typing_extensions import NotRequired
 from hfortix_fortios.models import FortiObject, FortiObjectList
 
-# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional via total=False)
+# ============================================================================
+# Nested TypedDicts for table field children (dict mode)
+# These MUST be defined before the Payload class to use them as type hints
+# ============================================================================
+
+class PtpServerinterfaceItem(TypedDict, total=False):
+    """Type hints for server-interface table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: PtpServerinterfaceItem = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    
+    id: int  # ID. | Default: 0 | Min: 0 | Max: 4294967295
+    server_interface_name: str  # Interface name. | MaxLen: 15
+    delay_mechanism: Literal["E2E", "P2P"]  # End to end delay detection or peer to peer delay d | Default: E2E
+
+
+# ============================================================================
+# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional)
+# ============================================================================
 # NOTE: We intentionally DON'T use NotRequired wrapper because:
 # 1. total=False already makes all fields optional
 # 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
@@ -28,23 +52,11 @@ class PtpPayload(TypedDict, total=False):
     request_interval: int  # The delay request value is the logarithmic mean in | Default: 1 | Min: 1 | Max: 6
     interface: str  # PTP client will reply through this interface. | MaxLen: 15
     server_mode: Literal["enable", "disable"]  # Enable/disable FortiGate PTP server mode. Your For | Default: disable
-    server_interface: list[dict[str, Any]]  # FortiGate interface(s) with PTP server mode enable
+    server_interface: list[PtpServerinterfaceItem]  # FortiGate interface(s) with PTP server mode enable
 
-# Nested TypedDicts for table field children (dict mode)
-
-class PtpServerinterfaceItem(TypedDict):
-    """Type hints for server-interface table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    id: int  # ID. | Default: 0 | Min: 0 | Max: 4294967295
-    server_interface_name: str  # Interface name. | MaxLen: 15
-    delay_mechanism: Literal["E2E", "P2P"]  # End to end delay detection or peer to peer delay d | Default: E2E
-
-
-# Nested classes for table field children (object mode)
+# ============================================================================
+# Nested classes for table field children (object mode - for API responses)
+# ============================================================================
 
 @final
 class PtpServerinterfaceObject:
@@ -126,6 +138,9 @@ class PtpObject:
     # Common API response fields
     status: str
     http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
     vdom: str | None
     
     # Methods from FortiObject
@@ -360,7 +375,7 @@ class Ptp:
         request_interval: int | None = ...,
         interface: str | None = ...,
         server_mode: Literal["enable", "disable"] | None = ...,
-        server_interface: str | list[str] | list[dict[str, Any]] | None = ...,
+        server_interface: str | list[PtpServerinterfaceItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> PtpObject: ...
     
@@ -374,7 +389,7 @@ class Ptp:
         request_interval: int | None = ...,
         interface: str | None = ...,
         server_mode: Literal["enable", "disable"] | None = ...,
-        server_interface: str | list[str] | list[dict[str, Any]] | None = ...,
+        server_interface: str | list[PtpServerinterfaceItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -389,7 +404,7 @@ class Ptp:
         request_interval: int | None = ...,
         interface: str | None = ...,
         server_mode: Literal["enable", "disable"] | None = ...,
-        server_interface: str | list[str] | list[dict[str, Any]] | None = ...,
+        server_interface: str | list[PtpServerinterfaceItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -402,7 +417,7 @@ class Ptp:
         request_interval: int | None = ...,
         interface: str | None = ...,
         server_mode: Literal["enable", "disable"] | None = ...,
-        server_interface: str | list[str] | list[dict[str, Any]] | None = ...,
+        server_interface: str | list[PtpServerinterfaceItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -421,7 +436,7 @@ class Ptp:
         request_interval: int | None = ...,
         interface: str | None = ...,
         server_mode: Literal["enable", "disable"] | None = ...,
-        server_interface: str | list[str] | list[dict[str, Any]] | None = ...,
+        server_interface: str | list[PtpServerinterfaceItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     

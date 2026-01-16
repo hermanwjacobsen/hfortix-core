@@ -2,32 +2,21 @@ from typing import TypedDict, Literal, Any, Coroutine, Union, overload, Generato
 from typing_extensions import NotRequired
 from hfortix_fortios.models import FortiObject, FortiObjectList
 
-# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional via total=False)
-# NOTE: We intentionally DON'T use NotRequired wrapper because:
-# 1. total=False already makes all fields optional
-# 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
-class RouteMapPayload(TypedDict, total=False):
-    """
-    Type hints for router/route_map payload fields.
-    
-    Configure route maps.
-    
-    **Usage:**
-        payload: RouteMapPayload = {
-            "field": "value",  # <- autocomplete shows all fields
-        }
-    """
-    name: str  # Name. | MaxLen: 35
-    comments: str  # Optional comments. | MaxLen: 127
-    rule: list[dict[str, Any]]  # Rule.
-
+# ============================================================================
 # Nested TypedDicts for table field children (dict mode)
+# These MUST be defined before the Payload class to use them as type hints
+# ============================================================================
 
-class RouteMapRuleItem(TypedDict):
+class RouteMapRuleItem(TypedDict, total=False):
     """Type hints for rule table item fields (dict mode).
     
     Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: RouteMapRuleItem = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
     """
     
     id: int  # Rule ID. | Default: 0 | Min: 0 | Max: 4294967295
@@ -81,7 +70,30 @@ class RouteMapRuleItem(TypedDict):
     set_priority: int  # Priority for routing table. | Min: 1 | Max: 65535
 
 
-# Nested classes for table field children (object mode)
+# ============================================================================
+# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional)
+# ============================================================================
+# NOTE: We intentionally DON'T use NotRequired wrapper because:
+# 1. total=False already makes all fields optional
+# 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
+class RouteMapPayload(TypedDict, total=False):
+    """
+    Type hints for router/route_map payload fields.
+    
+    Configure route maps.
+    
+    **Usage:**
+        payload: RouteMapPayload = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    name: str  # Name. | MaxLen: 35
+    comments: str  # Optional comments. | MaxLen: 127
+    rule: list[RouteMapRuleItem]  # Rule.
+
+# ============================================================================
+# Nested classes for table field children (object mode - for API responses)
+# ============================================================================
 
 @final
 class RouteMapRuleObject:
@@ -243,6 +255,9 @@ class RouteMapObject:
     # Common API response fields
     status: str
     http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
     vdom: str | None
     
     # Methods from FortiObject
@@ -474,7 +489,7 @@ class RouteMap:
         payload_dict: RouteMapPayload | None = ...,
         name: str | None = ...,
         comments: str | None = ...,
-        rule: str | list[str] | list[dict[str, Any]] | None = ...,
+        rule: str | list[RouteMapRuleItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> RouteMapObject: ...
     
@@ -484,7 +499,7 @@ class RouteMap:
         payload_dict: RouteMapPayload | None = ...,
         name: str | None = ...,
         comments: str | None = ...,
-        rule: str | list[str] | list[dict[str, Any]] | None = ...,
+        rule: str | list[RouteMapRuleItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -495,7 +510,7 @@ class RouteMap:
         payload_dict: RouteMapPayload | None = ...,
         name: str | None = ...,
         comments: str | None = ...,
-        rule: str | list[str] | list[dict[str, Any]] | None = ...,
+        rule: str | list[RouteMapRuleItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -504,7 +519,7 @@ class RouteMap:
         payload_dict: RouteMapPayload | None = ...,
         name: str | None = ...,
         comments: str | None = ...,
-        rule: str | list[str] | list[dict[str, Any]] | None = ...,
+        rule: str | list[RouteMapRuleItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -515,7 +530,7 @@ class RouteMap:
         payload_dict: RouteMapPayload | None = ...,
         name: str | None = ...,
         comments: str | None = ...,
-        rule: str | list[str] | list[dict[str, Any]] | None = ...,
+        rule: str | list[RouteMapRuleItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> RouteMapObject: ...
     
@@ -525,7 +540,7 @@ class RouteMap:
         payload_dict: RouteMapPayload | None = ...,
         name: str | None = ...,
         comments: str | None = ...,
-        rule: str | list[str] | list[dict[str, Any]] | None = ...,
+        rule: str | list[RouteMapRuleItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -536,7 +551,7 @@ class RouteMap:
         payload_dict: RouteMapPayload | None = ...,
         name: str | None = ...,
         comments: str | None = ...,
-        rule: str | list[str] | list[dict[str, Any]] | None = ...,
+        rule: str | list[RouteMapRuleItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -545,7 +560,7 @@ class RouteMap:
         payload_dict: RouteMapPayload | None = ...,
         name: str | None = ...,
         comments: str | None = ...,
-        rule: str | list[str] | list[dict[str, Any]] | None = ...,
+        rule: str | list[RouteMapRuleItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -589,7 +604,7 @@ class RouteMap:
         payload_dict: RouteMapPayload | None = ...,
         name: str | None = ...,
         comments: str | None = ...,
-        rule: str | list[str] | list[dict[str, Any]] | None = ...,
+        rule: str | list[RouteMapRuleItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     

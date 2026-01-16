@@ -2,7 +2,40 @@ from typing import TypedDict, Literal, Any, Coroutine, Union, overload, Generato
 from typing_extensions import NotRequired
 from hfortix_fortios.models import FortiObject, FortiObjectList
 
-# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional via total=False)
+# ============================================================================
+# Nested TypedDicts for table field children (dict mode)
+# These MUST be defined before the Payload class to use them as type hints
+# ============================================================================
+
+class SamlServiceprovidersItem(TypedDict, total=False):
+    """Type hints for service-providers table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: SamlServiceprovidersItem = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    
+    name: str  # Name. | MaxLen: 35
+    prefix: str  # Prefix. | MaxLen: 35
+    sp_binding_protocol: Literal["post", "redirect"]  # SP binding protocol. | Default: post
+    sp_cert: str  # SP certificate name. | MaxLen: 35
+    sp_entity_id: str  # SP entity ID. | MaxLen: 255
+    sp_single_sign_on_url: str  # SP single sign-on URL. | MaxLen: 255
+    sp_single_logout_url: str  # SP single logout URL. | MaxLen: 255
+    sp_portal_url: str  # SP portal URL. | MaxLen: 255
+    idp_entity_id: str  # IDP entity ID. | MaxLen: 255
+    idp_single_sign_on_url: str  # IDP single sign-on URL. | MaxLen: 255
+    idp_single_logout_url: str  # IDP single logout URL. | MaxLen: 255
+    assertion_attributes: str  # Customized SAML attributes to send along with asse
+
+
+# ============================================================================
+# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional)
+# ============================================================================
 # NOTE: We intentionally DON'T use NotRequired wrapper because:
 # 1. total=False already makes all fields optional
 # 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
@@ -42,32 +75,11 @@ class SamlPayload(TypedDict, total=False):
     require_signed_resp_and_asrt: Literal["enable", "disable"]  # Require both response and assertion from IDP to be | Default: disable
     tolerance: int  # Tolerance to the range of time when the assertion | Default: 5 | Min: 0 | Max: 4294967295
     life: int  # Length of the range of time when the assertion is | Default: 30 | Min: 0 | Max: 4294967295
-    service_providers: list[dict[str, Any]]  # Authorized service providers.
+    service_providers: list[SamlServiceprovidersItem]  # Authorized service providers.
 
-# Nested TypedDicts for table field children (dict mode)
-
-class SamlServiceprovidersItem(TypedDict):
-    """Type hints for service-providers table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    name: str  # Name. | MaxLen: 35
-    prefix: str  # Prefix. | MaxLen: 35
-    sp_binding_protocol: Literal["post", "redirect"]  # SP binding protocol. | Default: post
-    sp_cert: str  # SP certificate name. | MaxLen: 35
-    sp_entity_id: str  # SP entity ID. | MaxLen: 255
-    sp_single_sign_on_url: str  # SP single sign-on URL. | MaxLen: 255
-    sp_single_logout_url: str  # SP single logout URL. | MaxLen: 255
-    sp_portal_url: str  # SP portal URL. | MaxLen: 255
-    idp_entity_id: str  # IDP entity ID. | MaxLen: 255
-    idp_single_sign_on_url: str  # IDP single sign-on URL. | MaxLen: 255
-    idp_single_logout_url: str  # IDP single logout URL. | MaxLen: 255
-    assertion_attributes: str  # Customized SAML attributes to send along with asse
-
-
-# Nested classes for table field children (object mode)
+# ============================================================================
+# Nested classes for table field children (object mode - for API responses)
+# ============================================================================
 
 @final
 class SamlServiceprovidersObject:
@@ -203,6 +215,9 @@ class SamlObject:
     # Common API response fields
     status: str
     http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
     vdom: str | None
     
     # Methods from FortiObject
@@ -449,7 +464,7 @@ class Saml:
         require_signed_resp_and_asrt: Literal["enable", "disable"] | None = ...,
         tolerance: int | None = ...,
         life: int | None = ...,
-        service_providers: str | list[str] | list[dict[str, Any]] | None = ...,
+        service_providers: str | list[SamlServiceprovidersItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> SamlObject: ...
     
@@ -475,7 +490,7 @@ class Saml:
         require_signed_resp_and_asrt: Literal["enable", "disable"] | None = ...,
         tolerance: int | None = ...,
         life: int | None = ...,
-        service_providers: str | list[str] | list[dict[str, Any]] | None = ...,
+        service_providers: str | list[SamlServiceprovidersItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -502,7 +517,7 @@ class Saml:
         require_signed_resp_and_asrt: Literal["enable", "disable"] | None = ...,
         tolerance: int | None = ...,
         life: int | None = ...,
-        service_providers: str | list[str] | list[dict[str, Any]] | None = ...,
+        service_providers: str | list[SamlServiceprovidersItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -527,7 +542,7 @@ class Saml:
         require_signed_resp_and_asrt: Literal["enable", "disable"] | None = ...,
         tolerance: int | None = ...,
         life: int | None = ...,
-        service_providers: str | list[str] | list[dict[str, Any]] | None = ...,
+        service_providers: str | list[SamlServiceprovidersItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -558,7 +573,7 @@ class Saml:
         require_signed_resp_and_asrt: Literal["enable", "disable"] | None = ...,
         tolerance: int | None = ...,
         life: int | None = ...,
-        service_providers: str | list[str] | list[dict[str, Any]] | None = ...,
+        service_providers: str | list[SamlServiceprovidersItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     

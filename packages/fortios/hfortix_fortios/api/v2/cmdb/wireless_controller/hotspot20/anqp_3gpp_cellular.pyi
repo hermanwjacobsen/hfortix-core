@@ -2,7 +2,31 @@ from typing import TypedDict, Literal, Any, Coroutine, Union, overload, Generato
 from typing_extensions import NotRequired
 from hfortix_fortios.models import FortiObject, FortiObjectList
 
-# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional via total=False)
+# ============================================================================
+# Nested TypedDicts for table field children (dict mode)
+# These MUST be defined before the Payload class to use them as type hints
+# ============================================================================
+
+class Anqp3gppCellularMccmnclistItem(TypedDict, total=False):
+    """Type hints for mcc-mnc-list table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: Anqp3gppCellularMccmnclistItem = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    
+    id: int  # ID. | Default: 0 | Min: 1 | Max: 6
+    mcc: str  # Mobile country code. | MaxLen: 3
+    mnc: str  # Mobile network code. | MaxLen: 3
+
+
+# ============================================================================
+# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional)
+# ============================================================================
 # NOTE: We intentionally DON'T use NotRequired wrapper because:
 # 1. total=False already makes all fields optional
 # 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
@@ -18,23 +42,11 @@ class Anqp3gppCellularPayload(TypedDict, total=False):
         }
     """
     name: str  # 3GPP PLMN name. | MaxLen: 35
-    mcc_mnc_list: list[dict[str, Any]]  # Mobile Country Code and Mobile Network Code config
+    mcc_mnc_list: list[Anqp3gppCellularMccmnclistItem]  # Mobile Country Code and Mobile Network Code config
 
-# Nested TypedDicts for table field children (dict mode)
-
-class Anqp3gppCellularMccmnclistItem(TypedDict):
-    """Type hints for mcc-mnc-list table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    id: int  # ID. | Default: 0 | Min: 1 | Max: 6
-    mcc: str  # Mobile country code. | MaxLen: 3
-    mnc: str  # Mobile network code. | MaxLen: 3
-
-
-# Nested classes for table field children (object mode)
+# ============================================================================
+# Nested classes for table field children (object mode - for API responses)
+# ============================================================================
 
 @final
 class Anqp3gppCellularMccmnclistObject:
@@ -101,6 +113,9 @@ class Anqp3gppCellularObject:
     # Common API response fields
     status: str
     http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
     vdom: str | None
     
     # Methods from FortiObject
@@ -331,7 +346,7 @@ class Anqp3gppCellular:
         self,
         payload_dict: Anqp3gppCellularPayload | None = ...,
         name: str | None = ...,
-        mcc_mnc_list: str | list[str] | list[dict[str, Any]] | None = ...,
+        mcc_mnc_list: str | list[Anqp3gppCellularMccmnclistItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> Anqp3gppCellularObject: ...
     
@@ -340,7 +355,7 @@ class Anqp3gppCellular:
         self,
         payload_dict: Anqp3gppCellularPayload | None = ...,
         name: str | None = ...,
-        mcc_mnc_list: str | list[str] | list[dict[str, Any]] | None = ...,
+        mcc_mnc_list: str | list[Anqp3gppCellularMccmnclistItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -350,7 +365,7 @@ class Anqp3gppCellular:
         self,
         payload_dict: Anqp3gppCellularPayload | None = ...,
         name: str | None = ...,
-        mcc_mnc_list: str | list[str] | list[dict[str, Any]] | None = ...,
+        mcc_mnc_list: str | list[Anqp3gppCellularMccmnclistItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -358,7 +373,7 @@ class Anqp3gppCellular:
         self,
         payload_dict: Anqp3gppCellularPayload | None = ...,
         name: str | None = ...,
-        mcc_mnc_list: str | list[str] | list[dict[str, Any]] | None = ...,
+        mcc_mnc_list: str | list[Anqp3gppCellularMccmnclistItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -368,7 +383,7 @@ class Anqp3gppCellular:
         self,
         payload_dict: Anqp3gppCellularPayload | None = ...,
         name: str | None = ...,
-        mcc_mnc_list: str | list[str] | list[dict[str, Any]] | None = ...,
+        mcc_mnc_list: str | list[Anqp3gppCellularMccmnclistItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> Anqp3gppCellularObject: ...
     
@@ -377,7 +392,7 @@ class Anqp3gppCellular:
         self,
         payload_dict: Anqp3gppCellularPayload | None = ...,
         name: str | None = ...,
-        mcc_mnc_list: str | list[str] | list[dict[str, Any]] | None = ...,
+        mcc_mnc_list: str | list[Anqp3gppCellularMccmnclistItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -387,7 +402,7 @@ class Anqp3gppCellular:
         self,
         payload_dict: Anqp3gppCellularPayload | None = ...,
         name: str | None = ...,
-        mcc_mnc_list: str | list[str] | list[dict[str, Any]] | None = ...,
+        mcc_mnc_list: str | list[Anqp3gppCellularMccmnclistItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -395,7 +410,7 @@ class Anqp3gppCellular:
         self,
         payload_dict: Anqp3gppCellularPayload | None = ...,
         name: str | None = ...,
-        mcc_mnc_list: str | list[str] | list[dict[str, Any]] | None = ...,
+        mcc_mnc_list: str | list[Anqp3gppCellularMccmnclistItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -438,7 +453,7 @@ class Anqp3gppCellular:
         self,
         payload_dict: Anqp3gppCellularPayload | None = ...,
         name: str | None = ...,
-        mcc_mnc_list: str | list[str] | list[dict[str, Any]] | None = ...,
+        mcc_mnc_list: str | list[Anqp3gppCellularMccmnclistItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     

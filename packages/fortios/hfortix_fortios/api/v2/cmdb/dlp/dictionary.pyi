@@ -2,7 +2,35 @@ from typing import TypedDict, Literal, Any, Coroutine, Union, overload, Generato
 from typing_extensions import NotRequired
 from hfortix_fortios.models import FortiObject, FortiObjectList
 
-# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional via total=False)
+# ============================================================================
+# Nested TypedDicts for table field children (dict mode)
+# These MUST be defined before the Payload class to use them as type hints
+# ============================================================================
+
+class DictionaryEntriesItem(TypedDict, total=False):
+    """Type hints for entries table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: DictionaryEntriesItem = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    
+    id: int  # ID. | Default: 0 | Min: 0 | Max: 4294967295
+    type: str  # Pattern type to match. | MaxLen: 35
+    pattern: str  # Pattern to match. | MaxLen: 255
+    ignore_case: Literal["enable", "disable"]  # Enable/disable ignore case. | Default: disable
+    repeat: Literal["enable", "disable"]  # Enable/disable repeat match. | Default: disable
+    status: Literal["enable", "disable"]  # Enable/disable this pattern. | Default: enable
+    comment: str  # Optional comments. | MaxLen: 255
+
+
+# ============================================================================
+# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional)
+# ============================================================================
 # NOTE: We intentionally DON'T use NotRequired wrapper because:
 # 1. total=False already makes all fields optional
 # 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
@@ -22,27 +50,11 @@ class DictionaryPayload(TypedDict, total=False):
     match_type: Literal["match-all", "match-any"]  # Logical relation between entries | Default: match-any
     match_around: Literal["enable", "disable"]  # Enable/disable match-around support. | Default: disable
     comment: str  # Optional comments. | MaxLen: 255
-    entries: list[dict[str, Any]]  # DLP dictionary entries.
+    entries: list[DictionaryEntriesItem]  # DLP dictionary entries.
 
-# Nested TypedDicts for table field children (dict mode)
-
-class DictionaryEntriesItem(TypedDict):
-    """Type hints for entries table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    id: int  # ID. | Default: 0 | Min: 0 | Max: 4294967295
-    type: str  # Pattern type to match. | MaxLen: 35
-    pattern: str  # Pattern to match. | MaxLen: 255
-    ignore_case: Literal["enable", "disable"]  # Enable/disable ignore case. | Default: disable
-    repeat: Literal["enable", "disable"]  # Enable/disable repeat match. | Default: disable
-    status: Literal["enable", "disable"]  # Enable/disable this pattern. | Default: enable
-    comment: str  # Optional comments. | MaxLen: 255
-
-
-# Nested classes for table field children (object mode)
+# ============================================================================
+# Nested classes for table field children (object mode - for API responses)
+# ============================================================================
 
 @final
 class DictionaryEntriesObject:
@@ -129,6 +141,9 @@ class DictionaryObject:
     # Common API response fields
     status: str
     http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
     vdom: str | None
     
     # Methods from FortiObject
@@ -363,7 +378,7 @@ class Dictionary:
         match_type: Literal["match-all", "match-any"] | None = ...,
         match_around: Literal["enable", "disable"] | None = ...,
         comment: str | None = ...,
-        entries: str | list[str] | list[dict[str, Any]] | None = ...,
+        entries: str | list[DictionaryEntriesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> DictionaryObject: ...
     
@@ -376,7 +391,7 @@ class Dictionary:
         match_type: Literal["match-all", "match-any"] | None = ...,
         match_around: Literal["enable", "disable"] | None = ...,
         comment: str | None = ...,
-        entries: str | list[str] | list[dict[str, Any]] | None = ...,
+        entries: str | list[DictionaryEntriesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -390,7 +405,7 @@ class Dictionary:
         match_type: Literal["match-all", "match-any"] | None = ...,
         match_around: Literal["enable", "disable"] | None = ...,
         comment: str | None = ...,
-        entries: str | list[str] | list[dict[str, Any]] | None = ...,
+        entries: str | list[DictionaryEntriesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -402,7 +417,7 @@ class Dictionary:
         match_type: Literal["match-all", "match-any"] | None = ...,
         match_around: Literal["enable", "disable"] | None = ...,
         comment: str | None = ...,
-        entries: str | list[str] | list[dict[str, Any]] | None = ...,
+        entries: str | list[DictionaryEntriesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -416,7 +431,7 @@ class Dictionary:
         match_type: Literal["match-all", "match-any"] | None = ...,
         match_around: Literal["enable", "disable"] | None = ...,
         comment: str | None = ...,
-        entries: str | list[str] | list[dict[str, Any]] | None = ...,
+        entries: str | list[DictionaryEntriesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> DictionaryObject: ...
     
@@ -429,7 +444,7 @@ class Dictionary:
         match_type: Literal["match-all", "match-any"] | None = ...,
         match_around: Literal["enable", "disable"] | None = ...,
         comment: str | None = ...,
-        entries: str | list[str] | list[dict[str, Any]] | None = ...,
+        entries: str | list[DictionaryEntriesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -443,7 +458,7 @@ class Dictionary:
         match_type: Literal["match-all", "match-any"] | None = ...,
         match_around: Literal["enable", "disable"] | None = ...,
         comment: str | None = ...,
-        entries: str | list[str] | list[dict[str, Any]] | None = ...,
+        entries: str | list[DictionaryEntriesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -455,7 +470,7 @@ class Dictionary:
         match_type: Literal["match-all", "match-any"] | None = ...,
         match_around: Literal["enable", "disable"] | None = ...,
         comment: str | None = ...,
-        entries: str | list[str] | list[dict[str, Any]] | None = ...,
+        entries: str | list[DictionaryEntriesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -502,7 +517,7 @@ class Dictionary:
         match_type: Literal["match-all", "match-any"] | None = ...,
         match_around: Literal["enable", "disable"] | None = ...,
         comment: str | None = ...,
-        entries: str | list[str] | list[dict[str, Any]] | None = ...,
+        entries: str | list[DictionaryEntriesItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     

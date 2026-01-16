@@ -2,7 +2,52 @@ from typing import TypedDict, Literal, Any, Coroutine, Union, overload, Generato
 from typing_extensions import NotRequired
 from hfortix_fortios.models import FortiObject, FortiObjectList
 
-# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional via total=False)
+# ============================================================================
+# Nested TypedDicts for table field children (dict mode)
+# These MUST be defined before the Payload class to use them as type hints
+# ============================================================================
+
+class BfdNeighborItem(TypedDict, total=False):
+    """Type hints for neighbor table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: BfdNeighborItem = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    
+    ip: str  # IPv4 address of the BFD neighbor. | Default: 0.0.0.0
+    interface: str  # Interface name. | MaxLen: 15
+
+
+class BfdMultihoptemplateItem(TypedDict, total=False):
+    """Type hints for multihop-template table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: BfdMultihoptemplateItem = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    
+    id: int  # ID. | Default: 0 | Min: 0 | Max: 4294967295
+    src: str  # Source prefix. | Default: 0.0.0.0 0.0.0.0
+    dst: str  # Destination prefix. | Default: 0.0.0.0 0.0.0.0
+    bfd_desired_min_tx: int  # BFD desired minimal transmit interval | Default: 250 | Min: 100 | Max: 30000
+    bfd_required_min_rx: int  # BFD required minimal receive interval | Default: 250 | Min: 100 | Max: 30000
+    bfd_detect_mult: int  # BFD detection multiplier. | Default: 3 | Min: 3 | Max: 50
+    auth_mode: Literal["none", "md5"]  # Authentication mode. | Default: none
+    md5_key: str  # MD5 key of key ID 1. | MaxLen: 16
+
+
+# ============================================================================
+# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional)
+# ============================================================================
 # NOTE: We intentionally DON'T use NotRequired wrapper because:
 # 1. total=False already makes all fields optional
 # 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
@@ -17,40 +62,12 @@ class BfdPayload(TypedDict, total=False):
             "field": "value",  # <- autocomplete shows all fields
         }
     """
-    neighbor: list[dict[str, Any]]  # Neighbor.
-    multihop_template: list[dict[str, Any]]  # BFD multi-hop template table.
+    neighbor: list[BfdNeighborItem]  # Neighbor.
+    multihop_template: list[BfdMultihoptemplateItem]  # BFD multi-hop template table.
 
-# Nested TypedDicts for table field children (dict mode)
-
-class BfdNeighborItem(TypedDict):
-    """Type hints for neighbor table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    ip: str  # IPv4 address of the BFD neighbor. | Default: 0.0.0.0
-    interface: str  # Interface name. | MaxLen: 15
-
-
-class BfdMultihoptemplateItem(TypedDict):
-    """Type hints for multihop-template table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    id: int  # ID. | Default: 0 | Min: 0 | Max: 4294967295
-    src: str  # Source prefix. | Default: 0.0.0.0 0.0.0.0
-    dst: str  # Destination prefix. | Default: 0.0.0.0 0.0.0.0
-    bfd_desired_min_tx: int  # BFD desired minimal transmit interval | Default: 250 | Min: 100 | Max: 30000
-    bfd_required_min_rx: int  # BFD required minimal receive interval | Default: 250 | Min: 100 | Max: 30000
-    bfd_detect_mult: int  # BFD detection multiplier. | Default: 3 | Min: 3 | Max: 50
-    auth_mode: Literal["none", "md5"]  # Authentication mode. | Default: none
-    md5_key: str  # MD5 key of key ID 1. | MaxLen: 16
-
-
-# Nested classes for table field children (object mode)
+# ============================================================================
+# Nested classes for table field children (object mode - for API responses)
+# ============================================================================
 
 @final
 class BfdNeighborObject:
@@ -161,6 +178,9 @@ class BfdObject:
     # Common API response fields
     status: str
     http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
     vdom: str | None
     
     # Methods from FortiObject
@@ -389,8 +409,8 @@ class Bfd:
     def put(
         self,
         payload_dict: BfdPayload | None = ...,
-        neighbor: str | list[str] | list[dict[str, Any]] | None = ...,
-        multihop_template: str | list[str] | list[dict[str, Any]] | None = ...,
+        neighbor: str | list[BfdNeighborItem] | None = ...,
+        multihop_template: str | list[BfdMultihoptemplateItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> BfdObject: ...
     
@@ -398,8 +418,8 @@ class Bfd:
     def put(
         self,
         payload_dict: BfdPayload | None = ...,
-        neighbor: str | list[str] | list[dict[str, Any]] | None = ...,
-        multihop_template: str | list[str] | list[dict[str, Any]] | None = ...,
+        neighbor: str | list[BfdNeighborItem] | None = ...,
+        multihop_template: str | list[BfdMultihoptemplateItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -408,16 +428,16 @@ class Bfd:
     def put(
         self,
         payload_dict: BfdPayload | None = ...,
-        neighbor: str | list[str] | list[dict[str, Any]] | None = ...,
-        multihop_template: str | list[str] | list[dict[str, Any]] | None = ...,
+        neighbor: str | list[BfdNeighborItem] | None = ...,
+        multihop_template: str | list[BfdMultihoptemplateItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     def put(
         self,
         payload_dict: BfdPayload | None = ...,
-        neighbor: str | list[str] | list[dict[str, Any]] | None = ...,
-        multihop_template: str | list[str] | list[dict[str, Any]] | None = ...,
+        neighbor: str | list[BfdNeighborItem] | None = ...,
+        multihop_template: str | list[BfdMultihoptemplateItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -430,8 +450,8 @@ class Bfd:
     def set(
         self,
         payload_dict: BfdPayload | None = ...,
-        neighbor: str | list[str] | list[dict[str, Any]] | None = ...,
-        multihop_template: str | list[str] | list[dict[str, Any]] | None = ...,
+        neighbor: str | list[BfdNeighborItem] | None = ...,
+        multihop_template: str | list[BfdMultihoptemplateItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     

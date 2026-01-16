@@ -3,6 +3,97 @@ from typing_extensions import NotRequired
 from hfortix_fortios.models import FortiObject, FortiObjectList
 
 
+
+
+# Response TypedDict for GET returns (all fields present in API response)
+class CurrentResponse(TypedDict):
+    """
+    Type hints for system/upgrade_report/current API response fields.
+    
+    All fields are present in the response from the FortiGate API.
+    """
+    ipv4_sessions: int
+    ipv6_sessions: int
+    sslvpn_tunnels: int
+    ipsec_tunnels: int
+    cpu_usage: int
+    memory_usage: int
+    total_routes: int
+    total_ospf_routes: int
+    total_bgp_routes: int
+    fortigate_stats: str
+    fortiap_stats: str
+    fortiswitch_stats: str
+    fortiextender_stats: str
+    endpoint_device_stats: str
+
+
+@final
+class CurrentObject:
+    """Typed FortiObject for system/upgrade_report/current with IDE autocomplete support.
+    
+    This is a typed wrapper that provides IDE autocomplete for API response fields.
+    At runtime, this is actually a FortiObject instance.
+    """
+    
+    # ipv4_sessions
+    ipv4_sessions: int
+    # ipv6_sessions
+    ipv6_sessions: int
+    # sslvpn_tunnels
+    sslvpn_tunnels: int
+    # ipsec_tunnels
+    ipsec_tunnels: int
+    # cpu_usage
+    cpu_usage: int
+    # memory_usage
+    memory_usage: int
+    # total_routes
+    total_routes: int
+    # total_ospf_routes
+    total_ospf_routes: int
+    # total_bgp_routes
+    total_bgp_routes: int
+    # fortigate_stats
+    fortigate_stats: str
+    # fortiap_stats
+    fortiap_stats: str
+    # fortiswitch_stats
+    fortiswitch_stats: str
+    # fortiextender_stats
+    fortiextender_stats: str
+    # endpoint_device_stats
+    endpoint_device_stats: str
+    
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
+    
+    # Methods from FortiObject
+    @property
+    def dict(self) -> dict[str, Any]:
+        """Convert to dictionary."""
+        ...
+    @property
+    def json(self) -> str:
+        """Get pretty-printed JSON string."""
+        ...
+    @property
+    def raw(self) -> dict[str, Any]:
+        """Get raw API response data."""
+        ...
+    def get_full(self, name: str) -> Any: ...
+    def to_dict(self) -> CurrentPayload: ...
+    def keys(self) -> Any: ...
+    def values(self) -> Generator[Any, None, None]: ...
+    def items(self) -> Generator[tuple[str, Any], None, None]: ...
+    def get(self, key: str, default: Any = None) -> Any: ...
+
+
 class Current:
     """
     Get current realtime device statistics that can be compared against a saved upgrade report.

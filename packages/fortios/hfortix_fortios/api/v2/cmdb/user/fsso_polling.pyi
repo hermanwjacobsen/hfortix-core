@@ -2,7 +2,29 @@ from typing import TypedDict, Literal, Any, Coroutine, Union, overload, Generato
 from typing_extensions import NotRequired
 from hfortix_fortios.models import FortiObject, FortiObjectList
 
-# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional via total=False)
+# ============================================================================
+# Nested TypedDicts for table field children (dict mode)
+# These MUST be defined before the Payload class to use them as type hints
+# ============================================================================
+
+class FssoPollingAdgrpItem(TypedDict, total=False):
+    """Type hints for adgrp table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: FssoPollingAdgrpItem = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    
+    name: str  # Name. | MaxLen: 511
+
+
+# ============================================================================
+# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional)
+# ============================================================================
 # NOTE: We intentionally DON'T use NotRequired wrapper because:
 # 1. total=False already makes all fields optional
 # 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
@@ -32,23 +54,13 @@ class FssoPollingPayload(TypedDict, total=False):
     ldap_server: str  # LDAP server name used in LDAP connection strings. | MaxLen: 35
     logon_history: int  # Number of hours of logon history to keep, 0 means | Default: 8 | Min: 0 | Max: 48
     polling_frequency: int  # Polling frequency (every 1 to 30 seconds). | Default: 10 | Min: 1 | Max: 30
-    adgrp: list[dict[str, Any]]  # LDAP Group Info.
+    adgrp: list[FssoPollingAdgrpItem]  # LDAP Group Info.
     smbv1: Literal["enable", "disable"]  # Enable/disable support of SMBv1 for Samba. | Default: disable
     smb_ntlmv1_auth: Literal["enable", "disable"]  # Enable/disable support of NTLMv1 for Samba authent | Default: disable
 
-# Nested TypedDicts for table field children (dict mode)
-
-class FssoPollingAdgrpItem(TypedDict):
-    """Type hints for adgrp table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    name: str  # Name. | MaxLen: 511
-
-
-# Nested classes for table field children (object mode)
+# ============================================================================
+# Nested classes for table field children (object mode - for API responses)
+# ============================================================================
 
 @final
 class FssoPollingAdgrpObject:
@@ -144,6 +156,9 @@ class FssoPollingObject:
     # Common API response fields
     status: str
     http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
     vdom: str | None
     
     # Methods from FortiObject
@@ -383,7 +398,7 @@ class FssoPolling:
         ldap_server: str | None = ...,
         logon_history: int | None = ...,
         polling_frequency: int | None = ...,
-        adgrp: str | list[str] | list[dict[str, Any]] | None = ...,
+        adgrp: str | list[FssoPollingAdgrpItem] | None = ...,
         smbv1: Literal["enable", "disable"] | None = ...,
         smb_ntlmv1_auth: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
@@ -403,7 +418,7 @@ class FssoPolling:
         ldap_server: str | None = ...,
         logon_history: int | None = ...,
         polling_frequency: int | None = ...,
-        adgrp: str | list[str] | list[dict[str, Any]] | None = ...,
+        adgrp: str | list[FssoPollingAdgrpItem] | None = ...,
         smbv1: Literal["enable", "disable"] | None = ...,
         smb_ntlmv1_auth: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
@@ -424,7 +439,7 @@ class FssoPolling:
         ldap_server: str | None = ...,
         logon_history: int | None = ...,
         polling_frequency: int | None = ...,
-        adgrp: str | list[str] | list[dict[str, Any]] | None = ...,
+        adgrp: str | list[FssoPollingAdgrpItem] | None = ...,
         smbv1: Literal["enable", "disable"] | None = ...,
         smb_ntlmv1_auth: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
@@ -443,7 +458,7 @@ class FssoPolling:
         ldap_server: str | None = ...,
         logon_history: int | None = ...,
         polling_frequency: int | None = ...,
-        adgrp: str | list[str] | list[dict[str, Any]] | None = ...,
+        adgrp: str | list[FssoPollingAdgrpItem] | None = ...,
         smbv1: Literal["enable", "disable"] | None = ...,
         smb_ntlmv1_auth: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
@@ -464,7 +479,7 @@ class FssoPolling:
         ldap_server: str | None = ...,
         logon_history: int | None = ...,
         polling_frequency: int | None = ...,
-        adgrp: str | list[str] | list[dict[str, Any]] | None = ...,
+        adgrp: str | list[FssoPollingAdgrpItem] | None = ...,
         smbv1: Literal["enable", "disable"] | None = ...,
         smb_ntlmv1_auth: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
@@ -484,7 +499,7 @@ class FssoPolling:
         ldap_server: str | None = ...,
         logon_history: int | None = ...,
         polling_frequency: int | None = ...,
-        adgrp: str | list[str] | list[dict[str, Any]] | None = ...,
+        adgrp: str | list[FssoPollingAdgrpItem] | None = ...,
         smbv1: Literal["enable", "disable"] | None = ...,
         smb_ntlmv1_auth: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
@@ -505,7 +520,7 @@ class FssoPolling:
         ldap_server: str | None = ...,
         logon_history: int | None = ...,
         polling_frequency: int | None = ...,
-        adgrp: str | list[str] | list[dict[str, Any]] | None = ...,
+        adgrp: str | list[FssoPollingAdgrpItem] | None = ...,
         smbv1: Literal["enable", "disable"] | None = ...,
         smb_ntlmv1_auth: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
@@ -524,7 +539,7 @@ class FssoPolling:
         ldap_server: str | None = ...,
         logon_history: int | None = ...,
         polling_frequency: int | None = ...,
-        adgrp: str | list[str] | list[dict[str, Any]] | None = ...,
+        adgrp: str | list[FssoPollingAdgrpItem] | None = ...,
         smbv1: Literal["enable", "disable"] | None = ...,
         smb_ntlmv1_auth: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
@@ -578,7 +593,7 @@ class FssoPolling:
         ldap_server: str | None = ...,
         logon_history: int | None = ...,
         polling_frequency: int | None = ...,
-        adgrp: str | list[str] | list[dict[str, Any]] | None = ...,
+        adgrp: str | list[FssoPollingAdgrpItem] | None = ...,
         smbv1: Literal["enable", "disable"] | None = ...,
         smb_ntlmv1_auth: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,

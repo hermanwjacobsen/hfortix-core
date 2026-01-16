@@ -2,7 +2,41 @@ from typing import TypedDict, Literal, Any, Coroutine, Union, overload, Generato
 from typing_extensions import NotRequired
 from hfortix_fortios.models import FortiObject, FortiObjectList
 
-# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional via total=False)
+# ============================================================================
+# Nested TypedDicts for table field children (dict mode)
+# These MUST be defined before the Payload class to use them as type hints
+# ============================================================================
+
+class LayoutBodyitemItem(TypedDict, total=False):
+    """Type hints for body-item table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: LayoutBodyitemItem = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    
+    id: int  # Report item ID. | Default: 0 | Min: 0 | Max: 4294967295
+    description: str  # Description. | MaxLen: 63
+    type: Literal["text", "image", "chart", "misc"]  # Report item type. | Default: text
+    style: str  # Report item style. | MaxLen: 71
+    top_n: int  # Value of top. | Default: 0 | Min: 0 | Max: 4294967295
+    parameters: str  # Parameters.
+    text_component: Literal["text", "heading1", "heading2", "heading3"]  # Report item text component. | Default: text
+    content: str  # Report item text content. | MaxLen: 511
+    img_src: str  # Report item image file name. | MaxLen: 127
+    chart: str  # Report item chart name. | MaxLen: 71
+    chart_options: Literal["include-no-data", "hide-title", "show-caption"]  # Report chart options. | Default: include-no-data hide-title show-caption
+    misc_component: Literal["hline", "page-break", "column-break", "section-start"]  # Report item miscellaneous component. | Default: hline
+    title: str  # Report section title. | MaxLen: 511
+
+
+# ============================================================================
+# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional)
+# ============================================================================
 # NOTE: We intentionally DON'T use NotRequired wrapper because:
 # 1. total=False already makes all fields optional
 # 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
@@ -33,33 +67,11 @@ class LayoutPayload(TypedDict, total=False):
     email_recipients: str  # Email recipients for generated reports. | MaxLen: 511
     max_pdf_report: int  # Maximum number of PDF reports to keep at one time | Default: 31 | Min: 1 | Max: 365
     page: str  # Configure report page.
-    body_item: list[dict[str, Any]]  # Configure report body item.
+    body_item: list[LayoutBodyitemItem]  # Configure report body item.
 
-# Nested TypedDicts for table field children (dict mode)
-
-class LayoutBodyitemItem(TypedDict):
-    """Type hints for body-item table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    id: int  # Report item ID. | Default: 0 | Min: 0 | Max: 4294967295
-    description: str  # Description. | MaxLen: 63
-    type: Literal["text", "image", "chart", "misc"]  # Report item type. | Default: text
-    style: str  # Report item style. | MaxLen: 71
-    top_n: int  # Value of top. | Default: 0 | Min: 0 | Max: 4294967295
-    parameters: str  # Parameters.
-    text_component: Literal["text", "heading1", "heading2", "heading3"]  # Report item text component. | Default: text
-    content: str  # Report item text content. | MaxLen: 511
-    img_src: str  # Report item image file name. | MaxLen: 127
-    chart: str  # Report item chart name. | MaxLen: 71
-    chart_options: Literal["include-no-data", "hide-title", "show-caption"]  # Report chart options. | Default: include-no-data hide-title show-caption
-    misc_component: Literal["hline", "page-break", "column-break", "section-start"]  # Report item miscellaneous component. | Default: hline
-    title: str  # Report section title. | MaxLen: 511
-
-
-# Nested classes for table field children (object mode)
+# ============================================================================
+# Nested classes for table field children (object mode - for API responses)
+# ============================================================================
 
 @final
 class LayoutBodyitemObject:
@@ -191,6 +203,9 @@ class LayoutObject:
     # Common API response fields
     status: str
     http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
     vdom: str | None
     
     # Methods from FortiObject
@@ -436,7 +451,7 @@ class Layout:
         email_recipients: str | None = ...,
         max_pdf_report: int | None = ...,
         page: str | None = ...,
-        body_item: str | list[str] | list[dict[str, Any]] | None = ...,
+        body_item: str | list[LayoutBodyitemItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> LayoutObject: ...
     
@@ -460,7 +475,7 @@ class Layout:
         email_recipients: str | None = ...,
         max_pdf_report: int | None = ...,
         page: str | None = ...,
-        body_item: str | list[str] | list[dict[str, Any]] | None = ...,
+        body_item: str | list[LayoutBodyitemItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -485,7 +500,7 @@ class Layout:
         email_recipients: str | None = ...,
         max_pdf_report: int | None = ...,
         page: str | None = ...,
-        body_item: str | list[str] | list[dict[str, Any]] | None = ...,
+        body_item: str | list[LayoutBodyitemItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -508,7 +523,7 @@ class Layout:
         email_recipients: str | None = ...,
         max_pdf_report: int | None = ...,
         page: str | None = ...,
-        body_item: str | list[str] | list[dict[str, Any]] | None = ...,
+        body_item: str | list[LayoutBodyitemItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -533,7 +548,7 @@ class Layout:
         email_recipients: str | None = ...,
         max_pdf_report: int | None = ...,
         page: str | None = ...,
-        body_item: str | list[str] | list[dict[str, Any]] | None = ...,
+        body_item: str | list[LayoutBodyitemItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> LayoutObject: ...
     
@@ -557,7 +572,7 @@ class Layout:
         email_recipients: str | None = ...,
         max_pdf_report: int | None = ...,
         page: str | None = ...,
-        body_item: str | list[str] | list[dict[str, Any]] | None = ...,
+        body_item: str | list[LayoutBodyitemItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -582,7 +597,7 @@ class Layout:
         email_recipients: str | None = ...,
         max_pdf_report: int | None = ...,
         page: str | None = ...,
-        body_item: str | list[str] | list[dict[str, Any]] | None = ...,
+        body_item: str | list[LayoutBodyitemItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -605,7 +620,7 @@ class Layout:
         email_recipients: str | None = ...,
         max_pdf_report: int | None = ...,
         page: str | None = ...,
-        body_item: str | list[str] | list[dict[str, Any]] | None = ...,
+        body_item: str | list[LayoutBodyitemItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -663,7 +678,7 @@ class Layout:
         email_recipients: str | None = ...,
         max_pdf_report: int | None = ...,
         page: str | None = ...,
-        body_item: str | list[str] | list[dict[str, Any]] | None = ...,
+        body_item: str | list[LayoutBodyitemItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     

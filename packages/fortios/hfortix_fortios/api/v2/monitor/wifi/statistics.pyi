@@ -3,6 +3,79 @@ from typing_extensions import NotRequired
 from hfortix_fortios.models import FortiObject, FortiObjectList
 
 
+
+
+# Response TypedDict for GET returns (all fields present in API response)
+class StatisticsResponse(TypedDict):
+    """
+    Type hints for wifi/statistics API response fields.
+    
+    All fields are present in the response from the FortiGate API.
+    """
+    wtp_session_count: int
+    wtp_session_count_run: int
+    client_count: int
+    client_count_offline: int
+    sta_cap_count: int
+    rogue_ap_count: int
+    rogue_client_count: int
+    ble_device_count: int
+
+
+@final
+class StatisticsObject:
+    """Typed FortiObject for wifi/statistics with IDE autocomplete support.
+    
+    This is a typed wrapper that provides IDE autocomplete for API response fields.
+    At runtime, this is actually a FortiObject instance.
+    """
+    
+    # wtp_session_count
+    wtp_session_count: int
+    # wtp_session_count_run
+    wtp_session_count_run: int
+    # client_count
+    client_count: int
+    # client_count_offline
+    client_count_offline: int
+    # sta_cap_count
+    sta_cap_count: int
+    # rogue_ap_count
+    rogue_ap_count: int
+    # rogue_client_count
+    rogue_client_count: int
+    # ble_device_count
+    ble_device_count: int
+    
+    # Common API response fields
+    status: str
+    http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
+    vdom: str | None
+    
+    # Methods from FortiObject
+    @property
+    def dict(self) -> dict[str, Any]:
+        """Convert to dictionary."""
+        ...
+    @property
+    def json(self) -> str:
+        """Get pretty-printed JSON string."""
+        ...
+    @property
+    def raw(self) -> dict[str, Any]:
+        """Get raw API response data."""
+        ...
+    def get_full(self, name: str) -> Any: ...
+    def to_dict(self) -> StatisticsPayload: ...
+    def keys(self) -> Any: ...
+    def values(self) -> Generator[Any, None, None]: ...
+    def items(self) -> Generator[tuple[str, Any], None, None]: ...
+    def get(self, key: str, default: Any = None) -> Any: ...
+
+
 class Statistics:
     """
     Retrieve aggregated FortiAP statistics.

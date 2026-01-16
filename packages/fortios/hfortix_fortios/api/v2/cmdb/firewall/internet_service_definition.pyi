@@ -2,7 +2,33 @@ from typing import TypedDict, Literal, Any, Coroutine, Union, overload, Generato
 from typing_extensions import NotRequired
 from hfortix_fortios.models import FortiObject, FortiObjectList
 
-# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional via total=False)
+# ============================================================================
+# Nested TypedDicts for table field children (dict mode)
+# These MUST be defined before the Payload class to use them as type hints
+# ============================================================================
+
+class InternetServiceDefinitionEntryItem(TypedDict, total=False):
+    """Type hints for entry table item fields (dict mode).
+    
+    Provides IDE autocomplete for nested table field items.
+    Use this when building payloads for POST/PUT requests.
+    
+    **Example:**
+        entry: InternetServiceDefinitionEntryItem = {
+            "field": "value",  # <- autocomplete shows all fields
+        }
+    """
+    
+    seq_num: int  # Entry sequence number. | Default: 0 | Min: 0 | Max: 4294967295
+    category_id: int  # Internet Service category ID. | Default: 0 | Min: 0 | Max: 4294967295
+    name: str  # Internet Service name. | MaxLen: 63
+    protocol: int  # Integer value for the protocol type as defined by | Default: 0 | Min: 0 | Max: 255
+    port_range: str  # Port ranges in the definition entry.
+
+
+# ============================================================================
+# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional)
+# ============================================================================
 # NOTE: We intentionally DON'T use NotRequired wrapper because:
 # 1. total=False already makes all fields optional
 # 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
@@ -18,25 +44,11 @@ class InternetServiceDefinitionPayload(TypedDict, total=False):
         }
     """
     id: int  # Internet Service application list ID. | Default: 0 | Min: 0 | Max: 4294967295
-    entry: list[dict[str, Any]]  # Protocol and port information in an Internet Servi
+    entry: list[InternetServiceDefinitionEntryItem]  # Protocol and port information in an Internet Servi
 
-# Nested TypedDicts for table field children (dict mode)
-
-class InternetServiceDefinitionEntryItem(TypedDict):
-    """Type hints for entry table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    All fields are present in API responses.
-    """
-    
-    seq_num: int  # Entry sequence number. | Default: 0 | Min: 0 | Max: 4294967295
-    category_id: int  # Internet Service category ID. | Default: 0 | Min: 0 | Max: 4294967295
-    name: str  # Internet Service name. | MaxLen: 63
-    protocol: int  # Integer value for the protocol type as defined by | Default: 0 | Min: 0 | Max: 255
-    port_range: str  # Port ranges in the definition entry.
-
-
-# Nested classes for table field children (object mode)
+# ============================================================================
+# Nested classes for table field children (object mode - for API responses)
+# ============================================================================
 
 @final
 class InternetServiceDefinitionEntryObject:
@@ -107,6 +119,9 @@ class InternetServiceDefinitionObject:
     # Common API response fields
     status: str
     http_status: int | None
+    http_status_code: int | None
+    http_method: str | None
+    http_response_time: float | None
     vdom: str | None
     
     # Methods from FortiObject
@@ -337,7 +352,7 @@ class InternetServiceDefinition:
         self,
         payload_dict: InternetServiceDefinitionPayload | None = ...,
         id: int | None = ...,
-        entry: str | list[str] | list[dict[str, Any]] | None = ...,
+        entry: str | list[InternetServiceDefinitionEntryItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> InternetServiceDefinitionObject: ...
     
@@ -346,7 +361,7 @@ class InternetServiceDefinition:
         self,
         payload_dict: InternetServiceDefinitionPayload | None = ...,
         id: int | None = ...,
-        entry: str | list[str] | list[dict[str, Any]] | None = ...,
+        entry: str | list[InternetServiceDefinitionEntryItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -356,7 +371,7 @@ class InternetServiceDefinition:
         self,
         payload_dict: InternetServiceDefinitionPayload | None = ...,
         id: int | None = ...,
-        entry: str | list[str] | list[dict[str, Any]] | None = ...,
+        entry: str | list[InternetServiceDefinitionEntryItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -364,7 +379,7 @@ class InternetServiceDefinition:
         self,
         payload_dict: InternetServiceDefinitionPayload | None = ...,
         id: int | None = ...,
-        entry: str | list[str] | list[dict[str, Any]] | None = ...,
+        entry: str | list[InternetServiceDefinitionEntryItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -374,7 +389,7 @@ class InternetServiceDefinition:
         self,
         payload_dict: InternetServiceDefinitionPayload | None = ...,
         id: int | None = ...,
-        entry: str | list[str] | list[dict[str, Any]] | None = ...,
+        entry: str | list[InternetServiceDefinitionEntryItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> InternetServiceDefinitionObject: ...
     
@@ -383,7 +398,7 @@ class InternetServiceDefinition:
         self,
         payload_dict: InternetServiceDefinitionPayload | None = ...,
         id: int | None = ...,
-        entry: str | list[str] | list[dict[str, Any]] | None = ...,
+        entry: str | list[InternetServiceDefinitionEntryItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -393,7 +408,7 @@ class InternetServiceDefinition:
         self,
         payload_dict: InternetServiceDefinitionPayload | None = ...,
         id: int | None = ...,
-        entry: str | list[str] | list[dict[str, Any]] | None = ...,
+        entry: str | list[InternetServiceDefinitionEntryItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -401,7 +416,7 @@ class InternetServiceDefinition:
         self,
         payload_dict: InternetServiceDefinitionPayload | None = ...,
         id: int | None = ...,
-        entry: str | list[str] | list[dict[str, Any]] | None = ...,
+        entry: str | list[InternetServiceDefinitionEntryItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -444,7 +459,7 @@ class InternetServiceDefinition:
         self,
         payload_dict: InternetServiceDefinitionPayload | None = ...,
         id: int | None = ...,
-        entry: str | list[str] | list[dict[str, Any]] | None = ...,
+        entry: str | list[InternetServiceDefinitionEntryItem] | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
