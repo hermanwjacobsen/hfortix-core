@@ -17,7 +17,7 @@ class CollectedEmailPayload(TypedDict, total=False):
             "field": "value",  # <- autocomplete shows all fields
         }
     """
-    ipv6: str  # ipv6
+    ipv6: bool  # ipv6
 
 # Nested TypedDicts for table field children (dict mode)
 
@@ -32,7 +32,7 @@ class CollectedEmailResponse(TypedDict):
     
     All fields are present in the response from the FortiGate API.
     """
-    ipv6: str
+    ipv6: bool
 
 
 @final
@@ -44,7 +44,7 @@ class CollectedEmailObject:
     """
     
     # ipv6
-    ipv6: str
+    ipv6: bool
     
     # Common API response fields
     status: str

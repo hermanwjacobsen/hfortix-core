@@ -19,15 +19,15 @@ class FlushPayload(TypedDict, total=False):
     """
     scope: str  # scope
     gtp_profile: str  # gtp_profile
-    version: str  # version
+    version: int  # version
     imsi: str  # imsi
     msisdn: str  # msisdn
     ms_addr: str  # ms_addr
     ms_addr6: str  # ms_addr6
-    cteid: str  # cteid
+    cteid: int  # cteid
     cteid_addr: str  # cteid_addr
     cteid_addr6: str  # cteid_addr6
-    fteid: str  # fteid
+    fteid: int  # fteid
     fteid_addr: str  # fteid_addr
     fteid_addr6: str  # fteid_addr6
     apn: str  # apn
@@ -47,15 +47,15 @@ class FlushResponse(TypedDict):
     """
     scope: str
     gtp_profile: str
-    version: str
+    version: int
     imsi: str
     msisdn: str
     ms_addr: str
     ms_addr6: str
-    cteid: str
+    cteid: int
     cteid_addr: str
     cteid_addr6: str
-    fteid: str
+    fteid: int
     fteid_addr: str
     fteid_addr6: str
     apn: str
@@ -74,7 +74,7 @@ class FlushObject:
     # gtp_profile
     gtp_profile: str
     # version
-    version: str
+    version: int
     # imsi
     imsi: str
     # msisdn
@@ -84,13 +84,13 @@ class FlushObject:
     # ms_addr6
     ms_addr6: str
     # cteid
-    cteid: str
+    cteid: int
     # cteid_addr
     cteid_addr: str
     # cteid_addr6
     cteid_addr6: str
     # fteid
-    fteid: str
+    fteid: int
     # fteid_addr
     fteid_addr: str
     # fteid_addr6
@@ -325,15 +325,15 @@ class Flush:
         payload_dict: FlushPayload | None = ...,
         scope: str | None = ...,
         gtp_profile: str | None = ...,
-        version: str | None = ...,
+        version: int | None = ...,
         imsi: str | None = ...,
         msisdn: str | None = ...,
         ms_addr: str | None = ...,
         ms_addr6: str | None = ...,
-        cteid: str | None = ...,
+        cteid: int | None = ...,
         cteid_addr: str | None = ...,
         cteid_addr6: str | None = ...,
-        fteid: str | None = ...,
+        fteid: int | None = ...,
         fteid_addr: str | None = ...,
         fteid_addr6: str | None = ...,
         apn: str | None = ...,
@@ -346,15 +346,15 @@ class Flush:
         payload_dict: FlushPayload | None = ...,
         scope: str | None = ...,
         gtp_profile: str | None = ...,
-        version: str | None = ...,
+        version: int | None = ...,
         imsi: str | None = ...,
         msisdn: str | None = ...,
         ms_addr: str | None = ...,
         ms_addr6: str | None = ...,
-        cteid: str | None = ...,
+        cteid: int | None = ...,
         cteid_addr: str | None = ...,
         cteid_addr6: str | None = ...,
-        fteid: str | None = ...,
+        fteid: int | None = ...,
         fteid_addr: str | None = ...,
         fteid_addr6: str | None = ...,
         apn: str | None = ...,
@@ -368,15 +368,15 @@ class Flush:
         payload_dict: FlushPayload | None = ...,
         scope: str | None = ...,
         gtp_profile: str | None = ...,
-        version: str | None = ...,
+        version: int | None = ...,
         imsi: str | None = ...,
         msisdn: str | None = ...,
         ms_addr: str | None = ...,
         ms_addr6: str | None = ...,
-        cteid: str | None = ...,
+        cteid: int | None = ...,
         cteid_addr: str | None = ...,
         cteid_addr6: str | None = ...,
-        fteid: str | None = ...,
+        fteid: int | None = ...,
         fteid_addr: str | None = ...,
         fteid_addr6: str | None = ...,
         apn: str | None = ...,
@@ -388,15 +388,15 @@ class Flush:
         payload_dict: FlushPayload | None = ...,
         scope: str | None = ...,
         gtp_profile: str | None = ...,
-        version: str | None = ...,
+        version: int | None = ...,
         imsi: str | None = ...,
         msisdn: str | None = ...,
         ms_addr: str | None = ...,
         ms_addr6: str | None = ...,
-        cteid: str | None = ...,
+        cteid: int | None = ...,
         cteid_addr: str | None = ...,
         cteid_addr6: str | None = ...,
-        fteid: str | None = ...,
+        fteid: int | None = ...,
         fteid_addr: str | None = ...,
         fteid_addr6: str | None = ...,
         apn: str | None = ...,
@@ -410,15 +410,15 @@ class Flush:
         payload_dict: FlushPayload | None = ...,
         scope: str | None = ...,
         gtp_profile: str | None = ...,
-        version: str | None = ...,
+        version: int | None = ...,
         imsi: str | None = ...,
         msisdn: str | None = ...,
         ms_addr: str | None = ...,
         ms_addr6: str | None = ...,
-        cteid: str | None = ...,
+        cteid: int | None = ...,
         cteid_addr: str | None = ...,
         cteid_addr6: str | None = ...,
-        fteid: str | None = ...,
+        fteid: int | None = ...,
         fteid_addr: str | None = ...,
         fteid_addr6: str | None = ...,
         apn: str | None = ...,
@@ -431,15 +431,15 @@ class Flush:
         payload_dict: FlushPayload | None = ...,
         scope: str | None = ...,
         gtp_profile: str | None = ...,
-        version: str | None = ...,
+        version: int | None = ...,
         imsi: str | None = ...,
         msisdn: str | None = ...,
         ms_addr: str | None = ...,
         ms_addr6: str | None = ...,
-        cteid: str | None = ...,
+        cteid: int | None = ...,
         cteid_addr: str | None = ...,
         cteid_addr6: str | None = ...,
-        fteid: str | None = ...,
+        fteid: int | None = ...,
         fteid_addr: str | None = ...,
         fteid_addr6: str | None = ...,
         apn: str | None = ...,
@@ -453,15 +453,15 @@ class Flush:
         payload_dict: FlushPayload | None = ...,
         scope: str | None = ...,
         gtp_profile: str | None = ...,
-        version: str | None = ...,
+        version: int | None = ...,
         imsi: str | None = ...,
         msisdn: str | None = ...,
         ms_addr: str | None = ...,
         ms_addr6: str | None = ...,
-        cteid: str | None = ...,
+        cteid: int | None = ...,
         cteid_addr: str | None = ...,
         cteid_addr6: str | None = ...,
-        fteid: str | None = ...,
+        fteid: int | None = ...,
         fteid_addr: str | None = ...,
         fteid_addr6: str | None = ...,
         apn: str | None = ...,
@@ -473,15 +473,15 @@ class Flush:
         payload_dict: FlushPayload | None = ...,
         scope: str | None = ...,
         gtp_profile: str | None = ...,
-        version: str | None = ...,
+        version: int | None = ...,
         imsi: str | None = ...,
         msisdn: str | None = ...,
         ms_addr: str | None = ...,
         ms_addr6: str | None = ...,
-        cteid: str | None = ...,
+        cteid: int | None = ...,
         cteid_addr: str | None = ...,
         cteid_addr6: str | None = ...,
-        fteid: str | None = ...,
+        fteid: int | None = ...,
         fteid_addr: str | None = ...,
         fteid_addr6: str | None = ...,
         apn: str | None = ...,
@@ -499,15 +499,15 @@ class Flush:
         payload_dict: FlushPayload | None = ...,
         scope: str | None = ...,
         gtp_profile: str | None = ...,
-        version: str | None = ...,
+        version: int | None = ...,
         imsi: str | None = ...,
         msisdn: str | None = ...,
         ms_addr: str | None = ...,
         ms_addr6: str | None = ...,
-        cteid: str | None = ...,
+        cteid: int | None = ...,
         cteid_addr: str | None = ...,
         cteid_addr6: str | None = ...,
-        fteid: str | None = ...,
+        fteid: int | None = ...,
         fteid_addr: str | None = ...,
         fteid_addr6: str | None = ...,
         apn: str | None = ...,

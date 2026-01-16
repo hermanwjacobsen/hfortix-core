@@ -17,8 +17,8 @@ class ClearCountersPayload(TypedDict, total=False):
             "field": "value",  # <- autocomplete shows all fields
         }
     """
-    id: str  # id
-    is_ipv6: str  # is_ipv6
+    id: int  # id
+    is_ipv6: bool  # is_ipv6
 
 # Nested TypedDicts for table field children (dict mode)
 
@@ -33,8 +33,8 @@ class ClearCountersResponse(TypedDict):
     
     All fields are present in the response from the FortiGate API.
     """
-    id: str
-    is_ipv6: str
+    id: int
+    is_ipv6: bool
 
 
 @final
@@ -46,9 +46,9 @@ class ClearCountersObject:
     """
     
     # id
-    id: str
+    id: int
     # is_ipv6
-    is_ipv6: str
+    is_ipv6: bool
     
     # Common API response fields
     status: str
@@ -275,7 +275,7 @@ class ClearCounters:
     def post(
         self,
         payload_dict: ClearCountersPayload | None = ...,
-        id: str | None = ...,
+        id: int | None = ...,
         is_ipv6: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> ClearCountersObject: ...
@@ -284,7 +284,7 @@ class ClearCounters:
     def post(
         self,
         payload_dict: ClearCountersPayload | None = ...,
-        id: str | None = ...,
+        id: int | None = ...,
         is_ipv6: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
@@ -294,7 +294,7 @@ class ClearCounters:
     def post(
         self,
         payload_dict: ClearCountersPayload | None = ...,
-        id: str | None = ...,
+        id: int | None = ...,
         is_ipv6: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
@@ -302,7 +302,7 @@ class ClearCounters:
     def post(
         self,
         payload_dict: ClearCountersPayload | None = ...,
-        id: str | None = ...,
+        id: int | None = ...,
         is_ipv6: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
@@ -312,7 +312,7 @@ class ClearCounters:
     def put(
         self,
         payload_dict: ClearCountersPayload | None = ...,
-        id: str | None = ...,
+        id: int | None = ...,
         is_ipv6: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> ClearCountersObject: ...
@@ -321,7 +321,7 @@ class ClearCounters:
     def put(
         self,
         payload_dict: ClearCountersPayload | None = ...,
-        id: str | None = ...,
+        id: int | None = ...,
         is_ipv6: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
@@ -331,7 +331,7 @@ class ClearCounters:
     def put(
         self,
         payload_dict: ClearCountersPayload | None = ...,
-        id: str | None = ...,
+        id: int | None = ...,
         is_ipv6: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
@@ -339,7 +339,7 @@ class ClearCounters:
     def put(
         self,
         payload_dict: ClearCountersPayload | None = ...,
-        id: str | None = ...,
+        id: int | None = ...,
         is_ipv6: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
@@ -353,7 +353,7 @@ class ClearCounters:
     def set(
         self,
         payload_dict: ClearCountersPayload | None = ...,
-        id: str | None = ...,
+        id: int | None = ...,
         is_ipv6: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...

@@ -18,8 +18,8 @@ class StationCapabilityPayload(TypedDict, total=False):
         }
     """
     mac_address: str  # mac_address
-    min_age: str  # min_age
-    max_age: str  # max_age
+    min_age: int  # min_age
+    max_age: int  # max_age
 
 # Nested TypedDicts for table field children (dict mode)
 
@@ -35,8 +35,8 @@ class StationCapabilityResponse(TypedDict):
     All fields are present in the response from the FortiGate API.
     """
     mac_address: str
-    min_age: str
-    max_age: str
+    min_age: int
+    max_age: int
 
 
 @final
@@ -50,9 +50,9 @@ class StationCapabilityObject:
     # mac_address
     mac_address: str
     # min_age
-    min_age: str
+    min_age: int
     # max_age
-    max_age: str
+    max_age: int
     
     # Common API response fields
     status: str
@@ -247,8 +247,8 @@ class StationCapability:
         self,
         payload_dict: StationCapabilityPayload | None = ...,
         mac_address: str | None = ...,
-        min_age: str | None = ...,
-        max_age: str | None = ...,
+        min_age: int | None = ...,
+        max_age: int | None = ...,
         vdom: str | bool | None = ...,
     ) -> StationCapabilityObject: ...
     
@@ -257,8 +257,8 @@ class StationCapability:
         self,
         payload_dict: StationCapabilityPayload | None = ...,
         mac_address: str | None = ...,
-        min_age: str | None = ...,
-        max_age: str | None = ...,
+        min_age: int | None = ...,
+        max_age: int | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -268,8 +268,8 @@ class StationCapability:
         self,
         payload_dict: StationCapabilityPayload | None = ...,
         mac_address: str | None = ...,
-        min_age: str | None = ...,
-        max_age: str | None = ...,
+        min_age: int | None = ...,
+        max_age: int | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -277,8 +277,8 @@ class StationCapability:
         self,
         payload_dict: StationCapabilityPayload | None = ...,
         mac_address: str | None = ...,
-        min_age: str | None = ...,
-        max_age: str | None = ...,
+        min_age: int | None = ...,
+        max_age: int | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -292,8 +292,8 @@ class StationCapability:
         self,
         payload_dict: StationCapabilityPayload | None = ...,
         mac_address: str | None = ...,
-        min_age: str | None = ...,
-        max_age: str | None = ...,
+        min_age: int | None = ...,
+        max_age: int | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     

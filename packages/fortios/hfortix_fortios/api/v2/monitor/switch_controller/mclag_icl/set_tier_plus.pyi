@@ -37,7 +37,7 @@ class SetTierPlusResponse(TypedDict):
     
     All fields are present in the response from the FortiGate API.
     """
-    success: str
+    success: bool
     error: str
 
 
@@ -50,7 +50,7 @@ class SetTierPlusObject:
     """
     
     # success
-    success: str
+    success: bool
     # error
     error: str
     

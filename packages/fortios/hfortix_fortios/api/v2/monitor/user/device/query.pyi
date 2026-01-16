@@ -17,16 +17,16 @@ class QueryPayload(TypedDict, total=False):
             "field": "value",  # <- autocomplete shows all fields
         }
     """
-    timestamp_from: str  # timestamp_from
-    timestamp_to: str  # timestamp_to
+    timestamp_from: int  # timestamp_from
+    timestamp_to: int  # timestamp_to
     filters: str  # filters
     query_type: str  # query_type
     view_type: str  # view_type
-    query_id: str  # query_id
-    cache_query: str  # cache_query
-    key_only: str  # key_only
+    query_id: int  # query_id
+    cache_query: bool  # cache_query
+    key_only: bool  # key_only
     filter_logic: str  # filter_logic
-    total_only: str  # total_only
+    total_only: bool  # total_only
 
 # Nested TypedDicts for table field children (dict mode)
 
@@ -41,16 +41,16 @@ class QueryResponse(TypedDict):
     
     All fields are present in the response from the FortiGate API.
     """
-    timestamp_from: str
-    timestamp_to: str
+    timestamp_from: int
+    timestamp_to: int
     filters: str
     query_type: str
     view_type: str
-    query_id: str
-    cache_query: str
-    key_only: str
+    query_id: int
+    cache_query: bool
+    key_only: bool
     filter_logic: str
-    total_only: str
+    total_only: bool
 
 
 @final
@@ -62,9 +62,9 @@ class QueryObject:
     """
     
     # timestamp_from
-    timestamp_from: str
+    timestamp_from: int
     # timestamp_to
-    timestamp_to: str
+    timestamp_to: int
     # filters
     filters: str
     # query_type
@@ -72,15 +72,15 @@ class QueryObject:
     # view_type
     view_type: str
     # query_id
-    query_id: str
+    query_id: int
     # cache_query
-    cache_query: str
+    cache_query: bool
     # key_only
-    key_only: str
+    key_only: bool
     # filter_logic
     filter_logic: str
     # total_only
-    total_only: str
+    total_only: bool
     
     # Common API response fields
     status: str
@@ -281,12 +281,12 @@ class Query:
     def put(
         self,
         payload_dict: QueryPayload | None = ...,
-        timestamp_from: str | None = ...,
-        timestamp_to: str | None = ...,
+        timestamp_from: int | None = ...,
+        timestamp_to: int | None = ...,
         filters: str | None = ...,
         query_type: str | None = ...,
         view_type: str | None = ...,
-        query_id: str | None = ...,
+        query_id: int | None = ...,
         cache_query: str | None = ...,
         key_only: str | None = ...,
         filter_logic: str | None = ...,
@@ -298,12 +298,12 @@ class Query:
     def put(
         self,
         payload_dict: QueryPayload | None = ...,
-        timestamp_from: str | None = ...,
-        timestamp_to: str | None = ...,
+        timestamp_from: int | None = ...,
+        timestamp_to: int | None = ...,
         filters: str | None = ...,
         query_type: str | None = ...,
         view_type: str | None = ...,
-        query_id: str | None = ...,
+        query_id: int | None = ...,
         cache_query: str | None = ...,
         key_only: str | None = ...,
         filter_logic: str | None = ...,
@@ -316,12 +316,12 @@ class Query:
     def put(
         self,
         payload_dict: QueryPayload | None = ...,
-        timestamp_from: str | None = ...,
-        timestamp_to: str | None = ...,
+        timestamp_from: int | None = ...,
+        timestamp_to: int | None = ...,
         filters: str | None = ...,
         query_type: str | None = ...,
         view_type: str | None = ...,
-        query_id: str | None = ...,
+        query_id: int | None = ...,
         cache_query: str | None = ...,
         key_only: str | None = ...,
         filter_logic: str | None = ...,
@@ -332,12 +332,12 @@ class Query:
     def put(
         self,
         payload_dict: QueryPayload | None = ...,
-        timestamp_from: str | None = ...,
-        timestamp_to: str | None = ...,
+        timestamp_from: int | None = ...,
+        timestamp_to: int | None = ...,
         filters: str | None = ...,
         query_type: str | None = ...,
         view_type: str | None = ...,
-        query_id: str | None = ...,
+        query_id: int | None = ...,
         cache_query: str | None = ...,
         key_only: str | None = ...,
         filter_logic: str | None = ...,
@@ -354,12 +354,12 @@ class Query:
     def set(
         self,
         payload_dict: QueryPayload | None = ...,
-        timestamp_from: str | None = ...,
-        timestamp_to: str | None = ...,
+        timestamp_from: int | None = ...,
+        timestamp_to: int | None = ...,
         filters: str | None = ...,
         query_type: str | None = ...,
         view_type: str | None = ...,
-        query_id: str | None = ...,
+        query_id: int | None = ...,
         cache_query: str | None = ...,
         key_only: str | None = ...,
         filter_logic: str | None = ...,

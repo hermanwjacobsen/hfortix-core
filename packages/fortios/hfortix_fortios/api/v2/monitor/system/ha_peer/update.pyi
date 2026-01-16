@@ -18,8 +18,8 @@ class UpdatePayload(TypedDict, total=False):
         }
     """
     serial_no: str  # serial_no
-    vcluster_id: str  # vcluster_id
-    priority: str  # priority
+    vcluster_id: int  # vcluster_id
+    priority: int  # priority
     hostname: str  # hostname
 
 # Nested TypedDicts for table field children (dict mode)
@@ -36,8 +36,8 @@ class UpdateResponse(TypedDict):
     All fields are present in the response from the FortiGate API.
     """
     serial_no: str
-    vcluster_id: str
-    priority: str
+    vcluster_id: int
+    priority: int
     hostname: str
 
 
@@ -52,9 +52,9 @@ class UpdateObject:
     # serial_no
     serial_no: str
     # vcluster_id
-    vcluster_id: str
+    vcluster_id: int
     # priority
-    priority: str
+    priority: int
     # hostname
     hostname: str
     
@@ -284,8 +284,8 @@ class Update:
         self,
         payload_dict: UpdatePayload | None = ...,
         serial_no: str | None = ...,
-        vcluster_id: str | None = ...,
-        priority: str | None = ...,
+        vcluster_id: int | None = ...,
+        priority: int | None = ...,
         hostname: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> UpdateObject: ...
@@ -295,8 +295,8 @@ class Update:
         self,
         payload_dict: UpdatePayload | None = ...,
         serial_no: str | None = ...,
-        vcluster_id: str | None = ...,
-        priority: str | None = ...,
+        vcluster_id: int | None = ...,
+        priority: int | None = ...,
         hostname: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
@@ -307,8 +307,8 @@ class Update:
         self,
         payload_dict: UpdatePayload | None = ...,
         serial_no: str | None = ...,
-        vcluster_id: str | None = ...,
-        priority: str | None = ...,
+        vcluster_id: int | None = ...,
+        priority: int | None = ...,
         hostname: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
@@ -317,8 +317,8 @@ class Update:
         self,
         payload_dict: UpdatePayload | None = ...,
         serial_no: str | None = ...,
-        vcluster_id: str | None = ...,
-        priority: str | None = ...,
+        vcluster_id: int | None = ...,
+        priority: int | None = ...,
         hostname: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
@@ -329,8 +329,8 @@ class Update:
         self,
         payload_dict: UpdatePayload | None = ...,
         serial_no: str | None = ...,
-        vcluster_id: str | None = ...,
-        priority: str | None = ...,
+        vcluster_id: int | None = ...,
+        priority: int | None = ...,
         hostname: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> UpdateObject: ...
@@ -340,8 +340,8 @@ class Update:
         self,
         payload_dict: UpdatePayload | None = ...,
         serial_no: str | None = ...,
-        vcluster_id: str | None = ...,
-        priority: str | None = ...,
+        vcluster_id: int | None = ...,
+        priority: int | None = ...,
         hostname: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
@@ -352,8 +352,8 @@ class Update:
         self,
         payload_dict: UpdatePayload | None = ...,
         serial_no: str | None = ...,
-        vcluster_id: str | None = ...,
-        priority: str | None = ...,
+        vcluster_id: int | None = ...,
+        priority: int | None = ...,
         hostname: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
@@ -362,8 +362,8 @@ class Update:
         self,
         payload_dict: UpdatePayload | None = ...,
         serial_no: str | None = ...,
-        vcluster_id: str | None = ...,
-        priority: str | None = ...,
+        vcluster_id: int | None = ...,
+        priority: int | None = ...,
         hostname: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
@@ -378,8 +378,8 @@ class Update:
         self,
         payload_dict: UpdatePayload | None = ...,
         serial_no: str | None = ...,
-        vcluster_id: str | None = ...,
-        priority: str | None = ...,
+        vcluster_id: int | None = ...,
+        priority: int | None = ...,
         hostname: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...

@@ -17,7 +17,7 @@ class VerifyCertPayload(TypedDict, total=False):
             "field": "value",  # <- autocomplete shows all fields
         }
     """
-    ems_id: str  # ems_id
+    ems_id: int  # ems_id
     scope: str  # scope
     fingerprint: str  # fingerprint
 
@@ -291,7 +291,7 @@ class VerifyCert:
     def post(
         self,
         payload_dict: VerifyCertPayload | None = ...,
-        ems_id: str | None = ...,
+        ems_id: int | None = ...,
         scope: str | None = ...,
         fingerprint: str | None = ...,
         vdom: str | bool | None = ...,
@@ -301,7 +301,7 @@ class VerifyCert:
     def post(
         self,
         payload_dict: VerifyCertPayload | None = ...,
-        ems_id: str | None = ...,
+        ems_id: int | None = ...,
         scope: str | None = ...,
         fingerprint: str | None = ...,
         vdom: str | bool | None = ...,
@@ -312,7 +312,7 @@ class VerifyCert:
     def post(
         self,
         payload_dict: VerifyCertPayload | None = ...,
-        ems_id: str | None = ...,
+        ems_id: int | None = ...,
         scope: str | None = ...,
         fingerprint: str | None = ...,
         vdom: str | bool | None = ...,
@@ -321,7 +321,7 @@ class VerifyCert:
     def post(
         self,
         payload_dict: VerifyCertPayload | None = ...,
-        ems_id: str | None = ...,
+        ems_id: int | None = ...,
         scope: str | None = ...,
         fingerprint: str | None = ...,
         vdom: str | bool | None = ...,
@@ -332,7 +332,7 @@ class VerifyCert:
     def put(
         self,
         payload_dict: VerifyCertPayload | None = ...,
-        ems_id: str | None = ...,
+        ems_id: int | None = ...,
         scope: str | None = ...,
         fingerprint: str | None = ...,
         vdom: str | bool | None = ...,
@@ -342,7 +342,7 @@ class VerifyCert:
     def put(
         self,
         payload_dict: VerifyCertPayload | None = ...,
-        ems_id: str | None = ...,
+        ems_id: int | None = ...,
         scope: str | None = ...,
         fingerprint: str | None = ...,
         vdom: str | bool | None = ...,
@@ -353,7 +353,7 @@ class VerifyCert:
     def put(
         self,
         payload_dict: VerifyCertPayload | None = ...,
-        ems_id: str | None = ...,
+        ems_id: int | None = ...,
         scope: str | None = ...,
         fingerprint: str | None = ...,
         vdom: str | bool | None = ...,
@@ -362,7 +362,7 @@ class VerifyCert:
     def put(
         self,
         payload_dict: VerifyCertPayload | None = ...,
-        ems_id: str | None = ...,
+        ems_id: int | None = ...,
         scope: str | None = ...,
         fingerprint: str | None = ...,
         vdom: str | bool | None = ...,
@@ -377,7 +377,7 @@ class VerifyCert:
     def set(
         self,
         payload_dict: VerifyCertPayload | None = ...,
-        ems_id: str | None = ...,
+        ems_id: int | None = ...,
         scope: str | None = ...,
         fingerprint: str | None = ...,
         vdom: str | bool | None = ...,

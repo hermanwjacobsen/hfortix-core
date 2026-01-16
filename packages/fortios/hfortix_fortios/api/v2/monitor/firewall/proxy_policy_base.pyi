@@ -17,7 +17,7 @@ class ProxyPolicyPayload(TypedDict, total=False):
             "field": "value",  # <- autocomplete shows all fields
         }
     """
-    policyid: str  # policyid
+    policyid: int  # policyid
 
 # Nested TypedDicts for table field children (dict mode)
 
@@ -32,7 +32,7 @@ class ProxyPolicyResponse(TypedDict):
     
     All fields are present in the response from the FortiGate API.
     """
-    policyid: str
+    policyid: int
 
 
 @final
@@ -44,7 +44,7 @@ class ProxyPolicyObject:
     """
     
     # policyid
-    policyid: str
+    policyid: int
     
     # Common API response fields
     status: str
@@ -236,7 +236,7 @@ class ProxyPolicy:
     def put(
         self,
         payload_dict: ProxyPolicyPayload | None = ...,
-        policyid: str | None = ...,
+        policyid: int | None = ...,
         vdom: str | bool | None = ...,
     ) -> ProxyPolicyObject: ...
     
@@ -244,7 +244,7 @@ class ProxyPolicy:
     def put(
         self,
         payload_dict: ProxyPolicyPayload | None = ...,
-        policyid: str | None = ...,
+        policyid: int | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -253,14 +253,14 @@ class ProxyPolicy:
     def put(
         self,
         payload_dict: ProxyPolicyPayload | None = ...,
-        policyid: str | None = ...,
+        policyid: int | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     def put(
         self,
         payload_dict: ProxyPolicyPayload | None = ...,
-        policyid: str | None = ...,
+        policyid: int | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -273,7 +273,7 @@ class ProxyPolicy:
     def set(
         self,
         payload_dict: ProxyPolicyPayload | None = ...,
-        policyid: str | None = ...,
+        policyid: int | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     

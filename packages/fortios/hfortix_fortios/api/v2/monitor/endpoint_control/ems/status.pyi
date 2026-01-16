@@ -17,7 +17,7 @@ class StatusPayload(TypedDict, total=False):
             "field": "value",  # <- autocomplete shows all fields
         }
     """
-    ems_id: str  # ems_id
+    ems_id: int  # ems_id
     scope: str  # scope
 
 # Nested TypedDicts for table field children (dict mode)
@@ -39,8 +39,8 @@ class StatusResponse(TypedDict):
     ems_tenant_id: str
     ems_status_id: int
     ems_status: str
-    ems_is_connected: str
-    ems_is_verified: str
+    ems_is_connected: bool
+    ems_is_verified: bool
     api_status: str
     ws_status: str
     mgmt_ip: str
@@ -68,9 +68,9 @@ class StatusObject:
     # ems_status
     ems_status: str
     # ems_is_connected
-    ems_is_connected: str
+    ems_is_connected: bool
     # ems_is_verified
-    ems_is_verified: str
+    ems_is_verified: bool
     # api_status
     api_status: str
     # ws_status
@@ -271,7 +271,7 @@ class Status:
     def put(
         self,
         payload_dict: StatusPayload | None = ...,
-        ems_id: str | None = ...,
+        ems_id: int | None = ...,
         scope: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> StatusObject: ...
@@ -280,7 +280,7 @@ class Status:
     def put(
         self,
         payload_dict: StatusPayload | None = ...,
-        ems_id: str | None = ...,
+        ems_id: int | None = ...,
         scope: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
@@ -290,7 +290,7 @@ class Status:
     def put(
         self,
         payload_dict: StatusPayload | None = ...,
-        ems_id: str | None = ...,
+        ems_id: int | None = ...,
         scope: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
@@ -298,7 +298,7 @@ class Status:
     def put(
         self,
         payload_dict: StatusPayload | None = ...,
-        ems_id: str | None = ...,
+        ems_id: int | None = ...,
         scope: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
@@ -312,7 +312,7 @@ class Status:
     def set(
         self,
         payload_dict: StatusPayload | None = ...,
-        ems_id: str | None = ...,
+        ems_id: int | None = ...,
         scope: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...

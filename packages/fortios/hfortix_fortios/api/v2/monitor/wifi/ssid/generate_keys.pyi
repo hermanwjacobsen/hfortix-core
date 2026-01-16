@@ -20,8 +20,8 @@ class GenerateKeysPayload(TypedDict, total=False):
     mpsk_profile: str  # mpsk_profile
     group: str  # group
     prefix: str  # prefix
-    count: str  # count
-    key_length: str  # key_length
+    count: int  # count
+    key_length: int  # key_length
 
 # Nested TypedDicts for table field children (dict mode)
 
@@ -39,8 +39,8 @@ class GenerateKeysResponse(TypedDict):
     mpsk_profile: str
     group: str
     prefix: str
-    count: str
-    key_length: str
+    count: int
+    key_length: int
 
 
 @final
@@ -58,9 +58,9 @@ class GenerateKeysObject:
     # prefix
     prefix: str
     # count
-    count: str
+    count: int
     # key_length
-    key_length: str
+    key_length: int
     
     # Common API response fields
     status: str
@@ -290,8 +290,8 @@ class GenerateKeys:
         mpsk_profile: str | None = ...,
         group: str | None = ...,
         prefix: str | None = ...,
-        count: str | None = ...,
-        key_length: str | None = ...,
+        count: int | None = ...,
+        key_length: int | None = ...,
         vdom: str | bool | None = ...,
     ) -> GenerateKeysObject: ...
     
@@ -302,8 +302,8 @@ class GenerateKeys:
         mpsk_profile: str | None = ...,
         group: str | None = ...,
         prefix: str | None = ...,
-        count: str | None = ...,
-        key_length: str | None = ...,
+        count: int | None = ...,
+        key_length: int | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -315,8 +315,8 @@ class GenerateKeys:
         mpsk_profile: str | None = ...,
         group: str | None = ...,
         prefix: str | None = ...,
-        count: str | None = ...,
-        key_length: str | None = ...,
+        count: int | None = ...,
+        key_length: int | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -326,8 +326,8 @@ class GenerateKeys:
         mpsk_profile: str | None = ...,
         group: str | None = ...,
         prefix: str | None = ...,
-        count: str | None = ...,
-        key_length: str | None = ...,
+        count: int | None = ...,
+        key_length: int | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -339,8 +339,8 @@ class GenerateKeys:
         mpsk_profile: str | None = ...,
         group: str | None = ...,
         prefix: str | None = ...,
-        count: str | None = ...,
-        key_length: str | None = ...,
+        count: int | None = ...,
+        key_length: int | None = ...,
         vdom: str | bool | None = ...,
     ) -> GenerateKeysObject: ...
     
@@ -351,8 +351,8 @@ class GenerateKeys:
         mpsk_profile: str | None = ...,
         group: str | None = ...,
         prefix: str | None = ...,
-        count: str | None = ...,
-        key_length: str | None = ...,
+        count: int | None = ...,
+        key_length: int | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -364,8 +364,8 @@ class GenerateKeys:
         mpsk_profile: str | None = ...,
         group: str | None = ...,
         prefix: str | None = ...,
-        count: str | None = ...,
-        key_length: str | None = ...,
+        count: int | None = ...,
+        key_length: int | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -375,8 +375,8 @@ class GenerateKeys:
         mpsk_profile: str | None = ...,
         group: str | None = ...,
         prefix: str | None = ...,
-        count: str | None = ...,
-        key_length: str | None = ...,
+        count: int | None = ...,
+        key_length: int | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -392,8 +392,8 @@ class GenerateKeys:
         mpsk_profile: str | None = ...,
         group: str | None = ...,
         prefix: str | None = ...,
-        count: str | None = ...,
-        key_length: str | None = ...,
+        count: int | None = ...,
+        key_length: int | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     

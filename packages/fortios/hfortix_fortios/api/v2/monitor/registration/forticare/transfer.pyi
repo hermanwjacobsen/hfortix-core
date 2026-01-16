@@ -21,7 +21,7 @@ class TransferPayload(TypedDict, total=False):
     password: str  # password
     old_email: str  # old_email
     old_password: str  # old_password
-    is_government: str  # is_government
+    is_government: bool  # is_government
 
 # Nested TypedDicts for table field children (dict mode)
 
@@ -37,7 +37,7 @@ class TransferResponse(TypedDict):
     All fields are present in the response from the FortiGate API.
     """
     forticare_error: str
-    forticare_success: str
+    forticare_success: bool
 
 
 @final
@@ -51,7 +51,7 @@ class TransferObject:
     # forticare_error
     forticare_error: str
     # forticare_success
-    forticare_success: str
+    forticare_success: bool
     
     # Common API response fields
     status: str

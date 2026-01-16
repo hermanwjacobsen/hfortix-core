@@ -21,10 +21,10 @@ class RegisterDevicePayload(TypedDict, total=False):
     email: str  # email
     password: str  # password
     reseller: str  # reseller
-    reseller_id: str  # reseller_id
+    reseller_id: int  # reseller_id
     country: str  # country
-    is_government: str  # is_government
-    agreement_accepted: str  # agreement_accepted
+    is_government: bool  # is_government
+    agreement_accepted: bool  # agreement_accepted
 
 # Nested TypedDicts for table field children (dict mode)
 
@@ -41,7 +41,7 @@ class RegisterDeviceResponse(TypedDict):
     """
     successful_registration_count: int
     failed_registration_count: int
-    success: str
+    success: bool
     forticare_agreement: str
 
 
@@ -58,7 +58,7 @@ class RegisterDeviceObject:
     # failed_registration_count
     failed_registration_count: int
     # success
-    success: str
+    success: bool
     # forticare_agreement
     forticare_agreement: str
     
@@ -291,7 +291,7 @@ class RegisterDevice:
         email: str | None = ...,
         password: str | None = ...,
         reseller: str | None = ...,
-        reseller_id: str | None = ...,
+        reseller_id: int | None = ...,
         country: str | None = ...,
         is_government: str | None = ...,
         agreement_accepted: str | None = ...,
@@ -306,7 +306,7 @@ class RegisterDevice:
         email: str | None = ...,
         password: str | None = ...,
         reseller: str | None = ...,
-        reseller_id: str | None = ...,
+        reseller_id: int | None = ...,
         country: str | None = ...,
         is_government: str | None = ...,
         agreement_accepted: str | None = ...,
@@ -322,7 +322,7 @@ class RegisterDevice:
         email: str | None = ...,
         password: str | None = ...,
         reseller: str | None = ...,
-        reseller_id: str | None = ...,
+        reseller_id: int | None = ...,
         country: str | None = ...,
         is_government: str | None = ...,
         agreement_accepted: str | None = ...,
@@ -336,7 +336,7 @@ class RegisterDevice:
         email: str | None = ...,
         password: str | None = ...,
         reseller: str | None = ...,
-        reseller_id: str | None = ...,
+        reseller_id: int | None = ...,
         country: str | None = ...,
         is_government: str | None = ...,
         agreement_accepted: str | None = ...,
@@ -352,7 +352,7 @@ class RegisterDevice:
         email: str | None = ...,
         password: str | None = ...,
         reseller: str | None = ...,
-        reseller_id: str | None = ...,
+        reseller_id: int | None = ...,
         country: str | None = ...,
         is_government: str | None = ...,
         agreement_accepted: str | None = ...,
@@ -367,7 +367,7 @@ class RegisterDevice:
         email: str | None = ...,
         password: str | None = ...,
         reseller: str | None = ...,
-        reseller_id: str | None = ...,
+        reseller_id: int | None = ...,
         country: str | None = ...,
         is_government: str | None = ...,
         agreement_accepted: str | None = ...,
@@ -383,7 +383,7 @@ class RegisterDevice:
         email: str | None = ...,
         password: str | None = ...,
         reseller: str | None = ...,
-        reseller_id: str | None = ...,
+        reseller_id: int | None = ...,
         country: str | None = ...,
         is_government: str | None = ...,
         agreement_accepted: str | None = ...,
@@ -397,7 +397,7 @@ class RegisterDevice:
         email: str | None = ...,
         password: str | None = ...,
         reseller: str | None = ...,
-        reseller_id: str | None = ...,
+        reseller_id: int | None = ...,
         country: str | None = ...,
         is_government: str | None = ...,
         agreement_accepted: str | None = ...,
@@ -417,7 +417,7 @@ class RegisterDevice:
         email: str | None = ...,
         password: str | None = ...,
         reseller: str | None = ...,
-        reseller_id: str | None = ...,
+        reseller_id: int | None = ...,
         country: str | None = ...,
         is_government: str | None = ...,
         agreement_accepted: str | None = ...,

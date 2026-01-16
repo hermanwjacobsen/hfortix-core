@@ -18,7 +18,7 @@ class CsfPayload(TypedDict, total=False):
         }
     """
     scope: str  # scope
-    all_vdoms: str  # all_vdoms
+    all_vdoms: bool  # all_vdoms
 
 # Nested TypedDicts for table field children (dict mode)
 
@@ -33,7 +33,7 @@ class CsfResponse(TypedDict):
     
     All fields are present in the response from the FortiGate API.
     """
-    protocol_enabled: str
+    protocol_enabled: bool
     csf_group_name: str
     pending: str
     trusted: str
@@ -50,7 +50,7 @@ class CsfObject:
     """
     
     # protocol_enabled
-    protocol_enabled: str
+    protocol_enabled: bool
     # csf_group_name
     csf_group_name: str
     # pending

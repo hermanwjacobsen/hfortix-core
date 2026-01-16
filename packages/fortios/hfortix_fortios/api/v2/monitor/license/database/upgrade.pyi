@@ -18,8 +18,8 @@ class UpgradePayload(TypedDict, total=False):
         }
     """
     db_name: str  # db_name
-    confirm_not_signed: str  # confirm_not_signed
-    confirm_not_ga_certified: str  # confirm_not_ga_certified
+    confirm_not_signed: bool  # confirm_not_signed
+    confirm_not_ga_certified: bool  # confirm_not_ga_certified
     file_id: str  # file_id
     file_content: str  # file_content
 
@@ -37,8 +37,8 @@ class UpgradeResponse(TypedDict):
     All fields are present in the response from the FortiGate API.
     """
     db_name: str
-    confirm_not_signed: str
-    confirm_not_ga_certified: str
+    confirm_not_signed: bool
+    confirm_not_ga_certified: bool
     file_id: str
     file_content: str
 
@@ -54,9 +54,9 @@ class UpgradeObject:
     # db_name
     db_name: str
     # confirm_not_signed
-    confirm_not_signed: str
+    confirm_not_signed: bool
     # confirm_not_ga_certified
-    confirm_not_ga_certified: str
+    confirm_not_ga_certified: bool
     # file_id
     file_id: str
     # file_content

@@ -19,8 +19,8 @@ class StatsPayload(TypedDict, total=False):
     """
     stat_query_type: str  # stat-query-type
     stat_key: str  # stat-key
-    timestamp_from: str  # timestamp_from
-    timestamp_to: str  # timestamp_to
+    timestamp_from: int  # timestamp_from
+    timestamp_to: int  # timestamp_to
     filters: str  # filters
     filter_logic: str  # filter_logic
 
@@ -39,8 +39,8 @@ class StatsResponse(TypedDict):
     """
     stat_query_type: str
     stat_key: str
-    timestamp_from: str
-    timestamp_to: str
+    timestamp_from: int
+    timestamp_to: int
     filters: str
     filter_logic: str
 
@@ -58,9 +58,9 @@ class StatsObject:
     # stat-key
     stat_key: str
     # timestamp_from
-    timestamp_from: str
+    timestamp_from: int
     # timestamp_to
-    timestamp_to: str
+    timestamp_to: int
     # filters
     filters: str
     # filter_logic
@@ -263,8 +263,8 @@ class Stats:
         payload_dict: StatsPayload | None = ...,
         stat_query_type: str | None = ...,
         stat_key: str | None = ...,
-        timestamp_from: str | None = ...,
-        timestamp_to: str | None = ...,
+        timestamp_from: int | None = ...,
+        timestamp_to: int | None = ...,
         filters: str | None = ...,
         filter_logic: str | None = ...,
         vdom: str | bool | None = ...,
@@ -276,8 +276,8 @@ class Stats:
         payload_dict: StatsPayload | None = ...,
         stat_query_type: str | None = ...,
         stat_key: str | None = ...,
-        timestamp_from: str | None = ...,
-        timestamp_to: str | None = ...,
+        timestamp_from: int | None = ...,
+        timestamp_to: int | None = ...,
         filters: str | None = ...,
         filter_logic: str | None = ...,
         vdom: str | bool | None = ...,
@@ -290,8 +290,8 @@ class Stats:
         payload_dict: StatsPayload | None = ...,
         stat_query_type: str | None = ...,
         stat_key: str | None = ...,
-        timestamp_from: str | None = ...,
-        timestamp_to: str | None = ...,
+        timestamp_from: int | None = ...,
+        timestamp_to: int | None = ...,
         filters: str | None = ...,
         filter_logic: str | None = ...,
         vdom: str | bool | None = ...,
@@ -302,8 +302,8 @@ class Stats:
         payload_dict: StatsPayload | None = ...,
         stat_query_type: str | None = ...,
         stat_key: str | None = ...,
-        timestamp_from: str | None = ...,
-        timestamp_to: str | None = ...,
+        timestamp_from: int | None = ...,
+        timestamp_to: int | None = ...,
         filters: str | None = ...,
         filter_logic: str | None = ...,
         vdom: str | bool | None = ...,
@@ -320,8 +320,8 @@ class Stats:
         payload_dict: StatsPayload | None = ...,
         stat_query_type: str | None = ...,
         stat_key: str | None = ...,
-        timestamp_from: str | None = ...,
-        timestamp_to: str | None = ...,
+        timestamp_from: int | None = ...,
+        timestamp_to: int | None = ...,
         filters: str | None = ...,
         filter_logic: str | None = ...,
         vdom: str | bool | None = ...,

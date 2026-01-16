@@ -19,7 +19,7 @@ class ApChannelsPayload(TypedDict, total=False):
     """
     country: str  # country
     platform_type: str  # platform_type
-    indoor_outdoor: str  # indoor_outdoor
+    indoor_outdoor: int  # indoor_outdoor
 
 # Nested TypedDicts for table field children (dict mode)
 
@@ -34,9 +34,9 @@ class ApChannelsResponse(TypedDict):
     
     All fields are present in the response from the FortiGate API.
     """
-    outdoor: str
-    local: str
-    unii4_5ghz_band_country_support: str
+    outdoor: bool
+    local: bool
+    unii4_5ghz_band_country_support: bool
     channel_lists: str
 
 
@@ -49,11 +49,11 @@ class ApChannelsObject:
     """
     
     # outdoor
-    outdoor: str
+    outdoor: bool
     # local
-    local: str
+    local: bool
     # unii4_5ghz_band_country_support
-    unii4_5ghz_band_country_support: str
+    unii4_5ghz_band_country_support: bool
     # channel_lists
     channel_lists: str
     
@@ -251,7 +251,7 @@ class ApChannels:
         payload_dict: ApChannelsPayload | None = ...,
         country: str | None = ...,
         platform_type: str | None = ...,
-        indoor_outdoor: str | None = ...,
+        indoor_outdoor: int | None = ...,
         vdom: str | bool | None = ...,
     ) -> ApChannelsObject: ...
     
@@ -261,7 +261,7 @@ class ApChannels:
         payload_dict: ApChannelsPayload | None = ...,
         country: str | None = ...,
         platform_type: str | None = ...,
-        indoor_outdoor: str | None = ...,
+        indoor_outdoor: int | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -272,7 +272,7 @@ class ApChannels:
         payload_dict: ApChannelsPayload | None = ...,
         country: str | None = ...,
         platform_type: str | None = ...,
-        indoor_outdoor: str | None = ...,
+        indoor_outdoor: int | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -281,7 +281,7 @@ class ApChannels:
         payload_dict: ApChannelsPayload | None = ...,
         country: str | None = ...,
         platform_type: str | None = ...,
-        indoor_outdoor: str | None = ...,
+        indoor_outdoor: int | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -296,7 +296,7 @@ class ApChannels:
         payload_dict: ApChannelsPayload | None = ...,
         country: str | None = ...,
         platform_type: str | None = ...,
-        indoor_outdoor: str | None = ...,
+        indoor_outdoor: int | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     

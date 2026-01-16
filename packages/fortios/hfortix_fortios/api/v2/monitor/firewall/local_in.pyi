@@ -17,7 +17,7 @@ class LocalInPayload(TypedDict, total=False):
             "field": "value",  # <- autocomplete shows all fields
         }
     """
-    include_ttl: str  # include_ttl
+    include_ttl: bool  # include_ttl
 
 # Nested TypedDicts for table field children (dict mode)
 

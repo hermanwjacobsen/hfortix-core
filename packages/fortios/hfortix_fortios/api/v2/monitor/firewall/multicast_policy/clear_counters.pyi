@@ -17,7 +17,7 @@ class ClearCountersPayload(TypedDict, total=False):
             "field": "value",  # <- autocomplete shows all fields
         }
     """
-    policy: str  # policy
+    policy: int  # policy
 
 # Nested TypedDicts for table field children (dict mode)
 
@@ -32,7 +32,7 @@ class ClearCountersResponse(TypedDict):
     
     All fields are present in the response from the FortiGate API.
     """
-    policy: str
+    policy: int
 
 
 @final
@@ -44,7 +44,7 @@ class ClearCountersObject:
     """
     
     # policy
-    policy: str
+    policy: int
     
     # Common API response fields
     status: str
@@ -271,7 +271,7 @@ class ClearCounters:
     def post(
         self,
         payload_dict: ClearCountersPayload | None = ...,
-        policy: str | None = ...,
+        policy: int | None = ...,
         vdom: str | bool | None = ...,
     ) -> ClearCountersObject: ...
     
@@ -279,7 +279,7 @@ class ClearCounters:
     def post(
         self,
         payload_dict: ClearCountersPayload | None = ...,
-        policy: str | None = ...,
+        policy: int | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -288,14 +288,14 @@ class ClearCounters:
     def post(
         self,
         payload_dict: ClearCountersPayload | None = ...,
-        policy: str | None = ...,
+        policy: int | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     def post(
         self,
         payload_dict: ClearCountersPayload | None = ...,
-        policy: str | None = ...,
+        policy: int | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -304,7 +304,7 @@ class ClearCounters:
     def put(
         self,
         payload_dict: ClearCountersPayload | None = ...,
-        policy: str | None = ...,
+        policy: int | None = ...,
         vdom: str | bool | None = ...,
     ) -> ClearCountersObject: ...
     
@@ -312,7 +312,7 @@ class ClearCounters:
     def put(
         self,
         payload_dict: ClearCountersPayload | None = ...,
-        policy: str | None = ...,
+        policy: int | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -321,14 +321,14 @@ class ClearCounters:
     def put(
         self,
         payload_dict: ClearCountersPayload | None = ...,
-        policy: str | None = ...,
+        policy: int | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     def put(
         self,
         payload_dict: ClearCountersPayload | None = ...,
-        policy: str | None = ...,
+        policy: int | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -341,7 +341,7 @@ class ClearCounters:
     def set(
         self,
         payload_dict: ClearCountersPayload | None = ...,
-        policy: str | None = ...,
+        policy: int | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     

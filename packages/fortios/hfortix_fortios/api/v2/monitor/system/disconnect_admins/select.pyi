@@ -17,7 +17,7 @@ class SelectPayload(TypedDict, total=False):
             "field": "value",  # <- autocomplete shows all fields
         }
     """
-    id: str  # id
+    id: int  # id
     method: str  # method
     admins: str  # admins
 
@@ -34,7 +34,7 @@ class SelectResponse(TypedDict):
     
     All fields are present in the response from the FortiGate API.
     """
-    id: str
+    id: int
     method: str
     admins: str
 
@@ -48,7 +48,7 @@ class SelectObject:
     """
     
     # id
-    id: str
+    id: int
     # method
     method: str
     # admins
@@ -279,7 +279,7 @@ class Select:
     def post(
         self,
         payload_dict: SelectPayload | None = ...,
-        id: str | None = ...,
+        id: int | None = ...,
         method: str | None = ...,
         admins: str | None = ...,
         vdom: str | bool | None = ...,
@@ -289,7 +289,7 @@ class Select:
     def post(
         self,
         payload_dict: SelectPayload | None = ...,
-        id: str | None = ...,
+        id: int | None = ...,
         method: str | None = ...,
         admins: str | None = ...,
         vdom: str | bool | None = ...,
@@ -300,7 +300,7 @@ class Select:
     def post(
         self,
         payload_dict: SelectPayload | None = ...,
-        id: str | None = ...,
+        id: int | None = ...,
         method: str | None = ...,
         admins: str | None = ...,
         vdom: str | bool | None = ...,
@@ -309,7 +309,7 @@ class Select:
     def post(
         self,
         payload_dict: SelectPayload | None = ...,
-        id: str | None = ...,
+        id: int | None = ...,
         method: str | None = ...,
         admins: str | None = ...,
         vdom: str | bool | None = ...,
@@ -320,7 +320,7 @@ class Select:
     def put(
         self,
         payload_dict: SelectPayload | None = ...,
-        id: str | None = ...,
+        id: int | None = ...,
         method: str | None = ...,
         admins: str | None = ...,
         vdom: str | bool | None = ...,
@@ -330,7 +330,7 @@ class Select:
     def put(
         self,
         payload_dict: SelectPayload | None = ...,
-        id: str | None = ...,
+        id: int | None = ...,
         method: str | None = ...,
         admins: str | None = ...,
         vdom: str | bool | None = ...,
@@ -341,7 +341,7 @@ class Select:
     def put(
         self,
         payload_dict: SelectPayload | None = ...,
-        id: str | None = ...,
+        id: int | None = ...,
         method: str | None = ...,
         admins: str | None = ...,
         vdom: str | bool | None = ...,
@@ -350,7 +350,7 @@ class Select:
     def put(
         self,
         payload_dict: SelectPayload | None = ...,
-        id: str | None = ...,
+        id: int | None = ...,
         method: str | None = ...,
         admins: str | None = ...,
         vdom: str | bool | None = ...,
@@ -365,7 +365,7 @@ class Select:
     def set(
         self,
         payload_dict: SelectPayload | None = ...,
-        id: str | None = ...,
+        id: int | None = ...,
         method: str | None = ...,
         admins: str | None = ...,
         vdom: str | bool | None = ...,

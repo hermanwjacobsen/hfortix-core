@@ -18,8 +18,8 @@ class ClientPayload(TypedDict, total=False):
         }
     """
     type: str  # type
-    with_triangulation: str  # with_triangulation
-    with_stats: str  # with_stats
+    with_triangulation: bool  # with_triangulation
+    with_stats: bool  # with_stats
     mac: str  # mac
 
 # Nested TypedDicts for table field children (dict mode)
@@ -36,8 +36,8 @@ class ClientResponse(TypedDict):
     All fields are present in the response from the FortiGate API.
     """
     type: str
-    with_triangulation: str
-    with_stats: str
+    with_triangulation: bool
+    with_stats: bool
     mac: str
 
 
@@ -52,9 +52,9 @@ class ClientObject:
     # type
     type: str
     # with_triangulation
-    with_triangulation: str
+    with_triangulation: bool
     # with_stats
-    with_stats: str
+    with_stats: bool
     # mac
     mac: str
     

@@ -17,7 +17,7 @@ class PolicyPayload(TypedDict, total=False):
             "field": "value",  # <- autocomplete shows all fields
         }
     """
-    count_only: str  # count_only
+    count_only: bool  # count_only
 
 # Nested TypedDicts for table field children (dict mode)
 
@@ -32,7 +32,7 @@ class PolicyResponse(TypedDict):
     
     All fields are present in the response from the FortiGate API.
     """
-    count_only: str
+    count_only: bool
 
 
 @final
@@ -44,7 +44,7 @@ class PolicyObject:
     """
     
     # count_only
-    count_only: str
+    count_only: bool
     
     # Common API response fields
     status: str

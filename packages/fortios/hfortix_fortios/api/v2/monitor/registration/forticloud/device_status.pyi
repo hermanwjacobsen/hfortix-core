@@ -18,7 +18,7 @@ class DeviceStatusPayload(TypedDict, total=False):
         }
     """
     serials: str  # serials
-    update_cache: str  # update_cache
+    update_cache: bool  # update_cache
 
 # Nested TypedDicts for table field children (dict mode)
 
@@ -34,7 +34,7 @@ class DeviceStatusResponse(TypedDict):
     All fields are present in the response from the FortiGate API.
     """
     serials: str
-    update_cache: str
+    update_cache: bool
 
 
 @final
@@ -48,7 +48,7 @@ class DeviceStatusObject:
     # serials
     serials: str
     # update_cache
-    update_cache: str
+    update_cache: bool
     
     # Common API response fields
     status: str

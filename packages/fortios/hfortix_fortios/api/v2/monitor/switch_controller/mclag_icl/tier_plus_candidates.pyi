@@ -20,7 +20,7 @@ class TierPlusCandidatesPayload(TypedDict, total=False):
     fortilink: str  # fortilink
     parent_peer1: str  # parent_peer1
     parent_peer2: str  # parent_peer2
-    is_tier2: str  # is_tier2
+    is_tier2: bool  # is_tier2
 
 # Nested TypedDicts for table field children (dict mode)
 

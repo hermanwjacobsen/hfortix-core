@@ -17,7 +17,7 @@ class CentralSnatMapPayload(TypedDict, total=False):
             "field": "value",  # <- autocomplete shows all fields
         }
     """
-    policyid: str  # policyid
+    policyid: int  # policyid
     ip_version: str  # ip_version
 
 # Nested TypedDicts for table field children (dict mode)
@@ -33,7 +33,7 @@ class CentralSnatMapResponse(TypedDict):
     
     All fields are present in the response from the FortiGate API.
     """
-    policyid: str
+    policyid: int
     ip_version: str
 
 
@@ -46,7 +46,7 @@ class CentralSnatMapObject:
     """
     
     # policyid
-    policyid: str
+    policyid: int
     # ip_version
     ip_version: str
     
@@ -241,7 +241,7 @@ class CentralSnatMap:
     def put(
         self,
         payload_dict: CentralSnatMapPayload | None = ...,
-        policyid: str | None = ...,
+        policyid: int | None = ...,
         ip_version: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> CentralSnatMapObject: ...
@@ -250,7 +250,7 @@ class CentralSnatMap:
     def put(
         self,
         payload_dict: CentralSnatMapPayload | None = ...,
-        policyid: str | None = ...,
+        policyid: int | None = ...,
         ip_version: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
@@ -260,7 +260,7 @@ class CentralSnatMap:
     def put(
         self,
         payload_dict: CentralSnatMapPayload | None = ...,
-        policyid: str | None = ...,
+        policyid: int | None = ...,
         ip_version: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
@@ -268,7 +268,7 @@ class CentralSnatMap:
     def put(
         self,
         payload_dict: CentralSnatMapPayload | None = ...,
-        policyid: str | None = ...,
+        policyid: int | None = ...,
         ip_version: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
@@ -282,7 +282,7 @@ class CentralSnatMap:
     def set(
         self,
         payload_dict: CentralSnatMapPayload | None = ...,
-        policyid: str | None = ...,
+        policyid: int | None = ...,
         ip_version: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...

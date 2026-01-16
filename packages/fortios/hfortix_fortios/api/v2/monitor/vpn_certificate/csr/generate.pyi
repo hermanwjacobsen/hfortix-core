@@ -20,7 +20,7 @@ class GeneratePayload(TypedDict, total=False):
     certname: str  # certname
     subject: str  # subject
     keytype: str  # keytype
-    keysize: str  # keysize
+    keysize: int  # keysize
     curvename: str  # curvename
     orgunits: str  # orgunits
     org: str  # org
@@ -50,7 +50,7 @@ class GenerateResponse(TypedDict):
     certname: str
     subject: str
     keytype: str
-    keysize: str
+    keysize: int
     curvename: str
     orgunits: str
     org: str
@@ -80,7 +80,7 @@ class GenerateObject:
     # keytype
     keytype: str
     # keysize
-    keysize: str
+    keysize: int
     # curvename
     curvename: str
     # orgunits
@@ -334,7 +334,7 @@ class Generate:
         certname: str | None = ...,
         subject: str | None = ...,
         keytype: str | None = ...,
-        keysize: str | None = ...,
+        keysize: int | None = ...,
         curvename: str | None = ...,
         orgunits: str | None = ...,
         org: str | None = ...,
@@ -357,7 +357,7 @@ class Generate:
         certname: str | None = ...,
         subject: str | None = ...,
         keytype: str | None = ...,
-        keysize: str | None = ...,
+        keysize: int | None = ...,
         curvename: str | None = ...,
         orgunits: str | None = ...,
         org: str | None = ...,
@@ -381,7 +381,7 @@ class Generate:
         certname: str | None = ...,
         subject: str | None = ...,
         keytype: str | None = ...,
-        keysize: str | None = ...,
+        keysize: int | None = ...,
         curvename: str | None = ...,
         orgunits: str | None = ...,
         org: str | None = ...,
@@ -403,7 +403,7 @@ class Generate:
         certname: str | None = ...,
         subject: str | None = ...,
         keytype: str | None = ...,
-        keysize: str | None = ...,
+        keysize: int | None = ...,
         curvename: str | None = ...,
         orgunits: str | None = ...,
         org: str | None = ...,
@@ -427,7 +427,7 @@ class Generate:
         certname: str | None = ...,
         subject: str | None = ...,
         keytype: str | None = ...,
-        keysize: str | None = ...,
+        keysize: int | None = ...,
         curvename: str | None = ...,
         orgunits: str | None = ...,
         org: str | None = ...,
@@ -450,7 +450,7 @@ class Generate:
         certname: str | None = ...,
         subject: str | None = ...,
         keytype: str | None = ...,
-        keysize: str | None = ...,
+        keysize: int | None = ...,
         curvename: str | None = ...,
         orgunits: str | None = ...,
         org: str | None = ...,
@@ -474,7 +474,7 @@ class Generate:
         certname: str | None = ...,
         subject: str | None = ...,
         keytype: str | None = ...,
-        keysize: str | None = ...,
+        keysize: int | None = ...,
         curvename: str | None = ...,
         orgunits: str | None = ...,
         org: str | None = ...,
@@ -496,7 +496,7 @@ class Generate:
         certname: str | None = ...,
         subject: str | None = ...,
         keytype: str | None = ...,
-        keysize: str | None = ...,
+        keysize: int | None = ...,
         curvename: str | None = ...,
         orgunits: str | None = ...,
         org: str | None = ...,
@@ -524,7 +524,7 @@ class Generate:
         certname: str | None = ...,
         subject: str | None = ...,
         keytype: str | None = ...,
-        keysize: str | None = ...,
+        keysize: int | None = ...,
         curvename: str | None = ...,
         orgunits: str | None = ...,
         org: str | None = ...,

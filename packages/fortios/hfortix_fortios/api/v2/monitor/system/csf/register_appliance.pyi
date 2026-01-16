@@ -19,7 +19,7 @@ class RegisterAppliancePayload(TypedDict, total=False):
     """
     type: str  # type
     mgmt_ip: str  # mgmt_ip
-    mgmt_port: str  # mgmt_port
+    mgmt_port: int  # mgmt_port
     mgmt_url_parameters: str  # mgmt_url_parameters
     serial: str  # serial
     hostname: str  # hostname
@@ -39,7 +39,7 @@ class RegisterApplianceResponse(TypedDict):
     """
     type: str
     mgmt_ip: str
-    mgmt_port: str
+    mgmt_port: int
     mgmt_url_parameters: str
     serial: str
     hostname: str
@@ -58,7 +58,7 @@ class RegisterApplianceObject:
     # mgmt_ip
     mgmt_ip: str
     # mgmt_port
-    mgmt_port: str
+    mgmt_port: int
     # mgmt_url_parameters
     mgmt_url_parameters: str
     # serial
@@ -293,7 +293,7 @@ class RegisterAppliance:
         payload_dict: RegisterAppliancePayload | None = ...,
         type: str | None = ...,
         mgmt_ip: str | None = ...,
-        mgmt_port: str | None = ...,
+        mgmt_port: int | None = ...,
         mgmt_url_parameters: str | None = ...,
         serial: str | None = ...,
         hostname: str | None = ...,
@@ -306,7 +306,7 @@ class RegisterAppliance:
         payload_dict: RegisterAppliancePayload | None = ...,
         type: str | None = ...,
         mgmt_ip: str | None = ...,
-        mgmt_port: str | None = ...,
+        mgmt_port: int | None = ...,
         mgmt_url_parameters: str | None = ...,
         serial: str | None = ...,
         hostname: str | None = ...,
@@ -320,7 +320,7 @@ class RegisterAppliance:
         payload_dict: RegisterAppliancePayload | None = ...,
         type: str | None = ...,
         mgmt_ip: str | None = ...,
-        mgmt_port: str | None = ...,
+        mgmt_port: int | None = ...,
         mgmt_url_parameters: str | None = ...,
         serial: str | None = ...,
         hostname: str | None = ...,
@@ -332,7 +332,7 @@ class RegisterAppliance:
         payload_dict: RegisterAppliancePayload | None = ...,
         type: str | None = ...,
         mgmt_ip: str | None = ...,
-        mgmt_port: str | None = ...,
+        mgmt_port: int | None = ...,
         mgmt_url_parameters: str | None = ...,
         serial: str | None = ...,
         hostname: str | None = ...,
@@ -346,7 +346,7 @@ class RegisterAppliance:
         payload_dict: RegisterAppliancePayload | None = ...,
         type: str | None = ...,
         mgmt_ip: str | None = ...,
-        mgmt_port: str | None = ...,
+        mgmt_port: int | None = ...,
         mgmt_url_parameters: str | None = ...,
         serial: str | None = ...,
         hostname: str | None = ...,
@@ -359,7 +359,7 @@ class RegisterAppliance:
         payload_dict: RegisterAppliancePayload | None = ...,
         type: str | None = ...,
         mgmt_ip: str | None = ...,
-        mgmt_port: str | None = ...,
+        mgmt_port: int | None = ...,
         mgmt_url_parameters: str | None = ...,
         serial: str | None = ...,
         hostname: str | None = ...,
@@ -373,7 +373,7 @@ class RegisterAppliance:
         payload_dict: RegisterAppliancePayload | None = ...,
         type: str | None = ...,
         mgmt_ip: str | None = ...,
-        mgmt_port: str | None = ...,
+        mgmt_port: int | None = ...,
         mgmt_url_parameters: str | None = ...,
         serial: str | None = ...,
         hostname: str | None = ...,
@@ -385,7 +385,7 @@ class RegisterAppliance:
         payload_dict: RegisterAppliancePayload | None = ...,
         type: str | None = ...,
         mgmt_ip: str | None = ...,
-        mgmt_port: str | None = ...,
+        mgmt_port: int | None = ...,
         mgmt_url_parameters: str | None = ...,
         serial: str | None = ...,
         hostname: str | None = ...,
@@ -403,7 +403,7 @@ class RegisterAppliance:
         payload_dict: RegisterAppliancePayload | None = ...,
         type: str | None = ...,
         mgmt_ip: str | None = ...,
-        mgmt_port: str | None = ...,
+        mgmt_port: int | None = ...,
         mgmt_url_parameters: str | None = ...,
         serial: str | None = ...,
         hostname: str | None = ...,

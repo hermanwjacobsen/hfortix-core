@@ -17,7 +17,7 @@ class UnassociatedDevicesPayload(TypedDict, total=False):
             "field": "value",  # <- autocomplete shows all fields
         }
     """
-    with_triangulation: str  # with_triangulation
+    with_triangulation: bool  # with_triangulation
 
 # Nested TypedDicts for table field children (dict mode)
 
@@ -32,7 +32,7 @@ class UnassociatedDevicesResponse(TypedDict):
     
     All fields are present in the response from the FortiGate API.
     """
-    with_triangulation: str
+    with_triangulation: bool
 
 
 @final
@@ -44,7 +44,7 @@ class UnassociatedDevicesObject:
     """
     
     # with_triangulation
-    with_triangulation: str
+    with_triangulation: bool
     
     # Common API response fields
     status: str

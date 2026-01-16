@@ -17,7 +17,7 @@ class LoadBalancePayload(TypedDict, total=False):
             "field": "value",  # <- autocomplete shows all fields
         }
     """
-    count: str  # count
+    count: int  # count
 
 # Nested TypedDicts for table field children (dict mode)
 
@@ -32,7 +32,7 @@ class LoadBalanceResponse(TypedDict):
     
     All fields are present in the response from the FortiGate API.
     """
-    count: str
+    count: int
 
 
 @final
@@ -44,7 +44,7 @@ class LoadBalanceObject:
     """
     
     # count
-    count: str
+    count: int
     
     # Common API response fields
     status: str
@@ -236,7 +236,7 @@ class LoadBalance:
     def put(
         self,
         payload_dict: LoadBalancePayload | None = ...,
-        count: str | None = ...,
+        count: int | None = ...,
         vdom: str | bool | None = ...,
     ) -> LoadBalanceObject: ...
     
@@ -244,7 +244,7 @@ class LoadBalance:
     def put(
         self,
         payload_dict: LoadBalancePayload | None = ...,
-        count: str | None = ...,
+        count: int | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -253,14 +253,14 @@ class LoadBalance:
     def put(
         self,
         payload_dict: LoadBalancePayload | None = ...,
-        count: str | None = ...,
+        count: int | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     def put(
         self,
         payload_dict: LoadBalancePayload | None = ...,
-        count: str | None = ...,
+        count: int | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -273,7 +273,7 @@ class LoadBalance:
     def set(
         self,
         payload_dict: LoadBalancePayload | None = ...,
-        count: str | None = ...,
+        count: int | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     

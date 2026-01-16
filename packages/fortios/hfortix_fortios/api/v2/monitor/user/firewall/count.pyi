@@ -17,9 +17,9 @@ class CountPayload(TypedDict, total=False):
             "field": "value",  # <- autocomplete shows all fields
         }
     """
-    ipv4: str  # ipv4
-    ipv6: str  # ipv6
-    include_fsso: str  # include_fsso
+    ipv4: bool  # ipv4
+    ipv6: bool  # ipv6
+    include_fsso: bool  # include_fsso
 
 # Nested TypedDicts for table field children (dict mode)
 

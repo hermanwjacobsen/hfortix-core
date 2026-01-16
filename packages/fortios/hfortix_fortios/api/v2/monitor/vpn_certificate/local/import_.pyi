@@ -25,8 +25,8 @@ class ImportPayload(TypedDict, total=False):
     acme_domain: str  # acme_domain
     acme_email: str  # acme_email
     acme_ca_url: str  # acme_ca_url
-    acme_rsa_key_size: str  # acme_rsa_key_size
-    acme_renew_window: str  # acme_renew_window
+    acme_rsa_key_size: int  # acme_rsa_key_size
+    acme_renew_window: int  # acme_renew_window
     file_content: str  # file_content
 
 # Nested TypedDicts for table field children (dict mode)
@@ -50,8 +50,8 @@ class ImportResponse(TypedDict):
     acme_domain: str
     acme_email: str
     acme_ca_url: str
-    acme_rsa_key_size: str
-    acme_renew_window: str
+    acme_rsa_key_size: int
+    acme_renew_window: int
     file_content: str
 
 
@@ -80,9 +80,9 @@ class ImportObject:
     # acme_ca_url
     acme_ca_url: str
     # acme_rsa_key_size
-    acme_rsa_key_size: str
+    acme_rsa_key_size: int
     # acme_renew_window
-    acme_renew_window: str
+    acme_renew_window: int
     # file_content
     file_content: str
     
@@ -319,8 +319,8 @@ class Import:
         acme_domain: str | None = ...,
         acme_email: str | None = ...,
         acme_ca_url: str | None = ...,
-        acme_rsa_key_size: str | None = ...,
-        acme_renew_window: str | None = ...,
+        acme_rsa_key_size: int | None = ...,
+        acme_renew_window: int | None = ...,
         file_content: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> ImportObject: ...
@@ -337,8 +337,8 @@ class Import:
         acme_domain: str | None = ...,
         acme_email: str | None = ...,
         acme_ca_url: str | None = ...,
-        acme_rsa_key_size: str | None = ...,
-        acme_renew_window: str | None = ...,
+        acme_rsa_key_size: int | None = ...,
+        acme_renew_window: int | None = ...,
         file_content: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
@@ -356,8 +356,8 @@ class Import:
         acme_domain: str | None = ...,
         acme_email: str | None = ...,
         acme_ca_url: str | None = ...,
-        acme_rsa_key_size: str | None = ...,
-        acme_renew_window: str | None = ...,
+        acme_rsa_key_size: int | None = ...,
+        acme_renew_window: int | None = ...,
         file_content: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
@@ -373,8 +373,8 @@ class Import:
         acme_domain: str | None = ...,
         acme_email: str | None = ...,
         acme_ca_url: str | None = ...,
-        acme_rsa_key_size: str | None = ...,
-        acme_renew_window: str | None = ...,
+        acme_rsa_key_size: int | None = ...,
+        acme_renew_window: int | None = ...,
         file_content: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
@@ -392,8 +392,8 @@ class Import:
         acme_domain: str | None = ...,
         acme_email: str | None = ...,
         acme_ca_url: str | None = ...,
-        acme_rsa_key_size: str | None = ...,
-        acme_renew_window: str | None = ...,
+        acme_rsa_key_size: int | None = ...,
+        acme_renew_window: int | None = ...,
         file_content: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> ImportObject: ...
@@ -410,8 +410,8 @@ class Import:
         acme_domain: str | None = ...,
         acme_email: str | None = ...,
         acme_ca_url: str | None = ...,
-        acme_rsa_key_size: str | None = ...,
-        acme_renew_window: str | None = ...,
+        acme_rsa_key_size: int | None = ...,
+        acme_renew_window: int | None = ...,
         file_content: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
@@ -429,8 +429,8 @@ class Import:
         acme_domain: str | None = ...,
         acme_email: str | None = ...,
         acme_ca_url: str | None = ...,
-        acme_rsa_key_size: str | None = ...,
-        acme_renew_window: str | None = ...,
+        acme_rsa_key_size: int | None = ...,
+        acme_renew_window: int | None = ...,
         file_content: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
@@ -446,8 +446,8 @@ class Import:
         acme_domain: str | None = ...,
         acme_email: str | None = ...,
         acme_ca_url: str | None = ...,
-        acme_rsa_key_size: str | None = ...,
-        acme_renew_window: str | None = ...,
+        acme_rsa_key_size: int | None = ...,
+        acme_renew_window: int | None = ...,
         file_content: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
@@ -469,8 +469,8 @@ class Import:
         acme_domain: str | None = ...,
         acme_email: str | None = ...,
         acme_ca_url: str | None = ...,
-        acme_rsa_key_size: str | None = ...,
-        acme_renew_window: str | None = ...,
+        acme_rsa_key_size: int | None = ...,
+        acme_renew_window: int | None = ...,
         file_content: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...

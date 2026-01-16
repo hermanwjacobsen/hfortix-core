@@ -17,7 +17,7 @@ class SpeedTestStatusPayload(TypedDict, total=False):
             "field": "value",  # <- autocomplete shows all fields
         }
     """
-    id: str  # id
+    id: int  # id
 
 # Nested TypedDicts for table field children (dict mode)
 
@@ -248,7 +248,7 @@ class SpeedTestStatus:
     def put(
         self,
         payload_dict: SpeedTestStatusPayload | None = ...,
-        id: str | None = ...,
+        id: int | None = ...,
         vdom: str | bool | None = ...,
     ) -> SpeedTestStatusObject: ...
     
@@ -256,7 +256,7 @@ class SpeedTestStatus:
     def put(
         self,
         payload_dict: SpeedTestStatusPayload | None = ...,
-        id: str | None = ...,
+        id: int | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -265,14 +265,14 @@ class SpeedTestStatus:
     def put(
         self,
         payload_dict: SpeedTestStatusPayload | None = ...,
-        id: str | None = ...,
+        id: int | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     def put(
         self,
         payload_dict: SpeedTestStatusPayload | None = ...,
-        id: str | None = ...,
+        id: int | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -285,7 +285,7 @@ class SpeedTestStatus:
     def set(
         self,
         payload_dict: SpeedTestStatusPayload | None = ...,
-        id: str | None = ...,
+        id: int | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     

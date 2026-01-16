@@ -18,8 +18,8 @@ class InterfaceLogPayload(TypedDict, total=False):
         }
     """
     interface: str  # interface
-    since: str  # since
-    seconds: str  # seconds
+    since: int  # since
+    seconds: int  # seconds
 
 # Nested TypedDicts for table field children (dict mode)
 
@@ -35,8 +35,8 @@ class InterfaceLogResponse(TypedDict):
     All fields are present in the response from the FortiGate API.
     """
     interface: str
-    since: str
-    seconds: str
+    since: int
+    seconds: int
 
 
 @final
@@ -50,9 +50,9 @@ class InterfaceLogObject:
     # interface
     interface: str
     # since
-    since: str
+    since: int
     # seconds
-    seconds: str
+    seconds: int
     
     # Common API response fields
     status: str
@@ -247,8 +247,8 @@ class InterfaceLog:
         self,
         payload_dict: InterfaceLogPayload | None = ...,
         interface: str | None = ...,
-        since: str | None = ...,
-        seconds: str | None = ...,
+        since: int | None = ...,
+        seconds: int | None = ...,
         vdom: str | bool | None = ...,
     ) -> InterfaceLogObject: ...
     
@@ -257,8 +257,8 @@ class InterfaceLog:
         self,
         payload_dict: InterfaceLogPayload | None = ...,
         interface: str | None = ...,
-        since: str | None = ...,
-        seconds: str | None = ...,
+        since: int | None = ...,
+        seconds: int | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -268,8 +268,8 @@ class InterfaceLog:
         self,
         payload_dict: InterfaceLogPayload | None = ...,
         interface: str | None = ...,
-        since: str | None = ...,
-        seconds: str | None = ...,
+        since: int | None = ...,
+        seconds: int | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -277,8 +277,8 @@ class InterfaceLog:
         self,
         payload_dict: InterfaceLogPayload | None = ...,
         interface: str | None = ...,
-        since: str | None = ...,
-        seconds: str | None = ...,
+        since: int | None = ...,
+        seconds: int | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -292,8 +292,8 @@ class InterfaceLog:
         self,
         payload_dict: InterfaceLogPayload | None = ...,
         interface: str | None = ...,
-        since: str | None = ...,
-        seconds: str | None = ...,
+        since: int | None = ...,
+        seconds: int | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     

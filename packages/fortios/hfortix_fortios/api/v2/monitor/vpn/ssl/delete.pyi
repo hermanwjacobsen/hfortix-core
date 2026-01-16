@@ -18,7 +18,7 @@ class DeletePayload(TypedDict, total=False):
         }
     """
     type: str  # type
-    index: str  # index
+    index: int  # index
 
 # Nested TypedDicts for table field children (dict mode)
 
@@ -34,7 +34,7 @@ class DeleteResponse(TypedDict):
     All fields are present in the response from the FortiGate API.
     """
     type: str
-    index: str
+    index: int
 
 
 @final
@@ -48,7 +48,7 @@ class DeleteObject:
     # type
     type: str
     # index
-    index: str
+    index: int
     
     # Common API response fields
     status: str
@@ -276,7 +276,7 @@ class Delete:
         self,
         payload_dict: DeletePayload | None = ...,
         type: str | None = ...,
-        index: str | None = ...,
+        index: int | None = ...,
         vdom: str | bool | None = ...,
     ) -> DeleteObject: ...
     
@@ -285,7 +285,7 @@ class Delete:
         self,
         payload_dict: DeletePayload | None = ...,
         type: str | None = ...,
-        index: str | None = ...,
+        index: int | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -295,7 +295,7 @@ class Delete:
         self,
         payload_dict: DeletePayload | None = ...,
         type: str | None = ...,
-        index: str | None = ...,
+        index: int | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -303,7 +303,7 @@ class Delete:
         self,
         payload_dict: DeletePayload | None = ...,
         type: str | None = ...,
-        index: str | None = ...,
+        index: int | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -313,7 +313,7 @@ class Delete:
         self,
         payload_dict: DeletePayload | None = ...,
         type: str | None = ...,
-        index: str | None = ...,
+        index: int | None = ...,
         vdom: str | bool | None = ...,
     ) -> DeleteObject: ...
     
@@ -322,7 +322,7 @@ class Delete:
         self,
         payload_dict: DeletePayload | None = ...,
         type: str | None = ...,
-        index: str | None = ...,
+        index: int | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -332,7 +332,7 @@ class Delete:
         self,
         payload_dict: DeletePayload | None = ...,
         type: str | None = ...,
-        index: str | None = ...,
+        index: int | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -340,7 +340,7 @@ class Delete:
         self,
         payload_dict: DeletePayload | None = ...,
         type: str | None = ...,
-        index: str | None = ...,
+        index: int | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -354,7 +354,7 @@ class Delete:
         self,
         payload_dict: DeletePayload | None = ...,
         type: str | None = ...,
-        index: str | None = ...,
+        index: int | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     

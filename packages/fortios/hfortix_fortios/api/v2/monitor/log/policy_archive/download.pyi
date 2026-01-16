@@ -17,7 +17,7 @@ class DownloadPayload(TypedDict, total=False):
             "field": "value",  # <- autocomplete shows all fields
         }
     """
-    mkey: str  # mkey
+    mkey: int  # mkey
     srcip: str  # srcip
     dstip: str  # dstip
 
@@ -34,7 +34,7 @@ class DownloadResponse(TypedDict):
     
     All fields are present in the response from the FortiGate API.
     """
-    mkey: str
+    mkey: int
     srcip: str
     dstip: str
 
@@ -48,7 +48,7 @@ class DownloadObject:
     """
     
     # mkey
-    mkey: str
+    mkey: int
     # srcip
     srcip: str
     # dstip
@@ -246,7 +246,7 @@ class Download:
     def put(
         self,
         payload_dict: DownloadPayload | None = ...,
-        mkey: str | None = ...,
+        mkey: int | None = ...,
         srcip: str | None = ...,
         dstip: str | None = ...,
         vdom: str | bool | None = ...,
@@ -256,7 +256,7 @@ class Download:
     def put(
         self,
         payload_dict: DownloadPayload | None = ...,
-        mkey: str | None = ...,
+        mkey: int | None = ...,
         srcip: str | None = ...,
         dstip: str | None = ...,
         vdom: str | bool | None = ...,
@@ -267,7 +267,7 @@ class Download:
     def put(
         self,
         payload_dict: DownloadPayload | None = ...,
-        mkey: str | None = ...,
+        mkey: int | None = ...,
         srcip: str | None = ...,
         dstip: str | None = ...,
         vdom: str | bool | None = ...,
@@ -276,7 +276,7 @@ class Download:
     def put(
         self,
         payload_dict: DownloadPayload | None = ...,
-        mkey: str | None = ...,
+        mkey: int | None = ...,
         srcip: str | None = ...,
         dstip: str | None = ...,
         vdom: str | bool | None = ...,
@@ -291,7 +291,7 @@ class Download:
     def set(
         self,
         payload_dict: DownloadPayload | None = ...,
-        mkey: str | None = ...,
+        mkey: int | None = ...,
         srcip: str | None = ...,
         dstip: str | None = ...,
         vdom: str | bool | None = ...,

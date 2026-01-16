@@ -18,8 +18,8 @@ class KeepAlivePayload(TypedDict, total=False):
         }
     """
     wtp_id: str  # wtp_id
-    radio_id: str  # radio_id
-    duration: str  # duration
+    radio_id: int  # radio_id
+    duration: int  # duration
 
 # Nested TypedDicts for table field children (dict mode)
 
@@ -35,8 +35,8 @@ class KeepAliveResponse(TypedDict):
     All fields are present in the response from the FortiGate API.
     """
     wtp_id: str
-    radio_id: str
-    duration: str
+    radio_id: int
+    duration: int
 
 
 @final
@@ -50,9 +50,9 @@ class KeepAliveObject:
     # wtp_id
     wtp_id: str
     # radio_id
-    radio_id: str
+    radio_id: int
     # duration
-    duration: str
+    duration: int
     
     # Common API response fields
     status: str
@@ -280,8 +280,8 @@ class KeepAlive:
         self,
         payload_dict: KeepAlivePayload | None = ...,
         wtp_id: str | None = ...,
-        radio_id: str | None = ...,
-        duration: str | None = ...,
+        radio_id: int | None = ...,
+        duration: int | None = ...,
         vdom: str | bool | None = ...,
     ) -> KeepAliveObject: ...
     
@@ -290,8 +290,8 @@ class KeepAlive:
         self,
         payload_dict: KeepAlivePayload | None = ...,
         wtp_id: str | None = ...,
-        radio_id: str | None = ...,
-        duration: str | None = ...,
+        radio_id: int | None = ...,
+        duration: int | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -301,8 +301,8 @@ class KeepAlive:
         self,
         payload_dict: KeepAlivePayload | None = ...,
         wtp_id: str | None = ...,
-        radio_id: str | None = ...,
-        duration: str | None = ...,
+        radio_id: int | None = ...,
+        duration: int | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -310,8 +310,8 @@ class KeepAlive:
         self,
         payload_dict: KeepAlivePayload | None = ...,
         wtp_id: str | None = ...,
-        radio_id: str | None = ...,
-        duration: str | None = ...,
+        radio_id: int | None = ...,
+        duration: int | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -321,8 +321,8 @@ class KeepAlive:
         self,
         payload_dict: KeepAlivePayload | None = ...,
         wtp_id: str | None = ...,
-        radio_id: str | None = ...,
-        duration: str | None = ...,
+        radio_id: int | None = ...,
+        duration: int | None = ...,
         vdom: str | bool | None = ...,
     ) -> KeepAliveObject: ...
     
@@ -331,8 +331,8 @@ class KeepAlive:
         self,
         payload_dict: KeepAlivePayload | None = ...,
         wtp_id: str | None = ...,
-        radio_id: str | None = ...,
-        duration: str | None = ...,
+        radio_id: int | None = ...,
+        duration: int | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -342,8 +342,8 @@ class KeepAlive:
         self,
         payload_dict: KeepAlivePayload | None = ...,
         wtp_id: str | None = ...,
-        radio_id: str | None = ...,
-        duration: str | None = ...,
+        radio_id: int | None = ...,
+        duration: int | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -351,8 +351,8 @@ class KeepAlive:
         self,
         payload_dict: KeepAlivePayload | None = ...,
         wtp_id: str | None = ...,
-        radio_id: str | None = ...,
-        duration: str | None = ...,
+        radio_id: int | None = ...,
+        duration: int | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -366,8 +366,8 @@ class KeepAlive:
         self,
         payload_dict: KeepAlivePayload | None = ...,
         wtp_id: str | None = ...,
-        radio_id: str | None = ...,
-        duration: str | None = ...,
+        radio_id: int | None = ...,
+        duration: int | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     

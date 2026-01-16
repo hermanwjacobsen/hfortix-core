@@ -18,7 +18,7 @@ class MetaPayload(TypedDict, total=False):
         }
     """
     scope: str  # scope
-    include_ha: str  # include_ha
+    include_ha: bool  # include_ha
 
 # Nested TypedDicts for table field children (dict mode)
 

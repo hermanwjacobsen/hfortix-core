@@ -18,8 +18,8 @@ class ManagedApPayload(TypedDict, total=False):
         }
     """
     wtp_id: str  # wtp_id
-    incl_local: str  # incl_local
-    skip_eos: str  # skip_eos
+    incl_local: bool  # incl_local
+    skip_eos: bool  # skip_eos
 
 # Nested TypedDicts for table field children (dict mode)
 
@@ -35,8 +35,8 @@ class ManagedApResponse(TypedDict):
     All fields are present in the response from the FortiGate API.
     """
     wtp_id: str
-    incl_local: str
-    skip_eos: str
+    incl_local: bool
+    skip_eos: bool
 
 
 @final
@@ -50,9 +50,9 @@ class ManagedApObject:
     # wtp_id
     wtp_id: str
     # incl_local
-    incl_local: str
+    incl_local: bool
     # skip_eos
-    skip_eos: str
+    skip_eos: bool
     
     # Common API response fields
     status: str

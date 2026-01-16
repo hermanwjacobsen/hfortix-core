@@ -18,9 +18,9 @@ class StartPayload(TypedDict, total=False):
         }
     """
     wtp_id: str  # wtp_id
-    radio_id: str  # radio_id
+    radio_id: int  # radio_id
     channels: str  # channels
-    duration: str  # duration
+    duration: int  # duration
 
 # Nested TypedDicts for table field children (dict mode)
 
@@ -36,9 +36,9 @@ class StartResponse(TypedDict):
     All fields are present in the response from the FortiGate API.
     """
     wtp_id: str
-    radio_id: str
+    radio_id: int
     channels: str
-    duration: str
+    duration: int
 
 
 @final
@@ -52,11 +52,11 @@ class StartObject:
     # wtp_id
     wtp_id: str
     # radio_id
-    radio_id: str
+    radio_id: int
     # channels
     channels: str
     # duration
-    duration: str
+    duration: int
     
     # Common API response fields
     status: str
@@ -284,9 +284,9 @@ class Start:
         self,
         payload_dict: StartPayload | None = ...,
         wtp_id: str | None = ...,
-        radio_id: str | None = ...,
+        radio_id: int | None = ...,
         channels: str | None = ...,
-        duration: str | None = ...,
+        duration: int | None = ...,
         vdom: str | bool | None = ...,
     ) -> StartObject: ...
     
@@ -295,9 +295,9 @@ class Start:
         self,
         payload_dict: StartPayload | None = ...,
         wtp_id: str | None = ...,
-        radio_id: str | None = ...,
+        radio_id: int | None = ...,
         channels: str | None = ...,
-        duration: str | None = ...,
+        duration: int | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -307,9 +307,9 @@ class Start:
         self,
         payload_dict: StartPayload | None = ...,
         wtp_id: str | None = ...,
-        radio_id: str | None = ...,
+        radio_id: int | None = ...,
         channels: str | None = ...,
-        duration: str | None = ...,
+        duration: int | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -317,9 +317,9 @@ class Start:
         self,
         payload_dict: StartPayload | None = ...,
         wtp_id: str | None = ...,
-        radio_id: str | None = ...,
+        radio_id: int | None = ...,
         channels: str | None = ...,
-        duration: str | None = ...,
+        duration: int | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -329,9 +329,9 @@ class Start:
         self,
         payload_dict: StartPayload | None = ...,
         wtp_id: str | None = ...,
-        radio_id: str | None = ...,
+        radio_id: int | None = ...,
         channels: str | None = ...,
-        duration: str | None = ...,
+        duration: int | None = ...,
         vdom: str | bool | None = ...,
     ) -> StartObject: ...
     
@@ -340,9 +340,9 @@ class Start:
         self,
         payload_dict: StartPayload | None = ...,
         wtp_id: str | None = ...,
-        radio_id: str | None = ...,
+        radio_id: int | None = ...,
         channels: str | None = ...,
-        duration: str | None = ...,
+        duration: int | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -352,9 +352,9 @@ class Start:
         self,
         payload_dict: StartPayload | None = ...,
         wtp_id: str | None = ...,
-        radio_id: str | None = ...,
+        radio_id: int | None = ...,
         channels: str | None = ...,
-        duration: str | None = ...,
+        duration: int | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -362,9 +362,9 @@ class Start:
         self,
         payload_dict: StartPayload | None = ...,
         wtp_id: str | None = ...,
-        radio_id: str | None = ...,
+        radio_id: int | None = ...,
         channels: str | None = ...,
-        duration: str | None = ...,
+        duration: int | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -378,9 +378,9 @@ class Start:
         self,
         payload_dict: StartPayload | None = ...,
         wtp_id: str | None = ...,
-        radio_id: str | None = ...,
+        radio_id: int | None = ...,
         channels: str | None = ...,
-        duration: str | None = ...,
+        duration: int | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     

@@ -17,7 +17,7 @@ class CancelPayload(TypedDict, total=False):
             "field": "value",  # <- autocomplete shows all fields
         }
     """
-    sessionid: str  # sessionid
+    sessionid: int  # sessionid
     device: str  # device
     report_by: str  # report_by
     view_level: str  # view_level
@@ -35,7 +35,7 @@ class CancelResponse(TypedDict):
     
     All fields are present in the response from the FortiGate API.
     """
-    sessionid: str
+    sessionid: int
     device: str
     report_by: str
     view_level: str
@@ -50,7 +50,7 @@ class CancelObject:
     """
     
     # sessionid
-    sessionid: str
+    sessionid: int
     # device
     device: str
     # report_by
@@ -283,7 +283,7 @@ class Cancel:
     def post(
         self,
         payload_dict: CancelPayload | None = ...,
-        sessionid: str | None = ...,
+        sessionid: int | None = ...,
         device: str | None = ...,
         report_by: str | None = ...,
         view_level: str | None = ...,
@@ -294,7 +294,7 @@ class Cancel:
     def post(
         self,
         payload_dict: CancelPayload | None = ...,
-        sessionid: str | None = ...,
+        sessionid: int | None = ...,
         device: str | None = ...,
         report_by: str | None = ...,
         view_level: str | None = ...,
@@ -306,7 +306,7 @@ class Cancel:
     def post(
         self,
         payload_dict: CancelPayload | None = ...,
-        sessionid: str | None = ...,
+        sessionid: int | None = ...,
         device: str | None = ...,
         report_by: str | None = ...,
         view_level: str | None = ...,
@@ -316,7 +316,7 @@ class Cancel:
     def post(
         self,
         payload_dict: CancelPayload | None = ...,
-        sessionid: str | None = ...,
+        sessionid: int | None = ...,
         device: str | None = ...,
         report_by: str | None = ...,
         view_level: str | None = ...,
@@ -328,7 +328,7 @@ class Cancel:
     def put(
         self,
         payload_dict: CancelPayload | None = ...,
-        sessionid: str | None = ...,
+        sessionid: int | None = ...,
         device: str | None = ...,
         report_by: str | None = ...,
         view_level: str | None = ...,
@@ -339,7 +339,7 @@ class Cancel:
     def put(
         self,
         payload_dict: CancelPayload | None = ...,
-        sessionid: str | None = ...,
+        sessionid: int | None = ...,
         device: str | None = ...,
         report_by: str | None = ...,
         view_level: str | None = ...,
@@ -351,7 +351,7 @@ class Cancel:
     def put(
         self,
         payload_dict: CancelPayload | None = ...,
-        sessionid: str | None = ...,
+        sessionid: int | None = ...,
         device: str | None = ...,
         report_by: str | None = ...,
         view_level: str | None = ...,
@@ -361,7 +361,7 @@ class Cancel:
     def put(
         self,
         payload_dict: CancelPayload | None = ...,
-        sessionid: str | None = ...,
+        sessionid: int | None = ...,
         device: str | None = ...,
         report_by: str | None = ...,
         view_level: str | None = ...,
@@ -377,7 +377,7 @@ class Cancel:
     def set(
         self,
         payload_dict: CancelPayload | None = ...,
-        sessionid: str | None = ...,
+        sessionid: int | None = ...,
         device: str | None = ...,
         report_by: str | None = ...,
         view_level: str | None = ...,

@@ -17,7 +17,7 @@ class InternetServiceBasicPayload(TypedDict, total=False):
             "field": "value",  # <- autocomplete shows all fields
         }
     """
-    ipv6_only: str  # ipv6_only
+    ipv6_only: bool  # ipv6_only
 
 # Nested TypedDicts for table field children (dict mode)
 
@@ -32,7 +32,7 @@ class InternetServiceBasicResponse(TypedDict):
     
     All fields are present in the response from the FortiGate API.
     """
-    ipv6_only: str
+    ipv6_only: bool
 
 
 @final
@@ -44,7 +44,7 @@ class InternetServiceBasicObject:
     """
     
     # ipv6_only
-    ipv6_only: str
+    ipv6_only: bool
     
     # Common API response fields
     status: str

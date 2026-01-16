@@ -18,7 +18,7 @@ class HaPeerPayload(TypedDict, total=False):
         }
     """
     serial_no: str  # serial_no
-    vcluster_id: str  # vcluster_id
+    vcluster_id: int  # vcluster_id
 
 # Nested TypedDicts for table field children (dict mode)
 
@@ -34,7 +34,7 @@ class HaPeerResponse(TypedDict):
     All fields are present in the response from the FortiGate API.
     """
     serial_no: str
-    vcluster_id: str
+    vcluster_id: int
 
 
 @final
@@ -48,7 +48,7 @@ class HaPeerObject:
     # serial_no
     serial_no: str
     # vcluster_id
-    vcluster_id: str
+    vcluster_id: int
     
     # Common API response fields
     status: str
@@ -242,7 +242,7 @@ class HaPeer:
         self,
         payload_dict: HaPeerPayload | None = ...,
         serial_no: str | None = ...,
-        vcluster_id: str | None = ...,
+        vcluster_id: int | None = ...,
         vdom: str | bool | None = ...,
     ) -> HaPeerObject: ...
     
@@ -251,7 +251,7 @@ class HaPeer:
         self,
         payload_dict: HaPeerPayload | None = ...,
         serial_no: str | None = ...,
-        vcluster_id: str | None = ...,
+        vcluster_id: int | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -261,7 +261,7 @@ class HaPeer:
         self,
         payload_dict: HaPeerPayload | None = ...,
         serial_no: str | None = ...,
-        vcluster_id: str | None = ...,
+        vcluster_id: int | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -269,7 +269,7 @@ class HaPeer:
         self,
         payload_dict: HaPeerPayload | None = ...,
         serial_no: str | None = ...,
-        vcluster_id: str | None = ...,
+        vcluster_id: int | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -283,7 +283,7 @@ class HaPeer:
         self,
         payload_dict: HaPeerPayload | None = ...,
         serial_no: str | None = ...,
-        vcluster_id: str | None = ...,
+        vcluster_id: int | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     

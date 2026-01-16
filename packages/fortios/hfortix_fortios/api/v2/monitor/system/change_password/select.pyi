@@ -34,7 +34,7 @@ class SelectResponse(TypedDict):
     
     All fields are present in the response from the FortiGate API.
     """
-    changed: str
+    changed: bool
 
 
 @final
@@ -46,7 +46,7 @@ class SelectObject:
     """
     
     # changed
-    changed: str
+    changed: bool
     
     # Common API response fields
     status: str

@@ -19,7 +19,7 @@ class TunnelUpPayload(TypedDict, total=False):
     """
     p1name: str  # p1name
     p2name: str  # p2name
-    p2serial: str  # p2serial
+    p2serial: int  # p2serial
 
 # Nested TypedDicts for table field children (dict mode)
 
@@ -36,7 +36,7 @@ class TunnelUpResponse(TypedDict):
     """
     p1name: str
     p2name: str
-    p2serial: str
+    p2serial: int
 
 
 @final
@@ -52,7 +52,7 @@ class TunnelUpObject:
     # p2name
     p2name: str
     # p2serial
-    p2serial: str
+    p2serial: int
     
     # Common API response fields
     status: str
@@ -281,7 +281,7 @@ class TunnelUp:
         payload_dict: TunnelUpPayload | None = ...,
         p1name: str | None = ...,
         p2name: str | None = ...,
-        p2serial: str | None = ...,
+        p2serial: int | None = ...,
         vdom: str | bool | None = ...,
     ) -> TunnelUpObject: ...
     
@@ -291,7 +291,7 @@ class TunnelUp:
         payload_dict: TunnelUpPayload | None = ...,
         p1name: str | None = ...,
         p2name: str | None = ...,
-        p2serial: str | None = ...,
+        p2serial: int | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -302,7 +302,7 @@ class TunnelUp:
         payload_dict: TunnelUpPayload | None = ...,
         p1name: str | None = ...,
         p2name: str | None = ...,
-        p2serial: str | None = ...,
+        p2serial: int | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -311,7 +311,7 @@ class TunnelUp:
         payload_dict: TunnelUpPayload | None = ...,
         p1name: str | None = ...,
         p2name: str | None = ...,
-        p2serial: str | None = ...,
+        p2serial: int | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -322,7 +322,7 @@ class TunnelUp:
         payload_dict: TunnelUpPayload | None = ...,
         p1name: str | None = ...,
         p2name: str | None = ...,
-        p2serial: str | None = ...,
+        p2serial: int | None = ...,
         vdom: str | bool | None = ...,
     ) -> TunnelUpObject: ...
     
@@ -332,7 +332,7 @@ class TunnelUp:
         payload_dict: TunnelUpPayload | None = ...,
         p1name: str | None = ...,
         p2name: str | None = ...,
-        p2serial: str | None = ...,
+        p2serial: int | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -343,7 +343,7 @@ class TunnelUp:
         payload_dict: TunnelUpPayload | None = ...,
         p1name: str | None = ...,
         p2name: str | None = ...,
-        p2serial: str | None = ...,
+        p2serial: int | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -352,7 +352,7 @@ class TunnelUp:
         payload_dict: TunnelUpPayload | None = ...,
         p1name: str | None = ...,
         p2name: str | None = ...,
-        p2serial: str | None = ...,
+        p2serial: int | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -367,7 +367,7 @@ class TunnelUp:
         payload_dict: TunnelUpPayload | None = ...,
         p1name: str | None = ...,
         p2name: str | None = ...,
-        p2serial: str | None = ...,
+        p2serial: int | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     

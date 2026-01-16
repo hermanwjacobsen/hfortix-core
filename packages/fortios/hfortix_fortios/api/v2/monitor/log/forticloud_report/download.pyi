@@ -17,9 +17,9 @@ class DownloadPayload(TypedDict, total=False):
             "field": "value",  # <- autocomplete shows all fields
         }
     """
-    mkey: str  # mkey
+    mkey: int  # mkey
     report_name: str  # report_name
-    inline: str  # inline
+    inline: int  # inline
 
 # Nested TypedDicts for table field children (dict mode)
 
@@ -34,9 +34,9 @@ class DownloadResponse(TypedDict):
     
     All fields are present in the response from the FortiGate API.
     """
-    mkey: str
+    mkey: int
     report_name: str
-    inline: str
+    inline: int
 
 
 @final
@@ -48,11 +48,11 @@ class DownloadObject:
     """
     
     # mkey
-    mkey: str
+    mkey: int
     # report_name
     report_name: str
     # inline
-    inline: str
+    inline: int
     
     # Common API response fields
     status: str
@@ -246,9 +246,9 @@ class Download:
     def put(
         self,
         payload_dict: DownloadPayload | None = ...,
-        mkey: str | None = ...,
+        mkey: int | None = ...,
         report_name: str | None = ...,
-        inline: str | None = ...,
+        inline: int | None = ...,
         vdom: str | bool | None = ...,
     ) -> DownloadObject: ...
     
@@ -256,9 +256,9 @@ class Download:
     def put(
         self,
         payload_dict: DownloadPayload | None = ...,
-        mkey: str | None = ...,
+        mkey: int | None = ...,
         report_name: str | None = ...,
-        inline: str | None = ...,
+        inline: int | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -267,18 +267,18 @@ class Download:
     def put(
         self,
         payload_dict: DownloadPayload | None = ...,
-        mkey: str | None = ...,
+        mkey: int | None = ...,
         report_name: str | None = ...,
-        inline: str | None = ...,
+        inline: int | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     def put(
         self,
         payload_dict: DownloadPayload | None = ...,
-        mkey: str | None = ...,
+        mkey: int | None = ...,
         report_name: str | None = ...,
-        inline: str | None = ...,
+        inline: int | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -291,9 +291,9 @@ class Download:
     def set(
         self,
         payload_dict: DownloadPayload | None = ...,
-        mkey: str | None = ...,
+        mkey: int | None = ...,
         report_name: str | None = ...,
-        inline: str | None = ...,
+        inline: int | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     

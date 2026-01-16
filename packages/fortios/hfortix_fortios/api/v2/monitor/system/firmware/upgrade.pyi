@@ -20,12 +20,12 @@ class UpgradePayload(TypedDict, total=False):
     source: str  # source
     url: str  # url
     passphrase: str  # passphrase
-    force: str  # force
+    force: bool  # force
     filename: str  # filename
-    format_partition: str  # format_partition
-    ignore_invalid_signature: str  # ignore_invalid_signature
+    format_partition: bool  # format_partition
+    ignore_invalid_signature: bool  # ignore_invalid_signature
     file_id: str  # file_id
-    ignore_admin_lockout_upon_downgrade: str  # ignore_admin_lockout_upon_downgrade
+    ignore_admin_lockout_upon_downgrade: bool  # ignore_admin_lockout_upon_downgrade
     file_content: str  # file_content
 
 # Nested TypedDicts for table field children (dict mode)
@@ -44,12 +44,12 @@ class UpgradeResponse(TypedDict):
     source: str
     url: str
     passphrase: str
-    force: str
+    force: bool
     filename: str
-    format_partition: str
-    ignore_invalid_signature: str
+    format_partition: bool
+    ignore_invalid_signature: bool
     file_id: str
-    ignore_admin_lockout_upon_downgrade: str
+    ignore_admin_lockout_upon_downgrade: bool
     file_content: str
 
 
@@ -68,17 +68,17 @@ class UpgradeObject:
     # passphrase
     passphrase: str
     # force
-    force: str
+    force: bool
     # filename
     filename: str
     # format_partition
-    format_partition: str
+    format_partition: bool
     # ignore_invalid_signature
-    ignore_invalid_signature: str
+    ignore_invalid_signature: bool
     # file_id
     file_id: str
     # ignore_admin_lockout_upon_downgrade
-    ignore_admin_lockout_upon_downgrade: str
+    ignore_admin_lockout_upon_downgrade: bool
     # file_content
     file_content: str
     

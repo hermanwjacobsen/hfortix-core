@@ -37,7 +37,7 @@ class StateResponse(TypedDict):
     fortianalyzer: str
     fortianalyzer_cloud: str
     forticloud: str
-    is_fortiview_supported: str
+    is_fortiview_supported: bool
 
 
 @final
@@ -59,7 +59,7 @@ class StateObject:
     # forticloud
     forticloud: str
     # is_fortiview_supported
-    is_fortiview_supported: str
+    is_fortiview_supported: bool
     
     # Common API response fields
     status: str

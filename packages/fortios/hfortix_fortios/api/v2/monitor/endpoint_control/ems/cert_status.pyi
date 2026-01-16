@@ -17,9 +17,9 @@ class CertStatusPayload(TypedDict, total=False):
             "field": "value",  # <- autocomplete shows all fields
         }
     """
-    ems_id: str  # ems_id
+    ems_id: int  # ems_id
     scope: str  # scope
-    with_cert: str  # with_cert
+    with_cert: bool  # with_cert
 
 # Nested TypedDicts for table field children (dict mode)
 
@@ -255,7 +255,7 @@ class CertStatus:
     def put(
         self,
         payload_dict: CertStatusPayload | None = ...,
-        ems_id: str | None = ...,
+        ems_id: int | None = ...,
         scope: str | None = ...,
         with_cert: str | None = ...,
         vdom: str | bool | None = ...,
@@ -265,7 +265,7 @@ class CertStatus:
     def put(
         self,
         payload_dict: CertStatusPayload | None = ...,
-        ems_id: str | None = ...,
+        ems_id: int | None = ...,
         scope: str | None = ...,
         with_cert: str | None = ...,
         vdom: str | bool | None = ...,
@@ -276,7 +276,7 @@ class CertStatus:
     def put(
         self,
         payload_dict: CertStatusPayload | None = ...,
-        ems_id: str | None = ...,
+        ems_id: int | None = ...,
         scope: str | None = ...,
         with_cert: str | None = ...,
         vdom: str | bool | None = ...,
@@ -285,7 +285,7 @@ class CertStatus:
     def put(
         self,
         payload_dict: CertStatusPayload | None = ...,
-        ems_id: str | None = ...,
+        ems_id: int | None = ...,
         scope: str | None = ...,
         with_cert: str | None = ...,
         vdom: str | bool | None = ...,
@@ -300,7 +300,7 @@ class CertStatus:
     def set(
         self,
         payload_dict: CertStatusPayload | None = ...,
-        ems_id: str | None = ...,
+        ems_id: int | None = ...,
         scope: str | None = ...,
         with_cert: str | None = ...,
         vdom: str | bool | None = ...,

@@ -33,7 +33,7 @@ class CheckResponse(TypedDict):
     All fields are present in the response from the FortiGate API.
     """
     ip_address: str
-    is_banned: str
+    is_banned: bool
 
 
 @final
@@ -47,7 +47,7 @@ class CheckObject:
     # ip_address
     ip_address: str
     # is_banned
-    is_banned: str
+    is_banned: bool
     
     # Common API response fields
     status: str

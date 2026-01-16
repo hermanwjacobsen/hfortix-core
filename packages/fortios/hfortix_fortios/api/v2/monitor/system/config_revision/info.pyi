@@ -17,7 +17,7 @@ class InfoPayload(TypedDict, total=False):
             "field": "value",  # <- autocomplete shows all fields
         }
     """
-    config_id: str  # config_id
+    config_id: int  # config_id
 
 # Nested TypedDicts for table field children (dict mode)
 
@@ -32,7 +32,7 @@ class InfoResponse(TypedDict):
     
     All fields are present in the response from the FortiGate API.
     """
-    config_id: str
+    config_id: int
 
 
 @final
@@ -44,7 +44,7 @@ class InfoObject:
     """
     
     # config_id
-    config_id: str
+    config_id: int
     
     # Common API response fields
     status: str
@@ -236,7 +236,7 @@ class Info:
     def put(
         self,
         payload_dict: InfoPayload | None = ...,
-        config_id: str | None = ...,
+        config_id: int | None = ...,
         vdom: str | bool | None = ...,
     ) -> InfoObject: ...
     
@@ -244,7 +244,7 @@ class Info:
     def put(
         self,
         payload_dict: InfoPayload | None = ...,
-        config_id: str | None = ...,
+        config_id: int | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -253,14 +253,14 @@ class Info:
     def put(
         self,
         payload_dict: InfoPayload | None = ...,
-        config_id: str | None = ...,
+        config_id: int | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     def put(
         self,
         payload_dict: InfoPayload | None = ...,
-        config_id: str | None = ...,
+        config_id: int | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -273,7 +273,7 @@ class Info:
     def set(
         self,
         payload_dict: InfoPayload | None = ...,
-        config_id: str | None = ...,
+        config_id: int | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     

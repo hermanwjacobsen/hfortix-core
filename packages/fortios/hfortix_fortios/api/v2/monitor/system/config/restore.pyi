@@ -19,11 +19,11 @@ class RestorePayload(TypedDict, total=False):
     """
     source: str  # source
     usb_filename: str  # usb_filename
-    config_id: str  # config_id
+    config_id: int  # config_id
     password: str  # password
     scope: str  # scope
     vdom: str  # vdom
-    confirm_password_mask: str  # confirm_password_mask
+    confirm_password_mask: bool  # confirm_password_mask
     file_content: str  # file_content
 
 # Nested TypedDicts for table field children (dict mode)
@@ -39,10 +39,10 @@ class RestoreResponse(TypedDict):
     
     All fields are present in the response from the FortiGate API.
     """
-    restore_started: str
+    restore_started: bool
     error: str
     session_id: str
-    config_restored: str
+    config_restored: bool
 
 
 @final
@@ -54,13 +54,13 @@ class RestoreObject:
     """
     
     # restore_started
-    restore_started: str
+    restore_started: bool
     # error
     error: str
     # session_id
     session_id: str
     # config_restored
-    config_restored: str
+    config_restored: bool
     
     # Common API response fields
     status: str
@@ -289,7 +289,7 @@ class Restore:
         payload_dict: RestorePayload | None = ...,
         source: str | None = ...,
         usb_filename: str | None = ...,
-        config_id: str | None = ...,
+        config_id: int | None = ...,
         password: str | None = ...,
         scope: str | None = ...,
         confirm_password_mask: str | None = ...,
@@ -303,7 +303,7 @@ class Restore:
         payload_dict: RestorePayload | None = ...,
         source: str | None = ...,
         usb_filename: str | None = ...,
-        config_id: str | None = ...,
+        config_id: int | None = ...,
         password: str | None = ...,
         scope: str | None = ...,
         confirm_password_mask: str | None = ...,
@@ -318,7 +318,7 @@ class Restore:
         payload_dict: RestorePayload | None = ...,
         source: str | None = ...,
         usb_filename: str | None = ...,
-        config_id: str | None = ...,
+        config_id: int | None = ...,
         password: str | None = ...,
         scope: str | None = ...,
         confirm_password_mask: str | None = ...,
@@ -331,7 +331,7 @@ class Restore:
         payload_dict: RestorePayload | None = ...,
         source: str | None = ...,
         usb_filename: str | None = ...,
-        config_id: str | None = ...,
+        config_id: int | None = ...,
         password: str | None = ...,
         scope: str | None = ...,
         confirm_password_mask: str | None = ...,
@@ -346,7 +346,7 @@ class Restore:
         payload_dict: RestorePayload | None = ...,
         source: str | None = ...,
         usb_filename: str | None = ...,
-        config_id: str | None = ...,
+        config_id: int | None = ...,
         password: str | None = ...,
         scope: str | None = ...,
         confirm_password_mask: str | None = ...,
@@ -360,7 +360,7 @@ class Restore:
         payload_dict: RestorePayload | None = ...,
         source: str | None = ...,
         usb_filename: str | None = ...,
-        config_id: str | None = ...,
+        config_id: int | None = ...,
         password: str | None = ...,
         scope: str | None = ...,
         confirm_password_mask: str | None = ...,
@@ -375,7 +375,7 @@ class Restore:
         payload_dict: RestorePayload | None = ...,
         source: str | None = ...,
         usb_filename: str | None = ...,
-        config_id: str | None = ...,
+        config_id: int | None = ...,
         password: str | None = ...,
         scope: str | None = ...,
         confirm_password_mask: str | None = ...,
@@ -388,7 +388,7 @@ class Restore:
         payload_dict: RestorePayload | None = ...,
         source: str | None = ...,
         usb_filename: str | None = ...,
-        config_id: str | None = ...,
+        config_id: int | None = ...,
         password: str | None = ...,
         scope: str | None = ...,
         confirm_password_mask: str | None = ...,
@@ -407,7 +407,7 @@ class Restore:
         payload_dict: RestorePayload | None = ...,
         source: str | None = ...,
         usb_filename: str | None = ...,
-        config_id: str | None = ...,
+        config_id: int | None = ...,
         password: str | None = ...,
         scope: str | None = ...,
         confirm_password_mask: str | None = ...,

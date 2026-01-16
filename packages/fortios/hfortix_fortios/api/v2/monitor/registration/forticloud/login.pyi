@@ -19,7 +19,7 @@ class LoginPayload(TypedDict, total=False):
     """
     email: str  # email
     password: str  # password
-    send_logs: str  # send_logs
+    send_logs: bool  # send_logs
     domain: str  # domain
 
 # Nested TypedDicts for table field children (dict mode)
@@ -37,7 +37,7 @@ class LoginResponse(TypedDict):
     """
     email: str
     password: str
-    send_logs: str
+    send_logs: bool
     domain: str
 
 
@@ -54,7 +54,7 @@ class LoginObject:
     # password
     password: str
     # send_logs
-    send_logs: str
+    send_logs: bool
     # domain
     domain: str
     

@@ -19,7 +19,7 @@ class ReportPayload(TypedDict, total=False):
     """
     agent_ip: str  # agent_ip
     application_name: str  # application_name
-    application_id: str  # application_id
+    application_id: int  # application_id
     latency: str  # latency
     jitter: str  # jitter
     packet_loss: str  # packet_loss
@@ -42,7 +42,7 @@ class ReportResponse(TypedDict):
     """
     agent_ip: str
     application_name: str
-    application_id: str
+    application_id: int
     latency: str
     jitter: str
     packet_loss: str
@@ -64,7 +64,7 @@ class ReportObject:
     # application_name
     application_name: str
     # application_id
-    application_id: str
+    application_id: int
     # latency
     latency: str
     # jitter
@@ -305,7 +305,7 @@ class Report:
         payload_dict: ReportPayload | None = ...,
         agent_ip: str | None = ...,
         application_name: str | None = ...,
-        application_id: str | None = ...,
+        application_id: int | None = ...,
         latency: str | None = ...,
         jitter: str | None = ...,
         packet_loss: str | None = ...,
@@ -321,7 +321,7 @@ class Report:
         payload_dict: ReportPayload | None = ...,
         agent_ip: str | None = ...,
         application_name: str | None = ...,
-        application_id: str | None = ...,
+        application_id: int | None = ...,
         latency: str | None = ...,
         jitter: str | None = ...,
         packet_loss: str | None = ...,
@@ -338,7 +338,7 @@ class Report:
         payload_dict: ReportPayload | None = ...,
         agent_ip: str | None = ...,
         application_name: str | None = ...,
-        application_id: str | None = ...,
+        application_id: int | None = ...,
         latency: str | None = ...,
         jitter: str | None = ...,
         packet_loss: str | None = ...,
@@ -353,7 +353,7 @@ class Report:
         payload_dict: ReportPayload | None = ...,
         agent_ip: str | None = ...,
         application_name: str | None = ...,
-        application_id: str | None = ...,
+        application_id: int | None = ...,
         latency: str | None = ...,
         jitter: str | None = ...,
         packet_loss: str | None = ...,
@@ -370,7 +370,7 @@ class Report:
         payload_dict: ReportPayload | None = ...,
         agent_ip: str | None = ...,
         application_name: str | None = ...,
-        application_id: str | None = ...,
+        application_id: int | None = ...,
         latency: str | None = ...,
         jitter: str | None = ...,
         packet_loss: str | None = ...,
@@ -386,7 +386,7 @@ class Report:
         payload_dict: ReportPayload | None = ...,
         agent_ip: str | None = ...,
         application_name: str | None = ...,
-        application_id: str | None = ...,
+        application_id: int | None = ...,
         latency: str | None = ...,
         jitter: str | None = ...,
         packet_loss: str | None = ...,
@@ -403,7 +403,7 @@ class Report:
         payload_dict: ReportPayload | None = ...,
         agent_ip: str | None = ...,
         application_name: str | None = ...,
-        application_id: str | None = ...,
+        application_id: int | None = ...,
         latency: str | None = ...,
         jitter: str | None = ...,
         packet_loss: str | None = ...,
@@ -418,7 +418,7 @@ class Report:
         payload_dict: ReportPayload | None = ...,
         agent_ip: str | None = ...,
         application_name: str | None = ...,
-        application_id: str | None = ...,
+        application_id: int | None = ...,
         latency: str | None = ...,
         jitter: str | None = ...,
         packet_loss: str | None = ...,
@@ -439,7 +439,7 @@ class Report:
         payload_dict: ReportPayload | None = ...,
         agent_ip: str | None = ...,
         application_name: str | None = ...,
-        application_id: str | None = ...,
+        application_id: int | None = ...,
         latency: str | None = ...,
         jitter: str | None = ...,
         packet_loss: str | None = ...,

@@ -41,7 +41,7 @@ class RealtimeStatisticsPayload(TypedDict, total=False):
     shaper: str  # shaper
     srcuuid: str  # srcuuid
     dstuuid: str  # dstuuid
-    sessionid: str  # sessionid
+    sessionid: int  # sessionid
     report_by: str  # report_by
     sort_by: str  # sort_by
     ip_version: str  # ip_version
@@ -83,7 +83,7 @@ class RealtimeStatisticsResponse(TypedDict):
     shaper: str
     srcuuid: str
     dstuuid: str
-    sessionid: str
+    sessionid: int
     report_by: str
     sort_by: str
     ip_version: str
@@ -146,7 +146,7 @@ class RealtimeStatisticsObject:
     # dstuuid
     dstuuid: str
     # sessionid
-    sessionid: str
+    sessionid: int
     # report_by
     report_by: str
     # sort_by
@@ -395,7 +395,7 @@ class RealtimeStatistics:
         shaper: str | None = ...,
         srcuuid: str | None = ...,
         dstuuid: str | None = ...,
-        sessionid: str | None = ...,
+        sessionid: int | None = ...,
         report_by: str | None = ...,
         sort_by: str | None = ...,
         ip_version: str | None = ...,
@@ -430,7 +430,7 @@ class RealtimeStatistics:
         shaper: str | None = ...,
         srcuuid: str | None = ...,
         dstuuid: str | None = ...,
-        sessionid: str | None = ...,
+        sessionid: int | None = ...,
         report_by: str | None = ...,
         sort_by: str | None = ...,
         ip_version: str | None = ...,
@@ -466,7 +466,7 @@ class RealtimeStatistics:
         shaper: str | None = ...,
         srcuuid: str | None = ...,
         dstuuid: str | None = ...,
-        sessionid: str | None = ...,
+        sessionid: int | None = ...,
         report_by: str | None = ...,
         sort_by: str | None = ...,
         ip_version: str | None = ...,
@@ -500,7 +500,7 @@ class RealtimeStatistics:
         shaper: str | None = ...,
         srcuuid: str | None = ...,
         dstuuid: str | None = ...,
-        sessionid: str | None = ...,
+        sessionid: int | None = ...,
         report_by: str | None = ...,
         sort_by: str | None = ...,
         ip_version: str | None = ...,
@@ -540,7 +540,7 @@ class RealtimeStatistics:
         shaper: str | None = ...,
         srcuuid: str | None = ...,
         dstuuid: str | None = ...,
-        sessionid: str | None = ...,
+        sessionid: int | None = ...,
         report_by: str | None = ...,
         sort_by: str | None = ...,
         ip_version: str | None = ...,

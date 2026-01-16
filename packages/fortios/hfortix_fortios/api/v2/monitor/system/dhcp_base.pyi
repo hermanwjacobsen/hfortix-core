@@ -18,7 +18,7 @@ class DhcpPayload(TypedDict, total=False):
         }
     """
     scope: str  # scope
-    ipv6: str  # ipv6
+    ipv6: bool  # ipv6
     interface: str  # interface
 
 # Nested TypedDicts for table field children (dict mode)
@@ -35,7 +35,7 @@ class DhcpResponse(TypedDict):
     All fields are present in the response from the FortiGate API.
     """
     scope: str
-    ipv6: str
+    ipv6: bool
     interface: str
 
 
@@ -50,7 +50,7 @@ class DhcpObject:
     # scope
     scope: str
     # ipv6
-    ipv6: str
+    ipv6: bool
     # interface
     interface: str
     

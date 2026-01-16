@@ -19,8 +19,8 @@ class BouncePortPayload(TypedDict, total=False):
     """
     mkey: str  # mkey
     port: str  # port
-    duration: str  # duration
-    stop: str  # stop
+    duration: int  # duration
+    stop: bool  # stop
 
 # Nested TypedDicts for table field children (dict mode)
 
@@ -37,8 +37,8 @@ class BouncePortResponse(TypedDict):
     """
     mkey: str
     port: str
-    duration: str
-    stop: str
+    duration: int
+    stop: bool
 
 
 @final
@@ -54,9 +54,9 @@ class BouncePortObject:
     # port
     port: str
     # duration
-    duration: str
+    duration: int
     # stop
-    stop: str
+    stop: bool
     
     # Common API response fields
     status: str
@@ -285,7 +285,7 @@ class BouncePort:
         payload_dict: BouncePortPayload | None = ...,
         mkey: str | None = ...,
         port: str | None = ...,
-        duration: str | None = ...,
+        duration: int | None = ...,
         stop: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> BouncePortObject: ...
@@ -296,7 +296,7 @@ class BouncePort:
         payload_dict: BouncePortPayload | None = ...,
         mkey: str | None = ...,
         port: str | None = ...,
-        duration: str | None = ...,
+        duration: int | None = ...,
         stop: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
@@ -308,7 +308,7 @@ class BouncePort:
         payload_dict: BouncePortPayload | None = ...,
         mkey: str | None = ...,
         port: str | None = ...,
-        duration: str | None = ...,
+        duration: int | None = ...,
         stop: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
@@ -318,7 +318,7 @@ class BouncePort:
         payload_dict: BouncePortPayload | None = ...,
         mkey: str | None = ...,
         port: str | None = ...,
-        duration: str | None = ...,
+        duration: int | None = ...,
         stop: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
@@ -330,7 +330,7 @@ class BouncePort:
         payload_dict: BouncePortPayload | None = ...,
         mkey: str | None = ...,
         port: str | None = ...,
-        duration: str | None = ...,
+        duration: int | None = ...,
         stop: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> BouncePortObject: ...
@@ -341,7 +341,7 @@ class BouncePort:
         payload_dict: BouncePortPayload | None = ...,
         mkey: str | None = ...,
         port: str | None = ...,
-        duration: str | None = ...,
+        duration: int | None = ...,
         stop: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
@@ -353,7 +353,7 @@ class BouncePort:
         payload_dict: BouncePortPayload | None = ...,
         mkey: str | None = ...,
         port: str | None = ...,
-        duration: str | None = ...,
+        duration: int | None = ...,
         stop: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
@@ -363,7 +363,7 @@ class BouncePort:
         payload_dict: BouncePortPayload | None = ...,
         mkey: str | None = ...,
         port: str | None = ...,
-        duration: str | None = ...,
+        duration: int | None = ...,
         stop: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
@@ -379,7 +379,7 @@ class BouncePort:
         payload_dict: BouncePortPayload | None = ...,
         mkey: str | None = ...,
         port: str | None = ...,
-        duration: str | None = ...,
+        duration: int | None = ...,
         stop: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...

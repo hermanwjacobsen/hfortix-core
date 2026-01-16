@@ -17,11 +17,11 @@ class AnswersPayload(TypedDict, total=False):
             "field": "value",  # <- autocomplete shows all fields
         }
     """
-    page: str  # page
-    pagesize: str  # pagesize
+    page: int  # page
+    pagesize: int  # pagesize
     sortkey: str  # sortkey
     topics: str  # topics
-    limit: str  # limit
+    limit: int  # limit
 
 # Nested TypedDicts for table field children (dict mode)
 
@@ -268,11 +268,11 @@ class Answers:
     def put(
         self,
         payload_dict: AnswersPayload | None = ...,
-        page: str | None = ...,
-        pagesize: str | None = ...,
+        page: int | None = ...,
+        pagesize: int | None = ...,
         sortkey: str | None = ...,
         topics: str | None = ...,
-        limit: str | None = ...,
+        limit: int | None = ...,
         vdom: str | bool | None = ...,
     ) -> AnswersObject: ...
     
@@ -280,11 +280,11 @@ class Answers:
     def put(
         self,
         payload_dict: AnswersPayload | None = ...,
-        page: str | None = ...,
-        pagesize: str | None = ...,
+        page: int | None = ...,
+        pagesize: int | None = ...,
         sortkey: str | None = ...,
         topics: str | None = ...,
-        limit: str | None = ...,
+        limit: int | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -293,22 +293,22 @@ class Answers:
     def put(
         self,
         payload_dict: AnswersPayload | None = ...,
-        page: str | None = ...,
-        pagesize: str | None = ...,
+        page: int | None = ...,
+        pagesize: int | None = ...,
         sortkey: str | None = ...,
         topics: str | None = ...,
-        limit: str | None = ...,
+        limit: int | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     def put(
         self,
         payload_dict: AnswersPayload | None = ...,
-        page: str | None = ...,
-        pagesize: str | None = ...,
+        page: int | None = ...,
+        pagesize: int | None = ...,
         sortkey: str | None = ...,
         topics: str | None = ...,
-        limit: str | None = ...,
+        limit: int | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -321,11 +321,11 @@ class Answers:
     def set(
         self,
         payload_dict: AnswersPayload | None = ...,
-        page: str | None = ...,
-        pagesize: str | None = ...,
+        page: int | None = ...,
+        pagesize: int | None = ...,
         sortkey: str | None = ...,
         topics: str | None = ...,
-        limit: str | None = ...,
+        limit: int | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     

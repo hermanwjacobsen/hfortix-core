@@ -17,15 +17,15 @@ class PolicyLookupPayload(TypedDict, total=False):
             "field": "value",  # <- autocomplete shows all fields
         }
     """
-    ipv6: str  # ipv6
+    ipv6: bool  # ipv6
     srcintf: str  # srcintf
-    sourceport: str  # sourceport
+    sourceport: int  # sourceport
     sourceip: str  # sourceip
     protocol: str  # protocol
     dest: str  # dest
-    destport: str  # destport
-    icmptype: str  # icmptype
-    icmpcode: str  # icmpcode
+    destport: int  # destport
+    icmptype: int  # icmptype
+    icmpcode: int  # icmpcode
     policy_type: str  # policy_type
     auth_type: str  # auth_type
     user_group: str  # user_group
@@ -48,7 +48,7 @@ class PolicyLookupResponse(TypedDict):
     """
     dstaddr: str
     dst_cate: int
-    match: str
+    match: bool
     matched_policy_type: str
     policy_action: str
     policy_id: int
@@ -56,7 +56,7 @@ class PolicyLookupResponse(TypedDict):
     remote_groups: str
     sec_default_action: str
     srcaddr: str
-    success: str
+    success: bool
     urlf_entry_id: int
     user_group: str
     webfilter_action: str
@@ -78,7 +78,7 @@ class PolicyLookupObject:
     # dst_cate
     dst_cate: int
     # match
-    match: str
+    match: bool
     # matched_policy_type
     matched_policy_type: str
     # policy_action
@@ -94,7 +94,7 @@ class PolicyLookupObject:
     # srcaddr
     srcaddr: str
     # success
-    success: str
+    success: bool
     # urlf_entry_id
     urlf_entry_id: int
     # user_group
@@ -314,13 +314,13 @@ class PolicyLookup:
         payload_dict: PolicyLookupPayload | None = ...,
         ipv6: str | None = ...,
         srcintf: str | None = ...,
-        sourceport: str | None = ...,
+        sourceport: int | None = ...,
         sourceip: str | None = ...,
         protocol: str | None = ...,
         dest: str | None = ...,
-        destport: str | None = ...,
-        icmptype: str | None = ...,
-        icmpcode: str | None = ...,
+        destport: int | None = ...,
+        icmptype: int | None = ...,
+        icmpcode: int | None = ...,
         policy_type: str | None = ...,
         auth_type: str | None = ...,
         user_group: str | None = ...,
@@ -336,13 +336,13 @@ class PolicyLookup:
         payload_dict: PolicyLookupPayload | None = ...,
         ipv6: str | None = ...,
         srcintf: str | None = ...,
-        sourceport: str | None = ...,
+        sourceport: int | None = ...,
         sourceip: str | None = ...,
         protocol: str | None = ...,
         dest: str | None = ...,
-        destport: str | None = ...,
-        icmptype: str | None = ...,
-        icmpcode: str | None = ...,
+        destport: int | None = ...,
+        icmptype: int | None = ...,
+        icmpcode: int | None = ...,
         policy_type: str | None = ...,
         auth_type: str | None = ...,
         user_group: str | None = ...,
@@ -359,13 +359,13 @@ class PolicyLookup:
         payload_dict: PolicyLookupPayload | None = ...,
         ipv6: str | None = ...,
         srcintf: str | None = ...,
-        sourceport: str | None = ...,
+        sourceport: int | None = ...,
         sourceip: str | None = ...,
         protocol: str | None = ...,
         dest: str | None = ...,
-        destport: str | None = ...,
-        icmptype: str | None = ...,
-        icmpcode: str | None = ...,
+        destport: int | None = ...,
+        icmptype: int | None = ...,
+        icmpcode: int | None = ...,
         policy_type: str | None = ...,
         auth_type: str | None = ...,
         user_group: str | None = ...,
@@ -380,13 +380,13 @@ class PolicyLookup:
         payload_dict: PolicyLookupPayload | None = ...,
         ipv6: str | None = ...,
         srcintf: str | None = ...,
-        sourceport: str | None = ...,
+        sourceport: int | None = ...,
         sourceip: str | None = ...,
         protocol: str | None = ...,
         dest: str | None = ...,
-        destport: str | None = ...,
-        icmptype: str | None = ...,
-        icmpcode: str | None = ...,
+        destport: int | None = ...,
+        icmptype: int | None = ...,
+        icmpcode: int | None = ...,
         policy_type: str | None = ...,
         auth_type: str | None = ...,
         user_group: str | None = ...,
@@ -407,13 +407,13 @@ class PolicyLookup:
         payload_dict: PolicyLookupPayload | None = ...,
         ipv6: str | None = ...,
         srcintf: str | None = ...,
-        sourceport: str | None = ...,
+        sourceport: int | None = ...,
         sourceip: str | None = ...,
         protocol: str | None = ...,
         dest: str | None = ...,
-        destport: str | None = ...,
-        icmptype: str | None = ...,
-        icmpcode: str | None = ...,
+        destport: int | None = ...,
+        icmptype: int | None = ...,
+        icmpcode: int | None = ...,
         policy_type: str | None = ...,
         auth_type: str | None = ...,
         user_group: str | None = ...,

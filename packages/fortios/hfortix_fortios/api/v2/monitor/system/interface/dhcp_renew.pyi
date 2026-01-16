@@ -18,7 +18,7 @@ class DhcpRenewPayload(TypedDict, total=False):
         }
     """
     mkey: str  # mkey
-    ipv6: str  # ipv6
+    ipv6: bool  # ipv6
 
 # Nested TypedDicts for table field children (dict mode)
 
@@ -34,7 +34,7 @@ class DhcpRenewResponse(TypedDict):
     All fields are present in the response from the FortiGate API.
     """
     mkey: str
-    ipv6: str
+    ipv6: bool
 
 
 @final
@@ -48,7 +48,7 @@ class DhcpRenewObject:
     # mkey
     mkey: str
     # ipv6
-    ipv6: str
+    ipv6: bool
     
     # Common API response fields
     status: str

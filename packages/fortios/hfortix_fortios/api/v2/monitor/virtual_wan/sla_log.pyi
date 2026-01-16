@@ -19,13 +19,13 @@ class SlaLogPayload(TypedDict, total=False):
     """
     sla: str  # sla
     interface: str  # interface
-    since: str  # since
-    seconds: str  # seconds
-    latest: str  # latest
-    min_sample_interval: str  # min_sample_interval
-    sampling_interval: str  # sampling_interval
-    skip_vpn_child: str  # skip_vpn_child
-    include_sla_targets_met: str  # include_sla_targets_met
+    since: int  # since
+    seconds: int  # seconds
+    latest: bool  # latest
+    min_sample_interval: int  # min_sample_interval
+    sampling_interval: int  # sampling_interval
+    skip_vpn_child: bool  # skip_vpn_child
+    include_sla_targets_met: bool  # include_sla_targets_met
 
 # Nested TypedDicts for table field children (dict mode)
 
@@ -42,13 +42,13 @@ class SlaLogResponse(TypedDict):
     """
     sla: str
     interface: str
-    since: str
-    seconds: str
-    latest: str
-    min_sample_interval: str
-    sampling_interval: str
-    skip_vpn_child: str
-    include_sla_targets_met: str
+    since: int
+    seconds: int
+    latest: bool
+    min_sample_interval: int
+    sampling_interval: int
+    skip_vpn_child: bool
+    include_sla_targets_met: bool
 
 
 @final
@@ -64,19 +64,19 @@ class SlaLogObject:
     # interface
     interface: str
     # since
-    since: str
+    since: int
     # seconds
-    seconds: str
+    seconds: int
     # latest
-    latest: str
+    latest: bool
     # min_sample_interval
-    min_sample_interval: str
+    min_sample_interval: int
     # sampling_interval
-    sampling_interval: str
+    sampling_interval: int
     # skip_vpn_child
-    skip_vpn_child: str
+    skip_vpn_child: bool
     # include_sla_targets_met
-    include_sla_targets_met: str
+    include_sla_targets_met: bool
     
     # Common API response fields
     status: str
@@ -278,11 +278,11 @@ class SlaLog:
         payload_dict: SlaLogPayload | None = ...,
         sla: str | None = ...,
         interface: str | None = ...,
-        since: str | None = ...,
-        seconds: str | None = ...,
+        since: int | None = ...,
+        seconds: int | None = ...,
         latest: str | None = ...,
-        min_sample_interval: str | None = ...,
-        sampling_interval: str | None = ...,
+        min_sample_interval: int | None = ...,
+        sampling_interval: int | None = ...,
         skip_vpn_child: str | None = ...,
         include_sla_targets_met: str | None = ...,
         vdom: str | bool | None = ...,
@@ -294,11 +294,11 @@ class SlaLog:
         payload_dict: SlaLogPayload | None = ...,
         sla: str | None = ...,
         interface: str | None = ...,
-        since: str | None = ...,
-        seconds: str | None = ...,
+        since: int | None = ...,
+        seconds: int | None = ...,
         latest: str | None = ...,
-        min_sample_interval: str | None = ...,
-        sampling_interval: str | None = ...,
+        min_sample_interval: int | None = ...,
+        sampling_interval: int | None = ...,
         skip_vpn_child: str | None = ...,
         include_sla_targets_met: str | None = ...,
         vdom: str | bool | None = ...,
@@ -311,11 +311,11 @@ class SlaLog:
         payload_dict: SlaLogPayload | None = ...,
         sla: str | None = ...,
         interface: str | None = ...,
-        since: str | None = ...,
-        seconds: str | None = ...,
+        since: int | None = ...,
+        seconds: int | None = ...,
         latest: str | None = ...,
-        min_sample_interval: str | None = ...,
-        sampling_interval: str | None = ...,
+        min_sample_interval: int | None = ...,
+        sampling_interval: int | None = ...,
         skip_vpn_child: str | None = ...,
         include_sla_targets_met: str | None = ...,
         vdom: str | bool | None = ...,
@@ -326,11 +326,11 @@ class SlaLog:
         payload_dict: SlaLogPayload | None = ...,
         sla: str | None = ...,
         interface: str | None = ...,
-        since: str | None = ...,
-        seconds: str | None = ...,
+        since: int | None = ...,
+        seconds: int | None = ...,
         latest: str | None = ...,
-        min_sample_interval: str | None = ...,
-        sampling_interval: str | None = ...,
+        min_sample_interval: int | None = ...,
+        sampling_interval: int | None = ...,
         skip_vpn_child: str | None = ...,
         include_sla_targets_met: str | None = ...,
         vdom: str | bool | None = ...,
@@ -347,11 +347,11 @@ class SlaLog:
         payload_dict: SlaLogPayload | None = ...,
         sla: str | None = ...,
         interface: str | None = ...,
-        since: str | None = ...,
-        seconds: str | None = ...,
+        since: int | None = ...,
+        seconds: int | None = ...,
         latest: str | None = ...,
-        min_sample_interval: str | None = ...,
-        sampling_interval: str | None = ...,
+        min_sample_interval: int | None = ...,
+        sampling_interval: int | None = ...,
         skip_vpn_child: str | None = ...,
         include_sla_targets_met: str | None = ...,
         vdom: str | bool | None = ...,

@@ -17,12 +17,12 @@ class StartPayload(TypedDict, total=False):
             "field": "value",  # <- autocomplete shows all fields
         }
     """
-    ap_interface: str  # ap_interface
+    ap_interface: int  # ap_interface
     wtp: str  # wtp
-    start_vlan_id: str  # start_vlan_id
-    end_vlan_id: str  # end_vlan_id
-    retries: str  # retries
-    timeout: str  # timeout
+    start_vlan_id: int  # start_vlan_id
+    end_vlan_id: int  # end_vlan_id
+    retries: int  # retries
+    timeout: int  # timeout
 
 # Nested TypedDicts for table field children (dict mode)
 
@@ -37,12 +37,12 @@ class StartResponse(TypedDict):
     
     All fields are present in the response from the FortiGate API.
     """
-    ap_interface: str
+    ap_interface: int
     wtp: str
-    start_vlan_id: str
-    end_vlan_id: str
-    retries: str
-    timeout: str
+    start_vlan_id: int
+    end_vlan_id: int
+    retries: int
+    timeout: int
 
 
 @final
@@ -54,17 +54,17 @@ class StartObject:
     """
     
     # ap_interface
-    ap_interface: str
+    ap_interface: int
     # wtp
     wtp: str
     # start_vlan_id
-    start_vlan_id: str
+    start_vlan_id: int
     # end_vlan_id
-    end_vlan_id: str
+    end_vlan_id: int
     # retries
-    retries: str
+    retries: int
     # timeout
-    timeout: str
+    timeout: int
     
     # Common API response fields
     status: str
@@ -291,12 +291,12 @@ class Start:
     def post(
         self,
         payload_dict: StartPayload | None = ...,
-        ap_interface: str | None = ...,
+        ap_interface: int | None = ...,
         wtp: str | None = ...,
-        start_vlan_id: str | None = ...,
-        end_vlan_id: str | None = ...,
-        retries: str | None = ...,
-        timeout: str | None = ...,
+        start_vlan_id: int | None = ...,
+        end_vlan_id: int | None = ...,
+        retries: int | None = ...,
+        timeout: int | None = ...,
         vdom: str | bool | None = ...,
     ) -> StartObject: ...
     
@@ -304,12 +304,12 @@ class Start:
     def post(
         self,
         payload_dict: StartPayload | None = ...,
-        ap_interface: str | None = ...,
+        ap_interface: int | None = ...,
         wtp: str | None = ...,
-        start_vlan_id: str | None = ...,
-        end_vlan_id: str | None = ...,
-        retries: str | None = ...,
-        timeout: str | None = ...,
+        start_vlan_id: int | None = ...,
+        end_vlan_id: int | None = ...,
+        retries: int | None = ...,
+        timeout: int | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -318,24 +318,24 @@ class Start:
     def post(
         self,
         payload_dict: StartPayload | None = ...,
-        ap_interface: str | None = ...,
+        ap_interface: int | None = ...,
         wtp: str | None = ...,
-        start_vlan_id: str | None = ...,
-        end_vlan_id: str | None = ...,
-        retries: str | None = ...,
-        timeout: str | None = ...,
+        start_vlan_id: int | None = ...,
+        end_vlan_id: int | None = ...,
+        retries: int | None = ...,
+        timeout: int | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     def post(
         self,
         payload_dict: StartPayload | None = ...,
-        ap_interface: str | None = ...,
+        ap_interface: int | None = ...,
         wtp: str | None = ...,
-        start_vlan_id: str | None = ...,
-        end_vlan_id: str | None = ...,
-        retries: str | None = ...,
-        timeout: str | None = ...,
+        start_vlan_id: int | None = ...,
+        end_vlan_id: int | None = ...,
+        retries: int | None = ...,
+        timeout: int | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -344,12 +344,12 @@ class Start:
     def put(
         self,
         payload_dict: StartPayload | None = ...,
-        ap_interface: str | None = ...,
+        ap_interface: int | None = ...,
         wtp: str | None = ...,
-        start_vlan_id: str | None = ...,
-        end_vlan_id: str | None = ...,
-        retries: str | None = ...,
-        timeout: str | None = ...,
+        start_vlan_id: int | None = ...,
+        end_vlan_id: int | None = ...,
+        retries: int | None = ...,
+        timeout: int | None = ...,
         vdom: str | bool | None = ...,
     ) -> StartObject: ...
     
@@ -357,12 +357,12 @@ class Start:
     def put(
         self,
         payload_dict: StartPayload | None = ...,
-        ap_interface: str | None = ...,
+        ap_interface: int | None = ...,
         wtp: str | None = ...,
-        start_vlan_id: str | None = ...,
-        end_vlan_id: str | None = ...,
-        retries: str | None = ...,
-        timeout: str | None = ...,
+        start_vlan_id: int | None = ...,
+        end_vlan_id: int | None = ...,
+        retries: int | None = ...,
+        timeout: int | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -371,24 +371,24 @@ class Start:
     def put(
         self,
         payload_dict: StartPayload | None = ...,
-        ap_interface: str | None = ...,
+        ap_interface: int | None = ...,
         wtp: str | None = ...,
-        start_vlan_id: str | None = ...,
-        end_vlan_id: str | None = ...,
-        retries: str | None = ...,
-        timeout: str | None = ...,
+        start_vlan_id: int | None = ...,
+        end_vlan_id: int | None = ...,
+        retries: int | None = ...,
+        timeout: int | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     def put(
         self,
         payload_dict: StartPayload | None = ...,
-        ap_interface: str | None = ...,
+        ap_interface: int | None = ...,
         wtp: str | None = ...,
-        start_vlan_id: str | None = ...,
-        end_vlan_id: str | None = ...,
-        retries: str | None = ...,
-        timeout: str | None = ...,
+        start_vlan_id: int | None = ...,
+        end_vlan_id: int | None = ...,
+        retries: int | None = ...,
+        timeout: int | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -401,12 +401,12 @@ class Start:
     def set(
         self,
         payload_dict: StartPayload | None = ...,
-        ap_interface: str | None = ...,
+        ap_interface: int | None = ...,
         wtp: str | None = ...,
-        start_vlan_id: str | None = ...,
-        end_vlan_id: str | None = ...,
-        retries: str | None = ...,
-        timeout: str | None = ...,
+        start_vlan_id: int | None = ...,
+        end_vlan_id: int | None = ...,
+        retries: int | None = ...,
+        timeout: int | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     

@@ -17,7 +17,7 @@ class FirmwarePayload(TypedDict, total=False):
             "field": "value",  # <- autocomplete shows all fields
         }
     """
-    timeout: str  # timeout
+    timeout: int  # timeout
     version: str  # version
 
 # Nested TypedDicts for table field children (dict mode)
@@ -241,7 +241,7 @@ class Firmware:
     def put(
         self,
         payload_dict: FirmwarePayload | None = ...,
-        timeout: str | None = ...,
+        timeout: int | None = ...,
         version: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FirmwareObject: ...
@@ -250,7 +250,7 @@ class Firmware:
     def put(
         self,
         payload_dict: FirmwarePayload | None = ...,
-        timeout: str | None = ...,
+        timeout: int | None = ...,
         version: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
@@ -260,7 +260,7 @@ class Firmware:
     def put(
         self,
         payload_dict: FirmwarePayload | None = ...,
-        timeout: str | None = ...,
+        timeout: int | None = ...,
         version: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
@@ -268,7 +268,7 @@ class Firmware:
     def put(
         self,
         payload_dict: FirmwarePayload | None = ...,
-        timeout: str | None = ...,
+        timeout: int | None = ...,
         version: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
@@ -282,7 +282,7 @@ class Firmware:
     def set(
         self,
         payload_dict: FirmwarePayload | None = ...,
-        timeout: str | None = ...,
+        timeout: int | None = ...,
         version: str | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...

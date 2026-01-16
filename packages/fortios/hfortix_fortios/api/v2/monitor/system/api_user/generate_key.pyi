@@ -18,7 +18,7 @@ class GenerateKeyPayload(TypedDict, total=False):
         }
     """
     api_user: str  # api-user
-    expiry: str  # expiry
+    expiry: int  # expiry
 
 # Nested TypedDicts for table field children (dict mode)
 
@@ -34,7 +34,7 @@ class GenerateKeyResponse(TypedDict):
     All fields are present in the response from the FortiGate API.
     """
     api_user: str
-    expiry: str
+    expiry: int
 
 
 @final
@@ -48,7 +48,7 @@ class GenerateKeyObject:
     # api-user
     api_user: str
     # expiry
-    expiry: str
+    expiry: int
     
     # Common API response fields
     status: str
@@ -276,7 +276,7 @@ class GenerateKey:
         self,
         payload_dict: GenerateKeyPayload | None = ...,
         api_user: str | None = ...,
-        expiry: str | None = ...,
+        expiry: int | None = ...,
         vdom: str | bool | None = ...,
     ) -> GenerateKeyObject: ...
     
@@ -285,7 +285,7 @@ class GenerateKey:
         self,
         payload_dict: GenerateKeyPayload | None = ...,
         api_user: str | None = ...,
-        expiry: str | None = ...,
+        expiry: int | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -295,7 +295,7 @@ class GenerateKey:
         self,
         payload_dict: GenerateKeyPayload | None = ...,
         api_user: str | None = ...,
-        expiry: str | None = ...,
+        expiry: int | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -303,7 +303,7 @@ class GenerateKey:
         self,
         payload_dict: GenerateKeyPayload | None = ...,
         api_user: str | None = ...,
-        expiry: str | None = ...,
+        expiry: int | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -313,7 +313,7 @@ class GenerateKey:
         self,
         payload_dict: GenerateKeyPayload | None = ...,
         api_user: str | None = ...,
-        expiry: str | None = ...,
+        expiry: int | None = ...,
         vdom: str | bool | None = ...,
     ) -> GenerateKeyObject: ...
     
@@ -322,7 +322,7 @@ class GenerateKey:
         self,
         payload_dict: GenerateKeyPayload | None = ...,
         api_user: str | None = ...,
-        expiry: str | None = ...,
+        expiry: int | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -332,7 +332,7 @@ class GenerateKey:
         self,
         payload_dict: GenerateKeyPayload | None = ...,
         api_user: str | None = ...,
-        expiry: str | None = ...,
+        expiry: int | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -340,7 +340,7 @@ class GenerateKey:
         self,
         payload_dict: GenerateKeyPayload | None = ...,
         api_user: str | None = ...,
-        expiry: str | None = ...,
+        expiry: int | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -354,7 +354,7 @@ class GenerateKey:
         self,
         payload_dict: GenerateKeyPayload | None = ...,
         api_user: str | None = ...,
-        expiry: str | None = ...,
+        expiry: int | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     

@@ -18,7 +18,7 @@ class InterferingApPayload(TypedDict, total=False):
         }
     """
     wtp: str  # wtp
-    radio: str  # radio
+    radio: int  # radio
 
 # Nested TypedDicts for table field children (dict mode)
 
@@ -34,7 +34,7 @@ class InterferingApResponse(TypedDict):
     All fields are present in the response from the FortiGate API.
     """
     wtp: str
-    radio: str
+    radio: int
 
 
 @final
@@ -48,7 +48,7 @@ class InterferingApObject:
     # wtp
     wtp: str
     # radio
-    radio: str
+    radio: int
     
     # Common API response fields
     status: str
@@ -242,7 +242,7 @@ class InterferingAp:
         self,
         payload_dict: InterferingApPayload | None = ...,
         wtp: str | None = ...,
-        radio: str | None = ...,
+        radio: int | None = ...,
         vdom: str | bool | None = ...,
     ) -> InterferingApObject: ...
     
@@ -251,7 +251,7 @@ class InterferingAp:
         self,
         payload_dict: InterferingApPayload | None = ...,
         wtp: str | None = ...,
-        radio: str | None = ...,
+        radio: int | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -261,7 +261,7 @@ class InterferingAp:
         self,
         payload_dict: InterferingApPayload | None = ...,
         wtp: str | None = ...,
-        radio: str | None = ...,
+        radio: int | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -269,7 +269,7 @@ class InterferingAp:
         self,
         payload_dict: InterferingApPayload | None = ...,
         wtp: str | None = ...,
-        radio: str | None = ...,
+        radio: int | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
@@ -283,7 +283,7 @@ class InterferingAp:
         self,
         payload_dict: InterferingApPayload | None = ...,
         wtp: str | None = ...,
-        radio: str | None = ...,
+        radio: int | None = ...,
         vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     

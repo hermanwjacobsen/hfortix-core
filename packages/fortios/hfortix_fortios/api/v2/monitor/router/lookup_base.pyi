@@ -17,7 +17,7 @@ class LookupPayload(TypedDict, total=False):
             "field": "value",  # <- autocomplete shows all fields
         }
     """
-    ipv6: str  # ipv6
+    ipv6: bool  # ipv6
     destination: str  # destination
 
 # Nested TypedDicts for table field children (dict mode)
@@ -33,7 +33,7 @@ class LookupResponse(TypedDict):
     
     All fields are present in the response from the FortiGate API.
     """
-    success: str
+    success: bool
     error_message: str
     entries: str
 
@@ -47,7 +47,7 @@ class LookupObject:
     """
     
     # success
-    success: str
+    success: bool
     # error_message
     error_message: str
     # entries
