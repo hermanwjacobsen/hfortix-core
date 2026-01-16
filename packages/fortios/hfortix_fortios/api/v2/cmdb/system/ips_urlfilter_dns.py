@@ -502,7 +502,7 @@ class IpsUrlfilterDns(CRUDEndpoint, MetadataMixin):
         """
         # Use direct request with silent error handling to avoid logging 404s
         # This is expected behavior for exists() - 404 just means "doesn't exist"
-        endpoint = "/system/ips_urlfilter_dns"
+        endpoint = "/system/ips-urlfilter-dns"
         endpoint = f"{endpoint}/{quote_path_param(address)}"
         
         # Make request with silent=True to suppress 404 error logging
