@@ -99,7 +99,7 @@ class ForticareResellers:
         ...
     
     # ================================================================
-    # GET OVERLOADS - Always returns FortiObject
+    # GET OVERLOADS - Always returns FortiObject (or ContentResponse for file endpoints)
     # Pylance matches overloads top-to-bottom, so these must come first!
     # ================================================================
     
@@ -108,7 +108,7 @@ class ForticareResellers:
     def get(
         self,
         *,
-        country_code: str | None = ...,
+        country_code: int | None = ...,
         filter: str | list[str] | None = ...,
         count: int | None = ...,
         start: int | None = ...,

@@ -161,7 +161,7 @@ class PolicyLookup:
         ...
     
     # ================================================================
-    # GET OVERLOADS - Always returns FortiObject
+    # GET OVERLOADS - Always returns FortiObject (or ContentResponse for file endpoints)
     # Pylance matches overloads top-to-bottom, so these must come first!
     # ================================================================
     
@@ -172,13 +172,13 @@ class PolicyLookup:
         *,
         ipv6: str | None = ...,
         srcintf: str,
-        sourceport: str | None = ...,
+        sourceport: int | None = ...,
         sourceip: str,
         protocol: str,
         dest: str,
-        destport: str | None = ...,
-        icmptype: str | None = ...,
-        icmpcode: str | None = ...,
+        destport: int | None = ...,
+        icmptype: int | None = ...,
+        icmpcode: int | None = ...,
         policy_type: Literal["*policy", "proxy"] | None = ...,
         auth_type: Literal["user", "group", "saml", "ldap"] | None = ...,
         user_group: str | None = ...,

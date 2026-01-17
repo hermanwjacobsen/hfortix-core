@@ -207,7 +207,7 @@ class RealtimeStatistics:
         ...
     
     # ================================================================
-    # GET OVERLOADS - Always returns FortiObject
+    # GET OVERLOADS - Always returns FortiObject (or ContentResponse for file endpoints)
     # Pylance matches overloads top-to-bottom, so these must come first!
     # ================================================================
     
@@ -240,7 +240,7 @@ class RealtimeStatistics:
         shaper: str | None = ...,
         srcuuid: str | None = ...,
         dstuuid: str | None = ...,
-        sessionid: str | None = ...,
+        sessionid: int | None = ...,
         report_by: str | None = ...,
         sort_by: str | None = ...,
         ip_version: Literal["*ipv4", "ipv6", "ipboth"] | None = ...,

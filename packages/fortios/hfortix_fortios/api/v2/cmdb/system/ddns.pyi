@@ -297,7 +297,7 @@ class Ddns:
         ...
     
     # ================================================================
-    # GET OVERLOADS - Always returns FortiObject
+    # GET OVERLOADS - Always returns FortiObject (or ContentResponse for file endpoints)
     # Pylance matches overloads top-to-bottom, so these must come first!
     # ================================================================
     

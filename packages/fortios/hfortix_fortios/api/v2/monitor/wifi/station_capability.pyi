@@ -107,7 +107,7 @@ class StationCapability:
         ...
     
     # ================================================================
-    # GET OVERLOADS - Always returns FortiObject
+    # GET OVERLOADS - Always returns FortiObject (or ContentResponse for file endpoints)
     # Pylance matches overloads top-to-bottom, so these must come first!
     # ================================================================
     
@@ -117,8 +117,8 @@ class StationCapability:
         self,
         *,
         mac_address: str | None = ...,
-        min_age: str | None = ...,
-        max_age: str | None = ...,
+        min_age: int | None = ...,
+        max_age: int | None = ...,
         filter: str | list[str] | None = ...,
         count: int | None = ...,
         start: int | None = ...,

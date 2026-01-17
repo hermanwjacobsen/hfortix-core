@@ -110,7 +110,7 @@ class ApChannels:
         ...
     
     # ================================================================
-    # GET OVERLOADS - Always returns FortiObject
+    # GET OVERLOADS - Always returns FortiObject (or ContentResponse for file endpoints)
     # Pylance matches overloads top-to-bottom, so these must come first!
     # ================================================================
     
@@ -121,7 +121,7 @@ class ApChannels:
         *,
         country: str | None = ...,
         platform_type: str,
-        indoor_outdoor: str | None = ...,
+        indoor_outdoor: int | None = ...,
         filter: str | list[str] | None = ...,
         count: int | None = ...,
         start: int | None = ...,

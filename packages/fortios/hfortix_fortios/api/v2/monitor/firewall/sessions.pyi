@@ -129,7 +129,7 @@ class Sessions:
         ...
     
     # ================================================================
-    # GET OVERLOADS - Always returns FortiObject
+    # GET OVERLOADS - Always returns FortiObject (or ContentResponse for file endpoints)
     # Pylance matches overloads top-to-bottom, so these must come first!
     # ================================================================
     
@@ -139,7 +139,7 @@ class Sessions:
         self,
         *,
         ip_version: Literal["*ipv4", "ipv6", "ipboth"] | None = ...,
-        count: str,
+        count: int,
         summary: str | None = ...,
         srcport: str | None = ...,
         policyid: str | None = ...,

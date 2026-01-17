@@ -103,7 +103,7 @@ class InterferingAp:
         ...
     
     # ================================================================
-    # GET OVERLOADS - Always returns FortiObject
+    # GET OVERLOADS - Always returns FortiObject (or ContentResponse for file endpoints)
     # Pylance matches overloads top-to-bottom, so these must come first!
     # ================================================================
     
@@ -113,7 +113,7 @@ class InterferingAp:
         self,
         *,
         wtp: str | None = ...,
-        radio: str | None = ...,
+        radio: int | None = ...,
         filter: str | list[str] | None = ...,
         count: int | None = ...,
         start: int | None = ...,

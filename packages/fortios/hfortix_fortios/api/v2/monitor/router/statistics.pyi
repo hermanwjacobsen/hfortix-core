@@ -123,7 +123,7 @@ class Statistics:
         ...
     
     # ================================================================
-    # GET OVERLOADS - Always returns FortiObject
+    # GET OVERLOADS - Always returns FortiObject (or ContentResponse for file endpoints)
     # Pylance matches overloads top-to-bottom, so these must come first!
     # ================================================================
     
@@ -133,7 +133,7 @@ class Statistics:
         self,
         *,
         operator: Literal["*and", "or"] | None = ...,
-        ip_version: str | None = ...,
+        ip_version: int | None = ...,
         ip_mask: str | None = ...,
         gateway: str | None = ...,
         type: str | None = ...,
