@@ -29,16 +29,16 @@ from hfortix_fortios.models import (
 class ListEntriesItem:
     """Nested item for entries field - supports attribute access."""
     id: int
-    risk: str
-    category: str
-    application: str
-    protocols: str
-    vendor: str
-    technology: str
-    behavior: str
+    risk: str | list[str]
+    category: str | list[str]
+    application: str | list[str]
+    protocols: str | list[str]
+    vendor: str | list[str]
+    technology: str | list[str]
+    behavior: str | list[str]
     popularity: Literal["1", "2", "3", "4", "5"]
-    exclusion: str
-    parameters: str
+    exclusion: str | list[str]
+    parameters: str | list[str]
     action: Literal["pass", "block", "reset"]
     log: Literal["disable", "enable"]
     log_packet: Literal["disable", "enable"]

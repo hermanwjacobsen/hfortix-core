@@ -30,17 +30,17 @@ class IpamPoolsItem:
     name: str
     description: str
     subnet: str
-    exclude: str
+    exclude: str | list[str]
 
 
 class IpamRulesItem:
     """Nested item for rules field - supports attribute access."""
     name: str
     description: str
-    device: str
-    interface: str
+    device: str | list[str]
+    interface: str | list[str]
     role: Literal["any", "lan", "wan", "dmz", "undefined"]
-    pool: str
+    pool: str | list[str]
     dhcp: Literal["enable", "disable"]
 
 

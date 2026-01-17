@@ -26,6 +26,171 @@ from hfortix_fortios.models import (
 # TypedDict Payloads
 # ================================================================
 
+class ProfileHttpDict(TypedDict, total=False):
+    """Nested object type for http field."""
+    av_scan: Literal["disable", "block", "monitor"]
+    outbreak_prevention: Literal["disable", "block", "monitor"]
+    external_blocklist: Literal["disable", "block", "monitor"]
+    malware_stream: Literal["disable", "block", "monitor"]
+    fortindr: Literal["disable", "block", "monitor"]
+    fortisandbox: Literal["disable", "block", "monitor"]
+    quarantine: Literal["disable", "enable"]
+    archive_block: Literal["encrypted", "corrupted", "partiallycorrupted", "multipart", "nested", "mailbomb", "timeout", "unhandled"]
+    archive_log: Literal["encrypted", "corrupted", "partiallycorrupted", "multipart", "nested", "mailbomb", "timeout", "unhandled"]
+    emulator: Literal["enable", "disable"]
+    content_disarm: Literal["disable", "enable"]
+
+
+class ProfileFtpDict(TypedDict, total=False):
+    """Nested object type for ftp field."""
+    av_scan: Literal["disable", "block", "monitor"]
+    outbreak_prevention: Literal["disable", "block", "monitor"]
+    external_blocklist: Literal["disable", "block", "monitor"]
+    malware_stream: Literal["disable", "block", "monitor"]
+    fortindr: Literal["disable", "block", "monitor"]
+    fortisandbox: Literal["disable", "block", "monitor"]
+    quarantine: Literal["disable", "enable"]
+    archive_block: Literal["encrypted", "corrupted", "partiallycorrupted", "multipart", "nested", "mailbomb", "timeout", "unhandled"]
+    archive_log: Literal["encrypted", "corrupted", "partiallycorrupted", "multipart", "nested", "mailbomb", "timeout", "unhandled"]
+    emulator: Literal["enable", "disable"]
+
+
+class ProfileImapDict(TypedDict, total=False):
+    """Nested object type for imap field."""
+    av_scan: Literal["disable", "block", "monitor"]
+    outbreak_prevention: Literal["disable", "block", "monitor"]
+    external_blocklist: Literal["disable", "block", "monitor"]
+    malware_stream: Literal["disable", "block", "monitor"]
+    fortindr: Literal["disable", "block", "monitor"]
+    fortisandbox: Literal["disable", "block", "monitor"]
+    quarantine: Literal["disable", "enable"]
+    archive_block: Literal["encrypted", "corrupted", "partiallycorrupted", "multipart", "nested", "mailbomb", "timeout", "unhandled"]
+    archive_log: Literal["encrypted", "corrupted", "partiallycorrupted", "multipart", "nested", "mailbomb", "timeout", "unhandled"]
+    emulator: Literal["enable", "disable"]
+    executables: Literal["default", "virus"]
+    content_disarm: Literal["disable", "enable"]
+
+
+class ProfilePop3Dict(TypedDict, total=False):
+    """Nested object type for pop3 field."""
+    av_scan: Literal["disable", "block", "monitor"]
+    outbreak_prevention: Literal["disable", "block", "monitor"]
+    external_blocklist: Literal["disable", "block", "monitor"]
+    malware_stream: Literal["disable", "block", "monitor"]
+    fortindr: Literal["disable", "block", "monitor"]
+    fortisandbox: Literal["disable", "block", "monitor"]
+    quarantine: Literal["disable", "enable"]
+    archive_block: Literal["encrypted", "corrupted", "partiallycorrupted", "multipart", "nested", "mailbomb", "timeout", "unhandled"]
+    archive_log: Literal["encrypted", "corrupted", "partiallycorrupted", "multipart", "nested", "mailbomb", "timeout", "unhandled"]
+    emulator: Literal["enable", "disable"]
+    executables: Literal["default", "virus"]
+    content_disarm: Literal["disable", "enable"]
+
+
+class ProfileSmtpDict(TypedDict, total=False):
+    """Nested object type for smtp field."""
+    av_scan: Literal["disable", "block", "monitor"]
+    outbreak_prevention: Literal["disable", "block", "monitor"]
+    external_blocklist: Literal["disable", "block", "monitor"]
+    malware_stream: Literal["disable", "block", "monitor"]
+    fortindr: Literal["disable", "block", "monitor"]
+    fortisandbox: Literal["disable", "block", "monitor"]
+    quarantine: Literal["disable", "enable"]
+    archive_block: Literal["encrypted", "corrupted", "partiallycorrupted", "multipart", "nested", "mailbomb", "timeout", "unhandled"]
+    archive_log: Literal["encrypted", "corrupted", "partiallycorrupted", "multipart", "nested", "mailbomb", "timeout", "unhandled"]
+    emulator: Literal["enable", "disable"]
+    executables: Literal["default", "virus"]
+    content_disarm: Literal["disable", "enable"]
+
+
+class ProfileMapiDict(TypedDict, total=False):
+    """Nested object type for mapi field."""
+    av_scan: Literal["disable", "block", "monitor"]
+    outbreak_prevention: Literal["disable", "block", "monitor"]
+    external_blocklist: Literal["disable", "block", "monitor"]
+    malware_stream: Literal["disable", "block", "monitor"]
+    fortindr: Literal["disable", "block", "monitor"]
+    fortisandbox: Literal["disable", "block", "monitor"]
+    quarantine: Literal["disable", "enable"]
+    archive_block: Literal["encrypted", "corrupted", "partiallycorrupted", "multipart", "nested", "mailbomb", "timeout", "unhandled"]
+    archive_log: Literal["encrypted", "corrupted", "partiallycorrupted", "multipart", "nested", "mailbomb", "timeout", "unhandled"]
+    emulator: Literal["enable", "disable"]
+    executables: Literal["default", "virus"]
+
+
+class ProfileNntpDict(TypedDict, total=False):
+    """Nested object type for nntp field."""
+    av_scan: Literal["disable", "block", "monitor"]
+    outbreak_prevention: Literal["disable", "block", "monitor"]
+    external_blocklist: Literal["disable", "block", "monitor"]
+    malware_stream: Literal["disable", "block", "monitor"]
+    fortindr: Literal["disable", "block", "monitor"]
+    fortisandbox: Literal["disable", "block", "monitor"]
+    quarantine: Literal["disable", "enable"]
+    archive_block: Literal["encrypted", "corrupted", "partiallycorrupted", "multipart", "nested", "mailbomb", "timeout", "unhandled"]
+    archive_log: Literal["encrypted", "corrupted", "partiallycorrupted", "multipart", "nested", "mailbomb", "timeout", "unhandled"]
+    emulator: Literal["enable", "disable"]
+
+
+class ProfileCifsDict(TypedDict, total=False):
+    """Nested object type for cifs field."""
+    av_scan: Literal["disable", "block", "monitor"]
+    outbreak_prevention: Literal["disable", "block", "monitor"]
+    external_blocklist: Literal["disable", "block", "monitor"]
+    malware_stream: Literal["disable", "block", "monitor"]
+    fortindr: Literal["disable", "block", "monitor"]
+    fortisandbox: Literal["disable", "block", "monitor"]
+    quarantine: Literal["disable", "enable"]
+    archive_block: Literal["encrypted", "corrupted", "partiallycorrupted", "multipart", "nested", "mailbomb", "timeout", "unhandled"]
+    archive_log: Literal["encrypted", "corrupted", "partiallycorrupted", "multipart", "nested", "mailbomb", "timeout", "unhandled"]
+    emulator: Literal["enable", "disable"]
+
+
+class ProfileSshDict(TypedDict, total=False):
+    """Nested object type for ssh field."""
+    av_scan: Literal["disable", "block", "monitor"]
+    outbreak_prevention: Literal["disable", "block", "monitor"]
+    external_blocklist: Literal["disable", "block", "monitor"]
+    malware_stream: Literal["disable", "block", "monitor"]
+    fortindr: Literal["disable", "block", "monitor"]
+    fortisandbox: Literal["disable", "block", "monitor"]
+    quarantine: Literal["disable", "enable"]
+    archive_block: Literal["encrypted", "corrupted", "partiallycorrupted", "multipart", "nested", "mailbomb", "timeout", "unhandled"]
+    archive_log: Literal["encrypted", "corrupted", "partiallycorrupted", "multipart", "nested", "mailbomb", "timeout", "unhandled"]
+    emulator: Literal["enable", "disable"]
+
+
+class ProfileNacquarDict(TypedDict, total=False):
+    """Nested object type for nac-quar field."""
+    infected: Literal["none", "quar-src-ip"]
+    expiry: str
+    log: Literal["enable", "disable"]
+
+
+class ProfileContentdisarmDict(TypedDict, total=False):
+    """Nested object type for content-disarm field."""
+    analytics_suspicious: Literal["disable", "enable"]
+    original_file_destination: Literal["fortisandbox", "quarantine", "discard"]
+    error_action: Literal["block", "log-only", "ignore"]
+    office_macro: Literal["disable", "enable"]
+    office_hylink: Literal["disable", "enable"]
+    office_linked: Literal["disable", "enable"]
+    office_embed: Literal["disable", "enable"]
+    office_dde: Literal["disable", "enable"]
+    office_action: Literal["disable", "enable"]
+    pdf_javacode: Literal["disable", "enable"]
+    pdf_embedfile: Literal["disable", "enable"]
+    pdf_hyperlink: Literal["disable", "enable"]
+    pdf_act_gotor: Literal["disable", "enable"]
+    pdf_act_launch: Literal["disable", "enable"]
+    pdf_act_sound: Literal["disable", "enable"]
+    pdf_act_movie: Literal["disable", "enable"]
+    pdf_act_java: Literal["disable", "enable"]
+    pdf_act_form: Literal["disable", "enable"]
+    cover_page: Literal["disable", "enable"]
+    detect_only: Literal["disable", "enable"]
+
+
 class ProfileExternalblocklistItem:
     """Nested item for external-blocklist field - supports attribute access."""
     name: str
@@ -43,17 +208,17 @@ class ProfilePayload(TypedDict, total=False):
     analytics_accept_filetype: int
     analytics_db: Literal["disable", "enable"]
     mobile_malware_db: Literal["disable", "enable"]
-    http: str
-    ftp: str
-    imap: str
-    pop3: str
-    smtp: str
-    mapi: str
-    nntp: str
-    cifs: str
-    ssh: str
-    nac_quar: str
-    content_disarm: str
+    http: ProfileHttpDict
+    ftp: ProfileFtpDict
+    imap: ProfileImapDict
+    pop3: ProfilePop3Dict
+    smtp: ProfileSmtpDict
+    mapi: ProfileMapiDict
+    nntp: ProfileNntpDict
+    cifs: ProfileCifsDict
+    ssh: ProfileSshDict
+    nac_quar: ProfileNacquarDict
+    content_disarm: ProfileContentdisarmDict
     outbreak_prevention_archive_scan: Literal["disable", "enable"]
     external_blocklist_enable_all: Literal["disable", "enable"]
     external_blocklist: str | list[str] | list[dict[str, Any]] | list[ProfileExternalblocklistItem]
@@ -84,17 +249,17 @@ class ProfileResponse(TypedDict, total=False):
     analytics_accept_filetype: int
     analytics_db: Literal["disable", "enable"]
     mobile_malware_db: Literal["disable", "enable"]
-    http: str
-    ftp: str
-    imap: str
-    pop3: str
-    smtp: str
-    mapi: str
-    nntp: str
-    cifs: str
-    ssh: str
-    nac_quar: str
-    content_disarm: str
+    http: ProfileHttpDict
+    ftp: ProfileFtpDict
+    imap: ProfileImapDict
+    pop3: ProfilePop3Dict
+    smtp: ProfileSmtpDict
+    mapi: ProfileMapiDict
+    nntp: ProfileNntpDict
+    cifs: ProfileCifsDict
+    ssh: ProfileSshDict
+    nac_quar: ProfileNacquarDict
+    content_disarm: ProfileContentdisarmDict
     outbreak_prevention_archive_scan: Literal["disable", "enable"]
     external_blocklist_enable_all: Literal["disable", "enable"]
     external_blocklist: list[ProfileExternalblocklistItem]
@@ -126,17 +291,17 @@ class ProfileObject(FortiObject):
     analytics_accept_filetype: int
     analytics_db: Literal["disable", "enable"]
     mobile_malware_db: Literal["disable", "enable"]
-    http: str
-    ftp: str
-    imap: str
-    pop3: str
-    smtp: str
-    mapi: str
-    nntp: str
-    cifs: str
-    ssh: str
-    nac_quar: str
-    content_disarm: str
+    http: ProfileHttpDict
+    ftp: ProfileFtpDict
+    imap: ProfileImapDict
+    pop3: ProfilePop3Dict
+    smtp: ProfileSmtpDict
+    mapi: ProfileMapiDict
+    nntp: ProfileNntpDict
+    cifs: ProfileCifsDict
+    ssh: ProfileSshDict
+    nac_quar: ProfileNacquarDict
+    content_disarm: ProfileContentdisarmDict
     outbreak_prevention_archive_scan: Literal["disable", "enable"]
     external_blocklist_enable_all: Literal["disable", "enable"]
     external_blocklist: list[ProfileExternalblocklistItem]
@@ -237,17 +402,17 @@ class Profile:
         analytics_accept_filetype: int | None = ...,
         analytics_db: Literal["disable", "enable"] | None = ...,
         mobile_malware_db: Literal["disable", "enable"] | None = ...,
-        http: str | None = ...,
-        ftp: str | None = ...,
-        imap: str | None = ...,
-        pop3: str | None = ...,
-        smtp: str | None = ...,
-        mapi: str | None = ...,
-        nntp: str | None = ...,
-        cifs: str | None = ...,
-        ssh: str | None = ...,
-        nac_quar: str | None = ...,
-        content_disarm: str | None = ...,
+        http: ProfileHttpDict | None = ...,
+        ftp: ProfileFtpDict | None = ...,
+        imap: ProfileImapDict | None = ...,
+        pop3: ProfilePop3Dict | None = ...,
+        smtp: ProfileSmtpDict | None = ...,
+        mapi: ProfileMapiDict | None = ...,
+        nntp: ProfileNntpDict | None = ...,
+        cifs: ProfileCifsDict | None = ...,
+        ssh: ProfileSshDict | None = ...,
+        nac_quar: ProfileNacquarDict | None = ...,
+        content_disarm: ProfileContentdisarmDict | None = ...,
         outbreak_prevention_archive_scan: Literal["disable", "enable"] | None = ...,
         external_blocklist_enable_all: Literal["disable", "enable"] | None = ...,
         external_blocklist: str | list[str] | list[dict[str, Any]] | list[ProfileExternalblocklistItem] | None = ...,
@@ -282,17 +447,17 @@ class Profile:
         analytics_accept_filetype: int | None = ...,
         analytics_db: Literal["disable", "enable"] | None = ...,
         mobile_malware_db: Literal["disable", "enable"] | None = ...,
-        http: str | None = ...,
-        ftp: str | None = ...,
-        imap: str | None = ...,
-        pop3: str | None = ...,
-        smtp: str | None = ...,
-        mapi: str | None = ...,
-        nntp: str | None = ...,
-        cifs: str | None = ...,
-        ssh: str | None = ...,
-        nac_quar: str | None = ...,
-        content_disarm: str | None = ...,
+        http: ProfileHttpDict | None = ...,
+        ftp: ProfileFtpDict | None = ...,
+        imap: ProfileImapDict | None = ...,
+        pop3: ProfilePop3Dict | None = ...,
+        smtp: ProfileSmtpDict | None = ...,
+        mapi: ProfileMapiDict | None = ...,
+        nntp: ProfileNntpDict | None = ...,
+        cifs: ProfileCifsDict | None = ...,
+        ssh: ProfileSshDict | None = ...,
+        nac_quar: ProfileNacquarDict | None = ...,
+        content_disarm: ProfileContentdisarmDict | None = ...,
         outbreak_prevention_archive_scan: Literal["disable", "enable"] | None = ...,
         external_blocklist_enable_all: Literal["disable", "enable"] | None = ...,
         external_blocklist: str | list[str] | list[dict[str, Any]] | list[ProfileExternalblocklistItem] | None = ...,
@@ -345,17 +510,17 @@ class Profile:
         analytics_accept_filetype: int | None = ...,
         analytics_db: Literal["disable", "enable"] | None = ...,
         mobile_malware_db: Literal["disable", "enable"] | None = ...,
-        http: str | None = ...,
-        ftp: str | None = ...,
-        imap: str | None = ...,
-        pop3: str | None = ...,
-        smtp: str | None = ...,
-        mapi: str | None = ...,
-        nntp: str | None = ...,
-        cifs: str | None = ...,
-        ssh: str | None = ...,
-        nac_quar: str | None = ...,
-        content_disarm: str | None = ...,
+        http: ProfileHttpDict | None = ...,
+        ftp: ProfileFtpDict | None = ...,
+        imap: ProfileImapDict | None = ...,
+        pop3: ProfilePop3Dict | None = ...,
+        smtp: ProfileSmtpDict | None = ...,
+        mapi: ProfileMapiDict | None = ...,
+        nntp: ProfileNntpDict | None = ...,
+        cifs: ProfileCifsDict | None = ...,
+        ssh: ProfileSshDict | None = ...,
+        nac_quar: ProfileNacquarDict | None = ...,
+        content_disarm: ProfileContentdisarmDict | None = ...,
         outbreak_prevention_archive_scan: Literal["disable", "enable"] | None = ...,
         external_blocklist_enable_all: Literal["disable", "enable"] | None = ...,
         external_blocklist: str | list[str] | list[dict[str, Any]] | list[ProfileExternalblocklistItem] | None = ...,

@@ -84,17 +84,17 @@ class ManagedSwitchPortsItem:
     fgt_peer_device_name: str
     vlan: str
     allowed_vlans_all: Literal["enable", "disable"]
-    allowed_vlans: str
-    untagged_vlans: str
+    allowed_vlans: str | list[str]
+    untagged_vlans: str | list[str]
     type: Literal["physical", "trunk"]
     access_mode: Literal["dynamic", "nac", "static"]
     matched_dpp_policy: str
     matched_dpp_intf_tags: str
-    acl_group: str
-    fortiswitch_acls: str
+    acl_group: str | list[str]
+    fortiswitch_acls: str | list[str]
     dhcp_snooping: Literal["untrusted", "trusted"]
     dhcp_snoop_option82_trust: Literal["enable", "disable"]
-    dhcp_snoop_option82_override: str
+    dhcp_snoop_option82_override: str | list[str]
     arp_inspection_trust: Literal["untrusted", "trusted"]
     igmp_snooping_flood_reports: Literal["enable", "disable"]
     mcast_snooping_flood_traffic: Literal["enable", "disable"]
@@ -120,7 +120,7 @@ class ManagedSwitchPortsItem:
     storm_control_policy: str
     port_security_policy: str
     export_to_pool: str
-    interface_tags: str
+    interface_tags: str | list[str]
     learning_limit: int
     sticky_mac: Literal["enable", "disable"]
     lldp_status: Literal["disable", "rx-only", "tx-only", "tx-rx"]
@@ -139,7 +139,7 @@ class ManagedSwitchPortsItem:
     mclag: Literal["enable", "disable"]
     min_bundle: int
     max_bundle: int
-    members: str
+    members: str | list[str]
     fallback_port: str
 
 
@@ -147,7 +147,19 @@ class ManagedSwitchIpsourceguardItem:
     """Nested item for ip-source-guard field - supports attribute access."""
     port: str
     description: str
-    binding_entry: str
+    binding_entry: str | list[str]
+
+
+class ManagedSwitchStpsettingsDict(TypedDict, total=False):
+    """Nested object type for stp-settings field."""
+    local_override: Literal["enable", "disable"]
+    name: str
+    revision: int
+    hello_time: int
+    forward_time: int
+    max_age: int
+    max_hops: int
+    pending_timer: int
 
 
 class ManagedSwitchStpinstanceItem:
@@ -156,12 +168,28 @@ class ManagedSwitchStpinstanceItem:
     priority: Literal["0", "4096", "8192", "12288", "16384", "20480", "24576", "28672", "32768", "36864", "40960", "45056", "49152", "53248", "57344", "61440"]
 
 
+class ManagedSwitchSnmpsysinfoDict(TypedDict, total=False):
+    """Nested object type for snmp-sysinfo field."""
+    status: Literal["disable", "enable"]
+    engine_id: str
+    description: str
+    contact_info: str
+    location: str
+
+
+class ManagedSwitchSnmptrapthresholdDict(TypedDict, total=False):
+    """Nested object type for snmp-trap-threshold field."""
+    trap_high_cpu_threshold: int
+    trap_low_memory_threshold: int
+    trap_log_full_threshold: int
+
+
 class ManagedSwitchSnmpcommunityItem:
     """Nested item for snmp-community field - supports attribute access."""
     id: int
     name: str
     status: Literal["disable", "enable"]
-    hosts: str
+    hosts: str | list[str]
     query_v1_status: Literal["disable", "enable"]
     query_v1_port: int
     query_v2c_status: Literal["disable", "enable"]
@@ -187,6 +215,13 @@ class ManagedSwitchSnmpuserItem:
     priv_pwd: str
 
 
+class ManagedSwitchSwitchlogDict(TypedDict, total=False):
+    """Nested object type for switch-log field."""
+    local_override: Literal["enable", "disable"]
+    status: Literal["enable", "disable"]
+    severity: Literal["emergency", "alert", "critical", "error", "warning", "notification", "information", "debug"]
+
+
 class ManagedSwitchRemotelogItem:
     """Nested item for remote-log field - supports attribute access."""
     name: str
@@ -198,14 +233,24 @@ class ManagedSwitchRemotelogItem:
     facility: Literal["kernel", "user", "mail", "daemon", "auth", "syslog", "lpr", "news", "uucp", "cron", "authpriv", "ftp", "ntp", "audit", "alert", "clock", "local0", "local1", "local2", "local3", "local4", "local5", "local6", "local7"]
 
 
+class ManagedSwitchStormcontrolDict(TypedDict, total=False):
+    """Nested object type for storm-control field."""
+    local_override: Literal["enable", "disable"]
+    rate: int
+    burst_size_level: int
+    unknown_unicast: Literal["enable", "disable"]
+    unknown_multicast: Literal["enable", "disable"]
+    broadcast: Literal["enable", "disable"]
+
+
 class ManagedSwitchMirrorItem:
     """Nested item for mirror field - supports attribute access."""
     name: str
     status: Literal["active", "inactive"]
     switching_packet: Literal["enable", "disable"]
     dst: str
-    src_ingress: str
-    src_egress: str
+    src_ingress: str | list[str]
+    src_egress: str | list[str]
 
 
 class ManagedSwitchStaticmacItem:
@@ -231,6 +276,29 @@ class ManagedSwitchDhcpsnoopingstaticclientItem:
     ip: str
     mac: str
     port: str
+
+
+class ManagedSwitchIgmpsnoopingDict(TypedDict, total=False):
+    """Nested object type for igmp-snooping field."""
+    local_override: Literal["enable", "disable"]
+    aging_time: int
+    flood_unknown_multicast: Literal["enable", "disable"]
+    vlans: str | list[str]
+
+
+class ManagedSwitchX8021xsettingsDict(TypedDict, total=False):
+    """Nested object type for 802-1X-settings field."""
+    local_override: Literal["enable", "disable"]
+    link_down_auth: Literal["set-unauth", "no-action"]
+    reauth_period: int
+    max_reauth_attempt: int
+    tx_period: int
+    mab_reauth: Literal["disable", "enable"]
+    mac_username_delimiter: Literal["colon", "hyphen", "none", "single-hyphen"]
+    mac_password_delimiter: Literal["colon", "hyphen", "none", "single-hyphen"]
+    mac_calling_station_delimiter: Literal["colon", "hyphen", "none", "single-hyphen"]
+    mac_called_station_delimiter: Literal["colon", "hyphen", "none", "single-hyphen"]
+    mac_case: Literal["lowercase", "uppercase"]
 
 
 class ManagedSwitchRoutervrfItem:
@@ -286,8 +354,8 @@ class ManagedSwitchSystemdhcpserverItem:
     default_gateway: str
     netmask: str
     interface: str
-    ip_range: str
-    options: str
+    ip_range: str | list[str]
+    options: str | list[str]
 
 
 class ManagedSwitchPayload(TypedDict, total=False):
@@ -335,27 +403,27 @@ class ManagedSwitchPayload(TypedDict, total=False):
     firmware_provision_latest: Literal["disable", "once"]
     ports: str | list[str] | list[dict[str, Any]] | list[ManagedSwitchPortsItem]
     ip_source_guard: str | list[str] | list[dict[str, Any]] | list[ManagedSwitchIpsourceguardItem]
-    stp_settings: str
+    stp_settings: ManagedSwitchStpsettingsDict
     stp_instance: str | list[str] | list[dict[str, Any]] | list[ManagedSwitchStpinstanceItem]
     override_snmp_sysinfo: Literal["disable", "enable"]
-    snmp_sysinfo: str
+    snmp_sysinfo: ManagedSwitchSnmpsysinfoDict
     override_snmp_trap_threshold: Literal["enable", "disable"]
-    snmp_trap_threshold: str
+    snmp_trap_threshold: ManagedSwitchSnmptrapthresholdDict
     override_snmp_community: Literal["enable", "disable"]
     snmp_community: str | list[str] | list[dict[str, Any]] | list[ManagedSwitchSnmpcommunityItem]
     override_snmp_user: Literal["enable", "disable"]
     snmp_user: str | list[str] | list[dict[str, Any]] | list[ManagedSwitchSnmpuserItem]
     qos_drop_policy: Literal["taildrop", "random-early-detection"]
     qos_red_probability: int
-    switch_log: str
+    switch_log: ManagedSwitchSwitchlogDict
     remote_log: str | list[str] | list[dict[str, Any]] | list[ManagedSwitchRemotelogItem]
-    storm_control: str
+    storm_control: ManagedSwitchStormcontrolDict
     mirror: str | list[str] | list[dict[str, Any]] | list[ManagedSwitchMirrorItem]
     static_mac: str | list[str] | list[dict[str, Any]] | list[ManagedSwitchStaticmacItem]
     custom_command: str | list[str] | list[dict[str, Any]] | list[ManagedSwitchCustomcommandItem]
     dhcp_snooping_static_client: str | list[str] | list[dict[str, Any]] | list[ManagedSwitchDhcpsnoopingstaticclientItem]
-    igmp_snooping: str
-    x802_1X_settings: str
+    igmp_snooping: ManagedSwitchIgmpsnoopingDict
+    x802_1X_settings: ManagedSwitchX8021xsettingsDict
     router_vrf: str | list[str] | list[dict[str, Any]] | list[ManagedSwitchRoutervrfItem]
     system_interface: str | list[str] | list[dict[str, Any]] | list[ManagedSwitchSysteminterfaceItem]
     router_static: str | list[str] | list[dict[str, Any]] | list[ManagedSwitchRouterstaticItem]
@@ -411,27 +479,27 @@ class ManagedSwitchResponse(TypedDict, total=False):
     firmware_provision_latest: Literal["disable", "once"]
     ports: list[ManagedSwitchPortsItem]
     ip_source_guard: list[ManagedSwitchIpsourceguardItem]
-    stp_settings: str
+    stp_settings: ManagedSwitchStpsettingsDict
     stp_instance: list[ManagedSwitchStpinstanceItem]
     override_snmp_sysinfo: Literal["disable", "enable"]
-    snmp_sysinfo: str
+    snmp_sysinfo: ManagedSwitchSnmpsysinfoDict
     override_snmp_trap_threshold: Literal["enable", "disable"]
-    snmp_trap_threshold: str
+    snmp_trap_threshold: ManagedSwitchSnmptrapthresholdDict
     override_snmp_community: Literal["enable", "disable"]
     snmp_community: list[ManagedSwitchSnmpcommunityItem]
     override_snmp_user: Literal["enable", "disable"]
     snmp_user: list[ManagedSwitchSnmpuserItem]
     qos_drop_policy: Literal["taildrop", "random-early-detection"]
     qos_red_probability: int
-    switch_log: str
+    switch_log: ManagedSwitchSwitchlogDict
     remote_log: list[ManagedSwitchRemotelogItem]
-    storm_control: str
+    storm_control: ManagedSwitchStormcontrolDict
     mirror: list[ManagedSwitchMirrorItem]
     static_mac: list[ManagedSwitchStaticmacItem]
     custom_command: list[ManagedSwitchCustomcommandItem]
     dhcp_snooping_static_client: list[ManagedSwitchDhcpsnoopingstaticclientItem]
-    igmp_snooping: str
-    x802_1X_settings: str
+    igmp_snooping: ManagedSwitchIgmpsnoopingDict
+    x802_1X_settings: ManagedSwitchX8021xsettingsDict
     router_vrf: list[ManagedSwitchRoutervrfItem]
     system_interface: list[ManagedSwitchSysteminterfaceItem]
     router_static: list[ManagedSwitchRouterstaticItem]
@@ -487,27 +555,27 @@ class ManagedSwitchObject(FortiObject):
     firmware_provision_latest: Literal["disable", "once"]
     ports: list[ManagedSwitchPortsItem]
     ip_source_guard: list[ManagedSwitchIpsourceguardItem]
-    stp_settings: str
+    stp_settings: ManagedSwitchStpsettingsDict
     stp_instance: list[ManagedSwitchStpinstanceItem]
     override_snmp_sysinfo: Literal["disable", "enable"]
-    snmp_sysinfo: str
+    snmp_sysinfo: ManagedSwitchSnmpsysinfoDict
     override_snmp_trap_threshold: Literal["enable", "disable"]
-    snmp_trap_threshold: str
+    snmp_trap_threshold: ManagedSwitchSnmptrapthresholdDict
     override_snmp_community: Literal["enable", "disable"]
     snmp_community: list[ManagedSwitchSnmpcommunityItem]
     override_snmp_user: Literal["enable", "disable"]
     snmp_user: list[ManagedSwitchSnmpuserItem]
     qos_drop_policy: Literal["taildrop", "random-early-detection"]
     qos_red_probability: int
-    switch_log: str
+    switch_log: ManagedSwitchSwitchlogDict
     remote_log: list[ManagedSwitchRemotelogItem]
-    storm_control: str
+    storm_control: ManagedSwitchStormcontrolDict
     mirror: list[ManagedSwitchMirrorItem]
     static_mac: list[ManagedSwitchStaticmacItem]
     custom_command: list[ManagedSwitchCustomcommandItem]
     dhcp_snooping_static_client: list[ManagedSwitchDhcpsnoopingstaticclientItem]
-    igmp_snooping: str
-    x802_1X_settings: str
+    igmp_snooping: ManagedSwitchIgmpsnoopingDict
+    x802_1X_settings: ManagedSwitchX8021xsettingsDict
     router_vrf: list[ManagedSwitchRoutervrfItem]
     system_interface: list[ManagedSwitchSysteminterfaceItem]
     router_static: list[ManagedSwitchRouterstaticItem]
@@ -633,27 +701,27 @@ class ManagedSwitch:
         firmware_provision_latest: Literal["disable", "once"] | None = ...,
         ports: str | list[str] | list[dict[str, Any]] | list[ManagedSwitchPortsItem] | None = ...,
         ip_source_guard: str | list[str] | list[dict[str, Any]] | list[ManagedSwitchIpsourceguardItem] | None = ...,
-        stp_settings: str | None = ...,
+        stp_settings: ManagedSwitchStpsettingsDict | None = ...,
         stp_instance: str | list[str] | list[dict[str, Any]] | list[ManagedSwitchStpinstanceItem] | None = ...,
         override_snmp_sysinfo: Literal["disable", "enable"] | None = ...,
-        snmp_sysinfo: str | None = ...,
+        snmp_sysinfo: ManagedSwitchSnmpsysinfoDict | None = ...,
         override_snmp_trap_threshold: Literal["enable", "disable"] | None = ...,
-        snmp_trap_threshold: str | None = ...,
+        snmp_trap_threshold: ManagedSwitchSnmptrapthresholdDict | None = ...,
         override_snmp_community: Literal["enable", "disable"] | None = ...,
         snmp_community: str | list[str] | list[dict[str, Any]] | list[ManagedSwitchSnmpcommunityItem] | None = ...,
         override_snmp_user: Literal["enable", "disable"] | None = ...,
         snmp_user: str | list[str] | list[dict[str, Any]] | list[ManagedSwitchSnmpuserItem] | None = ...,
         qos_drop_policy: Literal["taildrop", "random-early-detection"] | None = ...,
         qos_red_probability: int | None = ...,
-        switch_log: str | None = ...,
+        switch_log: ManagedSwitchSwitchlogDict | None = ...,
         remote_log: str | list[str] | list[dict[str, Any]] | list[ManagedSwitchRemotelogItem] | None = ...,
-        storm_control: str | None = ...,
+        storm_control: ManagedSwitchStormcontrolDict | None = ...,
         mirror: str | list[str] | list[dict[str, Any]] | list[ManagedSwitchMirrorItem] | None = ...,
         static_mac: str | list[str] | list[dict[str, Any]] | list[ManagedSwitchStaticmacItem] | None = ...,
         custom_command: str | list[str] | list[dict[str, Any]] | list[ManagedSwitchCustomcommandItem] | None = ...,
         dhcp_snooping_static_client: str | list[str] | list[dict[str, Any]] | list[ManagedSwitchDhcpsnoopingstaticclientItem] | None = ...,
-        igmp_snooping: str | None = ...,
-        x802_1X_settings: str | None = ...,
+        igmp_snooping: ManagedSwitchIgmpsnoopingDict | None = ...,
+        x802_1X_settings: ManagedSwitchX8021xsettingsDict | None = ...,
         router_vrf: str | list[str] | list[dict[str, Any]] | list[ManagedSwitchRoutervrfItem] | None = ...,
         system_interface: str | list[str] | list[dict[str, Any]] | list[ManagedSwitchSysteminterfaceItem] | None = ...,
         router_static: str | list[str] | list[dict[str, Any]] | list[ManagedSwitchRouterstaticItem] | None = ...,
@@ -713,27 +781,27 @@ class ManagedSwitch:
         firmware_provision_latest: Literal["disable", "once"] | None = ...,
         ports: str | list[str] | list[dict[str, Any]] | list[ManagedSwitchPortsItem] | None = ...,
         ip_source_guard: str | list[str] | list[dict[str, Any]] | list[ManagedSwitchIpsourceguardItem] | None = ...,
-        stp_settings: str | None = ...,
+        stp_settings: ManagedSwitchStpsettingsDict | None = ...,
         stp_instance: str | list[str] | list[dict[str, Any]] | list[ManagedSwitchStpinstanceItem] | None = ...,
         override_snmp_sysinfo: Literal["disable", "enable"] | None = ...,
-        snmp_sysinfo: str | None = ...,
+        snmp_sysinfo: ManagedSwitchSnmpsysinfoDict | None = ...,
         override_snmp_trap_threshold: Literal["enable", "disable"] | None = ...,
-        snmp_trap_threshold: str | None = ...,
+        snmp_trap_threshold: ManagedSwitchSnmptrapthresholdDict | None = ...,
         override_snmp_community: Literal["enable", "disable"] | None = ...,
         snmp_community: str | list[str] | list[dict[str, Any]] | list[ManagedSwitchSnmpcommunityItem] | None = ...,
         override_snmp_user: Literal["enable", "disable"] | None = ...,
         snmp_user: str | list[str] | list[dict[str, Any]] | list[ManagedSwitchSnmpuserItem] | None = ...,
         qos_drop_policy: Literal["taildrop", "random-early-detection"] | None = ...,
         qos_red_probability: int | None = ...,
-        switch_log: str | None = ...,
+        switch_log: ManagedSwitchSwitchlogDict | None = ...,
         remote_log: str | list[str] | list[dict[str, Any]] | list[ManagedSwitchRemotelogItem] | None = ...,
-        storm_control: str | None = ...,
+        storm_control: ManagedSwitchStormcontrolDict | None = ...,
         mirror: str | list[str] | list[dict[str, Any]] | list[ManagedSwitchMirrorItem] | None = ...,
         static_mac: str | list[str] | list[dict[str, Any]] | list[ManagedSwitchStaticmacItem] | None = ...,
         custom_command: str | list[str] | list[dict[str, Any]] | list[ManagedSwitchCustomcommandItem] | None = ...,
         dhcp_snooping_static_client: str | list[str] | list[dict[str, Any]] | list[ManagedSwitchDhcpsnoopingstaticclientItem] | None = ...,
-        igmp_snooping: str | None = ...,
-        x802_1X_settings: str | None = ...,
+        igmp_snooping: ManagedSwitchIgmpsnoopingDict | None = ...,
+        x802_1X_settings: ManagedSwitchX8021xsettingsDict | None = ...,
         router_vrf: str | list[str] | list[dict[str, Any]] | list[ManagedSwitchRoutervrfItem] | None = ...,
         system_interface: str | list[str] | list[dict[str, Any]] | list[ManagedSwitchSysteminterfaceItem] | None = ...,
         router_static: str | list[str] | list[dict[str, Any]] | list[ManagedSwitchRouterstaticItem] | None = ...,
@@ -811,27 +879,27 @@ class ManagedSwitch:
         firmware_provision_latest: Literal["disable", "once"] | None = ...,
         ports: str | list[str] | list[dict[str, Any]] | list[ManagedSwitchPortsItem] | None = ...,
         ip_source_guard: str | list[str] | list[dict[str, Any]] | list[ManagedSwitchIpsourceguardItem] | None = ...,
-        stp_settings: str | None = ...,
+        stp_settings: ManagedSwitchStpsettingsDict | None = ...,
         stp_instance: str | list[str] | list[dict[str, Any]] | list[ManagedSwitchStpinstanceItem] | None = ...,
         override_snmp_sysinfo: Literal["disable", "enable"] | None = ...,
-        snmp_sysinfo: str | None = ...,
+        snmp_sysinfo: ManagedSwitchSnmpsysinfoDict | None = ...,
         override_snmp_trap_threshold: Literal["enable", "disable"] | None = ...,
-        snmp_trap_threshold: str | None = ...,
+        snmp_trap_threshold: ManagedSwitchSnmptrapthresholdDict | None = ...,
         override_snmp_community: Literal["enable", "disable"] | None = ...,
         snmp_community: str | list[str] | list[dict[str, Any]] | list[ManagedSwitchSnmpcommunityItem] | None = ...,
         override_snmp_user: Literal["enable", "disable"] | None = ...,
         snmp_user: str | list[str] | list[dict[str, Any]] | list[ManagedSwitchSnmpuserItem] | None = ...,
         qos_drop_policy: Literal["taildrop", "random-early-detection"] | None = ...,
         qos_red_probability: int | None = ...,
-        switch_log: str | None = ...,
+        switch_log: ManagedSwitchSwitchlogDict | None = ...,
         remote_log: str | list[str] | list[dict[str, Any]] | list[ManagedSwitchRemotelogItem] | None = ...,
-        storm_control: str | None = ...,
+        storm_control: ManagedSwitchStormcontrolDict | None = ...,
         mirror: str | list[str] | list[dict[str, Any]] | list[ManagedSwitchMirrorItem] | None = ...,
         static_mac: str | list[str] | list[dict[str, Any]] | list[ManagedSwitchStaticmacItem] | None = ...,
         custom_command: str | list[str] | list[dict[str, Any]] | list[ManagedSwitchCustomcommandItem] | None = ...,
         dhcp_snooping_static_client: str | list[str] | list[dict[str, Any]] | list[ManagedSwitchDhcpsnoopingstaticclientItem] | None = ...,
-        igmp_snooping: str | None = ...,
-        x802_1X_settings: str | None = ...,
+        igmp_snooping: ManagedSwitchIgmpsnoopingDict | None = ...,
+        x802_1X_settings: ManagedSwitchX8021xsettingsDict | None = ...,
         router_vrf: str | list[str] | list[dict[str, Any]] | list[ManagedSwitchRoutervrfItem] | None = ...,
         system_interface: str | list[str] | list[dict[str, Any]] | list[ManagedSwitchSysteminterfaceItem] | None = ...,
         router_static: str | list[str] | list[dict[str, Any]] | list[ManagedSwitchRouterstaticItem] | None = ...,

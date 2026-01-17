@@ -31,15 +31,15 @@ class ProfileSaasapplicationItem:
     name: str
     status: Literal["enable", "disable"]
     safe_search: Literal["enable", "disable"]
-    safe_search_control: str
+    safe_search_control: str | list[str]
     tenant_control: Literal["enable", "disable"]
-    tenant_control_tenants: str
-    advanced_tenant_control: str
+    tenant_control_tenants: str | list[str]
+    advanced_tenant_control: str | list[str]
     domain_control: Literal["enable", "disable"]
-    domain_control_domains: str
+    domain_control_domains: str | list[str]
     log: Literal["enable", "disable"]
-    access_rule: str
-    custom_control: str
+    access_rule: str | list[str]
+    custom_control: str | list[str]
 
 
 class ProfilePayload(TypedDict, total=False):

@@ -25,6 +25,43 @@ from hfortix_fortios.models import (
 # TypedDict Payloads
 # ================================================================
 
+class ThreatWeightLevelDict(TypedDict, total=False):
+    """Nested object type for level field."""
+    low: int
+    medium: int
+    high: int
+    critical: int
+
+
+class ThreatWeightMalwareDict(TypedDict, total=False):
+    """Nested object type for malware field."""
+    virus_infected: Literal["disable", "low", "medium", "high", "critical"]
+    inline_block: Literal["disable", "low", "medium", "high", "critical"]
+    file_blocked: Literal["disable", "low", "medium", "high", "critical"]
+    command_blocked: Literal["disable", "low", "medium", "high", "critical"]
+    oversized: Literal["disable", "low", "medium", "high", "critical"]
+    virus_scan_error: Literal["disable", "low", "medium", "high", "critical"]
+    switch_proto: Literal["disable", "low", "medium", "high", "critical"]
+    mimefragmented: Literal["disable", "low", "medium", "high", "critical"]
+    virus_file_type_executable: Literal["disable", "low", "medium", "high", "critical"]
+    virus_outbreak_prevention: Literal["disable", "low", "medium", "high", "critical"]
+    content_disarm: Literal["disable", "low", "medium", "high", "critical"]
+    malware_list: Literal["disable", "low", "medium", "high", "critical"]
+    ems_threat_feed: Literal["disable", "low", "medium", "high", "critical"]
+    fsa_malicious: Literal["disable", "low", "medium", "high", "critical"]
+    fsa_high_risk: Literal["disable", "low", "medium", "high", "critical"]
+    fsa_medium_risk: Literal["disable", "low", "medium", "high", "critical"]
+
+
+class ThreatWeightIpsDict(TypedDict, total=False):
+    """Nested object type for ips field."""
+    info_severity: Literal["disable", "low", "medium", "high", "critical"]
+    low_severity: Literal["disable", "low", "medium", "high", "critical"]
+    medium_severity: Literal["disable", "low", "medium", "high", "critical"]
+    high_severity: Literal["disable", "low", "medium", "high", "critical"]
+    critical_severity: Literal["disable", "low", "medium", "high", "critical"]
+
+
 class ThreatWeightWebItem:
     """Nested item for web field - supports attribute access."""
     id: int
@@ -49,13 +86,13 @@ class ThreatWeightApplicationItem:
 class ThreatWeightPayload(TypedDict, total=False):
     """Payload type for ThreatWeight operations."""
     status: Literal["enable", "disable"]
-    level: str
+    level: ThreatWeightLevelDict
     blocked_connection: Literal["disable", "low", "medium", "high", "critical"]
     failed_connection: Literal["disable", "low", "medium", "high", "critical"]
     url_block_detected: Literal["disable", "low", "medium", "high", "critical"]
     botnet_connection_detected: Literal["disable", "low", "medium", "high", "critical"]
-    malware: str
-    ips: str
+    malware: ThreatWeightMalwareDict
+    ips: ThreatWeightIpsDict
     web: str | list[str] | list[dict[str, Any]] | list[ThreatWeightWebItem]
     geolocation: str | list[str] | list[dict[str, Any]] | list[ThreatWeightGeolocationItem]
     application: str | list[str] | list[dict[str, Any]] | list[ThreatWeightApplicationItem]
@@ -68,13 +105,13 @@ class ThreatWeightPayload(TypedDict, total=False):
 class ThreatWeightResponse(TypedDict, total=False):
     """Response type for ThreatWeight - use with .dict property for typed dict access."""
     status: Literal["enable", "disable"]
-    level: str
+    level: ThreatWeightLevelDict
     blocked_connection: Literal["disable", "low", "medium", "high", "critical"]
     failed_connection: Literal["disable", "low", "medium", "high", "critical"]
     url_block_detected: Literal["disable", "low", "medium", "high", "critical"]
     botnet_connection_detected: Literal["disable", "low", "medium", "high", "critical"]
-    malware: str
-    ips: str
+    malware: ThreatWeightMalwareDict
+    ips: ThreatWeightIpsDict
     web: list[ThreatWeightWebItem]
     geolocation: list[ThreatWeightGeolocationItem]
     application: list[ThreatWeightApplicationItem]
@@ -88,13 +125,13 @@ class ThreatWeightResponse(TypedDict, total=False):
 class ThreatWeightObject(FortiObject):
     """Typed FortiObject for ThreatWeight with field access."""
     status: Literal["enable", "disable"]
-    level: str
+    level: ThreatWeightLevelDict
     blocked_connection: Literal["disable", "low", "medium", "high", "critical"]
     failed_connection: Literal["disable", "low", "medium", "high", "critical"]
     url_block_detected: Literal["disable", "low", "medium", "high", "critical"]
     botnet_connection_detected: Literal["disable", "low", "medium", "high", "critical"]
-    malware: str
-    ips: str
+    malware: ThreatWeightMalwareDict
+    ips: ThreatWeightIpsDict
     web: list[ThreatWeightWebItem]
     geolocation: list[ThreatWeightGeolocationItem]
     application: list[ThreatWeightApplicationItem]
@@ -157,13 +194,13 @@ class ThreatWeight:
         self,
         payload_dict: ThreatWeightPayload | None = ...,
         status: Literal["enable", "disable"] | None = ...,
-        level: str | None = ...,
+        level: ThreatWeightLevelDict | None = ...,
         blocked_connection: Literal["disable", "low", "medium", "high", "critical"] | None = ...,
         failed_connection: Literal["disable", "low", "medium", "high", "critical"] | None = ...,
         url_block_detected: Literal["disable", "low", "medium", "high", "critical"] | None = ...,
         botnet_connection_detected: Literal["disable", "low", "medium", "high", "critical"] | None = ...,
-        malware: str | None = ...,
-        ips: str | None = ...,
+        malware: ThreatWeightMalwareDict | None = ...,
+        ips: ThreatWeightIpsDict | None = ...,
         web: str | list[str] | list[dict[str, Any]] | list[ThreatWeightWebItem] | None = ...,
         geolocation: str | list[str] | list[dict[str, Any]] | list[ThreatWeightGeolocationItem] | None = ...,
         application: str | list[str] | list[dict[str, Any]] | list[ThreatWeightApplicationItem] | None = ...,
@@ -187,13 +224,13 @@ class ThreatWeight:
         self,
         payload_dict: ThreatWeightPayload | None = ...,
         status: Literal["enable", "disable"] | None = ...,
-        level: str | None = ...,
+        level: ThreatWeightLevelDict | None = ...,
         blocked_connection: Literal["disable", "low", "medium", "high", "critical"] | None = ...,
         failed_connection: Literal["disable", "low", "medium", "high", "critical"] | None = ...,
         url_block_detected: Literal["disable", "low", "medium", "high", "critical"] | None = ...,
         botnet_connection_detected: Literal["disable", "low", "medium", "high", "critical"] | None = ...,
-        malware: str | None = ...,
-        ips: str | None = ...,
+        malware: ThreatWeightMalwareDict | None = ...,
+        ips: ThreatWeightIpsDict | None = ...,
         web: str | list[str] | list[dict[str, Any]] | list[ThreatWeightWebItem] | None = ...,
         geolocation: str | list[str] | list[dict[str, Any]] | list[ThreatWeightGeolocationItem] | None = ...,
         application: str | list[str] | list[dict[str, Any]] | list[ThreatWeightApplicationItem] | None = ...,

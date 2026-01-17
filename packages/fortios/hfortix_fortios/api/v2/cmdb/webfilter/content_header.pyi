@@ -30,7 +30,7 @@ class ContentHeaderEntriesItem:
     """Nested item for entries field - supports attribute access."""
     pattern: str
     action: Literal["block", "allow", "exempt"]
-    category: str
+    category: str | list[str]
 
 
 class ContentHeaderPayload(TypedDict, total=False):

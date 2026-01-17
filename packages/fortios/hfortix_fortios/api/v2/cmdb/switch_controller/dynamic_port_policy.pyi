@@ -35,7 +35,7 @@ class DynamicPortPolicyPolicyItem:
     match_type: Literal["dynamic", "override"]
     match_period: int
     match_remove: Literal["default", "link-down"]
-    interface_tags: str
+    interface_tags: str | list[str]
     mac: str
     hw_vendor: str
     type: str

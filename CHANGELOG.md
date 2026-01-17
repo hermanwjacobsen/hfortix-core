@@ -5,6 +5,68 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.5.100] - 2026-01-17
+
+### Tests
+
+- **45 new CMDB endpoint test files** covering comprehensive firewall configuration testing:
+  - **Address & Address Groups**: `firewall_address.py` (6 tests), `firewall_address6.py` (6 tests), `firewall_addrgrp.py` (6 tests), `firewall_addrgrp6.py` (6 tests)
+  - **Internet Services**: `firewall_internet_service.py` (1 test, GET-only), `firewall_internet_service_addition.py` (6 tests), `firewall_internet_service_custom.py` (6 tests), `firewall_internet_service_custom_group.py` (6 tests), `firewall_internet_service_definition.py` (1 test, GET-only), `firewall_internet_service_extension.py` (1 test, GET-only), `firewall_internet_service_fortiguard.py` (1 test, GET-only), `firewall_internet_service_group.py` (6 tests), `firewall_internet_service_list.py` (1 test, GET-only), `firewall_internet_service_name.py` (6 tests)
+  - **IP Pools & NAT**: `firewall_ip_translation.py` (6 tests), `firewall_ippool.py` (6 tests), `firewall_ippool6.py` (6 tests)
+  - **Load Balancing**: `firewall_ldb_monitor.py` (6 tests)
+  - **Local-In Policies**: `firewall_local_in_policy.py` (6 tests), `firewall_local_in_policy6.py` (6 tests)
+  - **Multicast**: `firewall_multicast_address.py` (6 tests), `firewall_multicast_address6.py` (6 tests), `firewall_multicast_policy.py` (6 tests), `firewall_multicast_policy6.py` (6 tests)
+  - **Network Services**: `firewall_network_service_dynamic.py` (1 test, GET-only)
+  - **Packet Sniffers**: `firewall_on_demand_sniffer.py` (6 tests), `firewall_sniffer.py` (1 test, GET-only)
+  - **Policies**: `firewall_policy.py` (9 tests), `firewall_policy6.py` (9 tests), `firewall_proxy_policy.py` (9 tests), `firewall_shaping_policy.py` (6 tests)
+  - **Security Profiles**: `firewall_profile_group.py` (6 tests), `firewall_profile_protocol_options.py` (6 tests), `firewall_ssl_ssh_profile.py` (6 tests)
+  - **Proxy Objects**: `firewall_proxy_address.py` (6 tests), `firewall_proxy_addrgrp.py` (6 tests)
+  - **Geographic & Reference Data**: `firewall_region.py` (1 test, GET-only), `firewall_vendor_mac.py` (1 test, GET-only), `firewall_vendor_mac_summary.py` (1 test, GET-only)
+  - **Traffic Shaping**: `firewall_shaping_profile.py` (1 test, GET-only)
+  - **SSL/TLS**: `firewall_ssl_server.py` (6 tests)
+  - **Virtual IPs**: `firewall_vip.py` (6 tests), `firewall_vip6.py` (6 tests), `firewall_vipgrp.py` (6 tests), `firewall_vipgrp6.py` (6 tests)
+
+## [0.6.0] - 2026-01-17
+
+### Changed
+
+- **Generator: Readonly endpoint detection**: Updated endpoint generator to detect readonly reference data endpoints (marked with `"readonly": true` in schema) and only generate GET methods. Prevents generation of POST/PUT/DELETE methods for endpoints that provide read-only FortiGuard-managed data.
+- **38 readonly endpoints updated**: Internet service variants, geographic data, IPS signatures, vendor MAC addresses, system replacement messages, and timezone data endpoints now only expose `get()` and `get_schema()` methods.
+
+### Added
+
+- **Generator: Complex field TypedDict support**: Added full support for complex nested object fields (schema `category="complex"` with `children`). Generator now creates dedicated TypedDict classes for nested objects, enabling proper type checking and IDE autocomplete for complex configurations.
+- **Complex field examples**: Endpoints like `firewall.profile-protocol-options` with nested fields (`http`, `ftp`, `smtp`, etc.) now have full type safety:
+  ```python
+  # Before: complex fields were simple strings - type errors when passing dicts
+  http: str | None = ...  # ❌
+  
+  # After: proper TypedDict with nested field validation
+  http: ProfileProtocolOptionsHttpDict | None = ...  # ✅
+  class ProfileProtocolOptionsHttpDict(TypedDict, total=False):
+      ports: int | list[int]
+      status: Literal["enable", "disable"]
+      inspect_all: Literal["enable", "disable"]
+      # ... all nested fields with proper types
+  ```
+- **Documentation: READONLY_ENDPOINTS.md**: New documentation listing all 38 readonly endpoints with descriptions, primary keys, and usage examples. Located at `docs/fortios/READONLY_ENDPOINTS.md`.
+- **Readonly endpoint categories**:
+  - **Internet Services**: internet-service, internet-service-botnet, internet-service-custom, internet-service-custom-group, internet-service-extension, internet-service-group, internet-service-list, internet-service-name, internet-service-negate, internet-service-owner, internet-service-reputation, internet-service-sld
+  - **Geographic Data**: country, city, region, geoip-country
+  - **IPS Data**: decoder, rule, rule-settings, view-map
+  - **System Data**: vendor-mac, replacement-message groups, timezone
+  - **Application Data**: application categories and lists
+
+### Technical Details
+
+- Modified `endpoint_generator.py` `_extract_http_methods()` to check `schema.readonly` flag and return `['GET']` for readonly endpoints
+- Updated `endpoint_class.pyi.j2` template to handle `category == 'complex'` fields:
+  - Generate TypedDict classes for complex nested objects (not just table lists)
+  - Updated Payload, Response, and Object type sections to use complex field TypedDicts
+  - Updated POST, PUT, SET method parameters to accept complex TypedDict types
+- Created `scripts/generate_readonly_list.py` to scan schema files and generate readonly endpoint documentation
+- Readonly endpoints now include special documentation header explaining read-only nature and unsupported operations
+
 ## [0.5.99] - 2026-01-17
 
 ### Fixed

@@ -32,7 +32,7 @@ class Address6TemplateSubnetsegmentItem:
     name: str
     bits: int
     exclusive: Literal["enable", "disable"]
-    values: str
+    values: str | list[str]
 
 
 class Address6TemplatePayload(TypedDict, total=False):

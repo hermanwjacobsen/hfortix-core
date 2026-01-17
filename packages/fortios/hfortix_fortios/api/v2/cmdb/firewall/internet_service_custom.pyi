@@ -31,9 +31,9 @@ class InternetServiceCustomEntryItem:
     id: int
     addr_mode: Literal["ipv4", "ipv6"]
     protocol: int
-    port_range: str
-    dst: str
-    dst6: str
+    port_range: str | list[str]
+    dst: str | list[str]
+    dst6: str | list[str]
 
 
 class InternetServiceCustomPayload(TypedDict, total=False):

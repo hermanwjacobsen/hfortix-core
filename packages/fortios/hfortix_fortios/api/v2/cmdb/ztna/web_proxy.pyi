@@ -36,7 +36,7 @@ class WebProxyApigatewayItem:
     h2_support: Literal["enable", "disable"]
     h3_support: Literal["enable", "disable"]
     quic: str
-    realservers: str
+    realservers: str | list[str]
     persistence: Literal["none", "http-cookie"]
     http_cookie_domain_from_host: Literal["disable", "enable"]
     http_cookie_domain: str
@@ -47,7 +47,7 @@ class WebProxyApigatewayItem:
     https_cookie_secure: Literal["disable", "enable"]
     ssl_dh_bits: Literal["768", "1024", "1536", "2048", "3072", "4096"]
     ssl_algorithm: Literal["high", "medium", "low"]
-    ssl_cipher_suites: str
+    ssl_cipher_suites: str | list[str]
     ssl_min_version: Literal["tls-1.0", "tls-1.1", "tls-1.2", "tls-1.3"]
     ssl_max_version: Literal["tls-1.0", "tls-1.1", "tls-1.2", "tls-1.3"]
     ssl_renegotiation: Literal["enable", "disable"]
@@ -63,7 +63,7 @@ class WebProxyApigateway6Item:
     h2_support: Literal["enable", "disable"]
     h3_support: Literal["enable", "disable"]
     quic: str
-    realservers: str
+    realservers: str | list[str]
     persistence: Literal["none", "http-cookie"]
     http_cookie_domain_from_host: Literal["disable", "enable"]
     http_cookie_domain: str
@@ -74,7 +74,7 @@ class WebProxyApigateway6Item:
     https_cookie_secure: Literal["disable", "enable"]
     ssl_dh_bits: Literal["768", "1024", "1536", "2048", "3072", "4096"]
     ssl_algorithm: Literal["high", "medium", "low"]
-    ssl_cipher_suites: str
+    ssl_cipher_suites: str | list[str]
     ssl_min_version: Literal["tls-1.0", "tls-1.1", "tls-1.2", "tls-1.3"]
     ssl_max_version: Literal["tls-1.0", "tls-1.1", "tls-1.2", "tls-1.3"]
     ssl_renegotiation: Literal["enable", "disable"]

@@ -31,7 +31,7 @@ class AnqpNaiRealmNailistItem:
     name: str
     encoding: Literal["disable", "enable"]
     nai_realm: str
-    eap_method: str
+    eap_method: str | list[str]
 
 
 class AnqpNaiRealmPayload(TypedDict, total=False):

@@ -41,8 +41,8 @@ class TrafficSnifferTargetportItem:
     """Nested item for target-port field - supports attribute access."""
     switch_id: str
     description: str
-    in_ports: str
-    out_ports: str
+    in_ports: str | list[str]
+    out_ports: str | list[str]
 
 
 class TrafficSnifferPayload(TypedDict, total=False):

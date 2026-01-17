@@ -31,7 +31,7 @@ class IdentityBasedRouteRuleItem:
     id: int
     gateway: str
     device: str
-    groups: str
+    groups: str | list[str]
 
 
 class IdentityBasedRoutePayload(TypedDict, total=False):

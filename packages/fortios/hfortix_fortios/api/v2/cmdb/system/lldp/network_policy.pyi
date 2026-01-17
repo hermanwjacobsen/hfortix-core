@@ -26,18 +26,90 @@ from hfortix_fortios.models import (
 # TypedDict Payloads
 # ================================================================
 
+class NetworkPolicyVoiceDict(TypedDict, total=False):
+    """Nested object type for voice field."""
+    status: Literal["disable", "enable"]
+    tag: Literal["none", "dot1q", "dot1p"]
+    vlan: int
+    priority: int
+    dscp: int
+
+
+class NetworkPolicyVoicesignalingDict(TypedDict, total=False):
+    """Nested object type for voice-signaling field."""
+    status: Literal["disable", "enable"]
+    tag: Literal["none", "dot1q", "dot1p"]
+    vlan: int
+    priority: int
+    dscp: int
+
+
+class NetworkPolicyGuestDict(TypedDict, total=False):
+    """Nested object type for guest field."""
+    status: Literal["disable", "enable"]
+    tag: Literal["none", "dot1q", "dot1p"]
+    vlan: int
+    priority: int
+    dscp: int
+
+
+class NetworkPolicyGuestvoicesignalingDict(TypedDict, total=False):
+    """Nested object type for guest-voice-signaling field."""
+    status: Literal["disable", "enable"]
+    tag: Literal["none", "dot1q", "dot1p"]
+    vlan: int
+    priority: int
+    dscp: int
+
+
+class NetworkPolicySoftphoneDict(TypedDict, total=False):
+    """Nested object type for softphone field."""
+    status: Literal["disable", "enable"]
+    tag: Literal["none", "dot1q", "dot1p"]
+    vlan: int
+    priority: int
+    dscp: int
+
+
+class NetworkPolicyVideoconferencingDict(TypedDict, total=False):
+    """Nested object type for video-conferencing field."""
+    status: Literal["disable", "enable"]
+    tag: Literal["none", "dot1q", "dot1p"]
+    vlan: int
+    priority: int
+    dscp: int
+
+
+class NetworkPolicyStreamingvideoDict(TypedDict, total=False):
+    """Nested object type for streaming-video field."""
+    status: Literal["disable", "enable"]
+    tag: Literal["none", "dot1q", "dot1p"]
+    vlan: int
+    priority: int
+    dscp: int
+
+
+class NetworkPolicyVideosignalingDict(TypedDict, total=False):
+    """Nested object type for video-signaling field."""
+    status: Literal["disable", "enable"]
+    tag: Literal["none", "dot1q", "dot1p"]
+    vlan: int
+    priority: int
+    dscp: int
+
+
 class NetworkPolicyPayload(TypedDict, total=False):
     """Payload type for NetworkPolicy operations."""
     name: str
     comment: str
-    voice: str
-    voice_signaling: str
-    guest: str
-    guest_voice_signaling: str
-    softphone: str
-    video_conferencing: str
-    streaming_video: str
-    video_signaling: str
+    voice: NetworkPolicyVoiceDict
+    voice_signaling: NetworkPolicyVoicesignalingDict
+    guest: NetworkPolicyGuestDict
+    guest_voice_signaling: NetworkPolicyGuestvoicesignalingDict
+    softphone: NetworkPolicySoftphoneDict
+    video_conferencing: NetworkPolicyVideoconferencingDict
+    streaming_video: NetworkPolicyStreamingvideoDict
+    video_signaling: NetworkPolicyVideosignalingDict
 
 
 # ================================================================
@@ -48,14 +120,14 @@ class NetworkPolicyResponse(TypedDict, total=False):
     """Response type for NetworkPolicy - use with .dict property for typed dict access."""
     name: str
     comment: str
-    voice: str
-    voice_signaling: str
-    guest: str
-    guest_voice_signaling: str
-    softphone: str
-    video_conferencing: str
-    streaming_video: str
-    video_signaling: str
+    voice: NetworkPolicyVoiceDict
+    voice_signaling: NetworkPolicyVoicesignalingDict
+    guest: NetworkPolicyGuestDict
+    guest_voice_signaling: NetworkPolicyGuestvoicesignalingDict
+    softphone: NetworkPolicySoftphoneDict
+    video_conferencing: NetworkPolicyVideoconferencingDict
+    streaming_video: NetworkPolicyStreamingvideoDict
+    video_signaling: NetworkPolicyVideosignalingDict
 
 
 # ================================================================
@@ -67,14 +139,14 @@ class NetworkPolicyObject(FortiObject):
     """Typed FortiObject for NetworkPolicy with field access."""
     name: str
     comment: str
-    voice: str
-    voice_signaling: str
-    guest: str
-    guest_voice_signaling: str
-    softphone: str
-    video_conferencing: str
-    streaming_video: str
-    video_signaling: str
+    voice: NetworkPolicyVoiceDict
+    voice_signaling: NetworkPolicyVoicesignalingDict
+    guest: NetworkPolicyGuestDict
+    guest_voice_signaling: NetworkPolicyGuestvoicesignalingDict
+    softphone: NetworkPolicySoftphoneDict
+    video_conferencing: NetworkPolicyVideoconferencingDict
+    streaming_video: NetworkPolicyStreamingvideoDict
+    video_signaling: NetworkPolicyVideosignalingDict
 
 
 # ================================================================
@@ -155,14 +227,14 @@ class NetworkPolicy:
         payload_dict: NetworkPolicyPayload | None = ...,
         name: str | None = ...,
         comment: str | None = ...,
-        voice: str | None = ...,
-        voice_signaling: str | None = ...,
-        guest: str | None = ...,
-        guest_voice_signaling: str | None = ...,
-        softphone: str | None = ...,
-        video_conferencing: str | None = ...,
-        streaming_video: str | None = ...,
-        video_signaling: str | None = ...,
+        voice: NetworkPolicyVoiceDict | None = ...,
+        voice_signaling: NetworkPolicyVoicesignalingDict | None = ...,
+        guest: NetworkPolicyGuestDict | None = ...,
+        guest_voice_signaling: NetworkPolicyGuestvoicesignalingDict | None = ...,
+        softphone: NetworkPolicySoftphoneDict | None = ...,
+        video_conferencing: NetworkPolicyVideoconferencingDict | None = ...,
+        streaming_video: NetworkPolicyStreamingvideoDict | None = ...,
+        video_signaling: NetworkPolicyVideosignalingDict | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -177,14 +249,14 @@ class NetworkPolicy:
         payload_dict: NetworkPolicyPayload | None = ...,
         name: str | None = ...,
         comment: str | None = ...,
-        voice: str | None = ...,
-        voice_signaling: str | None = ...,
-        guest: str | None = ...,
-        guest_voice_signaling: str | None = ...,
-        softphone: str | None = ...,
-        video_conferencing: str | None = ...,
-        streaming_video: str | None = ...,
-        video_signaling: str | None = ...,
+        voice: NetworkPolicyVoiceDict | None = ...,
+        voice_signaling: NetworkPolicyVoicesignalingDict | None = ...,
+        guest: NetworkPolicyGuestDict | None = ...,
+        guest_voice_signaling: NetworkPolicyGuestvoicesignalingDict | None = ...,
+        softphone: NetworkPolicySoftphoneDict | None = ...,
+        video_conferencing: NetworkPolicyVideoconferencingDict | None = ...,
+        streaming_video: NetworkPolicyStreamingvideoDict | None = ...,
+        video_signaling: NetworkPolicyVideosignalingDict | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -217,14 +289,14 @@ class NetworkPolicy:
         payload_dict: NetworkPolicyPayload | None = ...,
         name: str | None = ...,
         comment: str | None = ...,
-        voice: str | None = ...,
-        voice_signaling: str | None = ...,
-        guest: str | None = ...,
-        guest_voice_signaling: str | None = ...,
-        softphone: str | None = ...,
-        video_conferencing: str | None = ...,
-        streaming_video: str | None = ...,
-        video_signaling: str | None = ...,
+        voice: NetworkPolicyVoiceDict | None = ...,
+        voice_signaling: NetworkPolicyVoicesignalingDict | None = ...,
+        guest: NetworkPolicyGuestDict | None = ...,
+        guest_voice_signaling: NetworkPolicyGuestvoicesignalingDict | None = ...,
+        softphone: NetworkPolicySoftphoneDict | None = ...,
+        video_conferencing: NetworkPolicyVideoconferencingDict | None = ...,
+        streaming_video: NetworkPolicyStreamingvideoDict | None = ...,
+        video_signaling: NetworkPolicyVideosignalingDict | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,

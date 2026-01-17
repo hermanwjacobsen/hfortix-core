@@ -40,9 +40,9 @@ class Ospf6AreaItem:
     key_rollover_interval: int
     ipsec_auth_alg: Literal["md5", "sha1", "sha256", "sha384", "sha512"]
     ipsec_enc_alg: Literal["null", "des", "3des", "aes128", "aes192", "aes256"]
-    ipsec_keys: str
-    range: str
-    virtual_link: str
+    ipsec_keys: str | list[str]
+    range: str | list[str]
+    virtual_link: str | list[str]
 
 
 class Ospf6Ospf6interfaceItem:
@@ -65,8 +65,8 @@ class Ospf6Ospf6interfaceItem:
     key_rollover_interval: int
     ipsec_auth_alg: Literal["md5", "sha1", "sha256", "sha384", "sha512"]
     ipsec_enc_alg: Literal["null", "des", "3des", "aes128", "aes192", "aes256"]
-    ipsec_keys: str
-    neighbor: str
+    ipsec_keys: str | list[str]
+    neighbor: str | list[str]
 
 
 class Ospf6RedistributeItem:

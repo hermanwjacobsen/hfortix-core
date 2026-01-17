@@ -38,9 +38,9 @@ class ProfileRespmodforwardrulesItem:
     """Nested item for respmod-forward-rules field - supports attribute access."""
     name: str
     host: str
-    header_group: str
+    header_group: str | list[str]
     action: Literal["forward", "bypass"]
-    http_resp_status_code: str
+    http_resp_status_code: str | list[str]
 
 
 class ProfilePayload(TypedDict, total=False):

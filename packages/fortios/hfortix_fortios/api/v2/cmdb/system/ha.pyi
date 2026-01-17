@@ -57,12 +57,12 @@ class HaVclusterItem:
     override: Literal["enable", "disable"]
     priority: int
     override_wait_time: int
-    monitor: str
-    pingserver_monitor_interface: str
+    monitor: str | list[str]
+    pingserver_monitor_interface: str | list[str]
     pingserver_failover_threshold: int
     pingserver_secondary_force_reset: Literal["enable", "disable"]
     pingserver_flip_timeout: int
-    vdom: str
+    vdom: str | list[str]
 
 
 class HaPayload(TypedDict, total=False):

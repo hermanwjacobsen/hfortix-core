@@ -29,7 +29,7 @@ class QuarantineTargetsItem:
     """Nested item for targets field - supports attribute access."""
     entry: str
     description: str
-    macs: str
+    macs: str | list[str]
 
 
 class QuarantinePayload(TypedDict, total=False):

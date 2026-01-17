@@ -26,6 +26,51 @@ from hfortix_fortios.models import (
 # TypedDict Payloads
 # ================================================================
 
+class ProfileSignatureDict(TypedDict, total=False):
+    """Nested object type for signature field."""
+    main_class: str | list[str]
+    disabled_sub_class: str | list[str]
+    disabled_signature: str | list[str]
+    credit_card_detection_threshold: int
+    custom_signature: str | list[str]
+
+
+class ProfileConstraintDict(TypedDict, total=False):
+    """Nested object type for constraint field."""
+    header_length: str
+    content_length: str
+    param_length: str
+    line_length: str
+    url_param_length: str
+    version: str
+    method: str
+    hostname: str
+    malformed: str
+    max_cookie: str
+    max_header_line: str
+    max_url_param: str
+    max_range_segment: str
+    exception: str | list[str]
+
+
+class ProfileMethodDict(TypedDict, total=False):
+    """Nested object type for method field."""
+    status: Literal["enable", "disable"]
+    log: Literal["enable", "disable"]
+    severity: Literal["high", "medium", "low"]
+    default_allowed_methods: Literal["get", "post", "put", "head", "connect", "trace", "options", "delete", "others"]
+    method_policy: str | list[str]
+
+
+class ProfileAddresslistDict(TypedDict, total=False):
+    """Nested object type for address-list field."""
+    status: Literal["enable", "disable"]
+    blocked_log: Literal["enable", "disable"]
+    severity: Literal["high", "medium", "low"]
+    trusted_address: str | list[str]
+    blocked_address: str | list[str]
+
+
 class ProfileUrlaccessItem:
     """Nested item for url-access field - supports attribute access."""
     id: int
@@ -33,7 +78,7 @@ class ProfileUrlaccessItem:
     action: Literal["bypass", "permit", "block"]
     log: Literal["enable", "disable"]
     severity: Literal["high", "medium", "low"]
-    access_pattern: str
+    access_pattern: str | list[str]
 
 
 class ProfilePayload(TypedDict, total=False):
@@ -41,10 +86,10 @@ class ProfilePayload(TypedDict, total=False):
     name: str
     external: Literal["disable", "enable"]
     extended_log: Literal["enable", "disable"]
-    signature: str
-    constraint: str
-    method: str
-    address_list: str
+    signature: ProfileSignatureDict
+    constraint: ProfileConstraintDict
+    method: ProfileMethodDict
+    address_list: ProfileAddresslistDict
     url_access: str | list[str] | list[dict[str, Any]] | list[ProfileUrlaccessItem]
     comment: str
 
@@ -58,10 +103,10 @@ class ProfileResponse(TypedDict, total=False):
     name: str
     external: Literal["disable", "enable"]
     extended_log: Literal["enable", "disable"]
-    signature: str
-    constraint: str
-    method: str
-    address_list: str
+    signature: ProfileSignatureDict
+    constraint: ProfileConstraintDict
+    method: ProfileMethodDict
+    address_list: ProfileAddresslistDict
     url_access: list[ProfileUrlaccessItem]
     comment: str
 
@@ -76,10 +121,10 @@ class ProfileObject(FortiObject):
     name: str
     external: Literal["disable", "enable"]
     extended_log: Literal["enable", "disable"]
-    signature: str
-    constraint: str
-    method: str
-    address_list: str
+    signature: ProfileSignatureDict
+    constraint: ProfileConstraintDict
+    method: ProfileMethodDict
+    address_list: ProfileAddresslistDict
     url_access: list[ProfileUrlaccessItem]
     comment: str
 
@@ -163,10 +208,10 @@ class Profile:
         name: str | None = ...,
         external: Literal["disable", "enable"] | None = ...,
         extended_log: Literal["enable", "disable"] | None = ...,
-        signature: str | None = ...,
-        constraint: str | None = ...,
-        method: str | None = ...,
-        address_list: str | None = ...,
+        signature: ProfileSignatureDict | None = ...,
+        constraint: ProfileConstraintDict | None = ...,
+        method: ProfileMethodDict | None = ...,
+        address_list: ProfileAddresslistDict | None = ...,
         url_access: str | list[str] | list[dict[str, Any]] | list[ProfileUrlaccessItem] | None = ...,
         comment: str | None = ...,
         vdom: str | bool | None = ...,
@@ -184,10 +229,10 @@ class Profile:
         name: str | None = ...,
         external: Literal["disable", "enable"] | None = ...,
         extended_log: Literal["enable", "disable"] | None = ...,
-        signature: str | None = ...,
-        constraint: str | None = ...,
-        method: str | None = ...,
-        address_list: str | None = ...,
+        signature: ProfileSignatureDict | None = ...,
+        constraint: ProfileConstraintDict | None = ...,
+        method: ProfileMethodDict | None = ...,
+        address_list: ProfileAddresslistDict | None = ...,
         url_access: str | list[str] | list[dict[str, Any]] | list[ProfileUrlaccessItem] | None = ...,
         comment: str | None = ...,
         vdom: str | bool | None = ...,
@@ -223,10 +268,10 @@ class Profile:
         name: str | None = ...,
         external: Literal["disable", "enable"] | None = ...,
         extended_log: Literal["enable", "disable"] | None = ...,
-        signature: str | None = ...,
-        constraint: str | None = ...,
-        method: str | None = ...,
-        address_list: str | None = ...,
+        signature: ProfileSignatureDict | None = ...,
+        constraint: ProfileConstraintDict | None = ...,
+        method: ProfileMethodDict | None = ...,
+        address_list: ProfileAddresslistDict | None = ...,
         url_access: str | list[str] | list[dict[str, Any]] | list[ProfileUrlaccessItem] | None = ...,
         comment: str | None = ...,
         vdom: str | bool | None = ...,

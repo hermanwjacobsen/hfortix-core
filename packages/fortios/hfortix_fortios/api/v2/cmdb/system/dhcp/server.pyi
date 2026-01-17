@@ -32,9 +32,9 @@ class ServerIprangeItem:
     start_ip: str
     end_ip: str
     vci_match: Literal["disable", "enable"]
-    vci_string: str
+    vci_string: str | list[str]
     uci_match: Literal["disable", "enable"]
-    uci_string: str
+    uci_string: str | list[str]
     lease_time: int
 
 
@@ -49,11 +49,11 @@ class ServerOptionsItem:
     code: int
     type: Literal["hex", "string", "ip", "fqdn"]
     value: str
-    ip: str
+    ip: str | list[str]
     vci_match: Literal["disable", "enable"]
-    vci_string: str
+    vci_string: str | list[str]
     uci_match: Literal["disable", "enable"]
-    uci_string: str
+    uci_string: str | list[str]
 
 
 class ServerVcistringItem:
@@ -67,9 +67,9 @@ class ServerExcluderangeItem:
     start_ip: str
     end_ip: str
     vci_match: Literal["disable", "enable"]
-    vci_string: str
+    vci_string: str | list[str]
     uci_match: Literal["disable", "enable"]
-    uci_string: str
+    uci_string: str | list[str]
     lease_time: int
 
 

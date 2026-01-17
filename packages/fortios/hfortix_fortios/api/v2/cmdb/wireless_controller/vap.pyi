@@ -36,6 +36,14 @@ class VapUsergroupItem:
     name: str
 
 
+class VapPortalmessageoverridesDict(TypedDict, total=False):
+    """Nested object type for portal-message-overrides field."""
+    auth_disclaimer_page: str
+    auth_reject_page: str
+    auth_login_page: str
+    auth_login_failed_page: str
+
+
 class VapSelectedusergroupsItem:
     """Nested item for selected-usergroups field - supports attribute access."""
     name: str
@@ -49,7 +57,7 @@ class VapScheduleItem:
 class VapVlannameItem:
     """Nested item for vlan-name field - supports attribute access."""
     name: str
-    vlan_id: int
+    vlan_id: int | list[int]
 
 
 class VapVlanpoolItem:
@@ -138,7 +146,7 @@ class VapPayload(TypedDict, total=False):
     captive_portal: Literal["enable", "disable"]
     captive_network_assistant_bypass: Literal["enable", "disable"]
     portal_message_override_group: str
-    portal_message_overrides: str
+    portal_message_overrides: VapPortalmessageoverridesDict
     portal_type: Literal["auth", "auth+disclaimer", "disclaimer", "email-collect", "cmcc", "cmcc-macauth", "auth-mac", "external-auth", "external-macauth"]
     selected_usergroups: str | list[str] | list[dict[str, Any]] | list[VapSelectedusergroupsItem]
     security_exempt_list: str
@@ -318,7 +326,7 @@ class VapResponse(TypedDict, total=False):
     captive_portal: Literal["enable", "disable"]
     captive_network_assistant_bypass: Literal["enable", "disable"]
     portal_message_override_group: str
-    portal_message_overrides: str
+    portal_message_overrides: VapPortalmessageoverridesDict
     portal_type: Literal["auth", "auth+disclaimer", "disclaimer", "email-collect", "cmcc", "cmcc-macauth", "auth-mac", "external-auth", "external-macauth"]
     selected_usergroups: list[VapSelectedusergroupsItem]
     security_exempt_list: str
@@ -499,7 +507,7 @@ class VapObject(FortiObject):
     captive_portal: Literal["enable", "disable"]
     captive_network_assistant_bypass: Literal["enable", "disable"]
     portal_message_override_group: str
-    portal_message_overrides: str
+    portal_message_overrides: VapPortalmessageoverridesDict
     portal_type: Literal["auth", "auth+disclaimer", "disclaimer", "email-collect", "cmcc", "cmcc-macauth", "auth-mac", "external-auth", "external-macauth"]
     selected_usergroups: list[VapSelectedusergroupsItem]
     security_exempt_list: str
@@ -749,7 +757,7 @@ class Vap:
         captive_portal: Literal["enable", "disable"] | None = ...,
         captive_network_assistant_bypass: Literal["enable", "disable"] | None = ...,
         portal_message_override_group: str | None = ...,
-        portal_message_overrides: str | None = ...,
+        portal_message_overrides: VapPortalmessageoverridesDict | None = ...,
         portal_type: Literal["auth", "auth+disclaimer", "disclaimer", "email-collect", "cmcc", "cmcc-macauth", "auth-mac", "external-auth", "external-macauth"] | None = ...,
         selected_usergroups: str | list[str] | list[dict[str, Any]] | list[VapSelectedusergroupsItem] | None = ...,
         security_exempt_list: str | None = ...,
@@ -933,7 +941,7 @@ class Vap:
         captive_portal: Literal["enable", "disable"] | None = ...,
         captive_network_assistant_bypass: Literal["enable", "disable"] | None = ...,
         portal_message_override_group: str | None = ...,
-        portal_message_overrides: str | None = ...,
+        portal_message_overrides: VapPortalmessageoverridesDict | None = ...,
         portal_type: Literal["auth", "auth+disclaimer", "disclaimer", "email-collect", "cmcc", "cmcc-macauth", "auth-mac", "external-auth", "external-macauth"] | None = ...,
         selected_usergroups: str | list[str] | list[dict[str, Any]] | list[VapSelectedusergroupsItem] | None = ...,
         security_exempt_list: str | None = ...,
@@ -1135,7 +1143,7 @@ class Vap:
         captive_portal: Literal["enable", "disable"] | None = ...,
         captive_network_assistant_bypass: Literal["enable", "disable"] | None = ...,
         portal_message_override_group: str | None = ...,
-        portal_message_overrides: str | None = ...,
+        portal_message_overrides: VapPortalmessageoverridesDict | None = ...,
         portal_type: Literal["auth", "auth+disclaimer", "disclaimer", "email-collect", "cmcc", "cmcc-macauth", "auth-mac", "external-auth", "external-macauth"] | None = ...,
         selected_usergroups: str | list[str] | list[dict[str, Any]] | list[VapSelectedusergroupsItem] | None = ...,
         security_exempt_list: str | None = ...,

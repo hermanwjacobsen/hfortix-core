@@ -39,9 +39,9 @@ class OspfAreaItem:
     nssa_default_information_originate_metric_type: Literal["1", "2"]
     nssa_redistribution: Literal["enable", "disable"]
     comments: str
-    range: str
-    virtual_link: str
-    filter_list: str
+    range: str | list[str]
+    virtual_link: str | list[str]
+    filter_list: str | list[str]
 
 
 class OspfOspfinterfaceItem:
@@ -69,7 +69,7 @@ class OspfOspfinterfaceItem:
     bfd: Literal["global", "enable", "disable"]
     status: Literal["disable", "enable"]
     resync_timeout: int
-    md5_keys: str
+    md5_keys: str | list[str]
 
 
 class OspfNetworkItem:

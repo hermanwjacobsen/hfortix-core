@@ -50,7 +50,7 @@ class AddressTaggingItem:
     """Nested item for tagging field - supports attribute access."""
     name: str
     category: str
-    tags: str
+    tags: str | list[str]
 
 
 class AddressPayload(TypedDict, total=False):

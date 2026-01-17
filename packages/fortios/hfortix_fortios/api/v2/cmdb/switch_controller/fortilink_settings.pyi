@@ -26,6 +26,16 @@ from hfortix_fortios.models import (
 # TypedDict Payloads
 # ================================================================
 
+class FortilinkSettingsNacportsDict(TypedDict, total=False):
+    """Nested object type for nac-ports field."""
+    onboarding_vlan: str
+    lan_segment: Literal["enabled", "disabled"]
+    nac_lan_interface: str
+    nac_segment_vlans: str | list[str]
+    parent_key: str
+    member_change: int
+
+
 class FortilinkSettingsPayload(TypedDict, total=False):
     """Payload type for FortilinkSettings operations."""
     name: str
@@ -33,7 +43,7 @@ class FortilinkSettingsPayload(TypedDict, total=False):
     inactive_timer: int
     link_down_flush: Literal["disable", "enable"]
     access_vlan_mode: Literal["legacy", "fail-open", "fail-close"]
-    nac_ports: str
+    nac_ports: FortilinkSettingsNacportsDict
 
 
 # ================================================================
@@ -47,7 +57,7 @@ class FortilinkSettingsResponse(TypedDict, total=False):
     inactive_timer: int
     link_down_flush: Literal["disable", "enable"]
     access_vlan_mode: Literal["legacy", "fail-open", "fail-close"]
-    nac_ports: str
+    nac_ports: FortilinkSettingsNacportsDict
 
 
 # ================================================================
@@ -62,7 +72,7 @@ class FortilinkSettingsObject(FortiObject):
     inactive_timer: int
     link_down_flush: Literal["disable", "enable"]
     access_vlan_mode: Literal["legacy", "fail-open", "fail-close"]
-    nac_ports: str
+    nac_ports: FortilinkSettingsNacportsDict
 
 
 # ================================================================
@@ -146,7 +156,7 @@ class FortilinkSettings:
         inactive_timer: int | None = ...,
         link_down_flush: Literal["disable", "enable"] | None = ...,
         access_vlan_mode: Literal["legacy", "fail-open", "fail-close"] | None = ...,
-        nac_ports: str | None = ...,
+        nac_ports: FortilinkSettingsNacportsDict | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -164,7 +174,7 @@ class FortilinkSettings:
         inactive_timer: int | None = ...,
         link_down_flush: Literal["disable", "enable"] | None = ...,
         access_vlan_mode: Literal["legacy", "fail-open", "fail-close"] | None = ...,
-        nac_ports: str | None = ...,
+        nac_ports: FortilinkSettingsNacportsDict | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -200,7 +210,7 @@ class FortilinkSettings:
         inactive_timer: int | None = ...,
         link_down_flush: Literal["disable", "enable"] | None = ...,
         access_vlan_mode: Literal["legacy", "fail-open", "fail-close"] | None = ...,
-        nac_ports: str | None = ...,
+        nac_ports: FortilinkSettingsNacportsDict | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,

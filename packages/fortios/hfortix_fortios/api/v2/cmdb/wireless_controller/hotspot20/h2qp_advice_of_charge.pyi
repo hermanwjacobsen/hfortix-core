@@ -32,7 +32,7 @@ class H2qpAdviceOfChargeAoclistItem:
     type: Literal["time-based", "volume-based", "time-and-volume-based", "unlimited"]
     nai_realm_encoding: str
     nai_realm: str
-    plan_info: str
+    plan_info: str | list[str]
 
 
 class H2qpAdviceOfChargePayload(TypedDict, total=False):

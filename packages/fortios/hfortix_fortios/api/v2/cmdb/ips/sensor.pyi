@@ -29,16 +29,16 @@ from hfortix_fortios.models import (
 class SensorEntriesItem:
     """Nested item for entries field - supports attribute access."""
     id: int
-    rule: str
-    location: str
-    severity: str
-    protocol: str
-    os: str
-    application: str
+    rule: str | list[str]
+    location: str | list[str]
+    severity: str | list[str]
+    protocol: str | list[str]
+    os: str | list[str]
+    application: str | list[str]
     default_action: Literal["all", "pass", "block"]
     default_status: Literal["all", "enable", "disable"]
-    cve: str
-    vuln_type: str
+    cve: str | list[str]
+    vuln_type: str | list[str]
     last_modified: str
     status: Literal["disable", "enable", "default"]
     log: Literal["disable", "enable"]
@@ -49,7 +49,7 @@ class SensorEntriesItem:
     rate_duration: int
     rate_mode: Literal["periodical", "continuous"]
     rate_track: Literal["none", "src-ip", "dest-ip", "dhcp-client-mac", "dns-domain"]
-    exempt_ip: str
+    exempt_ip: str | list[str]
     quarantine: Literal["none", "attacker"]
     quarantine_expiry: str
     quarantine_log: Literal["disable", "enable"]

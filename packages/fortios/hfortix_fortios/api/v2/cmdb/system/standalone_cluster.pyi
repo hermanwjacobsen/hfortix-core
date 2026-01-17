@@ -30,8 +30,8 @@ class StandaloneClusterClusterpeerItem:
     sync_id: int
     peervd: str
     peerip: str
-    syncvd: str
-    down_intfs_before_sess_sync: str
+    syncvd: str | list[str]
+    down_intfs_before_sess_sync: str | list[str]
     hb_interval: int
     hb_lost_threshold: int
     ipsec_tunnel_sync: Literal["enable", "disable"]

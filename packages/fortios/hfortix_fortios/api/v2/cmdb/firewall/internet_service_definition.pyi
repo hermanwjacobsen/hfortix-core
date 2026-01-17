@@ -32,7 +32,7 @@ class InternetServiceDefinitionEntryItem:
     category_id: int
     name: str
     protocol: int
-    port_range: str
+    port_range: str | list[str]
 
 
 class InternetServiceDefinitionPayload(TypedDict, total=False):

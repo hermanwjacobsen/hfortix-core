@@ -29,9 +29,9 @@ from hfortix_fortios.models import (
 class SecurityExemptListRuleItem:
     """Nested item for rule field - supports attribute access."""
     id: int
-    srcaddr: str
-    dstaddr: str
-    service: str
+    srcaddr: str | list[str]
+    dstaddr: str | list[str]
+    service: str | list[str]
 
 
 class SecurityExemptListPayload(TypedDict, total=False):
