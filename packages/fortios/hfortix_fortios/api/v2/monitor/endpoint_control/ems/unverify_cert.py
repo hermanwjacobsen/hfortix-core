@@ -154,8 +154,7 @@ class UnverifyCert(CRUDEndpoint, MetadataMixin):
 
         endpoint = "/endpoint-control/ems/unverify-cert"
         return self._client.post(
-            "monitor", endpoint, data=payload_data, vdom=vdom
-        )
+            "monitor", endpoint, data=payload_data, vdom=vdom        )
 
 
 

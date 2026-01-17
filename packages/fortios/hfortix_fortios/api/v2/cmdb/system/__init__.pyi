@@ -136,10 +136,141 @@ if TYPE_CHECKING:
     from .security_rating import SecurityRating
     from .snmp import Snmp
 
+__all__ = [
+    "Accprofile",
+    "Acme",
+    "Admin",
+    "AffinityInterrupt",
+    "AffinityPacketRedistribution",
+    "Alarm",
+    "Alias",
+    "ApiUser",
+    "ArpTable",
+    "AutoInstall",
+    "AutoScript",
+    "AutomationAction",
+    "AutomationCondition",
+    "AutomationDestination",
+    "AutomationStitch",
+    "AutomationTrigger",
+    "CentralManagement",
+    "CloudService",
+    "Console",
+    "Csf",
+    "CustomLanguage",
+    "Ddns",
+    "DedicatedMgmt",
+    "DeviceUpgrade",
+    "DeviceUpgradeExemptions",
+    "Dns",
+    "Dns64",
+    "DnsDatabase",
+    "DnsServer",
+    "DscpBasedPriority",
+    "EmailServer",
+    "Evpn",
+    "ExternalResource",
+    "FabricVpn",
+    "FederatedUpgrade",
+    "FipsCc",
+    "Fortiguard",
+    "Fortisandbox",
+    "FssoPolling",
+    "FtmPush",
+    "Geneve",
+    "GeoipCountry",
+    "GeoipOverride",
+    "Global",
+    "GreTunnel",
+    "Ha",
+    "HaMonitor",
+    "HealthCheckFortiguard",
+    "Ike",
+    "Interface",
+    "Ipam",
+    "IpipTunnel",
+    "Ips",
+    "IpsUrlfilterDns",
+    "IpsUrlfilterDns6",
+    "IpsecAggregate",
+    "Ipv6NeighborCache",
+    "Ipv6Tunnel",
+    "LinkMonitor",
+    "LteModem",
+    "MacAddressTable",
+    "MobileTunnel",
+    "Modem",
+    "NdProxy",
+    "Netflow",
+    "NetworkVisibility",
+    "NgfwSettings",
+    "Np6xlite",
+    "Npu",
+    "Ntp",
+    "ObjectTagging",
+    "PasswordPolicy",
+    "PasswordPolicyGuestAdmin",
+    "PcpServer",
+    "PhysicalSwitch",
+    "PppoeInterface",
+    "ProbeResponse",
+    "ProxyArp",
+    "Ptp",
+    "ReplacemsgGroup",
+    "ReplacemsgImage",
+    "ResourceLimits",
+    "Saml",
+    "SdnConnector",
+    "SdnProxy",
+    "SdnVpn",
+    "Sdwan",
+    "SessionHelper",
+    "SessionTtl",
+    "Settings",
+    "Sflow",
+    "SitTunnel",
+    "SmsServer",
+    "SovSase",
+    "SpeedTestSchedule",
+    "SpeedTestServer",
+    "SpeedTestSetting",
+    "SshConfig",
+    "SsoAdmin",
+    "SsoForticloudAdmin",
+    "SsoFortigateCloudAdmin",
+    "StandaloneCluster",
+    "Storage",
+    "Stp",
+    "SwitchInterface",
+    "Timezone",
+    "TosBasedPriority",
+    "Vdom",
+    "VdomDns",
+    "VdomException",
+    "VdomLink",
+    "VdomNetflow",
+    "VdomProperty",
+    "VdomRadiusServer",
+    "VdomSflow",
+    "VirtualSwitch",
+    "VirtualWirePair",
+    "VneInterface",
+    "Vxlan",
+    "Wccp",
+    "Zone",
+    "System",
+]
+
 
 class System:
-    """Type stub for System."""
-
+    """SYSTEM API category.
+    
+    All endpoints return FortiObject instances with:
+    - Attribute access: response.field
+    - Dictionary access: response["field"]
+    - Convert to dict: response.dict or response.json
+    """
+    
     autoupdate: Autoupdate
     dhcp: Dhcp
     dhcp6: Dhcp6
@@ -270,4 +401,6 @@ class System:
     wccp: Wccp
     zone: Zone
 
-    def __init__(self, client: IHTTPClient) -> None: ...
+    def __init__(self, client: IHTTPClient, vdom: str | None = None) -> None:
+        """Initialize system category with HTTP client."""
+        ...

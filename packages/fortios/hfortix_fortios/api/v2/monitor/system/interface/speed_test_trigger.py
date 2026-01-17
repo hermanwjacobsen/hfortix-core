@@ -151,8 +151,7 @@ class SpeedTestTrigger(CRUDEndpoint, MetadataMixin):
 
         endpoint = "/system/interface/speed-test-trigger"
         return self._client.post(
-            "monitor", endpoint, data=payload_data, vdom=vdom
-        )
+            "monitor", endpoint, data=payload_data, vdom=vdom        )
 
 
 

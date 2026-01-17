@@ -166,8 +166,7 @@ class WakeOnLan(CRUDEndpoint, MetadataMixin):
 
         endpoint = "/system/interface/wake-on-lan"
         return self._client.post(
-            "monitor", endpoint, data=payload_data, vdom=vdom
-        )
+            "monitor", endpoint, data=payload_data, vdom=vdom        )
 
 
 

@@ -47,6 +47,7 @@ from hfortix_fortios._helpers import (
     build_cmdb_payload,  # Keep for backward compatibility / manual usage
     is_success,
     quote_path_param,  # URL encoding for path parameters
+    normalize_table_field,  # For table field normalization
 )
 # Import metadata mixin for schema introspection
 from hfortix_fortios._helpers.metadata_mixin import MetadataMixin
@@ -59,6 +60,58 @@ class LocalInPolicy(CRUDEndpoint, MetadataMixin):
     
     # Configure metadata mixin to use this endpoint's helper module
     _helper_module_name = "local_in_policy"
+    
+    # ========================================================================
+    # Table Fields Metadata (for normalization)
+    # Auto-generated from schema - supports flexible input formats
+    # ========================================================================
+    _TABLE_FIELDS = {
+        "intf": {
+            "mkey": "name",
+            "required_fields": ['name'],
+            "example": "[{'name': 'value'}]",
+        },
+        "srcaddr": {
+            "mkey": "name",
+            "required_fields": ['name'],
+            "example": "[{'name': 'value'}]",
+        },
+        "dstaddr": {
+            "mkey": "name",
+            "required_fields": ['name'],
+            "example": "[{'name': 'value'}]",
+        },
+        "internet_service_src_name": {
+            "mkey": "name",
+            "required_fields": ['name'],
+            "example": "[{'name': 'value'}]",
+        },
+        "internet_service_src_group": {
+            "mkey": "name",
+            "required_fields": ['name'],
+            "example": "[{'name': 'value'}]",
+        },
+        "internet_service_src_custom": {
+            "mkey": "name",
+            "required_fields": ['name'],
+            "example": "[{'name': 'value'}]",
+        },
+        "internet_service_src_custom_group": {
+            "mkey": "name",
+            "required_fields": ['name'],
+            "example": "[{'name': 'value'}]",
+        },
+        "internet_service_src_fortiguard": {
+            "mkey": "name",
+            "required_fields": ['name'],
+            "example": "[{'name': 'value'}]",
+        },
+        "service": {
+            "mkey": "name",
+            "required_fields": ['name'],
+            "example": "[{'name': 'value'}]",
+        },
+    }
     
     # ========================================================================
     # Capabilities (from schema metadata)
@@ -273,18 +326,63 @@ class LocalInPolicy(CRUDEndpoint, MetadataMixin):
             uuid: Universally Unique Identifier (UUID; automatically assigned but can be manually reset).
             ha_mgmt_intf_only: Enable/disable dedicating the HA management interface only for local-in policy.
             intf: Incoming interface name from available options.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
             srcaddr: Source address object from available options.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
             srcaddr_negate: When enabled srcaddr specifies what the source address must NOT be.
             dstaddr: Destination address object from available options.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
             internet_service_src: Enable/disable use of Internet Services in source for this local-in policy. If enabled, source address is not used.
             internet_service_src_name: Internet Service source name.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
             internet_service_src_group: Internet Service source group name.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
             internet_service_src_custom: Custom Internet Service source name.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
             internet_service_src_custom_group: Custom Internet Service source group name.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
             internet_service_src_fortiguard: FortiGuard Internet Service source name.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
             dstaddr_negate: When enabled dstaddr specifies what the destination address must NOT be.
             action: Action performed on traffic matching the policy (default = deny).
             service: Service object from available options.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
             service_negate: When enabled service specifies what the service must NOT be.
             internet_service_src_negate: When enabled internet-service-src specifies what the service must NOT be.
             schedule: Schedule object from available options.
@@ -320,6 +418,80 @@ class LocalInPolicy(CRUDEndpoint, MetadataMixin):
             - post(): Create new object
             - set(): Intelligent create or update
         """
+        # Apply normalization for table fields (supports flexible input formats)
+        if intf is not None:
+            intf = normalize_table_field(
+                intf,
+                mkey="name",
+                required_fields=['name'],
+                field_name="intf",
+                example="[{'name': 'value'}]",
+            )
+        if srcaddr is not None:
+            srcaddr = normalize_table_field(
+                srcaddr,
+                mkey="name",
+                required_fields=['name'],
+                field_name="srcaddr",
+                example="[{'name': 'value'}]",
+            )
+        if dstaddr is not None:
+            dstaddr = normalize_table_field(
+                dstaddr,
+                mkey="name",
+                required_fields=['name'],
+                field_name="dstaddr",
+                example="[{'name': 'value'}]",
+            )
+        if internet_service_src_name is not None:
+            internet_service_src_name = normalize_table_field(
+                internet_service_src_name,
+                mkey="name",
+                required_fields=['name'],
+                field_name="internet_service_src_name",
+                example="[{'name': 'value'}]",
+            )
+        if internet_service_src_group is not None:
+            internet_service_src_group = normalize_table_field(
+                internet_service_src_group,
+                mkey="name",
+                required_fields=['name'],
+                field_name="internet_service_src_group",
+                example="[{'name': 'value'}]",
+            )
+        if internet_service_src_custom is not None:
+            internet_service_src_custom = normalize_table_field(
+                internet_service_src_custom,
+                mkey="name",
+                required_fields=['name'],
+                field_name="internet_service_src_custom",
+                example="[{'name': 'value'}]",
+            )
+        if internet_service_src_custom_group is not None:
+            internet_service_src_custom_group = normalize_table_field(
+                internet_service_src_custom_group,
+                mkey="name",
+                required_fields=['name'],
+                field_name="internet_service_src_custom_group",
+                example="[{'name': 'value'}]",
+            )
+        if internet_service_src_fortiguard is not None:
+            internet_service_src_fortiguard = normalize_table_field(
+                internet_service_src_fortiguard,
+                mkey="name",
+                required_fields=['name'],
+                field_name="internet_service_src_fortiguard",
+                example="[{'name': 'value'}]",
+            )
+        if service is not None:
+            service = normalize_table_field(
+                service,
+                mkey="name",
+                required_fields=['name'],
+                field_name="service",
+                example="[{'name': 'value'}]",
+            )
+        
         # Build payload using helper function with auto-normalization
         # This automatically converts strings/lists to [{'name': '...'}] format for list fields
         # To disable auto-normalization, use build_cmdb_payload directly
@@ -377,8 +549,7 @@ class LocalInPolicy(CRUDEndpoint, MetadataMixin):
             params["scope"] = q_scope
         
         return self._client.put(
-            "cmdb", endpoint, data=payload_data, params=params, vdom=vdom
-        )
+            "cmdb", endpoint, data=payload_data, params=params, vdom=vdom        )
 
     # ========================================================================
     # POST Method
@@ -429,18 +600,63 @@ class LocalInPolicy(CRUDEndpoint, MetadataMixin):
             uuid: Universally Unique Identifier (UUID; automatically assigned but can be manually reset).
             ha_mgmt_intf_only: Enable/disable dedicating the HA management interface only for local-in policy.
             intf: Incoming interface name from available options.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
             srcaddr: Source address object from available options.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
             srcaddr_negate: When enabled srcaddr specifies what the source address must NOT be.
             dstaddr: Destination address object from available options.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
             internet_service_src: Enable/disable use of Internet Services in source for this local-in policy. If enabled, source address is not used.
             internet_service_src_name: Internet Service source name.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
             internet_service_src_group: Internet Service source group name.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
             internet_service_src_custom: Custom Internet Service source name.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
             internet_service_src_custom_group: Custom Internet Service source group name.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
             internet_service_src_fortiguard: FortiGuard Internet Service source name.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
             dstaddr_negate: When enabled dstaddr specifies what the destination address must NOT be.
             action: Action performed on traffic matching the policy (default = deny).
             service: Service object from available options.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
             service_negate: When enabled service specifies what the service must NOT be.
             internet_service_src_negate: When enabled internet-service-src specifies what the service must NOT be.
             schedule: Schedule object from available options.
@@ -478,6 +694,80 @@ class LocalInPolicy(CRUDEndpoint, MetadataMixin):
             - put(): Update existing object
             - set(): Intelligent create or update
         """
+        # Apply normalization for table fields (supports flexible input formats)
+        if intf is not None:
+            intf = normalize_table_field(
+                intf,
+                mkey="name",
+                required_fields=['name'],
+                field_name="intf",
+                example="[{'name': 'value'}]",
+            )
+        if srcaddr is not None:
+            srcaddr = normalize_table_field(
+                srcaddr,
+                mkey="name",
+                required_fields=['name'],
+                field_name="srcaddr",
+                example="[{'name': 'value'}]",
+            )
+        if dstaddr is not None:
+            dstaddr = normalize_table_field(
+                dstaddr,
+                mkey="name",
+                required_fields=['name'],
+                field_name="dstaddr",
+                example="[{'name': 'value'}]",
+            )
+        if internet_service_src_name is not None:
+            internet_service_src_name = normalize_table_field(
+                internet_service_src_name,
+                mkey="name",
+                required_fields=['name'],
+                field_name="internet_service_src_name",
+                example="[{'name': 'value'}]",
+            )
+        if internet_service_src_group is not None:
+            internet_service_src_group = normalize_table_field(
+                internet_service_src_group,
+                mkey="name",
+                required_fields=['name'],
+                field_name="internet_service_src_group",
+                example="[{'name': 'value'}]",
+            )
+        if internet_service_src_custom is not None:
+            internet_service_src_custom = normalize_table_field(
+                internet_service_src_custom,
+                mkey="name",
+                required_fields=['name'],
+                field_name="internet_service_src_custom",
+                example="[{'name': 'value'}]",
+            )
+        if internet_service_src_custom_group is not None:
+            internet_service_src_custom_group = normalize_table_field(
+                internet_service_src_custom_group,
+                mkey="name",
+                required_fields=['name'],
+                field_name="internet_service_src_custom_group",
+                example="[{'name': 'value'}]",
+            )
+        if internet_service_src_fortiguard is not None:
+            internet_service_src_fortiguard = normalize_table_field(
+                internet_service_src_fortiguard,
+                mkey="name",
+                required_fields=['name'],
+                field_name="internet_service_src_fortiguard",
+                example="[{'name': 'value'}]",
+            )
+        if service is not None:
+            service = normalize_table_field(
+                service,
+                mkey="name",
+                required_fields=['name'],
+                field_name="service",
+                example="[{'name': 'value'}]",
+            )
+        
         # Build payload using helper function with auto-normalization
         # This automatically converts strings/lists to [{'name': '...'}] format for list fields
         # To disable auto-normalization, use build_cmdb_payload directly
@@ -530,8 +820,7 @@ class LocalInPolicy(CRUDEndpoint, MetadataMixin):
             params["scope"] = q_scope
         
         return self._client.post(
-            "cmdb", endpoint, data=payload_data, params=params, vdom=vdom
-        )
+            "cmdb", endpoint, data=payload_data, params=params, vdom=vdom        )
 
     # ========================================================================
     # DELETE Method
@@ -585,8 +874,7 @@ class LocalInPolicy(CRUDEndpoint, MetadataMixin):
             params["scope"] = q_scope
         
         return self._client.delete(
-            "cmdb", endpoint, params=params, vdom=vdom
-        )
+            "cmdb", endpoint, params=params, vdom=vdom        )
 
     def exists(
         self,

@@ -50,10 +50,45 @@ if TYPE_CHECKING:
     from .shaper import Shaper
     from .ztna_firewall_policy import ZtnaFirewallPolicy
 
+__all__ = [
+    "Address6Dynamic",
+    "AddressDynamic",
+    "AddressFqdns",
+    "AddressFqdns6",
+    "CheckAddrgrpExcludeMacMember",
+    "GtpRuntimeStatistics",
+    "GtpStatistics",
+    "Health",
+    "InternetServiceBasic",
+    "InternetServiceDetails",
+    "InternetServiceFqdn",
+    "InternetServiceFqdnIconIds",
+    "InternetServiceMatch",
+    "InternetServiceReputation",
+    "LoadBalance",
+    "LocalIn",
+    "LocalIn6",
+    "NetworkServiceDynamic",
+    "PolicyLookup",
+    "SaasApplication",
+    "SdnConnectorFilters",
+    "Sessions",
+    "UuidList",
+    "UuidTypeLookup",
+    "VipOverlap",
+    "Firewall",
+]
+
 
 class Firewall:
-    """Type stub for Firewall."""
-
+    """FIREWALL API category.
+    
+    All endpoints return FortiObject instances with:
+    - Attribute access: response.field
+    - Dictionary access: response["field"]
+    - Convert to dict: response.dict or response.json
+    """
+    
     acl: Acl
     acl6: Acl6
     central_snat_map: CentralSnatMap
@@ -98,4 +133,6 @@ class Firewall:
     uuid_type_lookup: UuidTypeLookup
     vip_overlap: VipOverlap
 
-    def __init__(self, client: IHTTPClient) -> None: ...
+    def __init__(self, client: IHTTPClient, vdom: str | None = None) -> None:
+        """Initialize firewall category with HTTP client."""
+        ...

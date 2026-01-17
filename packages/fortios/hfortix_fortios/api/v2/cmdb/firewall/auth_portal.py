@@ -47,6 +47,7 @@ from hfortix_fortios._helpers import (
     build_cmdb_payload,  # Keep for backward compatibility / manual usage
     is_success,
     quote_path_param,  # URL encoding for path parameters
+    normalize_table_field,  # For table field normalization
 )
 # Import metadata mixin for schema introspection
 from hfortix_fortios._helpers.metadata_mixin import MetadataMixin
@@ -59,6 +60,18 @@ class AuthPortal(CRUDEndpoint, MetadataMixin):
     
     # Configure metadata mixin to use this endpoint's helper module
     _helper_module_name = "auth_portal"
+    
+    # ========================================================================
+    # Table Fields Metadata (for normalization)
+    # Auto-generated from schema - supports flexible input formats
+    # ========================================================================
+    _TABLE_FIELDS = {
+        "groups": {
+            "mkey": "name",
+            "required_fields": ['name'],
+            "example": "[{'name': 'value'}]",
+        },
+    }
     
     # ========================================================================
     # Capabilities (from schema metadata)
@@ -247,6 +260,11 @@ class AuthPortal(CRUDEndpoint, MetadataMixin):
         Args:
             payload_dict: Object data as dict. Must include name (primary key).
             groups: Firewall user groups permitted to authenticate through this portal. Separate group names with spaces.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
             portal_addr: Address (or FQDN) of the authentication portal.
             portal_addr6: IPv6 address (or FQDN) of authentication portal.
             identity_based_route: Name of the identity-based route that applies to this portal.
@@ -279,6 +297,16 @@ class AuthPortal(CRUDEndpoint, MetadataMixin):
             - post(): Create new object
             - set(): Intelligent create or update
         """
+        # Apply normalization for table fields (supports flexible input formats)
+        if groups is not None:
+            groups = normalize_table_field(
+                groups,
+                mkey="name",
+                required_fields=['name'],
+                field_name="groups",
+                example="[{'name': 'value'}]",
+            )
+        
         # Build payload using helper function with auto-normalization
         # This automatically converts strings/lists to [{'name': '...'}] format for list fields
         # To disable auto-normalization, use build_cmdb_payload directly
@@ -316,8 +344,7 @@ class AuthPortal(CRUDEndpoint, MetadataMixin):
             params["scope"] = q_scope
         
         return self._client.put(
-            "cmdb", endpoint, data=payload_data, params=params, vdom=vdom
-        )
+            "cmdb", endpoint, data=payload_data, params=params, vdom=vdom        )
 
 
 

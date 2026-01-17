@@ -86,10 +86,92 @@ if TYPE_CHECKING:
     from .ssl import Ssl
     from .wildcard_fqdn import WildcardFqdn
 
+__all__ = [
+    "DosPolicy",
+    "DosPolicy6",
+    "AccessProxy",
+    "AccessProxy6",
+    "AccessProxySshClientCert",
+    "AccessProxyVirtualHost",
+    "Address",
+    "Address6",
+    "Address6Template",
+    "Addrgrp",
+    "Addrgrp6",
+    "AuthPortal",
+    "CentralSnatMap",
+    "City",
+    "Country",
+    "DecryptedTrafficMirror",
+    "Dnstranslation",
+    "Global",
+    "IdentityBasedRoute",
+    "InterfacePolicy",
+    "InterfacePolicy6",
+    "InternetService",
+    "InternetServiceAddition",
+    "InternetServiceAppend",
+    "InternetServiceBotnet",
+    "InternetServiceCustom",
+    "InternetServiceCustomGroup",
+    "InternetServiceDefinition",
+    "InternetServiceExtension",
+    "InternetServiceFortiguard",
+    "InternetServiceGroup",
+    "InternetServiceIpblReason",
+    "InternetServiceIpblVendor",
+    "InternetServiceList",
+    "InternetServiceName",
+    "InternetServiceOwner",
+    "InternetServiceReputation",
+    "InternetServiceSld",
+    "InternetServiceSubapp",
+    "IpTranslation",
+    "Ippool",
+    "Ippool6",
+    "LdbMonitor",
+    "LocalInPolicy",
+    "LocalInPolicy6",
+    "MulticastAddress",
+    "MulticastAddress6",
+    "MulticastPolicy",
+    "MulticastPolicy6",
+    "NetworkServiceDynamic",
+    "OnDemandSniffer",
+    "Policy",
+    "ProfileGroup",
+    "ProfileProtocolOptions",
+    "ProxyAddress",
+    "ProxyAddrgrp",
+    "ProxyPolicy",
+    "Region",
+    "SecurityPolicy",
+    "ShapingPolicy",
+    "ShapingProfile",
+    "Sniffer",
+    "SslServer",
+    "SslSshProfile",
+    "TrafficClass",
+    "TtlPolicy",
+    "VendorMac",
+    "VendorMacSummary",
+    "Vip",
+    "Vip6",
+    "Vipgrp",
+    "Vipgrp6",
+    "Firewall",
+]
+
 
 class Firewall:
-    """Type stub for Firewall."""
-
+    """FIREWALL API category.
+    
+    All endpoints return FortiObject instances with:
+    - Attribute access: response.field
+    - Dictionary access: response["field"]
+    - Convert to dict: response.dict or response.json
+    """
+    
     ipmacbinding: Ipmacbinding
     schedule: Schedule
     service: Service
@@ -170,4 +252,6 @@ class Firewall:
     vipgrp: Vipgrp
     vipgrp6: Vipgrp6
 
-    def __init__(self, client: IHTTPClient) -> None: ...
+    def __init__(self, client: IHTTPClient, vdom: str | None = None) -> None:
+        """Initialize firewall category with HTTP client."""
+        ...

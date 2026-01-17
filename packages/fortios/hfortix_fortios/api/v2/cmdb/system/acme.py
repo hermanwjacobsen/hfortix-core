@@ -47,6 +47,7 @@ from hfortix_fortios._helpers import (
     build_cmdb_payload,  # Keep for backward compatibility / manual usage
     is_success,
     quote_path_param,  # URL encoding for path parameters
+    normalize_table_field,  # For table field normalization
 )
 # Import metadata mixin for schema introspection
 from hfortix_fortios._helpers.metadata_mixin import MetadataMixin
@@ -59,6 +60,23 @@ class Acme(CRUDEndpoint, MetadataMixin):
     
     # Configure metadata mixin to use this endpoint's helper module
     _helper_module_name = "acme"
+    
+    # ========================================================================
+    # Table Fields Metadata (for normalization)
+    # Auto-generated from schema - supports flexible input formats
+    # ========================================================================
+    _TABLE_FIELDS = {
+        "interface": {
+            "mkey": "interface-name",
+            "required_fields": ['interface-name'],
+            "example": "[{'interface-name': 'value'}]",
+        },
+        "accounts": {
+            "mkey": "id",
+            "required_fields": ['status', 'url', 'ca_url', 'email', 'privatekey'],
+            "example": "[{'status': 'value', 'url': 'value', 'ca_url': 'value', 'email': 'value', 'privatekey': 'value'}]",
+        },
+    }
     
     # ========================================================================
     # Capabilities (from schema metadata)
@@ -249,10 +267,18 @@ class Acme(CRUDEndpoint, MetadataMixin):
         Args:
             payload_dict: Object data as dict. Must include name (primary key).
             interface: Interface(s) on which the ACME client will listen for challenges.
+                Default format: [{'interface-name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'interface-name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'interface-name': 'val1'}, ...]
+                  - List of dicts: [{'interface-name': 'value'}] (recommended)
             use_ha_direct: Enable the use of 'ha-mgmt' interface to connect to the ACME server when 'ha-direct' is enabled in HA configuration
             source_ip: Source IPv4 address used to connect to the ACME server.
             source_ip6: Source IPv6 address used to connect to the ACME server.
             accounts: ACME accounts list.
+                Default format: [{'status': 'value', 'url': 'value', 'ca_url': 'value', 'email': 'value', 'privatekey': 'value'}]
+                Required format: List of dicts with keys: status, url, ca_url, email, privatekey
+                  (String format not allowed due to multiple required fields)
             acc_details: Print Account information and decrypted key.
             status: Print information about the current status of the acme client.
             vdom: Virtual domain name.
@@ -283,6 +309,24 @@ class Acme(CRUDEndpoint, MetadataMixin):
             - post(): Create new object
             - set(): Intelligent create or update
         """
+        # Apply normalization for table fields (supports flexible input formats)
+        if interface is not None:
+            interface = normalize_table_field(
+                interface,
+                mkey="interface-name",
+                required_fields=['interface-name'],
+                field_name="interface",
+                example="[{'interface-name': 'value'}]",
+            )
+        if accounts is not None:
+            accounts = normalize_table_field(
+                accounts,
+                mkey="id",
+                required_fields=['status', 'url', 'ca_url', 'email', 'privatekey'],
+                field_name="accounts",
+                example="[{'status': 'value', 'url': 'value', 'ca_url': 'value', 'email': 'value', 'privatekey': 'value'}]",
+            )
+        
         # Build payload using helper function with auto-normalization
         # This automatically converts strings/lists to [{'name': '...'}] format for list fields
         # To disable auto-normalization, use build_cmdb_payload directly
@@ -322,8 +366,7 @@ class Acme(CRUDEndpoint, MetadataMixin):
             params["scope"] = q_scope
         
         return self._client.put(
-            "cmdb", endpoint, data=payload_data, params=params, vdom=vdom
-        )
+            "cmdb", endpoint, data=payload_data, params=params, vdom=vdom        )
 
 
 

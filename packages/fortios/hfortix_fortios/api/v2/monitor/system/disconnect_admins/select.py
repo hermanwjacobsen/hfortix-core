@@ -157,8 +157,7 @@ class Select(CRUDEndpoint, MetadataMixin):
 
         endpoint = "/system/disconnect-admins/select"
         return self._client.post(
-            "monitor", endpoint, data=payload_data, vdom=vdom
-        )
+            "monitor", endpoint, data=payload_data, vdom=vdom        )
 
 
 

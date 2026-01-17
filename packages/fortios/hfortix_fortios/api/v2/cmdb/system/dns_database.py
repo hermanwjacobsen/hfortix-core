@@ -47,6 +47,7 @@ from hfortix_fortios._helpers import (
     build_cmdb_payload,  # Keep for backward compatibility / manual usage
     is_success,
     quote_path_param,  # URL encoding for path parameters
+    normalize_table_field,  # For table field normalization
 )
 # Import metadata mixin for schema introspection
 from hfortix_fortios._helpers.metadata_mixin import MetadataMixin
@@ -59,6 +60,18 @@ class DnsDatabase(CRUDEndpoint, MetadataMixin):
     
     # Configure metadata mixin to use this endpoint's helper module
     _helper_module_name = "dns_database"
+    
+    # ========================================================================
+    # Table Fields Metadata (for normalization)
+    # Auto-generated from schema - supports flexible input formats
+    # ========================================================================
+    _TABLE_FIELDS = {
+        "dns_entry": {
+            "mkey": "id",
+            "required_fields": ['id', 'type', 'hostname'],
+            "example": "[{'id': 1, 'type': 'A', 'hostname': 'value'}]",
+        },
+    }
     
     # ========================================================================
     # Capabilities (from schema metadata)
@@ -285,6 +298,9 @@ class DnsDatabase(CRUDEndpoint, MetadataMixin):
             source_ip_interface: IP address of the specified interface as the source IP address.
             rr_max: Maximum number of resource records (10 - 65536, 0 means infinite).
             dns_entry: DNS entry.
+                Default format: [{'id': 1, 'type': 'A', 'hostname': 'value'}]
+                Required format: List of dicts with keys: id, type, hostname
+                  (String format not allowed due to multiple required fields)
             interface_select_method: Specify how to select outgoing interface to reach server.
             interface: Specify outgoing interface to reach server.
             vrf_select: VRF ID used for connection to server.
@@ -316,6 +332,16 @@ class DnsDatabase(CRUDEndpoint, MetadataMixin):
             - post(): Create new object
             - set(): Intelligent create or update
         """
+        # Apply normalization for table fields (supports flexible input formats)
+        if dns_entry is not None:
+            dns_entry = normalize_table_field(
+                dns_entry,
+                mkey="id",
+                required_fields=['id', 'type', 'hostname'],
+                field_name="dns_entry",
+                example="[{'id': 1, 'type': 'A', 'hostname': 'value'}]",
+            )
+        
         # Build payload using helper function with auto-normalization
         # This automatically converts strings/lists to [{'name': '...'}] format for list fields
         # To disable auto-normalization, use build_cmdb_payload directly
@@ -371,8 +397,7 @@ class DnsDatabase(CRUDEndpoint, MetadataMixin):
             params["scope"] = q_scope
         
         return self._client.put(
-            "cmdb", endpoint, data=payload_data, params=params, vdom=vdom
-        )
+            "cmdb", endpoint, data=payload_data, params=params, vdom=vdom        )
 
     # ========================================================================
     # POST Method
@@ -435,6 +460,9 @@ class DnsDatabase(CRUDEndpoint, MetadataMixin):
             source_ip_interface: IP address of the specified interface as the source IP address.
             rr_max: Maximum number of resource records (10 - 65536, 0 means infinite).
             dns_entry: DNS entry.
+                Default format: [{'id': 1, 'type': 'A', 'hostname': 'value'}]
+                Required format: List of dicts with keys: id, type, hostname
+                  (String format not allowed due to multiple required fields)
             interface_select_method: Specify how to select outgoing interface to reach server.
             interface: Specify outgoing interface to reach server.
             vrf_select: VRF ID used for connection to server.
@@ -468,6 +496,16 @@ class DnsDatabase(CRUDEndpoint, MetadataMixin):
             - put(): Update existing object
             - set(): Intelligent create or update
         """
+        # Apply normalization for table fields (supports flexible input formats)
+        if dns_entry is not None:
+            dns_entry = normalize_table_field(
+                dns_entry,
+                mkey="id",
+                required_fields=['id', 'type', 'hostname'],
+                field_name="dns_entry",
+                example="[{'id': 1, 'type': 'A', 'hostname': 'value'}]",
+            )
+        
         # Build payload using helper function with auto-normalization
         # This automatically converts strings/lists to [{'name': '...'}] format for list fields
         # To disable auto-normalization, use build_cmdb_payload directly
@@ -518,8 +556,7 @@ class DnsDatabase(CRUDEndpoint, MetadataMixin):
             params["scope"] = q_scope
         
         return self._client.post(
-            "cmdb", endpoint, data=payload_data, params=params, vdom=vdom
-        )
+            "cmdb", endpoint, data=payload_data, params=params, vdom=vdom        )
 
     # ========================================================================
     # DELETE Method
@@ -573,8 +610,7 @@ class DnsDatabase(CRUDEndpoint, MetadataMixin):
             params["scope"] = q_scope
         
         return self._client.delete(
-            "cmdb", endpoint, params=params, vdom=vdom
-        )
+            "cmdb", endpoint, params=params, vdom=vdom        )
 
     def exists(
         self,

@@ -47,6 +47,7 @@ from hfortix_fortios._helpers import (
     build_cmdb_payload,  # Keep for backward compatibility / manual usage
     is_success,
     quote_path_param,  # URL encoding for path parameters
+    normalize_table_field,  # For table field normalization
 )
 # Import metadata mixin for schema introspection
 from hfortix_fortios._helpers.metadata_mixin import MetadataMixin
@@ -59,6 +60,18 @@ class InternetServiceDefinition(CRUDEndpoint, MetadataMixin):
     
     # Configure metadata mixin to use this endpoint's helper module
     _helper_module_name = "internet_service_definition"
+    
+    # ========================================================================
+    # Table Fields Metadata (for normalization)
+    # Auto-generated from schema - supports flexible input formats
+    # ========================================================================
+    _TABLE_FIELDS = {
+        "entry": {
+            "mkey": "seq-num",
+            "required_fields": ['seq-num'],
+            "example": "[{'seq-num': 1}]",
+        },
+    }
     
     # ========================================================================
     # Capabilities (from schema metadata)
@@ -250,6 +263,11 @@ class InternetServiceDefinition(CRUDEndpoint, MetadataMixin):
             payload_dict: Object data as dict. Must include id (primary key).
             id: Internet Service application list ID.
             entry: Protocol and port information in an Internet Service entry.
+                Default format: [{'seq-num': 1}]
+                Supported formats:
+                  - Single string: "value" → [{'seq-num': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'seq-num': 'val1'}, ...]
+                  - List of dicts: [{'seq-num': 1}] (recommended)
             vdom: Virtual domain name.
             error_mode: Override client-level error_mode. "raise" raises exceptions, "return" returns error dict, "print" prints errors.
             error_format: Override client-level error_format. "detailed" provides full context, "simple" is concise, "code_only" returns just status code.
@@ -278,6 +296,16 @@ class InternetServiceDefinition(CRUDEndpoint, MetadataMixin):
             - post(): Create new object
             - set(): Intelligent create or update
         """
+        # Apply normalization for table fields (supports flexible input formats)
+        if entry is not None:
+            entry = normalize_table_field(
+                entry,
+                mkey="seq-num",
+                required_fields=['seq-num'],
+                field_name="entry",
+                example="[{'seq-num': 1}]",
+            )
+        
         # Build payload using helper function with auto-normalization
         # This automatically converts strings/lists to [{'name': '...'}] format for list fields
         # To disable auto-normalization, use build_cmdb_payload directly
@@ -314,8 +342,7 @@ class InternetServiceDefinition(CRUDEndpoint, MetadataMixin):
             params["scope"] = q_scope
         
         return self._client.put(
-            "cmdb", endpoint, data=payload_data, params=params, vdom=vdom
-        )
+            "cmdb", endpoint, data=payload_data, params=params, vdom=vdom        )
 
     # ========================================================================
     # POST Method
@@ -343,6 +370,11 @@ class InternetServiceDefinition(CRUDEndpoint, MetadataMixin):
             payload_dict: Complete object data as dict. Alternative to individual parameters.
             id: Internet Service application list ID.
             entry: Protocol and port information in an Internet Service entry.
+                Default format: [{'seq-num': 1}]
+                Supported formats:
+                  - Single string: "value" → [{'seq-num': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'seq-num': 'val1'}, ...]
+                  - List of dicts: [{'seq-num': 1}] (recommended)
             vdom: Virtual domain name. Use True for global, string for specific VDOM.
             error_mode: Override client-level error_mode. "raise" raises exceptions, "return" returns error dict, "print" prints errors.
             error_format: Override client-level error_format. "detailed" provides full context, "simple" is concise, "code_only" returns just status code.
@@ -373,6 +405,16 @@ class InternetServiceDefinition(CRUDEndpoint, MetadataMixin):
             - put(): Update existing object
             - set(): Intelligent create or update
         """
+        # Apply normalization for table fields (supports flexible input formats)
+        if entry is not None:
+            entry = normalize_table_field(
+                entry,
+                mkey="seq-num",
+                required_fields=['seq-num'],
+                field_name="entry",
+                example="[{'seq-num': 1}]",
+            )
+        
         # Build payload using helper function with auto-normalization
         # This automatically converts strings/lists to [{'name': '...'}] format for list fields
         # To disable auto-normalization, use build_cmdb_payload directly
@@ -404,8 +446,7 @@ class InternetServiceDefinition(CRUDEndpoint, MetadataMixin):
             params["scope"] = q_scope
         
         return self._client.post(
-            "cmdb", endpoint, data=payload_data, params=params, vdom=vdom
-        )
+            "cmdb", endpoint, data=payload_data, params=params, vdom=vdom        )
 
     # ========================================================================
     # DELETE Method
@@ -459,8 +500,7 @@ class InternetServiceDefinition(CRUDEndpoint, MetadataMixin):
             params["scope"] = q_scope
         
         return self._client.delete(
-            "cmdb", endpoint, params=params, vdom=vdom
-        )
+            "cmdb", endpoint, params=params, vdom=vdom        )
 
     def exists(
         self,

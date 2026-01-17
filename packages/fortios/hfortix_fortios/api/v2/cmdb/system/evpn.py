@@ -47,6 +47,7 @@ from hfortix_fortios._helpers import (
     build_cmdb_payload,  # Keep for backward compatibility / manual usage
     is_success,
     quote_path_param,  # URL encoding for path parameters
+    normalize_table_field,  # For table field normalization
 )
 # Import metadata mixin for schema introspection
 from hfortix_fortios._helpers.metadata_mixin import MetadataMixin
@@ -59,6 +60,23 @@ class Evpn(CRUDEndpoint, MetadataMixin):
     
     # Configure metadata mixin to use this endpoint's helper module
     _helper_module_name = "evpn"
+    
+    # ========================================================================
+    # Table Fields Metadata (for normalization)
+    # Auto-generated from schema - supports flexible input formats
+    # ========================================================================
+    _TABLE_FIELDS = {
+        "import_rt": {
+            "mkey": "route-target",
+            "required_fields": ['route-target'],
+            "example": "[{'route-target': 'value'}]",
+        },
+        "export_rt": {
+            "mkey": "route-target",
+            "required_fields": ['route-target'],
+            "example": "[{'route-target': 'value'}]",
+        },
+    }
     
     # ========================================================================
     # Capabilities (from schema metadata)
@@ -255,7 +273,17 @@ class Evpn(CRUDEndpoint, MetadataMixin):
             id: ID.
             rd: Route Distinguisher: AA:NN|A.B.C.D:NN.
             import_rt: List of import route targets.
+                Default format: [{'route-target': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'route-target': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'route-target': 'val1'}, ...]
+                  - List of dicts: [{'route-target': 'value'}] (recommended)
             export_rt: List of export route targets.
+                Default format: [{'route-target': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'route-target': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'route-target': 'val1'}, ...]
+                  - List of dicts: [{'route-target': 'value'}] (recommended)
             ip_local_learning: Enable/disable IP address local learning.
             arp_suppression: Enable/disable ARP suppression.
             vdom: Virtual domain name.
@@ -286,6 +314,24 @@ class Evpn(CRUDEndpoint, MetadataMixin):
             - post(): Create new object
             - set(): Intelligent create or update
         """
+        # Apply normalization for table fields (supports flexible input formats)
+        if import_rt is not None:
+            import_rt = normalize_table_field(
+                import_rt,
+                mkey="route-target",
+                required_fields=['route-target'],
+                field_name="import_rt",
+                example="[{'route-target': 'value'}]",
+            )
+        if export_rt is not None:
+            export_rt = normalize_table_field(
+                export_rt,
+                mkey="route-target",
+                required_fields=['route-target'],
+                field_name="export_rt",
+                example="[{'route-target': 'value'}]",
+            )
+        
         # Build payload using helper function with auto-normalization
         # This automatically converts strings/lists to [{'name': '...'}] format for list fields
         # To disable auto-normalization, use build_cmdb_payload directly
@@ -326,8 +372,7 @@ class Evpn(CRUDEndpoint, MetadataMixin):
             params["scope"] = q_scope
         
         return self._client.put(
-            "cmdb", endpoint, data=payload_data, params=params, vdom=vdom
-        )
+            "cmdb", endpoint, data=payload_data, params=params, vdom=vdom        )
 
     # ========================================================================
     # POST Method
@@ -360,7 +405,17 @@ class Evpn(CRUDEndpoint, MetadataMixin):
             id: ID.
             rd: Route Distinguisher: AA:NN|A.B.C.D:NN.
             import_rt: List of import route targets.
+                Default format: [{'route-target': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'route-target': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'route-target': 'val1'}, ...]
+                  - List of dicts: [{'route-target': 'value'}] (recommended)
             export_rt: List of export route targets.
+                Default format: [{'route-target': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'route-target': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'route-target': 'val1'}, ...]
+                  - List of dicts: [{'route-target': 'value'}] (recommended)
             ip_local_learning: Enable/disable IP address local learning.
             arp_suppression: Enable/disable ARP suppression.
             vdom: Virtual domain name. Use True for global, string for specific VDOM.
@@ -393,6 +448,24 @@ class Evpn(CRUDEndpoint, MetadataMixin):
             - put(): Update existing object
             - set(): Intelligent create or update
         """
+        # Apply normalization for table fields (supports flexible input formats)
+        if import_rt is not None:
+            import_rt = normalize_table_field(
+                import_rt,
+                mkey="route-target",
+                required_fields=['route-target'],
+                field_name="import_rt",
+                example="[{'route-target': 'value'}]",
+            )
+        if export_rt is not None:
+            export_rt = normalize_table_field(
+                export_rt,
+                mkey="route-target",
+                required_fields=['route-target'],
+                field_name="export_rt",
+                example="[{'route-target': 'value'}]",
+            )
+        
         # Build payload using helper function with auto-normalization
         # This automatically converts strings/lists to [{'name': '...'}] format for list fields
         # To disable auto-normalization, use build_cmdb_payload directly
@@ -428,8 +501,7 @@ class Evpn(CRUDEndpoint, MetadataMixin):
             params["scope"] = q_scope
         
         return self._client.post(
-            "cmdb", endpoint, data=payload_data, params=params, vdom=vdom
-        )
+            "cmdb", endpoint, data=payload_data, params=params, vdom=vdom        )
 
     # ========================================================================
     # DELETE Method
@@ -483,8 +555,7 @@ class Evpn(CRUDEndpoint, MetadataMixin):
             params["scope"] = q_scope
         
         return self._client.delete(
-            "cmdb", endpoint, params=params, vdom=vdom
-        )
+            "cmdb", endpoint, params=params, vdom=vdom        )
 
     def exists(
         self,

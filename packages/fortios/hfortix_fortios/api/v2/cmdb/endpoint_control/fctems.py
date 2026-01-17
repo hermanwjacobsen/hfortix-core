@@ -90,7 +90,6 @@ class Fctems(CRUDEndpoint, MetadataMixin):
         count: int | None = None,
         start: int | None = None,
         payload_dict: dict[str, Any] | None = None,
-        vdom: str | bool | None = None,
         error_mode: Literal["raise", "return", "print"] | None = None,
         error_format: Literal["detailed", "simple", "code_only"] | None = None,
     ):  # type: ignore[no-untyped-def]
@@ -117,7 +116,6 @@ class Fctems(CRUDEndpoint, MetadataMixin):
                 - scope (str): Query scope - "global", "vdom", or "both"
                 - action (str): Special actions - "schema", "default"
                 See FortiOS REST API documentation for complete list.
-            vdom: Virtual domain name. Use True for global, string for specific VDOM, None for default.
             error_mode: Override client-level error_mode. "raise" raises exceptions, "return" returns error dict, "print" prints errors.
             error_format: Override client-level error_format. "detailed" provides full context, "simple" is concise, "code_only" returns just status code.
 
@@ -182,12 +180,11 @@ class Fctems(CRUDEndpoint, MetadataMixin):
             unwrap_single = False
         
         return self._client.get(
-            "cmdb", endpoint, params=params, vdom=vdom, unwrap_single=unwrap_single
+            "cmdb", endpoint, params=params, vdom=False, unwrap_single=unwrap_single
         )
 
     def get_schema(
         self,
-        vdom: str | None = None,
         format: str = "schema",
     ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """
@@ -201,7 +198,6 @@ class Fctems(CRUDEndpoint, MetadataMixin):
         vary between FortiOS versions.
         
         Args:
-            vdom: Virtual domain. None uses default VDOM.
             format: Schema format - "schema" (FortiOS native) or "json-schema" (JSON Schema standard).
                 Defaults to "schema".
                 
@@ -220,7 +216,7 @@ class Fctems(CRUDEndpoint, MetadataMixin):
             Not all endpoints support all schema formats. The "schema" format
             is most widely supported.
         """
-        return self.get(action=format, vdom=vdom)
+        return self.get(action=format)
 
 
     # ========================================================================
@@ -259,7 +255,6 @@ class Fctems(CRUDEndpoint, MetadataMixin):
         q_before: str | None = None,
         q_after: str | None = None,
         q_scope: str | None = None,
-        vdom: str | bool | None = None,
         error_mode: Literal["raise", "return", "print"] | None = None,
         error_format: Literal["detailed", "simple", "code_only"] | None = None,
     ):  # type: ignore[no-untyped-def]
@@ -294,7 +289,6 @@ class Fctems(CRUDEndpoint, MetadataMixin):
             interface: Specify outgoing interface to reach server.
             trust_ca_cn: Enable/disable trust of the EMS certificate issuer(CA) and common name(CN) for certificate auto-renewal.
             verifying_ca: Lowest CA cert on Fortigate in verified EMS cert chain.
-            vdom: Virtual domain name.
             error_mode: Override client-level error_mode. "raise" raises exceptions, "return" returns error dict, "print" prints errors.
             error_format: Override client-level error_format. "detailed" provides full context, "simple" is concise, "code_only" returns just status code.
 
@@ -380,8 +374,7 @@ class Fctems(CRUDEndpoint, MetadataMixin):
             params["scope"] = q_scope
         
         return self._client.put(
-            "cmdb", endpoint, data=payload_data, params=params, vdom=vdom
-        )
+            "cmdb", endpoint, data=payload_data, params=params, vdom=False        )
 
     # ========================================================================
     # POST Method
@@ -418,7 +411,6 @@ class Fctems(CRUDEndpoint, MetadataMixin):
         q_action: Literal["clone"] | None = None,
         q_nkey: str | None = None,
         q_scope: str | None = None,
-        vdom: str | bool | None = None,
         error_mode: Literal["raise", "return", "print"] | None = None,
         error_format: Literal["detailed", "simple", "code_only"] | None = None,
     ):  # type: ignore[no-untyped-def]
@@ -453,7 +445,6 @@ class Fctems(CRUDEndpoint, MetadataMixin):
             interface: Specify outgoing interface to reach server.
             trust_ca_cn: Enable/disable trust of the EMS certificate issuer(CA) and common name(CN) for certificate auto-renewal.
             verifying_ca: Lowest CA cert on Fortigate in verified EMS cert chain.
-            vdom: Virtual domain name. Use True for global, string for specific VDOM.
             error_mode: Override client-level error_mode. "raise" raises exceptions, "return" returns error dict, "print" prints errors.
             error_format: Override client-level error_format. "detailed" provides full context, "simple" is concise, "code_only" returns just status code.
 
@@ -536,8 +527,7 @@ class Fctems(CRUDEndpoint, MetadataMixin):
             params["scope"] = q_scope
         
         return self._client.post(
-            "cmdb", endpoint, data=payload_data, params=params, vdom=vdom
-        )
+            "cmdb", endpoint, data=payload_data, params=params, vdom=False        )
 
     # ========================================================================
     # DELETE Method
@@ -548,7 +538,6 @@ class Fctems(CRUDEndpoint, MetadataMixin):
         self,
         ems_id: int | None = None,
         q_scope: str | None = None,
-        vdom: str | bool | None = None,
         error_mode: Literal["raise", "return", "print"] | None = None,
         error_format: Literal["detailed", "simple", "code_only"] | None = None,
     ):  # type: ignore[no-untyped-def]
@@ -559,7 +548,6 @@ class Fctems(CRUDEndpoint, MetadataMixin):
 
         Args:
             ems_id: Primary key identifier
-            vdom: Virtual domain name
             error_mode: Override client-level error_mode. "raise" raises exceptions, "return" returns error dict, "print" prints errors.
             error_format: Override client-level error_format. "detailed" provides full context, "simple" is concise, "code_only" returns just status code.
 
@@ -591,13 +579,11 @@ class Fctems(CRUDEndpoint, MetadataMixin):
             params["scope"] = q_scope
         
         return self._client.delete(
-            "cmdb", endpoint, params=params, vdom=vdom
-        )
+            "cmdb", endpoint, params=params, vdom=False        )
 
     def exists(
         self,
         ems_id: int,
-        vdom: str | bool | None = None,
     ) -> Union[bool, Coroutine[Any, Any, bool]]:
         """
         Check if endpoint_control/fctems object exists.
@@ -606,7 +592,6 @@ class Fctems(CRUDEndpoint, MetadataMixin):
 
         Args:
             ems_id: Primary key identifier
-            vdom: Virtual domain name
 
         Returns:
             True if object exists, False otherwise
@@ -640,7 +625,7 @@ class Fctems(CRUDEndpoint, MetadataMixin):
                 "cmdb",
                 endpoint,
                 params=None,
-                vdom=vdom,
+                vdom=False,
                 raw_json=True,
                 silent=True,
             )
@@ -686,7 +671,6 @@ class Fctems(CRUDEndpoint, MetadataMixin):
         interface: str | None = None,
         trust_ca_cn: Literal["enable", "disable"] | None = None,
         verifying_ca: str | None = None,
-        vdom: str | bool | None = None,
         error_mode: Literal["raise", "return", "print"] | None = None,
         error_format: Literal["detailed", "simple", "code_only"] | None = None,
         **kwargs: Any,
@@ -723,7 +707,6 @@ class Fctems(CRUDEndpoint, MetadataMixin):
             interface: Field interface
             trust_ca_cn: Field trust-ca-cn
             verifying_ca: Field verifying-ca
-            vdom: Virtual domain name
             **kwargs: Additional parameters passed to PUT or POST
 
         Returns:
@@ -796,12 +779,12 @@ class Fctems(CRUDEndpoint, MetadataMixin):
             raise ValueError("ems-id is required for set()")
         
         # Check if resource exists
-        if self.exists(ems_id=mkey_value, vdom=vdom):
+        if self.exists(ems_id=mkey_value):
             # Update existing resource
-            return self.put(payload_dict=payload_data, vdom=vdom, **kwargs)
+            return self.put(payload_dict=payload_data, **kwargs)
         else:
             # Create new resource
-            return self.post(payload_dict=payload_data, vdom=vdom, **kwargs)
+            return self.post(payload_dict=payload_data, **kwargs)
 
     # ========================================================================
     # Action: Move
@@ -812,7 +795,6 @@ class Fctems(CRUDEndpoint, MetadataMixin):
         ems_id: int,
         action: Literal["before", "after"],
         reference_ems_id: int,
-        vdom: str | bool | None = None,
         **kwargs: Any,
     ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """
@@ -824,7 +806,6 @@ class Fctems(CRUDEndpoint, MetadataMixin):
             ems_id: Identifier of object to move
             action: Move "before" or "after" reference object
             reference_ems_id: Identifier of reference object
-            vdom: Virtual domain name
             **kwargs: Additional parameters
             
         Returns:
@@ -845,7 +826,6 @@ class Fctems(CRUDEndpoint, MetadataMixin):
                 "ems-id": ems_id,
                 "action": "move",
                 action: reference_ems_id,
-                "vdom": vdom,
                 **kwargs,
             },
         )
@@ -858,7 +838,6 @@ class Fctems(CRUDEndpoint, MetadataMixin):
         self,
         ems_id: int,
         new_ems_id: int,
-        vdom: str | bool | None = None,
         **kwargs: Any,
     ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """
@@ -869,7 +848,6 @@ class Fctems(CRUDEndpoint, MetadataMixin):
         Args:
             ems_id: Identifier of object to clone
             new_ems_id: Identifier for the cloned object
-            vdom: Virtual domain name
             **kwargs: Additional parameters
             
         Returns:
@@ -889,7 +867,6 @@ class Fctems(CRUDEndpoint, MetadataMixin):
                 "ems-id": ems_id,
                 "new_ems-id": new_ems_id,
                 "action": "clone",
-                "vdom": vdom,
                 **kwargs,
             },
         )

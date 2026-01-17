@@ -160,8 +160,7 @@ class Disconnect(CRUDEndpoint, MetadataMixin):
 
         endpoint = "/system/ha-peer/disconnect"
         return self._client.post(
-            "monitor", endpoint, data=payload_data, vdom=vdom
-        )
+            "monitor", endpoint, data=payload_data, vdom=vdom        )
 
 
 

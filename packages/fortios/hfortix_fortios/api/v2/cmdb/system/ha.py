@@ -47,6 +47,7 @@ from hfortix_fortios._helpers import (
     build_cmdb_payload,  # Keep for backward compatibility / manual usage
     is_success,
     quote_path_param,  # URL encoding for path parameters
+    normalize_table_field,  # For table field normalization
 )
 # Import metadata mixin for schema introspection
 from hfortix_fortios._helpers.metadata_mixin import MetadataMixin
@@ -59,6 +60,38 @@ class Ha(CRUDEndpoint, MetadataMixin):
     
     # Configure metadata mixin to use this endpoint's helper module
     _helper_module_name = "ha"
+    
+    # ========================================================================
+    # Table Fields Metadata (for normalization)
+    # Auto-generated from schema - supports flexible input formats
+    # ========================================================================
+    _TABLE_FIELDS = {
+        "auto_virtual_mac_interface": {
+            "mkey": "interface-name",
+            "required_fields": ['interface-name'],
+            "example": "[{'interface-name': 'value'}]",
+        },
+        "backup_hbdev": {
+            "mkey": "name",
+            "required_fields": ['name'],
+            "example": "[{'name': 'value'}]",
+        },
+        "ha_mgmt_interfaces": {
+            "mkey": "id",
+            "required_fields": ['interface'],
+            "example": "[{'interface': 'value'}]",
+        },
+        "unicast_peers": {
+            "mkey": "id",
+            "required_fields": ['id'],
+            "example": "[{'id': 1}]",
+        },
+        "vcluster": {
+            "mkey": "vcluster-id",
+            "required_fields": ['vcluster-id'],
+            "example": "[{'vcluster-id': 1}]",
+        },
+    }
     
     # ========================================================================
     # Capabilities (from schema metadata)
@@ -330,7 +363,17 @@ class Ha(CRUDEndpoint, MetadataMixin):
             key: Key.
             hbdev: Heartbeat interfaces. Must be the same for all members.
             auto_virtual_mac_interface: The physical interface that will be assigned an auto-generated virtual MAC address.
+                Default format: [{'interface-name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'interface-name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'interface-name': 'val1'}, ...]
+                  - List of dicts: [{'interface-name': 'value'}] (recommended)
             backup_hbdev: Backup heartbeat interfaces. Must be the same for all members.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
             unicast_hb: Enable/disable unicast heartbeat.
             unicast_hb_peerip: Unicast heartbeat peer IP.
             unicast_hb_netmask: Unicast heartbeat netmask.
@@ -362,6 +405,11 @@ class Ha(CRUDEndpoint, MetadataMixin):
             standalone_mgmt_vdom: Enable/disable standalone management VDOM.
             ha_mgmt_status: Enable to reserve interfaces to manage individual cluster units.
             ha_mgmt_interfaces: Reserve interfaces to manage individual cluster units.
+                Default format: [{'interface': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'id': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'id': 'val1'}, ...]
+                  - List of dicts: [{'interface': 'value'}] (recommended)
             ha_eth_type: HA heartbeat packet Ethertype (4-digit hex).
             hc_eth_type: Transparent mode HA heartbeat packet Ethertype (4-digit hex).
             l2ep_eth_type: Telnet session HA heartbeat packet Ethertype (4-digit hex).
@@ -370,6 +418,11 @@ class Ha(CRUDEndpoint, MetadataMixin):
             unicast_status: Enable/disable unicast connection.
             unicast_gateway: Default route gateway for unicast interface.
             unicast_peers: Number of unicast peers.
+                Default format: [{'id': 1}]
+                Supported formats:
+                  - Single string: "value" → [{'id': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'id': 'val1'}, ...]
+                  - List of dicts: [{'id': 1}] (recommended)
             schedule: Type of A-A load balancing. Use none if you have external load balancers.
             weight: Weight-round-robin weight for each cluster unit. Syntax <priority> <weight>.
             cpu_threshold: Dynamic weighted load balancing CPU usage weight and high and low thresholds.
@@ -390,6 +443,11 @@ class Ha(CRUDEndpoint, MetadataMixin):
             pingserver_flip_timeout: Time to wait in minutes before renegotiating after a remote IP monitoring failover.
             vcluster_status: Enable/disable virtual cluster for virtual clustering.
             vcluster: Virtual cluster table.
+                Default format: [{'vcluster-id': 1}]
+                Supported formats:
+                  - Single string: "value" → [{'vcluster-id': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'vcluster-id': 'val1'}, ...]
+                  - List of dicts: [{'vcluster-id': 1}] (recommended)
             ha_direct: Enable/disable using ha-mgmt interface for syslog, remote authentication (RADIUS), FortiAnalyzer, FortiSandbox, sFlow, and Netflow.
             ssd_failover: Enable/disable automatic HA failover on SSD disk failure.
             memory_compatible_mode: Enable/disable memory compatible mode.
@@ -431,6 +489,48 @@ class Ha(CRUDEndpoint, MetadataMixin):
             - post(): Create new object
             - set(): Intelligent create or update
         """
+        # Apply normalization for table fields (supports flexible input formats)
+        if auto_virtual_mac_interface is not None:
+            auto_virtual_mac_interface = normalize_table_field(
+                auto_virtual_mac_interface,
+                mkey="interface-name",
+                required_fields=['interface-name'],
+                field_name="auto_virtual_mac_interface",
+                example="[{'interface-name': 'value'}]",
+            )
+        if backup_hbdev is not None:
+            backup_hbdev = normalize_table_field(
+                backup_hbdev,
+                mkey="name",
+                required_fields=['name'],
+                field_name="backup_hbdev",
+                example="[{'name': 'value'}]",
+            )
+        if ha_mgmt_interfaces is not None:
+            ha_mgmt_interfaces = normalize_table_field(
+                ha_mgmt_interfaces,
+                mkey="id",
+                required_fields=['interface'],
+                field_name="ha_mgmt_interfaces",
+                example="[{'interface': 'value'}]",
+            )
+        if unicast_peers is not None:
+            unicast_peers = normalize_table_field(
+                unicast_peers,
+                mkey="id",
+                required_fields=['id'],
+                field_name="unicast_peers",
+                example="[{'id': 1}]",
+            )
+        if vcluster is not None:
+            vcluster = normalize_table_field(
+                vcluster,
+                mkey="vcluster-id",
+                required_fields=['vcluster-id'],
+                field_name="vcluster",
+                example="[{'vcluster-id': 1}]",
+            )
+        
         # Build payload using helper function with auto-normalization
         # This automatically converts strings/lists to [{'name': '...'}] format for list fields
         # To disable auto-normalization, use build_cmdb_payload directly
@@ -544,8 +644,7 @@ class Ha(CRUDEndpoint, MetadataMixin):
             params["scope"] = q_scope
         
         return self._client.put(
-            "cmdb", endpoint, data=payload_data, params=params, vdom=vdom
-        )
+            "cmdb", endpoint, data=payload_data, params=params, vdom=vdom        )
 
 
 

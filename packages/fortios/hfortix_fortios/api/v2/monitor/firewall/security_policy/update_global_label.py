@@ -157,8 +157,7 @@ class UpdateGlobalLabel(CRUDEndpoint, MetadataMixin):
 
         endpoint = "/firewall/security-policy/update-global-label"
         return self._client.post(
-            "monitor", endpoint, data=payload_data, vdom=vdom
-        )
+            "monitor", endpoint, data=payload_data, vdom=vdom        )
 
 
 

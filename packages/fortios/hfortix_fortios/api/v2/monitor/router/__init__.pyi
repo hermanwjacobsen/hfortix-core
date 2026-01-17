@@ -18,10 +18,27 @@ if TYPE_CHECKING:
     from .ospf import Ospf
     from .sdwan import Sdwan
 
+__all__ = [
+    "Charts",
+    "Ipv4",
+    "Ipv6",
+    "LookupPolicy",
+    "Policy",
+    "Policy6",
+    "Statistics",
+    "Router",
+]
+
 
 class Router:
-    """Type stub for Router."""
-
+    """ROUTER API category.
+    
+    All endpoints return FortiObject instances with:
+    - Attribute access: response.field
+    - Dictionary access: response["field"]
+    - Convert to dict: response.dict or response.json
+    """
+    
     bgp: Bgp
     lookup: Lookup
     ospf: Ospf
@@ -34,4 +51,6 @@ class Router:
     policy6: Policy6
     statistics: Statistics
 
-    def __init__(self, client: IHTTPClient) -> None: ...
+    def __init__(self, client: IHTTPClient, vdom: str | None = None) -> None:
+        """Initialize router category with HTTP client."""
+        ...

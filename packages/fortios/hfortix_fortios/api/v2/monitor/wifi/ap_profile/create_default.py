@@ -151,8 +151,7 @@ class CreateDefault(CRUDEndpoint, MetadataMixin):
 
         endpoint = "/wifi/ap-profile/create-default"
         return self._client.post(
-            "monitor", endpoint, data=payload_data, vdom=vdom
-        )
+            "monitor", endpoint, data=payload_data, vdom=vdom        )
 
 
 

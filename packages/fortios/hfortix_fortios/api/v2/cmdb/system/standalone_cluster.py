@@ -47,6 +47,7 @@ from hfortix_fortios._helpers import (
     build_cmdb_payload,  # Keep for backward compatibility / manual usage
     is_success,
     quote_path_param,  # URL encoding for path parameters
+    normalize_table_field,  # For table field normalization
 )
 # Import metadata mixin for schema introspection
 from hfortix_fortios._helpers.metadata_mixin import MetadataMixin
@@ -59,6 +60,33 @@ class StandaloneCluster(CRUDEndpoint, MetadataMixin):
     
     # Configure metadata mixin to use this endpoint's helper module
     _helper_module_name = "standalone_cluster"
+    
+    # ========================================================================
+    # Table Fields Metadata (for normalization)
+    # Auto-generated from schema - supports flexible input formats
+    # ========================================================================
+    _TABLE_FIELDS = {
+        "cluster_peer": {
+            "mkey": "sync-id",
+            "required_fields": ['sync-id'],
+            "example": "[{'sync-id': 1}]",
+        },
+        "monitor_interface": {
+            "mkey": "name",
+            "required_fields": ['name'],
+            "example": "[{'name': 'value'}]",
+        },
+        "pingsvr_monitor_interface": {
+            "mkey": "name",
+            "required_fields": ['name'],
+            "example": "[{'name': 'value'}]",
+        },
+        "monitor_prefix": {
+            "mkey": "id",
+            "required_fields": ['id', 'vdom'],
+            "example": "[{'id': 1, 'vdom': 'value'}]",
+        },
+    }
     
     # ========================================================================
     # Capabilities (from schema metadata)
@@ -262,9 +290,27 @@ class StandaloneCluster(CRUDEndpoint, MetadataMixin):
             psksecret: Pre-shared secret for session synchronization (ASCII string or hexadecimal encoded with a leading 0x).
             asymmetric_traffic_control: Asymmetric traffic control mode.
             cluster_peer: Configure FortiGate Session Life Support Protocol (FGSP) session synchronization.
+                Default format: [{'sync-id': 1}]
+                Supported formats:
+                  - Single string: "value" → [{'sync-id': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'sync-id': 'val1'}, ...]
+                  - List of dicts: [{'sync-id': 1}] (recommended)
             monitor_interface: Configure a list of interfaces on which to monitor itself. Monitoring is performed on the status of the interface.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
             pingsvr_monitor_interface: List of pingsvr monitor interface to check for remote IP monitoring.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
             monitor_prefix: Configure a list of routing prefixes to monitor.
+                Default format: [{'id': 1, 'vdom': 'value'}]
+                Required format: List of dicts with keys: id, vdom
+                  (String format not allowed due to multiple required fields)
             helper_traffic_bounce: Enable/disable helper related traffic bounce.
             utm_traffic_bounce: Enable/disable UTM related traffic bounce.
             vdom: Virtual domain name.
@@ -295,6 +341,40 @@ class StandaloneCluster(CRUDEndpoint, MetadataMixin):
             - post(): Create new object
             - set(): Intelligent create or update
         """
+        # Apply normalization for table fields (supports flexible input formats)
+        if cluster_peer is not None:
+            cluster_peer = normalize_table_field(
+                cluster_peer,
+                mkey="sync-id",
+                required_fields=['sync-id'],
+                field_name="cluster_peer",
+                example="[{'sync-id': 1}]",
+            )
+        if monitor_interface is not None:
+            monitor_interface = normalize_table_field(
+                monitor_interface,
+                mkey="name",
+                required_fields=['name'],
+                field_name="monitor_interface",
+                example="[{'name': 'value'}]",
+            )
+        if pingsvr_monitor_interface is not None:
+            pingsvr_monitor_interface = normalize_table_field(
+                pingsvr_monitor_interface,
+                mkey="name",
+                required_fields=['name'],
+                field_name="pingsvr_monitor_interface",
+                example="[{'name': 'value'}]",
+            )
+        if monitor_prefix is not None:
+            monitor_prefix = normalize_table_field(
+                monitor_prefix,
+                mkey="id",
+                required_fields=['id', 'vdom'],
+                field_name="monitor_prefix",
+                example="[{'id': 1, 'vdom': 'value'}]",
+            )
+        
         # Build payload using helper function with auto-normalization
         # This automatically converts strings/lists to [{'name': '...'}] format for list fields
         # To disable auto-normalization, use build_cmdb_payload directly
@@ -340,8 +420,7 @@ class StandaloneCluster(CRUDEndpoint, MetadataMixin):
             params["scope"] = q_scope
         
         return self._client.put(
-            "cmdb", endpoint, data=payload_data, params=params, vdom=vdom
-        )
+            "cmdb", endpoint, data=payload_data, params=params, vdom=vdom        )
 
 
 

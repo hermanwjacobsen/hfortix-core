@@ -47,6 +47,7 @@ from hfortix_fortios._helpers import (
     build_cmdb_payload,  # Keep for backward compatibility / manual usage
     is_success,
     quote_path_param,  # URL encoding for path parameters
+    normalize_table_field,  # For table field normalization
 )
 # Import metadata mixin for schema introspection
 from hfortix_fortios._helpers.metadata_mixin import MetadataMixin
@@ -59,6 +60,43 @@ class Vap(CRUDEndpoint, MetadataMixin):
     
     # Configure metadata mixin to use this endpoint's helper module
     _helper_module_name = "vap"
+    
+    # ========================================================================
+    # Table Fields Metadata (for normalization)
+    # Auto-generated from schema - supports flexible input formats
+    # ========================================================================
+    _TABLE_FIELDS = {
+        "radius_mac_auth_usergroups": {
+            "mkey": "name",
+            "required_fields": ['name'],
+            "example": "[{'name': 'value'}]",
+        },
+        "usergroup": {
+            "mkey": "name",
+            "required_fields": ['name'],
+            "example": "[{'name': 'value'}]",
+        },
+        "selected_usergroups": {
+            "mkey": "name",
+            "required_fields": ['name'],
+            "example": "[{'name': 'value'}]",
+        },
+        "schedule": {
+            "mkey": "name",
+            "required_fields": ['name'],
+            "example": "[{'name': 'value'}]",
+        },
+        "vlan_name": {
+            "mkey": "name",
+            "required_fields": ['name'],
+            "example": "[{'name': 'value'}]",
+        },
+        "vlan_pool": {
+            "mkey": "id",
+            "required_fields": ['id'],
+            "example": "[{'id': 1}]",
+        },
+    }
     
     # ========================================================================
     # Capabilities (from schema metadata)
@@ -467,6 +505,11 @@ class Vap(CRUDEndpoint, MetadataMixin):
             radius_mac_mpsk_auth: Enable/disable RADIUS-based MAC authentication of clients for MPSK authentication (default = disable).
             radius_mac_mpsk_timeout: RADIUS MAC MPSK cache timeout interval (0 or 300 - 864000, default = 86400, 0 to disable caching).
             radius_mac_auth_usergroups: Selective user groups that are permitted for RADIUS mac authentication.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
             auth: Authentication protocol.
             encrypt: Encryption protocol to use (only available when security is set to a WPA type).
             keyindex: WEP key index (1 - 4).
@@ -493,18 +536,33 @@ class Vap(CRUDEndpoint, MetadataMixin):
             local_lan: Allow/deny traffic destined for a Class A, B, or C private IP address (default = allow).
             local_authentication: Enable/disable AP local authentication.
             usergroup: Firewall user group to be used to authenticate WiFi users.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
             captive_portal: Enable/disable captive portal.
             captive_network_assistant_bypass: Enable/disable Captive Network Assistant bypass.
             portal_message_override_group: Replacement message group for this VAP (only available when security is set to a captive portal type).
             portal_message_overrides: Individual message overrides.
             portal_type: Captive portal functionality. Configure how the captive portal authenticates users and whether it includes a disclaimer.
             selected_usergroups: Selective user groups that are permitted to authenticate.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
             security_exempt_list: Optional security exempt list for captive portal authentication.
             security_redirect_url: Optional URL for redirecting users after they pass captive portal authentication.
             auth_cert: HTTPS server certificate.
             auth_portal_addr: Address of captive portal.
             intra_vap_privacy: Enable/disable blocking communication between clients on the same SSID (called intra-SSID privacy) (default = disable).
             schedule: Firewall schedules for enabling this VAP on the FortiAP. This VAP will be enabled when at least one of the schedules is valid. Separate multiple schedule names with a space.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
             ldpc: VAP low-density parity-check (LDPC) coding configuration.
             high_efficiency: Enable/disable 802.11ax high efficiency (default = enable).
             target_wake_time: Enable/disable 802.11ax target wake time (default = enable).
@@ -537,8 +595,18 @@ class Vap(CRUDEndpoint, MetadataMixin):
             radio_5g_threshold: Minimum signal level/threshold in dBm required for the AP response to receive a packet in 5G band(-95 to -20, default = -76).
             radio_2g_threshold: Minimum signal level/threshold in dBm required for the AP response to receive a packet in 2.4G band (-95 to -20, default = -79).
             vlan_name: Table for mapping VLAN name to VLAN ID.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
             vlan_pooling: Enable/disable VLAN pooling, to allow grouping of multiple wireless controller VLANs into VLAN pools (default = disable). When set to wtp-group, VLAN pooling occurs with VLAN assignment by wtp-group.
             vlan_pool: VLAN pool.
+                Default format: [{'id': 1}]
+                Supported formats:
+                  - Single string: "value" → [{'id': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'id': 'val1'}, ...]
+                  - List of dicts: [{'id': 1}] (recommended)
             dhcp_option43_insertion: Enable/disable insertion of DHCP option 43 (default = enable).
             dhcp_option82_insertion: Enable/disable DHCP option 82 insert (default = disable).
             dhcp_option82_circuit_id_insertion: Enable/disable DHCP option 82 circuit-id insert (default = disable).
@@ -618,6 +686,56 @@ class Vap(CRUDEndpoint, MetadataMixin):
             - post(): Create new object
             - set(): Intelligent create or update
         """
+        # Apply normalization for table fields (supports flexible input formats)
+        if radius_mac_auth_usergroups is not None:
+            radius_mac_auth_usergroups = normalize_table_field(
+                radius_mac_auth_usergroups,
+                mkey="name",
+                required_fields=['name'],
+                field_name="radius_mac_auth_usergroups",
+                example="[{'name': 'value'}]",
+            )
+        if usergroup is not None:
+            usergroup = normalize_table_field(
+                usergroup,
+                mkey="name",
+                required_fields=['name'],
+                field_name="usergroup",
+                example="[{'name': 'value'}]",
+            )
+        if selected_usergroups is not None:
+            selected_usergroups = normalize_table_field(
+                selected_usergroups,
+                mkey="name",
+                required_fields=['name'],
+                field_name="selected_usergroups",
+                example="[{'name': 'value'}]",
+            )
+        if schedule is not None:
+            schedule = normalize_table_field(
+                schedule,
+                mkey="name",
+                required_fields=['name'],
+                field_name="schedule",
+                example="[{'name': 'value'}]",
+            )
+        if vlan_name is not None:
+            vlan_name = normalize_table_field(
+                vlan_name,
+                mkey="name",
+                required_fields=['name'],
+                field_name="vlan_name",
+                example="[{'name': 'value'}]",
+            )
+        if vlan_pool is not None:
+            vlan_pool = normalize_table_field(
+                vlan_pool,
+                mkey="id",
+                required_fields=['id'],
+                field_name="vlan_pool",
+                example="[{'id': 1}]",
+            )
+        
         # Build payload using helper function with auto-normalization
         # This automatically converts strings/lists to [{'name': '...'}] format for list fields
         # To disable auto-normalization, use build_cmdb_payload directly
@@ -824,8 +942,7 @@ class Vap(CRUDEndpoint, MetadataMixin):
             params["scope"] = q_scope
         
         return self._client.put(
-            "cmdb", endpoint, data=payload_data, params=params, vdom=vdom
-        )
+            "cmdb", endpoint, data=payload_data, params=params, vdom=vdom        )
 
     # ========================================================================
     # POST Method
@@ -1070,6 +1187,11 @@ class Vap(CRUDEndpoint, MetadataMixin):
             radius_mac_mpsk_auth: Enable/disable RADIUS-based MAC authentication of clients for MPSK authentication (default = disable).
             radius_mac_mpsk_timeout: RADIUS MAC MPSK cache timeout interval (0 or 300 - 864000, default = 86400, 0 to disable caching).
             radius_mac_auth_usergroups: Selective user groups that are permitted for RADIUS mac authentication.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
             auth: Authentication protocol.
             encrypt: Encryption protocol to use (only available when security is set to a WPA type).
             keyindex: WEP key index (1 - 4).
@@ -1096,18 +1218,33 @@ class Vap(CRUDEndpoint, MetadataMixin):
             local_lan: Allow/deny traffic destined for a Class A, B, or C private IP address (default = allow).
             local_authentication: Enable/disable AP local authentication.
             usergroup: Firewall user group to be used to authenticate WiFi users.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
             captive_portal: Enable/disable captive portal.
             captive_network_assistant_bypass: Enable/disable Captive Network Assistant bypass.
             portal_message_override_group: Replacement message group for this VAP (only available when security is set to a captive portal type).
             portal_message_overrides: Individual message overrides.
             portal_type: Captive portal functionality. Configure how the captive portal authenticates users and whether it includes a disclaimer.
             selected_usergroups: Selective user groups that are permitted to authenticate.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
             security_exempt_list: Optional security exempt list for captive portal authentication.
             security_redirect_url: Optional URL for redirecting users after they pass captive portal authentication.
             auth_cert: HTTPS server certificate.
             auth_portal_addr: Address of captive portal.
             intra_vap_privacy: Enable/disable blocking communication between clients on the same SSID (called intra-SSID privacy) (default = disable).
             schedule: Firewall schedules for enabling this VAP on the FortiAP. This VAP will be enabled when at least one of the schedules is valid. Separate multiple schedule names with a space.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
             ldpc: VAP low-density parity-check (LDPC) coding configuration.
             high_efficiency: Enable/disable 802.11ax high efficiency (default = enable).
             target_wake_time: Enable/disable 802.11ax target wake time (default = enable).
@@ -1140,8 +1277,18 @@ class Vap(CRUDEndpoint, MetadataMixin):
             radio_5g_threshold: Minimum signal level/threshold in dBm required for the AP response to receive a packet in 5G band(-95 to -20, default = -76).
             radio_2g_threshold: Minimum signal level/threshold in dBm required for the AP response to receive a packet in 2.4G band (-95 to -20, default = -79).
             vlan_name: Table for mapping VLAN name to VLAN ID.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
             vlan_pooling: Enable/disable VLAN pooling, to allow grouping of multiple wireless controller VLANs into VLAN pools (default = disable). When set to wtp-group, VLAN pooling occurs with VLAN assignment by wtp-group.
             vlan_pool: VLAN pool.
+                Default format: [{'id': 1}]
+                Supported formats:
+                  - Single string: "value" → [{'id': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'id': 'val1'}, ...]
+                  - List of dicts: [{'id': 1}] (recommended)
             dhcp_option43_insertion: Enable/disable insertion of DHCP option 43 (default = enable).
             dhcp_option82_insertion: Enable/disable DHCP option 82 insert (default = disable).
             dhcp_option82_circuit_id_insertion: Enable/disable DHCP option 82 circuit-id insert (default = disable).
@@ -1223,6 +1370,56 @@ class Vap(CRUDEndpoint, MetadataMixin):
             - put(): Update existing object
             - set(): Intelligent create or update
         """
+        # Apply normalization for table fields (supports flexible input formats)
+        if radius_mac_auth_usergroups is not None:
+            radius_mac_auth_usergroups = normalize_table_field(
+                radius_mac_auth_usergroups,
+                mkey="name",
+                required_fields=['name'],
+                field_name="radius_mac_auth_usergroups",
+                example="[{'name': 'value'}]",
+            )
+        if usergroup is not None:
+            usergroup = normalize_table_field(
+                usergroup,
+                mkey="name",
+                required_fields=['name'],
+                field_name="usergroup",
+                example="[{'name': 'value'}]",
+            )
+        if selected_usergroups is not None:
+            selected_usergroups = normalize_table_field(
+                selected_usergroups,
+                mkey="name",
+                required_fields=['name'],
+                field_name="selected_usergroups",
+                example="[{'name': 'value'}]",
+            )
+        if schedule is not None:
+            schedule = normalize_table_field(
+                schedule,
+                mkey="name",
+                required_fields=['name'],
+                field_name="schedule",
+                example="[{'name': 'value'}]",
+            )
+        if vlan_name is not None:
+            vlan_name = normalize_table_field(
+                vlan_name,
+                mkey="name",
+                required_fields=['name'],
+                field_name="vlan_name",
+                example="[{'name': 'value'}]",
+            )
+        if vlan_pool is not None:
+            vlan_pool = normalize_table_field(
+                vlan_pool,
+                mkey="id",
+                required_fields=['id'],
+                field_name="vlan_pool",
+                example="[{'id': 1}]",
+            )
+        
         # Build payload using helper function with auto-normalization
         # This automatically converts strings/lists to [{'name': '...'}] format for list fields
         # To disable auto-normalization, use build_cmdb_payload directly
@@ -1424,8 +1621,7 @@ class Vap(CRUDEndpoint, MetadataMixin):
             params["scope"] = q_scope
         
         return self._client.post(
-            "cmdb", endpoint, data=payload_data, params=params, vdom=vdom
-        )
+            "cmdb", endpoint, data=payload_data, params=params, vdom=vdom        )
 
     # ========================================================================
     # DELETE Method
@@ -1479,8 +1675,7 @@ class Vap(CRUDEndpoint, MetadataMixin):
             params["scope"] = q_scope
         
         return self._client.delete(
-            "cmdb", endpoint, params=params, vdom=vdom
-        )
+            "cmdb", endpoint, params=params, vdom=vdom        )
 
     def exists(
         self,

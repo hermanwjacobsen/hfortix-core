@@ -47,6 +47,7 @@ from hfortix_fortios._helpers import (
     build_cmdb_payload,  # Keep for backward compatibility / manual usage
     is_success,
     quote_path_param,  # URL encoding for path parameters
+    normalize_table_field,  # For table field normalization
 )
 # Import metadata mixin for schema introspection
 from hfortix_fortios._helpers.metadata_mixin import MetadataMixin
@@ -59,6 +60,18 @@ class Setting(CRUDEndpoint, MetadataMixin):
     
     # Configure metadata mixin to use this endpoint's helper module
     _helper_module_name = "setting"
+    
+    # ========================================================================
+    # Table Fields Metadata (for normalization)
+    # Auto-generated from schema - supports flexible input formats
+    # ========================================================================
+    _TABLE_FIELDS = {
+        "custom_log_fields": {
+            "mkey": "field-id",
+            "required_fields": ['field-id'],
+            "example": "[{'field-id': 'value'}]",
+        },
+    }
     
     # ========================================================================
     # Capabilities (from schema metadata)
@@ -298,6 +311,11 @@ class Setting(CRUDEndpoint, MetadataMixin):
             zone_name: Enable/disable zone name logging.
             web_svc_perf: Enable/disable web-svc performance logging.
             custom_log_fields: Custom fields to append to all log messages.
+                Default format: [{'field-id': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'field-id': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'field-id': 'val1'}, ...]
+                  - List of dicts: [{'field-id': 'value'}] (recommended)
             anonymization_hash: User name anonymization hash salt.
             vdom: Virtual domain name.
             error_mode: Override client-level error_mode. "raise" raises exceptions, "return" returns error dict, "print" prints errors.
@@ -327,6 +345,16 @@ class Setting(CRUDEndpoint, MetadataMixin):
             - post(): Create new object
             - set(): Intelligent create or update
         """
+        # Apply normalization for table fields (supports flexible input formats)
+        if custom_log_fields is not None:
+            custom_log_fields = normalize_table_field(
+                custom_log_fields,
+                mkey="field-id",
+                required_fields=['field-id'],
+                field_name="custom_log_fields",
+                example="[{'field-id': 'value'}]",
+            )
+        
         # Build payload using helper function with auto-normalization
         # This automatically converts strings/lists to [{'name': '...'}] format for list fields
         # To disable auto-normalization, use build_cmdb_payload directly
@@ -388,8 +416,7 @@ class Setting(CRUDEndpoint, MetadataMixin):
             params["scope"] = q_scope
         
         return self._client.put(
-            "cmdb", endpoint, data=payload_data, params=params, vdom=vdom
-        )
+            "cmdb", endpoint, data=payload_data, params=params, vdom=vdom        )
 
 
 

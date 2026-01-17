@@ -154,8 +154,7 @@ class UpdateComments(CRUDEndpoint, MetadataMixin):
 
         endpoint = "/system/config-revision/update-comments"
         return self._client.post(
-            "monitor", endpoint, data=payload_data, vdom=vdom
-        )
+            "monitor", endpoint, data=payload_data, vdom=vdom        )
 
 
 

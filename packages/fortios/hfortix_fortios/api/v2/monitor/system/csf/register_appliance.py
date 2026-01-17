@@ -166,8 +166,7 @@ class RegisterAppliance(CRUDEndpoint, MetadataMixin):
 
         endpoint = "/system/csf/register-appliance"
         return self._client.post(
-            "monitor", endpoint, data=payload_data, vdom=vdom
-        )
+            "monitor", endpoint, data=payload_data, vdom=vdom        )
 
 
 

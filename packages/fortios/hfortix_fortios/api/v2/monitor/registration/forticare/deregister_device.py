@@ -154,8 +154,7 @@ class DeregisterDevice(CRUDEndpoint, MetadataMixin):
 
         endpoint = "/registration/forticare/deregister-device"
         return self._client.post(
-            "monitor", endpoint, data=payload_data, vdom=vdom
-        )
+            "monitor", endpoint, data=payload_data, vdom=vdom        )
 
 
 

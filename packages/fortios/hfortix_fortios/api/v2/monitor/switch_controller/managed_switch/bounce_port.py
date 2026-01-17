@@ -160,8 +160,7 @@ class BouncePort(CRUDEndpoint, MetadataMixin):
 
         endpoint = "/switch-controller/managed-switch/bounce-port"
         return self._client.post(
-            "monitor", endpoint, data=payload_data, vdom=vdom
-        )
+            "monitor", endpoint, data=payload_data, vdom=vdom        )
 
 
 

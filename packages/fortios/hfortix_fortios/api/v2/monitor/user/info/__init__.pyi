@@ -10,12 +10,27 @@ if TYPE_CHECKING:
     from .thumbnail import Thumbnail
     from .thumbnail_file import ThumbnailFile
 
+__all__ = [
+    "Query",
+    "Thumbnail",
+    "ThumbnailFile",
+    "Info",
+]
+
 
 class Info:
-    """Type stub for Info."""
-
+    """INFO API category.
+    
+    All endpoints return FortiObject instances with:
+    - Attribute access: response.field
+    - Dictionary access: response["field"]
+    - Convert to dict: response.dict or response.json
+    """
+    
     query: Query
     thumbnail: Thumbnail
     thumbnail_file: ThumbnailFile
 
-    def __init__(self, client: IHTTPClient) -> None: ...
+    def __init__(self, client: IHTTPClient, vdom: str | None = None) -> None:
+        """Initialize info category with HTTP client."""
+        ...

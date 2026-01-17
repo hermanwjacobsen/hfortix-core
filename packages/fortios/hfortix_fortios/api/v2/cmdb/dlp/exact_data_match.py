@@ -47,6 +47,7 @@ from hfortix_fortios._helpers import (
     build_cmdb_payload,  # Keep for backward compatibility / manual usage
     is_success,
     quote_path_param,  # URL encoding for path parameters
+    normalize_table_field,  # For table field normalization
 )
 # Import metadata mixin for schema introspection
 from hfortix_fortios._helpers.metadata_mixin import MetadataMixin
@@ -59,6 +60,18 @@ class ExactDataMatch(CRUDEndpoint, MetadataMixin):
     
     # Configure metadata mixin to use this endpoint's helper module
     _helper_module_name = "exact_data_match"
+    
+    # ========================================================================
+    # Table Fields Metadata (for normalization)
+    # Auto-generated from schema - supports flexible input formats
+    # ========================================================================
+    _TABLE_FIELDS = {
+        "columns": {
+            "mkey": "index",
+            "required_fields": ['type', 'optional'],
+            "example": "[{'type': 'value', 'optional': 'enable'}]",
+        },
+    }
     
     # ========================================================================
     # Capabilities (from schema metadata)
@@ -254,6 +267,9 @@ class ExactDataMatch(CRUDEndpoint, MetadataMixin):
             optional: Number of optional columns need to match.
             data: External resource for exact data match.
             columns: DLP exact-data-match column types.
+                Default format: [{'type': 'value', 'optional': 'enable'}]
+                Required format: List of dicts with keys: type, optional
+                  (String format not allowed due to multiple required fields)
             vdom: Virtual domain name.
             error_mode: Override client-level error_mode. "raise" raises exceptions, "return" returns error dict, "print" prints errors.
             error_format: Override client-level error_format. "detailed" provides full context, "simple" is concise, "code_only" returns just status code.
@@ -282,6 +298,16 @@ class ExactDataMatch(CRUDEndpoint, MetadataMixin):
             - post(): Create new object
             - set(): Intelligent create or update
         """
+        # Apply normalization for table fields (supports flexible input formats)
+        if columns is not None:
+            columns = normalize_table_field(
+                columns,
+                mkey="index",
+                required_fields=['type', 'optional'],
+                field_name="columns",
+                example="[{'type': 'value', 'optional': 'enable'}]",
+            )
+        
         # Build payload using helper function with auto-normalization
         # This automatically converts strings/lists to [{'name': '...'}] format for list fields
         # To disable auto-normalization, use build_cmdb_payload directly
@@ -319,8 +345,7 @@ class ExactDataMatch(CRUDEndpoint, MetadataMixin):
             params["scope"] = q_scope
         
         return self._client.put(
-            "cmdb", endpoint, data=payload_data, params=params, vdom=vdom
-        )
+            "cmdb", endpoint, data=payload_data, params=params, vdom=vdom        )
 
     # ========================================================================
     # POST Method
@@ -352,6 +377,9 @@ class ExactDataMatch(CRUDEndpoint, MetadataMixin):
             optional: Number of optional columns need to match.
             data: External resource for exact data match.
             columns: DLP exact-data-match column types.
+                Default format: [{'type': 'value', 'optional': 'enable'}]
+                Required format: List of dicts with keys: type, optional
+                  (String format not allowed due to multiple required fields)
             vdom: Virtual domain name. Use True for global, string for specific VDOM.
             error_mode: Override client-level error_mode. "raise" raises exceptions, "return" returns error dict, "print" prints errors.
             error_format: Override client-level error_format. "detailed" provides full context, "simple" is concise, "code_only" returns just status code.
@@ -382,6 +410,16 @@ class ExactDataMatch(CRUDEndpoint, MetadataMixin):
             - put(): Update existing object
             - set(): Intelligent create or update
         """
+        # Apply normalization for table fields (supports flexible input formats)
+        if columns is not None:
+            columns = normalize_table_field(
+                columns,
+                mkey="index",
+                required_fields=['type', 'optional'],
+                field_name="columns",
+                example="[{'type': 'value', 'optional': 'enable'}]",
+            )
+        
         # Build payload using helper function with auto-normalization
         # This automatically converts strings/lists to [{'name': '...'}] format for list fields
         # To disable auto-normalization, use build_cmdb_payload directly
@@ -414,8 +452,7 @@ class ExactDataMatch(CRUDEndpoint, MetadataMixin):
             params["scope"] = q_scope
         
         return self._client.post(
-            "cmdb", endpoint, data=payload_data, params=params, vdom=vdom
-        )
+            "cmdb", endpoint, data=payload_data, params=params, vdom=vdom        )
 
     # ========================================================================
     # DELETE Method
@@ -469,8 +506,7 @@ class ExactDataMatch(CRUDEndpoint, MetadataMixin):
             params["scope"] = q_scope
         
         return self._client.delete(
-            "cmdb", endpoint, params=params, vdom=vdom
-        )
+            "cmdb", endpoint, params=params, vdom=vdom        )
 
     def exists(
         self,

@@ -151,8 +151,7 @@ class Refresh(CRUDEndpoint, MetadataMixin):
 
         endpoint = "/azure/application-list/refresh"
         return self._client.post(
-            "monitor", endpoint, data=payload_data, vdom=vdom
-        )
+            "monitor", endpoint, data=payload_data, vdom=vdom        )
 
 
 

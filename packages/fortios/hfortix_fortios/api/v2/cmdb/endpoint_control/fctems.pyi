@@ -208,7 +208,6 @@ class Fctems:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FctemsObject: ...
     
     # With mkey as keyword arg -> returns FortiObject
@@ -225,7 +224,6 @@ class Fctems:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FctemsObject: ...
     
     # Without mkey -> returns list of FortiObjects
@@ -241,7 +239,6 @@ class Fctems:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObjectList[FctemsObject]: ...
     
     # ================================================================
@@ -261,7 +258,6 @@ class Fctems:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FctemsObject: ...
     
     # With mkey as keyword arg -> returns single object
@@ -278,7 +274,6 @@ class Fctems:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FctemsObject: ...
     
     # With no mkey -> returns list of objects
@@ -294,7 +289,6 @@ class Fctems:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObjectList[FctemsObject]: ...
     
     # Dict mode with mkey provided as positional arg (single dict)
@@ -310,7 +304,6 @@ class Fctems:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FctemsObject: ...
     
     # Dict mode with mkey provided as keyword arg (single dict)
@@ -327,7 +320,6 @@ class Fctems:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FctemsObject: ...
     
     # Dict mode - list of dicts (no mkey/name provided) - keyword-only signature
@@ -343,7 +335,6 @@ class Fctems:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObjectList[FctemsObject]: ...
     
     # Fallback overload for all other cases
@@ -359,7 +350,6 @@ class Fctems:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> Union[dict[str, Any], list[dict[str, Any]], FortiObject, list[FortiObject]]: ...
     
     def get(
@@ -373,12 +363,10 @@ class Fctems:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FctemsObject | list[FctemsObject] | dict[str, Any] | list[dict[str, Any]]: ...
     
     def get_schema(
         self,
-        vdom: str | None = ...,
         format: str = ...,
     ) -> FortiObject: ...
     
@@ -411,7 +399,6 @@ class Fctems:
         interface: str | None = ...,
         trust_ca_cn: Literal["enable", "disable"] | None = ...,
         verifying_ca: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FctemsObject: ...
     
     @overload
@@ -442,7 +429,6 @@ class Fctems:
         interface: str | None = ...,
         trust_ca_cn: Literal["enable", "disable"] | None = ...,
         verifying_ca: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     # Default overload
@@ -474,7 +460,6 @@ class Fctems:
         interface: str | None = ...,
         trust_ca_cn: Literal["enable", "disable"] | None = ...,
         verifying_ca: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     def post(
@@ -504,7 +489,6 @@ class Fctems:
         interface: str | None = ...,
         trust_ca_cn: Literal["enable", "disable"] | None = ...,
         verifying_ca: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     # PUT overloads
@@ -536,7 +520,6 @@ class Fctems:
         interface: str | None = ...,
         trust_ca_cn: Literal["enable", "disable"] | None = ...,
         verifying_ca: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FctemsObject: ...
     
     @overload
@@ -567,7 +550,6 @@ class Fctems:
         interface: str | None = ...,
         trust_ca_cn: Literal["enable", "disable"] | None = ...,
         verifying_ca: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     # Default overload
@@ -599,7 +581,6 @@ class Fctems:
         interface: str | None = ...,
         trust_ca_cn: Literal["enable", "disable"] | None = ...,
         verifying_ca: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     def put(
@@ -629,7 +610,6 @@ class Fctems:
         interface: str | None = ...,
         trust_ca_cn: Literal["enable", "disable"] | None = ...,
         verifying_ca: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     # DELETE overloads
@@ -637,14 +617,12 @@ class Fctems:
     def delete(
         self,
         ems_id: int | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FctemsObject: ...
     
     @overload
     def delete(
         self,
         ems_id: int | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     # Default overload
@@ -652,19 +630,16 @@ class Fctems:
     def delete(
         self,
         ems_id: int | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     def delete(
         self,
         ems_id: int | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     def exists(
         self,
         ems_id: int,
-        vdom: str | bool | None = ...,
     ) -> bool: ...
     
     def set(
@@ -694,7 +669,6 @@ class Fctems:
         interface: str | None = ...,
         trust_ca_cn: Literal["enable", "disable"] | None = ...,
         verifying_ca: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     # Helper methods

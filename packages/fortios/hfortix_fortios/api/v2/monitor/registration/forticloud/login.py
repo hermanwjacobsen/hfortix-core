@@ -160,8 +160,7 @@ class Login(CRUDEndpoint, MetadataMixin):
 
         endpoint = "/registration/forticloud/login"
         return self._client.post(
-            "monitor", endpoint, data=payload_data, vdom=vdom
-        )
+            "monitor", endpoint, data=payload_data, vdom=vdom        )
 
 
 

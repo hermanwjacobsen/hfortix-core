@@ -47,6 +47,7 @@ from hfortix_fortios._helpers import (
     build_cmdb_payload,  # Keep for backward compatibility / manual usage
     is_success,
     quote_path_param,  # URL encoding for path parameters
+    normalize_table_field,  # For table field normalization
 )
 # Import metadata mixin for schema introspection
 from hfortix_fortios._helpers.metadata_mixin import MetadataMixin
@@ -59,6 +60,23 @@ class Bfd6(CRUDEndpoint, MetadataMixin):
     
     # Configure metadata mixin to use this endpoint's helper module
     _helper_module_name = "bfd6"
+    
+    # ========================================================================
+    # Table Fields Metadata (for normalization)
+    # Auto-generated from schema - supports flexible input formats
+    # ========================================================================
+    _TABLE_FIELDS = {
+        "neighbor": {
+            "mkey": "ip6-address",
+            "required_fields": ['ip6-address', 'interface'],
+            "example": "[{'ip6-address': 'value', 'interface': 'value'}]",
+        },
+        "multihop_template": {
+            "mkey": "id",
+            "required_fields": ['id', 'src', 'dst'],
+            "example": "[{'id': 1, 'src': 'value', 'dst': 'value'}]",
+        },
+    }
     
     # ========================================================================
     # Capabilities (from schema metadata)
@@ -244,7 +262,13 @@ class Bfd6(CRUDEndpoint, MetadataMixin):
         Args:
             payload_dict: Object data as dict. Must include name (primary key).
             neighbor: Configure neighbor of IPv6 BFD.
+                Default format: [{'ip6-address': 'value', 'interface': 'value'}]
+                Required format: List of dicts with keys: ip6-address, interface
+                  (String format not allowed due to multiple required fields)
             multihop_template: BFD IPv6 multi-hop template table.
+                Default format: [{'id': 1, 'src': 'value', 'dst': 'value'}]
+                Required format: List of dicts with keys: id, src, dst
+                  (String format not allowed due to multiple required fields)
             vdom: Virtual domain name.
             error_mode: Override client-level error_mode. "raise" raises exceptions, "return" returns error dict, "print" prints errors.
             error_format: Override client-level error_format. "detailed" provides full context, "simple" is concise, "code_only" returns just status code.
@@ -273,6 +297,24 @@ class Bfd6(CRUDEndpoint, MetadataMixin):
             - post(): Create new object
             - set(): Intelligent create or update
         """
+        # Apply normalization for table fields (supports flexible input formats)
+        if neighbor is not None:
+            neighbor = normalize_table_field(
+                neighbor,
+                mkey="ip6-address",
+                required_fields=['ip6-address', 'interface'],
+                field_name="neighbor",
+                example="[{'ip6-address': 'value', 'interface': 'value'}]",
+            )
+        if multihop_template is not None:
+            multihop_template = normalize_table_field(
+                multihop_template,
+                mkey="id",
+                required_fields=['id', 'src', 'dst'],
+                field_name="multihop_template",
+                example="[{'id': 1, 'src': 'value', 'dst': 'value'}]",
+            )
+        
         # Build payload using helper function with auto-normalization
         # This automatically converts strings/lists to [{'name': '...'}] format for list fields
         # To disable auto-normalization, use build_cmdb_payload directly
@@ -307,8 +349,7 @@ class Bfd6(CRUDEndpoint, MetadataMixin):
             params["scope"] = q_scope
         
         return self._client.put(
-            "cmdb", endpoint, data=payload_data, params=params, vdom=vdom
-        )
+            "cmdb", endpoint, data=payload_data, params=params, vdom=vdom        )
 
 
 

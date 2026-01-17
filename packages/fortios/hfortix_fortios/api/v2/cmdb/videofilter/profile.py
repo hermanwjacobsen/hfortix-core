@@ -47,6 +47,7 @@ from hfortix_fortios._helpers import (
     build_cmdb_payload,  # Keep for backward compatibility / manual usage
     is_success,
     quote_path_param,  # URL encoding for path parameters
+    normalize_table_field,  # For table field normalization
 )
 # Import metadata mixin for schema introspection
 from hfortix_fortios._helpers.metadata_mixin import MetadataMixin
@@ -59,6 +60,18 @@ class Profile(CRUDEndpoint, MetadataMixin):
     
     # Configure metadata mixin to use this endpoint's helper module
     _helper_module_name = "profile"
+    
+    # ========================================================================
+    # Table Fields Metadata (for normalization)
+    # Auto-generated from schema - supports flexible input formats
+    # ========================================================================
+    _TABLE_FIELDS = {
+        "filters": {
+            "mkey": "id",
+            "required_fields": ['id', 'type', 'keyword', 'category', 'channel'],
+            "example": "[{'id': 1, 'type': 'category', 'keyword': 1, 'category': 'value', 'channel': 'value'}]",
+        },
+    }
     
     # ========================================================================
     # Capabilities (from schema metadata)
@@ -256,6 +269,9 @@ class Profile(CRUDEndpoint, MetadataMixin):
             name: Name.
             comment: Comment.
             filters: YouTube filter entries.
+                Default format: [{'id': 1, 'type': 'category', 'keyword': 1, 'category': 'value', 'channel': 'value'}]
+                Required format: List of dicts with keys: id, type, keyword, category, channel
+                  (String format not allowed due to multiple required fields)
             youtube: Enable/disable YouTube video source.
             vimeo: Enable/disable Vimeo video source.
             dailymotion: Enable/disable Dailymotion video source.
@@ -288,6 +304,16 @@ class Profile(CRUDEndpoint, MetadataMixin):
             - post(): Create new object
             - set(): Intelligent create or update
         """
+        # Apply normalization for table fields (supports flexible input formats)
+        if filters is not None:
+            filters = normalize_table_field(
+                filters,
+                mkey="id",
+                required_fields=['id', 'type', 'keyword', 'category', 'channel'],
+                field_name="filters",
+                example="[{'id': 1, 'type': 'category', 'keyword': 1, 'category': 'value', 'channel': 'value'}]",
+            )
+        
         # Build payload using helper function with auto-normalization
         # This automatically converts strings/lists to [{'name': '...'}] format for list fields
         # To disable auto-normalization, use build_cmdb_payload directly
@@ -329,8 +355,7 @@ class Profile(CRUDEndpoint, MetadataMixin):
             params["scope"] = q_scope
         
         return self._client.put(
-            "cmdb", endpoint, data=payload_data, params=params, vdom=vdom
-        )
+            "cmdb", endpoint, data=payload_data, params=params, vdom=vdom        )
 
     # ========================================================================
     # POST Method
@@ -364,6 +389,9 @@ class Profile(CRUDEndpoint, MetadataMixin):
             name: Name.
             comment: Comment.
             filters: YouTube filter entries.
+                Default format: [{'id': 1, 'type': 'category', 'keyword': 1, 'category': 'value', 'channel': 'value'}]
+                Required format: List of dicts with keys: id, type, keyword, category, channel
+                  (String format not allowed due to multiple required fields)
             youtube: Enable/disable YouTube video source.
             vimeo: Enable/disable Vimeo video source.
             dailymotion: Enable/disable Dailymotion video source.
@@ -398,6 +426,16 @@ class Profile(CRUDEndpoint, MetadataMixin):
             - put(): Update existing object
             - set(): Intelligent create or update
         """
+        # Apply normalization for table fields (supports flexible input formats)
+        if filters is not None:
+            filters = normalize_table_field(
+                filters,
+                mkey="id",
+                required_fields=['id', 'type', 'keyword', 'category', 'channel'],
+                field_name="filters",
+                example="[{'id': 1, 'type': 'category', 'keyword': 1, 'category': 'value', 'channel': 'value'}]",
+            )
+        
         # Build payload using helper function with auto-normalization
         # This automatically converts strings/lists to [{'name': '...'}] format for list fields
         # To disable auto-normalization, use build_cmdb_payload directly
@@ -434,8 +472,7 @@ class Profile(CRUDEndpoint, MetadataMixin):
             params["scope"] = q_scope
         
         return self._client.post(
-            "cmdb", endpoint, data=payload_data, params=params, vdom=vdom
-        )
+            "cmdb", endpoint, data=payload_data, params=params, vdom=vdom        )
 
     # ========================================================================
     # DELETE Method
@@ -489,8 +526,7 @@ class Profile(CRUDEndpoint, MetadataMixin):
             params["scope"] = q_scope
         
         return self._client.delete(
-            "cmdb", endpoint, params=params, vdom=vdom
-        )
+            "cmdb", endpoint, params=params, vdom=vdom        )
 
     def exists(
         self,

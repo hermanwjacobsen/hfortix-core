@@ -151,8 +151,7 @@ class Start(CRUDEndpoint, MetadataMixin):
 
         endpoint = "/sniffer/start"
         return self._client.post(
-            "service", endpoint, data=payload_data, vdom=vdom
-        )
+            "service", endpoint, data=payload_data, vdom=vdom        )
 
 
 

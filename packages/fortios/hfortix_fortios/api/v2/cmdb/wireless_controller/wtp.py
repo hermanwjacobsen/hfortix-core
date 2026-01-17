@@ -47,6 +47,7 @@ from hfortix_fortios._helpers import (
     build_cmdb_payload,  # Keep for backward compatibility / manual usage
     is_success,
     quote_path_param,  # URL encoding for path parameters
+    normalize_table_field,  # For table field normalization
 )
 # Import metadata mixin for schema introspection
 from hfortix_fortios._helpers.metadata_mixin import MetadataMixin
@@ -59,6 +60,18 @@ class Wtp(CRUDEndpoint, MetadataMixin):
     
     # Configure metadata mixin to use this endpoint's helper module
     _helper_module_name = "wtp"
+    
+    # ========================================================================
+    # Table Fields Metadata (for normalization)
+    # Auto-generated from schema - supports flexible input formats
+    # ========================================================================
+    _TABLE_FIELDS = {
+        "split_tunneling_acl": {
+            "mkey": "id",
+            "required_fields": ['dest-ip'],
+            "example": "[{'dest-ip': 'value'}]",
+        },
+    }
     
     # ========================================================================
     # Capabilities (from schema metadata)
@@ -322,6 +335,11 @@ class Wtp(CRUDEndpoint, MetadataMixin):
             split_tunneling_acl_path: Split tunneling ACL path is local/tunnel.
             split_tunneling_acl_local_ap_subnet: Enable/disable automatically adding local subnetwork of FortiAP to split-tunneling ACL (default = disable).
             split_tunneling_acl: Split tunneling ACL filter list.
+                Default format: [{'dest-ip': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'id': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'id': 'val1'}, ...]
+                  - List of dicts: [{'dest-ip': 'value'}] (recommended)
             override_lan: Enable to override the WTP profile LAN port setting.
             lan: WTP LAN port mapping.
             override_allowaccess: Enable to override the WTP profile management access configuration.
@@ -368,6 +386,16 @@ class Wtp(CRUDEndpoint, MetadataMixin):
             - post(): Create new object
             - set(): Intelligent create or update
         """
+        # Apply normalization for table fields (supports flexible input formats)
+        if split_tunneling_acl is not None:
+            split_tunneling_acl = normalize_table_field(
+                split_tunneling_acl,
+                mkey="id",
+                required_fields=['dest-ip'],
+                field_name="split_tunneling_acl",
+                example="[{'dest-ip': 'value'}]",
+            )
+        
         # Build payload using helper function with auto-normalization
         # This automatically converts strings/lists to [{'name': '...'}] format for list fields
         # To disable auto-normalization, use build_cmdb_payload directly
@@ -449,8 +477,7 @@ class Wtp(CRUDEndpoint, MetadataMixin):
             params["scope"] = q_scope
         
         return self._client.put(
-            "cmdb", endpoint, data=payload_data, params=params, vdom=vdom
-        )
+            "cmdb", endpoint, data=payload_data, params=params, vdom=vdom        )
 
     # ========================================================================
     # POST Method
@@ -550,6 +577,11 @@ class Wtp(CRUDEndpoint, MetadataMixin):
             split_tunneling_acl_path: Split tunneling ACL path is local/tunnel.
             split_tunneling_acl_local_ap_subnet: Enable/disable automatically adding local subnetwork of FortiAP to split-tunneling ACL (default = disable).
             split_tunneling_acl: Split tunneling ACL filter list.
+                Default format: [{'dest-ip': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'id': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'id': 'val1'}, ...]
+                  - List of dicts: [{'dest-ip': 'value'}] (recommended)
             override_lan: Enable to override the WTP profile LAN port setting.
             lan: WTP LAN port mapping.
             override_allowaccess: Enable to override the WTP profile management access configuration.
@@ -598,6 +630,16 @@ class Wtp(CRUDEndpoint, MetadataMixin):
             - put(): Update existing object
             - set(): Intelligent create or update
         """
+        # Apply normalization for table fields (supports flexible input formats)
+        if split_tunneling_acl is not None:
+            split_tunneling_acl = normalize_table_field(
+                split_tunneling_acl,
+                mkey="id",
+                required_fields=['dest-ip'],
+                field_name="split_tunneling_acl",
+                example="[{'dest-ip': 'value'}]",
+            )
+        
         # Build payload using helper function with auto-normalization
         # This automatically converts strings/lists to [{'name': '...'}] format for list fields
         # To disable auto-normalization, use build_cmdb_payload directly
@@ -674,8 +716,7 @@ class Wtp(CRUDEndpoint, MetadataMixin):
             params["scope"] = q_scope
         
         return self._client.post(
-            "cmdb", endpoint, data=payload_data, params=params, vdom=vdom
-        )
+            "cmdb", endpoint, data=payload_data, params=params, vdom=vdom        )
 
     # ========================================================================
     # DELETE Method
@@ -729,8 +770,7 @@ class Wtp(CRUDEndpoint, MetadataMixin):
             params["scope"] = q_scope
         
         return self._client.delete(
-            "cmdb", endpoint, params=params, vdom=vdom
-        )
+            "cmdb", endpoint, params=params, vdom=vdom        )
 
     def exists(
         self,

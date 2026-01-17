@@ -953,11 +953,23 @@ class HTTPClient(BaseHTTPClient):
         url = f"{self._url}/api/v2/{api_type}/{encoded_path}"
         params = params or {}
 
-        # Only add vdom parameter if explicitly specified
-        if vdom is not None:
+        # Handle vdom parameter:
+        # - vdom=False: Don't send vdom param (for global-only endpoints)
+        # - vdom=True: Use "global" scope
+        # - vdom=None: Use client default or "root" as fallback
+        # - vdom="string": Use specified vdom
+        if vdom is False:
+            # Global-only endpoint - don't add vdom parameter
+            pass
+        elif vdom is True:
+            params["vdom"] = "global"
+        elif vdom is not None:
             params["vdom"] = vdom
         elif self._vdom is not None and "vdom" not in params:
             params["vdom"] = self._vdom
+        elif "vdom" not in params:
+            # Default to "root" if no vdom specified anywhere
+            params["vdom"] = "root"
 
         # Build full API path for logging and circuit breaker
         full_path = f"/api/v2/{api_type}/{path}"

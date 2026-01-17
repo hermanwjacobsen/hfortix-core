@@ -151,8 +151,7 @@ class Stop(CRUDEndpoint, MetadataMixin):
 
         endpoint = "/sniffer/stop"
         return self._client.post(
-            "service", endpoint, data=payload_data, vdom=vdom
-        )
+            "service", endpoint, data=payload_data, vdom=vdom        )
 
 
 

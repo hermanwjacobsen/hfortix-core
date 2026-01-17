@@ -172,8 +172,7 @@ class RegisterDevice(CRUDEndpoint, MetadataMixin):
 
         endpoint = "/registration/forticloud/register-device"
         return self._client.post(
-            "monitor", endpoint, data=payload_data, vdom=vdom
-        )
+            "monitor", endpoint, data=payload_data, vdom=vdom        )
 
 
 

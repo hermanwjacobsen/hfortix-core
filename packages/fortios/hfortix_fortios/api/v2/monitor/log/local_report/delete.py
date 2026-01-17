@@ -151,8 +151,7 @@ class Delete(CRUDEndpoint, MetadataMixin):
 
         endpoint = "/log/local-report/delete"
         return self._client.post(
-            "monitor", endpoint, data=payload_data, vdom=vdom
-        )
+            "monitor", endpoint, data=payload_data, vdom=vdom        )
 
 
 

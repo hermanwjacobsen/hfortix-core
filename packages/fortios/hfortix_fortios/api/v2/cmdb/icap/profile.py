@@ -47,6 +47,7 @@ from hfortix_fortios._helpers import (
     build_cmdb_payload,  # Keep for backward compatibility / manual usage
     is_success,
     quote_path_param,  # URL encoding for path parameters
+    normalize_table_field,  # For table field normalization
 )
 # Import metadata mixin for schema introspection
 from hfortix_fortios._helpers.metadata_mixin import MetadataMixin
@@ -59,6 +60,23 @@ class Profile(CRUDEndpoint, MetadataMixin):
     
     # Configure metadata mixin to use this endpoint's helper module
     _helper_module_name = "profile"
+    
+    # ========================================================================
+    # Table Fields Metadata (for normalization)
+    # Auto-generated from schema - supports flexible input formats
+    # ========================================================================
+    _TABLE_FIELDS = {
+        "icap_headers": {
+            "mkey": "id",
+            "required_fields": ['id'],
+            "example": "[{'id': 1}]",
+        },
+        "respmod_forward_rules": {
+            "mkey": "name",
+            "required_fields": ['host'],
+            "example": "[{'host': 'value'}]",
+        },
+    }
     
     # ========================================================================
     # Capabilities (from schema metadata)
@@ -307,7 +325,17 @@ class Profile(CRUDEndpoint, MetadataMixin):
             scan_progress_interval: Scan progress interval value.
             timeout: Time (in seconds) that ICAP client waits for the response from ICAP server.
             icap_headers: Configure ICAP forwarded request headers.
+                Default format: [{'id': 1}]
+                Supported formats:
+                  - Single string: "value" → [{'id': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'id': 'val1'}, ...]
+                  - List of dicts: [{'id': 1}] (recommended)
             respmod_forward_rules: ICAP response mode forward rules.
+                Default format: [{'host': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'host': 'value'}] (recommended)
             vdom: Virtual domain name.
             error_mode: Override client-level error_mode. "raise" raises exceptions, "return" returns error dict, "print" prints errors.
             error_format: Override client-level error_format. "detailed" provides full context, "simple" is concise, "code_only" returns just status code.
@@ -336,6 +364,24 @@ class Profile(CRUDEndpoint, MetadataMixin):
             - post(): Create new object
             - set(): Intelligent create or update
         """
+        # Apply normalization for table fields (supports flexible input formats)
+        if icap_headers is not None:
+            icap_headers = normalize_table_field(
+                icap_headers,
+                mkey="id",
+                required_fields=['id'],
+                field_name="icap_headers",
+                example="[{'id': 1}]",
+            )
+        if respmod_forward_rules is not None:
+            respmod_forward_rules = normalize_table_field(
+                respmod_forward_rules,
+                mkey="name",
+                required_fields=['host'],
+                field_name="respmod_forward_rules",
+                example="[{'host': 'value'}]",
+            )
+        
         # Build payload using helper function with auto-normalization
         # This automatically converts strings/lists to [{'name': '...'}] format for list fields
         # To disable auto-normalization, use build_cmdb_payload directly
@@ -401,8 +447,7 @@ class Profile(CRUDEndpoint, MetadataMixin):
             params["scope"] = q_scope
         
         return self._client.put(
-            "cmdb", endpoint, data=payload_data, params=params, vdom=vdom
-        )
+            "cmdb", endpoint, data=payload_data, params=params, vdom=vdom        )
 
     # ========================================================================
     # POST Method
@@ -487,7 +532,17 @@ class Profile(CRUDEndpoint, MetadataMixin):
             scan_progress_interval: Scan progress interval value.
             timeout: Time (in seconds) that ICAP client waits for the response from ICAP server.
             icap_headers: Configure ICAP forwarded request headers.
+                Default format: [{'id': 1}]
+                Supported formats:
+                  - Single string: "value" → [{'id': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'id': 'val1'}, ...]
+                  - List of dicts: [{'id': 1}] (recommended)
             respmod_forward_rules: ICAP response mode forward rules.
+                Default format: [{'host': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'host': 'value'}] (recommended)
             vdom: Virtual domain name. Use True for global, string for specific VDOM.
             error_mode: Override client-level error_mode. "raise" raises exceptions, "return" returns error dict, "print" prints errors.
             error_format: Override client-level error_format. "detailed" provides full context, "simple" is concise, "code_only" returns just status code.
@@ -518,6 +573,24 @@ class Profile(CRUDEndpoint, MetadataMixin):
             - put(): Update existing object
             - set(): Intelligent create or update
         """
+        # Apply normalization for table fields (supports flexible input formats)
+        if icap_headers is not None:
+            icap_headers = normalize_table_field(
+                icap_headers,
+                mkey="id",
+                required_fields=['id'],
+                field_name="icap_headers",
+                example="[{'id': 1}]",
+            )
+        if respmod_forward_rules is not None:
+            respmod_forward_rules = normalize_table_field(
+                respmod_forward_rules,
+                mkey="name",
+                required_fields=['host'],
+                field_name="respmod_forward_rules",
+                example="[{'host': 'value'}]",
+            )
+        
         # Build payload using helper function with auto-normalization
         # This automatically converts strings/lists to [{'name': '...'}] format for list fields
         # To disable auto-normalization, use build_cmdb_payload directly
@@ -578,8 +651,7 @@ class Profile(CRUDEndpoint, MetadataMixin):
             params["scope"] = q_scope
         
         return self._client.post(
-            "cmdb", endpoint, data=payload_data, params=params, vdom=vdom
-        )
+            "cmdb", endpoint, data=payload_data, params=params, vdom=vdom        )
 
     # ========================================================================
     # DELETE Method
@@ -633,8 +705,7 @@ class Profile(CRUDEndpoint, MetadataMixin):
             params["scope"] = q_scope
         
         return self._client.delete(
-            "cmdb", endpoint, params=params, vdom=vdom
-        )
+            "cmdb", endpoint, params=params, vdom=vdom        )
 
     def exists(
         self,

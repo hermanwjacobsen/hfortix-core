@@ -47,6 +47,7 @@ from hfortix_fortios._helpers import (
     build_cmdb_payload,  # Keep for backward compatibility / manual usage
     is_success,
     quote_path_param,  # URL encoding for path parameters
+    normalize_table_field,  # For table field normalization
 )
 # Import metadata mixin for schema introspection
 from hfortix_fortios._helpers.metadata_mixin import MetadataMixin
@@ -59,6 +60,18 @@ class KmipServer(CRUDEndpoint, MetadataMixin):
     
     # Configure metadata mixin to use this endpoint's helper module
     _helper_module_name = "kmip_server"
+    
+    # ========================================================================
+    # Table Fields Metadata (for normalization)
+    # Auto-generated from schema - supports flexible input formats
+    # ========================================================================
+    _TABLE_FIELDS = {
+        "server_list": {
+            "mkey": "id",
+            "required_fields": ['server', 'port'],
+            "example": "[{'server': '192.168.1.10', 'port': 1}]",
+        },
+    }
     
     # ========================================================================
     # Capabilities (from schema metadata)
@@ -258,6 +271,9 @@ class KmipServer(CRUDEndpoint, MetadataMixin):
             payload_dict: Object data as dict. Must include name (primary key).
             name: KMIP server entry name.
             server_list: KMIP server list.
+                Default format: [{'server': '192.168.1.10', 'port': 1}]
+                Required format: List of dicts with keys: server, port
+                  (String format not allowed due to multiple required fields)
             username: User name to use for connectivity to the KMIP server.
             password: Password to use for connectivity to the KMIP server.
             ssl_min_proto_version: Minimum supported protocol version for SSL/TLS connections (default is to follow system global setting).
@@ -294,6 +310,16 @@ class KmipServer(CRUDEndpoint, MetadataMixin):
             - post(): Create new object
             - set(): Intelligent create or update
         """
+        # Apply normalization for table fields (supports flexible input formats)
+        if server_list is not None:
+            server_list = normalize_table_field(
+                server_list,
+                mkey="id",
+                required_fields=['server', 'port'],
+                field_name="server_list",
+                example="[{'server': '192.168.1.10', 'port': 1}]",
+            )
+        
         # Build payload using helper function with auto-normalization
         # This automatically converts strings/lists to [{'name': '...'}] format for list fields
         # To disable auto-normalization, use build_cmdb_payload directly
@@ -338,8 +364,7 @@ class KmipServer(CRUDEndpoint, MetadataMixin):
             params["scope"] = q_scope
         
         return self._client.put(
-            "cmdb", endpoint, data=payload_data, params=params, vdom=vdom
-        )
+            "cmdb", endpoint, data=payload_data, params=params, vdom=vdom        )
 
     # ========================================================================
     # POST Method
@@ -375,6 +400,9 @@ class KmipServer(CRUDEndpoint, MetadataMixin):
             payload_dict: Complete object data as dict. Alternative to individual parameters.
             name: KMIP server entry name.
             server_list: KMIP server list.
+                Default format: [{'server': '192.168.1.10', 'port': 1}]
+                Required format: List of dicts with keys: server, port
+                  (String format not allowed due to multiple required fields)
             username: User name to use for connectivity to the KMIP server.
             password: Password to use for connectivity to the KMIP server.
             ssl_min_proto_version: Minimum supported protocol version for SSL/TLS connections (default is to follow system global setting).
@@ -413,6 +441,16 @@ class KmipServer(CRUDEndpoint, MetadataMixin):
             - put(): Update existing object
             - set(): Intelligent create or update
         """
+        # Apply normalization for table fields (supports flexible input formats)
+        if server_list is not None:
+            server_list = normalize_table_field(
+                server_list,
+                mkey="id",
+                required_fields=['server', 'port'],
+                field_name="server_list",
+                example="[{'server': '192.168.1.10', 'port': 1}]",
+            )
+        
         # Build payload using helper function with auto-normalization
         # This automatically converts strings/lists to [{'name': '...'}] format for list fields
         # To disable auto-normalization, use build_cmdb_payload directly
@@ -452,8 +490,7 @@ class KmipServer(CRUDEndpoint, MetadataMixin):
             params["scope"] = q_scope
         
         return self._client.post(
-            "cmdb", endpoint, data=payload_data, params=params, vdom=vdom
-        )
+            "cmdb", endpoint, data=payload_data, params=params, vdom=vdom        )
 
     # ========================================================================
     # DELETE Method
@@ -507,8 +544,7 @@ class KmipServer(CRUDEndpoint, MetadataMixin):
             params["scope"] = q_scope
         
         return self._client.delete(
-            "cmdb", endpoint, params=params, vdom=vdom
-        )
+            "cmdb", endpoint, params=params, vdom=vdom        )
 
     def exists(
         self,

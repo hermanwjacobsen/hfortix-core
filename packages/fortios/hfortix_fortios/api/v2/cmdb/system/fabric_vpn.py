@@ -47,6 +47,7 @@ from hfortix_fortios._helpers import (
     build_cmdb_payload,  # Keep for backward compatibility / manual usage
     is_success,
     quote_path_param,  # URL encoding for path parameters
+    normalize_table_field,  # For table field normalization
 )
 # Import metadata mixin for schema introspection
 from hfortix_fortios._helpers.metadata_mixin import MetadataMixin
@@ -59,6 +60,23 @@ class FabricVpn(CRUDEndpoint, MetadataMixin):
     
     # Configure metadata mixin to use this endpoint's helper module
     _helper_module_name = "fabric_vpn"
+    
+    # ========================================================================
+    # Table Fields Metadata (for normalization)
+    # Auto-generated from schema - supports flexible input formats
+    # ========================================================================
+    _TABLE_FIELDS = {
+        "overlays": {
+            "mkey": "name",
+            "required_fields": ['name'],
+            "example": "[{'name': 'value'}]",
+        },
+        "advertised_subnets": {
+            "mkey": "id",
+            "required_fields": ['prefix', 'access'],
+            "example": "[{'prefix': 'value', 'access': 'inbound'}]",
+        },
+    }
     
     # ========================================================================
     # Capabilities (from schema metadata)
@@ -261,7 +279,15 @@ class FabricVpn(CRUDEndpoint, MetadataMixin):
             policy_rule: Policy creation rule.
             vpn_role: Fabric VPN role.
             overlays: Local overlay interfaces table.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
             advertised_subnets: Local advertised subnets.
+                Default format: [{'prefix': 'value', 'access': 'inbound'}]
+                Required format: List of dicts with keys: prefix, access
+                  (String format not allowed due to multiple required fields)
             loopback_address_block: IPv4 address and subnet mask for hub's loopback address, syntax: X.X.X.X/24.
             loopback_interface: Loopback interface.
             loopback_advertised_subnet: Loopback advertised subnet reference.
@@ -297,6 +323,24 @@ class FabricVpn(CRUDEndpoint, MetadataMixin):
             - post(): Create new object
             - set(): Intelligent create or update
         """
+        # Apply normalization for table fields (supports flexible input formats)
+        if overlays is not None:
+            overlays = normalize_table_field(
+                overlays,
+                mkey="name",
+                required_fields=['name'],
+                field_name="overlays",
+                example="[{'name': 'value'}]",
+            )
+        if advertised_subnets is not None:
+            advertised_subnets = normalize_table_field(
+                advertised_subnets,
+                mkey="id",
+                required_fields=['prefix', 'access'],
+                field_name="advertised_subnets",
+                example="[{'prefix': 'value', 'access': 'inbound'}]",
+            )
+        
         # Build payload using helper function with auto-normalization
         # This automatically converts strings/lists to [{'name': '...'}] format for list fields
         # To disable auto-normalization, use build_cmdb_payload directly
@@ -343,8 +387,7 @@ class FabricVpn(CRUDEndpoint, MetadataMixin):
             params["scope"] = q_scope
         
         return self._client.put(
-            "cmdb", endpoint, data=payload_data, params=params, vdom=vdom
-        )
+            "cmdb", endpoint, data=payload_data, params=params, vdom=vdom        )
 
 
 

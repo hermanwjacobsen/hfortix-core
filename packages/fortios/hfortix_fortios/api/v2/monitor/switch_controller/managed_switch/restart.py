@@ -151,8 +151,7 @@ class Restart(CRUDEndpoint, MetadataMixin):
 
         endpoint = "/switch-controller/managed-switch/restart"
         return self._client.post(
-            "monitor", endpoint, data=payload_data, vdom=vdom
-        )
+            "monitor", endpoint, data=payload_data, vdom=vdom        )
 
 
 

@@ -47,6 +47,7 @@ from hfortix_fortios._helpers import (
     build_cmdb_payload,  # Keep for backward compatibility / manual usage
     is_success,
     quote_path_param,  # URL encoding for path parameters
+    normalize_table_field,  # For table field normalization
 )
 # Import metadata mixin for schema introspection
 from hfortix_fortios._helpers.metadata_mixin import MetadataMixin
@@ -59,6 +60,23 @@ class AccessProxy(CRUDEndpoint, MetadataMixin):
     
     # Configure metadata mixin to use this endpoint's helper module
     _helper_module_name = "access_proxy"
+    
+    # ========================================================================
+    # Table Fields Metadata (for normalization)
+    # Auto-generated from schema - supports flexible input formats
+    # ========================================================================
+    _TABLE_FIELDS = {
+        "api_gateway": {
+            "mkey": "id",
+            "required_fields": ['url-map', 'service', 'url-map-type', 'h2-support', 'application'],
+            "example": "[{'url-map': 'value', 'service': 'http', 'url-map-type': 'sub-string', 'h2-support': 'enable', 'application': 'value'}]",
+        },
+        "api_gateway6": {
+            "mkey": "id",
+            "required_fields": ['url-map', 'service', 'url-map-type', 'h2-support', 'application'],
+            "example": "[{'url-map': 'value', 'service': 'http', 'url-map-type': 'sub-string', 'h2-support': 'enable', 'application': 'value'}]",
+        },
+    }
     
     # ========================================================================
     # Capabilities (from schema metadata)
@@ -271,7 +289,13 @@ class AccessProxy(CRUDEndpoint, MetadataMixin):
             svr_pool_server_max_concurrent_request: Maximum number of concurrent requests that servers in server pool could handle (default = unlimited).
             decrypted_traffic_mirror: Decrypted traffic mirror.
             api_gateway: Set IPv4 API Gateway.
+                Default format: [{'url-map': 'value', 'service': 'http', 'url-map-type': 'sub-string', 'h2-support': 'enable', 'application': 'value'}]
+                Required format: List of dicts with keys: url-map, service, url-map-type, h2-support, application
+                  (String format not allowed due to multiple required fields)
             api_gateway6: Set IPv6 API Gateway.
+                Default format: [{'url-map': 'value', 'service': 'http', 'url-map-type': 'sub-string', 'h2-support': 'enable', 'application': 'value'}]
+                Required format: List of dicts with keys: url-map, service, url-map-type, h2-support, application
+                  (String format not allowed due to multiple required fields)
             vdom: Virtual domain name.
             error_mode: Override client-level error_mode. "raise" raises exceptions, "return" returns error dict, "print" prints errors.
             error_format: Override client-level error_format. "detailed" provides full context, "simple" is concise, "code_only" returns just status code.
@@ -300,6 +324,24 @@ class AccessProxy(CRUDEndpoint, MetadataMixin):
             - post(): Create new object
             - set(): Intelligent create or update
         """
+        # Apply normalization for table fields (supports flexible input formats)
+        if api_gateway is not None:
+            api_gateway = normalize_table_field(
+                api_gateway,
+                mkey="id",
+                required_fields=['url-map', 'service', 'url-map-type', 'h2-support', 'application'],
+                field_name="api_gateway",
+                example="[{'url-map': 'value', 'service': 'http', 'url-map-type': 'sub-string', 'h2-support': 'enable', 'application': 'value'}]",
+            )
+        if api_gateway6 is not None:
+            api_gateway6 = normalize_table_field(
+                api_gateway6,
+                mkey="id",
+                required_fields=['url-map', 'service', 'url-map-type', 'h2-support', 'application'],
+                field_name="api_gateway6",
+                example="[{'url-map': 'value', 'service': 'http', 'url-map-type': 'sub-string', 'h2-support': 'enable', 'application': 'value'}]",
+            )
+        
         # Build payload using helper function with auto-normalization
         # This automatically converts strings/lists to [{'name': '...'}] format for list fields
         # To disable auto-normalization, use build_cmdb_payload directly
@@ -347,8 +389,7 @@ class AccessProxy(CRUDEndpoint, MetadataMixin):
             params["scope"] = q_scope
         
         return self._client.put(
-            "cmdb", endpoint, data=payload_data, params=params, vdom=vdom
-        )
+            "cmdb", endpoint, data=payload_data, params=params, vdom=vdom        )
 
     # ========================================================================
     # POST Method
@@ -397,7 +438,13 @@ class AccessProxy(CRUDEndpoint, MetadataMixin):
             svr_pool_server_max_concurrent_request: Maximum number of concurrent requests that servers in server pool could handle (default = unlimited).
             decrypted_traffic_mirror: Decrypted traffic mirror.
             api_gateway: Set IPv4 API Gateway.
+                Default format: [{'url-map': 'value', 'service': 'http', 'url-map-type': 'sub-string', 'h2-support': 'enable', 'application': 'value'}]
+                Required format: List of dicts with keys: url-map, service, url-map-type, h2-support, application
+                  (String format not allowed due to multiple required fields)
             api_gateway6: Set IPv6 API Gateway.
+                Default format: [{'url-map': 'value', 'service': 'http', 'url-map-type': 'sub-string', 'h2-support': 'enable', 'application': 'value'}]
+                Required format: List of dicts with keys: url-map, service, url-map-type, h2-support, application
+                  (String format not allowed due to multiple required fields)
             vdom: Virtual domain name. Use True for global, string for specific VDOM.
             error_mode: Override client-level error_mode. "raise" raises exceptions, "return" returns error dict, "print" prints errors.
             error_format: Override client-level error_format. "detailed" provides full context, "simple" is concise, "code_only" returns just status code.
@@ -428,6 +475,24 @@ class AccessProxy(CRUDEndpoint, MetadataMixin):
             - put(): Update existing object
             - set(): Intelligent create or update
         """
+        # Apply normalization for table fields (supports flexible input formats)
+        if api_gateway is not None:
+            api_gateway = normalize_table_field(
+                api_gateway,
+                mkey="id",
+                required_fields=['url-map', 'service', 'url-map-type', 'h2-support', 'application'],
+                field_name="api_gateway",
+                example="[{'url-map': 'value', 'service': 'http', 'url-map-type': 'sub-string', 'h2-support': 'enable', 'application': 'value'}]",
+            )
+        if api_gateway6 is not None:
+            api_gateway6 = normalize_table_field(
+                api_gateway6,
+                mkey="id",
+                required_fields=['url-map', 'service', 'url-map-type', 'h2-support', 'application'],
+                field_name="api_gateway6",
+                example="[{'url-map': 'value', 'service': 'http', 'url-map-type': 'sub-string', 'h2-support': 'enable', 'application': 'value'}]",
+            )
+        
         # Build payload using helper function with auto-normalization
         # This automatically converts strings/lists to [{'name': '...'}] format for list fields
         # To disable auto-normalization, use build_cmdb_payload directly
@@ -470,8 +535,7 @@ class AccessProxy(CRUDEndpoint, MetadataMixin):
             params["scope"] = q_scope
         
         return self._client.post(
-            "cmdb", endpoint, data=payload_data, params=params, vdom=vdom
-        )
+            "cmdb", endpoint, data=payload_data, params=params, vdom=vdom        )
 
     # ========================================================================
     # DELETE Method
@@ -525,8 +589,7 @@ class AccessProxy(CRUDEndpoint, MetadataMixin):
             params["scope"] = q_scope
         
         return self._client.delete(
-            "cmdb", endpoint, params=params, vdom=vdom
-        )
+            "cmdb", endpoint, params=params, vdom=vdom        )
 
     def exists(
         self,

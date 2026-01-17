@@ -154,8 +154,7 @@ class BackupAction(CRUDEndpoint, MetadataMixin):
 
         endpoint = "/system/fortimanager/backup-action"
         return self._client.post(
-            "monitor", endpoint, data=payload_data, vdom=vdom
-        )
+            "monitor", endpoint, data=payload_data, vdom=vdom        )
 
 
 

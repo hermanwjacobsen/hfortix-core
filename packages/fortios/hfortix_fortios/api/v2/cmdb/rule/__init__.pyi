@@ -11,13 +11,29 @@ if TYPE_CHECKING:
     from .otdt import Otdt
     from .otvp import Otvp
 
+__all__ = [
+    "Fmwp",
+    "Iotd",
+    "Otdt",
+    "Otvp",
+    "Rule",
+]
+
 
 class Rule:
-    """Type stub for Rule."""
-
+    """RULE API category.
+    
+    All endpoints return FortiObject instances with:
+    - Attribute access: response.field
+    - Dictionary access: response["field"]
+    - Convert to dict: response.dict or response.json
+    """
+    
     fmwp: Fmwp
     iotd: Iotd
     otdt: Otdt
     otvp: Otvp
 
-    def __init__(self, client: IHTTPClient) -> None: ...
+    def __init__(self, client: IHTTPClient, vdom: str | None = None) -> None:
+        """Initialize rule category with HTTP client."""
+        ...

@@ -47,6 +47,7 @@ from hfortix_fortios._helpers import (
     build_cmdb_payload,  # Keep for backward compatibility / manual usage
     is_success,
     quote_path_param,  # URL encoding for path parameters
+    normalize_table_field,  # For table field normalization
 )
 # Import metadata mixin for schema introspection
 from hfortix_fortios._helpers.metadata_mixin import MetadataMixin
@@ -59,6 +60,38 @@ class Rule(CRUDEndpoint, MetadataMixin):
     
     # Configure metadata mixin to use this endpoint's helper module
     _helper_module_name = "rule"
+    
+    # ========================================================================
+    # Table Fields Metadata (for normalization)
+    # Auto-generated from schema - supports flexible input formats
+    # ========================================================================
+    _TABLE_FIELDS = {
+        "srcintf": {
+            "mkey": "name",
+            "required_fields": ['name'],
+            "example": "[{'name': 'value'}]",
+        },
+        "srcaddr": {
+            "mkey": "name",
+            "required_fields": ['name'],
+            "example": "[{'name': 'value'}]",
+        },
+        "dstaddr": {
+            "mkey": "name",
+            "required_fields": ['name'],
+            "example": "[{'name': 'value'}]",
+        },
+        "srcaddr6": {
+            "mkey": "name",
+            "required_fields": ['name'],
+            "example": "[{'name': 'value'}]",
+        },
+        "dstaddr6": {
+            "mkey": "name",
+            "required_fields": ['name'],
+            "example": "[{'name': 'value'}]",
+        },
+    }
     
     # ========================================================================
     # Capabilities (from schema metadata)
@@ -269,10 +302,35 @@ class Rule(CRUDEndpoint, MetadataMixin):
             status: Enable/disable this authentication rule.
             protocol: Authentication is required for the selected protocol (default = HTTP).
             srcintf: Incoming (ingress) interface.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
             srcaddr: Authentication is required for the selected IPv4 source address.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
             dstaddr: Select an IPv4 destination address from available options. Required for web proxy authentication.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
             srcaddr6: Authentication is required for the selected IPv6 source address.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
             dstaddr6: Select an IPv6 destination address from available options. Required for web proxy authentication.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
             ip_based: Enable/disable IP-based authentication. When enabled, previously authenticated users from the same IP address will be exempted.
             active_auth_method: Select an active authentication method.
             sso_auth_method: Select a single-sign on (SSO) authentication method.
@@ -312,6 +370,48 @@ class Rule(CRUDEndpoint, MetadataMixin):
             - post(): Create new object
             - set(): Intelligent create or update
         """
+        # Apply normalization for table fields (supports flexible input formats)
+        if srcintf is not None:
+            srcintf = normalize_table_field(
+                srcintf,
+                mkey="name",
+                required_fields=['name'],
+                field_name="srcintf",
+                example="[{'name': 'value'}]",
+            )
+        if srcaddr is not None:
+            srcaddr = normalize_table_field(
+                srcaddr,
+                mkey="name",
+                required_fields=['name'],
+                field_name="srcaddr",
+                example="[{'name': 'value'}]",
+            )
+        if dstaddr is not None:
+            dstaddr = normalize_table_field(
+                dstaddr,
+                mkey="name",
+                required_fields=['name'],
+                field_name="dstaddr",
+                example="[{'name': 'value'}]",
+            )
+        if srcaddr6 is not None:
+            srcaddr6 = normalize_table_field(
+                srcaddr6,
+                mkey="name",
+                required_fields=['name'],
+                field_name="srcaddr6",
+                example="[{'name': 'value'}]",
+            )
+        if dstaddr6 is not None:
+            dstaddr6 = normalize_table_field(
+                dstaddr6,
+                mkey="name",
+                required_fields=['name'],
+                field_name="dstaddr6",
+                example="[{'name': 'value'}]",
+            )
+        
         # Build payload using helper function with auto-normalization
         # This automatically converts strings/lists to [{'name': '...'}] format for list fields
         # To disable auto-normalization, use build_cmdb_payload directly
@@ -365,8 +465,7 @@ class Rule(CRUDEndpoint, MetadataMixin):
             params["scope"] = q_scope
         
         return self._client.put(
-            "cmdb", endpoint, data=payload_data, params=params, vdom=vdom
-        )
+            "cmdb", endpoint, data=payload_data, params=params, vdom=vdom        )
 
     # ========================================================================
     # POST Method
@@ -413,10 +512,35 @@ class Rule(CRUDEndpoint, MetadataMixin):
             status: Enable/disable this authentication rule.
             protocol: Authentication is required for the selected protocol (default = HTTP).
             srcintf: Incoming (ingress) interface.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
             srcaddr: Authentication is required for the selected IPv4 source address.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
             dstaddr: Select an IPv4 destination address from available options. Required for web proxy authentication.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
             srcaddr6: Authentication is required for the selected IPv6 source address.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
             dstaddr6: Select an IPv6 destination address from available options. Required for web proxy authentication.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
             ip_based: Enable/disable IP-based authentication. When enabled, previously authenticated users from the same IP address will be exempted.
             active_auth_method: Select an active authentication method.
             sso_auth_method: Select a single-sign on (SSO) authentication method.
@@ -458,6 +582,48 @@ class Rule(CRUDEndpoint, MetadataMixin):
             - put(): Update existing object
             - set(): Intelligent create or update
         """
+        # Apply normalization for table fields (supports flexible input formats)
+        if srcintf is not None:
+            srcintf = normalize_table_field(
+                srcintf,
+                mkey="name",
+                required_fields=['name'],
+                field_name="srcintf",
+                example="[{'name': 'value'}]",
+            )
+        if srcaddr is not None:
+            srcaddr = normalize_table_field(
+                srcaddr,
+                mkey="name",
+                required_fields=['name'],
+                field_name="srcaddr",
+                example="[{'name': 'value'}]",
+            )
+        if dstaddr is not None:
+            dstaddr = normalize_table_field(
+                dstaddr,
+                mkey="name",
+                required_fields=['name'],
+                field_name="dstaddr",
+                example="[{'name': 'value'}]",
+            )
+        if srcaddr6 is not None:
+            srcaddr6 = normalize_table_field(
+                srcaddr6,
+                mkey="name",
+                required_fields=['name'],
+                field_name="srcaddr6",
+                example="[{'name': 'value'}]",
+            )
+        if dstaddr6 is not None:
+            dstaddr6 = normalize_table_field(
+                dstaddr6,
+                mkey="name",
+                required_fields=['name'],
+                field_name="dstaddr6",
+                example="[{'name': 'value'}]",
+            )
+        
         # Build payload using helper function with auto-normalization
         # This automatically converts strings/lists to [{'name': '...'}] format for list fields
         # To disable auto-normalization, use build_cmdb_payload directly
@@ -506,8 +672,7 @@ class Rule(CRUDEndpoint, MetadataMixin):
             params["scope"] = q_scope
         
         return self._client.post(
-            "cmdb", endpoint, data=payload_data, params=params, vdom=vdom
-        )
+            "cmdb", endpoint, data=payload_data, params=params, vdom=vdom        )
 
     # ========================================================================
     # DELETE Method
@@ -561,8 +726,7 @@ class Rule(CRUDEndpoint, MetadataMixin):
             params["scope"] = q_scope
         
         return self._client.delete(
-            "cmdb", endpoint, params=params, vdom=vdom
-        )
+            "cmdb", endpoint, params=params, vdom=vdom        )
 
     def exists(
         self,

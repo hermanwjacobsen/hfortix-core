@@ -47,6 +47,7 @@ from hfortix_fortios._helpers import (
     build_cmdb_payload,  # Keep for backward compatibility / manual usage
     is_success,
     quote_path_param,  # URL encoding for path parameters
+    normalize_table_field,  # For table field normalization
 )
 # Import metadata mixin for schema introspection
 from hfortix_fortios._helpers.metadata_mixin import MetadataMixin
@@ -59,6 +60,28 @@ class InterfacePolicy6(CRUDEndpoint, MetadataMixin):
     
     # Configure metadata mixin to use this endpoint's helper module
     _helper_module_name = "interface_policy6"
+    
+    # ========================================================================
+    # Table Fields Metadata (for normalization)
+    # Auto-generated from schema - supports flexible input formats
+    # ========================================================================
+    _TABLE_FIELDS = {
+        "srcaddr6": {
+            "mkey": "name",
+            "required_fields": ['name'],
+            "example": "[{'name': 'value'}]",
+        },
+        "dstaddr6": {
+            "mkey": "name",
+            "required_fields": ['name'],
+            "example": "[{'name': 'value'}]",
+        },
+        "service6": {
+            "mkey": "name",
+            "required_fields": ['name'],
+            "example": "[{'name': 'value'}]",
+        },
+    }
     
     # ========================================================================
     # Capabilities (from schema metadata)
@@ -277,8 +300,23 @@ class InterfacePolicy6(CRUDEndpoint, MetadataMixin):
             logtraffic: Logging type to be used in this policy (Options: all | utm | disable, Default: utm).
             interface: Monitored interface name from available interfaces.
             srcaddr6: IPv6 address object to limit traffic monitoring to network traffic sent from the specified address or range.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
             dstaddr6: IPv6 address object to limit traffic monitoring to network traffic sent to the specified address or range.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
             service6: Service name.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
             application_list_status: Enable/disable application control.
             application_list: Application list name.
             ips_sensor_status: Enable/disable IPS.
@@ -322,6 +360,32 @@ class InterfacePolicy6(CRUDEndpoint, MetadataMixin):
             - post(): Create new object
             - set(): Intelligent create or update
         """
+        # Apply normalization for table fields (supports flexible input formats)
+        if srcaddr6 is not None:
+            srcaddr6 = normalize_table_field(
+                srcaddr6,
+                mkey="name",
+                required_fields=['name'],
+                field_name="srcaddr6",
+                example="[{'name': 'value'}]",
+            )
+        if dstaddr6 is not None:
+            dstaddr6 = normalize_table_field(
+                dstaddr6,
+                mkey="name",
+                required_fields=['name'],
+                field_name="dstaddr6",
+                example="[{'name': 'value'}]",
+            )
+        if service6 is not None:
+            service6 = normalize_table_field(
+                service6,
+                mkey="name",
+                required_fields=['name'],
+                field_name="service6",
+                example="[{'name': 'value'}]",
+            )
+        
         # Build payload using helper function with auto-normalization
         # This automatically converts strings/lists to [{'name': '...'}] format for list fields
         # To disable auto-normalization, use build_cmdb_payload directly
@@ -380,8 +444,7 @@ class InterfacePolicy6(CRUDEndpoint, MetadataMixin):
             params["scope"] = q_scope
         
         return self._client.put(
-            "cmdb", endpoint, data=payload_data, params=params, vdom=vdom
-        )
+            "cmdb", endpoint, data=payload_data, params=params, vdom=vdom        )
 
     # ========================================================================
     # POST Method
@@ -436,8 +499,23 @@ class InterfacePolicy6(CRUDEndpoint, MetadataMixin):
             logtraffic: Logging type to be used in this policy (Options: all | utm | disable, Default: utm).
             interface: Monitored interface name from available interfaces.
             srcaddr6: IPv6 address object to limit traffic monitoring to network traffic sent from the specified address or range.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
             dstaddr6: IPv6 address object to limit traffic monitoring to network traffic sent to the specified address or range.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
             service6: Service name.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
             application_list_status: Enable/disable application control.
             application_list: Application list name.
             ips_sensor_status: Enable/disable IPS.
@@ -483,6 +561,32 @@ class InterfacePolicy6(CRUDEndpoint, MetadataMixin):
             - put(): Update existing object
             - set(): Intelligent create or update
         """
+        # Apply normalization for table fields (supports flexible input formats)
+        if srcaddr6 is not None:
+            srcaddr6 = normalize_table_field(
+                srcaddr6,
+                mkey="name",
+                required_fields=['name'],
+                field_name="srcaddr6",
+                example="[{'name': 'value'}]",
+            )
+        if dstaddr6 is not None:
+            dstaddr6 = normalize_table_field(
+                dstaddr6,
+                mkey="name",
+                required_fields=['name'],
+                field_name="dstaddr6",
+                example="[{'name': 'value'}]",
+            )
+        if service6 is not None:
+            service6 = normalize_table_field(
+                service6,
+                mkey="name",
+                required_fields=['name'],
+                field_name="service6",
+                example="[{'name': 'value'}]",
+            )
+        
         # Build payload using helper function with auto-normalization
         # This automatically converts strings/lists to [{'name': '...'}] format for list fields
         # To disable auto-normalization, use build_cmdb_payload directly
@@ -536,8 +640,7 @@ class InterfacePolicy6(CRUDEndpoint, MetadataMixin):
             params["scope"] = q_scope
         
         return self._client.post(
-            "cmdb", endpoint, data=payload_data, params=params, vdom=vdom
-        )
+            "cmdb", endpoint, data=payload_data, params=params, vdom=vdom        )
 
     # ========================================================================
     # DELETE Method
@@ -591,8 +694,7 @@ class InterfacePolicy6(CRUDEndpoint, MetadataMixin):
             params["scope"] = q_scope
         
         return self._client.delete(
-            "cmdb", endpoint, params=params, vdom=vdom
-        )
+            "cmdb", endpoint, params=params, vdom=vdom        )
 
     def exists(
         self,

@@ -151,8 +151,7 @@ class Shutdown(CRUDEndpoint, MetadataMixin):
 
         endpoint = "/system/os/shutdown"
         return self._client.post(
-            "monitor", endpoint, data=payload_data, vdom=vdom
-        )
+            "monitor", endpoint, data=payload_data, vdom=vdom        )
 
 
 

@@ -151,8 +151,7 @@ class Revoke(CRUDEndpoint, MetadataMixin):
 
         endpoint = "/system/dhcp6/revoke"
         return self._client.post(
-            "monitor", endpoint, data=payload_data, vdom=vdom
-        )
+            "monitor", endpoint, data=payload_data, vdom=vdom        )
 
 
 

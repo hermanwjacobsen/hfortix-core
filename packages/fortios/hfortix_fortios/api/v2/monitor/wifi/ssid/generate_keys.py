@@ -163,8 +163,7 @@ class GenerateKeys(CRUDEndpoint, MetadataMixin):
 
         endpoint = "/wifi/ssid/generate-keys"
         return self._client.post(
-            "monitor", endpoint, data=payload_data, vdom=vdom
-        )
+            "monitor", endpoint, data=payload_data, vdom=vdom        )
 
 
 

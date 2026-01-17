@@ -154,8 +154,7 @@ class Diagnose(CRUDEndpoint, MetadataMixin):
 
         endpoint = "/extender-controller/extender/diagnose"
         return self._client.post(
-            "monitor", endpoint, data=payload_data, vdom=vdom
-        )
+            "monitor", endpoint, data=payload_data, vdom=vdom        )
 
 
 

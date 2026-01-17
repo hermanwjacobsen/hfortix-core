@@ -148,8 +148,7 @@ class EnableAppBandwidthTracking(CRUDEndpoint, MetadataMixin):
 
         endpoint = "/system/traffic-history/enable-app-bandwidth-tracking"
         return self._client.post(
-            "monitor", endpoint, data=payload_data, vdom=vdom
-        )
+            "monitor", endpoint, data=payload_data, vdom=vdom        )
 
 
 

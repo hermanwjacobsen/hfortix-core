@@ -151,8 +151,7 @@ class Delete(CRUDEndpoint, MetadataMixin):
 
         endpoint = "/sniffer/delete"
         return self._client.post(
-            "service", endpoint, data=payload_data, vdom=vdom
-        )
+            "service", endpoint, data=payload_data, vdom=vdom        )
 
 
 

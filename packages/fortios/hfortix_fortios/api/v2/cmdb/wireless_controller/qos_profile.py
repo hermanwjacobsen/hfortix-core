@@ -47,6 +47,7 @@ from hfortix_fortios._helpers import (
     build_cmdb_payload,  # Keep for backward compatibility / manual usage
     is_success,
     quote_path_param,  # URL encoding for path parameters
+    normalize_table_field,  # For table field normalization
 )
 # Import metadata mixin for schema introspection
 from hfortix_fortios._helpers.metadata_mixin import MetadataMixin
@@ -59,6 +60,33 @@ class QosProfile(CRUDEndpoint, MetadataMixin):
     
     # Configure metadata mixin to use this endpoint's helper module
     _helper_module_name = "qos_profile"
+    
+    # ========================================================================
+    # Table Fields Metadata (for normalization)
+    # Auto-generated from schema - supports flexible input formats
+    # ========================================================================
+    _TABLE_FIELDS = {
+        "dscp_wmm_vo": {
+            "mkey": "id",
+            "required_fields": ['id'],
+            "example": "[{'id': 1}]",
+        },
+        "dscp_wmm_vi": {
+            "mkey": "id",
+            "required_fields": ['id'],
+            "example": "[{'id': 1}]",
+        },
+        "dscp_wmm_be": {
+            "mkey": "id",
+            "required_fields": ['id'],
+            "example": "[{'id': 1}]",
+        },
+        "dscp_wmm_bk": {
+            "mkey": "id",
+            "required_fields": ['id'],
+            "example": "[{'id': 1}]",
+        },
+    }
     
     # ========================================================================
     # Capabilities (from schema metadata)
@@ -284,9 +312,29 @@ class QosProfile(CRUDEndpoint, MetadataMixin):
             bandwidth_capacity: Maximum bandwidth capacity allowed (1 - 600000 Kbps, default = 2000).
             dscp_wmm_mapping: Enable/disable Differentiated Services Code Point (DSCP) mapping.
             dscp_wmm_vo: DSCP mapping for voice access (default = 48 56).
+                Default format: [{'id': 1}]
+                Supported formats:
+                  - Single string: "value" → [{'id': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'id': 'val1'}, ...]
+                  - List of dicts: [{'id': 1}] (recommended)
             dscp_wmm_vi: DSCP mapping for video access (default = 32 40).
+                Default format: [{'id': 1}]
+                Supported formats:
+                  - Single string: "value" → [{'id': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'id': 'val1'}, ...]
+                  - List of dicts: [{'id': 1}] (recommended)
             dscp_wmm_be: DSCP mapping for best effort access (default = 0 24).
+                Default format: [{'id': 1}]
+                Supported formats:
+                  - Single string: "value" → [{'id': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'id': 'val1'}, ...]
+                  - List of dicts: [{'id': 1}] (recommended)
             dscp_wmm_bk: DSCP mapping for background access (default = 8 16).
+                Default format: [{'id': 1}]
+                Supported formats:
+                  - Single string: "value" → [{'id': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'id': 'val1'}, ...]
+                  - List of dicts: [{'id': 1}] (recommended)
             wmm_dscp_marking: Enable/disable WMM Differentiated Services Code Point (DSCP) marking.
             wmm_vo_dscp: DSCP marking for voice access (default = 48).
             wmm_vi_dscp: DSCP marking for video access (default = 32).
@@ -320,6 +368,40 @@ class QosProfile(CRUDEndpoint, MetadataMixin):
             - post(): Create new object
             - set(): Intelligent create or update
         """
+        # Apply normalization for table fields (supports flexible input formats)
+        if dscp_wmm_vo is not None:
+            dscp_wmm_vo = normalize_table_field(
+                dscp_wmm_vo,
+                mkey="id",
+                required_fields=['id'],
+                field_name="dscp_wmm_vo",
+                example="[{'id': 1}]",
+            )
+        if dscp_wmm_vi is not None:
+            dscp_wmm_vi = normalize_table_field(
+                dscp_wmm_vi,
+                mkey="id",
+                required_fields=['id'],
+                field_name="dscp_wmm_vi",
+                example="[{'id': 1}]",
+            )
+        if dscp_wmm_be is not None:
+            dscp_wmm_be = normalize_table_field(
+                dscp_wmm_be,
+                mkey="id",
+                required_fields=['id'],
+                field_name="dscp_wmm_be",
+                example="[{'id': 1}]",
+            )
+        if dscp_wmm_bk is not None:
+            dscp_wmm_bk = normalize_table_field(
+                dscp_wmm_bk,
+                mkey="id",
+                required_fields=['id'],
+                field_name="dscp_wmm_bk",
+                example="[{'id': 1}]",
+            )
+        
         # Build payload using helper function with auto-normalization
         # This automatically converts strings/lists to [{'name': '...'}] format for list fields
         # To disable auto-normalization, use build_cmdb_payload directly
@@ -377,8 +459,7 @@ class QosProfile(CRUDEndpoint, MetadataMixin):
             params["scope"] = q_scope
         
         return self._client.put(
-            "cmdb", endpoint, data=payload_data, params=params, vdom=vdom
-        )
+            "cmdb", endpoint, data=payload_data, params=params, vdom=vdom        )
 
     # ========================================================================
     # POST Method
@@ -440,9 +521,29 @@ class QosProfile(CRUDEndpoint, MetadataMixin):
             bandwidth_capacity: Maximum bandwidth capacity allowed (1 - 600000 Kbps, default = 2000).
             dscp_wmm_mapping: Enable/disable Differentiated Services Code Point (DSCP) mapping.
             dscp_wmm_vo: DSCP mapping for voice access (default = 48 56).
+                Default format: [{'id': 1}]
+                Supported formats:
+                  - Single string: "value" → [{'id': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'id': 'val1'}, ...]
+                  - List of dicts: [{'id': 1}] (recommended)
             dscp_wmm_vi: DSCP mapping for video access (default = 32 40).
+                Default format: [{'id': 1}]
+                Supported formats:
+                  - Single string: "value" → [{'id': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'id': 'val1'}, ...]
+                  - List of dicts: [{'id': 1}] (recommended)
             dscp_wmm_be: DSCP mapping for best effort access (default = 0 24).
+                Default format: [{'id': 1}]
+                Supported formats:
+                  - Single string: "value" → [{'id': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'id': 'val1'}, ...]
+                  - List of dicts: [{'id': 1}] (recommended)
             dscp_wmm_bk: DSCP mapping for background access (default = 8 16).
+                Default format: [{'id': 1}]
+                Supported formats:
+                  - Single string: "value" → [{'id': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'id': 'val1'}, ...]
+                  - List of dicts: [{'id': 1}] (recommended)
             wmm_dscp_marking: Enable/disable WMM Differentiated Services Code Point (DSCP) marking.
             wmm_vo_dscp: DSCP marking for voice access (default = 48).
             wmm_vi_dscp: DSCP marking for video access (default = 32).
@@ -478,6 +579,40 @@ class QosProfile(CRUDEndpoint, MetadataMixin):
             - put(): Update existing object
             - set(): Intelligent create or update
         """
+        # Apply normalization for table fields (supports flexible input formats)
+        if dscp_wmm_vo is not None:
+            dscp_wmm_vo = normalize_table_field(
+                dscp_wmm_vo,
+                mkey="id",
+                required_fields=['id'],
+                field_name="dscp_wmm_vo",
+                example="[{'id': 1}]",
+            )
+        if dscp_wmm_vi is not None:
+            dscp_wmm_vi = normalize_table_field(
+                dscp_wmm_vi,
+                mkey="id",
+                required_fields=['id'],
+                field_name="dscp_wmm_vi",
+                example="[{'id': 1}]",
+            )
+        if dscp_wmm_be is not None:
+            dscp_wmm_be = normalize_table_field(
+                dscp_wmm_be,
+                mkey="id",
+                required_fields=['id'],
+                field_name="dscp_wmm_be",
+                example="[{'id': 1}]",
+            )
+        if dscp_wmm_bk is not None:
+            dscp_wmm_bk = normalize_table_field(
+                dscp_wmm_bk,
+                mkey="id",
+                required_fields=['id'],
+                field_name="dscp_wmm_bk",
+                example="[{'id': 1}]",
+            )
+        
         # Build payload using helper function with auto-normalization
         # This automatically converts strings/lists to [{'name': '...'}] format for list fields
         # To disable auto-normalization, use build_cmdb_payload directly
@@ -530,8 +665,7 @@ class QosProfile(CRUDEndpoint, MetadataMixin):
             params["scope"] = q_scope
         
         return self._client.post(
-            "cmdb", endpoint, data=payload_data, params=params, vdom=vdom
-        )
+            "cmdb", endpoint, data=payload_data, params=params, vdom=vdom        )
 
     # ========================================================================
     # DELETE Method
@@ -585,8 +719,7 @@ class QosProfile(CRUDEndpoint, MetadataMixin):
             params["scope"] = q_scope
         
         return self._client.delete(
-            "cmdb", endpoint, params=params, vdom=vdom
-        )
+            "cmdb", endpoint, params=params, vdom=vdom        )
 
     def exists(
         self,

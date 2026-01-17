@@ -47,6 +47,7 @@ from hfortix_fortios._helpers import (
     build_cmdb_payload,  # Keep for backward compatibility / manual usage
     is_success,
     quote_path_param,  # URL encoding for path parameters
+    normalize_table_field,  # For table field normalization
 )
 # Import metadata mixin for schema introspection
 from hfortix_fortios._helpers.metadata_mixin import MetadataMixin
@@ -59,6 +60,23 @@ class Explicit(CRUDEndpoint, MetadataMixin):
     
     # Configure metadata mixin to use this endpoint's helper module
     _helper_module_name = "explicit"
+    
+    # ========================================================================
+    # Table Fields Metadata (for normalization)
+    # Auto-generated from schema - supports flexible input formats
+    # ========================================================================
+    _TABLE_FIELDS = {
+        "secure_web_proxy_cert": {
+            "mkey": "name",
+            "required_fields": ['name'],
+            "example": "[{'name': 'value'}]",
+        },
+        "pac_policy": {
+            "mkey": "policyid",
+            "required_fields": ['policyid', 'srcaddr', 'dstaddr', 'pac-file-name'],
+            "example": "[{'policyid': 1, 'srcaddr': 'value', 'dstaddr': 'value', 'pac-file-name': 'value'}]",
+        },
+    }
     
     # ========================================================================
     # Capabilities (from schema metadata)
@@ -287,6 +305,11 @@ class Explicit(CRUDEndpoint, MetadataMixin):
             http_connection_mode: HTTP connection mode (default = static).
             https_incoming_port: Accept incoming HTTPS requests on one or more ports (0 - 65535, default = 0, use the same as HTTP).
             secure_web_proxy_cert: Name of certificates for secure web proxy.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
             client_cert: Enable/disable to request client certificate.
             user_agent_detect: Enable/disable to detect device type by HTTP user-agent if no client certificate provided.
             empty_cert_action: Action of an empty client certificate.
@@ -315,6 +338,9 @@ class Explicit(CRUDEndpoint, MetadataMixin):
             pac_file_name: Pac file name.
             pac_file_data: PAC file contents enclosed in quotes (maximum of 256K bytes).
             pac_policy: PAC policies.
+                Default format: [{'policyid': 1, 'srcaddr': 'value', 'dstaddr': 'value', 'pac-file-name': 'value'}]
+                Required format: List of dicts with keys: policyid, srcaddr, dstaddr, pac-file-name
+                  (String format not allowed due to multiple required fields)
             ssl_algorithm: Relative strength of encryption algorithms accepted in HTTPS deep scan: high, medium, or low.
             trace_auth_no_rsp: Enable/disable logging timed-out authentication requests.
             vdom: Virtual domain name.
@@ -345,6 +371,24 @@ class Explicit(CRUDEndpoint, MetadataMixin):
             - post(): Create new object
             - set(): Intelligent create or update
         """
+        # Apply normalization for table fields (supports flexible input formats)
+        if secure_web_proxy_cert is not None:
+            secure_web_proxy_cert = normalize_table_field(
+                secure_web_proxy_cert,
+                mkey="name",
+                required_fields=['name'],
+                field_name="secure_web_proxy_cert",
+                example="[{'name': 'value'}]",
+            )
+        if pac_policy is not None:
+            pac_policy = normalize_table_field(
+                pac_policy,
+                mkey="policyid",
+                required_fields=['policyid', 'srcaddr', 'dstaddr', 'pac-file-name'],
+                field_name="pac_policy",
+                example="[{'policyid': 1, 'srcaddr': 'value', 'dstaddr': 'value', 'pac-file-name': 'value'}]",
+            )
+        
         # Build payload using helper function with auto-normalization
         # This automatically converts strings/lists to [{'name': '...'}] format for list fields
         # To disable auto-normalization, use build_cmdb_payload directly
@@ -415,8 +459,7 @@ class Explicit(CRUDEndpoint, MetadataMixin):
             params["scope"] = q_scope
         
         return self._client.put(
-            "cmdb", endpoint, data=payload_data, params=params, vdom=vdom
-        )
+            "cmdb", endpoint, data=payload_data, params=params, vdom=vdom        )
 
 
 

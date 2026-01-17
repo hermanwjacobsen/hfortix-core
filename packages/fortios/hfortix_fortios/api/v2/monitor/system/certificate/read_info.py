@@ -151,8 +151,7 @@ class ReadInfo(CRUDEndpoint, MetadataMixin):
 
         endpoint = "/system/certificate/read-info"
         return self._client.post(
-            "monitor", endpoint, data=payload_data, vdom=vdom
-        )
+            "monitor", endpoint, data=payload_data, vdom=vdom        )
 
 
 

@@ -148,8 +148,7 @@ class Stop(CRUDEndpoint, MetadataMixin):
 
         endpoint = "/network/debug-flow/stop"
         return self._client.post(
-            "monitor", endpoint, data=payload_data, vdom=vdom
-        )
+            "monitor", endpoint, data=payload_data, vdom=vdom        )
 
 
 

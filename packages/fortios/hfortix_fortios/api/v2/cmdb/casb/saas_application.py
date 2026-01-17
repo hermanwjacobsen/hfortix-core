@@ -47,6 +47,7 @@ from hfortix_fortios._helpers import (
     build_cmdb_payload,  # Keep for backward compatibility / manual usage
     is_success,
     quote_path_param,  # URL encoding for path parameters
+    normalize_table_field,  # For table field normalization
 )
 # Import metadata mixin for schema introspection
 from hfortix_fortios._helpers.metadata_mixin import MetadataMixin
@@ -59,6 +60,28 @@ class SaasApplication(CRUDEndpoint, MetadataMixin):
     
     # Configure metadata mixin to use this endpoint's helper module
     _helper_module_name = "saas_application"
+    
+    # ========================================================================
+    # Table Fields Metadata (for normalization)
+    # Auto-generated from schema - supports flexible input formats
+    # ========================================================================
+    _TABLE_FIELDS = {
+        "domains": {
+            "mkey": "domain",
+            "required_fields": ['domain'],
+            "example": "[{'domain': 'value'}]",
+        },
+        "output_attributes": {
+            "mkey": "name",
+            "required_fields": ['name'],
+            "example": "[{'name': 'value'}]",
+        },
+        "input_attributes": {
+            "mkey": "name",
+            "required_fields": ['name'],
+            "example": "[{'name': 'value'}]",
+        },
+    }
     
     # ========================================================================
     # Capabilities (from schema metadata)
@@ -262,8 +285,23 @@ class SaasApplication(CRUDEndpoint, MetadataMixin):
             casb_name: SaaS application signature name.
             description: SaaS application description.
             domains: SaaS application domain list.
+                Default format: [{'domain': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'domain': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'domain': 'val1'}, ...]
+                  - List of dicts: [{'domain': 'value'}] (recommended)
             output_attributes: SaaS application output attributes.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
             input_attributes: SaaS application input attributes.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
             vdom: Virtual domain name.
             error_mode: Override client-level error_mode. "raise" raises exceptions, "return" returns error dict, "print" prints errors.
             error_format: Override client-level error_format. "detailed" provides full context, "simple" is concise, "code_only" returns just status code.
@@ -292,6 +330,32 @@ class SaasApplication(CRUDEndpoint, MetadataMixin):
             - post(): Create new object
             - set(): Intelligent create or update
         """
+        # Apply normalization for table fields (supports flexible input formats)
+        if domains is not None:
+            domains = normalize_table_field(
+                domains,
+                mkey="domain",
+                required_fields=['domain'],
+                field_name="domains",
+                example="[{'domain': 'value'}]",
+            )
+        if output_attributes is not None:
+            output_attributes = normalize_table_field(
+                output_attributes,
+                mkey="name",
+                required_fields=['name'],
+                field_name="output_attributes",
+                example="[{'name': 'value'}]",
+            )
+        if input_attributes is not None:
+            input_attributes = normalize_table_field(
+                input_attributes,
+                mkey="name",
+                required_fields=['name'],
+                field_name="input_attributes",
+                example="[{'name': 'value'}]",
+            )
+        
         # Build payload using helper function with auto-normalization
         # This automatically converts strings/lists to [{'name': '...'}] format for list fields
         # To disable auto-normalization, use build_cmdb_payload directly
@@ -335,8 +399,7 @@ class SaasApplication(CRUDEndpoint, MetadataMixin):
             params["scope"] = q_scope
         
         return self._client.put(
-            "cmdb", endpoint, data=payload_data, params=params, vdom=vdom
-        )
+            "cmdb", endpoint, data=payload_data, params=params, vdom=vdom        )
 
     # ========================================================================
     # POST Method
@@ -376,8 +439,23 @@ class SaasApplication(CRUDEndpoint, MetadataMixin):
             casb_name: SaaS application signature name.
             description: SaaS application description.
             domains: SaaS application domain list.
+                Default format: [{'domain': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'domain': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'domain': 'val1'}, ...]
+                  - List of dicts: [{'domain': 'value'}] (recommended)
             output_attributes: SaaS application output attributes.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
             input_attributes: SaaS application input attributes.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
             vdom: Virtual domain name. Use True for global, string for specific VDOM.
             error_mode: Override client-level error_mode. "raise" raises exceptions, "return" returns error dict, "print" prints errors.
             error_format: Override client-level error_format. "detailed" provides full context, "simple" is concise, "code_only" returns just status code.
@@ -408,6 +486,32 @@ class SaasApplication(CRUDEndpoint, MetadataMixin):
             - put(): Update existing object
             - set(): Intelligent create or update
         """
+        # Apply normalization for table fields (supports flexible input formats)
+        if domains is not None:
+            domains = normalize_table_field(
+                domains,
+                mkey="domain",
+                required_fields=['domain'],
+                field_name="domains",
+                example="[{'domain': 'value'}]",
+            )
+        if output_attributes is not None:
+            output_attributes = normalize_table_field(
+                output_attributes,
+                mkey="name",
+                required_fields=['name'],
+                field_name="output_attributes",
+                example="[{'name': 'value'}]",
+            )
+        if input_attributes is not None:
+            input_attributes = normalize_table_field(
+                input_attributes,
+                mkey="name",
+                required_fields=['name'],
+                field_name="input_attributes",
+                example="[{'name': 'value'}]",
+            )
+        
         # Build payload using helper function with auto-normalization
         # This automatically converts strings/lists to [{'name': '...'}] format for list fields
         # To disable auto-normalization, use build_cmdb_payload directly
@@ -446,8 +550,7 @@ class SaasApplication(CRUDEndpoint, MetadataMixin):
             params["scope"] = q_scope
         
         return self._client.post(
-            "cmdb", endpoint, data=payload_data, params=params, vdom=vdom
-        )
+            "cmdb", endpoint, data=payload_data, params=params, vdom=vdom        )
 
     # ========================================================================
     # DELETE Method
@@ -501,8 +604,7 @@ class SaasApplication(CRUDEndpoint, MetadataMixin):
             params["scope"] = q_scope
         
         return self._client.delete(
-            "cmdb", endpoint, params=params, vdom=vdom
-        )
+            "cmdb", endpoint, params=params, vdom=vdom        )
 
     def exists(
         self,

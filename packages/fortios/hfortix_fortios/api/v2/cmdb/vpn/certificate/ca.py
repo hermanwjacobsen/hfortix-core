@@ -335,8 +335,7 @@ class Ca(CRUDEndpoint, MetadataMixin):
         endpoint = "/vpn.certificate/ca/" + quote_path_param(name_value)
 
         return self._client.put(
-            "cmdb", endpoint, data=payload_data, vdom=vdom
-        )
+            "cmdb", endpoint, data=payload_data, vdom=vdom        )
 
     # ========================================================================
     # POST Method
@@ -461,8 +460,7 @@ class Ca(CRUDEndpoint, MetadataMixin):
             params["scope"] = q_scope
         
         return self._client.post(
-            "cmdb", endpoint, data=payload_data, params=params, vdom=vdom
-        )
+            "cmdb", endpoint, data=payload_data, params=params, vdom=vdom        )
 
     # ========================================================================
     # DELETE Method
@@ -510,8 +508,7 @@ class Ca(CRUDEndpoint, MetadataMixin):
         endpoint = "/vpn.certificate/ca/" + quote_path_param(name)
 
         return self._client.delete(
-            "cmdb", endpoint, vdom=vdom
-        )
+            "cmdb", endpoint, vdom=vdom        )
 
     def exists(
         self,

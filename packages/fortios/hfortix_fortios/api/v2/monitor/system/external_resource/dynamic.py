@@ -151,8 +151,7 @@ class Dynamic(CRUDEndpoint, MetadataMixin):
 
         endpoint = "/system/external-resource/dynamic"
         return self._client.post(
-            "monitor", endpoint, data=payload_data, vdom=vdom
-        )
+            "monitor", endpoint, data=payload_data, vdom=vdom        )
 
 
 

@@ -47,6 +47,7 @@ from hfortix_fortios._helpers import (
     build_cmdb_payload,  # Keep for backward compatibility / manual usage
     is_success,
     quote_path_param,  # URL encoding for path parameters
+    normalize_table_field,  # For table field normalization
 )
 # Import metadata mixin for schema introspection
 from hfortix_fortios._helpers.metadata_mixin import MetadataMixin
@@ -59,6 +60,23 @@ class SwitchInterface(CRUDEndpoint, MetadataMixin):
     
     # Configure metadata mixin to use this endpoint's helper module
     _helper_module_name = "switch_interface"
+    
+    # ========================================================================
+    # Table Fields Metadata (for normalization)
+    # Auto-generated from schema - supports flexible input formats
+    # ========================================================================
+    _TABLE_FIELDS = {
+        "span_source_port": {
+            "mkey": "interface-name",
+            "required_fields": ['interface-name'],
+            "example": "[{'interface-name': 'value'}]",
+        },
+        "member": {
+            "mkey": "interface-name",
+            "required_fields": ['interface-name'],
+            "example": "[{'interface-name': 'value'}]",
+        },
+    }
     
     # ========================================================================
     # Capabilities (from schema metadata)
@@ -259,7 +277,17 @@ class SwitchInterface(CRUDEndpoint, MetadataMixin):
             vdom: VDOM that the software switch belongs to.
             span_dest_port: SPAN destination port name. All traffic on the SPAN source ports is echoed to the SPAN destination port.
             span_source_port: Physical interface name. Port spanning echoes all traffic on the SPAN source ports to the SPAN destination port.
+                Default format: [{'interface-name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'interface-name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'interface-name': 'val1'}, ...]
+                  - List of dicts: [{'interface-name': 'value'}] (recommended)
             member: Names of the interfaces that belong to the virtual switch.
+                Default format: [{'interface-name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'interface-name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'interface-name': 'val1'}, ...]
+                  - List of dicts: [{'interface-name': 'value'}] (recommended)
             type: Type of switch based on functionality: switch for normal functionality, or hub to duplicate packets to all port members.
             intra_switch_policy: Allow any traffic between switch interfaces or require firewall policies to allow traffic between switch interfaces.
             mac_ttl: Duration for which MAC addresses are held in the ARP table (300 - 8640000 sec, default = 300).
@@ -293,6 +321,24 @@ class SwitchInterface(CRUDEndpoint, MetadataMixin):
             - post(): Create new object
             - set(): Intelligent create or update
         """
+        # Apply normalization for table fields (supports flexible input formats)
+        if span_source_port is not None:
+            span_source_port = normalize_table_field(
+                span_source_port,
+                mkey="interface-name",
+                required_fields=['interface-name'],
+                field_name="span_source_port",
+                example="[{'interface-name': 'value'}]",
+            )
+        if member is not None:
+            member = normalize_table_field(
+                member,
+                mkey="interface-name",
+                required_fields=['interface-name'],
+                field_name="member",
+                example="[{'interface-name': 'value'}]",
+            )
+        
         # Build payload using helper function with auto-normalization
         # This automatically converts strings/lists to [{'name': '...'}] format for list fields
         # To disable auto-normalization, use build_cmdb_payload directly
@@ -336,8 +382,7 @@ class SwitchInterface(CRUDEndpoint, MetadataMixin):
             params["scope"] = q_scope
         
         return self._client.put(
-            "cmdb", endpoint, data=payload_data, params=params, vdom=vdom
-        )
+            "cmdb", endpoint, data=payload_data, params=params, vdom=vdom        )
 
     # ========================================================================
     # POST Method
@@ -374,7 +419,17 @@ class SwitchInterface(CRUDEndpoint, MetadataMixin):
             vdom: VDOM that the software switch belongs to.
             span_dest_port: SPAN destination port name. All traffic on the SPAN source ports is echoed to the SPAN destination port.
             span_source_port: Physical interface name. Port spanning echoes all traffic on the SPAN source ports to the SPAN destination port.
+                Default format: [{'interface-name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'interface-name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'interface-name': 'val1'}, ...]
+                  - List of dicts: [{'interface-name': 'value'}] (recommended)
             member: Names of the interfaces that belong to the virtual switch.
+                Default format: [{'interface-name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'interface-name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'interface-name': 'val1'}, ...]
+                  - List of dicts: [{'interface-name': 'value'}] (recommended)
             type: Type of switch based on functionality: switch for normal functionality, or hub to duplicate packets to all port members.
             intra_switch_policy: Allow any traffic between switch interfaces or require firewall policies to allow traffic between switch interfaces.
             mac_ttl: Duration for which MAC addresses are held in the ARP table (300 - 8640000 sec, default = 300).
@@ -410,6 +465,24 @@ class SwitchInterface(CRUDEndpoint, MetadataMixin):
             - put(): Update existing object
             - set(): Intelligent create or update
         """
+        # Apply normalization for table fields (supports flexible input formats)
+        if span_source_port is not None:
+            span_source_port = normalize_table_field(
+                span_source_port,
+                mkey="interface-name",
+                required_fields=['interface-name'],
+                field_name="span_source_port",
+                example="[{'interface-name': 'value'}]",
+            )
+        if member is not None:
+            member = normalize_table_field(
+                member,
+                mkey="interface-name",
+                required_fields=['interface-name'],
+                field_name="member",
+                example="[{'interface-name': 'value'}]",
+            )
+        
         # Build payload using helper function with auto-normalization
         # This automatically converts strings/lists to [{'name': '...'}] format for list fields
         # To disable auto-normalization, use build_cmdb_payload directly
@@ -448,8 +521,7 @@ class SwitchInterface(CRUDEndpoint, MetadataMixin):
             params["scope"] = q_scope
         
         return self._client.post(
-            "cmdb", endpoint, data=payload_data, params=params, vdom=vdom
-        )
+            "cmdb", endpoint, data=payload_data, params=params, vdom=vdom        )
 
     # ========================================================================
     # DELETE Method
@@ -503,8 +575,7 @@ class SwitchInterface(CRUDEndpoint, MetadataMixin):
             params["scope"] = q_scope
         
         return self._client.delete(
-            "cmdb", endpoint, params=params, vdom=vdom
-        )
+            "cmdb", endpoint, params=params, vdom=vdom        )
 
     def exists(
         self,

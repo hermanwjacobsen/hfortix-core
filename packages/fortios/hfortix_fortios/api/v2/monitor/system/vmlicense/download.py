@@ -154,8 +154,7 @@ class Download(CRUDEndpoint, MetadataMixin):
 
         endpoint = "/system/vmlicense/download"
         return self._client.post(
-            "monitor", endpoint, data=payload_data, vdom=vdom
-        )
+            "monitor", endpoint, data=payload_data, vdom=vdom        )
 
 
 

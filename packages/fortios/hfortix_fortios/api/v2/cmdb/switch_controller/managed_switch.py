@@ -47,6 +47,7 @@ from hfortix_fortios._helpers import (
     build_cmdb_payload,  # Keep for backward compatibility / manual usage
     is_success,
     quote_path_param,  # URL encoding for path parameters
+    normalize_table_field,  # For table field normalization
 )
 # Import metadata mixin for schema introspection
 from hfortix_fortios._helpers.metadata_mixin import MetadataMixin
@@ -59,6 +60,93 @@ class ManagedSwitch(CRUDEndpoint, MetadataMixin):
     
     # Configure metadata mixin to use this endpoint's helper module
     _helper_module_name = "managed_switch"
+    
+    # ========================================================================
+    # Table Fields Metadata (for normalization)
+    # Auto-generated from schema - supports flexible input formats
+    # ========================================================================
+    _TABLE_FIELDS = {
+        "route_offload_router": {
+            "mkey": "vlan-name",
+            "required_fields": ['router-ip'],
+            "example": "[{'router-ip': '192.168.1.10'}]",
+        },
+        "vlan": {
+            "mkey": "vlan-name",
+            "required_fields": ['assignment-priority'],
+            "example": "[{'assignment-priority': 1}]",
+        },
+        "ports": {
+            "mkey": "port-name",
+            "required_fields": ['port-name'],
+            "example": "[{'port-name': 'value'}]",
+        },
+        "ip_source_guard": {
+            "mkey": "port",
+            "required_fields": ['binding-entry'],
+            "example": "[{'binding-entry': 'value'}]",
+        },
+        "stp_instance": {
+            "mkey": "id",
+            "required_fields": ['id'],
+            "example": "[{'id': 1}]",
+        },
+        "snmp_community": {
+            "mkey": "id",
+            "required_fields": ['id', 'name'],
+            "example": "[{'id': 1, 'name': 'value'}]",
+        },
+        "snmp_user": {
+            "mkey": "name",
+            "required_fields": ['auth-pwd', 'priv-pwd'],
+            "example": "[{'auth-pwd': 'value', 'priv-pwd': 'value'}]",
+        },
+        "remote_log": {
+            "mkey": "name",
+            "required_fields": ['name', 'server'],
+            "example": "[{'name': 'value', 'server': '192.168.1.10'}]",
+        },
+        "mirror": {
+            "mkey": "name",
+            "required_fields": ['name'],
+            "example": "[{'name': 'value'}]",
+        },
+        "static_mac": {
+            "mkey": "id",
+            "required_fields": ['id'],
+            "example": "[{'id': 1}]",
+        },
+        "custom_command": {
+            "mkey": "command-entry",
+            "required_fields": ['command-name'],
+            "example": "[{'command-name': 'value'}]",
+        },
+        "dhcp_snooping_static_client": {
+            "mkey": "name",
+            "required_fields": ['vlan', 'ip', 'mac', 'port'],
+            "example": "[{'vlan': 'value', 'ip': '192.168.1.10', 'mac': 'value', 'port': 443}]",
+        },
+        "router_vrf": {
+            "mkey": "name",
+            "required_fields": ['name', 'vrfid'],
+            "example": "[{'name': 'value', 'vrfid': 1}]",
+        },
+        "system_interface": {
+            "mkey": "name",
+            "required_fields": ['ip', 'vlan', 'interface'],
+            "example": "[{'ip': '192.168.1.10', 'vlan': 'value', 'interface': 'value'}]",
+        },
+        "router_static": {
+            "mkey": "id",
+            "required_fields": ['dst', 'gateway'],
+            "example": "[{'dst': 'value', 'gateway': '192.168.1.10'}]",
+        },
+        "system_dhcp_server": {
+            "mkey": "id",
+            "required_fields": ['netmask', 'interface'],
+            "example": "[{'netmask': 'value', 'interface': 'value'}]",
+        },
+    }
     
     # ========================================================================
     # Capabilities (from schema metadata)
@@ -346,7 +434,17 @@ class ManagedSwitch(CRUDEndpoint, MetadataMixin):
             route_offload: Enable/disable route offload on this FortiSwitch.
             route_offload_mclag: Enable/disable route offload MCLAG on this FortiSwitch.
             route_offload_router: Configure route offload MCLAG IP address.
+                Default format: [{'router-ip': '192.168.1.10'}]
+                Supported formats:
+                  - Single string: "value" → [{'vlan-name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'vlan-name': 'val1'}, ...]
+                  - List of dicts: [{'router-ip': '192.168.1.10'}] (recommended)
             vlan: Configure VLAN assignment priority.
+                Default format: [{'assignment-priority': 1}]
+                Supported formats:
+                  - Single string: "value" → [{'vlan-name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'vlan-name': 'val1'}, ...]
+                  - List of dicts: [{'assignment-priority': 1}] (recommended)
             type: Indication of switch type, physical or virtual.
             owner_vdom: VDOM which owner of port belongs to.
             flow_identity: Flow-tracking netflow ipfix switch identity in hex format(00000000-FFFFFFFF default=0).
@@ -356,32 +454,86 @@ class ManagedSwitch(CRUDEndpoint, MetadataMixin):
             firmware_provision_version: Firmware version to provision to this FortiSwitch on bootup (major.minor.build, i.e. 6.2.1234).
             firmware_provision_latest: Enable/disable one-time automatic provisioning of the latest firmware version.
             ports: Managed-switch port list.
+                Default format: [{'port-name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'port-name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'port-name': 'val1'}, ...]
+                  - List of dicts: [{'port-name': 'value'}] (recommended)
             ip_source_guard: IP source guard.
+                Default format: [{'binding-entry': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'port': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'port': 'val1'}, ...]
+                  - List of dicts: [{'binding-entry': 'value'}] (recommended)
             stp_settings: Configuration method to edit Spanning Tree Protocol (STP) settings used to prevent bridge loops.
             stp_instance: Configuration method to edit Spanning Tree Protocol (STP) instances.
+                Default format: [{'id': 1}]
+                Supported formats:
+                  - Single string: "value" → [{'id': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'id': 'val1'}, ...]
+                  - List of dicts: [{'id': 1}] (recommended)
             override_snmp_sysinfo: Enable/disable overriding the global SNMP system information.
             snmp_sysinfo: Configuration method to edit Simple Network Management Protocol (SNMP) system info.
             override_snmp_trap_threshold: Enable/disable overriding the global SNMP trap threshold values.
             snmp_trap_threshold: Configuration method to edit Simple Network Management Protocol (SNMP) trap threshold values.
             override_snmp_community: Enable/disable overriding the global SNMP communities.
             snmp_community: Configuration method to edit Simple Network Management Protocol (SNMP) communities.
+                Default format: [{'id': 1, 'name': 'value'}]
+                Required format: List of dicts with keys: id, name
+                  (String format not allowed due to multiple required fields)
             override_snmp_user: Enable/disable overriding the global SNMP users.
             snmp_user: Configuration method to edit Simple Network Management Protocol (SNMP) users.
+                Default format: [{'auth-pwd': 'value', 'priv-pwd': 'value'}]
+                Required format: List of dicts with keys: auth-pwd, priv-pwd
+                  (String format not allowed due to multiple required fields)
             qos_drop_policy: Set QoS drop-policy.
             qos_red_probability: Set QoS RED/WRED drop probability.
             switch_log: Configuration method to edit FortiSwitch logging settings (logs are transferred to and inserted into the FortiGate event log).
             remote_log: Configure logging by FortiSwitch device to a remote syslog server.
+                Default format: [{'name': 'value', 'server': '192.168.1.10'}]
+                Required format: List of dicts with keys: name, server
+                  (String format not allowed due to multiple required fields)
             storm_control: Configuration method to edit FortiSwitch storm control for measuring traffic activity using data rates to prevent traffic disruption.
             mirror: Configuration method to edit FortiSwitch packet mirror.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
             static_mac: Configuration method to edit FortiSwitch Static and Sticky MAC.
+                Default format: [{'id': 1}]
+                Supported formats:
+                  - Single string: "value" → [{'id': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'id': 'val1'}, ...]
+                  - List of dicts: [{'id': 1}] (recommended)
             custom_command: Configuration method to edit FortiSwitch commands to be pushed to this FortiSwitch device upon rebooting the FortiGate switch controller or the FortiSwitch.
+                Default format: [{'command-name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'command-entry': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'command-entry': 'val1'}, ...]
+                  - List of dicts: [{'command-name': 'value'}] (recommended)
             dhcp_snooping_static_client: Configure FortiSwitch DHCP snooping static clients.
+                Default format: [{'vlan': 'value', 'ip': '192.168.1.10', 'mac': 'value', 'port': 443}]
+                Required format: List of dicts with keys: vlan, ip, mac, port
+                  (String format not allowed due to multiple required fields)
             igmp_snooping: Configure FortiSwitch IGMP snooping global settings.
             x802_1X_settings: Configuration method to edit FortiSwitch 802.1X global settings.
             router_vrf: Configure VRF.
+                Default format: [{'name': 'value', 'vrfid': 1}]
+                Required format: List of dicts with keys: name, vrfid
+                  (String format not allowed due to multiple required fields)
             system_interface: Configure system interface on FortiSwitch.
+                Default format: [{'ip': '192.168.1.10', 'vlan': 'value', 'interface': 'value'}]
+                Required format: List of dicts with keys: ip, vlan, interface
+                  (String format not allowed due to multiple required fields)
             router_static: Configure static routes.
+                Default format: [{'dst': 'value', 'gateway': '192.168.1.10'}]
+                Required format: List of dicts with keys: dst, gateway
+                  (String format not allowed due to multiple required fields)
             system_dhcp_server: Configure DHCP servers.
+                Default format: [{'netmask': 'value', 'interface': 'value'}]
+                Required format: List of dicts with keys: netmask, interface
+                  (String format not allowed due to multiple required fields)
             vdom: Virtual domain name.
             error_mode: Override client-level error_mode. "raise" raises exceptions, "return" returns error dict, "print" prints errors.
             error_format: Override client-level error_format. "detailed" provides full context, "simple" is concise, "code_only" returns just status code.
@@ -410,6 +562,136 @@ class ManagedSwitch(CRUDEndpoint, MetadataMixin):
             - post(): Create new object
             - set(): Intelligent create or update
         """
+        # Apply normalization for table fields (supports flexible input formats)
+        if route_offload_router is not None:
+            route_offload_router = normalize_table_field(
+                route_offload_router,
+                mkey="vlan-name",
+                required_fields=['router-ip'],
+                field_name="route_offload_router",
+                example="[{'router-ip': '192.168.1.10'}]",
+            )
+        if vlan is not None:
+            vlan = normalize_table_field(
+                vlan,
+                mkey="vlan-name",
+                required_fields=['assignment-priority'],
+                field_name="vlan",
+                example="[{'assignment-priority': 1}]",
+            )
+        if ports is not None:
+            ports = normalize_table_field(
+                ports,
+                mkey="port-name",
+                required_fields=['port-name'],
+                field_name="ports",
+                example="[{'port-name': 'value'}]",
+            )
+        if ip_source_guard is not None:
+            ip_source_guard = normalize_table_field(
+                ip_source_guard,
+                mkey="port",
+                required_fields=['binding-entry'],
+                field_name="ip_source_guard",
+                example="[{'binding-entry': 'value'}]",
+            )
+        if stp_instance is not None:
+            stp_instance = normalize_table_field(
+                stp_instance,
+                mkey="id",
+                required_fields=['id'],
+                field_name="stp_instance",
+                example="[{'id': 1}]",
+            )
+        if snmp_community is not None:
+            snmp_community = normalize_table_field(
+                snmp_community,
+                mkey="id",
+                required_fields=['id', 'name'],
+                field_name="snmp_community",
+                example="[{'id': 1, 'name': 'value'}]",
+            )
+        if snmp_user is not None:
+            snmp_user = normalize_table_field(
+                snmp_user,
+                mkey="name",
+                required_fields=['auth-pwd', 'priv-pwd'],
+                field_name="snmp_user",
+                example="[{'auth-pwd': 'value', 'priv-pwd': 'value'}]",
+            )
+        if remote_log is not None:
+            remote_log = normalize_table_field(
+                remote_log,
+                mkey="name",
+                required_fields=['name', 'server'],
+                field_name="remote_log",
+                example="[{'name': 'value', 'server': '192.168.1.10'}]",
+            )
+        if mirror is not None:
+            mirror = normalize_table_field(
+                mirror,
+                mkey="name",
+                required_fields=['name'],
+                field_name="mirror",
+                example="[{'name': 'value'}]",
+            )
+        if static_mac is not None:
+            static_mac = normalize_table_field(
+                static_mac,
+                mkey="id",
+                required_fields=['id'],
+                field_name="static_mac",
+                example="[{'id': 1}]",
+            )
+        if custom_command is not None:
+            custom_command = normalize_table_field(
+                custom_command,
+                mkey="command-entry",
+                required_fields=['command-name'],
+                field_name="custom_command",
+                example="[{'command-name': 'value'}]",
+            )
+        if dhcp_snooping_static_client is not None:
+            dhcp_snooping_static_client = normalize_table_field(
+                dhcp_snooping_static_client,
+                mkey="name",
+                required_fields=['vlan', 'ip', 'mac', 'port'],
+                field_name="dhcp_snooping_static_client",
+                example="[{'vlan': 'value', 'ip': '192.168.1.10', 'mac': 'value', 'port': 443}]",
+            )
+        if router_vrf is not None:
+            router_vrf = normalize_table_field(
+                router_vrf,
+                mkey="name",
+                required_fields=['name', 'vrfid'],
+                field_name="router_vrf",
+                example="[{'name': 'value', 'vrfid': 1}]",
+            )
+        if system_interface is not None:
+            system_interface = normalize_table_field(
+                system_interface,
+                mkey="name",
+                required_fields=['ip', 'vlan', 'interface'],
+                field_name="system_interface",
+                example="[{'ip': '192.168.1.10', 'vlan': 'value', 'interface': 'value'}]",
+            )
+        if router_static is not None:
+            router_static = normalize_table_field(
+                router_static,
+                mkey="id",
+                required_fields=['dst', 'gateway'],
+                field_name="router_static",
+                example="[{'dst': 'value', 'gateway': '192.168.1.10'}]",
+            )
+        if system_dhcp_server is not None:
+            system_dhcp_server = normalize_table_field(
+                system_dhcp_server,
+                mkey="id",
+                required_fields=['netmask', 'interface'],
+                field_name="system_dhcp_server",
+                example="[{'netmask': 'value', 'interface': 'value'}]",
+            )
+        
         # Build payload using helper function with auto-normalization
         # This automatically converts strings/lists to [{'name': '...'}] format for list fields
         # To disable auto-normalization, use build_cmdb_payload directly
@@ -512,8 +794,7 @@ class ManagedSwitch(CRUDEndpoint, MetadataMixin):
             params["scope"] = q_scope
         
         return self._client.put(
-            "cmdb", endpoint, data=payload_data, params=params, vdom=vdom
-        )
+            "cmdb", endpoint, data=payload_data, params=params, vdom=vdom        )
 
     # ========================================================================
     # POST Method
@@ -637,7 +918,17 @@ class ManagedSwitch(CRUDEndpoint, MetadataMixin):
             route_offload: Enable/disable route offload on this FortiSwitch.
             route_offload_mclag: Enable/disable route offload MCLAG on this FortiSwitch.
             route_offload_router: Configure route offload MCLAG IP address.
+                Default format: [{'router-ip': '192.168.1.10'}]
+                Supported formats:
+                  - Single string: "value" → [{'vlan-name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'vlan-name': 'val1'}, ...]
+                  - List of dicts: [{'router-ip': '192.168.1.10'}] (recommended)
             vlan: Configure VLAN assignment priority.
+                Default format: [{'assignment-priority': 1}]
+                Supported formats:
+                  - Single string: "value" → [{'vlan-name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'vlan-name': 'val1'}, ...]
+                  - List of dicts: [{'assignment-priority': 1}] (recommended)
             type: Indication of switch type, physical or virtual.
             owner_vdom: VDOM which owner of port belongs to.
             flow_identity: Flow-tracking netflow ipfix switch identity in hex format(00000000-FFFFFFFF default=0).
@@ -647,32 +938,86 @@ class ManagedSwitch(CRUDEndpoint, MetadataMixin):
             firmware_provision_version: Firmware version to provision to this FortiSwitch on bootup (major.minor.build, i.e. 6.2.1234).
             firmware_provision_latest: Enable/disable one-time automatic provisioning of the latest firmware version.
             ports: Managed-switch port list.
+                Default format: [{'port-name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'port-name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'port-name': 'val1'}, ...]
+                  - List of dicts: [{'port-name': 'value'}] (recommended)
             ip_source_guard: IP source guard.
+                Default format: [{'binding-entry': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'port': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'port': 'val1'}, ...]
+                  - List of dicts: [{'binding-entry': 'value'}] (recommended)
             stp_settings: Configuration method to edit Spanning Tree Protocol (STP) settings used to prevent bridge loops.
             stp_instance: Configuration method to edit Spanning Tree Protocol (STP) instances.
+                Default format: [{'id': 1}]
+                Supported formats:
+                  - Single string: "value" → [{'id': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'id': 'val1'}, ...]
+                  - List of dicts: [{'id': 1}] (recommended)
             override_snmp_sysinfo: Enable/disable overriding the global SNMP system information.
             snmp_sysinfo: Configuration method to edit Simple Network Management Protocol (SNMP) system info.
             override_snmp_trap_threshold: Enable/disable overriding the global SNMP trap threshold values.
             snmp_trap_threshold: Configuration method to edit Simple Network Management Protocol (SNMP) trap threshold values.
             override_snmp_community: Enable/disable overriding the global SNMP communities.
             snmp_community: Configuration method to edit Simple Network Management Protocol (SNMP) communities.
+                Default format: [{'id': 1, 'name': 'value'}]
+                Required format: List of dicts with keys: id, name
+                  (String format not allowed due to multiple required fields)
             override_snmp_user: Enable/disable overriding the global SNMP users.
             snmp_user: Configuration method to edit Simple Network Management Protocol (SNMP) users.
+                Default format: [{'auth-pwd': 'value', 'priv-pwd': 'value'}]
+                Required format: List of dicts with keys: auth-pwd, priv-pwd
+                  (String format not allowed due to multiple required fields)
             qos_drop_policy: Set QoS drop-policy.
             qos_red_probability: Set QoS RED/WRED drop probability.
             switch_log: Configuration method to edit FortiSwitch logging settings (logs are transferred to and inserted into the FortiGate event log).
             remote_log: Configure logging by FortiSwitch device to a remote syslog server.
+                Default format: [{'name': 'value', 'server': '192.168.1.10'}]
+                Required format: List of dicts with keys: name, server
+                  (String format not allowed due to multiple required fields)
             storm_control: Configuration method to edit FortiSwitch storm control for measuring traffic activity using data rates to prevent traffic disruption.
             mirror: Configuration method to edit FortiSwitch packet mirror.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
             static_mac: Configuration method to edit FortiSwitch Static and Sticky MAC.
+                Default format: [{'id': 1}]
+                Supported formats:
+                  - Single string: "value" → [{'id': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'id': 'val1'}, ...]
+                  - List of dicts: [{'id': 1}] (recommended)
             custom_command: Configuration method to edit FortiSwitch commands to be pushed to this FortiSwitch device upon rebooting the FortiGate switch controller or the FortiSwitch.
+                Default format: [{'command-name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'command-entry': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'command-entry': 'val1'}, ...]
+                  - List of dicts: [{'command-name': 'value'}] (recommended)
             dhcp_snooping_static_client: Configure FortiSwitch DHCP snooping static clients.
+                Default format: [{'vlan': 'value', 'ip': '192.168.1.10', 'mac': 'value', 'port': 443}]
+                Required format: List of dicts with keys: vlan, ip, mac, port
+                  (String format not allowed due to multiple required fields)
             igmp_snooping: Configure FortiSwitch IGMP snooping global settings.
             x802_1X_settings: Configuration method to edit FortiSwitch 802.1X global settings.
             router_vrf: Configure VRF.
+                Default format: [{'name': 'value', 'vrfid': 1}]
+                Required format: List of dicts with keys: name, vrfid
+                  (String format not allowed due to multiple required fields)
             system_interface: Configure system interface on FortiSwitch.
+                Default format: [{'ip': '192.168.1.10', 'vlan': 'value', 'interface': 'value'}]
+                Required format: List of dicts with keys: ip, vlan, interface
+                  (String format not allowed due to multiple required fields)
             router_static: Configure static routes.
+                Default format: [{'dst': 'value', 'gateway': '192.168.1.10'}]
+                Required format: List of dicts with keys: dst, gateway
+                  (String format not allowed due to multiple required fields)
             system_dhcp_server: Configure DHCP servers.
+                Default format: [{'netmask': 'value', 'interface': 'value'}]
+                Required format: List of dicts with keys: netmask, interface
+                  (String format not allowed due to multiple required fields)
             vdom: Virtual domain name. Use True for global, string for specific VDOM.
             error_mode: Override client-level error_mode. "raise" raises exceptions, "return" returns error dict, "print" prints errors.
             error_format: Override client-level error_format. "detailed" provides full context, "simple" is concise, "code_only" returns just status code.
@@ -703,6 +1048,136 @@ class ManagedSwitch(CRUDEndpoint, MetadataMixin):
             - put(): Update existing object
             - set(): Intelligent create or update
         """
+        # Apply normalization for table fields (supports flexible input formats)
+        if route_offload_router is not None:
+            route_offload_router = normalize_table_field(
+                route_offload_router,
+                mkey="vlan-name",
+                required_fields=['router-ip'],
+                field_name="route_offload_router",
+                example="[{'router-ip': '192.168.1.10'}]",
+            )
+        if vlan is not None:
+            vlan = normalize_table_field(
+                vlan,
+                mkey="vlan-name",
+                required_fields=['assignment-priority'],
+                field_name="vlan",
+                example="[{'assignment-priority': 1}]",
+            )
+        if ports is not None:
+            ports = normalize_table_field(
+                ports,
+                mkey="port-name",
+                required_fields=['port-name'],
+                field_name="ports",
+                example="[{'port-name': 'value'}]",
+            )
+        if ip_source_guard is not None:
+            ip_source_guard = normalize_table_field(
+                ip_source_guard,
+                mkey="port",
+                required_fields=['binding-entry'],
+                field_name="ip_source_guard",
+                example="[{'binding-entry': 'value'}]",
+            )
+        if stp_instance is not None:
+            stp_instance = normalize_table_field(
+                stp_instance,
+                mkey="id",
+                required_fields=['id'],
+                field_name="stp_instance",
+                example="[{'id': 1}]",
+            )
+        if snmp_community is not None:
+            snmp_community = normalize_table_field(
+                snmp_community,
+                mkey="id",
+                required_fields=['id', 'name'],
+                field_name="snmp_community",
+                example="[{'id': 1, 'name': 'value'}]",
+            )
+        if snmp_user is not None:
+            snmp_user = normalize_table_field(
+                snmp_user,
+                mkey="name",
+                required_fields=['auth-pwd', 'priv-pwd'],
+                field_name="snmp_user",
+                example="[{'auth-pwd': 'value', 'priv-pwd': 'value'}]",
+            )
+        if remote_log is not None:
+            remote_log = normalize_table_field(
+                remote_log,
+                mkey="name",
+                required_fields=['name', 'server'],
+                field_name="remote_log",
+                example="[{'name': 'value', 'server': '192.168.1.10'}]",
+            )
+        if mirror is not None:
+            mirror = normalize_table_field(
+                mirror,
+                mkey="name",
+                required_fields=['name'],
+                field_name="mirror",
+                example="[{'name': 'value'}]",
+            )
+        if static_mac is not None:
+            static_mac = normalize_table_field(
+                static_mac,
+                mkey="id",
+                required_fields=['id'],
+                field_name="static_mac",
+                example="[{'id': 1}]",
+            )
+        if custom_command is not None:
+            custom_command = normalize_table_field(
+                custom_command,
+                mkey="command-entry",
+                required_fields=['command-name'],
+                field_name="custom_command",
+                example="[{'command-name': 'value'}]",
+            )
+        if dhcp_snooping_static_client is not None:
+            dhcp_snooping_static_client = normalize_table_field(
+                dhcp_snooping_static_client,
+                mkey="name",
+                required_fields=['vlan', 'ip', 'mac', 'port'],
+                field_name="dhcp_snooping_static_client",
+                example="[{'vlan': 'value', 'ip': '192.168.1.10', 'mac': 'value', 'port': 443}]",
+            )
+        if router_vrf is not None:
+            router_vrf = normalize_table_field(
+                router_vrf,
+                mkey="name",
+                required_fields=['name', 'vrfid'],
+                field_name="router_vrf",
+                example="[{'name': 'value', 'vrfid': 1}]",
+            )
+        if system_interface is not None:
+            system_interface = normalize_table_field(
+                system_interface,
+                mkey="name",
+                required_fields=['ip', 'vlan', 'interface'],
+                field_name="system_interface",
+                example="[{'ip': '192.168.1.10', 'vlan': 'value', 'interface': 'value'}]",
+            )
+        if router_static is not None:
+            router_static = normalize_table_field(
+                router_static,
+                mkey="id",
+                required_fields=['dst', 'gateway'],
+                field_name="router_static",
+                example="[{'dst': 'value', 'gateway': '192.168.1.10'}]",
+            )
+        if system_dhcp_server is not None:
+            system_dhcp_server = normalize_table_field(
+                system_dhcp_server,
+                mkey="id",
+                required_fields=['netmask', 'interface'],
+                field_name="system_dhcp_server",
+                example="[{'netmask': 'value', 'interface': 'value'}]",
+            )
+        
         # Build payload using helper function with auto-normalization
         # This automatically converts strings/lists to [{'name': '...'}] format for list fields
         # To disable auto-normalization, use build_cmdb_payload directly
@@ -800,8 +1275,7 @@ class ManagedSwitch(CRUDEndpoint, MetadataMixin):
             params["scope"] = q_scope
         
         return self._client.post(
-            "cmdb", endpoint, data=payload_data, params=params, vdom=vdom
-        )
+            "cmdb", endpoint, data=payload_data, params=params, vdom=vdom        )
 
     # ========================================================================
     # DELETE Method
@@ -855,8 +1329,7 @@ class ManagedSwitch(CRUDEndpoint, MetadataMixin):
             params["scope"] = q_scope
         
         return self._client.delete(
-            "cmdb", endpoint, params=params, vdom=vdom
-        )
+            "cmdb", endpoint, params=params, vdom=vdom        )
 
     def exists(
         self,

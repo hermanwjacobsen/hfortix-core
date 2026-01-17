@@ -11,13 +11,29 @@ if TYPE_CHECKING:
     from .qos_policy import QosPolicy
     from .queue_policy import QueuePolicy
 
+__all__ = [
+    "Dot1pMap",
+    "IpDscpMap",
+    "QosPolicy",
+    "QueuePolicy",
+    "Qos",
+]
+
 
 class Qos:
-    """Type stub for Qos."""
-
+    """QOS API category.
+    
+    All endpoints return FortiObject instances with:
+    - Attribute access: response.field
+    - Dictionary access: response["field"]
+    - Convert to dict: response.dict or response.json
+    """
+    
     dot1p_map: Dot1pMap
     ip_dscp_map: IpDscpMap
     qos_policy: QosPolicy
     queue_policy: QueuePolicy
 
-    def __init__(self, client: IHTTPClient) -> None: ...
+    def __init__(self, client: IHTTPClient, vdom: str | None = None) -> None:
+        """Initialize qos category with HTTP client."""
+        ...

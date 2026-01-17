@@ -47,6 +47,7 @@ from hfortix_fortios._helpers import (
     build_cmdb_payload,  # Keep for backward compatibility / manual usage
     is_success,
     quote_path_param,  # URL encoding for path parameters
+    normalize_table_field,  # For table field normalization
 )
 # Import metadata mixin for schema introspection
 from hfortix_fortios._helpers.metadata_mixin import MetadataMixin
@@ -59,6 +60,23 @@ class QosMap(CRUDEndpoint, MetadataMixin):
     
     # Configure metadata mixin to use this endpoint's helper module
     _helper_module_name = "qos_map"
+    
+    # ========================================================================
+    # Table Fields Metadata (for normalization)
+    # Auto-generated from schema - supports flexible input formats
+    # ========================================================================
+    _TABLE_FIELDS = {
+        "dscp_except": {
+            "mkey": "index",
+            "required_fields": ['index'],
+            "example": "[{'index': 1}]",
+        },
+        "dscp_range": {
+            "mkey": "index",
+            "required_fields": ['up'],
+            "example": "[{'up': 1}]",
+        },
+    }
     
     # ========================================================================
     # Capabilities (from schema metadata)
@@ -251,7 +269,17 @@ class QosMap(CRUDEndpoint, MetadataMixin):
             payload_dict: Object data as dict. Must include name (primary key).
             name: QOS-MAP name.
             dscp_except: Differentiated Services Code Point (DSCP) exceptions.
+                Default format: [{'index': 1}]
+                Supported formats:
+                  - Single string: "value" → [{'index': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'index': 'val1'}, ...]
+                  - List of dicts: [{'index': 1}] (recommended)
             dscp_range: Differentiated Services Code Point (DSCP) ranges.
+                Default format: [{'up': 1}]
+                Supported formats:
+                  - Single string: "value" → [{'index': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'index': 'val1'}, ...]
+                  - List of dicts: [{'up': 1}] (recommended)
             vdom: Virtual domain name.
             error_mode: Override client-level error_mode. "raise" raises exceptions, "return" returns error dict, "print" prints errors.
             error_format: Override client-level error_format. "detailed" provides full context, "simple" is concise, "code_only" returns just status code.
@@ -280,6 +308,24 @@ class QosMap(CRUDEndpoint, MetadataMixin):
             - post(): Create new object
             - set(): Intelligent create or update
         """
+        # Apply normalization for table fields (supports flexible input formats)
+        if dscp_except is not None:
+            dscp_except = normalize_table_field(
+                dscp_except,
+                mkey="index",
+                required_fields=['index'],
+                field_name="dscp_except",
+                example="[{'index': 1}]",
+            )
+        if dscp_range is not None:
+            dscp_range = normalize_table_field(
+                dscp_range,
+                mkey="index",
+                required_fields=['up'],
+                field_name="dscp_range",
+                example="[{'up': 1}]",
+            )
+        
         # Build payload using helper function with auto-normalization
         # This automatically converts strings/lists to [{'name': '...'}] format for list fields
         # To disable auto-normalization, use build_cmdb_payload directly
@@ -317,8 +363,7 @@ class QosMap(CRUDEndpoint, MetadataMixin):
             params["scope"] = q_scope
         
         return self._client.put(
-            "cmdb", endpoint, data=payload_data, params=params, vdom=vdom
-        )
+            "cmdb", endpoint, data=payload_data, params=params, vdom=vdom        )
 
     # ========================================================================
     # POST Method
@@ -347,7 +392,17 @@ class QosMap(CRUDEndpoint, MetadataMixin):
             payload_dict: Complete object data as dict. Alternative to individual parameters.
             name: QOS-MAP name.
             dscp_except: Differentiated Services Code Point (DSCP) exceptions.
+                Default format: [{'index': 1}]
+                Supported formats:
+                  - Single string: "value" → [{'index': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'index': 'val1'}, ...]
+                  - List of dicts: [{'index': 1}] (recommended)
             dscp_range: Differentiated Services Code Point (DSCP) ranges.
+                Default format: [{'up': 1}]
+                Supported formats:
+                  - Single string: "value" → [{'index': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'index': 'val1'}, ...]
+                  - List of dicts: [{'up': 1}] (recommended)
             vdom: Virtual domain name. Use True for global, string for specific VDOM.
             error_mode: Override client-level error_mode. "raise" raises exceptions, "return" returns error dict, "print" prints errors.
             error_format: Override client-level error_format. "detailed" provides full context, "simple" is concise, "code_only" returns just status code.
@@ -378,6 +433,24 @@ class QosMap(CRUDEndpoint, MetadataMixin):
             - put(): Update existing object
             - set(): Intelligent create or update
         """
+        # Apply normalization for table fields (supports flexible input formats)
+        if dscp_except is not None:
+            dscp_except = normalize_table_field(
+                dscp_except,
+                mkey="index",
+                required_fields=['index'],
+                field_name="dscp_except",
+                example="[{'index': 1}]",
+            )
+        if dscp_range is not None:
+            dscp_range = normalize_table_field(
+                dscp_range,
+                mkey="index",
+                required_fields=['up'],
+                field_name="dscp_range",
+                example="[{'up': 1}]",
+            )
+        
         # Build payload using helper function with auto-normalization
         # This automatically converts strings/lists to [{'name': '...'}] format for list fields
         # To disable auto-normalization, use build_cmdb_payload directly
@@ -410,8 +483,7 @@ class QosMap(CRUDEndpoint, MetadataMixin):
             params["scope"] = q_scope
         
         return self._client.post(
-            "cmdb", endpoint, data=payload_data, params=params, vdom=vdom
-        )
+            "cmdb", endpoint, data=payload_data, params=params, vdom=vdom        )
 
     # ========================================================================
     # DELETE Method
@@ -465,8 +537,7 @@ class QosMap(CRUDEndpoint, MetadataMixin):
             params["scope"] = q_scope
         
         return self._client.delete(
-            "cmdb", endpoint, params=params, vdom=vdom
-        )
+            "cmdb", endpoint, params=params, vdom=vdom        )
 
     def exists(
         self,

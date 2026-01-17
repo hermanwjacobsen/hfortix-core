@@ -47,6 +47,7 @@ from hfortix_fortios._helpers import (
     build_cmdb_payload,  # Keep for backward compatibility / manual usage
     is_success,
     quote_path_param,  # URL encoding for path parameters
+    normalize_table_field,  # For table field normalization
 )
 # Import metadata mixin for schema introspection
 from hfortix_fortios._helpers.metadata_mixin import MetadataMixin
@@ -59,6 +60,178 @@ class SecurityPolicy(CRUDEndpoint, MetadataMixin):
     
     # Configure metadata mixin to use this endpoint's helper module
     _helper_module_name = "security_policy"
+    
+    # ========================================================================
+    # Table Fields Metadata (for normalization)
+    # Auto-generated from schema - supports flexible input formats
+    # ========================================================================
+    _TABLE_FIELDS = {
+        "srcintf": {
+            "mkey": "name",
+            "required_fields": ['name'],
+            "example": "[{'name': 'value'}]",
+        },
+        "dstintf": {
+            "mkey": "name",
+            "required_fields": ['name'],
+            "example": "[{'name': 'value'}]",
+        },
+        "srcaddr": {
+            "mkey": "name",
+            "required_fields": ['name'],
+            "example": "[{'name': 'value'}]",
+        },
+        "dstaddr": {
+            "mkey": "name",
+            "required_fields": ['name'],
+            "example": "[{'name': 'value'}]",
+        },
+        "srcaddr6": {
+            "mkey": "name",
+            "required_fields": ['name'],
+            "example": "[{'name': 'value'}]",
+        },
+        "dstaddr6": {
+            "mkey": "name",
+            "required_fields": ['name'],
+            "example": "[{'name': 'value'}]",
+        },
+        "internet_service_name": {
+            "mkey": "name",
+            "required_fields": ['name'],
+            "example": "[{'name': 'value'}]",
+        },
+        "internet_service_group": {
+            "mkey": "name",
+            "required_fields": ['name'],
+            "example": "[{'name': 'value'}]",
+        },
+        "internet_service_custom": {
+            "mkey": "name",
+            "required_fields": ['name'],
+            "example": "[{'name': 'value'}]",
+        },
+        "internet_service_custom_group": {
+            "mkey": "name",
+            "required_fields": ['name'],
+            "example": "[{'name': 'value'}]",
+        },
+        "internet_service_fortiguard": {
+            "mkey": "name",
+            "required_fields": ['name'],
+            "example": "[{'name': 'value'}]",
+        },
+        "internet_service_src_name": {
+            "mkey": "name",
+            "required_fields": ['name'],
+            "example": "[{'name': 'value'}]",
+        },
+        "internet_service_src_group": {
+            "mkey": "name",
+            "required_fields": ['name'],
+            "example": "[{'name': 'value'}]",
+        },
+        "internet_service_src_custom": {
+            "mkey": "name",
+            "required_fields": ['name'],
+            "example": "[{'name': 'value'}]",
+        },
+        "internet_service_src_custom_group": {
+            "mkey": "name",
+            "required_fields": ['name'],
+            "example": "[{'name': 'value'}]",
+        },
+        "internet_service_src_fortiguard": {
+            "mkey": "name",
+            "required_fields": ['name'],
+            "example": "[{'name': 'value'}]",
+        },
+        "internet_service6_name": {
+            "mkey": "name",
+            "required_fields": ['name'],
+            "example": "[{'name': 'value'}]",
+        },
+        "internet_service6_group": {
+            "mkey": "name",
+            "required_fields": ['name'],
+            "example": "[{'name': 'value'}]",
+        },
+        "internet_service6_custom": {
+            "mkey": "name",
+            "required_fields": ['name'],
+            "example": "[{'name': 'value'}]",
+        },
+        "internet_service6_custom_group": {
+            "mkey": "name",
+            "required_fields": ['name'],
+            "example": "[{'name': 'value'}]",
+        },
+        "internet_service6_fortiguard": {
+            "mkey": "name",
+            "required_fields": ['name'],
+            "example": "[{'name': 'value'}]",
+        },
+        "internet_service6_src_name": {
+            "mkey": "name",
+            "required_fields": ['name'],
+            "example": "[{'name': 'value'}]",
+        },
+        "internet_service6_src_group": {
+            "mkey": "name",
+            "required_fields": ['name'],
+            "example": "[{'name': 'value'}]",
+        },
+        "internet_service6_src_custom": {
+            "mkey": "name",
+            "required_fields": ['name'],
+            "example": "[{'name': 'value'}]",
+        },
+        "internet_service6_src_custom_group": {
+            "mkey": "name",
+            "required_fields": ['name'],
+            "example": "[{'name': 'value'}]",
+        },
+        "internet_service6_src_fortiguard": {
+            "mkey": "name",
+            "required_fields": ['name'],
+            "example": "[{'name': 'value'}]",
+        },
+        "service": {
+            "mkey": "name",
+            "required_fields": ['name'],
+            "example": "[{'name': 'value'}]",
+        },
+        "application": {
+            "mkey": "id",
+            "required_fields": ['id'],
+            "example": "[{'id': 1}]",
+        },
+        "app_category": {
+            "mkey": "id",
+            "required_fields": ['id'],
+            "example": "[{'id': 1}]",
+        },
+        "app_group": {
+            "mkey": "name",
+            "required_fields": ['name'],
+            "example": "[{'name': 'value'}]",
+        },
+        "groups": {
+            "mkey": "name",
+            "required_fields": ['name'],
+            "example": "[{'name': 'value'}]",
+        },
+        "users": {
+            "mkey": "name",
+            "required_fields": ['name'],
+            "example": "[{'name': 'value'}]",
+        },
+        "fsso_groups": {
+            "mkey": "name",
+            "required_fields": ['name'],
+            "example": "[{'name': 'value'}]",
+        },
+    }
     
     # ========================================================================
     # Capabilities (from schema metadata)
@@ -332,45 +505,180 @@ class SecurityPolicy(CRUDEndpoint, MetadataMixin):
             name: Policy name.
             comments: Comment.
             srcintf: Incoming (ingress) interface.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
             dstintf: Outgoing (egress) interface.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
             srcaddr: Source IPv4 address name and address group names.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
             srcaddr_negate: When enabled srcaddr specifies what the source address must NOT be.
             dstaddr: Destination IPv4 address name and address group names.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
             dstaddr_negate: When enabled dstaddr specifies what the destination address must NOT be.
             srcaddr6: Source IPv6 address name and address group names.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
             srcaddr6_negate: When enabled srcaddr6 specifies what the source address must NOT be.
             dstaddr6: Destination IPv6 address name and address group names.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
             dstaddr6_negate: When enabled dstaddr6 specifies what the destination address must NOT be.
             internet_service: Enable/disable use of Internet Services for this policy. If enabled, destination address, service and default application port enforcement are not used.
             internet_service_name: Internet Service name.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
             internet_service_negate: When enabled internet-service specifies what the service must NOT be.
             internet_service_group: Internet Service group name.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
             internet_service_custom: Custom Internet Service name.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
             internet_service_custom_group: Custom Internet Service group name.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
             internet_service_fortiguard: FortiGuard Internet Service name.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
             internet_service_src: Enable/disable use of Internet Services in source for this policy. If enabled, source address is not used.
             internet_service_src_name: Internet Service source name.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
             internet_service_src_negate: When enabled internet-service-src specifies what the service must NOT be.
             internet_service_src_group: Internet Service source group name.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
             internet_service_src_custom: Custom Internet Service source name.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
             internet_service_src_custom_group: Custom Internet Service source group name.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
             internet_service_src_fortiguard: FortiGuard Internet Service source name.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
             internet_service6: Enable/disable use of IPv6 Internet Services for this policy. If enabled, destination address, service and default application port enforcement are not used.
             internet_service6_name: IPv6 Internet Service name.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
             internet_service6_negate: When enabled internet-service6 specifies what the service must NOT be.
             internet_service6_group: Internet Service group name.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
             internet_service6_custom: Custom IPv6 Internet Service name.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
             internet_service6_custom_group: Custom IPv6 Internet Service group name.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
             internet_service6_fortiguard: FortiGuard IPv6 Internet Service name.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
             internet_service6_src: Enable/disable use of IPv6 Internet Services in source for this policy. If enabled, source address is not used.
             internet_service6_src_name: IPv6 Internet Service source name.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
             internet_service6_src_negate: When enabled internet-service6-src specifies what the service must NOT be.
             internet_service6_src_group: Internet Service6 source group name.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
             internet_service6_src_custom: Custom IPv6 Internet Service source name.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
             internet_service6_src_custom_group: Custom Internet Service6 source group name.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
             internet_service6_src_fortiguard: FortiGuard IPv6 Internet Service source name.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
             enforce_default_app_port: Enable/disable default application port enforcement for allowed applications.
             service: Service and service group names.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
             service_negate: When enabled service specifies what the service must NOT be.
             action: Policy action (accept/deny).
             send_deny_packet: Enable to send a reply when a session is denied or blocked by a firewall policy.
@@ -402,12 +710,42 @@ class SecurityPolicy(CRUDEndpoint, MetadataMixin):
             ssh_filter_profile: Name of an existing SSH filter profile.
             casb_profile: Name of an existing CASB profile.
             application: Application ID list.
+                Default format: [{'id': 1}]
+                Supported formats:
+                  - Single string: "value" → [{'id': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'id': 'val1'}, ...]
+                  - List of dicts: [{'id': 1}] (recommended)
             app_category: Application category ID list.
+                Default format: [{'id': 1}]
+                Supported formats:
+                  - Single string: "value" → [{'id': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'id': 'val1'}, ...]
+                  - List of dicts: [{'id': 1}] (recommended)
             url_category: URL categories or groups.
             app_group: Application group names.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
             groups: Names of user groups that can authenticate with this policy.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
             users: Names of individual users that can authenticate with this policy.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
             fsso_groups: Names of FSSO groups.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
             vdom: Virtual domain name.
             error_mode: Override client-level error_mode. "raise" raises exceptions, "return" returns error dict, "print" prints errors.
             error_format: Override client-level error_format. "detailed" provides full context, "simple" is concise, "code_only" returns just status code.
@@ -436,6 +774,272 @@ class SecurityPolicy(CRUDEndpoint, MetadataMixin):
             - post(): Create new object
             - set(): Intelligent create or update
         """
+        # Apply normalization for table fields (supports flexible input formats)
+        if srcintf is not None:
+            srcintf = normalize_table_field(
+                srcintf,
+                mkey="name",
+                required_fields=['name'],
+                field_name="srcintf",
+                example="[{'name': 'value'}]",
+            )
+        if dstintf is not None:
+            dstintf = normalize_table_field(
+                dstintf,
+                mkey="name",
+                required_fields=['name'],
+                field_name="dstintf",
+                example="[{'name': 'value'}]",
+            )
+        if srcaddr is not None:
+            srcaddr = normalize_table_field(
+                srcaddr,
+                mkey="name",
+                required_fields=['name'],
+                field_name="srcaddr",
+                example="[{'name': 'value'}]",
+            )
+        if dstaddr is not None:
+            dstaddr = normalize_table_field(
+                dstaddr,
+                mkey="name",
+                required_fields=['name'],
+                field_name="dstaddr",
+                example="[{'name': 'value'}]",
+            )
+        if srcaddr6 is not None:
+            srcaddr6 = normalize_table_field(
+                srcaddr6,
+                mkey="name",
+                required_fields=['name'],
+                field_name="srcaddr6",
+                example="[{'name': 'value'}]",
+            )
+        if dstaddr6 is not None:
+            dstaddr6 = normalize_table_field(
+                dstaddr6,
+                mkey="name",
+                required_fields=['name'],
+                field_name="dstaddr6",
+                example="[{'name': 'value'}]",
+            )
+        if internet_service_name is not None:
+            internet_service_name = normalize_table_field(
+                internet_service_name,
+                mkey="name",
+                required_fields=['name'],
+                field_name="internet_service_name",
+                example="[{'name': 'value'}]",
+            )
+        if internet_service_group is not None:
+            internet_service_group = normalize_table_field(
+                internet_service_group,
+                mkey="name",
+                required_fields=['name'],
+                field_name="internet_service_group",
+                example="[{'name': 'value'}]",
+            )
+        if internet_service_custom is not None:
+            internet_service_custom = normalize_table_field(
+                internet_service_custom,
+                mkey="name",
+                required_fields=['name'],
+                field_name="internet_service_custom",
+                example="[{'name': 'value'}]",
+            )
+        if internet_service_custom_group is not None:
+            internet_service_custom_group = normalize_table_field(
+                internet_service_custom_group,
+                mkey="name",
+                required_fields=['name'],
+                field_name="internet_service_custom_group",
+                example="[{'name': 'value'}]",
+            )
+        if internet_service_fortiguard is not None:
+            internet_service_fortiguard = normalize_table_field(
+                internet_service_fortiguard,
+                mkey="name",
+                required_fields=['name'],
+                field_name="internet_service_fortiguard",
+                example="[{'name': 'value'}]",
+            )
+        if internet_service_src_name is not None:
+            internet_service_src_name = normalize_table_field(
+                internet_service_src_name,
+                mkey="name",
+                required_fields=['name'],
+                field_name="internet_service_src_name",
+                example="[{'name': 'value'}]",
+            )
+        if internet_service_src_group is not None:
+            internet_service_src_group = normalize_table_field(
+                internet_service_src_group,
+                mkey="name",
+                required_fields=['name'],
+                field_name="internet_service_src_group",
+                example="[{'name': 'value'}]",
+            )
+        if internet_service_src_custom is not None:
+            internet_service_src_custom = normalize_table_field(
+                internet_service_src_custom,
+                mkey="name",
+                required_fields=['name'],
+                field_name="internet_service_src_custom",
+                example="[{'name': 'value'}]",
+            )
+        if internet_service_src_custom_group is not None:
+            internet_service_src_custom_group = normalize_table_field(
+                internet_service_src_custom_group,
+                mkey="name",
+                required_fields=['name'],
+                field_name="internet_service_src_custom_group",
+                example="[{'name': 'value'}]",
+            )
+        if internet_service_src_fortiguard is not None:
+            internet_service_src_fortiguard = normalize_table_field(
+                internet_service_src_fortiguard,
+                mkey="name",
+                required_fields=['name'],
+                field_name="internet_service_src_fortiguard",
+                example="[{'name': 'value'}]",
+            )
+        if internet_service6_name is not None:
+            internet_service6_name = normalize_table_field(
+                internet_service6_name,
+                mkey="name",
+                required_fields=['name'],
+                field_name="internet_service6_name",
+                example="[{'name': 'value'}]",
+            )
+        if internet_service6_group is not None:
+            internet_service6_group = normalize_table_field(
+                internet_service6_group,
+                mkey="name",
+                required_fields=['name'],
+                field_name="internet_service6_group",
+                example="[{'name': 'value'}]",
+            )
+        if internet_service6_custom is not None:
+            internet_service6_custom = normalize_table_field(
+                internet_service6_custom,
+                mkey="name",
+                required_fields=['name'],
+                field_name="internet_service6_custom",
+                example="[{'name': 'value'}]",
+            )
+        if internet_service6_custom_group is not None:
+            internet_service6_custom_group = normalize_table_field(
+                internet_service6_custom_group,
+                mkey="name",
+                required_fields=['name'],
+                field_name="internet_service6_custom_group",
+                example="[{'name': 'value'}]",
+            )
+        if internet_service6_fortiguard is not None:
+            internet_service6_fortiguard = normalize_table_field(
+                internet_service6_fortiguard,
+                mkey="name",
+                required_fields=['name'],
+                field_name="internet_service6_fortiguard",
+                example="[{'name': 'value'}]",
+            )
+        if internet_service6_src_name is not None:
+            internet_service6_src_name = normalize_table_field(
+                internet_service6_src_name,
+                mkey="name",
+                required_fields=['name'],
+                field_name="internet_service6_src_name",
+                example="[{'name': 'value'}]",
+            )
+        if internet_service6_src_group is not None:
+            internet_service6_src_group = normalize_table_field(
+                internet_service6_src_group,
+                mkey="name",
+                required_fields=['name'],
+                field_name="internet_service6_src_group",
+                example="[{'name': 'value'}]",
+            )
+        if internet_service6_src_custom is not None:
+            internet_service6_src_custom = normalize_table_field(
+                internet_service6_src_custom,
+                mkey="name",
+                required_fields=['name'],
+                field_name="internet_service6_src_custom",
+                example="[{'name': 'value'}]",
+            )
+        if internet_service6_src_custom_group is not None:
+            internet_service6_src_custom_group = normalize_table_field(
+                internet_service6_src_custom_group,
+                mkey="name",
+                required_fields=['name'],
+                field_name="internet_service6_src_custom_group",
+                example="[{'name': 'value'}]",
+            )
+        if internet_service6_src_fortiguard is not None:
+            internet_service6_src_fortiguard = normalize_table_field(
+                internet_service6_src_fortiguard,
+                mkey="name",
+                required_fields=['name'],
+                field_name="internet_service6_src_fortiguard",
+                example="[{'name': 'value'}]",
+            )
+        if service is not None:
+            service = normalize_table_field(
+                service,
+                mkey="name",
+                required_fields=['name'],
+                field_name="service",
+                example="[{'name': 'value'}]",
+            )
+        if application is not None:
+            application = normalize_table_field(
+                application,
+                mkey="id",
+                required_fields=['id'],
+                field_name="application",
+                example="[{'id': 1}]",
+            )
+        if app_category is not None:
+            app_category = normalize_table_field(
+                app_category,
+                mkey="id",
+                required_fields=['id'],
+                field_name="app_category",
+                example="[{'id': 1}]",
+            )
+        if app_group is not None:
+            app_group = normalize_table_field(
+                app_group,
+                mkey="name",
+                required_fields=['name'],
+                field_name="app_group",
+                example="[{'name': 'value'}]",
+            )
+        if groups is not None:
+            groups = normalize_table_field(
+                groups,
+                mkey="name",
+                required_fields=['name'],
+                field_name="groups",
+                example="[{'name': 'value'}]",
+            )
+        if users is not None:
+            users = normalize_table_field(
+                users,
+                mkey="name",
+                required_fields=['name'],
+                field_name="users",
+                example="[{'name': 'value'}]",
+            )
+        if fsso_groups is not None:
+            fsso_groups = normalize_table_field(
+                fsso_groups,
+                mkey="name",
+                required_fields=['name'],
+                field_name="fsso_groups",
+                example="[{'name': 'value'}]",
+            )
+        
         # Build payload using helper function with auto-normalization
         # This automatically converts strings/lists to [{'name': '...'}] format for list fields
         # To disable auto-normalization, use build_cmdb_payload directly
@@ -551,8 +1155,7 @@ class SecurityPolicy(CRUDEndpoint, MetadataMixin):
             params["scope"] = q_scope
         
         return self._client.put(
-            "cmdb", endpoint, data=payload_data, params=params, vdom=vdom
-        )
+            "cmdb", endpoint, data=payload_data, params=params, vdom=vdom        )
 
     # ========================================================================
     # POST Method
@@ -662,45 +1265,180 @@ class SecurityPolicy(CRUDEndpoint, MetadataMixin):
             name: Policy name.
             comments: Comment.
             srcintf: Incoming (ingress) interface.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
             dstintf: Outgoing (egress) interface.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
             srcaddr: Source IPv4 address name and address group names.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
             srcaddr_negate: When enabled srcaddr specifies what the source address must NOT be.
             dstaddr: Destination IPv4 address name and address group names.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
             dstaddr_negate: When enabled dstaddr specifies what the destination address must NOT be.
             srcaddr6: Source IPv6 address name and address group names.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
             srcaddr6_negate: When enabled srcaddr6 specifies what the source address must NOT be.
             dstaddr6: Destination IPv6 address name and address group names.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
             dstaddr6_negate: When enabled dstaddr6 specifies what the destination address must NOT be.
             internet_service: Enable/disable use of Internet Services for this policy. If enabled, destination address, service and default application port enforcement are not used.
             internet_service_name: Internet Service name.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
             internet_service_negate: When enabled internet-service specifies what the service must NOT be.
             internet_service_group: Internet Service group name.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
             internet_service_custom: Custom Internet Service name.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
             internet_service_custom_group: Custom Internet Service group name.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
             internet_service_fortiguard: FortiGuard Internet Service name.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
             internet_service_src: Enable/disable use of Internet Services in source for this policy. If enabled, source address is not used.
             internet_service_src_name: Internet Service source name.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
             internet_service_src_negate: When enabled internet-service-src specifies what the service must NOT be.
             internet_service_src_group: Internet Service source group name.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
             internet_service_src_custom: Custom Internet Service source name.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
             internet_service_src_custom_group: Custom Internet Service source group name.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
             internet_service_src_fortiguard: FortiGuard Internet Service source name.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
             internet_service6: Enable/disable use of IPv6 Internet Services for this policy. If enabled, destination address, service and default application port enforcement are not used.
             internet_service6_name: IPv6 Internet Service name.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
             internet_service6_negate: When enabled internet-service6 specifies what the service must NOT be.
             internet_service6_group: Internet Service group name.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
             internet_service6_custom: Custom IPv6 Internet Service name.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
             internet_service6_custom_group: Custom IPv6 Internet Service group name.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
             internet_service6_fortiguard: FortiGuard IPv6 Internet Service name.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
             internet_service6_src: Enable/disable use of IPv6 Internet Services in source for this policy. If enabled, source address is not used.
             internet_service6_src_name: IPv6 Internet Service source name.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
             internet_service6_src_negate: When enabled internet-service6-src specifies what the service must NOT be.
             internet_service6_src_group: Internet Service6 source group name.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
             internet_service6_src_custom: Custom IPv6 Internet Service source name.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
             internet_service6_src_custom_group: Custom Internet Service6 source group name.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
             internet_service6_src_fortiguard: FortiGuard IPv6 Internet Service source name.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
             enforce_default_app_port: Enable/disable default application port enforcement for allowed applications.
             service: Service and service group names.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
             service_negate: When enabled service specifies what the service must NOT be.
             action: Policy action (accept/deny).
             send_deny_packet: Enable to send a reply when a session is denied or blocked by a firewall policy.
@@ -732,12 +1470,42 @@ class SecurityPolicy(CRUDEndpoint, MetadataMixin):
             ssh_filter_profile: Name of an existing SSH filter profile.
             casb_profile: Name of an existing CASB profile.
             application: Application ID list.
+                Default format: [{'id': 1}]
+                Supported formats:
+                  - Single string: "value" → [{'id': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'id': 'val1'}, ...]
+                  - List of dicts: [{'id': 1}] (recommended)
             app_category: Application category ID list.
+                Default format: [{'id': 1}]
+                Supported formats:
+                  - Single string: "value" → [{'id': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'id': 'val1'}, ...]
+                  - List of dicts: [{'id': 1}] (recommended)
             url_category: URL categories or groups.
             app_group: Application group names.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
             groups: Names of user groups that can authenticate with this policy.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
             users: Names of individual users that can authenticate with this policy.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
             fsso_groups: Names of FSSO groups.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
             vdom: Virtual domain name. Use True for global, string for specific VDOM.
             error_mode: Override client-level error_mode. "raise" raises exceptions, "return" returns error dict, "print" prints errors.
             error_format: Override client-level error_format. "detailed" provides full context, "simple" is concise, "code_only" returns just status code.
@@ -768,6 +1536,272 @@ class SecurityPolicy(CRUDEndpoint, MetadataMixin):
             - put(): Update existing object
             - set(): Intelligent create or update
         """
+        # Apply normalization for table fields (supports flexible input formats)
+        if srcintf is not None:
+            srcintf = normalize_table_field(
+                srcintf,
+                mkey="name",
+                required_fields=['name'],
+                field_name="srcintf",
+                example="[{'name': 'value'}]",
+            )
+        if dstintf is not None:
+            dstintf = normalize_table_field(
+                dstintf,
+                mkey="name",
+                required_fields=['name'],
+                field_name="dstintf",
+                example="[{'name': 'value'}]",
+            )
+        if srcaddr is not None:
+            srcaddr = normalize_table_field(
+                srcaddr,
+                mkey="name",
+                required_fields=['name'],
+                field_name="srcaddr",
+                example="[{'name': 'value'}]",
+            )
+        if dstaddr is not None:
+            dstaddr = normalize_table_field(
+                dstaddr,
+                mkey="name",
+                required_fields=['name'],
+                field_name="dstaddr",
+                example="[{'name': 'value'}]",
+            )
+        if srcaddr6 is not None:
+            srcaddr6 = normalize_table_field(
+                srcaddr6,
+                mkey="name",
+                required_fields=['name'],
+                field_name="srcaddr6",
+                example="[{'name': 'value'}]",
+            )
+        if dstaddr6 is not None:
+            dstaddr6 = normalize_table_field(
+                dstaddr6,
+                mkey="name",
+                required_fields=['name'],
+                field_name="dstaddr6",
+                example="[{'name': 'value'}]",
+            )
+        if internet_service_name is not None:
+            internet_service_name = normalize_table_field(
+                internet_service_name,
+                mkey="name",
+                required_fields=['name'],
+                field_name="internet_service_name",
+                example="[{'name': 'value'}]",
+            )
+        if internet_service_group is not None:
+            internet_service_group = normalize_table_field(
+                internet_service_group,
+                mkey="name",
+                required_fields=['name'],
+                field_name="internet_service_group",
+                example="[{'name': 'value'}]",
+            )
+        if internet_service_custom is not None:
+            internet_service_custom = normalize_table_field(
+                internet_service_custom,
+                mkey="name",
+                required_fields=['name'],
+                field_name="internet_service_custom",
+                example="[{'name': 'value'}]",
+            )
+        if internet_service_custom_group is not None:
+            internet_service_custom_group = normalize_table_field(
+                internet_service_custom_group,
+                mkey="name",
+                required_fields=['name'],
+                field_name="internet_service_custom_group",
+                example="[{'name': 'value'}]",
+            )
+        if internet_service_fortiguard is not None:
+            internet_service_fortiguard = normalize_table_field(
+                internet_service_fortiguard,
+                mkey="name",
+                required_fields=['name'],
+                field_name="internet_service_fortiguard",
+                example="[{'name': 'value'}]",
+            )
+        if internet_service_src_name is not None:
+            internet_service_src_name = normalize_table_field(
+                internet_service_src_name,
+                mkey="name",
+                required_fields=['name'],
+                field_name="internet_service_src_name",
+                example="[{'name': 'value'}]",
+            )
+        if internet_service_src_group is not None:
+            internet_service_src_group = normalize_table_field(
+                internet_service_src_group,
+                mkey="name",
+                required_fields=['name'],
+                field_name="internet_service_src_group",
+                example="[{'name': 'value'}]",
+            )
+        if internet_service_src_custom is not None:
+            internet_service_src_custom = normalize_table_field(
+                internet_service_src_custom,
+                mkey="name",
+                required_fields=['name'],
+                field_name="internet_service_src_custom",
+                example="[{'name': 'value'}]",
+            )
+        if internet_service_src_custom_group is not None:
+            internet_service_src_custom_group = normalize_table_field(
+                internet_service_src_custom_group,
+                mkey="name",
+                required_fields=['name'],
+                field_name="internet_service_src_custom_group",
+                example="[{'name': 'value'}]",
+            )
+        if internet_service_src_fortiguard is not None:
+            internet_service_src_fortiguard = normalize_table_field(
+                internet_service_src_fortiguard,
+                mkey="name",
+                required_fields=['name'],
+                field_name="internet_service_src_fortiguard",
+                example="[{'name': 'value'}]",
+            )
+        if internet_service6_name is not None:
+            internet_service6_name = normalize_table_field(
+                internet_service6_name,
+                mkey="name",
+                required_fields=['name'],
+                field_name="internet_service6_name",
+                example="[{'name': 'value'}]",
+            )
+        if internet_service6_group is not None:
+            internet_service6_group = normalize_table_field(
+                internet_service6_group,
+                mkey="name",
+                required_fields=['name'],
+                field_name="internet_service6_group",
+                example="[{'name': 'value'}]",
+            )
+        if internet_service6_custom is not None:
+            internet_service6_custom = normalize_table_field(
+                internet_service6_custom,
+                mkey="name",
+                required_fields=['name'],
+                field_name="internet_service6_custom",
+                example="[{'name': 'value'}]",
+            )
+        if internet_service6_custom_group is not None:
+            internet_service6_custom_group = normalize_table_field(
+                internet_service6_custom_group,
+                mkey="name",
+                required_fields=['name'],
+                field_name="internet_service6_custom_group",
+                example="[{'name': 'value'}]",
+            )
+        if internet_service6_fortiguard is not None:
+            internet_service6_fortiguard = normalize_table_field(
+                internet_service6_fortiguard,
+                mkey="name",
+                required_fields=['name'],
+                field_name="internet_service6_fortiguard",
+                example="[{'name': 'value'}]",
+            )
+        if internet_service6_src_name is not None:
+            internet_service6_src_name = normalize_table_field(
+                internet_service6_src_name,
+                mkey="name",
+                required_fields=['name'],
+                field_name="internet_service6_src_name",
+                example="[{'name': 'value'}]",
+            )
+        if internet_service6_src_group is not None:
+            internet_service6_src_group = normalize_table_field(
+                internet_service6_src_group,
+                mkey="name",
+                required_fields=['name'],
+                field_name="internet_service6_src_group",
+                example="[{'name': 'value'}]",
+            )
+        if internet_service6_src_custom is not None:
+            internet_service6_src_custom = normalize_table_field(
+                internet_service6_src_custom,
+                mkey="name",
+                required_fields=['name'],
+                field_name="internet_service6_src_custom",
+                example="[{'name': 'value'}]",
+            )
+        if internet_service6_src_custom_group is not None:
+            internet_service6_src_custom_group = normalize_table_field(
+                internet_service6_src_custom_group,
+                mkey="name",
+                required_fields=['name'],
+                field_name="internet_service6_src_custom_group",
+                example="[{'name': 'value'}]",
+            )
+        if internet_service6_src_fortiguard is not None:
+            internet_service6_src_fortiguard = normalize_table_field(
+                internet_service6_src_fortiguard,
+                mkey="name",
+                required_fields=['name'],
+                field_name="internet_service6_src_fortiguard",
+                example="[{'name': 'value'}]",
+            )
+        if service is not None:
+            service = normalize_table_field(
+                service,
+                mkey="name",
+                required_fields=['name'],
+                field_name="service",
+                example="[{'name': 'value'}]",
+            )
+        if application is not None:
+            application = normalize_table_field(
+                application,
+                mkey="id",
+                required_fields=['id'],
+                field_name="application",
+                example="[{'id': 1}]",
+            )
+        if app_category is not None:
+            app_category = normalize_table_field(
+                app_category,
+                mkey="id",
+                required_fields=['id'],
+                field_name="app_category",
+                example="[{'id': 1}]",
+            )
+        if app_group is not None:
+            app_group = normalize_table_field(
+                app_group,
+                mkey="name",
+                required_fields=['name'],
+                field_name="app_group",
+                example="[{'name': 'value'}]",
+            )
+        if groups is not None:
+            groups = normalize_table_field(
+                groups,
+                mkey="name",
+                required_fields=['name'],
+                field_name="groups",
+                example="[{'name': 'value'}]",
+            )
+        if users is not None:
+            users = normalize_table_field(
+                users,
+                mkey="name",
+                required_fields=['name'],
+                field_name="users",
+                example="[{'name': 'value'}]",
+            )
+        if fsso_groups is not None:
+            fsso_groups = normalize_table_field(
+                fsso_groups,
+                mkey="name",
+                required_fields=['name'],
+                field_name="fsso_groups",
+                example="[{'name': 'value'}]",
+            )
+        
         # Build payload using helper function with auto-normalization
         # This automatically converts strings/lists to [{'name': '...'}] format for list fields
         # To disable auto-normalization, use build_cmdb_payload directly
@@ -878,8 +1912,7 @@ class SecurityPolicy(CRUDEndpoint, MetadataMixin):
             params["scope"] = q_scope
         
         return self._client.post(
-            "cmdb", endpoint, data=payload_data, params=params, vdom=vdom
-        )
+            "cmdb", endpoint, data=payload_data, params=params, vdom=vdom        )
 
     # ========================================================================
     # DELETE Method
@@ -933,8 +1966,7 @@ class SecurityPolicy(CRUDEndpoint, MetadataMixin):
             params["scope"] = q_scope
         
         return self._client.delete(
-            "cmdb", endpoint, params=params, vdom=vdom
-        )
+            "cmdb", endpoint, params=params, vdom=vdom        )
 
     def exists(
         self,

@@ -148,8 +148,7 @@ class Clear(CRUDEndpoint, MetadataMixin):
 
         endpoint = "/system/crash-log/clear"
         return self._client.post(
-            "monitor", endpoint, data=payload_data, vdom=vdom
-        )
+            "monitor", endpoint, data=payload_data, vdom=vdom        )
 
 
 

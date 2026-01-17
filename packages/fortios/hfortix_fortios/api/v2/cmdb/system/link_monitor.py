@@ -47,6 +47,7 @@ from hfortix_fortios._helpers import (
     build_cmdb_payload,  # Keep for backward compatibility / manual usage
     is_success,
     quote_path_param,  # URL encoding for path parameters
+    normalize_table_field,  # For table field normalization
 )
 # Import metadata mixin for schema introspection
 from hfortix_fortios._helpers.metadata_mixin import MetadataMixin
@@ -59,6 +60,28 @@ class LinkMonitor(CRUDEndpoint, MetadataMixin):
     
     # Configure metadata mixin to use this endpoint's helper module
     _helper_module_name = "link_monitor"
+    
+    # ========================================================================
+    # Table Fields Metadata (for normalization)
+    # Auto-generated from schema - supports flexible input formats
+    # ========================================================================
+    _TABLE_FIELDS = {
+        "server": {
+            "mkey": "address",
+            "required_fields": ['address'],
+            "example": "[{'address': 'value'}]",
+        },
+        "route": {
+            "mkey": "subnet",
+            "required_fields": ['subnet'],
+            "example": "[{'subnet': 'value'}]",
+        },
+        "server_list": {
+            "mkey": "id",
+            "required_fields": ['id', 'dst'],
+            "example": "[{'id': 1, 'dst': 'value'}]",
+        },
+    }
     
     # ========================================================================
     # Capabilities (from schema metadata)
@@ -286,11 +309,21 @@ class LinkMonitor(CRUDEndpoint, MetadataMixin):
             server_config: Mode of server configuration.
             server_type: Server type (static or dynamic).
             server: IP address of the server(s) to be monitored.
+                Default format: [{'address': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'address': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'address': 'val1'}, ...]
+                  - List of dicts: [{'address': 'value'}] (recommended)
             protocol: Protocols used to monitor the server.
             port: Port number of the traffic to be used to monitor the server.
             gateway_ip: Gateway IP address used to probe the server.
             gateway_ip6: Gateway IPv6 address used to probe the server.
             route: Subnet to monitor.
+                Default format: [{'subnet': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'subnet': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'subnet': 'val1'}, ...]
+                  - List of dicts: [{'subnet': 'value'}] (recommended)
             source_ip: Source IP address used in packet to the server.
             source_ip6: Source IPv6 address used in packet to the server.
             http_get: If you are monitoring an HTML server you can send an HTTP-GET request with a custom string. Use this option to define the string.
@@ -314,6 +347,9 @@ class LinkMonitor(CRUDEndpoint, MetadataMixin):
             class_id: Traffic class ID.
             service_detection: Only use monitor to read quality values. If enabled, static routes and cascade interfaces will not be updated.
             server_list: Servers for link-monitor to monitor.
+                Default format: [{'id': 1, 'dst': 'value'}]
+                Required format: List of dicts with keys: id, dst
+                  (String format not allowed due to multiple required fields)
             vdom: Virtual domain name.
             error_mode: Override client-level error_mode. "raise" raises exceptions, "return" returns error dict, "print" prints errors.
             error_format: Override client-level error_format. "detailed" provides full context, "simple" is concise, "code_only" returns just status code.
@@ -342,6 +378,32 @@ class LinkMonitor(CRUDEndpoint, MetadataMixin):
             - post(): Create new object
             - set(): Intelligent create or update
         """
+        # Apply normalization for table fields (supports flexible input formats)
+        if server is not None:
+            server = normalize_table_field(
+                server,
+                mkey="address",
+                required_fields=['address'],
+                field_name="server",
+                example="[{'address': 'value'}]",
+            )
+        if route is not None:
+            route = normalize_table_field(
+                route,
+                mkey="subnet",
+                required_fields=['subnet'],
+                field_name="route",
+                example="[{'subnet': 'value'}]",
+            )
+        if server_list is not None:
+            server_list = normalize_table_field(
+                server_list,
+                mkey="id",
+                required_fields=['id', 'dst'],
+                field_name="server_list",
+                example="[{'id': 1, 'dst': 'value'}]",
+            )
+        
         # Build payload using helper function with auto-normalization
         # This automatically converts strings/lists to [{'name': '...'}] format for list fields
         # To disable auto-normalization, use build_cmdb_payload directly
@@ -410,8 +472,7 @@ class LinkMonitor(CRUDEndpoint, MetadataMixin):
             params["scope"] = q_scope
         
         return self._client.put(
-            "cmdb", endpoint, data=payload_data, params=params, vdom=vdom
-        )
+            "cmdb", endpoint, data=payload_data, params=params, vdom=vdom        )
 
     # ========================================================================
     # POST Method
@@ -475,11 +536,21 @@ class LinkMonitor(CRUDEndpoint, MetadataMixin):
             server_config: Mode of server configuration.
             server_type: Server type (static or dynamic).
             server: IP address of the server(s) to be monitored.
+                Default format: [{'address': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'address': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'address': 'val1'}, ...]
+                  - List of dicts: [{'address': 'value'}] (recommended)
             protocol: Protocols used to monitor the server.
             port: Port number of the traffic to be used to monitor the server.
             gateway_ip: Gateway IP address used to probe the server.
             gateway_ip6: Gateway IPv6 address used to probe the server.
             route: Subnet to monitor.
+                Default format: [{'subnet': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'subnet': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'subnet': 'val1'}, ...]
+                  - List of dicts: [{'subnet': 'value'}] (recommended)
             source_ip: Source IP address used in packet to the server.
             source_ip6: Source IPv6 address used in packet to the server.
             http_get: If you are monitoring an HTML server you can send an HTTP-GET request with a custom string. Use this option to define the string.
@@ -503,6 +574,9 @@ class LinkMonitor(CRUDEndpoint, MetadataMixin):
             class_id: Traffic class ID.
             service_detection: Only use monitor to read quality values. If enabled, static routes and cascade interfaces will not be updated.
             server_list: Servers for link-monitor to monitor.
+                Default format: [{'id': 1, 'dst': 'value'}]
+                Required format: List of dicts with keys: id, dst
+                  (String format not allowed due to multiple required fields)
             vdom: Virtual domain name. Use True for global, string for specific VDOM.
             error_mode: Override client-level error_mode. "raise" raises exceptions, "return" returns error dict, "print" prints errors.
             error_format: Override client-level error_format. "detailed" provides full context, "simple" is concise, "code_only" returns just status code.
@@ -533,6 +607,32 @@ class LinkMonitor(CRUDEndpoint, MetadataMixin):
             - put(): Update existing object
             - set(): Intelligent create or update
         """
+        # Apply normalization for table fields (supports flexible input formats)
+        if server is not None:
+            server = normalize_table_field(
+                server,
+                mkey="address",
+                required_fields=['address'],
+                field_name="server",
+                example="[{'address': 'value'}]",
+            )
+        if route is not None:
+            route = normalize_table_field(
+                route,
+                mkey="subnet",
+                required_fields=['subnet'],
+                field_name="route",
+                example="[{'subnet': 'value'}]",
+            )
+        if server_list is not None:
+            server_list = normalize_table_field(
+                server_list,
+                mkey="id",
+                required_fields=['id', 'dst'],
+                field_name="server_list",
+                example="[{'id': 1, 'dst': 'value'}]",
+            )
+        
         # Build payload using helper function with auto-normalization
         # This automatically converts strings/lists to [{'name': '...'}] format for list fields
         # To disable auto-normalization, use build_cmdb_payload directly
@@ -596,8 +696,7 @@ class LinkMonitor(CRUDEndpoint, MetadataMixin):
             params["scope"] = q_scope
         
         return self._client.post(
-            "cmdb", endpoint, data=payload_data, params=params, vdom=vdom
-        )
+            "cmdb", endpoint, data=payload_data, params=params, vdom=vdom        )
 
     # ========================================================================
     # DELETE Method
@@ -651,8 +750,7 @@ class LinkMonitor(CRUDEndpoint, MetadataMixin):
             params["scope"] = q_scope
         
         return self._client.delete(
-            "cmdb", endpoint, params=params, vdom=vdom
-        )
+            "cmdb", endpoint, params=params, vdom=vdom        )
 
     def exists(
         self,

@@ -163,8 +163,7 @@ class Upgrade(CRUDEndpoint, MetadataMixin):
 
         endpoint = "/license/database/upgrade"
         return self._client.post(
-            "monitor", endpoint, data=payload_data, vdom=vdom
-        )
+            "monitor", endpoint, data=payload_data, vdom=vdom        )
 
 
 

@@ -151,8 +151,7 @@ class Download(CRUDEndpoint, MetadataMixin):
 
         endpoint = "/sniffer/download"
         return self._client.post(
-            "service", endpoint, data=payload_data, vdom=vdom
-        )
+            "service", endpoint, data=payload_data, vdom=vdom        )
 
 
 

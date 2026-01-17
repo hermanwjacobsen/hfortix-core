@@ -47,6 +47,7 @@ from hfortix_fortios._helpers import (
     build_cmdb_payload,  # Keep for backward compatibility / manual usage
     is_success,
     quote_path_param,  # URL encoding for path parameters
+    normalize_table_field,  # For table field normalization
 )
 # Import metadata mixin for schema introspection
 from hfortix_fortios._helpers.metadata_mixin import MetadataMixin
@@ -59,6 +60,23 @@ class Dns(CRUDEndpoint, MetadataMixin):
     
     # Configure metadata mixin to use this endpoint's helper module
     _helper_module_name = "dns"
+    
+    # ========================================================================
+    # Table Fields Metadata (for normalization)
+    # Auto-generated from schema - supports flexible input formats
+    # ========================================================================
+    _TABLE_FIELDS = {
+        "server_hostname": {
+            "mkey": "hostname",
+            "required_fields": ['hostname'],
+            "example": "[{'hostname': 'value'}]",
+        },
+        "domain": {
+            "mkey": "domain",
+            "required_fields": ['domain'],
+            "example": "[{'domain': 'value'}]",
+        },
+    }
     
     # ========================================================================
     # Capabilities (from schema metadata)
@@ -274,7 +292,17 @@ class Dns(CRUDEndpoint, MetadataMixin):
             protocol: DNS transport protocols.
             ssl_certificate: Name of local certificate for SSL connections.
             server_hostname: DNS server host name list.
+                Default format: [{'hostname': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'hostname': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'hostname': 'val1'}, ...]
+                  - List of dicts: [{'hostname': 'value'}] (recommended)
             domain: Search suffix list for hostname lookup.
+                Default format: [{'domain': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'domain': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'domain': 'val1'}, ...]
+                  - List of dicts: [{'domain': 'value'}] (recommended)
             ip6_primary: Primary DNS server IPv6 address.
             ip6_secondary: Secondary DNS server IPv6 address.
             timeout: DNS query timeout interval in seconds (1 - 10).
@@ -325,6 +353,24 @@ class Dns(CRUDEndpoint, MetadataMixin):
             - post(): Create new object
             - set(): Intelligent create or update
         """
+        # Apply normalization for table fields (supports flexible input formats)
+        if server_hostname is not None:
+            server_hostname = normalize_table_field(
+                server_hostname,
+                mkey="hostname",
+                required_fields=['hostname'],
+                field_name="server_hostname",
+                example="[{'hostname': 'value'}]",
+            )
+        if domain is not None:
+            domain = normalize_table_field(
+                domain,
+                mkey="domain",
+                required_fields=['domain'],
+                field_name="domain",
+                example="[{'domain': 'value'}]",
+            )
+        
         # Build payload using helper function with auto-normalization
         # This automatically converts strings/lists to [{'name': '...'}] format for list fields
         # To disable auto-normalization, use build_cmdb_payload directly
@@ -385,8 +431,7 @@ class Dns(CRUDEndpoint, MetadataMixin):
             params["scope"] = q_scope
         
         return self._client.put(
-            "cmdb", endpoint, data=payload_data, params=params, vdom=vdom
-        )
+            "cmdb", endpoint, data=payload_data, params=params, vdom=vdom        )
 
 
 

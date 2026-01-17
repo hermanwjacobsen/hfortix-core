@@ -157,8 +157,7 @@ class KeepAlive(CRUDEndpoint, MetadataMixin):
 
         endpoint = "/wifi/spectrum/keep-alive"
         return self._client.post(
-            "monitor", endpoint, data=payload_data, vdom=vdom
-        )
+            "monitor", endpoint, data=payload_data, vdom=vdom        )
 
 
 

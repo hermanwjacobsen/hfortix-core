@@ -47,6 +47,7 @@ from hfortix_fortios._helpers import (
     build_cmdb_payload,  # Keep for backward compatibility / manual usage
     is_success,
     quote_path_param,  # URL encoding for path parameters
+    normalize_table_field,  # For table field normalization
 )
 # Import metadata mixin for schema introspection
 from hfortix_fortios._helpers.metadata_mixin import MetadataMixin
@@ -59,6 +60,18 @@ class Global(CRUDEndpoint, MetadataMixin):
     
     # Configure metadata mixin to use this endpoint's helper module
     _helper_module_name = "global_"
+    
+    # ========================================================================
+    # Table Fields Metadata (for normalization)
+    # Auto-generated from schema - supports flexible input formats
+    # ========================================================================
+    _TABLE_FIELDS = {
+        "internet_service_download_list": {
+            "mkey": "id",
+            "required_fields": ['id'],
+            "example": "[{'id': 1}]",
+        },
+    }
     
     # ========================================================================
     # Capabilities (from schema metadata)
@@ -730,6 +743,11 @@ class Global(CRUDEndpoint, MetadataMixin):
             forticonverter_config_upload: Enable/disable config upload to FortiConverter.
             internet_service_database: Configure which Internet Service database size to download from FortiGuard and use.
             internet_service_download_list: Configure which on-demand Internet Service IDs are to be downloaded.
+                Default format: [{'id': 1}]
+                Supported formats:
+                  - Single string: "value" → [{'id': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'id': 'val1'}, ...]
+                  - List of dicts: [{'id': 1}] (recommended)
             geoip_full_db: When enabled, the full geographic database will be loaded into the kernel which enables geographic information in traffic logs - required for FortiView countries. Disabling this option will conserve memory.
             early_tcp_npu_session: Enable/disable early TCP NPU session.
             npu_neighbor_update: Enable/disable sending of ARP/ICMP6 probing packets to update neighbors for offloaded sessions.
@@ -773,6 +791,16 @@ class Global(CRUDEndpoint, MetadataMixin):
             - post(): Create new object
             - set(): Intelligent create or update
         """
+        # Apply normalization for table fields (supports flexible input formats)
+        if internet_service_download_list is not None:
+            internet_service_download_list = normalize_table_field(
+                internet_service_download_list,
+                mkey="id",
+                required_fields=['id'],
+                field_name="internet_service_download_list",
+                example="[{'id': 1}]",
+            )
+        
         # Build payload using helper function with auto-normalization
         # This automatically converts strings/lists to [{'name': '...'}] format for list fields
         # To disable auto-normalization, use build_cmdb_payload directly
@@ -1057,8 +1085,7 @@ class Global(CRUDEndpoint, MetadataMixin):
             params["scope"] = q_scope
         
         return self._client.put(
-            "cmdb", endpoint, data=payload_data, params=params, vdom=vdom
-        )
+            "cmdb", endpoint, data=payload_data, params=params, vdom=vdom        )
 
 
 

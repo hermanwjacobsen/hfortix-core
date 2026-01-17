@@ -11,13 +11,29 @@ if TYPE_CHECKING:
     from .query import Query
     from .stats import Stats
 
+__all__ = [
+    "IotQuery",
+    "PurdueLevel",
+    "Query",
+    "Stats",
+    "Device",
+]
+
 
 class Device:
-    """Type stub for Device."""
-
+    """DEVICE API category.
+    
+    All endpoints return FortiObject instances with:
+    - Attribute access: response.field
+    - Dictionary access: response["field"]
+    - Convert to dict: response.dict or response.json
+    """
+    
     iot_query: IotQuery
     purdue_level: PurdueLevel
     query: Query
     stats: Stats
 
-    def __init__(self, client: IHTTPClient) -> None: ...
+    def __init__(self, client: IHTTPClient, vdom: str | None = None) -> None:
+        """Initialize device category with HTTP client."""
+        ...

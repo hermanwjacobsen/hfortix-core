@@ -14,10 +14,27 @@ if TYPE_CHECKING:
     from .remote import Remote
     from .setting import Setting
 
+__all__ = [
+    "Ca",
+    "Crl",
+    "HsmLocal",
+    "Local",
+    "OcspServer",
+    "Remote",
+    "Setting",
+    "Certificate",
+]
+
 
 class Certificate:
-    """Type stub for Certificate."""
-
+    """CERTIFICATE API category.
+    
+    All endpoints return FortiObject instances with:
+    - Attribute access: response.field
+    - Dictionary access: response["field"]
+    - Convert to dict: response.dict or response.json
+    """
+    
     ca: Ca
     crl: Crl
     hsm_local: HsmLocal
@@ -26,4 +43,6 @@ class Certificate:
     remote: Remote
     setting: Setting
 
-    def __init__(self, client: IHTTPClient) -> None: ...
+    def __init__(self, client: IHTTPClient, vdom: str | None = None) -> None:
+        """Initialize certificate category with HTTP client."""
+        ...

@@ -23,10 +23,21 @@ if TYPE_CHECKING:
     from .scim import Scim
     from .tacacs_plus import TacacsPlus
 
+__all__ = [
+    "CollectedEmail",
+    "User",
+]
+
 
 class User:
-    """Type stub for User."""
-
+    """USER API category.
+    
+    All endpoints return FortiObject instances with:
+    - Attribute access: response.field
+    - Dictionary access: response["field"]
+    - Convert to dict: response.dict or response.json
+    """
+    
     banned: Banned
     device: Device
     firewall: Firewall
@@ -44,4 +55,6 @@ class User:
     tacacs_plus: TacacsPlus
     collected_email: CollectedEmail
 
-    def __init__(self, client: IHTTPClient) -> None: ...
+    def __init__(self, client: IHTTPClient, vdom: str | None = None) -> None:
+        """Initialize user category with HTTP client."""
+        ...

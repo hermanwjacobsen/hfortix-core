@@ -47,6 +47,7 @@ from hfortix_fortios._helpers import (
     build_cmdb_payload,  # Keep for backward compatibility / manual usage
     is_success,
     quote_path_param,  # URL encoding for path parameters
+    normalize_table_field,  # For table field normalization
 )
 # Import metadata mixin for schema introspection
 from hfortix_fortios._helpers.metadata_mixin import MetadataMixin
@@ -59,6 +60,63 @@ class SdnConnector(CRUDEndpoint, MetadataMixin):
     
     # Configure metadata mixin to use this endpoint's helper module
     _helper_module_name = "sdn_connector"
+    
+    # ========================================================================
+    # Table Fields Metadata (for normalization)
+    # Auto-generated from schema - supports flexible input formats
+    # ========================================================================
+    _TABLE_FIELDS = {
+        "server_list": {
+            "mkey": "ip",
+            "required_fields": ['ip'],
+            "example": "[{'ip': '192.168.1.10'}]",
+        },
+        "external_account_list": {
+            "mkey": "role-arn",
+            "required_fields": ['role-arn', 'region-list'],
+            "example": "[{'role-arn': 'value', 'region-list': 'value'}]",
+        },
+        "nic": {
+            "mkey": "name",
+            "required_fields": ['name'],
+            "example": "[{'name': 'value'}]",
+        },
+        "route_table": {
+            "mkey": "name",
+            "required_fields": ['name'],
+            "example": "[{'name': 'value'}]",
+        },
+        "compartment_list": {
+            "mkey": "compartment-id",
+            "required_fields": ['compartment-id'],
+            "example": "[{'compartment-id': 'value'}]",
+        },
+        "oci_region_list": {
+            "mkey": "region",
+            "required_fields": ['region'],
+            "example": "[{'region': 'value'}]",
+        },
+        "external_ip": {
+            "mkey": "name",
+            "required_fields": ['name'],
+            "example": "[{'name': 'value'}]",
+        },
+        "route": {
+            "mkey": "name",
+            "required_fields": ['name'],
+            "example": "[{'name': 'value'}]",
+        },
+        "gcp_project_list": {
+            "mkey": "id",
+            "required_fields": ['id'],
+            "example": "[{'id': 1}]",
+        },
+        "forwarding_rule": {
+            "mkey": "rule-name",
+            "required_fields": ['rule-name', 'target'],
+            "example": "[{'rule-name': 'value', 'target': 'value'}]",
+        },
+    }
     
     # ========================================================================
     # Capabilities (from schema metadata)
@@ -311,6 +369,11 @@ class SdnConnector(CRUDEndpoint, MetadataMixin):
             vdom: Virtual domain name of the remote SDN connector.
             server: Server address of the remote SDN connector.
             server_list: Server address list of the remote SDN connector.
+                Default format: [{'ip': '192.168.1.10'}]
+                Supported formats:
+                  - Single string: "value" → [{'ip': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'ip': 'val1'}, ...]
+                  - List of dicts: [{'ip': '192.168.1.10'}] (recommended)
             server_port: Port number of the remote SDN connector.
             message_server_port: HTTP port number of the SAP message server.
             username: Username of the remote SDN connector as login credentials.
@@ -324,6 +387,9 @@ class SdnConnector(CRUDEndpoint, MetadataMixin):
             vpc_id: AWS VPC ID.
             alt_resource_ip: Enable/disable AWS alternative resource IP.
             external_account_list: Configure AWS external account list.
+                Default format: [{'role-arn': 'value', 'region-list': 'value'}]
+                Required format: List of dicts with keys: role-arn, region-list
+                  (String format not allowed due to multiple required fields)
             tenant_id: Tenant ID (directory ID).
             client_id: Azure client ID (application ID).
             client_secret: Azure client secret (application key).
@@ -333,17 +399,55 @@ class SdnConnector(CRUDEndpoint, MetadataMixin):
             resource_url: Azure Stack resource URL.
             azure_region: Azure server region.
             nic: Configure Azure network interface.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
             route_table: Configure Azure route table.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
             user_id: User ID.
             compartment_list: Configure OCI compartment list.
+                Default format: [{'compartment-id': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'compartment-id': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'compartment-id': 'val1'}, ...]
+                  - List of dicts: [{'compartment-id': 'value'}] (recommended)
             oci_region_list: Configure OCI region list.
+                Default format: [{'region': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'region': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'region': 'val1'}, ...]
+                  - List of dicts: [{'region': 'value'}] (recommended)
             oci_region_type: OCI region type.
             oci_cert: OCI certificate.
             oci_fingerprint: OCI pubkey fingerprint.
             external_ip: Configure GCP external IP.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
             route: Configure GCP route.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
             gcp_project_list: Configure GCP project list.
+                Default format: [{'id': 1}]
+                Supported formats:
+                  - Single string: "value" → [{'id': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'id': 'val1'}, ...]
+                  - List of dicts: [{'id': 1}] (recommended)
             forwarding_rule: Configure GCP forwarding rule.
+                Default format: [{'rule-name': 'value', 'target': 'value'}]
+                Required format: List of dicts with keys: rule-name, target
+                  (String format not allowed due to multiple required fields)
             service_account: GCP service account email.
             private_key: Private key of GCP service account.
             secret_token: Secret token of Kubernetes service account.
@@ -383,6 +487,88 @@ class SdnConnector(CRUDEndpoint, MetadataMixin):
             - post(): Create new object
             - set(): Intelligent create or update
         """
+        # Apply normalization for table fields (supports flexible input formats)
+        if server_list is not None:
+            server_list = normalize_table_field(
+                server_list,
+                mkey="ip",
+                required_fields=['ip'],
+                field_name="server_list",
+                example="[{'ip': '192.168.1.10'}]",
+            )
+        if external_account_list is not None:
+            external_account_list = normalize_table_field(
+                external_account_list,
+                mkey="role-arn",
+                required_fields=['role-arn', 'region-list'],
+                field_name="external_account_list",
+                example="[{'role-arn': 'value', 'region-list': 'value'}]",
+            )
+        if nic is not None:
+            nic = normalize_table_field(
+                nic,
+                mkey="name",
+                required_fields=['name'],
+                field_name="nic",
+                example="[{'name': 'value'}]",
+            )
+        if route_table is not None:
+            route_table = normalize_table_field(
+                route_table,
+                mkey="name",
+                required_fields=['name'],
+                field_name="route_table",
+                example="[{'name': 'value'}]",
+            )
+        if compartment_list is not None:
+            compartment_list = normalize_table_field(
+                compartment_list,
+                mkey="compartment-id",
+                required_fields=['compartment-id'],
+                field_name="compartment_list",
+                example="[{'compartment-id': 'value'}]",
+            )
+        if oci_region_list is not None:
+            oci_region_list = normalize_table_field(
+                oci_region_list,
+                mkey="region",
+                required_fields=['region'],
+                field_name="oci_region_list",
+                example="[{'region': 'value'}]",
+            )
+        if external_ip is not None:
+            external_ip = normalize_table_field(
+                external_ip,
+                mkey="name",
+                required_fields=['name'],
+                field_name="external_ip",
+                example="[{'name': 'value'}]",
+            )
+        if route is not None:
+            route = normalize_table_field(
+                route,
+                mkey="name",
+                required_fields=['name'],
+                field_name="route",
+                example="[{'name': 'value'}]",
+            )
+        if gcp_project_list is not None:
+            gcp_project_list = normalize_table_field(
+                gcp_project_list,
+                mkey="id",
+                required_fields=['id'],
+                field_name="gcp_project_list",
+                example="[{'id': 1}]",
+            )
+        if forwarding_rule is not None:
+            forwarding_rule = normalize_table_field(
+                forwarding_rule,
+                mkey="rule-name",
+                required_fields=['rule-name', 'target'],
+                field_name="forwarding_rule",
+                example="[{'rule-name': 'value', 'target': 'value'}]",
+            )
+        
         # Build payload using helper function with auto-normalization
         # This automatically converts strings/lists to [{'name': '...'}] format for list fields
         # To disable auto-normalization, use build_cmdb_payload directly
@@ -471,8 +657,7 @@ class SdnConnector(CRUDEndpoint, MetadataMixin):
             params["scope"] = q_scope
         
         return self._client.put(
-            "cmdb", endpoint, data=payload_data, params=params, vdom=vdom
-        )
+            "cmdb", endpoint, data=payload_data, params=params, vdom=vdom        )
 
     # ========================================================================
     # POST Method
@@ -561,6 +746,11 @@ class SdnConnector(CRUDEndpoint, MetadataMixin):
             vdom: Virtual domain name of the remote SDN connector.
             server: Server address of the remote SDN connector.
             server_list: Server address list of the remote SDN connector.
+                Default format: [{'ip': '192.168.1.10'}]
+                Supported formats:
+                  - Single string: "value" → [{'ip': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'ip': 'val1'}, ...]
+                  - List of dicts: [{'ip': '192.168.1.10'}] (recommended)
             server_port: Port number of the remote SDN connector.
             message_server_port: HTTP port number of the SAP message server.
             username: Username of the remote SDN connector as login credentials.
@@ -574,6 +764,9 @@ class SdnConnector(CRUDEndpoint, MetadataMixin):
             vpc_id: AWS VPC ID.
             alt_resource_ip: Enable/disable AWS alternative resource IP.
             external_account_list: Configure AWS external account list.
+                Default format: [{'role-arn': 'value', 'region-list': 'value'}]
+                Required format: List of dicts with keys: role-arn, region-list
+                  (String format not allowed due to multiple required fields)
             tenant_id: Tenant ID (directory ID).
             client_id: Azure client ID (application ID).
             client_secret: Azure client secret (application key).
@@ -583,17 +776,55 @@ class SdnConnector(CRUDEndpoint, MetadataMixin):
             resource_url: Azure Stack resource URL.
             azure_region: Azure server region.
             nic: Configure Azure network interface.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
             route_table: Configure Azure route table.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
             user_id: User ID.
             compartment_list: Configure OCI compartment list.
+                Default format: [{'compartment-id': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'compartment-id': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'compartment-id': 'val1'}, ...]
+                  - List of dicts: [{'compartment-id': 'value'}] (recommended)
             oci_region_list: Configure OCI region list.
+                Default format: [{'region': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'region': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'region': 'val1'}, ...]
+                  - List of dicts: [{'region': 'value'}] (recommended)
             oci_region_type: OCI region type.
             oci_cert: OCI certificate.
             oci_fingerprint: OCI pubkey fingerprint.
             external_ip: Configure GCP external IP.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
             route: Configure GCP route.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
             gcp_project_list: Configure GCP project list.
+                Default format: [{'id': 1}]
+                Supported formats:
+                  - Single string: "value" → [{'id': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'id': 'val1'}, ...]
+                  - List of dicts: [{'id': 1}] (recommended)
             forwarding_rule: Configure GCP forwarding rule.
+                Default format: [{'rule-name': 'value', 'target': 'value'}]
+                Required format: List of dicts with keys: rule-name, target
+                  (String format not allowed due to multiple required fields)
             service_account: GCP service account email.
             private_key: Private key of GCP service account.
             secret_token: Secret token of Kubernetes service account.
@@ -635,6 +866,88 @@ class SdnConnector(CRUDEndpoint, MetadataMixin):
             - put(): Update existing object
             - set(): Intelligent create or update
         """
+        # Apply normalization for table fields (supports flexible input formats)
+        if server_list is not None:
+            server_list = normalize_table_field(
+                server_list,
+                mkey="ip",
+                required_fields=['ip'],
+                field_name="server_list",
+                example="[{'ip': '192.168.1.10'}]",
+            )
+        if external_account_list is not None:
+            external_account_list = normalize_table_field(
+                external_account_list,
+                mkey="role-arn",
+                required_fields=['role-arn', 'region-list'],
+                field_name="external_account_list",
+                example="[{'role-arn': 'value', 'region-list': 'value'}]",
+            )
+        if nic is not None:
+            nic = normalize_table_field(
+                nic,
+                mkey="name",
+                required_fields=['name'],
+                field_name="nic",
+                example="[{'name': 'value'}]",
+            )
+        if route_table is not None:
+            route_table = normalize_table_field(
+                route_table,
+                mkey="name",
+                required_fields=['name'],
+                field_name="route_table",
+                example="[{'name': 'value'}]",
+            )
+        if compartment_list is not None:
+            compartment_list = normalize_table_field(
+                compartment_list,
+                mkey="compartment-id",
+                required_fields=['compartment-id'],
+                field_name="compartment_list",
+                example="[{'compartment-id': 'value'}]",
+            )
+        if oci_region_list is not None:
+            oci_region_list = normalize_table_field(
+                oci_region_list,
+                mkey="region",
+                required_fields=['region'],
+                field_name="oci_region_list",
+                example="[{'region': 'value'}]",
+            )
+        if external_ip is not None:
+            external_ip = normalize_table_field(
+                external_ip,
+                mkey="name",
+                required_fields=['name'],
+                field_name="external_ip",
+                example="[{'name': 'value'}]",
+            )
+        if route is not None:
+            route = normalize_table_field(
+                route,
+                mkey="name",
+                required_fields=['name'],
+                field_name="route",
+                example="[{'name': 'value'}]",
+            )
+        if gcp_project_list is not None:
+            gcp_project_list = normalize_table_field(
+                gcp_project_list,
+                mkey="id",
+                required_fields=['id'],
+                field_name="gcp_project_list",
+                example="[{'id': 1}]",
+            )
+        if forwarding_rule is not None:
+            forwarding_rule = normalize_table_field(
+                forwarding_rule,
+                mkey="rule-name",
+                required_fields=['rule-name', 'target'],
+                field_name="forwarding_rule",
+                example="[{'rule-name': 'value', 'target': 'value'}]",
+            )
+        
         # Build payload using helper function with auto-normalization
         # This automatically converts strings/lists to [{'name': '...'}] format for list fields
         # To disable auto-normalization, use build_cmdb_payload directly
@@ -718,8 +1031,7 @@ class SdnConnector(CRUDEndpoint, MetadataMixin):
             params["scope"] = q_scope
         
         return self._client.post(
-            "cmdb", endpoint, data=payload_data, params=params, vdom=vdom
-        )
+            "cmdb", endpoint, data=payload_data, params=params, vdom=vdom        )
 
     # ========================================================================
     # DELETE Method
@@ -773,8 +1085,7 @@ class SdnConnector(CRUDEndpoint, MetadataMixin):
             params["scope"] = q_scope
         
         return self._client.delete(
-            "cmdb", endpoint, params=params, vdom=vdom
-        )
+            "cmdb", endpoint, params=params, vdom=vdom        )
 
     def exists(
         self,

@@ -9,11 +9,25 @@ if TYPE_CHECKING:
     from .reboot import Reboot
     from .shutdown import Shutdown
 
+__all__ = [
+    "Reboot",
+    "Shutdown",
+    "Os",
+]
+
 
 class Os:
-    """Type stub for Os."""
-
+    """OS API category.
+    
+    All endpoints return FortiObject instances with:
+    - Attribute access: response.field
+    - Dictionary access: response["field"]
+    - Convert to dict: response.dict or response.json
+    """
+    
     reboot: Reboot
     shutdown: Shutdown
 
-    def __init__(self, client: IHTTPClient) -> None: ...
+    def __init__(self, client: IHTTPClient, vdom: str | None = None) -> None:
+        """Initialize os category with HTTP client."""
+        ...

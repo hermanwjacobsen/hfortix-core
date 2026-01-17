@@ -10,12 +10,27 @@ if TYPE_CHECKING:
     from .interface import Interface
     from .top_applications import TopApplications
 
+__all__ = [
+    "EnableAppBandwidthTracking",
+    "Interface",
+    "TopApplications",
+    "TrafficHistory",
+]
+
 
 class TrafficHistory:
-    """Type stub for TrafficHistory."""
-
+    """TRAFFIC_HISTORY API category.
+    
+    All endpoints return FortiObject instances with:
+    - Attribute access: response.field
+    - Dictionary access: response["field"]
+    - Convert to dict: response.dict or response.json
+    """
+    
     enable_app_bandwidth_tracking: EnableAppBandwidthTracking
     interface: Interface
     top_applications: TopApplications
 
-    def __init__(self, client: IHTTPClient) -> None: ...
+    def __init__(self, client: IHTTPClient, vdom: str | None = None) -> None:
+        """Initialize traffic_history category with HTTP client."""
+        ...

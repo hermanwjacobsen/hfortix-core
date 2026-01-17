@@ -5,6 +5,229 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.5.91] - 2026-01-17
+
+### Fixed - **Generator: Remove `vdom` Parameter from Global-Only Endpoints**
+
+- ✅ **Improved API ergonomics**: Global-only endpoints no longer expose confusing `vdom` parameter to users
+- ✅ **Schema parsing updated**: Added `scope`, `scope_options`, and `is_global_only` properties to `EndpointSchema`
+- ✅ **Template conditionals**: `.py` and `.pyi` templates conditionally exclude `vdom` parameter based on `is_global_only`
+- ✅ **Internal handling**: Global-only endpoints internally pass `vdom=False` to HTTP client (skips sending vdom param)
+- ✅ **V1.7 schema support**: Fixed `_parse_v1_7()` function to extract and pass scope/scope_options
+
+### Global-Only Endpoints (147 total)
+
+These endpoints operate at global scope only and no longer accept a `vdom` parameter:
+
+<details>
+<summary><strong>Certificate (5)</strong></summary>
+
+- `certificate.ca`
+- `certificate.crl`
+- `certificate.hsm-local`
+- `certificate.local`
+- `certificate.remote`
+</details>
+
+<details>
+<summary><strong>Endpoint Control (1)</strong></summary>
+
+- `endpoint-control.fctems`
+</details>
+
+<details>
+<summary><strong>Firewall (16)</strong></summary>
+
+- `firewall.city`
+- `firewall.country`
+- `firewall.global`
+- `firewall.internet-service`
+- `firewall.internet-service-addition`
+- `firewall.internet-service-append`
+- `firewall.internet-service-botnet`
+- `firewall.internet-service-definition`
+- `firewall.internet-service-fortiguard`
+- `firewall.internet-service-ipbl-reason`
+- `firewall.internet-service-ipbl-vendor`
+- `firewall.internet-service-list`
+- `firewall.internet-service-owner`
+- `firewall.internet-service-reputation`
+- `firewall.internet-service-sld`
+- `firewall.internet-service-subapp`
+- `firewall.region`
+- `firewall.ssl.setting`
+- `firewall.vendor-mac`
+- `firewall.vendor-mac-summary`
+</details>
+
+<details>
+<summary><strong>IPS (3)</strong></summary>
+
+- `ips.decoder`
+- `ips.global`
+- `ips.rule`
+</details>
+
+<details>
+<summary><strong>Log (24)</strong></summary>
+
+- `log.fortianalyzer.filter`
+- `log.fortianalyzer.setting`
+- `log.fortianalyzer-cloud.filter`
+- `log.fortianalyzer-cloud.setting`
+- `log.fortianalyzer2.filter`
+- `log.fortianalyzer2.setting`
+- `log.fortianalyzer3.filter`
+- `log.fortianalyzer3.setting`
+- `log.fortiguard.filter`
+- `log.fortiguard.setting`
+- `log.memory.global-setting`
+- `log.syslogd.filter`
+- `log.syslogd.setting`
+- `log.syslogd2.filter`
+- `log.syslogd2.setting`
+- `log.syslogd3.filter`
+- `log.syslogd3.setting`
+- `log.syslogd4.filter`
+- `log.syslogd4.setting`
+- `log.webtrends.filter`
+- `log.webtrends.setting`
+</details>
+
+<details>
+<summary><strong>Rule (4)</strong></summary>
+
+- `rule.fmwp`
+- `rule.iotd`
+- `rule.otdt`
+- `rule.otvp`
+</details>
+
+<details>
+<summary><strong>System (72)</strong></summary>
+
+- `system.accprofile`
+- `system.acme`
+- `system.affinity-interrupt`
+- `system.affinity-packet-redistribution`
+- `system.alias`
+- `system.auto-install`
+- `system.auto-script`
+- `system.automation-action`
+- `system.automation-condition`
+- `system.automation-destination`
+- `system.automation-stitch`
+- `system.automation-trigger`
+- `system.autoupdate.schedule`
+- `system.central-management`
+- `system.cloud-service`
+- `system.console`
+- `system.csf`
+- `system.custom-language`
+- `system.ddns`
+- `system.dedicated-mgmt`
+- `system.device-upgrade-exemptions`
+- `system.dns`
+- `system.dscp-based-priority`
+- `system.email-server`
+- `system.fabric-vpn`
+- `system.federated-upgrade`
+- `system.fips-cc`
+- `system.fortiguard`
+- `system.fortisandbox`
+- `system.fsso-polling`
+- `system.ftm-push`
+- `system.geoip-country`
+- `system.geoip-override`
+- `system.global`
+- `system.ha`
+- `system.ha-monitor`
+- `system.health-check-fortiguard`
+- `system.ike`
+- `system.ipam`
+- `system.ips-urlfilter-dns`
+- `system.ips-urlfilter-dns6`
+- `system.netflow`
+- `system.ntp`
+- `system.password-policy`
+- `system.password-policy-guest-admin`
+- `system.probe-response`
+- `system.ptp`
+- `system.replacemsg-image`
+- `system.replacemsg.admin`
+- `system.replacemsg.alertmail`
+- `system.replacemsg.auth`
+- `system.replacemsg.automation`
+- `system.replacemsg.fortiguard-wf`
+- `system.replacemsg.http`
+- `system.replacemsg.mail`
+- `system.replacemsg.nac-quar`
+- `system.replacemsg.spam`
+- `system.replacemsg.sslvpn`
+- `system.replacemsg.traffic-quota`
+- `system.replacemsg.utm`
+- `system.resource-limits`
+- `system.saml`
+- `system.sdn-connector`
+- `system.sdn-proxy`
+- `system.sdn-vpn`
+- `system.security-rating.controls`
+- `system.security-rating.settings`
+- `system.session-helper`
+- `system.sflow`
+- `system.sms-server`
+- `system.snmp.community`
+- `system.snmp.mib-view`
+- `system.snmp.rmon-stat`
+- `system.snmp.sysinfo`
+- `system.snmp.user`
+- `system.sov-sase`
+- `system.speed-test-setting`
+- `system.ssh-config`
+- `system.standalone-cluster`
+- `system.storage`
+- `system.timezone`
+- `system.tos-based-priority`
+- `system.vdom`
+- `system.vdom-exception`
+- `system.vdom-link`
+- `system.vdom-property`
+- `system.vdom-radius-server`
+</details>
+
+<details>
+<summary><strong>Other (22)</strong></summary>
+
+- `application.name`
+- `automation.setting`
+- `dlp.settings`
+- `emailfilter.fortishield`
+- `emailfilter.options`
+- `switch-controller.system`
+- `waf.main-class`
+- `waf.signature`
+- `webfilter.fortiguard`
+- `webfilter.ips-urlfilter-cache-setting`
+- `wireless-controller.global`
+- `wireless-controller.inter-controller`
+- `wireless-controller.timers`
+</details>
+
+### Example
+
+```python
+# Before: Global-only endpoints showed confusing vdom parameter
+fgt.api.cmdb.system.global.get(vdom="root")  # vdom was ignored anyway!
+
+# After: Clean API without vdom parameter
+fgt.api.cmdb.system.global.get()  # ✅ No vdom parameter
+
+# VDOM-scoped endpoints still have vdom parameter
+fgt.api.cmdb.firewall.policy.get(vdom="engineering")  # ✅ vdom works here
+```
+
+---
+
 ## [0.5.90] - 2026-01-16
 
 ### Fixed - **Generator: Invalid LOG Module File Names**

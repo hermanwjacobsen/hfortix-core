@@ -151,8 +151,7 @@ class ChangeVdomMode(CRUDEndpoint, MetadataMixin):
 
         endpoint = "/system/admin/change-vdom-mode"
         return self._client.post(
-            "monitor", endpoint, data=payload_data, vdom=vdom
-        )
+            "monitor", endpoint, data=payload_data, vdom=vdom        )
 
 
 

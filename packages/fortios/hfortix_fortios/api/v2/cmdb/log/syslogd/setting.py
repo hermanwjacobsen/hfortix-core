@@ -47,6 +47,7 @@ from hfortix_fortios._helpers import (
     build_cmdb_payload,  # Keep for backward compatibility / manual usage
     is_success,
     quote_path_param,  # URL encoding for path parameters
+    normalize_table_field,  # For table field normalization
 )
 # Import metadata mixin for schema introspection
 from hfortix_fortios._helpers.metadata_mixin import MetadataMixin
@@ -59,6 +60,18 @@ class Setting(CRUDEndpoint, MetadataMixin):
     
     # Configure metadata mixin to use this endpoint's helper module
     _helper_module_name = "setting"
+    
+    # ========================================================================
+    # Table Fields Metadata (for normalization)
+    # Auto-generated from schema - supports flexible input formats
+    # ========================================================================
+    _TABLE_FIELDS = {
+        "custom_field_name": {
+            "mkey": "id",
+            "required_fields": ['name', 'custom'],
+            "example": "[{'name': 'value', 'custom': 'value'}]",
+        },
+    }
     
     # ========================================================================
     # Capabilities (from schema metadata)
@@ -272,6 +285,9 @@ class Setting(CRUDEndpoint, MetadataMixin):
             ssl_min_proto_version: Minimum supported protocol version for SSL/TLS connections (default is to follow system global setting).
             certificate: Certificate used to communicate with Syslog server.
             custom_field_name: Custom field name for CEF format logging.
+                Default format: [{'name': 'value', 'custom': 'value'}]
+                Required format: List of dicts with keys: name, custom
+                  (String format not allowed due to multiple required fields)
             interface_select_method: Specify how to select outgoing interface to reach server.
             interface: Specify outgoing interface to reach server.
             vrf_select: VRF ID used for connection to server.
@@ -303,6 +319,16 @@ class Setting(CRUDEndpoint, MetadataMixin):
             - post(): Create new object
             - set(): Intelligent create or update
         """
+        # Apply normalization for table fields (supports flexible input formats)
+        if custom_field_name is not None:
+            custom_field_name = normalize_table_field(
+                custom_field_name,
+                mkey="id",
+                required_fields=['name', 'custom'],
+                field_name="custom_field_name",
+                example="[{'name': 'value', 'custom': 'value'}]",
+            )
+        
         # Build payload using helper function with auto-normalization
         # This automatically converts strings/lists to [{'name': '...'}] format for list fields
         # To disable auto-normalization, use build_cmdb_payload directly
@@ -352,8 +378,7 @@ class Setting(CRUDEndpoint, MetadataMixin):
             params["scope"] = q_scope
         
         return self._client.put(
-            "cmdb", endpoint, data=payload_data, params=params, vdom=vdom
-        )
+            "cmdb", endpoint, data=payload_data, params=params, vdom=vdom        )
 
 
 

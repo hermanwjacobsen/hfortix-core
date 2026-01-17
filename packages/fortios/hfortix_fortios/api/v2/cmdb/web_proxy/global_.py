@@ -47,6 +47,7 @@ from hfortix_fortios._helpers import (
     build_cmdb_payload,  # Keep for backward compatibility / manual usage
     is_success,
     quote_path_param,  # URL encoding for path parameters
+    normalize_table_field,  # For table field normalization
 )
 # Import metadata mixin for schema introspection
 from hfortix_fortios._helpers.metadata_mixin import MetadataMixin
@@ -59,6 +60,23 @@ class Global(CRUDEndpoint, MetadataMixin):
     
     # Configure metadata mixin to use this endpoint's helper module
     _helper_module_name = "global_"
+    
+    # ========================================================================
+    # Table Fields Metadata (for normalization)
+    # Auto-generated from schema - supports flexible input formats
+    # ========================================================================
+    _TABLE_FIELDS = {
+        "learn_client_ip_srcaddr": {
+            "mkey": "name",
+            "required_fields": ['name'],
+            "example": "[{'name': 'value'}]",
+        },
+        "learn_client_ip_srcaddr6": {
+            "mkey": "name",
+            "required_fields": ['name'],
+            "example": "[{'name': 'value'}]",
+        },
+    }
     
     # ========================================================================
     # Capabilities (from schema metadata)
@@ -288,7 +306,17 @@ class Global(CRUDEndpoint, MetadataMixin):
             always_learn_client_ip: Enable/disable learning the client's IP address from headers for every request.
             learn_client_ip_from_header: Learn client IP address from the specified headers.
             learn_client_ip_srcaddr: Source address name (srcaddr or srcaddr6 must be set).
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
             learn_client_ip_srcaddr6: IPv6 Source address name (srcaddr or srcaddr6 must be set).
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
             src_affinity_exempt_addr: IPv4 source addresses to exempt proxy affinity.
             src_affinity_exempt_addr6: IPv6 source addresses to exempt proxy affinity.
             policy_partial_match: Enable/disable policy partial matching.
@@ -325,6 +353,24 @@ class Global(CRUDEndpoint, MetadataMixin):
             - post(): Create new object
             - set(): Intelligent create or update
         """
+        # Apply normalization for table fields (supports flexible input formats)
+        if learn_client_ip_srcaddr is not None:
+            learn_client_ip_srcaddr = normalize_table_field(
+                learn_client_ip_srcaddr,
+                mkey="name",
+                required_fields=['name'],
+                field_name="learn_client_ip_srcaddr",
+                example="[{'name': 'value'}]",
+            )
+        if learn_client_ip_srcaddr6 is not None:
+            learn_client_ip_srcaddr6 = normalize_table_field(
+                learn_client_ip_srcaddr6,
+                mkey="name",
+                required_fields=['name'],
+                field_name="learn_client_ip_srcaddr6",
+                example="[{'name': 'value'}]",
+            )
+        
         # Build payload using helper function with auto-normalization
         # This automatically converts strings/lists to [{'name': '...'}] format for list fields
         # To disable auto-normalization, use build_cmdb_payload directly
@@ -385,8 +431,7 @@ class Global(CRUDEndpoint, MetadataMixin):
             params["scope"] = q_scope
         
         return self._client.put(
-            "cmdb", endpoint, data=payload_data, params=params, vdom=vdom
-        )
+            "cmdb", endpoint, data=payload_data, params=params, vdom=vdom        )
 
 
 

@@ -148,8 +148,7 @@ class ClearAll(CRUDEndpoint, MetadataMixin):
 
         endpoint = "/user/banned/clear_all"
         return self._client.post(
-            "monitor", endpoint, data=payload_data, vdom=vdom
-        )
+            "monitor", endpoint, data=payload_data, vdom=vdom        )
 
 
 

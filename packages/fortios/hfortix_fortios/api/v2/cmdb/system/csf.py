@@ -47,6 +47,7 @@ from hfortix_fortios._helpers import (
     build_cmdb_payload,  # Keep for backward compatibility / manual usage
     is_success,
     quote_path_param,  # URL encoding for path parameters
+    normalize_table_field,  # For table field normalization
 )
 # Import metadata mixin for schema introspection
 from hfortix_fortios._helpers.metadata_mixin import MetadataMixin
@@ -59,6 +60,23 @@ class Csf(CRUDEndpoint, MetadataMixin):
     
     # Configure metadata mixin to use this endpoint's helper module
     _helper_module_name = "csf"
+    
+    # ========================================================================
+    # Table Fields Metadata (for normalization)
+    # Auto-generated from schema - supports flexible input formats
+    # ========================================================================
+    _TABLE_FIELDS = {
+        "trusted_list": {
+            "mkey": "name",
+            "required_fields": ['name'],
+            "example": "[{'name': 'value'}]",
+        },
+        "fabric_connector": {
+            "mkey": "serial",
+            "required_fields": ['serial'],
+            "example": "[{'serial': 'value'}]",
+        },
+    }
     
     # ========================================================================
     # Capabilities (from schema metadata)
@@ -288,7 +306,17 @@ class Csf(CRUDEndpoint, MetadataMixin):
             fabric_object_unification: Fabric CMDB Object Unification.
             saml_configuration_sync: SAML setting configuration synchronization.
             trusted_list: Pre-authorized and blocked security fabric nodes.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
             fabric_connector: Fabric connector configuration.
+                Default format: [{'serial': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'serial': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'serial': 'val1'}, ...]
+                  - List of dicts: [{'serial': 'value'}] (recommended)
             forticloud_account_enforcement: Fabric FortiCloud account unification.
             file_mgmt: Enable/disable Security Fabric daemon file management.
             file_quota: Maximum amount of memory that can be used by the daemon files (in bytes).
@@ -321,6 +349,24 @@ class Csf(CRUDEndpoint, MetadataMixin):
             - post(): Create new object
             - set(): Intelligent create or update
         """
+        # Apply normalization for table fields (supports flexible input formats)
+        if trusted_list is not None:
+            trusted_list = normalize_table_field(
+                trusted_list,
+                mkey="name",
+                required_fields=['name'],
+                field_name="trusted_list",
+                example="[{'name': 'value'}]",
+            )
+        if fabric_connector is not None:
+            fabric_connector = normalize_table_field(
+                fabric_connector,
+                mkey="serial",
+                required_fields=['serial'],
+                field_name="fabric_connector",
+                example="[{'serial': 'value'}]",
+            )
+        
         # Build payload using helper function with auto-normalization
         # This automatically converts strings/lists to [{'name': '...'}] format for list fields
         # To disable auto-normalization, use build_cmdb_payload directly
@@ -379,8 +425,7 @@ class Csf(CRUDEndpoint, MetadataMixin):
             params["scope"] = q_scope
         
         return self._client.put(
-            "cmdb", endpoint, data=payload_data, params=params, vdom=vdom
-        )
+            "cmdb", endpoint, data=payload_data, params=params, vdom=vdom        )
 
 
 

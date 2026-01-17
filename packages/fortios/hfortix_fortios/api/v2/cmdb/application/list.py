@@ -47,6 +47,7 @@ from hfortix_fortios._helpers import (
     build_cmdb_payload,  # Keep for backward compatibility / manual usage
     is_success,
     quote_path_param,  # URL encoding for path parameters
+    normalize_table_field,  # For table field normalization
 )
 # Import metadata mixin for schema introspection
 from hfortix_fortios._helpers.metadata_mixin import MetadataMixin
@@ -59,6 +60,23 @@ class List(CRUDEndpoint, MetadataMixin):
     
     # Configure metadata mixin to use this endpoint's helper module
     _helper_module_name = "list"
+    
+    # ========================================================================
+    # Table Fields Metadata (for normalization)
+    # Auto-generated from schema - supports flexible input formats
+    # ========================================================================
+    _TABLE_FIELDS = {
+        "entries": {
+            "mkey": "id",
+            "required_fields": ['id'],
+            "example": "[{'id': 1}]",
+        },
+        "default_network_services": {
+            "mkey": "id",
+            "required_fields": ['id', 'port'],
+            "example": "[{'id': 1, 'port': 1}]",
+        },
+    }
     
     # ========================================================================
     # Capabilities (from schema metadata)
@@ -278,8 +296,16 @@ class List(CRUDEndpoint, MetadataMixin):
             deep_app_inspection: Enable/disable deep application inspection.
             options: Basic application protocol signatures allowed by default.
             entries: Application list entries.
+                Default format: [{'id': 1}]
+                Supported formats:
+                  - Single string: "value" → [{'id': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'id': 'val1'}, ...]
+                  - List of dicts: [{'id': 1}] (recommended)
             control_default_network_services: Enable/disable enforcement of protocols over selected ports.
             default_network_services: Default network service entries.
+                Default format: [{'id': 1, 'port': 1}]
+                Required format: List of dicts with keys: id, port
+                  (String format not allowed due to multiple required fields)
             vdom: Virtual domain name.
             error_mode: Override client-level error_mode. "raise" raises exceptions, "return" returns error dict, "print" prints errors.
             error_format: Override client-level error_format. "detailed" provides full context, "simple" is concise, "code_only" returns just status code.
@@ -308,6 +334,24 @@ class List(CRUDEndpoint, MetadataMixin):
             - post(): Create new object
             - set(): Intelligent create or update
         """
+        # Apply normalization for table fields (supports flexible input formats)
+        if entries is not None:
+            entries = normalize_table_field(
+                entries,
+                mkey="id",
+                required_fields=['id'],
+                field_name="entries",
+                example="[{'id': 1}]",
+            )
+        if default_network_services is not None:
+            default_network_services = normalize_table_field(
+                default_network_services,
+                mkey="id",
+                required_fields=['id', 'port'],
+                field_name="default_network_services",
+                example="[{'id': 1, 'port': 1}]",
+            )
+        
         # Build payload using helper function with auto-normalization
         # This automatically converts strings/lists to [{'name': '...'}] format for list fields
         # To disable auto-normalization, use build_cmdb_payload directly
@@ -359,8 +403,7 @@ class List(CRUDEndpoint, MetadataMixin):
             params["scope"] = q_scope
         
         return self._client.put(
-            "cmdb", endpoint, data=payload_data, params=params, vdom=vdom
-        )
+            "cmdb", endpoint, data=payload_data, params=params, vdom=vdom        )
 
     # ========================================================================
     # POST Method
@@ -416,8 +459,16 @@ class List(CRUDEndpoint, MetadataMixin):
             deep_app_inspection: Enable/disable deep application inspection.
             options: Basic application protocol signatures allowed by default.
             entries: Application list entries.
+                Default format: [{'id': 1}]
+                Supported formats:
+                  - Single string: "value" → [{'id': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'id': 'val1'}, ...]
+                  - List of dicts: [{'id': 1}] (recommended)
             control_default_network_services: Enable/disable enforcement of protocols over selected ports.
             default_network_services: Default network service entries.
+                Default format: [{'id': 1, 'port': 1}]
+                Required format: List of dicts with keys: id, port
+                  (String format not allowed due to multiple required fields)
             vdom: Virtual domain name. Use True for global, string for specific VDOM.
             error_mode: Override client-level error_mode. "raise" raises exceptions, "return" returns error dict, "print" prints errors.
             error_format: Override client-level error_format. "detailed" provides full context, "simple" is concise, "code_only" returns just status code.
@@ -448,6 +499,24 @@ class List(CRUDEndpoint, MetadataMixin):
             - put(): Update existing object
             - set(): Intelligent create or update
         """
+        # Apply normalization for table fields (supports flexible input formats)
+        if entries is not None:
+            entries = normalize_table_field(
+                entries,
+                mkey="id",
+                required_fields=['id'],
+                field_name="entries",
+                example="[{'id': 1}]",
+            )
+        if default_network_services is not None:
+            default_network_services = normalize_table_field(
+                default_network_services,
+                mkey="id",
+                required_fields=['id', 'port'],
+                field_name="default_network_services",
+                example="[{'id': 1, 'port': 1}]",
+            )
+        
         # Build payload using helper function with auto-normalization
         # This automatically converts strings/lists to [{'name': '...'}] format for list fields
         # To disable auto-normalization, use build_cmdb_payload directly
@@ -494,8 +563,7 @@ class List(CRUDEndpoint, MetadataMixin):
             params["scope"] = q_scope
         
         return self._client.post(
-            "cmdb", endpoint, data=payload_data, params=params, vdom=vdom
-        )
+            "cmdb", endpoint, data=payload_data, params=params, vdom=vdom        )
 
     # ========================================================================
     # DELETE Method
@@ -549,8 +617,7 @@ class List(CRUDEndpoint, MetadataMixin):
             params["scope"] = q_scope
         
         return self._client.delete(
-            "cmdb", endpoint, params=params, vdom=vdom
-        )
+            "cmdb", endpoint, params=params, vdom=vdom        )
 
     def exists(
         self,

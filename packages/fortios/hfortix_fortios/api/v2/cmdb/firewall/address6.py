@@ -47,6 +47,7 @@ from hfortix_fortios._helpers import (
     build_cmdb_payload,  # Keep for backward compatibility / manual usage
     is_success,
     quote_path_param,  # URL encoding for path parameters
+    normalize_table_field,  # For table field normalization
 )
 # Import metadata mixin for schema introspection
 from hfortix_fortios._helpers.metadata_mixin import MetadataMixin
@@ -59,6 +60,33 @@ class Address6(CRUDEndpoint, MetadataMixin):
     
     # Configure metadata mixin to use this endpoint's helper module
     _helper_module_name = "address6"
+    
+    # ========================================================================
+    # Table Fields Metadata (for normalization)
+    # Auto-generated from schema - supports flexible input formats
+    # ========================================================================
+    _TABLE_FIELDS = {
+        "macaddr": {
+            "mkey": "macaddr",
+            "required_fields": ['macaddr'],
+            "example": "[{'macaddr': 'value'}]",
+        },
+        "tagging": {
+            "mkey": "name",
+            "required_fields": ['name'],
+            "example": "[{'name': 'value'}]",
+        },
+        "subnet_segment": {
+            "mkey": "name",
+            "required_fields": ['name', 'type', 'value'],
+            "example": "[{'name': 'value', 'type': 'any', 'value': 'value'}]",
+        },
+        "list": {
+            "mkey": "ip",
+            "required_fields": ['ip'],
+            "example": "[{'ip': '192.168.1.10'}]",
+        },
+    }
     
     # ========================================================================
     # Capabilities (from schema metadata)
@@ -280,6 +308,11 @@ class Address6(CRUDEndpoint, MetadataMixin):
             type: Type of IPv6 address object (default = ipprefix).
             route_tag: route-tag address.
             macaddr: Multiple MAC address ranges.
+                Default format: [{'macaddr': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'macaddr': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'macaddr': 'val1'}, ...]
+                  - List of dicts: [{'macaddr': 'value'}] (recommended)
             sdn: SDN.
             ip6: IPv6 address prefix (format: xxxx:xxxx:xxxx:xxxx:xxxx:xxxx:xxxx:xxxx/xxx).
             wildcard: IPv6 address and wildcard netmask.
@@ -291,9 +324,17 @@ class Address6(CRUDEndpoint, MetadataMixin):
             color: Integer value to determine the color of the icon in the GUI (range 1 to 32, default = 0, which sets the value to 1).
             obj_id: Object ID for NSX.
             tagging: Config object tagging.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
             comment: Comment.
             template: IPv6 address template.
             subnet_segment: IPv6 subnet segments.
+                Default format: [{'name': 'value', 'type': 'any', 'value': 'value'}]
+                Required format: List of dicts with keys: name, type, value
+                  (String format not allowed due to multiple required fields)
             host_type: Host type.
             host: Host Address.
             tenant: Tenant.
@@ -301,6 +342,11 @@ class Address6(CRUDEndpoint, MetadataMixin):
             sdn_tag: SDN Tag.
             filter: Match criteria filter.
             list: IP address list.
+                Default format: [{'ip': '192.168.1.10'}]
+                Supported formats:
+                  - Single string: "value" → [{'ip': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'ip': 'val1'}, ...]
+                  - List of dicts: [{'ip': '192.168.1.10'}] (recommended)
             sdn_addr_type: Type of addresses to collect.
             passive_fqdn_learning: Enable/disable passive learning of FQDNs.  When enabled, the FortiGate learns, trusts, and saves FQDNs from endpoint DNS queries (default = enable).
             fabric_object: Security Fabric global object setting.
@@ -332,6 +378,40 @@ class Address6(CRUDEndpoint, MetadataMixin):
             - post(): Create new object
             - set(): Intelligent create or update
         """
+        # Apply normalization for table fields (supports flexible input formats)
+        if macaddr is not None:
+            macaddr = normalize_table_field(
+                macaddr,
+                mkey="macaddr",
+                required_fields=['macaddr'],
+                field_name="macaddr",
+                example="[{'macaddr': 'value'}]",
+            )
+        if tagging is not None:
+            tagging = normalize_table_field(
+                tagging,
+                mkey="name",
+                required_fields=['name'],
+                field_name="tagging",
+                example="[{'name': 'value'}]",
+            )
+        if subnet_segment is not None:
+            subnet_segment = normalize_table_field(
+                subnet_segment,
+                mkey="name",
+                required_fields=['name', 'type', 'value'],
+                field_name="subnet_segment",
+                example="[{'name': 'value', 'type': 'any', 'value': 'value'}]",
+            )
+        if list is not None:
+            list = normalize_table_field(
+                list,
+                mkey="ip",
+                required_fields=['ip'],
+                field_name="list",
+                example="[{'ip': '192.168.1.10'}]",
+            )
+        
         # Build payload using helper function with auto-normalization
         # This automatically converts strings/lists to [{'name': '...'}] format for list fields
         # To disable auto-normalization, use build_cmdb_payload directly
@@ -395,8 +475,7 @@ class Address6(CRUDEndpoint, MetadataMixin):
             params["scope"] = q_scope
         
         return self._client.put(
-            "cmdb", endpoint, data=payload_data, params=params, vdom=vdom
-        )
+            "cmdb", endpoint, data=payload_data, params=params, vdom=vdom        )
 
     # ========================================================================
     # POST Method
@@ -454,6 +533,11 @@ class Address6(CRUDEndpoint, MetadataMixin):
             type: Type of IPv6 address object (default = ipprefix).
             route_tag: route-tag address.
             macaddr: Multiple MAC address ranges.
+                Default format: [{'macaddr': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'macaddr': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'macaddr': 'val1'}, ...]
+                  - List of dicts: [{'macaddr': 'value'}] (recommended)
             sdn: SDN.
             ip6: IPv6 address prefix (format: xxxx:xxxx:xxxx:xxxx:xxxx:xxxx:xxxx:xxxx/xxx).
             wildcard: IPv6 address and wildcard netmask.
@@ -465,9 +549,17 @@ class Address6(CRUDEndpoint, MetadataMixin):
             color: Integer value to determine the color of the icon in the GUI (range 1 to 32, default = 0, which sets the value to 1).
             obj_id: Object ID for NSX.
             tagging: Config object tagging.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
             comment: Comment.
             template: IPv6 address template.
             subnet_segment: IPv6 subnet segments.
+                Default format: [{'name': 'value', 'type': 'any', 'value': 'value'}]
+                Required format: List of dicts with keys: name, type, value
+                  (String format not allowed due to multiple required fields)
             host_type: Host type.
             host: Host Address.
             tenant: Tenant.
@@ -475,6 +567,11 @@ class Address6(CRUDEndpoint, MetadataMixin):
             sdn_tag: SDN Tag.
             filter: Match criteria filter.
             list: IP address list.
+                Default format: [{'ip': '192.168.1.10'}]
+                Supported formats:
+                  - Single string: "value" → [{'ip': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'ip': 'val1'}, ...]
+                  - List of dicts: [{'ip': '192.168.1.10'}] (recommended)
             sdn_addr_type: Type of addresses to collect.
             passive_fqdn_learning: Enable/disable passive learning of FQDNs.  When enabled, the FortiGate learns, trusts, and saves FQDNs from endpoint DNS queries (default = enable).
             fabric_object: Security Fabric global object setting.
@@ -508,6 +605,40 @@ class Address6(CRUDEndpoint, MetadataMixin):
             - put(): Update existing object
             - set(): Intelligent create or update
         """
+        # Apply normalization for table fields (supports flexible input formats)
+        if macaddr is not None:
+            macaddr = normalize_table_field(
+                macaddr,
+                mkey="macaddr",
+                required_fields=['macaddr'],
+                field_name="macaddr",
+                example="[{'macaddr': 'value'}]",
+            )
+        if tagging is not None:
+            tagging = normalize_table_field(
+                tagging,
+                mkey="name",
+                required_fields=['name'],
+                field_name="tagging",
+                example="[{'name': 'value'}]",
+            )
+        if subnet_segment is not None:
+            subnet_segment = normalize_table_field(
+                subnet_segment,
+                mkey="name",
+                required_fields=['name', 'type', 'value'],
+                field_name="subnet_segment",
+                example="[{'name': 'value', 'type': 'any', 'value': 'value'}]",
+            )
+        if list is not None:
+            list = normalize_table_field(
+                list,
+                mkey="ip",
+                required_fields=['ip'],
+                field_name="list",
+                example="[{'ip': '192.168.1.10'}]",
+            )
+        
         # Build payload using helper function with auto-normalization
         # This automatically converts strings/lists to [{'name': '...'}] format for list fields
         # To disable auto-normalization, use build_cmdb_payload directly
@@ -566,8 +697,7 @@ class Address6(CRUDEndpoint, MetadataMixin):
             params["scope"] = q_scope
         
         return self._client.post(
-            "cmdb", endpoint, data=payload_data, params=params, vdom=vdom
-        )
+            "cmdb", endpoint, data=payload_data, params=params, vdom=vdom        )
 
     # ========================================================================
     # DELETE Method
@@ -621,8 +751,7 @@ class Address6(CRUDEndpoint, MetadataMixin):
             params["scope"] = q_scope
         
         return self._client.delete(
-            "cmdb", endpoint, params=params, vdom=vdom
-        )
+            "cmdb", endpoint, params=params, vdom=vdom        )
 
     def exists(
         self,

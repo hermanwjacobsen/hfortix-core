@@ -47,6 +47,7 @@ from hfortix_fortios._helpers import (
     build_cmdb_payload,  # Keep for backward compatibility / manual usage
     is_success,
     quote_path_param,  # URL encoding for path parameters
+    normalize_table_field,  # For table field normalization
 )
 # Import metadata mixin for schema introspection
 from hfortix_fortios._helpers.metadata_mixin import MetadataMixin
@@ -59,6 +60,18 @@ class Scheme(CRUDEndpoint, MetadataMixin):
     
     # Configure metadata mixin to use this endpoint's helper module
     _helper_module_name = "scheme"
+    
+    # ========================================================================
+    # Table Fields Metadata (for normalization)
+    # Auto-generated from schema - supports flexible input formats
+    # ========================================================================
+    _TABLE_FIELDS = {
+        "user_database": {
+            "mkey": "name",
+            "required_fields": ['name'],
+            "example": "[{'name': 'value'}]",
+        },
+    }
     
     # ========================================================================
     # Capabilities (from schema metadata)
@@ -277,6 +290,11 @@ class Scheme(CRUDEndpoint, MetadataMixin):
             user_cert: Enable/disable authentication with user certificate (default = disable).
             cert_http_header: Enable/disable authentication with user certificate in Client-Cert HTTP header (default = disable).
             user_database: Authentication server to contain user information; "local-user-db" (default) or "123" (for LDAP).
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
             ssh_ca: SSH CA name.
             external_idp: External identity provider configuration.
             group_attr_type: Group attribute type used to match SCIM groups (default = display-name).
@@ -310,6 +328,16 @@ class Scheme(CRUDEndpoint, MetadataMixin):
             - post(): Create new object
             - set(): Intelligent create or update
         """
+        # Apply normalization for table fields (supports flexible input formats)
+        if user_database is not None:
+            user_database = normalize_table_field(
+                user_database,
+                mkey="name",
+                required_fields=['name'],
+                field_name="user_database",
+                example="[{'name': 'value'}]",
+            )
+        
         # Build payload using helper function with auto-normalization
         # This automatically converts strings/lists to [{'name': '...'}] format for list fields
         # To disable auto-normalization, use build_cmdb_payload directly
@@ -362,8 +390,7 @@ class Scheme(CRUDEndpoint, MetadataMixin):
             params["scope"] = q_scope
         
         return self._client.put(
-            "cmdb", endpoint, data=payload_data, params=params, vdom=vdom
-        )
+            "cmdb", endpoint, data=payload_data, params=params, vdom=vdom        )
 
     # ========================================================================
     # POST Method
@@ -418,6 +445,11 @@ class Scheme(CRUDEndpoint, MetadataMixin):
             user_cert: Enable/disable authentication with user certificate (default = disable).
             cert_http_header: Enable/disable authentication with user certificate in Client-Cert HTTP header (default = disable).
             user_database: Authentication server to contain user information; "local-user-db" (default) or "123" (for LDAP).
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
             ssh_ca: SSH CA name.
             external_idp: External identity provider configuration.
             group_attr_type: Group attribute type used to match SCIM groups (default = display-name).
@@ -453,6 +485,16 @@ class Scheme(CRUDEndpoint, MetadataMixin):
             - put(): Update existing object
             - set(): Intelligent create or update
         """
+        # Apply normalization for table fields (supports flexible input formats)
+        if user_database is not None:
+            user_database = normalize_table_field(
+                user_database,
+                mkey="name",
+                required_fields=['name'],
+                field_name="user_database",
+                example="[{'name': 'value'}]",
+            )
+        
         # Build payload using helper function with auto-normalization
         # This automatically converts strings/lists to [{'name': '...'}] format for list fields
         # To disable auto-normalization, use build_cmdb_payload directly
@@ -500,8 +542,7 @@ class Scheme(CRUDEndpoint, MetadataMixin):
             params["scope"] = q_scope
         
         return self._client.post(
-            "cmdb", endpoint, data=payload_data, params=params, vdom=vdom
-        )
+            "cmdb", endpoint, data=payload_data, params=params, vdom=vdom        )
 
     # ========================================================================
     # DELETE Method
@@ -555,8 +596,7 @@ class Scheme(CRUDEndpoint, MetadataMixin):
             params["scope"] = q_scope
         
         return self._client.delete(
-            "cmdb", endpoint, params=params, vdom=vdom
-        )
+            "cmdb", endpoint, params=params, vdom=vdom        )
 
     def exists(
         self,

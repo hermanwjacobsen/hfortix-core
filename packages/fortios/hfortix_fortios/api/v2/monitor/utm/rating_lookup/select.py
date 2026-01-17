@@ -154,8 +154,7 @@ class Select(CRUDEndpoint, MetadataMixin):
 
         endpoint = "/utm/rating-lookup/select"
         return self._client.post(
-            "monitor", endpoint, data=payload_data, vdom=vdom
-        )
+            "monitor", endpoint, data=payload_data, vdom=vdom        )
 
 
 

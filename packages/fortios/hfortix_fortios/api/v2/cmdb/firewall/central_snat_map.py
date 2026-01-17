@@ -47,6 +47,7 @@ from hfortix_fortios._helpers import (
     build_cmdb_payload,  # Keep for backward compatibility / manual usage
     is_success,
     quote_path_param,  # URL encoding for path parameters
+    normalize_table_field,  # For table field normalization
 )
 # Import metadata mixin for schema introspection
 from hfortix_fortios._helpers.metadata_mixin import MetadataMixin
@@ -59,6 +60,53 @@ class CentralSnatMap(CRUDEndpoint, MetadataMixin):
     
     # Configure metadata mixin to use this endpoint's helper module
     _helper_module_name = "central_snat_map"
+    
+    # ========================================================================
+    # Table Fields Metadata (for normalization)
+    # Auto-generated from schema - supports flexible input formats
+    # ========================================================================
+    _TABLE_FIELDS = {
+        "srcintf": {
+            "mkey": "name",
+            "required_fields": ['name'],
+            "example": "[{'name': 'value'}]",
+        },
+        "dstintf": {
+            "mkey": "name",
+            "required_fields": ['name'],
+            "example": "[{'name': 'value'}]",
+        },
+        "orig_addr": {
+            "mkey": "name",
+            "required_fields": ['name'],
+            "example": "[{'name': 'value'}]",
+        },
+        "orig_addr6": {
+            "mkey": "name",
+            "required_fields": ['name'],
+            "example": "[{'name': 'value'}]",
+        },
+        "dst_addr": {
+            "mkey": "name",
+            "required_fields": ['name'],
+            "example": "[{'name': 'value'}]",
+        },
+        "dst_addr6": {
+            "mkey": "name",
+            "required_fields": ['name'],
+            "example": "[{'name': 'value'}]",
+        },
+        "nat_ippool": {
+            "mkey": "name",
+            "required_fields": ['name'],
+            "example": "[{'name': 'value'}]",
+        },
+        "nat_ippool6": {
+            "mkey": "name",
+            "required_fields": ['name'],
+            "example": "[{'name': 'value'}]",
+        },
+    }
     
     # ========================================================================
     # Capabilities (from schema metadata)
@@ -273,18 +321,58 @@ class CentralSnatMap(CRUDEndpoint, MetadataMixin):
             status: Enable/disable the active status of this policy.
             type: IPv4/IPv6 source NAT.
             srcintf: Source interface name from available interfaces.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
             dstintf: Destination interface name from available interfaces.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
             orig_addr: IPv4 Original address.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
             orig_addr6: IPv6 Original address.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
             dst_addr: IPv4 Destination address.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
             dst_addr6: IPv6 Destination address.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
             protocol: Integer value for the protocol type (0 - 255).
             orig_port: Original TCP port (1 to 65535, 0 means any port).
             nat: Enable/disable source NAT.
             nat46: Enable/disable NAT46.
             nat64: Enable/disable NAT64.
             nat_ippool: Name of the IP pools to be used to translate addresses from available IP Pools.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
             nat_ippool6: IPv6 pools to be used for source NAT.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
             port_preserve: Enable/disable preservation of the original source port from source NAT if it has not been used.
             port_random: Enable/disable random source port selection for source NAT.
             nat_port: Translated port or port range (1 to 65535, 0 means any port).
@@ -318,6 +406,72 @@ class CentralSnatMap(CRUDEndpoint, MetadataMixin):
             - post(): Create new object
             - set(): Intelligent create or update
         """
+        # Apply normalization for table fields (supports flexible input formats)
+        if srcintf is not None:
+            srcintf = normalize_table_field(
+                srcintf,
+                mkey="name",
+                required_fields=['name'],
+                field_name="srcintf",
+                example="[{'name': 'value'}]",
+            )
+        if dstintf is not None:
+            dstintf = normalize_table_field(
+                dstintf,
+                mkey="name",
+                required_fields=['name'],
+                field_name="dstintf",
+                example="[{'name': 'value'}]",
+            )
+        if orig_addr is not None:
+            orig_addr = normalize_table_field(
+                orig_addr,
+                mkey="name",
+                required_fields=['name'],
+                field_name="orig_addr",
+                example="[{'name': 'value'}]",
+            )
+        if orig_addr6 is not None:
+            orig_addr6 = normalize_table_field(
+                orig_addr6,
+                mkey="name",
+                required_fields=['name'],
+                field_name="orig_addr6",
+                example="[{'name': 'value'}]",
+            )
+        if dst_addr is not None:
+            dst_addr = normalize_table_field(
+                dst_addr,
+                mkey="name",
+                required_fields=['name'],
+                field_name="dst_addr",
+                example="[{'name': 'value'}]",
+            )
+        if dst_addr6 is not None:
+            dst_addr6 = normalize_table_field(
+                dst_addr6,
+                mkey="name",
+                required_fields=['name'],
+                field_name="dst_addr6",
+                example="[{'name': 'value'}]",
+            )
+        if nat_ippool is not None:
+            nat_ippool = normalize_table_field(
+                nat_ippool,
+                mkey="name",
+                required_fields=['name'],
+                field_name="nat_ippool",
+                example="[{'name': 'value'}]",
+            )
+        if nat_ippool6 is not None:
+            nat_ippool6 = normalize_table_field(
+                nat_ippool6,
+                mkey="name",
+                required_fields=['name'],
+                field_name="nat_ippool6",
+                example="[{'name': 'value'}]",
+            )
+        
         # Build payload using helper function with auto-normalization
         # This automatically converts strings/lists to [{'name': '...'}] format for list fields
         # To disable auto-normalization, use build_cmdb_payload directly
@@ -374,8 +528,7 @@ class CentralSnatMap(CRUDEndpoint, MetadataMixin):
             params["scope"] = q_scope
         
         return self._client.put(
-            "cmdb", endpoint, data=payload_data, params=params, vdom=vdom
-        )
+            "cmdb", endpoint, data=payload_data, params=params, vdom=vdom        )
 
     # ========================================================================
     # POST Method
@@ -426,18 +579,58 @@ class CentralSnatMap(CRUDEndpoint, MetadataMixin):
             status: Enable/disable the active status of this policy.
             type: IPv4/IPv6 source NAT.
             srcintf: Source interface name from available interfaces.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
             dstintf: Destination interface name from available interfaces.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
             orig_addr: IPv4 Original address.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
             orig_addr6: IPv6 Original address.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
             dst_addr: IPv4 Destination address.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
             dst_addr6: IPv6 Destination address.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
             protocol: Integer value for the protocol type (0 - 255).
             orig_port: Original TCP port (1 to 65535, 0 means any port).
             nat: Enable/disable source NAT.
             nat46: Enable/disable NAT46.
             nat64: Enable/disable NAT64.
             nat_ippool: Name of the IP pools to be used to translate addresses from available IP Pools.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
             nat_ippool6: IPv6 pools to be used for source NAT.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
             port_preserve: Enable/disable preservation of the original source port from source NAT if it has not been used.
             port_random: Enable/disable random source port selection for source NAT.
             nat_port: Translated port or port range (1 to 65535, 0 means any port).
@@ -473,6 +666,72 @@ class CentralSnatMap(CRUDEndpoint, MetadataMixin):
             - put(): Update existing object
             - set(): Intelligent create or update
         """
+        # Apply normalization for table fields (supports flexible input formats)
+        if srcintf is not None:
+            srcintf = normalize_table_field(
+                srcintf,
+                mkey="name",
+                required_fields=['name'],
+                field_name="srcintf",
+                example="[{'name': 'value'}]",
+            )
+        if dstintf is not None:
+            dstintf = normalize_table_field(
+                dstintf,
+                mkey="name",
+                required_fields=['name'],
+                field_name="dstintf",
+                example="[{'name': 'value'}]",
+            )
+        if orig_addr is not None:
+            orig_addr = normalize_table_field(
+                orig_addr,
+                mkey="name",
+                required_fields=['name'],
+                field_name="orig_addr",
+                example="[{'name': 'value'}]",
+            )
+        if orig_addr6 is not None:
+            orig_addr6 = normalize_table_field(
+                orig_addr6,
+                mkey="name",
+                required_fields=['name'],
+                field_name="orig_addr6",
+                example="[{'name': 'value'}]",
+            )
+        if dst_addr is not None:
+            dst_addr = normalize_table_field(
+                dst_addr,
+                mkey="name",
+                required_fields=['name'],
+                field_name="dst_addr",
+                example="[{'name': 'value'}]",
+            )
+        if dst_addr6 is not None:
+            dst_addr6 = normalize_table_field(
+                dst_addr6,
+                mkey="name",
+                required_fields=['name'],
+                field_name="dst_addr6",
+                example="[{'name': 'value'}]",
+            )
+        if nat_ippool is not None:
+            nat_ippool = normalize_table_field(
+                nat_ippool,
+                mkey="name",
+                required_fields=['name'],
+                field_name="nat_ippool",
+                example="[{'name': 'value'}]",
+            )
+        if nat_ippool6 is not None:
+            nat_ippool6 = normalize_table_field(
+                nat_ippool6,
+                mkey="name",
+                required_fields=['name'],
+                field_name="nat_ippool6",
+                example="[{'name': 'value'}]",
+            )
+        
         # Build payload using helper function with auto-normalization
         # This automatically converts strings/lists to [{'name': '...'}] format for list fields
         # To disable auto-normalization, use build_cmdb_payload directly
@@ -524,8 +783,7 @@ class CentralSnatMap(CRUDEndpoint, MetadataMixin):
             params["scope"] = q_scope
         
         return self._client.post(
-            "cmdb", endpoint, data=payload_data, params=params, vdom=vdom
-        )
+            "cmdb", endpoint, data=payload_data, params=params, vdom=vdom        )
 
     # ========================================================================
     # DELETE Method
@@ -579,8 +837,7 @@ class CentralSnatMap(CRUDEndpoint, MetadataMixin):
             params["scope"] = q_scope
         
         return self._client.delete(
-            "cmdb", endpoint, params=params, vdom=vdom
-        )
+            "cmdb", endpoint, params=params, vdom=vdom        )
 
     def exists(
         self,

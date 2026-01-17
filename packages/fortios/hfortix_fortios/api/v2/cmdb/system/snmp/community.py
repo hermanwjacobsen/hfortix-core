@@ -47,6 +47,7 @@ from hfortix_fortios._helpers import (
     build_cmdb_payload,  # Keep for backward compatibility / manual usage
     is_success,
     quote_path_param,  # URL encoding for path parameters
+    normalize_table_field,  # For table field normalization
 )
 # Import metadata mixin for schema introspection
 from hfortix_fortios._helpers.metadata_mixin import MetadataMixin
@@ -59,6 +60,28 @@ class Community(CRUDEndpoint, MetadataMixin):
     
     # Configure metadata mixin to use this endpoint's helper module
     _helper_module_name = "community"
+    
+    # ========================================================================
+    # Table Fields Metadata (for normalization)
+    # Auto-generated from schema - supports flexible input formats
+    # ========================================================================
+    _TABLE_FIELDS = {
+        "hosts": {
+            "mkey": "id",
+            "required_fields": ['id', 'ip', 'interface'],
+            "example": "[{'id': 1, 'ip': '192.168.1.10', 'interface': 'value'}]",
+        },
+        "hosts6": {
+            "mkey": "id",
+            "required_fields": ['id', 'ipv6', 'interface'],
+            "example": "[{'id': 1, 'ipv6': 'value', 'interface': 'value'}]",
+        },
+        "vdoms": {
+            "mkey": "name",
+            "required_fields": ['name'],
+            "example": "[{'name': 'value'}]",
+        },
+    }
     
     # ========================================================================
     # Capabilities (from schema metadata)
@@ -268,7 +291,13 @@ class Community(CRUDEndpoint, MetadataMixin):
             name: Community name.
             status: Enable/disable this SNMP community.
             hosts: Configure IPv4 SNMP managers (hosts).
+                Default format: [{'id': 1, 'ip': '192.168.1.10', 'interface': 'value'}]
+                Required format: List of dicts with keys: id, ip, interface
+                  (String format not allowed due to multiple required fields)
             hosts6: Configure IPv6 SNMP managers.
+                Default format: [{'id': 1, 'ipv6': 'value', 'interface': 'value'}]
+                Required format: List of dicts with keys: id, ipv6, interface
+                  (String format not allowed due to multiple required fields)
             query_v1_status: Enable/disable SNMP v1 queries.
             query_v1_port: SNMP v1 query port (default = 161).
             query_v2c_status: Enable/disable SNMP v2c queries.
@@ -282,6 +311,11 @@ class Community(CRUDEndpoint, MetadataMixin):
             events: SNMP trap events.
             mib_view: SNMP access control MIB view.
             vdoms: SNMP access control VDOMs.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
             vdom: Virtual domain name.
             error_mode: Override client-level error_mode. "raise" raises exceptions, "return" returns error dict, "print" prints errors.
             error_format: Override client-level error_format. "detailed" provides full context, "simple" is concise, "code_only" returns just status code.
@@ -310,6 +344,32 @@ class Community(CRUDEndpoint, MetadataMixin):
             - post(): Create new object
             - set(): Intelligent create or update
         """
+        # Apply normalization for table fields (supports flexible input formats)
+        if hosts is not None:
+            hosts = normalize_table_field(
+                hosts,
+                mkey="id",
+                required_fields=['id', 'ip', 'interface'],
+                field_name="hosts",
+                example="[{'id': 1, 'ip': '192.168.1.10', 'interface': 'value'}]",
+            )
+        if hosts6 is not None:
+            hosts6 = normalize_table_field(
+                hosts6,
+                mkey="id",
+                required_fields=['id', 'ipv6', 'interface'],
+                field_name="hosts6",
+                example="[{'id': 1, 'ipv6': 'value', 'interface': 'value'}]",
+            )
+        if vdoms is not None:
+            vdoms = normalize_table_field(
+                vdoms,
+                mkey="name",
+                required_fields=['name'],
+                field_name="vdoms",
+                example="[{'name': 'value'}]",
+            )
+        
         # Build payload using helper function with auto-normalization
         # This automatically converts strings/lists to [{'name': '...'}] format for list fields
         # To disable auto-normalization, use build_cmdb_payload directly
@@ -362,8 +422,7 @@ class Community(CRUDEndpoint, MetadataMixin):
             params["scope"] = q_scope
         
         return self._client.put(
-            "cmdb", endpoint, data=payload_data, params=params, vdom=vdom
-        )
+            "cmdb", endpoint, data=payload_data, params=params, vdom=vdom        )
 
     # ========================================================================
     # POST Method
@@ -409,7 +468,13 @@ class Community(CRUDEndpoint, MetadataMixin):
             name: Community name.
             status: Enable/disable this SNMP community.
             hosts: Configure IPv4 SNMP managers (hosts).
+                Default format: [{'id': 1, 'ip': '192.168.1.10', 'interface': 'value'}]
+                Required format: List of dicts with keys: id, ip, interface
+                  (String format not allowed due to multiple required fields)
             hosts6: Configure IPv6 SNMP managers.
+                Default format: [{'id': 1, 'ipv6': 'value', 'interface': 'value'}]
+                Required format: List of dicts with keys: id, ipv6, interface
+                  (String format not allowed due to multiple required fields)
             query_v1_status: Enable/disable SNMP v1 queries.
             query_v1_port: SNMP v1 query port (default = 161).
             query_v2c_status: Enable/disable SNMP v2c queries.
@@ -423,6 +488,11 @@ class Community(CRUDEndpoint, MetadataMixin):
             events: SNMP trap events.
             mib_view: SNMP access control MIB view.
             vdoms: SNMP access control VDOMs.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
             vdom: Virtual domain name. Use True for global, string for specific VDOM.
             error_mode: Override client-level error_mode. "raise" raises exceptions, "return" returns error dict, "print" prints errors.
             error_format: Override client-level error_format. "detailed" provides full context, "simple" is concise, "code_only" returns just status code.
@@ -453,6 +523,32 @@ class Community(CRUDEndpoint, MetadataMixin):
             - put(): Update existing object
             - set(): Intelligent create or update
         """
+        # Apply normalization for table fields (supports flexible input formats)
+        if hosts is not None:
+            hosts = normalize_table_field(
+                hosts,
+                mkey="id",
+                required_fields=['id', 'ip', 'interface'],
+                field_name="hosts",
+                example="[{'id': 1, 'ip': '192.168.1.10', 'interface': 'value'}]",
+            )
+        if hosts6 is not None:
+            hosts6 = normalize_table_field(
+                hosts6,
+                mkey="id",
+                required_fields=['id', 'ipv6', 'interface'],
+                field_name="hosts6",
+                example="[{'id': 1, 'ipv6': 'value', 'interface': 'value'}]",
+            )
+        if vdoms is not None:
+            vdoms = normalize_table_field(
+                vdoms,
+                mkey="name",
+                required_fields=['name'],
+                field_name="vdoms",
+                example="[{'name': 'value'}]",
+            )
+        
         # Build payload using helper function with auto-normalization
         # This automatically converts strings/lists to [{'name': '...'}] format for list fields
         # To disable auto-normalization, use build_cmdb_payload directly
@@ -500,8 +596,7 @@ class Community(CRUDEndpoint, MetadataMixin):
             params["scope"] = q_scope
         
         return self._client.post(
-            "cmdb", endpoint, data=payload_data, params=params, vdom=vdom
-        )
+            "cmdb", endpoint, data=payload_data, params=params, vdom=vdom        )
 
     # ========================================================================
     # DELETE Method
@@ -555,8 +650,7 @@ class Community(CRUDEndpoint, MetadataMixin):
             params["scope"] = q_scope
         
         return self._client.delete(
-            "cmdb", endpoint, params=params, vdom=vdom
-        )
+            "cmdb", endpoint, params=params, vdom=vdom        )
 
     def exists(
         self,

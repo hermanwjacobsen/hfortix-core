@@ -305,8 +305,7 @@ class Remote(CRUDEndpoint, MetadataMixin):
         endpoint = "/certificate/remote/" + quote_path_param(name_value)
 
         return self._client.put(
-            "cmdb", endpoint, data=payload_data, vdom=vdom
-        )
+            "cmdb", endpoint, data=payload_data, vdom=vdom        )
 
     # ========================================================================
     # POST Method
@@ -388,8 +387,7 @@ class Remote(CRUDEndpoint, MetadataMixin):
 
         endpoint = "/certificate/remote"
         return self._client.post(
-            "cmdb", endpoint, data=payload_data, vdom=vdom
-        )
+            "cmdb", endpoint, data=payload_data, vdom=vdom        )
 
     # ========================================================================
     # DELETE Method
@@ -437,8 +435,7 @@ class Remote(CRUDEndpoint, MetadataMixin):
         endpoint = "/certificate/remote/" + quote_path_param(name)
 
         return self._client.delete(
-            "cmdb", endpoint, vdom=vdom
-        )
+            "cmdb", endpoint, vdom=vdom        )
 
     def exists(
         self,

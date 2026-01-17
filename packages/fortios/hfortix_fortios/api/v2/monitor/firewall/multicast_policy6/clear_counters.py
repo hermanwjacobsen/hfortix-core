@@ -151,8 +151,7 @@ class ClearCounters(CRUDEndpoint, MetadataMixin):
 
         endpoint = "/firewall/multicast-policy6/clear_counters"
         return self._client.post(
-            "monitor", endpoint, data=payload_data, vdom=vdom
-        )
+            "monitor", endpoint, data=payload_data, vdom=vdom        )
 
 
 

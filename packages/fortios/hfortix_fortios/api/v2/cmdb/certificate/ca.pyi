@@ -161,7 +161,6 @@ class Ca:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> CaObject: ...
     
     # With mkey as keyword arg -> returns FortiObject
@@ -178,7 +177,6 @@ class Ca:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> CaObject: ...
     
     # Without mkey -> returns list of FortiObjects
@@ -194,7 +192,6 @@ class Ca:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObjectList[CaObject]: ...
     
     # ================================================================
@@ -214,7 +211,6 @@ class Ca:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> CaObject: ...
     
     # With mkey as keyword arg -> returns single object
@@ -231,7 +227,6 @@ class Ca:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> CaObject: ...
     
     # With no mkey -> returns list of objects
@@ -247,7 +242,6 @@ class Ca:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObjectList[CaObject]: ...
     
     # Dict mode with mkey provided as positional arg (single dict)
@@ -263,7 +257,6 @@ class Ca:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> CaObject: ...
     
     # Dict mode with mkey provided as keyword arg (single dict)
@@ -280,7 +273,6 @@ class Ca:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> CaObject: ...
     
     # Dict mode - list of dicts (no mkey/name provided) - keyword-only signature
@@ -296,7 +288,6 @@ class Ca:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObjectList[CaObject]: ...
     
     # Fallback overload for all other cases
@@ -312,7 +303,6 @@ class Ca:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> Union[dict[str, Any], list[dict[str, Any]], FortiObject, list[FortiObject]]: ...
     
     def get(
@@ -326,12 +316,10 @@ class Ca:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> CaObject | list[CaObject] | dict[str, Any] | list[dict[str, Any]]: ...
     
     def get_schema(
         self,
-        vdom: str | None = ...,
         format: str = ...,
     ) -> FortiObject: ...
     
@@ -354,7 +342,6 @@ class Ca:
         obsolete: Literal["disable", "enable"] | None = ...,
         fabric_ca: Literal["disable", "enable"] | None = ...,
         details: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> CaObject: ...
     
     @overload
@@ -375,7 +362,6 @@ class Ca:
         obsolete: Literal["disable", "enable"] | None = ...,
         fabric_ca: Literal["disable", "enable"] | None = ...,
         details: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     # Default overload
@@ -397,7 +383,6 @@ class Ca:
         obsolete: Literal["disable", "enable"] | None = ...,
         fabric_ca: Literal["disable", "enable"] | None = ...,
         details: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     def put(
@@ -417,13 +402,11 @@ class Ca:
         obsolete: Literal["disable", "enable"] | None = ...,
         fabric_ca: Literal["disable", "enable"] | None = ...,
         details: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     def exists(
         self,
         name: str,
-        vdom: str | bool | None = ...,
     ) -> bool: ...
     
     def set(
@@ -443,7 +426,6 @@ class Ca:
         obsolete: Literal["disable", "enable"] | None = ...,
         fabric_ca: Literal["disable", "enable"] | None = ...,
         details: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     # Helper methods

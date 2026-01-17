@@ -47,6 +47,7 @@ from hfortix_fortios._helpers import (
     build_cmdb_payload,  # Keep for backward compatibility / manual usage
     is_success,
     quote_path_param,  # URL encoding for path parameters
+    normalize_table_field,  # For table field normalization
 )
 # Import metadata mixin for schema introspection
 from hfortix_fortios._helpers.metadata_mixin import MetadataMixin
@@ -59,6 +60,43 @@ class Vip6(CRUDEndpoint, MetadataMixin):
     
     # Configure metadata mixin to use this endpoint's helper module
     _helper_module_name = "vip6"
+    
+    # ========================================================================
+    # Table Fields Metadata (for normalization)
+    # Auto-generated from schema - supports flexible input formats
+    # ========================================================================
+    _TABLE_FIELDS = {
+        "src_filter": {
+            "mkey": "range",
+            "required_fields": ['range'],
+            "example": "[{'range': 'value'}]",
+        },
+        "realservers": {
+            "mkey": "id",
+            "required_fields": ['ip'],
+            "example": "[{'ip': '192.168.1.10'}]",
+        },
+        "ssl_certificate": {
+            "mkey": "name",
+            "required_fields": ['name'],
+            "example": "[{'name': 'value'}]",
+        },
+        "ssl_cipher_suites": {
+            "mkey": "priority",
+            "required_fields": ['cipher'],
+            "example": "[{'cipher': 'TLS-AES-128-GCM-SHA256'}]",
+        },
+        "ssl_server_cipher_suites": {
+            "mkey": "priority",
+            "required_fields": ['cipher'],
+            "example": "[{'cipher': 'TLS-AES-128-GCM-SHA256'}]",
+        },
+        "monitor": {
+            "mkey": "name",
+            "required_fields": ['name'],
+            "example": "[{'name': 'value'}]",
+        },
+    }
     
     # ========================================================================
     # Capabilities (from schema metadata)
@@ -335,6 +373,11 @@ class Vip6(CRUDEndpoint, MetadataMixin):
             comment: Comment.
             type: Configure a static NAT server load balance VIP or access proxy.
             src_filter: Source IP6 filter (x:x:x:x:x:x:x:x/x). Separate addresses with spaces.
+                Default format: [{'range': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'range': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'range': 'val1'}, ...]
+                  - List of dicts: [{'range': 'value'}] (recommended)
             src_vip_filter: Enable/disable use of 'src-filter' to match destinations for the reverse SNAT rule.
             extip: IPv6 address or address range on the external interface that you want to map to an address or address range on the destination network.
             mappedip: Mapped IPv6 address range in the format startIP-endIP.
@@ -359,6 +402,11 @@ class Vip6(CRUDEndpoint, MetadataMixin):
             user_agent_detect: Enable/disable detecting device type by HTTP user-agent if no client certificate is provided.
             client_cert: Enable/disable requesting client certificate.
             realservers: Select the real servers that this server load balancing VIP will distribute traffic to.
+                Default format: [{'ip': '192.168.1.10'}]
+                Supported formats:
+                  - Single string: "value" → [{'id': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'id': 'val1'}, ...]
+                  - List of dicts: [{'ip': '192.168.1.10'}] (recommended)
             http_cookie_domain_from_host: Enable/disable use of HTTP cookie domain from host field in HTTP.
             http_cookie_domain: Domain that HTTP cookie persistence should apply to.
             http_cookie_path: Limit HTTP cookie persistence to the specified path.
@@ -374,12 +422,27 @@ class Vip6(CRUDEndpoint, MetadataMixin):
             websphere_server: Enable to add an HTTP header to indicate SSL offloading for a WebSphere server.
             ssl_mode: Apply SSL offloading between the client and the FortiGate (half) or from the client to the FortiGate and from the FortiGate to the server (full).
             ssl_certificate: Name of the certificate to use for SSL handshake.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
             ssl_dh_bits: Number of bits to use in the Diffie-Hellman exchange for RSA encryption of SSL sessions.
             ssl_algorithm: Permitted encryption algorithms for SSL sessions according to encryption strength.
             ssl_cipher_suites: SSL/TLS cipher suites acceptable from a client, ordered by priority.
+                Default format: [{'cipher': 'TLS-AES-128-GCM-SHA256'}]
+                Supported formats:
+                  - Single string: "value" → [{'priority': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'priority': 'val1'}, ...]
+                  - List of dicts: [{'cipher': 'TLS-AES-128-GCM-SHA256'}] (recommended)
             ssl_server_renegotiation: Enable/disable secure renegotiation to comply with RFC 5746.
             ssl_server_algorithm: Permitted encryption algorithms for the server side of SSL full mode sessions according to encryption strength.
             ssl_server_cipher_suites: SSL/TLS cipher suites to offer to a server, ordered by priority.
+                Default format: [{'cipher': 'TLS-AES-128-GCM-SHA256'}]
+                Supported formats:
+                  - Single string: "value" → [{'priority': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'priority': 'val1'}, ...]
+                  - List of dicts: [{'cipher': 'TLS-AES-128-GCM-SHA256'}] (recommended)
             ssl_pfs: Select the cipher suites that can be used for SSL perfect forward secrecy (PFS). Applies to both client and server sessions.
             ssl_min_version: Lowest SSL/TLS version acceptable from a client.
             ssl_max_version: Highest SSL/TLS version acceptable from a client.
@@ -408,6 +471,11 @@ class Vip6(CRUDEndpoint, MetadataMixin):
             ssl_hsts_age: Number of seconds the client should honor the HSTS setting.
             ssl_hsts_include_subdomains: Indicate that HSTS header applies to all subdomains.
             monitor: Name of the health check monitor to use when polling to determine a virtual server's connectivity status.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
             max_embryonic_connections: Maximum number of incomplete connections.
             embedded_ipv4_address: Enable/disable use of the lower 32 bits of the external IPv6 address as mapped IPv4 address.
             ipv4_mappedip: Range of mapped IP addresses. Specify the start IP address followed by a space and the end IP address.
@@ -440,6 +508,56 @@ class Vip6(CRUDEndpoint, MetadataMixin):
             - post(): Create new object
             - set(): Intelligent create or update
         """
+        # Apply normalization for table fields (supports flexible input formats)
+        if src_filter is not None:
+            src_filter = normalize_table_field(
+                src_filter,
+                mkey="range",
+                required_fields=['range'],
+                field_name="src_filter",
+                example="[{'range': 'value'}]",
+            )
+        if realservers is not None:
+            realservers = normalize_table_field(
+                realservers,
+                mkey="id",
+                required_fields=['ip'],
+                field_name="realservers",
+                example="[{'ip': '192.168.1.10'}]",
+            )
+        if ssl_certificate is not None:
+            ssl_certificate = normalize_table_field(
+                ssl_certificate,
+                mkey="name",
+                required_fields=['name'],
+                field_name="ssl_certificate",
+                example="[{'name': 'value'}]",
+            )
+        if ssl_cipher_suites is not None:
+            ssl_cipher_suites = normalize_table_field(
+                ssl_cipher_suites,
+                mkey="priority",
+                required_fields=['cipher'],
+                field_name="ssl_cipher_suites",
+                example="[{'cipher': 'TLS-AES-128-GCM-SHA256'}]",
+            )
+        if ssl_server_cipher_suites is not None:
+            ssl_server_cipher_suites = normalize_table_field(
+                ssl_server_cipher_suites,
+                mkey="priority",
+                required_fields=['cipher'],
+                field_name="ssl_server_cipher_suites",
+                example="[{'cipher': 'TLS-AES-128-GCM-SHA256'}]",
+            )
+        if monitor is not None:
+            monitor = normalize_table_field(
+                monitor,
+                mkey="name",
+                required_fields=['name'],
+                field_name="monitor",
+                example="[{'name': 'value'}]",
+            )
+        
         # Build payload using helper function with auto-normalization
         # This automatically converts strings/lists to [{'name': '...'}] format for list fields
         # To disable auto-normalization, use build_cmdb_payload directly
@@ -557,8 +675,7 @@ class Vip6(CRUDEndpoint, MetadataMixin):
             params["scope"] = q_scope
         
         return self._client.put(
-            "cmdb", endpoint, data=payload_data, params=params, vdom=vdom
-        )
+            "cmdb", endpoint, data=payload_data, params=params, vdom=vdom        )
 
     # ========================================================================
     # POST Method
@@ -671,6 +788,11 @@ class Vip6(CRUDEndpoint, MetadataMixin):
             comment: Comment.
             type: Configure a static NAT server load balance VIP or access proxy.
             src_filter: Source IP6 filter (x:x:x:x:x:x:x:x/x). Separate addresses with spaces.
+                Default format: [{'range': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'range': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'range': 'val1'}, ...]
+                  - List of dicts: [{'range': 'value'}] (recommended)
             src_vip_filter: Enable/disable use of 'src-filter' to match destinations for the reverse SNAT rule.
             extip: IPv6 address or address range on the external interface that you want to map to an address or address range on the destination network.
             mappedip: Mapped IPv6 address range in the format startIP-endIP.
@@ -695,6 +817,11 @@ class Vip6(CRUDEndpoint, MetadataMixin):
             user_agent_detect: Enable/disable detecting device type by HTTP user-agent if no client certificate is provided.
             client_cert: Enable/disable requesting client certificate.
             realservers: Select the real servers that this server load balancing VIP will distribute traffic to.
+                Default format: [{'ip': '192.168.1.10'}]
+                Supported formats:
+                  - Single string: "value" → [{'id': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'id': 'val1'}, ...]
+                  - List of dicts: [{'ip': '192.168.1.10'}] (recommended)
             http_cookie_domain_from_host: Enable/disable use of HTTP cookie domain from host field in HTTP.
             http_cookie_domain: Domain that HTTP cookie persistence should apply to.
             http_cookie_path: Limit HTTP cookie persistence to the specified path.
@@ -710,12 +837,27 @@ class Vip6(CRUDEndpoint, MetadataMixin):
             websphere_server: Enable to add an HTTP header to indicate SSL offloading for a WebSphere server.
             ssl_mode: Apply SSL offloading between the client and the FortiGate (half) or from the client to the FortiGate and from the FortiGate to the server (full).
             ssl_certificate: Name of the certificate to use for SSL handshake.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
             ssl_dh_bits: Number of bits to use in the Diffie-Hellman exchange for RSA encryption of SSL sessions.
             ssl_algorithm: Permitted encryption algorithms for SSL sessions according to encryption strength.
             ssl_cipher_suites: SSL/TLS cipher suites acceptable from a client, ordered by priority.
+                Default format: [{'cipher': 'TLS-AES-128-GCM-SHA256'}]
+                Supported formats:
+                  - Single string: "value" → [{'priority': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'priority': 'val1'}, ...]
+                  - List of dicts: [{'cipher': 'TLS-AES-128-GCM-SHA256'}] (recommended)
             ssl_server_renegotiation: Enable/disable secure renegotiation to comply with RFC 5746.
             ssl_server_algorithm: Permitted encryption algorithms for the server side of SSL full mode sessions according to encryption strength.
             ssl_server_cipher_suites: SSL/TLS cipher suites to offer to a server, ordered by priority.
+                Default format: [{'cipher': 'TLS-AES-128-GCM-SHA256'}]
+                Supported formats:
+                  - Single string: "value" → [{'priority': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'priority': 'val1'}, ...]
+                  - List of dicts: [{'cipher': 'TLS-AES-128-GCM-SHA256'}] (recommended)
             ssl_pfs: Select the cipher suites that can be used for SSL perfect forward secrecy (PFS). Applies to both client and server sessions.
             ssl_min_version: Lowest SSL/TLS version acceptable from a client.
             ssl_max_version: Highest SSL/TLS version acceptable from a client.
@@ -744,6 +886,11 @@ class Vip6(CRUDEndpoint, MetadataMixin):
             ssl_hsts_age: Number of seconds the client should honor the HSTS setting.
             ssl_hsts_include_subdomains: Indicate that HSTS header applies to all subdomains.
             monitor: Name of the health check monitor to use when polling to determine a virtual server's connectivity status.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
             max_embryonic_connections: Maximum number of incomplete connections.
             embedded_ipv4_address: Enable/disable use of the lower 32 bits of the external IPv6 address as mapped IPv4 address.
             ipv4_mappedip: Range of mapped IP addresses. Specify the start IP address followed by a space and the end IP address.
@@ -778,6 +925,56 @@ class Vip6(CRUDEndpoint, MetadataMixin):
             - put(): Update existing object
             - set(): Intelligent create or update
         """
+        # Apply normalization for table fields (supports flexible input formats)
+        if src_filter is not None:
+            src_filter = normalize_table_field(
+                src_filter,
+                mkey="range",
+                required_fields=['range'],
+                field_name="src_filter",
+                example="[{'range': 'value'}]",
+            )
+        if realservers is not None:
+            realservers = normalize_table_field(
+                realservers,
+                mkey="id",
+                required_fields=['ip'],
+                field_name="realservers",
+                example="[{'ip': '192.168.1.10'}]",
+            )
+        if ssl_certificate is not None:
+            ssl_certificate = normalize_table_field(
+                ssl_certificate,
+                mkey="name",
+                required_fields=['name'],
+                field_name="ssl_certificate",
+                example="[{'name': 'value'}]",
+            )
+        if ssl_cipher_suites is not None:
+            ssl_cipher_suites = normalize_table_field(
+                ssl_cipher_suites,
+                mkey="priority",
+                required_fields=['cipher'],
+                field_name="ssl_cipher_suites",
+                example="[{'cipher': 'TLS-AES-128-GCM-SHA256'}]",
+            )
+        if ssl_server_cipher_suites is not None:
+            ssl_server_cipher_suites = normalize_table_field(
+                ssl_server_cipher_suites,
+                mkey="priority",
+                required_fields=['cipher'],
+                field_name="ssl_server_cipher_suites",
+                example="[{'cipher': 'TLS-AES-128-GCM-SHA256'}]",
+            )
+        if monitor is not None:
+            monitor = normalize_table_field(
+                monitor,
+                mkey="name",
+                required_fields=['name'],
+                field_name="monitor",
+                example="[{'name': 'value'}]",
+            )
+        
         # Build payload using helper function with auto-normalization
         # This automatically converts strings/lists to [{'name': '...'}] format for list fields
         # To disable auto-normalization, use build_cmdb_payload directly
@@ -890,8 +1087,7 @@ class Vip6(CRUDEndpoint, MetadataMixin):
             params["scope"] = q_scope
         
         return self._client.post(
-            "cmdb", endpoint, data=payload_data, params=params, vdom=vdom
-        )
+            "cmdb", endpoint, data=payload_data, params=params, vdom=vdom        )
 
     # ========================================================================
     # DELETE Method
@@ -945,8 +1141,7 @@ class Vip6(CRUDEndpoint, MetadataMixin):
             params["scope"] = q_scope
         
         return self._client.delete(
-            "cmdb", endpoint, params=params, vdom=vdom
-        )
+            "cmdb", endpoint, params=params, vdom=vdom        )
 
     def exists(
         self,

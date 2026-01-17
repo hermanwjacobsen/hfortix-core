@@ -154,8 +154,7 @@ class Set(CRUDEndpoint, MetadataMixin):
 
         endpoint = "/system/private-data-encryption/set"
         return self._client.post(
-            "monitor", endpoint, data=payload_data, vdom=vdom
-        )
+            "monitor", endpoint, data=payload_data, vdom=vdom        )
 
 
 

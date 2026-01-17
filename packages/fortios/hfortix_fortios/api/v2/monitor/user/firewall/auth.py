@@ -157,8 +157,7 @@ class Auth(CRUDEndpoint, MetadataMixin):
 
         endpoint = "/user/firewall/auth"
         return self._client.post(
-            "monitor", endpoint, data=payload_data, vdom=vdom
-        )
+            "monitor", endpoint, data=payload_data, vdom=vdom        )
 
 
 

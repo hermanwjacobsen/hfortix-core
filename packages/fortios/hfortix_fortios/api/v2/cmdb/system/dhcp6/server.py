@@ -47,6 +47,7 @@ from hfortix_fortios._helpers import (
     build_cmdb_payload,  # Keep for backward compatibility / manual usage
     is_success,
     quote_path_param,  # URL encoding for path parameters
+    normalize_table_field,  # For table field normalization
 )
 # Import metadata mixin for schema introspection
 from hfortix_fortios._helpers.metadata_mixin import MetadataMixin
@@ -59,6 +60,28 @@ class Server(CRUDEndpoint, MetadataMixin):
     
     # Configure metadata mixin to use this endpoint's helper module
     _helper_module_name = "server"
+    
+    # ========================================================================
+    # Table Fields Metadata (for normalization)
+    # Auto-generated from schema - supports flexible input formats
+    # ========================================================================
+    _TABLE_FIELDS = {
+        "options": {
+            "mkey": "id",
+            "required_fields": ['id', 'code'],
+            "example": "[{'id': 1, 'code': 1}]",
+        },
+        "prefix_range": {
+            "mkey": "id",
+            "required_fields": ['id', 'start-prefix', 'end-prefix', 'prefix-length'],
+            "example": "[{'id': 1, 'start-prefix': 'value', 'end-prefix': 'value', 'prefix-length': 1}]",
+        },
+        "ip_range": {
+            "mkey": "id",
+            "required_fields": ['id', 'start-ip', 'end-ip'],
+            "example": "[{'id': 1, 'start-ip': 'value', 'end-ip': 'value'}]",
+        },
+    }
     
     # ========================================================================
     # Capabilities (from schema metadata)
@@ -282,12 +305,21 @@ class Server(CRUDEndpoint, MetadataMixin):
             interface: DHCP server can assign IP configurations to clients connected to this interface.
             delegated_prefix_route: Enable/disable automatically adding of routing for delegated prefix.
             options: DHCPv6 options.
+                Default format: [{'id': 1, 'code': 1}]
+                Required format: List of dicts with keys: id, code
+                  (String format not allowed due to multiple required fields)
             upstream_interface: Interface name from where delegated information is provided.
             delegated_prefix_iaid: IAID of obtained delegated-prefix from the upstream interface.
             ip_mode: Method used to assign client IP.
             prefix_mode: Assigning a prefix from a DHCPv6 client or RA.
             prefix_range: DHCP prefix configuration.
+                Default format: [{'id': 1, 'start-prefix': 'value', 'end-prefix': 'value', 'prefix-length': 1}]
+                Required format: List of dicts with keys: id, start-prefix, end-prefix, prefix-length
+                  (String format not allowed due to multiple required fields)
             ip_range: DHCP IP range configuration.
+                Default format: [{'id': 1, 'start-ip': 'value', 'end-ip': 'value'}]
+                Required format: List of dicts with keys: id, start-ip, end-ip
+                  (String format not allowed due to multiple required fields)
             vdom: Virtual domain name.
             error_mode: Override client-level error_mode. "raise" raises exceptions, "return" returns error dict, "print" prints errors.
             error_format: Override client-level error_format. "detailed" provides full context, "simple" is concise, "code_only" returns just status code.
@@ -316,6 +348,32 @@ class Server(CRUDEndpoint, MetadataMixin):
             - post(): Create new object
             - set(): Intelligent create or update
         """
+        # Apply normalization for table fields (supports flexible input formats)
+        if options is not None:
+            options = normalize_table_field(
+                options,
+                mkey="id",
+                required_fields=['id', 'code'],
+                field_name="options",
+                example="[{'id': 1, 'code': 1}]",
+            )
+        if prefix_range is not None:
+            prefix_range = normalize_table_field(
+                prefix_range,
+                mkey="id",
+                required_fields=['id', 'start-prefix', 'end-prefix', 'prefix-length'],
+                field_name="prefix_range",
+                example="[{'id': 1, 'start-prefix': 'value', 'end-prefix': 'value', 'prefix-length': 1}]",
+            )
+        if ip_range is not None:
+            ip_range = normalize_table_field(
+                ip_range,
+                mkey="id",
+                required_fields=['id', 'start-ip', 'end-ip'],
+                field_name="ip_range",
+                example="[{'id': 1, 'start-ip': 'value', 'end-ip': 'value'}]",
+            )
+        
         # Build payload using helper function with auto-normalization
         # This automatically converts strings/lists to [{'name': '...'}] format for list fields
         # To disable auto-normalization, use build_cmdb_payload directly
@@ -371,8 +429,7 @@ class Server(CRUDEndpoint, MetadataMixin):
             params["scope"] = q_scope
         
         return self._client.put(
-            "cmdb", endpoint, data=payload_data, params=params, vdom=vdom
-        )
+            "cmdb", endpoint, data=payload_data, params=params, vdom=vdom        )
 
     # ========================================================================
     # POST Method
@@ -432,12 +489,21 @@ class Server(CRUDEndpoint, MetadataMixin):
             interface: DHCP server can assign IP configurations to clients connected to this interface.
             delegated_prefix_route: Enable/disable automatically adding of routing for delegated prefix.
             options: DHCPv6 options.
+                Default format: [{'id': 1, 'code': 1}]
+                Required format: List of dicts with keys: id, code
+                  (String format not allowed due to multiple required fields)
             upstream_interface: Interface name from where delegated information is provided.
             delegated_prefix_iaid: IAID of obtained delegated-prefix from the upstream interface.
             ip_mode: Method used to assign client IP.
             prefix_mode: Assigning a prefix from a DHCPv6 client or RA.
             prefix_range: DHCP prefix configuration.
+                Default format: [{'id': 1, 'start-prefix': 'value', 'end-prefix': 'value', 'prefix-length': 1}]
+                Required format: List of dicts with keys: id, start-prefix, end-prefix, prefix-length
+                  (String format not allowed due to multiple required fields)
             ip_range: DHCP IP range configuration.
+                Default format: [{'id': 1, 'start-ip': 'value', 'end-ip': 'value'}]
+                Required format: List of dicts with keys: id, start-ip, end-ip
+                  (String format not allowed due to multiple required fields)
             vdom: Virtual domain name. Use True for global, string for specific VDOM.
             error_mode: Override client-level error_mode. "raise" raises exceptions, "return" returns error dict, "print" prints errors.
             error_format: Override client-level error_format. "detailed" provides full context, "simple" is concise, "code_only" returns just status code.
@@ -468,6 +534,32 @@ class Server(CRUDEndpoint, MetadataMixin):
             - put(): Update existing object
             - set(): Intelligent create or update
         """
+        # Apply normalization for table fields (supports flexible input formats)
+        if options is not None:
+            options = normalize_table_field(
+                options,
+                mkey="id",
+                required_fields=['id', 'code'],
+                field_name="options",
+                example="[{'id': 1, 'code': 1}]",
+            )
+        if prefix_range is not None:
+            prefix_range = normalize_table_field(
+                prefix_range,
+                mkey="id",
+                required_fields=['id', 'start-prefix', 'end-prefix', 'prefix-length'],
+                field_name="prefix_range",
+                example="[{'id': 1, 'start-prefix': 'value', 'end-prefix': 'value', 'prefix-length': 1}]",
+            )
+        if ip_range is not None:
+            ip_range = normalize_table_field(
+                ip_range,
+                mkey="id",
+                required_fields=['id', 'start-ip', 'end-ip'],
+                field_name="ip_range",
+                example="[{'id': 1, 'start-ip': 'value', 'end-ip': 'value'}]",
+            )
+        
         # Build payload using helper function with auto-normalization
         # This automatically converts strings/lists to [{'name': '...'}] format for list fields
         # To disable auto-normalization, use build_cmdb_payload directly
@@ -518,8 +610,7 @@ class Server(CRUDEndpoint, MetadataMixin):
             params["scope"] = q_scope
         
         return self._client.post(
-            "cmdb", endpoint, data=payload_data, params=params, vdom=vdom
-        )
+            "cmdb", endpoint, data=payload_data, params=params, vdom=vdom        )
 
     # ========================================================================
     # DELETE Method
@@ -573,8 +664,7 @@ class Server(CRUDEndpoint, MetadataMixin):
             params["scope"] = q_scope
         
         return self._client.delete(
-            "cmdb", endpoint, params=params, vdom=vdom
-        )
+            "cmdb", endpoint, params=params, vdom=vdom        )
 
     def exists(
         self,

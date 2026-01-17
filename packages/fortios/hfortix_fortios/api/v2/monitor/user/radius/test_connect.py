@@ -169,8 +169,7 @@ class TestConnect(CRUDEndpoint, MetadataMixin):
 
         endpoint = "/user/radius/test-connect"
         return self._client.post(
-            "monitor", endpoint, data=payload_data, vdom=vdom
-        )
+            "monitor", endpoint, data=payload_data, vdom=vdom        )
 
 
 

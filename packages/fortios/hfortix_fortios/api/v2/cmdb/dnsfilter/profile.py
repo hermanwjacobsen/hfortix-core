@@ -47,6 +47,7 @@ from hfortix_fortios._helpers import (
     build_cmdb_payload,  # Keep for backward compatibility / manual usage
     is_success,
     quote_path_param,  # URL encoding for path parameters
+    normalize_table_field,  # For table field normalization
 )
 # Import metadata mixin for schema introspection
 from hfortix_fortios._helpers.metadata_mixin import MetadataMixin
@@ -59,6 +60,28 @@ class Profile(CRUDEndpoint, MetadataMixin):
     
     # Configure metadata mixin to use this endpoint's helper module
     _helper_module_name = "profile"
+    
+    # ========================================================================
+    # Table Fields Metadata (for normalization)
+    # Auto-generated from schema - supports flexible input formats
+    # ========================================================================
+    _TABLE_FIELDS = {
+        "external_ip_blocklist": {
+            "mkey": "name",
+            "required_fields": ['name'],
+            "example": "[{'name': 'value'}]",
+        },
+        "dns_translation": {
+            "mkey": "id",
+            "required_fields": ['addr-type'],
+            "example": "[{'addr-type': 'ipv4'}]",
+        },
+        "transparent_dns_database": {
+            "mkey": "name",
+            "required_fields": ['name'],
+            "example": "[{'name': 'value'}]",
+        },
+    }
     
     # ========================================================================
     # Capabilities (from schema metadata)
@@ -277,8 +300,23 @@ class Profile(CRUDEndpoint, MetadataMixin):
             safe_search: Enable/disable Google, Bing, YouTube, Qwant, DuckDuckGo safe search.
             youtube_restrict: Set safe search for YouTube restriction level.
             external_ip_blocklist: One or more external IP block lists.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
             dns_translation: DNS translation settings.
+                Default format: [{'addr-type': 'ipv4'}]
+                Supported formats:
+                  - Single string: "value" → [{'id': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'id': 'val1'}, ...]
+                  - List of dicts: [{'addr-type': 'ipv4'}] (recommended)
             transparent_dns_database: Transparent DNS database zones.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
             strip_ech: Enable/disable removal of the encrypted client hello service parameter from supporting DNS RRs.
             vdom: Virtual domain name.
             error_mode: Override client-level error_mode. "raise" raises exceptions, "return" returns error dict, "print" prints errors.
@@ -308,6 +346,32 @@ class Profile(CRUDEndpoint, MetadataMixin):
             - post(): Create new object
             - set(): Intelligent create or update
         """
+        # Apply normalization for table fields (supports flexible input formats)
+        if external_ip_blocklist is not None:
+            external_ip_blocklist = normalize_table_field(
+                external_ip_blocklist,
+                mkey="name",
+                required_fields=['name'],
+                field_name="external_ip_blocklist",
+                example="[{'name': 'value'}]",
+            )
+        if dns_translation is not None:
+            dns_translation = normalize_table_field(
+                dns_translation,
+                mkey="id",
+                required_fields=['addr-type'],
+                field_name="dns_translation",
+                example="[{'addr-type': 'ipv4'}]",
+            )
+        if transparent_dns_database is not None:
+            transparent_dns_database = normalize_table_field(
+                transparent_dns_database,
+                mkey="name",
+                required_fields=['name'],
+                field_name="transparent_dns_database",
+                example="[{'name': 'value'}]",
+            )
+        
         # Build payload using helper function with auto-normalization
         # This automatically converts strings/lists to [{'name': '...'}] format for list fields
         # To disable auto-normalization, use build_cmdb_payload directly
@@ -359,8 +423,7 @@ class Profile(CRUDEndpoint, MetadataMixin):
             params["scope"] = q_scope
         
         return self._client.put(
-            "cmdb", endpoint, data=payload_data, params=params, vdom=vdom
-        )
+            "cmdb", endpoint, data=payload_data, params=params, vdom=vdom        )
 
     # ========================================================================
     # POST Method
@@ -415,8 +478,23 @@ class Profile(CRUDEndpoint, MetadataMixin):
             safe_search: Enable/disable Google, Bing, YouTube, Qwant, DuckDuckGo safe search.
             youtube_restrict: Set safe search for YouTube restriction level.
             external_ip_blocklist: One or more external IP block lists.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
             dns_translation: DNS translation settings.
+                Default format: [{'addr-type': 'ipv4'}]
+                Supported formats:
+                  - Single string: "value" → [{'id': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'id': 'val1'}, ...]
+                  - List of dicts: [{'addr-type': 'ipv4'}] (recommended)
             transparent_dns_database: Transparent DNS database zones.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
             strip_ech: Enable/disable removal of the encrypted client hello service parameter from supporting DNS RRs.
             vdom: Virtual domain name. Use True for global, string for specific VDOM.
             error_mode: Override client-level error_mode. "raise" raises exceptions, "return" returns error dict, "print" prints errors.
@@ -448,6 +526,32 @@ class Profile(CRUDEndpoint, MetadataMixin):
             - put(): Update existing object
             - set(): Intelligent create or update
         """
+        # Apply normalization for table fields (supports flexible input formats)
+        if external_ip_blocklist is not None:
+            external_ip_blocklist = normalize_table_field(
+                external_ip_blocklist,
+                mkey="name",
+                required_fields=['name'],
+                field_name="external_ip_blocklist",
+                example="[{'name': 'value'}]",
+            )
+        if dns_translation is not None:
+            dns_translation = normalize_table_field(
+                dns_translation,
+                mkey="id",
+                required_fields=['addr-type'],
+                field_name="dns_translation",
+                example="[{'addr-type': 'ipv4'}]",
+            )
+        if transparent_dns_database is not None:
+            transparent_dns_database = normalize_table_field(
+                transparent_dns_database,
+                mkey="name",
+                required_fields=['name'],
+                field_name="transparent_dns_database",
+                example="[{'name': 'value'}]",
+            )
+        
         # Build payload using helper function with auto-normalization
         # This automatically converts strings/lists to [{'name': '...'}] format for list fields
         # To disable auto-normalization, use build_cmdb_payload directly
@@ -494,8 +598,7 @@ class Profile(CRUDEndpoint, MetadataMixin):
             params["scope"] = q_scope
         
         return self._client.post(
-            "cmdb", endpoint, data=payload_data, params=params, vdom=vdom
-        )
+            "cmdb", endpoint, data=payload_data, params=params, vdom=vdom        )
 
     # ========================================================================
     # DELETE Method
@@ -549,8 +652,7 @@ class Profile(CRUDEndpoint, MetadataMixin):
             params["scope"] = q_scope
         
         return self._client.delete(
-            "cmdb", endpoint, params=params, vdom=vdom
-        )
+            "cmdb", endpoint, params=params, vdom=vdom        )
 
     def exists(
         self,

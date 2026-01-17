@@ -47,6 +47,7 @@ from hfortix_fortios._helpers import (
     build_cmdb_payload,  # Keep for backward compatibility / manual usage
     is_success,
     quote_path_param,  # URL encoding for path parameters
+    normalize_table_field,  # For table field normalization
 )
 # Import metadata mixin for schema introspection
 from hfortix_fortios._helpers.metadata_mixin import MetadataMixin
@@ -59,6 +60,23 @@ class DomainController(CRUDEndpoint, MetadataMixin):
     
     # Configure metadata mixin to use this endpoint's helper module
     _helper_module_name = "domain_controller"
+    
+    # ========================================================================
+    # Table Fields Metadata (for normalization)
+    # Auto-generated from schema - supports flexible input formats
+    # ========================================================================
+    _TABLE_FIELDS = {
+        "extra_server": {
+            "mkey": "id",
+            "required_fields": ['id', 'ip-address', 'source-ip-address'],
+            "example": "[{'id': 1, 'ip-address': '192.168.1.10', 'source-ip-address': '192.168.1.10'}]",
+        },
+        "ldap_server": {
+            "mkey": "name",
+            "required_fields": ['name'],
+            "example": "[{'name': 'value'}]",
+        },
+    }
     
     # ========================================================================
     # Capabilities (from schema metadata)
@@ -284,9 +302,17 @@ class DomainController(CRUDEndpoint, MetadataMixin):
             interface_select_method: Specify how to select outgoing interface to reach server.
             interface: Specify outgoing interface to reach server.
             extra_server: Extra servers.
+                Default format: [{'id': 1, 'ip-address': '192.168.1.10', 'source-ip-address': '192.168.1.10'}]
+                Required format: List of dicts with keys: id, ip-address, source-ip-address
+                  (String format not allowed due to multiple required fields)
             domain_name: Domain DNS name.
             replication_port: Port to be used for communication with the domain controller for replication service. Port number 0 indicates automatic discovery.
             ldap_server: LDAP server name(s).
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
             change_detection: Enable/disable detection of a configuration change in the Active Directory server.
             change_detection_period: Minutes to detect a configuration change in the Active Directory server (5 - 10080 minutes (7 days), default = 60).
             dns_srv_lookup: Enable/disable DNS service lookup.
@@ -322,6 +348,24 @@ class DomainController(CRUDEndpoint, MetadataMixin):
             - post(): Create new object
             - set(): Intelligent create or update
         """
+        # Apply normalization for table fields (supports flexible input formats)
+        if extra_server is not None:
+            extra_server = normalize_table_field(
+                extra_server,
+                mkey="id",
+                required_fields=['id', 'ip-address', 'source-ip-address'],
+                field_name="extra_server",
+                example="[{'id': 1, 'ip-address': '192.168.1.10', 'source-ip-address': '192.168.1.10'}]",
+            )
+        if ldap_server is not None:
+            ldap_server = normalize_table_field(
+                ldap_server,
+                mkey="name",
+                required_fields=['name'],
+                field_name="ldap_server",
+                example="[{'name': 'value'}]",
+            )
+        
         # Build payload using helper function with auto-normalization
         # This automatically converts strings/lists to [{'name': '...'}] format for list fields
         # To disable auto-normalization, use build_cmdb_payload directly
@@ -380,8 +424,7 @@ class DomainController(CRUDEndpoint, MetadataMixin):
             params["scope"] = q_scope
         
         return self._client.put(
-            "cmdb", endpoint, data=payload_data, params=params, vdom=vdom
-        )
+            "cmdb", endpoint, data=payload_data, params=params, vdom=vdom        )
 
     # ========================================================================
     # POST Method
@@ -443,9 +486,17 @@ class DomainController(CRUDEndpoint, MetadataMixin):
             interface_select_method: Specify how to select outgoing interface to reach server.
             interface: Specify outgoing interface to reach server.
             extra_server: Extra servers.
+                Default format: [{'id': 1, 'ip-address': '192.168.1.10', 'source-ip-address': '192.168.1.10'}]
+                Required format: List of dicts with keys: id, ip-address, source-ip-address
+                  (String format not allowed due to multiple required fields)
             domain_name: Domain DNS name.
             replication_port: Port to be used for communication with the domain controller for replication service. Port number 0 indicates automatic discovery.
             ldap_server: LDAP server name(s).
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
             change_detection: Enable/disable detection of a configuration change in the Active Directory server.
             change_detection_period: Minutes to detect a configuration change in the Active Directory server (5 - 10080 minutes (7 days), default = 60).
             dns_srv_lookup: Enable/disable DNS service lookup.
@@ -483,6 +534,24 @@ class DomainController(CRUDEndpoint, MetadataMixin):
             - put(): Update existing object
             - set(): Intelligent create or update
         """
+        # Apply normalization for table fields (supports flexible input formats)
+        if extra_server is not None:
+            extra_server = normalize_table_field(
+                extra_server,
+                mkey="id",
+                required_fields=['id', 'ip-address', 'source-ip-address'],
+                field_name="extra_server",
+                example="[{'id': 1, 'ip-address': '192.168.1.10', 'source-ip-address': '192.168.1.10'}]",
+            )
+        if ldap_server is not None:
+            ldap_server = normalize_table_field(
+                ldap_server,
+                mkey="name",
+                required_fields=['name'],
+                field_name="ldap_server",
+                example="[{'name': 'value'}]",
+            )
+        
         # Build payload using helper function with auto-normalization
         # This automatically converts strings/lists to [{'name': '...'}] format for list fields
         # To disable auto-normalization, use build_cmdb_payload directly
@@ -536,8 +605,7 @@ class DomainController(CRUDEndpoint, MetadataMixin):
             params["scope"] = q_scope
         
         return self._client.post(
-            "cmdb", endpoint, data=payload_data, params=params, vdom=vdom
-        )
+            "cmdb", endpoint, data=payload_data, params=params, vdom=vdom        )
 
     # ========================================================================
     # DELETE Method
@@ -591,8 +659,7 @@ class DomainController(CRUDEndpoint, MetadataMixin):
             params["scope"] = q_scope
         
         return self._client.delete(
-            "cmdb", endpoint, params=params, vdom=vdom
-        )
+            "cmdb", endpoint, params=params, vdom=vdom        )
 
     def exists(
         self,

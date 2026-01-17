@@ -47,6 +47,7 @@ from hfortix_fortios._helpers import (
     build_cmdb_payload,  # Keep for backward compatibility / manual usage
     is_success,
     quote_path_param,  # URL encoding for path parameters
+    normalize_table_field,  # For table field normalization
 )
 # Import metadata mixin for schema introspection
 from hfortix_fortios._helpers.metadata_mixin import MetadataMixin
@@ -59,6 +60,23 @@ class FederatedUpgrade(CRUDEndpoint, MetadataMixin):
     
     # Configure metadata mixin to use this endpoint's helper module
     _helper_module_name = "federated_upgrade"
+    
+    # ========================================================================
+    # Table Fields Metadata (for normalization)
+    # Auto-generated from schema - supports flexible input formats
+    # ========================================================================
+    _TABLE_FIELDS = {
+        "known_ha_members": {
+            "mkey": "serial",
+            "required_fields": ['serial'],
+            "example": "[{'serial': 'value'}]",
+        },
+        "node_list": {
+            "mkey": "serial",
+            "required_fields": ['serial', 'timing', 'maximum-minutes', 'time', 'setup-time', 'upgrade-path', 'device-type'],
+            "example": "[{'serial': 'value', 'timing': 'immediate', 'maximum-minutes': 1, 'time': 'value', 'setup-time': 'value', 'upgrade-path': 'value', 'device-type': 'fortigate'}]",
+        },
+    }
     
     # ========================================================================
     # Capabilities (from schema metadata)
@@ -262,9 +280,17 @@ class FederatedUpgrade(CRUDEndpoint, MetadataMixin):
             ignore_signing_errors: Allow/reject use of FortiGate firmware images that are unsigned.
             ha_reboot_controller: Serial number of the FortiGate unit that will control the reboot process for the federated upgrade of the HA cluster.
             known_ha_members: Known members of the HA cluster. If a member is missing at upgrade time, the upgrade will be cancelled.
+                Default format: [{'serial': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'serial': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'serial': 'val1'}, ...]
+                  - List of dicts: [{'serial': 'value'}] (recommended)
             initial_version: Firmware version when the upgrade was set up.
             starter_admin: Admin that started the upgrade.
             node_list: Nodes which will be included in the upgrade.
+                Default format: [{'serial': 'value', 'timing': 'immediate', 'maximum-minutes': 1, 'time': 'value', 'setup-time': 'value', 'upgrade-path': 'value', 'device-type': 'fortigate'}]
+                Required format: List of dicts with keys: serial, timing, maximum-minutes, time, setup-time, upgrade-path, device-type
+                  (String format not allowed due to multiple required fields)
             vdom: Virtual domain name.
             error_mode: Override client-level error_mode. "raise" raises exceptions, "return" returns error dict, "print" prints errors.
             error_format: Override client-level error_format. "detailed" provides full context, "simple" is concise, "code_only" returns just status code.
@@ -293,6 +319,24 @@ class FederatedUpgrade(CRUDEndpoint, MetadataMixin):
             - post(): Create new object
             - set(): Intelligent create or update
         """
+        # Apply normalization for table fields (supports flexible input formats)
+        if known_ha_members is not None:
+            known_ha_members = normalize_table_field(
+                known_ha_members,
+                mkey="serial",
+                required_fields=['serial'],
+                field_name="known_ha_members",
+                example="[{'serial': 'value'}]",
+            )
+        if node_list is not None:
+            node_list = normalize_table_field(
+                node_list,
+                mkey="serial",
+                required_fields=['serial', 'timing', 'maximum-minutes', 'time', 'setup-time', 'upgrade-path', 'device-type'],
+                field_name="node_list",
+                example="[{'serial': 'value', 'timing': 'immediate', 'maximum-minutes': 1, 'time': 'value', 'setup-time': 'value', 'upgrade-path': 'value', 'device-type': 'fortigate'}]",
+            )
+        
         # Build payload using helper function with auto-normalization
         # This automatically converts strings/lists to [{'name': '...'}] format for list fields
         # To disable auto-normalization, use build_cmdb_payload directly
@@ -337,8 +381,7 @@ class FederatedUpgrade(CRUDEndpoint, MetadataMixin):
             params["scope"] = q_scope
         
         return self._client.put(
-            "cmdb", endpoint, data=payload_data, params=params, vdom=vdom
-        )
+            "cmdb", endpoint, data=payload_data, params=params, vdom=vdom        )
 
 
 

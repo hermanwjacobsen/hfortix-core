@@ -332,8 +332,7 @@ class Crl(CRUDEndpoint, MetadataMixin):
         endpoint = "/certificate/crl/" + quote_path_param(name_value)
 
         return self._client.put(
-            "cmdb", endpoint, data=payload_data, vdom=vdom
-        )
+            "cmdb", endpoint, data=payload_data, vdom=vdom        )
 
     # ========================================================================
     # POST Method
@@ -442,8 +441,7 @@ class Crl(CRUDEndpoint, MetadataMixin):
 
         endpoint = "/certificate/crl"
         return self._client.post(
-            "cmdb", endpoint, data=payload_data, vdom=vdom
-        )
+            "cmdb", endpoint, data=payload_data, vdom=vdom        )
 
     # ========================================================================
     # DELETE Method
@@ -491,8 +489,7 @@ class Crl(CRUDEndpoint, MetadataMixin):
         endpoint = "/certificate/crl/" + quote_path_param(name)
 
         return self._client.delete(
-            "cmdb", endpoint, vdom=vdom
-        )
+            "cmdb", endpoint, vdom=vdom        )
 
     def exists(
         self,

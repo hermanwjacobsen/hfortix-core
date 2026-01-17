@@ -47,6 +47,7 @@ from hfortix_fortios._helpers import (
     build_cmdb_payload,  # Keep for backward compatibility / manual usage
     is_success,
     quote_path_param,  # URL encoding for path parameters
+    normalize_table_field,  # For table field normalization
 )
 # Import metadata mixin for schema introspection
 from hfortix_fortios._helpers.metadata_mixin import MetadataMixin
@@ -59,6 +60,28 @@ class TrafficSniffer(CRUDEndpoint, MetadataMixin):
     
     # Configure metadata mixin to use this endpoint's helper module
     _helper_module_name = "traffic_sniffer"
+    
+    # ========================================================================
+    # Table Fields Metadata (for normalization)
+    # Auto-generated from schema - supports flexible input formats
+    # ========================================================================
+    _TABLE_FIELDS = {
+        "target_mac": {
+            "mkey": "mac",
+            "required_fields": ['mac'],
+            "example": "[{'mac': 'value'}]",
+        },
+        "target_ip": {
+            "mkey": "ip",
+            "required_fields": ['ip'],
+            "example": "[{'ip': '192.168.1.10'}]",
+        },
+        "target_port": {
+            "mkey": "switch-id",
+            "required_fields": ['switch-id'],
+            "example": "[{'switch-id': 'value'}]",
+        },
+    }
     
     # ========================================================================
     # Capabilities (from schema metadata)
@@ -249,8 +272,23 @@ class TrafficSniffer(CRUDEndpoint, MetadataMixin):
             mode: Configure traffic sniffer mode.
             erspan_ip: Configure ERSPAN collector IP address.
             target_mac: Sniffer MACs to filter.
+                Default format: [{'mac': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'mac': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'mac': 'val1'}, ...]
+                  - List of dicts: [{'mac': 'value'}] (recommended)
             target_ip: Sniffer IPs to filter.
+                Default format: [{'ip': '192.168.1.10'}]
+                Supported formats:
+                  - Single string: "value" → [{'ip': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'ip': 'val1'}, ...]
+                  - List of dicts: [{'ip': '192.168.1.10'}] (recommended)
             target_port: Sniffer ports to filter.
+                Default format: [{'switch-id': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'switch-id': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'switch-id': 'val1'}, ...]
+                  - List of dicts: [{'switch-id': 'value'}] (recommended)
             vdom: Virtual domain name.
             error_mode: Override client-level error_mode. "raise" raises exceptions, "return" returns error dict, "print" prints errors.
             error_format: Override client-level error_format. "detailed" provides full context, "simple" is concise, "code_only" returns just status code.
@@ -279,6 +317,32 @@ class TrafficSniffer(CRUDEndpoint, MetadataMixin):
             - post(): Create new object
             - set(): Intelligent create or update
         """
+        # Apply normalization for table fields (supports flexible input formats)
+        if target_mac is not None:
+            target_mac = normalize_table_field(
+                target_mac,
+                mkey="mac",
+                required_fields=['mac'],
+                field_name="target_mac",
+                example="[{'mac': 'value'}]",
+            )
+        if target_ip is not None:
+            target_ip = normalize_table_field(
+                target_ip,
+                mkey="ip",
+                required_fields=['ip'],
+                field_name="target_ip",
+                example="[{'ip': '192.168.1.10'}]",
+            )
+        if target_port is not None:
+            target_port = normalize_table_field(
+                target_port,
+                mkey="switch-id",
+                required_fields=['switch-id'],
+                field_name="target_port",
+                example="[{'switch-id': 'value'}]",
+            )
+        
         # Build payload using helper function with auto-normalization
         # This automatically converts strings/lists to [{'name': '...'}] format for list fields
         # To disable auto-normalization, use build_cmdb_payload directly
@@ -316,8 +380,7 @@ class TrafficSniffer(CRUDEndpoint, MetadataMixin):
             params["scope"] = q_scope
         
         return self._client.put(
-            "cmdb", endpoint, data=payload_data, params=params, vdom=vdom
-        )
+            "cmdb", endpoint, data=payload_data, params=params, vdom=vdom        )
 
 
 

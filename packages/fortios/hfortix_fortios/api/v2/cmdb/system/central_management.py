@@ -47,6 +47,7 @@ from hfortix_fortios._helpers import (
     build_cmdb_payload,  # Keep for backward compatibility / manual usage
     is_success,
     quote_path_param,  # URL encoding for path parameters
+    normalize_table_field,  # For table field normalization
 )
 # Import metadata mixin for schema introspection
 from hfortix_fortios._helpers.metadata_mixin import MetadataMixin
@@ -59,6 +60,18 @@ class CentralManagement(CRUDEndpoint, MetadataMixin):
     
     # Configure metadata mixin to use this endpoint's helper module
     _helper_module_name = "central_management"
+    
+    # ========================================================================
+    # Table Fields Metadata (for normalization)
+    # Auto-generated from schema - supports flexible input formats
+    # ========================================================================
+    _TABLE_FIELDS = {
+        "server_list": {
+            "mkey": "id",
+            "required_fields": ['server-type', 'server-address', 'server-address6', 'fqdn'],
+            "example": "[{'server-type': 'update', 'server-address': '192.168.1.10', 'server-address6': 'value', 'fqdn': 'value'}]",
+        },
+    }
     
     # ========================================================================
     # Capabilities (from schema metadata)
@@ -281,6 +294,9 @@ class CentralManagement(CRUDEndpoint, MetadataMixin):
             ca_cert: CA certificate to be used by FGFM protocol.
             vdom: Virtual domain (VDOM) name to use when communicating with FortiManager.
             server_list: Additional severs that the FortiGate can use for updates (for AV, IPS, updates) and ratings (for web filter and antispam ratings) servers.
+                Default format: [{'server-type': 'update', 'server-address': '192.168.1.10', 'server-address6': 'value', 'fqdn': 'value'}]
+                Required format: List of dicts with keys: server-type, server-address, server-address6, fqdn
+                  (String format not allowed due to multiple required fields)
             fmg_update_port: Port used to communicate with FortiManager that is acting as a FortiGuard update server.
             fmg_update_http_header: Enable/disable inclusion of HTTP header in update request.
             include_default_servers: Enable/disable inclusion of public FortiGuard servers in the override server list.
@@ -316,6 +332,16 @@ class CentralManagement(CRUDEndpoint, MetadataMixin):
             - post(): Create new object
             - set(): Intelligent create or update
         """
+        # Apply normalization for table fields (supports flexible input formats)
+        if server_list is not None:
+            server_list = normalize_table_field(
+                server_list,
+                mkey="id",
+                required_fields=['server-type', 'server-address', 'server-address6', 'fqdn'],
+                field_name="server_list",
+                example="[{'server-type': 'update', 'server-address': '192.168.1.10', 'server-address6': 'value', 'fqdn': 'value'}]",
+            )
+        
         # Build payload using helper function with auto-normalization
         # This automatically converts strings/lists to [{'name': '...'}] format for list fields
         # To disable auto-normalization, use build_cmdb_payload directly
@@ -371,8 +397,7 @@ class CentralManagement(CRUDEndpoint, MetadataMixin):
             params["scope"] = q_scope
         
         return self._client.put(
-            "cmdb", endpoint, data=payload_data, params=params, vdom=vdom
-        )
+            "cmdb", endpoint, data=payload_data, params=params, vdom=vdom        )
 
 
 

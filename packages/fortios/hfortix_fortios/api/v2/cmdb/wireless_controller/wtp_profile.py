@@ -47,6 +47,7 @@ from hfortix_fortios._helpers import (
     build_cmdb_payload,  # Keep for backward compatibility / manual usage
     is_success,
     quote_path_param,  # URL encoding for path parameters
+    normalize_table_field,  # For table field normalization
 )
 # Import metadata mixin for schema introspection
 from hfortix_fortios._helpers.metadata_mixin import MetadataMixin
@@ -59,6 +60,28 @@ class WtpProfile(CRUDEndpoint, MetadataMixin):
     
     # Configure metadata mixin to use this endpoint's helper module
     _helper_module_name = "wtp_profile"
+    
+    # ========================================================================
+    # Table Fields Metadata (for normalization)
+    # Auto-generated from schema - supports flexible input formats
+    # ========================================================================
+    _TABLE_FIELDS = {
+        "led_schedules": {
+            "mkey": "name",
+            "required_fields": ['name'],
+            "example": "[{'name': 'value'}]",
+        },
+        "deny_mac_list": {
+            "mkey": "id",
+            "required_fields": ['id'],
+            "example": "[{'id': 1}]",
+        },
+        "split_tunneling_acl": {
+            "mkey": "id",
+            "required_fields": ['dest-ip'],
+            "example": "[{'dest-ip': 'value'}]",
+        },
+    }
     
     # ========================================================================
     # Capabilities (from schema metadata)
@@ -342,6 +365,11 @@ class WtpProfile(CRUDEndpoint, MetadataMixin):
             energy_efficient_ethernet: Enable/disable use of energy efficient Ethernet on WTP.
             led_state: Enable/disable use of LEDs on WTP (default = enable).
             led_schedules: Recurring firewall schedules for illuminating LEDs on the FortiAP. If led-state is enabled, LEDs will be visible when at least one of the schedules is valid. Separate multiple schedule names with a space.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
             dtls_policy: WTP data channel DTLS policy (default = clear-text).
             dtls_in_kernel: Enable/disable data channel DTLS in kernel.
             max_clients: Maximum number of stations (STAs) supported by the WTP (default = 0, meaning no client limitation).
@@ -349,6 +377,11 @@ class WtpProfile(CRUDEndpoint, MetadataMixin):
             handoff_sta_thresh: Threshold value for AP handoff.
             handoff_roaming: Enable/disable client load balancing during roaming to avoid roaming delay (default = enable).
             deny_mac_list: List of MAC addresses that are denied access to this WTP, FortiAP, or AP.
+                Default format: [{'id': 1}]
+                Supported formats:
+                  - Single string: "value" → [{'id': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'id': 'val1'}, ...]
+                  - List of dicts: [{'id': 1}] (recommended)
             ap_country: Country in which this WTP, FortiAP, or AP will operate (default = NA, automatically use the country configured for the current VDOM).
             ip_fragment_preventing: Method(s) by which IP fragmentation is prevented for control and data packets through CAPWAP tunnel (default = tcp-mss-adjust).
             tun_mtu_uplink: The maximum transmission unit (MTU) of uplink CAPWAP tunnel (576 - 1500 bytes or 0; 0 means the local MTU of FortiAP; default = 0).
@@ -356,6 +389,11 @@ class WtpProfile(CRUDEndpoint, MetadataMixin):
             split_tunneling_acl_path: Split tunneling ACL path is local/tunnel.
             split_tunneling_acl_local_ap_subnet: Enable/disable automatically adding local subnetwork of FortiAP to split-tunneling ACL (default = disable).
             split_tunneling_acl: Split tunneling ACL filter list.
+                Default format: [{'dest-ip': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'id': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'id': 'val1'}, ...]
+                  - List of dicts: [{'dest-ip': 'value'}] (recommended)
             allowaccess: Control management access to the managed WTP, FortiAP, or AP. Separate entries with a space.
             login_passwd_change: Change or reset the administrator password of a managed WTP, FortiAP or AP (yes, default, or no, default = no).
             login_passwd: Set the managed WTP, FortiAP, or AP's administrator password.
@@ -430,6 +468,32 @@ class WtpProfile(CRUDEndpoint, MetadataMixin):
             - post(): Create new object
             - set(): Intelligent create or update
         """
+        # Apply normalization for table fields (supports flexible input formats)
+        if led_schedules is not None:
+            led_schedules = normalize_table_field(
+                led_schedules,
+                mkey="name",
+                required_fields=['name'],
+                field_name="led_schedules",
+                example="[{'name': 'value'}]",
+            )
+        if deny_mac_list is not None:
+            deny_mac_list = normalize_table_field(
+                deny_mac_list,
+                mkey="id",
+                required_fields=['id'],
+                field_name="deny_mac_list",
+                example="[{'id': 1}]",
+            )
+        if split_tunneling_acl is not None:
+            split_tunneling_acl = normalize_table_field(
+                split_tunneling_acl,
+                mkey="id",
+                required_fields=['dest-ip'],
+                field_name="split_tunneling_acl",
+                example="[{'dest-ip': 'value'}]",
+            )
+        
         # Build payload using helper function with auto-normalization
         # This automatically converts strings/lists to [{'name': '...'}] format for list fields
         # To disable auto-normalization, use build_cmdb_payload directly
@@ -542,8 +606,7 @@ class WtpProfile(CRUDEndpoint, MetadataMixin):
             params["scope"] = q_scope
         
         return self._client.put(
-            "cmdb", endpoint, data=payload_data, params=params, vdom=vdom
-        )
+            "cmdb", endpoint, data=payload_data, params=params, vdom=vdom        )
 
     # ========================================================================
     # POST Method
@@ -663,6 +726,11 @@ class WtpProfile(CRUDEndpoint, MetadataMixin):
             energy_efficient_ethernet: Enable/disable use of energy efficient Ethernet on WTP.
             led_state: Enable/disable use of LEDs on WTP (default = enable).
             led_schedules: Recurring firewall schedules for illuminating LEDs on the FortiAP. If led-state is enabled, LEDs will be visible when at least one of the schedules is valid. Separate multiple schedule names with a space.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
             dtls_policy: WTP data channel DTLS policy (default = clear-text).
             dtls_in_kernel: Enable/disable data channel DTLS in kernel.
             max_clients: Maximum number of stations (STAs) supported by the WTP (default = 0, meaning no client limitation).
@@ -670,6 +738,11 @@ class WtpProfile(CRUDEndpoint, MetadataMixin):
             handoff_sta_thresh: Threshold value for AP handoff.
             handoff_roaming: Enable/disable client load balancing during roaming to avoid roaming delay (default = enable).
             deny_mac_list: List of MAC addresses that are denied access to this WTP, FortiAP, or AP.
+                Default format: [{'id': 1}]
+                Supported formats:
+                  - Single string: "value" → [{'id': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'id': 'val1'}, ...]
+                  - List of dicts: [{'id': 1}] (recommended)
             ap_country: Country in which this WTP, FortiAP, or AP will operate (default = NA, automatically use the country configured for the current VDOM).
             ip_fragment_preventing: Method(s) by which IP fragmentation is prevented for control and data packets through CAPWAP tunnel (default = tcp-mss-adjust).
             tun_mtu_uplink: The maximum transmission unit (MTU) of uplink CAPWAP tunnel (576 - 1500 bytes or 0; 0 means the local MTU of FortiAP; default = 0).
@@ -677,6 +750,11 @@ class WtpProfile(CRUDEndpoint, MetadataMixin):
             split_tunneling_acl_path: Split tunneling ACL path is local/tunnel.
             split_tunneling_acl_local_ap_subnet: Enable/disable automatically adding local subnetwork of FortiAP to split-tunneling ACL (default = disable).
             split_tunneling_acl: Split tunneling ACL filter list.
+                Default format: [{'dest-ip': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'id': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'id': 'val1'}, ...]
+                  - List of dicts: [{'dest-ip': 'value'}] (recommended)
             allowaccess: Control management access to the managed WTP, FortiAP, or AP. Separate entries with a space.
             login_passwd_change: Change or reset the administrator password of a managed WTP, FortiAP or AP (yes, default, or no, default = no).
             login_passwd: Set the managed WTP, FortiAP, or AP's administrator password.
@@ -753,6 +831,32 @@ class WtpProfile(CRUDEndpoint, MetadataMixin):
             - put(): Update existing object
             - set(): Intelligent create or update
         """
+        # Apply normalization for table fields (supports flexible input formats)
+        if led_schedules is not None:
+            led_schedules = normalize_table_field(
+                led_schedules,
+                mkey="name",
+                required_fields=['name'],
+                field_name="led_schedules",
+                example="[{'name': 'value'}]",
+            )
+        if deny_mac_list is not None:
+            deny_mac_list = normalize_table_field(
+                deny_mac_list,
+                mkey="id",
+                required_fields=['id'],
+                field_name="deny_mac_list",
+                example="[{'id': 1}]",
+            )
+        if split_tunneling_acl is not None:
+            split_tunneling_acl = normalize_table_field(
+                split_tunneling_acl,
+                mkey="id",
+                required_fields=['dest-ip'],
+                field_name="split_tunneling_acl",
+                example="[{'dest-ip': 'value'}]",
+            )
+        
         # Build payload using helper function with auto-normalization
         # This automatically converts strings/lists to [{'name': '...'}] format for list fields
         # To disable auto-normalization, use build_cmdb_payload directly
@@ -860,8 +964,7 @@ class WtpProfile(CRUDEndpoint, MetadataMixin):
             params["scope"] = q_scope
         
         return self._client.post(
-            "cmdb", endpoint, data=payload_data, params=params, vdom=vdom
-        )
+            "cmdb", endpoint, data=payload_data, params=params, vdom=vdom        )
 
     # ========================================================================
     # DELETE Method
@@ -915,8 +1018,7 @@ class WtpProfile(CRUDEndpoint, MetadataMixin):
             params["scope"] = q_scope
         
         return self._client.delete(
-            "cmdb", endpoint, params=params, vdom=vdom
-        )
+            "cmdb", endpoint, params=params, vdom=vdom        )
 
     def exists(
         self,

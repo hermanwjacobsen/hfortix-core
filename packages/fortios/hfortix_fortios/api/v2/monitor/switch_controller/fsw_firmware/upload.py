@@ -154,8 +154,7 @@ class Upload(CRUDEndpoint, MetadataMixin):
 
         endpoint = "/switch-controller/fsw-firmware/upload"
         return self._client.post(
-            "monitor", endpoint, data=payload_data, vdom=vdom
-        )
+            "monitor", endpoint, data=payload_data, vdom=vdom        )
 
 
 

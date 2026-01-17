@@ -160,8 +160,7 @@ class Update(CRUDEndpoint, MetadataMixin):
 
         endpoint = "/system/ha-peer/update"
         return self._client.post(
-            "monitor", endpoint, data=payload_data, vdom=vdom
-        )
+            "monitor", endpoint, data=payload_data, vdom=vdom        )
 
 
 

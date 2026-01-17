@@ -166,8 +166,7 @@ class CloseMultiple(CRUDEndpoint, MetadataMixin):
 
         endpoint = "/firewall/session6/close-multiple"
         return self._client.post(
-            "monitor", endpoint, data=payload_data, vdom=vdom
-        )
+            "monitor", endpoint, data=payload_data, vdom=vdom        )
 
 
 

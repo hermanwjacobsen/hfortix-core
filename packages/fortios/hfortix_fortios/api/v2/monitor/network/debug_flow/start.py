@@ -196,8 +196,7 @@ class Start(CRUDEndpoint, MetadataMixin):
 
         endpoint = "/network/debug-flow/start"
         return self._client.post(
-            "monitor", endpoint, data=payload_data, vdom=vdom
-        )
+            "monitor", endpoint, data=payload_data, vdom=vdom        )
 
 
 

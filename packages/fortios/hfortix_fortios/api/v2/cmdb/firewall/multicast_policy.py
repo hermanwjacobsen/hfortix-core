@@ -47,6 +47,7 @@ from hfortix_fortios._helpers import (
     build_cmdb_payload,  # Keep for backward compatibility / manual usage
     is_success,
     quote_path_param,  # URL encoding for path parameters
+    normalize_table_field,  # For table field normalization
 )
 # Import metadata mixin for schema introspection
 from hfortix_fortios._helpers.metadata_mixin import MetadataMixin
@@ -59,6 +60,23 @@ class MulticastPolicy(CRUDEndpoint, MetadataMixin):
     
     # Configure metadata mixin to use this endpoint's helper module
     _helper_module_name = "multicast_policy"
+    
+    # ========================================================================
+    # Table Fields Metadata (for normalization)
+    # Auto-generated from schema - supports flexible input formats
+    # ========================================================================
+    _TABLE_FIELDS = {
+        "srcaddr": {
+            "mkey": "name",
+            "required_fields": ['name'],
+            "example": "[{'name': 'value'}]",
+        },
+        "dstaddr": {
+            "mkey": "name",
+            "required_fields": ['name'],
+            "example": "[{'name': 'value'}]",
+        },
+    }
     
     # ========================================================================
     # Capabilities (from schema metadata)
@@ -275,7 +293,17 @@ class MulticastPolicy(CRUDEndpoint, MetadataMixin):
             srcintf: Source interface name.
             dstintf: Destination interface name.
             srcaddr: Source address objects.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
             dstaddr: Destination address objects.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
             snat: Enable/disable substitution of the outgoing interface IP address for the original source IP address (called source NAT or SNAT).
             snat_ip: IPv4 address to be used as the source address for NATed traffic.
             dnat: IPv4 DNAT address used for multicast destination addresses.
@@ -316,6 +344,24 @@ class MulticastPolicy(CRUDEndpoint, MetadataMixin):
             - post(): Create new object
             - set(): Intelligent create or update
         """
+        # Apply normalization for table fields (supports flexible input formats)
+        if srcaddr is not None:
+            srcaddr = normalize_table_field(
+                srcaddr,
+                mkey="name",
+                required_fields=['name'],
+                field_name="srcaddr",
+                example="[{'name': 'value'}]",
+            )
+        if dstaddr is not None:
+            dstaddr = normalize_table_field(
+                dstaddr,
+                mkey="name",
+                required_fields=['name'],
+                field_name="dstaddr",
+                example="[{'name': 'value'}]",
+            )
+        
         # Build payload using helper function with auto-normalization
         # This automatically converts strings/lists to [{'name': '...'}] format for list fields
         # To disable auto-normalization, use build_cmdb_payload directly
@@ -371,8 +417,7 @@ class MulticastPolicy(CRUDEndpoint, MetadataMixin):
             params["scope"] = q_scope
         
         return self._client.put(
-            "cmdb", endpoint, data=payload_data, params=params, vdom=vdom
-        )
+            "cmdb", endpoint, data=payload_data, params=params, vdom=vdom        )
 
     # ========================================================================
     # POST Method
@@ -425,7 +470,17 @@ class MulticastPolicy(CRUDEndpoint, MetadataMixin):
             srcintf: Source interface name.
             dstintf: Destination interface name.
             srcaddr: Source address objects.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
             dstaddr: Destination address objects.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
             snat: Enable/disable substitution of the outgoing interface IP address for the original source IP address (called source NAT or SNAT).
             snat_ip: IPv4 address to be used as the source address for NATed traffic.
             dnat: IPv4 DNAT address used for multicast destination addresses.
@@ -468,6 +523,24 @@ class MulticastPolicy(CRUDEndpoint, MetadataMixin):
             - put(): Update existing object
             - set(): Intelligent create or update
         """
+        # Apply normalization for table fields (supports flexible input formats)
+        if srcaddr is not None:
+            srcaddr = normalize_table_field(
+                srcaddr,
+                mkey="name",
+                required_fields=['name'],
+                field_name="srcaddr",
+                example="[{'name': 'value'}]",
+            )
+        if dstaddr is not None:
+            dstaddr = normalize_table_field(
+                dstaddr,
+                mkey="name",
+                required_fields=['name'],
+                field_name="dstaddr",
+                example="[{'name': 'value'}]",
+            )
+        
         # Build payload using helper function with auto-normalization
         # This automatically converts strings/lists to [{'name': '...'}] format for list fields
         # To disable auto-normalization, use build_cmdb_payload directly
@@ -518,8 +591,7 @@ class MulticastPolicy(CRUDEndpoint, MetadataMixin):
             params["scope"] = q_scope
         
         return self._client.post(
-            "cmdb", endpoint, data=payload_data, params=params, vdom=vdom
-        )
+            "cmdb", endpoint, data=payload_data, params=params, vdom=vdom        )
 
     # ========================================================================
     # DELETE Method
@@ -573,8 +645,7 @@ class MulticastPolicy(CRUDEndpoint, MetadataMixin):
             params["scope"] = q_scope
         
         return self._client.delete(
-            "cmdb", endpoint, params=params, vdom=vdom
-        )
+            "cmdb", endpoint, params=params, vdom=vdom        )
 
     def exists(
         self,

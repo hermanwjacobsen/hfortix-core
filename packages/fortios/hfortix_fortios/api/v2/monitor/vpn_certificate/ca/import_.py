@@ -163,8 +163,7 @@ class Import(CRUDEndpoint, MetadataMixin):
 
         endpoint = "/vpn-certificate/ca/import"
         return self._client.post(
-            "monitor", endpoint, data=payload_data, vdom=vdom
-        )
+            "monitor", endpoint, data=payload_data, vdom=vdom        )
 
 
 

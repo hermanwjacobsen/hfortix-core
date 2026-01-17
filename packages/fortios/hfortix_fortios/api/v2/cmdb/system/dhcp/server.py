@@ -47,6 +47,7 @@ from hfortix_fortios._helpers import (
     build_cmdb_payload,  # Keep for backward compatibility / manual usage
     is_success,
     quote_path_param,  # URL encoding for path parameters
+    normalize_table_field,  # For table field normalization
 )
 # Import metadata mixin for schema introspection
 from hfortix_fortios._helpers.metadata_mixin import MetadataMixin
@@ -59,6 +60,43 @@ class Server(CRUDEndpoint, MetadataMixin):
     
     # Configure metadata mixin to use this endpoint's helper module
     _helper_module_name = "server"
+    
+    # ========================================================================
+    # Table Fields Metadata (for normalization)
+    # Auto-generated from schema - supports flexible input formats
+    # ========================================================================
+    _TABLE_FIELDS = {
+        "ip_range": {
+            "mkey": "id",
+            "required_fields": ['id', 'start-ip', 'end-ip'],
+            "example": "[{'id': 1, 'start-ip': '192.168.1.10', 'end-ip': '192.168.1.10'}]",
+        },
+        "tftp_server": {
+            "mkey": "tftp-server",
+            "required_fields": ['tftp-server'],
+            "example": "[{'tftp-server': 'value'}]",
+        },
+        "options": {
+            "mkey": "id",
+            "required_fields": ['id', 'code'],
+            "example": "[{'id': 1, 'code': 1}]",
+        },
+        "vci_string": {
+            "mkey": "vci-string",
+            "required_fields": ['vci-string'],
+            "example": "[{'vci-string': 'value'}]",
+        },
+        "exclude_range": {
+            "mkey": "id",
+            "required_fields": ['id', 'start-ip', 'end-ip'],
+            "example": "[{'id': 1, 'start-ip': '192.168.1.10', 'end-ip': '192.168.1.10'}]",
+        },
+        "reserved_address": {
+            "mkey": "id",
+            "required_fields": ['id', 'ip', 'mac'],
+            "example": "[{'id': 1, 'ip': '192.168.1.10', 'mac': 'value'}]",
+        },
+    }
     
     # ========================================================================
     # Capabilities (from schema metadata)
@@ -324,11 +362,22 @@ class Server(CRUDEndpoint, MetadataMixin):
             netmask: Netmask assigned by the DHCP server.
             interface: DHCP server can assign IP configurations to clients connected to this interface.
             ip_range: DHCP IP range configuration.
+                Default format: [{'id': 1, 'start-ip': '192.168.1.10', 'end-ip': '192.168.1.10'}]
+                Required format: List of dicts with keys: id, start-ip, end-ip
+                  (String format not allowed due to multiple required fields)
             timezone_option: Options for the DHCP server to set the client's time zone.
             timezone: Select the time zone to be assigned to DHCP clients.
             tftp_server: One or more hostnames or IP addresses of the TFTP servers in quotes separated by spaces.
+                Default format: [{'tftp-server': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'tftp-server': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'tftp-server': 'val1'}, ...]
+                  - List of dicts: [{'tftp-server': 'value'}] (recommended)
             filename: Name of the boot file on the TFTP server.
             options: DHCP options.
+                Default format: [{'id': 1, 'code': 1}]
+                Required format: List of dicts with keys: id, code
+                  (String format not allowed due to multiple required fields)
             server_type: DHCP server can be a normal DHCP server or an IPsec DHCP server.
             ip_mode: Method used to assign client IP.
             conflicted_ip_timeout: Time in seconds to wait after a conflicted IP address is removed from the DHCP range before it can be reused.
@@ -346,10 +395,21 @@ class Server(CRUDEndpoint, MetadataMixin):
             ddns_ttl: TTL.
             vci_match: Enable/disable vendor class identifier (VCI) matching. When enabled only DHCP requests with a matching VCI are served.
             vci_string: One or more VCI strings in quotes separated by spaces.
+                Default format: [{'vci-string': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'vci-string': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'vci-string': 'val1'}, ...]
+                  - List of dicts: [{'vci-string': 'value'}] (recommended)
             exclude_range: Exclude one or more ranges of IP addresses from being assigned to clients.
+                Default format: [{'id': 1, 'start-ip': '192.168.1.10', 'end-ip': '192.168.1.10'}]
+                Required format: List of dicts with keys: id, start-ip, end-ip
+                  (String format not allowed due to multiple required fields)
             shared_subnet: Enable/disable shared subnet.
             relay_agent: Relay agent IP.
             reserved_address: Options for the DHCP server to assign IP settings to specific MAC addresses.
+                Default format: [{'id': 1, 'ip': '192.168.1.10', 'mac': 'value'}]
+                Required format: List of dicts with keys: id, ip, mac
+                  (String format not allowed due to multiple required fields)
             vdom: Virtual domain name.
             error_mode: Override client-level error_mode. "raise" raises exceptions, "return" returns error dict, "print" prints errors.
             error_format: Override client-level error_format. "detailed" provides full context, "simple" is concise, "code_only" returns just status code.
@@ -378,6 +438,56 @@ class Server(CRUDEndpoint, MetadataMixin):
             - post(): Create new object
             - set(): Intelligent create or update
         """
+        # Apply normalization for table fields (supports flexible input formats)
+        if ip_range is not None:
+            ip_range = normalize_table_field(
+                ip_range,
+                mkey="id",
+                required_fields=['id', 'start-ip', 'end-ip'],
+                field_name="ip_range",
+                example="[{'id': 1, 'start-ip': '192.168.1.10', 'end-ip': '192.168.1.10'}]",
+            )
+        if tftp_server is not None:
+            tftp_server = normalize_table_field(
+                tftp_server,
+                mkey="tftp-server",
+                required_fields=['tftp-server'],
+                field_name="tftp_server",
+                example="[{'tftp-server': 'value'}]",
+            )
+        if options is not None:
+            options = normalize_table_field(
+                options,
+                mkey="id",
+                required_fields=['id', 'code'],
+                field_name="options",
+                example="[{'id': 1, 'code': 1}]",
+            )
+        if vci_string is not None:
+            vci_string = normalize_table_field(
+                vci_string,
+                mkey="vci-string",
+                required_fields=['vci-string'],
+                field_name="vci_string",
+                example="[{'vci-string': 'value'}]",
+            )
+        if exclude_range is not None:
+            exclude_range = normalize_table_field(
+                exclude_range,
+                mkey="id",
+                required_fields=['id', 'start-ip', 'end-ip'],
+                field_name="exclude_range",
+                example="[{'id': 1, 'start-ip': '192.168.1.10', 'end-ip': '192.168.1.10'}]",
+            )
+        if reserved_address is not None:
+            reserved_address = normalize_table_field(
+                reserved_address,
+                mkey="id",
+                required_fields=['id', 'ip', 'mac'],
+                field_name="reserved_address",
+                example="[{'id': 1, 'ip': '192.168.1.10', 'mac': 'value'}]",
+            )
+        
         # Build payload using helper function with auto-normalization
         # This automatically converts strings/lists to [{'name': '...'}] format for list fields
         # To disable auto-normalization, use build_cmdb_payload directly
@@ -464,8 +574,7 @@ class Server(CRUDEndpoint, MetadataMixin):
             params["scope"] = q_scope
         
         return self._client.put(
-            "cmdb", endpoint, data=payload_data, params=params, vdom=vdom
-        )
+            "cmdb", endpoint, data=payload_data, params=params, vdom=vdom        )
 
     # ========================================================================
     # POST Method
@@ -567,11 +676,22 @@ class Server(CRUDEndpoint, MetadataMixin):
             netmask: Netmask assigned by the DHCP server.
             interface: DHCP server can assign IP configurations to clients connected to this interface.
             ip_range: DHCP IP range configuration.
+                Default format: [{'id': 1, 'start-ip': '192.168.1.10', 'end-ip': '192.168.1.10'}]
+                Required format: List of dicts with keys: id, start-ip, end-ip
+                  (String format not allowed due to multiple required fields)
             timezone_option: Options for the DHCP server to set the client's time zone.
             timezone: Select the time zone to be assigned to DHCP clients.
             tftp_server: One or more hostnames or IP addresses of the TFTP servers in quotes separated by spaces.
+                Default format: [{'tftp-server': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'tftp-server': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'tftp-server': 'val1'}, ...]
+                  - List of dicts: [{'tftp-server': 'value'}] (recommended)
             filename: Name of the boot file on the TFTP server.
             options: DHCP options.
+                Default format: [{'id': 1, 'code': 1}]
+                Required format: List of dicts with keys: id, code
+                  (String format not allowed due to multiple required fields)
             server_type: DHCP server can be a normal DHCP server or an IPsec DHCP server.
             ip_mode: Method used to assign client IP.
             conflicted_ip_timeout: Time in seconds to wait after a conflicted IP address is removed from the DHCP range before it can be reused.
@@ -589,10 +709,21 @@ class Server(CRUDEndpoint, MetadataMixin):
             ddns_ttl: TTL.
             vci_match: Enable/disable vendor class identifier (VCI) matching. When enabled only DHCP requests with a matching VCI are served.
             vci_string: One or more VCI strings in quotes separated by spaces.
+                Default format: [{'vci-string': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'vci-string': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'vci-string': 'val1'}, ...]
+                  - List of dicts: [{'vci-string': 'value'}] (recommended)
             exclude_range: Exclude one or more ranges of IP addresses from being assigned to clients.
+                Default format: [{'id': 1, 'start-ip': '192.168.1.10', 'end-ip': '192.168.1.10'}]
+                Required format: List of dicts with keys: id, start-ip, end-ip
+                  (String format not allowed due to multiple required fields)
             shared_subnet: Enable/disable shared subnet.
             relay_agent: Relay agent IP.
             reserved_address: Options for the DHCP server to assign IP settings to specific MAC addresses.
+                Default format: [{'id': 1, 'ip': '192.168.1.10', 'mac': 'value'}]
+                Required format: List of dicts with keys: id, ip, mac
+                  (String format not allowed due to multiple required fields)
             vdom: Virtual domain name. Use True for global, string for specific VDOM.
             error_mode: Override client-level error_mode. "raise" raises exceptions, "return" returns error dict, "print" prints errors.
             error_format: Override client-level error_format. "detailed" provides full context, "simple" is concise, "code_only" returns just status code.
@@ -623,6 +754,56 @@ class Server(CRUDEndpoint, MetadataMixin):
             - put(): Update existing object
             - set(): Intelligent create or update
         """
+        # Apply normalization for table fields (supports flexible input formats)
+        if ip_range is not None:
+            ip_range = normalize_table_field(
+                ip_range,
+                mkey="id",
+                required_fields=['id', 'start-ip', 'end-ip'],
+                field_name="ip_range",
+                example="[{'id': 1, 'start-ip': '192.168.1.10', 'end-ip': '192.168.1.10'}]",
+            )
+        if tftp_server is not None:
+            tftp_server = normalize_table_field(
+                tftp_server,
+                mkey="tftp-server",
+                required_fields=['tftp-server'],
+                field_name="tftp_server",
+                example="[{'tftp-server': 'value'}]",
+            )
+        if options is not None:
+            options = normalize_table_field(
+                options,
+                mkey="id",
+                required_fields=['id', 'code'],
+                field_name="options",
+                example="[{'id': 1, 'code': 1}]",
+            )
+        if vci_string is not None:
+            vci_string = normalize_table_field(
+                vci_string,
+                mkey="vci-string",
+                required_fields=['vci-string'],
+                field_name="vci_string",
+                example="[{'vci-string': 'value'}]",
+            )
+        if exclude_range is not None:
+            exclude_range = normalize_table_field(
+                exclude_range,
+                mkey="id",
+                required_fields=['id', 'start-ip', 'end-ip'],
+                field_name="exclude_range",
+                example="[{'id': 1, 'start-ip': '192.168.1.10', 'end-ip': '192.168.1.10'}]",
+            )
+        if reserved_address is not None:
+            reserved_address = normalize_table_field(
+                reserved_address,
+                mkey="id",
+                required_fields=['id', 'ip', 'mac'],
+                field_name="reserved_address",
+                example="[{'id': 1, 'ip': '192.168.1.10', 'mac': 'value'}]",
+            )
+        
         # Build payload using helper function with auto-normalization
         # This automatically converts strings/lists to [{'name': '...'}] format for list fields
         # To disable auto-normalization, use build_cmdb_payload directly
@@ -704,8 +885,7 @@ class Server(CRUDEndpoint, MetadataMixin):
             params["scope"] = q_scope
         
         return self._client.post(
-            "cmdb", endpoint, data=payload_data, params=params, vdom=vdom
-        )
+            "cmdb", endpoint, data=payload_data, params=params, vdom=vdom        )
 
     # ========================================================================
     # DELETE Method
@@ -759,8 +939,7 @@ class Server(CRUDEndpoint, MetadataMixin):
             params["scope"] = q_scope
         
         return self._client.delete(
-            "cmdb", endpoint, params=params, vdom=vdom
-        )
+            "cmdb", endpoint, params=params, vdom=vdom        )
 
     def exists(
         self,

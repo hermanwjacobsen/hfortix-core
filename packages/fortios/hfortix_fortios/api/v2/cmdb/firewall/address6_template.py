@@ -47,6 +47,7 @@ from hfortix_fortios._helpers import (
     build_cmdb_payload,  # Keep for backward compatibility / manual usage
     is_success,
     quote_path_param,  # URL encoding for path parameters
+    normalize_table_field,  # For table field normalization
 )
 # Import metadata mixin for schema introspection
 from hfortix_fortios._helpers.metadata_mixin import MetadataMixin
@@ -59,6 +60,18 @@ class Address6Template(CRUDEndpoint, MetadataMixin):
     
     # Configure metadata mixin to use this endpoint's helper module
     _helper_module_name = "address6_template"
+    
+    # ========================================================================
+    # Table Fields Metadata (for normalization)
+    # Auto-generated from schema - supports flexible input formats
+    # ========================================================================
+    _TABLE_FIELDS = {
+        "subnet_segment": {
+            "mkey": "id",
+            "required_fields": ['id', 'name', 'bits', 'exclusive'],
+            "example": "[{'id': 1, 'name': 'value', 'bits': 1, 'exclusive': 'enable'}]",
+        },
+    }
     
     # ========================================================================
     # Capabilities (from schema metadata)
@@ -257,6 +270,9 @@ class Address6Template(CRUDEndpoint, MetadataMixin):
             ip6: IPv6 address prefix.
             subnet_segment_count: Number of IPv6 subnet segments.
             subnet_segment: IPv6 subnet segments.
+                Default format: [{'id': 1, 'name': 'value', 'bits': 1, 'exclusive': 'enable'}]
+                Required format: List of dicts with keys: id, name, bits, exclusive
+                  (String format not allowed due to multiple required fields)
             fabric_object: Security Fabric global object setting.
             vdom: Virtual domain name.
             error_mode: Override client-level error_mode. "raise" raises exceptions, "return" returns error dict, "print" prints errors.
@@ -286,6 +302,16 @@ class Address6Template(CRUDEndpoint, MetadataMixin):
             - post(): Create new object
             - set(): Intelligent create or update
         """
+        # Apply normalization for table fields (supports flexible input formats)
+        if subnet_segment is not None:
+            subnet_segment = normalize_table_field(
+                subnet_segment,
+                mkey="id",
+                required_fields=['id', 'name', 'bits', 'exclusive'],
+                field_name="subnet_segment",
+                example="[{'id': 1, 'name': 'value', 'bits': 1, 'exclusive': 'enable'}]",
+            )
+        
         # Build payload using helper function with auto-normalization
         # This automatically converts strings/lists to [{'name': '...'}] format for list fields
         # To disable auto-normalization, use build_cmdb_payload directly
@@ -326,8 +352,7 @@ class Address6Template(CRUDEndpoint, MetadataMixin):
             params["scope"] = q_scope
         
         return self._client.put(
-            "cmdb", endpoint, data=payload_data, params=params, vdom=vdom
-        )
+            "cmdb", endpoint, data=payload_data, params=params, vdom=vdom        )
 
     # ========================================================================
     # POST Method
@@ -362,6 +387,9 @@ class Address6Template(CRUDEndpoint, MetadataMixin):
             ip6: IPv6 address prefix.
             subnet_segment_count: Number of IPv6 subnet segments.
             subnet_segment: IPv6 subnet segments.
+                Default format: [{'id': 1, 'name': 'value', 'bits': 1, 'exclusive': 'enable'}]
+                Required format: List of dicts with keys: id, name, bits, exclusive
+                  (String format not allowed due to multiple required fields)
             fabric_object: Security Fabric global object setting.
             vdom: Virtual domain name. Use True for global, string for specific VDOM.
             error_mode: Override client-level error_mode. "raise" raises exceptions, "return" returns error dict, "print" prints errors.
@@ -393,6 +421,16 @@ class Address6Template(CRUDEndpoint, MetadataMixin):
             - put(): Update existing object
             - set(): Intelligent create or update
         """
+        # Apply normalization for table fields (supports flexible input formats)
+        if subnet_segment is not None:
+            subnet_segment = normalize_table_field(
+                subnet_segment,
+                mkey="id",
+                required_fields=['id', 'name', 'bits', 'exclusive'],
+                field_name="subnet_segment",
+                example="[{'id': 1, 'name': 'value', 'bits': 1, 'exclusive': 'enable'}]",
+            )
+        
         # Build payload using helper function with auto-normalization
         # This automatically converts strings/lists to [{'name': '...'}] format for list fields
         # To disable auto-normalization, use build_cmdb_payload directly
@@ -428,8 +466,7 @@ class Address6Template(CRUDEndpoint, MetadataMixin):
             params["scope"] = q_scope
         
         return self._client.post(
-            "cmdb", endpoint, data=payload_data, params=params, vdom=vdom
-        )
+            "cmdb", endpoint, data=payload_data, params=params, vdom=vdom        )
 
     # ========================================================================
     # DELETE Method
@@ -483,8 +520,7 @@ class Address6Template(CRUDEndpoint, MetadataMixin):
             params["scope"] = q_scope
         
         return self._client.delete(
-            "cmdb", endpoint, params=params, vdom=vdom
-        )
+            "cmdb", endpoint, params=params, vdom=vdom        )
 
     def exists(
         self,
