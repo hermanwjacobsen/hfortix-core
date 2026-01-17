@@ -11,7 +11,11 @@ from pydantic import BaseModel, Field, field_validator
 from typing import Any, Literal, Optional
 
 # ============================================================================
-# Child Table Models
+# Enum Definitions for Child Table Fields (for fields with 4+ allowed values)
+# ============================================================================
+
+# ============================================================================
+# Child Table Models (sorted deepest-first so nested models are defined before their parents)
 # ============================================================================
 
 class Static6SdwanZone(BaseModel):
@@ -25,8 +29,9 @@ class Static6SdwanZone(BaseModel):
         """Pydantic model configuration."""
         extra = "allow"  # Allow additional fields from API
         str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
     
-    name: str | None = Field(max_length=79, default="", description="SD-WAN zone name.")  # datasource: ['system.sdwan.zone.name']
+    name: str | None = Field(max_length=79, default=None, description="SD-WAN zone name.")  # datasource: ['system.sdwan.zone.name']
 # ============================================================================
 # Enum Definitions (for fields with 4+ allowed values)
 # ============================================================================
@@ -59,7 +64,7 @@ class Static6Model(BaseModel):
     status: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable this static route.")    
     dst: str = Field(default="::/0", description="Destination IPv6 prefix.")    
     gateway: str | None = Field(default="::", description="IPv6 address of the gateway.")    
-    device: str = Field(max_length=35, default="", description="Gateway out interface or tunnel.")  # datasource: ['system.interface.name']    
+    device: str = Field(max_length=35, description="Gateway out interface or tunnel.")  # datasource: ['system.interface.name']    
     devindex: int | None = Field(ge=0, le=4294967295, default=0, description="Device index (0 - 4294967295).")    
     distance: int | None = Field(ge=1, le=255, default=10, description="Administrative distance (1 - 255).")    
     weight: int | None = Field(ge=0, le=255, default=0, description="Administrative weight (0 - 255).")    
@@ -67,10 +72,10 @@ class Static6Model(BaseModel):
     comment: str | None = Field(max_length=255, default=None, description="Optional comments.")    
     blackhole: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable black hole.")    
     dynamic_gateway: Literal["enable", "disable"] | None = Field(default="disable", description="Enable use of dynamic gateway retrieved from Router Advertisement (RA).")    
-    sdwan_zone: list[SdwanZone] = Field(default=None, description="Choose SD-WAN Zone.")    
-    dstaddr: str | None = Field(max_length=79, default="", description="Name of firewall address or address group.")  # datasource: ['firewall.address6.name', 'firewall.addrgrp6.name']    
+    sdwan_zone: list[Static6SdwanZone] = Field(default_factory=list, description="Choose SD-WAN Zone.")    
+    dstaddr: str | None = Field(max_length=79, default=None, description="Name of firewall address or address group.")  # datasource: ['firewall.address6.name', 'firewall.addrgrp6.name']    
     link_monitor_exempt: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable withdrawal of this static route when link monitor or health check is down.")    
-    vrf: int | None = Field(ge=0, le=511, default="unspecified", description="Virtual Routing Forwarding ID.")    
+    vrf: int | None = Field(ge=0, le=511, default=None, description="Virtual Routing Forwarding ID.")    
     bfd: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable Bidirectional Forwarding Detection (BFD).")    
     tag: int | None = Field(ge=0, le=4294967295, default=0, description="Route tag.")    
     # ========================================================================
@@ -167,7 +172,7 @@ class Static6Model(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.router.static6.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate scalar field
         value = getattr(self, "device", None)
@@ -216,7 +221,7 @@ class Static6Model(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.router.static6.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate child table items
         values = getattr(self, "sdwan_zone", [])
@@ -274,7 +279,7 @@ class Static6Model(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.router.static6.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate scalar field
         value = getattr(self, "dstaddr", None)
@@ -340,5 +345,5 @@ __all__ = [
 # ============================================================================
 # Generated by hfortix generator v0.6.0
 # Schema: 1.7.0
-# Generated: 2026-01-17T05:32:16.608372Z
+# Generated: 2026-01-17T17:25:20.632506Z
 # ============================================================================

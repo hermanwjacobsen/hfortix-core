@@ -8,33 +8,33 @@ Generated from FortiOS schema version unknown.
 from __future__ import annotations
 
 from pydantic import BaseModel, Field
-from typing import Any, Optional
+from typing import Any, Literal, Optional
+from enum import Enum
 
 # ============================================================================
-# Child Table Models
+# Enum Definitions for Child Table Fields (for fields with 4+ allowed values)
 # ============================================================================
 
-class SnmpCommunity(BaseModel):
-    """
-    Child table model for community.
-    
-    SNMP Community Configuration.
-    """
-    
-    class Config:
-        """Pydantic model configuration."""
-        extra = "allow"  # Allow additional fields from API
-        str_strip_whitespace = True
-    
-    id: int = Field(ge=0, le=4294967295, default=0, description="Community ID.")    
-    name: str = Field(max_length=35, default="", description="Community name.")    
-    status: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable this SNMP community.")    
-    query_v1_status: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable SNMP v1 queries.")    
-    query_v2c_status: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable SNMP v2c queries.")    
-    trap_v1_status: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable SNMP v1 traps.")    
-    trap_v2c_status: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable SNMP v2c traps.")    
-    hosts: list[Hosts] = Field(default=None, description="Configure IPv4 SNMP managers (hosts).")    
-    hosts6: list[Hosts6] = Field(default=None, description="Configure IPv6 SNMP managers (hosts).")
+class SnmpUserAuthProtoEnum(str, Enum):
+    """Allowed values for auth_proto field in user."""
+    MD5 = "md5"
+    SHA = "sha"
+    SHA224 = "sha224"
+    SHA256 = "sha256"
+    SHA384 = "sha384"
+    SHA512 = "sha512"
+
+class SnmpUserPrivProtoEnum(str, Enum):
+    """Allowed values for priv_proto field in user."""
+    AES = "aes"
+    DES = "des"
+    AES256 = "aes256"
+    AES256CISCO = "aes256cisco"
+
+# ============================================================================
+# Child Table Models (sorted deepest-first so nested models are defined before their parents)
+# ============================================================================
+
 class SnmpUser(BaseModel):
     """
     Child table model for user.
@@ -46,18 +46,71 @@ class SnmpUser(BaseModel):
         """Pydantic model configuration."""
         extra = "allow"  # Allow additional fields from API
         str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
     
-    name: str = Field(max_length=32, default="", description="SNMP user name.")    
+    name: str = Field(max_length=32, description="SNMP user name.")    
     status: Literal["enable", "disable"] | None = Field(default="enable", description="SNMP user enable.")    
     queries: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable SNMP queries for this user.")    
     trap_status: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable traps for this SNMP user.")    
     security_level: Literal["no-auth-no-priv", "auth-no-priv", "auth-priv"] | None = Field(default="no-auth-no-priv", description="Security level for message authentication and encryption.")    
-    auth_proto: AuthProtoEnum | None = Field(default="sha", description="Authentication protocol.")    
+    auth_proto: SnmpUserAuthProtoEnum | None = Field(default=SnmpUserAuthProtoEnum.SHA, description="Authentication protocol.")    
     auth_pwd: Any = Field(max_length=128, description="Password for authentication protocol.")    
-    priv_proto: PrivProtoEnum | None = Field(default="aes", description="Privacy (encryption) protocol.")    
+    priv_proto: SnmpUserPrivProtoEnum | None = Field(default=SnmpUserPrivProtoEnum.AES, description="Privacy (encryption) protocol.")    
     priv_pwd: Any = Field(max_length=128, description="Password for privacy (encryption) protocol.")    
-    notify_hosts: list[NotifyHosts] = Field(default="", description="Configure SNMP User Notify Hosts.")    
-    notify_hosts6: list[NotifyHosts6] = Field(default="", description="Configure IPv6 SNMP User Notify Hosts.")
+    notify_hosts: list[str] = Field(default_factory=list, description="Configure SNMP User Notify Hosts.")    
+    notify_hosts6: list[str] = Field(default_factory=list, description="Configure IPv6 SNMP User Notify Hosts.")
+class SnmpCommunityHosts6(BaseModel):
+    """
+    Child table model for community.hosts6.
+    
+    Configure IPv6 SNMP managers (hosts).
+    """
+    
+    class Config:
+        """Pydantic model configuration."""
+        extra = "allow"  # Allow additional fields from API
+        str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
+    
+    id_: int = Field(ge=0, le=4294967295, default=0, serialization_alias="id", description="Host6 entry ID.")    
+    ipv6: str = Field(default="::/0", description="IPv6 address of the SNMP manager (host).")
+class SnmpCommunityHosts(BaseModel):
+    """
+    Child table model for community.hosts.
+    
+    Configure IPv4 SNMP managers (hosts).
+    """
+    
+    class Config:
+        """Pydantic model configuration."""
+        extra = "allow"  # Allow additional fields from API
+        str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
+    
+    id_: int = Field(ge=0, le=4294967295, default=0, serialization_alias="id", description="Host entry ID.")    
+    ip: str = Field(description="IPv4 address of the SNMP manager (host).")
+class SnmpCommunity(BaseModel):
+    """
+    Child table model for community.
+    
+    SNMP Community Configuration.
+    """
+    
+    class Config:
+        """Pydantic model configuration."""
+        extra = "allow"  # Allow additional fields from API
+        str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
+    
+    id_: int = Field(ge=0, le=4294967295, default=0, serialization_alias="id", description="Community ID.")    
+    name: str = Field(max_length=35, description="Community name.")    
+    status: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable this SNMP community.")    
+    query_v1_status: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable SNMP v1 queries.")    
+    query_v2c_status: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable SNMP v2c queries.")    
+    trap_v1_status: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable SNMP v1 traps.")    
+    trap_v2c_status: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable SNMP v2c traps.")    
+    hosts: list[SnmpCommunityHosts] = Field(default_factory=list, description="Configure IPv4 SNMP managers (hosts).")    
+    hosts6: list[SnmpCommunityHosts6] = Field(default_factory=list, description="Configure IPv6 SNMP managers (hosts).")
 # ============================================================================
 # Enum Definitions (for fields with 4+ allowed values)
 # ============================================================================
@@ -86,12 +139,12 @@ class SnmpModel(BaseModel):
     # Model Fields
     # ========================================================================
     
-    engine_id: str | None = Field(max_length=23, default="", description="AC SNMP engineID string (maximum 24 characters).")    
-    contact_info: str | None = Field(max_length=31, default="", description="Contact Information.")    
+    engine_id: str | None = Field(max_length=23, default=None, description="AC SNMP engineID string (maximum 24 characters).")    
+    contact_info: str | None = Field(max_length=31, default=None, description="Contact Information.")    
     trap_high_cpu_threshold: int | None = Field(ge=10, le=100, default=80, description="CPU usage when trap is sent.")    
     trap_high_mem_threshold: int | None = Field(ge=10, le=100, default=80, description="Memory usage when trap is sent.")    
-    community: list[Community] = Field(default=None, description="SNMP Community Configuration.")    
-    user: list[User] = Field(default=None, description="SNMP User Configuration.")    
+    community: list[SnmpCommunity] = Field(default_factory=list, description="SNMP Community Configuration.")    
+    user: list[SnmpUser] = Field(default_factory=list, description="SNMP User Configuration.")    
     # ========================================================================
     # Custom Validators
     # ========================================================================
@@ -134,11 +187,11 @@ Dict = dict[str, Any]  # For backward compatibility
 # ============================================================================
 
 __all__ = [
-    "SnmpModel",    "SnmpCommunity",    "SnmpUser",]
+    "SnmpModel",    "SnmpCommunity",    "SnmpCommunity.Hosts",    "SnmpCommunity.Hosts6",    "SnmpUser",]
 
 
 # ============================================================================
 # Generated by hfortix generator v0.6.0
 # Schema: 1.7.0
-# Generated: 2026-01-17T05:32:17.084194Z
+# Generated: 2026-01-17T17:25:21.023236Z
 # ============================================================================

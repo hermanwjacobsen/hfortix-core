@@ -12,7 +12,11 @@ from typing import Any, Literal, Optional
 from uuid import UUID
 
 # ============================================================================
-# Child Table Models
+# Enum Definitions for Child Table Fields (for fields with 4+ allowed values)
+# ============================================================================
+
+# ============================================================================
+# Child Table Models (sorted deepest-first so nested models are defined before their parents)
 # ============================================================================
 
 class CentralSnatMapSrcintf(BaseModel):
@@ -26,34 +30,9 @@ class CentralSnatMapSrcintf(BaseModel):
         """Pydantic model configuration."""
         extra = "allow"  # Allow additional fields from API
         str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
     
-    name: str | None = Field(max_length=79, default="", description="Interface name.")  # datasource: ['system.interface.name', 'system.zone.name', 'system.sdwan.zone.name']
-class CentralSnatMapDstintf(BaseModel):
-    """
-    Child table model for dstintf.
-    
-    Destination interface name from available interfaces.
-    """
-    
-    class Config:
-        """Pydantic model configuration."""
-        extra = "allow"  # Allow additional fields from API
-        str_strip_whitespace = True
-    
-    name: str = Field(max_length=79, default="", description="Interface name.")  # datasource: ['system.interface.name', 'system.zone.name', 'system.sdwan.zone.name']
-class CentralSnatMapOrigAddr(BaseModel):
-    """
-    Child table model for orig-addr.
-    
-    IPv4 Original address.
-    """
-    
-    class Config:
-        """Pydantic model configuration."""
-        extra = "allow"  # Allow additional fields from API
-        str_strip_whitespace = True
-    
-    name: str = Field(max_length=79, default="", description="Address name.")  # datasource: ['firewall.address.name', 'firewall.addrgrp.name', 'system.external-resource.name']
+    name: str | None = Field(max_length=79, default=None, description="Interface name.")  # datasource: ['system.interface.name', 'system.zone.name', 'system.sdwan.zone.name']
 class CentralSnatMapOrigAddr6(BaseModel):
     """
     Child table model for orig-addr6.
@@ -65,47 +44,23 @@ class CentralSnatMapOrigAddr6(BaseModel):
         """Pydantic model configuration."""
         extra = "allow"  # Allow additional fields from API
         str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
     
-    name: str | None = Field(max_length=79, default="", description="Address name.")  # datasource: ['firewall.address6.name', 'firewall.addrgrp6.name', 'system.external-resource.name']
-class CentralSnatMapDstAddr(BaseModel):
+    name: str | None = Field(max_length=79, default=None, description="Address name.")  # datasource: ['firewall.address6.name', 'firewall.addrgrp6.name', 'system.external-resource.name']
+class CentralSnatMapOrigAddr(BaseModel):
     """
-    Child table model for dst-addr.
+    Child table model for orig-addr.
     
-    IPv4 Destination address.
-    """
-    
-    class Config:
-        """Pydantic model configuration."""
-        extra = "allow"  # Allow additional fields from API
-        str_strip_whitespace = True
-    
-    name: str = Field(max_length=79, default="", description="Address name.")  # datasource: ['firewall.address.name', 'firewall.addrgrp.name']
-class CentralSnatMapDstAddr6(BaseModel):
-    """
-    Child table model for dst-addr6.
-    
-    IPv6 Destination address.
+    IPv4 Original address.
     """
     
     class Config:
         """Pydantic model configuration."""
         extra = "allow"  # Allow additional fields from API
         str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
     
-    name: str | None = Field(max_length=79, default="", description="Address name.")  # datasource: ['firewall.address6.name', 'firewall.addrgrp6.name']
-class CentralSnatMapNatIppool(BaseModel):
-    """
-    Child table model for nat-ippool.
-    
-    Name of the IP pools to be used to translate addresses from available IP Pools.
-    """
-    
-    class Config:
-        """Pydantic model configuration."""
-        extra = "allow"  # Allow additional fields from API
-        str_strip_whitespace = True
-    
-    name: str = Field(max_length=79, default="", description="IP pool name.")  # datasource: ['firewall.ippool.name']
+    name: str = Field(max_length=79, description="Address name.")  # datasource: ['firewall.address.name', 'firewall.addrgrp.name', 'system.external-resource.name']
 class CentralSnatMapNatIppool6(BaseModel):
     """
     Child table model for nat-ippool6.
@@ -117,8 +72,65 @@ class CentralSnatMapNatIppool6(BaseModel):
         """Pydantic model configuration."""
         extra = "allow"  # Allow additional fields from API
         str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
     
-    name: str = Field(max_length=79, default="", description="IPv6 pool name.")  # datasource: ['firewall.ippool6.name']
+    name: str = Field(max_length=79, description="IPv6 pool name.")  # datasource: ['firewall.ippool6.name']
+class CentralSnatMapNatIppool(BaseModel):
+    """
+    Child table model for nat-ippool.
+    
+    Name of the IP pools to be used to translate addresses from available IP Pools.
+    """
+    
+    class Config:
+        """Pydantic model configuration."""
+        extra = "allow"  # Allow additional fields from API
+        str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
+    
+    name: str = Field(max_length=79, description="IP pool name.")  # datasource: ['firewall.ippool.name']
+class CentralSnatMapDstintf(BaseModel):
+    """
+    Child table model for dstintf.
+    
+    Destination interface name from available interfaces.
+    """
+    
+    class Config:
+        """Pydantic model configuration."""
+        extra = "allow"  # Allow additional fields from API
+        str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
+    
+    name: str = Field(max_length=79, description="Interface name.")  # datasource: ['system.interface.name', 'system.zone.name', 'system.sdwan.zone.name']
+class CentralSnatMapDstAddr6(BaseModel):
+    """
+    Child table model for dst-addr6.
+    
+    IPv6 Destination address.
+    """
+    
+    class Config:
+        """Pydantic model configuration."""
+        extra = "allow"  # Allow additional fields from API
+        str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
+    
+    name: str | None = Field(max_length=79, default=None, description="Address name.")  # datasource: ['firewall.address6.name', 'firewall.addrgrp6.name']
+class CentralSnatMapDstAddr(BaseModel):
+    """
+    Child table model for dst-addr.
+    
+    IPv4 Destination address.
+    """
+    
+    class Config:
+        """Pydantic model configuration."""
+        extra = "allow"  # Allow additional fields from API
+        str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
+    
+    name: str = Field(max_length=79, description="Address name.")  # datasource: ['firewall.address.name', 'firewall.addrgrp.name']
 # ============================================================================
 # Enum Definitions (for fields with 4+ allowed values)
 # ============================================================================
@@ -134,7 +146,7 @@ class CentralSnatMapModel(BaseModel):
     
     Configure IPv4 and IPv6 central SNAT policies.
     
-    Validation Rules:        - policyid: min=0 max=4294967295 pattern=        - uuid: pattern=        - status: pattern=        - type: pattern=        - srcintf: pattern=        - dstintf: pattern=        - orig_addr: pattern=        - orig_addr6: pattern=        - dst_addr: pattern=        - dst_addr6: pattern=        - protocol: min=0 max=255 pattern=        - orig_port: pattern=        - nat: pattern=        - nat46: pattern=        - nat64: pattern=        - nat_ippool: pattern=        - nat_ippool6: pattern=        - port_preserve: pattern=        - port_random: pattern=        - nat_port: pattern=        - dst_port: pattern=        - comments: max_length=1023 pattern=    """
+    Validation Rules:        - policyid: min=0 max=4294967295 pattern=        - uuid: pattern=        - status: pattern=        - type_: pattern=        - srcintf: pattern=        - dstintf: pattern=        - orig_addr: pattern=        - orig_addr6: pattern=        - dst_addr: pattern=        - dst_addr6: pattern=        - protocol: min=0 max=255 pattern=        - orig_port: pattern=        - nat: pattern=        - nat46: pattern=        - nat64: pattern=        - nat_ippool: pattern=        - nat_ippool6: pattern=        - port_preserve: pattern=        - port_random: pattern=        - nat_port: pattern=        - dst_port: pattern=        - comments: max_length=1023 pattern=    """
     
     class Config:
         """Pydantic model configuration."""
@@ -150,24 +162,24 @@ class CentralSnatMapModel(BaseModel):
     policyid: int | None = Field(ge=0, le=4294967295, default=0, description="Policy ID.")    
     uuid: str | None = Field(default="00000000-0000-0000-0000-000000000000", description="Universally Unique Identifier (UUID; automatically assigned but can be manually reset).")    
     status: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable the active status of this policy.")    
-    type: Literal["ipv4", "ipv6"] | None = Field(default="ipv4", description="IPv4/IPv6 source NAT.")    
-    srcintf: list[Srcintf] = Field(description="Source interface name from available interfaces.")    
-    dstintf: list[Dstintf] = Field(description="Destination interface name from available interfaces.")    
-    orig_addr: list[OrigAddr] = Field(description="IPv4 Original address.")    
-    orig_addr6: list[OrigAddr6] = Field(description="IPv6 Original address.")    
-    dst_addr: list[DstAddr] = Field(description="IPv4 Destination address.")    
-    dst_addr6: list[DstAddr6] = Field(description="IPv6 Destination address.")    
+    type_: Literal["ipv4", "ipv6"] | None = Field(default="ipv4", serialization_alias="type", description="IPv4/IPv6 source NAT.")    
+    srcintf: list[CentralSnatMapSrcintf] = Field(description="Source interface name from available interfaces.")    
+    dstintf: list[CentralSnatMapDstintf] = Field(description="Destination interface name from available interfaces.")    
+    orig_addr: list[CentralSnatMapOrigAddr] = Field(description="IPv4 Original address.")    
+    orig_addr6: list[CentralSnatMapOrigAddr6] = Field(description="IPv6 Original address.")    
+    dst_addr: list[CentralSnatMapDstAddr] = Field(description="IPv4 Destination address.")    
+    dst_addr6: list[CentralSnatMapDstAddr6] = Field(description="IPv6 Destination address.")    
     protocol: int | None = Field(ge=0, le=255, default=0, description="Integer value for the protocol type (0 - 255).")    
-    orig_port: str | None = Field(default="", description="Original TCP port (1 to 65535, 0 means any port).")    
+    orig_port: str | None = Field(default=None, description="Original TCP port (1 to 65535, 0 means any port).")    
     nat: Literal["disable", "enable"] | None = Field(default="enable", description="Enable/disable source NAT.")    
     nat46: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable NAT46.")    
     nat64: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable NAT64.")    
-    nat_ippool: list[NatIppool] = Field(default=None, description="Name of the IP pools to be used to translate addresses from available IP Pools.")    
-    nat_ippool6: list[NatIppool6] = Field(default=None, description="IPv6 pools to be used for source NAT.")    
+    nat_ippool: list[CentralSnatMapNatIppool] = Field(default_factory=list, description="Name of the IP pools to be used to translate addresses from available IP Pools.")    
+    nat_ippool6: list[CentralSnatMapNatIppool6] = Field(default_factory=list, description="IPv6 pools to be used for source NAT.")    
     port_preserve: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable preservation of the original source port from source NAT if it has not been used.")    
     port_random: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable random source port selection for source NAT.")    
-    nat_port: str | None = Field(default="", description="Translated port or port range (1 to 65535, 0 means any port).")    
-    dst_port: str | None = Field(default="", description="Destination port or port range (1 to 65535, 0 means any port).")    
+    nat_port: str | None = Field(default=None, description="Translated port or port range (1 to 65535, 0 means any port).")    
+    dst_port: str | None = Field(default=None, description="Destination port or port range (1 to 65535, 0 means any port).")    
     comments: str | None = Field(max_length=1023, default=None, description="Comment.")    
     # ========================================================================
     # Custom Validators
@@ -233,7 +245,7 @@ class CentralSnatMapModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.central_snat_map.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate child table items
         values = getattr(self, "srcintf", [])
@@ -295,7 +307,7 @@ class CentralSnatMapModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.central_snat_map.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate child table items
         values = getattr(self, "dstintf", [])
@@ -357,7 +369,7 @@ class CentralSnatMapModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.central_snat_map.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate child table items
         values = getattr(self, "orig_addr", [])
@@ -379,7 +391,7 @@ class CentralSnatMapModel(BaseModel):
                 found = True
             elif await client.api.cmdb.firewall.addrgrp.exists(value):
                 found = True
-            elif await client.api.cmdb.system.external-resource.exists(value):
+            elif await client.api.cmdb.system.external_resource.exists(value):
                 found = True
             
             if not found:
@@ -419,7 +431,7 @@ class CentralSnatMapModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.central_snat_map.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate child table items
         values = getattr(self, "orig_addr6", [])
@@ -441,7 +453,7 @@ class CentralSnatMapModel(BaseModel):
                 found = True
             elif await client.api.cmdb.firewall.addrgrp6.exists(value):
                 found = True
-            elif await client.api.cmdb.system.external-resource.exists(value):
+            elif await client.api.cmdb.system.external_resource.exists(value):
                 found = True
             
             if not found:
@@ -481,7 +493,7 @@ class CentralSnatMapModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.central_snat_map.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate child table items
         values = getattr(self, "dst_addr", [])
@@ -541,7 +553,7 @@ class CentralSnatMapModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.central_snat_map.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate child table items
         values = getattr(self, "dst_addr6", [])
@@ -601,7 +613,7 @@ class CentralSnatMapModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.central_snat_map.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate child table items
         values = getattr(self, "nat_ippool", [])
@@ -659,7 +671,7 @@ class CentralSnatMapModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.central_snat_map.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate child table items
         values = getattr(self, "nat_ippool6", [])
@@ -742,5 +754,5 @@ __all__ = [
 # ============================================================================
 # Generated by hfortix generator v0.6.0
 # Schema: 1.7.0
-# Generated: 2026-01-17T05:32:18.138413Z
+# Generated: 2026-01-17T17:25:21.952877Z
 # ============================================================================

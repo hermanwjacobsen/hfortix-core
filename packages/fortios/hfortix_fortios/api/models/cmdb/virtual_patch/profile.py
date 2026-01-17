@@ -7,14 +7,46 @@ Generated from FortiOS schema version unknown.
 
 from __future__ import annotations
 
-from pydantic import BaseModel, Field, field_validator
+from pydantic import BaseModel, Field
 from typing import Any, Literal, Optional
 from enum import Enum
 
 # ============================================================================
-# Child Table Models
+# Enum Definitions for Child Table Fields (for fields with 4+ allowed values)
 # ============================================================================
 
+# ============================================================================
+# Child Table Models (sorted deepest-first so nested models are defined before their parents)
+# ============================================================================
+
+class ProfileExemptionRule(BaseModel):
+    """
+    Child table model for exemption.rule.
+    
+    Patch signature rule IDs.
+    """
+    
+    class Config:
+        """Pydantic model configuration."""
+        extra = "allow"  # Allow additional fields from API
+        str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
+    
+    id_: int = Field(ge=0, le=4294967295, default=0, serialization_alias="id", description="Rule IDs.")
+class ProfileExemptionDevice(BaseModel):
+    """
+    Child table model for exemption.device.
+    
+    Device MAC addresses.
+    """
+    
+    class Config:
+        """Pydantic model configuration."""
+        extra = "allow"  # Allow additional fields from API
+        str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
+    
+    mac: str | None = Field(default="00:00:00:00:00:00", description="Device MAC address.")
 class ProfileExemption(BaseModel):
     """
     Child table model for exemption.
@@ -26,18 +58,24 @@ class ProfileExemption(BaseModel):
         """Pydantic model configuration."""
         extra = "allow"  # Allow additional fields from API
         str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
     
-    id: int | None = Field(ge=0, le=4294967295, default=0, description="IDs.")    
+    id_: int | None = Field(ge=0, le=4294967295, default=0, serialization_alias="id", description="IDs.")    
     status: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable exemption.")    
-    rule: list[Rule] = Field(default=None, description="Patch signature rule IDs.")    
-    device: list[Device] = Field(default=None, description="Device MAC addresses.")
+    rule: list[ProfileExemptionRule] = Field(default_factory=list, description="Patch signature rule IDs.")    
+    device: list[ProfileExemptionDevice] = Field(default_factory=list, description="Device MAC addresses.")
 # ============================================================================
 # Enum Definitions (for fields with 4+ allowed values)
 # ============================================================================
 
 class ProfileSeverityEnum(str, Enum):
     """Allowed values for severity field."""
-    INFO = "info"    LOW = "low"    MEDIUM = "medium"    HIGH = "high"    CRITICAL = "critical"
+    INFO = "info"
+    LOW = "low"
+    MEDIUM = "medium"
+    HIGH = "high"
+    CRITICAL = "critical"
+
 
 # ============================================================================
 # Main Model
@@ -62,12 +100,12 @@ class ProfileModel(BaseModel):
     # Model Fields
     # ========================================================================
     
-    name: str = Field(max_length=47, default="", description="Profile name.")    
+    name: str = Field(max_length=47, description="Profile name.")    
     comment: str | None = Field(max_length=255, default=None, description="Comment.")    
-    severity: list[Severity] = Field(default="info low medium high critical", description="Relative severity of the signature (low, medium, high, critical).")    
+    severity: list[ProfileSeverityEnum] = Field(default_factory=list, description="Relative severity of the signature (low, medium, high, critical).")    
     action: Literal["pass", "block"] | None = Field(default="block", description="Action (pass/block).")    
     log: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable logging of detection.")    
-    exemption: list[Exemption] = Field(default=None, description="Exempt devices or rules.")    
+    exemption: list[ProfileExemption] = Field(default_factory=list, description="Exempt devices or rules.")    
     # ========================================================================
     # Custom Validators
     # ========================================================================
@@ -110,11 +148,11 @@ Dict = dict[str, Any]  # For backward compatibility
 # ============================================================================
 
 __all__ = [
-    "ProfileModel",    "ProfileExemption",]
+    "ProfileModel",    "ProfileExemption",    "ProfileExemption.Rule",    "ProfileExemption.Device",]
 
 
 # ============================================================================
 # Generated by hfortix generator v0.6.0
 # Schema: 1.7.0
-# Generated: 2026-01-17T05:32:18.898830Z
+# Generated: 2026-01-17T17:25:22.629075Z
 # ============================================================================

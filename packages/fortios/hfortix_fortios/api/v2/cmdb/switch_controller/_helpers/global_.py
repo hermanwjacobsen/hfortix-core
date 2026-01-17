@@ -266,7 +266,7 @@ VALID_QUERY_ACTION = ["default", "schema"]
 # ============================================================================
 
 
-def validate_switch_controller_global__get(
+def validate_switch_controller_global_get(
     attr: str | None = None,
     filters: dict[str, Any] | None = None,
     **params: Any,
@@ -290,7 +290,7 @@ def validate_switch_controller_global__get(
 # ============================================================================
 
 
-def validate_switch_controller_global__post(
+def validate_switch_controller_global_post(
     payload: dict,
     **params: Any,
 ) -> tuple[bool, str | None]:
@@ -476,7 +476,7 @@ def validate_switch_controller_global__post(
 # ============================================================================
 
 
-def validate_switch_controller_global__put(
+def validate_switch_controller_global_put(
     payload: dict,
     **params: Any,
 ) -> tuple[bool, str | None]:

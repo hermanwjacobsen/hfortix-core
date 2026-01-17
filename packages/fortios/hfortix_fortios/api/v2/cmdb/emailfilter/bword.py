@@ -638,6 +638,16 @@ class Bword(CRUDEndpoint, MetadataMixin):
             - put(): Update existing object
             - exists(): Check existence manually
         """
+        # Apply normalization for table fields (supports flexible input formats)
+        if entries is not None:
+            entries = normalize_table_field(
+                entries,
+                mkey="id",
+                required_fields=['status', 'id', 'pattern', 'pattern-type', 'action', 'where', 'language'],
+                field_name="entries",
+                example="[{'status': 'enable', 'id': 1, 'pattern': 'value', 'pattern-type': 'wildcard', 'action': 'spam', 'where': 'subject', 'language': 'western'}]",
+            )
+        
         # Build payload using helper function with auto-normalization
         payload_data = build_api_payload(
             id=id,

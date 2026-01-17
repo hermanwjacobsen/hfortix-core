@@ -1,160 +1,118 @@
-from typing import TypedDict, Literal, Any, Coroutine, Union, overload, Generator, final
-from typing_extensions import NotRequired
-from hfortix_fortios.models import FortiObject, FortiObjectList
+""" - Type Stubs
 
-# ============================================================================
-# Nested TypedDicts for table field children (dict mode)
-# These MUST be defined before the Payload class to use them as type hints
-# ============================================================================
+Auto-generated stub file for type checking and IDE support.
 
-# ============================================================================
-# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional)
-# ============================================================================
-# NOTE: We intentionally DON'T use NotRequired wrapper because:
-# 1. total=False already makes all fields optional
-# 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
+Endpoint: system/vne_interface
+Category: cmdb
+"""
+
+from __future__ import annotations
+
+from typing import (
+    Any,
+    ClassVar,
+    Literal,
+    TypedDict,
+    overload,
+)
+
+from hfortix_fortios.models import (
+    FortiObject,
+    FortiObjectList,
+)
+
+
+# ================================================================
+# TypedDict Payloads
+# ================================================================
+
 class VneInterfacePayload(TypedDict, total=False):
-    """
-    Type hints for system/vne_interface payload fields.
-    
-    Configure virtual network enabler tunnels.
-    
-    **Related Resources:**
-
-    Dependencies (resources this endpoint references):
-        - :class:`~.certificate.local.LocalEndpoint` (via: ssl-certificate)
-        - :class:`~.system.interface.InterfaceEndpoint` (via: interface)
-
-    **Usage:**
-        payload: VneInterfacePayload = {
-            "field": "value",  # <- autocomplete shows all fields
-        }
-    """
-    name: str  # VNE tunnel name. | MaxLen: 15
-    interface: str  # Interface name. | MaxLen: 15
-    ssl_certificate: str  # Name of local certificate for SSL connections. | Default: Fortinet_Factory | MaxLen: 35
-    bmr_hostname: str  # BMR hostname. | MaxLen: 128
-    auto_asic_offload: Literal["enable", "disable"]  # Enable/disable tunnel ASIC offloading. | Default: enable
-    ipv4_address: str  # Tunnel IPv4 address and netmask. | Default: 0.0.0.0 0.0.0.0
-    br: str  # IPv6 address or FQDN of the border relay. | MaxLen: 255
-    update_url: str  # URL of provisioning server. | MaxLen: 511
-    mode: Literal["map-e", "fixed-ip", "ds-lite"]  # VNE tunnel mode. | Default: map-e
-    http_username: str  # HTTP authentication user name. | MaxLen: 64
-    http_password: str  # HTTP authentication password. | MaxLen: 128
-
-# ============================================================================
-# Nested classes for table field children (object mode - for API responses)
-# ============================================================================
-
-
-
-# Response TypedDict for GET returns (all fields present in API response)
-class VneInterfaceResponse(TypedDict):
-    """
-    Type hints for system/vne_interface API response fields.
-    
-    All fields are present in the response from the FortiGate API.
-    """
-    name: str  # VNE tunnel name. | MaxLen: 15
-    interface: str  # Interface name. | MaxLen: 15
-    ssl_certificate: str  # Name of local certificate for SSL connections. | Default: Fortinet_Factory | MaxLen: 35
-    bmr_hostname: str  # BMR hostname. | MaxLen: 128
-    auto_asic_offload: Literal["enable", "disable"]  # Enable/disable tunnel ASIC offloading. | Default: enable
-    ipv4_address: str  # Tunnel IPv4 address and netmask. | Default: 0.0.0.0 0.0.0.0
-    br: str  # IPv6 address or FQDN of the border relay. | MaxLen: 255
-    update_url: str  # URL of provisioning server. | MaxLen: 511
-    mode: Literal["map-e", "fixed-ip", "ds-lite"]  # VNE tunnel mode. | Default: map-e
-    http_username: str  # HTTP authentication user name. | MaxLen: 64
-    http_password: str  # HTTP authentication password. | MaxLen: 128
-
-
-@final
-class VneInterfaceObject:
-    """Typed FortiObject for system/vne_interface with IDE autocomplete support.
-    
-    This is a typed wrapper that provides IDE autocomplete for API response fields.
-    At runtime, this is actually a FortiObject instance.
-    """
-    
-    # VNE tunnel name. | MaxLen: 15
+    """Payload type for VneInterface operations."""
     name: str
-    # Interface name. | MaxLen: 15
     interface: str
-    # Name of local certificate for SSL connections. | Default: Fortinet_Factory | MaxLen: 35
     ssl_certificate: str
-    # BMR hostname. | MaxLen: 128
     bmr_hostname: str
-    # Enable/disable tunnel ASIC offloading. | Default: enable
     auto_asic_offload: Literal["enable", "disable"]
-    # Tunnel IPv4 address and netmask. | Default: 0.0.0.0 0.0.0.0
     ipv4_address: str
-    # IPv6 address or FQDN of the border relay. | MaxLen: 255
     br: str
-    # URL of provisioning server. | MaxLen: 511
     update_url: str
-    # VNE tunnel mode. | Default: map-e
     mode: Literal["map-e", "fixed-ip", "ds-lite"]
-    # HTTP authentication user name. | MaxLen: 64
     http_username: str
-    # HTTP authentication password. | MaxLen: 128
     http_password: str
-    
-    # Common API response fields
-    status: str
-    http_status: int | None
-    http_status_code: int | None
-    http_method: str | None
-    http_response_time: float | None
-    vdom: str | None
-    
-    # Methods from FortiObject
-    @property
-    def dict(self) -> dict[str, Any]:
-        """Convert to dictionary."""
-        ...
-    @property
-    def json(self) -> str:
-        """Get pretty-printed JSON string."""
-        ...
-    @property
-    def raw(self) -> dict[str, Any]:
-        """Get raw API response data."""
-        ...
-    def get_full(self, name: str) -> Any: ...
-    def to_dict(self) -> VneInterfacePayload: ...
-    def keys(self) -> Any: ...
-    def values(self) -> Generator[Any, None, None]: ...
-    def items(self) -> Generator[tuple[str, Any], None, None]: ...
-    def get(self, key: str, default: Any = None) -> Any: ...
 
+
+# ================================================================
+# Response Types (TypedDict for dict-style access)
+# ================================================================
+
+class VneInterfaceResponse(TypedDict, total=False):
+    """Response type for VneInterface - use with .dict property for typed dict access."""
+    name: str
+    interface: str
+    ssl_certificate: str
+    bmr_hostname: str
+    auto_asic_offload: Literal["enable", "disable"]
+    ipv4_address: str
+    br: str
+    update_url: str
+    mode: Literal["map-e", "fixed-ip", "ds-lite"]
+    http_username: str
+    http_password: str
+
+
+# ================================================================
+# Response Types (Class for attribute access)
+# ================================================================
+
+
+class VneInterfaceObject(FortiObject):
+    """Typed FortiObject for VneInterface with field access."""
+    name: str
+    interface: str
+    ssl_certificate: str
+    bmr_hostname: str
+    auto_asic_offload: Literal["enable", "disable"]
+    ipv4_address: str
+    br: str
+    update_url: str
+    mode: Literal["map-e", "fixed-ip", "ds-lite"]
+    http_username: str
+    http_password: str
+
+
+# ================================================================
+# Main Endpoint Class
+# ================================================================
 
 class VneInterface:
     """
-    Configure virtual network enabler tunnels.
     
-    Path: system/vne_interface
+    Endpoint: system/vne_interface
     Category: cmdb
-    Primary Key: name
+    MKey: name
     """
     
+    # Class attributes for introspection
+    endpoint: ClassVar[str] = ...
+    path: ClassVar[str] = ...
+    category: ClassVar[str] = ...
+    mkey: ClassVar[str] = ...
+    capabilities: ClassVar[dict[str, Any]] = ...
+    
     def __init__(self, client: Any) -> None:
-        """Initialize endpoint with HTTP client.
-        
-        Args:
-            client: HTTP client instance for API communication
-        """
+        """Initialize endpoint with HTTP client."""
         ...
     
     # ================================================================
-    # GET OVERLOADS - Always returns FortiObject (or ContentResponse for file endpoints)
-    # Pylance matches overloads top-to-bottom, so these must come first!
+    # GET Methods
     # ================================================================
     
-    # With mkey as positional arg -> returns FortiObject
+    # CMDB with mkey - overloads for single vs list returns
     @overload
     def get(
         self,
         name: str,
+        *,
         filter: str | list[str] | None = ...,
         count: int | None = ...,
         start: int | None = ...,
@@ -164,14 +122,14 @@ class VneInterface:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        error_mode: Literal["raise", "return", "print"] | None = ...,
+        error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> VneInterfaceObject: ...
     
-    # With mkey as keyword arg -> returns FortiObject
     @overload
     def get(
         self,
         *,
-        name: str,
         filter: str | list[str] | None = ...,
         count: int | None = ...,
         start: int | None = ...,
@@ -181,164 +139,20 @@ class VneInterface:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> VneInterfaceObject: ...
-    
-    # Without mkey -> returns list of FortiObjects
-    @overload
-    def get(
-        self,
-        name: None = None,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
+        error_mode: Literal["raise", "return", "print"] | None = ...,
+        error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> FortiObjectList[VneInterfaceObject]: ...
-    
-    # ================================================================
-    # (removed - all GET now returns FortiObject)
-    # ================================================================
-    
-    # With mkey as positional arg -> returns single object
-    @overload
-    def get(
-        self,
-        name: str,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> VneInterfaceObject: ...
-    
-    # With mkey as keyword arg -> returns single object
-    @overload
-    def get(
-        self,
-        *,
-        name: str,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> VneInterfaceObject: ...
-    
-    # With no mkey -> returns list of objects
-    @overload
-    def get(
-        self,
-        *,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObjectList[VneInterfaceObject]: ...
-    
-    # Dict mode with mkey provided as positional arg (single dict)
-    @overload
-    def get(
-        self,
-        name: str,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> VneInterfaceObject: ...
-    
-    # Dict mode with mkey provided as keyword arg (single dict)
-    @overload
-    def get(
-        self,
-        *,
-        name: str,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> VneInterfaceObject: ...
-    
-    # Dict mode - list of dicts (no mkey/name provided) - keyword-only signature
-    @overload
-    def get(
-        self,
-        *,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObjectList[VneInterfaceObject]: ...
-    
-    # Fallback overload for all other cases
-    @overload
-    def get(
-        self,
-        name: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> Union[dict[str, Any], list[dict[str, Any]], FortiObject, list[FortiObject]]: ...
-    
-    def get(
-        self,
-        name: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> VneInterfaceObject | list[VneInterfaceObject] | dict[str, Any] | list[dict[str, Any]]: ...
     
     def get_schema(
         self,
         vdom: str | None = ...,
         format: str = ...,
     ) -> FortiObject: ...
+
+    # ================================================================
+    # POST Method
+    # ================================================================
     
-    # POST overloads
-    @overload
     def post(
         self,
         payload_dict: VneInterfacePayload | None = ...,
@@ -354,64 +168,14 @@ class VneInterface:
         http_username: str | None = ...,
         http_password: str | None = ...,
         vdom: str | bool | None = ...,
+        error_mode: Literal["raise", "return", "print"] | None = ...,
+        error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> VneInterfaceObject: ...
+
+    # ================================================================
+    # PUT Method
+    # ================================================================
     
-    @overload
-    def post(
-        self,
-        payload_dict: VneInterfacePayload | None = ...,
-        name: str | None = ...,
-        interface: str | None = ...,
-        ssl_certificate: str | None = ...,
-        bmr_hostname: str | None = ...,
-        auto_asic_offload: Literal["enable", "disable"] | None = ...,
-        ipv4_address: str | None = ...,
-        br: str | None = ...,
-        update_url: str | None = ...,
-        mode: Literal["map-e", "fixed-ip", "ds-lite"] | None = ...,
-        http_username: str | None = ...,
-        http_password: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
-    
-    # Default overload
-    @overload
-    def post(
-        self,
-        payload_dict: VneInterfacePayload | None = ...,
-        name: str | None = ...,
-        interface: str | None = ...,
-        ssl_certificate: str | None = ...,
-        bmr_hostname: str | None = ...,
-        auto_asic_offload: Literal["enable", "disable"] | None = ...,
-        ipv4_address: str | None = ...,
-        br: str | None = ...,
-        update_url: str | None = ...,
-        mode: Literal["map-e", "fixed-ip", "ds-lite"] | None = ...,
-        http_username: str | None = ...,
-        http_password: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
-    
-    def post(
-        self,
-        payload_dict: VneInterfacePayload | None = ...,
-        name: str | None = ...,
-        interface: str | None = ...,
-        ssl_certificate: str | None = ...,
-        bmr_hostname: str | None = ...,
-        auto_asic_offload: Literal["enable", "disable"] | None = ...,
-        ipv4_address: str | None = ...,
-        br: str | None = ...,
-        update_url: str | None = ...,
-        mode: Literal["map-e", "fixed-ip", "ds-lite"] | None = ...,
-        http_username: str | None = ...,
-        http_password: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
-    
-    # PUT overloads
-    @overload
     def put(
         self,
         payload_dict: VneInterfacePayload | None = ...,
@@ -427,90 +191,25 @@ class VneInterface:
         http_username: str | None = ...,
         http_password: str | None = ...,
         vdom: str | bool | None = ...,
+        error_mode: Literal["raise", "return", "print"] | None = ...,
+        error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> VneInterfaceObject: ...
-    
-    @overload
-    def put(
-        self,
-        payload_dict: VneInterfacePayload | None = ...,
-        name: str | None = ...,
-        interface: str | None = ...,
-        ssl_certificate: str | None = ...,
-        bmr_hostname: str | None = ...,
-        auto_asic_offload: Literal["enable", "disable"] | None = ...,
-        ipv4_address: str | None = ...,
-        br: str | None = ...,
-        update_url: str | None = ...,
-        mode: Literal["map-e", "fixed-ip", "ds-lite"] | None = ...,
-        http_username: str | None = ...,
-        http_password: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
-    
-    # Default overload
-    @overload
-    def put(
-        self,
-        payload_dict: VneInterfacePayload | None = ...,
-        name: str | None = ...,
-        interface: str | None = ...,
-        ssl_certificate: str | None = ...,
-        bmr_hostname: str | None = ...,
-        auto_asic_offload: Literal["enable", "disable"] | None = ...,
-        ipv4_address: str | None = ...,
-        br: str | None = ...,
-        update_url: str | None = ...,
-        mode: Literal["map-e", "fixed-ip", "ds-lite"] | None = ...,
-        http_username: str | None = ...,
-        http_password: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
-    
-    def put(
-        self,
-        payload_dict: VneInterfacePayload | None = ...,
-        name: str | None = ...,
-        interface: str | None = ...,
-        ssl_certificate: str | None = ...,
-        bmr_hostname: str | None = ...,
-        auto_asic_offload: Literal["enable", "disable"] | None = ...,
-        ipv4_address: str | None = ...,
-        br: str | None = ...,
-        update_url: str | None = ...,
-        mode: Literal["map-e", "fixed-ip", "ds-lite"] | None = ...,
-        http_username: str | None = ...,
-        http_password: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
-    
-    # DELETE overloads
-    @overload
-    def delete(
-        self,
-        name: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> VneInterfaceObject: ...
-    
-    @overload
-    def delete(
-        self,
-        name: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
-    
-    # Default overload
-    @overload
-    def delete(
-        self,
-        name: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+
+    # ================================================================
+    # DELETE Method
+    # ================================================================
     
     def delete(
         self,
         name: str | None = ...,
         vdom: str | bool | None = ...,
+        error_mode: Literal["raise", "return", "print"] | None = ...,
+        error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> FortiObject: ...
+
+    # ================================================================
+    # Utility Methods
+    # ================================================================
     
     def exists(
         self,
@@ -533,6 +232,8 @@ class VneInterface:
         http_username: str | None = ...,
         http_password: str | None = ...,
         vdom: str | bool | None = ...,
+        error_mode: Literal["raise", "return", "print"] | None = ...,
+        error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> FortiObject: ...
     
     # Helper methods
@@ -540,7 +241,7 @@ class VneInterface:
     def help(field_name: str | None = ...) -> str: ...
     
     @staticmethod
-    def fields(detailed: bool = ...) -> Union[list[str], list[dict[str, Any]]]: ...
+    def fields(detailed: bool = ...) -> list[str] | list[dict[str, Any]]: ...
     
     @staticmethod
     def field_info(field_name: str) -> FortiObject: ...
@@ -556,9 +257,6 @@ class VneInterface:
     
     @staticmethod
     def schema() -> FortiObject: ...
-
-
-# ================================================================
 
 
 __all__ = [

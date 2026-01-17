@@ -315,6 +315,46 @@ policy.srcaddr            # ✅ Auto-flattened member table
 
 ---
 
+## ⚙️ Recommended VS Code Settings
+
+For the best autocomplete experience, add these to your `.vscode/settings.json`:
+
+```json
+{
+  "python.languageServer": "Pylance",
+  "python.analysis.typeCheckingMode": "basic",
+  "python.analysis.autoImportCompletions": true,
+  "python.analysis.indexing": true,
+  "python.analysis.persistAllIndices": true,
+  "python.analysis.completeFunctionParens": true,
+  "python.analysis.inlayHints.functionReturnTypes": true,
+  "editor.quickSuggestions": {
+    "other": true,
+    "comments": false,
+    "strings": true
+  }
+}
+```
+
+### Recommended Extensions
+
+Install these VS Code extensions for the best experience:
+
+- **ms-python.python** - Python language support
+- **ms-python.vscode-pylance** - Fast, feature-rich Python language server
+- **charliermarsh.ruff** - Fast Python linter
+
+### Troubleshooting Autocomplete
+
+If autocomplete isn't working:
+
+1. **Reload VS Code**: `Ctrl+Shift+P` → "Developer: Reload Window"
+2. **Clear Pylance cache**: `Ctrl+Shift+P` → "Pylance: Clear Cache and Reload"
+3. **Check Python interpreter**: Ensure you're using the correct venv
+4. **Force autocomplete**: Press `Ctrl+Space` after typing `.`
+
+---
+
 ## ❓ FAQ
 
 **Q: Do I need to change existing code?**  

@@ -622,6 +622,16 @@ class Fec(CRUDEndpoint, MetadataMixin):
             - put(): Update existing object
             - exists(): Check existence manually
         """
+        # Apply normalization for table fields (supports flexible input formats)
+        if mappings is not None:
+            mappings = normalize_table_field(
+                mappings,
+                mkey="seqno",
+                required_fields=['seqno', 'base', 'redundant'],
+                field_name="mappings",
+                example="[{'seqno': 1, 'base': 1, 'redundant': 1}]",
+            )
+        
         # Build payload using helper function with auto-normalization
         payload_data = build_api_payload(
             name=name,

@@ -865,6 +865,24 @@ class Custom(CRUDEndpoint, MetadataMixin):
             - put(): Update existing object
             - exists(): Check existence manually
         """
+        # Apply normalization for table fields (supports flexible input formats)
+        if app_category is not None:
+            app_category = normalize_table_field(
+                app_category,
+                mkey="id",
+                required_fields=['id'],
+                field_name="app_category",
+                example="[{'id': 1}]",
+            )
+        if application is not None:
+            application = normalize_table_field(
+                application,
+                mkey="id",
+                required_fields=['id'],
+                field_name="application",
+                example="[{'id': 1}]",
+            )
+        
         # Build payload using helper function with auto-normalization
         payload_data = build_api_payload(
             name=name,

@@ -11,48 +11,45 @@ from pydantic import BaseModel, Field, field_validator
 from typing import Any, Literal, Optional
 
 # ============================================================================
-# Child Table Models
+# Enum Definitions for Child Table Fields (for fields with 4+ allowed values)
 # ============================================================================
 
-class MulticastPimSmGlobal(BaseModel):
+# ============================================================================
+# Child Table Models (sorted deepest-first so nested models are defined before their parents)
+# ============================================================================
+
+class MulticastPimSmGlobalRpAddress(BaseModel):
     """
-    Child table model for pim-sm-global.
+    Child table model for pim-sm-global.rp-address.
     
-    PIM sparse-mode global settings.
+    Statically configure RP addresses.
     """
     
     class Config:
         """Pydantic model configuration."""
         extra = "allow"  # Allow additional fields from API
         str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
     
-    message_interval: int | None = Field(ge=1, le=65535, default=60, description="Period of time between sending periodic PIM join/prune messages in seconds (1 - 65535, default = 60).")    
-    join_prune_holdtime: int | None = Field(ge=1, le=65535, default=210, description="Join/prune holdtime (1 - 65535, default = 210).")    
-    accept_register_list: str | None = Field(max_length=35, default="", description="Sources allowed to register packets with this Rendezvous Point (RP).")  # datasource: ['router.access-list.name']    
-    accept_source_list: str | None = Field(max_length=35, default="", description="Sources allowed to send multicast traffic.")  # datasource: ['router.access-list.name']    
-    bsr_candidate: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable allowing this router to become a bootstrap router (BSR).")    
-    bsr_interface: str | None = Field(max_length=15, default="", description="Interface to advertise as candidate BSR.")  # datasource: ['system.interface.name']    
-    bsr_priority: int | None = Field(ge=0, le=255, default=0, description="BSR priority (0 - 255, default = 0).")    
-    bsr_hash: int | None = Field(ge=0, le=32, default=10, description="BSR hash length (0 - 32, default = 10).")    
-    bsr_allow_quick_refresh: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable accept BSR quick refresh packets from neighbors.")    
-    cisco_crp_prefix: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable making candidate RP compatible with old Cisco IOS.")    
-    cisco_register_checksum: Literal["enable", "disable"] | None = Field(default="disable", description="Checksum entire register packet(for old Cisco IOS compatibility).")    
-    cisco_register_checksum_group: str | None = Field(max_length=35, default="", description="Cisco register checksum only these groups.")  # datasource: ['router.access-list.name']    
-    cisco_ignore_rp_set_priority: Literal["enable", "disable"] | None = Field(default="disable", description="Use only hash for RP selection (compatibility with old Cisco IOS).")    
-    register_rp_reachability: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable check RP is reachable before registering packets.")    
-    register_source: Literal["disable", "interface", "ip-address"] | None = Field(default="disable", description="Override source address in register packets.")    
-    register_source_interface: str | None = Field(max_length=15, default="", description="Override with primary interface address.")  # datasource: ['system.interface.name']    
-    register_source_ip: str | None = Field(default="0.0.0.0", description="Override with local IP address.")    
-    register_supression: int | None = Field(ge=1, le=65535, default=60, description="Period of time to honor register-stop message (1 - 65535 sec, default = 60).")    
-    null_register_retries: int | None = Field(ge=1, le=20, default=1, description="Maximum retries of null register (1 - 20, default = 1).")    
-    rp_register_keepalive: int | None = Field(ge=1, le=65535, default=185, description="Timeout for RP receiving data on (S,G) tree (1 - 65535 sec, default = 185).")    
-    spt_threshold: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable switching to source specific trees.")    
-    spt_threshold_group: str | None = Field(max_length=35, default="", description="Groups allowed to switch to source tree.")  # datasource: ['router.access-list.name']    
-    ssm: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable source specific multicast.")    
-    ssm_range: str | None = Field(max_length=35, default="", description="Groups allowed to source specific multicast.")  # datasource: ['router.access-list.name']    
-    register_rate_limit: int | None = Field(ge=0, le=65535, default=0, description="Limit of packets/sec per source registered through this RP (0 - 65535, default = 0 which means unlimited).")    
-    pim_use_sdwan: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable use of SDWAN when checking RPF neighbor and sending of REG packet.")    
-    rp_address: list[RpAddress] = Field(default=None, description="Statically configure RP addresses.")
+    id_: int | None = Field(ge=0, le=4294967295, default=0, serialization_alias="id", description="ID.")    
+    ip_address: str = Field(default="0.0.0.0", description="RP router address.")    
+    group: str | None = Field(max_length=35, default=None, description="Groups to use this RP.")  # datasource: ['router.access-list.name']
+class MulticastPimSmGlobalVrfRpAddress(BaseModel):
+    """
+    Child table model for pim-sm-global-vrf.rp-address.
+    
+    Statically configure RP addresses.
+    """
+    
+    class Config:
+        """Pydantic model configuration."""
+        extra = "allow"  # Allow additional fields from API
+        str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
+    
+    id_: int | None = Field(ge=0, le=4294967295, default=0, serialization_alias="id", description="ID.")    
+    ip_address: str = Field(default="0.0.0.0", description="RP router address.")    
+    group: str | None = Field(max_length=35, default=None, description="Groups to use this RP.")  # datasource: ['router.access-list.name']
 class MulticastPimSmGlobalVrf(BaseModel):
     """
     Child table model for pim-sm-global-vrf.
@@ -64,15 +61,92 @@ class MulticastPimSmGlobalVrf(BaseModel):
         """Pydantic model configuration."""
         extra = "allow"  # Allow additional fields from API
         str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
     
     vrf: int | None = Field(ge=1, le=511, default=0, description="VRF ID.")    
     bsr_candidate: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable allowing this router to become a bootstrap router (BSR).")    
-    bsr_interface: str | None = Field(max_length=15, default="", description="Interface to advertise as candidate BSR.")  # datasource: ['system.interface.name']    
+    bsr_interface: str | None = Field(max_length=15, default=None, description="Interface to advertise as candidate BSR.")  # datasource: ['system.interface.name']    
     bsr_priority: int | None = Field(ge=0, le=255, default=0, description="BSR priority (0 - 255, default = 0).")    
     bsr_hash: int | None = Field(ge=0, le=32, default=10, description="BSR hash length (0 - 32, default = 10).")    
     bsr_allow_quick_refresh: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable accept BSR quick refresh packets from neighbors.")    
     cisco_crp_prefix: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable making candidate RP compatible with old Cisco IOS.")    
-    rp_address: list[RpAddress] = Field(default=None, description="Statically configure RP addresses.")
+    rp_address: list[MulticastPimSmGlobalVrfRpAddress] = Field(default_factory=list, description="Statically configure RP addresses.")
+class MulticastPimSmGlobal(BaseModel):
+    """
+    Child table model for pim-sm-global.
+    
+    PIM sparse-mode global settings.
+    """
+    
+    class Config:
+        """Pydantic model configuration."""
+        extra = "allow"  # Allow additional fields from API
+        str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
+    
+    message_interval: int | None = Field(ge=1, le=65535, default=60, description="Period of time between sending periodic PIM join/prune messages in seconds (1 - 65535, default = 60).")    
+    join_prune_holdtime: int | None = Field(ge=1, le=65535, default=210, description="Join/prune holdtime (1 - 65535, default = 210).")    
+    accept_register_list: str | None = Field(max_length=35, default=None, description="Sources allowed to register packets with this Rendezvous Point (RP).")  # datasource: ['router.access-list.name']    
+    accept_source_list: str | None = Field(max_length=35, default=None, description="Sources allowed to send multicast traffic.")  # datasource: ['router.access-list.name']    
+    bsr_candidate: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable allowing this router to become a bootstrap router (BSR).")    
+    bsr_interface: str | None = Field(max_length=15, default=None, description="Interface to advertise as candidate BSR.")  # datasource: ['system.interface.name']    
+    bsr_priority: int | None = Field(ge=0, le=255, default=0, description="BSR priority (0 - 255, default = 0).")    
+    bsr_hash: int | None = Field(ge=0, le=32, default=10, description="BSR hash length (0 - 32, default = 10).")    
+    bsr_allow_quick_refresh: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable accept BSR quick refresh packets from neighbors.")    
+    cisco_crp_prefix: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable making candidate RP compatible with old Cisco IOS.")    
+    cisco_register_checksum: Literal["enable", "disable"] | None = Field(default="disable", description="Checksum entire register packet(for old Cisco IOS compatibility).")    
+    cisco_register_checksum_group: str | None = Field(max_length=35, default=None, description="Cisco register checksum only these groups.")  # datasource: ['router.access-list.name']    
+    cisco_ignore_rp_set_priority: Literal["enable", "disable"] | None = Field(default="disable", description="Use only hash for RP selection (compatibility with old Cisco IOS).")    
+    register_rp_reachability: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable check RP is reachable before registering packets.")    
+    register_source: Literal["disable", "interface", "ip-address"] | None = Field(default="disable", description="Override source address in register packets.")    
+    register_source_interface: str | None = Field(max_length=15, default=None, description="Override with primary interface address.")  # datasource: ['system.interface.name']    
+    register_source_ip: str | None = Field(default="0.0.0.0", description="Override with local IP address.")    
+    register_supression: int | None = Field(ge=1, le=65535, default=60, description="Period of time to honor register-stop message (1 - 65535 sec, default = 60).")    
+    null_register_retries: int | None = Field(ge=1, le=20, default=1, description="Maximum retries of null register (1 - 20, default = 1).")    
+    rp_register_keepalive: int | None = Field(ge=1, le=65535, default=185, description="Timeout for RP receiving data on (S,G) tree (1 - 65535 sec, default = 185).")    
+    spt_threshold: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable switching to source specific trees.")    
+    spt_threshold_group: str | None = Field(max_length=35, default=None, description="Groups allowed to switch to source tree.")  # datasource: ['router.access-list.name']    
+    ssm: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable source specific multicast.")    
+    ssm_range: str | None = Field(max_length=35, default=None, description="Groups allowed to source specific multicast.")  # datasource: ['router.access-list.name']    
+    register_rate_limit: int | None = Field(ge=0, le=65535, default=0, description="Limit of packets/sec per source registered through this RP (0 - 65535, default = 0 which means unlimited).")    
+    pim_use_sdwan: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable use of SDWAN when checking RPF neighbor and sending of REG packet.")    
+    rp_address: list[MulticastPimSmGlobalRpAddress] = Field(default_factory=list, description="Statically configure RP addresses.")
+class MulticastInterfaceJoinGroup(BaseModel):
+    """
+    Child table model for interface.join-group.
+    
+    Join multicast groups.
+    """
+    
+    class Config:
+        """Pydantic model configuration."""
+        extra = "allow"  # Allow additional fields from API
+        str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
+    
+    address: str | None = Field(default="0.0.0.0", description="Multicast group IP address.")
+class MulticastInterfaceIgmp(BaseModel):
+    """
+    Child table model for interface.igmp.
+    
+    IGMP configuration options.
+    """
+    
+    class Config:
+        """Pydantic model configuration."""
+        extra = "allow"  # Allow additional fields from API
+        str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
+    
+    access_group: str | None = Field(max_length=35, default=None, description="Groups IGMP hosts are allowed to join.")  # datasource: ['router.access-list.name']    
+    version: Literal["3", "2", "1"] | None = Field(default="3", description="Maximum version of IGMP to support.")    
+    immediate_leave_group: str | None = Field(max_length=35, default=None, description="Groups to drop membership for immediately after receiving IGMPv2 leave.")  # datasource: ['router.access-list.name']    
+    last_member_query_interval: int | None = Field(ge=1, le=65535, default=1000, description="Timeout between IGMPv2 leave and removing group (1 - 65535 msec, default = 1000).")    
+    last_member_query_count: int | None = Field(ge=2, le=7, default=2, description="Number of group specific queries before removing group (2 - 7, default = 2).")    
+    query_max_response_time: int | None = Field(ge=1, le=25, default=10, description="Maximum time to wait for a IGMP query response (1 - 25 sec, default = 10).")    
+    query_interval: int | None = Field(ge=1, le=65535, default=125, description="Interval between queries to IGMP hosts (1 - 65535 sec, default = 125).")    
+    query_timeout: int | None = Field(ge=60, le=900, default=255, description="Timeout between queries before becoming querying unit for network (60 - 900, default = 255).")    
+    router_alert_check: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable require IGMP packets contain router alert option.")
 class MulticastInterface(BaseModel):
     """
     Child table model for interface.
@@ -84,13 +158,14 @@ class MulticastInterface(BaseModel):
         """Pydantic model configuration."""
         extra = "allow"  # Allow additional fields from API
         str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
     
-    name: str | None = Field(max_length=15, default="", description="Interface name.")  # datasource: ['system.interface.name']    
+    name: str | None = Field(max_length=15, default=None, description="Interface name.")  # datasource: ['system.interface.name']    
     ttl_threshold: int | None = Field(ge=1, le=255, default=1, description="Minimum TTL of multicast packets that will be forwarded (applied only to new multicast routes) (1 - 255, default = 1).")    
     pim_mode: Literal["sparse-mode", "dense-mode"] | None = Field(default="sparse-mode", description="PIM operation mode.")    
     passive: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable listening to IGMP but not participating in PIM.")    
     bfd: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable Protocol Independent Multicast (PIM) Bidirectional Forwarding Detection (BFD).")    
-    neighbour_filter: str | None = Field(max_length=35, default="", description="Routers acknowledged as neighbor routers.")  # datasource: ['router.access-list.name']    
+    neighbour_filter: str | None = Field(max_length=35, default=None, description="Routers acknowledged as neighbor routers.")  # datasource: ['router.access-list.name']    
     hello_interval: int | None = Field(ge=1, le=65535, default=30, description="Interval between sending PIM hello messages (0 - 65535 sec, default = 30).")    
     hello_holdtime: int | None = Field(ge=1, le=65535, default=105, description="Time before old neighbor information expires (0 - 65535 sec, default = 105).")    
     cisco_exclude_genid: Literal["enable", "disable"] | None = Field(default="disable", description="Exclude GenID from hello packets (compatibility with old Cisco IOS).")    
@@ -98,15 +173,15 @@ class MulticastInterface(BaseModel):
     propagation_delay: int | None = Field(ge=100, le=5000, default=500, description="Delay flooding packets on this interface (100 - 5000 msec, default = 500).")    
     state_refresh_interval: int | None = Field(ge=1, le=100, default=60, description="Interval between sending state-refresh packets (1 - 100 sec, default = 60).")    
     rp_candidate: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable compete to become RP in elections.")    
-    rp_candidate_group: str | None = Field(max_length=35, default="", description="Multicast groups managed by this RP.")  # datasource: ['router.access-list.name']    
+    rp_candidate_group: str | None = Field(max_length=35, default=None, description="Multicast groups managed by this RP.")  # datasource: ['router.access-list.name']    
     rp_candidate_priority: int | None = Field(ge=0, le=255, default=192, description="Router's priority as RP.")    
     rp_candidate_interval: int | None = Field(ge=1, le=16383, default=60, description="RP candidate advertisement interval (1 - 16383 sec, default = 60).")    
-    multicast_flow: str | None = Field(max_length=35, default="", description="Acceptable source for multicast group.")  # datasource: ['router.multicast-flow.name']    
-    static_group: str | None = Field(max_length=35, default="", description="Statically set multicast groups to forward out.")  # datasource: ['router.multicast-flow.name']    
+    multicast_flow: str | None = Field(max_length=35, default=None, description="Acceptable source for multicast group.")  # datasource: ['router.multicast-flow.name']    
+    static_group: str | None = Field(max_length=35, default=None, description="Statically set multicast groups to forward out.")  # datasource: ['router.multicast-flow.name']    
     rpf_nbr_fail_back: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable fail back for RPF neighbor query.")    
-    rpf_nbr_fail_back_filter: str | None = Field(max_length=35, default="", description="Filter for fail back RPF neighbors.")  # datasource: ['router.access-list.name']    
-    join_group: list[JoinGroup] = Field(default=None, description="Join multicast groups.")    
-    igmp: list[Igmp] = Field(default=None, description="IGMP configuration options.")
+    rpf_nbr_fail_back_filter: str | None = Field(max_length=35, default=None, description="Filter for fail back RPF neighbors.")  # datasource: ['router.access-list.name']    
+    join_group: list[MulticastInterfaceJoinGroup] = Field(default_factory=list, description="Join multicast groups.")    
+    igmp: list[MulticastInterfaceIgmp] = Field(default_factory=list, description="IGMP configuration options.")
 # ============================================================================
 # Enum Definitions (for fields with 4+ allowed values)
 # ============================================================================
@@ -135,12 +210,12 @@ class MulticastModel(BaseModel):
     # Model Fields
     # ========================================================================
     
-    route_threshold: int | None = Field(ge=1, le=2147483647, default="", description="Generate warnings when the number of multicast routes exceeds this number, must not be greater than route-limit.")    
+    route_threshold: int | None = Field(ge=1, le=2147483647, default=None, description="Generate warnings when the number of multicast routes exceeds this number, must not be greater than route-limit.")    
     route_limit: int | None = Field(ge=1, le=2147483647, default=2147483647, description="Maximum number of multicast routes.")    
     multicast_routing: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable IP multicast routing.")    
-    pim_sm_global: list[PimSmGlobal] = Field(default=None, description="PIM sparse-mode global settings.")    
-    pim_sm_global_vrf: list[PimSmGlobalVrf] = Field(default=None, description="per-VRF PIM sparse-mode global settings.")    
-    interface: list[Interface] = Field(default=None, description="PIM interfaces.")    
+    pim_sm_global: list[MulticastPimSmGlobal] = Field(default_factory=list, description="PIM sparse-mode global settings.")    
+    pim_sm_global_vrf: list[MulticastPimSmGlobalVrf] = Field(default_factory=list, description="per-VRF PIM sparse-mode global settings.")    
+    interface: list[MulticastInterface] = Field(default_factory=list, description="PIM interfaces.")    
     # ========================================================================
     # Custom Validators
     # ========================================================================
@@ -205,7 +280,7 @@ class MulticastModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.router.multicast.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate child table items
         values = getattr(self, "pim_sm_global", [])
@@ -223,7 +298,7 @@ class MulticastModel(BaseModel):
             
             # Check all datasource endpoints
             found = False
-            if await client.api.cmdb.router.access-list.exists(value):
+            if await client.api.cmdb.router.access_list.exists(value):
                 found = True
             
             if not found:
@@ -263,7 +338,7 @@ class MulticastModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.router.multicast.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate child table items
         values = getattr(self, "pim_sm_global_vrf", [])
@@ -321,7 +396,7 @@ class MulticastModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.router.multicast.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate child table items
         values = getattr(self, "interface", [])
@@ -339,7 +414,7 @@ class MulticastModel(BaseModel):
             
             # Check all datasource endpoints
             found = False
-            if await client.api.cmdb.router.access-list.exists(value):
+            if await client.api.cmdb.router.access_list.exists(value):
                 found = True
             
             if not found:
@@ -388,11 +463,11 @@ Dict = dict[str, Any]  # For backward compatibility
 # ============================================================================
 
 __all__ = [
-    "MulticastModel",    "MulticastPimSmGlobal",    "MulticastPimSmGlobalVrf",    "MulticastInterface",]
+    "MulticastModel",    "MulticastPimSmGlobal",    "MulticastPimSmGlobal.RpAddress",    "MulticastPimSmGlobalVrf",    "MulticastPimSmGlobalVrf.RpAddress",    "MulticastInterface",    "MulticastInterface.JoinGroup",    "MulticastInterface.Igmp",]
 
 
 # ============================================================================
 # Generated by hfortix generator v0.6.0
 # Schema: 1.7.0
-# Generated: 2026-01-17T05:32:20.112158Z
+# Generated: 2026-01-17T17:25:23.683309Z
 # ============================================================================

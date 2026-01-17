@@ -12,22 +12,13 @@ from typing import Any, Literal, Optional
 from enum import Enum
 
 # ============================================================================
-# Child Table Models
+# Enum Definitions for Child Table Fields (for fields with 4+ allowed values)
 # ============================================================================
 
-class NacPolicySeverity(BaseModel):
-    """
-    Child table model for severity.
-    
-    NAC policy matching devices vulnerability severity lists.
-    """
-    
-    class Config:
-        """Pydantic model configuration."""
-        extra = "allow"  # Allow additional fields from API
-        str_strip_whitespace = True
-    
-    severity_num: int = Field(ge=0, le=4, default=0, description="Enter multiple severity levels, where 0 = Info, 1 = Low, ..., 4 = Critical")
+# ============================================================================
+# Child Table Models (sorted deepest-first so nested models are defined before their parents)
+# ============================================================================
+
 class NacPolicySwitchGroup(BaseModel):
     """
     Child table model for switch-group.
@@ -39,15 +30,35 @@ class NacPolicySwitchGroup(BaseModel):
         """Pydantic model configuration."""
         extra = "allow"  # Allow additional fields from API
         str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
     
-    name: str = Field(max_length=79, default="", description="Managed FortiSwitch group name from available options.")  # datasource: ['switch-controller.switch-group.name']
+    name: str = Field(max_length=79, description="Managed FortiSwitch group name from available options.")  # datasource: ['switch-controller.switch-group.name']
+class NacPolicySeverity(BaseModel):
+    """
+    Child table model for severity.
+    
+    NAC policy matching devices vulnerability severity lists.
+    """
+    
+    class Config:
+        """Pydantic model configuration."""
+        extra = "allow"  # Allow additional fields from API
+        str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
+    
+    severity_num: int = Field(ge=0, le=4, default=0, description="Enter multiple severity levels, where 0 = Info, 1 = Low, ..., 4 = Critical")
 # ============================================================================
 # Enum Definitions (for fields with 4+ allowed values)
 # ============================================================================
 
 class NacPolicyCategoryEnum(str, Enum):
     """Allowed values for category field."""
-    DEVICE = "device"    FIREWALL_USER = "firewall-user"    EMS_TAG = "ems-tag"    FORTIVOICE_TAG = "fortivoice-tag"    VULNERABILITY = "vulnerability"
+    DEVICE = "device"
+    FIREWALL_USER = "firewall-user"
+    EMS_TAG = "ems-tag"
+    FORTIVOICE_TAG = "fortivoice-tag"
+    VULNERABILITY = "vulnerability"
+
 
 # ============================================================================
 # Main Model
@@ -59,7 +70,7 @@ class NacPolicyModel(BaseModel):
     
     Configure NAC policy matching pattern to identify matching NAC devices.
     
-    Validation Rules:        - name: max_length=63 pattern=        - description: max_length=63 pattern=        - category: pattern=        - status: pattern=        - match_type: pattern=        - match_period: min=0 max=120 pattern=        - match_remove: pattern=        - mac: max_length=17 pattern=        - hw_vendor: max_length=15 pattern=        - type: max_length=15 pattern=        - family: max_length=31 pattern=        - os: max_length=31 pattern=        - hw_version: max_length=15 pattern=        - sw_version: max_length=15 pattern=        - host: max_length=64 pattern=        - user: max_length=64 pattern=        - src: max_length=15 pattern=        - user_group: max_length=35 pattern=        - ems_tag: max_length=79 pattern=        - fortivoice_tag: max_length=79 pattern=        - severity: pattern=        - switch_fortilink: max_length=15 pattern=        - switch_group: pattern=        - switch_mac_policy: max_length=63 pattern=        - firewall_address: max_length=79 pattern=        - ssid_policy: max_length=35 pattern=    """
+    Validation Rules:        - name: max_length=63 pattern=        - description: max_length=63 pattern=        - category: pattern=        - status: pattern=        - match_type: pattern=        - match_period: min=0 max=120 pattern=        - match_remove: pattern=        - mac: max_length=17 pattern=        - hw_vendor: max_length=15 pattern=        - type_: max_length=15 pattern=        - family: max_length=31 pattern=        - os: max_length=31 pattern=        - hw_version: max_length=15 pattern=        - sw_version: max_length=15 pattern=        - host: max_length=64 pattern=        - user: max_length=64 pattern=        - src: max_length=15 pattern=        - user_group: max_length=35 pattern=        - ems_tag: max_length=79 pattern=        - fortivoice_tag: max_length=79 pattern=        - severity: pattern=        - switch_fortilink: max_length=15 pattern=        - switch_group: pattern=        - switch_mac_policy: max_length=63 pattern=        - firewall_address: max_length=79 pattern=        - ssid_policy: max_length=35 pattern=    """
     
     class Config:
         """Pydantic model configuration."""
@@ -72,32 +83,32 @@ class NacPolicyModel(BaseModel):
     # Model Fields
     # ========================================================================
     
-    name: str | None = Field(max_length=63, default="", description="NAC policy name.")    
-    description: str | None = Field(max_length=63, default="", description="Description for the NAC policy matching pattern.")    
-    category: CategoryEnum | None = Field(default="device", description="Category of NAC policy.")    
+    name: str | None = Field(max_length=63, default=None, description="NAC policy name.")    
+    description: str | None = Field(max_length=63, default=None, description="Description for the NAC policy matching pattern.")    
+    category: NacPolicyCategoryEnum | None = Field(default=NacPolicyCategoryEnum.DEVICE, description="Category of NAC policy.")    
     status: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable NAC policy.")    
     match_type: Literal["dynamic", "override"] | None = Field(default="dynamic", description="Match and retain the devices based on the type.")    
     match_period: int | None = Field(ge=0, le=120, default=0, description="Number of days the matched devices will be retained (0 - always retain)")    
     match_remove: Literal["default", "link-down"] | None = Field(default="default", description="Options to remove the matched override devices.")    
-    mac: str | None = Field(max_length=17, default="", description="NAC policy matching MAC address.")    
-    hw_vendor: str | None = Field(max_length=15, default="", description="NAC policy matching hardware vendor.")    
-    type: str | None = Field(max_length=15, default="", description="NAC policy matching type.")    
-    family: str | None = Field(max_length=31, default="", description="NAC policy matching family.")    
-    os: str | None = Field(max_length=31, default="", description="NAC policy matching operating system.")    
-    hw_version: str | None = Field(max_length=15, default="", description="NAC policy matching hardware version.")    
-    sw_version: str | None = Field(max_length=15, default="", description="NAC policy matching software version.")    
-    host: str | None = Field(max_length=64, default="", description="NAC policy matching host.")    
-    user: str | None = Field(max_length=64, default="", description="NAC policy matching user.")    
-    src: str | None = Field(max_length=15, default="", description="NAC policy matching source.")    
-    user_group: str | None = Field(max_length=35, default="", description="NAC policy matching user group.")  # datasource: ['user.group.name']    
-    ems_tag: str | None = Field(max_length=79, default="", description="NAC policy matching EMS tag.")  # datasource: ['firewall.address.name']    
-    fortivoice_tag: str | None = Field(max_length=79, default="", description="NAC policy matching FortiVoice tag.")  # datasource: ['firewall.address.name']    
-    severity: list[Severity] = Field(default=None, description="NAC policy matching devices vulnerability severity lists.")    
-    switch_fortilink: str | None = Field(max_length=15, default="", description="FortiLink interface for which this NAC policy belongs to.")  # datasource: ['system.interface.name']    
-    switch_group: list[SwitchGroup] = Field(default=None, description="List of managed FortiSwitch groups on which NAC policy can be applied.")    
-    switch_mac_policy: str | None = Field(max_length=63, default="", description="Switch MAC policy action to be applied on the matched NAC policy.")  # datasource: ['switch-controller.mac-policy.name']    
-    firewall_address: str | None = Field(max_length=79, default="", description="Dynamic firewall address to associate MAC which match this policy.")  # datasource: ['firewall.address.name']    
-    ssid_policy: str | None = Field(max_length=35, default="", description="SSID policy to be applied on the matched NAC policy.")  # datasource: ['wireless-controller.ssid-policy.name']    
+    mac: str | None = Field(max_length=17, default=None, description="NAC policy matching MAC address.")    
+    hw_vendor: str | None = Field(max_length=15, default=None, description="NAC policy matching hardware vendor.")    
+    type_: str | None = Field(max_length=15, default=None, serialization_alias="type", description="NAC policy matching type.")    
+    family: str | None = Field(max_length=31, default=None, description="NAC policy matching family.")    
+    os: str | None = Field(max_length=31, default=None, description="NAC policy matching operating system.")    
+    hw_version: str | None = Field(max_length=15, default=None, description="NAC policy matching hardware version.")    
+    sw_version: str | None = Field(max_length=15, default=None, description="NAC policy matching software version.")    
+    host: str | None = Field(max_length=64, default=None, description="NAC policy matching host.")    
+    user: str | None = Field(max_length=64, default=None, description="NAC policy matching user.")    
+    src: str | None = Field(max_length=15, default=None, description="NAC policy matching source.")    
+    user_group: str | None = Field(max_length=35, default=None, description="NAC policy matching user group.")  # datasource: ['user.group.name']    
+    ems_tag: str | None = Field(max_length=79, default=None, description="NAC policy matching EMS tag.")  # datasource: ['firewall.address.name']    
+    fortivoice_tag: str | None = Field(max_length=79, default=None, description="NAC policy matching FortiVoice tag.")  # datasource: ['firewall.address.name']    
+    severity: list[NacPolicySeverity] = Field(default_factory=list, description="NAC policy matching devices vulnerability severity lists.")    
+    switch_fortilink: str | None = Field(max_length=15, default=None, description="FortiLink interface for which this NAC policy belongs to.")  # datasource: ['system.interface.name']    
+    switch_group: list[NacPolicySwitchGroup] = Field(default_factory=list, description="List of managed FortiSwitch groups on which NAC policy can be applied.")    
+    switch_mac_policy: str | None = Field(max_length=63, default=None, description="Switch MAC policy action to be applied on the matched NAC policy.")  # datasource: ['switch-controller.mac-policy.name']    
+    firewall_address: str | None = Field(max_length=79, default=None, description="Dynamic firewall address to associate MAC which match this policy.")  # datasource: ['firewall.address.name']    
+    ssid_policy: str | None = Field(max_length=35, default=None, description="SSID policy to be applied on the matched NAC policy.")  # datasource: ['wireless-controller.ssid-policy.name']    
     # ========================================================================
     # Custom Validators
     # ========================================================================
@@ -267,7 +278,7 @@ class NacPolicyModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.user.nac_policy.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate scalar field
         value = getattr(self, "user_group", None)
@@ -316,7 +327,7 @@ class NacPolicyModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.user.nac_policy.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate scalar field
         value = getattr(self, "ems_tag", None)
@@ -365,7 +376,7 @@ class NacPolicyModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.user.nac_policy.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate scalar field
         value = getattr(self, "fortivoice_tag", None)
@@ -414,7 +425,7 @@ class NacPolicyModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.user.nac_policy.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate scalar field
         value = getattr(self, "switch_fortilink", None)
@@ -463,7 +474,7 @@ class NacPolicyModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.user.nac_policy.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate child table items
         values = getattr(self, "switch_group", [])
@@ -481,7 +492,7 @@ class NacPolicyModel(BaseModel):
             
             # Check all datasource endpoints
             found = False
-            if await client.api.cmdb.switch-controller.switch-group.exists(value):
+            if await client.api.cmdb.switch_controller.switch_group.exists(value):
                 found = True
             
             if not found:
@@ -521,7 +532,7 @@ class NacPolicyModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.user.nac_policy.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate scalar field
         value = getattr(self, "switch_mac_policy", None)
@@ -530,7 +541,7 @@ class NacPolicyModel(BaseModel):
         
         # Check all datasource endpoints
         found = False
-        if await client.api.cmdb.switch-controller.mac-policy.exists(value):
+        if await client.api.cmdb.switch_controller.mac_policy.exists(value):
             found = True
         
         if not found:
@@ -570,7 +581,7 @@ class NacPolicyModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.user.nac_policy.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate scalar field
         value = getattr(self, "firewall_address", None)
@@ -619,7 +630,7 @@ class NacPolicyModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.user.nac_policy.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate scalar field
         value = getattr(self, "ssid_policy", None)
@@ -628,7 +639,7 @@ class NacPolicyModel(BaseModel):
         
         # Check all datasource endpoints
         found = False
-        if await client.api.cmdb.wireless-controller.ssid-policy.exists(value):
+        if await client.api.cmdb.wireless_controller.ssid_policy.exists(value):
             found = True
         
         if not found:
@@ -693,5 +704,5 @@ __all__ = [
 # ============================================================================
 # Generated by hfortix generator v0.6.0
 # Schema: 1.7.0
-# Generated: 2026-01-17T05:32:18.758754Z
+# Generated: 2026-01-17T17:25:22.503375Z
 # ============================================================================

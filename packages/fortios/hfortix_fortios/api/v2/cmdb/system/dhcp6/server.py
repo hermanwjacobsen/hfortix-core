@@ -828,6 +828,32 @@ class Server(CRUDEndpoint, MetadataMixin):
             - put(): Update existing object
             - exists(): Check existence manually
         """
+        # Apply normalization for table fields (supports flexible input formats)
+        if options is not None:
+            options = normalize_table_field(
+                options,
+                mkey="id",
+                required_fields=['id', 'code'],
+                field_name="options",
+                example="[{'id': 1, 'code': 1}]",
+            )
+        if prefix_range is not None:
+            prefix_range = normalize_table_field(
+                prefix_range,
+                mkey="id",
+                required_fields=['id', 'start-prefix', 'end-prefix', 'prefix-length'],
+                field_name="prefix_range",
+                example="[{'id': 1, 'start-prefix': 'value', 'end-prefix': 'value', 'prefix-length': 1}]",
+            )
+        if ip_range is not None:
+            ip_range = normalize_table_field(
+                ip_range,
+                mkey="id",
+                required_fields=['id', 'start-ip', 'end-ip'],
+                field_name="ip_range",
+                example="[{'id': 1, 'start-ip': 'value', 'end-ip': 'value'}]",
+            )
+        
         # Build payload using helper function with auto-normalization
         payload_data = build_api_payload(
             id=id,

@@ -642,6 +642,16 @@ class SwitchGroup(CRUDEndpoint, MetadataMixin):
             - put(): Update existing object
             - exists(): Check existence manually
         """
+        # Apply normalization for table fields (supports flexible input formats)
+        if members is not None:
+            members = normalize_table_field(
+                members,
+                mkey="switch-id",
+                required_fields=['switch-id'],
+                field_name="members",
+                example="[{'switch-id': 'value'}]",
+            )
+        
         # Build payload using helper function with auto-normalization
         payload_data = build_api_payload(
             name=name,

@@ -868,6 +868,8 @@ class Interface(CRUDEndpoint, MetadataMixin):
                 example="[{'name': 'value'}]",
             )
         
+        # Apply normalization for multi-value option fields (space-separated strings)
+        
         # Build payload using helper function with auto-normalization
         # This automatically converts strings/lists to [{'name': '...'}] format for list fields
         # To disable auto-normalization, use build_cmdb_payload directly
@@ -1722,6 +1724,8 @@ class Interface(CRUDEndpoint, MetadataMixin):
                 field_name="tagging",
                 example="[{'name': 'value'}]",
             )
+        
+        # Apply normalization for multi-value option fields (space-separated strings)
         
         # Build payload using helper function with auto-normalization
         # This automatically converts strings/lists to [{'name': '...'}] format for list fields
@@ -2591,6 +2595,74 @@ class Interface(CRUDEndpoint, MetadataMixin):
             - put(): Update existing object
             - exists(): Check existence manually
         """
+        # Apply normalization for table fields (supports flexible input formats)
+        if client_options is not None:
+            client_options = normalize_table_field(
+                client_options,
+                mkey="id",
+                required_fields=['id', 'code'],
+                field_name="client_options",
+                example="[{'id': 1, 'code': 1}]",
+            )
+        if fail_alert_interfaces is not None:
+            fail_alert_interfaces = normalize_table_field(
+                fail_alert_interfaces,
+                mkey="name",
+                required_fields=['name'],
+                field_name="fail_alert_interfaces",
+                example="[{'name': 'value'}]",
+            )
+        if member is not None:
+            member = normalize_table_field(
+                member,
+                mkey="interface-name",
+                required_fields=['interface-name'],
+                field_name="member",
+                example="[{'interface-name': 'value'}]",
+            )
+        if security_groups is not None:
+            security_groups = normalize_table_field(
+                security_groups,
+                mkey="name",
+                required_fields=['name'],
+                field_name="security_groups",
+                example="[{'name': 'value'}]",
+            )
+        if vrrp is not None:
+            vrrp = normalize_table_field(
+                vrrp,
+                mkey="vrid",
+                required_fields=['vrid', 'vrip'],
+                field_name="vrrp",
+                example="[{'vrid': 1, 'vrip': '192.168.1.10'}]",
+            )
+        if secondaryip is not None:
+            secondaryip = normalize_table_field(
+                secondaryip,
+                mkey="id",
+                required_fields=['id'],
+                field_name="secondaryip",
+                example="[{'id': 1}]",
+            )
+        if dhcp_snooping_server_list is not None:
+            dhcp_snooping_server_list = normalize_table_field(
+                dhcp_snooping_server_list,
+                mkey="name",
+                required_fields=['name'],
+                field_name="dhcp_snooping_server_list",
+                example="[{'name': 'value'}]",
+            )
+        if tagging is not None:
+            tagging = normalize_table_field(
+                tagging,
+                mkey="name",
+                required_fields=['name'],
+                field_name="tagging",
+                example="[{'name': 'value'}]",
+            )
+        
+        # Apply normalization for multi-value option fields (space-separated strings)
+        
         # Build payload using helper function with auto-normalization
         payload_data = build_api_payload(
             name=name,

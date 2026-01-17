@@ -17,10 +17,21 @@ from enum import Enum
 
 class FortiguardPortEnum(str, Enum):
     """Allowed values for port field."""
-    8888 = "8888"    53 = "53"    80 = "80"    443 = "443"
-class FortiguardAuto_firmware_upgrade_dayEnum(str, Enum):
+    V_8888 = "8888"
+    V_53 = "53"
+    V_80 = "80"
+    V_443 = "443"
+
+class FortiguardAutoFirmwareUpgradeDayEnum(str, Enum):
     """Allowed values for auto_firmware_upgrade_day field."""
-    SUNDAY = "sunday"    MONDAY = "monday"    TUESDAY = "tuesday"    WEDNESDAY = "wednesday"    THURSDAY = "thursday"    FRIDAY = "friday"    SATURDAY = "saturday"
+    SUNDAY = "sunday"
+    MONDAY = "monday"
+    TUESDAY = "tuesday"
+    WEDNESDAY = "wednesday"
+    THURSDAY = "thursday"
+    FRIDAY = "friday"
+    SATURDAY = "saturday"
+
 
 # ============================================================================
 # Main Model
@@ -48,11 +59,11 @@ class FortiguardModel(BaseModel):
     fortiguard_anycast: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable use of FortiGuard's Anycast network.")    
     fortiguard_anycast_source: Literal["fortinet", "aws", "debug"] | None = Field(default="fortinet", description="Configure which of Fortinet's servers to provide FortiGuard services in FortiGuard's anycast network. Default is Fortinet.")    
     protocol: Literal["udp", "http", "https"] | None = Field(default="https", description="Protocol used to communicate with the FortiGuard servers.")    
-    port: PortEnum | None = Field(default="443", description="Port used to communicate with the FortiGuard servers.")    
+    port: FortiguardPortEnum | None = Field(default=FortiguardPortEnum.V_443, description="Port used to communicate with the FortiGuard servers.")    
     load_balance_servers: int | None = Field(ge=1, le=266, default=1, description="Number of servers to alternate between as first FortiGuard option.")    
     auto_join_forticloud: Literal["enable", "disable"] | None = Field(default="enable", description="Automatically connect to and login to FortiCloud.")    
     update_server_location: Literal["automatic", "usa", "eu"] | None = Field(default="automatic", description="Location from which to receive FortiGuard updates.")    
-    sandbox_region: str | None = Field(max_length=63, default="", description="FortiCloud Sandbox region.")    
+    sandbox_region: str | None = Field(max_length=63, default=None, description="FortiCloud Sandbox region.")    
     sandbox_inline_scan: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable FortiCloud Sandbox inline-scan.")    
     update_ffdb: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable Internet Service Database update.")    
     update_uwdb: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable allowlist update.")    
@@ -60,9 +71,9 @@ class FortiguardModel(BaseModel):
     update_extdb: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable external resource update.")    
     update_build_proxy: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable proxy dictionary rebuild.")    
     persistent_connection: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable use of persistent connection to receive update notification from FortiGuard.")    
-    vdom: str | None = Field(max_length=31, default="", description="FortiGuard Service virtual domain name.")  # datasource: ['system.vdom.name']    
+    vdom: str | None = Field(max_length=31, default=None, description="FortiGuard Service virtual domain name.")  # datasource: ['system.vdom.name']    
     auto_firmware_upgrade: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable automatic patch-level firmware upgrade from FortiGuard. The FortiGate unit searches for new patches only in the same major and minor version.")    
-    auto_firmware_upgrade_day: list[AutoFirmwareUpgradeDay] = Field(default="", description="Allowed day(s) of the week to install an automatic patch-level firmware upgrade from FortiGuard (default is none). Disallow any day of the week to use auto-firmware-upgrade-delay instead, which waits for designated days before installing an automatic patch-level firmware upgrade.")    
+    auto_firmware_upgrade_day: list[FortiguardAutoFirmwareUpgradeDayEnum] = Field(default_factory=list, description="Allowed day(s) of the week to install an automatic patch-level firmware upgrade from FortiGuard (default is none). Disallow any day of the week to use auto-firmware-upgrade-delay instead, which waits for designated days before installing an automatic patch-level firmware upgrade.")    
     auto_firmware_upgrade_delay: int | None = Field(ge=0, le=14, default=3, description="Delay of day(s) before installing an automatic patch-level firmware upgrade from FortiGuard (default = 3). Set it 0 to use auto-firmware-upgrade-day instead, which selects allowed day(s) of the week for installing an automatic patch-level firmware upgrade.")    
     auto_firmware_upgrade_start_hour: int | None = Field(ge=0, le=23, default=1, description="Start time in the designated time window for automatic patch-level firmware upgrade from FortiGuard in 24 hour time (0 ~ 23, default = 2). The actual upgrade time is selected randomly within the time window.")    
     auto_firmware_upgrade_end_hour: int | None = Field(ge=0, le=23, default=4, description="End time in the designated time window for automatic patch-level firmware upgrade from FortiGuard in 24 hour time (0 ~ 23, default = 4). When the end time is smaller than the start time, the end time is interpreted as the next day. The actual upgrade time is selected randomly within the time window.")    
@@ -88,22 +99,22 @@ class FortiguardModel(BaseModel):
     webfilter_license: int | None = Field(ge=0, le=4294967295, default=4294967295, description="Interval of time between license checks for the FortiGuard web filter contract.")    
     webfilter_expiration: int | None = Field(ge=0, le=4294967295, default=0, description="Expiration date of the FortiGuard web filter contract.")    
     webfilter_timeout: int = Field(ge=1, le=30, default=15, description="Web filter query time out (1 - 30 sec, default = 15).")    
-    sdns_server_ip: list[SdnsServerIp] = Field(default="", description="IP address of the FortiGuard DNS rating server.")    
+    sdns_server_ip: list[str] = Field(default_factory=list, description="IP address of the FortiGuard DNS rating server.")    
     sdns_server_port: int | None = Field(ge=1, le=65535, default=53, description="Port to connect to on the FortiGuard DNS rating server.")    
     anycast_sdns_server_ip: str | None = Field(default="0.0.0.0", description="IP address of the FortiGuard anycast DNS rating server.")    
     anycast_sdns_server_port: int | None = Field(ge=1, le=65535, default=853, description="Port to connect to on the FortiGuard anycast DNS rating server.")    
-    sdns_options: list[SdnsOptions] = Field(default="", description="Customization options for the FortiGuard DNS service.")    
+    sdns_options: list[Literal["include-question-section"]] = Field(default_factory=list, description="Customization options for the FortiGuard DNS service.")    
     source_ip: str | None = Field(default="0.0.0.0", description="Source IPv4 address used to communicate with FortiGuard.")    
     source_ip6: str | None = Field(default="::", description="Source IPv6 address used to communicate with FortiGuard.")    
-    proxy_server_ip: str | None = Field(max_length=63, default="", description="Hostname or IPv4 address of the proxy server.")    
+    proxy_server_ip: str | None = Field(max_length=63, default=None, description="Hostname or IPv4 address of the proxy server.")    
     proxy_server_port: int | None = Field(ge=0, le=65535, default=0, description="Port used to communicate with the proxy server.")    
-    proxy_username: str | None = Field(max_length=64, default="", description="Proxy user name.")    
+    proxy_username: str | None = Field(max_length=64, default=None, description="Proxy user name.")    
     proxy_password: Any = Field(max_length=128, default=None, description="Proxy user password.")    
     ddns_server_ip: str | None = Field(default="0.0.0.0", description="IP address of the FortiDDNS server.")    
     ddns_server_ip6: str | None = Field(default="::", description="IPv6 address of the FortiDDNS server.")    
     ddns_server_port: int | None = Field(ge=1, le=65535, default=443, description="Port used to communicate with FortiDDNS servers.")    
     interface_select_method: Literal["auto", "sdwan", "specify"] | None = Field(default="auto", description="Specify how to select outgoing interface to reach server.")    
-    interface: str = Field(max_length=15, default="", description="Specify outgoing interface to reach server.")  # datasource: ['system.interface.name']    
+    interface: str = Field(max_length=15, description="Specify outgoing interface to reach server.")  # datasource: ['system.interface.name']    
     vrf_select: int | None = Field(ge=0, le=511, default=0, description="VRF ID used for connection to server.")    
     # ========================================================================
     # Custom Validators
@@ -199,7 +210,7 @@ class FortiguardModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.system.fortiguard.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate scalar field
         value = getattr(self, "vdom", None)
@@ -248,7 +259,7 @@ class FortiguardModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.system.fortiguard.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate scalar field
         value = getattr(self, "interface", None)
@@ -310,5 +321,5 @@ __all__ = [
 # ============================================================================
 # Generated by hfortix generator v0.6.0
 # Schema: 1.7.0
-# Generated: 2026-01-17T05:32:18.196979Z
+# Generated: 2026-01-17T17:25:22.005165Z
 # ============================================================================

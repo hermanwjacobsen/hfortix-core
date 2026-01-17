@@ -11,7 +11,11 @@ from pydantic import BaseModel, Field, field_validator
 from typing import Any, Literal, Optional
 
 # ============================================================================
-# Child Table Models
+# Enum Definitions for Child Table Fields (for fields with 4+ allowed values)
+# ============================================================================
+
+# ============================================================================
+# Child Table Models (sorted deepest-first so nested models are defined before their parents)
 # ============================================================================
 
 class StaticSdwanZone(BaseModel):
@@ -25,8 +29,9 @@ class StaticSdwanZone(BaseModel):
         """Pydantic model configuration."""
         extra = "allow"  # Allow additional fields from API
         str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
     
-    name: str | None = Field(max_length=79, default="", description="SD-WAN zone name.")  # datasource: ['system.sdwan.zone.name']
+    name: str | None = Field(max_length=79, default=None, description="SD-WAN zone name.")  # datasource: ['system.sdwan.zone.name']
 # ============================================================================
 # Enum Definitions (for fields with 4+ allowed values)
 # ============================================================================
@@ -64,18 +69,18 @@ class StaticModel(BaseModel):
     distance: int | None = Field(ge=1, le=255, default=10, description="Administrative distance (1 - 255).")    
     weight: int | None = Field(ge=0, le=255, default=0, description="Administrative weight (0 - 255).")    
     priority: int | None = Field(ge=1, le=65535, default=1, description="Administrative priority (1 - 65535).")    
-    device: str = Field(max_length=35, default="", description="Gateway out interface or tunnel.")  # datasource: ['system.interface.name']    
+    device: str = Field(max_length=35, description="Gateway out interface or tunnel.")  # datasource: ['system.interface.name']    
     comment: str | None = Field(max_length=255, default=None, description="Optional comments.")    
     blackhole: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable black hole.")    
     dynamic_gateway: Literal["enable", "disable"] | None = Field(default="disable", description="Enable use of dynamic gateway retrieved from a DHCP or PPP server.")    
-    sdwan_zone: list[SdwanZone] = Field(default=None, description="Choose SD-WAN Zone.")    
-    dstaddr: str | None = Field(max_length=79, default="", description="Name of firewall address or address group.")  # datasource: ['firewall.address.name', 'firewall.addrgrp.name']    
+    sdwan_zone: list[StaticSdwanZone] = Field(default_factory=list, description="Choose SD-WAN Zone.")    
+    dstaddr: str | None = Field(max_length=79, default=None, description="Name of firewall address or address group.")  # datasource: ['firewall.address.name', 'firewall.addrgrp.name']    
     internet_service: int | None = Field(ge=0, le=4294967295, default=0, description="Application ID in the Internet service database.")  # datasource: ['firewall.internet-service.id']    
-    internet_service_custom: str | None = Field(max_length=64, default="", description="Application name in the Internet service custom database.")  # datasource: ['firewall.internet-service-custom.name']    
-    internet_service_fortiguard: str | None = Field(max_length=64, default="", description="Application name in the Internet service fortiguard database.")  # datasource: ['firewall.internet-service-fortiguard.name']    
+    internet_service_custom: str | None = Field(max_length=64, default=None, description="Application name in the Internet service custom database.")  # datasource: ['firewall.internet-service-custom.name']    
+    internet_service_fortiguard: str | None = Field(max_length=64, default=None, description="Application name in the Internet service fortiguard database.")  # datasource: ['firewall.internet-service-fortiguard.name']    
     link_monitor_exempt: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable withdrawal of this static route when link monitor or health check is down.")    
     tag: int | None = Field(ge=0, le=4294967295, default=0, description="Route tag.")    
-    vrf: int | None = Field(ge=0, le=511, default="unspecified", description="Virtual Routing Forwarding ID.")    
+    vrf: int | None = Field(ge=0, le=511, default=None, description="Virtual Routing Forwarding ID.")    
     bfd: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable Bidirectional Forwarding Detection (BFD).")    
     # ========================================================================
     # Custom Validators
@@ -216,7 +221,7 @@ class StaticModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.router.static.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate scalar field
         value = getattr(self, "device", None)
@@ -265,7 +270,7 @@ class StaticModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.router.static.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate child table items
         values = getattr(self, "sdwan_zone", [])
@@ -323,7 +328,7 @@ class StaticModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.router.static.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate scalar field
         value = getattr(self, "dstaddr", None)
@@ -374,7 +379,7 @@ class StaticModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.router.static.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate scalar field
         value = getattr(self, "internet_service", None)
@@ -383,7 +388,7 @@ class StaticModel(BaseModel):
         
         # Check all datasource endpoints
         found = False
-        if await client.api.cmdb.firewall.internet-service.exists(value):
+        if await client.api.cmdb.firewall.internet_service.exists(value):
             found = True
         
         if not found:
@@ -423,7 +428,7 @@ class StaticModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.router.static.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate scalar field
         value = getattr(self, "internet_service_custom", None)
@@ -432,7 +437,7 @@ class StaticModel(BaseModel):
         
         # Check all datasource endpoints
         found = False
-        if await client.api.cmdb.firewall.internet-service-custom.exists(value):
+        if await client.api.cmdb.firewall.internet_service_custom.exists(value):
             found = True
         
         if not found:
@@ -472,7 +477,7 @@ class StaticModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.router.static.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate scalar field
         value = getattr(self, "internet_service_fortiguard", None)
@@ -481,7 +486,7 @@ class StaticModel(BaseModel):
         
         # Check all datasource endpoints
         found = False
-        if await client.api.cmdb.firewall.internet-service-fortiguard.exists(value):
+        if await client.api.cmdb.firewall.internet_service_fortiguard.exists(value):
             found = True
         
         if not found:
@@ -542,5 +547,5 @@ __all__ = [
 # ============================================================================
 # Generated by hfortix generator v0.6.0
 # Schema: 1.7.0
-# Generated: 2026-01-17T05:32:16.478674Z
+# Generated: 2026-01-17T17:25:20.516543Z
 # ============================================================================

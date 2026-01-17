@@ -1,142 +1,109 @@
-from typing import TypedDict, Literal, Any, Coroutine, Union, overload, Generator, final
-from typing_extensions import NotRequired
-from hfortix_fortios.models import FortiObject, FortiObjectList
+""" - Type Stubs
 
-# ============================================================================
-# Nested TypedDicts for table field children (dict mode)
-# These MUST be defined before the Payload class to use them as type hints
-# ============================================================================
+Auto-generated stub file for type checking and IDE support.
 
-# ============================================================================
-# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional)
-# ============================================================================
-# NOTE: We intentionally DON'T use NotRequired wrapper because:
-# 1. total=False already makes all fields optional
-# 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
+Endpoint: switch_controller/storm_control_policy
+Category: cmdb
+"""
+
+from __future__ import annotations
+
+from typing import (
+    Any,
+    ClassVar,
+    Literal,
+    TypedDict,
+    overload,
+)
+
+from hfortix_fortios.models import (
+    FortiObject,
+    FortiObjectList,
+)
+
+
+# ================================================================
+# TypedDict Payloads
+# ================================================================
+
 class StormControlPolicyPayload(TypedDict, total=False):
-    """
-    Type hints for switch_controller/storm_control_policy payload fields.
-    
-    Configure FortiSwitch storm control policy to be applied on managed-switch ports.
-    
-    **Usage:**
-        payload: StormControlPolicyPayload = {
-            "field": "value",  # <- autocomplete shows all fields
-        }
-    """
-    name: str  # Storm control policy name. | MaxLen: 63
-    description: str  # Description of the storm control policy. | MaxLen: 63
-    storm_control_mode: Literal["global", "override", "disabled"]  # Set Storm control mode. | Default: global
-    rate: int  # Threshold rate in packets per second at which stor | Default: 500 | Min: 0 | Max: 10000000
-    burst_size_level: int  # Increase level to handle bursty traffic | Default: 0 | Min: 0 | Max: 4
-    unknown_unicast: Literal["enable", "disable"]  # Enable/disable storm control to drop/allow unknown | Default: disable
-    unknown_multicast: Literal["enable", "disable"]  # Enable/disable storm control to drop/allow unknown | Default: disable
-    broadcast: Literal["enable", "disable"]  # Enable/disable storm control to drop/allow broadca | Default: disable
-
-# ============================================================================
-# Nested classes for table field children (object mode - for API responses)
-# ============================================================================
-
-
-
-# Response TypedDict for GET returns (all fields present in API response)
-class StormControlPolicyResponse(TypedDict):
-    """
-    Type hints for switch_controller/storm_control_policy API response fields.
-    
-    All fields are present in the response from the FortiGate API.
-    """
-    name: str  # Storm control policy name. | MaxLen: 63
-    description: str  # Description of the storm control policy. | MaxLen: 63
-    storm_control_mode: Literal["global", "override", "disabled"]  # Set Storm control mode. | Default: global
-    rate: int  # Threshold rate in packets per second at which stor | Default: 500 | Min: 0 | Max: 10000000
-    burst_size_level: int  # Increase level to handle bursty traffic | Default: 0 | Min: 0 | Max: 4
-    unknown_unicast: Literal["enable", "disable"]  # Enable/disable storm control to drop/allow unknown | Default: disable
-    unknown_multicast: Literal["enable", "disable"]  # Enable/disable storm control to drop/allow unknown | Default: disable
-    broadcast: Literal["enable", "disable"]  # Enable/disable storm control to drop/allow broadca | Default: disable
-
-
-@final
-class StormControlPolicyObject:
-    """Typed FortiObject for switch_controller/storm_control_policy with IDE autocomplete support.
-    
-    This is a typed wrapper that provides IDE autocomplete for API response fields.
-    At runtime, this is actually a FortiObject instance.
-    """
-    
-    # Storm control policy name. | MaxLen: 63
+    """Payload type for StormControlPolicy operations."""
     name: str
-    # Description of the storm control policy. | MaxLen: 63
     description: str
-    # Set Storm control mode. | Default: global
     storm_control_mode: Literal["global", "override", "disabled"]
-    # Threshold rate in packets per second at which storm traffic | Default: 500 | Min: 0 | Max: 10000000
     rate: int
-    # Increase level to handle bursty traffic (0 - 4, default = 0) | Default: 0 | Min: 0 | Max: 4
     burst_size_level: int
-    # Enable/disable storm control to drop/allow unknown unicast t | Default: disable
     unknown_unicast: Literal["enable", "disable"]
-    # Enable/disable storm control to drop/allow unknown multicast | Default: disable
     unknown_multicast: Literal["enable", "disable"]
-    # Enable/disable storm control to drop/allow broadcast traffic | Default: disable
     broadcast: Literal["enable", "disable"]
-    
-    # Common API response fields
-    status: str
-    http_status: int | None
-    http_status_code: int | None
-    http_method: str | None
-    http_response_time: float | None
-    vdom: str | None
-    
-    # Methods from FortiObject
-    @property
-    def dict(self) -> dict[str, Any]:
-        """Convert to dictionary."""
-        ...
-    @property
-    def json(self) -> str:
-        """Get pretty-printed JSON string."""
-        ...
-    @property
-    def raw(self) -> dict[str, Any]:
-        """Get raw API response data."""
-        ...
-    def get_full(self, name: str) -> Any: ...
-    def to_dict(self) -> StormControlPolicyPayload: ...
-    def keys(self) -> Any: ...
-    def values(self) -> Generator[Any, None, None]: ...
-    def items(self) -> Generator[tuple[str, Any], None, None]: ...
-    def get(self, key: str, default: Any = None) -> Any: ...
 
+
+# ================================================================
+# Response Types (TypedDict for dict-style access)
+# ================================================================
+
+class StormControlPolicyResponse(TypedDict, total=False):
+    """Response type for StormControlPolicy - use with .dict property for typed dict access."""
+    name: str
+    description: str
+    storm_control_mode: Literal["global", "override", "disabled"]
+    rate: int
+    burst_size_level: int
+    unknown_unicast: Literal["enable", "disable"]
+    unknown_multicast: Literal["enable", "disable"]
+    broadcast: Literal["enable", "disable"]
+
+
+# ================================================================
+# Response Types (Class for attribute access)
+# ================================================================
+
+
+class StormControlPolicyObject(FortiObject):
+    """Typed FortiObject for StormControlPolicy with field access."""
+    name: str
+    description: str
+    storm_control_mode: Literal["global", "override", "disabled"]
+    rate: int
+    burst_size_level: int
+    unknown_unicast: Literal["enable", "disable"]
+    unknown_multicast: Literal["enable", "disable"]
+    broadcast: Literal["enable", "disable"]
+
+
+# ================================================================
+# Main Endpoint Class
+# ================================================================
 
 class StormControlPolicy:
     """
-    Configure FortiSwitch storm control policy to be applied on managed-switch ports.
     
-    Path: switch_controller/storm_control_policy
+    Endpoint: switch_controller/storm_control_policy
     Category: cmdb
-    Primary Key: name
+    MKey: name
     """
     
+    # Class attributes for introspection
+    endpoint: ClassVar[str] = ...
+    path: ClassVar[str] = ...
+    category: ClassVar[str] = ...
+    mkey: ClassVar[str] = ...
+    capabilities: ClassVar[dict[str, Any]] = ...
+    
     def __init__(self, client: Any) -> None:
-        """Initialize endpoint with HTTP client.
-        
-        Args:
-            client: HTTP client instance for API communication
-        """
+        """Initialize endpoint with HTTP client."""
         ...
     
     # ================================================================
-    # GET OVERLOADS - Always returns FortiObject (or ContentResponse for file endpoints)
-    # Pylance matches overloads top-to-bottom, so these must come first!
+    # GET Methods
     # ================================================================
     
-    # With mkey as positional arg -> returns FortiObject
+    # CMDB with mkey - overloads for single vs list returns
     @overload
     def get(
         self,
         name: str,
+        *,
         filter: str | list[str] | None = ...,
         count: int | None = ...,
         start: int | None = ...,
@@ -146,14 +113,14 @@ class StormControlPolicy:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        error_mode: Literal["raise", "return", "print"] | None = ...,
+        error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> StormControlPolicyObject: ...
     
-    # With mkey as keyword arg -> returns FortiObject
     @overload
     def get(
         self,
         *,
-        name: str,
         filter: str | list[str] | None = ...,
         count: int | None = ...,
         start: int | None = ...,
@@ -163,164 +130,20 @@ class StormControlPolicy:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> StormControlPolicyObject: ...
-    
-    # Without mkey -> returns list of FortiObjects
-    @overload
-    def get(
-        self,
-        name: None = None,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
+        error_mode: Literal["raise", "return", "print"] | None = ...,
+        error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> FortiObjectList[StormControlPolicyObject]: ...
-    
-    # ================================================================
-    # (removed - all GET now returns FortiObject)
-    # ================================================================
-    
-    # With mkey as positional arg -> returns single object
-    @overload
-    def get(
-        self,
-        name: str,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> StormControlPolicyObject: ...
-    
-    # With mkey as keyword arg -> returns single object
-    @overload
-    def get(
-        self,
-        *,
-        name: str,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> StormControlPolicyObject: ...
-    
-    # With no mkey -> returns list of objects
-    @overload
-    def get(
-        self,
-        *,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObjectList[StormControlPolicyObject]: ...
-    
-    # Dict mode with mkey provided as positional arg (single dict)
-    @overload
-    def get(
-        self,
-        name: str,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> StormControlPolicyObject: ...
-    
-    # Dict mode with mkey provided as keyword arg (single dict)
-    @overload
-    def get(
-        self,
-        *,
-        name: str,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> StormControlPolicyObject: ...
-    
-    # Dict mode - list of dicts (no mkey/name provided) - keyword-only signature
-    @overload
-    def get(
-        self,
-        *,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObjectList[StormControlPolicyObject]: ...
-    
-    # Fallback overload for all other cases
-    @overload
-    def get(
-        self,
-        name: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> Union[dict[str, Any], list[dict[str, Any]], FortiObject, list[FortiObject]]: ...
-    
-    def get(
-        self,
-        name: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> StormControlPolicyObject | list[StormControlPolicyObject] | dict[str, Any] | list[dict[str, Any]]: ...
     
     def get_schema(
         self,
         vdom: str | None = ...,
         format: str = ...,
     ) -> FortiObject: ...
+
+    # ================================================================
+    # POST Method
+    # ================================================================
     
-    # POST overloads
-    @overload
     def post(
         self,
         payload_dict: StormControlPolicyPayload | None = ...,
@@ -333,55 +156,14 @@ class StormControlPolicy:
         unknown_multicast: Literal["enable", "disable"] | None = ...,
         broadcast: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
+        error_mode: Literal["raise", "return", "print"] | None = ...,
+        error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> StormControlPolicyObject: ...
+
+    # ================================================================
+    # PUT Method
+    # ================================================================
     
-    @overload
-    def post(
-        self,
-        payload_dict: StormControlPolicyPayload | None = ...,
-        name: str | None = ...,
-        description: str | None = ...,
-        storm_control_mode: Literal["global", "override", "disabled"] | None = ...,
-        rate: int | None = ...,
-        burst_size_level: int | None = ...,
-        unknown_unicast: Literal["enable", "disable"] | None = ...,
-        unknown_multicast: Literal["enable", "disable"] | None = ...,
-        broadcast: Literal["enable", "disable"] | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
-    
-    # Default overload
-    @overload
-    def post(
-        self,
-        payload_dict: StormControlPolicyPayload | None = ...,
-        name: str | None = ...,
-        description: str | None = ...,
-        storm_control_mode: Literal["global", "override", "disabled"] | None = ...,
-        rate: int | None = ...,
-        burst_size_level: int | None = ...,
-        unknown_unicast: Literal["enable", "disable"] | None = ...,
-        unknown_multicast: Literal["enable", "disable"] | None = ...,
-        broadcast: Literal["enable", "disable"] | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
-    
-    def post(
-        self,
-        payload_dict: StormControlPolicyPayload | None = ...,
-        name: str | None = ...,
-        description: str | None = ...,
-        storm_control_mode: Literal["global", "override", "disabled"] | None = ...,
-        rate: int | None = ...,
-        burst_size_level: int | None = ...,
-        unknown_unicast: Literal["enable", "disable"] | None = ...,
-        unknown_multicast: Literal["enable", "disable"] | None = ...,
-        broadcast: Literal["enable", "disable"] | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
-    
-    # PUT overloads
-    @overload
     def put(
         self,
         payload_dict: StormControlPolicyPayload | None = ...,
@@ -394,81 +176,25 @@ class StormControlPolicy:
         unknown_multicast: Literal["enable", "disable"] | None = ...,
         broadcast: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
+        error_mode: Literal["raise", "return", "print"] | None = ...,
+        error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> StormControlPolicyObject: ...
-    
-    @overload
-    def put(
-        self,
-        payload_dict: StormControlPolicyPayload | None = ...,
-        name: str | None = ...,
-        description: str | None = ...,
-        storm_control_mode: Literal["global", "override", "disabled"] | None = ...,
-        rate: int | None = ...,
-        burst_size_level: int | None = ...,
-        unknown_unicast: Literal["enable", "disable"] | None = ...,
-        unknown_multicast: Literal["enable", "disable"] | None = ...,
-        broadcast: Literal["enable", "disable"] | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
-    
-    # Default overload
-    @overload
-    def put(
-        self,
-        payload_dict: StormControlPolicyPayload | None = ...,
-        name: str | None = ...,
-        description: str | None = ...,
-        storm_control_mode: Literal["global", "override", "disabled"] | None = ...,
-        rate: int | None = ...,
-        burst_size_level: int | None = ...,
-        unknown_unicast: Literal["enable", "disable"] | None = ...,
-        unknown_multicast: Literal["enable", "disable"] | None = ...,
-        broadcast: Literal["enable", "disable"] | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
-    
-    def put(
-        self,
-        payload_dict: StormControlPolicyPayload | None = ...,
-        name: str | None = ...,
-        description: str | None = ...,
-        storm_control_mode: Literal["global", "override", "disabled"] | None = ...,
-        rate: int | None = ...,
-        burst_size_level: int | None = ...,
-        unknown_unicast: Literal["enable", "disable"] | None = ...,
-        unknown_multicast: Literal["enable", "disable"] | None = ...,
-        broadcast: Literal["enable", "disable"] | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
-    
-    # DELETE overloads
-    @overload
-    def delete(
-        self,
-        name: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> StormControlPolicyObject: ...
-    
-    @overload
-    def delete(
-        self,
-        name: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
-    
-    # Default overload
-    @overload
-    def delete(
-        self,
-        name: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+
+    # ================================================================
+    # DELETE Method
+    # ================================================================
     
     def delete(
         self,
         name: str | None = ...,
         vdom: str | bool | None = ...,
+        error_mode: Literal["raise", "return", "print"] | None = ...,
+        error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> FortiObject: ...
+
+    # ================================================================
+    # Utility Methods
+    # ================================================================
     
     def exists(
         self,
@@ -488,6 +214,8 @@ class StormControlPolicy:
         unknown_multicast: Literal["enable", "disable"] | None = ...,
         broadcast: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
+        error_mode: Literal["raise", "return", "print"] | None = ...,
+        error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> FortiObject: ...
     
     # Helper methods
@@ -495,7 +223,7 @@ class StormControlPolicy:
     def help(field_name: str | None = ...) -> str: ...
     
     @staticmethod
-    def fields(detailed: bool = ...) -> Union[list[str], list[dict[str, Any]]]: ...
+    def fields(detailed: bool = ...) -> list[str] | list[dict[str, Any]]: ...
     
     @staticmethod
     def field_info(field_name: str) -> FortiObject: ...
@@ -511,9 +239,6 @@ class StormControlPolicy:
     
     @staticmethod
     def schema() -> FortiObject: ...
-
-
-# ================================================================
 
 
 __all__ = [

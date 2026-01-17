@@ -494,6 +494,8 @@ class WtpProfile(CRUDEndpoint, MetadataMixin):
                 example="[{'dest-ip': 'value'}]",
             )
         
+        # Apply normalization for multi-value option fields (space-separated strings)
+        
         # Build payload using helper function with auto-normalization
         # This automatically converts strings/lists to [{'name': '...'}] format for list fields
         # To disable auto-normalization, use build_cmdb_payload directly
@@ -856,6 +858,8 @@ class WtpProfile(CRUDEndpoint, MetadataMixin):
                 field_name="split_tunneling_acl",
                 example="[{'dest-ip': 'value'}]",
             )
+        
+        # Apply normalization for multi-value option fields (space-separated strings)
         
         # Build payload using helper function with auto-normalization
         # This automatically converts strings/lists to [{'name': '...'}] format for list fields
@@ -1296,6 +1300,34 @@ class WtpProfile(CRUDEndpoint, MetadataMixin):
             - put(): Update existing object
             - exists(): Check existence manually
         """
+        # Apply normalization for table fields (supports flexible input formats)
+        if led_schedules is not None:
+            led_schedules = normalize_table_field(
+                led_schedules,
+                mkey="name",
+                required_fields=['name'],
+                field_name="led_schedules",
+                example="[{'name': 'value'}]",
+            )
+        if deny_mac_list is not None:
+            deny_mac_list = normalize_table_field(
+                deny_mac_list,
+                mkey="id",
+                required_fields=['id'],
+                field_name="deny_mac_list",
+                example="[{'id': 1}]",
+            )
+        if split_tunneling_acl is not None:
+            split_tunneling_acl = normalize_table_field(
+                split_tunneling_acl,
+                mkey="id",
+                required_fields=['dest-ip'],
+                field_name="split_tunneling_acl",
+                example="[{'dest-ip': 'value'}]",
+            )
+        
+        # Apply normalization for multi-value option fields (space-separated strings)
+        
         # Build payload using helper function with auto-normalization
         payload_data = build_api_payload(
             name=name,

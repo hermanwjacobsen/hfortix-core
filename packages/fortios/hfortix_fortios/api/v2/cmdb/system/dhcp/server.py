@@ -1165,6 +1165,56 @@ class Server(CRUDEndpoint, MetadataMixin):
             - put(): Update existing object
             - exists(): Check existence manually
         """
+        # Apply normalization for table fields (supports flexible input formats)
+        if ip_range is not None:
+            ip_range = normalize_table_field(
+                ip_range,
+                mkey="id",
+                required_fields=['id', 'start-ip', 'end-ip'],
+                field_name="ip_range",
+                example="[{'id': 1, 'start-ip': '192.168.1.10', 'end-ip': '192.168.1.10'}]",
+            )
+        if tftp_server is not None:
+            tftp_server = normalize_table_field(
+                tftp_server,
+                mkey="tftp-server",
+                required_fields=['tftp-server'],
+                field_name="tftp_server",
+                example="[{'tftp-server': 'value'}]",
+            )
+        if options is not None:
+            options = normalize_table_field(
+                options,
+                mkey="id",
+                required_fields=['id', 'code'],
+                field_name="options",
+                example="[{'id': 1, 'code': 1}]",
+            )
+        if vci_string is not None:
+            vci_string = normalize_table_field(
+                vci_string,
+                mkey="vci-string",
+                required_fields=['vci-string'],
+                field_name="vci_string",
+                example="[{'vci-string': 'value'}]",
+            )
+        if exclude_range is not None:
+            exclude_range = normalize_table_field(
+                exclude_range,
+                mkey="id",
+                required_fields=['id', 'start-ip', 'end-ip'],
+                field_name="exclude_range",
+                example="[{'id': 1, 'start-ip': '192.168.1.10', 'end-ip': '192.168.1.10'}]",
+            )
+        if reserved_address is not None:
+            reserved_address = normalize_table_field(
+                reserved_address,
+                mkey="id",
+                required_fields=['id', 'ip', 'mac'],
+                field_name="reserved_address",
+                example="[{'id': 1, 'ip': '192.168.1.10', 'mac': 'value'}]",
+            )
+        
         # Build payload using helper function with auto-normalization
         payload_data = build_api_payload(
             id=id,

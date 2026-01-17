@@ -16,11 +16,21 @@ from enum import Enum
 # ============================================================================
 
 class LocalTypeEnum(str, Enum):
-    """Allowed values for type field."""
-    PASSWORD = "password"    RADIUS = "radius"    TACACS = "tacacs+"    LDAP = "ldap"    SAML = "saml"
-class LocalTwo_factorEnum(str, Enum):
+    """Allowed values for type_ field."""
+    PASSWORD = "password"
+    RADIUS = "radius"
+    TACACS_PLUS = "tacacs+"
+    LDAP = "ldap"
+    SAML = "saml"
+
+class LocalTwoFactorEnum(str, Enum):
     """Allowed values for two_factor field."""
-    DISABLE = "disable"    FORTITOKEN = "fortitoken"    FORTITOKEN_CLOUD = "fortitoken-cloud"    EMAIL = "email"    SMS = "sms"
+    DISABLE = "disable"
+    FORTITOKEN = "fortitoken"
+    FORTITOKEN_CLOUD = "fortitoken-cloud"
+    EMAIL = "email"
+    SMS = "sms"
+
 
 # ============================================================================
 # Main Model
@@ -32,7 +42,7 @@ class LocalModel(BaseModel):
     
     Configure local users.
     
-    Validation Rules:        - name: max_length=64 pattern=        - id: min=0 max=4294967295 pattern=        - status: pattern=        - type: pattern=        - passwd: max_length=128 pattern=        - ldap_server: max_length=35 pattern=        - radius_server: max_length=35 pattern=        - tacacs+_server: max_length=35 pattern=        - saml_server: max_length=35 pattern=        - two_factor: pattern=        - two_factor_authentication: pattern=        - two_factor_notification: pattern=        - fortitoken: max_length=16 pattern=        - email_to: max_length=63 pattern=        - sms_server: pattern=        - sms_custom_server: max_length=35 pattern=        - sms_phone: max_length=15 pattern=        - passwd_policy: max_length=35 pattern=        - passwd_time: pattern=        - authtimeout: min=0 max=1440 pattern=        - workstation: max_length=35 pattern=        - auth_concurrent_override: pattern=        - auth_concurrent_value: min=0 max=100 pattern=        - ppk_secret: pattern=        - ppk_identity: max_length=35 pattern=        - qkd_profile: max_length=35 pattern=        - username_sensitivity: pattern=    """
+    Validation Rules:        - name: max_length=64 pattern=        - id_: min=0 max=4294967295 pattern=        - status: pattern=        - type_: pattern=        - passwd: max_length=128 pattern=        - ldap_server: max_length=35 pattern=        - radius_server: max_length=35 pattern=        - tacacs_server: max_length=35 pattern=        - saml_server: max_length=35 pattern=        - two_factor: pattern=        - two_factor_authentication: pattern=        - two_factor_notification: pattern=        - fortitoken: max_length=16 pattern=        - email_to: max_length=63 pattern=        - sms_server: pattern=        - sms_custom_server: max_length=35 pattern=        - sms_phone: max_length=15 pattern=        - passwd_policy: max_length=35 pattern=        - passwd_time: pattern=        - authtimeout: min=0 max=1440 pattern=        - workstation: max_length=35 pattern=        - auth_concurrent_override: pattern=        - auth_concurrent_value: min=0 max=100 pattern=        - ppk_secret: pattern=        - ppk_identity: max_length=35 pattern=        - qkd_profile: max_length=35 pattern=        - username_sensitivity: pattern=    """
     
     class Config:
         """Pydantic model configuration."""
@@ -45,32 +55,32 @@ class LocalModel(BaseModel):
     # Model Fields
     # ========================================================================
     
-    name: str | None = Field(max_length=64, default="", description="Local user name.")    
-    id: int | None = Field(ge=0, le=4294967295, default=0, description="User ID.")    
+    name: str | None = Field(max_length=64, default=None, description="Local user name.")    
+    id_: int | None = Field(ge=0, le=4294967295, default=0, serialization_alias="id", description="User ID.")    
     status: Literal["enable", "disable"] = Field(default="enable", description="Enable/disable allowing the local user to authenticate with the FortiGate unit.")    
-    type: TypeEnum = Field(default="password", description="Authentication method.")    
+    type_: LocalTypeEnum = Field(default=LocalTypeEnum.PASSWORD, serialization_alias="type", description="Authentication method.")    
     passwd: Any = Field(max_length=128, description="User's password.")    
-    ldap_server: str = Field(max_length=35, default="", description="Name of LDAP server with which the user must authenticate.")  # datasource: ['user.ldap.name']    
-    radius_server: str = Field(max_length=35, default="", description="Name of RADIUS server with which the user must authenticate.")  # datasource: ['user.radius.name']    
-    tacacs+_server: str = Field(max_length=35, default="", description="Name of TACACS+ server with which the user must authenticate.")  # datasource: ['user.tacacs+.name']    
-    saml_server: str = Field(max_length=35, default="", description="Name of SAML server with which the user must authenticate.")  # datasource: ['user.saml.name']    
-    two_factor: TwoFactorEnum | None = Field(default="disable", description="Enable/disable two-factor authentication.")    
-    two_factor_authentication: Literal["fortitoken", "email", "sms"] | None = Field(default="", description="Authentication method by FortiToken Cloud.")    
-    two_factor_notification: Literal["email", "sms"] | None = Field(default="", description="Notification method for user activation by FortiToken Cloud.")    
-    fortitoken: str | None = Field(max_length=16, default="", description="Two-factor recipient's FortiToken serial number.")  # datasource: ['user.fortitoken.serial-number']    
-    email_to: str | None = Field(max_length=63, default="", description="Two-factor recipient's email address.")    
+    ldap_server: str = Field(max_length=35, description="Name of LDAP server with which the user must authenticate.")  # datasource: ['user.ldap.name']    
+    radius_server: str = Field(max_length=35, description="Name of RADIUS server with which the user must authenticate.")  # datasource: ['user.radius.name']    
+    tacacs_server: str = Field(max_length=35, description="Name of TACACS+ server with which the user must authenticate.")  # datasource: ['user.tacacs+.name']    
+    saml_server: str = Field(max_length=35, description="Name of SAML server with which the user must authenticate.")  # datasource: ['user.saml.name']    
+    two_factor: LocalTwoFactorEnum | None = Field(default=LocalTwoFactorEnum.DISABLE, description="Enable/disable two-factor authentication.")    
+    two_factor_authentication: Literal["fortitoken", "email", "sms"] | None = Field(default=None, description="Authentication method by FortiToken Cloud.")    
+    two_factor_notification: Literal["email", "sms"] | None = Field(default=None, description="Notification method for user activation by FortiToken Cloud.")    
+    fortitoken: str | None = Field(max_length=16, default=None, description="Two-factor recipient's FortiToken serial number.")  # datasource: ['user.fortitoken.serial-number']    
+    email_to: str | None = Field(max_length=63, default=None, description="Two-factor recipient's email address.")    
     sms_server: Literal["fortiguard", "custom"] | None = Field(default="fortiguard", description="Send SMS through FortiGuard or other external server.")    
-    sms_custom_server: str | None = Field(max_length=35, default="", description="Two-factor recipient's SMS server.")  # datasource: ['system.sms-server.name']    
-    sms_phone: str | None = Field(max_length=15, default="", description="Two-factor recipient's mobile phone number.")    
-    passwd_policy: str | None = Field(max_length=35, default="", description="Password policy to apply to this user, as defined in config user password-policy.")  # datasource: ['user.password-policy.name']    
-    passwd_time: str | None = Field(default="", description="Time of the last password update.")    
+    sms_custom_server: str | None = Field(max_length=35, default=None, description="Two-factor recipient's SMS server.")  # datasource: ['system.sms-server.name']    
+    sms_phone: str | None = Field(max_length=15, default=None, description="Two-factor recipient's mobile phone number.")    
+    passwd_policy: str | None = Field(max_length=35, default=None, description="Password policy to apply to this user, as defined in config user password-policy.")  # datasource: ['user.password-policy.name']    
+    passwd_time: str | None = Field(default=None, description="Time of the last password update.")    
     authtimeout: int | None = Field(ge=0, le=1440, default=0, description="Time in minutes before the authentication timeout for a user is reached.")    
-    workstation: str | None = Field(max_length=35, default="", description="Name of the remote user workstation, if you want to limit the user to authenticate only from a particular workstation.")    
+    workstation: str | None = Field(max_length=35, default=None, description="Name of the remote user workstation, if you want to limit the user to authenticate only from a particular workstation.")    
     auth_concurrent_override: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable overriding the policy-auth-concurrent under config system global.")    
     auth_concurrent_value: int | None = Field(ge=0, le=100, default=0, description="Maximum number of concurrent logins permitted from the same user.")    
     ppk_secret: Any = Field(default=None, description="IKEv2 Postquantum Preshared Key (ASCII string or hexadecimal encoded with a leading 0x).")    
-    ppk_identity: str | None = Field(max_length=35, default="", description="IKEv2 Postquantum Preshared Key Identity.")    
-    qkd_profile: str | None = Field(max_length=35, default="", description="Quantum Key Distribution (QKD) profile.")  # datasource: ['vpn.qkd.name']    
+    ppk_identity: str | None = Field(max_length=35, default=None, description="IKEv2 Postquantum Preshared Key Identity.")    
+    qkd_profile: str | None = Field(max_length=35, default=None, description="Quantum Key Distribution (QKD) profile.")  # datasource: ['vpn.qkd.name']    
     username_sensitivity: Literal["disable", "enable"] | None = Field(default="enable", description="Enable/disable case and accent sensitivity when performing username matching (accents are stripped and case is ignored when disabled).")    
     # ========================================================================
     # Custom Validators
@@ -106,11 +116,11 @@ class LocalModel(BaseModel):
         # Basic validation passed via Field() constraints
         # Additional datasource validation could be added here
         return v    
-    @field_validator('tacacs+_server')
+    @field_validator('tacacs_server')
     @classmethod
-    def validate_tacacs+_server(cls, v: Any) -> Any:
+    def validate_tacacs_server(cls, v: Any) -> Any:
         """
-        Validate tacacs+_server field.
+        Validate tacacs_server field.
         
         Datasource: ['user.tacacs+.name']
         
@@ -256,7 +266,7 @@ class LocalModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.user.local.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate scalar field
         value = getattr(self, "ldap_server", None)
@@ -305,7 +315,7 @@ class LocalModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.user.local.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate scalar field
         value = getattr(self, "radius_server", None)
@@ -323,9 +333,9 @@ class LocalModel(BaseModel):
                 "user/radius"
             )        
         return errors    
-    async def validate_tacacs+_server_references(self, client: Any) -> list[str]:
+    async def validate_tacacs_plus_server_references(self, client: Any) -> list[str]:
         """
-        Validate tacacs+_server references exist in FortiGate.
+        Validate tacacs_plus_server references exist in FortiGate.
         
         This method checks if referenced objects exist by calling exists() on
         the appropriate API endpoints. This is an OPTIONAL validation step that
@@ -344,26 +354,26 @@ class LocalModel(BaseModel):
             >>> 
             >>> fgt = FortiOS(host="192.168.1.1", token="your-token")
             >>> policy = LocalModel(
-            ...     tacacs+_server="invalid-name",
+            ...     tacacs_plus_server="invalid-name",
             ... )
             >>> 
             >>> # Validate before posting
-            >>> errors = await policy.validate_tacacs+_server_references(fgt._client)
+            >>> errors = await policy.validate_tacacs_plus_server_references(fgt._client)
             >>> if errors:
             ...     print("Validation failed:", errors)
             ... else:
             ...     result = await fgt.api.cmdb.user.local.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate scalar field
-        value = getattr(self, "tacacs+_server", None)
+        value = getattr(self, "tacacs_plus_server", None)
         if not value:
             return errors
         
         # Check all datasource endpoints
         found = False
-        if await client.api.cmdb.user.tacacs+.exists(value):
+        if await client.api.cmdb.user.tacacs_plus.exists(value):
             found = True
         
         if not found:
@@ -403,7 +413,7 @@ class LocalModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.user.local.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate scalar field
         value = getattr(self, "saml_server", None)
@@ -452,7 +462,7 @@ class LocalModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.user.local.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate scalar field
         value = getattr(self, "fortitoken", None)
@@ -501,7 +511,7 @@ class LocalModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.user.local.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate scalar field
         value = getattr(self, "sms_custom_server", None)
@@ -510,7 +520,7 @@ class LocalModel(BaseModel):
         
         # Check all datasource endpoints
         found = False
-        if await client.api.cmdb.system.sms-server.exists(value):
+        if await client.api.cmdb.system.sms_server.exists(value):
             found = True
         
         if not found:
@@ -550,7 +560,7 @@ class LocalModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.user.local.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate scalar field
         value = getattr(self, "passwd_policy", None)
@@ -559,7 +569,7 @@ class LocalModel(BaseModel):
         
         # Check all datasource endpoints
         found = False
-        if await client.api.cmdb.user.password-policy.exists(value):
+        if await client.api.cmdb.user.password_policy.exists(value):
             found = True
         
         if not found:
@@ -599,7 +609,7 @@ class LocalModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.user.local.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate scalar field
         value = getattr(self, "qkd_profile", None)
@@ -642,7 +652,7 @@ class LocalModel(BaseModel):
         all_errors.extend(errors)        
         errors = await self.validate_radius_server_references(client)
         all_errors.extend(errors)        
-        errors = await self.validate_tacacs+_server_references(client)
+        errors = await self.validate_tacacs_plus_server_references(client)
         all_errors.extend(errors)        
         errors = await self.validate_saml_server_references(client)
         all_errors.extend(errors)        
@@ -673,5 +683,5 @@ __all__ = [
 # ============================================================================
 # Generated by hfortix generator v0.6.0
 # Schema: 1.7.0
-# Generated: 2026-01-17T05:32:16.929164Z
+# Generated: 2026-01-17T17:25:20.897348Z
 # ============================================================================

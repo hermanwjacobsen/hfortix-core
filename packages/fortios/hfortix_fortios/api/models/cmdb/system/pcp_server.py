@@ -11,9 +11,55 @@ from pydantic import BaseModel, Field, field_validator
 from typing import Any, Literal, Optional
 
 # ============================================================================
-# Child Table Models
+# Enum Definitions for Child Table Fields (for fields with 4+ allowed values)
 # ============================================================================
 
+# ============================================================================
+# Child Table Models (sorted deepest-first so nested models are defined before their parents)
+# ============================================================================
+
+class PcpServerPoolsThirdPartySubnet(BaseModel):
+    """
+    Child table model for pools.third-party-subnet.
+    
+    Subnets from which third party requests are accepted.
+    """
+    
+    class Config:
+        """Pydantic model configuration."""
+        extra = "allow"  # Allow additional fields from API
+        str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
+    
+    subnet: str = Field(max_length=79, description="Third party subnets.")
+class PcpServerPoolsIntlIntf(BaseModel):
+    """
+    Child table model for pools.intl-intf.
+    
+    Internal interface name.
+    """
+    
+    class Config:
+        """Pydantic model configuration."""
+        extra = "allow"  # Allow additional fields from API
+        str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
+    
+    interface_name: str = Field(max_length=79, description="Interface name.")  # datasource: ['system.interface.name']
+class PcpServerPoolsClientSubnet(BaseModel):
+    """
+    Child table model for pools.client-subnet.
+    
+    Subnets from which PCP requests are accepted.
+    """
+    
+    class Config:
+        """Pydantic model configuration."""
+        extra = "allow"  # Allow additional fields from API
+        str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
+    
+    subnet: str = Field(max_length=79, description="Client subnets.")
 class PcpServerPools(BaseModel):
     """
     Child table model for pools.
@@ -25,25 +71,26 @@ class PcpServerPools(BaseModel):
         """Pydantic model configuration."""
         extra = "allow"  # Allow additional fields from API
         str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
     
-    name: str = Field(max_length=79, default="", description="PCP pool name.")    
-    description: str | None = Field(max_length=127, default="", description="Description.")    
-    id: int | None = Field(ge=0, le=4294967295, default=0, description="ID.")    
-    client_subnet: list[ClientSubnet] = Field(description="Subnets from which PCP requests are accepted.")    
-    ext_intf: str = Field(max_length=35, default="", description="External interface name.")  # datasource: ['system.interface.name']    
+    name: str = Field(max_length=79, description="PCP pool name.")    
+    description: str | None = Field(max_length=127, default=None, description="Description.")    
+    id_: int | None = Field(ge=0, le=4294967295, default=0, serialization_alias="id", description="ID.")    
+    client_subnet: list[PcpServerPoolsClientSubnet] = Field(description="Subnets from which PCP requests are accepted.")    
+    ext_intf: str = Field(max_length=35, description="External interface name.")  # datasource: ['system.interface.name']    
     arp_reply: Literal["disable", "enable"] | None = Field(default="enable", description="Enable to respond to ARP requests for external IP (default = enable).")    
-    extip: str = Field(default="", description="IP address or address range on the external interface that you want to map to an address on the internal network.")    
-    extport: str = Field(default="", description="Incoming port number range that you want to map to a port number on the internal network.")    
+    extip: str = Field(description="IP address or address range on the external interface that you want to map to an address on the internal network.")    
+    extport: str = Field(description="Incoming port number range that you want to map to a port number on the internal network.")    
     minimal_lifetime: int | None = Field(ge=60, le=300, default=120, description="Minimal lifetime of a PCP mapping in seconds (60 - 300, default = 120).")    
     maximal_lifetime: int | None = Field(ge=3600, le=604800, default=86400, description="Maximal lifetime of a PCP mapping in seconds (3600 - 604800, default = 86400).")    
     client_mapping_limit: int | None = Field(ge=0, le=65535, default=0, description="Mapping limit per client (0 - 65535, default = 0, 0 = unlimited).")    
     mapping_filter_limit: int | None = Field(ge=0, le=5, default=1, description="Filter limit per mapping (0 - 5, default = 1).")    
-    allow_opcode: list[AllowOpcode] = Field(default="map peer announce", description="Allowed PCP opcode.")    
+    allow_opcode: list[Literal["map", "peer", "announce"]] = Field(default_factory=list, description="Allowed PCP opcode.")    
     third_party: Literal["allow", "disallow"] | None = Field(default="disallow", description="Allow/disallow third party option.")    
-    third_party_subnet: list[ThirdPartySubnet] = Field(default=None, description="Subnets from which third party requests are accepted.")    
+    third_party_subnet: list[PcpServerPoolsThirdPartySubnet] = Field(default_factory=list, description="Subnets from which third party requests are accepted.")    
     multicast_announcement: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable multicast announcements.")    
     announcement_count: int | None = Field(ge=3, le=10, default=3, description="Number of multicast announcements.")    
-    intl_intf: list[IntlIntf] = Field(description="Internal interface name.")    
+    intl_intf: list[PcpServerPoolsIntlIntf] = Field(description="Internal interface name.")    
     recycle_delay: int | None = Field(ge=0, le=3600, default=0, description="Minimum delay (in seconds) the PCP Server will wait before recycling mappings that have expired (0 - 3600, default = 0).")
 # ============================================================================
 # Enum Definitions (for fields with 4+ allowed values)
@@ -74,7 +121,7 @@ class PcpServerModel(BaseModel):
     # ========================================================================
     
     status: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable PCP server.")    
-    pools: list[Pools] = Field(default=None, description="Configure PCP pools.")    
+    pools: list[PcpServerPools] = Field(default_factory=list, description="Configure PCP pools.")    
     # ========================================================================
     # Custom Validators
     # ========================================================================
@@ -139,7 +186,7 @@ class PcpServerModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.system.pcp_server.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate child table items
         values = getattr(self, "pools", [])
@@ -202,11 +249,11 @@ Dict = dict[str, Any]  # For backward compatibility
 # ============================================================================
 
 __all__ = [
-    "PcpServerModel",    "PcpServerPools",]
+    "PcpServerModel",    "PcpServerPools",    "PcpServerPools.ClientSubnet",    "PcpServerPools.ThirdPartySubnet",    "PcpServerPools.IntlIntf",]
 
 
 # ============================================================================
 # Generated by hfortix generator v0.6.0
 # Schema: 1.7.0
-# Generated: 2026-01-17T05:32:18.093330Z
+# Generated: 2026-01-17T17:25:21.910284Z
 # ============================================================================

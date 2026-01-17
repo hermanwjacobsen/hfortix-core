@@ -15,12 +15,25 @@ from enum import Enum
 # Enum Definitions (for fields with 4+ allowed values)
 # ============================================================================
 
-class PppoeInterfacePppoe_egress_cosEnum(str, Enum):
+class PppoeInterfacePppoeEgressCosEnum(str, Enum):
     """Allowed values for pppoe_egress_cos field."""
-    COS0 = "cos0"    COS1 = "cos1"    COS2 = "cos2"    COS3 = "cos3"    COS4 = "cos4"    COS5 = "cos5"    COS6 = "cos6"    COS7 = "cos7"
-class PppoeInterfaceAuth_typeEnum(str, Enum):
+    COS0 = "cos0"
+    COS1 = "cos1"
+    COS2 = "cos2"
+    COS3 = "cos3"
+    COS4 = "cos4"
+    COS5 = "cos5"
+    COS6 = "cos6"
+    COS7 = "cos7"
+
+class PppoeInterfaceAuthTypeEnum(str, Enum):
     """Allowed values for auth_type field."""
-    AUTO = "auto"    PAP = "pap"    CHAP = "chap"    MSCHAPV1 = "mschapv1"    MSCHAPV2 = "mschapv2"
+    AUTO = "auto"
+    PAP = "pap"
+    CHAP = "chap"
+    MSCHAPV1 = "mschapv1"
+    MSCHAPV2 = "mschapv2"
+
 
 # ============================================================================
 # Main Model
@@ -45,14 +58,14 @@ class PppoeInterfaceModel(BaseModel):
     # Model Fields
     # ========================================================================
     
-    name: str | None = Field(max_length=15, default="", description="Name of the PPPoE interface.")    
+    name: str | None = Field(max_length=15, default=None, description="Name of the PPPoE interface.")    
     dial_on_demand: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable dial on demand to dial the PPPoE interface when packets are routed to the PPPoE interface.")    
     ipv6: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable IPv6 Control Protocol (IPv6CP).")    
-    device: str = Field(max_length=15, default="", description="Name for the physical interface.")  # datasource: ['system.interface.name']    
-    username: str | None = Field(max_length=64, default="", description="User name.")    
+    device: str = Field(max_length=15, description="Name for the physical interface.")  # datasource: ['system.interface.name']    
+    username: str | None = Field(max_length=64, default=None, description="User name.")    
     password: Any = Field(max_length=128, default=None, description="Enter the password.")    
-    pppoe_egress_cos: PppoeEgressCosEnum | None = Field(default="cos0", description="CoS in VLAN tag for outgoing PPPoE/PPP packets.")    
-    auth_type: AuthTypeEnum | None = Field(default="auto", description="PPP authentication type to use.")    
+    pppoe_egress_cos: PppoeInterfacePppoeEgressCosEnum | None = Field(default=PppoeInterfacePppoeEgressCosEnum.COS0, description="CoS in VLAN tag for outgoing PPPoE/PPP packets.")    
+    auth_type: PppoeInterfaceAuthTypeEnum | None = Field(default=PppoeInterfaceAuthTypeEnum.AUTO, description="PPP authentication type to use.")    
     ipunnumbered: str | None = Field(default="0.0.0.0", description="PPPoE unnumbered IP.")    
     pppoe_unnumbered_negotiate: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable PPPoE unnumbered negotiation.")    
     idle_timeout: int | None = Field(ge=0, le=4294967295, default=0, description="PPPoE auto disconnect after idle timeout (0-4294967295 sec).")    
@@ -60,8 +73,8 @@ class PppoeInterfaceModel(BaseModel):
     mrru: int | None = Field(ge=296, le=65535, default=1500, description="PPP MRRU (296 - 65535, default = 1500).")    
     disc_retry_timeout: int | None = Field(ge=0, le=4294967295, default=1, description="PPPoE discovery init timeout value in (0-4294967295 sec).")    
     padt_retry_timeout: int | None = Field(ge=0, le=4294967295, default=1, description="PPPoE terminate timeout value in (0-4294967295 sec).")    
-    service_name: str | None = Field(max_length=63, default="", description="PPPoE service name.")    
-    ac_name: str | None = Field(max_length=63, default="", description="PPPoE AC name.")    
+    service_name: str | None = Field(max_length=63, default=None, description="PPPoE service name.")    
+    ac_name: str | None = Field(max_length=63, default=None, description="PPPoE AC name.")    
     lcp_echo_interval: int | None = Field(ge=0, le=32767, default=5, description="Time in seconds between PPPoE Link Control Protocol (LCP) echo requests.")    
     lcp_max_echo_fails: int | None = Field(ge=0, le=32767, default=3, description="Maximum missed LCP echo messages before disconnect.")    
     # ========================================================================
@@ -143,7 +156,7 @@ class PppoeInterfaceModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.system.pppoe_interface.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate scalar field
         value = getattr(self, "device", None)
@@ -203,5 +216,5 @@ __all__ = [
 # ============================================================================
 # Generated by hfortix generator v0.6.0
 # Schema: 1.7.0
-# Generated: 2026-01-17T05:32:17.849216Z
+# Generated: 2026-01-17T17:25:21.691919Z
 # ============================================================================

@@ -66,7 +66,7 @@ class Radius(CRUDEndpoint, MetadataMixin):
     # Auto-generated from schema - supports flexible input formats
     # ========================================================================
     _TABLE_FIELDS = {
-        "class": {
+        "class_": {
             "mkey": "name",
             "required_fields": ['name'],
             "example": "[{'name': 'value'}]",
@@ -274,6 +274,7 @@ class Radius(CRUDEndpoint, MetadataMixin):
         source_ip_interface: str | None = None,
         username_case_sensitive: Literal["enable", "disable"] | None = None,
         group_override_attr_type: Literal["filter-Id", "class"] | None = None,
+        class_: str | list[str] | list[dict[str, Any]] | None = None,
         password_renewal: Literal["enable", "disable"] | None = None,
         require_message_authenticator: Literal["enable", "disable"] | None = None,
         password_encoding: Literal["auto", "ISO-8859-1"] | None = None,
@@ -350,12 +351,7 @@ class Radius(CRUDEndpoint, MetadataMixin):
             source_ip_interface: Source interface for communication with the RADIUS server.
             username_case_sensitive: Enable/disable case sensitive user names.
             group_override_attr_type: RADIUS attribute type to override user group information.
-            class: Class attribute name(s).
-                Default format: [{'name': 'value'}]
-                Supported formats:
-                  - Single string: "value" → [{'name': 'value'}]
-                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
-                  - List of dicts: [{'name': 'value'}] (recommended)
+            class_: Class attribute name(s).
             password_renewal: Enable/disable password renewal.
             require_message_authenticator: Require message authenticator in authentication response.
             password_encoding: Password encoding.
@@ -424,6 +420,14 @@ class Radius(CRUDEndpoint, MetadataMixin):
             - set(): Intelligent create or update
         """
         # Apply normalization for table fields (supports flexible input formats)
+        if class_ is not None:
+            class_ = normalize_table_field(
+                class_,
+                mkey="name",
+                required_fields=['name'],
+                field_name="class_",
+                example="[{'name': 'value'}]",
+            )
         if accounting_server is not None:
             accounting_server = normalize_table_field(
                 accounting_server,
@@ -432,6 +436,8 @@ class Radius(CRUDEndpoint, MetadataMixin):
                 field_name="accounting_server",
                 example="[{'server': '192.168.1.10', 'secret': 'value', 'interface': 'value'}]",
             )
+        
+        # Apply normalization for multi-value option fields (space-separated strings)
         
         # Build payload using helper function with auto-normalization
         # This automatically converts strings/lists to [{'name': '...'}] format for list fields
@@ -462,6 +468,7 @@ class Radius(CRUDEndpoint, MetadataMixin):
             source_ip_interface=source_ip_interface,
             username_case_sensitive=username_case_sensitive,
             group_override_attr_type=group_override_attr_type,
+            class_=class_,
             password_renewal=password_renewal,
             require_message_authenticator=require_message_authenticator,
             password_encoding=password_encoding,
@@ -563,6 +570,7 @@ class Radius(CRUDEndpoint, MetadataMixin):
         source_ip_interface: str | None = None,
         username_case_sensitive: Literal["enable", "disable"] | None = None,
         group_override_attr_type: Literal["filter-Id", "class"] | None = None,
+        class_: str | list[str] | list[dict[str, Any]] | None = None,
         password_renewal: Literal["enable", "disable"] | None = None,
         require_message_authenticator: Literal["enable", "disable"] | None = None,
         password_encoding: Literal["auto", "ISO-8859-1"] | None = None,
@@ -638,12 +646,7 @@ class Radius(CRUDEndpoint, MetadataMixin):
             source_ip_interface: Source interface for communication with the RADIUS server.
             username_case_sensitive: Enable/disable case sensitive user names.
             group_override_attr_type: RADIUS attribute type to override user group information.
-            class: Class attribute name(s).
-                Default format: [{'name': 'value'}]
-                Supported formats:
-                  - Single string: "value" → [{'name': 'value'}]
-                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
-                  - List of dicts: [{'name': 'value'}] (recommended)
+            class_: Class attribute name(s).
             password_renewal: Enable/disable password renewal.
             require_message_authenticator: Require message authenticator in authentication response.
             password_encoding: Password encoding.
@@ -714,6 +717,14 @@ class Radius(CRUDEndpoint, MetadataMixin):
             - set(): Intelligent create or update
         """
         # Apply normalization for table fields (supports flexible input formats)
+        if class_ is not None:
+            class_ = normalize_table_field(
+                class_,
+                mkey="name",
+                required_fields=['name'],
+                field_name="class_",
+                example="[{'name': 'value'}]",
+            )
         if accounting_server is not None:
             accounting_server = normalize_table_field(
                 accounting_server,
@@ -722,6 +733,8 @@ class Radius(CRUDEndpoint, MetadataMixin):
                 field_name="accounting_server",
                 example="[{'server': '192.168.1.10', 'secret': 'value', 'interface': 'value'}]",
             )
+        
+        # Apply normalization for multi-value option fields (space-separated strings)
         
         # Build payload using helper function with auto-normalization
         # This automatically converts strings/lists to [{'name': '...'}] format for list fields
@@ -752,6 +765,7 @@ class Radius(CRUDEndpoint, MetadataMixin):
             source_ip_interface=source_ip_interface,
             username_case_sensitive=username_case_sensitive,
             group_override_attr_type=group_override_attr_type,
+            class_=class_,
             password_renewal=password_renewal,
             require_message_authenticator=require_message_authenticator,
             password_encoding=password_encoding,
@@ -962,6 +976,7 @@ class Radius(CRUDEndpoint, MetadataMixin):
         source_ip_interface: str | None = None,
         username_case_sensitive: Literal["enable", "disable"] | None = None,
         group_override_attr_type: Literal["filter-Id", "class"] | None = None,
+        class_: str | list[str] | list[dict[str, Any]] | None = None,
         password_renewal: Literal["enable", "disable"] | None = None,
         require_message_authenticator: Literal["enable", "disable"] | None = None,
         password_encoding: Literal["auto", "ISO-8859-1"] | None = None,
@@ -1036,6 +1051,7 @@ class Radius(CRUDEndpoint, MetadataMixin):
             source_ip_interface: Field source-ip-interface
             username_case_sensitive: Field username-case-sensitive
             group_override_attr_type: Field group-override-attr-type
+            class_: Field class
             password_renewal: Field password-renewal
             require_message_authenticator: Field require-message-authenticator
             password_encoding: Field password-encoding
@@ -1111,6 +1127,26 @@ class Radius(CRUDEndpoint, MetadataMixin):
             - put(): Update existing object
             - exists(): Check existence manually
         """
+        # Apply normalization for table fields (supports flexible input formats)
+        if class_ is not None:
+            class_ = normalize_table_field(
+                class_,
+                mkey="name",
+                required_fields=['name'],
+                field_name="class_",
+                example="[{'name': 'value'}]",
+            )
+        if accounting_server is not None:
+            accounting_server = normalize_table_field(
+                accounting_server,
+                mkey="id",
+                required_fields=['server', 'secret', 'interface'],
+                field_name="accounting_server",
+                example="[{'server': '192.168.1.10', 'secret': 'value', 'interface': 'value'}]",
+            )
+        
+        # Apply normalization for multi-value option fields (space-separated strings)
+        
         # Build payload using helper function with auto-normalization
         payload_data = build_api_payload(
             name=name,
@@ -1138,6 +1174,7 @@ class Radius(CRUDEndpoint, MetadataMixin):
             source_ip_interface=source_ip_interface,
             username_case_sensitive=username_case_sensitive,
             group_override_attr_type=group_override_attr_type,
+            class_=class_,
             password_renewal=password_renewal,
             require_message_authenticator=require_message_authenticator,
             password_encoding=password_encoding,

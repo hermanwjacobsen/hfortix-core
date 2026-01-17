@@ -1,384 +1,133 @@
-from typing import TypedDict, Literal, Any, Coroutine, Union, overload, Generator, final
-from typing_extensions import NotRequired
-from hfortix_fortios.models import FortiObject, FortiObjectList
+""" - Type Stubs
 
-# ============================================================================
-# Nested TypedDicts for table field children (dict mode)
-# These MUST be defined before the Payload class to use them as type hints
-# ============================================================================
+Auto-generated stub file for type checking and IDE support.
 
-class WebPortalBookmarkUsersItem(TypedDict, total=False):
-    """Type hints for users table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    Use this when building payloads for POST/PUT requests.
-    
-    **Available fields:**
-        - name: str
-    
-    **Example:**
-        entry: WebPortalBookmarkUsersItem = {
-            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
-        }
-    """
-    
-    name: str  # User name. | MaxLen: 79
+Endpoint: ztna/web_portal_bookmark
+Category: cmdb
+"""
+
+from __future__ import annotations
+
+from typing import (
+    Any,
+    ClassVar,
+    Literal,
+    TypedDict,
+    overload,
+)
+
+from hfortix_fortios.models import (
+    FortiObject,
+    FortiObjectList,
+)
 
 
-class WebPortalBookmarkGroupsItem(TypedDict, total=False):
-    """Type hints for groups table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    Use this when building payloads for POST/PUT requests.
-    
-    **Available fields:**
-        - name: str
-    
-    **Example:**
-        entry: WebPortalBookmarkGroupsItem = {
-            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
-        }
-    """
-    
-    name: str  # Group name. | MaxLen: 79
+# ================================================================
+# TypedDict Payloads
+# ================================================================
 
-
-class WebPortalBookmarkBookmarksItem(TypedDict, total=False):
-    """Type hints for bookmarks table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    Use this when building payloads for POST/PUT requests.
-    
-    **Available fields:**
-        - name: str
-        - apptype: "ftp" | "rdp" | "sftp" | "smb" | "ssh" | "telnet" | "vnc" | "web"
-        - url: str
-        - host: str
-        - folder: str
-        - domain: str
-        - description: str
-        - keyboard_layout: "ar-101" | "ar-102" | "ar-102-azerty" | "can-mul" | "cz" | "cz-qwerty" | "cz-pr" | "da" | "nl" | "de" | "de-ch" | "de-ibm" | "en-uk" | "en-uk-ext" | "en-us" | "en-us-dvorak" | "es" | "es-var" | "fi" | "fi-sami" | "fr" | "fr-apple" | "fr-ca" | "fr-ch" | "fr-be" | "hr" | "hu" | "hu-101" | "it" | "it-142" | "ja" | "ja-106" | "ko" | "la-am" | "lt" | "lt-ibm" | "lt-std" | "lav-std" | "lav-leg" | "mk" | "mk-std" | "no" | "no-sami" | "pol-214" | "pol-pr" | "pt" | "pt-br" | "pt-br-abnt2" | "ru" | "ru-mne" | "ru-t" | "sl" | "sv" | "sv-sami" | "tuk" | "tur-f" | "tur-q" | "zh-sym-sg-us" | "zh-sym-us" | "zh-tr-hk" | "zh-tr-mo" | "zh-tr-us"
-        - security: "any" | "rdp" | "nla" | "tls"
-        - send_preconnection_id: "enable" | "disable"
-        - preconnection_id: int
-        - preconnection_blob: str
-        - load_balancing_info: str
-        - restricted_admin: "enable" | "disable"
-        - port: int
-        - logon_user: str
-        - logon_password: str
-        - color_depth: "32" | "16" | "8"
-        - sso: "disable" | "enable"
-        - width: int
-        - height: int
-        - vnc_keyboard_layout: "default" | "da" | "nl" | "en-uk" | "en-uk-ext" | "fi" | "fr" | "fr-be" | "fr-ca-mul" | "de" | "de-ch" | "it" | "it-142" | "pt" | "pt-br-abnt2" | "no" | "gd" | "es" | "sv" | "us-intl"
-    
-    **Example:**
-        entry: WebPortalBookmarkBookmarksItem = {
-            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
-        }
-    """
-    
-    name: str  # Bookmark name. | MaxLen: 35
-    apptype: Literal["ftp", "rdp", "sftp", "smb", "ssh", "telnet", "vnc", "web"]  # Application type. | Default: web
-    url: str  # URL parameter. | MaxLen: 128
-    host: str  # Host name/IP parameter. | MaxLen: 128
-    folder: str  # Network shared file folder parameter. | MaxLen: 128
-    domain: str  # Login domain. | MaxLen: 128
-    description: str  # Description. | MaxLen: 128
-    keyboard_layout: Literal["ar-101", "ar-102", "ar-102-azerty", "can-mul", "cz", "cz-qwerty", "cz-pr", "da", "nl", "de", "de-ch", "de-ibm", "en-uk", "en-uk-ext", "en-us", "en-us-dvorak", "es", "es-var", "fi", "fi-sami", "fr", "fr-apple", "fr-ca", "fr-ch", "fr-be", "hr", "hu", "hu-101", "it", "it-142", "ja", "ja-106", "ko", "la-am", "lt", "lt-ibm", "lt-std", "lav-std", "lav-leg", "mk", "mk-std", "no", "no-sami", "pol-214", "pol-pr", "pt", "pt-br", "pt-br-abnt2", "ru", "ru-mne", "ru-t", "sl", "sv", "sv-sami", "tuk", "tur-f", "tur-q", "zh-sym-sg-us", "zh-sym-us", "zh-tr-hk", "zh-tr-mo", "zh-tr-us"]  # Keyboard layout. | Default: en-us
-    security: Literal["any", "rdp", "nla", "tls"]  # Security mode for RDP connection (default = any). | Default: any
-    send_preconnection_id: Literal["enable", "disable"]  # Enable/disable sending of preconnection ID. | Default: disable
-    preconnection_id: int  # The numeric ID of the RDP source (0-4294967295). | Default: 0 | Min: 0 | Max: 4294967295
-    preconnection_blob: str  # An arbitrary string which identifies the RDP sourc | MaxLen: 511
-    load_balancing_info: str  # The load balancing information or cookie which sho | MaxLen: 511
-    restricted_admin: Literal["enable", "disable"]  # Enable/disable restricted admin mode for RDP. | Default: disable
-    port: int  # Remote port. | Default: 0 | Min: 0 | Max: 65535
-    logon_user: str  # Logon user. | MaxLen: 35
-    logon_password: str  # Logon password. | MaxLen: 128
-    color_depth: Literal["32", "16", "8"]  # Color depth per pixel. | Default: 16
-    sso: Literal["disable", "enable"]  # Single sign-on. | Default: disable
-    width: int  # Screen width (range from 0 - 65535, default = 0). | Default: 0 | Min: 0 | Max: 65535
-    height: int  # Screen height (range from 0 - 65535, default = 0). | Default: 0 | Min: 0 | Max: 65535
-    vnc_keyboard_layout: Literal["default", "da", "nl", "en-uk", "en-uk-ext", "fi", "fr", "fr-be", "fr-ca-mul", "de", "de-ch", "it", "it-142", "pt", "pt-br-abnt2", "no", "gd", "es", "sv", "us-intl"]  # Keyboard layout. | Default: default
-
-
-# ============================================================================
-# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional)
-# ============================================================================
-# NOTE: We intentionally DON'T use NotRequired wrapper because:
-# 1. total=False already makes all fields optional
-# 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
-class WebPortalBookmarkPayload(TypedDict, total=False):
-    """
-    Type hints for ztna/web_portal_bookmark payload fields.
-    
-    Configure ztna web-portal bookmark.
-    
-    **Usage:**
-        payload: WebPortalBookmarkPayload = {
-            "field": "value",  # <- autocomplete shows all fields
-        }
-    """
-    name: str  # Bookmark name. | MaxLen: 35
-    users: list[WebPortalBookmarkUsersItem]  # User name.
-    groups: list[WebPortalBookmarkGroupsItem]  # User groups.
-    bookmarks: list[WebPortalBookmarkBookmarksItem]  # Bookmark table.
-
-# ============================================================================
-# Nested classes for table field children (object mode - for API responses)
-# ============================================================================
-
-@final
-class WebPortalBookmarkUsersObject:
-    """Typed object for users table items.
-    
-    Provides IDE autocomplete for nested table field attributes.
-    At runtime, this is a FortiObject instance.
-    """
-    
-    # User name. | MaxLen: 79
+class WebPortalBookmarkUsersItem:
+    """Nested item for users field - supports attribute access."""
     name: str
-    
-    # Common API response fields
-    status: str
-    http_status: int | None
-    http_status_code: int | None
-    http_method: str | None
-    http_response_time: float | None
-    vdom: str | None
-    
-    # Methods from FortiObject
-    @property
-    def dict(self) -> dict[str, Any]:
-        """Convert to dictionary."""
-        ...
-    @property
-    def json(self) -> str:
-        """Get pretty-printed JSON string."""
-        ...
-    @property
-    def raw(self) -> dict[str, Any]:
-        """Get raw API response data."""
-        ...
-    def get_full(self, name: str) -> Any: ...
-    def to_dict(self) -> FortiObject: ...
-    def keys(self) -> Any: ...
-    def values(self) -> Generator[Any, None, None]: ...
-    def items(self) -> Generator[tuple[str, Any], None, None]: ...
-    def get(self, key: str, default: Any = None) -> Any: ...
 
 
-@final
-class WebPortalBookmarkGroupsObject:
-    """Typed object for groups table items.
-    
-    Provides IDE autocomplete for nested table field attributes.
-    At runtime, this is a FortiObject instance.
-    """
-    
-    # Group name. | MaxLen: 79
+class WebPortalBookmarkGroupsItem:
+    """Nested item for groups field - supports attribute access."""
     name: str
-    
-    # Common API response fields
-    status: str
-    http_status: int | None
-    http_status_code: int | None
-    http_method: str | None
-    http_response_time: float | None
-    vdom: str | None
-    
-    # Methods from FortiObject
-    @property
-    def dict(self) -> dict[str, Any]:
-        """Convert to dictionary."""
-        ...
-    @property
-    def json(self) -> str:
-        """Get pretty-printed JSON string."""
-        ...
-    @property
-    def raw(self) -> dict[str, Any]:
-        """Get raw API response data."""
-        ...
-    def get_full(self, name: str) -> Any: ...
-    def to_dict(self) -> FortiObject: ...
-    def keys(self) -> Any: ...
-    def values(self) -> Generator[Any, None, None]: ...
-    def items(self) -> Generator[tuple[str, Any], None, None]: ...
-    def get(self, key: str, default: Any = None) -> Any: ...
 
 
-@final
-class WebPortalBookmarkBookmarksObject:
-    """Typed object for bookmarks table items.
-    
-    Provides IDE autocomplete for nested table field attributes.
-    At runtime, this is a FortiObject instance.
-    """
-    
-    # Bookmark name. | MaxLen: 35
+class WebPortalBookmarkBookmarksItem:
+    """Nested item for bookmarks field - supports attribute access."""
     name: str
-    # Application type. | Default: web
     apptype: Literal["ftp", "rdp", "sftp", "smb", "ssh", "telnet", "vnc", "web"]
-    # URL parameter. | MaxLen: 128
     url: str
-    # Host name/IP parameter. | MaxLen: 128
     host: str
-    # Network shared file folder parameter. | MaxLen: 128
     folder: str
-    # Login domain. | MaxLen: 128
     domain: str
-    # Description. | MaxLen: 128
     description: str
-    # Keyboard layout. | Default: en-us
     keyboard_layout: Literal["ar-101", "ar-102", "ar-102-azerty", "can-mul", "cz", "cz-qwerty", "cz-pr", "da", "nl", "de", "de-ch", "de-ibm", "en-uk", "en-uk-ext", "en-us", "en-us-dvorak", "es", "es-var", "fi", "fi-sami", "fr", "fr-apple", "fr-ca", "fr-ch", "fr-be", "hr", "hu", "hu-101", "it", "it-142", "ja", "ja-106", "ko", "la-am", "lt", "lt-ibm", "lt-std", "lav-std", "lav-leg", "mk", "mk-std", "no", "no-sami", "pol-214", "pol-pr", "pt", "pt-br", "pt-br-abnt2", "ru", "ru-mne", "ru-t", "sl", "sv", "sv-sami", "tuk", "tur-f", "tur-q", "zh-sym-sg-us", "zh-sym-us", "zh-tr-hk", "zh-tr-mo", "zh-tr-us"]
-    # Security mode for RDP connection (default = any). | Default: any
     security: Literal["any", "rdp", "nla", "tls"]
-    # Enable/disable sending of preconnection ID. | Default: disable
     send_preconnection_id: Literal["enable", "disable"]
-    # The numeric ID of the RDP source (0-4294967295). | Default: 0 | Min: 0 | Max: 4294967295
     preconnection_id: int
-    # An arbitrary string which identifies the RDP source. | MaxLen: 511
     preconnection_blob: str
-    # The load balancing information or cookie which should be pro | MaxLen: 511
     load_balancing_info: str
-    # Enable/disable restricted admin mode for RDP. | Default: disable
     restricted_admin: Literal["enable", "disable"]
-    # Remote port. | Default: 0 | Min: 0 | Max: 65535
     port: int
-    # Logon user. | MaxLen: 35
     logon_user: str
-    # Logon password. | MaxLen: 128
     logon_password: str
-    # Color depth per pixel. | Default: 16
     color_depth: Literal["32", "16", "8"]
-    # Single sign-on. | Default: disable
     sso: Literal["disable", "enable"]
-    # Screen width (range from 0 - 65535, default = 0). | Default: 0 | Min: 0 | Max: 65535
     width: int
-    # Screen height (range from 0 - 65535, default = 0). | Default: 0 | Min: 0 | Max: 65535
     height: int
-    # Keyboard layout. | Default: default
     vnc_keyboard_layout: Literal["default", "da", "nl", "en-uk", "en-uk-ext", "fi", "fr", "fr-be", "fr-ca-mul", "de", "de-ch", "it", "it-142", "pt", "pt-br-abnt2", "no", "gd", "es", "sv", "us-intl"]
-    
-    # Common API response fields
-    status: str
-    http_status: int | None
-    http_status_code: int | None
-    http_method: str | None
-    http_response_time: float | None
-    vdom: str | None
-    
-    # Methods from FortiObject
-    @property
-    def dict(self) -> dict[str, Any]:
-        """Convert to dictionary."""
-        ...
-    @property
-    def json(self) -> str:
-        """Get pretty-printed JSON string."""
-        ...
-    @property
-    def raw(self) -> dict[str, Any]:
-        """Get raw API response data."""
-        ...
-    def get_full(self, name: str) -> Any: ...
-    def to_dict(self) -> FortiObject: ...
-    def keys(self) -> Any: ...
-    def values(self) -> Generator[Any, None, None]: ...
-    def items(self) -> Generator[tuple[str, Any], None, None]: ...
-    def get(self, key: str, default: Any = None) -> Any: ...
 
 
-
-
-# Response TypedDict for GET returns (all fields present in API response)
-class WebPortalBookmarkResponse(TypedDict):
-    """
-    Type hints for ztna/web_portal_bookmark API response fields.
-    
-    All fields are present in the response from the FortiGate API.
-    """
-    name: str  # Bookmark name. | MaxLen: 35
-    users: list[WebPortalBookmarkUsersItem]  # User name.
-    groups: list[WebPortalBookmarkGroupsItem]  # User groups.
-    bookmarks: list[WebPortalBookmarkBookmarksItem]  # Bookmark table.
-
-
-@final
-class WebPortalBookmarkObject:
-    """Typed FortiObject for ztna/web_portal_bookmark with IDE autocomplete support.
-    
-    This is a typed wrapper that provides IDE autocomplete for API response fields.
-    At runtime, this is actually a FortiObject instance.
-    """
-    
-    # Bookmark name. | MaxLen: 35
+class WebPortalBookmarkPayload(TypedDict, total=False):
+    """Payload type for WebPortalBookmark operations."""
     name: str
-    # User name.
-    users: list[WebPortalBookmarkUsersObject]
-    # User groups.
-    groups: list[WebPortalBookmarkGroupsObject]
-    # Bookmark table.
-    bookmarks: list[WebPortalBookmarkBookmarksObject]
-    
-    # Common API response fields
-    status: str
-    http_status: int | None
-    http_status_code: int | None
-    http_method: str | None
-    http_response_time: float | None
-    vdom: str | None
-    
-    # Methods from FortiObject
-    @property
-    def dict(self) -> dict[str, Any]:
-        """Convert to dictionary."""
-        ...
-    @property
-    def json(self) -> str:
-        """Get pretty-printed JSON string."""
-        ...
-    @property
-    def raw(self) -> dict[str, Any]:
-        """Get raw API response data."""
-        ...
-    def get_full(self, name: str) -> Any: ...
-    def to_dict(self) -> WebPortalBookmarkPayload: ...
-    def keys(self) -> Any: ...
-    def values(self) -> Generator[Any, None, None]: ...
-    def items(self) -> Generator[tuple[str, Any], None, None]: ...
-    def get(self, key: str, default: Any = None) -> Any: ...
+    users: str | list[str] | list[dict[str, Any]] | list[WebPortalBookmarkUsersItem]
+    groups: str | list[str] | list[dict[str, Any]] | list[WebPortalBookmarkGroupsItem]
+    bookmarks: str | list[str] | list[dict[str, Any]] | list[WebPortalBookmarkBookmarksItem]
 
+
+# ================================================================
+# Response Types (TypedDict for dict-style access)
+# ================================================================
+
+class WebPortalBookmarkResponse(TypedDict, total=False):
+    """Response type for WebPortalBookmark - use with .dict property for typed dict access."""
+    name: str
+    users: list[WebPortalBookmarkUsersItem]
+    groups: list[WebPortalBookmarkGroupsItem]
+    bookmarks: list[WebPortalBookmarkBookmarksItem]
+
+
+# ================================================================
+# Response Types (Class for attribute access)
+# ================================================================
+
+
+class WebPortalBookmarkObject(FortiObject):
+    """Typed FortiObject for WebPortalBookmark with field access."""
+    name: str
+    users: list[WebPortalBookmarkUsersItem]
+    groups: list[WebPortalBookmarkGroupsItem]
+    bookmarks: list[WebPortalBookmarkBookmarksItem]
+
+
+# ================================================================
+# Main Endpoint Class
+# ================================================================
 
 class WebPortalBookmark:
     """
-    Configure ztna web-portal bookmark.
     
-    Path: ztna/web_portal_bookmark
+    Endpoint: ztna/web_portal_bookmark
     Category: cmdb
-    Primary Key: name
+    MKey: name
     """
     
+    # Class attributes for introspection
+    endpoint: ClassVar[str] = ...
+    path: ClassVar[str] = ...
+    category: ClassVar[str] = ...
+    mkey: ClassVar[str] = ...
+    capabilities: ClassVar[dict[str, Any]] = ...
+    
     def __init__(self, client: Any) -> None:
-        """Initialize endpoint with HTTP client.
-        
-        Args:
-            client: HTTP client instance for API communication
-        """
+        """Initialize endpoint with HTTP client."""
         ...
     
     # ================================================================
-    # GET OVERLOADS - Always returns FortiObject (or ContentResponse for file endpoints)
-    # Pylance matches overloads top-to-bottom, so these must come first!
+    # GET Methods
     # ================================================================
     
-    # With mkey as positional arg -> returns FortiObject
+    # CMDB with mkey - overloads for single vs list returns
     @overload
     def get(
         self,
         name: str,
+        *,
         filter: str | list[str] | None = ...,
         count: int | None = ...,
         start: int | None = ...,
@@ -388,14 +137,14 @@ class WebPortalBookmark:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        error_mode: Literal["raise", "return", "print"] | None = ...,
+        error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> WebPortalBookmarkObject: ...
     
-    # With mkey as keyword arg -> returns FortiObject
     @overload
     def get(
         self,
         *,
-        name: str,
         filter: str | list[str] | None = ...,
         count: int | None = ...,
         start: int | None = ...,
@@ -405,280 +154,63 @@ class WebPortalBookmark:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> WebPortalBookmarkObject: ...
-    
-    # Without mkey -> returns list of FortiObjects
-    @overload
-    def get(
-        self,
-        name: None = None,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
+        error_mode: Literal["raise", "return", "print"] | None = ...,
+        error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> FortiObjectList[WebPortalBookmarkObject]: ...
-    
-    # ================================================================
-    # (removed - all GET now returns FortiObject)
-    # ================================================================
-    
-    # With mkey as positional arg -> returns single object
-    @overload
-    def get(
-        self,
-        name: str,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> WebPortalBookmarkObject: ...
-    
-    # With mkey as keyword arg -> returns single object
-    @overload
-    def get(
-        self,
-        *,
-        name: str,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> WebPortalBookmarkObject: ...
-    
-    # With no mkey -> returns list of objects
-    @overload
-    def get(
-        self,
-        *,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObjectList[WebPortalBookmarkObject]: ...
-    
-    # Dict mode with mkey provided as positional arg (single dict)
-    @overload
-    def get(
-        self,
-        name: str,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> WebPortalBookmarkObject: ...
-    
-    # Dict mode with mkey provided as keyword arg (single dict)
-    @overload
-    def get(
-        self,
-        *,
-        name: str,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> WebPortalBookmarkObject: ...
-    
-    # Dict mode - list of dicts (no mkey/name provided) - keyword-only signature
-    @overload
-    def get(
-        self,
-        *,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObjectList[WebPortalBookmarkObject]: ...
-    
-    # Fallback overload for all other cases
-    @overload
-    def get(
-        self,
-        name: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> Union[dict[str, Any], list[dict[str, Any]], FortiObject, list[FortiObject]]: ...
-    
-    def get(
-        self,
-        name: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> WebPortalBookmarkObject | list[WebPortalBookmarkObject] | dict[str, Any] | list[dict[str, Any]]: ...
     
     def get_schema(
         self,
         vdom: str | None = ...,
         format: str = ...,
     ) -> FortiObject: ...
+
+    # ================================================================
+    # POST Method
+    # ================================================================
     
-    # POST overloads
-    @overload
     def post(
         self,
         payload_dict: WebPortalBookmarkPayload | None = ...,
         name: str | None = ...,
-        users: str | list[str] | list[WebPortalBookmarkUsersItem] | None = ...,
-        groups: str | list[str] | list[WebPortalBookmarkGroupsItem] | None = ...,
-        bookmarks: str | list[str] | list[WebPortalBookmarkBookmarksItem] | None = ...,
+        users: str | list[str] | list[dict[str, Any]] | list[WebPortalBookmarkUsersItem] | None = ...,
+        groups: str | list[str] | list[dict[str, Any]] | list[WebPortalBookmarkGroupsItem] | None = ...,
+        bookmarks: str | list[str] | list[dict[str, Any]] | list[WebPortalBookmarkBookmarksItem] | None = ...,
         vdom: str | bool | None = ...,
+        error_mode: Literal["raise", "return", "print"] | None = ...,
+        error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> WebPortalBookmarkObject: ...
+
+    # ================================================================
+    # PUT Method
+    # ================================================================
     
-    @overload
-    def post(
-        self,
-        payload_dict: WebPortalBookmarkPayload | None = ...,
-        name: str | None = ...,
-        users: str | list[str] | list[WebPortalBookmarkUsersItem] | None = ...,
-        groups: str | list[str] | list[WebPortalBookmarkGroupsItem] | None = ...,
-        bookmarks: str | list[str] | list[WebPortalBookmarkBookmarksItem] | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
-    
-    # Default overload
-    @overload
-    def post(
-        self,
-        payload_dict: WebPortalBookmarkPayload | None = ...,
-        name: str | None = ...,
-        users: str | list[str] | list[WebPortalBookmarkUsersItem] | None = ...,
-        groups: str | list[str] | list[WebPortalBookmarkGroupsItem] | None = ...,
-        bookmarks: str | list[str] | list[WebPortalBookmarkBookmarksItem] | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
-    
-    def post(
-        self,
-        payload_dict: WebPortalBookmarkPayload | None = ...,
-        name: str | None = ...,
-        users: str | list[str] | list[WebPortalBookmarkUsersItem] | None = ...,
-        groups: str | list[str] | list[WebPortalBookmarkGroupsItem] | None = ...,
-        bookmarks: str | list[str] | list[WebPortalBookmarkBookmarksItem] | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
-    
-    # PUT overloads
-    @overload
     def put(
         self,
         payload_dict: WebPortalBookmarkPayload | None = ...,
         name: str | None = ...,
-        users: str | list[str] | list[WebPortalBookmarkUsersItem] | None = ...,
-        groups: str | list[str] | list[WebPortalBookmarkGroupsItem] | None = ...,
-        bookmarks: str | list[str] | list[WebPortalBookmarkBookmarksItem] | None = ...,
+        users: str | list[str] | list[dict[str, Any]] | list[WebPortalBookmarkUsersItem] | None = ...,
+        groups: str | list[str] | list[dict[str, Any]] | list[WebPortalBookmarkGroupsItem] | None = ...,
+        bookmarks: str | list[str] | list[dict[str, Any]] | list[WebPortalBookmarkBookmarksItem] | None = ...,
         vdom: str | bool | None = ...,
+        error_mode: Literal["raise", "return", "print"] | None = ...,
+        error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> WebPortalBookmarkObject: ...
-    
-    @overload
-    def put(
-        self,
-        payload_dict: WebPortalBookmarkPayload | None = ...,
-        name: str | None = ...,
-        users: str | list[str] | list[WebPortalBookmarkUsersItem] | None = ...,
-        groups: str | list[str] | list[WebPortalBookmarkGroupsItem] | None = ...,
-        bookmarks: str | list[str] | list[WebPortalBookmarkBookmarksItem] | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
-    
-    # Default overload
-    @overload
-    def put(
-        self,
-        payload_dict: WebPortalBookmarkPayload | None = ...,
-        name: str | None = ...,
-        users: str | list[str] | list[WebPortalBookmarkUsersItem] | None = ...,
-        groups: str | list[str] | list[WebPortalBookmarkGroupsItem] | None = ...,
-        bookmarks: str | list[str] | list[WebPortalBookmarkBookmarksItem] | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
-    
-    def put(
-        self,
-        payload_dict: WebPortalBookmarkPayload | None = ...,
-        name: str | None = ...,
-        users: str | list[str] | list[WebPortalBookmarkUsersItem] | None = ...,
-        groups: str | list[str] | list[WebPortalBookmarkGroupsItem] | None = ...,
-        bookmarks: str | list[str] | list[WebPortalBookmarkBookmarksItem] | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
-    
-    # DELETE overloads
-    @overload
-    def delete(
-        self,
-        name: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> WebPortalBookmarkObject: ...
-    
-    @overload
-    def delete(
-        self,
-        name: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
-    
-    # Default overload
-    @overload
-    def delete(
-        self,
-        name: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+
+    # ================================================================
+    # DELETE Method
+    # ================================================================
     
     def delete(
         self,
         name: str | None = ...,
         vdom: str | bool | None = ...,
+        error_mode: Literal["raise", "return", "print"] | None = ...,
+        error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> FortiObject: ...
+
+    # ================================================================
+    # Utility Methods
+    # ================================================================
     
     def exists(
         self,
@@ -690,10 +222,12 @@ class WebPortalBookmark:
         self,
         payload_dict: WebPortalBookmarkPayload | None = ...,
         name: str | None = ...,
-        users: str | list[str] | list[WebPortalBookmarkUsersItem] | None = ...,
-        groups: str | list[str] | list[WebPortalBookmarkGroupsItem] | None = ...,
-        bookmarks: str | list[str] | list[WebPortalBookmarkBookmarksItem] | None = ...,
+        users: str | list[str] | list[dict[str, Any]] | list[WebPortalBookmarkUsersItem] | None = ...,
+        groups: str | list[str] | list[dict[str, Any]] | list[WebPortalBookmarkGroupsItem] | None = ...,
+        bookmarks: str | list[str] | list[dict[str, Any]] | list[WebPortalBookmarkBookmarksItem] | None = ...,
         vdom: str | bool | None = ...,
+        error_mode: Literal["raise", "return", "print"] | None = ...,
+        error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> FortiObject: ...
     
     # Helper methods
@@ -701,7 +235,7 @@ class WebPortalBookmark:
     def help(field_name: str | None = ...) -> str: ...
     
     @staticmethod
-    def fields(detailed: bool = ...) -> Union[list[str], list[dict[str, Any]]]: ...
+    def fields(detailed: bool = ...) -> list[str] | list[dict[str, Any]]: ...
     
     @staticmethod
     def field_info(field_name: str) -> FortiObject: ...
@@ -717,9 +251,6 @@ class WebPortalBookmark:
     
     @staticmethod
     def schema() -> FortiObject: ...
-
-
-# ================================================================
 
 
 __all__ = [

@@ -11,101 +11,13 @@ from pydantic import BaseModel, Field, field_validator
 from typing import Any, Literal, Optional
 
 # ============================================================================
-# Child Table Models
+# Enum Definitions for Child Table Fields (for fields with 4+ allowed values)
 # ============================================================================
 
-class RipDistance(BaseModel):
-    """
-    Child table model for distance.
-    
-    Distance.
-    """
-    
-    class Config:
-        """Pydantic model configuration."""
-        extra = "allow"  # Allow additional fields from API
-        str_strip_whitespace = True
-    
-    id: int = Field(ge=0, le=4294967295, default=0, description="Distance ID.")    
-    prefix: Any = Field(default="0.0.0.0 0.0.0.0", description="Distance prefix.")    
-    distance: int = Field(ge=1, le=255, default=0, description="Distance (1 - 255).")    
-    access_list: str | None = Field(max_length=35, default="", description="Access list for route destination.")  # datasource: ['router.access-list.name']
-class RipDistributeList(BaseModel):
-    """
-    Child table model for distribute-list.
-    
-    Distribute list.
-    """
-    
-    class Config:
-        """Pydantic model configuration."""
-        extra = "allow"  # Allow additional fields from API
-        str_strip_whitespace = True
-    
-    id: int = Field(ge=0, le=4294967295, default=0, description="Distribute list ID.")    
-    status: Literal["enable", "disable"] | None = Field(default="disable", description="Status.")    
-    direction: Literal["in", "out"] = Field(default="out", description="Distribute list direction.")    
-    listname: str = Field(max_length=35, default="", description="Distribute access/prefix list name.")  # datasource: ['router.access-list.name', 'router.prefix-list.name']    
-    interface: str | None = Field(max_length=15, default="", description="Distribute list interface name.")  # datasource: ['system.interface.name']
-class RipNeighbor(BaseModel):
-    """
-    Child table model for neighbor.
-    
-    Neighbor.
-    """
-    
-    class Config:
-        """Pydantic model configuration."""
-        extra = "allow"  # Allow additional fields from API
-        str_strip_whitespace = True
-    
-    id: int | None = Field(ge=0, le=4294967295, default=0, description="Neighbor entry ID.")    
-    ip: str = Field(default="0.0.0.0", description="IP address.")
-class RipNetwork(BaseModel):
-    """
-    Child table model for network.
-    
-    Network.
-    """
-    
-    class Config:
-        """Pydantic model configuration."""
-        extra = "allow"  # Allow additional fields from API
-        str_strip_whitespace = True
-    
-    id: int | None = Field(ge=0, le=4294967295, default=0, description="Network entry ID.")    
-    prefix: str | None = Field(default="0.0.0.0 0.0.0.0", description="Network prefix.")
-class RipOffsetList(BaseModel):
-    """
-    Child table model for offset-list.
-    
-    Offset list.
-    """
-    
-    class Config:
-        """Pydantic model configuration."""
-        extra = "allow"  # Allow additional fields from API
-        str_strip_whitespace = True
-    
-    id: int = Field(ge=0, le=4294967295, default=0, description="Offset-list ID.")    
-    status: Literal["enable", "disable"] | None = Field(default="enable", description="Status.")    
-    direction: Literal["in", "out"] = Field(default="out", description="Offset list direction.")    
-    access_list: str = Field(max_length=35, default="", description="Access list name.")  # datasource: ['router.access-list.name']    
-    offset: int = Field(ge=1, le=16, default=0, description="Offset.")    
-    interface: str | None = Field(max_length=15, default="", description="Interface name.")  # datasource: ['system.interface.name']
-class RipPassiveInterface(BaseModel):
-    """
-    Child table model for passive-interface.
-    
-    Passive interface configuration.
-    """
-    
-    class Config:
-        """Pydantic model configuration."""
-        extra = "allow"  # Allow additional fields from API
-        str_strip_whitespace = True
-    
-    name: str = Field(max_length=79, default="", description="Passive interface name.")  # datasource: ['system.interface.name']
+# ============================================================================
+# Child Table Models (sorted deepest-first so nested models are defined before their parents)
+# ============================================================================
+
 class RipRedistribute(BaseModel):
     """
     Child table model for redistribute.
@@ -117,11 +29,75 @@ class RipRedistribute(BaseModel):
         """Pydantic model configuration."""
         extra = "allow"  # Allow additional fields from API
         str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
     
-    name: str = Field(max_length=35, default="", description="Redistribute name.")    
+    name: str = Field(max_length=35, description="Redistribute name.")    
     status: Literal["enable", "disable"] | None = Field(default="disable", description="Status.")    
     metric: int | None = Field(ge=1, le=16, default=0, description="Redistribute metric setting.")    
-    routemap: str | None = Field(max_length=35, default="", description="Route map name.")  # datasource: ['router.route-map.name']
+    routemap: str | None = Field(max_length=35, default=None, description="Route map name.")  # datasource: ['router.route-map.name']
+class RipPassiveInterface(BaseModel):
+    """
+    Child table model for passive-interface.
+    
+    Passive interface configuration.
+    """
+    
+    class Config:
+        """Pydantic model configuration."""
+        extra = "allow"  # Allow additional fields from API
+        str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
+    
+    name: str = Field(max_length=79, description="Passive interface name.")  # datasource: ['system.interface.name']
+class RipOffsetList(BaseModel):
+    """
+    Child table model for offset-list.
+    
+    Offset list.
+    """
+    
+    class Config:
+        """Pydantic model configuration."""
+        extra = "allow"  # Allow additional fields from API
+        str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
+    
+    id_: int = Field(ge=0, le=4294967295, default=0, serialization_alias="id", description="Offset-list ID.")    
+    status: Literal["enable", "disable"] | None = Field(default="enable", description="Status.")    
+    direction: Literal["in", "out"] = Field(default="out", description="Offset list direction.")    
+    access_list: str = Field(max_length=35, description="Access list name.")  # datasource: ['router.access-list.name']    
+    offset: int = Field(ge=1, le=16, default=0, description="Offset.")    
+    interface: str | None = Field(max_length=15, default=None, description="Interface name.")  # datasource: ['system.interface.name']
+class RipNetwork(BaseModel):
+    """
+    Child table model for network.
+    
+    Network.
+    """
+    
+    class Config:
+        """Pydantic model configuration."""
+        extra = "allow"  # Allow additional fields from API
+        str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
+    
+    id_: int | None = Field(ge=0, le=4294967295, default=0, serialization_alias="id", description="Network entry ID.")    
+    prefix: str | None = Field(default="0.0.0.0 0.0.0.0", description="Network prefix.")
+class RipNeighbor(BaseModel):
+    """
+    Child table model for neighbor.
+    
+    Neighbor.
+    """
+    
+    class Config:
+        """Pydantic model configuration."""
+        extra = "allow"  # Allow additional fields from API
+        str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
+    
+    id_: int | None = Field(ge=0, le=4294967295, default=0, serialization_alias="id", description="Neighbor entry ID.")    
+    ip: str = Field(default="0.0.0.0", description="IP address.")
 class RipInterface(BaseModel):
     """
     Child table model for interface.
@@ -133,17 +109,53 @@ class RipInterface(BaseModel):
         """Pydantic model configuration."""
         extra = "allow"  # Allow additional fields from API
         str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
     
-    name: str | None = Field(max_length=35, default="", description="Interface name.")  # datasource: ['system.interface.name']    
-    auth_keychain: str | None = Field(max_length=35, default="", description="Authentication key-chain name.")  # datasource: ['router.key-chain.name']    
+    name: str | None = Field(max_length=35, default=None, description="Interface name.")  # datasource: ['system.interface.name']    
+    auth_keychain: str | None = Field(max_length=35, default=None, description="Authentication key-chain name.")  # datasource: ['router.key-chain.name']    
     auth_mode: Literal["none", "text", "md5"] | None = Field(default="none", description="Authentication mode.")    
     auth_string: Any = Field(max_length=16, default=None, description="Authentication string/password.")    
-    receive_version: list[ReceiveVersion] = Field(default="", description="Receive version.")    
-    send_version: list[SendVersion] = Field(default="", description="Send version.")    
+    receive_version: list[Literal["1", "2"]] = Field(default_factory=list, description="Receive version.")    
+    send_version: list[Literal["1", "2"]] = Field(default_factory=list, description="Send version.")    
     send_version2_broadcast: Literal["disable", "enable"] | None = Field(default="disable", description="Enable/disable broadcast version 1 compatible packets.")    
     split_horizon_status: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable split horizon.")    
     split_horizon: Literal["poisoned", "regular"] | None = Field(default="poisoned", description="Enable/disable split horizon.")    
     flags: int | None = Field(ge=0, le=255, default=8, description="Flags.")
+class RipDistributeList(BaseModel):
+    """
+    Child table model for distribute-list.
+    
+    Distribute list.
+    """
+    
+    class Config:
+        """Pydantic model configuration."""
+        extra = "allow"  # Allow additional fields from API
+        str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
+    
+    id_: int = Field(ge=0, le=4294967295, default=0, serialization_alias="id", description="Distribute list ID.")    
+    status: Literal["enable", "disable"] | None = Field(default="disable", description="Status.")    
+    direction: Literal["in", "out"] = Field(default="out", description="Distribute list direction.")    
+    listname: str = Field(max_length=35, description="Distribute access/prefix list name.")  # datasource: ['router.access-list.name', 'router.prefix-list.name']    
+    interface: str | None = Field(max_length=15, default=None, description="Distribute list interface name.")  # datasource: ['system.interface.name']
+class RipDistance(BaseModel):
+    """
+    Child table model for distance.
+    
+    Distance.
+    """
+    
+    class Config:
+        """Pydantic model configuration."""
+        extra = "allow"  # Allow additional fields from API
+        str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
+    
+    id_: int = Field(ge=0, le=4294967295, default=0, serialization_alias="id", description="Distance ID.")    
+    prefix: Any = Field(default="0.0.0.0 0.0.0.0", description="Distance prefix.")    
+    distance: int = Field(ge=1, le=255, default=0, description="Distance (1 - 255).")    
+    access_list: str | None = Field(max_length=35, default=None, description="Access list for route destination.")  # datasource: ['router.access-list.name']
 # ============================================================================
 # Enum Definitions (for fields with 4+ allowed values)
 # ============================================================================
@@ -175,18 +187,18 @@ class RipModel(BaseModel):
     default_information_originate: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable generation of default route.")    
     default_metric: int | None = Field(ge=1, le=16, default=1, description="Default metric.")    
     max_out_metric: int | None = Field(ge=0, le=15, default=0, description="Maximum metric allowed to output(0 means 'not set').")    
-    distance: list[Distance] = Field(default=None, description="Distance.")    
-    distribute_list: list[DistributeList] = Field(default=None, description="Distribute list.")    
-    neighbor: list[Neighbor] = Field(default=None, description="Neighbor.")    
-    network: list[Network] = Field(default=None, description="Network.")    
-    offset_list: list[OffsetList] = Field(default=None, description="Offset list.")    
-    passive_interface: list[PassiveInterface] = Field(default=None, description="Passive interface configuration.")    
-    redistribute: list[Redistribute] = Field(default=None, description="Redistribute configuration.")    
+    distance: list[RipDistance] = Field(default_factory=list, description="Distance.")    
+    distribute_list: list[RipDistributeList] = Field(default_factory=list, description="Distribute list.")    
+    neighbor: list[RipNeighbor] = Field(default_factory=list, description="Neighbor.")    
+    network: list[RipNetwork] = Field(default_factory=list, description="Network.")    
+    offset_list: list[RipOffsetList] = Field(default_factory=list, description="Offset list.")    
+    passive_interface: list[RipPassiveInterface] = Field(default_factory=list, description="Passive interface configuration.")    
+    redistribute: list[RipRedistribute] = Field(default_factory=list, description="Redistribute configuration.")    
     update_timer: int | None = Field(ge=1, le=2147483647, default=30, description="Update timer in seconds.")    
     timeout_timer: int | None = Field(ge=5, le=2147483647, default=180, description="Timeout timer in seconds.")    
     garbage_timer: int | None = Field(ge=5, le=2147483647, default=120, description="Garbage timer in seconds.")    
     version: Literal["1", "2"] | None = Field(default="2", description="RIP version.")    
-    interface: list[Interface] = Field(default=None, description="RIP interface configuration.")    
+    interface: list[RipInterface] = Field(default_factory=list, description="RIP interface configuration.")    
     # ========================================================================
     # Custom Validators
     # ========================================================================
@@ -251,7 +263,7 @@ class RipModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.router.rip.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate child table items
         values = getattr(self, "distance", [])
@@ -269,7 +281,7 @@ class RipModel(BaseModel):
             
             # Check all datasource endpoints
             found = False
-            if await client.api.cmdb.router.access-list.exists(value):
+            if await client.api.cmdb.router.access_list.exists(value):
                 found = True
             
             if not found:
@@ -309,7 +321,7 @@ class RipModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.router.rip.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate child table items
         values = getattr(self, "distribute_list", [])
@@ -367,7 +379,7 @@ class RipModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.router.rip.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate child table items
         values = getattr(self, "offset_list", [])
@@ -425,7 +437,7 @@ class RipModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.router.rip.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate child table items
         values = getattr(self, "passive_interface", [])
@@ -483,7 +495,7 @@ class RipModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.router.rip.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate child table items
         values = getattr(self, "redistribute", [])
@@ -501,7 +513,7 @@ class RipModel(BaseModel):
             
             # Check all datasource endpoints
             found = False
-            if await client.api.cmdb.router.route-map.exists(value):
+            if await client.api.cmdb.router.route_map.exists(value):
                 found = True
             
             if not found:
@@ -541,7 +553,7 @@ class RipModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.router.rip.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate child table items
         values = getattr(self, "interface", [])
@@ -559,7 +571,7 @@ class RipModel(BaseModel):
             
             # Check all datasource endpoints
             found = False
-            if await client.api.cmdb.router.key-chain.exists(value):
+            if await client.api.cmdb.router.key_chain.exists(value):
                 found = True
             
             if not found:
@@ -620,5 +632,5 @@ __all__ = [
 # ============================================================================
 # Generated by hfortix generator v0.6.0
 # Schema: 1.7.0
-# Generated: 2026-01-17T05:32:16.496250Z
+# Generated: 2026-01-17T17:25:20.531274Z
 # ============================================================================

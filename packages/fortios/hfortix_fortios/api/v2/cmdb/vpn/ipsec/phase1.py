@@ -730,6 +730,8 @@ class Phase1(CRUDEndpoint, MetadataMixin):
                 example="[{'name': 'value'}]",
             )
         
+        # Apply normalization for multi-value option fields (space-separated strings)
+        
         # Build payload using helper function with auto-normalization
         # This automatically converts strings/lists to [{'name': '...'}] format for list fields
         # To disable auto-normalization, use build_cmdb_payload directly
@@ -1392,6 +1394,8 @@ class Phase1(CRUDEndpoint, MetadataMixin):
                 field_name="remote_gw_ztna_tags",
                 example="[{'name': 'value'}]",
             )
+        
+        # Apply normalization for multi-value option fields (space-separated strings)
         
         # Build payload using helper function with auto-normalization
         # This automatically converts strings/lists to [{'name': '...'}] format for list fields
@@ -2084,6 +2088,66 @@ class Phase1(CRUDEndpoint, MetadataMixin):
             - put(): Update existing object
             - exists(): Check existence manually
         """
+        # Apply normalization for table fields (supports flexible input formats)
+        if certificate is not None:
+            certificate = normalize_table_field(
+                certificate,
+                mkey="name",
+                required_fields=['name'],
+                field_name="certificate",
+                example="[{'name': 'value'}]",
+            )
+        if internal_domain_list is not None:
+            internal_domain_list = normalize_table_field(
+                internal_domain_list,
+                mkey="domain-name",
+                required_fields=['domain-name'],
+                field_name="internal_domain_list",
+                example="[{'domain-name': 'value'}]",
+            )
+        if dns_suffix_search is not None:
+            dns_suffix_search = normalize_table_field(
+                dns_suffix_search,
+                mkey="dns-suffix",
+                required_fields=['dns-suffix'],
+                field_name="dns_suffix_search",
+                example="[{'dns-suffix': 'value'}]",
+            )
+        if ipv4_exclude_range is not None:
+            ipv4_exclude_range = normalize_table_field(
+                ipv4_exclude_range,
+                mkey="id",
+                required_fields=['id', 'start-ip', 'end-ip'],
+                field_name="ipv4_exclude_range",
+                example="[{'id': 1, 'start-ip': '192.168.1.10', 'end-ip': '192.168.1.10'}]",
+            )
+        if ipv6_exclude_range is not None:
+            ipv6_exclude_range = normalize_table_field(
+                ipv6_exclude_range,
+                mkey="id",
+                required_fields=['id', 'start-ip', 'end-ip'],
+                field_name="ipv6_exclude_range",
+                example="[{'id': 1, 'start-ip': 'value', 'end-ip': 'value'}]",
+            )
+        if backup_gateway is not None:
+            backup_gateway = normalize_table_field(
+                backup_gateway,
+                mkey="address",
+                required_fields=['address'],
+                field_name="backup_gateway",
+                example="[{'address': 'value'}]",
+            )
+        if remote_gw_ztna_tags is not None:
+            remote_gw_ztna_tags = normalize_table_field(
+                remote_gw_ztna_tags,
+                mkey="name",
+                required_fields=['name'],
+                field_name="remote_gw_ztna_tags",
+                example="[{'name': 'value'}]",
+            )
+        
+        # Apply normalization for multi-value option fields (space-separated strings)
+        
         # Build payload using helper function with auto-normalization
         payload_data = build_api_payload(
             name=name,

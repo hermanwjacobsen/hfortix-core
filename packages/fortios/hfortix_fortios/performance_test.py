@@ -608,7 +608,7 @@ def run_performance_test(
                     for _ in range(concurrent_count):
                         tasks.append(fgt.api.monitor.system.status.get())
 
-                    await asyncio.gather(*tasks)
+                    await asyncio.gather(*tasks)  # type: ignore[call-overload]
                     duration = time.time() - start
 
                     await fgt.aclose()  # type: ignore[attr-defined]

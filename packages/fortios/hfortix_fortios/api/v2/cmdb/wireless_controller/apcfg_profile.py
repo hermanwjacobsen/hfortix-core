@@ -674,6 +674,16 @@ class ApcfgProfile(CRUDEndpoint, MetadataMixin):
             - put(): Update existing object
             - exists(): Check existence manually
         """
+        # Apply normalization for table fields (supports flexible input formats)
+        if command_list is not None:
+            command_list = normalize_table_field(
+                command_list,
+                mkey="id",
+                required_fields=['id'],
+                field_name="command_list",
+                example="[{'id': 1}]",
+            )
+        
         # Build payload using helper function with auto-normalization
         payload_data = build_api_payload(
             name=name,

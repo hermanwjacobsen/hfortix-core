@@ -12,9 +12,77 @@ from typing import Any, Literal, Optional
 from enum import Enum
 
 # ============================================================================
-# Child Table Models
+# Enum Definitions for Child Table Fields (for fields with 4+ allowed values)
 # ============================================================================
 
+class ProfileRuleSeverityEnum(str, Enum):
+    """Allowed values for severity field in rule."""
+    INFO = "info"
+    LOW = "low"
+    MEDIUM = "medium"
+    HIGH = "high"
+    CRITICAL = "critical"
+
+class ProfileRuleProtoEnum(str, Enum):
+    """Allowed values for proto field in rule."""
+    SMTP = "smtp"
+    POP3 = "pop3"
+    IMAP = "imap"
+    HTTP_GET = "http-get"
+    HTTP_POST = "http-post"
+    FTP = "ftp"
+    NNTP = "nntp"
+    MAPI = "mapi"
+    SSH = "ssh"
+    CIFS = "cifs"
+
+class ProfileRuleFilterByEnum(str, Enum):
+    """Allowed values for filter_by field in rule."""
+    SENSOR = "sensor"
+    LABEL = "label"
+    FINGERPRINT = "fingerprint"
+    ENCRYPTED = "encrypted"
+    NONE = "none"
+
+class ProfileRuleActionEnum(str, Enum):
+    """Allowed values for action field in rule."""
+    ALLOW = "allow"
+    LOG_ONLY = "log-only"
+    BLOCK = "block"
+    QUARANTINE_IP = "quarantine-ip"
+
+# ============================================================================
+# Child Table Models (sorted deepest-first so nested models are defined before their parents)
+# ============================================================================
+
+class ProfileRuleSensor(BaseModel):
+    """
+    Child table model for rule.sensor.
+    
+    Select DLP sensors.
+    """
+    
+    class Config:
+        """Pydantic model configuration."""
+        extra = "allow"  # Allow additional fields from API
+        str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
+    
+    name: str = Field(max_length=35, description="Address name.")  # datasource: ['dlp.sensor.name']
+class ProfileRuleSensitivity(BaseModel):
+    """
+    Child table model for rule.sensitivity.
+    
+    Select a DLP file pattern sensitivity to match.
+    """
+    
+    class Config:
+        """Pydantic model configuration."""
+        extra = "allow"  # Allow additional fields from API
+        str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
+    
+    name: str = Field(max_length=35, description="Select a DLP sensitivity.")  # datasource: ['dlp.sensitivity.name']
 class ProfileRule(BaseModel):
     """
     Child table model for rule.
@@ -26,32 +94,53 @@ class ProfileRule(BaseModel):
         """Pydantic model configuration."""
         extra = "allow"  # Allow additional fields from API
         str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
     
-    id: int | None = Field(ge=0, le=4294967295, default=0, description="ID.")    
-    name: str | None = Field(max_length=35, default="", description="Filter name.")    
-    severity: SeverityEnum | None = Field(default="medium", description="Select the severity or threat level that matches this filter.")    
-    type: Literal["file", "message"] | None = Field(default="file", description="Select whether to check the content of messages (an email message) or files (downloaded files or email attachments).")    
-    proto: list[Proto] = Field(default="", description="Check messages or files over one or more of these protocols.")    
-    filter_by: FilterByEnum | None = Field(default="none", description="Select the type of content to match.")    
+    id_: int | None = Field(ge=0, le=4294967295, default=0, serialization_alias="id", description="ID.")    
+    name: str | None = Field(max_length=35, default=None, description="Filter name.")    
+    severity: ProfileRuleSeverityEnum | None = Field(default=ProfileRuleSeverityEnum.MEDIUM, description="Select the severity or threat level that matches this filter.")    
+    type_: Literal["file", "message"] | None = Field(default="file", serialization_alias="type", description="Select whether to check the content of messages (an email message) or files (downloaded files or email attachments).")    
+    proto: list[ProfileRuleProtoEnum] = Field(default_factory=list, description="Check messages or files over one or more of these protocols.")    
+    filter_by: ProfileRuleFilterByEnum | None = Field(default=ProfileRuleFilterByEnum.NONE, description="Select the type of content to match.")    
     file_size: int | None = Field(ge=0, le=4193280, default=0, description="Match files greater than or equal to this size (KB).")    
-    sensitivity: list[Sensitivity] = Field(description="Select a DLP file pattern sensitivity to match.")    
+    sensitivity: list[ProfileRuleSensitivity] = Field(description="Select a DLP file pattern sensitivity to match.")    
     match_percentage: int | None = Field(ge=1, le=100, default=10, description="Percentage of fingerprints in the fingerprint databases designated with the selected sensitivity to match.")    
     file_type: int | None = Field(ge=0, le=4294967295, default=0, description="Select the number of a DLP file pattern table to match.")  # datasource: ['dlp.filepattern.id']    
-    sensor: list[Sensor] = Field(description="Select DLP sensors.")    
-    label: str = Field(max_length=35, default="", description="Select DLP label.")  # datasource: ['dlp.label.name']    
+    sensor: list[ProfileRuleSensor] = Field(description="Select DLP sensors.")    
+    label: str = Field(max_length=35, description="Select DLP label.")  # datasource: ['dlp.label.name']    
     archive: Literal["disable", "enable"] | None = Field(default="disable", description="Enable/disable DLP archiving.")    
-    action: ActionEnum | None = Field(default="allow", description="Action to take with content that this DLP profile matches.")    
+    action: ProfileRuleActionEnum | None = Field(default=ProfileRuleActionEnum.ALLOW, description="Action to take with content that this DLP profile matches.")    
     expiry: str | None = Field(default="5m", description="Quarantine duration in days, hours, minutes (format = dddhhmm).")
 # ============================================================================
 # Enum Definitions (for fields with 4+ allowed values)
 # ============================================================================
 
-class ProfileFull_archive_protoEnum(str, Enum):
+class ProfileFullArchiveProtoEnum(str, Enum):
     """Allowed values for full_archive_proto field."""
-    SMTP = "smtp"    POP3 = "pop3"    IMAP = "imap"    HTTP_GET = "http-get"    HTTP_POST = "http-post"    FTP = "ftp"    NNTP = "nntp"    MAPI = "mapi"    SSH = "ssh"    CIFS = "cifs"
-class ProfileSummary_protoEnum(str, Enum):
+    SMTP = "smtp"
+    POP3 = "pop3"
+    IMAP = "imap"
+    HTTP_GET = "http-get"
+    HTTP_POST = "http-post"
+    FTP = "ftp"
+    NNTP = "nntp"
+    MAPI = "mapi"
+    SSH = "ssh"
+    CIFS = "cifs"
+
+class ProfileSummaryProtoEnum(str, Enum):
     """Allowed values for summary_proto field."""
-    SMTP = "smtp"    POP3 = "pop3"    IMAP = "imap"    HTTP_GET = "http-get"    HTTP_POST = "http-post"    FTP = "ftp"    NNTP = "nntp"    MAPI = "mapi"    SSH = "ssh"    CIFS = "cifs"
+    SMTP = "smtp"
+    POP3 = "pop3"
+    IMAP = "imap"
+    HTTP_GET = "http-get"
+    HTTP_POST = "http-post"
+    FTP = "ftp"
+    NNTP = "nntp"
+    MAPI = "mapi"
+    SSH = "ssh"
+    CIFS = "cifs"
+
 
 # ============================================================================
 # Main Model
@@ -76,16 +165,16 @@ class ProfileModel(BaseModel):
     # Model Fields
     # ========================================================================
     
-    name: str = Field(max_length=47, default="", description="Name of the DLP profile.")    
+    name: str = Field(max_length=47, description="Name of the DLP profile.")    
     comment: str | None = Field(max_length=255, default=None, description="Comment.")    
     feature_set: Literal["flow", "proxy"] | None = Field(default="flow", description="Flow/proxy feature set.")    
-    replacemsg_group: str | None = Field(max_length=35, default="", description="Replacement message group used by this DLP profile.")  # datasource: ['system.replacemsg-group.name']    
-    rule: list[Rule] = Field(default=None, description="Set up DLP rules for this profile.")    
+    replacemsg_group: str | None = Field(max_length=35, default=None, description="Replacement message group used by this DLP profile.")  # datasource: ['system.replacemsg-group.name']    
+    rule: list[ProfileRule] = Field(default_factory=list, description="Set up DLP rules for this profile.")    
     dlp_log: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable DLP logging.")    
     extended_log: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable extended logging for data loss prevention.")    
     nac_quar_log: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable NAC quarantine logging.")    
-    full_archive_proto: list[FullArchiveProto] = Field(default="", description="Protocols to always content archive.")    
-    summary_proto: list[SummaryProto] = Field(default="", description="Protocols to always log summary.")    
+    full_archive_proto: list[ProfileFullArchiveProtoEnum] = Field(default_factory=list, description="Protocols to always content archive.")    
+    summary_proto: list[ProfileSummaryProtoEnum] = Field(default_factory=list, description="Protocols to always log summary.")    
     fortidata_error_action: Literal["log-only", "block", "ignore"] | None = Field(default="block", description="Action to take if FortiData query fails.")    
     # ========================================================================
     # Custom Validators
@@ -166,7 +255,7 @@ class ProfileModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.dlp.profile.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate scalar field
         value = getattr(self, "replacemsg_group", None)
@@ -175,7 +264,7 @@ class ProfileModel(BaseModel):
         
         # Check all datasource endpoints
         found = False
-        if await client.api.cmdb.system.replacemsg-group.exists(value):
+        if await client.api.cmdb.system.replacemsg_group.exists(value):
             found = True
         
         if not found:
@@ -215,7 +304,7 @@ class ProfileModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.dlp.profile.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate child table items
         values = getattr(self, "rule", [])
@@ -280,11 +369,11 @@ Dict = dict[str, Any]  # For backward compatibility
 # ============================================================================
 
 __all__ = [
-    "ProfileModel",    "ProfileRule",]
+    "ProfileModel",    "ProfileRule",    "ProfileRule.Sensitivity",    "ProfileRule.Sensor",]
 
 
 # ============================================================================
 # Generated by hfortix generator v0.6.0
 # Schema: 1.7.0
-# Generated: 2026-01-17T05:32:19.818368Z
+# Generated: 2026-01-17T17:25:23.435927Z
 # ============================================================================

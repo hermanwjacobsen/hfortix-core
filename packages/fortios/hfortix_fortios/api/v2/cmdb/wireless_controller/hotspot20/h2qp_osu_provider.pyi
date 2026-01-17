@@ -1,275 +1,120 @@
-from typing import TypedDict, Literal, Any, Coroutine, Union, overload, Generator, final
-from typing_extensions import NotRequired
-from hfortix_fortios.models import FortiObject, FortiObjectList
+""" - Type Stubs
 
-# ============================================================================
-# Nested TypedDicts for table field children (dict mode)
-# These MUST be defined before the Payload class to use them as type hints
-# ============================================================================
+Auto-generated stub file for type checking and IDE support.
 
-class H2qpOsuProviderFriendlynameItem(TypedDict, total=False):
-    """Type hints for friendly-name table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    Use this when building payloads for POST/PUT requests.
-    
-    **Available fields:**
-        - index: int
-        - lang: str
-        - friendly_name: str
-    
-    **Example:**
-        entry: H2qpOsuProviderFriendlynameItem = {
-            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
-        }
-    """
-    
-    index: int  # OSU provider friendly name index. | Default: 0 | Min: 1 | Max: 10
-    lang: str  # Language code. | Default: eng | MaxLen: 3
-    friendly_name: str  # OSU provider friendly name. | MaxLen: 252
+Endpoint: wireless_controller/hotspot20/h2qp_osu_provider
+Category: cmdb
+"""
+
+from __future__ import annotations
+
+from typing import (
+    Any,
+    ClassVar,
+    Literal,
+    TypedDict,
+    overload,
+)
+
+from hfortix_fortios.models import (
+    FortiObject,
+    FortiObjectList,
+)
 
 
-class H2qpOsuProviderServicedescriptionItem(TypedDict, total=False):
-    """Type hints for service-description table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    Use this when building payloads for POST/PUT requests.
-    
-    **Available fields:**
-        - service_id: int
-        - lang: str
-        - service_description: str
-    
-    **Example:**
-        entry: H2qpOsuProviderServicedescriptionItem = {
-            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
-        }
-    """
-    
-    service_id: int  # OSU service ID. | Default: 0 | Min: 0 | Max: 4294967295
-    lang: str  # Language code. | Default: eng | MaxLen: 3
-    service_description: str  # Service description. | MaxLen: 252
+# ================================================================
+# TypedDict Payloads
+# ================================================================
 
-
-# ============================================================================
-# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional)
-# ============================================================================
-# NOTE: We intentionally DON'T use NotRequired wrapper because:
-# 1. total=False already makes all fields optional
-# 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
-class H2qpOsuProviderPayload(TypedDict, total=False):
-    """
-    Type hints for wireless_controller/hotspot20/h2qp_osu_provider payload fields.
-    
-    Configure online sign up (OSU) provider list.
-    
-    **Related Resources:**
-
-    Dependencies (resources this endpoint references):
-        - :class:`~.wireless-controller.hotspot20.icon.IconEndpoint` (via: icon)
-
-    **Usage:**
-        payload: H2qpOsuProviderPayload = {
-            "field": "value",  # <- autocomplete shows all fields
-        }
-    """
-    name: str  # OSU provider ID. | MaxLen: 35
-    friendly_name: list[H2qpOsuProviderFriendlynameItem]  # OSU provider friendly name.
-    server_uri: str  # Server URI. | MaxLen: 255
-    osu_method: Literal["oma-dm", "soap-xml-spp", "reserved"]  # OSU method list.
-    osu_nai: str  # OSU NAI. | MaxLen: 255
-    service_description: list[H2qpOsuProviderServicedescriptionItem]  # OSU service name.
-    icon: str  # OSU provider icon. | MaxLen: 35
-
-# ============================================================================
-# Nested classes for table field children (object mode - for API responses)
-# ============================================================================
-
-@final
-class H2qpOsuProviderFriendlynameObject:
-    """Typed object for friendly-name table items.
-    
-    Provides IDE autocomplete for nested table field attributes.
-    At runtime, this is a FortiObject instance.
-    """
-    
-    # OSU provider friendly name index. | Default: 0 | Min: 1 | Max: 10
+class H2qpOsuProviderFriendlynameItem:
+    """Nested item for friendly-name field - supports attribute access."""
     index: int
-    # Language code. | Default: eng | MaxLen: 3
     lang: str
-    # OSU provider friendly name. | MaxLen: 252
     friendly_name: str
-    
-    # Common API response fields
-    status: str
-    http_status: int | None
-    http_status_code: int | None
-    http_method: str | None
-    http_response_time: float | None
-    vdom: str | None
-    
-    # Methods from FortiObject
-    @property
-    def dict(self) -> dict[str, Any]:
-        """Convert to dictionary."""
-        ...
-    @property
-    def json(self) -> str:
-        """Get pretty-printed JSON string."""
-        ...
-    @property
-    def raw(self) -> dict[str, Any]:
-        """Get raw API response data."""
-        ...
-    def get_full(self, name: str) -> Any: ...
-    def to_dict(self) -> FortiObject: ...
-    def keys(self) -> Any: ...
-    def values(self) -> Generator[Any, None, None]: ...
-    def items(self) -> Generator[tuple[str, Any], None, None]: ...
-    def get(self, key: str, default: Any = None) -> Any: ...
 
 
-@final
-class H2qpOsuProviderServicedescriptionObject:
-    """Typed object for service-description table items.
-    
-    Provides IDE autocomplete for nested table field attributes.
-    At runtime, this is a FortiObject instance.
-    """
-    
-    # OSU service ID. | Default: 0 | Min: 0 | Max: 4294967295
+class H2qpOsuProviderServicedescriptionItem:
+    """Nested item for service-description field - supports attribute access."""
     service_id: int
-    # Language code. | Default: eng | MaxLen: 3
     lang: str
-    # Service description. | MaxLen: 252
     service_description: str
-    
-    # Common API response fields
-    status: str
-    http_status: int | None
-    http_status_code: int | None
-    http_method: str | None
-    http_response_time: float | None
-    vdom: str | None
-    
-    # Methods from FortiObject
-    @property
-    def dict(self) -> dict[str, Any]:
-        """Convert to dictionary."""
-        ...
-    @property
-    def json(self) -> str:
-        """Get pretty-printed JSON string."""
-        ...
-    @property
-    def raw(self) -> dict[str, Any]:
-        """Get raw API response data."""
-        ...
-    def get_full(self, name: str) -> Any: ...
-    def to_dict(self) -> FortiObject: ...
-    def keys(self) -> Any: ...
-    def values(self) -> Generator[Any, None, None]: ...
-    def items(self) -> Generator[tuple[str, Any], None, None]: ...
-    def get(self, key: str, default: Any = None) -> Any: ...
 
 
-
-
-# Response TypedDict for GET returns (all fields present in API response)
-class H2qpOsuProviderResponse(TypedDict):
-    """
-    Type hints for wireless_controller/hotspot20/h2qp_osu_provider API response fields.
-    
-    All fields are present in the response from the FortiGate API.
-    """
-    name: str  # OSU provider ID. | MaxLen: 35
-    friendly_name: list[H2qpOsuProviderFriendlynameItem]  # OSU provider friendly name.
-    server_uri: str  # Server URI. | MaxLen: 255
-    osu_method: Literal["oma-dm", "soap-xml-spp", "reserved"]  # OSU method list.
-    osu_nai: str  # OSU NAI. | MaxLen: 255
-    service_description: list[H2qpOsuProviderServicedescriptionItem]  # OSU service name.
-    icon: str  # OSU provider icon. | MaxLen: 35
-
-
-@final
-class H2qpOsuProviderObject:
-    """Typed FortiObject for wireless_controller/hotspot20/h2qp_osu_provider with IDE autocomplete support.
-    
-    This is a typed wrapper that provides IDE autocomplete for API response fields.
-    At runtime, this is actually a FortiObject instance.
-    """
-    
-    # OSU provider ID. | MaxLen: 35
+class H2qpOsuProviderPayload(TypedDict, total=False):
+    """Payload type for H2qpOsuProvider operations."""
     name: str
-    # OSU provider friendly name.
-    friendly_name: list[H2qpOsuProviderFriendlynameObject]
-    # Server URI. | MaxLen: 255
+    friendly_name: str | list[str] | list[dict[str, Any]] | list[H2qpOsuProviderFriendlynameItem]
     server_uri: str
-    # OSU method list.
-    osu_method: Literal["oma-dm", "soap-xml-spp", "reserved"]
-    # OSU NAI. | MaxLen: 255
+    osu_method: str | list[str]
     osu_nai: str
-    # OSU service name.
-    service_description: list[H2qpOsuProviderServicedescriptionObject]
-    # OSU provider icon. | MaxLen: 35
+    service_description: str | list[str] | list[dict[str, Any]] | list[H2qpOsuProviderServicedescriptionItem]
     icon: str
-    
-    # Common API response fields
-    status: str
-    http_status: int | None
-    http_status_code: int | None
-    http_method: str | None
-    http_response_time: float | None
-    vdom: str | None
-    
-    # Methods from FortiObject
-    @property
-    def dict(self) -> dict[str, Any]:
-        """Convert to dictionary."""
-        ...
-    @property
-    def json(self) -> str:
-        """Get pretty-printed JSON string."""
-        ...
-    @property
-    def raw(self) -> dict[str, Any]:
-        """Get raw API response data."""
-        ...
-    def get_full(self, name: str) -> Any: ...
-    def to_dict(self) -> H2qpOsuProviderPayload: ...
-    def keys(self) -> Any: ...
-    def values(self) -> Generator[Any, None, None]: ...
-    def items(self) -> Generator[tuple[str, Any], None, None]: ...
-    def get(self, key: str, default: Any = None) -> Any: ...
 
+
+# ================================================================
+# Response Types (TypedDict for dict-style access)
+# ================================================================
+
+class H2qpOsuProviderResponse(TypedDict, total=False):
+    """Response type for H2qpOsuProvider - use with .dict property for typed dict access."""
+    name: str
+    friendly_name: list[H2qpOsuProviderFriendlynameItem]
+    server_uri: str
+    osu_method: str
+    osu_nai: str
+    service_description: list[H2qpOsuProviderServicedescriptionItem]
+    icon: str
+
+
+# ================================================================
+# Response Types (Class for attribute access)
+# ================================================================
+
+
+class H2qpOsuProviderObject(FortiObject):
+    """Typed FortiObject for H2qpOsuProvider with field access."""
+    name: str
+    friendly_name: list[H2qpOsuProviderFriendlynameItem]
+    server_uri: str
+    osu_method: str
+    osu_nai: str
+    service_description: list[H2qpOsuProviderServicedescriptionItem]
+    icon: str
+
+
+# ================================================================
+# Main Endpoint Class
+# ================================================================
 
 class H2qpOsuProvider:
     """
-    Configure online sign up (OSU) provider list.
     
-    Path: wireless_controller/hotspot20/h2qp_osu_provider
+    Endpoint: wireless_controller/hotspot20/h2qp_osu_provider
     Category: cmdb
-    Primary Key: name
+    MKey: name
     """
     
+    # Class attributes for introspection
+    endpoint: ClassVar[str] = ...
+    path: ClassVar[str] = ...
+    category: ClassVar[str] = ...
+    mkey: ClassVar[str] = ...
+    capabilities: ClassVar[dict[str, Any]] = ...
+    
     def __init__(self, client: Any) -> None:
-        """Initialize endpoint with HTTP client.
-        
-        Args:
-            client: HTTP client instance for API communication
-        """
+        """Initialize endpoint with HTTP client."""
         ...
     
     # ================================================================
-    # GET OVERLOADS - Always returns FortiObject (or ContentResponse for file endpoints)
-    # Pylance matches overloads top-to-bottom, so these must come first!
+    # GET Methods
     # ================================================================
     
-    # With mkey as positional arg -> returns FortiObject
+    # CMDB with mkey - overloads for single vs list returns
     @overload
     def get(
         self,
         name: str,
+        *,
         filter: str | list[str] | None = ...,
         count: int | None = ...,
         start: int | None = ...,
@@ -279,14 +124,14 @@ class H2qpOsuProvider:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        error_mode: Literal["raise", "return", "print"] | None = ...,
+        error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> H2qpOsuProviderObject: ...
     
-    # With mkey as keyword arg -> returns FortiObject
     @overload
     def get(
         self,
         *,
-        name: str,
         filter: str | list[str] | None = ...,
         count: int | None = ...,
         start: int | None = ...,
@@ -296,304 +141,69 @@ class H2qpOsuProvider:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> H2qpOsuProviderObject: ...
-    
-    # Without mkey -> returns list of FortiObjects
-    @overload
-    def get(
-        self,
-        name: None = None,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
+        error_mode: Literal["raise", "return", "print"] | None = ...,
+        error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> FortiObjectList[H2qpOsuProviderObject]: ...
-    
-    # ================================================================
-    # (removed - all GET now returns FortiObject)
-    # ================================================================
-    
-    # With mkey as positional arg -> returns single object
-    @overload
-    def get(
-        self,
-        name: str,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> H2qpOsuProviderObject: ...
-    
-    # With mkey as keyword arg -> returns single object
-    @overload
-    def get(
-        self,
-        *,
-        name: str,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> H2qpOsuProviderObject: ...
-    
-    # With no mkey -> returns list of objects
-    @overload
-    def get(
-        self,
-        *,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObjectList[H2qpOsuProviderObject]: ...
-    
-    # Dict mode with mkey provided as positional arg (single dict)
-    @overload
-    def get(
-        self,
-        name: str,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> H2qpOsuProviderObject: ...
-    
-    # Dict mode with mkey provided as keyword arg (single dict)
-    @overload
-    def get(
-        self,
-        *,
-        name: str,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> H2qpOsuProviderObject: ...
-    
-    # Dict mode - list of dicts (no mkey/name provided) - keyword-only signature
-    @overload
-    def get(
-        self,
-        *,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObjectList[H2qpOsuProviderObject]: ...
-    
-    # Fallback overload for all other cases
-    @overload
-    def get(
-        self,
-        name: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> Union[dict[str, Any], list[dict[str, Any]], FortiObject, list[FortiObject]]: ...
-    
-    def get(
-        self,
-        name: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> H2qpOsuProviderObject | list[H2qpOsuProviderObject] | dict[str, Any] | list[dict[str, Any]]: ...
     
     def get_schema(
         self,
         vdom: str | None = ...,
         format: str = ...,
     ) -> FortiObject: ...
+
+    # ================================================================
+    # POST Method
+    # ================================================================
     
-    # POST overloads
-    @overload
     def post(
         self,
         payload_dict: H2qpOsuProviderPayload | None = ...,
         name: str | None = ...,
-        friendly_name: str | list[str] | list[H2qpOsuProviderFriendlynameItem] | None = ...,
+        friendly_name: str | list[str] | list[dict[str, Any]] | list[H2qpOsuProviderFriendlynameItem] | None = ...,
         server_uri: str | None = ...,
-        osu_method: Literal["oma-dm", "soap-xml-spp", "reserved"] | list[str] | None = ...,
+        osu_method: str | list[str] | None = ...,
         osu_nai: str | None = ...,
-        service_description: str | list[str] | list[H2qpOsuProviderServicedescriptionItem] | None = ...,
+        service_description: str | list[str] | list[dict[str, Any]] | list[H2qpOsuProviderServicedescriptionItem] | None = ...,
         icon: str | None = ...,
         vdom: str | bool | None = ...,
+        error_mode: Literal["raise", "return", "print"] | None = ...,
+        error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> H2qpOsuProviderObject: ...
+
+    # ================================================================
+    # PUT Method
+    # ================================================================
     
-    @overload
-    def post(
-        self,
-        payload_dict: H2qpOsuProviderPayload | None = ...,
-        name: str | None = ...,
-        friendly_name: str | list[str] | list[H2qpOsuProviderFriendlynameItem] | None = ...,
-        server_uri: str | None = ...,
-        osu_method: Literal["oma-dm", "soap-xml-spp", "reserved"] | list[str] | None = ...,
-        osu_nai: str | None = ...,
-        service_description: str | list[str] | list[H2qpOsuProviderServicedescriptionItem] | None = ...,
-        icon: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
-    
-    # Default overload
-    @overload
-    def post(
-        self,
-        payload_dict: H2qpOsuProviderPayload | None = ...,
-        name: str | None = ...,
-        friendly_name: str | list[str] | list[H2qpOsuProviderFriendlynameItem] | None = ...,
-        server_uri: str | None = ...,
-        osu_method: Literal["oma-dm", "soap-xml-spp", "reserved"] | list[str] | None = ...,
-        osu_nai: str | None = ...,
-        service_description: str | list[str] | list[H2qpOsuProviderServicedescriptionItem] | None = ...,
-        icon: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
-    
-    def post(
-        self,
-        payload_dict: H2qpOsuProviderPayload | None = ...,
-        name: str | None = ...,
-        friendly_name: str | list[str] | list[H2qpOsuProviderFriendlynameItem] | None = ...,
-        server_uri: str | None = ...,
-        osu_method: Literal["oma-dm", "soap-xml-spp", "reserved"] | list[str] | None = ...,
-        osu_nai: str | None = ...,
-        service_description: str | list[str] | list[H2qpOsuProviderServicedescriptionItem] | None = ...,
-        icon: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
-    
-    # PUT overloads
-    @overload
     def put(
         self,
         payload_dict: H2qpOsuProviderPayload | None = ...,
         name: str | None = ...,
-        friendly_name: str | list[str] | list[H2qpOsuProviderFriendlynameItem] | None = ...,
+        friendly_name: str | list[str] | list[dict[str, Any]] | list[H2qpOsuProviderFriendlynameItem] | None = ...,
         server_uri: str | None = ...,
-        osu_method: Literal["oma-dm", "soap-xml-spp", "reserved"] | list[str] | None = ...,
+        osu_method: str | list[str] | None = ...,
         osu_nai: str | None = ...,
-        service_description: str | list[str] | list[H2qpOsuProviderServicedescriptionItem] | None = ...,
+        service_description: str | list[str] | list[dict[str, Any]] | list[H2qpOsuProviderServicedescriptionItem] | None = ...,
         icon: str | None = ...,
         vdom: str | bool | None = ...,
+        error_mode: Literal["raise", "return", "print"] | None = ...,
+        error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> H2qpOsuProviderObject: ...
-    
-    @overload
-    def put(
-        self,
-        payload_dict: H2qpOsuProviderPayload | None = ...,
-        name: str | None = ...,
-        friendly_name: str | list[str] | list[H2qpOsuProviderFriendlynameItem] | None = ...,
-        server_uri: str | None = ...,
-        osu_method: Literal["oma-dm", "soap-xml-spp", "reserved"] | list[str] | None = ...,
-        osu_nai: str | None = ...,
-        service_description: str | list[str] | list[H2qpOsuProviderServicedescriptionItem] | None = ...,
-        icon: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
-    
-    # Default overload
-    @overload
-    def put(
-        self,
-        payload_dict: H2qpOsuProviderPayload | None = ...,
-        name: str | None = ...,
-        friendly_name: str | list[str] | list[H2qpOsuProviderFriendlynameItem] | None = ...,
-        server_uri: str | None = ...,
-        osu_method: Literal["oma-dm", "soap-xml-spp", "reserved"] | list[str] | None = ...,
-        osu_nai: str | None = ...,
-        service_description: str | list[str] | list[H2qpOsuProviderServicedescriptionItem] | None = ...,
-        icon: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
-    
-    def put(
-        self,
-        payload_dict: H2qpOsuProviderPayload | None = ...,
-        name: str | None = ...,
-        friendly_name: str | list[str] | list[H2qpOsuProviderFriendlynameItem] | None = ...,
-        server_uri: str | None = ...,
-        osu_method: Literal["oma-dm", "soap-xml-spp", "reserved"] | list[str] | None = ...,
-        osu_nai: str | None = ...,
-        service_description: str | list[str] | list[H2qpOsuProviderServicedescriptionItem] | None = ...,
-        icon: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
-    
-    # DELETE overloads
-    @overload
-    def delete(
-        self,
-        name: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> H2qpOsuProviderObject: ...
-    
-    @overload
-    def delete(
-        self,
-        name: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
-    
-    # Default overload
-    @overload
-    def delete(
-        self,
-        name: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+
+    # ================================================================
+    # DELETE Method
+    # ================================================================
     
     def delete(
         self,
         name: str | None = ...,
         vdom: str | bool | None = ...,
+        error_mode: Literal["raise", "return", "print"] | None = ...,
+        error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> FortiObject: ...
+
+    # ================================================================
+    # Utility Methods
+    # ================================================================
     
     def exists(
         self,
@@ -605,13 +215,15 @@ class H2qpOsuProvider:
         self,
         payload_dict: H2qpOsuProviderPayload | None = ...,
         name: str | None = ...,
-        friendly_name: str | list[str] | list[H2qpOsuProviderFriendlynameItem] | None = ...,
+        friendly_name: str | list[str] | list[dict[str, Any]] | list[H2qpOsuProviderFriendlynameItem] | None = ...,
         server_uri: str | None = ...,
         osu_method: Literal["oma-dm", "soap-xml-spp", "reserved"] | list[str] | None = ...,
         osu_nai: str | None = ...,
-        service_description: str | list[str] | list[H2qpOsuProviderServicedescriptionItem] | None = ...,
+        service_description: str | list[str] | list[dict[str, Any]] | list[H2qpOsuProviderServicedescriptionItem] | None = ...,
         icon: str | None = ...,
         vdom: str | bool | None = ...,
+        error_mode: Literal["raise", "return", "print"] | None = ...,
+        error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> FortiObject: ...
     
     # Helper methods
@@ -619,7 +231,7 @@ class H2qpOsuProvider:
     def help(field_name: str | None = ...) -> str: ...
     
     @staticmethod
-    def fields(detailed: bool = ...) -> Union[list[str], list[dict[str, Any]]]: ...
+    def fields(detailed: bool = ...) -> list[str] | list[dict[str, Any]]: ...
     
     @staticmethod
     def field_info(field_name: str) -> FortiObject: ...
@@ -635,9 +247,6 @@ class H2qpOsuProvider:
     
     @staticmethod
     def schema() -> FortiObject: ...
-
-
-# ================================================================
 
 
 __all__ = [

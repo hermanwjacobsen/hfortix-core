@@ -11,37 +11,41 @@ from pydantic import BaseModel, Field, field_validator
 from typing import Any, Literal, Optional
 
 # ============================================================================
-# Child Table Models
+# Enum Definitions for Child Table Fields (for fields with 4+ allowed values)
 # ============================================================================
 
-class TrafficSnifferTargetMac(BaseModel):
+# ============================================================================
+# Child Table Models (sorted deepest-first so nested models are defined before their parents)
+# ============================================================================
+
+class TrafficSnifferTargetPortOutPorts(BaseModel):
     """
-    Child table model for target-mac.
+    Child table model for target-port.out-ports.
     
-    Sniffer MACs to filter.
-    """
-    
-    class Config:
-        """Pydantic model configuration."""
-        extra = "allow"  # Allow additional fields from API
-        str_strip_whitespace = True
-    
-    mac: str = Field(default="00:00:00:00:00:00", description="Sniffer MAC.")    
-    description: str | None = Field(max_length=63, default="", description="Description for the sniffer MAC.")
-class TrafficSnifferTargetIp(BaseModel):
-    """
-    Child table model for target-ip.
-    
-    Sniffer IPs to filter.
+    Configure source egress port interfaces.
     """
     
     class Config:
         """Pydantic model configuration."""
         extra = "allow"  # Allow additional fields from API
         str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
     
-    ip: str = Field(default="0.0.0.0", description="Sniffer IP.")    
-    description: str | None = Field(max_length=63, default="", description="Description for the sniffer IP.")
+    name: str = Field(max_length=79, description="Interface name.")
+class TrafficSnifferTargetPortInPorts(BaseModel):
+    """
+    Child table model for target-port.in-ports.
+    
+    Configure source ingress port interfaces.
+    """
+    
+    class Config:
+        """Pydantic model configuration."""
+        extra = "allow"  # Allow additional fields from API
+        str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
+    
+    name: str = Field(max_length=79, description="Interface name.")
 class TrafficSnifferTargetPort(BaseModel):
     """
     Child table model for target-port.
@@ -53,11 +57,42 @@ class TrafficSnifferTargetPort(BaseModel):
         """Pydantic model configuration."""
         extra = "allow"  # Allow additional fields from API
         str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
     
-    switch_id: str = Field(max_length=35, default="", description="Managed-switch ID.")  # datasource: ['switch-controller.managed-switch.switch-id']    
-    description: str | None = Field(max_length=63, default="", description="Description for the sniffer port entry.")    
-    in_ports: list[InPorts] = Field(default=None, description="Configure source ingress port interfaces.")    
-    out_ports: list[OutPorts] = Field(default=None, description="Configure source egress port interfaces.")
+    switch_id: str = Field(max_length=35, description="Managed-switch ID.")  # datasource: ['switch-controller.managed-switch.switch-id']    
+    description: str | None = Field(max_length=63, default=None, description="Description for the sniffer port entry.")    
+    in_ports: list[TrafficSnifferTargetPortInPorts] = Field(default_factory=list, description="Configure source ingress port interfaces.")    
+    out_ports: list[TrafficSnifferTargetPortOutPorts] = Field(default_factory=list, description="Configure source egress port interfaces.")
+class TrafficSnifferTargetMac(BaseModel):
+    """
+    Child table model for target-mac.
+    
+    Sniffer MACs to filter.
+    """
+    
+    class Config:
+        """Pydantic model configuration."""
+        extra = "allow"  # Allow additional fields from API
+        str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
+    
+    mac: str = Field(default="00:00:00:00:00:00", description="Sniffer MAC.")    
+    description: str | None = Field(max_length=63, default=None, description="Description for the sniffer MAC.")
+class TrafficSnifferTargetIp(BaseModel):
+    """
+    Child table model for target-ip.
+    
+    Sniffer IPs to filter.
+    """
+    
+    class Config:
+        """Pydantic model configuration."""
+        extra = "allow"  # Allow additional fields from API
+        str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
+    
+    ip: str = Field(default="0.0.0.0", description="Sniffer IP.")    
+    description: str | None = Field(max_length=63, default=None, description="Description for the sniffer IP.")
 # ============================================================================
 # Enum Definitions (for fields with 4+ allowed values)
 # ============================================================================
@@ -88,9 +123,9 @@ class TrafficSnifferModel(BaseModel):
     
     mode: Literal["erspan-auto", "rspan", "none"] | None = Field(default="erspan-auto", description="Configure traffic sniffer mode.")    
     erspan_ip: str | None = Field(default="0.0.0.0", description="Configure ERSPAN collector IP address.")    
-    target_mac: list[TargetMac] = Field(default=None, description="Sniffer MACs to filter.")    
-    target_ip: list[TargetIp] = Field(default=None, description="Sniffer IPs to filter.")    
-    target_port: list[TargetPort] = Field(default=None, description="Sniffer ports to filter.")    
+    target_mac: list[TrafficSnifferTargetMac] = Field(default_factory=list, description="Sniffer MACs to filter.")    
+    target_ip: list[TrafficSnifferTargetIp] = Field(default_factory=list, description="Sniffer IPs to filter.")    
+    target_port: list[TrafficSnifferTargetPort] = Field(default_factory=list, description="Sniffer ports to filter.")    
     # ========================================================================
     # Custom Validators
     # ========================================================================
@@ -155,7 +190,7 @@ class TrafficSnifferModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.switch_controller.traffic_sniffer.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate child table items
         values = getattr(self, "target_port", [])
@@ -173,7 +208,7 @@ class TrafficSnifferModel(BaseModel):
             
             # Check all datasource endpoints
             found = False
-            if await client.api.cmdb.switch-controller.managed-switch.exists(value):
+            if await client.api.cmdb.switch_controller.managed_switch.exists(value):
                 found = True
             
             if not found:
@@ -218,11 +253,11 @@ Dict = dict[str, Any]  # For backward compatibility
 # ============================================================================
 
 __all__ = [
-    "TrafficSnifferModel",    "TrafficSnifferTargetMac",    "TrafficSnifferTargetIp",    "TrafficSnifferTargetPort",]
+    "TrafficSnifferModel",    "TrafficSnifferTargetMac",    "TrafficSnifferTargetIp",    "TrafficSnifferTargetPort",    "TrafficSnifferTargetPort.InPorts",    "TrafficSnifferTargetPort.OutPorts",]
 
 
 # ============================================================================
 # Generated by hfortix generator v0.6.0
 # Schema: 1.7.0
-# Generated: 2026-01-17T05:32:19.447839Z
+# Generated: 2026-01-17T17:25:23.127558Z
 # ============================================================================

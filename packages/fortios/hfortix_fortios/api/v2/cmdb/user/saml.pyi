@@ -1,205 +1,151 @@
-from typing import TypedDict, Literal, Any, Coroutine, Union, overload, Generator, final
-from typing_extensions import NotRequired
-from hfortix_fortios.models import FortiObject, FortiObjectList
+""" - Type Stubs
 
-# ============================================================================
-# Nested TypedDicts for table field children (dict mode)
-# These MUST be defined before the Payload class to use them as type hints
-# ============================================================================
+Auto-generated stub file for type checking and IDE support.
 
-# ============================================================================
-# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional)
-# ============================================================================
-# NOTE: We intentionally DON'T use NotRequired wrapper because:
-# 1. total=False already makes all fields optional
-# 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
+Endpoint: user/saml
+Category: cmdb
+"""
+
+from __future__ import annotations
+
+from typing import (
+    Any,
+    ClassVar,
+    Literal,
+    TypedDict,
+    overload,
+)
+
+from hfortix_fortios.models import (
+    FortiObject,
+    FortiObjectList,
+)
+
+
+# ================================================================
+# TypedDict Payloads
+# ================================================================
+
 class SamlPayload(TypedDict, total=False):
-    """
-    Type hints for user/saml payload fields.
-    
-    SAML server entry configuration.
-    
-    **Related Resources:**
-
-    Dependencies (resources this endpoint references):
-        - :class:`~.user.scim.ScimEndpoint` (via: scim-client)
-        - :class:`~.vpn.certificate.local.LocalEndpoint` (via: cert)
-        - :class:`~.vpn.certificate.remote.RemoteEndpoint` (via: idp-cert)
-
-    **Usage:**
-        payload: SamlPayload = {
-            "field": "value",  # <- autocomplete shows all fields
-        }
-    """
-    name: str  # SAML server entry name. | MaxLen: 35
-    cert: str  # Certificate to sign SAML messages. | MaxLen: 35
-    entity_id: str  # SP entity ID. | MaxLen: 255
-    single_sign_on_url: str  # SP single sign-on URL. | MaxLen: 255
-    single_logout_url: str  # SP single logout URL. | MaxLen: 255
-    idp_entity_id: str  # IDP entity ID. | MaxLen: 255
-    idp_single_sign_on_url: str  # IDP single sign-on URL. | MaxLen: 255
-    idp_single_logout_url: str  # IDP single logout url. | MaxLen: 255
-    idp_cert: str  # IDP Certificate name. | MaxLen: 35
-    scim_client: str  # SCIM client name. | MaxLen: 35
-    scim_user_attr_type: Literal["user-name", "display-name", "external-id", "email"]  # User attribute type used to match SCIM users | Default: user-name
-    scim_group_attr_type: Literal["display-name", "external-id"]  # Group attribute type used to match SCIM groups | Default: display-name
-    user_name: str  # User name in assertion statement. | MaxLen: 255
-    group_name: str  # Group name in assertion statement. | MaxLen: 255
-    digest_method: Literal["sha1", "sha256"]  # Digest method algorithm. | Default: sha1
-    require_signed_resp_and_asrt: Literal["enable", "disable"]  # Require both response and assertion from IDP to be | Default: disable
-    limit_relaystate: Literal["enable", "disable"]  # Enable/disable limiting of relay-state parameter w | Default: disable
-    clock_tolerance: int  # Clock skew tolerance in seconds | Default: 15 | Min: 0 | Max: 300
-    adfs_claim: Literal["enable", "disable"]  # Enable/disable ADFS Claim for user/group attribute | Default: disable
-    user_claim_type: Literal["email", "given-name", "name", "upn", "common-name", "email-adfs-1x", "group", "upn-adfs-1x", "role", "sur-name", "ppid", "name-identifier", "authentication-method", "deny-only-group-sid", "deny-only-primary-sid", "deny-only-primary-group-sid", "group-sid", "primary-group-sid", "primary-sid", "windows-account-name"]  # User name claim in assertion statement. | Default: upn
-    group_claim_type: Literal["email", "given-name", "name", "upn", "common-name", "email-adfs-1x", "group", "upn-adfs-1x", "role", "sur-name", "ppid", "name-identifier", "authentication-method", "deny-only-group-sid", "deny-only-primary-sid", "deny-only-primary-group-sid", "group-sid", "primary-group-sid", "primary-sid", "windows-account-name"]  # Group claim in assertion statement. | Default: group
-    reauth: Literal["enable", "disable"]  # Enable/disable signalling of IDP to force user re- | Default: disable
-
-# ============================================================================
-# Nested classes for table field children (object mode - for API responses)
-# ============================================================================
-
-
-
-# Response TypedDict for GET returns (all fields present in API response)
-class SamlResponse(TypedDict):
-    """
-    Type hints for user/saml API response fields.
-    
-    All fields are present in the response from the FortiGate API.
-    """
-    name: str  # SAML server entry name. | MaxLen: 35
-    cert: str  # Certificate to sign SAML messages. | MaxLen: 35
-    entity_id: str  # SP entity ID. | MaxLen: 255
-    single_sign_on_url: str  # SP single sign-on URL. | MaxLen: 255
-    single_logout_url: str  # SP single logout URL. | MaxLen: 255
-    idp_entity_id: str  # IDP entity ID. | MaxLen: 255
-    idp_single_sign_on_url: str  # IDP single sign-on URL. | MaxLen: 255
-    idp_single_logout_url: str  # IDP single logout url. | MaxLen: 255
-    idp_cert: str  # IDP Certificate name. | MaxLen: 35
-    scim_client: str  # SCIM client name. | MaxLen: 35
-    scim_user_attr_type: Literal["user-name", "display-name", "external-id", "email"]  # User attribute type used to match SCIM users | Default: user-name
-    scim_group_attr_type: Literal["display-name", "external-id"]  # Group attribute type used to match SCIM groups | Default: display-name
-    user_name: str  # User name in assertion statement. | MaxLen: 255
-    group_name: str  # Group name in assertion statement. | MaxLen: 255
-    digest_method: Literal["sha1", "sha256"]  # Digest method algorithm. | Default: sha1
-    require_signed_resp_and_asrt: Literal["enable", "disable"]  # Require both response and assertion from IDP to be | Default: disable
-    limit_relaystate: Literal["enable", "disable"]  # Enable/disable limiting of relay-state parameter w | Default: disable
-    clock_tolerance: int  # Clock skew tolerance in seconds | Default: 15 | Min: 0 | Max: 300
-    adfs_claim: Literal["enable", "disable"]  # Enable/disable ADFS Claim for user/group attribute | Default: disable
-    user_claim_type: Literal["email", "given-name", "name", "upn", "common-name", "email-adfs-1x", "group", "upn-adfs-1x", "role", "sur-name", "ppid", "name-identifier", "authentication-method", "deny-only-group-sid", "deny-only-primary-sid", "deny-only-primary-group-sid", "group-sid", "primary-group-sid", "primary-sid", "windows-account-name"]  # User name claim in assertion statement. | Default: upn
-    group_claim_type: Literal["email", "given-name", "name", "upn", "common-name", "email-adfs-1x", "group", "upn-adfs-1x", "role", "sur-name", "ppid", "name-identifier", "authentication-method", "deny-only-group-sid", "deny-only-primary-sid", "deny-only-primary-group-sid", "group-sid", "primary-group-sid", "primary-sid", "windows-account-name"]  # Group claim in assertion statement. | Default: group
-    reauth: Literal["enable", "disable"]  # Enable/disable signalling of IDP to force user re- | Default: disable
-
-
-@final
-class SamlObject:
-    """Typed FortiObject for user/saml with IDE autocomplete support.
-    
-    This is a typed wrapper that provides IDE autocomplete for API response fields.
-    At runtime, this is actually a FortiObject instance.
-    """
-    
-    # SAML server entry name. | MaxLen: 35
+    """Payload type for Saml operations."""
     name: str
-    # Certificate to sign SAML messages. | MaxLen: 35
     cert: str
-    # SP entity ID. | MaxLen: 255
     entity_id: str
-    # SP single sign-on URL. | MaxLen: 255
     single_sign_on_url: str
-    # SP single logout URL. | MaxLen: 255
     single_logout_url: str
-    # IDP entity ID. | MaxLen: 255
     idp_entity_id: str
-    # IDP single sign-on URL. | MaxLen: 255
     idp_single_sign_on_url: str
-    # IDP single logout url. | MaxLen: 255
     idp_single_logout_url: str
-    # IDP Certificate name. | MaxLen: 35
     idp_cert: str
-    # SCIM client name. | MaxLen: 35
     scim_client: str
-    # User attribute type used to match SCIM users | Default: user-name
     scim_user_attr_type: Literal["user-name", "display-name", "external-id", "email"]
-    # Group attribute type used to match SCIM groups | Default: display-name
     scim_group_attr_type: Literal["display-name", "external-id"]
-    # User name in assertion statement. | MaxLen: 255
     user_name: str
-    # Group name in assertion statement. | MaxLen: 255
     group_name: str
-    # Digest method algorithm. | Default: sha1
     digest_method: Literal["sha1", "sha256"]
-    # Require both response and assertion from IDP to be signed wh | Default: disable
     require_signed_resp_and_asrt: Literal["enable", "disable"]
-    # Enable/disable limiting of relay-state parameter when it exc | Default: disable
     limit_relaystate: Literal["enable", "disable"]
-    # Clock skew tolerance in seconds | Default: 15 | Min: 0 | Max: 300
     clock_tolerance: int
-    # Enable/disable ADFS Claim for user/group attribute in assert | Default: disable
     adfs_claim: Literal["enable", "disable"]
-    # User name claim in assertion statement. | Default: upn
     user_claim_type: Literal["email", "given-name", "name", "upn", "common-name", "email-adfs-1x", "group", "upn-adfs-1x", "role", "sur-name", "ppid", "name-identifier", "authentication-method", "deny-only-group-sid", "deny-only-primary-sid", "deny-only-primary-group-sid", "group-sid", "primary-group-sid", "primary-sid", "windows-account-name"]
-    # Group claim in assertion statement. | Default: group
     group_claim_type: Literal["email", "given-name", "name", "upn", "common-name", "email-adfs-1x", "group", "upn-adfs-1x", "role", "sur-name", "ppid", "name-identifier", "authentication-method", "deny-only-group-sid", "deny-only-primary-sid", "deny-only-primary-group-sid", "group-sid", "primary-group-sid", "primary-sid", "windows-account-name"]
-    # Enable/disable signalling of IDP to force user re-authentica | Default: disable
     reauth: Literal["enable", "disable"]
-    
-    # Common API response fields
-    status: str
-    http_status: int | None
-    http_status_code: int | None
-    http_method: str | None
-    http_response_time: float | None
-    vdom: str | None
-    
-    # Methods from FortiObject
-    @property
-    def dict(self) -> dict[str, Any]:
-        """Convert to dictionary."""
-        ...
-    @property
-    def json(self) -> str:
-        """Get pretty-printed JSON string."""
-        ...
-    @property
-    def raw(self) -> dict[str, Any]:
-        """Get raw API response data."""
-        ...
-    def get_full(self, name: str) -> Any: ...
-    def to_dict(self) -> SamlPayload: ...
-    def keys(self) -> Any: ...
-    def values(self) -> Generator[Any, None, None]: ...
-    def items(self) -> Generator[tuple[str, Any], None, None]: ...
-    def get(self, key: str, default: Any = None) -> Any: ...
 
+
+# ================================================================
+# Response Types (TypedDict for dict-style access)
+# ================================================================
+
+class SamlResponse(TypedDict, total=False):
+    """Response type for Saml - use with .dict property for typed dict access."""
+    name: str
+    cert: str
+    entity_id: str
+    single_sign_on_url: str
+    single_logout_url: str
+    idp_entity_id: str
+    idp_single_sign_on_url: str
+    idp_single_logout_url: str
+    idp_cert: str
+    scim_client: str
+    scim_user_attr_type: Literal["user-name", "display-name", "external-id", "email"]
+    scim_group_attr_type: Literal["display-name", "external-id"]
+    user_name: str
+    group_name: str
+    digest_method: Literal["sha1", "sha256"]
+    require_signed_resp_and_asrt: Literal["enable", "disable"]
+    limit_relaystate: Literal["enable", "disable"]
+    clock_tolerance: int
+    adfs_claim: Literal["enable", "disable"]
+    user_claim_type: Literal["email", "given-name", "name", "upn", "common-name", "email-adfs-1x", "group", "upn-adfs-1x", "role", "sur-name", "ppid", "name-identifier", "authentication-method", "deny-only-group-sid", "deny-only-primary-sid", "deny-only-primary-group-sid", "group-sid", "primary-group-sid", "primary-sid", "windows-account-name"]
+    group_claim_type: Literal["email", "given-name", "name", "upn", "common-name", "email-adfs-1x", "group", "upn-adfs-1x", "role", "sur-name", "ppid", "name-identifier", "authentication-method", "deny-only-group-sid", "deny-only-primary-sid", "deny-only-primary-group-sid", "group-sid", "primary-group-sid", "primary-sid", "windows-account-name"]
+    reauth: Literal["enable", "disable"]
+
+
+# ================================================================
+# Response Types (Class for attribute access)
+# ================================================================
+
+
+class SamlObject(FortiObject):
+    """Typed FortiObject for Saml with field access."""
+    name: str
+    cert: str
+    entity_id: str
+    single_sign_on_url: str
+    single_logout_url: str
+    idp_entity_id: str
+    idp_single_sign_on_url: str
+    idp_single_logout_url: str
+    idp_cert: str
+    scim_client: str
+    scim_user_attr_type: Literal["user-name", "display-name", "external-id", "email"]
+    scim_group_attr_type: Literal["display-name", "external-id"]
+    user_name: str
+    group_name: str
+    digest_method: Literal["sha1", "sha256"]
+    require_signed_resp_and_asrt: Literal["enable", "disable"]
+    limit_relaystate: Literal["enable", "disable"]
+    clock_tolerance: int
+    adfs_claim: Literal["enable", "disable"]
+    user_claim_type: Literal["email", "given-name", "name", "upn", "common-name", "email-adfs-1x", "group", "upn-adfs-1x", "role", "sur-name", "ppid", "name-identifier", "authentication-method", "deny-only-group-sid", "deny-only-primary-sid", "deny-only-primary-group-sid", "group-sid", "primary-group-sid", "primary-sid", "windows-account-name"]
+    group_claim_type: Literal["email", "given-name", "name", "upn", "common-name", "email-adfs-1x", "group", "upn-adfs-1x", "role", "sur-name", "ppid", "name-identifier", "authentication-method", "deny-only-group-sid", "deny-only-primary-sid", "deny-only-primary-group-sid", "group-sid", "primary-group-sid", "primary-sid", "windows-account-name"]
+    reauth: Literal["enable", "disable"]
+
+
+# ================================================================
+# Main Endpoint Class
+# ================================================================
 
 class Saml:
     """
-    SAML server entry configuration.
     
-    Path: user/saml
+    Endpoint: user/saml
     Category: cmdb
-    Primary Key: name
+    MKey: name
     """
     
+    # Class attributes for introspection
+    endpoint: ClassVar[str] = ...
+    path: ClassVar[str] = ...
+    category: ClassVar[str] = ...
+    mkey: ClassVar[str] = ...
+    capabilities: ClassVar[dict[str, Any]] = ...
+    
     def __init__(self, client: Any) -> None:
-        """Initialize endpoint with HTTP client.
-        
-        Args:
-            client: HTTP client instance for API communication
-        """
+        """Initialize endpoint with HTTP client."""
         ...
     
     # ================================================================
-    # GET OVERLOADS - Always returns FortiObject (or ContentResponse for file endpoints)
-    # Pylance matches overloads top-to-bottom, so these must come first!
+    # GET Methods
     # ================================================================
     
-    # With mkey as positional arg -> returns FortiObject
+    # CMDB with mkey - overloads for single vs list returns
     @overload
     def get(
         self,
         name: str,
+        *,
         filter: str | list[str] | None = ...,
         count: int | None = ...,
         start: int | None = ...,
@@ -209,14 +155,14 @@ class Saml:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        error_mode: Literal["raise", "return", "print"] | None = ...,
+        error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> SamlObject: ...
     
-    # With mkey as keyword arg -> returns FortiObject
     @overload
     def get(
         self,
         *,
-        name: str,
         filter: str | list[str] | None = ...,
         count: int | None = ...,
         start: int | None = ...,
@@ -226,164 +172,20 @@ class Saml:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> SamlObject: ...
-    
-    # Without mkey -> returns list of FortiObjects
-    @overload
-    def get(
-        self,
-        name: None = None,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
+        error_mode: Literal["raise", "return", "print"] | None = ...,
+        error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> FortiObjectList[SamlObject]: ...
-    
-    # ================================================================
-    # (removed - all GET now returns FortiObject)
-    # ================================================================
-    
-    # With mkey as positional arg -> returns single object
-    @overload
-    def get(
-        self,
-        name: str,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> SamlObject: ...
-    
-    # With mkey as keyword arg -> returns single object
-    @overload
-    def get(
-        self,
-        *,
-        name: str,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> SamlObject: ...
-    
-    # With no mkey -> returns list of objects
-    @overload
-    def get(
-        self,
-        *,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObjectList[SamlObject]: ...
-    
-    # Dict mode with mkey provided as positional arg (single dict)
-    @overload
-    def get(
-        self,
-        name: str,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> SamlObject: ...
-    
-    # Dict mode with mkey provided as keyword arg (single dict)
-    @overload
-    def get(
-        self,
-        *,
-        name: str,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> SamlObject: ...
-    
-    # Dict mode - list of dicts (no mkey/name provided) - keyword-only signature
-    @overload
-    def get(
-        self,
-        *,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObjectList[SamlObject]: ...
-    
-    # Fallback overload for all other cases
-    @overload
-    def get(
-        self,
-        name: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> Union[dict[str, Any], list[dict[str, Any]], FortiObject, list[FortiObject]]: ...
-    
-    def get(
-        self,
-        name: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> SamlObject | list[SamlObject] | dict[str, Any] | list[dict[str, Any]]: ...
     
     def get_schema(
         self,
         vdom: str | None = ...,
         format: str = ...,
     ) -> FortiObject: ...
+
+    # ================================================================
+    # POST Method
+    # ================================================================
     
-    # POST overloads
-    @overload
     def post(
         self,
         payload_dict: SamlPayload | None = ...,
@@ -410,97 +212,14 @@ class Saml:
         group_claim_type: Literal["email", "given-name", "name", "upn", "common-name", "email-adfs-1x", "group", "upn-adfs-1x", "role", "sur-name", "ppid", "name-identifier", "authentication-method", "deny-only-group-sid", "deny-only-primary-sid", "deny-only-primary-group-sid", "group-sid", "primary-group-sid", "primary-sid", "windows-account-name"] | None = ...,
         reauth: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
+        error_mode: Literal["raise", "return", "print"] | None = ...,
+        error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> SamlObject: ...
+
+    # ================================================================
+    # PUT Method
+    # ================================================================
     
-    @overload
-    def post(
-        self,
-        payload_dict: SamlPayload | None = ...,
-        name: str | None = ...,
-        cert: str | None = ...,
-        entity_id: str | None = ...,
-        single_sign_on_url: str | None = ...,
-        single_logout_url: str | None = ...,
-        idp_entity_id: str | None = ...,
-        idp_single_sign_on_url: str | None = ...,
-        idp_single_logout_url: str | None = ...,
-        idp_cert: str | None = ...,
-        scim_client: str | None = ...,
-        scim_user_attr_type: Literal["user-name", "display-name", "external-id", "email"] | None = ...,
-        scim_group_attr_type: Literal["display-name", "external-id"] | None = ...,
-        user_name: str | None = ...,
-        group_name: str | None = ...,
-        digest_method: Literal["sha1", "sha256"] | None = ...,
-        require_signed_resp_and_asrt: Literal["enable", "disable"] | None = ...,
-        limit_relaystate: Literal["enable", "disable"] | None = ...,
-        clock_tolerance: int | None = ...,
-        adfs_claim: Literal["enable", "disable"] | None = ...,
-        user_claim_type: Literal["email", "given-name", "name", "upn", "common-name", "email-adfs-1x", "group", "upn-adfs-1x", "role", "sur-name", "ppid", "name-identifier", "authentication-method", "deny-only-group-sid", "deny-only-primary-sid", "deny-only-primary-group-sid", "group-sid", "primary-group-sid", "primary-sid", "windows-account-name"] | None = ...,
-        group_claim_type: Literal["email", "given-name", "name", "upn", "common-name", "email-adfs-1x", "group", "upn-adfs-1x", "role", "sur-name", "ppid", "name-identifier", "authentication-method", "deny-only-group-sid", "deny-only-primary-sid", "deny-only-primary-group-sid", "group-sid", "primary-group-sid", "primary-sid", "windows-account-name"] | None = ...,
-        reauth: Literal["enable", "disable"] | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
-    
-    # Default overload
-    @overload
-    def post(
-        self,
-        payload_dict: SamlPayload | None = ...,
-        name: str | None = ...,
-        cert: str | None = ...,
-        entity_id: str | None = ...,
-        single_sign_on_url: str | None = ...,
-        single_logout_url: str | None = ...,
-        idp_entity_id: str | None = ...,
-        idp_single_sign_on_url: str | None = ...,
-        idp_single_logout_url: str | None = ...,
-        idp_cert: str | None = ...,
-        scim_client: str | None = ...,
-        scim_user_attr_type: Literal["user-name", "display-name", "external-id", "email"] | None = ...,
-        scim_group_attr_type: Literal["display-name", "external-id"] | None = ...,
-        user_name: str | None = ...,
-        group_name: str | None = ...,
-        digest_method: Literal["sha1", "sha256"] | None = ...,
-        require_signed_resp_and_asrt: Literal["enable", "disable"] | None = ...,
-        limit_relaystate: Literal["enable", "disable"] | None = ...,
-        clock_tolerance: int | None = ...,
-        adfs_claim: Literal["enable", "disable"] | None = ...,
-        user_claim_type: Literal["email", "given-name", "name", "upn", "common-name", "email-adfs-1x", "group", "upn-adfs-1x", "role", "sur-name", "ppid", "name-identifier", "authentication-method", "deny-only-group-sid", "deny-only-primary-sid", "deny-only-primary-group-sid", "group-sid", "primary-group-sid", "primary-sid", "windows-account-name"] | None = ...,
-        group_claim_type: Literal["email", "given-name", "name", "upn", "common-name", "email-adfs-1x", "group", "upn-adfs-1x", "role", "sur-name", "ppid", "name-identifier", "authentication-method", "deny-only-group-sid", "deny-only-primary-sid", "deny-only-primary-group-sid", "group-sid", "primary-group-sid", "primary-sid", "windows-account-name"] | None = ...,
-        reauth: Literal["enable", "disable"] | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
-    
-    def post(
-        self,
-        payload_dict: SamlPayload | None = ...,
-        name: str | None = ...,
-        cert: str | None = ...,
-        entity_id: str | None = ...,
-        single_sign_on_url: str | None = ...,
-        single_logout_url: str | None = ...,
-        idp_entity_id: str | None = ...,
-        idp_single_sign_on_url: str | None = ...,
-        idp_single_logout_url: str | None = ...,
-        idp_cert: str | None = ...,
-        scim_client: str | None = ...,
-        scim_user_attr_type: Literal["user-name", "display-name", "external-id", "email"] | None = ...,
-        scim_group_attr_type: Literal["display-name", "external-id"] | None = ...,
-        user_name: str | None = ...,
-        group_name: str | None = ...,
-        digest_method: Literal["sha1", "sha256"] | None = ...,
-        require_signed_resp_and_asrt: Literal["enable", "disable"] | None = ...,
-        limit_relaystate: Literal["enable", "disable"] | None = ...,
-        clock_tolerance: int | None = ...,
-        adfs_claim: Literal["enable", "disable"] | None = ...,
-        user_claim_type: Literal["email", "given-name", "name", "upn", "common-name", "email-adfs-1x", "group", "upn-adfs-1x", "role", "sur-name", "ppid", "name-identifier", "authentication-method", "deny-only-group-sid", "deny-only-primary-sid", "deny-only-primary-group-sid", "group-sid", "primary-group-sid", "primary-sid", "windows-account-name"] | None = ...,
-        group_claim_type: Literal["email", "given-name", "name", "upn", "common-name", "email-adfs-1x", "group", "upn-adfs-1x", "role", "sur-name", "ppid", "name-identifier", "authentication-method", "deny-only-group-sid", "deny-only-primary-sid", "deny-only-primary-group-sid", "group-sid", "primary-group-sid", "primary-sid", "windows-account-name"] | None = ...,
-        reauth: Literal["enable", "disable"] | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
-    
-    # PUT overloads
-    @overload
     def put(
         self,
         payload_dict: SamlPayload | None = ...,
@@ -527,123 +246,25 @@ class Saml:
         group_claim_type: Literal["email", "given-name", "name", "upn", "common-name", "email-adfs-1x", "group", "upn-adfs-1x", "role", "sur-name", "ppid", "name-identifier", "authentication-method", "deny-only-group-sid", "deny-only-primary-sid", "deny-only-primary-group-sid", "group-sid", "primary-group-sid", "primary-sid", "windows-account-name"] | None = ...,
         reauth: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
+        error_mode: Literal["raise", "return", "print"] | None = ...,
+        error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> SamlObject: ...
-    
-    @overload
-    def put(
-        self,
-        payload_dict: SamlPayload | None = ...,
-        name: str | None = ...,
-        cert: str | None = ...,
-        entity_id: str | None = ...,
-        single_sign_on_url: str | None = ...,
-        single_logout_url: str | None = ...,
-        idp_entity_id: str | None = ...,
-        idp_single_sign_on_url: str | None = ...,
-        idp_single_logout_url: str | None = ...,
-        idp_cert: str | None = ...,
-        scim_client: str | None = ...,
-        scim_user_attr_type: Literal["user-name", "display-name", "external-id", "email"] | None = ...,
-        scim_group_attr_type: Literal["display-name", "external-id"] | None = ...,
-        user_name: str | None = ...,
-        group_name: str | None = ...,
-        digest_method: Literal["sha1", "sha256"] | None = ...,
-        require_signed_resp_and_asrt: Literal["enable", "disable"] | None = ...,
-        limit_relaystate: Literal["enable", "disable"] | None = ...,
-        clock_tolerance: int | None = ...,
-        adfs_claim: Literal["enable", "disable"] | None = ...,
-        user_claim_type: Literal["email", "given-name", "name", "upn", "common-name", "email-adfs-1x", "group", "upn-adfs-1x", "role", "sur-name", "ppid", "name-identifier", "authentication-method", "deny-only-group-sid", "deny-only-primary-sid", "deny-only-primary-group-sid", "group-sid", "primary-group-sid", "primary-sid", "windows-account-name"] | None = ...,
-        group_claim_type: Literal["email", "given-name", "name", "upn", "common-name", "email-adfs-1x", "group", "upn-adfs-1x", "role", "sur-name", "ppid", "name-identifier", "authentication-method", "deny-only-group-sid", "deny-only-primary-sid", "deny-only-primary-group-sid", "group-sid", "primary-group-sid", "primary-sid", "windows-account-name"] | None = ...,
-        reauth: Literal["enable", "disable"] | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
-    
-    # Default overload
-    @overload
-    def put(
-        self,
-        payload_dict: SamlPayload | None = ...,
-        name: str | None = ...,
-        cert: str | None = ...,
-        entity_id: str | None = ...,
-        single_sign_on_url: str | None = ...,
-        single_logout_url: str | None = ...,
-        idp_entity_id: str | None = ...,
-        idp_single_sign_on_url: str | None = ...,
-        idp_single_logout_url: str | None = ...,
-        idp_cert: str | None = ...,
-        scim_client: str | None = ...,
-        scim_user_attr_type: Literal["user-name", "display-name", "external-id", "email"] | None = ...,
-        scim_group_attr_type: Literal["display-name", "external-id"] | None = ...,
-        user_name: str | None = ...,
-        group_name: str | None = ...,
-        digest_method: Literal["sha1", "sha256"] | None = ...,
-        require_signed_resp_and_asrt: Literal["enable", "disable"] | None = ...,
-        limit_relaystate: Literal["enable", "disable"] | None = ...,
-        clock_tolerance: int | None = ...,
-        adfs_claim: Literal["enable", "disable"] | None = ...,
-        user_claim_type: Literal["email", "given-name", "name", "upn", "common-name", "email-adfs-1x", "group", "upn-adfs-1x", "role", "sur-name", "ppid", "name-identifier", "authentication-method", "deny-only-group-sid", "deny-only-primary-sid", "deny-only-primary-group-sid", "group-sid", "primary-group-sid", "primary-sid", "windows-account-name"] | None = ...,
-        group_claim_type: Literal["email", "given-name", "name", "upn", "common-name", "email-adfs-1x", "group", "upn-adfs-1x", "role", "sur-name", "ppid", "name-identifier", "authentication-method", "deny-only-group-sid", "deny-only-primary-sid", "deny-only-primary-group-sid", "group-sid", "primary-group-sid", "primary-sid", "windows-account-name"] | None = ...,
-        reauth: Literal["enable", "disable"] | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
-    
-    def put(
-        self,
-        payload_dict: SamlPayload | None = ...,
-        name: str | None = ...,
-        cert: str | None = ...,
-        entity_id: str | None = ...,
-        single_sign_on_url: str | None = ...,
-        single_logout_url: str | None = ...,
-        idp_entity_id: str | None = ...,
-        idp_single_sign_on_url: str | None = ...,
-        idp_single_logout_url: str | None = ...,
-        idp_cert: str | None = ...,
-        scim_client: str | None = ...,
-        scim_user_attr_type: Literal["user-name", "display-name", "external-id", "email"] | None = ...,
-        scim_group_attr_type: Literal["display-name", "external-id"] | None = ...,
-        user_name: str | None = ...,
-        group_name: str | None = ...,
-        digest_method: Literal["sha1", "sha256"] | None = ...,
-        require_signed_resp_and_asrt: Literal["enable", "disable"] | None = ...,
-        limit_relaystate: Literal["enable", "disable"] | None = ...,
-        clock_tolerance: int | None = ...,
-        adfs_claim: Literal["enable", "disable"] | None = ...,
-        user_claim_type: Literal["email", "given-name", "name", "upn", "common-name", "email-adfs-1x", "group", "upn-adfs-1x", "role", "sur-name", "ppid", "name-identifier", "authentication-method", "deny-only-group-sid", "deny-only-primary-sid", "deny-only-primary-group-sid", "group-sid", "primary-group-sid", "primary-sid", "windows-account-name"] | None = ...,
-        group_claim_type: Literal["email", "given-name", "name", "upn", "common-name", "email-adfs-1x", "group", "upn-adfs-1x", "role", "sur-name", "ppid", "name-identifier", "authentication-method", "deny-only-group-sid", "deny-only-primary-sid", "deny-only-primary-group-sid", "group-sid", "primary-group-sid", "primary-sid", "windows-account-name"] | None = ...,
-        reauth: Literal["enable", "disable"] | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
-    
-    # DELETE overloads
-    @overload
-    def delete(
-        self,
-        name: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> SamlObject: ...
-    
-    @overload
-    def delete(
-        self,
-        name: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
-    
-    # Default overload
-    @overload
-    def delete(
-        self,
-        name: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+
+    # ================================================================
+    # DELETE Method
+    # ================================================================
     
     def delete(
         self,
         name: str | None = ...,
         vdom: str | bool | None = ...,
+        error_mode: Literal["raise", "return", "print"] | None = ...,
+        error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> FortiObject: ...
+
+    # ================================================================
+    # Utility Methods
+    # ================================================================
     
     def exists(
         self,
@@ -677,6 +298,8 @@ class Saml:
         group_claim_type: Literal["email", "given-name", "name", "upn", "common-name", "email-adfs-1x", "group", "upn-adfs-1x", "role", "sur-name", "ppid", "name-identifier", "authentication-method", "deny-only-group-sid", "deny-only-primary-sid", "deny-only-primary-group-sid", "group-sid", "primary-group-sid", "primary-sid", "windows-account-name"] | None = ...,
         reauth: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
+        error_mode: Literal["raise", "return", "print"] | None = ...,
+        error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> FortiObject: ...
     
     # Helper methods
@@ -684,7 +307,7 @@ class Saml:
     def help(field_name: str | None = ...) -> str: ...
     
     @staticmethod
-    def fields(detailed: bool = ...) -> Union[list[str], list[dict[str, Any]]]: ...
+    def fields(detailed: bool = ...) -> list[str] | list[dict[str, Any]]: ...
     
     @staticmethod
     def field_info(field_name: str) -> FortiObject: ...
@@ -700,9 +323,6 @@ class Saml:
     
     @staticmethod
     def schema() -> FortiObject: ...
-
-
-# ================================================================
 
 
 __all__ = [

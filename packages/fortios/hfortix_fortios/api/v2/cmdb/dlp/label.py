@@ -654,6 +654,16 @@ class Label(CRUDEndpoint, MetadataMixin):
             - put(): Update existing object
             - exists(): Check existence manually
         """
+        # Apply normalization for table fields (supports flexible input formats)
+        if entries is not None:
+            entries = normalize_table_field(
+                entries,
+                mkey="id",
+                required_fields=['fortidata-label-name', 'mpip-label-name', 'guid'],
+                field_name="entries",
+                example="[{'fortidata-label-name': 'value', 'mpip-label-name': 'value', 'guid': 'value'}]",
+            )
+        
         # Build payload using helper function with auto-normalization
         payload_data = build_api_payload(
             name=name,

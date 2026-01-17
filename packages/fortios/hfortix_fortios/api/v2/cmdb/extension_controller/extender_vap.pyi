@@ -1,194 +1,148 @@
-from typing import TypedDict, Literal, Any, Coroutine, Union, overload, Generator, final
-from typing_extensions import NotRequired
-from hfortix_fortios.models import FortiObject, FortiObjectList
+""" - Type Stubs
 
-# ============================================================================
-# Nested TypedDicts for table field children (dict mode)
-# These MUST be defined before the Payload class to use them as type hints
-# ============================================================================
+Auto-generated stub file for type checking and IDE support.
 
-# ============================================================================
-# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional)
-# ============================================================================
-# NOTE: We intentionally DON'T use NotRequired wrapper because:
-# 1. total=False already makes all fields optional
-# 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
+Endpoint: extension_controller/extender_vap
+Category: cmdb
+"""
+
+from __future__ import annotations
+
+from typing import (
+    Any,
+    ClassVar,
+    Literal,
+    TypedDict,
+    overload,
+)
+
+from hfortix_fortios.models import (
+    FortiObject,
+    FortiObjectList,
+)
+
+
+# ================================================================
+# TypedDict Payloads
+# ================================================================
+
 class ExtenderVapPayload(TypedDict, total=False):
-    """
-    Type hints for extension_controller/extender_vap payload fields.
-    
-    FortiExtender wifi vap configuration.
-    
-    **Usage:**
-        payload: ExtenderVapPayload = {
-            "field": "value",  # <- autocomplete shows all fields
-        }
-    """
-    name: str  # Wi-Fi VAP name. | MaxLen: 15
-    type: Literal["local-vap", "lan-ext-vap"]  # Wi-Fi VAP type local-vap / lan-extension-vap.
-    ssid: str  # Wi-Fi SSID. | MaxLen: 32
-    max_clients: int  # Wi-Fi max clients (0 - 512), default = 0 | Default: 0 | Min: 0 | Max: 512
-    broadcast_ssid: Literal["disable", "enable"]  # Wi-Fi broadcast SSID enable / disable. | Default: enable
-    security: Literal["OPEN", "WPA2-Personal", "WPA-WPA2-Personal", "WPA3-SAE", "WPA3-SAE-Transition", "WPA2-Enterprise", "WPA3-Enterprise-only", "WPA3-Enterprise-transition", "WPA3-Enterprise-192-bit"]  # Wi-Fi security. | Default: WPA2-Personal
-    dtim: int  # Wi-Fi DTIM (1 - 255) default = 1. | Default: 1 | Min: 1 | Max: 255
-    rts_threshold: int  # Wi-Fi RTS Threshold (256 - 2347), default = 2347 | Default: 2347 | Min: 256 | Max: 2347
-    pmf: Literal["disabled", "optional", "required"]  # Wi-Fi pmf enable/disable, default = disable. | Default: disabled
-    target_wake_time: Literal["disable", "enable"]  # Wi-Fi 802.11AX target wake time enable / disable, | Default: enable
-    bss_color_partial: Literal["disable", "enable"]  # Wi-Fi 802.11AX bss color partial enable / disable, | Default: enable
-    mu_mimo: Literal["disable", "enable"]  # Wi-Fi multi-user MIMO enable / disable, default = | Default: enable
-    passphrase: str  # Wi-Fi passphrase. | MaxLen: 59
-    sae_password: str  # Wi-Fi SAE Password. | MaxLen: 124
-    auth_server_address: str  # Wi-Fi Authentication Server Address (IPv4 format). | MaxLen: 63
-    auth_server_port: int  # Wi-Fi Authentication Server Port. | Default: 0 | Min: 1 | Max: 65535
-    auth_server_secret: str  # Wi-Fi Authentication Server Secret. | MaxLen: 63
-    ip_address: str  # Extender ip address. | Default: 0.0.0.0 0.0.0.0
-    start_ip: str  # Start ip address. | Default: 0.0.0.0
-    end_ip: str  # End ip address. | Default: 0.0.0.0
-    allowaccess: Literal["ping", "telnet", "http", "https", "ssh", "snmp"]  # Control management access to the managed extender.
-
-# ============================================================================
-# Nested classes for table field children (object mode - for API responses)
-# ============================================================================
-
-
-
-# Response TypedDict for GET returns (all fields present in API response)
-class ExtenderVapResponse(TypedDict):
-    """
-    Type hints for extension_controller/extender_vap API response fields.
-    
-    All fields are present in the response from the FortiGate API.
-    """
-    name: str  # Wi-Fi VAP name. | MaxLen: 15
-    type: Literal["local-vap", "lan-ext-vap"]  # Wi-Fi VAP type local-vap / lan-extension-vap.
-    ssid: str  # Wi-Fi SSID. | MaxLen: 32
-    max_clients: int  # Wi-Fi max clients (0 - 512), default = 0 | Default: 0 | Min: 0 | Max: 512
-    broadcast_ssid: Literal["disable", "enable"]  # Wi-Fi broadcast SSID enable / disable. | Default: enable
-    security: Literal["OPEN", "WPA2-Personal", "WPA-WPA2-Personal", "WPA3-SAE", "WPA3-SAE-Transition", "WPA2-Enterprise", "WPA3-Enterprise-only", "WPA3-Enterprise-transition", "WPA3-Enterprise-192-bit"]  # Wi-Fi security. | Default: WPA2-Personal
-    dtim: int  # Wi-Fi DTIM (1 - 255) default = 1. | Default: 1 | Min: 1 | Max: 255
-    rts_threshold: int  # Wi-Fi RTS Threshold (256 - 2347), default = 2347 | Default: 2347 | Min: 256 | Max: 2347
-    pmf: Literal["disabled", "optional", "required"]  # Wi-Fi pmf enable/disable, default = disable. | Default: disabled
-    target_wake_time: Literal["disable", "enable"]  # Wi-Fi 802.11AX target wake time enable / disable, | Default: enable
-    bss_color_partial: Literal["disable", "enable"]  # Wi-Fi 802.11AX bss color partial enable / disable, | Default: enable
-    mu_mimo: Literal["disable", "enable"]  # Wi-Fi multi-user MIMO enable / disable, default = | Default: enable
-    passphrase: str  # Wi-Fi passphrase. | MaxLen: 59
-    sae_password: str  # Wi-Fi SAE Password. | MaxLen: 124
-    auth_server_address: str  # Wi-Fi Authentication Server Address (IPv4 format). | MaxLen: 63
-    auth_server_port: int  # Wi-Fi Authentication Server Port. | Default: 0 | Min: 1 | Max: 65535
-    auth_server_secret: str  # Wi-Fi Authentication Server Secret. | MaxLen: 63
-    ip_address: str  # Extender ip address. | Default: 0.0.0.0 0.0.0.0
-    start_ip: str  # Start ip address. | Default: 0.0.0.0
-    end_ip: str  # End ip address. | Default: 0.0.0.0
-    allowaccess: Literal["ping", "telnet", "http", "https", "ssh", "snmp"]  # Control management access to the managed extender.
-
-
-@final
-class ExtenderVapObject:
-    """Typed FortiObject for extension_controller/extender_vap with IDE autocomplete support.
-    
-    This is a typed wrapper that provides IDE autocomplete for API response fields.
-    At runtime, this is actually a FortiObject instance.
-    """
-    
-    # Wi-Fi VAP name. | MaxLen: 15
+    """Payload type for ExtenderVap operations."""
     name: str
-    # Wi-Fi VAP type local-vap / lan-extension-vap.
     type: Literal["local-vap", "lan-ext-vap"]
-    # Wi-Fi SSID. | MaxLen: 32
     ssid: str
-    # Wi-Fi max clients (0 - 512), default = 0 (no limit) | Default: 0 | Min: 0 | Max: 512
     max_clients: int
-    # Wi-Fi broadcast SSID enable / disable. | Default: enable
     broadcast_ssid: Literal["disable", "enable"]
-    # Wi-Fi security. | Default: WPA2-Personal
     security: Literal["OPEN", "WPA2-Personal", "WPA-WPA2-Personal", "WPA3-SAE", "WPA3-SAE-Transition", "WPA2-Enterprise", "WPA3-Enterprise-only", "WPA3-Enterprise-transition", "WPA3-Enterprise-192-bit"]
-    # Wi-Fi DTIM (1 - 255) default = 1. | Default: 1 | Min: 1 | Max: 255
     dtim: int
-    # Wi-Fi RTS Threshold (256 - 2347), default = 2347 | Default: 2347 | Min: 256 | Max: 2347
     rts_threshold: int
-    # Wi-Fi pmf enable/disable, default = disable. | Default: disabled
     pmf: Literal["disabled", "optional", "required"]
-    # Wi-Fi 802.11AX target wake time enable / disable, default = | Default: enable
     target_wake_time: Literal["disable", "enable"]
-    # Wi-Fi 802.11AX bss color partial enable / disable, default = | Default: enable
     bss_color_partial: Literal["disable", "enable"]
-    # Wi-Fi multi-user MIMO enable / disable, default = enable. | Default: enable
     mu_mimo: Literal["disable", "enable"]
-    # Wi-Fi passphrase. | MaxLen: 59
     passphrase: str
-    # Wi-Fi SAE Password. | MaxLen: 124
     sae_password: str
-    # Wi-Fi Authentication Server Address (IPv4 format). | MaxLen: 63
     auth_server_address: str
-    # Wi-Fi Authentication Server Port. | Default: 0 | Min: 1 | Max: 65535
     auth_server_port: int
-    # Wi-Fi Authentication Server Secret. | MaxLen: 63
     auth_server_secret: str
-    # Extender ip address. | Default: 0.0.0.0 0.0.0.0
     ip_address: str
-    # Start ip address. | Default: 0.0.0.0
     start_ip: str
-    # End ip address. | Default: 0.0.0.0
     end_ip: str
-    # Control management access to the managed extender. Separate
-    allowaccess: Literal["ping", "telnet", "http", "https", "ssh", "snmp"]
-    
-    # Common API response fields
-    status: str
-    http_status: int | None
-    http_status_code: int | None
-    http_method: str | None
-    http_response_time: float | None
-    vdom: str | None
-    
-    # Methods from FortiObject
-    @property
-    def dict(self) -> dict[str, Any]:
-        """Convert to dictionary."""
-        ...
-    @property
-    def json(self) -> str:
-        """Get pretty-printed JSON string."""
-        ...
-    @property
-    def raw(self) -> dict[str, Any]:
-        """Get raw API response data."""
-        ...
-    def get_full(self, name: str) -> Any: ...
-    def to_dict(self) -> ExtenderVapPayload: ...
-    def keys(self) -> Any: ...
-    def values(self) -> Generator[Any, None, None]: ...
-    def items(self) -> Generator[tuple[str, Any], None, None]: ...
-    def get(self, key: str, default: Any = None) -> Any: ...
+    allowaccess: str | list[str]
 
+
+# ================================================================
+# Response Types (TypedDict for dict-style access)
+# ================================================================
+
+class ExtenderVapResponse(TypedDict, total=False):
+    """Response type for ExtenderVap - use with .dict property for typed dict access."""
+    name: str
+    type: Literal["local-vap", "lan-ext-vap"]
+    ssid: str
+    max_clients: int
+    broadcast_ssid: Literal["disable", "enable"]
+    security: Literal["OPEN", "WPA2-Personal", "WPA-WPA2-Personal", "WPA3-SAE", "WPA3-SAE-Transition", "WPA2-Enterprise", "WPA3-Enterprise-only", "WPA3-Enterprise-transition", "WPA3-Enterprise-192-bit"]
+    dtim: int
+    rts_threshold: int
+    pmf: Literal["disabled", "optional", "required"]
+    target_wake_time: Literal["disable", "enable"]
+    bss_color_partial: Literal["disable", "enable"]
+    mu_mimo: Literal["disable", "enable"]
+    passphrase: str
+    sae_password: str
+    auth_server_address: str
+    auth_server_port: int
+    auth_server_secret: str
+    ip_address: str
+    start_ip: str
+    end_ip: str
+    allowaccess: str
+
+
+# ================================================================
+# Response Types (Class for attribute access)
+# ================================================================
+
+
+class ExtenderVapObject(FortiObject):
+    """Typed FortiObject for ExtenderVap with field access."""
+    name: str
+    type: Literal["local-vap", "lan-ext-vap"]
+    ssid: str
+    max_clients: int
+    broadcast_ssid: Literal["disable", "enable"]
+    security: Literal["OPEN", "WPA2-Personal", "WPA-WPA2-Personal", "WPA3-SAE", "WPA3-SAE-Transition", "WPA2-Enterprise", "WPA3-Enterprise-only", "WPA3-Enterprise-transition", "WPA3-Enterprise-192-bit"]
+    dtim: int
+    rts_threshold: int
+    pmf: Literal["disabled", "optional", "required"]
+    target_wake_time: Literal["disable", "enable"]
+    bss_color_partial: Literal["disable", "enable"]
+    mu_mimo: Literal["disable", "enable"]
+    passphrase: str
+    sae_password: str
+    auth_server_address: str
+    auth_server_port: int
+    auth_server_secret: str
+    ip_address: str
+    start_ip: str
+    end_ip: str
+    allowaccess: str
+
+
+# ================================================================
+# Main Endpoint Class
+# ================================================================
 
 class ExtenderVap:
     """
-    FortiExtender wifi vap configuration.
     
-    Path: extension_controller/extender_vap
+    Endpoint: extension_controller/extender_vap
     Category: cmdb
-    Primary Key: name
+    MKey: name
     """
     
+    # Class attributes for introspection
+    endpoint: ClassVar[str] = ...
+    path: ClassVar[str] = ...
+    category: ClassVar[str] = ...
+    mkey: ClassVar[str] = ...
+    capabilities: ClassVar[dict[str, Any]] = ...
+    
     def __init__(self, client: Any) -> None:
-        """Initialize endpoint with HTTP client.
-        
-        Args:
-            client: HTTP client instance for API communication
-        """
+        """Initialize endpoint with HTTP client."""
         ...
     
     # ================================================================
-    # GET OVERLOADS - Always returns FortiObject (or ContentResponse for file endpoints)
-    # Pylance matches overloads top-to-bottom, so these must come first!
+    # GET Methods
     # ================================================================
     
-    # With mkey as positional arg -> returns FortiObject
+    # CMDB with mkey - overloads for single vs list returns
     @overload
     def get(
         self,
         name: str,
+        *,
         filter: str | list[str] | None = ...,
         count: int | None = ...,
         start: int | None = ...,
@@ -198,14 +152,14 @@ class ExtenderVap:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        error_mode: Literal["raise", "return", "print"] | None = ...,
+        error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> ExtenderVapObject: ...
     
-    # With mkey as keyword arg -> returns FortiObject
     @overload
     def get(
         self,
         *,
-        name: str,
         filter: str | list[str] | None = ...,
         count: int | None = ...,
         start: int | None = ...,
@@ -215,164 +169,20 @@ class ExtenderVap:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> ExtenderVapObject: ...
-    
-    # Without mkey -> returns list of FortiObjects
-    @overload
-    def get(
-        self,
-        name: None = None,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
+        error_mode: Literal["raise", "return", "print"] | None = ...,
+        error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> FortiObjectList[ExtenderVapObject]: ...
-    
-    # ================================================================
-    # (removed - all GET now returns FortiObject)
-    # ================================================================
-    
-    # With mkey as positional arg -> returns single object
-    @overload
-    def get(
-        self,
-        name: str,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> ExtenderVapObject: ...
-    
-    # With mkey as keyword arg -> returns single object
-    @overload
-    def get(
-        self,
-        *,
-        name: str,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> ExtenderVapObject: ...
-    
-    # With no mkey -> returns list of objects
-    @overload
-    def get(
-        self,
-        *,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObjectList[ExtenderVapObject]: ...
-    
-    # Dict mode with mkey provided as positional arg (single dict)
-    @overload
-    def get(
-        self,
-        name: str,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> ExtenderVapObject: ...
-    
-    # Dict mode with mkey provided as keyword arg (single dict)
-    @overload
-    def get(
-        self,
-        *,
-        name: str,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> ExtenderVapObject: ...
-    
-    # Dict mode - list of dicts (no mkey/name provided) - keyword-only signature
-    @overload
-    def get(
-        self,
-        *,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObjectList[ExtenderVapObject]: ...
-    
-    # Fallback overload for all other cases
-    @overload
-    def get(
-        self,
-        name: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> Union[dict[str, Any], list[dict[str, Any]], FortiObject, list[FortiObject]]: ...
-    
-    def get(
-        self,
-        name: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> ExtenderVapObject | list[ExtenderVapObject] | dict[str, Any] | list[dict[str, Any]]: ...
     
     def get_schema(
         self,
         vdom: str | None = ...,
         format: str = ...,
     ) -> FortiObject: ...
+
+    # ================================================================
+    # POST Method
+    # ================================================================
     
-    # POST overloads
-    @overload
     def post(
         self,
         payload_dict: ExtenderVapPayload | None = ...,
@@ -396,96 +206,16 @@ class ExtenderVap:
         ip_address: str | None = ...,
         start_ip: str | None = ...,
         end_ip: str | None = ...,
-        allowaccess: Literal["ping", "telnet", "http", "https", "ssh", "snmp"] | list[str] | None = ...,
+        allowaccess: str | list[str] | None = ...,
         vdom: str | bool | None = ...,
+        error_mode: Literal["raise", "return", "print"] | None = ...,
+        error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> ExtenderVapObject: ...
+
+    # ================================================================
+    # PUT Method
+    # ================================================================
     
-    @overload
-    def post(
-        self,
-        payload_dict: ExtenderVapPayload | None = ...,
-        name: str | None = ...,
-        type: Literal["local-vap", "lan-ext-vap"] | None = ...,
-        ssid: str | None = ...,
-        max_clients: int | None = ...,
-        broadcast_ssid: Literal["disable", "enable"] | None = ...,
-        security: Literal["OPEN", "WPA2-Personal", "WPA-WPA2-Personal", "WPA3-SAE", "WPA3-SAE-Transition", "WPA2-Enterprise", "WPA3-Enterprise-only", "WPA3-Enterprise-transition", "WPA3-Enterprise-192-bit"] | None = ...,
-        dtim: int | None = ...,
-        rts_threshold: int | None = ...,
-        pmf: Literal["disabled", "optional", "required"] | None = ...,
-        target_wake_time: Literal["disable", "enable"] | None = ...,
-        bss_color_partial: Literal["disable", "enable"] | None = ...,
-        mu_mimo: Literal["disable", "enable"] | None = ...,
-        passphrase: str | None = ...,
-        sae_password: str | None = ...,
-        auth_server_address: str | None = ...,
-        auth_server_port: int | None = ...,
-        auth_server_secret: str | None = ...,
-        ip_address: str | None = ...,
-        start_ip: str | None = ...,
-        end_ip: str | None = ...,
-        allowaccess: Literal["ping", "telnet", "http", "https", "ssh", "snmp"] | list[str] | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
-    
-    # Default overload
-    @overload
-    def post(
-        self,
-        payload_dict: ExtenderVapPayload | None = ...,
-        name: str | None = ...,
-        type: Literal["local-vap", "lan-ext-vap"] | None = ...,
-        ssid: str | None = ...,
-        max_clients: int | None = ...,
-        broadcast_ssid: Literal["disable", "enable"] | None = ...,
-        security: Literal["OPEN", "WPA2-Personal", "WPA-WPA2-Personal", "WPA3-SAE", "WPA3-SAE-Transition", "WPA2-Enterprise", "WPA3-Enterprise-only", "WPA3-Enterprise-transition", "WPA3-Enterprise-192-bit"] | None = ...,
-        dtim: int | None = ...,
-        rts_threshold: int | None = ...,
-        pmf: Literal["disabled", "optional", "required"] | None = ...,
-        target_wake_time: Literal["disable", "enable"] | None = ...,
-        bss_color_partial: Literal["disable", "enable"] | None = ...,
-        mu_mimo: Literal["disable", "enable"] | None = ...,
-        passphrase: str | None = ...,
-        sae_password: str | None = ...,
-        auth_server_address: str | None = ...,
-        auth_server_port: int | None = ...,
-        auth_server_secret: str | None = ...,
-        ip_address: str | None = ...,
-        start_ip: str | None = ...,
-        end_ip: str | None = ...,
-        allowaccess: Literal["ping", "telnet", "http", "https", "ssh", "snmp"] | list[str] | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
-    
-    def post(
-        self,
-        payload_dict: ExtenderVapPayload | None = ...,
-        name: str | None = ...,
-        type: Literal["local-vap", "lan-ext-vap"] | None = ...,
-        ssid: str | None = ...,
-        max_clients: int | None = ...,
-        broadcast_ssid: Literal["disable", "enable"] | None = ...,
-        security: Literal["OPEN", "WPA2-Personal", "WPA-WPA2-Personal", "WPA3-SAE", "WPA3-SAE-Transition", "WPA2-Enterprise", "WPA3-Enterprise-only", "WPA3-Enterprise-transition", "WPA3-Enterprise-192-bit"] | None = ...,
-        dtim: int | None = ...,
-        rts_threshold: int | None = ...,
-        pmf: Literal["disabled", "optional", "required"] | None = ...,
-        target_wake_time: Literal["disable", "enable"] | None = ...,
-        bss_color_partial: Literal["disable", "enable"] | None = ...,
-        mu_mimo: Literal["disable", "enable"] | None = ...,
-        passphrase: str | None = ...,
-        sae_password: str | None = ...,
-        auth_server_address: str | None = ...,
-        auth_server_port: int | None = ...,
-        auth_server_secret: str | None = ...,
-        ip_address: str | None = ...,
-        start_ip: str | None = ...,
-        end_ip: str | None = ...,
-        allowaccess: Literal["ping", "telnet", "http", "https", "ssh", "snmp"] | list[str] | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
-    
-    # PUT overloads
-    @overload
     def put(
         self,
         payload_dict: ExtenderVapPayload | None = ...,
@@ -509,122 +239,27 @@ class ExtenderVap:
         ip_address: str | None = ...,
         start_ip: str | None = ...,
         end_ip: str | None = ...,
-        allowaccess: Literal["ping", "telnet", "http", "https", "ssh", "snmp"] | list[str] | None = ...,
+        allowaccess: str | list[str] | None = ...,
         vdom: str | bool | None = ...,
+        error_mode: Literal["raise", "return", "print"] | None = ...,
+        error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> ExtenderVapObject: ...
-    
-    @overload
-    def put(
-        self,
-        payload_dict: ExtenderVapPayload | None = ...,
-        name: str | None = ...,
-        type: Literal["local-vap", "lan-ext-vap"] | None = ...,
-        ssid: str | None = ...,
-        max_clients: int | None = ...,
-        broadcast_ssid: Literal["disable", "enable"] | None = ...,
-        security: Literal["OPEN", "WPA2-Personal", "WPA-WPA2-Personal", "WPA3-SAE", "WPA3-SAE-Transition", "WPA2-Enterprise", "WPA3-Enterprise-only", "WPA3-Enterprise-transition", "WPA3-Enterprise-192-bit"] | None = ...,
-        dtim: int | None = ...,
-        rts_threshold: int | None = ...,
-        pmf: Literal["disabled", "optional", "required"] | None = ...,
-        target_wake_time: Literal["disable", "enable"] | None = ...,
-        bss_color_partial: Literal["disable", "enable"] | None = ...,
-        mu_mimo: Literal["disable", "enable"] | None = ...,
-        passphrase: str | None = ...,
-        sae_password: str | None = ...,
-        auth_server_address: str | None = ...,
-        auth_server_port: int | None = ...,
-        auth_server_secret: str | None = ...,
-        ip_address: str | None = ...,
-        start_ip: str | None = ...,
-        end_ip: str | None = ...,
-        allowaccess: Literal["ping", "telnet", "http", "https", "ssh", "snmp"] | list[str] | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
-    
-    # Default overload
-    @overload
-    def put(
-        self,
-        payload_dict: ExtenderVapPayload | None = ...,
-        name: str | None = ...,
-        type: Literal["local-vap", "lan-ext-vap"] | None = ...,
-        ssid: str | None = ...,
-        max_clients: int | None = ...,
-        broadcast_ssid: Literal["disable", "enable"] | None = ...,
-        security: Literal["OPEN", "WPA2-Personal", "WPA-WPA2-Personal", "WPA3-SAE", "WPA3-SAE-Transition", "WPA2-Enterprise", "WPA3-Enterprise-only", "WPA3-Enterprise-transition", "WPA3-Enterprise-192-bit"] | None = ...,
-        dtim: int | None = ...,
-        rts_threshold: int | None = ...,
-        pmf: Literal["disabled", "optional", "required"] | None = ...,
-        target_wake_time: Literal["disable", "enable"] | None = ...,
-        bss_color_partial: Literal["disable", "enable"] | None = ...,
-        mu_mimo: Literal["disable", "enable"] | None = ...,
-        passphrase: str | None = ...,
-        sae_password: str | None = ...,
-        auth_server_address: str | None = ...,
-        auth_server_port: int | None = ...,
-        auth_server_secret: str | None = ...,
-        ip_address: str | None = ...,
-        start_ip: str | None = ...,
-        end_ip: str | None = ...,
-        allowaccess: Literal["ping", "telnet", "http", "https", "ssh", "snmp"] | list[str] | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
-    
-    def put(
-        self,
-        payload_dict: ExtenderVapPayload | None = ...,
-        name: str | None = ...,
-        type: Literal["local-vap", "lan-ext-vap"] | None = ...,
-        ssid: str | None = ...,
-        max_clients: int | None = ...,
-        broadcast_ssid: Literal["disable", "enable"] | None = ...,
-        security: Literal["OPEN", "WPA2-Personal", "WPA-WPA2-Personal", "WPA3-SAE", "WPA3-SAE-Transition", "WPA2-Enterprise", "WPA3-Enterprise-only", "WPA3-Enterprise-transition", "WPA3-Enterprise-192-bit"] | None = ...,
-        dtim: int | None = ...,
-        rts_threshold: int | None = ...,
-        pmf: Literal["disabled", "optional", "required"] | None = ...,
-        target_wake_time: Literal["disable", "enable"] | None = ...,
-        bss_color_partial: Literal["disable", "enable"] | None = ...,
-        mu_mimo: Literal["disable", "enable"] | None = ...,
-        passphrase: str | None = ...,
-        sae_password: str | None = ...,
-        auth_server_address: str | None = ...,
-        auth_server_port: int | None = ...,
-        auth_server_secret: str | None = ...,
-        ip_address: str | None = ...,
-        start_ip: str | None = ...,
-        end_ip: str | None = ...,
-        allowaccess: Literal["ping", "telnet", "http", "https", "ssh", "snmp"] | list[str] | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
-    
-    # DELETE overloads
-    @overload
-    def delete(
-        self,
-        name: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> ExtenderVapObject: ...
-    
-    @overload
-    def delete(
-        self,
-        name: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
-    
-    # Default overload
-    @overload
-    def delete(
-        self,
-        name: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+
+    # ================================================================
+    # DELETE Method
+    # ================================================================
     
     def delete(
         self,
         name: str | None = ...,
         vdom: str | bool | None = ...,
+        error_mode: Literal["raise", "return", "print"] | None = ...,
+        error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> FortiObject: ...
+
+    # ================================================================
+    # Utility Methods
+    # ================================================================
     
     def exists(
         self,
@@ -657,6 +292,8 @@ class ExtenderVap:
         end_ip: str | None = ...,
         allowaccess: Literal["ping", "telnet", "http", "https", "ssh", "snmp"] | list[str] | None = ...,
         vdom: str | bool | None = ...,
+        error_mode: Literal["raise", "return", "print"] | None = ...,
+        error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> FortiObject: ...
     
     # Helper methods
@@ -664,7 +301,7 @@ class ExtenderVap:
     def help(field_name: str | None = ...) -> str: ...
     
     @staticmethod
-    def fields(detailed: bool = ...) -> Union[list[str], list[dict[str, Any]]]: ...
+    def fields(detailed: bool = ...) -> list[str] | list[dict[str, Any]]: ...
     
     @staticmethod
     def field_info(field_name: str) -> FortiObject: ...
@@ -680,9 +317,6 @@ class ExtenderVap:
     
     @staticmethod
     def schema() -> FortiObject: ...
-
-
-# ================================================================
 
 
 __all__ = [

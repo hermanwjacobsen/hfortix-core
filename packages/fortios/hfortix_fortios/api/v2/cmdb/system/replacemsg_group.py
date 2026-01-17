@@ -1227,6 +1227,136 @@ class ReplacemsgGroup(CRUDEndpoint, MetadataMixin):
             - put(): Update existing object
             - exists(): Check existence manually
         """
+        # Apply normalization for table fields (supports flexible input formats)
+        if mail is not None:
+            mail = normalize_table_field(
+                mail,
+                mkey="msg-type",
+                required_fields=['msg-type'],
+                field_name="mail",
+                example="[{'msg-type': 'value'}]",
+            )
+        if http is not None:
+            http = normalize_table_field(
+                http,
+                mkey="msg-type",
+                required_fields=['msg-type'],
+                field_name="http",
+                example="[{'msg-type': 'value'}]",
+            )
+        if webproxy is not None:
+            webproxy = normalize_table_field(
+                webproxy,
+                mkey="msg-type",
+                required_fields=['msg-type'],
+                field_name="webproxy",
+                example="[{'msg-type': 'value'}]",
+            )
+        if ftp is not None:
+            ftp = normalize_table_field(
+                ftp,
+                mkey="msg-type",
+                required_fields=['msg-type'],
+                field_name="ftp",
+                example="[{'msg-type': 'value'}]",
+            )
+        if fortiguard_wf is not None:
+            fortiguard_wf = normalize_table_field(
+                fortiguard_wf,
+                mkey="msg-type",
+                required_fields=['msg-type'],
+                field_name="fortiguard_wf",
+                example="[{'msg-type': 'value'}]",
+            )
+        if spam is not None:
+            spam = normalize_table_field(
+                spam,
+                mkey="msg-type",
+                required_fields=['msg-type'],
+                field_name="spam",
+                example="[{'msg-type': 'value'}]",
+            )
+        if alertmail is not None:
+            alertmail = normalize_table_field(
+                alertmail,
+                mkey="msg-type",
+                required_fields=['msg-type'],
+                field_name="alertmail",
+                example="[{'msg-type': 'value'}]",
+            )
+        if admin is not None:
+            admin = normalize_table_field(
+                admin,
+                mkey="msg-type",
+                required_fields=['msg-type'],
+                field_name="admin",
+                example="[{'msg-type': 'value'}]",
+            )
+        if auth is not None:
+            auth = normalize_table_field(
+                auth,
+                mkey="msg-type",
+                required_fields=['msg-type'],
+                field_name="auth",
+                example="[{'msg-type': 'value'}]",
+            )
+        if sslvpn is not None:
+            sslvpn = normalize_table_field(
+                sslvpn,
+                mkey="msg-type",
+                required_fields=['msg-type'],
+                field_name="sslvpn",
+                example="[{'msg-type': 'value'}]",
+            )
+        if nac_quar is not None:
+            nac_quar = normalize_table_field(
+                nac_quar,
+                mkey="msg-type",
+                required_fields=['msg-type'],
+                field_name="nac_quar",
+                example="[{'msg-type': 'value'}]",
+            )
+        if traffic_quota is not None:
+            traffic_quota = normalize_table_field(
+                traffic_quota,
+                mkey="msg-type",
+                required_fields=['msg-type'],
+                field_name="traffic_quota",
+                example="[{'msg-type': 'value'}]",
+            )
+        if utm is not None:
+            utm = normalize_table_field(
+                utm,
+                mkey="msg-type",
+                required_fields=['msg-type'],
+                field_name="utm",
+                example="[{'msg-type': 'value'}]",
+            )
+        if custom_message is not None:
+            custom_message = normalize_table_field(
+                custom_message,
+                mkey="msg-type",
+                required_fields=['msg-type'],
+                field_name="custom_message",
+                example="[{'msg-type': 'value'}]",
+            )
+        if icap is not None:
+            icap = normalize_table_field(
+                icap,
+                mkey="msg-type",
+                required_fields=['msg-type'],
+                field_name="icap",
+                example="[{'msg-type': 'value'}]",
+            )
+        if automation is not None:
+            automation = normalize_table_field(
+                automation,
+                mkey="msg-type",
+                required_fields=['msg-type'],
+                field_name="automation",
+                example="[{'msg-type': 'value'}]",
+            )
+        
         # Build payload using helper function with auto-normalization
         payload_data = build_api_payload(
             name=name,

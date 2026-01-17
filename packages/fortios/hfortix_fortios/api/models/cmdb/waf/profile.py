@@ -9,88 +9,74 @@ from __future__ import annotations
 
 from pydantic import BaseModel, Field, field_validator
 from typing import Any, Literal, Optional
+from enum import Enum
 
 # ============================================================================
-# Child Table Models
+# Enum Definitions for Child Table Fields (for fields with 4+ allowed values)
 # ============================================================================
 
-class ProfileSignature(BaseModel):
+class ProfileSignatureCustomSignatureTargetEnum(str, Enum):
+    """Allowed values for target field in signature.custom-signature."""
+    ARG = "arg"
+    ARG_NAME = "arg-name"
+    REQ_BODY = "req-body"
+    REQ_COOKIE = "req-cookie"
+    REQ_COOKIE_NAME = "req-cookie-name"
+    REQ_FILENAME = "req-filename"
+    REQ_HEADER = "req-header"
+    REQ_HEADER_NAME = "req-header-name"
+    REQ_RAW_URI = "req-raw-uri"
+    REQ_URI = "req-uri"
+    RESP_BODY = "resp-body"
+    RESP_HDR = "resp-hdr"
+    RESP_STATUS = "resp-status"
+
+class ProfileMethodMethodPolicyAllowedMethodsEnum(str, Enum):
+    """Allowed values for allowed_methods field in method.method-policy."""
+    GET = "get"
+    POST = "post"
+    PUT = "put"
+    HEAD = "head"
+    CONNECT = "connect"
+    TRACE = "trace"
+    OPTIONS = "options"
+    DELETE = "delete"
+    OTHERS = "others"
+
+class ProfileMethodDefaultAllowedMethodsEnum(str, Enum):
+    """Allowed values for default_allowed_methods field in method."""
+    GET = "get"
+    POST = "post"
+    PUT = "put"
+    HEAD = "head"
+    CONNECT = "connect"
+    TRACE = "trace"
+    OPTIONS = "options"
+    DELETE = "delete"
+    OTHERS = "others"
+
+# ============================================================================
+# Child Table Models (sorted deepest-first so nested models are defined before their parents)
+# ============================================================================
+
+class ProfileUrlAccessAccessPattern(BaseModel):
     """
-    Child table model for signature.
+    Child table model for url-access.access-pattern.
     
-    WAF signatures.
-    """
-    
-    class Config:
-        """Pydantic model configuration."""
-        extra = "allow"  # Allow additional fields from API
-        str_strip_whitespace = True
-    
-    main_class: list[MainClass] = Field(default=None, description="Main signature class.")    
-    disabled_sub_class: list[DisabledSubClass] = Field(default=None, description="Disabled signature subclasses.")    
-    disabled_signature: list[DisabledSignature] = Field(default=None, description="Disabled signatures.")    
-    credit_card_detection_threshold: int | None = Field(ge=0, le=128, default=3, description="The minimum number of Credit cards to detect violation.")    
-    custom_signature: list[CustomSignature] = Field(default=None, description="Custom signature.")
-class ProfileConstraint(BaseModel):
-    """
-    Child table model for constraint.
-    
-    WAF HTTP protocol restrictions.
-    """
-    
-    class Config:
-        """Pydantic model configuration."""
-        extra = "allow"  # Allow additional fields from API
-        str_strip_whitespace = True
-    
-    header_length: list[HeaderLength] = Field(default=None, description="HTTP header length in request.")    
-    content_length: list[ContentLength] = Field(default=None, description="HTTP content length in request.")    
-    param_length: list[ParamLength] = Field(default=None, description="Maximum length of parameter in URL, HTTP POST request or HTTP body.")    
-    line_length: list[LineLength] = Field(default=None, description="HTTP line length in request.")    
-    url_param_length: list[UrlParamLength] = Field(default=None, description="Maximum length of parameter in URL.")    
-    version: list[Version] = Field(default=None, description="Enable/disable HTTP version check.")    
-    method: list[Method] = Field(default=None, description="Enable/disable HTTP method check.")    
-    hostname: list[Hostname] = Field(default=None, description="Enable/disable hostname check.")    
-    malformed: list[Malformed] = Field(default=None, description="Enable/disable malformed HTTP request check.")    
-    max_cookie: list[MaxCookie] = Field(default=None, description="Maximum number of cookies in HTTP request.")    
-    max_header_line: list[MaxHeaderLine] = Field(default=None, description="Maximum number of HTTP header line.")    
-    max_url_param: list[MaxUrlParam] = Field(default=None, description="Maximum number of parameters in URL.")    
-    max_range_segment: list[MaxRangeSegment] = Field(default=None, description="Maximum number of range segments in HTTP range line.")    
-    exception: list[Exception] = Field(default=None, description="HTTP constraint exception.")
-class ProfileMethod(BaseModel):
-    """
-    Child table model for method.
-    
-    Method restriction.
-    """
-    
-    class Config:
-        """Pydantic model configuration."""
-        extra = "allow"  # Allow additional fields from API
-        str_strip_whitespace = True
-    
-    status: Literal["enable", "disable"] | None = Field(default="disable", description="Status.")    
-    log: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable logging.")    
-    severity: Literal["high", "medium", "low"] | None = Field(default="medium", description="Severity.")    
-    default_allowed_methods: list[DefaultAllowedMethods] = Field(default="", description="Methods.")    
-    method_policy: list[MethodPolicy] = Field(default=None, description="HTTP method policy.")
-class ProfileAddressList(BaseModel):
-    """
-    Child table model for address-list.
-    
-    Address block and allow lists.
+    URL access pattern.
     """
     
     class Config:
         """Pydantic model configuration."""
         extra = "allow"  # Allow additional fields from API
         str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
     
-    status: Literal["enable", "disable"] | None = Field(default="disable", description="Status.")    
-    blocked_log: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable logging on blocked addresses.")    
-    severity: Literal["high", "medium", "low"] | None = Field(default="medium", description="Severity.")    
-    trusted_address: list[TrustedAddress] = Field(default=None, description="Trusted address.")    
-    blocked_address: list[BlockedAddress] = Field(default=None, description="Blocked address.")
+    id_: int | None = Field(ge=0, le=4294967295, default=0, serialization_alias="id", description="URL access pattern ID.")    
+    srcaddr: str | None = Field(max_length=79, default=None, description="Source address.")  # datasource: ['firewall.address.name', 'firewall.addrgrp.name']    
+    pattern: str = Field(max_length=511, description="URL pattern.")    
+    regex: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable regular expression based pattern match.")    
+    negate: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable match negation.")
 class ProfileUrlAccess(BaseModel):
     """
     Child table model for url-access.
@@ -102,13 +88,469 @@ class ProfileUrlAccess(BaseModel):
         """Pydantic model configuration."""
         extra = "allow"  # Allow additional fields from API
         str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
     
-    id: int | None = Field(ge=0, le=4294967295, default=0, description="URL access ID.")    
-    address: str = Field(max_length=79, default="", description="Host address.")  # datasource: ['firewall.address.name', 'firewall.addrgrp.name']    
+    id_: int | None = Field(ge=0, le=4294967295, default=0, serialization_alias="id", description="URL access ID.")    
+    address: str = Field(max_length=79, description="Host address.")  # datasource: ['firewall.address.name', 'firewall.addrgrp.name']    
     action: Literal["bypass", "permit", "block"] | None = Field(default="permit", description="Action.")    
     log: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable logging.")    
     severity: Literal["high", "medium", "low"] | None = Field(default="medium", description="Severity.")    
-    access_pattern: list[AccessPattern] = Field(default=None, description="URL access pattern.")
+    access_pattern: list[ProfileUrlAccessAccessPattern] = Field(default_factory=list, description="URL access pattern.")
+class ProfileSignatureMainClass(BaseModel):
+    """
+    Child table model for signature.main-class.
+    
+    Main signature class.
+    """
+    
+    class Config:
+        """Pydantic model configuration."""
+        extra = "allow"  # Allow additional fields from API
+        str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
+    
+    id_: int | None = Field(ge=0, le=4294967295, default=0, serialization_alias="id", description="Main signature class ID.")  # datasource: ['waf.main-class.id']    
+    status: Literal["enable", "disable"] | None = Field(default="disable", description="Status.")    
+    action: Literal["allow", "block", "erase"] | None = Field(default="allow", description="Action.")    
+    log: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable logging.")    
+    severity: Literal["high", "medium", "low"] | None = Field(default="medium", description="Severity.")
+class ProfileSignatureDisabledSubClass(BaseModel):
+    """
+    Child table model for signature.disabled-sub-class.
+    
+    Disabled signature subclasses.
+    """
+    
+    class Config:
+        """Pydantic model configuration."""
+        extra = "allow"  # Allow additional fields from API
+        str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
+    
+    id_: int | None = Field(ge=0, le=4294967295, default=0, serialization_alias="id", description="Signature subclass ID.")  # datasource: ['waf.sub-class.id']
+class ProfileSignatureDisabledSignature(BaseModel):
+    """
+    Child table model for signature.disabled-signature.
+    
+    Disabled signatures.
+    """
+    
+    class Config:
+        """Pydantic model configuration."""
+        extra = "allow"  # Allow additional fields from API
+        str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
+    
+    id_: int | None = Field(ge=0, le=4294967295, default=0, serialization_alias="id", description="Signature ID.")  # datasource: ['waf.signature.id']
+class ProfileSignatureCustomSignature(BaseModel):
+    """
+    Child table model for signature.custom-signature.
+    
+    Custom signature.
+    """
+    
+    class Config:
+        """Pydantic model configuration."""
+        extra = "allow"  # Allow additional fields from API
+        str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
+    
+    name: str | None = Field(max_length=35, default=None, description="Signature name.")    
+    status: Literal["enable", "disable"] | None = Field(default="disable", description="Status.")    
+    action: Literal["allow", "block", "erase"] | None = Field(default="allow", description="Action.")    
+    log: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable logging.")    
+    severity: Literal["high", "medium", "low"] | None = Field(default="medium", description="Severity.")    
+    direction: Literal["request", "response"] | None = Field(default="request", description="Traffic direction.")    
+    case_sensitivity: Literal["disable", "enable"] | None = Field(default="disable", description="Case sensitivity in pattern.")    
+    pattern: str | None = Field(max_length=511, default=None, description="Match pattern.")    
+    target: list[ProfileSignatureCustomSignatureTargetEnum] = Field(default_factory=list, description="Match HTTP target.")
+class ProfileSignature(BaseModel):
+    """
+    Child table model for signature.
+    
+    WAF signatures.
+    """
+    
+    class Config:
+        """Pydantic model configuration."""
+        extra = "allow"  # Allow additional fields from API
+        str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
+    
+    main_class: list[ProfileSignatureMainClass] = Field(default_factory=list, description="Main signature class.")    
+    disabled_sub_class: list[ProfileSignatureDisabledSubClass] = Field(default_factory=list, description="Disabled signature subclasses.")    
+    disabled_signature: list[ProfileSignatureDisabledSignature] = Field(default_factory=list, description="Disabled signatures.")    
+    credit_card_detection_threshold: int | None = Field(ge=0, le=128, default=3, description="The minimum number of Credit cards to detect violation.")    
+    custom_signature: list[ProfileSignatureCustomSignature] = Field(default_factory=list, description="Custom signature.")
+class ProfileMethodMethodPolicy(BaseModel):
+    """
+    Child table model for method.method-policy.
+    
+    HTTP method policy.
+    """
+    
+    class Config:
+        """Pydantic model configuration."""
+        extra = "allow"  # Allow additional fields from API
+        str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
+    
+    id_: int | None = Field(ge=0, le=4294967295, default=0, serialization_alias="id", description="HTTP method policy ID.")    
+    pattern: str | None = Field(max_length=511, default=None, description="URL pattern.")    
+    regex: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable regular expression based pattern match.")    
+    address: str = Field(max_length=79, description="Host address.")  # datasource: ['firewall.address.name', 'firewall.addrgrp.name']    
+    allowed_methods: list[ProfileMethodMethodPolicyAllowedMethodsEnum] = Field(default_factory=list, description="Allowed Methods.")
+class ProfileMethod(BaseModel):
+    """
+    Child table model for method.
+    
+    Method restriction.
+    """
+    
+    class Config:
+        """Pydantic model configuration."""
+        extra = "allow"  # Allow additional fields from API
+        str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
+    
+    status: Literal["enable", "disable"] | None = Field(default="disable", description="Status.")    
+    log: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable logging.")    
+    severity: Literal["high", "medium", "low"] | None = Field(default="medium", description="Severity.")    
+    default_allowed_methods: list[ProfileMethodDefaultAllowedMethodsEnum] = Field(default_factory=list, description="Methods.")    
+    method_policy: list[ProfileMethodMethodPolicy] = Field(default_factory=list, description="HTTP method policy.")
+class ProfileConstraintVersion(BaseModel):
+    """
+    Child table model for constraint.version.
+    
+    Enable/disable HTTP version check.
+    """
+    
+    class Config:
+        """Pydantic model configuration."""
+        extra = "allow"  # Allow additional fields from API
+        str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
+    
+    status: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable the constraint.")    
+    action: Literal["allow", "block"] | None = Field(default="allow", description="Action.")    
+    log: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable logging.")    
+    severity: Literal["high", "medium", "low"] | None = Field(default="medium", description="Severity.")
+class ProfileConstraintUrlParamLength(BaseModel):
+    """
+    Child table model for constraint.url-param-length.
+    
+    Maximum length of parameter in URL.
+    """
+    
+    class Config:
+        """Pydantic model configuration."""
+        extra = "allow"  # Allow additional fields from API
+        str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
+    
+    status: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable the constraint.")    
+    length: int | None = Field(ge=0, le=2147483647, default=8192, description="Maximum length of URL parameter in bytes (0 to 2147483647).")    
+    action: Literal["allow", "block"] | None = Field(default="allow", description="Action.")    
+    log: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable logging.")    
+    severity: Literal["high", "medium", "low"] | None = Field(default="medium", description="Severity.")
+class ProfileConstraintParamLength(BaseModel):
+    """
+    Child table model for constraint.param-length.
+    
+    Maximum length of parameter in URL, HTTP POST request or HTTP body.
+    """
+    
+    class Config:
+        """Pydantic model configuration."""
+        extra = "allow"  # Allow additional fields from API
+        str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
+    
+    status: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable the constraint.")    
+    length: int | None = Field(ge=0, le=2147483647, default=8192, description="Maximum length of parameter in URL, HTTP POST request or HTTP body in bytes (0 to 2147483647).")    
+    action: Literal["allow", "block"] | None = Field(default="allow", description="Action.")    
+    log: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable logging.")    
+    severity: Literal["high", "medium", "low"] | None = Field(default="medium", description="Severity.")
+class ProfileConstraintMethod(BaseModel):
+    """
+    Child table model for constraint.method.
+    
+    Enable/disable HTTP method check.
+    """
+    
+    class Config:
+        """Pydantic model configuration."""
+        extra = "allow"  # Allow additional fields from API
+        str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
+    
+    status: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable the constraint.")    
+    action: Literal["allow", "block"] | None = Field(default="allow", description="Action.")    
+    log: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable logging.")    
+    severity: Literal["high", "medium", "low"] | None = Field(default="medium", description="Severity.")
+class ProfileConstraintMaxUrlParam(BaseModel):
+    """
+    Child table model for constraint.max-url-param.
+    
+    Maximum number of parameters in URL.
+    """
+    
+    class Config:
+        """Pydantic model configuration."""
+        extra = "allow"  # Allow additional fields from API
+        str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
+    
+    status: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable the constraint.")    
+    max_url_param: int | None = Field(ge=0, le=2147483647, default=16, description="Maximum number of parameters in URL (0 to 2147483647).")    
+    action: Literal["allow", "block"] | None = Field(default="allow", description="Action.")    
+    log: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable logging.")    
+    severity: Literal["high", "medium", "low"] | None = Field(default="medium", description="Severity.")
+class ProfileConstraintMaxRangeSegment(BaseModel):
+    """
+    Child table model for constraint.max-range-segment.
+    
+    Maximum number of range segments in HTTP range line.
+    """
+    
+    class Config:
+        """Pydantic model configuration."""
+        extra = "allow"  # Allow additional fields from API
+        str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
+    
+    status: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable the constraint.")    
+    max_range_segment: int | None = Field(ge=0, le=2147483647, default=5, description="Maximum number of range segments in HTTP range line (0 to 2147483647).")    
+    action: Literal["allow", "block"] | None = Field(default="allow", description="Action.")    
+    log: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable logging.")    
+    severity: Literal["high", "medium", "low"] | None = Field(default="medium", description="Severity.")
+class ProfileConstraintMaxHeaderLine(BaseModel):
+    """
+    Child table model for constraint.max-header-line.
+    
+    Maximum number of HTTP header line.
+    """
+    
+    class Config:
+        """Pydantic model configuration."""
+        extra = "allow"  # Allow additional fields from API
+        str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
+    
+    status: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable the constraint.")    
+    max_header_line: int | None = Field(ge=0, le=2147483647, default=32, description="Maximum number HTTP header lines (0 to 2147483647).")    
+    action: Literal["allow", "block"] | None = Field(default="allow", description="Action.")    
+    log: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable logging.")    
+    severity: Literal["high", "medium", "low"] | None = Field(default="medium", description="Severity.")
+class ProfileConstraintMaxCookie(BaseModel):
+    """
+    Child table model for constraint.max-cookie.
+    
+    Maximum number of cookies in HTTP request.
+    """
+    
+    class Config:
+        """Pydantic model configuration."""
+        extra = "allow"  # Allow additional fields from API
+        str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
+    
+    status: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable the constraint.")    
+    max_cookie: int | None = Field(ge=0, le=2147483647, default=16, description="Maximum number of cookies in HTTP request (0 to 2147483647).")    
+    action: Literal["allow", "block"] | None = Field(default="allow", description="Action.")    
+    log: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable logging.")    
+    severity: Literal["high", "medium", "low"] | None = Field(default="medium", description="Severity.")
+class ProfileConstraintMalformed(BaseModel):
+    """
+    Child table model for constraint.malformed.
+    
+    Enable/disable malformed HTTP request check.
+    """
+    
+    class Config:
+        """Pydantic model configuration."""
+        extra = "allow"  # Allow additional fields from API
+        str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
+    
+    status: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable the constraint.")    
+    action: Literal["allow", "block"] | None = Field(default="allow", description="Action.")    
+    log: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable logging.")    
+    severity: Literal["high", "medium", "low"] | None = Field(default="medium", description="Severity.")
+class ProfileConstraintLineLength(BaseModel):
+    """
+    Child table model for constraint.line-length.
+    
+    HTTP line length in request.
+    """
+    
+    class Config:
+        """Pydantic model configuration."""
+        extra = "allow"  # Allow additional fields from API
+        str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
+    
+    status: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable the constraint.")    
+    length: int | None = Field(ge=0, le=2147483647, default=1024, description="Length of HTTP line in bytes (0 to 2147483647).")    
+    action: Literal["allow", "block"] | None = Field(default="allow", description="Action.")    
+    log: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable logging.")    
+    severity: Literal["high", "medium", "low"] | None = Field(default="medium", description="Severity.")
+class ProfileConstraintHostname(BaseModel):
+    """
+    Child table model for constraint.hostname.
+    
+    Enable/disable hostname check.
+    """
+    
+    class Config:
+        """Pydantic model configuration."""
+        extra = "allow"  # Allow additional fields from API
+        str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
+    
+    status: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable the constraint.")    
+    action: Literal["allow", "block"] | None = Field(default="allow", description="Action.")    
+    log: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable logging.")    
+    severity: Literal["high", "medium", "low"] | None = Field(default="medium", description="Severity.")
+class ProfileConstraintHeaderLength(BaseModel):
+    """
+    Child table model for constraint.header-length.
+    
+    HTTP header length in request.
+    """
+    
+    class Config:
+        """Pydantic model configuration."""
+        extra = "allow"  # Allow additional fields from API
+        str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
+    
+    status: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable the constraint.")    
+    length: int | None = Field(ge=0, le=2147483647, default=8192, description="Length of HTTP header in bytes (0 to 2147483647).")    
+    action: Literal["allow", "block"] | None = Field(default="allow", description="Action.")    
+    log: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable logging.")    
+    severity: Literal["high", "medium", "low"] | None = Field(default="medium", description="Severity.")
+class ProfileConstraintException(BaseModel):
+    """
+    Child table model for constraint.exception.
+    
+    HTTP constraint exception.
+    """
+    
+    class Config:
+        """Pydantic model configuration."""
+        extra = "allow"  # Allow additional fields from API
+        str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
+    
+    id_: int | None = Field(ge=0, le=4294967295, default=0, serialization_alias="id", description="Exception ID.")    
+    pattern: str = Field(max_length=511, description="URL pattern.")    
+    regex: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable regular expression based pattern match.")    
+    address: str = Field(max_length=79, description="Host address.")  # datasource: ['firewall.address.name', 'firewall.addrgrp.name']    
+    header_length: Literal["enable", "disable"] | None = Field(default="disable", description="HTTP header length in request.")    
+    content_length: Literal["enable", "disable"] | None = Field(default="disable", description="HTTP content length in request.")    
+    param_length: Literal["enable", "disable"] | None = Field(default="disable", description="Maximum length of parameter in URL, HTTP POST request or HTTP body.")    
+    line_length: Literal["enable", "disable"] | None = Field(default="disable", description="HTTP line length in request.")    
+    url_param_length: Literal["enable", "disable"] | None = Field(default="disable", description="Maximum length of parameter in URL.")    
+    version: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable HTTP version check.")    
+    method: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable HTTP method check.")    
+    hostname: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable hostname check.")    
+    malformed: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable malformed HTTP request check.")    
+    max_cookie: Literal["enable", "disable"] | None = Field(default="disable", description="Maximum number of cookies in HTTP request.")    
+    max_header_line: Literal["enable", "disable"] | None = Field(default="disable", description="Maximum number of HTTP header line.")    
+    max_url_param: Literal["enable", "disable"] | None = Field(default="disable", description="Maximum number of parameters in URL.")    
+    max_range_segment: Literal["enable", "disable"] | None = Field(default="disable", description="Maximum number of range segments in HTTP range line.")
+class ProfileConstraintContentLength(BaseModel):
+    """
+    Child table model for constraint.content-length.
+    
+    HTTP content length in request.
+    """
+    
+    class Config:
+        """Pydantic model configuration."""
+        extra = "allow"  # Allow additional fields from API
+        str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
+    
+    status: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable the constraint.")    
+    length: int | None = Field(ge=0, le=2147483647, default=67108864, description="Length of HTTP content in bytes (0 to 2147483647).")    
+    action: Literal["allow", "block"] | None = Field(default="allow", description="Action.")    
+    log: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable logging.")    
+    severity: Literal["high", "medium", "low"] | None = Field(default="medium", description="Severity.")
+class ProfileConstraint(BaseModel):
+    """
+    Child table model for constraint.
+    
+    WAF HTTP protocol restrictions.
+    """
+    
+    class Config:
+        """Pydantic model configuration."""
+        extra = "allow"  # Allow additional fields from API
+        str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
+    
+    header_length: list[ProfileConstraintHeaderLength] = Field(default_factory=list, description="HTTP header length in request.")    
+    content_length: list[ProfileConstraintContentLength] = Field(default_factory=list, description="HTTP content length in request.")    
+    param_length: list[ProfileConstraintParamLength] = Field(default_factory=list, description="Maximum length of parameter in URL, HTTP POST request or HTTP body.")    
+    line_length: list[ProfileConstraintLineLength] = Field(default_factory=list, description="HTTP line length in request.")    
+    url_param_length: list[ProfileConstraintUrlParamLength] = Field(default_factory=list, description="Maximum length of parameter in URL.")    
+    version: list[ProfileConstraintVersion] = Field(default_factory=list, description="Enable/disable HTTP version check.")    
+    method: list[ProfileConstraintMethod] = Field(default_factory=list, description="Enable/disable HTTP method check.")    
+    hostname: list[ProfileConstraintHostname] = Field(default_factory=list, description="Enable/disable hostname check.")    
+    malformed: list[ProfileConstraintMalformed] = Field(default_factory=list, description="Enable/disable malformed HTTP request check.")    
+    max_cookie: list[ProfileConstraintMaxCookie] = Field(default_factory=list, description="Maximum number of cookies in HTTP request.")    
+    max_header_line: list[ProfileConstraintMaxHeaderLine] = Field(default_factory=list, description="Maximum number of HTTP header line.")    
+    max_url_param: list[ProfileConstraintMaxUrlParam] = Field(default_factory=list, description="Maximum number of parameters in URL.")    
+    max_range_segment: list[ProfileConstraintMaxRangeSegment] = Field(default_factory=list, description="Maximum number of range segments in HTTP range line.")    
+    exception: list[ProfileConstraintException] = Field(default_factory=list, description="HTTP constraint exception.")
+class ProfileAddressListTrustedAddress(BaseModel):
+    """
+    Child table model for address-list.trusted-address.
+    
+    Trusted address.
+    """
+    
+    class Config:
+        """Pydantic model configuration."""
+        extra = "allow"  # Allow additional fields from API
+        str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
+    
+    name: str = Field(max_length=79, description="Address name.")  # datasource: ['firewall.address.name', 'firewall.addrgrp.name']
+class ProfileAddressListBlockedAddress(BaseModel):
+    """
+    Child table model for address-list.blocked-address.
+    
+    Blocked address.
+    """
+    
+    class Config:
+        """Pydantic model configuration."""
+        extra = "allow"  # Allow additional fields from API
+        str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
+    
+    name: str = Field(max_length=79, description="Address name.")  # datasource: ['firewall.address.name', 'firewall.addrgrp.name']
+class ProfileAddressList(BaseModel):
+    """
+    Child table model for address-list.
+    
+    Address block and allow lists.
+    """
+    
+    class Config:
+        """Pydantic model configuration."""
+        extra = "allow"  # Allow additional fields from API
+        str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
+    
+    status: Literal["enable", "disable"] | None = Field(default="disable", description="Status.")    
+    blocked_log: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable logging on blocked addresses.")    
+    severity: Literal["high", "medium", "low"] | None = Field(default="medium", description="Severity.")    
+    trusted_address: list[ProfileAddressListTrustedAddress] = Field(default_factory=list, description="Trusted address.")    
+    blocked_address: list[ProfileAddressListBlockedAddress] = Field(default_factory=list, description="Blocked address.")
 # ============================================================================
 # Enum Definitions (for fields with 4+ allowed values)
 # ============================================================================
@@ -137,14 +579,14 @@ class ProfileModel(BaseModel):
     # Model Fields
     # ========================================================================
     
-    name: str | None = Field(max_length=47, default="", description="WAF Profile name.")    
+    name: str | None = Field(max_length=47, default=None, description="WAF Profile name.")    
     external: Literal["disable", "enable"] | None = Field(default="disable", description="Disable/Enable external HTTP Inspection.")    
     extended_log: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable extended logging.")    
-    signature: list[Signature] = Field(default=None, description="WAF signatures.")    
-    constraint: list[Constraint] = Field(default=None, description="WAF HTTP protocol restrictions.")    
-    method: list[Method] = Field(default=None, description="Method restriction.")    
-    address_list: list[AddressList] = Field(default=None, description="Address block and allow lists.")    
-    url_access: list[UrlAccess] = Field(default=None, description="URL access list.")    
+    signature: list[ProfileSignature] = Field(default_factory=list, description="WAF signatures.")    
+    constraint: list[ProfileConstraint] = Field(default_factory=list, description="WAF HTTP protocol restrictions.")    
+    method: list[ProfileMethod] = Field(default_factory=list, description="Method restriction.")    
+    address_list: list[ProfileAddressList] = Field(default_factory=list, description="Address block and allow lists.")    
+    url_access: list[ProfileUrlAccess] = Field(default_factory=list, description="URL access list.")    
     comment: str | None = Field(max_length=1023, default=None, description="Comment.")    
     # ========================================================================
     # Custom Validators
@@ -210,7 +652,7 @@ class ProfileModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.waf.profile.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate child table items
         values = getattr(self, "url_access", [])
@@ -275,11 +717,11 @@ Dict = dict[str, Any]  # For backward compatibility
 # ============================================================================
 
 __all__ = [
-    "ProfileModel",    "ProfileSignature",    "ProfileConstraint",    "ProfileMethod",    "ProfileAddressList",    "ProfileUrlAccess",]
+    "ProfileModel",    "ProfileSignature",    "ProfileSignature.MainClass",    "ProfileSignature.DisabledSubClass",    "ProfileSignature.DisabledSignature",    "ProfileSignature.CustomSignature",    "ProfileConstraint",    "ProfileConstraint.HeaderLength",    "ProfileConstraint.ContentLength",    "ProfileConstraint.ParamLength",    "ProfileConstraint.LineLength",    "ProfileConstraint.UrlParamLength",    "ProfileConstraint.Version",    "ProfileConstraint.Method",    "ProfileConstraint.Hostname",    "ProfileConstraint.Malformed",    "ProfileConstraint.MaxCookie",    "ProfileConstraint.MaxHeaderLine",    "ProfileConstraint.MaxUrlParam",    "ProfileConstraint.MaxRangeSegment",    "ProfileConstraint.Exception",    "ProfileMethod",    "ProfileMethod.MethodPolicy",    "ProfileAddressList",    "ProfileAddressList.TrustedAddress",    "ProfileAddressList.BlockedAddress",    "ProfileUrlAccess",    "ProfileUrlAccess.AccessPattern",]
 
 
 # ============================================================================
 # Generated by hfortix generator v0.6.0
 # Schema: 1.7.0
-# Generated: 2026-01-17T05:32:16.438443Z
+# Generated: 2026-01-17T17:25:20.481778Z
 # ============================================================================

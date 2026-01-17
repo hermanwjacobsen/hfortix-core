@@ -7,78 +7,18 @@ Generated from FortiOS schema version unknown.
 
 from __future__ import annotations
 
-from pydantic import BaseModel, Field, field_validator
+from pydantic import BaseModel, Field
 from typing import Any, Literal, Optional
 from enum import Enum
 
 # ============================================================================
-# Child Table Models
+# Enum Definitions for Child Table Fields (for fields with 4+ allowed values)
 # ============================================================================
 
-class AccprofileNetgrpPermission(BaseModel):
-    """
-    Child table model for netgrp-permission.
-    
-    Custom network permission.
-    """
-    
-    class Config:
-        """Pydantic model configuration."""
-        extra = "allow"  # Allow additional fields from API
-        str_strip_whitespace = True
-    
-    cfg: Literal["none", "read", "read-write"] | None = Field(default="none", description="Network Configuration.")    
-    packet_capture: Literal["none", "read", "read-write"] | None = Field(default="none", description="Packet Capture Configuration.")    
-    route_cfg: Literal["none", "read", "read-write"] | None = Field(default="none", description="Router Configuration.")
-class AccprofileSysgrpPermission(BaseModel):
-    """
-    Child table model for sysgrp-permission.
-    
-    Custom system permission.
-    """
-    
-    class Config:
-        """Pydantic model configuration."""
-        extra = "allow"  # Allow additional fields from API
-        str_strip_whitespace = True
-    
-    admin: Literal["none", "read", "read-write"] | None = Field(default="none", description="Administrator Users.")    
-    upd: Literal["none", "read", "read-write"] | None = Field(default="none", description="FortiGuard Updates.")    
-    cfg: Literal["none", "read", "read-write"] | None = Field(default="none", description="System Configuration.")    
-    mnt: Literal["none", "read", "read-write"] | None = Field(default="none", description="Maintenance.")
-class AccprofileFwgrpPermission(BaseModel):
-    """
-    Child table model for fwgrp-permission.
-    
-    Custom firewall permission.
-    """
-    
-    class Config:
-        """Pydantic model configuration."""
-        extra = "allow"  # Allow additional fields from API
-        str_strip_whitespace = True
-    
-    policy: Literal["none", "read", "read-write"] | None = Field(default="none", description="Policy Configuration.")    
-    address: Literal["none", "read", "read-write"] | None = Field(default="none", description="Address Configuration.")    
-    service: Literal["none", "read", "read-write"] | None = Field(default="none", description="Service Configuration.")    
-    schedule: Literal["none", "read", "read-write"] | None = Field(default="none", description="Schedule Configuration.")    
-    others: Literal["none", "read", "read-write"] | None = Field(default="none", description="Other Firewall Configuration.")
-class AccprofileLoggrpPermission(BaseModel):
-    """
-    Child table model for loggrp-permission.
-    
-    Custom Log & Report permission.
-    """
-    
-    class Config:
-        """Pydantic model configuration."""
-        extra = "allow"  # Allow additional fields from API
-        str_strip_whitespace = True
-    
-    config: Literal["none", "read", "read-write"] | None = Field(default="none", description="Log & Report configuration.")    
-    data_access: Literal["none", "read", "read-write"] | None = Field(default="none", description="Log & Report Data Access.")    
-    report_access: Literal["none", "read", "read-write"] | None = Field(default="none", description="Log & Report Report Access.")    
-    threat_weight: Literal["none", "read", "read-write"] | None = Field(default="none", description="Log & Report Threat Weight.")
+# ============================================================================
+# Child Table Models (sorted deepest-first so nested models are defined before their parents)
+# ============================================================================
+
 class AccprofileUtmgrpPermission(BaseModel):
     """
     Child table model for utmgrp-permission.
@@ -90,6 +30,7 @@ class AccprofileUtmgrpPermission(BaseModel):
         """Pydantic model configuration."""
         extra = "allow"  # Allow additional fields from API
         str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
     
     antivirus: Literal["none", "read", "read-write"] | None = Field(default="none", description="Antivirus profiles and settings.")    
     ips: Literal["none", "read", "read-write"] | None = Field(default="none", description="IPS profiles and settings.")    
@@ -107,6 +48,23 @@ class AccprofileUtmgrpPermission(BaseModel):
     virtual_patch: Literal["none", "read", "read-write"] | None = Field(default="none", description="Virtual patch profiles and settings.")    
     casb: Literal["none", "read", "read-write"] | None = Field(default="none", description="Inline CASB filter profile and settings")    
     telemetry: Literal["none", "read", "read-write"] | None = Field(default="none", description="Telemetry profile and settings.")
+class AccprofileSysgrpPermission(BaseModel):
+    """
+    Child table model for sysgrp-permission.
+    
+    Custom system permission.
+    """
+    
+    class Config:
+        """Pydantic model configuration."""
+        extra = "allow"  # Allow additional fields from API
+        str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
+    
+    admin: Literal["none", "read", "read-write"] | None = Field(default="none", description="Administrator Users.")    
+    upd: Literal["none", "read", "read-write"] | None = Field(default="none", description="FortiGuard Updates.")    
+    cfg: Literal["none", "read", "read-write"] | None = Field(default="none", description="System Configuration.")    
+    mnt: Literal["none", "read", "read-write"] | None = Field(default="none", description="Maintenance.")
 class AccprofileSecfabgrpPermission(BaseModel):
     """
     Child table model for secfabgrp-permission.
@@ -118,31 +76,107 @@ class AccprofileSecfabgrpPermission(BaseModel):
         """Pydantic model configuration."""
         extra = "allow"  # Allow additional fields from API
         str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
     
     csfsys: Literal["none", "read", "read-write"] | None = Field(default="none", description="Security Fabric system profiles and settings.")    
     csffoo: Literal["none", "read", "read-write"] | None = Field(default="none", description="Fabric Overlay Orchestrator profiles and settings.")
+class AccprofileNetgrpPermission(BaseModel):
+    """
+    Child table model for netgrp-permission.
+    
+    Custom network permission.
+    """
+    
+    class Config:
+        """Pydantic model configuration."""
+        extra = "allow"  # Allow additional fields from API
+        str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
+    
+    cfg: Literal["none", "read", "read-write"] | None = Field(default="none", description="Network Configuration.")    
+    packet_capture: Literal["none", "read", "read-write"] | None = Field(default="none", description="Packet Capture Configuration.")    
+    route_cfg: Literal["none", "read", "read-write"] | None = Field(default="none", description="Router Configuration.")
+class AccprofileLoggrpPermission(BaseModel):
+    """
+    Child table model for loggrp-permission.
+    
+    Custom Log & Report permission.
+    """
+    
+    class Config:
+        """Pydantic model configuration."""
+        extra = "allow"  # Allow additional fields from API
+        str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
+    
+    config: Literal["none", "read", "read-write"] | None = Field(default="none", description="Log & Report configuration.")    
+    data_access: Literal["none", "read", "read-write"] | None = Field(default="none", description="Log & Report Data Access.")    
+    report_access: Literal["none", "read", "read-write"] | None = Field(default="none", description="Log & Report Report Access.")    
+    threat_weight: Literal["none", "read", "read-write"] | None = Field(default="none", description="Log & Report Threat Weight.")
+class AccprofileFwgrpPermission(BaseModel):
+    """
+    Child table model for fwgrp-permission.
+    
+    Custom firewall permission.
+    """
+    
+    class Config:
+        """Pydantic model configuration."""
+        extra = "allow"  # Allow additional fields from API
+        str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
+    
+    policy: Literal["none", "read", "read-write"] | None = Field(default="none", description="Policy Configuration.")    
+    address: Literal["none", "read", "read-write"] | None = Field(default="none", description="Address Configuration.")    
+    service: Literal["none", "read", "read-write"] | None = Field(default="none", description="Service Configuration.")    
+    schedule: Literal["none", "read", "read-write"] | None = Field(default="none", description="Schedule Configuration.")    
+    others: Literal["none", "read", "read-write"] | None = Field(default="none", description="Other Firewall Configuration.")
 # ============================================================================
 # Enum Definitions (for fields with 4+ allowed values)
 # ============================================================================
 
 class AccprofileSecfabgrpEnum(str, Enum):
     """Allowed values for secfabgrp field."""
-    NONE = "none"    READ = "read"    READ_WRITE = "read-write"    CUSTOM = "custom"
+    NONE = "none"
+    READ = "read"
+    READ_WRITE = "read-write"
+    CUSTOM = "custom"
+
 class AccprofileSysgrpEnum(str, Enum):
     """Allowed values for sysgrp field."""
-    NONE = "none"    READ = "read"    READ_WRITE = "read-write"    CUSTOM = "custom"
+    NONE = "none"
+    READ = "read"
+    READ_WRITE = "read-write"
+    CUSTOM = "custom"
+
 class AccprofileNetgrpEnum(str, Enum):
     """Allowed values for netgrp field."""
-    NONE = "none"    READ = "read"    READ_WRITE = "read-write"    CUSTOM = "custom"
+    NONE = "none"
+    READ = "read"
+    READ_WRITE = "read-write"
+    CUSTOM = "custom"
+
 class AccprofileLoggrpEnum(str, Enum):
     """Allowed values for loggrp field."""
-    NONE = "none"    READ = "read"    READ_WRITE = "read-write"    CUSTOM = "custom"
+    NONE = "none"
+    READ = "read"
+    READ_WRITE = "read-write"
+    CUSTOM = "custom"
+
 class AccprofileFwgrpEnum(str, Enum):
     """Allowed values for fwgrp field."""
-    NONE = "none"    READ = "read"    READ_WRITE = "read-write"    CUSTOM = "custom"
+    NONE = "none"
+    READ = "read"
+    READ_WRITE = "read-write"
+    CUSTOM = "custom"
+
 class AccprofileUtmgrpEnum(str, Enum):
     """Allowed values for utmgrp field."""
-    NONE = "none"    READ = "read"    READ_WRITE = "read-write"    CUSTOM = "custom"
+    NONE = "none"
+    READ = "read"
+    READ_WRITE = "read-write"
+    CUSTOM = "custom"
+
 
 # ============================================================================
 # Main Model
@@ -167,26 +201,26 @@ class AccprofileModel(BaseModel):
     # Model Fields
     # ========================================================================
     
-    name: str = Field(max_length=35, default="", description="Profile name.")    
+    name: str = Field(max_length=35, description="Profile name.")    
     scope: Literal["vdom", "global"] | None = Field(default="vdom", description="Scope of admin access: global or specific VDOM(s).")    
     comments: str | None = Field(max_length=255, default=None, description="Comment.")    
-    secfabgrp: SecfabgrpEnum | None = Field(default="none", description="Security Fabric.")    
+    secfabgrp: AccprofileSecfabgrpEnum | None = Field(default=AccprofileSecfabgrpEnum.NONE, description="Security Fabric.")    
     ftviewgrp: Literal["none", "read", "read-write"] | None = Field(default="none", description="FortiView.")    
     authgrp: Literal["none", "read", "read-write"] | None = Field(default="none", description="Administrator access to Users and Devices.")    
-    sysgrp: SysgrpEnum | None = Field(default="none", description="System Configuration.")    
-    netgrp: NetgrpEnum | None = Field(default="none", description="Network Configuration.")    
-    loggrp: LoggrpEnum | None = Field(default="none", description="Administrator access to Logging and Reporting including viewing log messages.")    
-    fwgrp: FwgrpEnum | None = Field(default="none", description="Administrator access to the Firewall configuration.")    
+    sysgrp: AccprofileSysgrpEnum | None = Field(default=AccprofileSysgrpEnum.NONE, description="System Configuration.")    
+    netgrp: AccprofileNetgrpEnum | None = Field(default=AccprofileNetgrpEnum.NONE, description="Network Configuration.")    
+    loggrp: AccprofileLoggrpEnum | None = Field(default=AccprofileLoggrpEnum.NONE, description="Administrator access to Logging and Reporting including viewing log messages.")    
+    fwgrp: AccprofileFwgrpEnum | None = Field(default=AccprofileFwgrpEnum.NONE, description="Administrator access to the Firewall configuration.")    
     vpngrp: Literal["none", "read", "read-write"] | None = Field(default="none", description="Administrator access to IPsec, SSL, PPTP, and L2TP VPN.")    
-    utmgrp: UtmgrpEnum | None = Field(default="none", description="Administrator access to Security Profiles.")    
+    utmgrp: AccprofileUtmgrpEnum | None = Field(default=AccprofileUtmgrpEnum.NONE, description="Administrator access to Security Profiles.")    
     wanoptgrp: Literal["none", "read", "read-write"] | None = Field(default="none", description="Administrator access to WAN Opt & Cache.")    
     wifi: Literal["none", "read", "read-write"] | None = Field(default="none", description="Administrator access to the WiFi controller and Switch controller.")    
-    netgrp_permission: list[NetgrpPermission] = Field(default=None, description="Custom network permission.")    
-    sysgrp_permission: list[SysgrpPermission] = Field(default=None, description="Custom system permission.")    
-    fwgrp_permission: list[FwgrpPermission] = Field(default=None, description="Custom firewall permission.")    
-    loggrp_permission: list[LoggrpPermission] = Field(default=None, description="Custom Log & Report permission.")    
-    utmgrp_permission: list[UtmgrpPermission] = Field(default=None, description="Custom Security Profile permissions.")    
-    secfabgrp_permission: list[SecfabgrpPermission] = Field(default=None, description="Custom Security Fabric permissions.")    
+    netgrp_permission: list[AccprofileNetgrpPermission] = Field(default_factory=list, description="Custom network permission.")    
+    sysgrp_permission: list[AccprofileSysgrpPermission] = Field(default_factory=list, description="Custom system permission.")    
+    fwgrp_permission: list[AccprofileFwgrpPermission] = Field(default_factory=list, description="Custom firewall permission.")    
+    loggrp_permission: list[AccprofileLoggrpPermission] = Field(default_factory=list, description="Custom Log & Report permission.")    
+    utmgrp_permission: list[AccprofileUtmgrpPermission] = Field(default_factory=list, description="Custom Security Profile permissions.")    
+    secfabgrp_permission: list[AccprofileSecfabgrpPermission] = Field(default_factory=list, description="Custom Security Fabric permissions.")    
     admintimeout_override: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable overriding the global administrator idle timeout.")    
     admintimeout: int | None = Field(ge=1, le=480, default=10, description="Administrator timeout for this access profile (0 - 480 min, default = 10, 0 means never timeout).")    
     cli_diagnose: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable permission to run diagnostic commands.")    
@@ -244,5 +278,5 @@ __all__ = [
 # ============================================================================
 # Generated by hfortix generator v0.6.0
 # Schema: 1.7.0
-# Generated: 2026-01-17T05:32:19.087431Z
+# Generated: 2026-01-17T17:25:22.799038Z
 # ============================================================================

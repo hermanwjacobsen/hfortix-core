@@ -665,6 +665,24 @@ class QosMap(CRUDEndpoint, MetadataMixin):
             - put(): Update existing object
             - exists(): Check existence manually
         """
+        # Apply normalization for table fields (supports flexible input formats)
+        if dscp_except is not None:
+            dscp_except = normalize_table_field(
+                dscp_except,
+                mkey="index",
+                required_fields=['index'],
+                field_name="dscp_except",
+                example="[{'index': 1}]",
+            )
+        if dscp_range is not None:
+            dscp_range = normalize_table_field(
+                dscp_range,
+                mkey="index",
+                required_fields=['up'],
+                field_name="dscp_range",
+                example="[{'up': 1}]",
+            )
+        
         # Build payload using helper function with auto-normalization
         payload_data = build_api_payload(
             name=name,

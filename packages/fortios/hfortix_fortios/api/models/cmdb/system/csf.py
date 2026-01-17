@@ -11,7 +11,11 @@ from pydantic import BaseModel, Field, field_validator
 from typing import Any, Literal, Optional
 
 # ============================================================================
-# Child Table Models
+# Enum Definitions for Child Table Fields (for fields with 4+ allowed values)
+# ============================================================================
+
+# ============================================================================
+# Child Table Models (sorted deepest-first so nested models are defined before their parents)
 # ============================================================================
 
 class CsfTrustedList(BaseModel):
@@ -25,15 +29,30 @@ class CsfTrustedList(BaseModel):
         """Pydantic model configuration."""
         extra = "allow"  # Allow additional fields from API
         str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
     
-    name: str | None = Field(max_length=35, default="", description="Name.")    
+    name: str | None = Field(max_length=35, default=None, description="Name.")    
     authorization_type: Literal["serial", "certificate"] | None = Field(default="serial", description="Authorization type.")    
-    serial: str | None = Field(max_length=19, default="", description="Serial.")    
+    serial: str | None = Field(max_length=19, default=None, description="Serial.")    
     certificate: str | None = Field(max_length=32767, default=None, description="Certificate.")    
     action: Literal["accept", "deny"] | None = Field(default="accept", description="Security fabric authorization action.")    
-    ha_members: list[HaMembers] = Field(max_length=19, default="", description="HA members.")    
+    ha_members: list[str] = Field(max_length=19, default_factory=list, description="HA members.")    
     downstream_authorization: Literal["enable", "disable"] | None = Field(default="disable", description="Trust authorizations by this node's administrator.")    
     index: int | None = Field(ge=1, le=1024, default=0, description="Index of the downstream in tree.")
+class CsfFabricConnectorVdom(BaseModel):
+    """
+    Child table model for fabric-connector.vdom.
+    
+    Virtual domains that the connector has access to. If none are set, the connector will only have access to the VDOM that it joins the Security Fabric through.
+    """
+    
+    class Config:
+        """Pydantic model configuration."""
+        extra = "allow"  # Allow additional fields from API
+        str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
+    
+    name: str = Field(max_length=79, description="Virtual domain name.")  # datasource: ['system.vdom.name']
 class CsfFabricConnector(BaseModel):
     """
     Child table model for fabric-connector.
@@ -45,11 +64,12 @@ class CsfFabricConnector(BaseModel):
         """Pydantic model configuration."""
         extra = "allow"  # Allow additional fields from API
         str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
     
-    serial: str | None = Field(max_length=19, default="", description="Serial.")    
-    accprofile: str | None = Field(max_length=35, default="", description="Override access profile.")  # datasource: ['system.accprofile.name']    
+    serial: str | None = Field(max_length=19, default=None, description="Serial.")    
+    accprofile: str | None = Field(max_length=35, default=None, description="Override access profile.")  # datasource: ['system.accprofile.name']    
     configuration_write_access: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable downstream device write access to configuration.")    
-    vdom: list[Vdom] = Field(default=None, description="Virtual domains that the connector has access to. If none are set, the connector will only have access to the VDOM that it joins the Security Fabric through.")
+    vdom: list[CsfFabricConnectorVdom] = Field(default_factory=list, description="Virtual domains that the connector has access to. If none are set, the connector will only have access to the VDOM that it joins the Security Fabric through.")
 # ============================================================================
 # Enum Definitions (for fields with 4+ allowed values)
 # ============================================================================
@@ -79,27 +99,27 @@ class CsfModel(BaseModel):
     # ========================================================================
     
     status: Literal["enable", "disable"] = Field(default="disable", description="Enable/disable Security Fabric.")    
-    uid: str | None = Field(max_length=35, default="", description="Unique ID of the current CSF node")    
-    upstream: str | None = Field(max_length=255, default="", description="IP/FQDN of the FortiGate upstream from this FortiGate in the Security Fabric.")    
+    uid: str | None = Field(max_length=35, default=None, description="Unique ID of the current CSF node")    
+    upstream: str | None = Field(max_length=255, default=None, description="IP/FQDN of the FortiGate upstream from this FortiGate in the Security Fabric.")    
     source_ip: str | None = Field(default="0.0.0.0", description="Source IP address for communication with the upstream FortiGate.")    
     upstream_interface_select_method: Literal["auto", "sdwan", "specify"] | None = Field(default="auto", description="Specify how to select outgoing interface to reach server.")    
-    upstream_interface: str = Field(max_length=15, default="", description="Specify outgoing interface to reach server.")  # datasource: ['system.interface.name']    
+    upstream_interface: str = Field(max_length=15, description="Specify outgoing interface to reach server.")  # datasource: ['system.interface.name']    
     upstream_port: int | None = Field(ge=1, le=65535, default=8013, description="The port number to use to communicate with the FortiGate upstream from this FortiGate in the Security Fabric (default = 8013).")    
-    group_name: str | None = Field(max_length=35, default="", description="Security Fabric group name. All FortiGates in a Security Fabric must have the same group name.")    
+    group_name: str | None = Field(max_length=35, default=None, description="Security Fabric group name. All FortiGates in a Security Fabric must have the same group name.")    
     group_password: Any = Field(max_length=128, default=None, description="Security Fabric group password. For legacy authentication, fabric members must have the same group password.")    
     accept_auth_by_cert: Literal["disable", "enable"] | None = Field(default="enable", description="Accept connections with unknown certificates and ask admin for approval.")    
     log_unification: Literal["disable", "enable"] | None = Field(default="enable", description="Enable/disable broadcast of discovery messages for log unification.")    
     authorization_request_type: Literal["serial", "certificate"] | None = Field(default="serial", description="Authorization request type.")    
-    certificate: str | None = Field(max_length=35, default="", description="Certificate.")  # datasource: ['certificate.local.name']    
+    certificate: str | None = Field(max_length=35, default=None, description="Certificate.")  # datasource: ['certificate.local.name']    
     fabric_workers: int | None = Field(ge=1, le=4, default=2, description="Number of worker processes for Security Fabric daemon.")    
     downstream_access: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable downstream device access to this device's configuration and data.")    
     legacy_authentication: Literal["disable", "enable"] | None = Field(default="disable", description="Enable/disable legacy authentication.")    
-    downstream_accprofile: str = Field(max_length=35, default="", description="Default access profile for requests from downstream devices.")  # datasource: ['system.accprofile.name']    
+    downstream_accprofile: str = Field(max_length=35, description="Default access profile for requests from downstream devices.")  # datasource: ['system.accprofile.name']    
     configuration_sync: Literal["default", "local"] = Field(default="default", description="Configuration sync mode.")    
     fabric_object_unification: Literal["default", "local"] | None = Field(default="default", description="Fabric CMDB Object Unification.")    
     saml_configuration_sync: Literal["default", "local"] | None = Field(default="default", description="SAML setting configuration synchronization.")    
-    trusted_list: list[TrustedList] = Field(default=None, description="Pre-authorized and blocked security fabric nodes.")    
-    fabric_connector: list[FabricConnector] = Field(default=None, description="Fabric connector configuration.")    
+    trusted_list: list[CsfTrustedList] = Field(default_factory=list, description="Pre-authorized and blocked security fabric nodes.")    
+    fabric_connector: list[CsfFabricConnector] = Field(default_factory=list, description="Fabric connector configuration.")    
     forticloud_account_enforcement: Literal["enable", "disable"] | None = Field(default="enable", description="Fabric FortiCloud account unification.")    
     file_mgmt: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable Security Fabric daemon file management.")    
     file_quota: int | None = Field(ge=0, le=4294967295, default=0, description="Maximum amount of memory that can be used by the daemon files (in bytes).")    
@@ -213,7 +233,7 @@ class CsfModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.system.csf.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate scalar field
         value = getattr(self, "upstream_interface", None)
@@ -262,7 +282,7 @@ class CsfModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.system.csf.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate scalar field
         value = getattr(self, "certificate", None)
@@ -311,7 +331,7 @@ class CsfModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.system.csf.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate scalar field
         value = getattr(self, "downstream_accprofile", None)
@@ -360,7 +380,7 @@ class CsfModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.system.csf.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate child table items
         values = getattr(self, "fabric_connector", [])
@@ -429,11 +449,11 @@ Dict = dict[str, Any]  # For backward compatibility
 # ============================================================================
 
 __all__ = [
-    "CsfModel",    "CsfTrustedList",    "CsfFabricConnector",]
+    "CsfModel",    "CsfTrustedList",    "CsfFabricConnector",    "CsfFabricConnector.Vdom",]
 
 
 # ============================================================================
 # Generated by hfortix generator v0.6.0
 # Schema: 1.7.0
-# Generated: 2026-01-17T05:32:19.342607Z
+# Generated: 2026-01-17T17:25:23.034487Z
 # ============================================================================

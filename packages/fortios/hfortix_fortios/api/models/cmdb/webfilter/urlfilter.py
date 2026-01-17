@@ -9,9 +9,33 @@ from __future__ import annotations
 
 from pydantic import BaseModel, Field, field_validator
 from typing import Any, Literal, Optional
+from enum import Enum
 
 # ============================================================================
-# Child Table Models
+# Enum Definitions for Child Table Fields (for fields with 4+ allowed values)
+# ============================================================================
+
+class UrlfilterEntriesActionEnum(str, Enum):
+    """Allowed values for action field in entries."""
+    EXEMPT = "exempt"
+    BLOCK = "block"
+    ALLOW = "allow"
+    MONITOR = "monitor"
+
+class UrlfilterEntriesExemptEnum(str, Enum):
+    """Allowed values for exempt field in entries."""
+    AV = "av"
+    WEB_CONTENT = "web-content"
+    ACTIVEX_JAVA_COOKIE = "activex-java-cookie"
+    DLP = "dlp"
+    FORTIGUARD = "fortiguard"
+    RANGE_BLOCK = "range-block"
+    PASS = "pass"
+    ANTIPHISH = "antiphish"
+    ALL = "all"
+
+# ============================================================================
+# Child Table Models (sorted deepest-first so nested models are defined before their parents)
 # ============================================================================
 
 class UrlfilterEntries(BaseModel):
@@ -25,16 +49,17 @@ class UrlfilterEntries(BaseModel):
         """Pydantic model configuration."""
         extra = "allow"  # Allow additional fields from API
         str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
     
-    id: int = Field(ge=0, le=4294967295, default=0, description="Id.")    
-    url: str | None = Field(max_length=511, default="", description="URL to be filtered.")    
-    type: Literal["simple", "regex", "wildcard"] | None = Field(default="simple", description="Filter type (simple, regex, or wildcard).")    
-    action: ActionEnum | None = Field(default="exempt", description="Action to take for URL filter matches.")    
+    id_: int = Field(ge=0, le=4294967295, default=0, serialization_alias="id", description="Id.")    
+    url: str | None = Field(max_length=511, default=None, description="URL to be filtered.")    
+    type_: Literal["simple", "regex", "wildcard"] | None = Field(default="simple", serialization_alias="type", description="Filter type (simple, regex, or wildcard).")    
+    action: UrlfilterEntriesActionEnum | None = Field(default=UrlfilterEntriesActionEnum.EXEMPT, description="Action to take for URL filter matches.")    
     antiphish_action: Literal["block", "log"] | None = Field(default="block", description="Action to take for AntiPhishing matches.")    
     status: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable this URL filter.")    
-    exempt: list[Exempt] = Field(default="av web-content activex-java-cookie dlp fortiguard range-block antiphish all", description="If action is set to exempt, select the security profile operations that exempt URLs skip. Separate multiple options with a space.")    
-    web_proxy_profile: str | None = Field(max_length=63, default="", description="Web proxy profile.")  # datasource: ['web-proxy.profile.name']    
-    referrer_host: str | None = Field(max_length=255, default="", description="Referrer host name.")    
+    exempt: list[UrlfilterEntriesExemptEnum] = Field(default_factory=list, description="If action is set to exempt, select the security profile operations that exempt URLs skip. Separate multiple options with a space.")    
+    web_proxy_profile: str | None = Field(max_length=63, default=None, description="Web proxy profile.")  # datasource: ['web-proxy.profile.name']    
+    referrer_host: str | None = Field(max_length=255, default=None, description="Referrer host name.")    
     dns_address_family: Literal["ipv4", "ipv6", "both"] | None = Field(default="ipv4", description="Resolve IPv4 address, IPv6 address, or both from DNS server.")    
     comment: str | None = Field(max_length=255, default=None, description="Comment.")
 # ============================================================================
@@ -52,7 +77,7 @@ class UrlfilterModel(BaseModel):
     
     Configure URL filter lists.
     
-    Validation Rules:        - id: min=0 max=4294967295 pattern=        - name: max_length=63 pattern=        - comment: max_length=255 pattern=        - one_arm_ips_urlfilter: pattern=        - ip_addr_block: pattern=        - ip4_mapped_ip6: pattern=        - include_subdomains: pattern=        - entries: pattern=    """
+    Validation Rules:        - id_: min=0 max=4294967295 pattern=        - name: max_length=63 pattern=        - comment: max_length=255 pattern=        - one_arm_ips_urlfilter: pattern=        - ip_addr_block: pattern=        - ip4_mapped_ip6: pattern=        - include_subdomains: pattern=        - entries: pattern=    """
     
     class Config:
         """Pydantic model configuration."""
@@ -65,14 +90,14 @@ class UrlfilterModel(BaseModel):
     # Model Fields
     # ========================================================================
     
-    id: int = Field(ge=0, le=4294967295, default=0, description="ID.")    
-    name: str = Field(max_length=63, default="", description="Name of URL filter list.")    
+    id_: int = Field(ge=0, le=4294967295, default=0, serialization_alias="id", description="ID.")    
+    name: str = Field(max_length=63, description="Name of URL filter list.")    
     comment: str | None = Field(max_length=255, default=None, description="Optional comments.")    
     one_arm_ips_urlfilter: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable DNS resolver for one-arm IPS URL filter operation.")    
     ip_addr_block: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable blocking URLs when the hostname appears as an IP address.")    
     ip4_mapped_ip6: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable matching of IPv4 mapped IPv6 URLs.")    
     include_subdomains: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable matching subdomains. Applies only to simple type (default = enable).")    
-    entries: list[Entries] = Field(description="URL filter entries.")    
+    entries: list[UrlfilterEntries] = Field(description="URL filter entries.")    
     # ========================================================================
     # Custom Validators
     # ========================================================================
@@ -137,7 +162,7 @@ class UrlfilterModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.webfilter.urlfilter.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate child table items
         values = getattr(self, "entries", [])
@@ -155,7 +180,7 @@ class UrlfilterModel(BaseModel):
             
             # Check all datasource endpoints
             found = False
-            if await client.api.cmdb.web-proxy.profile.exists(value):
+            if await client.api.cmdb.web_proxy.profile.exists(value):
                 found = True
             
             if not found:
@@ -206,5 +231,5 @@ __all__ = [
 # ============================================================================
 # Generated by hfortix generator v0.6.0
 # Schema: 1.7.0
-# Generated: 2026-01-17T05:32:17.399354Z
+# Generated: 2026-01-17T17:25:21.293166Z
 # ============================================================================

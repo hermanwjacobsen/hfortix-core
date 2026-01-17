@@ -931,6 +931,40 @@ class SslSshProfile(CRUDEndpoint, MetadataMixin):
             - put(): Update existing object
             - exists(): Check existence manually
         """
+        # Apply normalization for table fields (supports flexible input formats)
+        if ssl_exempt is not None:
+            ssl_exempt = normalize_table_field(
+                ssl_exempt,
+                mkey="id",
+                required_fields=['type'],
+                field_name="ssl_exempt",
+                example="[{'type': 'fortiguard-category'}]",
+            )
+        if ech_outer_sni is not None:
+            ech_outer_sni = normalize_table_field(
+                ech_outer_sni,
+                mkey="name",
+                required_fields=['name', 'sni'],
+                field_name="ech_outer_sni",
+                example="[{'name': 'value', 'sni': 'value'}]",
+            )
+        if server_cert is not None:
+            server_cert = normalize_table_field(
+                server_cert,
+                mkey="name",
+                required_fields=['name'],
+                field_name="server_cert",
+                example="[{'name': 'value'}]",
+            )
+        if ssl_server is not None:
+            ssl_server = normalize_table_field(
+                ssl_server,
+                mkey="id",
+                required_fields=['ip'],
+                field_name="ssl_server",
+                example="[{'ip': '192.168.1.10'}]",
+            )
+        
         # Build payload using helper function with auto-normalization
         payload_data = build_api_payload(
             name=name,

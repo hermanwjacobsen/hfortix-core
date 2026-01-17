@@ -12,7 +12,11 @@ from typing import Any, Literal, Optional
 from enum import Enum
 
 # ============================================================================
-# Child Table Models
+# Enum Definitions for Child Table Fields (for fields with 4+ allowed values)
+# ============================================================================
+
+# ============================================================================
+# Child Table Models (sorted deepest-first so nested models are defined before their parents)
 # ============================================================================
 
 class SslServerSslCert(BaseModel):
@@ -26,21 +30,34 @@ class SslServerSslCert(BaseModel):
         """Pydantic model configuration."""
         extra = "allow"  # Allow additional fields from API
         str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
     
     name: str | None = Field(max_length=79, default="Fortinet_SSL", description="Certificate list.")  # datasource: ['vpn.certificate.local.name']
 # ============================================================================
 # Enum Definitions (for fields with 4+ allowed values)
 # ============================================================================
 
-class SslServerSsl_dh_bitsEnum(str, Enum):
+class SslServerSslDhBitsEnum(str, Enum):
     """Allowed values for ssl_dh_bits field."""
-    768 = "768"    1024 = "1024"    1536 = "1536"    2048 = "2048"
-class SslServerSsl_min_versionEnum(str, Enum):
+    V_768 = "768"
+    V_1024 = "1024"
+    V_1536 = "1536"
+    V_2048 = "2048"
+
+class SslServerSslMinVersionEnum(str, Enum):
     """Allowed values for ssl_min_version field."""
-    TLS_1_0 = "tls-1.0"    TLS_1_1 = "tls-1.1"    TLS_1_2 = "tls-1.2"    TLS_1_3 = "tls-1.3"
-class SslServerSsl_max_versionEnum(str, Enum):
+    TLS_1_0 = "tls-1.0"
+    TLS_1_1 = "tls-1.1"
+    TLS_1_2 = "tls-1.2"
+    TLS_1_3 = "tls-1.3"
+
+class SslServerSslMaxVersionEnum(str, Enum):
     """Allowed values for ssl_max_version field."""
-    TLS_1_0 = "tls-1.0"    TLS_1_1 = "tls-1.1"    TLS_1_2 = "tls-1.2"    TLS_1_3 = "tls-1.3"
+    TLS_1_0 = "tls-1.0"
+    TLS_1_1 = "tls-1.1"
+    TLS_1_2 = "tls-1.2"
+    TLS_1_3 = "tls-1.3"
+
 
 # ============================================================================
 # Main Model
@@ -65,18 +82,18 @@ class SslServerModel(BaseModel):
     # Model Fields
     # ========================================================================
     
-    name: str | None = Field(max_length=35, default="", description="Server name.")    
+    name: str | None = Field(max_length=35, default=None, description="Server name.")    
     ip: str = Field(default="0.0.0.0", description="IPv4 address of the SSL server.")    
     port: int = Field(ge=1, le=65535, default=443, description="Server service port (1 - 65535, default = 443).")    
     ssl_mode: Literal["half", "full"] | None = Field(default="full", description="SSL/TLS mode for encryption and decryption of traffic.")    
     add_header_x_forwarded_proto: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable adding an X-Forwarded-Proto header to forwarded requests.")    
     mapped_port: int = Field(ge=1, le=65535, default=80, description="Mapped server service port (1 - 65535, default = 80).")    
-    ssl_cert: list[SslCert] = Field(default=None, description="List of certificate names to use for SSL connections to this server. (default = \"Fortinet_SSL\").")    
-    ssl_dh_bits: SslDhBitsEnum | None = Field(default="2048", description="Bit-size of Diffie-Hellman (DH) prime used in DHE-RSA negotiation (default = 2048).")    
+    ssl_cert: list[SslServerSslCert] = Field(default_factory=list, description="List of certificate names to use for SSL connections to this server. (default = \"Fortinet_SSL\").")    
+    ssl_dh_bits: SslServerSslDhBitsEnum | None = Field(default=SslServerSslDhBitsEnum.V_2048, description="Bit-size of Diffie-Hellman (DH) prime used in DHE-RSA negotiation (default = 2048).")    
     ssl_algorithm: Literal["high", "medium", "low"] | None = Field(default="high", description="Relative strength of encryption algorithms accepted in negotiation.")    
     ssl_client_renegotiation: Literal["allow", "deny", "secure"] | None = Field(default="allow", description="Allow or block client renegotiation by server.")    
-    ssl_min_version: SslMinVersionEnum | None = Field(default="tls-1.1", description="Lowest SSL/TLS version to negotiate.")    
-    ssl_max_version: SslMaxVersionEnum | None = Field(default="tls-1.3", description="Highest SSL/TLS version to negotiate.")    
+    ssl_min_version: SslServerSslMinVersionEnum | None = Field(default=SslServerSslMinVersionEnum.TLS_1_1, description="Lowest SSL/TLS version to negotiate.")    
+    ssl_max_version: SslServerSslMaxVersionEnum | None = Field(default=SslServerSslMaxVersionEnum.TLS_1_3, description="Highest SSL/TLS version to negotiate.")    
     ssl_send_empty_frags: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable sending empty fragments to avoid attack on CBC IV.")    
     url_rewrite: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable rewriting the URL.")    
     # ========================================================================
@@ -143,7 +160,7 @@ class SslServerModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.ssl_server.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate child table items
         values = getattr(self, "ssl_cert", [])
@@ -212,5 +229,5 @@ __all__ = [
 # ============================================================================
 # Generated by hfortix generator v0.6.0
 # Schema: 1.7.0
-# Generated: 2026-01-17T05:32:16.737874Z
+# Generated: 2026-01-17T17:25:20.731951Z
 # ============================================================================

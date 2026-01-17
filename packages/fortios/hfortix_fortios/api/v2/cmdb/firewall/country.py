@@ -643,6 +643,16 @@ class Country(CRUDEndpoint, MetadataMixin):
             - put(): Update existing object
             - exists(): Check existence manually
         """
+        # Apply normalization for table fields (supports flexible input formats)
+        if region is not None:
+            region = normalize_table_field(
+                region,
+                mkey="id",
+                required_fields=['id'],
+                field_name="region",
+                example="[{'id': 1}]",
+            )
+        
         # Build payload using helper function with auto-normalization
         payload_data = build_api_payload(
             id=id,

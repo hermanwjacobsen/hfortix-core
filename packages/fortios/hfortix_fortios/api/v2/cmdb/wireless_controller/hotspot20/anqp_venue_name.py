@@ -622,6 +622,16 @@ class AnqpVenueName(CRUDEndpoint, MetadataMixin):
             - put(): Update existing object
             - exists(): Check existence manually
         """
+        # Apply normalization for table fields (supports flexible input formats)
+        if value_list is not None:
+            value_list = normalize_table_field(
+                value_list,
+                mkey="index",
+                required_fields=['lang', 'value'],
+                field_name="value_list",
+                example="[{'lang': 'value', 'value': 'value'}]",
+            )
+        
         # Build payload using helper function with auto-normalization
         payload_data = build_api_payload(
             name=name,

@@ -1,466 +1,181 @@
-from typing import TypedDict, Literal, Any, Coroutine, Union, overload, Generator, final
-from typing_extensions import NotRequired
-from hfortix_fortios.models import FortiObject, FortiObjectList
+""" - Type Stubs
 
-# ============================================================================
-# Nested TypedDicts for table field children (dict mode)
-# These MUST be defined before the Payload class to use them as type hints
-# ============================================================================
+Auto-generated stub file for type checking and IDE support.
 
-class WebProxyApigatewayItem(TypedDict, total=False):
-    """Type hints for api-gateway table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    Use this when building payloads for POST/PUT requests.
-    
-    **Available fields:**
-        - id: int
-        - url_map: str
-        - service: "http" | "https"
-        - ldb_method: "static" | "round-robin" | "weighted" | "first-alive" | "http-host"
-        - url_map_type: "sub-string" | "wildcard" | "regex"
-        - h2_support: "enable" | "disable"
-        - h3_support: "enable" | "disable"
-        - quic: str
-        - realservers: str
-        - persistence: "none" | "http-cookie"
-        - http_cookie_domain_from_host: "disable" | "enable"
-        - http_cookie_domain: str
-        - http_cookie_path: str
-        - http_cookie_generation: int
-        - http_cookie_age: int
-        - http_cookie_share: "disable" | "same-ip"
-        - https_cookie_secure: "disable" | "enable"
-        - ssl_dh_bits: "768" | "1024" | "1536" | "2048" | "3072" | "4096"
-        - ssl_algorithm: "high" | "medium" | "low"
-        - ssl_cipher_suites: str
-        - ssl_min_version: "tls-1.0" | "tls-1.1" | "tls-1.2" | "tls-1.3"
-        - ssl_max_version: "tls-1.0" | "tls-1.1" | "tls-1.2" | "tls-1.3"
-        - ssl_renegotiation: "enable" | "disable"
-    
-    **Example:**
-        entry: WebProxyApigatewayItem = {
-            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
-        }
-    """
-    
-    id: int  # API Gateway ID. | Default: 0 | Min: 0 | Max: 4294967295
-    url_map: str  # URL pattern to match. | Default: / | MaxLen: 511
-    service: Literal["http", "https"]  # Service. | Default: https
-    ldb_method: Literal["static", "round-robin", "weighted", "first-alive", "http-host"]  # Method used to distribute sessions to real servers | Default: static
-    url_map_type: Literal["sub-string", "wildcard", "regex"]  # Type of url-map. | Default: sub-string
-    h2_support: Literal["enable", "disable"]  # HTTP2 support, default=Enable. | Default: enable
-    h3_support: Literal["enable", "disable"]  # HTTP3/QUIC support, default=Disable. | Default: disable
-    quic: str  # QUIC setting.
-    realservers: str  # Select the real servers that this Access Proxy wil
-    persistence: Literal["none", "http-cookie"]  # Configure how to make sure that clients connect to | Default: none
-    http_cookie_domain_from_host: Literal["disable", "enable"]  # Enable/disable use of HTTP cookie domain from host | Default: disable
-    http_cookie_domain: str  # Domain that HTTP cookie persistence should apply t | MaxLen: 35
-    http_cookie_path: str  # Limit HTTP cookie persistence to the specified pat | MaxLen: 35
-    http_cookie_generation: int  # Generation of HTTP cookie to be accepted. Changing | Default: 0 | Min: 0 | Max: 4294967295
-    http_cookie_age: int  # Time in minutes that client web browsers should ke | Default: 60 | Min: 0 | Max: 525600
-    http_cookie_share: Literal["disable", "same-ip"]  # Control sharing of cookies across API Gateway. Use | Default: same-ip
-    https_cookie_secure: Literal["disable", "enable"]  # Enable/disable verification that inserted HTTPS co | Default: disable
-    ssl_dh_bits: Literal["768", "1024", "1536", "2048", "3072", "4096"]  # Number of bits to use in the Diffie-Hellman exchan | Default: 2048
-    ssl_algorithm: Literal["high", "medium", "low"]  # Permitted encryption algorithms for the server sid | Default: high
-    ssl_cipher_suites: str  # SSL/TLS cipher suites to offer to a server, ordere
-    ssl_min_version: Literal["tls-1.0", "tls-1.1", "tls-1.2", "tls-1.3"]  # Lowest SSL/TLS version acceptable from a server. | Default: tls-1.1
-    ssl_max_version: Literal["tls-1.0", "tls-1.1", "tls-1.2", "tls-1.3"]  # Highest SSL/TLS version acceptable from a server. | Default: tls-1.3
-    ssl_renegotiation: Literal["enable", "disable"]  # Enable/disable secure renegotiation to comply with | Default: enable
+Endpoint: ztna/web_proxy
+Category: cmdb
+"""
+
+from __future__ import annotations
+
+from typing import (
+    Any,
+    ClassVar,
+    Literal,
+    TypedDict,
+    overload,
+)
+
+from hfortix_fortios.models import (
+    FortiObject,
+    FortiObjectList,
+)
 
 
-class WebProxyApigateway6Item(TypedDict, total=False):
-    """Type hints for api-gateway6 table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    Use this when building payloads for POST/PUT requests.
-    
-    **Available fields:**
-        - id: int
-        - url_map: str
-        - service: "http" | "https"
-        - ldb_method: "static" | "round-robin" | "weighted" | "first-alive" | "http-host"
-        - url_map_type: "sub-string" | "wildcard" | "regex"
-        - h2_support: "enable" | "disable"
-        - h3_support: "enable" | "disable"
-        - quic: str
-        - realservers: str
-        - persistence: "none" | "http-cookie"
-        - http_cookie_domain_from_host: "disable" | "enable"
-        - http_cookie_domain: str
-        - http_cookie_path: str
-        - http_cookie_generation: int
-        - http_cookie_age: int
-        - http_cookie_share: "disable" | "same-ip"
-        - https_cookie_secure: "disable" | "enable"
-        - ssl_dh_bits: "768" | "1024" | "1536" | "2048" | "3072" | "4096"
-        - ssl_algorithm: "high" | "medium" | "low"
-        - ssl_cipher_suites: str
-        - ssl_min_version: "tls-1.0" | "tls-1.1" | "tls-1.2" | "tls-1.3"
-        - ssl_max_version: "tls-1.0" | "tls-1.1" | "tls-1.2" | "tls-1.3"
-        - ssl_renegotiation: "enable" | "disable"
-    
-    **Example:**
-        entry: WebProxyApigateway6Item = {
-            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
-        }
-    """
-    
-    id: int  # API Gateway ID. | Default: 0 | Min: 0 | Max: 4294967295
-    url_map: str  # URL pattern to match. | Default: / | MaxLen: 511
-    service: Literal["http", "https"]  # Service. | Default: https
-    ldb_method: Literal["static", "round-robin", "weighted", "first-alive", "http-host"]  # Method used to distribute sessions to real servers | Default: static
-    url_map_type: Literal["sub-string", "wildcard", "regex"]  # Type of url-map. | Default: sub-string
-    h2_support: Literal["enable", "disable"]  # HTTP2 support, default=Enable. | Default: enable
-    h3_support: Literal["enable", "disable"]  # HTTP3/QUIC support, default=Disable. | Default: disable
-    quic: str  # QUIC setting.
-    realservers: str  # Select the real servers that this Access Proxy wil
-    persistence: Literal["none", "http-cookie"]  # Configure how to make sure that clients connect to | Default: none
-    http_cookie_domain_from_host: Literal["disable", "enable"]  # Enable/disable use of HTTP cookie domain from host | Default: disable
-    http_cookie_domain: str  # Domain that HTTP cookie persistence should apply t | MaxLen: 35
-    http_cookie_path: str  # Limit HTTP cookie persistence to the specified pat | MaxLen: 35
-    http_cookie_generation: int  # Generation of HTTP cookie to be accepted. Changing | Default: 0 | Min: 0 | Max: 4294967295
-    http_cookie_age: int  # Time in minutes that client web browsers should ke | Default: 60 | Min: 0 | Max: 525600
-    http_cookie_share: Literal["disable", "same-ip"]  # Control sharing of cookies across API Gateway. Use | Default: same-ip
-    https_cookie_secure: Literal["disable", "enable"]  # Enable/disable verification that inserted HTTPS co | Default: disable
-    ssl_dh_bits: Literal["768", "1024", "1536", "2048", "3072", "4096"]  # Number of bits to use in the Diffie-Hellman exchan | Default: 2048
-    ssl_algorithm: Literal["high", "medium", "low"]  # Permitted encryption algorithms for the server sid | Default: high
-    ssl_cipher_suites: str  # SSL/TLS cipher suites to offer to a server, ordere
-    ssl_min_version: Literal["tls-1.0", "tls-1.1", "tls-1.2", "tls-1.3"]  # Lowest SSL/TLS version acceptable from a server. | Default: tls-1.1
-    ssl_max_version: Literal["tls-1.0", "tls-1.1", "tls-1.2", "tls-1.3"]  # Highest SSL/TLS version acceptable from a server. | Default: tls-1.3
-    ssl_renegotiation: Literal["enable", "disable"]  # Enable/disable secure renegotiation to comply with | Default: enable
+# ================================================================
+# TypedDict Payloads
+# ================================================================
+
+class WebProxyApigatewayItem:
+    """Nested item for api-gateway field - supports attribute access."""
+    id: int
+    url_map: str
+    service: Literal["http", "https"]
+    ldb_method: Literal["static", "round-robin", "weighted", "first-alive", "http-host"]
+    url_map_type: Literal["sub-string", "wildcard", "regex"]
+    h2_support: Literal["enable", "disable"]
+    h3_support: Literal["enable", "disable"]
+    quic: str
+    realservers: str
+    persistence: Literal["none", "http-cookie"]
+    http_cookie_domain_from_host: Literal["disable", "enable"]
+    http_cookie_domain: str
+    http_cookie_path: str
+    http_cookie_generation: int
+    http_cookie_age: int
+    http_cookie_share: Literal["disable", "same-ip"]
+    https_cookie_secure: Literal["disable", "enable"]
+    ssl_dh_bits: Literal["768", "1024", "1536", "2048", "3072", "4096"]
+    ssl_algorithm: Literal["high", "medium", "low"]
+    ssl_cipher_suites: str
+    ssl_min_version: Literal["tls-1.0", "tls-1.1", "tls-1.2", "tls-1.3"]
+    ssl_max_version: Literal["tls-1.0", "tls-1.1", "tls-1.2", "tls-1.3"]
+    ssl_renegotiation: Literal["enable", "disable"]
 
 
-# ============================================================================
-# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional)
-# ============================================================================
-# NOTE: We intentionally DON'T use NotRequired wrapper because:
-# 1. total=False already makes all fields optional
-# 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
+class WebProxyApigateway6Item:
+    """Nested item for api-gateway6 field - supports attribute access."""
+    id: int
+    url_map: str
+    service: Literal["http", "https"]
+    ldb_method: Literal["static", "round-robin", "weighted", "first-alive", "http-host"]
+    url_map_type: Literal["sub-string", "wildcard", "regex"]
+    h2_support: Literal["enable", "disable"]
+    h3_support: Literal["enable", "disable"]
+    quic: str
+    realservers: str
+    persistence: Literal["none", "http-cookie"]
+    http_cookie_domain_from_host: Literal["disable", "enable"]
+    http_cookie_domain: str
+    http_cookie_path: str
+    http_cookie_generation: int
+    http_cookie_age: int
+    http_cookie_share: Literal["disable", "same-ip"]
+    https_cookie_secure: Literal["disable", "enable"]
+    ssl_dh_bits: Literal["768", "1024", "1536", "2048", "3072", "4096"]
+    ssl_algorithm: Literal["high", "medium", "low"]
+    ssl_cipher_suites: str
+    ssl_min_version: Literal["tls-1.0", "tls-1.1", "tls-1.2", "tls-1.3"]
+    ssl_max_version: Literal["tls-1.0", "tls-1.1", "tls-1.2", "tls-1.3"]
+    ssl_renegotiation: Literal["enable", "disable"]
+
+
 class WebProxyPayload(TypedDict, total=False):
-    """
-    Type hints for ztna/web_proxy payload fields.
-    
-    Configure ZTNA web-proxy.
-    
-    **Related Resources:**
-
-    Dependencies (resources this endpoint references):
-        - :class:`~.firewall.access-proxy-virtual-host.AccessProxyVirtualHostEndpoint` (via: auth-virtual-host, host)
-        - :class:`~.firewall.decrypted-traffic-mirror.DecryptedTrafficMirrorEndpoint` (via: decrypted-traffic-mirror)
-        - :class:`~.firewall.vip.VipEndpoint` (via: vip)
-        - :class:`~.firewall.vip6.Vip6Endpoint` (via: vip6)
-
-    **Usage:**
-        payload: WebProxyPayload = {
-            "field": "value",  # <- autocomplete shows all fields
-        }
-    """
-    name: str  # ZTNA proxy name. | MaxLen: 79
-    vip: str  # Virtual IP name. | MaxLen: 79
-    host: str  # Virtual or real host name. | MaxLen: 79
-    decrypted_traffic_mirror: str  # Decrypted traffic mirror. | MaxLen: 35
-    log_blocked_traffic: Literal["disable", "enable"]  # Enable/disable logging of blocked traffic. | Default: enable
-    auth_portal: Literal["disable", "enable"]  # Enable/disable authentication portal. | Default: disable
-    auth_virtual_host: str  # Virtual host for authentication portal. | MaxLen: 79
-    vip6: str  # Virtual IPv6 name. | MaxLen: 79
-    svr_pool_multiplex: Literal["enable", "disable"]  # Enable/disable server pool multiplexing | Default: disable
-    svr_pool_ttl: int  # Time-to-live in the server pool for idle connectio | Default: 15 | Min: 0 | Max: 2147483647
-    svr_pool_server_max_request: int  # Maximum number of requests that servers in the ser | Default: 0 | Min: 0 | Max: 2147483647
-    svr_pool_server_max_concurrent_request: int  # Maximum number of concurrent requests that servers | Default: 0 | Min: 0 | Max: 2147483647
-    api_gateway: list[WebProxyApigatewayItem]  # Set IPv4 API Gateway.
-    api_gateway6: list[WebProxyApigateway6Item]  # Set IPv6 API Gateway.
-
-# ============================================================================
-# Nested classes for table field children (object mode - for API responses)
-# ============================================================================
-
-@final
-class WebProxyApigatewayObject:
-    """Typed object for api-gateway table items.
-    
-    Provides IDE autocomplete for nested table field attributes.
-    At runtime, this is a FortiObject instance.
-    """
-    
-    # API Gateway ID. | Default: 0 | Min: 0 | Max: 4294967295
-    id: int
-    # URL pattern to match. | Default: / | MaxLen: 511
-    url_map: str
-    # Service. | Default: https
-    service: Literal["http", "https"]
-    # Method used to distribute sessions to real servers. | Default: static
-    ldb_method: Literal["static", "round-robin", "weighted", "first-alive", "http-host"]
-    # Type of url-map. | Default: sub-string
-    url_map_type: Literal["sub-string", "wildcard", "regex"]
-    # HTTP2 support, default=Enable. | Default: enable
-    h2_support: Literal["enable", "disable"]
-    # HTTP3/QUIC support, default=Disable. | Default: disable
-    h3_support: Literal["enable", "disable"]
-    # QUIC setting.
-    quic: str
-    # Select the real servers that this Access Proxy will distribu
-    realservers: str
-    # Configure how to make sure that clients connect to the same | Default: none
-    persistence: Literal["none", "http-cookie"]
-    # Enable/disable use of HTTP cookie domain from host field in | Default: disable
-    http_cookie_domain_from_host: Literal["disable", "enable"]
-    # Domain that HTTP cookie persistence should apply to. | MaxLen: 35
-    http_cookie_domain: str
-    # Limit HTTP cookie persistence to the specified path. | MaxLen: 35
-    http_cookie_path: str
-    # Generation of HTTP cookie to be accepted. Changing invalidat | Default: 0 | Min: 0 | Max: 4294967295
-    http_cookie_generation: int
-    # Time in minutes that client web browsers should keep a cooki | Default: 60 | Min: 0 | Max: 525600
-    http_cookie_age: int
-    # Control sharing of cookies across API Gateway. Use of same-i | Default: same-ip
-    http_cookie_share: Literal["disable", "same-ip"]
-    # Enable/disable verification that inserted HTTPS cookies are | Default: disable
-    https_cookie_secure: Literal["disable", "enable"]
-    # Number of bits to use in the Diffie-Hellman exchange for RSA | Default: 2048
-    ssl_dh_bits: Literal["768", "1024", "1536", "2048", "3072", "4096"]
-    # Permitted encryption algorithms for the server side of SSL f | Default: high
-    ssl_algorithm: Literal["high", "medium", "low"]
-    # SSL/TLS cipher suites to offer to a server, ordered by prior
-    ssl_cipher_suites: str
-    # Lowest SSL/TLS version acceptable from a server. | Default: tls-1.1
-    ssl_min_version: Literal["tls-1.0", "tls-1.1", "tls-1.2", "tls-1.3"]
-    # Highest SSL/TLS version acceptable from a server. | Default: tls-1.3
-    ssl_max_version: Literal["tls-1.0", "tls-1.1", "tls-1.2", "tls-1.3"]
-    # Enable/disable secure renegotiation to comply with RFC 5746. | Default: enable
-    ssl_renegotiation: Literal["enable", "disable"]
-    
-    # Common API response fields
-    status: str
-    http_status: int | None
-    http_status_code: int | None
-    http_method: str | None
-    http_response_time: float | None
-    vdom: str | None
-    
-    # Methods from FortiObject
-    @property
-    def dict(self) -> dict[str, Any]:
-        """Convert to dictionary."""
-        ...
-    @property
-    def json(self) -> str:
-        """Get pretty-printed JSON string."""
-        ...
-    @property
-    def raw(self) -> dict[str, Any]:
-        """Get raw API response data."""
-        ...
-    def get_full(self, name: str) -> Any: ...
-    def to_dict(self) -> FortiObject: ...
-    def keys(self) -> Any: ...
-    def values(self) -> Generator[Any, None, None]: ...
-    def items(self) -> Generator[tuple[str, Any], None, None]: ...
-    def get(self, key: str, default: Any = None) -> Any: ...
-
-
-@final
-class WebProxyApigateway6Object:
-    """Typed object for api-gateway6 table items.
-    
-    Provides IDE autocomplete for nested table field attributes.
-    At runtime, this is a FortiObject instance.
-    """
-    
-    # API Gateway ID. | Default: 0 | Min: 0 | Max: 4294967295
-    id: int
-    # URL pattern to match. | Default: / | MaxLen: 511
-    url_map: str
-    # Service. | Default: https
-    service: Literal["http", "https"]
-    # Method used to distribute sessions to real servers. | Default: static
-    ldb_method: Literal["static", "round-robin", "weighted", "first-alive", "http-host"]
-    # Type of url-map. | Default: sub-string
-    url_map_type: Literal["sub-string", "wildcard", "regex"]
-    # HTTP2 support, default=Enable. | Default: enable
-    h2_support: Literal["enable", "disable"]
-    # HTTP3/QUIC support, default=Disable. | Default: disable
-    h3_support: Literal["enable", "disable"]
-    # QUIC setting.
-    quic: str
-    # Select the real servers that this Access Proxy will distribu
-    realservers: str
-    # Configure how to make sure that clients connect to the same | Default: none
-    persistence: Literal["none", "http-cookie"]
-    # Enable/disable use of HTTP cookie domain from host field in | Default: disable
-    http_cookie_domain_from_host: Literal["disable", "enable"]
-    # Domain that HTTP cookie persistence should apply to. | MaxLen: 35
-    http_cookie_domain: str
-    # Limit HTTP cookie persistence to the specified path. | MaxLen: 35
-    http_cookie_path: str
-    # Generation of HTTP cookie to be accepted. Changing invalidat | Default: 0 | Min: 0 | Max: 4294967295
-    http_cookie_generation: int
-    # Time in minutes that client web browsers should keep a cooki | Default: 60 | Min: 0 | Max: 525600
-    http_cookie_age: int
-    # Control sharing of cookies across API Gateway. Use of same-i | Default: same-ip
-    http_cookie_share: Literal["disable", "same-ip"]
-    # Enable/disable verification that inserted HTTPS cookies are | Default: disable
-    https_cookie_secure: Literal["disable", "enable"]
-    # Number of bits to use in the Diffie-Hellman exchange for RSA | Default: 2048
-    ssl_dh_bits: Literal["768", "1024", "1536", "2048", "3072", "4096"]
-    # Permitted encryption algorithms for the server side of SSL f | Default: high
-    ssl_algorithm: Literal["high", "medium", "low"]
-    # SSL/TLS cipher suites to offer to a server, ordered by prior
-    ssl_cipher_suites: str
-    # Lowest SSL/TLS version acceptable from a server. | Default: tls-1.1
-    ssl_min_version: Literal["tls-1.0", "tls-1.1", "tls-1.2", "tls-1.3"]
-    # Highest SSL/TLS version acceptable from a server. | Default: tls-1.3
-    ssl_max_version: Literal["tls-1.0", "tls-1.1", "tls-1.2", "tls-1.3"]
-    # Enable/disable secure renegotiation to comply with RFC 5746. | Default: enable
-    ssl_renegotiation: Literal["enable", "disable"]
-    
-    # Common API response fields
-    status: str
-    http_status: int | None
-    http_status_code: int | None
-    http_method: str | None
-    http_response_time: float | None
-    vdom: str | None
-    
-    # Methods from FortiObject
-    @property
-    def dict(self) -> dict[str, Any]:
-        """Convert to dictionary."""
-        ...
-    @property
-    def json(self) -> str:
-        """Get pretty-printed JSON string."""
-        ...
-    @property
-    def raw(self) -> dict[str, Any]:
-        """Get raw API response data."""
-        ...
-    def get_full(self, name: str) -> Any: ...
-    def to_dict(self) -> FortiObject: ...
-    def keys(self) -> Any: ...
-    def values(self) -> Generator[Any, None, None]: ...
-    def items(self) -> Generator[tuple[str, Any], None, None]: ...
-    def get(self, key: str, default: Any = None) -> Any: ...
-
-
-
-
-# Response TypedDict for GET returns (all fields present in API response)
-class WebProxyResponse(TypedDict):
-    """
-    Type hints for ztna/web_proxy API response fields.
-    
-    All fields are present in the response from the FortiGate API.
-    """
-    name: str  # ZTNA proxy name. | MaxLen: 79
-    vip: str  # Virtual IP name. | MaxLen: 79
-    host: str  # Virtual or real host name. | MaxLen: 79
-    decrypted_traffic_mirror: str  # Decrypted traffic mirror. | MaxLen: 35
-    log_blocked_traffic: Literal["disable", "enable"]  # Enable/disable logging of blocked traffic. | Default: enable
-    auth_portal: Literal["disable", "enable"]  # Enable/disable authentication portal. | Default: disable
-    auth_virtual_host: str  # Virtual host for authentication portal. | MaxLen: 79
-    vip6: str  # Virtual IPv6 name. | MaxLen: 79
-    svr_pool_multiplex: Literal["enable", "disable"]  # Enable/disable server pool multiplexing | Default: disable
-    svr_pool_ttl: int  # Time-to-live in the server pool for idle connectio | Default: 15 | Min: 0 | Max: 2147483647
-    svr_pool_server_max_request: int  # Maximum number of requests that servers in the ser | Default: 0 | Min: 0 | Max: 2147483647
-    svr_pool_server_max_concurrent_request: int  # Maximum number of concurrent requests that servers | Default: 0 | Min: 0 | Max: 2147483647
-    api_gateway: list[WebProxyApigatewayItem]  # Set IPv4 API Gateway.
-    api_gateway6: list[WebProxyApigateway6Item]  # Set IPv6 API Gateway.
-
-
-@final
-class WebProxyObject:
-    """Typed FortiObject for ztna/web_proxy with IDE autocomplete support.
-    
-    This is a typed wrapper that provides IDE autocomplete for API response fields.
-    At runtime, this is actually a FortiObject instance.
-    """
-    
-    # ZTNA proxy name. | MaxLen: 79
+    """Payload type for WebProxy operations."""
     name: str
-    # Virtual IP name. | MaxLen: 79
     vip: str
-    # Virtual or real host name. | MaxLen: 79
     host: str
-    # Decrypted traffic mirror. | MaxLen: 35
     decrypted_traffic_mirror: str
-    # Enable/disable logging of blocked traffic. | Default: enable
     log_blocked_traffic: Literal["disable", "enable"]
-    # Enable/disable authentication portal. | Default: disable
     auth_portal: Literal["disable", "enable"]
-    # Virtual host for authentication portal. | MaxLen: 79
     auth_virtual_host: str
-    # Virtual IPv6 name. | MaxLen: 79
     vip6: str
-    # Enable/disable server pool multiplexing (default = disable). | Default: disable
     svr_pool_multiplex: Literal["enable", "disable"]
-    # Time-to-live in the server pool for idle connections to serv | Default: 15 | Min: 0 | Max: 2147483647
     svr_pool_ttl: int
-    # Maximum number of requests that servers in the server pool h | Default: 0 | Min: 0 | Max: 2147483647
     svr_pool_server_max_request: int
-    # Maximum number of concurrent requests that servers in the se | Default: 0 | Min: 0 | Max: 2147483647
     svr_pool_server_max_concurrent_request: int
-    # Set IPv4 API Gateway.
-    api_gateway: list[WebProxyApigatewayObject]
-    # Set IPv6 API Gateway.
-    api_gateway6: list[WebProxyApigateway6Object]
-    
-    # Common API response fields
-    status: str
-    http_status: int | None
-    http_status_code: int | None
-    http_method: str | None
-    http_response_time: float | None
-    vdom: str | None
-    
-    # Methods from FortiObject
-    @property
-    def dict(self) -> dict[str, Any]:
-        """Convert to dictionary."""
-        ...
-    @property
-    def json(self) -> str:
-        """Get pretty-printed JSON string."""
-        ...
-    @property
-    def raw(self) -> dict[str, Any]:
-        """Get raw API response data."""
-        ...
-    def get_full(self, name: str) -> Any: ...
-    def to_dict(self) -> WebProxyPayload: ...
-    def keys(self) -> Any: ...
-    def values(self) -> Generator[Any, None, None]: ...
-    def items(self) -> Generator[tuple[str, Any], None, None]: ...
-    def get(self, key: str, default: Any = None) -> Any: ...
+    api_gateway: str | list[str] | list[dict[str, Any]] | list[WebProxyApigatewayItem]
+    api_gateway6: str | list[str] | list[dict[str, Any]] | list[WebProxyApigateway6Item]
 
+
+# ================================================================
+# Response Types (TypedDict for dict-style access)
+# ================================================================
+
+class WebProxyResponse(TypedDict, total=False):
+    """Response type for WebProxy - use with .dict property for typed dict access."""
+    name: str
+    vip: str
+    host: str
+    decrypted_traffic_mirror: str
+    log_blocked_traffic: Literal["disable", "enable"]
+    auth_portal: Literal["disable", "enable"]
+    auth_virtual_host: str
+    vip6: str
+    svr_pool_multiplex: Literal["enable", "disable"]
+    svr_pool_ttl: int
+    svr_pool_server_max_request: int
+    svr_pool_server_max_concurrent_request: int
+    api_gateway: list[WebProxyApigatewayItem]
+    api_gateway6: list[WebProxyApigateway6Item]
+
+
+# ================================================================
+# Response Types (Class for attribute access)
+# ================================================================
+
+
+class WebProxyObject(FortiObject):
+    """Typed FortiObject for WebProxy with field access."""
+    name: str
+    vip: str
+    host: str
+    decrypted_traffic_mirror: str
+    log_blocked_traffic: Literal["disable", "enable"]
+    auth_portal: Literal["disable", "enable"]
+    auth_virtual_host: str
+    vip6: str
+    svr_pool_multiplex: Literal["enable", "disable"]
+    svr_pool_ttl: int
+    svr_pool_server_max_request: int
+    svr_pool_server_max_concurrent_request: int
+    api_gateway: list[WebProxyApigatewayItem]
+    api_gateway6: list[WebProxyApigateway6Item]
+
+
+# ================================================================
+# Main Endpoint Class
+# ================================================================
 
 class WebProxy:
     """
-    Configure ZTNA web-proxy.
     
-    Path: ztna/web_proxy
+    Endpoint: ztna/web_proxy
     Category: cmdb
-    Primary Key: name
+    MKey: name
     """
     
+    # Class attributes for introspection
+    endpoint: ClassVar[str] = ...
+    path: ClassVar[str] = ...
+    category: ClassVar[str] = ...
+    mkey: ClassVar[str] = ...
+    capabilities: ClassVar[dict[str, Any]] = ...
+    
     def __init__(self, client: Any) -> None:
-        """Initialize endpoint with HTTP client.
-        
-        Args:
-            client: HTTP client instance for API communication
-        """
+        """Initialize endpoint with HTTP client."""
         ...
     
     # ================================================================
-    # GET OVERLOADS - Always returns FortiObject (or ContentResponse for file endpoints)
-    # Pylance matches overloads top-to-bottom, so these must come first!
+    # GET Methods
     # ================================================================
     
-    # With mkey as positional arg -> returns FortiObject
+    # CMDB with mkey - overloads for single vs list returns
     @overload
     def get(
         self,
         name: str,
+        *,
         filter: str | list[str] | None = ...,
         count: int | None = ...,
         start: int | None = ...,
@@ -470,14 +185,14 @@ class WebProxy:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        error_mode: Literal["raise", "return", "print"] | None = ...,
+        error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> WebProxyObject: ...
     
-    # With mkey as keyword arg -> returns FortiObject
     @overload
     def get(
         self,
         *,
-        name: str,
         filter: str | list[str] | None = ...,
         count: int | None = ...,
         start: int | None = ...,
@@ -487,164 +202,20 @@ class WebProxy:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> WebProxyObject: ...
-    
-    # Without mkey -> returns list of FortiObjects
-    @overload
-    def get(
-        self,
-        name: None = None,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
+        error_mode: Literal["raise", "return", "print"] | None = ...,
+        error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> FortiObjectList[WebProxyObject]: ...
-    
-    # ================================================================
-    # (removed - all GET now returns FortiObject)
-    # ================================================================
-    
-    # With mkey as positional arg -> returns single object
-    @overload
-    def get(
-        self,
-        name: str,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> WebProxyObject: ...
-    
-    # With mkey as keyword arg -> returns single object
-    @overload
-    def get(
-        self,
-        *,
-        name: str,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> WebProxyObject: ...
-    
-    # With no mkey -> returns list of objects
-    @overload
-    def get(
-        self,
-        *,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObjectList[WebProxyObject]: ...
-    
-    # Dict mode with mkey provided as positional arg (single dict)
-    @overload
-    def get(
-        self,
-        name: str,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> WebProxyObject: ...
-    
-    # Dict mode with mkey provided as keyword arg (single dict)
-    @overload
-    def get(
-        self,
-        *,
-        name: str,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> WebProxyObject: ...
-    
-    # Dict mode - list of dicts (no mkey/name provided) - keyword-only signature
-    @overload
-    def get(
-        self,
-        *,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObjectList[WebProxyObject]: ...
-    
-    # Fallback overload for all other cases
-    @overload
-    def get(
-        self,
-        name: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> Union[dict[str, Any], list[dict[str, Any]], FortiObject, list[FortiObject]]: ...
-    
-    def get(
-        self,
-        name: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> WebProxyObject | list[WebProxyObject] | dict[str, Any] | list[dict[str, Any]]: ...
     
     def get_schema(
         self,
         vdom: str | None = ...,
         format: str = ...,
     ) -> FortiObject: ...
+
+    # ================================================================
+    # POST Method
+    # ================================================================
     
-    # POST overloads
-    @overload
     def post(
         self,
         payload_dict: WebProxyPayload | None = ...,
@@ -660,76 +231,17 @@ class WebProxy:
         svr_pool_ttl: int | None = ...,
         svr_pool_server_max_request: int | None = ...,
         svr_pool_server_max_concurrent_request: int | None = ...,
-        api_gateway: str | list[str] | list[WebProxyApigatewayItem] | None = ...,
-        api_gateway6: str | list[str] | list[WebProxyApigateway6Item] | None = ...,
+        api_gateway: str | list[str] | list[dict[str, Any]] | list[WebProxyApigatewayItem] | None = ...,
+        api_gateway6: str | list[str] | list[dict[str, Any]] | list[WebProxyApigateway6Item] | None = ...,
         vdom: str | bool | None = ...,
+        error_mode: Literal["raise", "return", "print"] | None = ...,
+        error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> WebProxyObject: ...
+
+    # ================================================================
+    # PUT Method
+    # ================================================================
     
-    @overload
-    def post(
-        self,
-        payload_dict: WebProxyPayload | None = ...,
-        name: str | None = ...,
-        vip: str | None = ...,
-        host: str | None = ...,
-        decrypted_traffic_mirror: str | None = ...,
-        log_blocked_traffic: Literal["disable", "enable"] | None = ...,
-        auth_portal: Literal["disable", "enable"] | None = ...,
-        auth_virtual_host: str | None = ...,
-        vip6: str | None = ...,
-        svr_pool_multiplex: Literal["enable", "disable"] | None = ...,
-        svr_pool_ttl: int | None = ...,
-        svr_pool_server_max_request: int | None = ...,
-        svr_pool_server_max_concurrent_request: int | None = ...,
-        api_gateway: str | list[str] | list[WebProxyApigatewayItem] | None = ...,
-        api_gateway6: str | list[str] | list[WebProxyApigateway6Item] | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
-    
-    # Default overload
-    @overload
-    def post(
-        self,
-        payload_dict: WebProxyPayload | None = ...,
-        name: str | None = ...,
-        vip: str | None = ...,
-        host: str | None = ...,
-        decrypted_traffic_mirror: str | None = ...,
-        log_blocked_traffic: Literal["disable", "enable"] | None = ...,
-        auth_portal: Literal["disable", "enable"] | None = ...,
-        auth_virtual_host: str | None = ...,
-        vip6: str | None = ...,
-        svr_pool_multiplex: Literal["enable", "disable"] | None = ...,
-        svr_pool_ttl: int | None = ...,
-        svr_pool_server_max_request: int | None = ...,
-        svr_pool_server_max_concurrent_request: int | None = ...,
-        api_gateway: str | list[str] | list[WebProxyApigatewayItem] | None = ...,
-        api_gateway6: str | list[str] | list[WebProxyApigateway6Item] | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
-    
-    def post(
-        self,
-        payload_dict: WebProxyPayload | None = ...,
-        name: str | None = ...,
-        vip: str | None = ...,
-        host: str | None = ...,
-        decrypted_traffic_mirror: str | None = ...,
-        log_blocked_traffic: Literal["disable", "enable"] | None = ...,
-        auth_portal: Literal["disable", "enable"] | None = ...,
-        auth_virtual_host: str | None = ...,
-        vip6: str | None = ...,
-        svr_pool_multiplex: Literal["enable", "disable"] | None = ...,
-        svr_pool_ttl: int | None = ...,
-        svr_pool_server_max_request: int | None = ...,
-        svr_pool_server_max_concurrent_request: int | None = ...,
-        api_gateway: str | list[str] | list[WebProxyApigatewayItem] | None = ...,
-        api_gateway6: str | list[str] | list[WebProxyApigateway6Item] | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
-    
-    # PUT overloads
-    @overload
     def put(
         self,
         payload_dict: WebProxyPayload | None = ...,
@@ -745,102 +257,28 @@ class WebProxy:
         svr_pool_ttl: int | None = ...,
         svr_pool_server_max_request: int | None = ...,
         svr_pool_server_max_concurrent_request: int | None = ...,
-        api_gateway: str | list[str] | list[WebProxyApigatewayItem] | None = ...,
-        api_gateway6: str | list[str] | list[WebProxyApigateway6Item] | None = ...,
+        api_gateway: str | list[str] | list[dict[str, Any]] | list[WebProxyApigatewayItem] | None = ...,
+        api_gateway6: str | list[str] | list[dict[str, Any]] | list[WebProxyApigateway6Item] | None = ...,
         vdom: str | bool | None = ...,
+        error_mode: Literal["raise", "return", "print"] | None = ...,
+        error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> WebProxyObject: ...
-    
-    @overload
-    def put(
-        self,
-        payload_dict: WebProxyPayload | None = ...,
-        name: str | None = ...,
-        vip: str | None = ...,
-        host: str | None = ...,
-        decrypted_traffic_mirror: str | None = ...,
-        log_blocked_traffic: Literal["disable", "enable"] | None = ...,
-        auth_portal: Literal["disable", "enable"] | None = ...,
-        auth_virtual_host: str | None = ...,
-        vip6: str | None = ...,
-        svr_pool_multiplex: Literal["enable", "disable"] | None = ...,
-        svr_pool_ttl: int | None = ...,
-        svr_pool_server_max_request: int | None = ...,
-        svr_pool_server_max_concurrent_request: int | None = ...,
-        api_gateway: str | list[str] | list[WebProxyApigatewayItem] | None = ...,
-        api_gateway6: str | list[str] | list[WebProxyApigateway6Item] | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
-    
-    # Default overload
-    @overload
-    def put(
-        self,
-        payload_dict: WebProxyPayload | None = ...,
-        name: str | None = ...,
-        vip: str | None = ...,
-        host: str | None = ...,
-        decrypted_traffic_mirror: str | None = ...,
-        log_blocked_traffic: Literal["disable", "enable"] | None = ...,
-        auth_portal: Literal["disable", "enable"] | None = ...,
-        auth_virtual_host: str | None = ...,
-        vip6: str | None = ...,
-        svr_pool_multiplex: Literal["enable", "disable"] | None = ...,
-        svr_pool_ttl: int | None = ...,
-        svr_pool_server_max_request: int | None = ...,
-        svr_pool_server_max_concurrent_request: int | None = ...,
-        api_gateway: str | list[str] | list[WebProxyApigatewayItem] | None = ...,
-        api_gateway6: str | list[str] | list[WebProxyApigateway6Item] | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
-    
-    def put(
-        self,
-        payload_dict: WebProxyPayload | None = ...,
-        name: str | None = ...,
-        vip: str | None = ...,
-        host: str | None = ...,
-        decrypted_traffic_mirror: str | None = ...,
-        log_blocked_traffic: Literal["disable", "enable"] | None = ...,
-        auth_portal: Literal["disable", "enable"] | None = ...,
-        auth_virtual_host: str | None = ...,
-        vip6: str | None = ...,
-        svr_pool_multiplex: Literal["enable", "disable"] | None = ...,
-        svr_pool_ttl: int | None = ...,
-        svr_pool_server_max_request: int | None = ...,
-        svr_pool_server_max_concurrent_request: int | None = ...,
-        api_gateway: str | list[str] | list[WebProxyApigatewayItem] | None = ...,
-        api_gateway6: str | list[str] | list[WebProxyApigateway6Item] | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
-    
-    # DELETE overloads
-    @overload
-    def delete(
-        self,
-        name: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> WebProxyObject: ...
-    
-    @overload
-    def delete(
-        self,
-        name: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
-    
-    # Default overload
-    @overload
-    def delete(
-        self,
-        name: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+
+    # ================================================================
+    # DELETE Method
+    # ================================================================
     
     def delete(
         self,
         name: str | None = ...,
         vdom: str | bool | None = ...,
+        error_mode: Literal["raise", "return", "print"] | None = ...,
+        error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> FortiObject: ...
+
+    # ================================================================
+    # Utility Methods
+    # ================================================================
     
     def exists(
         self,
@@ -863,9 +301,11 @@ class WebProxy:
         svr_pool_ttl: int | None = ...,
         svr_pool_server_max_request: int | None = ...,
         svr_pool_server_max_concurrent_request: int | None = ...,
-        api_gateway: str | list[str] | list[WebProxyApigatewayItem] | None = ...,
-        api_gateway6: str | list[str] | list[WebProxyApigateway6Item] | None = ...,
+        api_gateway: str | list[str] | list[dict[str, Any]] | list[WebProxyApigatewayItem] | None = ...,
+        api_gateway6: str | list[str] | list[dict[str, Any]] | list[WebProxyApigateway6Item] | None = ...,
         vdom: str | bool | None = ...,
+        error_mode: Literal["raise", "return", "print"] | None = ...,
+        error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> FortiObject: ...
     
     # Helper methods
@@ -873,7 +313,7 @@ class WebProxy:
     def help(field_name: str | None = ...) -> str: ...
     
     @staticmethod
-    def fields(detailed: bool = ...) -> Union[list[str], list[dict[str, Any]]]: ...
+    def fields(detailed: bool = ...) -> list[str] | list[dict[str, Any]]: ...
     
     @staticmethod
     def field_info(field_name: str) -> FortiObject: ...
@@ -889,9 +329,6 @@ class WebProxy:
     
     @staticmethod
     def schema() -> FortiObject: ...
-
-
-# ================================================================
 
 
 __all__ = [

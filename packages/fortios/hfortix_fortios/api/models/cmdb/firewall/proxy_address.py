@@ -13,38 +13,27 @@ from enum import Enum
 from uuid import UUID
 
 # ============================================================================
-# Child Table Models
+# Enum Definitions for Child Table Fields (for fields with 4+ allowed values)
 # ============================================================================
 
-class ProxyAddressCategory(BaseModel):
+# ============================================================================
+# Child Table Models (sorted deepest-first so nested models are defined before their parents)
+# ============================================================================
+
+class ProxyAddressTaggingTags(BaseModel):
     """
-    Child table model for category.
+    Child table model for tagging.tags.
     
-    FortiGuard category ID.
-    """
-    
-    class Config:
-        """Pydantic model configuration."""
-        extra = "allow"  # Allow additional fields from API
-        str_strip_whitespace = True
-    
-    id: int | None = Field(ge=0, le=4294967295, default=0, description="FortiGuard category ID.")
-class ProxyAddressHeaderGroup(BaseModel):
-    """
-    Child table model for header-group.
-    
-    HTTP header group.
+    Tags.
     """
     
     class Config:
         """Pydantic model configuration."""
         extra = "allow"  # Allow additional fields from API
         str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
     
-    id: int | None = Field(ge=0, le=4294967295, default=0, description="ID.")    
-    header_name: str = Field(max_length=79, default="", description="HTTP header.")    
-    header: str = Field(max_length=255, default="", description="HTTP header regular expression.")    
-    case_sensitivity: Literal["disable", "enable"] | None = Field(default="disable", description="Case sensitivity in pattern.")
+    name: str | None = Field(max_length=79, default=None, description="Tag name.")  # datasource: ['system.object-tagging.tags.name']
 class ProxyAddressTagging(BaseModel):
     """
     Child table model for tagging.
@@ -56,10 +45,42 @@ class ProxyAddressTagging(BaseModel):
         """Pydantic model configuration."""
         extra = "allow"  # Allow additional fields from API
         str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
     
-    name: str | None = Field(max_length=63, default="", description="Tagging entry name.")    
-    category: str | None = Field(max_length=63, default="", description="Tag category.")  # datasource: ['system.object-tagging.category']    
-    tags: list[Tags] = Field(default=None, description="Tags.")
+    name: str | None = Field(max_length=63, default=None, description="Tagging entry name.")    
+    category: str | None = Field(max_length=63, default=None, description="Tag category.")  # datasource: ['system.object-tagging.category']    
+    tags: list[ProxyAddressTaggingTags] = Field(default_factory=list, description="Tags.")
+class ProxyAddressHeaderGroup(BaseModel):
+    """
+    Child table model for header-group.
+    
+    HTTP header group.
+    """
+    
+    class Config:
+        """Pydantic model configuration."""
+        extra = "allow"  # Allow additional fields from API
+        str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
+    
+    id_: int | None = Field(ge=0, le=4294967295, default=0, serialization_alias="id", description="ID.")    
+    header_name: str = Field(max_length=79, description="HTTP header.")    
+    header: str = Field(max_length=255, description="HTTP header regular expression.")    
+    case_sensitivity: Literal["disable", "enable"] | None = Field(default="disable", description="Case sensitivity in pattern.")
+class ProxyAddressCategory(BaseModel):
+    """
+    Child table model for category.
+    
+    FortiGuard category ID.
+    """
+    
+    class Config:
+        """Pydantic model configuration."""
+        extra = "allow"  # Allow additional fields from API
+        str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
+    
+    id_: int | None = Field(ge=0, le=4294967295, default=0, serialization_alias="id", description="FortiGuard category ID.")
 class ProxyAddressApplication(BaseModel):
     """
     Child table model for application.
@@ -71,21 +92,49 @@ class ProxyAddressApplication(BaseModel):
         """Pydantic model configuration."""
         extra = "allow"  # Allow additional fields from API
         str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
     
-    name: str | None = Field(max_length=79, default="", description="SaaS application name.")
+    name: str | None = Field(max_length=79, default=None, description="SaaS application name.")
 # ============================================================================
 # Enum Definitions (for fields with 4+ allowed values)
 # ============================================================================
 
 class ProxyAddressTypeEnum(str, Enum):
-    """Allowed values for type field."""
-    HOST_REGEX = "host-regex"    URL = "url"    CATEGORY = "category"    METHOD = "method"    UA = "ua"    HEADER = "header"    SRC_ADVANCED = "src-advanced"    DST_ADVANCED = "dst-advanced"    SAAS = "saas"
+    """Allowed values for type_ field."""
+    HOST_REGEX = "host-regex"
+    URL = "url"
+    CATEGORY = "category"
+    METHOD = "method"
+    UA = "ua"
+    HEADER = "header"
+    SRC_ADVANCED = "src-advanced"
+    DST_ADVANCED = "dst-advanced"
+    SAAS = "saas"
+
 class ProxyAddressMethodEnum(str, Enum):
     """Allowed values for method field."""
-    GET = "get"    POST = "post"    PUT = "put"    HEAD = "head"    CONNECT = "connect"    TRACE = "trace"    OPTIONS = "options"    DELETE = "delete"    UPDATE = "update"    PATCH = "patch"    OTHER = "other"
+    GET = "get"
+    POST = "post"
+    PUT = "put"
+    HEAD = "head"
+    CONNECT = "connect"
+    TRACE = "trace"
+    OPTIONS = "options"
+    DELETE = "delete"
+    UPDATE = "update"
+    PATCH = "patch"
+    OTHER = "other"
+
 class ProxyAddressUaEnum(str, Enum):
     """Allowed values for ua field."""
-    CHROME = "chrome"    MS = "ms"    FIREFOX = "firefox"    SAFARI = "safari"    IE = "ie"    EDGE = "edge"    OTHER = "other"
+    CHROME = "chrome"
+    MS = "ms"
+    FIREFOX = "firefox"
+    SAFARI = "safari"
+    IE = "ie"
+    EDGE = "edge"
+    OTHER = "other"
+
 
 # ============================================================================
 # Main Model
@@ -97,7 +146,7 @@ class ProxyAddressModel(BaseModel):
     
     Configure web proxy address.
     
-    Validation Rules:        - name: max_length=79 pattern=        - uuid: pattern=        - type: pattern=        - host: max_length=79 pattern=        - host_regex: max_length=255 pattern=        - path: max_length=255 pattern=        - query: max_length=255 pattern=        - referrer: pattern=        - category: pattern=        - method: pattern=        - ua: pattern=        - ua_min_ver: max_length=63 pattern=        - ua_max_ver: max_length=63 pattern=        - header_name: max_length=79 pattern=        - header: max_length=255 pattern=        - case_sensitivity: pattern=        - header_group: pattern=        - color: min=0 max=32 pattern=        - tagging: pattern=        - comment: max_length=255 pattern=        - application: pattern=    """
+    Validation Rules:        - name: max_length=79 pattern=        - uuid: pattern=        - type_: pattern=        - host: max_length=79 pattern=        - host_regex: max_length=255 pattern=        - path: max_length=255 pattern=        - query: max_length=255 pattern=        - referrer: pattern=        - category: pattern=        - method: pattern=        - ua: pattern=        - ua_min_ver: max_length=63 pattern=        - ua_max_ver: max_length=63 pattern=        - header_name: max_length=79 pattern=        - header: max_length=255 pattern=        - case_sensitivity: pattern=        - header_group: pattern=        - color: min=0 max=32 pattern=        - tagging: pattern=        - comment: max_length=255 pattern=        - application: pattern=    """
     
     class Config:
         """Pydantic model configuration."""
@@ -110,27 +159,27 @@ class ProxyAddressModel(BaseModel):
     # Model Fields
     # ========================================================================
     
-    name: str | None = Field(max_length=79, default="", description="Address name.")    
+    name: str | None = Field(max_length=79, default=None, description="Address name.")    
     uuid: str | None = Field(default="00000000-0000-0000-0000-000000000000", description="Universally Unique Identifier (UUID; automatically assigned but can be manually reset).")    
-    type: TypeEnum | None = Field(default="url", description="Proxy address type.")    
-    host: str = Field(max_length=79, default="", description="Address object for the host.")  # datasource: ['firewall.address.name', 'firewall.addrgrp.name', 'firewall.proxy-address.name', 'firewall.vipgrp.name', 'firewall.vip.name']    
-    host_regex: str | None = Field(max_length=255, default="", description="Host name as a regular expression.")    
-    path: str | None = Field(max_length=255, default="", description="URL path as a regular expression.")    
-    query: str | None = Field(max_length=255, default="", description="Match the query part of the URL as a regular expression.")    
+    type_: ProxyAddressTypeEnum | None = Field(default=ProxyAddressTypeEnum.URL, serialization_alias="type", description="Proxy address type.")    
+    host: str = Field(max_length=79, description="Address object for the host.")  # datasource: ['firewall.address.name', 'firewall.addrgrp.name', 'firewall.proxy-address.name', 'firewall.vipgrp.name', 'firewall.vip.name']    
+    host_regex: str | None = Field(max_length=255, default=None, description="Host name as a regular expression.")    
+    path: str | None = Field(max_length=255, default=None, description="URL path as a regular expression.")    
+    query: str | None = Field(max_length=255, default=None, description="Match the query part of the URL as a regular expression.")    
     referrer: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable use of referrer field in the HTTP header to match the address.")    
-    category: list[Category] = Field(default=None, description="FortiGuard category ID.")    
-    method: list[Method] = Field(default="", description="HTTP request methods to be used.")    
-    ua: list[Ua] = Field(default="", description="Names of browsers to be used as user agent.")    
-    ua_min_ver: str | None = Field(max_length=63, default="", description="Minimum version of the user agent specified in dotted notation. For example, use 90.0.1 with the ua field set to \"chrome\" to require Google Chrome's minimum version must be 90.0.1.")    
-    ua_max_ver: str | None = Field(max_length=63, default="", description="Maximum version of the user agent specified in dotted notation. For example, use 120 with the ua field set to \"chrome\" to require Google Chrome's maximum version must be 120.")    
-    header_name: str | None = Field(max_length=79, default="", description="Name of HTTP header.")    
-    header: str | None = Field(max_length=255, default="", description="HTTP header name as a regular expression.")    
+    category: list[ProxyAddressCategory] = Field(default_factory=list, description="FortiGuard category ID.")    
+    method: list[ProxyAddressMethodEnum] = Field(default_factory=list, description="HTTP request methods to be used.")    
+    ua: list[ProxyAddressUaEnum] = Field(default_factory=list, description="Names of browsers to be used as user agent.")    
+    ua_min_ver: str | None = Field(max_length=63, default=None, description="Minimum version of the user agent specified in dotted notation. For example, use 90.0.1 with the ua field set to \"chrome\" to require Google Chrome's minimum version must be 90.0.1.")    
+    ua_max_ver: str | None = Field(max_length=63, default=None, description="Maximum version of the user agent specified in dotted notation. For example, use 120 with the ua field set to \"chrome\" to require Google Chrome's maximum version must be 120.")    
+    header_name: str | None = Field(max_length=79, default=None, description="Name of HTTP header.")    
+    header: str | None = Field(max_length=255, default=None, description="HTTP header name as a regular expression.")    
     case_sensitivity: Literal["disable", "enable"] | None = Field(default="disable", description="Enable to make the pattern case sensitive.")    
-    header_group: list[HeaderGroup] = Field(default=None, description="HTTP header group.")    
+    header_group: list[ProxyAddressHeaderGroup] = Field(default_factory=list, description="HTTP header group.")    
     color: int | None = Field(ge=0, le=32, default=0, description="Integer value to determine the color of the icon in the GUI (1 - 32, default = 0, which sets value to 1).")    
-    tagging: list[Tagging] = Field(default=None, description="Config object tagging.")    
+    tagging: list[ProxyAddressTagging] = Field(default_factory=list, description="Config object tagging.")    
     comment: str | None = Field(max_length=255, default=None, description="Optional comments.")    
-    application: list[Application] = Field(description="SaaS application.")    
+    application: list[ProxyAddressApplication] = Field(description="SaaS application.")    
     # ========================================================================
     # Custom Validators
     # ========================================================================
@@ -210,7 +259,7 @@ class ProxyAddressModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.proxy_address.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate scalar field
         value = getattr(self, "host", None)
@@ -223,7 +272,7 @@ class ProxyAddressModel(BaseModel):
             found = True
         elif await client.api.cmdb.firewall.addrgrp.exists(value):
             found = True
-        elif await client.api.cmdb.firewall.proxy-address.exists(value):
+        elif await client.api.cmdb.firewall.proxy_address.exists(value):
             found = True
         elif await client.api.cmdb.firewall.vipgrp.exists(value):
             found = True
@@ -267,7 +316,7 @@ class ProxyAddressModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.proxy_address.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate child table items
         values = getattr(self, "tagging", [])
@@ -285,7 +334,7 @@ class ProxyAddressModel(BaseModel):
             
             # Check all datasource endpoints
             found = False
-            if await client.api.cmdb.system.object-tagging.exists(value):
+            if await client.api.cmdb.system.object_tagging.exists(value):
                 found = True
             
             if not found:
@@ -332,11 +381,11 @@ Dict = dict[str, Any]  # For backward compatibility
 # ============================================================================
 
 __all__ = [
-    "ProxyAddressModel",    "ProxyAddressCategory",    "ProxyAddressHeaderGroup",    "ProxyAddressTagging",    "ProxyAddressApplication",]
+    "ProxyAddressModel",    "ProxyAddressCategory",    "ProxyAddressHeaderGroup",    "ProxyAddressTagging",    "ProxyAddressTagging.Tags",    "ProxyAddressApplication",]
 
 
 # ============================================================================
 # Generated by hfortix generator v0.6.0
 # Schema: 1.7.0
-# Generated: 2026-01-17T05:32:16.239495Z
+# Generated: 2026-01-17T17:25:20.317344Z
 # ============================================================================

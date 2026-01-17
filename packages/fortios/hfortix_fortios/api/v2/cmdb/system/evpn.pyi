@@ -1,250 +1,113 @@
-from typing import TypedDict, Literal, Any, Coroutine, Union, overload, Generator, final
-from typing_extensions import NotRequired
-from hfortix_fortios.models import FortiObject, FortiObjectList
+""" - Type Stubs
 
-# ============================================================================
-# Nested TypedDicts for table field children (dict mode)
-# These MUST be defined before the Payload class to use them as type hints
-# ============================================================================
+Auto-generated stub file for type checking and IDE support.
 
-class EvpnImportrtItem(TypedDict, total=False):
-    """Type hints for import-rt table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    Use this when building payloads for POST/PUT requests.
-    
-    **Available fields:**
-        - route_target: str
-    
-    **Example:**
-        entry: EvpnImportrtItem = {
-            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
-        }
-    """
-    
-    route_target: str  # Route target: AA:NN|A.B.C.D:NN. | MaxLen: 79
+Endpoint: system/evpn
+Category: cmdb
+"""
+
+from __future__ import annotations
+
+from typing import (
+    Any,
+    ClassVar,
+    Literal,
+    TypedDict,
+    overload,
+)
+
+from hfortix_fortios.models import (
+    FortiObject,
+    FortiObjectList,
+)
 
 
-class EvpnExportrtItem(TypedDict, total=False):
-    """Type hints for export-rt table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    Use this when building payloads for POST/PUT requests.
-    
-    **Available fields:**
-        - route_target: str
-    
-    **Example:**
-        entry: EvpnExportrtItem = {
-            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
-        }
-    """
-    
-    route_target: str  # Route target: AA:NN|A.B.C.D:NN. | MaxLen: 79
+# ================================================================
+# TypedDict Payloads
+# ================================================================
+
+class EvpnImportrtItem:
+    """Nested item for import-rt field - supports attribute access."""
+    route_target: str
 
 
-# ============================================================================
-# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional)
-# ============================================================================
-# NOTE: We intentionally DON'T use NotRequired wrapper because:
-# 1. total=False already makes all fields optional
-# 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
+class EvpnExportrtItem:
+    """Nested item for export-rt field - supports attribute access."""
+    route_target: str
+
+
 class EvpnPayload(TypedDict, total=False):
-    """
-    Type hints for system/evpn payload fields.
-    
-    Configure EVPN instance.
-    
-    **Usage:**
-        payload: EvpnPayload = {
-            "field": "value",  # <- autocomplete shows all fields
-        }
-    """
-    id: int  # ID. | Default: 0 | Min: 1 | Max: 65535
-    rd: str  # Route Distinguisher: AA:NN|A.B.C.D:NN. | MaxLen: 79
-    import_rt: list[EvpnImportrtItem]  # List of import route targets.
-    export_rt: list[EvpnExportrtItem]  # List of export route targets.
-    ip_local_learning: Literal["enable", "disable"]  # Enable/disable IP address local learning. | Default: disable
-    arp_suppression: Literal["enable", "disable"]  # Enable/disable ARP suppression. | Default: disable
-
-# ============================================================================
-# Nested classes for table field children (object mode - for API responses)
-# ============================================================================
-
-@final
-class EvpnImportrtObject:
-    """Typed object for import-rt table items.
-    
-    Provides IDE autocomplete for nested table field attributes.
-    At runtime, this is a FortiObject instance.
-    """
-    
-    # Route target: AA:NN|A.B.C.D:NN. | MaxLen: 79
-    route_target: str
-    
-    # Common API response fields
-    status: str
-    http_status: int | None
-    http_status_code: int | None
-    http_method: str | None
-    http_response_time: float | None
-    vdom: str | None
-    
-    # Methods from FortiObject
-    @property
-    def dict(self) -> dict[str, Any]:
-        """Convert to dictionary."""
-        ...
-    @property
-    def json(self) -> str:
-        """Get pretty-printed JSON string."""
-        ...
-    @property
-    def raw(self) -> dict[str, Any]:
-        """Get raw API response data."""
-        ...
-    def get_full(self, name: str) -> Any: ...
-    def to_dict(self) -> FortiObject: ...
-    def keys(self) -> Any: ...
-    def values(self) -> Generator[Any, None, None]: ...
-    def items(self) -> Generator[tuple[str, Any], None, None]: ...
-    def get(self, key: str, default: Any = None) -> Any: ...
-
-
-@final
-class EvpnExportrtObject:
-    """Typed object for export-rt table items.
-    
-    Provides IDE autocomplete for nested table field attributes.
-    At runtime, this is a FortiObject instance.
-    """
-    
-    # Route target: AA:NN|A.B.C.D:NN. | MaxLen: 79
-    route_target: str
-    
-    # Common API response fields
-    status: str
-    http_status: int | None
-    http_status_code: int | None
-    http_method: str | None
-    http_response_time: float | None
-    vdom: str | None
-    
-    # Methods from FortiObject
-    @property
-    def dict(self) -> dict[str, Any]:
-        """Convert to dictionary."""
-        ...
-    @property
-    def json(self) -> str:
-        """Get pretty-printed JSON string."""
-        ...
-    @property
-    def raw(self) -> dict[str, Any]:
-        """Get raw API response data."""
-        ...
-    def get_full(self, name: str) -> Any: ...
-    def to_dict(self) -> FortiObject: ...
-    def keys(self) -> Any: ...
-    def values(self) -> Generator[Any, None, None]: ...
-    def items(self) -> Generator[tuple[str, Any], None, None]: ...
-    def get(self, key: str, default: Any = None) -> Any: ...
-
-
-
-
-# Response TypedDict for GET returns (all fields present in API response)
-class EvpnResponse(TypedDict):
-    """
-    Type hints for system/evpn API response fields.
-    
-    All fields are present in the response from the FortiGate API.
-    """
-    id: int  # ID. | Default: 0 | Min: 1 | Max: 65535
-    rd: str  # Route Distinguisher: AA:NN|A.B.C.D:NN. | MaxLen: 79
-    import_rt: list[EvpnImportrtItem]  # List of import route targets.
-    export_rt: list[EvpnExportrtItem]  # List of export route targets.
-    ip_local_learning: Literal["enable", "disable"]  # Enable/disable IP address local learning. | Default: disable
-    arp_suppression: Literal["enable", "disable"]  # Enable/disable ARP suppression. | Default: disable
-
-
-@final
-class EvpnObject:
-    """Typed FortiObject for system/evpn with IDE autocomplete support.
-    
-    This is a typed wrapper that provides IDE autocomplete for API response fields.
-    At runtime, this is actually a FortiObject instance.
-    """
-    
-    # ID. | Default: 0 | Min: 1 | Max: 65535
+    """Payload type for Evpn operations."""
     id: int
-    # Route Distinguisher: AA:NN|A.B.C.D:NN. | MaxLen: 79
     rd: str
-    # List of import route targets.
-    import_rt: list[EvpnImportrtObject]
-    # List of export route targets.
-    export_rt: list[EvpnExportrtObject]
-    # Enable/disable IP address local learning. | Default: disable
+    import_rt: str | list[str] | list[dict[str, Any]] | list[EvpnImportrtItem]
+    export_rt: str | list[str] | list[dict[str, Any]] | list[EvpnExportrtItem]
     ip_local_learning: Literal["enable", "disable"]
-    # Enable/disable ARP suppression. | Default: disable
     arp_suppression: Literal["enable", "disable"]
-    
-    # Common API response fields
-    status: str
-    http_status: int | None
-    http_status_code: int | None
-    http_method: str | None
-    http_response_time: float | None
-    vdom: str | None
-    
-    # Methods from FortiObject
-    @property
-    def dict(self) -> dict[str, Any]:
-        """Convert to dictionary."""
-        ...
-    @property
-    def json(self) -> str:
-        """Get pretty-printed JSON string."""
-        ...
-    @property
-    def raw(self) -> dict[str, Any]:
-        """Get raw API response data."""
-        ...
-    def get_full(self, name: str) -> Any: ...
-    def to_dict(self) -> EvpnPayload: ...
-    def keys(self) -> Any: ...
-    def values(self) -> Generator[Any, None, None]: ...
-    def items(self) -> Generator[tuple[str, Any], None, None]: ...
-    def get(self, key: str, default: Any = None) -> Any: ...
 
+
+# ================================================================
+# Response Types (TypedDict for dict-style access)
+# ================================================================
+
+class EvpnResponse(TypedDict, total=False):
+    """Response type for Evpn - use with .dict property for typed dict access."""
+    id: int
+    rd: str
+    import_rt: list[EvpnImportrtItem]
+    export_rt: list[EvpnExportrtItem]
+    ip_local_learning: Literal["enable", "disable"]
+    arp_suppression: Literal["enable", "disable"]
+
+
+# ================================================================
+# Response Types (Class for attribute access)
+# ================================================================
+
+
+class EvpnObject(FortiObject):
+    """Typed FortiObject for Evpn with field access."""
+    id: int
+    rd: str
+    import_rt: list[EvpnImportrtItem]
+    export_rt: list[EvpnExportrtItem]
+    ip_local_learning: Literal["enable", "disable"]
+    arp_suppression: Literal["enable", "disable"]
+
+
+# ================================================================
+# Main Endpoint Class
+# ================================================================
 
 class Evpn:
     """
-    Configure EVPN instance.
     
-    Path: system/evpn
+    Endpoint: system/evpn
     Category: cmdb
-    Primary Key: id
+    MKey: id
     """
     
+    # Class attributes for introspection
+    endpoint: ClassVar[str] = ...
+    path: ClassVar[str] = ...
+    category: ClassVar[str] = ...
+    mkey: ClassVar[str] = ...
+    capabilities: ClassVar[dict[str, Any]] = ...
+    
     def __init__(self, client: Any) -> None:
-        """Initialize endpoint with HTTP client.
-        
-        Args:
-            client: HTTP client instance for API communication
-        """
+        """Initialize endpoint with HTTP client."""
         ...
     
     # ================================================================
-    # GET OVERLOADS - Always returns FortiObject (or ContentResponse for file endpoints)
-    # Pylance matches overloads top-to-bottom, so these must come first!
+    # GET Methods
     # ================================================================
     
-    # With mkey as positional arg -> returns FortiObject
+    # CMDB with mkey - overloads for single vs list returns
     @overload
     def get(
         self,
         id: int,
+        *,
         filter: str | list[str] | None = ...,
         count: int | None = ...,
         start: int | None = ...,
@@ -254,14 +117,14 @@ class Evpn:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        error_mode: Literal["raise", "return", "print"] | None = ...,
+        error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> EvpnObject: ...
     
-    # With mkey as keyword arg -> returns FortiObject
     @overload
     def get(
         self,
         *,
-        id: int,
         filter: str | list[str] | None = ...,
         count: int | None = ...,
         start: int | None = ...,
@@ -271,296 +134,67 @@ class Evpn:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> EvpnObject: ...
-    
-    # Without mkey -> returns list of FortiObjects
-    @overload
-    def get(
-        self,
-        id: None = None,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
+        error_mode: Literal["raise", "return", "print"] | None = ...,
+        error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> FortiObjectList[EvpnObject]: ...
-    
-    # ================================================================
-    # (removed - all GET now returns FortiObject)
-    # ================================================================
-    
-    # With mkey as positional arg -> returns single object
-    @overload
-    def get(
-        self,
-        id: int,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> EvpnObject: ...
-    
-    # With mkey as keyword arg -> returns single object
-    @overload
-    def get(
-        self,
-        *,
-        id: int,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> EvpnObject: ...
-    
-    # With no mkey -> returns list of objects
-    @overload
-    def get(
-        self,
-        *,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObjectList[EvpnObject]: ...
-    
-    # Dict mode with mkey provided as positional arg (single dict)
-    @overload
-    def get(
-        self,
-        id: int,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> EvpnObject: ...
-    
-    # Dict mode with mkey provided as keyword arg (single dict)
-    @overload
-    def get(
-        self,
-        *,
-        id: int,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> EvpnObject: ...
-    
-    # Dict mode - list of dicts (no mkey/name provided) - keyword-only signature
-    @overload
-    def get(
-        self,
-        *,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObjectList[EvpnObject]: ...
-    
-    # Fallback overload for all other cases
-    @overload
-    def get(
-        self,
-        id: int | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> Union[dict[str, Any], list[dict[str, Any]], FortiObject, list[FortiObject]]: ...
-    
-    def get(
-        self,
-        id: int | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> EvpnObject | list[EvpnObject] | dict[str, Any] | list[dict[str, Any]]: ...
     
     def get_schema(
         self,
         vdom: str | None = ...,
         format: str = ...,
     ) -> FortiObject: ...
+
+    # ================================================================
+    # POST Method
+    # ================================================================
     
-    # POST overloads
-    @overload
     def post(
         self,
         payload_dict: EvpnPayload | None = ...,
         id: int | None = ...,
         rd: str | None = ...,
-        import_rt: str | list[str] | list[EvpnImportrtItem] | None = ...,
-        export_rt: str | list[str] | list[EvpnExportrtItem] | None = ...,
+        import_rt: str | list[str] | list[dict[str, Any]] | list[EvpnImportrtItem] | None = ...,
+        export_rt: str | list[str] | list[dict[str, Any]] | list[EvpnExportrtItem] | None = ...,
         ip_local_learning: Literal["enable", "disable"] | None = ...,
         arp_suppression: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
+        error_mode: Literal["raise", "return", "print"] | None = ...,
+        error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> EvpnObject: ...
+
+    # ================================================================
+    # PUT Method
+    # ================================================================
     
-    @overload
-    def post(
-        self,
-        payload_dict: EvpnPayload | None = ...,
-        id: int | None = ...,
-        rd: str | None = ...,
-        import_rt: str | list[str] | list[EvpnImportrtItem] | None = ...,
-        export_rt: str | list[str] | list[EvpnExportrtItem] | None = ...,
-        ip_local_learning: Literal["enable", "disable"] | None = ...,
-        arp_suppression: Literal["enable", "disable"] | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
-    
-    # Default overload
-    @overload
-    def post(
-        self,
-        payload_dict: EvpnPayload | None = ...,
-        id: int | None = ...,
-        rd: str | None = ...,
-        import_rt: str | list[str] | list[EvpnImportrtItem] | None = ...,
-        export_rt: str | list[str] | list[EvpnExportrtItem] | None = ...,
-        ip_local_learning: Literal["enable", "disable"] | None = ...,
-        arp_suppression: Literal["enable", "disable"] | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
-    
-    def post(
-        self,
-        payload_dict: EvpnPayload | None = ...,
-        id: int | None = ...,
-        rd: str | None = ...,
-        import_rt: str | list[str] | list[EvpnImportrtItem] | None = ...,
-        export_rt: str | list[str] | list[EvpnExportrtItem] | None = ...,
-        ip_local_learning: Literal["enable", "disable"] | None = ...,
-        arp_suppression: Literal["enable", "disable"] | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
-    
-    # PUT overloads
-    @overload
     def put(
         self,
         payload_dict: EvpnPayload | None = ...,
         id: int | None = ...,
         rd: str | None = ...,
-        import_rt: str | list[str] | list[EvpnImportrtItem] | None = ...,
-        export_rt: str | list[str] | list[EvpnExportrtItem] | None = ...,
+        import_rt: str | list[str] | list[dict[str, Any]] | list[EvpnImportrtItem] | None = ...,
+        export_rt: str | list[str] | list[dict[str, Any]] | list[EvpnExportrtItem] | None = ...,
         ip_local_learning: Literal["enable", "disable"] | None = ...,
         arp_suppression: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
+        error_mode: Literal["raise", "return", "print"] | None = ...,
+        error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> EvpnObject: ...
-    
-    @overload
-    def put(
-        self,
-        payload_dict: EvpnPayload | None = ...,
-        id: int | None = ...,
-        rd: str | None = ...,
-        import_rt: str | list[str] | list[EvpnImportrtItem] | None = ...,
-        export_rt: str | list[str] | list[EvpnExportrtItem] | None = ...,
-        ip_local_learning: Literal["enable", "disable"] | None = ...,
-        arp_suppression: Literal["enable", "disable"] | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
-    
-    # Default overload
-    @overload
-    def put(
-        self,
-        payload_dict: EvpnPayload | None = ...,
-        id: int | None = ...,
-        rd: str | None = ...,
-        import_rt: str | list[str] | list[EvpnImportrtItem] | None = ...,
-        export_rt: str | list[str] | list[EvpnExportrtItem] | None = ...,
-        ip_local_learning: Literal["enable", "disable"] | None = ...,
-        arp_suppression: Literal["enable", "disable"] | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
-    
-    def put(
-        self,
-        payload_dict: EvpnPayload | None = ...,
-        id: int | None = ...,
-        rd: str | None = ...,
-        import_rt: str | list[str] | list[EvpnImportrtItem] | None = ...,
-        export_rt: str | list[str] | list[EvpnExportrtItem] | None = ...,
-        ip_local_learning: Literal["enable", "disable"] | None = ...,
-        arp_suppression: Literal["enable", "disable"] | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
-    
-    # DELETE overloads
-    @overload
-    def delete(
-        self,
-        id: int | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> EvpnObject: ...
-    
-    @overload
-    def delete(
-        self,
-        id: int | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
-    
-    # Default overload
-    @overload
-    def delete(
-        self,
-        id: int | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+
+    # ================================================================
+    # DELETE Method
+    # ================================================================
     
     def delete(
         self,
         id: int | None = ...,
         vdom: str | bool | None = ...,
+        error_mode: Literal["raise", "return", "print"] | None = ...,
+        error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> FortiObject: ...
+
+    # ================================================================
+    # Utility Methods
+    # ================================================================
     
     def exists(
         self,
@@ -573,11 +207,13 @@ class Evpn:
         payload_dict: EvpnPayload | None = ...,
         id: int | None = ...,
         rd: str | None = ...,
-        import_rt: str | list[str] | list[EvpnImportrtItem] | None = ...,
-        export_rt: str | list[str] | list[EvpnExportrtItem] | None = ...,
+        import_rt: str | list[str] | list[dict[str, Any]] | list[EvpnImportrtItem] | None = ...,
+        export_rt: str | list[str] | list[dict[str, Any]] | list[EvpnExportrtItem] | None = ...,
         ip_local_learning: Literal["enable", "disable"] | None = ...,
         arp_suppression: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
+        error_mode: Literal["raise", "return", "print"] | None = ...,
+        error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> FortiObject: ...
     
     # Helper methods
@@ -585,7 +221,7 @@ class Evpn:
     def help(field_name: str | None = ...) -> str: ...
     
     @staticmethod
-    def fields(detailed: bool = ...) -> Union[list[str], list[dict[str, Any]]]: ...
+    def fields(detailed: bool = ...) -> list[str] | list[dict[str, Any]]: ...
     
     @staticmethod
     def field_info(field_name: str) -> FortiObject: ...
@@ -601,9 +237,6 @@ class Evpn:
     
     @staticmethod
     def schema() -> FortiObject: ...
-
-
-# ================================================================
 
 
 __all__ = [

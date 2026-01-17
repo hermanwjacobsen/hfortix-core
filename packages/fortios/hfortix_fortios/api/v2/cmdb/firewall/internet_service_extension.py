@@ -673,6 +673,24 @@ class InternetServiceExtension(CRUDEndpoint, MetadataMixin):
             - put(): Update existing object
             - exists(): Check existence manually
         """
+        # Apply normalization for table fields (supports flexible input formats)
+        if entry is not None:
+            entry = normalize_table_field(
+                entry,
+                mkey="id",
+                required_fields=['id'],
+                field_name="entry",
+                example="[{'id': 1}]",
+            )
+        if disable_entry is not None:
+            disable_entry = normalize_table_field(
+                disable_entry,
+                mkey="id",
+                required_fields=['protocol'],
+                field_name="disable_entry",
+                example="[{'protocol': 1}]",
+            )
+        
         # Build payload using helper function with auto-normalization
         payload_data = build_api_payload(
             id=id,

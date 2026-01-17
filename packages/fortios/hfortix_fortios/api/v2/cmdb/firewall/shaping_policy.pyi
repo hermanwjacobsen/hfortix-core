@@ -1,1638 +1,338 @@
-from typing import TypedDict, Literal, Any, Coroutine, Union, overload, Generator, final
-from typing_extensions import NotRequired
-from hfortix_fortios.models import FortiObject, FortiObjectList
+""" - Type Stubs
 
-# ============================================================================
-# Nested TypedDicts for table field children (dict mode)
-# These MUST be defined before the Payload class to use them as type hints
-# ============================================================================
+Auto-generated stub file for type checking and IDE support.
 
-class ShapingPolicySrcaddrItem(TypedDict, total=False):
-    """Type hints for srcaddr table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    Use this when building payloads for POST/PUT requests.
-    
-    **Available fields:**
-        - name: str
-    
-    **Example:**
-        entry: ShapingPolicySrcaddrItem = {
-            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
-        }
-    """
-    
-    name: str  # Address name. | MaxLen: 79
+Endpoint: firewall/shaping_policy
+Category: cmdb
+"""
+
+from __future__ import annotations
+
+from typing import (
+    Any,
+    ClassVar,
+    Literal,
+    TypedDict,
+    overload,
+)
+
+from hfortix_fortios.models import (
+    FortiObject,
+    FortiObjectList,
+)
 
 
-class ShapingPolicyDstaddrItem(TypedDict, total=False):
-    """Type hints for dstaddr table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    Use this when building payloads for POST/PUT requests.
-    
-    **Available fields:**
-        - name: str
-    
-    **Example:**
-        entry: ShapingPolicyDstaddrItem = {
-            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
-        }
-    """
-    
-    name: str  # Address name. | MaxLen: 79
+# ================================================================
+# TypedDict Payloads
+# ================================================================
+
+class ShapingPolicySrcaddrItem:
+    """Nested item for srcaddr field - supports attribute access."""
+    name: str
 
 
-class ShapingPolicySrcaddr6Item(TypedDict, total=False):
-    """Type hints for srcaddr6 table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    Use this when building payloads for POST/PUT requests.
-    
-    **Available fields:**
-        - name: str
-    
-    **Example:**
-        entry: ShapingPolicySrcaddr6Item = {
-            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
-        }
-    """
-    
-    name: str  # Address name. | MaxLen: 79
+class ShapingPolicyDstaddrItem:
+    """Nested item for dstaddr field - supports attribute access."""
+    name: str
 
 
-class ShapingPolicyDstaddr6Item(TypedDict, total=False):
-    """Type hints for dstaddr6 table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    Use this when building payloads for POST/PUT requests.
-    
-    **Available fields:**
-        - name: str
-    
-    **Example:**
-        entry: ShapingPolicyDstaddr6Item = {
-            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
-        }
-    """
-    
-    name: str  # Address name. | MaxLen: 79
+class ShapingPolicySrcaddr6Item:
+    """Nested item for srcaddr6 field - supports attribute access."""
+    name: str
 
 
-class ShapingPolicyInternetservicenameItem(TypedDict, total=False):
-    """Type hints for internet-service-name table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    Use this when building payloads for POST/PUT requests.
-    
-    **Available fields:**
-        - name: str
-    
-    **Example:**
-        entry: ShapingPolicyInternetservicenameItem = {
-            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
-        }
-    """
-    
-    name: str  # Internet Service name. | MaxLen: 79
+class ShapingPolicyDstaddr6Item:
+    """Nested item for dstaddr6 field - supports attribute access."""
+    name: str
 
 
-class ShapingPolicyInternetservicegroupItem(TypedDict, total=False):
-    """Type hints for internet-service-group table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    Use this when building payloads for POST/PUT requests.
-    
-    **Available fields:**
-        - name: str
-    
-    **Example:**
-        entry: ShapingPolicyInternetservicegroupItem = {
-            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
-        }
-    """
-    
-    name: str  # Internet Service group name. | MaxLen: 79
+class ShapingPolicyInternetservicenameItem:
+    """Nested item for internet-service-name field - supports attribute access."""
+    name: str
 
 
-class ShapingPolicyInternetservicecustomItem(TypedDict, total=False):
-    """Type hints for internet-service-custom table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    Use this when building payloads for POST/PUT requests.
-    
-    **Available fields:**
-        - name: str
-    
-    **Example:**
-        entry: ShapingPolicyInternetservicecustomItem = {
-            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
-        }
-    """
-    
-    name: str  # Custom Internet Service name. | MaxLen: 79
+class ShapingPolicyInternetservicegroupItem:
+    """Nested item for internet-service-group field - supports attribute access."""
+    name: str
 
 
-class ShapingPolicyInternetservicecustomgroupItem(TypedDict, total=False):
-    """Type hints for internet-service-custom-group table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    Use this when building payloads for POST/PUT requests.
-    
-    **Available fields:**
-        - name: str
-    
-    **Example:**
-        entry: ShapingPolicyInternetservicecustomgroupItem = {
-            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
-        }
-    """
-    
-    name: str  # Custom Internet Service group name. | MaxLen: 79
+class ShapingPolicyInternetservicecustomItem:
+    """Nested item for internet-service-custom field - supports attribute access."""
+    name: str
 
 
-class ShapingPolicyInternetservicefortiguardItem(TypedDict, total=False):
-    """Type hints for internet-service-fortiguard table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    Use this when building payloads for POST/PUT requests.
-    
-    **Available fields:**
-        - name: str
-    
-    **Example:**
-        entry: ShapingPolicyInternetservicefortiguardItem = {
-            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
-        }
-    """
-    
-    name: str  # FortiGuard Internet Service name. | MaxLen: 79
+class ShapingPolicyInternetservicecustomgroupItem:
+    """Nested item for internet-service-custom-group field - supports attribute access."""
+    name: str
 
 
-class ShapingPolicyInternetservicesrcnameItem(TypedDict, total=False):
-    """Type hints for internet-service-src-name table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    Use this when building payloads for POST/PUT requests.
-    
-    **Available fields:**
-        - name: str
-    
-    **Example:**
-        entry: ShapingPolicyInternetservicesrcnameItem = {
-            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
-        }
-    """
-    
-    name: str  # Internet Service name. | MaxLen: 79
+class ShapingPolicyInternetservicefortiguardItem:
+    """Nested item for internet-service-fortiguard field - supports attribute access."""
+    name: str
 
 
-class ShapingPolicyInternetservicesrcgroupItem(TypedDict, total=False):
-    """Type hints for internet-service-src-group table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    Use this when building payloads for POST/PUT requests.
-    
-    **Available fields:**
-        - name: str
-    
-    **Example:**
-        entry: ShapingPolicyInternetservicesrcgroupItem = {
-            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
-        }
-    """
-    
-    name: str  # Internet Service group name. | MaxLen: 79
+class ShapingPolicyInternetservicesrcnameItem:
+    """Nested item for internet-service-src-name field - supports attribute access."""
+    name: str
 
 
-class ShapingPolicyInternetservicesrccustomItem(TypedDict, total=False):
-    """Type hints for internet-service-src-custom table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    Use this when building payloads for POST/PUT requests.
-    
-    **Available fields:**
-        - name: str
-    
-    **Example:**
-        entry: ShapingPolicyInternetservicesrccustomItem = {
-            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
-        }
-    """
-    
-    name: str  # Custom Internet Service name. | MaxLen: 79
+class ShapingPolicyInternetservicesrcgroupItem:
+    """Nested item for internet-service-src-group field - supports attribute access."""
+    name: str
 
 
-class ShapingPolicyInternetservicesrccustomgroupItem(TypedDict, total=False):
-    """Type hints for internet-service-src-custom-group table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    Use this when building payloads for POST/PUT requests.
-    
-    **Available fields:**
-        - name: str
-    
-    **Example:**
-        entry: ShapingPolicyInternetservicesrccustomgroupItem = {
-            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
-        }
-    """
-    
-    name: str  # Custom Internet Service group name. | MaxLen: 79
+class ShapingPolicyInternetservicesrccustomItem:
+    """Nested item for internet-service-src-custom field - supports attribute access."""
+    name: str
 
 
-class ShapingPolicyInternetservicesrcfortiguardItem(TypedDict, total=False):
-    """Type hints for internet-service-src-fortiguard table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    Use this when building payloads for POST/PUT requests.
-    
-    **Available fields:**
-        - name: str
-    
-    **Example:**
-        entry: ShapingPolicyInternetservicesrcfortiguardItem = {
-            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
-        }
-    """
-    
-    name: str  # FortiGuard Internet Service name. | MaxLen: 79
+class ShapingPolicyInternetservicesrccustomgroupItem:
+    """Nested item for internet-service-src-custom-group field - supports attribute access."""
+    name: str
 
 
-class ShapingPolicyServiceItem(TypedDict, total=False):
-    """Type hints for service table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    Use this when building payloads for POST/PUT requests.
-    
-    **Available fields:**
-        - name: str
-    
-    **Example:**
-        entry: ShapingPolicyServiceItem = {
-            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
-        }
-    """
-    
-    name: str  # Service name. | MaxLen: 79
+class ShapingPolicyInternetservicesrcfortiguardItem:
+    """Nested item for internet-service-src-fortiguard field - supports attribute access."""
+    name: str
 
 
-class ShapingPolicyUsersItem(TypedDict, total=False):
-    """Type hints for users table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    Use this when building payloads for POST/PUT requests.
-    
-    **Available fields:**
-        - name: str
-    
-    **Example:**
-        entry: ShapingPolicyUsersItem = {
-            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
-        }
-    """
-    
-    name: str  # User name. | MaxLen: 79
+class ShapingPolicyServiceItem:
+    """Nested item for service field - supports attribute access."""
+    name: str
 
 
-class ShapingPolicyGroupsItem(TypedDict, total=False):
-    """Type hints for groups table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    Use this when building payloads for POST/PUT requests.
-    
-    **Available fields:**
-        - name: str
-    
-    **Example:**
-        entry: ShapingPolicyGroupsItem = {
-            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
-        }
-    """
-    
-    name: str  # Group name. | MaxLen: 79
+class ShapingPolicyUsersItem:
+    """Nested item for users field - supports attribute access."""
+    name: str
 
 
-class ShapingPolicyApplicationItem(TypedDict, total=False):
-    """Type hints for application table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    Use this when building payloads for POST/PUT requests.
-    
-    **Available fields:**
-        - id: int
-    
-    **Example:**
-        entry: ShapingPolicyApplicationItem = {
-            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
-        }
-    """
-    
-    id: int  # Application IDs. | Default: 0 | Min: 0 | Max: 4294967295
+class ShapingPolicyGroupsItem:
+    """Nested item for groups field - supports attribute access."""
+    name: str
 
 
-class ShapingPolicyAppcategoryItem(TypedDict, total=False):
-    """Type hints for app-category table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    Use this when building payloads for POST/PUT requests.
-    
-    **Available fields:**
-        - id: int
-    
-    **Example:**
-        entry: ShapingPolicyAppcategoryItem = {
-            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
-        }
-    """
-    
-    id: int  # Category IDs. | Default: 0 | Min: 0 | Max: 4294967295
+class ShapingPolicyApplicationItem:
+    """Nested item for application field - supports attribute access."""
+    id: int
 
 
-class ShapingPolicyAppgroupItem(TypedDict, total=False):
-    """Type hints for app-group table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    Use this when building payloads for POST/PUT requests.
-    
-    **Available fields:**
-        - name: str
-    
-    **Example:**
-        entry: ShapingPolicyAppgroupItem = {
-            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
-        }
-    """
-    
-    name: str  # Application group name. | MaxLen: 79
+class ShapingPolicyAppcategoryItem:
+    """Nested item for app-category field - supports attribute access."""
+    id: int
 
 
-class ShapingPolicyUrlcategoryItem(TypedDict, total=False):
-    """Type hints for url-category table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    Use this when building payloads for POST/PUT requests.
-    
-    **Available fields:**
-        - id: int
-    
-    **Example:**
-        entry: ShapingPolicyUrlcategoryItem = {
-            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
-        }
-    """
-    
-    id: int  # URL category ID. | Default: 0 | Min: 0 | Max: 4294967295
+class ShapingPolicyAppgroupItem:
+    """Nested item for app-group field - supports attribute access."""
+    name: str
 
 
-class ShapingPolicySrcintfItem(TypedDict, total=False):
-    """Type hints for srcintf table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    Use this when building payloads for POST/PUT requests.
-    
-    **Available fields:**
-        - name: str
-    
-    **Example:**
-        entry: ShapingPolicySrcintfItem = {
-            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
-        }
-    """
-    
-    name: str  # Interface name. | MaxLen: 79
+class ShapingPolicyUrlcategoryItem:
+    """Nested item for url-category field - supports attribute access."""
+    id: int
 
 
-class ShapingPolicyDstintfItem(TypedDict, total=False):
-    """Type hints for dstintf table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    Use this when building payloads for POST/PUT requests.
-    
-    **Available fields:**
-        - name: str
-    
-    **Example:**
-        entry: ShapingPolicyDstintfItem = {
-            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
-        }
-    """
-    
-    name: str  # Interface name. | MaxLen: 79
+class ShapingPolicySrcintfItem:
+    """Nested item for srcintf field - supports attribute access."""
+    name: str
 
 
-# ============================================================================
-# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional)
-# ============================================================================
-# NOTE: We intentionally DON'T use NotRequired wrapper because:
-# 1. total=False already makes all fields optional
-# 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
+class ShapingPolicyDstintfItem:
+    """Nested item for dstintf field - supports attribute access."""
+    name: str
+
+
 class ShapingPolicyPayload(TypedDict, total=False):
-    """
-    Type hints for firewall/shaping_policy payload fields.
-    
-    Configure shaping policies.
-    
-    **Related Resources:**
-
-    Dependencies (resources this endpoint references):
-        - :class:`~.firewall.schedule.group.GroupEndpoint` (via: schedule)
-        - :class:`~.firewall.schedule.onetime.OnetimeEndpoint` (via: schedule)
-        - :class:`~.firewall.schedule.recurring.RecurringEndpoint` (via: schedule)
-        - :class:`~.firewall.shaper.per-ip-shaper.PerIpShaperEndpoint` (via: per-ip-shaper)
-        - :class:`~.firewall.shaper.traffic-shaper.TrafficShaperEndpoint` (via: traffic-shaper, traffic-shaper-reverse)
-        - :class:`~.firewall.traffic-class.TrafficClassEndpoint` (via: class-id)
-
-    **Usage:**
-        payload: ShapingPolicyPayload = {
-            "field": "value",  # <- autocomplete shows all fields
-        }
-    """
-    id: int  # Shaping policy ID (0 - 4294967295). | Default: 0 | Min: 0 | Max: 4294967295
-    uuid: str  # Universally Unique Identifier | Default: 00000000-0000-0000-0000-000000000000
-    name: str  # Shaping policy name. | MaxLen: 35
-    comment: str  # Comments. | MaxLen: 255
-    status: Literal["enable", "disable"]  # Enable/disable this traffic shaping policy. | Default: enable
-    ip_version: Literal["4", "6"]  # Apply this traffic shaping policy to IPv4 or IPv6 | Default: 4
-    traffic_type: Literal["forwarding", "local-in", "local-out"]  # Traffic type. | Default: forwarding
-    srcaddr: list[ShapingPolicySrcaddrItem]  # IPv4 source address and address group names.
-    dstaddr: list[ShapingPolicyDstaddrItem]  # IPv4 destination address and address group names.
-    srcaddr6: list[ShapingPolicySrcaddr6Item]  # IPv6 source address and address group names.
-    dstaddr6: list[ShapingPolicyDstaddr6Item]  # IPv6 destination address and address group names.
-    internet_service: Literal["enable", "disable"]  # Enable/disable use of Internet Services for this p | Default: disable
-    internet_service_name: list[ShapingPolicyInternetservicenameItem]  # Internet Service ID.
-    internet_service_group: list[ShapingPolicyInternetservicegroupItem]  # Internet Service group name.
-    internet_service_custom: list[ShapingPolicyInternetservicecustomItem]  # Custom Internet Service name.
-    internet_service_custom_group: list[ShapingPolicyInternetservicecustomgroupItem]  # Custom Internet Service group name.
-    internet_service_fortiguard: list[ShapingPolicyInternetservicefortiguardItem]  # FortiGuard Internet Service name.
-    internet_service_src: Literal["enable", "disable"]  # Enable/disable use of Internet Services in source | Default: disable
-    internet_service_src_name: list[ShapingPolicyInternetservicesrcnameItem]  # Internet Service source name.
-    internet_service_src_group: list[ShapingPolicyInternetservicesrcgroupItem]  # Internet Service source group name.
-    internet_service_src_custom: list[ShapingPolicyInternetservicesrccustomItem]  # Custom Internet Service source name.
-    internet_service_src_custom_group: list[ShapingPolicyInternetservicesrccustomgroupItem]  # Custom Internet Service source group name.
-    internet_service_src_fortiguard: list[ShapingPolicyInternetservicesrcfortiguardItem]  # FortiGuard Internet Service source name.
-    service: list[ShapingPolicyServiceItem]  # Service and service group names.
-    schedule: str  # Schedule name. | MaxLen: 35
-    users: list[ShapingPolicyUsersItem]  # Apply this traffic shaping policy to individual us
-    groups: list[ShapingPolicyGroupsItem]  # Apply this traffic shaping policy to user groups t
-    application: list[ShapingPolicyApplicationItem]  # IDs of one or more applications that this shaper a
-    app_category: list[ShapingPolicyAppcategoryItem]  # IDs of one or more application categories that thi
-    app_group: list[ShapingPolicyAppgroupItem]  # One or more application group names.
-    url_category: list[ShapingPolicyUrlcategoryItem]  # IDs of one or more FortiGuard Web Filtering catego
-    srcintf: list[ShapingPolicySrcintfItem]  # One or more incoming (ingress) interfaces.
-    dstintf: list[ShapingPolicyDstintfItem]  # One or more outgoing (egress) interfaces.
-    tos_mask: str  # Non-zero bit positions are used for comparison whi
-    tos: str  # ToS (Type of Service) value used for comparison.
-    tos_negate: Literal["enable", "disable"]  # Enable negated TOS match. | Default: disable
-    traffic_shaper: str  # Traffic shaper to apply to traffic forwarded by th | MaxLen: 35
-    traffic_shaper_reverse: str  # Traffic shaper to apply to response traffic receiv | MaxLen: 35
-    per_ip_shaper: str  # Per-IP traffic shaper to apply with this policy. | MaxLen: 35
-    class_id: int  # Traffic class ID. | Default: 0 | Min: 0 | Max: 4294967295
-    diffserv_forward: Literal["enable", "disable"]  # Enable to change packet's DiffServ values to the s | Default: disable
-    diffserv_reverse: Literal["enable", "disable"]  # Enable to change packet's reverse (reply) DiffServ | Default: disable
-    diffservcode_forward: str  # Change packet's DiffServ to this value.
-    diffservcode_rev: str  # Change packet's reverse (reply) DiffServ to this v
-    cos_mask: str  # VLAN CoS evaluated bits.
-    cos: str  # VLAN CoS bit pattern.
-
-# ============================================================================
-# Nested classes for table field children (object mode - for API responses)
-# ============================================================================
-
-@final
-class ShapingPolicySrcaddrObject:
-    """Typed object for srcaddr table items.
-    
-    Provides IDE autocomplete for nested table field attributes.
-    At runtime, this is a FortiObject instance.
-    """
-    
-    # Address name. | MaxLen: 79
-    name: str
-    
-    # Common API response fields
-    status: str
-    http_status: int | None
-    http_status_code: int | None
-    http_method: str | None
-    http_response_time: float | None
-    vdom: str | None
-    
-    # Methods from FortiObject
-    @property
-    def dict(self) -> dict[str, Any]:
-        """Convert to dictionary."""
-        ...
-    @property
-    def json(self) -> str:
-        """Get pretty-printed JSON string."""
-        ...
-    @property
-    def raw(self) -> dict[str, Any]:
-        """Get raw API response data."""
-        ...
-    def get_full(self, name: str) -> Any: ...
-    def to_dict(self) -> FortiObject: ...
-    def keys(self) -> Any: ...
-    def values(self) -> Generator[Any, None, None]: ...
-    def items(self) -> Generator[tuple[str, Any], None, None]: ...
-    def get(self, key: str, default: Any = None) -> Any: ...
-
-
-@final
-class ShapingPolicyDstaddrObject:
-    """Typed object for dstaddr table items.
-    
-    Provides IDE autocomplete for nested table field attributes.
-    At runtime, this is a FortiObject instance.
-    """
-    
-    # Address name. | MaxLen: 79
-    name: str
-    
-    # Common API response fields
-    status: str
-    http_status: int | None
-    http_status_code: int | None
-    http_method: str | None
-    http_response_time: float | None
-    vdom: str | None
-    
-    # Methods from FortiObject
-    @property
-    def dict(self) -> dict[str, Any]:
-        """Convert to dictionary."""
-        ...
-    @property
-    def json(self) -> str:
-        """Get pretty-printed JSON string."""
-        ...
-    @property
-    def raw(self) -> dict[str, Any]:
-        """Get raw API response data."""
-        ...
-    def get_full(self, name: str) -> Any: ...
-    def to_dict(self) -> FortiObject: ...
-    def keys(self) -> Any: ...
-    def values(self) -> Generator[Any, None, None]: ...
-    def items(self) -> Generator[tuple[str, Any], None, None]: ...
-    def get(self, key: str, default: Any = None) -> Any: ...
-
-
-@final
-class ShapingPolicySrcaddr6Object:
-    """Typed object for srcaddr6 table items.
-    
-    Provides IDE autocomplete for nested table field attributes.
-    At runtime, this is a FortiObject instance.
-    """
-    
-    # Address name. | MaxLen: 79
-    name: str
-    
-    # Common API response fields
-    status: str
-    http_status: int | None
-    http_status_code: int | None
-    http_method: str | None
-    http_response_time: float | None
-    vdom: str | None
-    
-    # Methods from FortiObject
-    @property
-    def dict(self) -> dict[str, Any]:
-        """Convert to dictionary."""
-        ...
-    @property
-    def json(self) -> str:
-        """Get pretty-printed JSON string."""
-        ...
-    @property
-    def raw(self) -> dict[str, Any]:
-        """Get raw API response data."""
-        ...
-    def get_full(self, name: str) -> Any: ...
-    def to_dict(self) -> FortiObject: ...
-    def keys(self) -> Any: ...
-    def values(self) -> Generator[Any, None, None]: ...
-    def items(self) -> Generator[tuple[str, Any], None, None]: ...
-    def get(self, key: str, default: Any = None) -> Any: ...
-
-
-@final
-class ShapingPolicyDstaddr6Object:
-    """Typed object for dstaddr6 table items.
-    
-    Provides IDE autocomplete for nested table field attributes.
-    At runtime, this is a FortiObject instance.
-    """
-    
-    # Address name. | MaxLen: 79
-    name: str
-    
-    # Common API response fields
-    status: str
-    http_status: int | None
-    http_status_code: int | None
-    http_method: str | None
-    http_response_time: float | None
-    vdom: str | None
-    
-    # Methods from FortiObject
-    @property
-    def dict(self) -> dict[str, Any]:
-        """Convert to dictionary."""
-        ...
-    @property
-    def json(self) -> str:
-        """Get pretty-printed JSON string."""
-        ...
-    @property
-    def raw(self) -> dict[str, Any]:
-        """Get raw API response data."""
-        ...
-    def get_full(self, name: str) -> Any: ...
-    def to_dict(self) -> FortiObject: ...
-    def keys(self) -> Any: ...
-    def values(self) -> Generator[Any, None, None]: ...
-    def items(self) -> Generator[tuple[str, Any], None, None]: ...
-    def get(self, key: str, default: Any = None) -> Any: ...
-
-
-@final
-class ShapingPolicyInternetservicenameObject:
-    """Typed object for internet-service-name table items.
-    
-    Provides IDE autocomplete for nested table field attributes.
-    At runtime, this is a FortiObject instance.
-    """
-    
-    # Internet Service name. | MaxLen: 79
-    name: str
-    
-    # Common API response fields
-    status: str
-    http_status: int | None
-    http_status_code: int | None
-    http_method: str | None
-    http_response_time: float | None
-    vdom: str | None
-    
-    # Methods from FortiObject
-    @property
-    def dict(self) -> dict[str, Any]:
-        """Convert to dictionary."""
-        ...
-    @property
-    def json(self) -> str:
-        """Get pretty-printed JSON string."""
-        ...
-    @property
-    def raw(self) -> dict[str, Any]:
-        """Get raw API response data."""
-        ...
-    def get_full(self, name: str) -> Any: ...
-    def to_dict(self) -> FortiObject: ...
-    def keys(self) -> Any: ...
-    def values(self) -> Generator[Any, None, None]: ...
-    def items(self) -> Generator[tuple[str, Any], None, None]: ...
-    def get(self, key: str, default: Any = None) -> Any: ...
-
-
-@final
-class ShapingPolicyInternetservicegroupObject:
-    """Typed object for internet-service-group table items.
-    
-    Provides IDE autocomplete for nested table field attributes.
-    At runtime, this is a FortiObject instance.
-    """
-    
-    # Internet Service group name. | MaxLen: 79
-    name: str
-    
-    # Common API response fields
-    status: str
-    http_status: int | None
-    http_status_code: int | None
-    http_method: str | None
-    http_response_time: float | None
-    vdom: str | None
-    
-    # Methods from FortiObject
-    @property
-    def dict(self) -> dict[str, Any]:
-        """Convert to dictionary."""
-        ...
-    @property
-    def json(self) -> str:
-        """Get pretty-printed JSON string."""
-        ...
-    @property
-    def raw(self) -> dict[str, Any]:
-        """Get raw API response data."""
-        ...
-    def get_full(self, name: str) -> Any: ...
-    def to_dict(self) -> FortiObject: ...
-    def keys(self) -> Any: ...
-    def values(self) -> Generator[Any, None, None]: ...
-    def items(self) -> Generator[tuple[str, Any], None, None]: ...
-    def get(self, key: str, default: Any = None) -> Any: ...
-
-
-@final
-class ShapingPolicyInternetservicecustomObject:
-    """Typed object for internet-service-custom table items.
-    
-    Provides IDE autocomplete for nested table field attributes.
-    At runtime, this is a FortiObject instance.
-    """
-    
-    # Custom Internet Service name. | MaxLen: 79
-    name: str
-    
-    # Common API response fields
-    status: str
-    http_status: int | None
-    http_status_code: int | None
-    http_method: str | None
-    http_response_time: float | None
-    vdom: str | None
-    
-    # Methods from FortiObject
-    @property
-    def dict(self) -> dict[str, Any]:
-        """Convert to dictionary."""
-        ...
-    @property
-    def json(self) -> str:
-        """Get pretty-printed JSON string."""
-        ...
-    @property
-    def raw(self) -> dict[str, Any]:
-        """Get raw API response data."""
-        ...
-    def get_full(self, name: str) -> Any: ...
-    def to_dict(self) -> FortiObject: ...
-    def keys(self) -> Any: ...
-    def values(self) -> Generator[Any, None, None]: ...
-    def items(self) -> Generator[tuple[str, Any], None, None]: ...
-    def get(self, key: str, default: Any = None) -> Any: ...
-
-
-@final
-class ShapingPolicyInternetservicecustomgroupObject:
-    """Typed object for internet-service-custom-group table items.
-    
-    Provides IDE autocomplete for nested table field attributes.
-    At runtime, this is a FortiObject instance.
-    """
-    
-    # Custom Internet Service group name. | MaxLen: 79
-    name: str
-    
-    # Common API response fields
-    status: str
-    http_status: int | None
-    http_status_code: int | None
-    http_method: str | None
-    http_response_time: float | None
-    vdom: str | None
-    
-    # Methods from FortiObject
-    @property
-    def dict(self) -> dict[str, Any]:
-        """Convert to dictionary."""
-        ...
-    @property
-    def json(self) -> str:
-        """Get pretty-printed JSON string."""
-        ...
-    @property
-    def raw(self) -> dict[str, Any]:
-        """Get raw API response data."""
-        ...
-    def get_full(self, name: str) -> Any: ...
-    def to_dict(self) -> FortiObject: ...
-    def keys(self) -> Any: ...
-    def values(self) -> Generator[Any, None, None]: ...
-    def items(self) -> Generator[tuple[str, Any], None, None]: ...
-    def get(self, key: str, default: Any = None) -> Any: ...
-
-
-@final
-class ShapingPolicyInternetservicefortiguardObject:
-    """Typed object for internet-service-fortiguard table items.
-    
-    Provides IDE autocomplete for nested table field attributes.
-    At runtime, this is a FortiObject instance.
-    """
-    
-    # FortiGuard Internet Service name. | MaxLen: 79
-    name: str
-    
-    # Common API response fields
-    status: str
-    http_status: int | None
-    http_status_code: int | None
-    http_method: str | None
-    http_response_time: float | None
-    vdom: str | None
-    
-    # Methods from FortiObject
-    @property
-    def dict(self) -> dict[str, Any]:
-        """Convert to dictionary."""
-        ...
-    @property
-    def json(self) -> str:
-        """Get pretty-printed JSON string."""
-        ...
-    @property
-    def raw(self) -> dict[str, Any]:
-        """Get raw API response data."""
-        ...
-    def get_full(self, name: str) -> Any: ...
-    def to_dict(self) -> FortiObject: ...
-    def keys(self) -> Any: ...
-    def values(self) -> Generator[Any, None, None]: ...
-    def items(self) -> Generator[tuple[str, Any], None, None]: ...
-    def get(self, key: str, default: Any = None) -> Any: ...
-
-
-@final
-class ShapingPolicyInternetservicesrcnameObject:
-    """Typed object for internet-service-src-name table items.
-    
-    Provides IDE autocomplete for nested table field attributes.
-    At runtime, this is a FortiObject instance.
-    """
-    
-    # Internet Service name. | MaxLen: 79
-    name: str
-    
-    # Common API response fields
-    status: str
-    http_status: int | None
-    http_status_code: int | None
-    http_method: str | None
-    http_response_time: float | None
-    vdom: str | None
-    
-    # Methods from FortiObject
-    @property
-    def dict(self) -> dict[str, Any]:
-        """Convert to dictionary."""
-        ...
-    @property
-    def json(self) -> str:
-        """Get pretty-printed JSON string."""
-        ...
-    @property
-    def raw(self) -> dict[str, Any]:
-        """Get raw API response data."""
-        ...
-    def get_full(self, name: str) -> Any: ...
-    def to_dict(self) -> FortiObject: ...
-    def keys(self) -> Any: ...
-    def values(self) -> Generator[Any, None, None]: ...
-    def items(self) -> Generator[tuple[str, Any], None, None]: ...
-    def get(self, key: str, default: Any = None) -> Any: ...
-
-
-@final
-class ShapingPolicyInternetservicesrcgroupObject:
-    """Typed object for internet-service-src-group table items.
-    
-    Provides IDE autocomplete for nested table field attributes.
-    At runtime, this is a FortiObject instance.
-    """
-    
-    # Internet Service group name. | MaxLen: 79
-    name: str
-    
-    # Common API response fields
-    status: str
-    http_status: int | None
-    http_status_code: int | None
-    http_method: str | None
-    http_response_time: float | None
-    vdom: str | None
-    
-    # Methods from FortiObject
-    @property
-    def dict(self) -> dict[str, Any]:
-        """Convert to dictionary."""
-        ...
-    @property
-    def json(self) -> str:
-        """Get pretty-printed JSON string."""
-        ...
-    @property
-    def raw(self) -> dict[str, Any]:
-        """Get raw API response data."""
-        ...
-    def get_full(self, name: str) -> Any: ...
-    def to_dict(self) -> FortiObject: ...
-    def keys(self) -> Any: ...
-    def values(self) -> Generator[Any, None, None]: ...
-    def items(self) -> Generator[tuple[str, Any], None, None]: ...
-    def get(self, key: str, default: Any = None) -> Any: ...
-
-
-@final
-class ShapingPolicyInternetservicesrccustomObject:
-    """Typed object for internet-service-src-custom table items.
-    
-    Provides IDE autocomplete for nested table field attributes.
-    At runtime, this is a FortiObject instance.
-    """
-    
-    # Custom Internet Service name. | MaxLen: 79
-    name: str
-    
-    # Common API response fields
-    status: str
-    http_status: int | None
-    http_status_code: int | None
-    http_method: str | None
-    http_response_time: float | None
-    vdom: str | None
-    
-    # Methods from FortiObject
-    @property
-    def dict(self) -> dict[str, Any]:
-        """Convert to dictionary."""
-        ...
-    @property
-    def json(self) -> str:
-        """Get pretty-printed JSON string."""
-        ...
-    @property
-    def raw(self) -> dict[str, Any]:
-        """Get raw API response data."""
-        ...
-    def get_full(self, name: str) -> Any: ...
-    def to_dict(self) -> FortiObject: ...
-    def keys(self) -> Any: ...
-    def values(self) -> Generator[Any, None, None]: ...
-    def items(self) -> Generator[tuple[str, Any], None, None]: ...
-    def get(self, key: str, default: Any = None) -> Any: ...
-
-
-@final
-class ShapingPolicyInternetservicesrccustomgroupObject:
-    """Typed object for internet-service-src-custom-group table items.
-    
-    Provides IDE autocomplete for nested table field attributes.
-    At runtime, this is a FortiObject instance.
-    """
-    
-    # Custom Internet Service group name. | MaxLen: 79
-    name: str
-    
-    # Common API response fields
-    status: str
-    http_status: int | None
-    http_status_code: int | None
-    http_method: str | None
-    http_response_time: float | None
-    vdom: str | None
-    
-    # Methods from FortiObject
-    @property
-    def dict(self) -> dict[str, Any]:
-        """Convert to dictionary."""
-        ...
-    @property
-    def json(self) -> str:
-        """Get pretty-printed JSON string."""
-        ...
-    @property
-    def raw(self) -> dict[str, Any]:
-        """Get raw API response data."""
-        ...
-    def get_full(self, name: str) -> Any: ...
-    def to_dict(self) -> FortiObject: ...
-    def keys(self) -> Any: ...
-    def values(self) -> Generator[Any, None, None]: ...
-    def items(self) -> Generator[tuple[str, Any], None, None]: ...
-    def get(self, key: str, default: Any = None) -> Any: ...
-
-
-@final
-class ShapingPolicyInternetservicesrcfortiguardObject:
-    """Typed object for internet-service-src-fortiguard table items.
-    
-    Provides IDE autocomplete for nested table field attributes.
-    At runtime, this is a FortiObject instance.
-    """
-    
-    # FortiGuard Internet Service name. | MaxLen: 79
-    name: str
-    
-    # Common API response fields
-    status: str
-    http_status: int | None
-    http_status_code: int | None
-    http_method: str | None
-    http_response_time: float | None
-    vdom: str | None
-    
-    # Methods from FortiObject
-    @property
-    def dict(self) -> dict[str, Any]:
-        """Convert to dictionary."""
-        ...
-    @property
-    def json(self) -> str:
-        """Get pretty-printed JSON string."""
-        ...
-    @property
-    def raw(self) -> dict[str, Any]:
-        """Get raw API response data."""
-        ...
-    def get_full(self, name: str) -> Any: ...
-    def to_dict(self) -> FortiObject: ...
-    def keys(self) -> Any: ...
-    def values(self) -> Generator[Any, None, None]: ...
-    def items(self) -> Generator[tuple[str, Any], None, None]: ...
-    def get(self, key: str, default: Any = None) -> Any: ...
-
-
-@final
-class ShapingPolicyServiceObject:
-    """Typed object for service table items.
-    
-    Provides IDE autocomplete for nested table field attributes.
-    At runtime, this is a FortiObject instance.
-    """
-    
-    # Service name. | MaxLen: 79
-    name: str
-    
-    # Common API response fields
-    status: str
-    http_status: int | None
-    http_status_code: int | None
-    http_method: str | None
-    http_response_time: float | None
-    vdom: str | None
-    
-    # Methods from FortiObject
-    @property
-    def dict(self) -> dict[str, Any]:
-        """Convert to dictionary."""
-        ...
-    @property
-    def json(self) -> str:
-        """Get pretty-printed JSON string."""
-        ...
-    @property
-    def raw(self) -> dict[str, Any]:
-        """Get raw API response data."""
-        ...
-    def get_full(self, name: str) -> Any: ...
-    def to_dict(self) -> FortiObject: ...
-    def keys(self) -> Any: ...
-    def values(self) -> Generator[Any, None, None]: ...
-    def items(self) -> Generator[tuple[str, Any], None, None]: ...
-    def get(self, key: str, default: Any = None) -> Any: ...
-
-
-@final
-class ShapingPolicyUsersObject:
-    """Typed object for users table items.
-    
-    Provides IDE autocomplete for nested table field attributes.
-    At runtime, this is a FortiObject instance.
-    """
-    
-    # User name. | MaxLen: 79
-    name: str
-    
-    # Common API response fields
-    status: str
-    http_status: int | None
-    http_status_code: int | None
-    http_method: str | None
-    http_response_time: float | None
-    vdom: str | None
-    
-    # Methods from FortiObject
-    @property
-    def dict(self) -> dict[str, Any]:
-        """Convert to dictionary."""
-        ...
-    @property
-    def json(self) -> str:
-        """Get pretty-printed JSON string."""
-        ...
-    @property
-    def raw(self) -> dict[str, Any]:
-        """Get raw API response data."""
-        ...
-    def get_full(self, name: str) -> Any: ...
-    def to_dict(self) -> FortiObject: ...
-    def keys(self) -> Any: ...
-    def values(self) -> Generator[Any, None, None]: ...
-    def items(self) -> Generator[tuple[str, Any], None, None]: ...
-    def get(self, key: str, default: Any = None) -> Any: ...
-
-
-@final
-class ShapingPolicyGroupsObject:
-    """Typed object for groups table items.
-    
-    Provides IDE autocomplete for nested table field attributes.
-    At runtime, this is a FortiObject instance.
-    """
-    
-    # Group name. | MaxLen: 79
-    name: str
-    
-    # Common API response fields
-    status: str
-    http_status: int | None
-    http_status_code: int | None
-    http_method: str | None
-    http_response_time: float | None
-    vdom: str | None
-    
-    # Methods from FortiObject
-    @property
-    def dict(self) -> dict[str, Any]:
-        """Convert to dictionary."""
-        ...
-    @property
-    def json(self) -> str:
-        """Get pretty-printed JSON string."""
-        ...
-    @property
-    def raw(self) -> dict[str, Any]:
-        """Get raw API response data."""
-        ...
-    def get_full(self, name: str) -> Any: ...
-    def to_dict(self) -> FortiObject: ...
-    def keys(self) -> Any: ...
-    def values(self) -> Generator[Any, None, None]: ...
-    def items(self) -> Generator[tuple[str, Any], None, None]: ...
-    def get(self, key: str, default: Any = None) -> Any: ...
-
-
-@final
-class ShapingPolicyApplicationObject:
-    """Typed object for application table items.
-    
-    Provides IDE autocomplete for nested table field attributes.
-    At runtime, this is a FortiObject instance.
-    """
-    
-    # Application IDs. | Default: 0 | Min: 0 | Max: 4294967295
+    """Payload type for ShapingPolicy operations."""
     id: int
-    
-    # Common API response fields
-    status: str
-    http_status: int | None
-    http_status_code: int | None
-    http_method: str | None
-    http_response_time: float | None
-    vdom: str | None
-    
-    # Methods from FortiObject
-    @property
-    def dict(self) -> dict[str, Any]:
-        """Convert to dictionary."""
-        ...
-    @property
-    def json(self) -> str:
-        """Get pretty-printed JSON string."""
-        ...
-    @property
-    def raw(self) -> dict[str, Any]:
-        """Get raw API response data."""
-        ...
-    def get_full(self, name: str) -> Any: ...
-    def to_dict(self) -> FortiObject: ...
-    def keys(self) -> Any: ...
-    def values(self) -> Generator[Any, None, None]: ...
-    def items(self) -> Generator[tuple[str, Any], None, None]: ...
-    def get(self, key: str, default: Any = None) -> Any: ...
-
-
-@final
-class ShapingPolicyAppcategoryObject:
-    """Typed object for app-category table items.
-    
-    Provides IDE autocomplete for nested table field attributes.
-    At runtime, this is a FortiObject instance.
-    """
-    
-    # Category IDs. | Default: 0 | Min: 0 | Max: 4294967295
-    id: int
-    
-    # Common API response fields
-    status: str
-    http_status: int | None
-    http_status_code: int | None
-    http_method: str | None
-    http_response_time: float | None
-    vdom: str | None
-    
-    # Methods from FortiObject
-    @property
-    def dict(self) -> dict[str, Any]:
-        """Convert to dictionary."""
-        ...
-    @property
-    def json(self) -> str:
-        """Get pretty-printed JSON string."""
-        ...
-    @property
-    def raw(self) -> dict[str, Any]:
-        """Get raw API response data."""
-        ...
-    def get_full(self, name: str) -> Any: ...
-    def to_dict(self) -> FortiObject: ...
-    def keys(self) -> Any: ...
-    def values(self) -> Generator[Any, None, None]: ...
-    def items(self) -> Generator[tuple[str, Any], None, None]: ...
-    def get(self, key: str, default: Any = None) -> Any: ...
-
-
-@final
-class ShapingPolicyAppgroupObject:
-    """Typed object for app-group table items.
-    
-    Provides IDE autocomplete for nested table field attributes.
-    At runtime, this is a FortiObject instance.
-    """
-    
-    # Application group name. | MaxLen: 79
-    name: str
-    
-    # Common API response fields
-    status: str
-    http_status: int | None
-    http_status_code: int | None
-    http_method: str | None
-    http_response_time: float | None
-    vdom: str | None
-    
-    # Methods from FortiObject
-    @property
-    def dict(self) -> dict[str, Any]:
-        """Convert to dictionary."""
-        ...
-    @property
-    def json(self) -> str:
-        """Get pretty-printed JSON string."""
-        ...
-    @property
-    def raw(self) -> dict[str, Any]:
-        """Get raw API response data."""
-        ...
-    def get_full(self, name: str) -> Any: ...
-    def to_dict(self) -> FortiObject: ...
-    def keys(self) -> Any: ...
-    def values(self) -> Generator[Any, None, None]: ...
-    def items(self) -> Generator[tuple[str, Any], None, None]: ...
-    def get(self, key: str, default: Any = None) -> Any: ...
-
-
-@final
-class ShapingPolicyUrlcategoryObject:
-    """Typed object for url-category table items.
-    
-    Provides IDE autocomplete for nested table field attributes.
-    At runtime, this is a FortiObject instance.
-    """
-    
-    # URL category ID. | Default: 0 | Min: 0 | Max: 4294967295
-    id: int
-    
-    # Common API response fields
-    status: str
-    http_status: int | None
-    http_status_code: int | None
-    http_method: str | None
-    http_response_time: float | None
-    vdom: str | None
-    
-    # Methods from FortiObject
-    @property
-    def dict(self) -> dict[str, Any]:
-        """Convert to dictionary."""
-        ...
-    @property
-    def json(self) -> str:
-        """Get pretty-printed JSON string."""
-        ...
-    @property
-    def raw(self) -> dict[str, Any]:
-        """Get raw API response data."""
-        ...
-    def get_full(self, name: str) -> Any: ...
-    def to_dict(self) -> FortiObject: ...
-    def keys(self) -> Any: ...
-    def values(self) -> Generator[Any, None, None]: ...
-    def items(self) -> Generator[tuple[str, Any], None, None]: ...
-    def get(self, key: str, default: Any = None) -> Any: ...
-
-
-@final
-class ShapingPolicySrcintfObject:
-    """Typed object for srcintf table items.
-    
-    Provides IDE autocomplete for nested table field attributes.
-    At runtime, this is a FortiObject instance.
-    """
-    
-    # Interface name. | MaxLen: 79
-    name: str
-    
-    # Common API response fields
-    status: str
-    http_status: int | None
-    http_status_code: int | None
-    http_method: str | None
-    http_response_time: float | None
-    vdom: str | None
-    
-    # Methods from FortiObject
-    @property
-    def dict(self) -> dict[str, Any]:
-        """Convert to dictionary."""
-        ...
-    @property
-    def json(self) -> str:
-        """Get pretty-printed JSON string."""
-        ...
-    @property
-    def raw(self) -> dict[str, Any]:
-        """Get raw API response data."""
-        ...
-    def get_full(self, name: str) -> Any: ...
-    def to_dict(self) -> FortiObject: ...
-    def keys(self) -> Any: ...
-    def values(self) -> Generator[Any, None, None]: ...
-    def items(self) -> Generator[tuple[str, Any], None, None]: ...
-    def get(self, key: str, default: Any = None) -> Any: ...
-
-
-@final
-class ShapingPolicyDstintfObject:
-    """Typed object for dstintf table items.
-    
-    Provides IDE autocomplete for nested table field attributes.
-    At runtime, this is a FortiObject instance.
-    """
-    
-    # Interface name. | MaxLen: 79
-    name: str
-    
-    # Common API response fields
-    status: str
-    http_status: int | None
-    http_status_code: int | None
-    http_method: str | None
-    http_response_time: float | None
-    vdom: str | None
-    
-    # Methods from FortiObject
-    @property
-    def dict(self) -> dict[str, Any]:
-        """Convert to dictionary."""
-        ...
-    @property
-    def json(self) -> str:
-        """Get pretty-printed JSON string."""
-        ...
-    @property
-    def raw(self) -> dict[str, Any]:
-        """Get raw API response data."""
-        ...
-    def get_full(self, name: str) -> Any: ...
-    def to_dict(self) -> FortiObject: ...
-    def keys(self) -> Any: ...
-    def values(self) -> Generator[Any, None, None]: ...
-    def items(self) -> Generator[tuple[str, Any], None, None]: ...
-    def get(self, key: str, default: Any = None) -> Any: ...
-
-
-
-
-# Response TypedDict for GET returns (all fields present in API response)
-class ShapingPolicyResponse(TypedDict):
-    """
-    Type hints for firewall/shaping_policy API response fields.
-    
-    All fields are present in the response from the FortiGate API.
-    """
-    id: int  # Shaping policy ID (0 - 4294967295). | Default: 0 | Min: 0 | Max: 4294967295
-    uuid: str  # Universally Unique Identifier | Default: 00000000-0000-0000-0000-000000000000
-    name: str  # Shaping policy name. | MaxLen: 35
-    comment: str  # Comments. | MaxLen: 255
-    status: Literal["enable", "disable"]  # Enable/disable this traffic shaping policy. | Default: enable
-    ip_version: Literal["4", "6"]  # Apply this traffic shaping policy to IPv4 or IPv6 | Default: 4
-    traffic_type: Literal["forwarding", "local-in", "local-out"]  # Traffic type. | Default: forwarding
-    srcaddr: list[ShapingPolicySrcaddrItem]  # IPv4 source address and address group names.
-    dstaddr: list[ShapingPolicyDstaddrItem]  # IPv4 destination address and address group names.
-    srcaddr6: list[ShapingPolicySrcaddr6Item]  # IPv6 source address and address group names.
-    dstaddr6: list[ShapingPolicyDstaddr6Item]  # IPv6 destination address and address group names.
-    internet_service: Literal["enable", "disable"]  # Enable/disable use of Internet Services for this p | Default: disable
-    internet_service_name: list[ShapingPolicyInternetservicenameItem]  # Internet Service ID.
-    internet_service_group: list[ShapingPolicyInternetservicegroupItem]  # Internet Service group name.
-    internet_service_custom: list[ShapingPolicyInternetservicecustomItem]  # Custom Internet Service name.
-    internet_service_custom_group: list[ShapingPolicyInternetservicecustomgroupItem]  # Custom Internet Service group name.
-    internet_service_fortiguard: list[ShapingPolicyInternetservicefortiguardItem]  # FortiGuard Internet Service name.
-    internet_service_src: Literal["enable", "disable"]  # Enable/disable use of Internet Services in source | Default: disable
-    internet_service_src_name: list[ShapingPolicyInternetservicesrcnameItem]  # Internet Service source name.
-    internet_service_src_group: list[ShapingPolicyInternetservicesrcgroupItem]  # Internet Service source group name.
-    internet_service_src_custom: list[ShapingPolicyInternetservicesrccustomItem]  # Custom Internet Service source name.
-    internet_service_src_custom_group: list[ShapingPolicyInternetservicesrccustomgroupItem]  # Custom Internet Service source group name.
-    internet_service_src_fortiguard: list[ShapingPolicyInternetservicesrcfortiguardItem]  # FortiGuard Internet Service source name.
-    service: list[ShapingPolicyServiceItem]  # Service and service group names.
-    schedule: str  # Schedule name. | MaxLen: 35
-    users: list[ShapingPolicyUsersItem]  # Apply this traffic shaping policy to individual us
-    groups: list[ShapingPolicyGroupsItem]  # Apply this traffic shaping policy to user groups t
-    application: list[ShapingPolicyApplicationItem]  # IDs of one or more applications that this shaper a
-    app_category: list[ShapingPolicyAppcategoryItem]  # IDs of one or more application categories that thi
-    app_group: list[ShapingPolicyAppgroupItem]  # One or more application group names.
-    url_category: list[ShapingPolicyUrlcategoryItem]  # IDs of one or more FortiGuard Web Filtering catego
-    srcintf: list[ShapingPolicySrcintfItem]  # One or more incoming (ingress) interfaces.
-    dstintf: list[ShapingPolicyDstintfItem]  # One or more outgoing (egress) interfaces.
-    tos_mask: str  # Non-zero bit positions are used for comparison whi
-    tos: str  # ToS (Type of Service) value used for comparison.
-    tos_negate: Literal["enable", "disable"]  # Enable negated TOS match. | Default: disable
-    traffic_shaper: str  # Traffic shaper to apply to traffic forwarded by th | MaxLen: 35
-    traffic_shaper_reverse: str  # Traffic shaper to apply to response traffic receiv | MaxLen: 35
-    per_ip_shaper: str  # Per-IP traffic shaper to apply with this policy. | MaxLen: 35
-    class_id: int  # Traffic class ID. | Default: 0 | Min: 0 | Max: 4294967295
-    diffserv_forward: Literal["enable", "disable"]  # Enable to change packet's DiffServ values to the s | Default: disable
-    diffserv_reverse: Literal["enable", "disable"]  # Enable to change packet's reverse (reply) DiffServ | Default: disable
-    diffservcode_forward: str  # Change packet's DiffServ to this value.
-    diffservcode_rev: str  # Change packet's reverse (reply) DiffServ to this v
-    cos_mask: str  # VLAN CoS evaluated bits.
-    cos: str  # VLAN CoS bit pattern.
-
-
-@final
-class ShapingPolicyObject:
-    """Typed FortiObject for firewall/shaping_policy with IDE autocomplete support.
-    
-    This is a typed wrapper that provides IDE autocomplete for API response fields.
-    At runtime, this is actually a FortiObject instance.
-    """
-    
-    # Shaping policy ID (0 - 4294967295). | Default: 0 | Min: 0 | Max: 4294967295
-    id: int
-    # Universally Unique Identifier | Default: 00000000-0000-0000-0000-000000000000
     uuid: str
-    # Shaping policy name. | MaxLen: 35
     name: str
-    # Comments. | MaxLen: 255
     comment: str
-    # Enable/disable this traffic shaping policy. | Default: enable
     status: Literal["enable", "disable"]
-    # Apply this traffic shaping policy to IPv4 or IPv6 traffic. | Default: 4
     ip_version: Literal["4", "6"]
-    # Traffic type. | Default: forwarding
     traffic_type: Literal["forwarding", "local-in", "local-out"]
-    # IPv4 source address and address group names.
-    srcaddr: list[ShapingPolicySrcaddrObject]
-    # IPv4 destination address and address group names.
-    dstaddr: list[ShapingPolicyDstaddrObject]
-    # IPv6 source address and address group names.
-    srcaddr6: list[ShapingPolicySrcaddr6Object]
-    # IPv6 destination address and address group names.
-    dstaddr6: list[ShapingPolicyDstaddr6Object]
-    # Enable/disable use of Internet Services for this policy. If | Default: disable
+    srcaddr: str | list[str] | list[dict[str, Any]] | list[ShapingPolicySrcaddrItem]
+    dstaddr: str | list[str] | list[dict[str, Any]] | list[ShapingPolicyDstaddrItem]
+    srcaddr6: str | list[str] | list[dict[str, Any]] | list[ShapingPolicySrcaddr6Item]
+    dstaddr6: str | list[str] | list[dict[str, Any]] | list[ShapingPolicyDstaddr6Item]
     internet_service: Literal["enable", "disable"]
-    # Internet Service ID.
-    internet_service_name: list[ShapingPolicyInternetservicenameObject]
-    # Internet Service group name.
-    internet_service_group: list[ShapingPolicyInternetservicegroupObject]
-    # Custom Internet Service name.
-    internet_service_custom: list[ShapingPolicyInternetservicecustomObject]
-    # Custom Internet Service group name.
-    internet_service_custom_group: list[ShapingPolicyInternetservicecustomgroupObject]
-    # FortiGuard Internet Service name.
-    internet_service_fortiguard: list[ShapingPolicyInternetservicefortiguardObject]
-    # Enable/disable use of Internet Services in source for this p | Default: disable
+    internet_service_name: str | list[str] | list[dict[str, Any]] | list[ShapingPolicyInternetservicenameItem]
+    internet_service_group: str | list[str] | list[dict[str, Any]] | list[ShapingPolicyInternetservicegroupItem]
+    internet_service_custom: str | list[str] | list[dict[str, Any]] | list[ShapingPolicyInternetservicecustomItem]
+    internet_service_custom_group: str | list[str] | list[dict[str, Any]] | list[ShapingPolicyInternetservicecustomgroupItem]
+    internet_service_fortiguard: str | list[str] | list[dict[str, Any]] | list[ShapingPolicyInternetservicefortiguardItem]
     internet_service_src: Literal["enable", "disable"]
-    # Internet Service source name.
-    internet_service_src_name: list[ShapingPolicyInternetservicesrcnameObject]
-    # Internet Service source group name.
-    internet_service_src_group: list[ShapingPolicyInternetservicesrcgroupObject]
-    # Custom Internet Service source name.
-    internet_service_src_custom: list[ShapingPolicyInternetservicesrccustomObject]
-    # Custom Internet Service source group name.
-    internet_service_src_custom_group: list[ShapingPolicyInternetservicesrccustomgroupObject]
-    # FortiGuard Internet Service source name.
-    internet_service_src_fortiguard: list[ShapingPolicyInternetservicesrcfortiguardObject]
-    # Service and service group names.
-    service: list[ShapingPolicyServiceObject]
-    # Schedule name. | MaxLen: 35
+    internet_service_src_name: str | list[str] | list[dict[str, Any]] | list[ShapingPolicyInternetservicesrcnameItem]
+    internet_service_src_group: str | list[str] | list[dict[str, Any]] | list[ShapingPolicyInternetservicesrcgroupItem]
+    internet_service_src_custom: str | list[str] | list[dict[str, Any]] | list[ShapingPolicyInternetservicesrccustomItem]
+    internet_service_src_custom_group: str | list[str] | list[dict[str, Any]] | list[ShapingPolicyInternetservicesrccustomgroupItem]
+    internet_service_src_fortiguard: str | list[str] | list[dict[str, Any]] | list[ShapingPolicyInternetservicesrcfortiguardItem]
+    service: str | list[str] | list[dict[str, Any]] | list[ShapingPolicyServiceItem]
     schedule: str
-    # Apply this traffic shaping policy to individual users that h
-    users: list[ShapingPolicyUsersObject]
-    # Apply this traffic shaping policy to user groups that have a
-    groups: list[ShapingPolicyGroupsObject]
-    # IDs of one or more applications that this shaper applies app
-    application: list[ShapingPolicyApplicationObject]
-    # IDs of one or more application categories that this shaper a
-    app_category: list[ShapingPolicyAppcategoryObject]
-    # One or more application group names.
-    app_group: list[ShapingPolicyAppgroupObject]
-    # IDs of one or more FortiGuard Web Filtering categories that
-    url_category: list[ShapingPolicyUrlcategoryObject]
-    # One or more incoming (ingress) interfaces.
-    srcintf: list[ShapingPolicySrcintfObject]
-    # One or more outgoing (egress) interfaces.
-    dstintf: list[ShapingPolicyDstintfObject]
-    # Non-zero bit positions are used for comparison while zero bi
+    users: str | list[str] | list[dict[str, Any]] | list[ShapingPolicyUsersItem]
+    groups: str | list[str] | list[dict[str, Any]] | list[ShapingPolicyGroupsItem]
+    application: str | list[str] | list[dict[str, Any]] | list[ShapingPolicyApplicationItem]
+    app_category: str | list[str] | list[dict[str, Any]] | list[ShapingPolicyAppcategoryItem]
+    app_group: str | list[str] | list[dict[str, Any]] | list[ShapingPolicyAppgroupItem]
+    url_category: str | list[str] | list[dict[str, Any]] | list[ShapingPolicyUrlcategoryItem]
+    srcintf: str | list[str] | list[dict[str, Any]] | list[ShapingPolicySrcintfItem]
+    dstintf: str | list[str] | list[dict[str, Any]] | list[ShapingPolicyDstintfItem]
     tos_mask: str
-    # ToS (Type of Service) value used for comparison.
     tos: str
-    # Enable negated TOS match. | Default: disable
     tos_negate: Literal["enable", "disable"]
-    # Traffic shaper to apply to traffic forwarded by the firewall | MaxLen: 35
     traffic_shaper: str
-    # Traffic shaper to apply to response traffic received by the | MaxLen: 35
     traffic_shaper_reverse: str
-    # Per-IP traffic shaper to apply with this policy. | MaxLen: 35
     per_ip_shaper: str
-    # Traffic class ID. | Default: 0 | Min: 0 | Max: 4294967295
     class_id: int
-    # Enable to change packet's DiffServ values to the specified d | Default: disable
     diffserv_forward: Literal["enable", "disable"]
-    # Enable to change packet's reverse (reply) DiffServ values to | Default: disable
     diffserv_reverse: Literal["enable", "disable"]
-    # Change packet's DiffServ to this value.
     diffservcode_forward: str
-    # Change packet's reverse (reply) DiffServ to this value.
     diffservcode_rev: str
-    # VLAN CoS evaluated bits.
     cos_mask: str
-    # VLAN CoS bit pattern.
     cos: str
-    
-    # Common API response fields
-    status: str
-    http_status: int | None
-    http_status_code: int | None
-    http_method: str | None
-    http_response_time: float | None
-    vdom: str | None
-    
-    # Methods from FortiObject
-    @property
-    def dict(self) -> dict[str, Any]:
-        """Convert to dictionary."""
-        ...
-    @property
-    def json(self) -> str:
-        """Get pretty-printed JSON string."""
-        ...
-    @property
-    def raw(self) -> dict[str, Any]:
-        """Get raw API response data."""
-        ...
-    def get_full(self, name: str) -> Any: ...
-    def to_dict(self) -> ShapingPolicyPayload: ...
-    def keys(self) -> Any: ...
-    def values(self) -> Generator[Any, None, None]: ...
-    def items(self) -> Generator[tuple[str, Any], None, None]: ...
-    def get(self, key: str, default: Any = None) -> Any: ...
 
+
+# ================================================================
+# Response Types (TypedDict for dict-style access)
+# ================================================================
+
+class ShapingPolicyResponse(TypedDict, total=False):
+    """Response type for ShapingPolicy - use with .dict property for typed dict access."""
+    id: int
+    uuid: str
+    name: str
+    comment: str
+    status: Literal["enable", "disable"]
+    ip_version: Literal["4", "6"]
+    traffic_type: Literal["forwarding", "local-in", "local-out"]
+    srcaddr: list[ShapingPolicySrcaddrItem]
+    dstaddr: list[ShapingPolicyDstaddrItem]
+    srcaddr6: list[ShapingPolicySrcaddr6Item]
+    dstaddr6: list[ShapingPolicyDstaddr6Item]
+    internet_service: Literal["enable", "disable"]
+    internet_service_name: list[ShapingPolicyInternetservicenameItem]
+    internet_service_group: list[ShapingPolicyInternetservicegroupItem]
+    internet_service_custom: list[ShapingPolicyInternetservicecustomItem]
+    internet_service_custom_group: list[ShapingPolicyInternetservicecustomgroupItem]
+    internet_service_fortiguard: list[ShapingPolicyInternetservicefortiguardItem]
+    internet_service_src: Literal["enable", "disable"]
+    internet_service_src_name: list[ShapingPolicyInternetservicesrcnameItem]
+    internet_service_src_group: list[ShapingPolicyInternetservicesrcgroupItem]
+    internet_service_src_custom: list[ShapingPolicyInternetservicesrccustomItem]
+    internet_service_src_custom_group: list[ShapingPolicyInternetservicesrccustomgroupItem]
+    internet_service_src_fortiguard: list[ShapingPolicyInternetservicesrcfortiguardItem]
+    service: list[ShapingPolicyServiceItem]
+    schedule: str
+    users: list[ShapingPolicyUsersItem]
+    groups: list[ShapingPolicyGroupsItem]
+    application: list[ShapingPolicyApplicationItem]
+    app_category: list[ShapingPolicyAppcategoryItem]
+    app_group: list[ShapingPolicyAppgroupItem]
+    url_category: list[ShapingPolicyUrlcategoryItem]
+    srcintf: list[ShapingPolicySrcintfItem]
+    dstintf: list[ShapingPolicyDstintfItem]
+    tos_mask: str
+    tos: str
+    tos_negate: Literal["enable", "disable"]
+    traffic_shaper: str
+    traffic_shaper_reverse: str
+    per_ip_shaper: str
+    class_id: int
+    diffserv_forward: Literal["enable", "disable"]
+    diffserv_reverse: Literal["enable", "disable"]
+    diffservcode_forward: str
+    diffservcode_rev: str
+    cos_mask: str
+    cos: str
+
+
+# ================================================================
+# Response Types (Class for attribute access)
+# ================================================================
+
+
+class ShapingPolicyObject(FortiObject):
+    """Typed FortiObject for ShapingPolicy with field access."""
+    id: int
+    uuid: str
+    name: str
+    comment: str
+    status: Literal["enable", "disable"]
+    ip_version: Literal["4", "6"]
+    traffic_type: Literal["forwarding", "local-in", "local-out"]
+    srcaddr: list[ShapingPolicySrcaddrItem]
+    dstaddr: list[ShapingPolicyDstaddrItem]
+    srcaddr6: list[ShapingPolicySrcaddr6Item]
+    dstaddr6: list[ShapingPolicyDstaddr6Item]
+    internet_service: Literal["enable", "disable"]
+    internet_service_name: list[ShapingPolicyInternetservicenameItem]
+    internet_service_group: list[ShapingPolicyInternetservicegroupItem]
+    internet_service_custom: list[ShapingPolicyInternetservicecustomItem]
+    internet_service_custom_group: list[ShapingPolicyInternetservicecustomgroupItem]
+    internet_service_fortiguard: list[ShapingPolicyInternetservicefortiguardItem]
+    internet_service_src: Literal["enable", "disable"]
+    internet_service_src_name: list[ShapingPolicyInternetservicesrcnameItem]
+    internet_service_src_group: list[ShapingPolicyInternetservicesrcgroupItem]
+    internet_service_src_custom: list[ShapingPolicyInternetservicesrccustomItem]
+    internet_service_src_custom_group: list[ShapingPolicyInternetservicesrccustomgroupItem]
+    internet_service_src_fortiguard: list[ShapingPolicyInternetservicesrcfortiguardItem]
+    service: list[ShapingPolicyServiceItem]
+    schedule: str
+    users: list[ShapingPolicyUsersItem]
+    groups: list[ShapingPolicyGroupsItem]
+    application: list[ShapingPolicyApplicationItem]
+    app_category: list[ShapingPolicyAppcategoryItem]
+    app_group: list[ShapingPolicyAppgroupItem]
+    url_category: list[ShapingPolicyUrlcategoryItem]
+    srcintf: list[ShapingPolicySrcintfItem]
+    dstintf: list[ShapingPolicyDstintfItem]
+    tos_mask: str
+    tos: str
+    tos_negate: Literal["enable", "disable"]
+    traffic_shaper: str
+    traffic_shaper_reverse: str
+    per_ip_shaper: str
+    class_id: int
+    diffserv_forward: Literal["enable", "disable"]
+    diffserv_reverse: Literal["enable", "disable"]
+    diffservcode_forward: str
+    diffservcode_rev: str
+    cos_mask: str
+    cos: str
+
+
+# ================================================================
+# Main Endpoint Class
+# ================================================================
 
 class ShapingPolicy:
     """
-    Configure shaping policies.
     
-    Path: firewall/shaping_policy
+    Endpoint: firewall/shaping_policy
     Category: cmdb
-    Primary Key: id
+    MKey: id
     """
     
+    # Class attributes for introspection
+    endpoint: ClassVar[str] = ...
+    path: ClassVar[str] = ...
+    category: ClassVar[str] = ...
+    mkey: ClassVar[str] = ...
+    capabilities: ClassVar[dict[str, Any]] = ...
+    
     def __init__(self, client: Any) -> None:
-        """Initialize endpoint with HTTP client.
-        
-        Args:
-            client: HTTP client instance for API communication
-        """
+        """Initialize endpoint with HTTP client."""
         ...
     
     # ================================================================
-    # GET OVERLOADS - Always returns FortiObject (or ContentResponse for file endpoints)
-    # Pylance matches overloads top-to-bottom, so these must come first!
+    # GET Methods
     # ================================================================
     
-    # With mkey as positional arg -> returns FortiObject
+    # CMDB with mkey - overloads for single vs list returns
     @overload
     def get(
         self,
         id: int,
+        *,
         filter: str | list[str] | None = ...,
         count: int | None = ...,
         start: int | None = ...,
@@ -1642,14 +342,14 @@ class ShapingPolicy:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        error_mode: Literal["raise", "return", "print"] | None = ...,
+        error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> ShapingPolicyObject: ...
     
-    # With mkey as keyword arg -> returns FortiObject
     @overload
     def get(
         self,
         *,
-        id: int,
         filter: str | list[str] | None = ...,
         count: int | None = ...,
         start: int | None = ...,
@@ -1659,164 +359,20 @@ class ShapingPolicy:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> ShapingPolicyObject: ...
-    
-    # Without mkey -> returns list of FortiObjects
-    @overload
-    def get(
-        self,
-        id: None = None,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
+        error_mode: Literal["raise", "return", "print"] | None = ...,
+        error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> FortiObjectList[ShapingPolicyObject]: ...
-    
-    # ================================================================
-    # (removed - all GET now returns FortiObject)
-    # ================================================================
-    
-    # With mkey as positional arg -> returns single object
-    @overload
-    def get(
-        self,
-        id: int,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> ShapingPolicyObject: ...
-    
-    # With mkey as keyword arg -> returns single object
-    @overload
-    def get(
-        self,
-        *,
-        id: int,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> ShapingPolicyObject: ...
-    
-    # With no mkey -> returns list of objects
-    @overload
-    def get(
-        self,
-        *,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObjectList[ShapingPolicyObject]: ...
-    
-    # Dict mode with mkey provided as positional arg (single dict)
-    @overload
-    def get(
-        self,
-        id: int,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> ShapingPolicyObject: ...
-    
-    # Dict mode with mkey provided as keyword arg (single dict)
-    @overload
-    def get(
-        self,
-        *,
-        id: int,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> ShapingPolicyObject: ...
-    
-    # Dict mode - list of dicts (no mkey/name provided) - keyword-only signature
-    @overload
-    def get(
-        self,
-        *,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObjectList[ShapingPolicyObject]: ...
-    
-    # Fallback overload for all other cases
-    @overload
-    def get(
-        self,
-        id: int | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> Union[dict[str, Any], list[dict[str, Any]], FortiObject, list[FortiObject]]: ...
-    
-    def get(
-        self,
-        id: int | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> ShapingPolicyObject | list[ShapingPolicyObject] | dict[str, Any] | list[dict[str, Any]]: ...
     
     def get_schema(
         self,
         vdom: str | None = ...,
         format: str = ...,
     ) -> FortiObject: ...
+
+    # ================================================================
+    # POST Method
+    # ================================================================
     
-    # POST overloads
-    @overload
     def post(
         self,
         payload_dict: ShapingPolicyPayload | None = ...,
@@ -1827,32 +383,32 @@ class ShapingPolicy:
         status: Literal["enable", "disable"] | None = ...,
         ip_version: Literal["4", "6"] | None = ...,
         traffic_type: Literal["forwarding", "local-in", "local-out"] | None = ...,
-        srcaddr: str | list[str] | list[ShapingPolicySrcaddrItem] | None = ...,
-        dstaddr: str | list[str] | list[ShapingPolicyDstaddrItem] | None = ...,
-        srcaddr6: str | list[str] | list[ShapingPolicySrcaddr6Item] | None = ...,
-        dstaddr6: str | list[str] | list[ShapingPolicyDstaddr6Item] | None = ...,
+        srcaddr: str | list[str] | list[dict[str, Any]] | list[ShapingPolicySrcaddrItem] | None = ...,
+        dstaddr: str | list[str] | list[dict[str, Any]] | list[ShapingPolicyDstaddrItem] | None = ...,
+        srcaddr6: str | list[str] | list[dict[str, Any]] | list[ShapingPolicySrcaddr6Item] | None = ...,
+        dstaddr6: str | list[str] | list[dict[str, Any]] | list[ShapingPolicyDstaddr6Item] | None = ...,
         internet_service: Literal["enable", "disable"] | None = ...,
-        internet_service_name: str | list[str] | list[ShapingPolicyInternetservicenameItem] | None = ...,
-        internet_service_group: str | list[str] | list[ShapingPolicyInternetservicegroupItem] | None = ...,
-        internet_service_custom: str | list[str] | list[ShapingPolicyInternetservicecustomItem] | None = ...,
-        internet_service_custom_group: str | list[str] | list[ShapingPolicyInternetservicecustomgroupItem] | None = ...,
-        internet_service_fortiguard: str | list[str] | list[ShapingPolicyInternetservicefortiguardItem] | None = ...,
+        internet_service_name: str | list[str] | list[dict[str, Any]] | list[ShapingPolicyInternetservicenameItem] | None = ...,
+        internet_service_group: str | list[str] | list[dict[str, Any]] | list[ShapingPolicyInternetservicegroupItem] | None = ...,
+        internet_service_custom: str | list[str] | list[dict[str, Any]] | list[ShapingPolicyInternetservicecustomItem] | None = ...,
+        internet_service_custom_group: str | list[str] | list[dict[str, Any]] | list[ShapingPolicyInternetservicecustomgroupItem] | None = ...,
+        internet_service_fortiguard: str | list[str] | list[dict[str, Any]] | list[ShapingPolicyInternetservicefortiguardItem] | None = ...,
         internet_service_src: Literal["enable", "disable"] | None = ...,
-        internet_service_src_name: str | list[str] | list[ShapingPolicyInternetservicesrcnameItem] | None = ...,
-        internet_service_src_group: str | list[str] | list[ShapingPolicyInternetservicesrcgroupItem] | None = ...,
-        internet_service_src_custom: str | list[str] | list[ShapingPolicyInternetservicesrccustomItem] | None = ...,
-        internet_service_src_custom_group: str | list[str] | list[ShapingPolicyInternetservicesrccustomgroupItem] | None = ...,
-        internet_service_src_fortiguard: str | list[str] | list[ShapingPolicyInternetservicesrcfortiguardItem] | None = ...,
-        service: str | list[str] | list[ShapingPolicyServiceItem] | None = ...,
+        internet_service_src_name: str | list[str] | list[dict[str, Any]] | list[ShapingPolicyInternetservicesrcnameItem] | None = ...,
+        internet_service_src_group: str | list[str] | list[dict[str, Any]] | list[ShapingPolicyInternetservicesrcgroupItem] | None = ...,
+        internet_service_src_custom: str | list[str] | list[dict[str, Any]] | list[ShapingPolicyInternetservicesrccustomItem] | None = ...,
+        internet_service_src_custom_group: str | list[str] | list[dict[str, Any]] | list[ShapingPolicyInternetservicesrccustomgroupItem] | None = ...,
+        internet_service_src_fortiguard: str | list[str] | list[dict[str, Any]] | list[ShapingPolicyInternetservicesrcfortiguardItem] | None = ...,
+        service: str | list[str] | list[dict[str, Any]] | list[ShapingPolicyServiceItem] | None = ...,
         schedule: str | None = ...,
-        users: str | list[str] | list[ShapingPolicyUsersItem] | None = ...,
-        groups: str | list[str] | list[ShapingPolicyGroupsItem] | None = ...,
-        application: str | list[str] | list[ShapingPolicyApplicationItem] | None = ...,
-        app_category: str | list[str] | list[ShapingPolicyAppcategoryItem] | None = ...,
-        app_group: str | list[str] | list[ShapingPolicyAppgroupItem] | None = ...,
-        url_category: str | list[str] | list[ShapingPolicyUrlcategoryItem] | None = ...,
-        srcintf: str | list[str] | list[ShapingPolicySrcintfItem] | None = ...,
-        dstintf: str | list[str] | list[ShapingPolicyDstintfItem] | None = ...,
+        users: str | list[str] | list[dict[str, Any]] | list[ShapingPolicyUsersItem] | None = ...,
+        groups: str | list[str] | list[dict[str, Any]] | list[ShapingPolicyGroupsItem] | None = ...,
+        application: str | list[str] | list[dict[str, Any]] | list[ShapingPolicyApplicationItem] | None = ...,
+        app_category: str | list[str] | list[dict[str, Any]] | list[ShapingPolicyAppcategoryItem] | None = ...,
+        app_group: str | list[str] | list[dict[str, Any]] | list[ShapingPolicyAppgroupItem] | None = ...,
+        url_category: str | list[str] | list[dict[str, Any]] | list[ShapingPolicyUrlcategoryItem] | None = ...,
+        srcintf: str | list[str] | list[dict[str, Any]] | list[ShapingPolicySrcintfItem] | None = ...,
+        dstintf: str | list[str] | list[dict[str, Any]] | list[ShapingPolicyDstintfItem] | None = ...,
         tos_mask: str | None = ...,
         tos: str | None = ...,
         tos_negate: Literal["enable", "disable"] | None = ...,
@@ -1867,169 +423,14 @@ class ShapingPolicy:
         cos_mask: str | None = ...,
         cos: str | None = ...,
         vdom: str | bool | None = ...,
+        error_mode: Literal["raise", "return", "print"] | None = ...,
+        error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> ShapingPolicyObject: ...
+
+    # ================================================================
+    # PUT Method
+    # ================================================================
     
-    @overload
-    def post(
-        self,
-        payload_dict: ShapingPolicyPayload | None = ...,
-        id: int | None = ...,
-        uuid: str | None = ...,
-        name: str | None = ...,
-        comment: str | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
-        ip_version: Literal["4", "6"] | None = ...,
-        traffic_type: Literal["forwarding", "local-in", "local-out"] | None = ...,
-        srcaddr: str | list[str] | list[ShapingPolicySrcaddrItem] | None = ...,
-        dstaddr: str | list[str] | list[ShapingPolicyDstaddrItem] | None = ...,
-        srcaddr6: str | list[str] | list[ShapingPolicySrcaddr6Item] | None = ...,
-        dstaddr6: str | list[str] | list[ShapingPolicyDstaddr6Item] | None = ...,
-        internet_service: Literal["enable", "disable"] | None = ...,
-        internet_service_name: str | list[str] | list[ShapingPolicyInternetservicenameItem] | None = ...,
-        internet_service_group: str | list[str] | list[ShapingPolicyInternetservicegroupItem] | None = ...,
-        internet_service_custom: str | list[str] | list[ShapingPolicyInternetservicecustomItem] | None = ...,
-        internet_service_custom_group: str | list[str] | list[ShapingPolicyInternetservicecustomgroupItem] | None = ...,
-        internet_service_fortiguard: str | list[str] | list[ShapingPolicyInternetservicefortiguardItem] | None = ...,
-        internet_service_src: Literal["enable", "disable"] | None = ...,
-        internet_service_src_name: str | list[str] | list[ShapingPolicyInternetservicesrcnameItem] | None = ...,
-        internet_service_src_group: str | list[str] | list[ShapingPolicyInternetservicesrcgroupItem] | None = ...,
-        internet_service_src_custom: str | list[str] | list[ShapingPolicyInternetservicesrccustomItem] | None = ...,
-        internet_service_src_custom_group: str | list[str] | list[ShapingPolicyInternetservicesrccustomgroupItem] | None = ...,
-        internet_service_src_fortiguard: str | list[str] | list[ShapingPolicyInternetservicesrcfortiguardItem] | None = ...,
-        service: str | list[str] | list[ShapingPolicyServiceItem] | None = ...,
-        schedule: str | None = ...,
-        users: str | list[str] | list[ShapingPolicyUsersItem] | None = ...,
-        groups: str | list[str] | list[ShapingPolicyGroupsItem] | None = ...,
-        application: str | list[str] | list[ShapingPolicyApplicationItem] | None = ...,
-        app_category: str | list[str] | list[ShapingPolicyAppcategoryItem] | None = ...,
-        app_group: str | list[str] | list[ShapingPolicyAppgroupItem] | None = ...,
-        url_category: str | list[str] | list[ShapingPolicyUrlcategoryItem] | None = ...,
-        srcintf: str | list[str] | list[ShapingPolicySrcintfItem] | None = ...,
-        dstintf: str | list[str] | list[ShapingPolicyDstintfItem] | None = ...,
-        tos_mask: str | None = ...,
-        tos: str | None = ...,
-        tos_negate: Literal["enable", "disable"] | None = ...,
-        traffic_shaper: str | None = ...,
-        traffic_shaper_reverse: str | None = ...,
-        per_ip_shaper: str | None = ...,
-        class_id: int | None = ...,
-        diffserv_forward: Literal["enable", "disable"] | None = ...,
-        diffserv_reverse: Literal["enable", "disable"] | None = ...,
-        diffservcode_forward: str | None = ...,
-        diffservcode_rev: str | None = ...,
-        cos_mask: str | None = ...,
-        cos: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
-    
-    # Default overload
-    @overload
-    def post(
-        self,
-        payload_dict: ShapingPolicyPayload | None = ...,
-        id: int | None = ...,
-        uuid: str | None = ...,
-        name: str | None = ...,
-        comment: str | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
-        ip_version: Literal["4", "6"] | None = ...,
-        traffic_type: Literal["forwarding", "local-in", "local-out"] | None = ...,
-        srcaddr: str | list[str] | list[ShapingPolicySrcaddrItem] | None = ...,
-        dstaddr: str | list[str] | list[ShapingPolicyDstaddrItem] | None = ...,
-        srcaddr6: str | list[str] | list[ShapingPolicySrcaddr6Item] | None = ...,
-        dstaddr6: str | list[str] | list[ShapingPolicyDstaddr6Item] | None = ...,
-        internet_service: Literal["enable", "disable"] | None = ...,
-        internet_service_name: str | list[str] | list[ShapingPolicyInternetservicenameItem] | None = ...,
-        internet_service_group: str | list[str] | list[ShapingPolicyInternetservicegroupItem] | None = ...,
-        internet_service_custom: str | list[str] | list[ShapingPolicyInternetservicecustomItem] | None = ...,
-        internet_service_custom_group: str | list[str] | list[ShapingPolicyInternetservicecustomgroupItem] | None = ...,
-        internet_service_fortiguard: str | list[str] | list[ShapingPolicyInternetservicefortiguardItem] | None = ...,
-        internet_service_src: Literal["enable", "disable"] | None = ...,
-        internet_service_src_name: str | list[str] | list[ShapingPolicyInternetservicesrcnameItem] | None = ...,
-        internet_service_src_group: str | list[str] | list[ShapingPolicyInternetservicesrcgroupItem] | None = ...,
-        internet_service_src_custom: str | list[str] | list[ShapingPolicyInternetservicesrccustomItem] | None = ...,
-        internet_service_src_custom_group: str | list[str] | list[ShapingPolicyInternetservicesrccustomgroupItem] | None = ...,
-        internet_service_src_fortiguard: str | list[str] | list[ShapingPolicyInternetservicesrcfortiguardItem] | None = ...,
-        service: str | list[str] | list[ShapingPolicyServiceItem] | None = ...,
-        schedule: str | None = ...,
-        users: str | list[str] | list[ShapingPolicyUsersItem] | None = ...,
-        groups: str | list[str] | list[ShapingPolicyGroupsItem] | None = ...,
-        application: str | list[str] | list[ShapingPolicyApplicationItem] | None = ...,
-        app_category: str | list[str] | list[ShapingPolicyAppcategoryItem] | None = ...,
-        app_group: str | list[str] | list[ShapingPolicyAppgroupItem] | None = ...,
-        url_category: str | list[str] | list[ShapingPolicyUrlcategoryItem] | None = ...,
-        srcintf: str | list[str] | list[ShapingPolicySrcintfItem] | None = ...,
-        dstintf: str | list[str] | list[ShapingPolicyDstintfItem] | None = ...,
-        tos_mask: str | None = ...,
-        tos: str | None = ...,
-        tos_negate: Literal["enable", "disable"] | None = ...,
-        traffic_shaper: str | None = ...,
-        traffic_shaper_reverse: str | None = ...,
-        per_ip_shaper: str | None = ...,
-        class_id: int | None = ...,
-        diffserv_forward: Literal["enable", "disable"] | None = ...,
-        diffserv_reverse: Literal["enable", "disable"] | None = ...,
-        diffservcode_forward: str | None = ...,
-        diffservcode_rev: str | None = ...,
-        cos_mask: str | None = ...,
-        cos: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
-    
-    def post(
-        self,
-        payload_dict: ShapingPolicyPayload | None = ...,
-        id: int | None = ...,
-        uuid: str | None = ...,
-        name: str | None = ...,
-        comment: str | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
-        ip_version: Literal["4", "6"] | None = ...,
-        traffic_type: Literal["forwarding", "local-in", "local-out"] | None = ...,
-        srcaddr: str | list[str] | list[ShapingPolicySrcaddrItem] | None = ...,
-        dstaddr: str | list[str] | list[ShapingPolicyDstaddrItem] | None = ...,
-        srcaddr6: str | list[str] | list[ShapingPolicySrcaddr6Item] | None = ...,
-        dstaddr6: str | list[str] | list[ShapingPolicyDstaddr6Item] | None = ...,
-        internet_service: Literal["enable", "disable"] | None = ...,
-        internet_service_name: str | list[str] | list[ShapingPolicyInternetservicenameItem] | None = ...,
-        internet_service_group: str | list[str] | list[ShapingPolicyInternetservicegroupItem] | None = ...,
-        internet_service_custom: str | list[str] | list[ShapingPolicyInternetservicecustomItem] | None = ...,
-        internet_service_custom_group: str | list[str] | list[ShapingPolicyInternetservicecustomgroupItem] | None = ...,
-        internet_service_fortiguard: str | list[str] | list[ShapingPolicyInternetservicefortiguardItem] | None = ...,
-        internet_service_src: Literal["enable", "disable"] | None = ...,
-        internet_service_src_name: str | list[str] | list[ShapingPolicyInternetservicesrcnameItem] | None = ...,
-        internet_service_src_group: str | list[str] | list[ShapingPolicyInternetservicesrcgroupItem] | None = ...,
-        internet_service_src_custom: str | list[str] | list[ShapingPolicyInternetservicesrccustomItem] | None = ...,
-        internet_service_src_custom_group: str | list[str] | list[ShapingPolicyInternetservicesrccustomgroupItem] | None = ...,
-        internet_service_src_fortiguard: str | list[str] | list[ShapingPolicyInternetservicesrcfortiguardItem] | None = ...,
-        service: str | list[str] | list[ShapingPolicyServiceItem] | None = ...,
-        schedule: str | None = ...,
-        users: str | list[str] | list[ShapingPolicyUsersItem] | None = ...,
-        groups: str | list[str] | list[ShapingPolicyGroupsItem] | None = ...,
-        application: str | list[str] | list[ShapingPolicyApplicationItem] | None = ...,
-        app_category: str | list[str] | list[ShapingPolicyAppcategoryItem] | None = ...,
-        app_group: str | list[str] | list[ShapingPolicyAppgroupItem] | None = ...,
-        url_category: str | list[str] | list[ShapingPolicyUrlcategoryItem] | None = ...,
-        srcintf: str | list[str] | list[ShapingPolicySrcintfItem] | None = ...,
-        dstintf: str | list[str] | list[ShapingPolicyDstintfItem] | None = ...,
-        tos_mask: str | None = ...,
-        tos: str | None = ...,
-        tos_negate: Literal["enable", "disable"] | None = ...,
-        traffic_shaper: str | None = ...,
-        traffic_shaper_reverse: str | None = ...,
-        per_ip_shaper: str | None = ...,
-        class_id: int | None = ...,
-        diffserv_forward: Literal["enable", "disable"] | None = ...,
-        diffserv_reverse: Literal["enable", "disable"] | None = ...,
-        diffservcode_forward: str | None = ...,
-        diffservcode_rev: str | None = ...,
-        cos_mask: str | None = ...,
-        cos: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
-    
-    # PUT overloads
-    @overload
     def put(
         self,
         payload_dict: ShapingPolicyPayload | None = ...,
@@ -2040,32 +441,32 @@ class ShapingPolicy:
         status: Literal["enable", "disable"] | None = ...,
         ip_version: Literal["4", "6"] | None = ...,
         traffic_type: Literal["forwarding", "local-in", "local-out"] | None = ...,
-        srcaddr: str | list[str] | list[ShapingPolicySrcaddrItem] | None = ...,
-        dstaddr: str | list[str] | list[ShapingPolicyDstaddrItem] | None = ...,
-        srcaddr6: str | list[str] | list[ShapingPolicySrcaddr6Item] | None = ...,
-        dstaddr6: str | list[str] | list[ShapingPolicyDstaddr6Item] | None = ...,
+        srcaddr: str | list[str] | list[dict[str, Any]] | list[ShapingPolicySrcaddrItem] | None = ...,
+        dstaddr: str | list[str] | list[dict[str, Any]] | list[ShapingPolicyDstaddrItem] | None = ...,
+        srcaddr6: str | list[str] | list[dict[str, Any]] | list[ShapingPolicySrcaddr6Item] | None = ...,
+        dstaddr6: str | list[str] | list[dict[str, Any]] | list[ShapingPolicyDstaddr6Item] | None = ...,
         internet_service: Literal["enable", "disable"] | None = ...,
-        internet_service_name: str | list[str] | list[ShapingPolicyInternetservicenameItem] | None = ...,
-        internet_service_group: str | list[str] | list[ShapingPolicyInternetservicegroupItem] | None = ...,
-        internet_service_custom: str | list[str] | list[ShapingPolicyInternetservicecustomItem] | None = ...,
-        internet_service_custom_group: str | list[str] | list[ShapingPolicyInternetservicecustomgroupItem] | None = ...,
-        internet_service_fortiguard: str | list[str] | list[ShapingPolicyInternetservicefortiguardItem] | None = ...,
+        internet_service_name: str | list[str] | list[dict[str, Any]] | list[ShapingPolicyInternetservicenameItem] | None = ...,
+        internet_service_group: str | list[str] | list[dict[str, Any]] | list[ShapingPolicyInternetservicegroupItem] | None = ...,
+        internet_service_custom: str | list[str] | list[dict[str, Any]] | list[ShapingPolicyInternetservicecustomItem] | None = ...,
+        internet_service_custom_group: str | list[str] | list[dict[str, Any]] | list[ShapingPolicyInternetservicecustomgroupItem] | None = ...,
+        internet_service_fortiguard: str | list[str] | list[dict[str, Any]] | list[ShapingPolicyInternetservicefortiguardItem] | None = ...,
         internet_service_src: Literal["enable", "disable"] | None = ...,
-        internet_service_src_name: str | list[str] | list[ShapingPolicyInternetservicesrcnameItem] | None = ...,
-        internet_service_src_group: str | list[str] | list[ShapingPolicyInternetservicesrcgroupItem] | None = ...,
-        internet_service_src_custom: str | list[str] | list[ShapingPolicyInternetservicesrccustomItem] | None = ...,
-        internet_service_src_custom_group: str | list[str] | list[ShapingPolicyInternetservicesrccustomgroupItem] | None = ...,
-        internet_service_src_fortiguard: str | list[str] | list[ShapingPolicyInternetservicesrcfortiguardItem] | None = ...,
-        service: str | list[str] | list[ShapingPolicyServiceItem] | None = ...,
+        internet_service_src_name: str | list[str] | list[dict[str, Any]] | list[ShapingPolicyInternetservicesrcnameItem] | None = ...,
+        internet_service_src_group: str | list[str] | list[dict[str, Any]] | list[ShapingPolicyInternetservicesrcgroupItem] | None = ...,
+        internet_service_src_custom: str | list[str] | list[dict[str, Any]] | list[ShapingPolicyInternetservicesrccustomItem] | None = ...,
+        internet_service_src_custom_group: str | list[str] | list[dict[str, Any]] | list[ShapingPolicyInternetservicesrccustomgroupItem] | None = ...,
+        internet_service_src_fortiguard: str | list[str] | list[dict[str, Any]] | list[ShapingPolicyInternetservicesrcfortiguardItem] | None = ...,
+        service: str | list[str] | list[dict[str, Any]] | list[ShapingPolicyServiceItem] | None = ...,
         schedule: str | None = ...,
-        users: str | list[str] | list[ShapingPolicyUsersItem] | None = ...,
-        groups: str | list[str] | list[ShapingPolicyGroupsItem] | None = ...,
-        application: str | list[str] | list[ShapingPolicyApplicationItem] | None = ...,
-        app_category: str | list[str] | list[ShapingPolicyAppcategoryItem] | None = ...,
-        app_group: str | list[str] | list[ShapingPolicyAppgroupItem] | None = ...,
-        url_category: str | list[str] | list[ShapingPolicyUrlcategoryItem] | None = ...,
-        srcintf: str | list[str] | list[ShapingPolicySrcintfItem] | None = ...,
-        dstintf: str | list[str] | list[ShapingPolicyDstintfItem] | None = ...,
+        users: str | list[str] | list[dict[str, Any]] | list[ShapingPolicyUsersItem] | None = ...,
+        groups: str | list[str] | list[dict[str, Any]] | list[ShapingPolicyGroupsItem] | None = ...,
+        application: str | list[str] | list[dict[str, Any]] | list[ShapingPolicyApplicationItem] | None = ...,
+        app_category: str | list[str] | list[dict[str, Any]] | list[ShapingPolicyAppcategoryItem] | None = ...,
+        app_group: str | list[str] | list[dict[str, Any]] | list[ShapingPolicyAppgroupItem] | None = ...,
+        url_category: str | list[str] | list[dict[str, Any]] | list[ShapingPolicyUrlcategoryItem] | None = ...,
+        srcintf: str | list[str] | list[dict[str, Any]] | list[ShapingPolicySrcintfItem] | None = ...,
+        dstintf: str | list[str] | list[dict[str, Any]] | list[ShapingPolicyDstintfItem] | None = ...,
         tos_mask: str | None = ...,
         tos: str | None = ...,
         tos_negate: Literal["enable", "disable"] | None = ...,
@@ -2080,195 +481,25 @@ class ShapingPolicy:
         cos_mask: str | None = ...,
         cos: str | None = ...,
         vdom: str | bool | None = ...,
+        error_mode: Literal["raise", "return", "print"] | None = ...,
+        error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> ShapingPolicyObject: ...
-    
-    @overload
-    def put(
-        self,
-        payload_dict: ShapingPolicyPayload | None = ...,
-        id: int | None = ...,
-        uuid: str | None = ...,
-        name: str | None = ...,
-        comment: str | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
-        ip_version: Literal["4", "6"] | None = ...,
-        traffic_type: Literal["forwarding", "local-in", "local-out"] | None = ...,
-        srcaddr: str | list[str] | list[ShapingPolicySrcaddrItem] | None = ...,
-        dstaddr: str | list[str] | list[ShapingPolicyDstaddrItem] | None = ...,
-        srcaddr6: str | list[str] | list[ShapingPolicySrcaddr6Item] | None = ...,
-        dstaddr6: str | list[str] | list[ShapingPolicyDstaddr6Item] | None = ...,
-        internet_service: Literal["enable", "disable"] | None = ...,
-        internet_service_name: str | list[str] | list[ShapingPolicyInternetservicenameItem] | None = ...,
-        internet_service_group: str | list[str] | list[ShapingPolicyInternetservicegroupItem] | None = ...,
-        internet_service_custom: str | list[str] | list[ShapingPolicyInternetservicecustomItem] | None = ...,
-        internet_service_custom_group: str | list[str] | list[ShapingPolicyInternetservicecustomgroupItem] | None = ...,
-        internet_service_fortiguard: str | list[str] | list[ShapingPolicyInternetservicefortiguardItem] | None = ...,
-        internet_service_src: Literal["enable", "disable"] | None = ...,
-        internet_service_src_name: str | list[str] | list[ShapingPolicyInternetservicesrcnameItem] | None = ...,
-        internet_service_src_group: str | list[str] | list[ShapingPolicyInternetservicesrcgroupItem] | None = ...,
-        internet_service_src_custom: str | list[str] | list[ShapingPolicyInternetservicesrccustomItem] | None = ...,
-        internet_service_src_custom_group: str | list[str] | list[ShapingPolicyInternetservicesrccustomgroupItem] | None = ...,
-        internet_service_src_fortiguard: str | list[str] | list[ShapingPolicyInternetservicesrcfortiguardItem] | None = ...,
-        service: str | list[str] | list[ShapingPolicyServiceItem] | None = ...,
-        schedule: str | None = ...,
-        users: str | list[str] | list[ShapingPolicyUsersItem] | None = ...,
-        groups: str | list[str] | list[ShapingPolicyGroupsItem] | None = ...,
-        application: str | list[str] | list[ShapingPolicyApplicationItem] | None = ...,
-        app_category: str | list[str] | list[ShapingPolicyAppcategoryItem] | None = ...,
-        app_group: str | list[str] | list[ShapingPolicyAppgroupItem] | None = ...,
-        url_category: str | list[str] | list[ShapingPolicyUrlcategoryItem] | None = ...,
-        srcintf: str | list[str] | list[ShapingPolicySrcintfItem] | None = ...,
-        dstintf: str | list[str] | list[ShapingPolicyDstintfItem] | None = ...,
-        tos_mask: str | None = ...,
-        tos: str | None = ...,
-        tos_negate: Literal["enable", "disable"] | None = ...,
-        traffic_shaper: str | None = ...,
-        traffic_shaper_reverse: str | None = ...,
-        per_ip_shaper: str | None = ...,
-        class_id: int | None = ...,
-        diffserv_forward: Literal["enable", "disable"] | None = ...,
-        diffserv_reverse: Literal["enable", "disable"] | None = ...,
-        diffservcode_forward: str | None = ...,
-        diffservcode_rev: str | None = ...,
-        cos_mask: str | None = ...,
-        cos: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
-    
-    # Default overload
-    @overload
-    def put(
-        self,
-        payload_dict: ShapingPolicyPayload | None = ...,
-        id: int | None = ...,
-        uuid: str | None = ...,
-        name: str | None = ...,
-        comment: str | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
-        ip_version: Literal["4", "6"] | None = ...,
-        traffic_type: Literal["forwarding", "local-in", "local-out"] | None = ...,
-        srcaddr: str | list[str] | list[ShapingPolicySrcaddrItem] | None = ...,
-        dstaddr: str | list[str] | list[ShapingPolicyDstaddrItem] | None = ...,
-        srcaddr6: str | list[str] | list[ShapingPolicySrcaddr6Item] | None = ...,
-        dstaddr6: str | list[str] | list[ShapingPolicyDstaddr6Item] | None = ...,
-        internet_service: Literal["enable", "disable"] | None = ...,
-        internet_service_name: str | list[str] | list[ShapingPolicyInternetservicenameItem] | None = ...,
-        internet_service_group: str | list[str] | list[ShapingPolicyInternetservicegroupItem] | None = ...,
-        internet_service_custom: str | list[str] | list[ShapingPolicyInternetservicecustomItem] | None = ...,
-        internet_service_custom_group: str | list[str] | list[ShapingPolicyInternetservicecustomgroupItem] | None = ...,
-        internet_service_fortiguard: str | list[str] | list[ShapingPolicyInternetservicefortiguardItem] | None = ...,
-        internet_service_src: Literal["enable", "disable"] | None = ...,
-        internet_service_src_name: str | list[str] | list[ShapingPolicyInternetservicesrcnameItem] | None = ...,
-        internet_service_src_group: str | list[str] | list[ShapingPolicyInternetservicesrcgroupItem] | None = ...,
-        internet_service_src_custom: str | list[str] | list[ShapingPolicyInternetservicesrccustomItem] | None = ...,
-        internet_service_src_custom_group: str | list[str] | list[ShapingPolicyInternetservicesrccustomgroupItem] | None = ...,
-        internet_service_src_fortiguard: str | list[str] | list[ShapingPolicyInternetservicesrcfortiguardItem] | None = ...,
-        service: str | list[str] | list[ShapingPolicyServiceItem] | None = ...,
-        schedule: str | None = ...,
-        users: str | list[str] | list[ShapingPolicyUsersItem] | None = ...,
-        groups: str | list[str] | list[ShapingPolicyGroupsItem] | None = ...,
-        application: str | list[str] | list[ShapingPolicyApplicationItem] | None = ...,
-        app_category: str | list[str] | list[ShapingPolicyAppcategoryItem] | None = ...,
-        app_group: str | list[str] | list[ShapingPolicyAppgroupItem] | None = ...,
-        url_category: str | list[str] | list[ShapingPolicyUrlcategoryItem] | None = ...,
-        srcintf: str | list[str] | list[ShapingPolicySrcintfItem] | None = ...,
-        dstintf: str | list[str] | list[ShapingPolicyDstintfItem] | None = ...,
-        tos_mask: str | None = ...,
-        tos: str | None = ...,
-        tos_negate: Literal["enable", "disable"] | None = ...,
-        traffic_shaper: str | None = ...,
-        traffic_shaper_reverse: str | None = ...,
-        per_ip_shaper: str | None = ...,
-        class_id: int | None = ...,
-        diffserv_forward: Literal["enable", "disable"] | None = ...,
-        diffserv_reverse: Literal["enable", "disable"] | None = ...,
-        diffservcode_forward: str | None = ...,
-        diffservcode_rev: str | None = ...,
-        cos_mask: str | None = ...,
-        cos: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
-    
-    def put(
-        self,
-        payload_dict: ShapingPolicyPayload | None = ...,
-        id: int | None = ...,
-        uuid: str | None = ...,
-        name: str | None = ...,
-        comment: str | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
-        ip_version: Literal["4", "6"] | None = ...,
-        traffic_type: Literal["forwarding", "local-in", "local-out"] | None = ...,
-        srcaddr: str | list[str] | list[ShapingPolicySrcaddrItem] | None = ...,
-        dstaddr: str | list[str] | list[ShapingPolicyDstaddrItem] | None = ...,
-        srcaddr6: str | list[str] | list[ShapingPolicySrcaddr6Item] | None = ...,
-        dstaddr6: str | list[str] | list[ShapingPolicyDstaddr6Item] | None = ...,
-        internet_service: Literal["enable", "disable"] | None = ...,
-        internet_service_name: str | list[str] | list[ShapingPolicyInternetservicenameItem] | None = ...,
-        internet_service_group: str | list[str] | list[ShapingPolicyInternetservicegroupItem] | None = ...,
-        internet_service_custom: str | list[str] | list[ShapingPolicyInternetservicecustomItem] | None = ...,
-        internet_service_custom_group: str | list[str] | list[ShapingPolicyInternetservicecustomgroupItem] | None = ...,
-        internet_service_fortiguard: str | list[str] | list[ShapingPolicyInternetservicefortiguardItem] | None = ...,
-        internet_service_src: Literal["enable", "disable"] | None = ...,
-        internet_service_src_name: str | list[str] | list[ShapingPolicyInternetservicesrcnameItem] | None = ...,
-        internet_service_src_group: str | list[str] | list[ShapingPolicyInternetservicesrcgroupItem] | None = ...,
-        internet_service_src_custom: str | list[str] | list[ShapingPolicyInternetservicesrccustomItem] | None = ...,
-        internet_service_src_custom_group: str | list[str] | list[ShapingPolicyInternetservicesrccustomgroupItem] | None = ...,
-        internet_service_src_fortiguard: str | list[str] | list[ShapingPolicyInternetservicesrcfortiguardItem] | None = ...,
-        service: str | list[str] | list[ShapingPolicyServiceItem] | None = ...,
-        schedule: str | None = ...,
-        users: str | list[str] | list[ShapingPolicyUsersItem] | None = ...,
-        groups: str | list[str] | list[ShapingPolicyGroupsItem] | None = ...,
-        application: str | list[str] | list[ShapingPolicyApplicationItem] | None = ...,
-        app_category: str | list[str] | list[ShapingPolicyAppcategoryItem] | None = ...,
-        app_group: str | list[str] | list[ShapingPolicyAppgroupItem] | None = ...,
-        url_category: str | list[str] | list[ShapingPolicyUrlcategoryItem] | None = ...,
-        srcintf: str | list[str] | list[ShapingPolicySrcintfItem] | None = ...,
-        dstintf: str | list[str] | list[ShapingPolicyDstintfItem] | None = ...,
-        tos_mask: str | None = ...,
-        tos: str | None = ...,
-        tos_negate: Literal["enable", "disable"] | None = ...,
-        traffic_shaper: str | None = ...,
-        traffic_shaper_reverse: str | None = ...,
-        per_ip_shaper: str | None = ...,
-        class_id: int | None = ...,
-        diffserv_forward: Literal["enable", "disable"] | None = ...,
-        diffserv_reverse: Literal["enable", "disable"] | None = ...,
-        diffservcode_forward: str | None = ...,
-        diffservcode_rev: str | None = ...,
-        cos_mask: str | None = ...,
-        cos: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
-    
-    # DELETE overloads
-    @overload
-    def delete(
-        self,
-        id: int | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> ShapingPolicyObject: ...
-    
-    @overload
-    def delete(
-        self,
-        id: int | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
-    
-    # Default overload
-    @overload
-    def delete(
-        self,
-        id: int | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+
+    # ================================================================
+    # DELETE Method
+    # ================================================================
     
     def delete(
         self,
         id: int | None = ...,
         vdom: str | bool | None = ...,
+        error_mode: Literal["raise", "return", "print"] | None = ...,
+        error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> FortiObject: ...
+
+    # ================================================================
+    # Utility Methods
+    # ================================================================
     
     def exists(
         self,
@@ -2286,32 +517,32 @@ class ShapingPolicy:
         status: Literal["enable", "disable"] | None = ...,
         ip_version: Literal["4", "6"] | None = ...,
         traffic_type: Literal["forwarding", "local-in", "local-out"] | None = ...,
-        srcaddr: str | list[str] | list[ShapingPolicySrcaddrItem] | None = ...,
-        dstaddr: str | list[str] | list[ShapingPolicyDstaddrItem] | None = ...,
-        srcaddr6: str | list[str] | list[ShapingPolicySrcaddr6Item] | None = ...,
-        dstaddr6: str | list[str] | list[ShapingPolicyDstaddr6Item] | None = ...,
+        srcaddr: str | list[str] | list[dict[str, Any]] | list[ShapingPolicySrcaddrItem] | None = ...,
+        dstaddr: str | list[str] | list[dict[str, Any]] | list[ShapingPolicyDstaddrItem] | None = ...,
+        srcaddr6: str | list[str] | list[dict[str, Any]] | list[ShapingPolicySrcaddr6Item] | None = ...,
+        dstaddr6: str | list[str] | list[dict[str, Any]] | list[ShapingPolicyDstaddr6Item] | None = ...,
         internet_service: Literal["enable", "disable"] | None = ...,
-        internet_service_name: str | list[str] | list[ShapingPolicyInternetservicenameItem] | None = ...,
-        internet_service_group: str | list[str] | list[ShapingPolicyInternetservicegroupItem] | None = ...,
-        internet_service_custom: str | list[str] | list[ShapingPolicyInternetservicecustomItem] | None = ...,
-        internet_service_custom_group: str | list[str] | list[ShapingPolicyInternetservicecustomgroupItem] | None = ...,
-        internet_service_fortiguard: str | list[str] | list[ShapingPolicyInternetservicefortiguardItem] | None = ...,
+        internet_service_name: str | list[str] | list[dict[str, Any]] | list[ShapingPolicyInternetservicenameItem] | None = ...,
+        internet_service_group: str | list[str] | list[dict[str, Any]] | list[ShapingPolicyInternetservicegroupItem] | None = ...,
+        internet_service_custom: str | list[str] | list[dict[str, Any]] | list[ShapingPolicyInternetservicecustomItem] | None = ...,
+        internet_service_custom_group: str | list[str] | list[dict[str, Any]] | list[ShapingPolicyInternetservicecustomgroupItem] | None = ...,
+        internet_service_fortiguard: str | list[str] | list[dict[str, Any]] | list[ShapingPolicyInternetservicefortiguardItem] | None = ...,
         internet_service_src: Literal["enable", "disable"] | None = ...,
-        internet_service_src_name: str | list[str] | list[ShapingPolicyInternetservicesrcnameItem] | None = ...,
-        internet_service_src_group: str | list[str] | list[ShapingPolicyInternetservicesrcgroupItem] | None = ...,
-        internet_service_src_custom: str | list[str] | list[ShapingPolicyInternetservicesrccustomItem] | None = ...,
-        internet_service_src_custom_group: str | list[str] | list[ShapingPolicyInternetservicesrccustomgroupItem] | None = ...,
-        internet_service_src_fortiguard: str | list[str] | list[ShapingPolicyInternetservicesrcfortiguardItem] | None = ...,
-        service: str | list[str] | list[ShapingPolicyServiceItem] | None = ...,
+        internet_service_src_name: str | list[str] | list[dict[str, Any]] | list[ShapingPolicyInternetservicesrcnameItem] | None = ...,
+        internet_service_src_group: str | list[str] | list[dict[str, Any]] | list[ShapingPolicyInternetservicesrcgroupItem] | None = ...,
+        internet_service_src_custom: str | list[str] | list[dict[str, Any]] | list[ShapingPolicyInternetservicesrccustomItem] | None = ...,
+        internet_service_src_custom_group: str | list[str] | list[dict[str, Any]] | list[ShapingPolicyInternetservicesrccustomgroupItem] | None = ...,
+        internet_service_src_fortiguard: str | list[str] | list[dict[str, Any]] | list[ShapingPolicyInternetservicesrcfortiguardItem] | None = ...,
+        service: str | list[str] | list[dict[str, Any]] | list[ShapingPolicyServiceItem] | None = ...,
         schedule: str | None = ...,
-        users: str | list[str] | list[ShapingPolicyUsersItem] | None = ...,
-        groups: str | list[str] | list[ShapingPolicyGroupsItem] | None = ...,
-        application: str | list[str] | list[ShapingPolicyApplicationItem] | None = ...,
-        app_category: str | list[str] | list[ShapingPolicyAppcategoryItem] | None = ...,
-        app_group: str | list[str] | list[ShapingPolicyAppgroupItem] | None = ...,
-        url_category: str | list[str] | list[ShapingPolicyUrlcategoryItem] | None = ...,
-        srcintf: str | list[str] | list[ShapingPolicySrcintfItem] | None = ...,
-        dstintf: str | list[str] | list[ShapingPolicyDstintfItem] | None = ...,
+        users: str | list[str] | list[dict[str, Any]] | list[ShapingPolicyUsersItem] | None = ...,
+        groups: str | list[str] | list[dict[str, Any]] | list[ShapingPolicyGroupsItem] | None = ...,
+        application: str | list[str] | list[dict[str, Any]] | list[ShapingPolicyApplicationItem] | None = ...,
+        app_category: str | list[str] | list[dict[str, Any]] | list[ShapingPolicyAppcategoryItem] | None = ...,
+        app_group: str | list[str] | list[dict[str, Any]] | list[ShapingPolicyAppgroupItem] | None = ...,
+        url_category: str | list[str] | list[dict[str, Any]] | list[ShapingPolicyUrlcategoryItem] | None = ...,
+        srcintf: str | list[str] | list[dict[str, Any]] | list[ShapingPolicySrcintfItem] | None = ...,
+        dstintf: str | list[str] | list[dict[str, Any]] | list[ShapingPolicyDstintfItem] | None = ...,
         tos_mask: str | None = ...,
         tos: str | None = ...,
         tos_negate: Literal["enable", "disable"] | None = ...,
@@ -2326,6 +557,8 @@ class ShapingPolicy:
         cos_mask: str | None = ...,
         cos: str | None = ...,
         vdom: str | bool | None = ...,
+        error_mode: Literal["raise", "return", "print"] | None = ...,
+        error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> FortiObject: ...
     
     # Helper methods
@@ -2333,7 +566,7 @@ class ShapingPolicy:
     def help(field_name: str | None = ...) -> str: ...
     
     @staticmethod
-    def fields(detailed: bool = ...) -> Union[list[str], list[dict[str, Any]]]: ...
+    def fields(detailed: bool = ...) -> list[str] | list[dict[str, Any]]: ...
     
     @staticmethod
     def field_info(field_name: str) -> FortiObject: ...
@@ -2349,9 +582,6 @@ class ShapingPolicy:
     
     @staticmethod
     def schema() -> FortiObject: ...
-
-
-# ================================================================
 
 
 __all__ = [

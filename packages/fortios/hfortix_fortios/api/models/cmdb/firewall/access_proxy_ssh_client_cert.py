@@ -11,7 +11,11 @@ from pydantic import BaseModel, Field, field_validator
 from typing import Any, Literal, Optional
 
 # ============================================================================
-# Child Table Models
+# Enum Definitions for Child Table Fields (for fields with 4+ allowed values)
+# ============================================================================
+
+# ============================================================================
+# Child Table Models (sorted deepest-first so nested models are defined before their parents)
 # ============================================================================
 
 class AccessProxySshClientCertCertExtension(BaseModel):
@@ -25,11 +29,12 @@ class AccessProxySshClientCertCertExtension(BaseModel):
         """Pydantic model configuration."""
         extra = "allow"  # Allow additional fields from API
         str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
     
-    name: str = Field(max_length=127, default="", description="Name of certificate extension.")    
+    name: str = Field(max_length=127, description="Name of certificate extension.")    
     critical: Literal["no", "yes"] | None = Field(default="no", description="Critical option.")    
-    type: Literal["fixed", "user"] | None = Field(default="fixed", description="Type of certificate extension.")    
-    data: str | None = Field(max_length=127, default="", description="Data of certificate extension.")
+    type_: Literal["fixed", "user"] | None = Field(default="fixed", serialization_alias="type", description="Type of certificate extension.")    
+    data: str | None = Field(max_length=127, default=None, description="Data of certificate extension.")
 # ============================================================================
 # Enum Definitions (for fields with 4+ allowed values)
 # ============================================================================
@@ -58,15 +63,15 @@ class AccessProxySshClientCertModel(BaseModel):
     # Model Fields
     # ========================================================================
     
-    name: str | None = Field(max_length=79, default="", description="SSH client certificate name.")    
+    name: str | None = Field(max_length=79, default=None, description="SSH client certificate name.")    
     source_address: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable appending source-address certificate critical option. This option ensure certificate only accepted from FortiGate source address.")    
     permit_x11_forwarding: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable appending permit-x11-forwarding certificate extension.")    
     permit_agent_forwarding: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable appending permit-agent-forwarding certificate extension.")    
     permit_port_forwarding: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable appending permit-port-forwarding certificate extension.")    
     permit_pty: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable appending permit-pty certificate extension.")    
     permit_user_rc: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable appending permit-user-rc certificate extension.")    
-    cert_extension: list[CertExtension] = Field(default=None, description="Configure certificate extension for user certificate.")    
-    auth_ca: str = Field(max_length=79, default="", description="Name of the SSH server public key authentication CA.")  # datasource: ['firewall.ssh.local-ca.name']    
+    cert_extension: list[AccessProxySshClientCertCertExtension] = Field(default_factory=list, description="Configure certificate extension for user certificate.")    
+    auth_ca: str = Field(max_length=79, description="Name of the SSH server public key authentication CA.")  # datasource: ['firewall.ssh.local-ca.name']    
     # ========================================================================
     # Custom Validators
     # ========================================================================
@@ -146,7 +151,7 @@ class AccessProxySshClientCertModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.access_proxy_ssh_client_cert.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate scalar field
         value = getattr(self, "auth_ca", None)
@@ -155,7 +160,7 @@ class AccessProxySshClientCertModel(BaseModel):
         
         # Check all datasource endpoints
         found = False
-        if await client.api.cmdb.firewall.ssh.local-ca.exists(value):
+        if await client.api.cmdb.firewall.ssh.local_ca.exists(value):
             found = True
         
         if not found:
@@ -206,5 +211,5 @@ __all__ = [
 # ============================================================================
 # Generated by hfortix generator v0.6.0
 # Schema: 1.7.0
-# Generated: 2026-01-17T05:32:19.742719Z
+# Generated: 2026-01-17T17:25:23.385010Z
 # ============================================================================

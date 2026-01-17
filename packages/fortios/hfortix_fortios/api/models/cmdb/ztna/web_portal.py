@@ -17,7 +17,17 @@ from enum import Enum
 
 class WebPortalThemeEnum(str, Enum):
     """Allowed values for theme field."""
-    JADE = "jade"    NEUTRINO = "neutrino"    MARINER = "mariner"    GRAPHITE = "graphite"    MELONGENE = "melongene"    JET_STREAM = "jet-stream"    SECURITY_FABRIC = "security-fabric"    DARK_MATTER = "dark-matter"    ONYX = "onyx"    ECLIPSE = "eclipse"
+    JADE = "jade"
+    NEUTRINO = "neutrino"
+    MARINER = "mariner"
+    GRAPHITE = "graphite"
+    MELONGENE = "melongene"
+    JET_STREAM = "jet-stream"
+    SECURITY_FABRIC = "security-fabric"
+    DARK_MATTER = "dark-matter"
+    ONYX = "onyx"
+    ECLIPSE = "eclipse"
+
 
 # ============================================================================
 # Main Model
@@ -42,22 +52,22 @@ class WebPortalModel(BaseModel):
     # Model Fields
     # ========================================================================
     
-    name: str | None = Field(max_length=79, default="", description="ZTNA proxy name.")    
-    vip: str | None = Field(max_length=79, default="", description="Virtual IP name.")  # datasource: ['firewall.vip.name']    
-    host: str | None = Field(max_length=79, default="", description="Virtual or real host name.")  # datasource: ['firewall.access-proxy-virtual-host.name']    
-    decrypted_traffic_mirror: str | None = Field(max_length=35, default="", description="Decrypted traffic mirror.")  # datasource: ['firewall.decrypted-traffic-mirror.name']    
+    name: str | None = Field(max_length=79, default=None, description="ZTNA proxy name.")    
+    vip: str | None = Field(max_length=79, default=None, description="Virtual IP name.")  # datasource: ['firewall.vip.name']    
+    host: str | None = Field(max_length=79, default=None, description="Virtual or real host name.")  # datasource: ['firewall.access-proxy-virtual-host.name']    
+    decrypted_traffic_mirror: str | None = Field(max_length=35, default=None, description="Decrypted traffic mirror.")  # datasource: ['firewall.decrypted-traffic-mirror.name']    
     log_blocked_traffic: Literal["disable", "enable"] | None = Field(default="enable", description="Enable/disable logging of blocked traffic.")    
     auth_portal: Literal["disable", "enable"] | None = Field(default="disable", description="Enable/disable authentication portal.")    
-    auth_virtual_host: str | None = Field(max_length=79, default="", description="Virtual host for authentication portal.")  # datasource: ['firewall.access-proxy-virtual-host.name']    
-    vip6: str | None = Field(max_length=79, default="", description="Virtual IPv6 name.")  # datasource: ['firewall.vip6.name']    
-    auth_rule: str | None = Field(max_length=35, default="", description="Authentication Rule.")  # datasource: ['authentication.rule.name']    
+    auth_virtual_host: str | None = Field(max_length=79, default=None, description="Virtual host for authentication portal.")  # datasource: ['firewall.access-proxy-virtual-host.name']    
+    vip6: str | None = Field(max_length=79, default=None, description="Virtual IPv6 name.")  # datasource: ['firewall.vip6.name']    
+    auth_rule: str | None = Field(max_length=35, default=None, description="Authentication Rule.")  # datasource: ['authentication.rule.name']    
     display_bookmark: Literal["enable", "disable"] | None = Field(default="enable", description="Enable to display the web portal bookmark widget.")    
     focus_bookmark: Literal["enable", "disable"] | None = Field(default="disable", description="Enable to prioritize the placement of the bookmark section over the quick-connection section in the ztna web-portal.")    
     display_status: Literal["enable", "disable"] | None = Field(default="enable", description="Enable to display the web portal status widget.")    
     display_history: Literal["enable", "disable"] | None = Field(default="disable", description="Enable to display the web portal user login history widget.")    
     policy_auth_sso: Literal["enable", "disable"] | None = Field(default="enable", description="Enable policy sso authentication.")    
     heading: str | None = Field(max_length=31, default="ZTNA Portal", description="Web portal heading message.")    
-    theme: ThemeEnum | None = Field(default="security-fabric", description="Web portal color scheme.")    
+    theme: WebPortalThemeEnum | None = Field(default=WebPortalThemeEnum.SECURITY_FABRIC, description="Web portal color scheme.")    
     clipboard: Literal["enable", "disable"] | None = Field(default="enable", description="Enable to support RDP/VPC clipboard functionality.")    
     default_window_width: int | None = Field(ge=0, le=65535, default=1024, description="Screen width (range from 0 - 65535, default = 1024).")    
     default_window_height: int | None = Field(ge=0, le=65535, default=768, description="Screen height (range from 0 - 65535, default = 768).")    
@@ -220,7 +230,7 @@ class WebPortalModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.ztna.web_portal.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate scalar field
         value = getattr(self, "vip", None)
@@ -269,7 +279,7 @@ class WebPortalModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.ztna.web_portal.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate scalar field
         value = getattr(self, "host", None)
@@ -278,7 +288,7 @@ class WebPortalModel(BaseModel):
         
         # Check all datasource endpoints
         found = False
-        if await client.api.cmdb.firewall.access-proxy-virtual-host.exists(value):
+        if await client.api.cmdb.firewall.access_proxy_virtual_host.exists(value):
             found = True
         
         if not found:
@@ -318,7 +328,7 @@ class WebPortalModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.ztna.web_portal.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate scalar field
         value = getattr(self, "decrypted_traffic_mirror", None)
@@ -327,7 +337,7 @@ class WebPortalModel(BaseModel):
         
         # Check all datasource endpoints
         found = False
-        if await client.api.cmdb.firewall.decrypted-traffic-mirror.exists(value):
+        if await client.api.cmdb.firewall.decrypted_traffic_mirror.exists(value):
             found = True
         
         if not found:
@@ -367,7 +377,7 @@ class WebPortalModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.ztna.web_portal.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate scalar field
         value = getattr(self, "auth_virtual_host", None)
@@ -376,7 +386,7 @@ class WebPortalModel(BaseModel):
         
         # Check all datasource endpoints
         found = False
-        if await client.api.cmdb.firewall.access-proxy-virtual-host.exists(value):
+        if await client.api.cmdb.firewall.access_proxy_virtual_host.exists(value):
             found = True
         
         if not found:
@@ -416,7 +426,7 @@ class WebPortalModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.ztna.web_portal.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate scalar field
         value = getattr(self, "vip6", None)
@@ -465,7 +475,7 @@ class WebPortalModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.ztna.web_portal.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate scalar field
         value = getattr(self, "auth_rule", None)
@@ -535,5 +545,5 @@ __all__ = [
 # ============================================================================
 # Generated by hfortix generator v0.6.0
 # Schema: 1.7.0
-# Generated: 2026-01-17T05:32:20.210861Z
+# Generated: 2026-01-17T17:25:23.754001Z
 # ============================================================================

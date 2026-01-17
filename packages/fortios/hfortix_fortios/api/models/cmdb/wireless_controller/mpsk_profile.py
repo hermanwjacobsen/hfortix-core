@@ -11,9 +11,51 @@ from pydantic import BaseModel, Field, field_validator
 from typing import Any, Literal, Optional
 
 # ============================================================================
-# Child Table Models
+# Enum Definitions for Child Table Fields (for fields with 4+ allowed values)
 # ============================================================================
 
+# ============================================================================
+# Child Table Models (sorted deepest-first so nested models are defined before their parents)
+# ============================================================================
+
+class MpskProfileMpskGroupMpskKeyMpskSchedules(BaseModel):
+    """
+    Child table model for mpsk-group.mpsk-key.mpsk-schedules.
+    
+    Firewall schedule for MPSK passphrase. The passphrase will be effective only when at least one schedule is valid.
+    """
+    
+    class Config:
+        """Pydantic model configuration."""
+        extra = "allow"  # Allow additional fields from API
+        str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
+    
+    name: str = Field(max_length=35, description="Schedule name.")  # datasource: ['firewall.schedule.group.name', 'firewall.schedule.recurring.name', 'firewall.schedule.onetime.name']
+class MpskProfileMpskGroupMpskKey(BaseModel):
+    """
+    Child table model for mpsk-group.mpsk-key.
+    
+    List of multiple PSK entries.
+    """
+    
+    class Config:
+        """Pydantic model configuration."""
+        extra = "allow"  # Allow additional fields from API
+        str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
+    
+    name: str = Field(max_length=35, description="Pre-shared key name.")    
+    key_type: Literal["wpa2-personal", "wpa3-sae"] | None = Field(default="wpa2-personal", description="Select the type of the key.")    
+    mac: str | None = Field(default="00:00:00:00:00:00", description="MAC address.")    
+    passphrase: Any = Field(max_length=128, default=None, description="WPA Pre-shared key.")    
+    sae_password: Any = Field(max_length=128, default=None, description="WPA3 SAE password.")    
+    sae_pk: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable WPA3 SAE-PK (default = disable).")    
+    sae_private_key: str | None = Field(max_length=359, default=None, description="Private key used for WPA3 SAE-PK authentication.")    
+    concurrent_client_limit_type: Literal["default", "unlimited", "specified"] | None = Field(default="default", description="MPSK client limit type options.")    
+    concurrent_clients: int | None = Field(ge=1, le=65535, default=256, description="Number of clients that can connect using this pre-shared key (1 - 65535, default is 256).")    
+    comment: str | None = Field(max_length=255, default=None, description="Comment.")    
+    mpsk_schedules: list[MpskProfileMpskGroupMpskKeyMpskSchedules] = Field(default_factory=list, description="Firewall schedule for MPSK passphrase. The passphrase will be effective only when at least one schedule is valid.")
 class MpskProfileMpskGroup(BaseModel):
     """
     Child table model for mpsk-group.
@@ -25,11 +67,12 @@ class MpskProfileMpskGroup(BaseModel):
         """Pydantic model configuration."""
         extra = "allow"  # Allow additional fields from API
         str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
     
-    name: str = Field(max_length=35, default="", description="MPSK group name.")    
+    name: str = Field(max_length=35, description="MPSK group name.")    
     vlan_type: Literal["no-vlan", "fixed-vlan"] | None = Field(default="no-vlan", description="MPSK group VLAN options.")    
     vlan_id: int | None = Field(ge=1, le=4094, default=0, description="Optional VLAN ID.")    
-    mpsk_key: list[MpskKey] = Field(default=None, description="List of multiple PSK entries.")
+    mpsk_key: list[MpskProfileMpskGroupMpskKey] = Field(default_factory=list, description="List of multiple PSK entries.")
 # ============================================================================
 # Enum Definitions (for fields with 4+ allowed values)
 # ============================================================================
@@ -58,12 +101,12 @@ class MpskProfileModel(BaseModel):
     # Model Fields
     # ========================================================================
     
-    name: str | None = Field(max_length=35, default="", description="MPSK profile name.")    
+    name: str | None = Field(max_length=35, default=None, description="MPSK profile name.")    
     mpsk_concurrent_clients: int | None = Field(ge=0, le=65535, default=0, description="Maximum number of concurrent clients that connect using the same passphrase in multiple PSK authentication (0 - 65535, default = 0, meaning no limitation).")    
     mpsk_external_server_auth: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/Disable MPSK external server authentication (default = disable).")    
-    mpsk_external_server: str | None = Field(max_length=35, default="", description="RADIUS server to be used to authenticate MPSK users.")  # datasource: ['user.radius.name']    
+    mpsk_external_server: str | None = Field(max_length=35, default=None, description="RADIUS server to be used to authenticate MPSK users.")  # datasource: ['user.radius.name']    
     mpsk_type: Literal["wpa2-personal", "wpa3-sae", "wpa3-sae-transition"] | None = Field(default="wpa2-personal", description="Select the security type of keys for this profile.")    
-    mpsk_group: list[MpskGroup] = Field(default=None, description="List of multiple PSK groups.")    
+    mpsk_group: list[MpskProfileMpskGroup] = Field(default_factory=list, description="List of multiple PSK groups.")    
     # ========================================================================
     # Custom Validators
     # ========================================================================
@@ -143,7 +186,7 @@ class MpskProfileModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.wireless_controller.mpsk_profile.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate scalar field
         value = getattr(self, "mpsk_external_server", None)
@@ -197,11 +240,11 @@ Dict = dict[str, Any]  # For backward compatibility
 # ============================================================================
 
 __all__ = [
-    "MpskProfileModel",    "MpskProfileMpskGroup",]
+    "MpskProfileModel",    "MpskProfileMpskGroup",    "MpskProfileMpskGroup.MpskKey",    "MpskProfileMpskGroup.MpskKey.MpskSchedules",]
 
 
 # ============================================================================
 # Generated by hfortix generator v0.6.0
 # Schema: 1.7.0
-# Generated: 2026-01-17T05:32:18.741174Z
+# Generated: 2026-01-17T17:25:22.488822Z
 # ============================================================================

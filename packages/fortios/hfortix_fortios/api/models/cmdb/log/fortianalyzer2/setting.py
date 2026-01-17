@@ -12,7 +12,11 @@ from typing import Any, Literal, Optional
 from enum import Enum
 
 # ============================================================================
-# Child Table Models
+# Enum Definitions for Child Table Fields (for fields with 4+ allowed values)
+# ============================================================================
+
+# ============================================================================
+# Child Table Models (sorted deepest-first so nested models are defined before their parents)
 # ============================================================================
 
 class SettingSerial(BaseModel):
@@ -26,18 +30,29 @@ class SettingSerial(BaseModel):
         """Pydantic model configuration."""
         extra = "allow"  # Allow additional fields from API
         str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
     
-    name: str = Field(max_length=79, default="", description="Serial Number.")
+    name: str = Field(max_length=79, description="Serial Number.")
 # ============================================================================
 # Enum Definitions (for fields with 4+ allowed values)
 # ============================================================================
 
-class SettingSsl_min_proto_versionEnum(str, Enum):
+class SettingSslMinProtoVersionEnum(str, Enum):
     """Allowed values for ssl_min_proto_version field."""
-    DEFAULT = "default"    SSLV3 = "SSLv3"    TLSV1 = "TLSv1"    TLSV1_1 = "TLSv1-1"    TLSV1_2 = "TLSv1-2"    TLSV1_3 = "TLSv1-3"
-class SettingUpload_optionEnum(str, Enum):
+    DEFAULT = "default"
+    SSLV3 = "SSLv3"
+    TLSV1 = "TLSv1"
+    TLSV1_1 = "TLSv1-1"
+    TLSV1_2 = "TLSv1-2"
+    TLSV1_3 = "TLSv1-3"
+
+class SettingUploadOptionEnum(str, Enum):
     """Allowed values for upload_option field."""
-    STORE_AND_UPLOAD = "store-and-upload"    REALTIME = "realtime"    1_MINUTE = "1-minute"    5_MINUTE = "5-minute"
+    STORE_AND_UPLOAD = "store-and-upload"
+    REALTIME = "realtime"
+    V_1_MINUTE = "1-minute"
+    V_5_MINUTE = "5-minute"
+
 
 # ============================================================================
 # Main Model
@@ -64,31 +79,31 @@ class SettingModel(BaseModel):
     
     status: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable logging to FortiAnalyzer.")    
     ips_archive: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable IPS packet archive logging.")    
-    server: str = Field(max_length=127, default="", description="The remote FortiAnalyzer.")    
-    alt_server: str | None = Field(max_length=127, default="", description="Alternate FortiAnalyzer.")    
+    server: str = Field(max_length=127, description="The remote FortiAnalyzer.")    
+    alt_server: str | None = Field(max_length=127, default=None, description="Alternate FortiAnalyzer.")    
     fallback_to_primary: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable this FortiGate unit to fallback to the primary FortiAnalyzer when it is available.")    
     certificate_verification: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable identity verification of FortiAnalyzer by use of certificate.")    
-    serial: list[Serial] = Field(default=None, description="Serial numbers of the FortiAnalyzer.")    
-    server_cert_ca: str | None = Field(max_length=79, default="", description="Mandatory CA on FortiGate in certificate chain of server.")  # datasource: ['certificate.ca.name', 'vpn.certificate.ca.name']    
-    preshared_key: str | None = Field(max_length=63, default="", description="Preshared-key used for auto-authorization on FortiAnalyzer.")    
+    serial: list[SettingSerial] = Field(default_factory=list, description="Serial numbers of the FortiAnalyzer.")    
+    server_cert_ca: str | None = Field(max_length=79, default=None, description="Mandatory CA on FortiGate in certificate chain of server.")  # datasource: ['certificate.ca.name', 'vpn.certificate.ca.name']    
+    preshared_key: str | None = Field(max_length=63, default=None, description="Preshared-key used for auto-authorization on FortiAnalyzer.")    
     access_config: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable FortiAnalyzer access to configuration and data.")    
     hmac_algorithm: Literal["sha256"] | None = Field(default="sha256", description="OFTP login hash algorithm.")    
     enc_algorithm: Literal["high-medium", "high", "low"] | None = Field(default="high", description="Configure the level of SSL protection for secure communication with FortiAnalyzer.")    
-    ssl_min_proto_version: SslMinProtoVersionEnum | None = Field(default="default", description="Minimum supported protocol version for SSL/TLS connections (default is to follow system global setting).")    
+    ssl_min_proto_version: SettingSslMinProtoVersionEnum | None = Field(default=SettingSslMinProtoVersionEnum.DEFAULT, description="Minimum supported protocol version for SSL/TLS connections (default is to follow system global setting).")    
     conn_timeout: int | None = Field(ge=1, le=3600, default=10, description="FortiAnalyzer connection time-out in seconds (for status and log buffer).")    
     monitor_keepalive_period: int | None = Field(ge=1, le=120, default=5, description="Time between OFTP keepalives in seconds (for status and log buffer).")    
     monitor_failure_retry_period: int | None = Field(ge=1, le=86400, default=5, description="Time between FortiAnalyzer connection retries in seconds (for status and log buffer).")    
-    certificate: str | None = Field(max_length=35, default="", description="Certificate used to communicate with FortiAnalyzer.")  # datasource: ['certificate.local.name']    
-    source_ip: str | None = Field(max_length=63, default="", description="Source IPv4 or IPv6 address used to communicate with FortiAnalyzer.")    
-    upload_option: UploadOptionEnum | None = Field(default="5-minute", description="Enable/disable logging to hard disk and then uploading to FortiAnalyzer.")    
+    certificate: str | None = Field(max_length=35, default=None, description="Certificate used to communicate with FortiAnalyzer.")  # datasource: ['certificate.local.name']    
+    source_ip: str | None = Field(max_length=63, default=None, description="Source IPv4 or IPv6 address used to communicate with FortiAnalyzer.")    
+    upload_option: SettingUploadOptionEnum | None = Field(default=SettingUploadOptionEnum.V_5_MINUTE, description="Enable/disable logging to hard disk and then uploading to FortiAnalyzer.")    
     upload_interval: Literal["daily", "weekly", "monthly"] | None = Field(default="daily", description="Frequency to upload log files to FortiAnalyzer.")    
-    upload_day: str | None = Field(default="", description="Day of week (month) to upload logs.")    
-    upload_time: str | None = Field(default="", description="Time to upload logs (hh:mm).")    
+    upload_day: str | None = Field(default=None, description="Day of week (month) to upload logs.")    
+    upload_time: str | None = Field(default=None, description="Time to upload logs (hh:mm).")    
     reliable: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable reliable logging to FortiAnalyzer.")    
     priority: Literal["default", "low"] | None = Field(default="default", description="Set log transmission priority.")    
     max_log_rate: int | None = Field(ge=0, le=100000, default=0, description="FortiAnalyzer maximum log rate in MBps (0 = unlimited).")    
     interface_select_method: Literal["auto", "sdwan", "specify"] | None = Field(default="auto", description="Specify how to select outgoing interface to reach server.")    
-    interface: str = Field(max_length=15, default="", description="Specify outgoing interface to reach server.")  # datasource: ['system.interface.name']    
+    interface: str = Field(max_length=15, description="Specify outgoing interface to reach server.")  # datasource: ['system.interface.name']    
     vrf_select: int | None = Field(ge=0, le=511, default=0, description="VRF ID used for connection to server.")    
     # ========================================================================
     # Custom Validators
@@ -199,7 +214,7 @@ class SettingModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.log.fortianalyzer2.setting.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate scalar field
         value = getattr(self, "server_cert_ca", None)
@@ -250,7 +265,7 @@ class SettingModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.log.fortianalyzer2.setting.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate scalar field
         value = getattr(self, "certificate", None)
@@ -299,7 +314,7 @@ class SettingModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.log.fortianalyzer2.setting.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate scalar field
         value = getattr(self, "interface", None)
@@ -363,5 +378,5 @@ __all__ = [
 # ============================================================================
 # Generated by hfortix generator v0.6.0
 # Schema: 1.7.0
-# Generated: 2026-01-17T05:32:17.132911Z
+# Generated: 2026-01-17T17:25:21.064386Z
 # ============================================================================

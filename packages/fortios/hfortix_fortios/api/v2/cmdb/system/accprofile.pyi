@@ -1,226 +1,172 @@
-from typing import TypedDict, Literal, Any, Coroutine, Union, overload, Generator, final
-from typing_extensions import NotRequired
-from hfortix_fortios.models import FortiObject, FortiObjectList
+""" - Type Stubs
 
-# ============================================================================
-# Nested TypedDicts for table field children (dict mode)
-# These MUST be defined before the Payload class to use them as type hints
-# ============================================================================
+Auto-generated stub file for type checking and IDE support.
 
-# ============================================================================
-# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional)
-# ============================================================================
-# NOTE: We intentionally DON'T use NotRequired wrapper because:
-# 1. total=False already makes all fields optional
-# 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
+Endpoint: system/accprofile
+Category: cmdb
+"""
+
+from __future__ import annotations
+
+from typing import (
+    Any,
+    ClassVar,
+    Literal,
+    TypedDict,
+    overload,
+)
+
+from hfortix_fortios.models import (
+    FortiObject,
+    FortiObjectList,
+)
+
+
+# ================================================================
+# TypedDict Payloads
+# ================================================================
+
 class AccprofilePayload(TypedDict, total=False):
-    """
-    Type hints for system/accprofile payload fields.
-    
-    Configure access profiles for system administrators.
-    
-    **Usage:**
-        payload: AccprofilePayload = {
-            "field": "value",  # <- autocomplete shows all fields
-        }
-    """
-    name: str  # Profile name. | MaxLen: 35
-    scope: Literal["vdom", "global"]  # Scope of admin access: global or specific VDOM(s). | Default: vdom
-    comments: str  # Comment. | MaxLen: 255
-    secfabgrp: Literal["none", "read", "read-write", "custom"]  # Security Fabric. | Default: none
-    ftviewgrp: Literal["none", "read", "read-write"]  # FortiView. | Default: none
-    authgrp: Literal["none", "read", "read-write"]  # Administrator access to Users and Devices. | Default: none
-    sysgrp: Literal["none", "read", "read-write", "custom"]  # System Configuration. | Default: none
-    netgrp: Literal["none", "read", "read-write", "custom"]  # Network Configuration. | Default: none
-    loggrp: Literal["none", "read", "read-write", "custom"]  # Administrator access to Logging and Reporting incl | Default: none
-    fwgrp: Literal["none", "read", "read-write", "custom"]  # Administrator access to the Firewall configuration | Default: none
-    vpngrp: Literal["none", "read", "read-write"]  # Administrator access to IPsec, SSL, PPTP, and L2TP | Default: none
-    utmgrp: Literal["none", "read", "read-write", "custom"]  # Administrator access to Security Profiles. | Default: none
-    wanoptgrp: Literal["none", "read", "read-write"]  # Administrator access to WAN Opt & Cache. | Default: none
-    wifi: Literal["none", "read", "read-write"]  # Administrator access to the WiFi controller and Sw | Default: none
-    netgrp_permission: str  # Custom network permission.
-    sysgrp_permission: str  # Custom system permission.
-    fwgrp_permission: str  # Custom firewall permission.
-    loggrp_permission: str  # Custom Log & Report permission.
-    utmgrp_permission: str  # Custom Security Profile permissions.
-    secfabgrp_permission: str  # Custom Security Fabric permissions.
-    admintimeout_override: Literal["enable", "disable"]  # Enable/disable overriding the global administrator | Default: disable
-    admintimeout: int  # Administrator timeout for this access profile | Default: 10 | Min: 1 | Max: 480
-    cli_diagnose: Literal["enable", "disable"]  # Enable/disable permission to run diagnostic comman | Default: disable
-    cli_get: Literal["enable", "disable"]  # Enable/disable permission to run get commands. | Default: disable
-    cli_show: Literal["enable", "disable"]  # Enable/disable permission to run show commands. | Default: disable
-    cli_exec: Literal["enable", "disable"]  # Enable/disable permission to run execute commands. | Default: disable
-    cli_config: Literal["enable", "disable"]  # Enable/disable permission to run config commands. | Default: disable
-    system_execute_ssh: Literal["enable", "disable"]  # Enable/disable permission to execute SSH commands. | Default: enable
-    system_execute_telnet: Literal["enable", "disable"]  # Enable/disable permission to execute TELNET comman | Default: enable
-
-# ============================================================================
-# Nested classes for table field children (object mode - for API responses)
-# ============================================================================
-
-
-
-# Response TypedDict for GET returns (all fields present in API response)
-class AccprofileResponse(TypedDict):
-    """
-    Type hints for system/accprofile API response fields.
-    
-    All fields are present in the response from the FortiGate API.
-    """
-    name: str  # Profile name. | MaxLen: 35
-    scope: Literal["vdom", "global"]  # Scope of admin access: global or specific VDOM(s). | Default: vdom
-    comments: str  # Comment. | MaxLen: 255
-    secfabgrp: Literal["none", "read", "read-write", "custom"]  # Security Fabric. | Default: none
-    ftviewgrp: Literal["none", "read", "read-write"]  # FortiView. | Default: none
-    authgrp: Literal["none", "read", "read-write"]  # Administrator access to Users and Devices. | Default: none
-    sysgrp: Literal["none", "read", "read-write", "custom"]  # System Configuration. | Default: none
-    netgrp: Literal["none", "read", "read-write", "custom"]  # Network Configuration. | Default: none
-    loggrp: Literal["none", "read", "read-write", "custom"]  # Administrator access to Logging and Reporting incl | Default: none
-    fwgrp: Literal["none", "read", "read-write", "custom"]  # Administrator access to the Firewall configuration | Default: none
-    vpngrp: Literal["none", "read", "read-write"]  # Administrator access to IPsec, SSL, PPTP, and L2TP | Default: none
-    utmgrp: Literal["none", "read", "read-write", "custom"]  # Administrator access to Security Profiles. | Default: none
-    wanoptgrp: Literal["none", "read", "read-write"]  # Administrator access to WAN Opt & Cache. | Default: none
-    wifi: Literal["none", "read", "read-write"]  # Administrator access to the WiFi controller and Sw | Default: none
-    netgrp_permission: str  # Custom network permission.
-    sysgrp_permission: str  # Custom system permission.
-    fwgrp_permission: str  # Custom firewall permission.
-    loggrp_permission: str  # Custom Log & Report permission.
-    utmgrp_permission: str  # Custom Security Profile permissions.
-    secfabgrp_permission: str  # Custom Security Fabric permissions.
-    admintimeout_override: Literal["enable", "disable"]  # Enable/disable overriding the global administrator | Default: disable
-    admintimeout: int  # Administrator timeout for this access profile | Default: 10 | Min: 1 | Max: 480
-    cli_diagnose: Literal["enable", "disable"]  # Enable/disable permission to run diagnostic comman | Default: disable
-    cli_get: Literal["enable", "disable"]  # Enable/disable permission to run get commands. | Default: disable
-    cli_show: Literal["enable", "disable"]  # Enable/disable permission to run show commands. | Default: disable
-    cli_exec: Literal["enable", "disable"]  # Enable/disable permission to run execute commands. | Default: disable
-    cli_config: Literal["enable", "disable"]  # Enable/disable permission to run config commands. | Default: disable
-    system_execute_ssh: Literal["enable", "disable"]  # Enable/disable permission to execute SSH commands. | Default: enable
-    system_execute_telnet: Literal["enable", "disable"]  # Enable/disable permission to execute TELNET comman | Default: enable
-
-
-@final
-class AccprofileObject:
-    """Typed FortiObject for system/accprofile with IDE autocomplete support.
-    
-    This is a typed wrapper that provides IDE autocomplete for API response fields.
-    At runtime, this is actually a FortiObject instance.
-    """
-    
-    # Profile name. | MaxLen: 35
+    """Payload type for Accprofile operations."""
     name: str
-    # Scope of admin access: global or specific VDOM(s). | Default: vdom
     scope: Literal["vdom", "global"]
-    # Comment. | MaxLen: 255
     comments: str
-    # Security Fabric. | Default: none
     secfabgrp: Literal["none", "read", "read-write", "custom"]
-    # FortiView. | Default: none
     ftviewgrp: Literal["none", "read", "read-write"]
-    # Administrator access to Users and Devices. | Default: none
     authgrp: Literal["none", "read", "read-write"]
-    # System Configuration. | Default: none
     sysgrp: Literal["none", "read", "read-write", "custom"]
-    # Network Configuration. | Default: none
     netgrp: Literal["none", "read", "read-write", "custom"]
-    # Administrator access to Logging and Reporting including view | Default: none
     loggrp: Literal["none", "read", "read-write", "custom"]
-    # Administrator access to the Firewall configuration. | Default: none
     fwgrp: Literal["none", "read", "read-write", "custom"]
-    # Administrator access to IPsec, SSL, PPTP, and L2TP VPN. | Default: none
     vpngrp: Literal["none", "read", "read-write"]
-    # Administrator access to Security Profiles. | Default: none
     utmgrp: Literal["none", "read", "read-write", "custom"]
-    # Administrator access to WAN Opt & Cache. | Default: none
     wanoptgrp: Literal["none", "read", "read-write"]
-    # Administrator access to the WiFi controller and Switch contr | Default: none
     wifi: Literal["none", "read", "read-write"]
-    # Custom network permission.
     netgrp_permission: str
-    # Custom system permission.
     sysgrp_permission: str
-    # Custom firewall permission.
     fwgrp_permission: str
-    # Custom Log & Report permission.
     loggrp_permission: str
-    # Custom Security Profile permissions.
     utmgrp_permission: str
-    # Custom Security Fabric permissions.
     secfabgrp_permission: str
-    # Enable/disable overriding the global administrator idle time | Default: disable
     admintimeout_override: Literal["enable", "disable"]
-    # Administrator timeout for this access profile | Default: 10 | Min: 1 | Max: 480
     admintimeout: int
-    # Enable/disable permission to run diagnostic commands. | Default: disable
     cli_diagnose: Literal["enable", "disable"]
-    # Enable/disable permission to run get commands. | Default: disable
     cli_get: Literal["enable", "disable"]
-    # Enable/disable permission to run show commands. | Default: disable
     cli_show: Literal["enable", "disable"]
-    # Enable/disable permission to run execute commands. | Default: disable
     cli_exec: Literal["enable", "disable"]
-    # Enable/disable permission to run config commands. | Default: disable
     cli_config: Literal["enable", "disable"]
-    # Enable/disable permission to execute SSH commands. | Default: enable
     system_execute_ssh: Literal["enable", "disable"]
-    # Enable/disable permission to execute TELNET commands. | Default: enable
     system_execute_telnet: Literal["enable", "disable"]
-    
-    # Common API response fields
-    status: str
-    http_status: int | None
-    http_status_code: int | None
-    http_method: str | None
-    http_response_time: float | None
-    vdom: str | None
-    
-    # Methods from FortiObject
-    @property
-    def dict(self) -> dict[str, Any]:
-        """Convert to dictionary."""
-        ...
-    @property
-    def json(self) -> str:
-        """Get pretty-printed JSON string."""
-        ...
-    @property
-    def raw(self) -> dict[str, Any]:
-        """Get raw API response data."""
-        ...
-    def get_full(self, name: str) -> Any: ...
-    def to_dict(self) -> AccprofilePayload: ...
-    def keys(self) -> Any: ...
-    def values(self) -> Generator[Any, None, None]: ...
-    def items(self) -> Generator[tuple[str, Any], None, None]: ...
-    def get(self, key: str, default: Any = None) -> Any: ...
 
+
+# ================================================================
+# Response Types (TypedDict for dict-style access)
+# ================================================================
+
+class AccprofileResponse(TypedDict, total=False):
+    """Response type for Accprofile - use with .dict property for typed dict access."""
+    name: str
+    scope: Literal["vdom", "global"]
+    comments: str
+    secfabgrp: Literal["none", "read", "read-write", "custom"]
+    ftviewgrp: Literal["none", "read", "read-write"]
+    authgrp: Literal["none", "read", "read-write"]
+    sysgrp: Literal["none", "read", "read-write", "custom"]
+    netgrp: Literal["none", "read", "read-write", "custom"]
+    loggrp: Literal["none", "read", "read-write", "custom"]
+    fwgrp: Literal["none", "read", "read-write", "custom"]
+    vpngrp: Literal["none", "read", "read-write"]
+    utmgrp: Literal["none", "read", "read-write", "custom"]
+    wanoptgrp: Literal["none", "read", "read-write"]
+    wifi: Literal["none", "read", "read-write"]
+    netgrp_permission: str
+    sysgrp_permission: str
+    fwgrp_permission: str
+    loggrp_permission: str
+    utmgrp_permission: str
+    secfabgrp_permission: str
+    admintimeout_override: Literal["enable", "disable"]
+    admintimeout: int
+    cli_diagnose: Literal["enable", "disable"]
+    cli_get: Literal["enable", "disable"]
+    cli_show: Literal["enable", "disable"]
+    cli_exec: Literal["enable", "disable"]
+    cli_config: Literal["enable", "disable"]
+    system_execute_ssh: Literal["enable", "disable"]
+    system_execute_telnet: Literal["enable", "disable"]
+
+
+# ================================================================
+# Response Types (Class for attribute access)
+# ================================================================
+
+
+class AccprofileObject(FortiObject):
+    """Typed FortiObject for Accprofile with field access."""
+    name: str
+    scope: Literal["vdom", "global"]
+    comments: str
+    secfabgrp: Literal["none", "read", "read-write", "custom"]
+    ftviewgrp: Literal["none", "read", "read-write"]
+    authgrp: Literal["none", "read", "read-write"]
+    sysgrp: Literal["none", "read", "read-write", "custom"]
+    netgrp: Literal["none", "read", "read-write", "custom"]
+    loggrp: Literal["none", "read", "read-write", "custom"]
+    fwgrp: Literal["none", "read", "read-write", "custom"]
+    vpngrp: Literal["none", "read", "read-write"]
+    utmgrp: Literal["none", "read", "read-write", "custom"]
+    wanoptgrp: Literal["none", "read", "read-write"]
+    wifi: Literal["none", "read", "read-write"]
+    netgrp_permission: str
+    sysgrp_permission: str
+    fwgrp_permission: str
+    loggrp_permission: str
+    utmgrp_permission: str
+    secfabgrp_permission: str
+    admintimeout_override: Literal["enable", "disable"]
+    admintimeout: int
+    cli_diagnose: Literal["enable", "disable"]
+    cli_get: Literal["enable", "disable"]
+    cli_show: Literal["enable", "disable"]
+    cli_exec: Literal["enable", "disable"]
+    cli_config: Literal["enable", "disable"]
+    system_execute_ssh: Literal["enable", "disable"]
+    system_execute_telnet: Literal["enable", "disable"]
+
+
+# ================================================================
+# Main Endpoint Class
+# ================================================================
 
 class Accprofile:
     """
-    Configure access profiles for system administrators.
     
-    Path: system/accprofile
+    Endpoint: system/accprofile
     Category: cmdb
-    Primary Key: name
+    MKey: name
     """
     
+    # Class attributes for introspection
+    endpoint: ClassVar[str] = ...
+    path: ClassVar[str] = ...
+    category: ClassVar[str] = ...
+    mkey: ClassVar[str] = ...
+    capabilities: ClassVar[dict[str, Any]] = ...
+    
     def __init__(self, client: Any) -> None:
-        """Initialize endpoint with HTTP client.
-        
-        Args:
-            client: HTTP client instance for API communication
-        """
+        """Initialize endpoint with HTTP client."""
         ...
     
     # ================================================================
-    # GET OVERLOADS - Always returns FortiObject (or ContentResponse for file endpoints)
-    # Pylance matches overloads top-to-bottom, so these must come first!
+    # GET Methods
     # ================================================================
     
-    # With mkey as positional arg -> returns FortiObject
+    # CMDB with mkey - overloads for single vs list returns
     @overload
     def get(
         self,
         name: str,
+        *,
         filter: str | list[str] | None = ...,
         count: int | None = ...,
         start: int | None = ...,
@@ -229,14 +175,14 @@ class Accprofile:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
+        error_mode: Literal["raise", "return", "print"] | None = ...,
+        error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> AccprofileObject: ...
     
-    # With mkey as keyword arg -> returns FortiObject
     @overload
     def get(
         self,
         *,
-        name: str,
         filter: str | list[str] | None = ...,
         count: int | None = ...,
         start: int | None = ...,
@@ -245,154 +191,19 @@ class Accprofile:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-    ) -> AccprofileObject: ...
-    
-    # Without mkey -> returns list of FortiObjects
-    @overload
-    def get(
-        self,
-        name: None = None,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
+        error_mode: Literal["raise", "return", "print"] | None = ...,
+        error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> FortiObjectList[AccprofileObject]: ...
-    
-    # ================================================================
-    # (removed - all GET now returns FortiObject)
-    # ================================================================
-    
-    # With mkey as positional arg -> returns single object
-    @overload
-    def get(
-        self,
-        name: str,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-    ) -> AccprofileObject: ...
-    
-    # With mkey as keyword arg -> returns single object
-    @overload
-    def get(
-        self,
-        *,
-        name: str,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-    ) -> AccprofileObject: ...
-    
-    # With no mkey -> returns list of objects
-    @overload
-    def get(
-        self,
-        *,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-    ) -> FortiObjectList[AccprofileObject]: ...
-    
-    # Dict mode with mkey provided as positional arg (single dict)
-    @overload
-    def get(
-        self,
-        name: str,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-    ) -> AccprofileObject: ...
-    
-    # Dict mode with mkey provided as keyword arg (single dict)
-    @overload
-    def get(
-        self,
-        *,
-        name: str,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-    ) -> AccprofileObject: ...
-    
-    # Dict mode - list of dicts (no mkey/name provided) - keyword-only signature
-    @overload
-    def get(
-        self,
-        *,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-    ) -> FortiObjectList[AccprofileObject]: ...
-    
-    # Fallback overload for all other cases
-    @overload
-    def get(
-        self,
-        name: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-    ) -> Union[dict[str, Any], list[dict[str, Any]], FortiObject, list[FortiObject]]: ...
-    
-    def get(
-        self,
-        name: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-    ) -> AccprofileObject | list[AccprofileObject] | dict[str, Any] | list[dict[str, Any]]: ...
     
     def get_schema(
         self,
         format: str = ...,
     ) -> FortiObject: ...
+
+    # ================================================================
+    # POST Method
+    # ================================================================
     
-    # POST overloads
-    @overload
     def post(
         self,
         payload_dict: AccprofilePayload | None = ...,
@@ -425,115 +236,14 @@ class Accprofile:
         cli_config: Literal["enable", "disable"] | None = ...,
         system_execute_ssh: Literal["enable", "disable"] | None = ...,
         system_execute_telnet: Literal["enable", "disable"] | None = ...,
+        error_mode: Literal["raise", "return", "print"] | None = ...,
+        error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> AccprofileObject: ...
+
+    # ================================================================
+    # PUT Method
+    # ================================================================
     
-    @overload
-    def post(
-        self,
-        payload_dict: AccprofilePayload | None = ...,
-        name: str | None = ...,
-        scope: Literal["vdom", "global"] | None = ...,
-        comments: str | None = ...,
-        secfabgrp: Literal["none", "read", "read-write", "custom"] | None = ...,
-        ftviewgrp: Literal["none", "read", "read-write"] | None = ...,
-        authgrp: Literal["none", "read", "read-write"] | None = ...,
-        sysgrp: Literal["none", "read", "read-write", "custom"] | None = ...,
-        netgrp: Literal["none", "read", "read-write", "custom"] | None = ...,
-        loggrp: Literal["none", "read", "read-write", "custom"] | None = ...,
-        fwgrp: Literal["none", "read", "read-write", "custom"] | None = ...,
-        vpngrp: Literal["none", "read", "read-write"] | None = ...,
-        utmgrp: Literal["none", "read", "read-write", "custom"] | None = ...,
-        wanoptgrp: Literal["none", "read", "read-write"] | None = ...,
-        wifi: Literal["none", "read", "read-write"] | None = ...,
-        netgrp_permission: str | None = ...,
-        sysgrp_permission: str | None = ...,
-        fwgrp_permission: str | None = ...,
-        loggrp_permission: str | None = ...,
-        utmgrp_permission: str | None = ...,
-        secfabgrp_permission: str | None = ...,
-        admintimeout_override: Literal["enable", "disable"] | None = ...,
-        admintimeout: int | None = ...,
-        cli_diagnose: Literal["enable", "disable"] | None = ...,
-        cli_get: Literal["enable", "disable"] | None = ...,
-        cli_show: Literal["enable", "disable"] | None = ...,
-        cli_exec: Literal["enable", "disable"] | None = ...,
-        cli_config: Literal["enable", "disable"] | None = ...,
-        system_execute_ssh: Literal["enable", "disable"] | None = ...,
-        system_execute_telnet: Literal["enable", "disable"] | None = ...,
-    ) -> FortiObject: ...
-    
-    # Default overload
-    @overload
-    def post(
-        self,
-        payload_dict: AccprofilePayload | None = ...,
-        name: str | None = ...,
-        scope: Literal["vdom", "global"] | None = ...,
-        comments: str | None = ...,
-        secfabgrp: Literal["none", "read", "read-write", "custom"] | None = ...,
-        ftviewgrp: Literal["none", "read", "read-write"] | None = ...,
-        authgrp: Literal["none", "read", "read-write"] | None = ...,
-        sysgrp: Literal["none", "read", "read-write", "custom"] | None = ...,
-        netgrp: Literal["none", "read", "read-write", "custom"] | None = ...,
-        loggrp: Literal["none", "read", "read-write", "custom"] | None = ...,
-        fwgrp: Literal["none", "read", "read-write", "custom"] | None = ...,
-        vpngrp: Literal["none", "read", "read-write"] | None = ...,
-        utmgrp: Literal["none", "read", "read-write", "custom"] | None = ...,
-        wanoptgrp: Literal["none", "read", "read-write"] | None = ...,
-        wifi: Literal["none", "read", "read-write"] | None = ...,
-        netgrp_permission: str | None = ...,
-        sysgrp_permission: str | None = ...,
-        fwgrp_permission: str | None = ...,
-        loggrp_permission: str | None = ...,
-        utmgrp_permission: str | None = ...,
-        secfabgrp_permission: str | None = ...,
-        admintimeout_override: Literal["enable", "disable"] | None = ...,
-        admintimeout: int | None = ...,
-        cli_diagnose: Literal["enable", "disable"] | None = ...,
-        cli_get: Literal["enable", "disable"] | None = ...,
-        cli_show: Literal["enable", "disable"] | None = ...,
-        cli_exec: Literal["enable", "disable"] | None = ...,
-        cli_config: Literal["enable", "disable"] | None = ...,
-        system_execute_ssh: Literal["enable", "disable"] | None = ...,
-        system_execute_telnet: Literal["enable", "disable"] | None = ...,
-    ) -> FortiObject: ...
-    
-    def post(
-        self,
-        payload_dict: AccprofilePayload | None = ...,
-        name: str | None = ...,
-        scope: Literal["vdom", "global"] | None = ...,
-        comments: str | None = ...,
-        secfabgrp: Literal["none", "read", "read-write", "custom"] | None = ...,
-        ftviewgrp: Literal["none", "read", "read-write"] | None = ...,
-        authgrp: Literal["none", "read", "read-write"] | None = ...,
-        sysgrp: Literal["none", "read", "read-write", "custom"] | None = ...,
-        netgrp: Literal["none", "read", "read-write", "custom"] | None = ...,
-        loggrp: Literal["none", "read", "read-write", "custom"] | None = ...,
-        fwgrp: Literal["none", "read", "read-write", "custom"] | None = ...,
-        vpngrp: Literal["none", "read", "read-write"] | None = ...,
-        utmgrp: Literal["none", "read", "read-write", "custom"] | None = ...,
-        wanoptgrp: Literal["none", "read", "read-write"] | None = ...,
-        wifi: Literal["none", "read", "read-write"] | None = ...,
-        netgrp_permission: str | None = ...,
-        sysgrp_permission: str | None = ...,
-        fwgrp_permission: str | None = ...,
-        loggrp_permission: str | None = ...,
-        utmgrp_permission: str | None = ...,
-        secfabgrp_permission: str | None = ...,
-        admintimeout_override: Literal["enable", "disable"] | None = ...,
-        admintimeout: int | None = ...,
-        cli_diagnose: Literal["enable", "disable"] | None = ...,
-        cli_get: Literal["enable", "disable"] | None = ...,
-        cli_show: Literal["enable", "disable"] | None = ...,
-        cli_exec: Literal["enable", "disable"] | None = ...,
-        cli_config: Literal["enable", "disable"] | None = ...,
-        system_execute_ssh: Literal["enable", "disable"] | None = ...,
-        system_execute_telnet: Literal["enable", "disable"] | None = ...,
-    ) -> FortiObject: ...
-    
-    # PUT overloads
-    @overload
     def put(
         self,
         payload_dict: AccprofilePayload | None = ...,
@@ -566,137 +276,24 @@ class Accprofile:
         cli_config: Literal["enable", "disable"] | None = ...,
         system_execute_ssh: Literal["enable", "disable"] | None = ...,
         system_execute_telnet: Literal["enable", "disable"] | None = ...,
+        error_mode: Literal["raise", "return", "print"] | None = ...,
+        error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> AccprofileObject: ...
-    
-    @overload
-    def put(
-        self,
-        payload_dict: AccprofilePayload | None = ...,
-        name: str | None = ...,
-        scope: Literal["vdom", "global"] | None = ...,
-        comments: str | None = ...,
-        secfabgrp: Literal["none", "read", "read-write", "custom"] | None = ...,
-        ftviewgrp: Literal["none", "read", "read-write"] | None = ...,
-        authgrp: Literal["none", "read", "read-write"] | None = ...,
-        sysgrp: Literal["none", "read", "read-write", "custom"] | None = ...,
-        netgrp: Literal["none", "read", "read-write", "custom"] | None = ...,
-        loggrp: Literal["none", "read", "read-write", "custom"] | None = ...,
-        fwgrp: Literal["none", "read", "read-write", "custom"] | None = ...,
-        vpngrp: Literal["none", "read", "read-write"] | None = ...,
-        utmgrp: Literal["none", "read", "read-write", "custom"] | None = ...,
-        wanoptgrp: Literal["none", "read", "read-write"] | None = ...,
-        wifi: Literal["none", "read", "read-write"] | None = ...,
-        netgrp_permission: str | None = ...,
-        sysgrp_permission: str | None = ...,
-        fwgrp_permission: str | None = ...,
-        loggrp_permission: str | None = ...,
-        utmgrp_permission: str | None = ...,
-        secfabgrp_permission: str | None = ...,
-        admintimeout_override: Literal["enable", "disable"] | None = ...,
-        admintimeout: int | None = ...,
-        cli_diagnose: Literal["enable", "disable"] | None = ...,
-        cli_get: Literal["enable", "disable"] | None = ...,
-        cli_show: Literal["enable", "disable"] | None = ...,
-        cli_exec: Literal["enable", "disable"] | None = ...,
-        cli_config: Literal["enable", "disable"] | None = ...,
-        system_execute_ssh: Literal["enable", "disable"] | None = ...,
-        system_execute_telnet: Literal["enable", "disable"] | None = ...,
-    ) -> FortiObject: ...
-    
-    # Default overload
-    @overload
-    def put(
-        self,
-        payload_dict: AccprofilePayload | None = ...,
-        name: str | None = ...,
-        scope: Literal["vdom", "global"] | None = ...,
-        comments: str | None = ...,
-        secfabgrp: Literal["none", "read", "read-write", "custom"] | None = ...,
-        ftviewgrp: Literal["none", "read", "read-write"] | None = ...,
-        authgrp: Literal["none", "read", "read-write"] | None = ...,
-        sysgrp: Literal["none", "read", "read-write", "custom"] | None = ...,
-        netgrp: Literal["none", "read", "read-write", "custom"] | None = ...,
-        loggrp: Literal["none", "read", "read-write", "custom"] | None = ...,
-        fwgrp: Literal["none", "read", "read-write", "custom"] | None = ...,
-        vpngrp: Literal["none", "read", "read-write"] | None = ...,
-        utmgrp: Literal["none", "read", "read-write", "custom"] | None = ...,
-        wanoptgrp: Literal["none", "read", "read-write"] | None = ...,
-        wifi: Literal["none", "read", "read-write"] | None = ...,
-        netgrp_permission: str | None = ...,
-        sysgrp_permission: str | None = ...,
-        fwgrp_permission: str | None = ...,
-        loggrp_permission: str | None = ...,
-        utmgrp_permission: str | None = ...,
-        secfabgrp_permission: str | None = ...,
-        admintimeout_override: Literal["enable", "disable"] | None = ...,
-        admintimeout: int | None = ...,
-        cli_diagnose: Literal["enable", "disable"] | None = ...,
-        cli_get: Literal["enable", "disable"] | None = ...,
-        cli_show: Literal["enable", "disable"] | None = ...,
-        cli_exec: Literal["enable", "disable"] | None = ...,
-        cli_config: Literal["enable", "disable"] | None = ...,
-        system_execute_ssh: Literal["enable", "disable"] | None = ...,
-        system_execute_telnet: Literal["enable", "disable"] | None = ...,
-    ) -> FortiObject: ...
-    
-    def put(
-        self,
-        payload_dict: AccprofilePayload | None = ...,
-        name: str | None = ...,
-        scope: Literal["vdom", "global"] | None = ...,
-        comments: str | None = ...,
-        secfabgrp: Literal["none", "read", "read-write", "custom"] | None = ...,
-        ftviewgrp: Literal["none", "read", "read-write"] | None = ...,
-        authgrp: Literal["none", "read", "read-write"] | None = ...,
-        sysgrp: Literal["none", "read", "read-write", "custom"] | None = ...,
-        netgrp: Literal["none", "read", "read-write", "custom"] | None = ...,
-        loggrp: Literal["none", "read", "read-write", "custom"] | None = ...,
-        fwgrp: Literal["none", "read", "read-write", "custom"] | None = ...,
-        vpngrp: Literal["none", "read", "read-write"] | None = ...,
-        utmgrp: Literal["none", "read", "read-write", "custom"] | None = ...,
-        wanoptgrp: Literal["none", "read", "read-write"] | None = ...,
-        wifi: Literal["none", "read", "read-write"] | None = ...,
-        netgrp_permission: str | None = ...,
-        sysgrp_permission: str | None = ...,
-        fwgrp_permission: str | None = ...,
-        loggrp_permission: str | None = ...,
-        utmgrp_permission: str | None = ...,
-        secfabgrp_permission: str | None = ...,
-        admintimeout_override: Literal["enable", "disable"] | None = ...,
-        admintimeout: int | None = ...,
-        cli_diagnose: Literal["enable", "disable"] | None = ...,
-        cli_get: Literal["enable", "disable"] | None = ...,
-        cli_show: Literal["enable", "disable"] | None = ...,
-        cli_exec: Literal["enable", "disable"] | None = ...,
-        cli_config: Literal["enable", "disable"] | None = ...,
-        system_execute_ssh: Literal["enable", "disable"] | None = ...,
-        system_execute_telnet: Literal["enable", "disable"] | None = ...,
-    ) -> FortiObject: ...
-    
-    # DELETE overloads
-    @overload
-    def delete(
-        self,
-        name: str | None = ...,
-    ) -> AccprofileObject: ...
-    
-    @overload
-    def delete(
-        self,
-        name: str | None = ...,
-    ) -> FortiObject: ...
-    
-    # Default overload
-    @overload
-    def delete(
-        self,
-        name: str | None = ...,
-    ) -> FortiObject: ...
+
+    # ================================================================
+    # DELETE Method
+    # ================================================================
     
     def delete(
         self,
         name: str | None = ...,
+        error_mode: Literal["raise", "return", "print"] | None = ...,
+        error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> FortiObject: ...
+
+    # ================================================================
+    # Utility Methods
+    # ================================================================
     
     def exists(
         self,
@@ -735,6 +332,8 @@ class Accprofile:
         cli_config: Literal["enable", "disable"] | None = ...,
         system_execute_ssh: Literal["enable", "disable"] | None = ...,
         system_execute_telnet: Literal["enable", "disable"] | None = ...,
+        error_mode: Literal["raise", "return", "print"] | None = ...,
+        error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> FortiObject: ...
     
     # Helper methods
@@ -742,7 +341,7 @@ class Accprofile:
     def help(field_name: str | None = ...) -> str: ...
     
     @staticmethod
-    def fields(detailed: bool = ...) -> Union[list[str], list[dict[str, Any]]]: ...
+    def fields(detailed: bool = ...) -> list[str] | list[dict[str, Any]]: ...
     
     @staticmethod
     def field_info(field_name: str) -> FortiObject: ...
@@ -758,9 +357,6 @@ class Accprofile:
     
     @staticmethod
     def schema() -> FortiObject: ...
-
-
-# ================================================================
 
 
 __all__ = [

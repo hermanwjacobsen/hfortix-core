@@ -12,7 +12,11 @@ from typing import Any, Literal, Optional
 from enum import Enum
 
 # ============================================================================
-# Child Table Models
+# Enum Definitions for Child Table Fields (for fields with 4+ allowed values)
+# ============================================================================
+
+# ============================================================================
+# Child Table Models (sorted deepest-first so nested models are defined before their parents)
 # ============================================================================
 
 class OverrideSettingCustomFieldName(BaseModel):
@@ -26,26 +30,66 @@ class OverrideSettingCustomFieldName(BaseModel):
         """Pydantic model configuration."""
         extra = "allow"  # Allow additional fields from API
         str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
     
-    id: int | None = Field(ge=0, le=255, default=0, description="Entry ID.")    
-    name: str = Field(max_length=35, default="", description="Field name [A-Za-z0-9_].")    
-    custom: str = Field(max_length=35, default="", description="Field custom name [A-Za-z0-9_].")
+    id_: int | None = Field(ge=0, le=255, default=0, serialization_alias="id", description="Entry ID.")    
+    name: str = Field(max_length=35, description="Field name [A-Za-z0-9_].")    
+    custom: str = Field(max_length=35, description="Field custom name [A-Za-z0-9_].")
 # ============================================================================
 # Enum Definitions (for fields with 4+ allowed values)
 # ============================================================================
 
 class OverrideSettingFacilityEnum(str, Enum):
     """Allowed values for facility field."""
-    KERNEL = "kernel"    USER = "user"    MAIL = "mail"    DAEMON = "daemon"    AUTH = "auth"    SYSLOG = "syslog"    LPR = "lpr"    NEWS = "news"    UUCP = "uucp"    CRON = "cron"    AUTHPRIV = "authpriv"    FTP = "ftp"    NTP = "ntp"    AUDIT = "audit"    ALERT = "alert"    CLOCK = "clock"    LOCAL0 = "local0"    LOCAL1 = "local1"    LOCAL2 = "local2"    LOCAL3 = "local3"    LOCAL4 = "local4"    LOCAL5 = "local5"    LOCAL6 = "local6"    LOCAL7 = "local7"
+    KERNEL = "kernel"
+    USER = "user"
+    MAIL = "mail"
+    DAEMON = "daemon"
+    AUTH = "auth"
+    SYSLOG = "syslog"
+    LPR = "lpr"
+    NEWS = "news"
+    UUCP = "uucp"
+    CRON = "cron"
+    AUTHPRIV = "authpriv"
+    FTP = "ftp"
+    NTP = "ntp"
+    AUDIT = "audit"
+    ALERT = "alert"
+    CLOCK = "clock"
+    LOCAL0 = "local0"
+    LOCAL1 = "local1"
+    LOCAL2 = "local2"
+    LOCAL3 = "local3"
+    LOCAL4 = "local4"
+    LOCAL5 = "local5"
+    LOCAL6 = "local6"
+    LOCAL7 = "local7"
+
 class OverrideSettingFormatEnum(str, Enum):
-    """Allowed values for format field."""
-    DEFAULT = "default"    CSV = "csv"    CEF = "cef"    RFC5424 = "rfc5424"    JSON = "json"
-class OverrideSettingEnc_algorithmEnum(str, Enum):
+    """Allowed values for format_ field."""
+    DEFAULT = "default"
+    CSV = "csv"
+    CEF = "cef"
+    RFC5424 = "rfc5424"
+    JSON = "json"
+
+class OverrideSettingEncAlgorithmEnum(str, Enum):
     """Allowed values for enc_algorithm field."""
-    HIGH_MEDIUM = "high-medium"    HIGH = "high"    LOW = "low"    DISABLE = "disable"
-class OverrideSettingSsl_min_proto_versionEnum(str, Enum):
+    HIGH_MEDIUM = "high-medium"
+    HIGH = "high"
+    LOW = "low"
+    DISABLE = "disable"
+
+class OverrideSettingSslMinProtoVersionEnum(str, Enum):
     """Allowed values for ssl_min_proto_version field."""
-    DEFAULT = "default"    SSLV3 = "SSLv3"    TLSV1 = "TLSv1"    TLSV1_1 = "TLSv1-1"    TLSV1_2 = "TLSv1-2"    TLSV1_3 = "TLSv1-3"
+    DEFAULT = "default"
+    SSLV3 = "SSLv3"
+    TLSV1 = "TLSv1"
+    TLSV1_1 = "TLSv1-1"
+    TLSV1_2 = "TLSv1-2"
+    TLSV1_3 = "TLSv1-3"
+
 
 # ============================================================================
 # Main Model
@@ -57,7 +101,7 @@ class OverrideSettingModel(BaseModel):
     
     Override settings for remote syslog server.
     
-    Validation Rules:        - status: pattern=        - server: max_length=127 pattern=        - mode: pattern=        - use_management_vdom: pattern=        - port: min=0 max=65535 pattern=        - facility: pattern=        - source_ip_interface: max_length=15 pattern=        - source_ip: max_length=63 pattern=        - format: pattern=        - priority: pattern=        - max_log_rate: min=0 max=100000 pattern=        - enc_algorithm: pattern=        - ssl_min_proto_version: pattern=        - certificate: max_length=35 pattern=        - custom_field_name: pattern=        - interface_select_method: pattern=        - interface: max_length=15 pattern=        - vrf_select: min=0 max=511 pattern=    """
+    Validation Rules:        - status: pattern=        - server: max_length=127 pattern=        - mode: pattern=        - use_management_vdom: pattern=        - port: min=0 max=65535 pattern=        - facility: pattern=        - source_ip_interface: max_length=15 pattern=        - source_ip: max_length=63 pattern=        - format_: pattern=        - priority: pattern=        - max_log_rate: min=0 max=100000 pattern=        - enc_algorithm: pattern=        - ssl_min_proto_version: pattern=        - certificate: max_length=35 pattern=        - custom_field_name: pattern=        - interface_select_method: pattern=        - interface: max_length=15 pattern=        - vrf_select: min=0 max=511 pattern=    """
     
     class Config:
         """Pydantic model configuration."""
@@ -71,22 +115,22 @@ class OverrideSettingModel(BaseModel):
     # ========================================================================
     
     status: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable remote syslog logging.")    
-    server: str = Field(max_length=127, default="", description="Address of remote syslog server.")    
+    server: str = Field(max_length=127, description="Address of remote syslog server.")    
     mode: Literal["udp", "legacy-reliable", "reliable"] | None = Field(default="udp", description="Remote syslog logging over UDP/Reliable TCP.")    
     use_management_vdom: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable use of management VDOM as source VDOM for logs sent to syslog server.")    
     port: int | None = Field(ge=0, le=65535, default=514, description="Server listen port.")    
-    facility: FacilityEnum | None = Field(default="local7", description="Remote syslog facility.")    
-    source_ip_interface: str | None = Field(max_length=15, default="", description="Source interface of syslog.")  # datasource: ['system.interface.name']    
-    source_ip: str | None = Field(max_length=63, default="", description="Source IP address of syslog.")    
-    format: FormatEnum | None = Field(default="default", description="Log format.")    
+    facility: OverrideSettingFacilityEnum | None = Field(default=OverrideSettingFacilityEnum.LOCAL7, description="Remote syslog facility.")    
+    source_ip_interface: str | None = Field(max_length=15, default=None, description="Source interface of syslog.")  # datasource: ['system.interface.name']    
+    source_ip: str | None = Field(max_length=63, default=None, description="Source IP address of syslog.")    
+    format_: OverrideSettingFormatEnum | None = Field(default=OverrideSettingFormatEnum.DEFAULT, serialization_alias="format", description="Log format.")    
     priority: Literal["default", "low"] | None = Field(default="default", description="Set log transmission priority.")    
     max_log_rate: int | None = Field(ge=0, le=100000, default=0, description="Syslog maximum log rate in MBps (0 = unlimited).")    
-    enc_algorithm: EncAlgorithmEnum | None = Field(default="disable", description="Enable/disable reliable syslogging with TLS encryption.")    
-    ssl_min_proto_version: SslMinProtoVersionEnum | None = Field(default="default", description="Minimum supported protocol version for SSL/TLS connections (default is to follow system global setting).")    
-    certificate: str | None = Field(max_length=35, default="", description="Certificate used to communicate with Syslog server.")  # datasource: ['certificate.local.name']    
-    custom_field_name: list[CustomFieldName] = Field(default=None, description="Custom field name for CEF format logging.")    
+    enc_algorithm: OverrideSettingEncAlgorithmEnum | None = Field(default=OverrideSettingEncAlgorithmEnum.DISABLE, description="Enable/disable reliable syslogging with TLS encryption.")    
+    ssl_min_proto_version: OverrideSettingSslMinProtoVersionEnum | None = Field(default=OverrideSettingSslMinProtoVersionEnum.DEFAULT, description="Minimum supported protocol version for SSL/TLS connections (default is to follow system global setting).")    
+    certificate: str | None = Field(max_length=35, default=None, description="Certificate used to communicate with Syslog server.")  # datasource: ['certificate.local.name']    
+    custom_field_name: list[OverrideSettingCustomFieldName] = Field(default_factory=list, description="Custom field name for CEF format logging.")    
     interface_select_method: Literal["auto", "sdwan", "specify"] | None = Field(default="auto", description="Specify how to select outgoing interface to reach server.")    
-    interface: str = Field(max_length=15, default="", description="Specify outgoing interface to reach server.")  # datasource: ['system.interface.name']    
+    interface: str = Field(max_length=15, description="Specify outgoing interface to reach server.")  # datasource: ['system.interface.name']    
     vrf_select: int | None = Field(ge=0, le=511, default=0, description="VRF ID used for connection to server.")    
     # ========================================================================
     # Custom Validators
@@ -197,7 +241,7 @@ class OverrideSettingModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.log.syslogd3.override_setting.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate scalar field
         value = getattr(self, "source_ip_interface", None)
@@ -246,7 +290,7 @@ class OverrideSettingModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.log.syslogd3.override_setting.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate scalar field
         value = getattr(self, "certificate", None)
@@ -295,7 +339,7 @@ class OverrideSettingModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.log.syslogd3.override_setting.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate scalar field
         value = getattr(self, "interface", None)
@@ -359,5 +403,5 @@ __all__ = [
 # ============================================================================
 # Generated by hfortix generator v0.6.0
 # Schema: 1.7.0
-# Generated: 2026-01-17T05:32:18.696087Z
+# Generated: 2026-01-17T17:25:22.450631Z
 # ============================================================================

@@ -9,22 +9,226 @@ from __future__ import annotations
 
 from pydantic import BaseModel, Field, field_validator
 from typing import Any, Literal, Optional
+from enum import Enum
 
 # ============================================================================
-# Child Table Models
+# Enum Definitions for Child Table Fields (for fields with 4+ allowed values)
 # ============================================================================
 
-class ProfileHttp(BaseModel):
+class ProfileSshArchiveBlockEnum(str, Enum):
+    """Allowed values for archive_block field in ssh."""
+    ENCRYPTED = "encrypted"
+    CORRUPTED = "corrupted"
+    PARTIALLYCORRUPTED = "partiallycorrupted"
+    MULTIPART = "multipart"
+    NESTED = "nested"
+    MAILBOMB = "mailbomb"
+    TIMEOUT = "timeout"
+    UNHANDLED = "unhandled"
+
+class ProfileSshArchiveLogEnum(str, Enum):
+    """Allowed values for archive_log field in ssh."""
+    ENCRYPTED = "encrypted"
+    CORRUPTED = "corrupted"
+    PARTIALLYCORRUPTED = "partiallycorrupted"
+    MULTIPART = "multipart"
+    NESTED = "nested"
+    MAILBOMB = "mailbomb"
+    TIMEOUT = "timeout"
+    UNHANDLED = "unhandled"
+
+class ProfileSmtpArchiveBlockEnum(str, Enum):
+    """Allowed values for archive_block field in smtp."""
+    ENCRYPTED = "encrypted"
+    CORRUPTED = "corrupted"
+    PARTIALLYCORRUPTED = "partiallycorrupted"
+    MULTIPART = "multipart"
+    NESTED = "nested"
+    MAILBOMB = "mailbomb"
+    TIMEOUT = "timeout"
+    UNHANDLED = "unhandled"
+
+class ProfileSmtpArchiveLogEnum(str, Enum):
+    """Allowed values for archive_log field in smtp."""
+    ENCRYPTED = "encrypted"
+    CORRUPTED = "corrupted"
+    PARTIALLYCORRUPTED = "partiallycorrupted"
+    MULTIPART = "multipart"
+    NESTED = "nested"
+    MAILBOMB = "mailbomb"
+    TIMEOUT = "timeout"
+    UNHANDLED = "unhandled"
+
+class ProfilePop3ArchiveBlockEnum(str, Enum):
+    """Allowed values for archive_block field in pop3."""
+    ENCRYPTED = "encrypted"
+    CORRUPTED = "corrupted"
+    PARTIALLYCORRUPTED = "partiallycorrupted"
+    MULTIPART = "multipart"
+    NESTED = "nested"
+    MAILBOMB = "mailbomb"
+    TIMEOUT = "timeout"
+    UNHANDLED = "unhandled"
+
+class ProfilePop3ArchiveLogEnum(str, Enum):
+    """Allowed values for archive_log field in pop3."""
+    ENCRYPTED = "encrypted"
+    CORRUPTED = "corrupted"
+    PARTIALLYCORRUPTED = "partiallycorrupted"
+    MULTIPART = "multipart"
+    NESTED = "nested"
+    MAILBOMB = "mailbomb"
+    TIMEOUT = "timeout"
+    UNHANDLED = "unhandled"
+
+class ProfileNntpArchiveBlockEnum(str, Enum):
+    """Allowed values for archive_block field in nntp."""
+    ENCRYPTED = "encrypted"
+    CORRUPTED = "corrupted"
+    PARTIALLYCORRUPTED = "partiallycorrupted"
+    MULTIPART = "multipart"
+    NESTED = "nested"
+    MAILBOMB = "mailbomb"
+    TIMEOUT = "timeout"
+    UNHANDLED = "unhandled"
+
+class ProfileNntpArchiveLogEnum(str, Enum):
+    """Allowed values for archive_log field in nntp."""
+    ENCRYPTED = "encrypted"
+    CORRUPTED = "corrupted"
+    PARTIALLYCORRUPTED = "partiallycorrupted"
+    MULTIPART = "multipart"
+    NESTED = "nested"
+    MAILBOMB = "mailbomb"
+    TIMEOUT = "timeout"
+    UNHANDLED = "unhandled"
+
+class ProfileMapiArchiveBlockEnum(str, Enum):
+    """Allowed values for archive_block field in mapi."""
+    ENCRYPTED = "encrypted"
+    CORRUPTED = "corrupted"
+    PARTIALLYCORRUPTED = "partiallycorrupted"
+    MULTIPART = "multipart"
+    NESTED = "nested"
+    MAILBOMB = "mailbomb"
+    TIMEOUT = "timeout"
+    UNHANDLED = "unhandled"
+
+class ProfileMapiArchiveLogEnum(str, Enum):
+    """Allowed values for archive_log field in mapi."""
+    ENCRYPTED = "encrypted"
+    CORRUPTED = "corrupted"
+    PARTIALLYCORRUPTED = "partiallycorrupted"
+    MULTIPART = "multipart"
+    NESTED = "nested"
+    MAILBOMB = "mailbomb"
+    TIMEOUT = "timeout"
+    UNHANDLED = "unhandled"
+
+class ProfileImapArchiveBlockEnum(str, Enum):
+    """Allowed values for archive_block field in imap."""
+    ENCRYPTED = "encrypted"
+    CORRUPTED = "corrupted"
+    PARTIALLYCORRUPTED = "partiallycorrupted"
+    MULTIPART = "multipart"
+    NESTED = "nested"
+    MAILBOMB = "mailbomb"
+    TIMEOUT = "timeout"
+    UNHANDLED = "unhandled"
+
+class ProfileImapArchiveLogEnum(str, Enum):
+    """Allowed values for archive_log field in imap."""
+    ENCRYPTED = "encrypted"
+    CORRUPTED = "corrupted"
+    PARTIALLYCORRUPTED = "partiallycorrupted"
+    MULTIPART = "multipart"
+    NESTED = "nested"
+    MAILBOMB = "mailbomb"
+    TIMEOUT = "timeout"
+    UNHANDLED = "unhandled"
+
+class ProfileHttpArchiveBlockEnum(str, Enum):
+    """Allowed values for archive_block field in http."""
+    ENCRYPTED = "encrypted"
+    CORRUPTED = "corrupted"
+    PARTIALLYCORRUPTED = "partiallycorrupted"
+    MULTIPART = "multipart"
+    NESTED = "nested"
+    MAILBOMB = "mailbomb"
+    TIMEOUT = "timeout"
+    UNHANDLED = "unhandled"
+
+class ProfileHttpArchiveLogEnum(str, Enum):
+    """Allowed values for archive_log field in http."""
+    ENCRYPTED = "encrypted"
+    CORRUPTED = "corrupted"
+    PARTIALLYCORRUPTED = "partiallycorrupted"
+    MULTIPART = "multipart"
+    NESTED = "nested"
+    MAILBOMB = "mailbomb"
+    TIMEOUT = "timeout"
+    UNHANDLED = "unhandled"
+
+class ProfileFtpArchiveBlockEnum(str, Enum):
+    """Allowed values for archive_block field in ftp."""
+    ENCRYPTED = "encrypted"
+    CORRUPTED = "corrupted"
+    PARTIALLYCORRUPTED = "partiallycorrupted"
+    MULTIPART = "multipart"
+    NESTED = "nested"
+    MAILBOMB = "mailbomb"
+    TIMEOUT = "timeout"
+    UNHANDLED = "unhandled"
+
+class ProfileFtpArchiveLogEnum(str, Enum):
+    """Allowed values for archive_log field in ftp."""
+    ENCRYPTED = "encrypted"
+    CORRUPTED = "corrupted"
+    PARTIALLYCORRUPTED = "partiallycorrupted"
+    MULTIPART = "multipart"
+    NESTED = "nested"
+    MAILBOMB = "mailbomb"
+    TIMEOUT = "timeout"
+    UNHANDLED = "unhandled"
+
+class ProfileCifsArchiveBlockEnum(str, Enum):
+    """Allowed values for archive_block field in cifs."""
+    ENCRYPTED = "encrypted"
+    CORRUPTED = "corrupted"
+    PARTIALLYCORRUPTED = "partiallycorrupted"
+    MULTIPART = "multipart"
+    NESTED = "nested"
+    MAILBOMB = "mailbomb"
+    TIMEOUT = "timeout"
+    UNHANDLED = "unhandled"
+
+class ProfileCifsArchiveLogEnum(str, Enum):
+    """Allowed values for archive_log field in cifs."""
+    ENCRYPTED = "encrypted"
+    CORRUPTED = "corrupted"
+    PARTIALLYCORRUPTED = "partiallycorrupted"
+    MULTIPART = "multipart"
+    NESTED = "nested"
+    MAILBOMB = "mailbomb"
+    TIMEOUT = "timeout"
+    UNHANDLED = "unhandled"
+
+# ============================================================================
+# Child Table Models (sorted deepest-first so nested models are defined before their parents)
+# ============================================================================
+
+class ProfileSsh(BaseModel):
     """
-    Child table model for http.
+    Child table model for ssh.
     
-    Configure HTTP AntiVirus options.
+    Configure SFTP and SCP AntiVirus options.
     """
     
     class Config:
         """Pydantic model configuration."""
         extra = "allow"  # Allow additional fields from API
         str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
     
     av_scan: Literal["disable", "block", "monitor"] | None = Field(default="disable", description="Enable AntiVirus scan service.")    
     outbreak_prevention: Literal["disable", "block", "monitor"] | None = Field(default="disable", description="Enable virus outbreak prevention service.")    
@@ -33,43 +237,21 @@ class ProfileHttp(BaseModel):
     fortindr: Literal["disable", "block", "monitor"] | None = Field(default="disable", description="Enable scanning of files by FortiNDR.")    
     fortisandbox: Literal["disable", "block", "monitor"] | None = Field(default="disable", description="Enable scanning of files by FortiSandbox.")    
     quarantine: Literal["disable", "enable"] | None = Field(default="disable", description="Enable/disable quarantine for infected files.")    
-    archive_block: list[ArchiveBlock] = Field(default="", description="Select the archive types to block.")    
-    archive_log: list[ArchiveLog] = Field(default="", description="Select the archive types to log.")    
-    emulator: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable the virus emulator.")    
-    content_disarm: Literal["disable", "enable"] | None = Field(default="disable", description="Enable/disable Content Disarm and Reconstruction when performing AntiVirus scan.")
-class ProfileFtp(BaseModel):
-    """
-    Child table model for ftp.
-    
-    Configure FTP AntiVirus options.
-    """
-    
-    class Config:
-        """Pydantic model configuration."""
-        extra = "allow"  # Allow additional fields from API
-        str_strip_whitespace = True
-    
-    av_scan: Literal["disable", "block", "monitor"] | None = Field(default="disable", description="Enable AntiVirus scan service.")    
-    outbreak_prevention: Literal["disable", "block", "monitor"] | None = Field(default="disable", description="Enable virus outbreak prevention service.")    
-    external_blocklist: Literal["disable", "block", "monitor"] | None = Field(default="disable", description="Enable external-blocklist. Analyzes files including the content of archives.")    
-    malware_stream: Literal["disable", "block", "monitor"] | None = Field(default="disable", description="Enable 0-day malware-stream scanning. Analyzes files including the content of archives.")    
-    fortindr: Literal["disable", "block", "monitor"] | None = Field(default="disable", description="Enable scanning of files by FortiNDR.")    
-    fortisandbox: Literal["disable", "block", "monitor"] | None = Field(default="disable", description="Enable scanning of files by FortiSandbox.")    
-    quarantine: Literal["disable", "enable"] | None = Field(default="disable", description="Enable/disable quarantine for infected files.")    
-    archive_block: list[ArchiveBlock] = Field(default="", description="Select the archive types to block.")    
-    archive_log: list[ArchiveLog] = Field(default="", description="Select the archive types to log.")    
+    archive_block: list[ProfileSshArchiveBlockEnum] = Field(default_factory=list, description="Select the archive types to block.")    
+    archive_log: list[ProfileSshArchiveLogEnum] = Field(default_factory=list, description="Select the archive types to log.")    
     emulator: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable the virus emulator.")
-class ProfileImap(BaseModel):
+class ProfileSmtp(BaseModel):
     """
-    Child table model for imap.
+    Child table model for smtp.
     
-    Configure IMAP AntiVirus options.
+    Configure SMTP AntiVirus options.
     """
     
     class Config:
         """Pydantic model configuration."""
         extra = "allow"  # Allow additional fields from API
         str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
     
     av_scan: Literal["disable", "block", "monitor"] | None = Field(default="disable", description="Enable AntiVirus scan service.")    
     outbreak_prevention: Literal["disable", "block", "monitor"] | None = Field(default="disable", description="Enable virus outbreak prevention service.")    
@@ -78,8 +260,8 @@ class ProfileImap(BaseModel):
     fortindr: Literal["disable", "block", "monitor"] | None = Field(default="disable", description="Enable scanning of files by FortiNDR.")    
     fortisandbox: Literal["disable", "block", "monitor"] | None = Field(default="disable", description="Enable scanning of files by FortiSandbox.")    
     quarantine: Literal["disable", "enable"] | None = Field(default="disable", description="Enable/disable quarantine for infected files.")    
-    archive_block: list[ArchiveBlock] = Field(default="", description="Select the archive types to block.")    
-    archive_log: list[ArchiveLog] = Field(default="", description="Select the archive types to log.")    
+    archive_block: list[ProfileSmtpArchiveBlockEnum] = Field(default_factory=list, description="Select the archive types to block.")    
+    archive_log: list[ProfileSmtpArchiveLogEnum] = Field(default_factory=list, description="Select the archive types to log.")    
     emulator: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable the virus emulator.")    
     executables: Literal["default", "virus"] | None = Field(default="default", description="Treat Windows executable files as viruses for the purpose of blocking or monitoring.")    
     content_disarm: Literal["disable", "enable"] | None = Field(default="disable", description="Enable/disable Content Disarm and Reconstruction when performing AntiVirus scan.")
@@ -94,6 +276,7 @@ class ProfilePop3(BaseModel):
         """Pydantic model configuration."""
         extra = "allow"  # Allow additional fields from API
         str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
     
     av_scan: Literal["disable", "block", "monitor"] | None = Field(default="disable", description="Enable AntiVirus scan service.")    
     outbreak_prevention: Literal["disable", "block", "monitor"] | None = Field(default="disable", description="Enable virus outbreak prevention service.")    
@@ -102,58 +285,11 @@ class ProfilePop3(BaseModel):
     fortindr: Literal["disable", "block", "monitor"] | None = Field(default="disable", description="Enable scanning of files by FortiNDR.")    
     fortisandbox: Literal["disable", "block", "monitor"] | None = Field(default="disable", description="Enable scanning of files by FortiSandbox.")    
     quarantine: Literal["disable", "enable"] | None = Field(default="disable", description="Enable/disable quarantine for infected files.")    
-    archive_block: list[ArchiveBlock] = Field(default="", description="Select the archive types to block.")    
-    archive_log: list[ArchiveLog] = Field(default="", description="Select the archive types to log.")    
+    archive_block: list[ProfilePop3ArchiveBlockEnum] = Field(default_factory=list, description="Select the archive types to block.")    
+    archive_log: list[ProfilePop3ArchiveLogEnum] = Field(default_factory=list, description="Select the archive types to log.")    
     emulator: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable the virus emulator.")    
     executables: Literal["default", "virus"] | None = Field(default="default", description="Treat Windows executable files as viruses for the purpose of blocking or monitoring.")    
     content_disarm: Literal["disable", "enable"] | None = Field(default="disable", description="Enable/disable Content Disarm and Reconstruction when performing AntiVirus scan.")
-class ProfileSmtp(BaseModel):
-    """
-    Child table model for smtp.
-    
-    Configure SMTP AntiVirus options.
-    """
-    
-    class Config:
-        """Pydantic model configuration."""
-        extra = "allow"  # Allow additional fields from API
-        str_strip_whitespace = True
-    
-    av_scan: Literal["disable", "block", "monitor"] | None = Field(default="disable", description="Enable AntiVirus scan service.")    
-    outbreak_prevention: Literal["disable", "block", "monitor"] | None = Field(default="disable", description="Enable virus outbreak prevention service.")    
-    external_blocklist: Literal["disable", "block", "monitor"] | None = Field(default="disable", description="Enable external-blocklist. Analyzes files including the content of archives.")    
-    malware_stream: Literal["disable", "block", "monitor"] | None = Field(default="disable", description="Enable 0-day malware-stream scanning. Analyzes files including the content of archives.")    
-    fortindr: Literal["disable", "block", "monitor"] | None = Field(default="disable", description="Enable scanning of files by FortiNDR.")    
-    fortisandbox: Literal["disable", "block", "monitor"] | None = Field(default="disable", description="Enable scanning of files by FortiSandbox.")    
-    quarantine: Literal["disable", "enable"] | None = Field(default="disable", description="Enable/disable quarantine for infected files.")    
-    archive_block: list[ArchiveBlock] = Field(default="", description="Select the archive types to block.")    
-    archive_log: list[ArchiveLog] = Field(default="", description="Select the archive types to log.")    
-    emulator: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable the virus emulator.")    
-    executables: Literal["default", "virus"] | None = Field(default="default", description="Treat Windows executable files as viruses for the purpose of blocking or monitoring.")    
-    content_disarm: Literal["disable", "enable"] | None = Field(default="disable", description="Enable/disable Content Disarm and Reconstruction when performing AntiVirus scan.")
-class ProfileMapi(BaseModel):
-    """
-    Child table model for mapi.
-    
-    Configure MAPI AntiVirus options.
-    """
-    
-    class Config:
-        """Pydantic model configuration."""
-        extra = "allow"  # Allow additional fields from API
-        str_strip_whitespace = True
-    
-    av_scan: Literal["disable", "block", "monitor"] | None = Field(default="disable", description="Enable AntiVirus scan service.")    
-    outbreak_prevention: Literal["disable", "block", "monitor"] | None = Field(default="disable", description="Enable virus outbreak prevention service.")    
-    external_blocklist: Literal["disable", "block", "monitor"] | None = Field(default="disable", description="Enable external-blocklist. Analyzes files including the content of archives.")    
-    malware_stream: Literal["disable", "block", "monitor"] | None = Field(default="disable", description="Enable 0-day malware-stream scanning. Analyzes files including the content of archives.")    
-    fortindr: Literal["disable", "block", "monitor"] | None = Field(default="disable", description="Enable scanning of files by FortiNDR.")    
-    fortisandbox: Literal["disable", "block", "monitor"] | None = Field(default="disable", description="Enable scanning of files by FortiSandbox.")    
-    quarantine: Literal["disable", "enable"] | None = Field(default="disable", description="Enable/disable quarantine for infected files.")    
-    archive_block: list[ArchiveBlock] = Field(default="", description="Select the archive types to block.")    
-    archive_log: list[ArchiveLog] = Field(default="", description="Select the archive types to log.")    
-    emulator: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable the virus emulator.")    
-    executables: Literal["default", "virus"] | None = Field(default="default", description="Treat Windows executable files as viruses for the purpose of blocking or monitoring.")
 class ProfileNntp(BaseModel):
     """
     Child table model for nntp.
@@ -165,6 +301,7 @@ class ProfileNntp(BaseModel):
         """Pydantic model configuration."""
         extra = "allow"  # Allow additional fields from API
         str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
     
     av_scan: Literal["disable", "block", "monitor"] | None = Field(default="disable", description="Enable AntiVirus scan service.")    
     outbreak_prevention: Literal["disable", "block", "monitor"] | None = Field(default="disable", description="Enable virus outbreak prevention service.")    
@@ -173,52 +310,8 @@ class ProfileNntp(BaseModel):
     fortindr: Literal["disable", "block", "monitor"] | None = Field(default="disable", description="Enable scanning of files by FortiNDR.")    
     fortisandbox: Literal["disable", "block", "monitor"] | None = Field(default="disable", description="Enable scanning of files by FortiSandbox.")    
     quarantine: Literal["disable", "enable"] | None = Field(default="disable", description="Enable/disable quarantine for infected files.")    
-    archive_block: list[ArchiveBlock] = Field(default="", description="Select the archive types to block.")    
-    archive_log: list[ArchiveLog] = Field(default="", description="Select the archive types to log.")    
-    emulator: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable the virus emulator.")
-class ProfileCifs(BaseModel):
-    """
-    Child table model for cifs.
-    
-    Configure CIFS AntiVirus options.
-    """
-    
-    class Config:
-        """Pydantic model configuration."""
-        extra = "allow"  # Allow additional fields from API
-        str_strip_whitespace = True
-    
-    av_scan: Literal["disable", "block", "monitor"] | None = Field(default="disable", description="Enable AntiVirus scan service.")    
-    outbreak_prevention: Literal["disable", "block", "monitor"] | None = Field(default="disable", description="Enable virus outbreak prevention service.")    
-    external_blocklist: Literal["disable", "block", "monitor"] | None = Field(default="disable", description="Enable external-blocklist. Analyzes files including the content of archives.")    
-    malware_stream: Literal["disable", "block", "monitor"] | None = Field(default="disable", description="Enable 0-day malware-stream scanning. Analyzes files including the content of archives.")    
-    fortindr: Literal["disable", "block", "monitor"] | None = Field(default="disable", description="Enable scanning of files by FortiNDR.")    
-    fortisandbox: Literal["disable", "block", "monitor"] | None = Field(default="disable", description="Enable scanning of files by FortiSandbox.")    
-    quarantine: Literal["disable", "enable"] | None = Field(default="disable", description="Enable/disable quarantine for infected files.")    
-    archive_block: list[ArchiveBlock] = Field(default="", description="Select the archive types to block.")    
-    archive_log: list[ArchiveLog] = Field(default="", description="Select the archive types to log.")    
-    emulator: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable the virus emulator.")
-class ProfileSsh(BaseModel):
-    """
-    Child table model for ssh.
-    
-    Configure SFTP and SCP AntiVirus options.
-    """
-    
-    class Config:
-        """Pydantic model configuration."""
-        extra = "allow"  # Allow additional fields from API
-        str_strip_whitespace = True
-    
-    av_scan: Literal["disable", "block", "monitor"] | None = Field(default="disable", description="Enable AntiVirus scan service.")    
-    outbreak_prevention: Literal["disable", "block", "monitor"] | None = Field(default="disable", description="Enable virus outbreak prevention service.")    
-    external_blocklist: Literal["disable", "block", "monitor"] | None = Field(default="disable", description="Enable external-blocklist. Analyzes files including the content of archives.")    
-    malware_stream: Literal["disable", "block", "monitor"] | None = Field(default="disable", description="Enable 0-day malware-stream scanning. Analyzes files including the content of archives.")    
-    fortindr: Literal["disable", "block", "monitor"] | None = Field(default="disable", description="Enable scanning of files by FortiNDR.")    
-    fortisandbox: Literal["disable", "block", "monitor"] | None = Field(default="disable", description="Enable scanning of files by FortiSandbox.")    
-    quarantine: Literal["disable", "enable"] | None = Field(default="disable", description="Enable/disable quarantine for infected files.")    
-    archive_block: list[ArchiveBlock] = Field(default="", description="Select the archive types to block.")    
-    archive_log: list[ArchiveLog] = Field(default="", description="Select the archive types to log.")    
+    archive_block: list[ProfileNntpArchiveBlockEnum] = Field(default_factory=list, description="Select the archive types to block.")    
+    archive_log: list[ProfileNntpArchiveLogEnum] = Field(default_factory=list, description="Select the archive types to log.")    
     emulator: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable the virus emulator.")
 class ProfileNacQuar(BaseModel):
     """
@@ -231,42 +324,107 @@ class ProfileNacQuar(BaseModel):
         """Pydantic model configuration."""
         extra = "allow"  # Allow additional fields from API
         str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
     
     infected: Literal["none", "quar-src-ip"] | None = Field(default="none", description="Enable/Disable quarantining infected hosts to the banned user list.")    
     expiry: str | None = Field(default="5m", description="Duration of quarantine.")    
     log: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable AntiVirus quarantine logging.")
-class ProfileContentDisarm(BaseModel):
+class ProfileMapi(BaseModel):
     """
-    Child table model for content-disarm.
+    Child table model for mapi.
     
-    AV Content Disarm and Reconstruction settings.
+    Configure MAPI AntiVirus options.
     """
     
     class Config:
         """Pydantic model configuration."""
         extra = "allow"  # Allow additional fields from API
         str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
     
-    analytics_suspicious: Literal["disable", "enable"] | None = Field(default="enable", description="Enable/disable using CDR as a secondary method for determining suspicous files for analytics.")    
-    original_file_destination: Literal["fortisandbox", "quarantine", "discard"] | None = Field(default="discard", description="Destination to send original file if active content is removed.")    
-    error_action: Literal["block", "log-only", "ignore"] | None = Field(default="log-only", description="Action to be taken if CDR engine encounters an unrecoverable error.")    
-    office_macro: Literal["disable", "enable"] | None = Field(default="enable", description="Enable/disable stripping of macros in Microsoft Office documents.")    
-    office_hylink: Literal["disable", "enable"] | None = Field(default="enable", description="Enable/disable stripping of hyperlinks in Microsoft Office documents.")    
-    office_linked: Literal["disable", "enable"] | None = Field(default="", description="Enable/disable stripping of linked objects in Microsoft Office documents.")    
-    office_embed: Literal["disable", "enable"] | None = Field(default="enable", description="Enable/disable stripping of embedded objects in Microsoft Office documents.")    
-    office_dde: Literal["disable", "enable"] | None = Field(default="", description="Enable/disable stripping of Dynamic Data Exchange events in Microsoft Office documents.")    
-    office_action: Literal["disable", "enable"] | None = Field(default="enable", description="Enable/disable stripping of PowerPoint action events in Microsoft Office documents.")    
-    pdf_javacode: Literal["disable", "enable"] | None = Field(default="", description="Enable/disable stripping of JavaScript code in PDF documents.")    
-    pdf_embedfile: Literal["disable", "enable"] | None = Field(default="enable", description="Enable/disable stripping of embedded files in PDF documents.")    
-    pdf_hyperlink: Literal["disable", "enable"] | None = Field(default="", description="Enable/disable stripping of hyperlinks from PDF documents.")    
-    pdf_act_gotor: Literal["disable", "enable"] | None = Field(default="enable", description="Enable/disable stripping of PDF document actions that access other PDF documents.")    
-    pdf_act_launch: Literal["disable", "enable"] | None = Field(default="enable", description="Enable/disable stripping of PDF document actions that launch other applications.")    
-    pdf_act_sound: Literal["disable", "enable"] | None = Field(default="", description="Enable/disable stripping of PDF document actions that play a sound.")    
-    pdf_act_movie: Literal["disable", "enable"] | None = Field(default="", description="Enable/disable stripping of PDF document actions that play a movie.")    
-    pdf_act_java: Literal["disable", "enable"] | None = Field(default="", description="Enable/disable stripping of PDF document actions that execute JavaScript code.")    
-    pdf_act_form: Literal["disable", "enable"] | None = Field(default="", description="Enable/disable stripping of PDF document actions that submit data to other targets.")    
-    cover_page: Literal["disable", "enable"] | None = Field(default="enable", description="Enable/disable inserting a cover page into the disarmed document.")    
-    detect_only: Literal["disable", "enable"] | None = Field(default="disable", description="Enable/disable only detect disarmable files, do not alter content.")
+    av_scan: Literal["disable", "block", "monitor"] | None = Field(default="disable", description="Enable AntiVirus scan service.")    
+    outbreak_prevention: Literal["disable", "block", "monitor"] | None = Field(default="disable", description="Enable virus outbreak prevention service.")    
+    external_blocklist: Literal["disable", "block", "monitor"] | None = Field(default="disable", description="Enable external-blocklist. Analyzes files including the content of archives.")    
+    malware_stream: Literal["disable", "block", "monitor"] | None = Field(default="disable", description="Enable 0-day malware-stream scanning. Analyzes files including the content of archives.")    
+    fortindr: Literal["disable", "block", "monitor"] | None = Field(default="disable", description="Enable scanning of files by FortiNDR.")    
+    fortisandbox: Literal["disable", "block", "monitor"] | None = Field(default="disable", description="Enable scanning of files by FortiSandbox.")    
+    quarantine: Literal["disable", "enable"] | None = Field(default="disable", description="Enable/disable quarantine for infected files.")    
+    archive_block: list[ProfileMapiArchiveBlockEnum] = Field(default_factory=list, description="Select the archive types to block.")    
+    archive_log: list[ProfileMapiArchiveLogEnum] = Field(default_factory=list, description="Select the archive types to log.")    
+    emulator: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable the virus emulator.")    
+    executables: Literal["default", "virus"] | None = Field(default="default", description="Treat Windows executable files as viruses for the purpose of blocking or monitoring.")
+class ProfileImap(BaseModel):
+    """
+    Child table model for imap.
+    
+    Configure IMAP AntiVirus options.
+    """
+    
+    class Config:
+        """Pydantic model configuration."""
+        extra = "allow"  # Allow additional fields from API
+        str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
+    
+    av_scan: Literal["disable", "block", "monitor"] | None = Field(default="disable", description="Enable AntiVirus scan service.")    
+    outbreak_prevention: Literal["disable", "block", "monitor"] | None = Field(default="disable", description="Enable virus outbreak prevention service.")    
+    external_blocklist: Literal["disable", "block", "monitor"] | None = Field(default="disable", description="Enable external-blocklist. Analyzes files including the content of archives.")    
+    malware_stream: Literal["disable", "block", "monitor"] | None = Field(default="disable", description="Enable 0-day malware-stream scanning. Analyzes files including the content of archives.")    
+    fortindr: Literal["disable", "block", "monitor"] | None = Field(default="disable", description="Enable scanning of files by FortiNDR.")    
+    fortisandbox: Literal["disable", "block", "monitor"] | None = Field(default="disable", description="Enable scanning of files by FortiSandbox.")    
+    quarantine: Literal["disable", "enable"] | None = Field(default="disable", description="Enable/disable quarantine for infected files.")    
+    archive_block: list[ProfileImapArchiveBlockEnum] = Field(default_factory=list, description="Select the archive types to block.")    
+    archive_log: list[ProfileImapArchiveLogEnum] = Field(default_factory=list, description="Select the archive types to log.")    
+    emulator: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable the virus emulator.")    
+    executables: Literal["default", "virus"] | None = Field(default="default", description="Treat Windows executable files as viruses for the purpose of blocking or monitoring.")    
+    content_disarm: Literal["disable", "enable"] | None = Field(default="disable", description="Enable/disable Content Disarm and Reconstruction when performing AntiVirus scan.")
+class ProfileHttp(BaseModel):
+    """
+    Child table model for http.
+    
+    Configure HTTP AntiVirus options.
+    """
+    
+    class Config:
+        """Pydantic model configuration."""
+        extra = "allow"  # Allow additional fields from API
+        str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
+    
+    av_scan: Literal["disable", "block", "monitor"] | None = Field(default="disable", description="Enable AntiVirus scan service.")    
+    outbreak_prevention: Literal["disable", "block", "monitor"] | None = Field(default="disable", description="Enable virus outbreak prevention service.")    
+    external_blocklist: Literal["disable", "block", "monitor"] | None = Field(default="disable", description="Enable external-blocklist. Analyzes files including the content of archives.")    
+    malware_stream: Literal["disable", "block", "monitor"] | None = Field(default="disable", description="Enable 0-day malware-stream scanning. Analyzes files including the content of archives.")    
+    fortindr: Literal["disable", "block", "monitor"] | None = Field(default="disable", description="Enable scanning of files by FortiNDR.")    
+    fortisandbox: Literal["disable", "block", "monitor"] | None = Field(default="disable", description="Enable scanning of files by FortiSandbox.")    
+    quarantine: Literal["disable", "enable"] | None = Field(default="disable", description="Enable/disable quarantine for infected files.")    
+    archive_block: list[ProfileHttpArchiveBlockEnum] = Field(default_factory=list, description="Select the archive types to block.")    
+    archive_log: list[ProfileHttpArchiveLogEnum] = Field(default_factory=list, description="Select the archive types to log.")    
+    emulator: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable the virus emulator.")    
+    content_disarm: Literal["disable", "enable"] | None = Field(default="disable", description="Enable/disable Content Disarm and Reconstruction when performing AntiVirus scan.")
+class ProfileFtp(BaseModel):
+    """
+    Child table model for ftp.
+    
+    Configure FTP AntiVirus options.
+    """
+    
+    class Config:
+        """Pydantic model configuration."""
+        extra = "allow"  # Allow additional fields from API
+        str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
+    
+    av_scan: Literal["disable", "block", "monitor"] | None = Field(default="disable", description="Enable AntiVirus scan service.")    
+    outbreak_prevention: Literal["disable", "block", "monitor"] | None = Field(default="disable", description="Enable virus outbreak prevention service.")    
+    external_blocklist: Literal["disable", "block", "monitor"] | None = Field(default="disable", description="Enable external-blocklist. Analyzes files including the content of archives.")    
+    malware_stream: Literal["disable", "block", "monitor"] | None = Field(default="disable", description="Enable 0-day malware-stream scanning. Analyzes files including the content of archives.")    
+    fortindr: Literal["disable", "block", "monitor"] | None = Field(default="disable", description="Enable scanning of files by FortiNDR.")    
+    fortisandbox: Literal["disable", "block", "monitor"] | None = Field(default="disable", description="Enable scanning of files by FortiSandbox.")    
+    quarantine: Literal["disable", "enable"] | None = Field(default="disable", description="Enable/disable quarantine for infected files.")    
+    archive_block: list[ProfileFtpArchiveBlockEnum] = Field(default_factory=list, description="Select the archive types to block.")    
+    archive_log: list[ProfileFtpArchiveLogEnum] = Field(default_factory=list, description="Select the archive types to log.")    
+    emulator: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable the virus emulator.")
 class ProfileExternalBlocklist(BaseModel):
     """
     Child table model for external-blocklist.
@@ -278,8 +436,65 @@ class ProfileExternalBlocklist(BaseModel):
         """Pydantic model configuration."""
         extra = "allow"  # Allow additional fields from API
         str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
     
-    name: str | None = Field(max_length=79, default="", description="External blocklist.")  # datasource: ['system.external-resource.name']
+    name: str | None = Field(max_length=79, default=None, description="External blocklist.")  # datasource: ['system.external-resource.name']
+class ProfileContentDisarm(BaseModel):
+    """
+    Child table model for content-disarm.
+    
+    AV Content Disarm and Reconstruction settings.
+    """
+    
+    class Config:
+        """Pydantic model configuration."""
+        extra = "allow"  # Allow additional fields from API
+        str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
+    
+    analytics_suspicious: Literal["disable", "enable"] | None = Field(default="enable", description="Enable/disable using CDR as a secondary method for determining suspicous files for analytics.")    
+    original_file_destination: Literal["fortisandbox", "quarantine", "discard"] | None = Field(default="discard", description="Destination to send original file if active content is removed.")    
+    error_action: Literal["block", "log-only", "ignore"] | None = Field(default="log-only", description="Action to be taken if CDR engine encounters an unrecoverable error.")    
+    office_macro: Literal["disable", "enable"] | None = Field(default="enable", description="Enable/disable stripping of macros in Microsoft Office documents.")    
+    office_hylink: Literal["disable", "enable"] | None = Field(default="enable", description="Enable/disable stripping of hyperlinks in Microsoft Office documents.")    
+    office_linked: Literal["disable", "enable"] | None = Field(default=None, description="Enable/disable stripping of linked objects in Microsoft Office documents.")    
+    office_embed: Literal["disable", "enable"] | None = Field(default="enable", description="Enable/disable stripping of embedded objects in Microsoft Office documents.")    
+    office_dde: Literal["disable", "enable"] | None = Field(default=None, description="Enable/disable stripping of Dynamic Data Exchange events in Microsoft Office documents.")    
+    office_action: Literal["disable", "enable"] | None = Field(default="enable", description="Enable/disable stripping of PowerPoint action events in Microsoft Office documents.")    
+    pdf_javacode: Literal["disable", "enable"] | None = Field(default=None, description="Enable/disable stripping of JavaScript code in PDF documents.")    
+    pdf_embedfile: Literal["disable", "enable"] | None = Field(default="enable", description="Enable/disable stripping of embedded files in PDF documents.")    
+    pdf_hyperlink: Literal["disable", "enable"] | None = Field(default=None, description="Enable/disable stripping of hyperlinks from PDF documents.")    
+    pdf_act_gotor: Literal["disable", "enable"] | None = Field(default="enable", description="Enable/disable stripping of PDF document actions that access other PDF documents.")    
+    pdf_act_launch: Literal["disable", "enable"] | None = Field(default="enable", description="Enable/disable stripping of PDF document actions that launch other applications.")    
+    pdf_act_sound: Literal["disable", "enable"] | None = Field(default=None, description="Enable/disable stripping of PDF document actions that play a sound.")    
+    pdf_act_movie: Literal["disable", "enable"] | None = Field(default=None, description="Enable/disable stripping of PDF document actions that play a movie.")    
+    pdf_act_java: Literal["disable", "enable"] | None = Field(default=None, description="Enable/disable stripping of PDF document actions that execute JavaScript code.")    
+    pdf_act_form: Literal["disable", "enable"] | None = Field(default=None, description="Enable/disable stripping of PDF document actions that submit data to other targets.")    
+    cover_page: Literal["disable", "enable"] | None = Field(default="enable", description="Enable/disable inserting a cover page into the disarmed document.")    
+    detect_only: Literal["disable", "enable"] | None = Field(default="disable", description="Enable/disable only detect disarmable files, do not alter content.")
+class ProfileCifs(BaseModel):
+    """
+    Child table model for cifs.
+    
+    Configure CIFS AntiVirus options.
+    """
+    
+    class Config:
+        """Pydantic model configuration."""
+        extra = "allow"  # Allow additional fields from API
+        str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
+    
+    av_scan: Literal["disable", "block", "monitor"] | None = Field(default="disable", description="Enable AntiVirus scan service.")    
+    outbreak_prevention: Literal["disable", "block", "monitor"] | None = Field(default="disable", description="Enable virus outbreak prevention service.")    
+    external_blocklist: Literal["disable", "block", "monitor"] | None = Field(default="disable", description="Enable external-blocklist. Analyzes files including the content of archives.")    
+    malware_stream: Literal["disable", "block", "monitor"] | None = Field(default="disable", description="Enable 0-day malware-stream scanning. Analyzes files including the content of archives.")    
+    fortindr: Literal["disable", "block", "monitor"] | None = Field(default="disable", description="Enable scanning of files by FortiNDR.")    
+    fortisandbox: Literal["disable", "block", "monitor"] | None = Field(default="disable", description="Enable scanning of files by FortiSandbox.")    
+    quarantine: Literal["disable", "enable"] | None = Field(default="disable", description="Enable/disable quarantine for infected files.")    
+    archive_block: list[ProfileCifsArchiveBlockEnum] = Field(default_factory=list, description="Select the archive types to block.")    
+    archive_log: list[ProfileCifsArchiveLogEnum] = Field(default_factory=list, description="Select the archive types to log.")    
+    emulator: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable the virus emulator.")
 # ============================================================================
 # Enum Definitions (for fields with 4+ allowed values)
 # ============================================================================
@@ -308,9 +523,9 @@ class ProfileModel(BaseModel):
     # Model Fields
     # ========================================================================
     
-    name: str = Field(max_length=47, default="", description="Profile name.")    
+    name: str = Field(max_length=47, description="Profile name.")    
     comment: str | None = Field(max_length=255, default=None, description="Comment.")    
-    replacemsg_group: str | None = Field(max_length=35, default="", description="Replacement message group customized for this profile.")  # datasource: ['system.replacemsg-group.name']    
+    replacemsg_group: str | None = Field(max_length=35, default=None, description="Replacement message group customized for this profile.")  # datasource: ['system.replacemsg-group.name']    
     feature_set: Literal["flow", "proxy"] | None = Field(default="flow", description="Flow/proxy feature set.")    
     fortisandbox_mode: Literal["inline", "analytics-suspicious", "analytics-everything"] | None = Field(default="analytics-everything", description="FortiSandbox scan modes.")    
     fortisandbox_max_upload: int | None = Field(ge=1, le=4095, default=10, description="Maximum size of files that can be uploaded to FortiSandbox in Mbytes.")    
@@ -318,20 +533,20 @@ class ProfileModel(BaseModel):
     analytics_accept_filetype: int | None = Field(ge=0, le=4294967295, default=0, description="Only submit files matching this DLP file-pattern to FortiSandbox (post-transfer scan only).")  # datasource: ['dlp.filepattern.id']    
     analytics_db: Literal["disable", "enable"] | None = Field(default="disable", description="Enable/disable using the FortiSandbox signature database to supplement the AV signature databases.")    
     mobile_malware_db: Literal["disable", "enable"] | None = Field(default="enable", description="Enable/disable using the mobile malware signature database.")    
-    http: list[Http] = Field(default=None, description="Configure HTTP AntiVirus options.")    
-    ftp: list[Ftp] = Field(default=None, description="Configure FTP AntiVirus options.")    
-    imap: list[Imap] = Field(default=None, description="Configure IMAP AntiVirus options.")    
-    pop3: list[Pop3] = Field(default=None, description="Configure POP3 AntiVirus options.")    
-    smtp: list[Smtp] = Field(default=None, description="Configure SMTP AntiVirus options.")    
-    mapi: list[Mapi] = Field(default=None, description="Configure MAPI AntiVirus options.")    
-    nntp: list[Nntp] = Field(default=None, description="Configure NNTP AntiVirus options.")    
-    cifs: list[Cifs] = Field(default=None, description="Configure CIFS AntiVirus options.")    
-    ssh: list[Ssh] = Field(default=None, description="Configure SFTP and SCP AntiVirus options.")    
-    nac_quar: list[NacQuar] = Field(default=None, description="Configure AntiVirus quarantine settings.")    
-    content_disarm: list[ContentDisarm] = Field(default=None, description="AV Content Disarm and Reconstruction settings.")    
+    http: list[ProfileHttp] = Field(default_factory=list, description="Configure HTTP AntiVirus options.")    
+    ftp: list[ProfileFtp] = Field(default_factory=list, description="Configure FTP AntiVirus options.")    
+    imap: list[ProfileImap] = Field(default_factory=list, description="Configure IMAP AntiVirus options.")    
+    pop3: list[ProfilePop3] = Field(default_factory=list, description="Configure POP3 AntiVirus options.")    
+    smtp: list[ProfileSmtp] = Field(default_factory=list, description="Configure SMTP AntiVirus options.")    
+    mapi: list[ProfileMapi] = Field(default_factory=list, description="Configure MAPI AntiVirus options.")    
+    nntp: list[ProfileNntp] = Field(default_factory=list, description="Configure NNTP AntiVirus options.")    
+    cifs: list[ProfileCifs] = Field(default_factory=list, description="Configure CIFS AntiVirus options.")    
+    ssh: list[ProfileSsh] = Field(default_factory=list, description="Configure SFTP and SCP AntiVirus options.")    
+    nac_quar: list[ProfileNacQuar] = Field(default_factory=list, description="Configure AntiVirus quarantine settings.")    
+    content_disarm: list[ProfileContentDisarm] = Field(default_factory=list, description="AV Content Disarm and Reconstruction settings.")    
     outbreak_prevention_archive_scan: Literal["disable", "enable"] | None = Field(default="enable", description="Enable/disable outbreak-prevention archive scanning.")    
     external_blocklist_enable_all: Literal["disable", "enable"] | None = Field(default="disable", description="Enable/disable all external blocklists.")    
-    external_blocklist: list[ExternalBlocklist] = Field(default=None, description="One or more external malware block lists.")    
+    external_blocklist: list[ProfileExternalBlocklist] = Field(default_factory=list, description="One or more external malware block lists.")    
     ems_threat_feed: Literal["disable", "enable"] | None = Field(default="disable", description="Enable/disable use of EMS threat feed when performing AntiVirus scan. Analyzes files including the content of archives.")    
     fortindr_error_action: Literal["log-only", "block", "ignore"] | None = Field(default="log-only", description="Action to take if FortiNDR encounters an error.")    
     fortindr_timeout_action: Literal["log-only", "block", "ignore"] | None = Field(default="log-only", description="Action to take if FortiNDR encounters a scan timeout.")    
@@ -450,7 +665,7 @@ class ProfileModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.antivirus.profile.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate scalar field
         value = getattr(self, "replacemsg_group", None)
@@ -459,7 +674,7 @@ class ProfileModel(BaseModel):
         
         # Check all datasource endpoints
         found = False
-        if await client.api.cmdb.system.replacemsg-group.exists(value):
+        if await client.api.cmdb.system.replacemsg_group.exists(value):
             found = True
         
         if not found:
@@ -499,7 +714,7 @@ class ProfileModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.antivirus.profile.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate scalar field
         value = getattr(self, "analytics_ignore_filetype", None)
@@ -548,7 +763,7 @@ class ProfileModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.antivirus.profile.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate scalar field
         value = getattr(self, "analytics_accept_filetype", None)
@@ -597,7 +812,7 @@ class ProfileModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.antivirus.profile.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate child table items
         values = getattr(self, "external_blocklist", [])
@@ -615,7 +830,7 @@ class ProfileModel(BaseModel):
             
             # Check all datasource endpoints
             found = False
-            if await client.api.cmdb.system.external-resource.exists(value):
+            if await client.api.cmdb.system.external_resource.exists(value):
                 found = True
             
             if not found:
@@ -672,5 +887,5 @@ __all__ = [
 # ============================================================================
 # Generated by hfortix generator v0.6.0
 # Schema: 1.7.0
-# Generated: 2026-01-17T05:32:18.882557Z
+# Generated: 2026-01-17T17:25:22.612594Z
 # ============================================================================

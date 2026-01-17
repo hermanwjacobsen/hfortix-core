@@ -7,7 +7,7 @@ Generated from FortiOS schema version unknown.
 
 from __future__ import annotations
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, field_validator
 from typing import Any, Optional
 
 # ============================================================================
@@ -38,27 +38,27 @@ class ProfileGroupModel(BaseModel):
     # Model Fields
     # ========================================================================
     
-    name: str = Field(max_length=47, default="", description="Profile group name.")    
+    name: str = Field(max_length=47, description="Profile group name.")    
     profile_protocol_options: str | None = Field(max_length=47, default="default", description="Name of an existing Protocol options profile.")  # datasource: ['firewall.profile-protocol-options.name']    
     ssl_ssh_profile: str | None = Field(max_length=47, default="certificate-inspection", description="Name of an existing SSL SSH profile.")  # datasource: ['firewall.ssl-ssh-profile.name']    
-    av_profile: str | None = Field(max_length=47, default="", description="Name of an existing Antivirus profile.")  # datasource: ['antivirus.profile.name']    
-    webfilter_profile: str | None = Field(max_length=47, default="", description="Name of an existing Web filter profile.")  # datasource: ['webfilter.profile.name']    
-    dnsfilter_profile: str | None = Field(max_length=47, default="", description="Name of an existing DNS filter profile.")  # datasource: ['dnsfilter.profile.name']    
-    emailfilter_profile: str | None = Field(max_length=47, default="", description="Name of an existing email filter profile.")  # datasource: ['emailfilter.profile.name']    
-    dlp_profile: str | None = Field(max_length=47, default="", description="Name of an existing DLP profile.")  # datasource: ['dlp.profile.name']    
-    file_filter_profile: str | None = Field(max_length=47, default="", description="Name of an existing file-filter profile.")  # datasource: ['file-filter.profile.name']    
-    ips_sensor: str | None = Field(max_length=47, default="", description="Name of an existing IPS sensor.")  # datasource: ['ips.sensor.name']    
-    application_list: str | None = Field(max_length=47, default="", description="Name of an existing Application list.")  # datasource: ['application.list.name']    
-    voip_profile: str | None = Field(max_length=47, default="", description="Name of an existing VoIP (voipd) profile.")  # datasource: ['voip.profile.name']    
-    ips_voip_filter: str | None = Field(max_length=47, default="", description="Name of an existing VoIP (ips) profile.")  # datasource: ['voip.profile.name']    
-    sctp_filter_profile: str | None = Field(max_length=47, default="", description="Name of an existing SCTP filter profile.")  # datasource: ['sctp-filter.profile.name']    
-    diameter_filter_profile: str | None = Field(max_length=47, default="", description="Name of an existing Diameter filter profile.")  # datasource: ['diameter-filter.profile.name']    
-    virtual_patch_profile: str | None = Field(max_length=47, default="", description="Name of an existing virtual-patch profile.")  # datasource: ['virtual-patch.profile.name']    
-    icap_profile: str | None = Field(max_length=47, default="", description="Name of an existing ICAP profile.")  # datasource: ['icap.profile.name']    
-    videofilter_profile: str | None = Field(max_length=47, default="", description="Name of an existing VideoFilter profile.")  # datasource: ['videofilter.profile.name']    
-    waf_profile: str | None = Field(max_length=47, default="", description="Name of an existing Web application firewall profile.")  # datasource: ['waf.profile.name']    
-    ssh_filter_profile: str | None = Field(max_length=47, default="", description="Name of an existing SSH filter profile.")  # datasource: ['ssh-filter.profile.name']    
-    casb_profile: str | None = Field(max_length=47, default="", description="Name of an existing CASB profile.")  # datasource: ['casb.profile.name']    
+    av_profile: str | None = Field(max_length=47, default=None, description="Name of an existing Antivirus profile.")  # datasource: ['antivirus.profile.name']    
+    webfilter_profile: str | None = Field(max_length=47, default=None, description="Name of an existing Web filter profile.")  # datasource: ['webfilter.profile.name']    
+    dnsfilter_profile: str | None = Field(max_length=47, default=None, description="Name of an existing DNS filter profile.")  # datasource: ['dnsfilter.profile.name']    
+    emailfilter_profile: str | None = Field(max_length=47, default=None, description="Name of an existing email filter profile.")  # datasource: ['emailfilter.profile.name']    
+    dlp_profile: str | None = Field(max_length=47, default=None, description="Name of an existing DLP profile.")  # datasource: ['dlp.profile.name']    
+    file_filter_profile: str | None = Field(max_length=47, default=None, description="Name of an existing file-filter profile.")  # datasource: ['file-filter.profile.name']    
+    ips_sensor: str | None = Field(max_length=47, default=None, description="Name of an existing IPS sensor.")  # datasource: ['ips.sensor.name']    
+    application_list: str | None = Field(max_length=47, default=None, description="Name of an existing Application list.")  # datasource: ['application.list.name']    
+    voip_profile: str | None = Field(max_length=47, default=None, description="Name of an existing VoIP (voipd) profile.")  # datasource: ['voip.profile.name']    
+    ips_voip_filter: str | None = Field(max_length=47, default=None, description="Name of an existing VoIP (ips) profile.")  # datasource: ['voip.profile.name']    
+    sctp_filter_profile: str | None = Field(max_length=47, default=None, description="Name of an existing SCTP filter profile.")  # datasource: ['sctp-filter.profile.name']    
+    diameter_filter_profile: str | None = Field(max_length=47, default=None, description="Name of an existing Diameter filter profile.")  # datasource: ['diameter-filter.profile.name']    
+    virtual_patch_profile: str | None = Field(max_length=47, default=None, description="Name of an existing virtual-patch profile.")  # datasource: ['virtual-patch.profile.name']    
+    icap_profile: str | None = Field(max_length=47, default=None, description="Name of an existing ICAP profile.")  # datasource: ['icap.profile.name']    
+    videofilter_profile: str | None = Field(max_length=47, default=None, description="Name of an existing VideoFilter profile.")  # datasource: ['videofilter.profile.name']    
+    waf_profile: str | None = Field(max_length=47, default=None, description="Name of an existing Web application firewall profile.")  # datasource: ['waf.profile.name']    
+    ssh_filter_profile: str | None = Field(max_length=47, default=None, description="Name of an existing SSH filter profile.")  # datasource: ['ssh-filter.profile.name']    
+    casb_profile: str | None = Field(max_length=47, default=None, description="Name of an existing CASB profile.")  # datasource: ['casb.profile.name']    
     # ========================================================================
     # Custom Validators
     # ========================================================================
@@ -423,7 +423,7 @@ class ProfileGroupModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.profile_group.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate scalar field
         value = getattr(self, "profile_protocol_options", None)
@@ -432,7 +432,7 @@ class ProfileGroupModel(BaseModel):
         
         # Check all datasource endpoints
         found = False
-        if await client.api.cmdb.firewall.profile-protocol-options.exists(value):
+        if await client.api.cmdb.firewall.profile_protocol_options.exists(value):
             found = True
         
         if not found:
@@ -472,7 +472,7 @@ class ProfileGroupModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.profile_group.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate scalar field
         value = getattr(self, "ssl_ssh_profile", None)
@@ -481,7 +481,7 @@ class ProfileGroupModel(BaseModel):
         
         # Check all datasource endpoints
         found = False
-        if await client.api.cmdb.firewall.ssl-ssh-profile.exists(value):
+        if await client.api.cmdb.firewall.ssl_ssh_profile.exists(value):
             found = True
         
         if not found:
@@ -521,7 +521,7 @@ class ProfileGroupModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.profile_group.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate scalar field
         value = getattr(self, "av_profile", None)
@@ -570,7 +570,7 @@ class ProfileGroupModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.profile_group.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate scalar field
         value = getattr(self, "webfilter_profile", None)
@@ -619,7 +619,7 @@ class ProfileGroupModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.profile_group.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate scalar field
         value = getattr(self, "dnsfilter_profile", None)
@@ -668,7 +668,7 @@ class ProfileGroupModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.profile_group.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate scalar field
         value = getattr(self, "emailfilter_profile", None)
@@ -717,7 +717,7 @@ class ProfileGroupModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.profile_group.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate scalar field
         value = getattr(self, "dlp_profile", None)
@@ -766,7 +766,7 @@ class ProfileGroupModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.profile_group.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate scalar field
         value = getattr(self, "file_filter_profile", None)
@@ -775,7 +775,7 @@ class ProfileGroupModel(BaseModel):
         
         # Check all datasource endpoints
         found = False
-        if await client.api.cmdb.file-filter.profile.exists(value):
+        if await client.api.cmdb.file_filter.profile.exists(value):
             found = True
         
         if not found:
@@ -815,7 +815,7 @@ class ProfileGroupModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.profile_group.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate scalar field
         value = getattr(self, "ips_sensor", None)
@@ -864,7 +864,7 @@ class ProfileGroupModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.profile_group.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate scalar field
         value = getattr(self, "application_list", None)
@@ -913,7 +913,7 @@ class ProfileGroupModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.profile_group.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate scalar field
         value = getattr(self, "voip_profile", None)
@@ -962,7 +962,7 @@ class ProfileGroupModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.profile_group.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate scalar field
         value = getattr(self, "ips_voip_filter", None)
@@ -1011,7 +1011,7 @@ class ProfileGroupModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.profile_group.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate scalar field
         value = getattr(self, "sctp_filter_profile", None)
@@ -1020,7 +1020,7 @@ class ProfileGroupModel(BaseModel):
         
         # Check all datasource endpoints
         found = False
-        if await client.api.cmdb.sctp-filter.profile.exists(value):
+        if await client.api.cmdb.sctp_filter.profile.exists(value):
             found = True
         
         if not found:
@@ -1060,7 +1060,7 @@ class ProfileGroupModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.profile_group.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate scalar field
         value = getattr(self, "diameter_filter_profile", None)
@@ -1069,7 +1069,7 @@ class ProfileGroupModel(BaseModel):
         
         # Check all datasource endpoints
         found = False
-        if await client.api.cmdb.diameter-filter.profile.exists(value):
+        if await client.api.cmdb.diameter_filter.profile.exists(value):
             found = True
         
         if not found:
@@ -1109,7 +1109,7 @@ class ProfileGroupModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.profile_group.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate scalar field
         value = getattr(self, "virtual_patch_profile", None)
@@ -1118,7 +1118,7 @@ class ProfileGroupModel(BaseModel):
         
         # Check all datasource endpoints
         found = False
-        if await client.api.cmdb.virtual-patch.profile.exists(value):
+        if await client.api.cmdb.virtual_patch.profile.exists(value):
             found = True
         
         if not found:
@@ -1158,7 +1158,7 @@ class ProfileGroupModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.profile_group.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate scalar field
         value = getattr(self, "icap_profile", None)
@@ -1207,7 +1207,7 @@ class ProfileGroupModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.profile_group.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate scalar field
         value = getattr(self, "videofilter_profile", None)
@@ -1256,7 +1256,7 @@ class ProfileGroupModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.profile_group.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate scalar field
         value = getattr(self, "waf_profile", None)
@@ -1305,7 +1305,7 @@ class ProfileGroupModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.profile_group.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate scalar field
         value = getattr(self, "ssh_filter_profile", None)
@@ -1314,7 +1314,7 @@ class ProfileGroupModel(BaseModel):
         
         # Check all datasource endpoints
         found = False
-        if await client.api.cmdb.ssh-filter.profile.exists(value):
+        if await client.api.cmdb.ssh_filter.profile.exists(value):
             found = True
         
         if not found:
@@ -1354,7 +1354,7 @@ class ProfileGroupModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.profile_group.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate scalar field
         value = getattr(self, "casb_profile", None)
@@ -1452,5 +1452,5 @@ __all__ = [
 # ============================================================================
 # Generated by hfortix generator v0.6.0
 # Schema: 1.7.0
-# Generated: 2026-01-17T05:32:16.986760Z
+# Generated: 2026-01-17T17:25:20.944172Z
 # ============================================================================

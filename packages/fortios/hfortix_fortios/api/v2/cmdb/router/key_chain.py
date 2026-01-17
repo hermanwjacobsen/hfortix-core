@@ -622,6 +622,16 @@ class KeyChain(CRUDEndpoint, MetadataMixin):
             - put(): Update existing object
             - exists(): Check existence manually
         """
+        # Apply normalization for table fields (supports flexible input formats)
+        if key is not None:
+            key = normalize_table_field(
+                key,
+                mkey="id",
+                required_fields=['id', 'accept-lifetime', 'send-lifetime', 'key-string'],
+                field_name="key",
+                example="[{'id': 1, 'accept-lifetime': 'value', 'send-lifetime': 'value', 'key-string': 'value'}]",
+            )
+        
         # Build payload using helper function with auto-normalization
         payload_data = build_api_payload(
             name=name,

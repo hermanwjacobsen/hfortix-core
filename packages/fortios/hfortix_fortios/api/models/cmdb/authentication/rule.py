@@ -12,7 +12,11 @@ from typing import Any, Literal, Optional
 from enum import Enum
 
 # ============================================================================
-# Child Table Models
+# Enum Definitions for Child Table Fields (for fields with 4+ allowed values)
+# ============================================================================
+
+# ============================================================================
+# Child Table Models (sorted deepest-first so nested models are defined before their parents)
 # ============================================================================
 
 class RuleSrcintf(BaseModel):
@@ -26,34 +30,9 @@ class RuleSrcintf(BaseModel):
         """Pydantic model configuration."""
         extra = "allow"  # Allow additional fields from API
         str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
     
-    name: str | None = Field(max_length=79, default="", description="Interface name.")  # datasource: ['system.interface.name', 'system.zone.name', 'system.sdwan.zone.name']
-class RuleSrcaddr(BaseModel):
-    """
-    Child table model for srcaddr.
-    
-    Authentication is required for the selected IPv4 source address.
-    """
-    
-    class Config:
-        """Pydantic model configuration."""
-        extra = "allow"  # Allow additional fields from API
-        str_strip_whitespace = True
-    
-    name: str = Field(max_length=79, default="", description="Address name.")  # datasource: ['firewall.address.name', 'firewall.addrgrp.name', 'firewall.proxy-address.name', 'firewall.proxy-addrgrp.name', 'system.external-resource.name']
-class RuleDstaddr(BaseModel):
-    """
-    Child table model for dstaddr.
-    
-    Select an IPv4 destination address from available options. Required for web proxy authentication.
-    """
-    
-    class Config:
-        """Pydantic model configuration."""
-        extra = "allow"  # Allow additional fields from API
-        str_strip_whitespace = True
-    
-    name: str = Field(max_length=79, default="", description="Address name.")  # datasource: ['firewall.address.name', 'firewall.addrgrp.name', 'firewall.proxy-address.name', 'firewall.proxy-addrgrp.name', 'system.external-resource.name']
+    name: str | None = Field(max_length=79, default=None, description="Interface name.")  # datasource: ['system.interface.name', 'system.zone.name', 'system.sdwan.zone.name']
 class RuleSrcaddr6(BaseModel):
     """
     Child table model for srcaddr6.
@@ -65,8 +44,23 @@ class RuleSrcaddr6(BaseModel):
         """Pydantic model configuration."""
         extra = "allow"  # Allow additional fields from API
         str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
     
-    name: str = Field(max_length=79, default="", description="Address name.")  # datasource: ['firewall.address6.name', 'firewall.addrgrp6.name']
+    name: str = Field(max_length=79, description="Address name.")  # datasource: ['firewall.address6.name', 'firewall.addrgrp6.name']
+class RuleSrcaddr(BaseModel):
+    """
+    Child table model for srcaddr.
+    
+    Authentication is required for the selected IPv4 source address.
+    """
+    
+    class Config:
+        """Pydantic model configuration."""
+        extra = "allow"  # Allow additional fields from API
+        str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
+    
+    name: str = Field(max_length=79, description="Address name.")  # datasource: ['firewall.address.name', 'firewall.addrgrp.name', 'firewall.proxy-address.name', 'firewall.proxy-addrgrp.name', 'system.external-resource.name']
 class RuleDstaddr6(BaseModel):
     """
     Child table model for dstaddr6.
@@ -78,15 +72,35 @@ class RuleDstaddr6(BaseModel):
         """Pydantic model configuration."""
         extra = "allow"  # Allow additional fields from API
         str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
     
-    name: str = Field(max_length=79, default="", description="Address name.")  # datasource: ['firewall.address6.name', 'firewall.addrgrp6.name']
+    name: str = Field(max_length=79, description="Address name.")  # datasource: ['firewall.address6.name', 'firewall.addrgrp6.name']
+class RuleDstaddr(BaseModel):
+    """
+    Child table model for dstaddr.
+    
+    Select an IPv4 destination address from available options. Required for web proxy authentication.
+    """
+    
+    class Config:
+        """Pydantic model configuration."""
+        extra = "allow"  # Allow additional fields from API
+        str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
+    
+    name: str = Field(max_length=79, description="Address name.")  # datasource: ['firewall.address.name', 'firewall.addrgrp.name', 'firewall.proxy-address.name', 'firewall.proxy-addrgrp.name', 'system.external-resource.name']
 # ============================================================================
 # Enum Definitions (for fields with 4+ allowed values)
 # ============================================================================
 
 class RuleProtocolEnum(str, Enum):
     """Allowed values for protocol field."""
-    HTTP = "http"    FTP = "ftp"    SOCKS = "socks"    SSH = "ssh"    ZTNA_PORTAL = "ztna-portal"
+    HTTP = "http"
+    FTP = "ftp"
+    SOCKS = "socks"
+    SSH = "ssh"
+    ZTNA_PORTAL = "ztna-portal"
+
 
 # ============================================================================
 # Main Model
@@ -111,17 +125,17 @@ class RuleModel(BaseModel):
     # Model Fields
     # ========================================================================
     
-    name: str | None = Field(max_length=35, default="", description="Authentication rule name.")    
+    name: str | None = Field(max_length=35, default=None, description="Authentication rule name.")    
     status: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable this authentication rule.")    
-    protocol: ProtocolEnum | None = Field(default="http", description="Authentication is required for the selected protocol (default = HTTP).")    
-    srcintf: list[Srcintf] = Field(default=None, description="Incoming (ingress) interface.")    
-    srcaddr: list[Srcaddr] = Field(default=None, description="Authentication is required for the selected IPv4 source address.")    
-    dstaddr: list[Dstaddr] = Field(default=None, description="Select an IPv4 destination address from available options. Required for web proxy authentication.")    
-    srcaddr6: list[Srcaddr6] = Field(default=None, description="Authentication is required for the selected IPv6 source address.")    
-    dstaddr6: list[Dstaddr6] = Field(default=None, description="Select an IPv6 destination address from available options. Required for web proxy authentication.")    
+    protocol: RuleProtocolEnum | None = Field(default=RuleProtocolEnum.HTTP, description="Authentication is required for the selected protocol (default = HTTP).")    
+    srcintf: list[RuleSrcintf] = Field(default_factory=list, description="Incoming (ingress) interface.")    
+    srcaddr: list[RuleSrcaddr] = Field(default_factory=list, description="Authentication is required for the selected IPv4 source address.")    
+    dstaddr: list[RuleDstaddr] = Field(default_factory=list, description="Select an IPv4 destination address from available options. Required for web proxy authentication.")    
+    srcaddr6: list[RuleSrcaddr6] = Field(default_factory=list, description="Authentication is required for the selected IPv6 source address.")    
+    dstaddr6: list[RuleDstaddr6] = Field(default_factory=list, description="Select an IPv6 destination address from available options. Required for web proxy authentication.")    
     ip_based: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable IP-based authentication. When enabled, previously authenticated users from the same IP address will be exempted.")    
-    active_auth_method: str | None = Field(max_length=35, default="", description="Select an active authentication method.")  # datasource: ['authentication.scheme.name']    
-    sso_auth_method: str | None = Field(max_length=35, default="", description="Select a single-sign on (SSO) authentication method.")  # datasource: ['authentication.scheme.name']    
+    active_auth_method: str | None = Field(max_length=35, default=None, description="Select an active authentication method.")  # datasource: ['authentication.scheme.name']    
+    sso_auth_method: str | None = Field(max_length=35, default=None, description="Select a single-sign on (SSO) authentication method.")  # datasource: ['authentication.scheme.name']    
     web_auth_cookie: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable Web authentication cookies (default = disable).")    
     cors_stateful: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable allowance of CORS access (default = disable).")    
     cors_depth: int | None = Field(ge=1, le=8, default=3, description="Depth to allow CORS access (default = 3).")    
@@ -224,7 +238,7 @@ class RuleModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.authentication.rule.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate child table items
         values = getattr(self, "srcintf", [])
@@ -286,7 +300,7 @@ class RuleModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.authentication.rule.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate child table items
         values = getattr(self, "srcaddr", [])
@@ -308,11 +322,11 @@ class RuleModel(BaseModel):
                 found = True
             elif await client.api.cmdb.firewall.addrgrp.exists(value):
                 found = True
-            elif await client.api.cmdb.firewall.proxy-address.exists(value):
+            elif await client.api.cmdb.firewall.proxy_address.exists(value):
                 found = True
-            elif await client.api.cmdb.firewall.proxy-addrgrp.exists(value):
+            elif await client.api.cmdb.firewall.proxy_addrgrp.exists(value):
                 found = True
-            elif await client.api.cmdb.system.external-resource.exists(value):
+            elif await client.api.cmdb.system.external_resource.exists(value):
                 found = True
             
             if not found:
@@ -352,7 +366,7 @@ class RuleModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.authentication.rule.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate child table items
         values = getattr(self, "dstaddr", [])
@@ -374,11 +388,11 @@ class RuleModel(BaseModel):
                 found = True
             elif await client.api.cmdb.firewall.addrgrp.exists(value):
                 found = True
-            elif await client.api.cmdb.firewall.proxy-address.exists(value):
+            elif await client.api.cmdb.firewall.proxy_address.exists(value):
                 found = True
-            elif await client.api.cmdb.firewall.proxy-addrgrp.exists(value):
+            elif await client.api.cmdb.firewall.proxy_addrgrp.exists(value):
                 found = True
-            elif await client.api.cmdb.system.external-resource.exists(value):
+            elif await client.api.cmdb.system.external_resource.exists(value):
                 found = True
             
             if not found:
@@ -418,7 +432,7 @@ class RuleModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.authentication.rule.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate child table items
         values = getattr(self, "srcaddr6", [])
@@ -478,7 +492,7 @@ class RuleModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.authentication.rule.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate child table items
         values = getattr(self, "dstaddr6", [])
@@ -538,7 +552,7 @@ class RuleModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.authentication.rule.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate scalar field
         value = getattr(self, "active_auth_method", None)
@@ -587,7 +601,7 @@ class RuleModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.authentication.rule.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate scalar field
         value = getattr(self, "sso_auth_method", None)
@@ -659,5 +673,5 @@ __all__ = [
 # ============================================================================
 # Generated by hfortix generator v0.6.0
 # Schema: 1.7.0
-# Generated: 2026-01-17T05:32:18.579827Z
+# Generated: 2026-01-17T17:25:22.348861Z
 # ============================================================================

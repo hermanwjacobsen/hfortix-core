@@ -7,13 +7,31 @@ Generated from FortiOS schema version unknown.
 
 from __future__ import annotations
 
-from pydantic import BaseModel, Field
-from typing import Any, Optional
+from pydantic import BaseModel, Field, field_validator
+from typing import Any, Literal, Optional
 
 # ============================================================================
-# Child Table Models
+# Enum Definitions for Child Table Fields (for fields with 4+ allowed values)
 # ============================================================================
 
+# ============================================================================
+# Child Table Models (sorted deepest-first so nested models are defined before their parents)
+# ============================================================================
+
+class DynamicPortPolicyPolicyInterfaceTags(BaseModel):
+    """
+    Child table model for policy.interface-tags.
+    
+    Match policy based on the FortiSwitch interface object tags.
+    """
+    
+    class Config:
+        """Pydantic model configuration."""
+        extra = "allow"  # Allow additional fields from API
+        str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
+    
+    tag_name: str | None = Field(max_length=63, default=None, description="FortiSwitch port tag name.")  # datasource: ['switch-controller.switch-interface-tag.name']
 class DynamicPortPolicyPolicy(BaseModel):
     """
     Child table model for policy.
@@ -25,24 +43,25 @@ class DynamicPortPolicyPolicy(BaseModel):
         """Pydantic model configuration."""
         extra = "allow"  # Allow additional fields from API
         str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
     
-    name: str = Field(max_length=63, default="", description="Policy name.")    
-    description: str | None = Field(max_length=63, default="", description="Description for the policy.")    
+    name: str = Field(max_length=63, description="Policy name.")    
+    description: str | None = Field(max_length=63, default=None, description="Description for the policy.")    
     status: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable policy.")    
     category: Literal["device", "interface-tag"] | None = Field(default="device", description="Category of Dynamic port policy.")    
     match_type: Literal["dynamic", "override"] | None = Field(default="dynamic", description="Match and retain the devices based on the type.")    
     match_period: int | None = Field(ge=0, le=120, default=0, description="Number of days the matched devices will be retained (0 - 120, 0 = always retain).")    
     match_remove: Literal["default", "link-down"] | None = Field(default="default", description="Options to remove the matched override devices.")    
-    interface_tags: list[InterfaceTags] = Field(default=None, description="Match policy based on the FortiSwitch interface object tags.")    
-    mac: str | None = Field(max_length=17, default="", description="Match policy based on MAC address.")    
-    hw_vendor: str | None = Field(max_length=15, default="", description="Match policy based on hardware vendor.")    
-    type: str | None = Field(max_length=15, default="", description="Match policy based on type.")    
-    family: str | None = Field(max_length=31, default="", description="Match policy based on family.")    
-    host: str | None = Field(max_length=64, default="", description="Match policy based on host.")    
-    lldp_profile: str | None = Field(max_length=63, default="", description="LLDP profile to be applied when using this policy.")  # datasource: ['switch-controller.lldp-profile.name']    
-    qos_policy: str | None = Field(max_length=63, default="", description="QoS policy to be applied when using this policy.")  # datasource: ['switch-controller.qos.qos-policy.name']    
-    802_1x: str | None = Field(max_length=31, default="", description="802.1x security policy to be applied when using this policy.")  # datasource: ['switch-controller.security-policy.802-1X.name', 'switch-controller.security-policy.captive-portal.name']    
-    vlan_policy: str | None = Field(max_length=63, default="", description="VLAN policy to be applied when using this policy.")  # datasource: ['switch-controller.vlan-policy.name']    
+    interface_tags: list[DynamicPortPolicyPolicyInterfaceTags] = Field(default_factory=list, description="Match policy based on the FortiSwitch interface object tags.")    
+    mac: str | None = Field(max_length=17, default=None, description="Match policy based on MAC address.")    
+    hw_vendor: str | None = Field(max_length=15, default=None, description="Match policy based on hardware vendor.")    
+    type_: str | None = Field(max_length=15, default=None, serialization_alias="type", description="Match policy based on type.")    
+    family: str | None = Field(max_length=31, default=None, description="Match policy based on family.")    
+    host: str | None = Field(max_length=64, default=None, description="Match policy based on host.")    
+    lldp_profile: str | None = Field(max_length=63, default=None, description="LLDP profile to be applied when using this policy.")  # datasource: ['switch-controller.lldp-profile.name']    
+    qos_policy: str | None = Field(max_length=63, default=None, description="QoS policy to be applied when using this policy.")  # datasource: ['switch-controller.qos.qos-policy.name']    
+    _802_1x: str | None = Field(max_length=31, default=None, serialization_alias="802-1x", description="802.1x security policy to be applied when using this policy.")  # datasource: ['switch-controller.security-policy.802-1X.name', 'switch-controller.security-policy.captive-portal.name']    
+    vlan_policy: str | None = Field(max_length=63, default=None, description="VLAN policy to be applied when using this policy.")  # datasource: ['switch-controller.vlan-policy.name']    
     bounce_port_link: Literal["disable", "enable"] | None = Field(default="enable", description="Enable/disable bouncing (administratively bring the link down, up) of a switch port where this policy is applied. Helps to clear and reassign VLAN from lldp-profile.")    
     bounce_port_duration: int | None = Field(ge=1, le=30, default=5, description="Bounce duration in seconds of a switch port where this policy is applied.")    
     poe_reset: Literal["disable", "enable"] | None = Field(default="disable", description="Enable/disable POE reset of a switch port where this policy is applied.")
@@ -74,10 +93,10 @@ class DynamicPortPolicyModel(BaseModel):
     # Model Fields
     # ========================================================================
     
-    name: str | None = Field(max_length=63, default="", description="Dynamic port policy name.")    
-    description: str | None = Field(max_length=63, default="", description="Description for the Dynamic port policy.")    
-    fortilink: str = Field(max_length=15, default="", description="FortiLink interface for which this Dynamic port policy belongs to.")  # datasource: ['system.interface.name']    
-    policy: list[Policy] = Field(default=None, description="Port policies with matching criteria and actions.")    
+    name: str | None = Field(max_length=63, default=None, description="Dynamic port policy name.")    
+    description: str | None = Field(max_length=63, default=None, description="Description for the Dynamic port policy.")    
+    fortilink: str = Field(max_length=15, description="FortiLink interface for which this Dynamic port policy belongs to.")  # datasource: ['system.interface.name']    
+    policy: list[DynamicPortPolicyPolicy] = Field(default_factory=list, description="Port policies with matching criteria and actions.")    
     # ========================================================================
     # Custom Validators
     # ========================================================================
@@ -157,7 +176,7 @@ class DynamicPortPolicyModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.switch_controller.dynamic_port_policy.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate scalar field
         value = getattr(self, "fortilink", None)
@@ -206,7 +225,7 @@ class DynamicPortPolicyModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.switch_controller.dynamic_port_policy.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate child table items
         values = getattr(self, "policy", [])
@@ -224,7 +243,7 @@ class DynamicPortPolicyModel(BaseModel):
             
             # Check all datasource endpoints
             found = False
-            if await client.api.cmdb.switch-controller.vlan-policy.exists(value):
+            if await client.api.cmdb.switch_controller.vlan_policy.exists(value):
                 found = True
             
             if not found:
@@ -271,11 +290,11 @@ Dict = dict[str, Any]  # For backward compatibility
 # ============================================================================
 
 __all__ = [
-    "DynamicPortPolicyModel",    "DynamicPortPolicyPolicy",]
+    "DynamicPortPolicyModel",    "DynamicPortPolicyPolicy",    "DynamicPortPolicyPolicy.InterfaceTags",]
 
 
 # ============================================================================
 # Generated by hfortix generator v0.6.0
 # Schema: 1.7.0
-# Generated: 2026-01-17T05:32:18.273408Z
+# Generated: 2026-01-17T17:25:22.070376Z
 # ============================================================================

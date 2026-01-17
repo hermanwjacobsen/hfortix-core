@@ -1003,6 +1003,72 @@ class CentralSnatMap(CRUDEndpoint, MetadataMixin):
             - put(): Update existing object
             - exists(): Check existence manually
         """
+        # Apply normalization for table fields (supports flexible input formats)
+        if srcintf is not None:
+            srcintf = normalize_table_field(
+                srcintf,
+                mkey="name",
+                required_fields=['name'],
+                field_name="srcintf",
+                example="[{'name': 'value'}]",
+            )
+        if dstintf is not None:
+            dstintf = normalize_table_field(
+                dstintf,
+                mkey="name",
+                required_fields=['name'],
+                field_name="dstintf",
+                example="[{'name': 'value'}]",
+            )
+        if orig_addr is not None:
+            orig_addr = normalize_table_field(
+                orig_addr,
+                mkey="name",
+                required_fields=['name'],
+                field_name="orig_addr",
+                example="[{'name': 'value'}]",
+            )
+        if orig_addr6 is not None:
+            orig_addr6 = normalize_table_field(
+                orig_addr6,
+                mkey="name",
+                required_fields=['name'],
+                field_name="orig_addr6",
+                example="[{'name': 'value'}]",
+            )
+        if dst_addr is not None:
+            dst_addr = normalize_table_field(
+                dst_addr,
+                mkey="name",
+                required_fields=['name'],
+                field_name="dst_addr",
+                example="[{'name': 'value'}]",
+            )
+        if dst_addr6 is not None:
+            dst_addr6 = normalize_table_field(
+                dst_addr6,
+                mkey="name",
+                required_fields=['name'],
+                field_name="dst_addr6",
+                example="[{'name': 'value'}]",
+            )
+        if nat_ippool is not None:
+            nat_ippool = normalize_table_field(
+                nat_ippool,
+                mkey="name",
+                required_fields=['name'],
+                field_name="nat_ippool",
+                example="[{'name': 'value'}]",
+            )
+        if nat_ippool6 is not None:
+            nat_ippool6 = normalize_table_field(
+                nat_ippool6,
+                mkey="name",
+                required_fields=['name'],
+                field_name="nat_ippool6",
+                example="[{'name': 'value'}]",
+            )
+        
         # Build payload using helper function with auto-normalization
         payload_data = build_api_payload(
             policyid=policyid,

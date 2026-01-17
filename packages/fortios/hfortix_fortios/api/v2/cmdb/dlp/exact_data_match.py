@@ -636,6 +636,16 @@ class ExactDataMatch(CRUDEndpoint, MetadataMixin):
             - put(): Update existing object
             - exists(): Check existence manually
         """
+        # Apply normalization for table fields (supports flexible input formats)
+        if columns is not None:
+            columns = normalize_table_field(
+                columns,
+                mkey="index",
+                required_fields=['type', 'optional'],
+                field_name="columns",
+                example="[{'type': 'value', 'optional': 'enable'}]",
+            )
+        
         # Build payload using helper function with auto-normalization
         payload_data = build_api_payload(
             name=name,

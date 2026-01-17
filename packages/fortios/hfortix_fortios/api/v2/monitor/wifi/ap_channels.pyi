@@ -1,121 +1,86 @@
-from typing import TypedDict, Literal, Any, Coroutine, Union, overload, Generator, final
-from typing_extensions import NotRequired
-from hfortix_fortios.models import FortiObject, FortiObjectList
+""" - Type Stubs
 
-# ============================================================================
-# Nested TypedDicts for table field children (dict mode)
-# These MUST be defined before the Payload class to use them as type hints
-# ============================================================================
+Auto-generated stub file for type checking and IDE support.
 
-# ============================================================================
-# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional)
-# ============================================================================
-# NOTE: We intentionally DON'T use NotRequired wrapper because:
-# 1. total=False already makes all fields optional
-# 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
+Endpoint: wifi/ap_channels
+Category: monitor
+"""
+
+from __future__ import annotations
+
+from typing import (
+    Any,
+    ClassVar,
+    Literal,
+    TypedDict,
+)
+
+from hfortix_fortios.models import (
+    FortiObject,
+    FortiObjectList,
+)
+
+
+# ================================================================
+# TypedDict Payloads
+# ================================================================
+
 class ApChannelsPayload(TypedDict, total=False):
-    """
-    Type hints for wifi/ap_channels payload fields.
-    
-    Retrieve the set of channel lists for all possible band/configurations for the given FortiAP platform.
-    
-    **Usage:**
-        payload: ApChannelsPayload = {
-            "field": "value",  # <- autocomplete shows all fields
-        }
-    """
-    country: str  # country
-    platform_type: str  # platform_type
-    indoor_outdoor: int  # indoor_outdoor
-
-# ============================================================================
-# Nested classes for table field children (object mode - for API responses)
-# ============================================================================
+    """Payload type for ApChannels operations."""
+    country: str
+    platform_type: str
+    indoor_outdoor: int
 
 
+# ================================================================
+# Response Types (TypedDict for dict-style access)
+# ================================================================
 
-# Response TypedDict for GET returns (all fields present in API response)
-class ApChannelsResponse(TypedDict):
-    """
-    Type hints for wifi/ap_channels API response fields.
-    
-    All fields are present in the response from the FortiGate API.
-    """
-    outdoor: bool
-    local: bool
-    unii4_5ghz_band_country_support: bool
-    channel_lists: str
+class ApChannelsResponse(TypedDict, total=False):
+    """Response type for ApChannels - use with .dict property for typed dict access."""
+    country: str
+    platform_type: str
+    indoor_outdoor: int
 
 
-@final
-class ApChannelsObject:
-    """Typed FortiObject for wifi/ap_channels with IDE autocomplete support.
-    
-    This is a typed wrapper that provides IDE autocomplete for API response fields.
-    At runtime, this is actually a FortiObject instance.
-    """
-    
-    # outdoor
-    outdoor: bool
-    # local
-    local: bool
-    # unii4_5ghz_band_country_support
-    unii4_5ghz_band_country_support: bool
-    # channel_lists
-    channel_lists: str
-    
-    # Common API response fields
-    status: str
-    http_status: int | None
-    http_status_code: int | None
-    http_method: str | None
-    http_response_time: float | None
-    vdom: str | None
-    
-    # Methods from FortiObject
-    @property
-    def dict(self) -> dict[str, Any]:
-        """Convert to dictionary."""
-        ...
-    @property
-    def json(self) -> str:
-        """Get pretty-printed JSON string."""
-        ...
-    @property
-    def raw(self) -> dict[str, Any]:
-        """Get raw API response data."""
-        ...
-    def get_full(self, name: str) -> Any: ...
-    def to_dict(self) -> ApChannelsPayload: ...
-    def keys(self) -> Any: ...
-    def values(self) -> Generator[Any, None, None]: ...
-    def items(self) -> Generator[tuple[str, Any], None, None]: ...
-    def get(self, key: str, default: Any = None) -> Any: ...
+# ================================================================
+# Response Types (Class for attribute access)
+# ================================================================
 
+
+class ApChannelsObject(FortiObject):
+    """Typed FortiObject for ApChannels with field access."""
+    country: str
+    platform_type: str
+    indoor_outdoor: int
+
+
+# ================================================================
+# Main Endpoint Class
+# ================================================================
 
 class ApChannels:
     """
-    Retrieve the set of channel lists for all possible band/configurations for the given FortiAP platform.
     
-    Path: wifi/ap_channels
+    Endpoint: wifi/ap_channels
     Category: monitor
     """
     
+    # Class attributes for introspection
+    endpoint: ClassVar[str] = ...
+    path: ClassVar[str] = ...
+    category: ClassVar[str] = ...
+    capabilities: ClassVar[dict[str, Any]] = ...
+    
     def __init__(self, client: Any) -> None:
-        """Initialize endpoint with HTTP client.
-        
-        Args:
-            client: HTTP client instance for API communication
-        """
+        """Initialize endpoint with HTTP client."""
         ...
     
     # ================================================================
-    # GET OVERLOADS - Always returns FortiObject (or ContentResponse for file endpoints)
-    # Pylance matches overloads top-to-bottom, so these must come first!
+    # GET Methods
     # ================================================================
     
-    # Service/Monitor endpoint with query parameters
-    @overload
+    # Service/Monitor endpoint
     def get(
         self,
         *,
@@ -127,143 +92,16 @@ class ApChannels:
         start: int | None = ...,
         payload_dict: dict[str, Any] | None = ...,
         vdom: str | bool | None = ...,
+        error_mode: Literal["raise", "return", "print"] | None = ...,
+        error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> ApChannelsObject: ...
     
-    
+
+
     # ================================================================
-    # (removed - all GET now returns FortiObject)
+    # PUT Method
     # ================================================================
     
-    # With mkey as positional arg -> returns single object
-    @overload
-    def get(
-        self,
-        name: str,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> ApChannelsObject: ...
-    
-    # With mkey as keyword arg -> returns single object
-    @overload
-    def get(
-        self,
-        *,
-        name: str,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> ApChannelsObject: ...
-    
-    # With no mkey -> returns list of objects
-    @overload
-    def get(
-        self,
-        *,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> ApChannelsObject: ...
-    
-    # Dict mode with mkey provided as positional arg (single dict)
-    @overload
-    def get(
-        self,
-        name: str,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> ApChannelsObject: ...
-    
-    # Dict mode with mkey provided as keyword arg (single dict)
-    @overload
-    def get(
-        self,
-        *,
-        name: str,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> ApChannelsObject: ...
-    
-    # Dict mode - list of dicts (no mkey/name provided) - keyword-only signature
-    @overload
-    def get(
-        self,
-        *,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> ApChannelsObject: ...
-    
-    # Fallback overload for all other cases
-    @overload
-    def get(
-        self,
-        name: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> dict[str, Any] | FortiObject: ...
-    
-    def get(
-        self,
-        name: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> ApChannelsObject | dict[str, Any]: ...
-    
-    # PUT overloads
-    @overload
     def put(
         self,
         payload_dict: ApChannelsPayload | None = ...,
@@ -271,37 +109,14 @@ class ApChannels:
         platform_type: str | None = ...,
         indoor_outdoor: int | None = ...,
         vdom: str | bool | None = ...,
+        error_mode: Literal["raise", "return", "print"] | None = ...,
+        error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> ApChannelsObject: ...
-    
-    @overload
-    def put(
-        self,
-        payload_dict: ApChannelsPayload | None = ...,
-        country: str | None = ...,
-        platform_type: str | None = ...,
-        indoor_outdoor: int | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
-    
-    # Default overload
-    @overload
-    def put(
-        self,
-        payload_dict: ApChannelsPayload | None = ...,
-        country: str | None = ...,
-        platform_type: str | None = ...,
-        indoor_outdoor: int | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
-    
-    def put(
-        self,
-        payload_dict: ApChannelsPayload | None = ...,
-        country: str | None = ...,
-        platform_type: str | None = ...,
-        indoor_outdoor: int | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+
+
+    # ================================================================
+    # Utility Methods
+    # ================================================================
     
     def exists(
         self,
@@ -316,6 +131,8 @@ class ApChannels:
         platform_type: str | None = ...,
         indoor_outdoor: int | None = ...,
         vdom: str | bool | None = ...,
+        error_mode: Literal["raise", "return", "print"] | None = ...,
+        error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> FortiObject: ...
     
     # Helper methods
@@ -323,7 +140,7 @@ class ApChannels:
     def help(field_name: str | None = ...) -> str: ...
     
     @staticmethod
-    def fields(detailed: bool = ...) -> Union[list[str], list[dict[str, Any]]]: ...
+    def fields(detailed: bool = ...) -> list[str] | list[dict[str, Any]]: ...
     
     @staticmethod
     def field_info(field_name: str) -> FortiObject: ...
@@ -339,9 +156,6 @@ class ApChannels:
     
     @staticmethod
     def schema() -> FortiObject: ...
-
-
-# ================================================================
 
 
 __all__ = [

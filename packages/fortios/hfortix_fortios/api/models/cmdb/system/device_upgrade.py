@@ -12,7 +12,11 @@ from typing import Any, Literal, Optional
 from enum import Enum
 
 # ============================================================================
-# Child Table Models
+# Enum Definitions for Child Table Fields (for fields with 4+ allowed values)
+# ============================================================================
+
+# ============================================================================
+# Child Table Models (sorted deepest-first so nested models are defined before their parents)
 # ============================================================================
 
 class DeviceUpgradeKnownHaMembers(BaseModel):
@@ -26,21 +30,57 @@ class DeviceUpgradeKnownHaMembers(BaseModel):
         """Pydantic model configuration."""
         extra = "allow"  # Allow additional fields from API
         str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
     
-    serial: str = Field(max_length=79, default="", description="Serial number of HA member")
+    serial: str = Field(max_length=79, description="Serial number of HA member")
 # ============================================================================
 # Enum Definitions (for fields with 4+ allowed values)
 # ============================================================================
 
 class DeviceUpgradeStatusEnum(str, Enum):
     """Allowed values for status field."""
-    DISABLED = "disabled"    INITIALIZED = "initialized"    DOWNLOADING = "downloading"    DEVICE_DISCONNECTED = "device-disconnected"    READY = "ready"    COORDINATING = "coordinating"    STAGING = "staging"    FINAL_CHECK = "final-check"    UPGRADE_DEVICES = "upgrade-devices"    CANCELLED = "cancelled"    CONFIRMED = "confirmed"    DONE = "done"    FAILED = "failed"
-class DeviceUpgradeDevice_typeEnum(str, Enum):
+    DISABLED = "disabled"
+    INITIALIZED = "initialized"
+    DOWNLOADING = "downloading"
+    DEVICE_DISCONNECTED = "device-disconnected"
+    READY = "ready"
+    COORDINATING = "coordinating"
+    STAGING = "staging"
+    FINAL_CHECK = "final-check"
+    UPGRADE_DEVICES = "upgrade-devices"
+    CANCELLED = "cancelled"
+    CONFIRMED = "confirmed"
+    DONE = "done"
+    FAILED = "failed"
+
+class DeviceUpgradeDeviceTypeEnum(str, Enum):
     """Allowed values for device_type field."""
-    FORTIGATE = "fortigate"    FORTISWITCH = "fortiswitch"    FORTIAP = "fortiap"    FORTIEXTENDER = "fortiextender"
-class DeviceUpgradeFailure_reasonEnum(str, Enum):
+    FORTIGATE = "fortigate"
+    FORTISWITCH = "fortiswitch"
+    FORTIAP = "fortiap"
+    FORTIEXTENDER = "fortiextender"
+
+class DeviceUpgradeFailureReasonEnum(str, Enum):
     """Allowed values for failure_reason field."""
-    NONE = "none"    INTERNAL = "internal"    TIMEOUT = "timeout"    DEVICE_TYPE_UNSUPPORTED = "device-type-unsupported"    DOWNLOAD_FAILED = "download-failed"    DEVICE_MISSING = "device-missing"    VERSION_UNAVAILABLE = "version-unavailable"    STAGING_FAILED = "staging-failed"    REBOOT_FAILED = "reboot-failed"    DEVICE_NOT_RECONNECTED = "device-not-reconnected"    NODE_NOT_READY = "node-not-ready"    NO_FINAL_CONFIRMATION = "no-final-confirmation"    NO_CONFIRMATION_QUERY = "no-confirmation-query"    CONFIG_ERROR_LOG_NONEMPTY = "config-error-log-nonempty"    CSF_TREE_NOT_SUPPORTED = "csf-tree-not-supported"    FIRMWARE_CHANGED = "firmware-changed"    NODE_FAILED = "node-failed"    IMAGE_MISSING = "image-missing"
+    NONE = "none"
+    INTERNAL = "internal"
+    TIMEOUT = "timeout"
+    DEVICE_TYPE_UNSUPPORTED = "device-type-unsupported"
+    DOWNLOAD_FAILED = "download-failed"
+    DEVICE_MISSING = "device-missing"
+    VERSION_UNAVAILABLE = "version-unavailable"
+    STAGING_FAILED = "staging-failed"
+    REBOOT_FAILED = "reboot-failed"
+    DEVICE_NOT_RECONNECTED = "device-not-reconnected"
+    NODE_NOT_READY = "node-not-ready"
+    NO_FINAL_CONFIRMATION = "no-final-confirmation"
+    NO_CONFIRMATION_QUERY = "no-confirmation-query"
+    CONFIG_ERROR_LOG_NONEMPTY = "config-error-log-nonempty"
+    CSF_TREE_NOT_SUPPORTED = "csf-tree-not-supported"
+    FIRMWARE_CHANGED = "firmware-changed"
+    NODE_FAILED = "node-failed"
+    IMAGE_MISSING = "image-missing"
+
 
 # ============================================================================
 # Main Model
@@ -65,22 +105,22 @@ class DeviceUpgradeModel(BaseModel):
     # Model Fields
     # ========================================================================
     
-    vdom: str | None = Field(max_length=31, default="", description="Limit upgrade to this virtual domain (VDOM).")  # datasource: ['system.vdom.name']    
-    status: StatusEnum = Field(default="disabled", description="Current status of the upgrade.")    
-    ha_reboot_controller: str | None = Field(max_length=79, default="", description="Serial number of the FortiGate unit that will control the reboot process for the federated upgrade of the HA cluster.")    
+    vdom: str | None = Field(max_length=31, default=None, description="Limit upgrade to this virtual domain (VDOM).")  # datasource: ['system.vdom.name']    
+    status: DeviceUpgradeStatusEnum = Field(default=DeviceUpgradeStatusEnum.DISABLED, description="Current status of the upgrade.")    
+    ha_reboot_controller: str | None = Field(max_length=79, default=None, description="Serial number of the FortiGate unit that will control the reboot process for the federated upgrade of the HA cluster.")    
     next_path_index: int = Field(ge=0, le=10, default=0, description="The index of the next image to upgrade to.")    
-    known_ha_members: list[KnownHaMembers] = Field(description="Known members of the HA cluster. If a member is missing at upgrade time, the upgrade will be cancelled.")    
-    initial_version: str | None = Field(default="", description="Firmware version when the upgrade was set up.")    
-    starter_admin: str | None = Field(max_length=64, default="", description="Admin that started the upgrade.")    
-    serial: str = Field(max_length=79, default="", description="Serial number of the node to include.")    
+    known_ha_members: list[DeviceUpgradeKnownHaMembers] = Field(description="Known members of the HA cluster. If a member is missing at upgrade time, the upgrade will be cancelled.")    
+    initial_version: str | None = Field(default=None, description="Firmware version when the upgrade was set up.")    
+    starter_admin: str | None = Field(max_length=64, default=None, description="Admin that started the upgrade.")    
+    serial: str = Field(max_length=79, description="Serial number of the node to include.")    
     timing: Literal["immediate", "scheduled"] = Field(default="immediate", description="Run immediately or at a scheduled time.")    
     maximum_minutes: int = Field(ge=5, le=10080, default=15, description="Maximum number of minutes to allow for immediate upgrade preparation.")    
-    time: str = Field(default="", description="Scheduled upgrade execution time in UTC (hh:mm yyyy/mm/dd UTC).")    
-    setup_time: str = Field(default="", description="Upgrade preparation start time in UTC (hh:mm yyyy/mm/dd UTC).")    
-    upgrade_path: str = Field(default="", description="Fortinet OS image versions to upgrade through in major-minor-patch format, such as 7-0-4.")    
-    device_type: DeviceTypeEnum = Field(default="fortigate", description="Fortinet device type.")    
+    time: str = Field(description="Scheduled upgrade execution time in UTC (hh:mm yyyy/mm/dd UTC).")    
+    setup_time: str = Field(description="Upgrade preparation start time in UTC (hh:mm yyyy/mm/dd UTC).")    
+    upgrade_path: str = Field(description="Fortinet OS image versions to upgrade through in major-minor-patch format, such as 7-0-4.")    
+    device_type: DeviceUpgradeDeviceTypeEnum = Field(default=DeviceUpgradeDeviceTypeEnum.FORTIGATE, description="Fortinet device type.")    
     allow_download: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable download firmware images.")    
-    failure_reason: FailureReasonEnum | None = Field(default="none", description="Upgrade failure reason.")    
+    failure_reason: DeviceUpgradeFailureReasonEnum | None = Field(default=DeviceUpgradeFailureReasonEnum.NONE, description="Upgrade failure reason.")    
     # ========================================================================
     # Custom Validators
     # ========================================================================
@@ -160,7 +200,7 @@ class DeviceUpgradeModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.system.device_upgrade.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate scalar field
         value = getattr(self, "vdom", None)
@@ -220,5 +260,5 @@ __all__ = [
 # ============================================================================
 # Generated by hfortix generator v0.6.0
 # Schema: 1.7.0
-# Generated: 2026-01-17T05:32:19.857921Z
+# Generated: 2026-01-17T17:25:23.471262Z
 # ============================================================================

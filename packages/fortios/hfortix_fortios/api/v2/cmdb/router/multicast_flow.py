@@ -630,6 +630,16 @@ class MulticastFlow(CRUDEndpoint, MetadataMixin):
             - put(): Update existing object
             - exists(): Check existence manually
         """
+        # Apply normalization for table fields (supports flexible input formats)
+        if flows is not None:
+            flows = normalize_table_field(
+                flows,
+                mkey="id",
+                required_fields=['group-addr', 'source-addr'],
+                field_name="flows",
+                example="[{'group-addr': '192.168.1.10', 'source-addr': '192.168.1.10'}]",
+            )
+        
         # Build payload using helper function with auto-normalization
         payload_data = build_api_payload(
             name=name,

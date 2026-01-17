@@ -11,44 +11,13 @@ from pydantic import BaseModel, Field, field_validator
 from typing import Any, Literal, Optional
 
 # ============================================================================
-# Child Table Models
+# Enum Definitions for Child Table Fields (for fields with 4+ allowed values)
 # ============================================================================
 
-class StandaloneClusterClusterPeer(BaseModel):
-    """
-    Child table model for cluster-peer.
-    
-    Configure FortiGate Session Life Support Protocol (FGSP) session synchronization.
-    """
-    
-    class Config:
-        """Pydantic model configuration."""
-        extra = "allow"  # Allow additional fields from API
-        str_strip_whitespace = True
-    
-    sync_id: int | None = Field(ge=0, le=4294967295, default=0, description="Sync ID.")    
-    peervd: str | None = Field(max_length=31, default="root", description="VDOM that contains the session synchronization link interface on the peer unit. Usually both peers would have the same peervd.")  # datasource: ['system.vdom.name']    
-    peerip: str | None = Field(default="0.0.0.0", description="IP address of the interface on the peer unit that is used for the session synchronization link.")    
-    syncvd: list[Syncvd] = Field(default=None, description="Sessions from these VDOMs are synchronized using this session synchronization configuration.")    
-    down_intfs_before_sess_sync: list[DownIntfsBeforeSessSync] = Field(default=None, description="List of interfaces to be turned down before session synchronization is complete.")    
-    hb_interval: int | None = Field(ge=1, le=20, default=2, description="Heartbeat interval (1 - 20 (100*ms). Increase to reduce false positives.")    
-    hb_lost_threshold: int | None = Field(ge=1, le=60, default=10, description="Lost heartbeat threshold (1 - 60). Increase to reduce false positives.")    
-    ipsec_tunnel_sync: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable IPsec tunnel synchronization.")    
-    secondary_add_ipsec_routes: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable IKE route announcement on the backup unit.")    
-    session_sync_filter: list[SessionSyncFilter] = Field(default=None, description="Add one or more filters if you only want to synchronize some sessions. Use the filter to configure the types of sessions to synchronize.")
-class StandaloneClusterMonitorInterface(BaseModel):
-    """
-    Child table model for monitor-interface.
-    
-    Configure a list of interfaces on which to monitor itself. Monitoring is performed on the status of the interface.
-    """
-    
-    class Config:
-        """Pydantic model configuration."""
-        extra = "allow"  # Allow additional fields from API
-        str_strip_whitespace = True
-    
-    name: str = Field(max_length=79, default="", description="Interface name.")  # datasource: ['system.interface.name']
+# ============================================================================
+# Child Table Models (sorted deepest-first so nested models are defined before their parents)
+# ============================================================================
+
 class StandaloneClusterPingsvrMonitorInterface(BaseModel):
     """
     Child table model for pingsvr-monitor-interface.
@@ -60,8 +29,9 @@ class StandaloneClusterPingsvrMonitorInterface(BaseModel):
         """Pydantic model configuration."""
         extra = "allow"  # Allow additional fields from API
         str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
     
-    name: str = Field(max_length=79, default="", description="Interface name.")  # datasource: ['system.interface.name']
+    name: str = Field(max_length=79, description="Interface name.")  # datasource: ['system.interface.name']
 class StandaloneClusterMonitorPrefix(BaseModel):
     """
     Child table model for monitor-prefix.
@@ -73,11 +43,113 @@ class StandaloneClusterMonitorPrefix(BaseModel):
         """Pydantic model configuration."""
         extra = "allow"  # Allow additional fields from API
         str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
     
-    id: int = Field(ge=0, le=4294967295, default=0, description="ID.")    
-    vdom: str = Field(max_length=31, default="", description="VDOM name.")  # datasource: ['system.vdom.name']    
+    id_: int = Field(ge=0, le=4294967295, default=0, serialization_alias="id", description="ID.")    
+    vdom: str = Field(max_length=31, description="VDOM name.")  # datasource: ['system.vdom.name']    
     vrf: int | None = Field(ge=0, le=511, default=0, description="VRF ID.")    
     prefix: Any = Field(default="0.0.0.0 0.0.0.0", description="Prefix.")
+class StandaloneClusterMonitorInterface(BaseModel):
+    """
+    Child table model for monitor-interface.
+    
+    Configure a list of interfaces on which to monitor itself. Monitoring is performed on the status of the interface.
+    """
+    
+    class Config:
+        """Pydantic model configuration."""
+        extra = "allow"  # Allow additional fields from API
+        str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
+    
+    name: str = Field(max_length=79, description="Interface name.")  # datasource: ['system.interface.name']
+class StandaloneClusterClusterPeerSyncvd(BaseModel):
+    """
+    Child table model for cluster-peer.syncvd.
+    
+    Sessions from these VDOMs are synchronized using this session synchronization configuration.
+    """
+    
+    class Config:
+        """Pydantic model configuration."""
+        extra = "allow"  # Allow additional fields from API
+        str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
+    
+    name: str | None = Field(max_length=79, default=None, description="VDOM name.")  # datasource: ['system.vdom.name']
+class StandaloneClusterClusterPeerSessionSyncFilterCustomService(BaseModel):
+    """
+    Child table model for cluster-peer.session-sync-filter.custom-service.
+    
+    Only sessions using these custom services are synchronized. Use source and destination port ranges to define these custom services.
+    """
+    
+    class Config:
+        """Pydantic model configuration."""
+        extra = "allow"  # Allow additional fields from API
+        str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
+    
+    id_: int | None = Field(ge=0, le=4294967295, default=0, serialization_alias="id", description="Custom service ID.")    
+    src_port_range: str | None = Field(default="0-0", description="Custom service source port range.")    
+    dst_port_range: str | None = Field(default="0-0", description="Custom service destination port range.")
+class StandaloneClusterClusterPeerSessionSyncFilter(BaseModel):
+    """
+    Child table model for cluster-peer.session-sync-filter.
+    
+    Add one or more filters if you only want to synchronize some sessions. Use the filter to configure the types of sessions to synchronize.
+    """
+    
+    class Config:
+        """Pydantic model configuration."""
+        extra = "allow"  # Allow additional fields from API
+        str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
+    
+    srcintf: str | None = Field(max_length=15, default=None, description="Only sessions from this interface are synchronized.")  # datasource: ['system.interface.name']    
+    dstintf: str | None = Field(max_length=15, default=None, description="Only sessions to this interface are synchronized.")  # datasource: ['system.interface.name']    
+    srcaddr: Any = Field(default="0.0.0.0 0.0.0.0", description="Only sessions from this IPv4 address are synchronized.")    
+    dstaddr: Any = Field(default="0.0.0.0 0.0.0.0", description="Only sessions to this IPv4 address are synchronized.")    
+    srcaddr6: str | None = Field(default="::/0", description="Only sessions from this IPv6 address are synchronized.")    
+    dstaddr6: str | None = Field(default="::/0", description="Only sessions to this IPv6 address are synchronized.")    
+    custom_service: list[StandaloneClusterClusterPeerSessionSyncFilterCustomService] = Field(default_factory=list, description="Only sessions using these custom services are synchronized. Use source and destination port ranges to define these custom services.")
+class StandaloneClusterClusterPeerDownIntfsBeforeSessSync(BaseModel):
+    """
+    Child table model for cluster-peer.down-intfs-before-sess-sync.
+    
+    List of interfaces to be turned down before session synchronization is complete.
+    """
+    
+    class Config:
+        """Pydantic model configuration."""
+        extra = "allow"  # Allow additional fields from API
+        str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
+    
+    name: str = Field(max_length=79, description="Interface name.")  # datasource: ['system.interface.name']
+class StandaloneClusterClusterPeer(BaseModel):
+    """
+    Child table model for cluster-peer.
+    
+    Configure FortiGate Session Life Support Protocol (FGSP) session synchronization.
+    """
+    
+    class Config:
+        """Pydantic model configuration."""
+        extra = "allow"  # Allow additional fields from API
+        str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
+    
+    sync_id: int | None = Field(ge=0, le=4294967295, default=0, description="Sync ID.")    
+    peervd: str | None = Field(max_length=31, default="root", description="VDOM that contains the session synchronization link interface on the peer unit. Usually both peers would have the same peervd.")  # datasource: ['system.vdom.name']    
+    peerip: str | None = Field(default="0.0.0.0", description="IP address of the interface on the peer unit that is used for the session synchronization link.")    
+    syncvd: list[StandaloneClusterClusterPeerSyncvd] = Field(default_factory=list, description="Sessions from these VDOMs are synchronized using this session synchronization configuration.")    
+    down_intfs_before_sess_sync: list[StandaloneClusterClusterPeerDownIntfsBeforeSessSync] = Field(default_factory=list, description="List of interfaces to be turned down before session synchronization is complete.")    
+    hb_interval: int | None = Field(ge=1, le=20, default=2, description="Heartbeat interval (1 - 20 (100*ms). Increase to reduce false positives.")    
+    hb_lost_threshold: int | None = Field(ge=1, le=60, default=10, description="Lost heartbeat threshold (1 - 60). Increase to reduce false positives.")    
+    ipsec_tunnel_sync: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable IPsec tunnel synchronization.")    
+    secondary_add_ipsec_routes: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable IKE route announcement on the backup unit.")    
+    session_sync_filter: list[StandaloneClusterClusterPeerSessionSyncFilter] = Field(default_factory=list, description="Add one or more filters if you only want to synchronize some sessions. Use the filter to configure the types of sessions to synchronize.")
 # ============================================================================
 # Enum Definitions (for fields with 4+ allowed values)
 # ============================================================================
@@ -109,14 +181,14 @@ class StandaloneClusterModel(BaseModel):
     standalone_group_id: int | None = Field(ge=0, le=255, default=0, description="Cluster group ID (0 - 255). Must be the same for all members.")    
     group_member_id: int | None = Field(ge=0, le=15, default=0, description="Cluster member ID (0 - 15).")    
     layer2_connection: Literal["available", "unavailable"] | None = Field(default="unavailable", description="Indicate whether layer 2 connections are present among FGSP members.")    
-    session_sync_dev: list[SessionSyncDev] = Field(default="", description="Offload session-sync process to kernel and sync sessions using connected interface(s) directly.")  # datasource: ['system.interface.name']    
+    session_sync_dev: list[str] = Field(default_factory=list, description="Offload session-sync process to kernel and sync sessions using connected interface(s) directly.")  # datasource: ['system.interface.name']    
     encryption: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable encryption when synchronizing sessions.")    
     psksecret: Any = Field(description="Pre-shared secret for session synchronization (ASCII string or hexadecimal encoded with a leading 0x).")    
     asymmetric_traffic_control: Literal["cps-preferred", "strict-anti-replay"] | None = Field(default="cps-preferred", description="Asymmetric traffic control mode.")    
-    cluster_peer: list[ClusterPeer] = Field(default=None, description="Configure FortiGate Session Life Support Protocol (FGSP) session synchronization.")    
-    monitor_interface: list[MonitorInterface] = Field(default=None, description="Configure a list of interfaces on which to monitor itself. Monitoring is performed on the status of the interface.")    
-    pingsvr_monitor_interface: list[PingsvrMonitorInterface] = Field(default=None, description="List of pingsvr monitor interface to check for remote IP monitoring.")    
-    monitor_prefix: list[MonitorPrefix] = Field(default=None, description="Configure a list of routing prefixes to monitor.")    
+    cluster_peer: list[StandaloneClusterClusterPeer] = Field(default_factory=list, description="Configure FortiGate Session Life Support Protocol (FGSP) session synchronization.")    
+    monitor_interface: list[StandaloneClusterMonitorInterface] = Field(default_factory=list, description="Configure a list of interfaces on which to monitor itself. Monitoring is performed on the status of the interface.")    
+    pingsvr_monitor_interface: list[StandaloneClusterPingsvrMonitorInterface] = Field(default_factory=list, description="List of pingsvr monitor interface to check for remote IP monitoring.")    
+    monitor_prefix: list[StandaloneClusterMonitorPrefix] = Field(default_factory=list, description="Configure a list of routing prefixes to monitor.")    
     helper_traffic_bounce: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable helper related traffic bounce.")    
     utm_traffic_bounce: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable UTM related traffic bounce.")    
     # ========================================================================
@@ -198,7 +270,7 @@ class StandaloneClusterModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.system.standalone_cluster.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate scalar field
         value = getattr(self, "session_sync_dev", None)
@@ -247,7 +319,7 @@ class StandaloneClusterModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.system.standalone_cluster.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate child table items
         values = getattr(self, "cluster_peer", [])
@@ -305,7 +377,7 @@ class StandaloneClusterModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.system.standalone_cluster.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate child table items
         values = getattr(self, "monitor_interface", [])
@@ -363,7 +435,7 @@ class StandaloneClusterModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.system.standalone_cluster.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate child table items
         values = getattr(self, "pingsvr_monitor_interface", [])
@@ -421,7 +493,7 @@ class StandaloneClusterModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.system.standalone_cluster.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate child table items
         values = getattr(self, "monitor_prefix", [])
@@ -492,11 +564,11 @@ Dict = dict[str, Any]  # For backward compatibility
 # ============================================================================
 
 __all__ = [
-    "StandaloneClusterModel",    "StandaloneClusterClusterPeer",    "StandaloneClusterMonitorInterface",    "StandaloneClusterPingsvrMonitorInterface",    "StandaloneClusterMonitorPrefix",]
+    "StandaloneClusterModel",    "StandaloneClusterClusterPeer",    "StandaloneClusterClusterPeer.Syncvd",    "StandaloneClusterClusterPeer.DownIntfsBeforeSessSync",    "StandaloneClusterClusterPeer.SessionSyncFilter",    "StandaloneClusterClusterPeer.SessionSyncFilter.CustomService",    "StandaloneClusterMonitorInterface",    "StandaloneClusterPingsvrMonitorInterface",    "StandaloneClusterMonitorPrefix",]
 
 
 # ============================================================================
 # Generated by hfortix generator v0.6.0
 # Schema: 1.7.0
-# Generated: 2026-01-17T05:32:19.302197Z
+# Generated: 2026-01-17T17:25:22.997156Z
 # ============================================================================

@@ -215,7 +215,7 @@ class VlansModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.switch_controller.initial_config.vlans.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate scalar field
         value = getattr(self, "default_vlan", None)
@@ -224,7 +224,7 @@ class VlansModel(BaseModel):
         
         # Check all datasource endpoints
         found = False
-        if await client.api.cmdb.switch-controller.initial-config.template.exists(value):
+        if await client.api.cmdb.switch_controller.initial_config.template.exists(value):
             found = True
         
         if not found:
@@ -264,7 +264,7 @@ class VlansModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.switch_controller.initial_config.vlans.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate scalar field
         value = getattr(self, "quarantine", None)
@@ -273,7 +273,7 @@ class VlansModel(BaseModel):
         
         # Check all datasource endpoints
         found = False
-        if await client.api.cmdb.switch-controller.initial-config.template.exists(value):
+        if await client.api.cmdb.switch_controller.initial_config.template.exists(value):
             found = True
         
         if not found:
@@ -313,7 +313,7 @@ class VlansModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.switch_controller.initial_config.vlans.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate scalar field
         value = getattr(self, "rspan", None)
@@ -322,7 +322,7 @@ class VlansModel(BaseModel):
         
         # Check all datasource endpoints
         found = False
-        if await client.api.cmdb.switch-controller.initial-config.template.exists(value):
+        if await client.api.cmdb.switch_controller.initial_config.template.exists(value):
             found = True
         
         if not found:
@@ -362,7 +362,7 @@ class VlansModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.switch_controller.initial_config.vlans.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate scalar field
         value = getattr(self, "voice", None)
@@ -371,7 +371,7 @@ class VlansModel(BaseModel):
         
         # Check all datasource endpoints
         found = False
-        if await client.api.cmdb.switch-controller.initial-config.template.exists(value):
+        if await client.api.cmdb.switch_controller.initial_config.template.exists(value):
             found = True
         
         if not found:
@@ -411,7 +411,7 @@ class VlansModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.switch_controller.initial_config.vlans.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate scalar field
         value = getattr(self, "video", None)
@@ -420,7 +420,7 @@ class VlansModel(BaseModel):
         
         # Check all datasource endpoints
         found = False
-        if await client.api.cmdb.switch-controller.initial-config.template.exists(value):
+        if await client.api.cmdb.switch_controller.initial_config.template.exists(value):
             found = True
         
         if not found:
@@ -460,7 +460,7 @@ class VlansModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.switch_controller.initial_config.vlans.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate scalar field
         value = getattr(self, "nac", None)
@@ -469,7 +469,7 @@ class VlansModel(BaseModel):
         
         # Check all datasource endpoints
         found = False
-        if await client.api.cmdb.switch-controller.initial-config.template.exists(value):
+        if await client.api.cmdb.switch_controller.initial_config.template.exists(value):
             found = True
         
         if not found:
@@ -509,7 +509,7 @@ class VlansModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.switch_controller.initial_config.vlans.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate scalar field
         value = getattr(self, "nac_segment", None)
@@ -518,7 +518,7 @@ class VlansModel(BaseModel):
         
         # Check all datasource endpoints
         found = False
-        if await client.api.cmdb.switch-controller.initial-config.template.exists(value):
+        if await client.api.cmdb.switch_controller.initial_config.template.exists(value):
             found = True
         
         if not found:
@@ -581,5 +581,5 @@ __all__ = [
 # ============================================================================
 # Generated by hfortix generator v0.6.0
 # Schema: 1.7.0
-# Generated: 2026-01-17T05:32:18.751152Z
+# Generated: 2026-01-17T17:25:22.496792Z
 # ============================================================================

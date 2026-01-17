@@ -11,70 +11,13 @@ from pydantic import BaseModel, Field, field_validator
 from typing import Any, Literal, Optional
 
 # ============================================================================
-# Child Table Models
+# Enum Definitions for Child Table Fields (for fields with 4+ allowed values)
 # ============================================================================
 
-class ProfileDomainFilter(BaseModel):
-    """
-    Child table model for domain-filter.
-    
-    Domain filter settings.
-    """
-    
-    class Config:
-        """Pydantic model configuration."""
-        extra = "allow"  # Allow additional fields from API
-        str_strip_whitespace = True
-    
-    domain_filter_table: int | None = Field(ge=0, le=4294967295, default=0, description="DNS domain filter table ID.")  # datasource: ['dnsfilter.domain-filter.id']
-class ProfileFtgdDns(BaseModel):
-    """
-    Child table model for ftgd-dns.
-    
-    FortiGuard DNS Filter settings.
-    """
-    
-    class Config:
-        """Pydantic model configuration."""
-        extra = "allow"  # Allow additional fields from API
-        str_strip_whitespace = True
-    
-    options: list[Options] = Field(default="", description="FortiGuard DNS filter options.")    
-    filters: list[Filters] = Field(default=None, description="FortiGuard DNS domain filters.")
-class ProfileExternalIpBlocklist(BaseModel):
-    """
-    Child table model for external-ip-blocklist.
-    
-    One or more external IP block lists.
-    """
-    
-    class Config:
-        """Pydantic model configuration."""
-        extra = "allow"  # Allow additional fields from API
-        str_strip_whitespace = True
-    
-    name: str | None = Field(max_length=79, default="", description="External domain block list name.")  # datasource: ['system.external-resource.name']
-class ProfileDnsTranslation(BaseModel):
-    """
-    Child table model for dns-translation.
-    
-    DNS translation settings.
-    """
-    
-    class Config:
-        """Pydantic model configuration."""
-        extra = "allow"  # Allow additional fields from API
-        str_strip_whitespace = True
-    
-    id: int | None = Field(ge=0, le=4294967295, default=0, description="ID.")    
-    addr_type: Literal["ipv4", "ipv6"] = Field(default="ipv4", description="DNS translation type (IPv4 or IPv6).")    
-    src: str | None = Field(default="0.0.0.0", description="IPv4 address or subnet on the internal network to compare with the resolved address in DNS query replies. If the resolved address matches, the resolved address is substituted with dst.")    
-    dst: str | None = Field(default="0.0.0.0", description="IPv4 address or subnet on the external network to substitute for the resolved address in DNS query replies. Can be single IP address or subnet on the external network, but number of addresses must equal number of mapped IP addresses in src.")    
-    netmask: str | None = Field(default="255.255.255.255", description="If src and dst are subnets rather than single IP addresses, enter the netmask for both src and dst.")    
-    status: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable this DNS translation entry.")    
-    src6: str | None = Field(default="::", description="IPv6 address or subnet on the internal network to compare with the resolved address in DNS query replies. If the resolved address matches, the resolved address is substituted with dst6.")    
-    dst6: str | None = Field(default="::", description="IPv6 address or subnet on the external network to substitute for the resolved address in DNS query replies. Can be single IP address or subnet on the external network, but number of addresses must equal number of mapped IP addresses in src6.")    
-    prefix: int | None = Field(ge=1, le=128, default=128, description="If src6 and dst6 are subnets rather than single IP addresses, enter the prefix for both src6 and dst6 (1 - 128, default = 128).")
+# ============================================================================
+# Child Table Models (sorted deepest-first so nested models are defined before their parents)
+# ============================================================================
+
 class ProfileTransparentDnsDatabase(BaseModel):
     """
     Child table model for transparent-dns-database.
@@ -86,8 +29,91 @@ class ProfileTransparentDnsDatabase(BaseModel):
         """Pydantic model configuration."""
         extra = "allow"  # Allow additional fields from API
         str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
     
-    name: str | None = Field(max_length=79, default="", description="DNS database zone name.")  # datasource: ['system.dns-database.name']
+    name: str | None = Field(max_length=79, default=None, description="DNS database zone name.")  # datasource: ['system.dns-database.name']
+class ProfileFtgdDnsFilters(BaseModel):
+    """
+    Child table model for ftgd-dns.filters.
+    
+    FortiGuard DNS domain filters.
+    """
+    
+    class Config:
+        """Pydantic model configuration."""
+        extra = "allow"  # Allow additional fields from API
+        str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
+    
+    id_: int | None = Field(ge=0, le=255, default=0, serialization_alias="id", description="ID number.")    
+    category: int | None = Field(ge=0, le=255, default=0, description="Category number.")    
+    action: Literal["block", "monitor"] | None = Field(default="monitor", description="Action to take for DNS requests matching the category.")    
+    log: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable DNS filter logging for this DNS profile.")
+class ProfileFtgdDns(BaseModel):
+    """
+    Child table model for ftgd-dns.
+    
+    FortiGuard DNS Filter settings.
+    """
+    
+    class Config:
+        """Pydantic model configuration."""
+        extra = "allow"  # Allow additional fields from API
+        str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
+    
+    options: list[Literal["error-allow", "ftgd-disable"]] = Field(default_factory=list, description="FortiGuard DNS filter options.")    
+    filters: list[ProfileFtgdDnsFilters] = Field(default_factory=list, description="FortiGuard DNS domain filters.")
+class ProfileExternalIpBlocklist(BaseModel):
+    """
+    Child table model for external-ip-blocklist.
+    
+    One or more external IP block lists.
+    """
+    
+    class Config:
+        """Pydantic model configuration."""
+        extra = "allow"  # Allow additional fields from API
+        str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
+    
+    name: str | None = Field(max_length=79, default=None, description="External domain block list name.")  # datasource: ['system.external-resource.name']
+class ProfileDomainFilter(BaseModel):
+    """
+    Child table model for domain-filter.
+    
+    Domain filter settings.
+    """
+    
+    class Config:
+        """Pydantic model configuration."""
+        extra = "allow"  # Allow additional fields from API
+        str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
+    
+    domain_filter_table: int | None = Field(ge=0, le=4294967295, default=0, description="DNS domain filter table ID.")  # datasource: ['dnsfilter.domain-filter.id']
+class ProfileDnsTranslation(BaseModel):
+    """
+    Child table model for dns-translation.
+    
+    DNS translation settings.
+    """
+    
+    class Config:
+        """Pydantic model configuration."""
+        extra = "allow"  # Allow additional fields from API
+        str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
+    
+    id_: int | None = Field(ge=0, le=4294967295, default=0, serialization_alias="id", description="ID.")    
+    addr_type: Literal["ipv4", "ipv6"] = Field(default="ipv4", description="DNS translation type (IPv4 or IPv6).")    
+    src: str | None = Field(default="0.0.0.0", description="IPv4 address or subnet on the internal network to compare with the resolved address in DNS query replies. If the resolved address matches, the resolved address is substituted with dst.")    
+    dst: str | None = Field(default="0.0.0.0", description="IPv4 address or subnet on the external network to substitute for the resolved address in DNS query replies. Can be single IP address or subnet on the external network, but number of addresses must equal number of mapped IP addresses in src.")    
+    netmask: str | None = Field(default="255.255.255.255", description="If src and dst are subnets rather than single IP addresses, enter the netmask for both src and dst.")    
+    status: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable this DNS translation entry.")    
+    src6: str | None = Field(default="::", description="IPv6 address or subnet on the internal network to compare with the resolved address in DNS query replies. If the resolved address matches, the resolved address is substituted with dst6.")    
+    dst6: str | None = Field(default="::", description="IPv6 address or subnet on the external network to substitute for the resolved address in DNS query replies. Can be single IP address or subnet on the external network, but number of addresses must equal number of mapped IP addresses in src6.")    
+    prefix: int | None = Field(ge=1, le=128, default=128, description="If src6 and dst6 are subnets rather than single IP addresses, enter the prefix for both src6 and dst6 (1 - 128, default = 128).")
 # ============================================================================
 # Enum Definitions (for fields with 4+ allowed values)
 # ============================================================================
@@ -116,10 +142,10 @@ class ProfileModel(BaseModel):
     # Model Fields
     # ========================================================================
     
-    name: str = Field(max_length=47, default="", description="Profile name.")    
+    name: str = Field(max_length=47, description="Profile name.")    
     comment: str | None = Field(max_length=255, default=None, description="Comment.")    
-    domain_filter: list[DomainFilter] = Field(default=None, description="Domain filter settings.")    
-    ftgd_dns: list[FtgdDns] = Field(default=None, description="FortiGuard DNS Filter settings.")    
+    domain_filter: list[ProfileDomainFilter] = Field(default_factory=list, description="Domain filter settings.")    
+    ftgd_dns: list[ProfileFtgdDns] = Field(default_factory=list, description="FortiGuard DNS Filter settings.")    
     log_all_domain: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable logging of all domains visited (detailed DNS logging).")    
     sdns_ftgd_err_log: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable FortiGuard SDNS rating error logging.")    
     sdns_domain_log: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable domain filtering and botnet domain logging.")    
@@ -129,9 +155,9 @@ class ProfileModel(BaseModel):
     block_botnet: Literal["disable", "enable"] | None = Field(default="disable", description="Enable/disable blocking botnet C&C DNS lookups.")    
     safe_search: Literal["disable", "enable"] | None = Field(default="disable", description="Enable/disable Google, Bing, YouTube, Qwant, DuckDuckGo safe search.")    
     youtube_restrict: Literal["strict", "moderate", "none"] | None = Field(default="strict", description="Set safe search for YouTube restriction level.")    
-    external_ip_blocklist: list[ExternalIpBlocklist] = Field(default=None, description="One or more external IP block lists.")    
-    dns_translation: list[DnsTranslation] = Field(default=None, description="DNS translation settings.")    
-    transparent_dns_database: list[TransparentDnsDatabase] = Field(default=None, description="Transparent DNS database zones.")    
+    external_ip_blocklist: list[ProfileExternalIpBlocklist] = Field(default_factory=list, description="One or more external IP block lists.")    
+    dns_translation: list[ProfileDnsTranslation] = Field(default_factory=list, description="DNS translation settings.")    
+    transparent_dns_database: list[ProfileTransparentDnsDatabase] = Field(default_factory=list, description="Transparent DNS database zones.")    
     strip_ech: Literal["disable", "enable"] | None = Field(default="enable", description="Enable/disable removal of the encrypted client hello service parameter from supporting DNS RRs.")    
     # ========================================================================
     # Custom Validators
@@ -197,7 +223,7 @@ class ProfileModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.dnsfilter.profile.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate child table items
         values = getattr(self, "domain_filter", [])
@@ -215,7 +241,7 @@ class ProfileModel(BaseModel):
             
             # Check all datasource endpoints
             found = False
-            if await client.api.cmdb.dnsfilter.domain-filter.exists(value):
+            if await client.api.cmdb.dnsfilter.domain_filter.exists(value):
                 found = True
             
             if not found:
@@ -255,7 +281,7 @@ class ProfileModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.dnsfilter.profile.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate child table items
         values = getattr(self, "external_ip_blocklist", [])
@@ -273,7 +299,7 @@ class ProfileModel(BaseModel):
             
             # Check all datasource endpoints
             found = False
-            if await client.api.cmdb.system.external-resource.exists(value):
+            if await client.api.cmdb.system.external_resource.exists(value):
                 found = True
             
             if not found:
@@ -313,7 +339,7 @@ class ProfileModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.dnsfilter.profile.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate child table items
         values = getattr(self, "transparent_dns_database", [])
@@ -331,7 +357,7 @@ class ProfileModel(BaseModel):
             
             # Check all datasource endpoints
             found = False
-            if await client.api.cmdb.system.dns-database.exists(value):
+            if await client.api.cmdb.system.dns_database.exists(value):
                 found = True
             
             if not found:
@@ -380,11 +406,11 @@ Dict = dict[str, Any]  # For backward compatibility
 # ============================================================================
 
 __all__ = [
-    "ProfileModel",    "ProfileDomainFilter",    "ProfileFtgdDns",    "ProfileExternalIpBlocklist",    "ProfileDnsTranslation",    "ProfileTransparentDnsDatabase",]
+    "ProfileModel",    "ProfileDomainFilter",    "ProfileFtgdDns",    "ProfileFtgdDns.Filters",    "ProfileExternalIpBlocklist",    "ProfileDnsTranslation",    "ProfileTransparentDnsDatabase",]
 
 
 # ============================================================================
 # Generated by hfortix generator v0.6.0
 # Schema: 1.7.0
-# Generated: 2026-01-17T05:32:19.621127Z
+# Generated: 2026-01-17T17:25:23.284795Z
 # ============================================================================

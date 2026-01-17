@@ -11,38 +11,27 @@ from pydantic import BaseModel, Field
 from typing import Any, Optional
 
 # ============================================================================
-# Child Table Models
+# Enum Definitions for Child Table Fields (for fields with 4+ allowed values)
 # ============================================================================
 
-class NameParameters(BaseModel):
+# ============================================================================
+# Child Table Models (sorted deepest-first so nested models are defined before their parents)
+# ============================================================================
+
+class NameStatusApplicationListName(BaseModel):
     """
-    Child table model for parameters.
+    Child table model for status.<application list name>.
     
-    Application parameters.
-    """
-    
-    class Config:
-        """Pydantic model configuration."""
-        extra = "allow"  # Allow additional fields from API
-        str_strip_whitespace = True
-    
-    name: str | None = Field(max_length=31, default="", description="Parameter name.")    
-    default value: str | None = Field(max_length=199, default="", description="Parameter default value.")
-class NameMetadata(BaseModel):
-    """
-    Child table model for metadata.
-    
-    Meta data.
+    Application list name.
     """
     
     class Config:
         """Pydantic model configuration."""
         extra = "allow"  # Allow additional fields from API
         str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
     
-    id: int | None = Field(ge=0, le=4294967295, default=0, description="ID.")    
-    metaid: int | None = Field(ge=0, le=4294967295, default=0, description="Meta ID.")    
-    valueid: int | None = Field(ge=0, le=4294967295, default=0, description="Value ID.")
+    application_entry_name: Any = Field(default=None, description="application entry name")
 class NameStatus(BaseModel):
     """
     Child table model for status.
@@ -54,8 +43,40 @@ class NameStatus(BaseModel):
         """Pydantic model configuration."""
         extra = "allow"  # Allow additional fields from API
         str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
     
-    <application list name>: list[<Application List Name>] = Field(default=None, description="Application list name.")
+    application_list_name: list[NameStatusApplicationListName] = Field(default_factory=list, description="Application list name.")
+class NameParameters(BaseModel):
+    """
+    Child table model for parameters.
+    
+    Application parameters.
+    """
+    
+    class Config:
+        """Pydantic model configuration."""
+        extra = "allow"  # Allow additional fields from API
+        str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
+    
+    name: str | None = Field(max_length=31, default=None, description="Parameter name.")    
+    default_value: str | None = Field(max_length=199, default=None, description="Parameter default value.")
+class NameMetadata(BaseModel):
+    """
+    Child table model for metadata.
+    
+    Meta data.
+    """
+    
+    class Config:
+        """Pydantic model configuration."""
+        extra = "allow"  # Allow additional fields from API
+        str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
+    
+    id_: int | None = Field(ge=0, le=4294967295, default=0, serialization_alias="id", description="ID.")    
+    metaid: int | None = Field(ge=0, le=4294967295, default=0, description="Meta ID.")    
+    valueid: int | None = Field(ge=0, le=4294967295, default=0, description="Value ID.")
 # ============================================================================
 # Enum Definitions (for fields with 4+ allowed values)
 # ============================================================================
@@ -71,7 +92,7 @@ class NameModel(BaseModel):
     
     Configure application signatures.
     
-    Validation Rules:        - name: max_length=63 pattern=        - id: min=0 max=4294967295 pattern=        - category: min=0 max=4294967295 pattern=        - popularity: min=0 max=255 pattern=        - risk: min=0 max=255 pattern=        - weight: min=0 max=255 pattern=        - protocol: pattern=        - technology: pattern=        - behavior: pattern=        - vendor: pattern=        - parameters: pattern=        - metadata: pattern=        - status: pattern=    """
+    Validation Rules:        - name: max_length=63 pattern=        - id_: min=0 max=4294967295 pattern=        - category: min=0 max=4294967295 pattern=        - popularity: min=0 max=255 pattern=        - risk: min=0 max=255 pattern=        - weight: min=0 max=255 pattern=        - protocol: pattern=        - technology: pattern=        - behavior: pattern=        - vendor: pattern=        - parameters: pattern=        - metadata: pattern=        - status: pattern=    """
     
     class Config:
         """Pydantic model configuration."""
@@ -84,19 +105,19 @@ class NameModel(BaseModel):
     # Model Fields
     # ========================================================================
     
-    name: str | None = Field(max_length=63, default="", description="Application name.")    
-    id: int | None = Field(ge=0, le=4294967295, default=0, description="Application ID.")    
+    name: str | None = Field(max_length=63, default=None, description="Application name.")    
+    id_: int | None = Field(ge=0, le=4294967295, default=0, serialization_alias="id", description="Application ID.")    
     category: int = Field(ge=0, le=4294967295, default=0, description="Application category ID.")    
     popularity: int | None = Field(ge=0, le=255, default=0, description="Application popularity.")    
     risk: int | None = Field(ge=0, le=255, default=0, description="Application risk.")    
     weight: int | None = Field(ge=0, le=255, default=0, description="Application weight.")    
-    protocol: str | None = Field(default="", description="Application protocol.")    
-    technology: str | None = Field(default="", description="Application technology.")    
-    behavior: str | None = Field(default="", description="Application behavior.")    
-    vendor: str | None = Field(default="", description="Application vendor.")    
-    parameters: list[Parameters] = Field(default=None, description="Application parameters.")    
-    metadata: list[Metadata] = Field(default=None, description="Meta data.")    
-    status: list[Status] = Field(default=None, description="print all application information")    
+    protocol: str | None = Field(default=None, description="Application protocol.")    
+    technology: str | None = Field(default=None, description="Application technology.")    
+    behavior: str | None = Field(default=None, description="Application behavior.")    
+    vendor: str | None = Field(default=None, description="Application vendor.")    
+    parameters: list[NameParameters] = Field(default_factory=list, description="Application parameters.")    
+    metadata: list[NameMetadata] = Field(default_factory=list, description="Meta data.")    
+    status: list[NameStatus] = Field(default_factory=list, description="print all application information")    
     # ========================================================================
     # Custom Validators
     # ========================================================================
@@ -139,11 +160,11 @@ Dict = dict[str, Any]  # For backward compatibility
 # ============================================================================
 
 __all__ = [
-    "NameModel",    "NameParameters",    "NameMetadata",    "NameStatus",]
+    "NameModel",    "NameParameters",    "NameMetadata",    "NameStatus",    "NameStatus.<Application List Name>",]
 
 
 # ============================================================================
 # Generated by hfortix generator v0.6.0
 # Schema: 1.7.0
-# Generated: 2026-01-17T05:32:18.489878Z
+# Generated: 2026-01-17T17:25:22.265914Z
 # ============================================================================

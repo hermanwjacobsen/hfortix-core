@@ -11,7 +11,11 @@ from pydantic import BaseModel, Field, field_validator
 from typing import Any, Literal, Optional
 
 # ============================================================================
-# Child Table Models
+# Enum Definitions for Child Table Fields (for fields with 4+ allowed values)
+# ============================================================================
+
+# ============================================================================
+# Child Table Models (sorted deepest-first so nested models are defined before their parents)
 # ============================================================================
 
 class DnsServerHostname(BaseModel):
@@ -25,8 +29,9 @@ class DnsServerHostname(BaseModel):
         """Pydantic model configuration."""
         extra = "allow"  # Allow additional fields from API
         str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
     
-    hostname: str = Field(max_length=127, default="", description="DNS server host name list separated by space (maximum 4 domains).")
+    hostname: str = Field(max_length=127, description="DNS server host name list separated by space (maximum 4 domains).")
 class DnsDomain(BaseModel):
     """
     Child table model for domain.
@@ -38,8 +43,9 @@ class DnsDomain(BaseModel):
         """Pydantic model configuration."""
         extra = "allow"  # Allow additional fields from API
         str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
     
-    domain: str = Field(max_length=127, default="", description="DNS search domain list separated by space (maximum 8 domains).")
+    domain: str = Field(max_length=127, description="DNS search domain list separated by space (maximum 8 domains).")
 # ============================================================================
 # Enum Definitions (for fields with 4+ allowed values)
 # ============================================================================
@@ -70,10 +76,10 @@ class DnsModel(BaseModel):
     
     primary: str = Field(default="0.0.0.0", description="Primary DNS server IP address.")    
     secondary: str | None = Field(default="0.0.0.0", description="Secondary DNS server IP address.")    
-    protocol: list[Protocol] = Field(default="cleartext", description="DNS transport protocols.")    
+    protocol: list[Literal["cleartext", "dot", "doh"]] = Field(default_factory=list, description="DNS transport protocols.")    
     ssl_certificate: str | None = Field(max_length=35, default="Fortinet_Factory", description="Name of local certificate for SSL connections.")  # datasource: ['certificate.local.name']    
-    server_hostname: list[ServerHostname] = Field(default=None, description="DNS server host name list.")    
-    domain: list[Domain] = Field(default=None, description="Search suffix list for hostname lookup.")    
+    server_hostname: list[DnsServerHostname] = Field(default_factory=list, description="DNS server host name list.")    
+    domain: list[DnsDomain] = Field(default_factory=list, description="Search suffix list for hostname lookup.")    
     ip6_primary: str | None = Field(default="::", description="Primary DNS server IPv6 address.")    
     ip6_secondary: str | None = Field(default="::", description="Secondary DNS server IPv6 address.")    
     timeout: int | None = Field(ge=1, le=10, default=5, description="DNS query timeout interval in seconds (1 - 10).")    
@@ -82,10 +88,10 @@ class DnsModel(BaseModel):
     dns_cache_ttl: int | None = Field(ge=60, le=86400, default=1800, description="Duration in seconds that the DNS cache retains information.")    
     cache_notfound_responses: Literal["disable", "enable"] | None = Field(default="disable", description="Enable/disable response from the DNS server when a record is not in cache.")    
     source_ip: str | None = Field(default="0.0.0.0", description="IP address used by the DNS server as its source IP.")    
-    source_ip_interface: str | None = Field(max_length=15, default="", description="IP address of the specified interface as the source IP address.")  # datasource: ['system.interface.name']    
-    root_servers: list[RootServers] = Field(default="", description="Configure up to two preferred servers that serve the DNS root zone (default uses all 13 root servers).")    
+    source_ip_interface: str | None = Field(max_length=15, default=None, description="IP address of the specified interface as the source IP address.")  # datasource: ['system.interface.name']    
+    root_servers: list[str] = Field(default_factory=list, description="Configure up to two preferred servers that serve the DNS root zone (default uses all 13 root servers).")    
     interface_select_method: Literal["auto", "sdwan", "specify"] | None = Field(default="auto", description="Specify how to select outgoing interface to reach server.")    
-    interface: str = Field(max_length=15, default="", description="Specify outgoing interface to reach server.")  # datasource: ['system.interface.name']    
+    interface: str = Field(max_length=15, description="Specify outgoing interface to reach server.")  # datasource: ['system.interface.name']    
     vrf_select: int | None = Field(ge=0, le=511, default=0, description="VRF ID used for connection to server.")    
     server_select_method: Literal["least-rtt", "failover"] | None = Field(default="least-rtt", description="Specify how configured servers are prioritized.")    
     alt_primary: str | None = Field(default="0.0.0.0", description="Alternate primary DNS server. This is not used as a failover DNS server.")    
@@ -205,7 +211,7 @@ class DnsModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.system.dns.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate scalar field
         value = getattr(self, "ssl_certificate", None)
@@ -254,7 +260,7 @@ class DnsModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.system.dns.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate scalar field
         value = getattr(self, "source_ip_interface", None)
@@ -303,7 +309,7 @@ class DnsModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.system.dns.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate scalar field
         value = getattr(self, "interface", None)
@@ -367,5 +373,5 @@ __all__ = [
 # ============================================================================
 # Generated by hfortix generator v0.6.0
 # Schema: 1.7.0
-# Generated: 2026-01-17T05:32:19.028983Z
+# Generated: 2026-01-17T17:25:22.745443Z
 # ============================================================================

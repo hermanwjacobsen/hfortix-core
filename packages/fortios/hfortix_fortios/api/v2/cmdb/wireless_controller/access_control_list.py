@@ -673,6 +673,24 @@ class AccessControlList(CRUDEndpoint, MetadataMixin):
             - put(): Update existing object
             - exists(): Check existence manually
         """
+        # Apply normalization for table fields (supports flexible input formats)
+        if layer3_ipv4_rules is not None:
+            layer3_ipv4_rules = normalize_table_field(
+                layer3_ipv4_rules,
+                mkey="rule-id",
+                required_fields=['rule-id'],
+                field_name="layer3_ipv4_rules",
+                example="[{'rule-id': 1}]",
+            )
+        if layer3_ipv6_rules is not None:
+            layer3_ipv6_rules = normalize_table_field(
+                layer3_ipv6_rules,
+                mkey="rule-id",
+                required_fields=['rule-id'],
+                field_name="layer3_ipv6_rules",
+                example="[{'rule-id': 1}]",
+            )
+        
         # Build payload using helper function with auto-normalization
         payload_data = build_api_payload(
             name=name,

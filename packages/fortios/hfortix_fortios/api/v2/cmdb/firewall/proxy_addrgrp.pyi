@@ -1,262 +1,118 @@
-from typing import TypedDict, Literal, Any, Coroutine, Union, overload, Generator, final
-from typing_extensions import NotRequired
-from hfortix_fortios.models import FortiObject, FortiObjectList
+""" - Type Stubs
 
-# ============================================================================
-# Nested TypedDicts for table field children (dict mode)
-# These MUST be defined before the Payload class to use them as type hints
-# ============================================================================
+Auto-generated stub file for type checking and IDE support.
 
-class ProxyAddrgrpMemberItem(TypedDict, total=False):
-    """Type hints for member table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    Use this when building payloads for POST/PUT requests.
-    
-    **Available fields:**
-        - name: str
-    
-    **Example:**
-        entry: ProxyAddrgrpMemberItem = {
-            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
-        }
-    """
-    
-    name: str  # Address name. | MaxLen: 79
+Endpoint: firewall/proxy_addrgrp
+Category: cmdb
+"""
+
+from __future__ import annotations
+
+from typing import (
+    Any,
+    ClassVar,
+    Literal,
+    TypedDict,
+    overload,
+)
+
+from hfortix_fortios.models import (
+    FortiObject,
+    FortiObjectList,
+)
 
 
-class ProxyAddrgrpTaggingItem(TypedDict, total=False):
-    """Type hints for tagging table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    Use this when building payloads for POST/PUT requests.
-    
-    **Available fields:**
-        - name: str
-        - category: str
-        - tags: str
-    
-    **Example:**
-        entry: ProxyAddrgrpTaggingItem = {
-            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
-        }
-    """
-    
-    name: str  # Tagging entry name. | MaxLen: 63
-    category: str  # Tag category. | MaxLen: 63
-    tags: str  # Tags.
+# ================================================================
+# TypedDict Payloads
+# ================================================================
 
-
-# ============================================================================
-# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional)
-# ============================================================================
-# NOTE: We intentionally DON'T use NotRequired wrapper because:
-# 1. total=False already makes all fields optional
-# 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
-class ProxyAddrgrpPayload(TypedDict, total=False):
-    """
-    Type hints for firewall/proxy_addrgrp payload fields.
-    
-    Configure web proxy address group.
-    
-    **Usage:**
-        payload: ProxyAddrgrpPayload = {
-            "field": "value",  # <- autocomplete shows all fields
-        }
-    """
-    name: str  # Address group name. | MaxLen: 79
-    type: Literal["src", "dst"]  # Source or destination address group type. | Default: src
-    uuid: str  # Universally Unique Identifier | Default: 00000000-0000-0000-0000-000000000000
-    member: list[ProxyAddrgrpMemberItem]  # Members of address group.
-    color: int  # Integer value to determine the color of the icon i | Default: 0 | Min: 0 | Max: 32
-    tagging: list[ProxyAddrgrpTaggingItem]  # Config object tagging.
-    comment: str  # Optional comments. | MaxLen: 255
-
-# ============================================================================
-# Nested classes for table field children (object mode - for API responses)
-# ============================================================================
-
-@final
-class ProxyAddrgrpMemberObject:
-    """Typed object for member table items.
-    
-    Provides IDE autocomplete for nested table field attributes.
-    At runtime, this is a FortiObject instance.
-    """
-    
-    # Address name. | MaxLen: 79
+class ProxyAddrgrpMemberItem:
+    """Nested item for member field - supports attribute access."""
     name: str
-    
-    # Common API response fields
-    status: str
-    http_status: int | None
-    http_status_code: int | None
-    http_method: str | None
-    http_response_time: float | None
-    vdom: str | None
-    
-    # Methods from FortiObject
-    @property
-    def dict(self) -> dict[str, Any]:
-        """Convert to dictionary."""
-        ...
-    @property
-    def json(self) -> str:
-        """Get pretty-printed JSON string."""
-        ...
-    @property
-    def raw(self) -> dict[str, Any]:
-        """Get raw API response data."""
-        ...
-    def get_full(self, name: str) -> Any: ...
-    def to_dict(self) -> FortiObject: ...
-    def keys(self) -> Any: ...
-    def values(self) -> Generator[Any, None, None]: ...
-    def items(self) -> Generator[tuple[str, Any], None, None]: ...
-    def get(self, key: str, default: Any = None) -> Any: ...
 
 
-@final
-class ProxyAddrgrpTaggingObject:
-    """Typed object for tagging table items.
-    
-    Provides IDE autocomplete for nested table field attributes.
-    At runtime, this is a FortiObject instance.
-    """
-    
-    # Tagging entry name. | MaxLen: 63
+class ProxyAddrgrpTaggingItem:
+    """Nested item for tagging field - supports attribute access."""
     name: str
-    # Tag category. | MaxLen: 63
     category: str
-    # Tags.
     tags: str
-    
-    # Common API response fields
-    status: str
-    http_status: int | None
-    http_status_code: int | None
-    http_method: str | None
-    http_response_time: float | None
-    vdom: str | None
-    
-    # Methods from FortiObject
-    @property
-    def dict(self) -> dict[str, Any]:
-        """Convert to dictionary."""
-        ...
-    @property
-    def json(self) -> str:
-        """Get pretty-printed JSON string."""
-        ...
-    @property
-    def raw(self) -> dict[str, Any]:
-        """Get raw API response data."""
-        ...
-    def get_full(self, name: str) -> Any: ...
-    def to_dict(self) -> FortiObject: ...
-    def keys(self) -> Any: ...
-    def values(self) -> Generator[Any, None, None]: ...
-    def items(self) -> Generator[tuple[str, Any], None, None]: ...
-    def get(self, key: str, default: Any = None) -> Any: ...
 
 
-
-
-# Response TypedDict for GET returns (all fields present in API response)
-class ProxyAddrgrpResponse(TypedDict):
-    """
-    Type hints for firewall/proxy_addrgrp API response fields.
-    
-    All fields are present in the response from the FortiGate API.
-    """
-    name: str  # Address group name. | MaxLen: 79
-    type: Literal["src", "dst"]  # Source or destination address group type. | Default: src
-    uuid: str  # Universally Unique Identifier | Default: 00000000-0000-0000-0000-000000000000
-    member: list[ProxyAddrgrpMemberItem]  # Members of address group.
-    color: int  # Integer value to determine the color of the icon i | Default: 0 | Min: 0 | Max: 32
-    tagging: list[ProxyAddrgrpTaggingItem]  # Config object tagging.
-    comment: str  # Optional comments. | MaxLen: 255
-
-
-@final
-class ProxyAddrgrpObject:
-    """Typed FortiObject for firewall/proxy_addrgrp with IDE autocomplete support.
-    
-    This is a typed wrapper that provides IDE autocomplete for API response fields.
-    At runtime, this is actually a FortiObject instance.
-    """
-    
-    # Address group name. | MaxLen: 79
+class ProxyAddrgrpPayload(TypedDict, total=False):
+    """Payload type for ProxyAddrgrp operations."""
     name: str
-    # Source or destination address group type. | Default: src
     type: Literal["src", "dst"]
-    # Universally Unique Identifier | Default: 00000000-0000-0000-0000-000000000000
     uuid: str
-    # Members of address group.
-    member: list[ProxyAddrgrpMemberObject]
-    # Integer value to determine the color of the icon in the GUI | Default: 0 | Min: 0 | Max: 32
+    member: str | list[str] | list[dict[str, Any]] | list[ProxyAddrgrpMemberItem]
     color: int
-    # Config object tagging.
-    tagging: list[ProxyAddrgrpTaggingObject]
-    # Optional comments. | MaxLen: 255
+    tagging: str | list[str] | list[dict[str, Any]] | list[ProxyAddrgrpTaggingItem]
     comment: str
-    
-    # Common API response fields
-    status: str
-    http_status: int | None
-    http_status_code: int | None
-    http_method: str | None
-    http_response_time: float | None
-    vdom: str | None
-    
-    # Methods from FortiObject
-    @property
-    def dict(self) -> dict[str, Any]:
-        """Convert to dictionary."""
-        ...
-    @property
-    def json(self) -> str:
-        """Get pretty-printed JSON string."""
-        ...
-    @property
-    def raw(self) -> dict[str, Any]:
-        """Get raw API response data."""
-        ...
-    def get_full(self, name: str) -> Any: ...
-    def to_dict(self) -> ProxyAddrgrpPayload: ...
-    def keys(self) -> Any: ...
-    def values(self) -> Generator[Any, None, None]: ...
-    def items(self) -> Generator[tuple[str, Any], None, None]: ...
-    def get(self, key: str, default: Any = None) -> Any: ...
 
+
+# ================================================================
+# Response Types (TypedDict for dict-style access)
+# ================================================================
+
+class ProxyAddrgrpResponse(TypedDict, total=False):
+    """Response type for ProxyAddrgrp - use with .dict property for typed dict access."""
+    name: str
+    type: Literal["src", "dst"]
+    uuid: str
+    member: list[ProxyAddrgrpMemberItem]
+    color: int
+    tagging: list[ProxyAddrgrpTaggingItem]
+    comment: str
+
+
+# ================================================================
+# Response Types (Class for attribute access)
+# ================================================================
+
+
+class ProxyAddrgrpObject(FortiObject):
+    """Typed FortiObject for ProxyAddrgrp with field access."""
+    name: str
+    type: Literal["src", "dst"]
+    uuid: str
+    member: list[ProxyAddrgrpMemberItem]
+    color: int
+    tagging: list[ProxyAddrgrpTaggingItem]
+    comment: str
+
+
+# ================================================================
+# Main Endpoint Class
+# ================================================================
 
 class ProxyAddrgrp:
     """
-    Configure web proxy address group.
     
-    Path: firewall/proxy_addrgrp
+    Endpoint: firewall/proxy_addrgrp
     Category: cmdb
-    Primary Key: name
+    MKey: name
     """
     
+    # Class attributes for introspection
+    endpoint: ClassVar[str] = ...
+    path: ClassVar[str] = ...
+    category: ClassVar[str] = ...
+    mkey: ClassVar[str] = ...
+    capabilities: ClassVar[dict[str, Any]] = ...
+    
     def __init__(self, client: Any) -> None:
-        """Initialize endpoint with HTTP client.
-        
-        Args:
-            client: HTTP client instance for API communication
-        """
+        """Initialize endpoint with HTTP client."""
         ...
     
     # ================================================================
-    # GET OVERLOADS - Always returns FortiObject (or ContentResponse for file endpoints)
-    # Pylance matches overloads top-to-bottom, so these must come first!
+    # GET Methods
     # ================================================================
     
-    # With mkey as positional arg -> returns FortiObject
+    # CMDB with mkey - overloads for single vs list returns
     @overload
     def get(
         self,
         name: str,
+        *,
         filter: str | list[str] | None = ...,
         count: int | None = ...,
         start: int | None = ...,
@@ -266,14 +122,14 @@ class ProxyAddrgrp:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        error_mode: Literal["raise", "return", "print"] | None = ...,
+        error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> ProxyAddrgrpObject: ...
     
-    # With mkey as keyword arg -> returns FortiObject
     @overload
     def get(
         self,
         *,
-        name: str,
         filter: str | list[str] | None = ...,
         count: int | None = ...,
         start: int | None = ...,
@@ -283,304 +139,69 @@ class ProxyAddrgrp:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> ProxyAddrgrpObject: ...
-    
-    # Without mkey -> returns list of FortiObjects
-    @overload
-    def get(
-        self,
-        name: None = None,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
+        error_mode: Literal["raise", "return", "print"] | None = ...,
+        error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> FortiObjectList[ProxyAddrgrpObject]: ...
-    
-    # ================================================================
-    # (removed - all GET now returns FortiObject)
-    # ================================================================
-    
-    # With mkey as positional arg -> returns single object
-    @overload
-    def get(
-        self,
-        name: str,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> ProxyAddrgrpObject: ...
-    
-    # With mkey as keyword arg -> returns single object
-    @overload
-    def get(
-        self,
-        *,
-        name: str,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> ProxyAddrgrpObject: ...
-    
-    # With no mkey -> returns list of objects
-    @overload
-    def get(
-        self,
-        *,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObjectList[ProxyAddrgrpObject]: ...
-    
-    # Dict mode with mkey provided as positional arg (single dict)
-    @overload
-    def get(
-        self,
-        name: str,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> ProxyAddrgrpObject: ...
-    
-    # Dict mode with mkey provided as keyword arg (single dict)
-    @overload
-    def get(
-        self,
-        *,
-        name: str,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> ProxyAddrgrpObject: ...
-    
-    # Dict mode - list of dicts (no mkey/name provided) - keyword-only signature
-    @overload
-    def get(
-        self,
-        *,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObjectList[ProxyAddrgrpObject]: ...
-    
-    # Fallback overload for all other cases
-    @overload
-    def get(
-        self,
-        name: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> Union[dict[str, Any], list[dict[str, Any]], FortiObject, list[FortiObject]]: ...
-    
-    def get(
-        self,
-        name: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> ProxyAddrgrpObject | list[ProxyAddrgrpObject] | dict[str, Any] | list[dict[str, Any]]: ...
     
     def get_schema(
         self,
         vdom: str | None = ...,
         format: str = ...,
     ) -> FortiObject: ...
+
+    # ================================================================
+    # POST Method
+    # ================================================================
     
-    # POST overloads
-    @overload
     def post(
         self,
         payload_dict: ProxyAddrgrpPayload | None = ...,
         name: str | None = ...,
         type: Literal["src", "dst"] | None = ...,
         uuid: str | None = ...,
-        member: str | list[str] | list[ProxyAddrgrpMemberItem] | None = ...,
+        member: str | list[str] | list[dict[str, Any]] | list[ProxyAddrgrpMemberItem] | None = ...,
         color: int | None = ...,
-        tagging: str | list[str] | list[ProxyAddrgrpTaggingItem] | None = ...,
+        tagging: str | list[str] | list[dict[str, Any]] | list[ProxyAddrgrpTaggingItem] | None = ...,
         comment: str | None = ...,
         vdom: str | bool | None = ...,
+        error_mode: Literal["raise", "return", "print"] | None = ...,
+        error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> ProxyAddrgrpObject: ...
+
+    # ================================================================
+    # PUT Method
+    # ================================================================
     
-    @overload
-    def post(
-        self,
-        payload_dict: ProxyAddrgrpPayload | None = ...,
-        name: str | None = ...,
-        type: Literal["src", "dst"] | None = ...,
-        uuid: str | None = ...,
-        member: str | list[str] | list[ProxyAddrgrpMemberItem] | None = ...,
-        color: int | None = ...,
-        tagging: str | list[str] | list[ProxyAddrgrpTaggingItem] | None = ...,
-        comment: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
-    
-    # Default overload
-    @overload
-    def post(
-        self,
-        payload_dict: ProxyAddrgrpPayload | None = ...,
-        name: str | None = ...,
-        type: Literal["src", "dst"] | None = ...,
-        uuid: str | None = ...,
-        member: str | list[str] | list[ProxyAddrgrpMemberItem] | None = ...,
-        color: int | None = ...,
-        tagging: str | list[str] | list[ProxyAddrgrpTaggingItem] | None = ...,
-        comment: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
-    
-    def post(
-        self,
-        payload_dict: ProxyAddrgrpPayload | None = ...,
-        name: str | None = ...,
-        type: Literal["src", "dst"] | None = ...,
-        uuid: str | None = ...,
-        member: str | list[str] | list[ProxyAddrgrpMemberItem] | None = ...,
-        color: int | None = ...,
-        tagging: str | list[str] | list[ProxyAddrgrpTaggingItem] | None = ...,
-        comment: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
-    
-    # PUT overloads
-    @overload
     def put(
         self,
         payload_dict: ProxyAddrgrpPayload | None = ...,
         name: str | None = ...,
         type: Literal["src", "dst"] | None = ...,
         uuid: str | None = ...,
-        member: str | list[str] | list[ProxyAddrgrpMemberItem] | None = ...,
+        member: str | list[str] | list[dict[str, Any]] | list[ProxyAddrgrpMemberItem] | None = ...,
         color: int | None = ...,
-        tagging: str | list[str] | list[ProxyAddrgrpTaggingItem] | None = ...,
+        tagging: str | list[str] | list[dict[str, Any]] | list[ProxyAddrgrpTaggingItem] | None = ...,
         comment: str | None = ...,
         vdom: str | bool | None = ...,
+        error_mode: Literal["raise", "return", "print"] | None = ...,
+        error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> ProxyAddrgrpObject: ...
-    
-    @overload
-    def put(
-        self,
-        payload_dict: ProxyAddrgrpPayload | None = ...,
-        name: str | None = ...,
-        type: Literal["src", "dst"] | None = ...,
-        uuid: str | None = ...,
-        member: str | list[str] | list[ProxyAddrgrpMemberItem] | None = ...,
-        color: int | None = ...,
-        tagging: str | list[str] | list[ProxyAddrgrpTaggingItem] | None = ...,
-        comment: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
-    
-    # Default overload
-    @overload
-    def put(
-        self,
-        payload_dict: ProxyAddrgrpPayload | None = ...,
-        name: str | None = ...,
-        type: Literal["src", "dst"] | None = ...,
-        uuid: str | None = ...,
-        member: str | list[str] | list[ProxyAddrgrpMemberItem] | None = ...,
-        color: int | None = ...,
-        tagging: str | list[str] | list[ProxyAddrgrpTaggingItem] | None = ...,
-        comment: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
-    
-    def put(
-        self,
-        payload_dict: ProxyAddrgrpPayload | None = ...,
-        name: str | None = ...,
-        type: Literal["src", "dst"] | None = ...,
-        uuid: str | None = ...,
-        member: str | list[str] | list[ProxyAddrgrpMemberItem] | None = ...,
-        color: int | None = ...,
-        tagging: str | list[str] | list[ProxyAddrgrpTaggingItem] | None = ...,
-        comment: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
-    
-    # DELETE overloads
-    @overload
-    def delete(
-        self,
-        name: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> ProxyAddrgrpObject: ...
-    
-    @overload
-    def delete(
-        self,
-        name: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
-    
-    # Default overload
-    @overload
-    def delete(
-        self,
-        name: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+
+    # ================================================================
+    # DELETE Method
+    # ================================================================
     
     def delete(
         self,
         name: str | None = ...,
         vdom: str | bool | None = ...,
+        error_mode: Literal["raise", "return", "print"] | None = ...,
+        error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> FortiObject: ...
+
+    # ================================================================
+    # Utility Methods
+    # ================================================================
     
     def exists(
         self,
@@ -594,11 +215,13 @@ class ProxyAddrgrp:
         name: str | None = ...,
         type: Literal["src", "dst"] | None = ...,
         uuid: str | None = ...,
-        member: str | list[str] | list[ProxyAddrgrpMemberItem] | None = ...,
+        member: str | list[str] | list[dict[str, Any]] | list[ProxyAddrgrpMemberItem] | None = ...,
         color: int | None = ...,
-        tagging: str | list[str] | list[ProxyAddrgrpTaggingItem] | None = ...,
+        tagging: str | list[str] | list[dict[str, Any]] | list[ProxyAddrgrpTaggingItem] | None = ...,
         comment: str | None = ...,
         vdom: str | bool | None = ...,
+        error_mode: Literal["raise", "return", "print"] | None = ...,
+        error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> FortiObject: ...
     
     # Helper methods
@@ -606,7 +229,7 @@ class ProxyAddrgrp:
     def help(field_name: str | None = ...) -> str: ...
     
     @staticmethod
-    def fields(detailed: bool = ...) -> Union[list[str], list[dict[str, Any]]]: ...
+    def fields(detailed: bool = ...) -> list[str] | list[dict[str, Any]]: ...
     
     @staticmethod
     def field_info(field_name: str) -> FortiObject: ...
@@ -622,9 +245,6 @@ class ProxyAddrgrp:
     
     @staticmethod
     def schema() -> FortiObject: ...
-
-
-# ================================================================
 
 
 __all__ = [

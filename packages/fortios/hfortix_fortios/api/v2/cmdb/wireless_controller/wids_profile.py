@@ -1552,6 +1552,32 @@ class WidsProfile(CRUDEndpoint, MetadataMixin):
             - put(): Update existing object
             - exists(): Check existence manually
         """
+        # Apply normalization for table fields (supports flexible input formats)
+        if ap_scan_channel_list_2G_5G is not None:
+            ap_scan_channel_list_2G_5G = normalize_table_field(
+                ap_scan_channel_list_2G_5G,
+                mkey="chan",
+                required_fields=['chan'],
+                field_name="ap_scan_channel_list_2G_5G",
+                example="[{'chan': 'value'}]",
+            )
+        if ap_scan_channel_list_6G is not None:
+            ap_scan_channel_list_6G = normalize_table_field(
+                ap_scan_channel_list_6G,
+                mkey="chan",
+                required_fields=['chan'],
+                field_name="ap_scan_channel_list_6G",
+                example="[{'chan': 'value'}]",
+            )
+        if ap_bgscan_disable_schedules is not None:
+            ap_bgscan_disable_schedules = normalize_table_field(
+                ap_bgscan_disable_schedules,
+                mkey="name",
+                required_fields=['name'],
+                field_name="ap_bgscan_disable_schedules",
+                example="[{'name': 'value'}]",
+            )
+        
         # Build payload using helper function with auto-normalization
         payload_data = build_api_payload(
             name=name,

@@ -11,7 +11,11 @@ from pydantic import BaseModel, Field, field_validator
 from typing import Any, Literal, Optional
 
 # ============================================================================
-# Child Table Models
+# Enum Definitions for Child Table Fields (for fields with 4+ allowed values)
+# ============================================================================
+
+# ============================================================================
+# Child Table Models (sorted deepest-first so nested models are defined before their parents)
 # ============================================================================
 
 class DosPolicySrcaddr(BaseModel):
@@ -25,21 +29,9 @@ class DosPolicySrcaddr(BaseModel):
         """Pydantic model configuration."""
         extra = "allow"  # Allow additional fields from API
         str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
     
-    name: str = Field(max_length=79, default="", description="Address name.")  # datasource: ['firewall.address.name', 'firewall.addrgrp.name']
-class DosPolicyDstaddr(BaseModel):
-    """
-    Child table model for dstaddr.
-    
-    Destination address name from available addresses.
-    """
-    
-    class Config:
-        """Pydantic model configuration."""
-        extra = "allow"  # Allow additional fields from API
-        str_strip_whitespace = True
-    
-    name: str = Field(max_length=79, default="", description="Address name.")  # datasource: ['firewall.address.name', 'firewall.addrgrp.name']
+    name: str = Field(max_length=79, description="Address name.")  # datasource: ['firewall.address.name', 'firewall.addrgrp.name']
 class DosPolicyService(BaseModel):
     """
     Child table model for service.
@@ -51,8 +43,23 @@ class DosPolicyService(BaseModel):
         """Pydantic model configuration."""
         extra = "allow"  # Allow additional fields from API
         str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
     
-    name: str = Field(max_length=79, default="", description="Service name.")  # datasource: ['firewall.service.custom.name', 'firewall.service.group.name']
+    name: str = Field(max_length=79, description="Service name.")  # datasource: ['firewall.service.custom.name', 'firewall.service.group.name']
+class DosPolicyDstaddr(BaseModel):
+    """
+    Child table model for dstaddr.
+    
+    Destination address name from available addresses.
+    """
+    
+    class Config:
+        """Pydantic model configuration."""
+        extra = "allow"  # Allow additional fields from API
+        str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
+    
+    name: str = Field(max_length=79, description="Address name.")  # datasource: ['firewall.address.name', 'firewall.addrgrp.name']
 class DosPolicyAnomaly(BaseModel):
     """
     Child table model for anomaly.
@@ -64,8 +71,9 @@ class DosPolicyAnomaly(BaseModel):
         """Pydantic model configuration."""
         extra = "allow"  # Allow additional fields from API
         str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
     
-    name: str | None = Field(max_length=63, default="", description="Anomaly name.")    
+    name: str | None = Field(max_length=63, default=None, description="Anomaly name.")    
     status: Literal["disable", "enable"] | None = Field(default="disable", description="Enable/disable this anomaly.")    
     log: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable anomaly logging.")    
     action: Literal["pass", "block"] | None = Field(default="pass", description="Action taken when the threshold is reached.")    
@@ -73,7 +81,7 @@ class DosPolicyAnomaly(BaseModel):
     quarantine_expiry: str | None = Field(default="5m", description="Duration of quarantine. (Format ###d##h##m, minimum 1m, maximum 364d23h59m, default = 5m). Requires quarantine set to attacker.")    
     quarantine_log: Literal["disable", "enable"] | None = Field(default="enable", description="Enable/disable quarantine logging.")    
     threshold: int | None = Field(ge=1, le=2147483647, default=0, description="Anomaly threshold. Number of detected instances (packets per second or concurrent session number) that triggers the anomaly action.")    
-    threshold(default): int | None = Field(ge=0, le=4294967295, default=0, description="Number of detected instances (packets per second or concurrent session number) which triggers action (1 - 2147483647, default = 1000). Note that each anomaly has a different threshold value assigned to it.")
+    thresholddefault: int | None = Field(ge=0, le=4294967295, default=0, description="Number of detected instances (packets per second or concurrent session number) which triggers action (1 - 2147483647, default = 1000). Note that each anomaly has a different threshold value assigned to it.")
 # ============================================================================
 # Enum Definitions (for fields with 4+ allowed values)
 # ============================================================================
@@ -104,13 +112,13 @@ class DosPolicyModel(BaseModel):
     
     policyid: int | None = Field(ge=0, le=9999, default=0, description="Policy ID.")    
     status: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable this policy.")    
-    name: str | None = Field(max_length=35, default="", description="Policy name.")    
+    name: str | None = Field(max_length=35, default=None, description="Policy name.")    
     comments: str | None = Field(max_length=1023, default=None, description="Comment.")    
-    interface: str = Field(max_length=35, default="", description="Incoming interface name from available interfaces.")  # datasource: ['system.zone.name', 'system.sdwan.zone.name', 'system.interface.name']    
-    srcaddr: list[Srcaddr] = Field(description="Source address name from available addresses.")    
-    dstaddr: list[Dstaddr] = Field(description="Destination address name from available addresses.")    
-    service: list[Service] = Field(description="Service object from available options.")    
-    anomaly: list[Anomaly] = Field(default=None, description="Anomaly name.")    
+    interface: str = Field(max_length=35, description="Incoming interface name from available interfaces.")  # datasource: ['system.zone.name', 'system.sdwan.zone.name', 'system.interface.name']    
+    srcaddr: list[DosPolicySrcaddr] = Field(description="Source address name from available addresses.")    
+    dstaddr: list[DosPolicyDstaddr] = Field(description="Destination address name from available addresses.")    
+    service: list[DosPolicyService] = Field(description="Service object from available options.")    
+    anomaly: list[DosPolicyAnomaly] = Field(default_factory=list, description="Anomaly name.")    
     # ========================================================================
     # Custom Validators
     # ========================================================================
@@ -190,7 +198,7 @@ class DosPolicyModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.DoS_policy.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate scalar field
         value = getattr(self, "interface", None)
@@ -243,7 +251,7 @@ class DosPolicyModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.DoS_policy.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate child table items
         values = getattr(self, "srcaddr", [])
@@ -303,7 +311,7 @@ class DosPolicyModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.DoS_policy.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate child table items
         values = getattr(self, "dstaddr", [])
@@ -363,7 +371,7 @@ class DosPolicyModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.DoS_policy.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate child table items
         values = getattr(self, "service", [])
@@ -440,5 +448,5 @@ __all__ = [
 # ============================================================================
 # Generated by hfortix generator v0.6.0
 # Schema: 1.7.0
-# Generated: 2026-01-17T05:32:17.378090Z
+# Generated: 2026-01-17T17:25:21.273790Z
 # ============================================================================

@@ -7,13 +7,31 @@ Generated from FortiOS schema version unknown.
 
 from __future__ import annotations
 
-from pydantic import BaseModel, Field, field_validator
+from pydantic import BaseModel, Field
 from typing import Any, Literal, Optional
 
 # ============================================================================
-# Child Table Models
+# Enum Definitions for Child Table Fields (for fields with 4+ allowed values)
 # ============================================================================
 
+# ============================================================================
+# Child Table Models (sorted deepest-first so nested models are defined before their parents)
+# ============================================================================
+
+class RuleStatusSensorName(BaseModel):
+    """
+    Child table model for status.<sensor name>.
+    
+    IPS sensor name.
+    """
+    
+    class Config:
+        """Pydantic model configuration."""
+        extra = "allow"  # Allow additional fields from API
+        str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
+    
+    filter_name: Any = Field(default=None, description="IPS filter name.")
 class RuleStatus(BaseModel):
     """
     Child table model for status.
@@ -25,8 +43,9 @@ class RuleStatus(BaseModel):
         """Pydantic model configuration."""
         extra = "allow"  # Allow additional fields from API
         str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
     
-    <sensor name>: list[<Sensor Name>] = Field(default=None, description="IPS sensor name.")
+    sensor_name: list[RuleStatusSensorName] = Field(default_factory=list, description="IPS sensor name.")
 class RuleMetadata(BaseModel):
     """
     Child table model for metadata.
@@ -38,8 +57,9 @@ class RuleMetadata(BaseModel):
         """Pydantic model configuration."""
         extra = "allow"  # Allow additional fields from API
         str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
     
-    id: int | None = Field(ge=0, le=4294967295, default=0, description="ID.")    
+    id_: int | None = Field(ge=0, le=4294967295, default=0, serialization_alias="id", description="ID.")    
     metaid: int | None = Field(ge=0, le=4294967295, default=0, description="Meta ID.")    
     valueid: int | None = Field(ge=0, le=4294967295, default=0, description="Value ID.")
 # ============================================================================
@@ -70,21 +90,21 @@ class RuleModel(BaseModel):
     # Model Fields
     # ========================================================================
     
-    name: str | None = Field(max_length=63, default="", description="Rule name.")    
-    status: list[Status] = Field(default="enable", description="Print all IPS rule status information.")    
+    name: str | None = Field(max_length=63, default=None, description="Rule name.")    
+    status: list[RuleStatus] = Field(default_factory=list, description="Print all IPS rule status information.")    
     log: Literal["disable", "enable"] | None = Field(default="enable", description="Enable/disable logging.")    
     log_packet: Literal["disable", "enable"] | None = Field(default="disable", description="Enable/disable packet logging.")    
     action: Literal["pass", "block"] | None = Field(default="pass", description="Action.")    
-    group: str | None = Field(max_length=63, default="", description="Group.")    
-    severity: str | None = Field(default="", description="Severity.")    
-    location: list[Location] = Field(default="", description="Vulnerable location.")    
-    os: str | None = Field(default="", description="Vulnerable operation systems.")    
-    application: str | None = Field(default="", description="Vulnerable applications.")    
-    service: str | None = Field(default="", description="Vulnerable service.")    
+    group: str | None = Field(max_length=63, default=None, description="Group.")    
+    severity: str | None = Field(default=None, description="Severity.")    
+    location: list[str] = Field(default_factory=list, description="Vulnerable location.")    
+    os: str | None = Field(default=None, description="Vulnerable operation systems.")    
+    application: str | None = Field(default=None, description="Vulnerable applications.")    
+    service: str | None = Field(default=None, description="Vulnerable service.")    
     rule_id: int | None = Field(ge=0, le=4294967295, default=0, description="Rule ID.")    
     rev: int | None = Field(ge=0, le=4294967295, default=0, description="Revision.")    
     date: int | None = Field(ge=0, le=4294967295, default=0, description="Date.")    
-    metadata: list[Metadata] = Field(default=None, description="Meta data.")    
+    metadata: list[RuleMetadata] = Field(default_factory=list, description="Meta data.")    
     # ========================================================================
     # Custom Validators
     # ========================================================================
@@ -127,11 +147,11 @@ Dict = dict[str, Any]  # For backward compatibility
 # ============================================================================
 
 __all__ = [
-    "RuleModel",    "RuleStatus",    "RuleMetadata",]
+    "RuleModel",    "RuleStatus",    "RuleStatus.<Sensor Name>",    "RuleMetadata",]
 
 
 # ============================================================================
 # Generated by hfortix generator v0.6.0
 # Schema: 1.7.0
-# Generated: 2026-01-17T05:32:19.154700Z
+# Generated: 2026-01-17T17:25:22.858384Z
 # ============================================================================

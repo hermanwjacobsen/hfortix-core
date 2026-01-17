@@ -11,113 +11,13 @@ from pydantic import BaseModel, Field, field_validator
 from typing import Any, Literal, Optional
 
 # ============================================================================
-# Child Table Models
+# Enum Definitions for Child Table Fields (for fields with 4+ allowed values)
 # ============================================================================
 
-class Policy6InputDevice(BaseModel):
-    """
-    Child table model for input-device.
-    
-    Incoming interface name.
-    """
-    
-    class Config:
-        """Pydantic model configuration."""
-        extra = "allow"  # Allow additional fields from API
-        str_strip_whitespace = True
-    
-    name: str | None = Field(max_length=79, default="", description="Interface name.")  # datasource: ['system.interface.name']
-class Policy6Src(BaseModel):
-    """
-    Child table model for src.
-    
-    Source IPv6 prefix.
-    """
-    
-    class Config:
-        """Pydantic model configuration."""
-        extra = "allow"  # Allow additional fields from API
-        str_strip_whitespace = True
-    
-    addr6: str | None = Field(max_length=79, default="", description="IPv6 address prefix.")
-class Policy6Srcaddr(BaseModel):
-    """
-    Child table model for srcaddr.
-    
-    Source address name.
-    """
-    
-    class Config:
-        """Pydantic model configuration."""
-        extra = "allow"  # Allow additional fields from API
-        str_strip_whitespace = True
-    
-    name: str | None = Field(max_length=79, default="", description="Address/group name.")  # datasource: ['firewall.address6.name', 'firewall.addrgrp6.name']
-class Policy6Dst(BaseModel):
-    """
-    Child table model for dst.
-    
-    Destination IPv6 prefix.
-    """
-    
-    class Config:
-        """Pydantic model configuration."""
-        extra = "allow"  # Allow additional fields from API
-        str_strip_whitespace = True
-    
-    addr6: str | None = Field(max_length=79, default="", description="IPv6 address prefix.")
-class Policy6Dstaddr(BaseModel):
-    """
-    Child table model for dstaddr.
-    
-    Destination address name.
-    """
-    
-    class Config:
-        """Pydantic model configuration."""
-        extra = "allow"  # Allow additional fields from API
-        str_strip_whitespace = True
-    
-    name: str | None = Field(max_length=79, default="", description="Address/group name.")  # datasource: ['firewall.address6.name', 'firewall.addrgrp6.name']
-class Policy6InternetServiceId(BaseModel):
-    """
-    Child table model for internet-service-id.
-    
-    Destination Internet Service ID.
-    """
-    
-    class Config:
-        """Pydantic model configuration."""
-        extra = "allow"  # Allow additional fields from API
-        str_strip_whitespace = True
-    
-    id: int = Field(ge=0, le=4294967295, default=0, description="Destination Internet Service ID.")  # datasource: ['firewall.internet-service.id']
-class Policy6InternetServiceCustom(BaseModel):
-    """
-    Child table model for internet-service-custom.
-    
-    Custom Destination Internet Service name.
-    """
-    
-    class Config:
-        """Pydantic model configuration."""
-        extra = "allow"  # Allow additional fields from API
-        str_strip_whitespace = True
-    
-    name: str = Field(max_length=79, default="", description="Custom Destination Internet Service name.")  # datasource: ['firewall.internet-service-custom.name']
-class Policy6InternetServiceFortiguard(BaseModel):
-    """
-    Child table model for internet-service-fortiguard.
-    
-    FortiGuard Destination Internet Service name.
-    """
-    
-    class Config:
-        """Pydantic model configuration."""
-        extra = "allow"  # Allow additional fields from API
-        str_strip_whitespace = True
-    
-    name: str = Field(max_length=79, default="", description="FortiGuard Destination Internet Service name.")  # datasource: ['firewall.internet-service-fortiguard.name']
+# ============================================================================
+# Child Table Models (sorted deepest-first so nested models are defined before their parents)
+# ============================================================================
+
 class Policy6Users(BaseModel):
     """
     Child table model for users.
@@ -129,8 +29,93 @@ class Policy6Users(BaseModel):
         """Pydantic model configuration."""
         extra = "allow"  # Allow additional fields from API
         str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
     
-    name: str = Field(max_length=79, default="", description="User name.")  # datasource: ['user.local.name']
+    name: str = Field(max_length=79, description="User name.")  # datasource: ['user.local.name']
+class Policy6Srcaddr(BaseModel):
+    """
+    Child table model for srcaddr.
+    
+    Source address name.
+    """
+    
+    class Config:
+        """Pydantic model configuration."""
+        extra = "allow"  # Allow additional fields from API
+        str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
+    
+    name: str | None = Field(max_length=79, default=None, description="Address/group name.")  # datasource: ['firewall.address6.name', 'firewall.addrgrp6.name']
+class Policy6Src(BaseModel):
+    """
+    Child table model for src.
+    
+    Source IPv6 prefix.
+    """
+    
+    class Config:
+        """Pydantic model configuration."""
+        extra = "allow"  # Allow additional fields from API
+        str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
+    
+    addr6: str | None = Field(max_length=79, default=None, description="IPv6 address prefix.")
+class Policy6InternetServiceId(BaseModel):
+    """
+    Child table model for internet-service-id.
+    
+    Destination Internet Service ID.
+    """
+    
+    class Config:
+        """Pydantic model configuration."""
+        extra = "allow"  # Allow additional fields from API
+        str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
+    
+    id_: int = Field(ge=0, le=4294967295, default=0, serialization_alias="id", description="Destination Internet Service ID.")  # datasource: ['firewall.internet-service.id']
+class Policy6InternetServiceFortiguard(BaseModel):
+    """
+    Child table model for internet-service-fortiguard.
+    
+    FortiGuard Destination Internet Service name.
+    """
+    
+    class Config:
+        """Pydantic model configuration."""
+        extra = "allow"  # Allow additional fields from API
+        str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
+    
+    name: str = Field(max_length=79, description="FortiGuard Destination Internet Service name.")  # datasource: ['firewall.internet-service-fortiguard.name']
+class Policy6InternetServiceCustom(BaseModel):
+    """
+    Child table model for internet-service-custom.
+    
+    Custom Destination Internet Service name.
+    """
+    
+    class Config:
+        """Pydantic model configuration."""
+        extra = "allow"  # Allow additional fields from API
+        str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
+    
+    name: str = Field(max_length=79, description="Custom Destination Internet Service name.")  # datasource: ['firewall.internet-service-custom.name']
+class Policy6InputDevice(BaseModel):
+    """
+    Child table model for input-device.
+    
+    Incoming interface name.
+    """
+    
+    class Config:
+        """Pydantic model configuration."""
+        extra = "allow"  # Allow additional fields from API
+        str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
+    
+    name: str | None = Field(max_length=79, default=None, description="Interface name.")  # datasource: ['system.interface.name']
 class Policy6Groups(BaseModel):
     """
     Child table model for groups.
@@ -142,8 +127,37 @@ class Policy6Groups(BaseModel):
         """Pydantic model configuration."""
         extra = "allow"  # Allow additional fields from API
         str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
     
-    name: str = Field(max_length=79, default="", description="Group name.")  # datasource: ['user.group.name']
+    name: str = Field(max_length=79, description="Group name.")  # datasource: ['user.group.name']
+class Policy6Dstaddr(BaseModel):
+    """
+    Child table model for dstaddr.
+    
+    Destination address name.
+    """
+    
+    class Config:
+        """Pydantic model configuration."""
+        extra = "allow"  # Allow additional fields from API
+        str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
+    
+    name: str | None = Field(max_length=79, default=None, description="Address/group name.")  # datasource: ['firewall.address6.name', 'firewall.addrgrp6.name']
+class Policy6Dst(BaseModel):
+    """
+    Child table model for dst.
+    
+    Destination IPv6 prefix.
+    """
+    
+    class Config:
+        """Pydantic model configuration."""
+        extra = "allow"  # Allow additional fields from API
+        str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
+    
+    addr6: str | None = Field(max_length=79, default=None, description="IPv6 address prefix.")
 # ============================================================================
 # Enum Definitions (for fields with 4+ allowed values)
 # ============================================================================
@@ -173,13 +187,13 @@ class Policy6Model(BaseModel):
     # ========================================================================
     
     seq_num: int | None = Field(ge=1, le=65535, default=0, description="Sequence number(1-65535).")    
-    input_device: list[InputDevice] = Field(default=None, description="Incoming interface name.")    
+    input_device: list[Policy6InputDevice] = Field(default_factory=list, description="Incoming interface name.")    
     input_device_negate: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable negation of input device match.")    
-    src: list[Src] = Field(default=None, description="Source IPv6 prefix.")    
-    srcaddr: list[Srcaddr] = Field(default=None, description="Source address name.")    
+    src: list[Policy6Src] = Field(default_factory=list, description="Source IPv6 prefix.")    
+    srcaddr: list[Policy6Srcaddr] = Field(default_factory=list, description="Source address name.")    
     src_negate: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable negating source address match.")    
-    dst: list[Dst] = Field(default=None, description="Destination IPv6 prefix.")    
-    dstaddr: list[Dstaddr] = Field(default=None, description="Destination address name.")    
+    dst: list[Policy6Dst] = Field(default_factory=list, description="Destination IPv6 prefix.")    
+    dstaddr: list[Policy6Dstaddr] = Field(default_factory=list, description="Destination address name.")    
     dst_negate: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable negating destination address match.")    
     action: Literal["deny", "permit"] | None = Field(default="permit", description="Action of the policy route.")    
     protocol: int | None = Field(ge=0, le=255, default=0, description="Protocol number (0 - 255).")    
@@ -188,16 +202,16 @@ class Policy6Model(BaseModel):
     start_source_port: int | None = Field(ge=1, le=65535, default=1, description="Start source port number (1 - 65535).")    
     end_source_port: int | None = Field(ge=1, le=65535, default=65535, description="End source port number (1 - 65535).")    
     gateway: str | None = Field(default="::", description="IPv6 address of the gateway.")    
-    output_device: str | None = Field(max_length=35, default="", description="Outgoing interface name.")  # datasource: ['system.interface.name', 'system.interface.name']    
-    tos: str | None = Field(default="", description="Type of service bit pattern.")    
-    tos_mask: str | None = Field(default="", description="Type of service evaluated bits.")    
+    output_device: str | None = Field(max_length=35, default=None, description="Outgoing interface name.")  # datasource: ['system.interface.name', 'system.interface.name']    
+    tos: str | None = Field(default=None, description="Type of service bit pattern.")    
+    tos_mask: str | None = Field(default=None, description="Type of service evaluated bits.")    
     status: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable this policy route.")    
     comments: str | None = Field(max_length=255, default=None, description="Optional comments.")    
-    internet_service_id: list[InternetServiceId] = Field(default=None, description="Destination Internet Service ID.")    
-    internet_service_custom: list[InternetServiceCustom] = Field(default=None, description="Custom Destination Internet Service name.")    
-    internet_service_fortiguard: list[InternetServiceFortiguard] = Field(default=None, description="FortiGuard Destination Internet Service name.")    
-    users: list[Users] = Field(default=None, description="List of users.")    
-    groups: list[Groups] = Field(default=None, description="List of user groups.")    
+    internet_service_id: list[Policy6InternetServiceId] = Field(default_factory=list, description="Destination Internet Service ID.")    
+    internet_service_custom: list[Policy6InternetServiceCustom] = Field(default_factory=list, description="Custom Destination Internet Service name.")    
+    internet_service_fortiguard: list[Policy6InternetServiceFortiguard] = Field(default_factory=list, description="FortiGuard Destination Internet Service name.")    
+    users: list[Policy6Users] = Field(default_factory=list, description="List of users.")    
+    groups: list[Policy6Groups] = Field(default_factory=list, description="List of user groups.")    
     # ========================================================================
     # Custom Validators
     # ========================================================================
@@ -277,7 +291,7 @@ class Policy6Model(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.router.policy6.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate child table items
         values = getattr(self, "input_device", [])
@@ -335,7 +349,7 @@ class Policy6Model(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.router.policy6.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate child table items
         values = getattr(self, "srcaddr", [])
@@ -395,7 +409,7 @@ class Policy6Model(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.router.policy6.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate child table items
         values = getattr(self, "dstaddr", [])
@@ -455,7 +469,7 @@ class Policy6Model(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.router.policy6.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate scalar field
         value = getattr(self, "output_device", None)
@@ -506,7 +520,7 @@ class Policy6Model(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.router.policy6.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate child table items
         values = getattr(self, "internet_service_id", [])
@@ -524,7 +538,7 @@ class Policy6Model(BaseModel):
             
             # Check all datasource endpoints
             found = False
-            if await client.api.cmdb.firewall.internet-service.exists(value):
+            if await client.api.cmdb.firewall.internet_service.exists(value):
                 found = True
             
             if not found:
@@ -564,7 +578,7 @@ class Policy6Model(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.router.policy6.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate child table items
         values = getattr(self, "internet_service_custom", [])
@@ -582,7 +596,7 @@ class Policy6Model(BaseModel):
             
             # Check all datasource endpoints
             found = False
-            if await client.api.cmdb.firewall.internet-service-custom.exists(value):
+            if await client.api.cmdb.firewall.internet_service_custom.exists(value):
                 found = True
             
             if not found:
@@ -622,7 +636,7 @@ class Policy6Model(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.router.policy6.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate child table items
         values = getattr(self, "internet_service_fortiguard", [])
@@ -640,7 +654,7 @@ class Policy6Model(BaseModel):
             
             # Check all datasource endpoints
             found = False
-            if await client.api.cmdb.firewall.internet-service-fortiguard.exists(value):
+            if await client.api.cmdb.firewall.internet_service_fortiguard.exists(value):
                 found = True
             
             if not found:
@@ -680,7 +694,7 @@ class Policy6Model(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.router.policy6.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate child table items
         values = getattr(self, "users", [])
@@ -738,7 +752,7 @@ class Policy6Model(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.router.policy6.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate child table items
         values = getattr(self, "groups", [])
@@ -823,5 +837,5 @@ __all__ = [
 # ============================================================================
 # Generated by hfortix generator v0.6.0
 # Schema: 1.7.0
-# Generated: 2026-01-17T05:32:16.540033Z
+# Generated: 2026-01-17T17:25:20.572284Z
 # ============================================================================

@@ -1,188 +1,105 @@
-from typing import TypedDict, Literal, Any, Coroutine, Union, overload, Generator, final
-from typing_extensions import NotRequired
-from hfortix_fortios.models import FortiObject, FortiObjectList
+""" - Type Stubs
 
-# ============================================================================
-# Nested TypedDicts for table field children (dict mode)
-# These MUST be defined before the Payload class to use them as type hints
-# ============================================================================
+Auto-generated stub file for type checking and IDE support.
 
-class KrbKeytabLdapserverItem(TypedDict, total=False):
-    """Type hints for ldap-server table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    Use this when building payloads for POST/PUT requests.
-    
-    **Available fields:**
-        - name: str
-    
-    **Example:**
-        entry: KrbKeytabLdapserverItem = {
-            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
-        }
-    """
-    
-    name: str  # LDAP server name. | MaxLen: 79
+Endpoint: user/krb_keytab
+Category: cmdb
+"""
+
+from __future__ import annotations
+
+from typing import (
+    Any,
+    ClassVar,
+    Literal,
+    TypedDict,
+    overload,
+)
+
+from hfortix_fortios.models import (
+    FortiObject,
+    FortiObjectList,
+)
 
 
-# ============================================================================
-# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional)
-# ============================================================================
-# NOTE: We intentionally DON'T use NotRequired wrapper because:
-# 1. total=False already makes all fields optional
-# 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
+# ================================================================
+# TypedDict Payloads
+# ================================================================
+
+class KrbKeytabLdapserverItem:
+    """Nested item for ldap-server field - supports attribute access."""
+    name: str
+
+
 class KrbKeytabPayload(TypedDict, total=False):
-    """
-    Type hints for user/krb_keytab payload fields.
-    
-    Configure Kerberos keytab entries.
-    
-    **Usage:**
-        payload: KrbKeytabPayload = {
-            "field": "value",  # <- autocomplete shows all fields
-        }
-    """
-    name: str  # Kerberos keytab entry name. | MaxLen: 35
-    pac_data: Literal["enable", "disable"]  # Enable/disable parsing PAC data in the ticket. | Default: enable
-    principal: str  # Kerberos service principal. For example, HTTP/myfg | MaxLen: 511
-    ldap_server: list[KrbKeytabLdapserverItem]  # LDAP server name(s).
-    keytab: str  # Base64 coded keytab file containing a pre-shared k | MaxLen: 8191
-
-# ============================================================================
-# Nested classes for table field children (object mode - for API responses)
-# ============================================================================
-
-@final
-class KrbKeytabLdapserverObject:
-    """Typed object for ldap-server table items.
-    
-    Provides IDE autocomplete for nested table field attributes.
-    At runtime, this is a FortiObject instance.
-    """
-    
-    # LDAP server name. | MaxLen: 79
+    """Payload type for KrbKeytab operations."""
     name: str
-    
-    # Common API response fields
-    status: str
-    http_status: int | None
-    http_status_code: int | None
-    http_method: str | None
-    http_response_time: float | None
-    vdom: str | None
-    
-    # Methods from FortiObject
-    @property
-    def dict(self) -> dict[str, Any]:
-        """Convert to dictionary."""
-        ...
-    @property
-    def json(self) -> str:
-        """Get pretty-printed JSON string."""
-        ...
-    @property
-    def raw(self) -> dict[str, Any]:
-        """Get raw API response data."""
-        ...
-    def get_full(self, name: str) -> Any: ...
-    def to_dict(self) -> FortiObject: ...
-    def keys(self) -> Any: ...
-    def values(self) -> Generator[Any, None, None]: ...
-    def items(self) -> Generator[tuple[str, Any], None, None]: ...
-    def get(self, key: str, default: Any = None) -> Any: ...
-
-
-
-
-# Response TypedDict for GET returns (all fields present in API response)
-class KrbKeytabResponse(TypedDict):
-    """
-    Type hints for user/krb_keytab API response fields.
-    
-    All fields are present in the response from the FortiGate API.
-    """
-    name: str  # Kerberos keytab entry name. | MaxLen: 35
-    pac_data: Literal["enable", "disable"]  # Enable/disable parsing PAC data in the ticket. | Default: enable
-    principal: str  # Kerberos service principal. For example, HTTP/myfg | MaxLen: 511
-    ldap_server: list[KrbKeytabLdapserverItem]  # LDAP server name(s).
-    keytab: str  # Base64 coded keytab file containing a pre-shared k | MaxLen: 8191
-
-
-@final
-class KrbKeytabObject:
-    """Typed FortiObject for user/krb_keytab with IDE autocomplete support.
-    
-    This is a typed wrapper that provides IDE autocomplete for API response fields.
-    At runtime, this is actually a FortiObject instance.
-    """
-    
-    # Kerberos keytab entry name. | MaxLen: 35
-    name: str
-    # Enable/disable parsing PAC data in the ticket. | Default: enable
     pac_data: Literal["enable", "disable"]
-    # Kerberos service principal. For example, HTTP/myfgt.example. | MaxLen: 511
     principal: str
-    # LDAP server name(s).
-    ldap_server: list[KrbKeytabLdapserverObject]
-    # Base64 coded keytab file containing a pre-shared key. | MaxLen: 8191
+    ldap_server: str | list[str] | list[dict[str, Any]] | list[KrbKeytabLdapserverItem]
     keytab: str
-    
-    # Common API response fields
-    status: str
-    http_status: int | None
-    http_status_code: int | None
-    http_method: str | None
-    http_response_time: float | None
-    vdom: str | None
-    
-    # Methods from FortiObject
-    @property
-    def dict(self) -> dict[str, Any]:
-        """Convert to dictionary."""
-        ...
-    @property
-    def json(self) -> str:
-        """Get pretty-printed JSON string."""
-        ...
-    @property
-    def raw(self) -> dict[str, Any]:
-        """Get raw API response data."""
-        ...
-    def get_full(self, name: str) -> Any: ...
-    def to_dict(self) -> KrbKeytabPayload: ...
-    def keys(self) -> Any: ...
-    def values(self) -> Generator[Any, None, None]: ...
-    def items(self) -> Generator[tuple[str, Any], None, None]: ...
-    def get(self, key: str, default: Any = None) -> Any: ...
 
+
+# ================================================================
+# Response Types (TypedDict for dict-style access)
+# ================================================================
+
+class KrbKeytabResponse(TypedDict, total=False):
+    """Response type for KrbKeytab - use with .dict property for typed dict access."""
+    name: str
+    pac_data: Literal["enable", "disable"]
+    principal: str
+    ldap_server: list[KrbKeytabLdapserverItem]
+    keytab: str
+
+
+# ================================================================
+# Response Types (Class for attribute access)
+# ================================================================
+
+
+class KrbKeytabObject(FortiObject):
+    """Typed FortiObject for KrbKeytab with field access."""
+    name: str
+    pac_data: Literal["enable", "disable"]
+    principal: str
+    ldap_server: list[KrbKeytabLdapserverItem]
+    keytab: str
+
+
+# ================================================================
+# Main Endpoint Class
+# ================================================================
 
 class KrbKeytab:
     """
-    Configure Kerberos keytab entries.
     
-    Path: user/krb_keytab
+    Endpoint: user/krb_keytab
     Category: cmdb
-    Primary Key: name
+    MKey: name
     """
     
+    # Class attributes for introspection
+    endpoint: ClassVar[str] = ...
+    path: ClassVar[str] = ...
+    category: ClassVar[str] = ...
+    mkey: ClassVar[str] = ...
+    capabilities: ClassVar[dict[str, Any]] = ...
+    
     def __init__(self, client: Any) -> None:
-        """Initialize endpoint with HTTP client.
-        
-        Args:
-            client: HTTP client instance for API communication
-        """
+        """Initialize endpoint with HTTP client."""
         ...
     
     # ================================================================
-    # GET OVERLOADS - Always returns FortiObject (or ContentResponse for file endpoints)
-    # Pylance matches overloads top-to-bottom, so these must come first!
+    # GET Methods
     # ================================================================
     
-    # With mkey as positional arg -> returns FortiObject
+    # CMDB with mkey - overloads for single vs list returns
     @overload
     def get(
         self,
         name: str,
+        *,
         filter: str | list[str] | None = ...,
         count: int | None = ...,
         start: int | None = ...,
@@ -192,14 +109,14 @@ class KrbKeytab:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        error_mode: Literal["raise", "return", "print"] | None = ...,
+        error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> KrbKeytabObject: ...
     
-    # With mkey as keyword arg -> returns FortiObject
     @overload
     def get(
         self,
         *,
-        name: str,
         filter: str | list[str] | None = ...,
         count: int | None = ...,
         start: int | None = ...,
@@ -209,288 +126,65 @@ class KrbKeytab:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> KrbKeytabObject: ...
-    
-    # Without mkey -> returns list of FortiObjects
-    @overload
-    def get(
-        self,
-        name: None = None,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
+        error_mode: Literal["raise", "return", "print"] | None = ...,
+        error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> FortiObjectList[KrbKeytabObject]: ...
-    
-    # ================================================================
-    # (removed - all GET now returns FortiObject)
-    # ================================================================
-    
-    # With mkey as positional arg -> returns single object
-    @overload
-    def get(
-        self,
-        name: str,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> KrbKeytabObject: ...
-    
-    # With mkey as keyword arg -> returns single object
-    @overload
-    def get(
-        self,
-        *,
-        name: str,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> KrbKeytabObject: ...
-    
-    # With no mkey -> returns list of objects
-    @overload
-    def get(
-        self,
-        *,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObjectList[KrbKeytabObject]: ...
-    
-    # Dict mode with mkey provided as positional arg (single dict)
-    @overload
-    def get(
-        self,
-        name: str,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> KrbKeytabObject: ...
-    
-    # Dict mode with mkey provided as keyword arg (single dict)
-    @overload
-    def get(
-        self,
-        *,
-        name: str,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> KrbKeytabObject: ...
-    
-    # Dict mode - list of dicts (no mkey/name provided) - keyword-only signature
-    @overload
-    def get(
-        self,
-        *,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObjectList[KrbKeytabObject]: ...
-    
-    # Fallback overload for all other cases
-    @overload
-    def get(
-        self,
-        name: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> Union[dict[str, Any], list[dict[str, Any]], FortiObject, list[FortiObject]]: ...
-    
-    def get(
-        self,
-        name: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> KrbKeytabObject | list[KrbKeytabObject] | dict[str, Any] | list[dict[str, Any]]: ...
     
     def get_schema(
         self,
         vdom: str | None = ...,
         format: str = ...,
     ) -> FortiObject: ...
+
+    # ================================================================
+    # POST Method
+    # ================================================================
     
-    # POST overloads
-    @overload
     def post(
         self,
         payload_dict: KrbKeytabPayload | None = ...,
         name: str | None = ...,
         pac_data: Literal["enable", "disable"] | None = ...,
         principal: str | None = ...,
-        ldap_server: str | list[str] | list[KrbKeytabLdapserverItem] | None = ...,
+        ldap_server: str | list[str] | list[dict[str, Any]] | list[KrbKeytabLdapserverItem] | None = ...,
         keytab: str | None = ...,
         vdom: str | bool | None = ...,
+        error_mode: Literal["raise", "return", "print"] | None = ...,
+        error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> KrbKeytabObject: ...
+
+    # ================================================================
+    # PUT Method
+    # ================================================================
     
-    @overload
-    def post(
-        self,
-        payload_dict: KrbKeytabPayload | None = ...,
-        name: str | None = ...,
-        pac_data: Literal["enable", "disable"] | None = ...,
-        principal: str | None = ...,
-        ldap_server: str | list[str] | list[KrbKeytabLdapserverItem] | None = ...,
-        keytab: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
-    
-    # Default overload
-    @overload
-    def post(
-        self,
-        payload_dict: KrbKeytabPayload | None = ...,
-        name: str | None = ...,
-        pac_data: Literal["enable", "disable"] | None = ...,
-        principal: str | None = ...,
-        ldap_server: str | list[str] | list[KrbKeytabLdapserverItem] | None = ...,
-        keytab: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
-    
-    def post(
-        self,
-        payload_dict: KrbKeytabPayload | None = ...,
-        name: str | None = ...,
-        pac_data: Literal["enable", "disable"] | None = ...,
-        principal: str | None = ...,
-        ldap_server: str | list[str] | list[KrbKeytabLdapserverItem] | None = ...,
-        keytab: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
-    
-    # PUT overloads
-    @overload
     def put(
         self,
         payload_dict: KrbKeytabPayload | None = ...,
         name: str | None = ...,
         pac_data: Literal["enable", "disable"] | None = ...,
         principal: str | None = ...,
-        ldap_server: str | list[str] | list[KrbKeytabLdapserverItem] | None = ...,
+        ldap_server: str | list[str] | list[dict[str, Any]] | list[KrbKeytabLdapserverItem] | None = ...,
         keytab: str | None = ...,
         vdom: str | bool | None = ...,
+        error_mode: Literal["raise", "return", "print"] | None = ...,
+        error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> KrbKeytabObject: ...
-    
-    @overload
-    def put(
-        self,
-        payload_dict: KrbKeytabPayload | None = ...,
-        name: str | None = ...,
-        pac_data: Literal["enable", "disable"] | None = ...,
-        principal: str | None = ...,
-        ldap_server: str | list[str] | list[KrbKeytabLdapserverItem] | None = ...,
-        keytab: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
-    
-    # Default overload
-    @overload
-    def put(
-        self,
-        payload_dict: KrbKeytabPayload | None = ...,
-        name: str | None = ...,
-        pac_data: Literal["enable", "disable"] | None = ...,
-        principal: str | None = ...,
-        ldap_server: str | list[str] | list[KrbKeytabLdapserverItem] | None = ...,
-        keytab: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
-    
-    def put(
-        self,
-        payload_dict: KrbKeytabPayload | None = ...,
-        name: str | None = ...,
-        pac_data: Literal["enable", "disable"] | None = ...,
-        principal: str | None = ...,
-        ldap_server: str | list[str] | list[KrbKeytabLdapserverItem] | None = ...,
-        keytab: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
-    
-    # DELETE overloads
-    @overload
-    def delete(
-        self,
-        name: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> KrbKeytabObject: ...
-    
-    @overload
-    def delete(
-        self,
-        name: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
-    
-    # Default overload
-    @overload
-    def delete(
-        self,
-        name: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+
+    # ================================================================
+    # DELETE Method
+    # ================================================================
     
     def delete(
         self,
         name: str | None = ...,
         vdom: str | bool | None = ...,
+        error_mode: Literal["raise", "return", "print"] | None = ...,
+        error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> FortiObject: ...
+
+    # ================================================================
+    # Utility Methods
+    # ================================================================
     
     def exists(
         self,
@@ -504,9 +198,11 @@ class KrbKeytab:
         name: str | None = ...,
         pac_data: Literal["enable", "disable"] | None = ...,
         principal: str | None = ...,
-        ldap_server: str | list[str] | list[KrbKeytabLdapserverItem] | None = ...,
+        ldap_server: str | list[str] | list[dict[str, Any]] | list[KrbKeytabLdapserverItem] | None = ...,
         keytab: str | None = ...,
         vdom: str | bool | None = ...,
+        error_mode: Literal["raise", "return", "print"] | None = ...,
+        error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> FortiObject: ...
     
     # Helper methods
@@ -514,7 +210,7 @@ class KrbKeytab:
     def help(field_name: str | None = ...) -> str: ...
     
     @staticmethod
-    def fields(detailed: bool = ...) -> Union[list[str], list[dict[str, Any]]]: ...
+    def fields(detailed: bool = ...) -> list[str] | list[dict[str, Any]]: ...
     
     @staticmethod
     def field_info(field_name: str) -> FortiObject: ...
@@ -530,9 +226,6 @@ class KrbKeytab:
     
     @staticmethod
     def schema() -> FortiObject: ...
-
-
-# ================================================================
 
 
 __all__ = [

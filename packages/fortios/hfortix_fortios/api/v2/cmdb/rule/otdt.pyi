@@ -1,290 +1,137 @@
-from typing import TypedDict, Literal, Any, Coroutine, Union, overload, Generator, final
-from typing_extensions import NotRequired
-from hfortix_fortios.models import FortiObject, FortiObjectList
+""" - Type Stubs
 
-# ============================================================================
-# Nested TypedDicts for table field children (dict mode)
-# These MUST be defined before the Payload class to use them as type hints
-# ============================================================================
+Auto-generated stub file for type checking and IDE support.
 
-class OtdtParametersItem(TypedDict, total=False):
-    """Type hints for parameters table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    Use this when building payloads for POST/PUT requests.
-    
-    **Available fields:**
-        - name: str
-        - default value: str
-    
-    **Example:**
-        entry: OtdtParametersItem = {
-            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
-        }
-    """
-    
-    name: str  # Parameter name. | MaxLen: 31
-    default value: str  # Parameter default value. | MaxLen: 199
+Endpoint: rule/otdt
+Category: cmdb
+"""
+
+from __future__ import annotations
+
+from typing import (
+    Any,
+    ClassVar,
+    Literal,
+    TypedDict,
+    overload,
+)
+
+from hfortix_fortios.models import (
+    FortiObject,
+    FortiObjectList,
+)
 
 
-class OtdtMetadataItem(TypedDict, total=False):
-    """Type hints for metadata table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    Use this when building payloads for POST/PUT requests.
-    
-    **Available fields:**
-        - id: int
-        - metaid: int
-        - valueid: int
-    
-    **Example:**
-        entry: OtdtMetadataItem = {
-            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
-        }
-    """
-    
-    id: int  # ID. | Default: 0 | Min: 0 | Max: 4294967295
-    metaid: int  # Meta ID. | Default: 0 | Min: 0 | Max: 4294967295
-    valueid: int  # Value ID. | Default: 0 | Min: 0 | Max: 4294967295
+# ================================================================
+# TypedDict Payloads
+# ================================================================
 
-
-# ============================================================================
-# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional)
-# ============================================================================
-# NOTE: We intentionally DON'T use NotRequired wrapper because:
-# 1. total=False already makes all fields optional
-# 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
-class OtdtPayload(TypedDict, total=False):
-    """
-    Type hints for rule/otdt payload fields.
-    
-    Show OT detection signatures.
-    
-    **Usage:**
-        payload: OtdtPayload = {
-            "field": "value",  # <- autocomplete shows all fields
-        }
-    """
-    name: str  # Application name. | MaxLen: 63
-    id: int  # Application ID. | Default: 0 | Min: 0 | Max: 4294967295
-    category: int  # Application category ID. | Default: 0 | Min: 0 | Max: 4294967295
-    popularity: int  # Application popularity. | Default: 0 | Min: 0 | Max: 255
-    risk: int  # Application risk. | Default: 0 | Min: 0 | Max: 255
-    weight: int  # Application weight. | Default: 0 | Min: 0 | Max: 255
-    protocol: str  # Application protocol.
-    technology: str  # Application technology.
-    behavior: str  # Application behavior.
-    vendor: str  # Application vendor.
-    parameters: list[OtdtParametersItem]  # Application parameters.
-    metadata: list[OtdtMetadataItem]  # Meta data.
-    status: str  # Print all OT detection rules information.
-
-# ============================================================================
-# Nested classes for table field children (object mode - for API responses)
-# ============================================================================
-
-@final
-class OtdtParametersObject:
-    """Typed object for parameters table items.
-    
-    Provides IDE autocomplete for nested table field attributes.
-    At runtime, this is a FortiObject instance.
-    """
-    
-    # Parameter name. | MaxLen: 31
+class OtdtParametersItem:
+    """Nested item for parameters field - supports attribute access."""
     name: str
-    # Parameter default value. | MaxLen: 199
-    default value: str
-    
-    # Common API response fields
-    status: str
-    http_status: int | None
-    http_status_code: int | None
-    http_method: str | None
-    http_response_time: float | None
-    vdom: str | None
-    
-    # Methods from FortiObject
-    @property
-    def dict(self) -> dict[str, Any]:
-        """Convert to dictionary."""
-        ...
-    @property
-    def json(self) -> str:
-        """Get pretty-printed JSON string."""
-        ...
-    @property
-    def raw(self) -> dict[str, Any]:
-        """Get raw API response data."""
-        ...
-    def get_full(self, name: str) -> Any: ...
-    def to_dict(self) -> FortiObject: ...
-    def keys(self) -> Any: ...
-    def values(self) -> Generator[Any, None, None]: ...
-    def items(self) -> Generator[tuple[str, Any], None, None]: ...
-    def get(self, key: str, default: Any = None) -> Any: ...
+    default_value: str
 
 
-@final
-class OtdtMetadataObject:
-    """Typed object for metadata table items.
-    
-    Provides IDE autocomplete for nested table field attributes.
-    At runtime, this is a FortiObject instance.
-    """
-    
-    # ID. | Default: 0 | Min: 0 | Max: 4294967295
+class OtdtMetadataItem:
+    """Nested item for metadata field - supports attribute access."""
     id: int
-    # Meta ID. | Default: 0 | Min: 0 | Max: 4294967295
     metaid: int
-    # Value ID. | Default: 0 | Min: 0 | Max: 4294967295
     valueid: int
-    
-    # Common API response fields
-    status: str
-    http_status: int | None
-    http_status_code: int | None
-    http_method: str | None
-    http_response_time: float | None
-    vdom: str | None
-    
-    # Methods from FortiObject
-    @property
-    def dict(self) -> dict[str, Any]:
-        """Convert to dictionary."""
-        ...
-    @property
-    def json(self) -> str:
-        """Get pretty-printed JSON string."""
-        ...
-    @property
-    def raw(self) -> dict[str, Any]:
-        """Get raw API response data."""
-        ...
-    def get_full(self, name: str) -> Any: ...
-    def to_dict(self) -> FortiObject: ...
-    def keys(self) -> Any: ...
-    def values(self) -> Generator[Any, None, None]: ...
-    def items(self) -> Generator[tuple[str, Any], None, None]: ...
-    def get(self, key: str, default: Any = None) -> Any: ...
 
 
-
-
-# Response TypedDict for GET returns (all fields present in API response)
-class OtdtResponse(TypedDict):
-    """
-    Type hints for rule/otdt API response fields.
-    
-    All fields are present in the response from the FortiGate API.
-    """
-    name: str  # Application name. | MaxLen: 63
-    id: int  # Application ID. | Default: 0 | Min: 0 | Max: 4294967295
-    category: int  # Application category ID. | Default: 0 | Min: 0 | Max: 4294967295
-    popularity: int  # Application popularity. | Default: 0 | Min: 0 | Max: 255
-    risk: int  # Application risk. | Default: 0 | Min: 0 | Max: 255
-    weight: int  # Application weight. | Default: 0 | Min: 0 | Max: 255
-    protocol: str  # Application protocol.
-    technology: str  # Application technology.
-    behavior: str  # Application behavior.
-    vendor: str  # Application vendor.
-    parameters: list[OtdtParametersItem]  # Application parameters.
-    metadata: list[OtdtMetadataItem]  # Meta data.
-    status: str  # Print all OT detection rules information.
-
-
-@final
-class OtdtObject:
-    """Typed FortiObject for rule/otdt with IDE autocomplete support.
-    
-    This is a typed wrapper that provides IDE autocomplete for API response fields.
-    At runtime, this is actually a FortiObject instance.
-    """
-    
-    # Application name. | MaxLen: 63
+class OtdtPayload(TypedDict, total=False):
+    """Payload type for Otdt operations."""
     name: str
-    # Application ID. | Default: 0 | Min: 0 | Max: 4294967295
     id: int
-    # Application category ID. | Default: 0 | Min: 0 | Max: 4294967295
     category: int
-    # Application popularity. | Default: 0 | Min: 0 | Max: 255
     popularity: int
-    # Application risk. | Default: 0 | Min: 0 | Max: 255
     risk: int
-    # Application weight. | Default: 0 | Min: 0 | Max: 255
     weight: int
-    # Application protocol.
     protocol: str
-    # Application technology.
     technology: str
-    # Application behavior.
     behavior: str
-    # Application vendor.
     vendor: str
-    # Application parameters.
-    parameters: list[OtdtParametersObject]
-    # Meta data.
-    metadata: list[OtdtMetadataObject]
-    # Print all OT detection rules information.
+    parameters: str | list[str] | list[dict[str, Any]] | list[OtdtParametersItem]
+    metadata: str | list[str] | list[dict[str, Any]] | list[OtdtMetadataItem]
     status: str
-    
-    # Common API response fields
-    status: str
-    http_status: int | None
-    http_status_code: int | None
-    http_method: str | None
-    http_response_time: float | None
-    vdom: str | None
-    
-    # Methods from FortiObject
-    @property
-    def dict(self) -> dict[str, Any]:
-        """Convert to dictionary."""
-        ...
-    @property
-    def json(self) -> str:
-        """Get pretty-printed JSON string."""
-        ...
-    @property
-    def raw(self) -> dict[str, Any]:
-        """Get raw API response data."""
-        ...
-    def get_full(self, name: str) -> Any: ...
-    def to_dict(self) -> OtdtPayload: ...
-    def keys(self) -> Any: ...
-    def values(self) -> Generator[Any, None, None]: ...
-    def items(self) -> Generator[tuple[str, Any], None, None]: ...
-    def get(self, key: str, default: Any = None) -> Any: ...
 
+
+# ================================================================
+# Response Types (TypedDict for dict-style access)
+# ================================================================
+
+class OtdtResponse(TypedDict, total=False):
+    """Response type for Otdt - use with .dict property for typed dict access."""
+    name: str
+    id: int
+    category: int
+    popularity: int
+    risk: int
+    weight: int
+    protocol: str
+    technology: str
+    behavior: str
+    vendor: str
+    parameters: list[OtdtParametersItem]
+    metadata: list[OtdtMetadataItem]
+    status: str
+
+
+# ================================================================
+# Response Types (Class for attribute access)
+# ================================================================
+
+
+class OtdtObject(FortiObject):
+    """Typed FortiObject for Otdt with field access."""
+    name: str
+    id: int
+    category: int
+    popularity: int
+    risk: int
+    weight: int
+    protocol: str
+    technology: str
+    behavior: str
+    vendor: str
+    parameters: list[OtdtParametersItem]
+    metadata: list[OtdtMetadataItem]
+    status: str
+
+
+# ================================================================
+# Main Endpoint Class
+# ================================================================
 
 class Otdt:
     """
-    Show OT detection signatures.
     
-    Path: rule/otdt
+    Endpoint: rule/otdt
     Category: cmdb
-    Primary Key: name
+    MKey: name
     """
     
+    # Class attributes for introspection
+    endpoint: ClassVar[str] = ...
+    path: ClassVar[str] = ...
+    category: ClassVar[str] = ...
+    mkey: ClassVar[str] = ...
+    capabilities: ClassVar[dict[str, Any]] = ...
+    
     def __init__(self, client: Any) -> None:
-        """Initialize endpoint with HTTP client.
-        
-        Args:
-            client: HTTP client instance for API communication
-        """
+        """Initialize endpoint with HTTP client."""
         ...
     
     # ================================================================
-    # GET OVERLOADS - Always returns FortiObject (or ContentResponse for file endpoints)
-    # Pylance matches overloads top-to-bottom, so these must come first!
+    # GET Methods
     # ================================================================
     
-    # With mkey as positional arg -> returns FortiObject
+    # CMDB with mkey - overloads for single vs list returns
     @overload
     def get(
         self,
         name: str,
+        *,
         filter: str | list[str] | None = ...,
         count: int | None = ...,
         start: int | None = ...,
@@ -293,14 +140,14 @@ class Otdt:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
+        error_mode: Literal["raise", "return", "print"] | None = ...,
+        error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> OtdtObject: ...
     
-    # With mkey as keyword arg -> returns FortiObject
     @overload
     def get(
         self,
         *,
-        name: str,
         filter: str | list[str] | None = ...,
         count: int | None = ...,
         start: int | None = ...,
@@ -309,154 +156,19 @@ class Otdt:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-    ) -> OtdtObject: ...
-    
-    # Without mkey -> returns list of FortiObjects
-    @overload
-    def get(
-        self,
-        name: None = None,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
+        error_mode: Literal["raise", "return", "print"] | None = ...,
+        error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> FortiObjectList[OtdtObject]: ...
-    
-    # ================================================================
-    # (removed - all GET now returns FortiObject)
-    # ================================================================
-    
-    # With mkey as positional arg -> returns single object
-    @overload
-    def get(
-        self,
-        name: str,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-    ) -> OtdtObject: ...
-    
-    # With mkey as keyword arg -> returns single object
-    @overload
-    def get(
-        self,
-        *,
-        name: str,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-    ) -> OtdtObject: ...
-    
-    # With no mkey -> returns list of objects
-    @overload
-    def get(
-        self,
-        *,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-    ) -> FortiObjectList[OtdtObject]: ...
-    
-    # Dict mode with mkey provided as positional arg (single dict)
-    @overload
-    def get(
-        self,
-        name: str,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-    ) -> OtdtObject: ...
-    
-    # Dict mode with mkey provided as keyword arg (single dict)
-    @overload
-    def get(
-        self,
-        *,
-        name: str,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-    ) -> OtdtObject: ...
-    
-    # Dict mode - list of dicts (no mkey/name provided) - keyword-only signature
-    @overload
-    def get(
-        self,
-        *,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-    ) -> FortiObjectList[OtdtObject]: ...
-    
-    # Fallback overload for all other cases
-    @overload
-    def get(
-        self,
-        name: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-    ) -> Union[dict[str, Any], list[dict[str, Any]], FortiObject, list[FortiObject]]: ...
-    
-    def get(
-        self,
-        name: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-    ) -> OtdtObject | list[OtdtObject] | dict[str, Any] | list[dict[str, Any]]: ...
     
     def get_schema(
         self,
         format: str = ...,
     ) -> FortiObject: ...
+
+    # ================================================================
+    # POST Method
+    # ================================================================
     
-    # POST overloads
-    @overload
     def post(
         self,
         payload_dict: OtdtPayload | None = ...,
@@ -470,70 +182,17 @@ class Otdt:
         technology: str | None = ...,
         behavior: str | None = ...,
         vendor: str | None = ...,
-        parameters: str | list[str] | list[OtdtParametersItem] | None = ...,
-        metadata: str | list[str] | list[OtdtMetadataItem] | None = ...,
+        parameters: str | list[str] | list[dict[str, Any]] | list[OtdtParametersItem] | None = ...,
+        metadata: str | list[str] | list[dict[str, Any]] | list[OtdtMetadataItem] | None = ...,
         status: str | None = ...,
+        error_mode: Literal["raise", "return", "print"] | None = ...,
+        error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> OtdtObject: ...
+
+    # ================================================================
+    # PUT Method
+    # ================================================================
     
-    @overload
-    def post(
-        self,
-        payload_dict: OtdtPayload | None = ...,
-        name: str | None = ...,
-        id: int | None = ...,
-        category: int | None = ...,
-        popularity: int | None = ...,
-        risk: int | None = ...,
-        weight: int | None = ...,
-        protocol: str | None = ...,
-        technology: str | None = ...,
-        behavior: str | None = ...,
-        vendor: str | None = ...,
-        parameters: str | list[str] | list[OtdtParametersItem] | None = ...,
-        metadata: str | list[str] | list[OtdtMetadataItem] | None = ...,
-        status: str | None = ...,
-    ) -> FortiObject: ...
-    
-    # Default overload
-    @overload
-    def post(
-        self,
-        payload_dict: OtdtPayload | None = ...,
-        name: str | None = ...,
-        id: int | None = ...,
-        category: int | None = ...,
-        popularity: int | None = ...,
-        risk: int | None = ...,
-        weight: int | None = ...,
-        protocol: str | None = ...,
-        technology: str | None = ...,
-        behavior: str | None = ...,
-        vendor: str | None = ...,
-        parameters: str | list[str] | list[OtdtParametersItem] | None = ...,
-        metadata: str | list[str] | list[OtdtMetadataItem] | None = ...,
-        status: str | None = ...,
-    ) -> FortiObject: ...
-    
-    def post(
-        self,
-        payload_dict: OtdtPayload | None = ...,
-        name: str | None = ...,
-        id: int | None = ...,
-        category: int | None = ...,
-        popularity: int | None = ...,
-        risk: int | None = ...,
-        weight: int | None = ...,
-        protocol: str | None = ...,
-        technology: str | None = ...,
-        behavior: str | None = ...,
-        vendor: str | None = ...,
-        parameters: str | list[str] | list[OtdtParametersItem] | None = ...,
-        metadata: str | list[str] | list[OtdtMetadataItem] | None = ...,
-        status: str | None = ...,
-    ) -> FortiObject: ...
-    
-    # PUT overloads
-    @overload
     def put(
         self,
         payload_dict: OtdtPayload | None = ...,
@@ -547,92 +206,27 @@ class Otdt:
         technology: str | None = ...,
         behavior: str | None = ...,
         vendor: str | None = ...,
-        parameters: str | list[str] | list[OtdtParametersItem] | None = ...,
-        metadata: str | list[str] | list[OtdtMetadataItem] | None = ...,
+        parameters: str | list[str] | list[dict[str, Any]] | list[OtdtParametersItem] | None = ...,
+        metadata: str | list[str] | list[dict[str, Any]] | list[OtdtMetadataItem] | None = ...,
         status: str | None = ...,
+        error_mode: Literal["raise", "return", "print"] | None = ...,
+        error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> OtdtObject: ...
-    
-    @overload
-    def put(
-        self,
-        payload_dict: OtdtPayload | None = ...,
-        name: str | None = ...,
-        id: int | None = ...,
-        category: int | None = ...,
-        popularity: int | None = ...,
-        risk: int | None = ...,
-        weight: int | None = ...,
-        protocol: str | None = ...,
-        technology: str | None = ...,
-        behavior: str | None = ...,
-        vendor: str | None = ...,
-        parameters: str | list[str] | list[OtdtParametersItem] | None = ...,
-        metadata: str | list[str] | list[OtdtMetadataItem] | None = ...,
-        status: str | None = ...,
-    ) -> FortiObject: ...
-    
-    # Default overload
-    @overload
-    def put(
-        self,
-        payload_dict: OtdtPayload | None = ...,
-        name: str | None = ...,
-        id: int | None = ...,
-        category: int | None = ...,
-        popularity: int | None = ...,
-        risk: int | None = ...,
-        weight: int | None = ...,
-        protocol: str | None = ...,
-        technology: str | None = ...,
-        behavior: str | None = ...,
-        vendor: str | None = ...,
-        parameters: str | list[str] | list[OtdtParametersItem] | None = ...,
-        metadata: str | list[str] | list[OtdtMetadataItem] | None = ...,
-        status: str | None = ...,
-    ) -> FortiObject: ...
-    
-    def put(
-        self,
-        payload_dict: OtdtPayload | None = ...,
-        name: str | None = ...,
-        id: int | None = ...,
-        category: int | None = ...,
-        popularity: int | None = ...,
-        risk: int | None = ...,
-        weight: int | None = ...,
-        protocol: str | None = ...,
-        technology: str | None = ...,
-        behavior: str | None = ...,
-        vendor: str | None = ...,
-        parameters: str | list[str] | list[OtdtParametersItem] | None = ...,
-        metadata: str | list[str] | list[OtdtMetadataItem] | None = ...,
-        status: str | None = ...,
-    ) -> FortiObject: ...
-    
-    # DELETE overloads
-    @overload
-    def delete(
-        self,
-        name: str | None = ...,
-    ) -> OtdtObject: ...
-    
-    @overload
-    def delete(
-        self,
-        name: str | None = ...,
-    ) -> FortiObject: ...
-    
-    # Default overload
-    @overload
-    def delete(
-        self,
-        name: str | None = ...,
-    ) -> FortiObject: ...
+
+    # ================================================================
+    # DELETE Method
+    # ================================================================
     
     def delete(
         self,
         name: str | None = ...,
+        error_mode: Literal["raise", "return", "print"] | None = ...,
+        error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> FortiObject: ...
+
+    # ================================================================
+    # Utility Methods
+    # ================================================================
     
     def exists(
         self,
@@ -652,9 +246,11 @@ class Otdt:
         technology: str | None = ...,
         behavior: str | None = ...,
         vendor: str | None = ...,
-        parameters: str | list[str] | list[OtdtParametersItem] | None = ...,
-        metadata: str | list[str] | list[OtdtMetadataItem] | None = ...,
+        parameters: str | list[str] | list[dict[str, Any]] | list[OtdtParametersItem] | None = ...,
+        metadata: str | list[str] | list[dict[str, Any]] | list[OtdtMetadataItem] | None = ...,
         status: str | None = ...,
+        error_mode: Literal["raise", "return", "print"] | None = ...,
+        error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> FortiObject: ...
     
     # Helper methods
@@ -662,7 +258,7 @@ class Otdt:
     def help(field_name: str | None = ...) -> str: ...
     
     @staticmethod
-    def fields(detailed: bool = ...) -> Union[list[str], list[dict[str, Any]]]: ...
+    def fields(detailed: bool = ...) -> list[str] | list[dict[str, Any]]: ...
     
     @staticmethod
     def field_info(field_name: str) -> FortiObject: ...
@@ -678,9 +274,6 @@ class Otdt:
     
     @staticmethod
     def schema() -> FortiObject: ...
-
-
-# ================================================================
 
 
 __all__ = [

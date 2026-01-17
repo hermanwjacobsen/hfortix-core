@@ -1,241 +1,137 @@
-from typing import TypedDict, Literal, Any, Coroutine, Union, overload, Generator, final
-from typing_extensions import NotRequired
-from hfortix_fortios.models import FortiObject, FortiObjectList
+""" - Type Stubs
 
-# ============================================================================
-# Nested TypedDicts for table field children (dict mode)
-# These MUST be defined before the Payload class to use them as type hints
-# ============================================================================
+Auto-generated stub file for type checking and IDE support.
 
-class MobileTunnelNetworkItem(TypedDict, total=False):
-    """Type hints for network table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    Use this when building payloads for POST/PUT requests.
-    
-    **Available fields:**
-        - id: int
-        - interface: str
-        - prefix: str
-    
-    **Example:**
-        entry: MobileTunnelNetworkItem = {
-            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
-        }
-    """
-    
-    id: int  # Network entry ID. | Default: 0 | Min: 0 | Max: 4294967295
-    interface: str  # Select the associated interface name from availabl | MaxLen: 15
-    prefix: str  # Class IP and Netmask with correction | Default: 0.0.0.0 0.0.0.0
+Endpoint: system/mobile_tunnel
+Category: cmdb
+"""
+
+from __future__ import annotations
+
+from typing import (
+    Any,
+    ClassVar,
+    Literal,
+    TypedDict,
+    overload,
+)
+
+from hfortix_fortios.models import (
+    FortiObject,
+    FortiObjectList,
+)
 
 
-# ============================================================================
-# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional)
-# ============================================================================
-# NOTE: We intentionally DON'T use NotRequired wrapper because:
-# 1. total=False already makes all fields optional
-# 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
-class MobileTunnelPayload(TypedDict, total=False):
-    """
-    Type hints for system/mobile_tunnel payload fields.
-    
-    Configure Mobile tunnels, an implementation of Network Mobility (NEMO) extensions for Mobile IPv4 RFC5177.
-    
-    **Related Resources:**
+# ================================================================
+# TypedDict Payloads
+# ================================================================
 
-    Dependencies (resources this endpoint references):
-        - :class:`~.system.interface.InterfaceEndpoint` (via: roaming-interface)
-
-    **Usage:**
-        payload: MobileTunnelPayload = {
-            "field": "value",  # <- autocomplete shows all fields
-        }
-    """
-    name: str  # Tunnel name. | MaxLen: 15
-    status: Literal["disable", "enable"]  # Enable/disable this mobile tunnel. | Default: enable
-    roaming_interface: str  # Select the associated interface name from availabl | MaxLen: 15
-    home_agent: str  # IPv4 address of the NEMO HA | Default: 0.0.0.0
-    home_address: str  # Home IP address (Format: xxx.xxx.xxx.xxx). | Default: 0.0.0.0
-    renew_interval: int  # Time before lifetime expiration to send NMMO HA re | Default: 60 | Min: 5 | Max: 60
-    lifetime: int  # NMMO HA registration request lifetime | Default: 65535 | Min: 180 | Max: 65535
-    reg_interval: int  # NMMO HA registration interval | Default: 5 | Min: 5 | Max: 300
-    reg_retry: int  # Maximum number of NMMO HA registration retries | Default: 3 | Min: 1 | Max: 30
-    n_mhae_spi: int  # NEMO authentication SPI (default: 256). | Default: 256 | Min: 0 | Max: 4294967295
-    n_mhae_key_type: Literal["ascii", "base64"]  # NEMO authentication key type (ASCII or base64). | Default: ascii
-    n_mhae_key: str  # NEMO authentication key.
-    hash_algorithm: Literal["hmac-md5"]  # Hash Algorithm (Keyed MD5). | Default: hmac-md5
-    tunnel_mode: Literal["gre"]  # NEMO tunnel mode (GRE tunnel). | Default: gre
-    network: list[MobileTunnelNetworkItem]  # NEMO network configuration.
-
-# ============================================================================
-# Nested classes for table field children (object mode - for API responses)
-# ============================================================================
-
-@final
-class MobileTunnelNetworkObject:
-    """Typed object for network table items.
-    
-    Provides IDE autocomplete for nested table field attributes.
-    At runtime, this is a FortiObject instance.
-    """
-    
-    # Network entry ID. | Default: 0 | Min: 0 | Max: 4294967295
+class MobileTunnelNetworkItem:
+    """Nested item for network field - supports attribute access."""
     id: int
-    # Select the associated interface name from available options. | MaxLen: 15
     interface: str
-    # Class IP and Netmask with correction | Default: 0.0.0.0 0.0.0.0
     prefix: str
-    
-    # Common API response fields
-    status: str
-    http_status: int | None
-    http_status_code: int | None
-    http_method: str | None
-    http_response_time: float | None
-    vdom: str | None
-    
-    # Methods from FortiObject
-    @property
-    def dict(self) -> dict[str, Any]:
-        """Convert to dictionary."""
-        ...
-    @property
-    def json(self) -> str:
-        """Get pretty-printed JSON string."""
-        ...
-    @property
-    def raw(self) -> dict[str, Any]:
-        """Get raw API response data."""
-        ...
-    def get_full(self, name: str) -> Any: ...
-    def to_dict(self) -> FortiObject: ...
-    def keys(self) -> Any: ...
-    def values(self) -> Generator[Any, None, None]: ...
-    def items(self) -> Generator[tuple[str, Any], None, None]: ...
-    def get(self, key: str, default: Any = None) -> Any: ...
 
 
-
-
-# Response TypedDict for GET returns (all fields present in API response)
-class MobileTunnelResponse(TypedDict):
-    """
-    Type hints for system/mobile_tunnel API response fields.
-    
-    All fields are present in the response from the FortiGate API.
-    """
-    name: str  # Tunnel name. | MaxLen: 15
-    status: Literal["disable", "enable"]  # Enable/disable this mobile tunnel. | Default: enable
-    roaming_interface: str  # Select the associated interface name from availabl | MaxLen: 15
-    home_agent: str  # IPv4 address of the NEMO HA | Default: 0.0.0.0
-    home_address: str  # Home IP address (Format: xxx.xxx.xxx.xxx). | Default: 0.0.0.0
-    renew_interval: int  # Time before lifetime expiration to send NMMO HA re | Default: 60 | Min: 5 | Max: 60
-    lifetime: int  # NMMO HA registration request lifetime | Default: 65535 | Min: 180 | Max: 65535
-    reg_interval: int  # NMMO HA registration interval | Default: 5 | Min: 5 | Max: 300
-    reg_retry: int  # Maximum number of NMMO HA registration retries | Default: 3 | Min: 1 | Max: 30
-    n_mhae_spi: int  # NEMO authentication SPI (default: 256). | Default: 256 | Min: 0 | Max: 4294967295
-    n_mhae_key_type: Literal["ascii", "base64"]  # NEMO authentication key type (ASCII or base64). | Default: ascii
-    n_mhae_key: str  # NEMO authentication key.
-    hash_algorithm: Literal["hmac-md5"]  # Hash Algorithm (Keyed MD5). | Default: hmac-md5
-    tunnel_mode: Literal["gre"]  # NEMO tunnel mode (GRE tunnel). | Default: gre
-    network: list[MobileTunnelNetworkItem]  # NEMO network configuration.
-
-
-@final
-class MobileTunnelObject:
-    """Typed FortiObject for system/mobile_tunnel with IDE autocomplete support.
-    
-    This is a typed wrapper that provides IDE autocomplete for API response fields.
-    At runtime, this is actually a FortiObject instance.
-    """
-    
-    # Tunnel name. | MaxLen: 15
+class MobileTunnelPayload(TypedDict, total=False):
+    """Payload type for MobileTunnel operations."""
     name: str
-    # Enable/disable this mobile tunnel. | Default: enable
     status: Literal["disable", "enable"]
-    # Select the associated interface name from available options. | MaxLen: 15
     roaming_interface: str
-    # IPv4 address of the NEMO HA (Format: xxx.xxx.xxx.xxx). | Default: 0.0.0.0
     home_agent: str
-    # Home IP address (Format: xxx.xxx.xxx.xxx). | Default: 0.0.0.0
     home_address: str
-    # Time before lifetime expiration to send NMMO HA re-registrat | Default: 60 | Min: 5 | Max: 60
     renew_interval: int
-    # NMMO HA registration request lifetime | Default: 65535 | Min: 180 | Max: 65535
     lifetime: int
-    # NMMO HA registration interval (5 - 300, default = 5). | Default: 5 | Min: 5 | Max: 300
     reg_interval: int
-    # Maximum number of NMMO HA registration retries | Default: 3 | Min: 1 | Max: 30
     reg_retry: int
-    # NEMO authentication SPI (default: 256). | Default: 256 | Min: 0 | Max: 4294967295
     n_mhae_spi: int
-    # NEMO authentication key type (ASCII or base64). | Default: ascii
     n_mhae_key_type: Literal["ascii", "base64"]
-    # NEMO authentication key.
     n_mhae_key: str
-    # Hash Algorithm (Keyed MD5). | Default: hmac-md5
     hash_algorithm: Literal["hmac-md5"]
-    # NEMO tunnel mode (GRE tunnel). | Default: gre
     tunnel_mode: Literal["gre"]
-    # NEMO network configuration.
-    network: list[MobileTunnelNetworkObject]
-    
-    # Common API response fields
-    status: str
-    http_status: int | None
-    http_status_code: int | None
-    http_method: str | None
-    http_response_time: float | None
-    vdom: str | None
-    
-    # Methods from FortiObject
-    @property
-    def dict(self) -> dict[str, Any]:
-        """Convert to dictionary."""
-        ...
-    @property
-    def json(self) -> str:
-        """Get pretty-printed JSON string."""
-        ...
-    @property
-    def raw(self) -> dict[str, Any]:
-        """Get raw API response data."""
-        ...
-    def get_full(self, name: str) -> Any: ...
-    def to_dict(self) -> MobileTunnelPayload: ...
-    def keys(self) -> Any: ...
-    def values(self) -> Generator[Any, None, None]: ...
-    def items(self) -> Generator[tuple[str, Any], None, None]: ...
-    def get(self, key: str, default: Any = None) -> Any: ...
+    network: str | list[str] | list[dict[str, Any]] | list[MobileTunnelNetworkItem]
 
+
+# ================================================================
+# Response Types (TypedDict for dict-style access)
+# ================================================================
+
+class MobileTunnelResponse(TypedDict, total=False):
+    """Response type for MobileTunnel - use with .dict property for typed dict access."""
+    name: str
+    status: Literal["disable", "enable"]
+    roaming_interface: str
+    home_agent: str
+    home_address: str
+    renew_interval: int
+    lifetime: int
+    reg_interval: int
+    reg_retry: int
+    n_mhae_spi: int
+    n_mhae_key_type: Literal["ascii", "base64"]
+    n_mhae_key: str
+    hash_algorithm: Literal["hmac-md5"]
+    tunnel_mode: Literal["gre"]
+    network: list[MobileTunnelNetworkItem]
+
+
+# ================================================================
+# Response Types (Class for attribute access)
+# ================================================================
+
+
+class MobileTunnelObject(FortiObject):
+    """Typed FortiObject for MobileTunnel with field access."""
+    name: str
+    status: Literal["disable", "enable"]
+    roaming_interface: str
+    home_agent: str
+    home_address: str
+    renew_interval: int
+    lifetime: int
+    reg_interval: int
+    reg_retry: int
+    n_mhae_spi: int
+    n_mhae_key_type: Literal["ascii", "base64"]
+    n_mhae_key: str
+    hash_algorithm: Literal["hmac-md5"]
+    tunnel_mode: Literal["gre"]
+    network: list[MobileTunnelNetworkItem]
+
+
+# ================================================================
+# Main Endpoint Class
+# ================================================================
 
 class MobileTunnel:
     """
-    Configure Mobile tunnels, an implementation of Network Mobility (NEMO) extensions for Mobile IPv4 RFC5177.
     
-    Path: system/mobile_tunnel
+    Endpoint: system/mobile_tunnel
     Category: cmdb
-    Primary Key: name
+    MKey: name
     """
     
+    # Class attributes for introspection
+    endpoint: ClassVar[str] = ...
+    path: ClassVar[str] = ...
+    category: ClassVar[str] = ...
+    mkey: ClassVar[str] = ...
+    capabilities: ClassVar[dict[str, Any]] = ...
+    
     def __init__(self, client: Any) -> None:
-        """Initialize endpoint with HTTP client.
-        
-        Args:
-            client: HTTP client instance for API communication
-        """
+        """Initialize endpoint with HTTP client."""
         ...
     
     # ================================================================
-    # GET OVERLOADS - Always returns FortiObject (or ContentResponse for file endpoints)
-    # Pylance matches overloads top-to-bottom, so these must come first!
+    # GET Methods
     # ================================================================
     
-    # With mkey as positional arg -> returns FortiObject
+    # CMDB with mkey - overloads for single vs list returns
     @overload
     def get(
         self,
         name: str,
+        *,
         filter: str | list[str] | None = ...,
         count: int | None = ...,
         start: int | None = ...,
@@ -245,14 +141,14 @@ class MobileTunnel:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        error_mode: Literal["raise", "return", "print"] | None = ...,
+        error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> MobileTunnelObject: ...
     
-    # With mkey as keyword arg -> returns FortiObject
     @overload
     def get(
         self,
         *,
-        name: str,
         filter: str | list[str] | None = ...,
         count: int | None = ...,
         start: int | None = ...,
@@ -262,164 +158,20 @@ class MobileTunnel:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> MobileTunnelObject: ...
-    
-    # Without mkey -> returns list of FortiObjects
-    @overload
-    def get(
-        self,
-        name: None = None,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
+        error_mode: Literal["raise", "return", "print"] | None = ...,
+        error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> FortiObjectList[MobileTunnelObject]: ...
-    
-    # ================================================================
-    # (removed - all GET now returns FortiObject)
-    # ================================================================
-    
-    # With mkey as positional arg -> returns single object
-    @overload
-    def get(
-        self,
-        name: str,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> MobileTunnelObject: ...
-    
-    # With mkey as keyword arg -> returns single object
-    @overload
-    def get(
-        self,
-        *,
-        name: str,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> MobileTunnelObject: ...
-    
-    # With no mkey -> returns list of objects
-    @overload
-    def get(
-        self,
-        *,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObjectList[MobileTunnelObject]: ...
-    
-    # Dict mode with mkey provided as positional arg (single dict)
-    @overload
-    def get(
-        self,
-        name: str,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> MobileTunnelObject: ...
-    
-    # Dict mode with mkey provided as keyword arg (single dict)
-    @overload
-    def get(
-        self,
-        *,
-        name: str,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> MobileTunnelObject: ...
-    
-    # Dict mode - list of dicts (no mkey/name provided) - keyword-only signature
-    @overload
-    def get(
-        self,
-        *,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObjectList[MobileTunnelObject]: ...
-    
-    # Fallback overload for all other cases
-    @overload
-    def get(
-        self,
-        name: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> Union[dict[str, Any], list[dict[str, Any]], FortiObject, list[FortiObject]]: ...
-    
-    def get(
-        self,
-        name: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> MobileTunnelObject | list[MobileTunnelObject] | dict[str, Any] | list[dict[str, Any]]: ...
     
     def get_schema(
         self,
         vdom: str | None = ...,
         format: str = ...,
     ) -> FortiObject: ...
+
+    # ================================================================
+    # POST Method
+    # ================================================================
     
-    # POST overloads
-    @overload
     def post(
         self,
         payload_dict: MobileTunnelPayload | None = ...,
@@ -437,78 +189,16 @@ class MobileTunnel:
         n_mhae_key: str | None = ...,
         hash_algorithm: Literal["hmac-md5"] | None = ...,
         tunnel_mode: Literal["gre"] | None = ...,
-        network: str | list[str] | list[MobileTunnelNetworkItem] | None = ...,
+        network: str | list[str] | list[dict[str, Any]] | list[MobileTunnelNetworkItem] | None = ...,
         vdom: str | bool | None = ...,
+        error_mode: Literal["raise", "return", "print"] | None = ...,
+        error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> MobileTunnelObject: ...
+
+    # ================================================================
+    # PUT Method
+    # ================================================================
     
-    @overload
-    def post(
-        self,
-        payload_dict: MobileTunnelPayload | None = ...,
-        name: str | None = ...,
-        status: Literal["disable", "enable"] | None = ...,
-        roaming_interface: str | None = ...,
-        home_agent: str | None = ...,
-        home_address: str | None = ...,
-        renew_interval: int | None = ...,
-        lifetime: int | None = ...,
-        reg_interval: int | None = ...,
-        reg_retry: int | None = ...,
-        n_mhae_spi: int | None = ...,
-        n_mhae_key_type: Literal["ascii", "base64"] | None = ...,
-        n_mhae_key: str | None = ...,
-        hash_algorithm: Literal["hmac-md5"] | None = ...,
-        tunnel_mode: Literal["gre"] | None = ...,
-        network: str | list[str] | list[MobileTunnelNetworkItem] | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
-    
-    # Default overload
-    @overload
-    def post(
-        self,
-        payload_dict: MobileTunnelPayload | None = ...,
-        name: str | None = ...,
-        status: Literal["disable", "enable"] | None = ...,
-        roaming_interface: str | None = ...,
-        home_agent: str | None = ...,
-        home_address: str | None = ...,
-        renew_interval: int | None = ...,
-        lifetime: int | None = ...,
-        reg_interval: int | None = ...,
-        reg_retry: int | None = ...,
-        n_mhae_spi: int | None = ...,
-        n_mhae_key_type: Literal["ascii", "base64"] | None = ...,
-        n_mhae_key: str | None = ...,
-        hash_algorithm: Literal["hmac-md5"] | None = ...,
-        tunnel_mode: Literal["gre"] | None = ...,
-        network: str | list[str] | list[MobileTunnelNetworkItem] | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
-    
-    def post(
-        self,
-        payload_dict: MobileTunnelPayload | None = ...,
-        name: str | None = ...,
-        status: Literal["disable", "enable"] | None = ...,
-        roaming_interface: str | None = ...,
-        home_agent: str | None = ...,
-        home_address: str | None = ...,
-        renew_interval: int | None = ...,
-        lifetime: int | None = ...,
-        reg_interval: int | None = ...,
-        reg_retry: int | None = ...,
-        n_mhae_spi: int | None = ...,
-        n_mhae_key_type: Literal["ascii", "base64"] | None = ...,
-        n_mhae_key: str | None = ...,
-        hash_algorithm: Literal["hmac-md5"] | None = ...,
-        tunnel_mode: Literal["gre"] | None = ...,
-        network: str | list[str] | list[MobileTunnelNetworkItem] | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
-    
-    # PUT overloads
-    @overload
     def put(
         self,
         payload_dict: MobileTunnelPayload | None = ...,
@@ -526,104 +216,27 @@ class MobileTunnel:
         n_mhae_key: str | None = ...,
         hash_algorithm: Literal["hmac-md5"] | None = ...,
         tunnel_mode: Literal["gre"] | None = ...,
-        network: str | list[str] | list[MobileTunnelNetworkItem] | None = ...,
+        network: str | list[str] | list[dict[str, Any]] | list[MobileTunnelNetworkItem] | None = ...,
         vdom: str | bool | None = ...,
+        error_mode: Literal["raise", "return", "print"] | None = ...,
+        error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> MobileTunnelObject: ...
-    
-    @overload
-    def put(
-        self,
-        payload_dict: MobileTunnelPayload | None = ...,
-        name: str | None = ...,
-        status: Literal["disable", "enable"] | None = ...,
-        roaming_interface: str | None = ...,
-        home_agent: str | None = ...,
-        home_address: str | None = ...,
-        renew_interval: int | None = ...,
-        lifetime: int | None = ...,
-        reg_interval: int | None = ...,
-        reg_retry: int | None = ...,
-        n_mhae_spi: int | None = ...,
-        n_mhae_key_type: Literal["ascii", "base64"] | None = ...,
-        n_mhae_key: str | None = ...,
-        hash_algorithm: Literal["hmac-md5"] | None = ...,
-        tunnel_mode: Literal["gre"] | None = ...,
-        network: str | list[str] | list[MobileTunnelNetworkItem] | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
-    
-    # Default overload
-    @overload
-    def put(
-        self,
-        payload_dict: MobileTunnelPayload | None = ...,
-        name: str | None = ...,
-        status: Literal["disable", "enable"] | None = ...,
-        roaming_interface: str | None = ...,
-        home_agent: str | None = ...,
-        home_address: str | None = ...,
-        renew_interval: int | None = ...,
-        lifetime: int | None = ...,
-        reg_interval: int | None = ...,
-        reg_retry: int | None = ...,
-        n_mhae_spi: int | None = ...,
-        n_mhae_key_type: Literal["ascii", "base64"] | None = ...,
-        n_mhae_key: str | None = ...,
-        hash_algorithm: Literal["hmac-md5"] | None = ...,
-        tunnel_mode: Literal["gre"] | None = ...,
-        network: str | list[str] | list[MobileTunnelNetworkItem] | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
-    
-    def put(
-        self,
-        payload_dict: MobileTunnelPayload | None = ...,
-        name: str | None = ...,
-        status: Literal["disable", "enable"] | None = ...,
-        roaming_interface: str | None = ...,
-        home_agent: str | None = ...,
-        home_address: str | None = ...,
-        renew_interval: int | None = ...,
-        lifetime: int | None = ...,
-        reg_interval: int | None = ...,
-        reg_retry: int | None = ...,
-        n_mhae_spi: int | None = ...,
-        n_mhae_key_type: Literal["ascii", "base64"] | None = ...,
-        n_mhae_key: str | None = ...,
-        hash_algorithm: Literal["hmac-md5"] | None = ...,
-        tunnel_mode: Literal["gre"] | None = ...,
-        network: str | list[str] | list[MobileTunnelNetworkItem] | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
-    
-    # DELETE overloads
-    @overload
-    def delete(
-        self,
-        name: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> MobileTunnelObject: ...
-    
-    @overload
-    def delete(
-        self,
-        name: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
-    
-    # Default overload
-    @overload
-    def delete(
-        self,
-        name: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+
+    # ================================================================
+    # DELETE Method
+    # ================================================================
     
     def delete(
         self,
         name: str | None = ...,
         vdom: str | bool | None = ...,
+        error_mode: Literal["raise", "return", "print"] | None = ...,
+        error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> FortiObject: ...
+
+    # ================================================================
+    # Utility Methods
+    # ================================================================
     
     def exists(
         self,
@@ -648,8 +261,10 @@ class MobileTunnel:
         n_mhae_key: str | None = ...,
         hash_algorithm: Literal["hmac-md5"] | None = ...,
         tunnel_mode: Literal["gre"] | None = ...,
-        network: str | list[str] | list[MobileTunnelNetworkItem] | None = ...,
+        network: str | list[str] | list[dict[str, Any]] | list[MobileTunnelNetworkItem] | None = ...,
         vdom: str | bool | None = ...,
+        error_mode: Literal["raise", "return", "print"] | None = ...,
+        error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> FortiObject: ...
     
     # Helper methods
@@ -657,7 +272,7 @@ class MobileTunnel:
     def help(field_name: str | None = ...) -> str: ...
     
     @staticmethod
-    def fields(detailed: bool = ...) -> Union[list[str], list[dict[str, Any]]]: ...
+    def fields(detailed: bool = ...) -> list[str] | list[dict[str, Any]]: ...
     
     @staticmethod
     def field_info(field_name: str) -> FortiObject: ...
@@ -673,9 +288,6 @@ class MobileTunnel:
     
     @staticmethod
     def schema() -> FortiObject: ...
-
-
-# ================================================================
 
 
 __all__ = [

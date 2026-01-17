@@ -642,6 +642,16 @@ class DynamicPortPolicy(CRUDEndpoint, MetadataMixin):
             - put(): Update existing object
             - exists(): Check existence manually
         """
+        # Apply normalization for table fields (supports flexible input formats)
+        if policy is not None:
+            policy = normalize_table_field(
+                policy,
+                mkey="name",
+                required_fields=['name'],
+                field_name="policy",
+                example="[{'name': 'value'}]",
+            )
+        
         # Build payload using helper function with auto-normalization
         payload_data = build_api_payload(
             name=name,

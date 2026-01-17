@@ -11,7 +11,11 @@ from pydantic import BaseModel, Field, field_validator
 from typing import Any, Literal, Optional
 
 # ============================================================================
-# Child Table Models
+# Enum Definitions for Child Table Fields (for fields with 4+ allowed values)
+# ============================================================================
+
+# ============================================================================
+# Child Table Models (sorted deepest-first so nested models are defined before their parents)
 # ============================================================================
 
 class NtpNtpserver(BaseModel):
@@ -25,9 +29,10 @@ class NtpNtpserver(BaseModel):
         """Pydantic model configuration."""
         extra = "allow"  # Allow additional fields from API
         str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
     
-    id: int = Field(ge=0, le=4294967295, default=0, description="NTP server ID.")    
-    server: str = Field(max_length=63, default="", description="IP address or hostname of the NTP Server.")    
+    id_: int = Field(ge=0, le=4294967295, default=0, serialization_alias="id", description="NTP server ID.")    
+    server: str = Field(max_length=63, description="IP address or hostname of the NTP Server.")    
     ntpv3: Literal["enable", "disable"] | None = Field(default="disable", description="Enable to use NTPv3 instead of NTPv4.")    
     authentication: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable authentication.")    
     key_type: Literal["MD5", "SHA1", "SHA256"] | None = Field(default="MD5", description="Select NTP authentication type.")    
@@ -35,7 +40,7 @@ class NtpNtpserver(BaseModel):
     key_id: int = Field(ge=0, le=4294967295, default=0, description="Key ID for authentication.")    
     ip_type: Literal["IPv6", "IPv4", "Both"] | None = Field(default="Both", description="Choose to connect to IPv4 or/and IPv6 NTP server.")    
     interface_select_method: Literal["auto", "sdwan", "specify"] | None = Field(default="auto", description="Specify how to select outgoing interface to reach server.")    
-    interface: str = Field(max_length=15, default="", description="Specify outgoing interface to reach server.")  # datasource: ['system.interface.name']    
+    interface: str = Field(max_length=15, description="Specify outgoing interface to reach server.")  # datasource: ['system.interface.name']    
     vrf_select: int | None = Field(ge=0, le=511, default=0, description="VRF ID used for connection to server.")
 class NtpInterface(BaseModel):
     """
@@ -48,8 +53,9 @@ class NtpInterface(BaseModel):
         """Pydantic model configuration."""
         extra = "allow"  # Allow additional fields from API
         str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
     
-    interface_name: str = Field(max_length=79, default="", description="Interface name.")  # datasource: ['system.interface.name']
+    interface_name: str = Field(max_length=79, description="Interface name.")  # datasource: ['system.interface.name']
 # ============================================================================
 # Enum Definitions (for fields with 4+ allowed values)
 # ============================================================================
@@ -65,7 +71,7 @@ class NtpModel(BaseModel):
     
     Configure system NTP information.
     
-    Validation Rules:        - ntpsync: pattern=        - type: pattern=        - syncinterval: min=1 max=1440 pattern=        - ntpserver: pattern=        - source_ip: pattern=        - source_ip6: pattern=        - server_mode: pattern=        - authentication: pattern=        - key_type: pattern=        - key: max_length=64 pattern=        - key_id: min=0 max=4294967295 pattern=        - interface: pattern=    """
+    Validation Rules:        - ntpsync: pattern=        - type_: pattern=        - syncinterval: min=1 max=1440 pattern=        - ntpserver: pattern=        - source_ip: pattern=        - source_ip6: pattern=        - server_mode: pattern=        - authentication: pattern=        - key_type: pattern=        - key: max_length=64 pattern=        - key_id: min=0 max=4294967295 pattern=        - interface: pattern=    """
     
     class Config:
         """Pydantic model configuration."""
@@ -79,9 +85,9 @@ class NtpModel(BaseModel):
     # ========================================================================
     
     ntpsync: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable setting the FortiGate system time by synchronizing with an NTP Server.")    
-    type: Literal["fortiguard", "custom"] | None = Field(default="fortiguard", description="Use the FortiGuard NTP server or any other available NTP Server.")    
+    type_: Literal["fortiguard", "custom"] | None = Field(default="fortiguard", serialization_alias="type", description="Use the FortiGuard NTP server or any other available NTP Server.")    
     syncinterval: int | None = Field(ge=1, le=1440, default=60, description="NTP synchronization interval (1 - 1440 min).")    
-    ntpserver: list[Ntpserver] = Field(default=None, description="Configure the FortiGate to connect to any available third-party NTP server.")    
+    ntpserver: list[NtpNtpserver] = Field(default_factory=list, description="Configure the FortiGate to connect to any available third-party NTP server.")    
     source_ip: str | None = Field(default="0.0.0.0", description="Source IP address for communication to the NTP server.")    
     source_ip6: str | None = Field(default="::", description="Source IPv6 address for communication to the NTP server.")    
     server_mode: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable FortiGate NTP Server Mode. Your FortiGate becomes an NTP server for other devices on your network. The FortiGate relays NTP requests to its configured NTP server.")    
@@ -89,7 +95,7 @@ class NtpModel(BaseModel):
     key_type: Literal["MD5", "SHA1", "SHA256"] | None = Field(default="MD5", description="Key type for authentication (MD5, SHA1, SHA256).")    
     key: Any = Field(max_length=64, description="Key for authentication.")    
     key_id: int = Field(ge=0, le=4294967295, default=0, description="Key ID for authentication.")    
-    interface: list[Interface] = Field(default=None, description="FortiGate interface(s) with NTP server mode enabled. Devices on your network can contact these interfaces for NTP services.")    
+    interface: list[NtpInterface] = Field(default_factory=list, description="FortiGate interface(s) with NTP server mode enabled. Devices on your network can contact these interfaces for NTP services.")    
     # ========================================================================
     # Custom Validators
     # ========================================================================
@@ -154,7 +160,7 @@ class NtpModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.system.ntp.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate child table items
         values = getattr(self, "ntpserver", [])
@@ -212,7 +218,7 @@ class NtpModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.system.ntp.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate child table items
         values = getattr(self, "interface", [])
@@ -283,5 +289,5 @@ __all__ = [
 # ============================================================================
 # Generated by hfortix generator v0.6.0
 # Schema: 1.7.0
-# Generated: 2026-01-17T05:32:19.049818Z
+# Generated: 2026-01-17T17:25:22.764578Z
 # ============================================================================

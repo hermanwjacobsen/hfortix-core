@@ -715,6 +715,24 @@ class SwitchInterface(CRUDEndpoint, MetadataMixin):
             - put(): Update existing object
             - exists(): Check existence manually
         """
+        # Apply normalization for table fields (supports flexible input formats)
+        if span_source_port is not None:
+            span_source_port = normalize_table_field(
+                span_source_port,
+                mkey="interface-name",
+                required_fields=['interface-name'],
+                field_name="span_source_port",
+                example="[{'interface-name': 'value'}]",
+            )
+        if member is not None:
+            member = normalize_table_field(
+                member,
+                mkey="interface-name",
+                required_fields=['interface-name'],
+                field_name="member",
+                example="[{'interface-name': 'value'}]",
+            )
+        
         # Build payload using helper function with auto-normalization
         payload_data = build_api_payload(
             name=name,

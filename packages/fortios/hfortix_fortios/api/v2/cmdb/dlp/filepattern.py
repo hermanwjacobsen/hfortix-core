@@ -638,6 +638,16 @@ class Filepattern(CRUDEndpoint, MetadataMixin):
             - put(): Update existing object
             - exists(): Check existence manually
         """
+        # Apply normalization for table fields (supports flexible input formats)
+        if entries is not None:
+            entries = normalize_table_field(
+                entries,
+                mkey="pattern",
+                required_fields=['filter-type', 'file-type'],
+                field_name="entries",
+                example="[{'filter-type': 'pattern', 'file-type': '7z'}]",
+            )
+        
         # Build payload using helper function with auto-normalization
         payload_data = build_api_payload(
             id=id,

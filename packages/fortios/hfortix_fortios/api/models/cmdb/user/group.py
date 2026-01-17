@@ -12,7 +12,11 @@ from typing import Any, Literal, Optional
 from enum import Enum
 
 # ============================================================================
-# Child Table Models
+# Enum Definitions for Child Table Fields (for fields with 4+ allowed values)
+# ============================================================================
+
+# ============================================================================
+# Child Table Models (sorted deepest-first so nested models are defined before their parents)
 # ============================================================================
 
 class GroupMember(BaseModel):
@@ -26,8 +30,9 @@ class GroupMember(BaseModel):
         """Pydantic model configuration."""
         extra = "allow"  # Allow additional fields from API
         str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
     
-    name: str = Field(max_length=511, default="", description="Group member name.")  # datasource: ['user.peer.name', 'user.local.name', 'user.radius.name', 'user.tacacs+.name', 'user.ldap.name', 'user.saml.name', 'user.external-identity-provider.name', 'user.adgrp.name', 'user.pop3.name', 'user.certificate.name']
+    name: str = Field(max_length=511, description="Group member name.")  # datasource: ['user.peer.name', 'user.local.name', 'user.radius.name', 'user.tacacs+.name', 'user.ldap.name', 'user.saml.name', 'user.external-identity-provider.name', 'user.adgrp.name', 'user.pop3.name', 'user.certificate.name']
 class GroupMatch(BaseModel):
     """
     Child table model for match.
@@ -39,10 +44,11 @@ class GroupMatch(BaseModel):
         """Pydantic model configuration."""
         extra = "allow"  # Allow additional fields from API
         str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
     
-    id: int = Field(ge=0, le=4294967295, default=0, description="ID.")    
-    server_name: str = Field(max_length=35, default="", description="Name of remote auth server.")  # datasource: ['user.radius.name', 'user.ldap.name', 'user.tacacs+.name', 'user.saml.name', 'user.external-identity-provider.name']    
-    group_name: str = Field(max_length=511, default="", description="Name of matching user or group on remote authentication server or SCIM.")
+    id_: int = Field(ge=0, le=4294967295, default=0, serialization_alias="id", description="ID.")    
+    server_name: str = Field(max_length=35, description="Name of remote auth server.")  # datasource: ['user.radius.name', 'user.ldap.name', 'user.tacacs+.name', 'user.saml.name', 'user.external-identity-provider.name']    
+    group_name: str = Field(max_length=511, description="Name of matching user or group on remote authentication server or SCIM.")
 class GroupGuest(BaseModel):
     """
     Child table model for guest.
@@ -54,24 +60,29 @@ class GroupGuest(BaseModel):
         """Pydantic model configuration."""
         extra = "allow"  # Allow additional fields from API
         str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
     
-    id: int = Field(ge=0, le=4294967295, default=0, description="Guest ID.")    
-    user_id: str | None = Field(max_length=64, default="", description="Guest ID.")    
-    name: str | None = Field(max_length=64, default="", description="Guest name.")    
+    id_: int = Field(ge=0, le=4294967295, default=0, serialization_alias="id", description="Guest ID.")    
+    user_id: str | None = Field(max_length=64, default=None, description="Guest ID.")    
+    name: str | None = Field(max_length=64, default=None, description="Guest name.")    
     password: Any = Field(max_length=128, default=None, description="Guest password.")    
-    mobile_phone: str | None = Field(max_length=35, default="", description="Mobile phone.")    
-    sponsor: str | None = Field(max_length=35, default="", description="Set the action for the sponsor guest user field.")    
-    company: str | None = Field(max_length=35, default="", description="Set the action for the company guest user field.")    
-    email: str | None = Field(max_length=64, default="", description="Email.")    
-    expiration: str | None = Field(default="", description="Expire time.")    
+    mobile_phone: str | None = Field(max_length=35, default=None, description="Mobile phone.")    
+    sponsor: str | None = Field(max_length=35, default=None, description="Set the action for the sponsor guest user field.")    
+    company: str | None = Field(max_length=35, default=None, description="Set the action for the company guest user field.")    
+    email: str | None = Field(max_length=64, default=None, description="Email.")    
+    expiration: str | None = Field(default=None, description="Expire time.")    
     comment: str | None = Field(max_length=255, default=None, description="Comment.")
 # ============================================================================
 # Enum Definitions (for fields with 4+ allowed values)
 # ============================================================================
 
-class GroupGroup_typeEnum(str, Enum):
+class GroupGroupTypeEnum(str, Enum):
     """Allowed values for group_type field."""
-    FIREWALL = "firewall"    FSSO_SERVICE = "fsso-service"    RSSO = "rsso"    GUEST = "guest"
+    FIREWALL = "firewall"
+    FSSO_SERVICE = "fsso-service"
+    RSSO = "rsso"
+    GUEST = "guest"
+
 
 # ============================================================================
 # Main Model
@@ -83,7 +94,7 @@ class GroupModel(BaseModel):
     
     Configure user groups.
     
-    Validation Rules:        - name: max_length=35 pattern=        - id: min=0 max=4294967295 pattern=        - group_type: pattern=        - authtimeout: min=0 max=43200 pattern=        - auth_concurrent_override: pattern=        - auth_concurrent_value: min=0 max=100 pattern=        - http_digest_realm: max_length=35 pattern=        - sso_attribute_value: max_length=511 pattern=        - member: pattern=        - match: pattern=        - user_id: pattern=        - password: pattern=        - user_name: pattern=        - sponsor: pattern=        - company: pattern=        - email: pattern=        - mobile_phone: pattern=        - sms_server: pattern=        - sms_custom_server: max_length=35 pattern=        - expire_type: pattern=        - expire: min=1 max=31536000 pattern=        - max_accounts: min=0 max=500 pattern=        - multiple_guest_add: pattern=        - guest: pattern=    """
+    Validation Rules:        - name: max_length=35 pattern=        - id_: min=0 max=4294967295 pattern=        - group_type: pattern=        - authtimeout: min=0 max=43200 pattern=        - auth_concurrent_override: pattern=        - auth_concurrent_value: min=0 max=100 pattern=        - http_digest_realm: max_length=35 pattern=        - sso_attribute_value: max_length=511 pattern=        - member: pattern=        - match: pattern=        - user_id: pattern=        - password: pattern=        - user_name: pattern=        - sponsor: pattern=        - company: pattern=        - email: pattern=        - mobile_phone: pattern=        - sms_server: pattern=        - sms_custom_server: max_length=35 pattern=        - expire_type: pattern=        - expire: min=1 max=31536000 pattern=        - max_accounts: min=0 max=500 pattern=        - multiple_guest_add: pattern=        - guest: pattern=    """
     
     class Config:
         """Pydantic model configuration."""
@@ -96,16 +107,16 @@ class GroupModel(BaseModel):
     # Model Fields
     # ========================================================================
     
-    name: str | None = Field(max_length=35, default="", description="Group name.")    
-    id: int | None = Field(ge=0, le=4294967295, default=0, description="Group ID.")    
-    group_type: GroupTypeEnum | None = Field(default="firewall", description="Set the group to be for firewall authentication, FSSO, RSSO, or guest users.")    
+    name: str | None = Field(max_length=35, default=None, description="Group name.")    
+    id_: int | None = Field(ge=0, le=4294967295, default=0, serialization_alias="id", description="Group ID.")    
+    group_type: GroupGroupTypeEnum | None = Field(default=GroupGroupTypeEnum.FIREWALL, description="Set the group to be for firewall authentication, FSSO, RSSO, or guest users.")    
     authtimeout: int | None = Field(ge=0, le=43200, default=0, description="Authentication timeout in minutes for this user group. 0 to use the global user setting auth-timeout.")    
     auth_concurrent_override: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable overriding the global number of concurrent authentication sessions for this user group.")    
     auth_concurrent_value: int | None = Field(ge=0, le=100, default=0, description="Maximum number of concurrent authenticated connections per user (0 - 100).")    
-    http_digest_realm: str | None = Field(max_length=35, default="", description="Realm attribute for MD5-digest authentication.")    
-    sso_attribute_value: str | None = Field(max_length=511, default="", description="RADIUS attribute value.")    
-    member: list[Member] = Field(default=None, description="Names of users, peers, LDAP severs, RADIUS servers or external idp servers to add to the user group.")    
-    match: list[Match] = Field(default=None, description="Group matches.")    
+    http_digest_realm: str | None = Field(max_length=35, default=None, description="Realm attribute for MD5-digest authentication.")    
+    sso_attribute_value: str | None = Field(max_length=511, default=None, description="RADIUS attribute value.")    
+    member: list[GroupMember] = Field(default_factory=list, description="Names of users, peers, LDAP severs, RADIUS servers or external idp servers to add to the user group.")    
+    match: list[GroupMatch] = Field(default_factory=list, description="Group matches.")    
     user_id: Literal["email", "auto-generate", "specify"] | None = Field(default="email", description="Guest user ID type.")    
     password: Literal["auto-generate", "specify", "disable"] | None = Field(default="auto-generate", description="Guest user password type.")    
     user_name: Literal["disable", "enable"] | None = Field(default="disable", description="Enable/disable the guest user name entry.")    
@@ -114,12 +125,12 @@ class GroupModel(BaseModel):
     email: Literal["disable", "enable"] | None = Field(default="enable", description="Enable/disable the guest user email address field.")    
     mobile_phone: Literal["disable", "enable"] | None = Field(default="disable", description="Enable/disable the guest user mobile phone number field.")    
     sms_server: Literal["fortiguard", "custom"] | None = Field(default="fortiguard", description="Send SMS through FortiGuard or other external server.")    
-    sms_custom_server: str | None = Field(max_length=35, default="", description="SMS server.")  # datasource: ['system.sms-server.name']    
+    sms_custom_server: str | None = Field(max_length=35, default=None, description="SMS server.")  # datasource: ['system.sms-server.name']    
     expire_type: Literal["immediately", "first-successful-login"] | None = Field(default="immediately", description="Determine when the expiration countdown begins.")    
     expire: int | None = Field(ge=1, le=31536000, default=14400, description="Time in seconds before guest user accounts expire (1 - 31536000).")    
     max_accounts: int | None = Field(ge=0, le=500, default=0, description="Maximum number of guest accounts that can be created for this group (0 means unlimited).")    
     multiple_guest_add: Literal["disable", "enable"] | None = Field(default="disable", description="Enable/disable addition of multiple guests.")    
-    guest: list[Guest] = Field(default=None, description="Guest User.")    
+    guest: list[GroupGuest] = Field(default_factory=list, description="Guest User.")    
     # ========================================================================
     # Custom Validators
     # ========================================================================
@@ -199,7 +210,7 @@ class GroupModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.user.group.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate child table items
         values = getattr(self, "member", [])
@@ -223,13 +234,13 @@ class GroupModel(BaseModel):
                 found = True
             elif await client.api.cmdb.user.radius.exists(value):
                 found = True
-            elif await client.api.cmdb.user.tacacs+.exists(value):
+            elif await client.api.cmdb.user.tacacs_plus.exists(value):
                 found = True
             elif await client.api.cmdb.user.ldap.exists(value):
                 found = True
             elif await client.api.cmdb.user.saml.exists(value):
                 found = True
-            elif await client.api.cmdb.user.external-identity-provider.exists(value):
+            elif await client.api.cmdb.user.external_identity_provider.exists(value):
                 found = True
             elif await client.api.cmdb.user.adgrp.exists(value):
                 found = True
@@ -275,7 +286,7 @@ class GroupModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.user.group.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate child table items
         values = getattr(self, "match", [])
@@ -297,11 +308,11 @@ class GroupModel(BaseModel):
                 found = True
             elif await client.api.cmdb.user.ldap.exists(value):
                 found = True
-            elif await client.api.cmdb.user.tacacs+.exists(value):
+            elif await client.api.cmdb.user.tacacs_plus.exists(value):
                 found = True
             elif await client.api.cmdb.user.saml.exists(value):
                 found = True
-            elif await client.api.cmdb.user.external-identity-provider.exists(value):
+            elif await client.api.cmdb.user.external_identity_provider.exists(value):
                 found = True
             
             if not found:
@@ -341,7 +352,7 @@ class GroupModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.user.group.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate scalar field
         value = getattr(self, "sms_custom_server", None)
@@ -350,7 +361,7 @@ class GroupModel(BaseModel):
         
         # Check all datasource endpoints
         found = False
-        if await client.api.cmdb.system.sms-server.exists(value):
+        if await client.api.cmdb.system.sms_server.exists(value):
             found = True
         
         if not found:
@@ -405,5 +416,5 @@ __all__ = [
 # ============================================================================
 # Generated by hfortix generator v0.6.0
 # Schema: 1.7.0
-# Generated: 2026-01-17T05:32:19.411855Z
+# Generated: 2026-01-17T17:25:23.094185Z
 # ============================================================================

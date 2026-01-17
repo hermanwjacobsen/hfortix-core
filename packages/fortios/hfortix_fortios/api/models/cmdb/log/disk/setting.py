@@ -15,15 +15,46 @@ from enum import Enum
 # Enum Definitions (for fields with 4+ allowed values)
 # ============================================================================
 
-class SettingRoll_dayEnum(str, Enum):
+class SettingRollDayEnum(str, Enum):
     """Allowed values for roll_day field."""
-    SUNDAY = "sunday"    MONDAY = "monday"    TUESDAY = "tuesday"    WEDNESDAY = "wednesday"    THURSDAY = "thursday"    FRIDAY = "friday"    SATURDAY = "saturday"
+    SUNDAY = "sunday"
+    MONDAY = "monday"
+    TUESDAY = "tuesday"
+    WEDNESDAY = "wednesday"
+    THURSDAY = "thursday"
+    FRIDAY = "friday"
+    SATURDAY = "saturday"
+
 class SettingUploadtypeEnum(str, Enum):
     """Allowed values for uploadtype field."""
-    TRAFFIC = "traffic"    EVENT = "event"    VIRUS = "virus"    WEBFILTER = "webfilter"    IPS = "IPS"    EMAILFILTER = "emailfilter"    DLP_ARCHIVE = "dlp-archive"    ANOMALY = "anomaly"    VOIP = "voip"    DLP = "dlp"    APP_CTRL = "app-ctrl"    WAF = "waf"    GTP = "gtp"    DNS = "dns"    SSH = "ssh"    SSL = "ssl"    FILE_FILTER = "file-filter"    ICAP = "icap"    VIRTUAL_PATCH = "virtual-patch"    DEBUG = "debug"
-class SettingUpload_ssl_connEnum(str, Enum):
+    TRAFFIC = "traffic"
+    EVENT = "event"
+    VIRUS = "virus"
+    WEBFILTER = "webfilter"
+    IPS = "IPS"
+    EMAILFILTER = "emailfilter"
+    DLP_ARCHIVE = "dlp-archive"
+    ANOMALY = "anomaly"
+    VOIP = "voip"
+    DLP = "dlp"
+    APP_CTRL = "app-ctrl"
+    WAF = "waf"
+    GTP = "gtp"
+    DNS = "dns"
+    SSH = "ssh"
+    SSL = "ssl"
+    FILE_FILTER = "file-filter"
+    ICAP = "icap"
+    VIRTUAL_PATCH = "virtual-patch"
+    DEBUG = "debug"
+
+class SettingUploadSslConnEnum(str, Enum):
     """Allowed values for upload_ssl_conn field."""
-    DEFAULT = "default"    HIGH = "high"    LOW = "low"    DISABLE = "disable"
+    DEFAULT = "default"
+    HIGH = "high"
+    LOW = "low"
+    DISABLE = "disable"
+
 
 # ============================================================================
 # Main Model
@@ -53,8 +84,8 @@ class SettingModel(BaseModel):
     max_log_file_size: int | None = Field(ge=1, le=100, default=20, description="Maximum log file size before rolling (1 - 100 Mbytes).")    
     max_policy_packet_capture_size: int | None = Field(ge=0, le=4294967295, default=100, description="Maximum size of policy sniffer in MB (0 means unlimited).")    
     roll_schedule: Literal["daily", "weekly"] | None = Field(default="daily", description="Frequency to check log file for rolling.")    
-    roll_day: list[RollDay] = Field(default="sunday", description="Day of week on which to roll log file.")    
-    roll_time: str | None = Field(default="", description="Time of day to roll the log file (hh:mm).")    
+    roll_day: list[SettingRollDayEnum] = Field(default_factory=list, description="Day of week on which to roll log file.")    
+    roll_time: str | None = Field(default=None, description="Time of day to roll the log file (hh:mm).")    
     diskfull: Literal["overwrite", "nolog"] | None = Field(default="overwrite", description="Action to take when disk is full. The system can overwrite the oldest log messages or stop logging when the disk is full (default = overwrite).")    
     log_quota: int | None = Field(ge=0, le=4294967295, default=0, description="Disk log quota (MB).")    
     dlp_archive_quota: int | None = Field(ge=0, le=4294967295, default=0, description="DLP archive quota (MB).")    
@@ -65,19 +96,19 @@ class SettingModel(BaseModel):
     uploadip: str = Field(default="0.0.0.0", description="IP address of the FTP server to upload log files to.")    
     uploadport: int | None = Field(ge=0, le=65535, default=21, description="TCP port to use for communicating with the FTP server (default = 21).")    
     source_ip: str | None = Field(default="0.0.0.0", description="Source IP address to use for uploading disk log files.")    
-    uploaduser: str = Field(max_length=35, default="", description="Username required to log into the FTP server to upload disk log files.")    
+    uploaduser: str = Field(max_length=35, description="Username required to log into the FTP server to upload disk log files.")    
     uploadpass: Any = Field(max_length=128, default=None, description="Password required to log into the FTP server to upload disk log files.")    
-    uploaddir: str | None = Field(max_length=63, default="", description="The remote directory on the FTP server to upload log files to.")    
-    uploadtype: list[Uploadtype] = Field(default="traffic event virus webfilter IPS emailfilter dlp-archive anomaly voip dlp app-ctrl waf gtp dns ssh ssl", description="Types of log files to upload. Separate multiple entries with a space.")    
+    uploaddir: str | None = Field(max_length=63, default=None, description="The remote directory on the FTP server to upload log files to.")    
+    uploadtype: list[SettingUploadtypeEnum] = Field(default_factory=list, description="Types of log files to upload. Separate multiple entries with a space.")    
     uploadsched: Literal["disable", "enable"] | None = Field(default="disable", description="Set the schedule for uploading log files to the FTP server (default = disable = upload when rolling).")    
-    uploadtime: str | None = Field(default="", description="Time of day at which log files are uploaded if uploadsched is enabled (hh:mm or hh).")    
+    uploadtime: str | None = Field(default=None, description="Time of day at which log files are uploaded if uploadsched is enabled (hh:mm or hh).")    
     upload_delete_files: Literal["enable", "disable"] | None = Field(default="enable", description="Delete log files after uploading (default = enable).")    
-    upload_ssl_conn: UploadSslConnEnum | None = Field(default="default", description="Enable/disable encrypted FTPS communication to upload log files.")    
+    upload_ssl_conn: SettingUploadSslConnEnum | None = Field(default=SettingUploadSslConnEnum.DEFAULT, description="Enable/disable encrypted FTPS communication to upload log files.")    
     full_first_warning_threshold: int | None = Field(ge=1, le=98, default=75, description="Log full first warning threshold as a percent (1 - 98, default = 75).")    
     full_second_warning_threshold: int | None = Field(ge=2, le=99, default=90, description="Log full second warning threshold as a percent (2 - 99, default = 90).")    
     full_final_warning_threshold: int | None = Field(ge=3, le=100, default=95, description="Log full final warning threshold as a percent (3 - 100, default = 95).")    
     interface_select_method: Literal["auto", "sdwan", "specify"] | None = Field(default="auto", description="Specify how to select outgoing interface to reach server.")    
-    interface: str = Field(max_length=15, default="", description="Specify outgoing interface to reach server.")  # datasource: ['system.interface.name']    
+    interface: str = Field(max_length=15, description="Specify outgoing interface to reach server.")  # datasource: ['system.interface.name']    
     vrf_select: int | None = Field(ge=0, le=511, default=0, description="VRF ID used for connection to server.")    
     # ========================================================================
     # Custom Validators
@@ -158,7 +189,7 @@ class SettingModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.log.disk.setting.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate scalar field
         value = getattr(self, "interface", None)
@@ -218,5 +249,5 @@ __all__ = [
 # ============================================================================
 # Generated by hfortix generator v0.6.0
 # Schema: 1.7.0
-# Generated: 2026-01-17T05:32:19.170621Z
+# Generated: 2026-01-17T17:25:22.872466Z
 # ============================================================================

@@ -7,13 +7,61 @@ Generated from FortiOS schema version unknown.
 
 from __future__ import annotations
 
-from pydantic import BaseModel, Field
-from typing import Any, Optional
+from pydantic import BaseModel, Field, field_validator
+from typing import Any, Literal, Optional
 
 # ============================================================================
-# Child Table Models
+# Enum Definitions for Child Table Fields (for fields with 4+ allowed values)
 # ============================================================================
 
+# ============================================================================
+# Child Table Models (sorted deepest-first so nested models are defined before their parents)
+# ============================================================================
+
+class InternetServiceCustomEntryPortRange(BaseModel):
+    """
+    Child table model for entry.port-range.
+    
+    Port ranges in the custom entry.
+    """
+    
+    class Config:
+        """Pydantic model configuration."""
+        extra = "allow"  # Allow additional fields from API
+        str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
+    
+    id_: int | None = Field(ge=0, le=4294967295, default=0, serialization_alias="id", description="Custom entry port range ID.")    
+    start_port: int = Field(ge=0, le=65535, default=1, description="Integer value for starting TCP/UDP/SCTP destination port in range (0 to 65535).")    
+    end_port: int = Field(ge=0, le=65535, default=65535, description="Integer value for ending TCP/UDP/SCTP destination port in range (0 to 65535).")
+class InternetServiceCustomEntryDst6(BaseModel):
+    """
+    Child table model for entry.dst6.
+    
+    Destination address6 or address6 group name.
+    """
+    
+    class Config:
+        """Pydantic model configuration."""
+        extra = "allow"  # Allow additional fields from API
+        str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
+    
+    name: str = Field(max_length=79, description="Select the destination address6 or address group object from available options.")  # datasource: ['firewall.address6.name', 'firewall.addrgrp6.name']
+class InternetServiceCustomEntryDst(BaseModel):
+    """
+    Child table model for entry.dst.
+    
+    Destination address or address group name.
+    """
+    
+    class Config:
+        """Pydantic model configuration."""
+        extra = "allow"  # Allow additional fields from API
+        str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
+    
+    name: str = Field(max_length=79, description="Select the destination address or address group object from available options.")  # datasource: ['firewall.address.name', 'firewall.addrgrp.name']
 class InternetServiceCustomEntry(BaseModel):
     """
     Child table model for entry.
@@ -25,13 +73,14 @@ class InternetServiceCustomEntry(BaseModel):
         """Pydantic model configuration."""
         extra = "allow"  # Allow additional fields from API
         str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
     
-    id: int | None = Field(ge=0, le=255, default=0, description="Entry ID(1-255).")    
+    id_: int | None = Field(ge=0, le=255, default=0, serialization_alias="id", description="Entry ID(1-255).")    
     addr_mode: Literal["ipv4", "ipv6"] | None = Field(default="ipv4", description="Address mode (IPv4 or IPv6).")    
     protocol: int | None = Field(ge=0, le=255, default=0, description="Integer value for the protocol type as defined by IANA (0 - 255).")    
-    port_range: list[PortRange] = Field(default=None, description="Port ranges in the custom entry.")    
-    dst: list[Dst] = Field(default=None, description="Destination address or address group name.")    
-    dst6: list[Dst6] = Field(default=None, description="Destination address6 or address6 group name.")
+    port_range: list[InternetServiceCustomEntryPortRange] = Field(default_factory=list, description="Port ranges in the custom entry.")    
+    dst: list[InternetServiceCustomEntryDst] = Field(default_factory=list, description="Destination address or address group name.")    
+    dst6: list[InternetServiceCustomEntryDst6] = Field(default_factory=list, description="Destination address6 or address6 group name.")
 # ============================================================================
 # Enum Definitions (for fields with 4+ allowed values)
 # ============================================================================
@@ -60,10 +109,10 @@ class InternetServiceCustomModel(BaseModel):
     # Model Fields
     # ========================================================================
     
-    name: str | None = Field(max_length=63, default="", description="Internet Service name.")    
+    name: str | None = Field(max_length=63, default=None, description="Internet Service name.")    
     reputation: int | None = Field(ge=0, le=4294967295, default=3, description="Reputation level of the custom Internet Service.")  # datasource: ['firewall.internet-service-reputation.id']    
     comment: str | None = Field(max_length=255, default=None, description="Comment.")    
-    entry: list[Entry] = Field(default=None, description="Entries added to the Internet Service database and custom database.")    
+    entry: list[InternetServiceCustomEntry] = Field(default_factory=list, description="Entries added to the Internet Service database and custom database.")    
     # ========================================================================
     # Custom Validators
     # ========================================================================
@@ -143,7 +192,7 @@ class InternetServiceCustomModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.internet_service_custom.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate scalar field
         value = getattr(self, "reputation", None)
@@ -152,7 +201,7 @@ class InternetServiceCustomModel(BaseModel):
         
         # Check all datasource endpoints
         found = False
-        if await client.api.cmdb.firewall.internet-service-reputation.exists(value):
+        if await client.api.cmdb.firewall.internet_service_reputation.exists(value):
             found = True
         
         if not found:
@@ -197,11 +246,11 @@ Dict = dict[str, Any]  # For backward compatibility
 # ============================================================================
 
 __all__ = [
-    "InternetServiceCustomModel",    "InternetServiceCustomEntry",]
+    "InternetServiceCustomModel",    "InternetServiceCustomEntry",    "InternetServiceCustomEntry.PortRange",    "InternetServiceCustomEntry.Dst",    "InternetServiceCustomEntry.Dst6",]
 
 
 # ============================================================================
 # Generated by hfortix generator v0.6.0
 # Schema: 1.7.0
-# Generated: 2026-01-17T05:32:19.889466Z
+# Generated: 2026-01-17T17:25:23.499830Z
 # ============================================================================

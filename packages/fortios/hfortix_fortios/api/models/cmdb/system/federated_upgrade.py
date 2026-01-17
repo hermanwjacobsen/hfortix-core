@@ -7,27 +7,46 @@ Generated from FortiOS schema version unknown.
 
 from __future__ import annotations
 
-from pydantic import BaseModel, Field, field_validator
+from pydantic import BaseModel, Field
 from typing import Any, Literal, Optional
 from enum import Enum
 
 # ============================================================================
-# Child Table Models
+# Enum Definitions for Child Table Fields (for fields with 4+ allowed values)
 # ============================================================================
 
-class FederatedUpgradeKnownHaMembers(BaseModel):
-    """
-    Child table model for known-ha-members.
-    
-    Known members of the HA cluster. If a member is missing at upgrade time, the upgrade will be cancelled.
-    """
-    
-    class Config:
-        """Pydantic model configuration."""
-        extra = "allow"  # Allow additional fields from API
-        str_strip_whitespace = True
-    
-    serial: str = Field(max_length=79, default="", description="Serial number of HA member")
+class FederatedUpgradeNodeListDeviceTypeEnum(str, Enum):
+    """Allowed values for device_type field in node-list."""
+    FORTIGATE = "fortigate"
+    FORTISWITCH = "fortiswitch"
+    FORTIAP = "fortiap"
+    FORTIEXTENDER = "fortiextender"
+
+class FederatedUpgradeNodeListFailureReasonEnum(str, Enum):
+    """Allowed values for failure_reason field in node-list."""
+    NONE = "none"
+    INTERNAL = "internal"
+    TIMEOUT = "timeout"
+    DEVICE_TYPE_UNSUPPORTED = "device-type-unsupported"
+    DOWNLOAD_FAILED = "download-failed"
+    DEVICE_MISSING = "device-missing"
+    VERSION_UNAVAILABLE = "version-unavailable"
+    STAGING_FAILED = "staging-failed"
+    REBOOT_FAILED = "reboot-failed"
+    DEVICE_NOT_RECONNECTED = "device-not-reconnected"
+    NODE_NOT_READY = "node-not-ready"
+    NO_FINAL_CONFIRMATION = "no-final-confirmation"
+    NO_CONFIRMATION_QUERY = "no-confirmation-query"
+    CONFIG_ERROR_LOG_NONEMPTY = "config-error-log-nonempty"
+    CSF_TREE_NOT_SUPPORTED = "csf-tree-not-supported"
+    FIRMWARE_CHANGED = "firmware-changed"
+    NODE_FAILED = "node-failed"
+    IMAGE_MISSING = "image-missing"
+
+# ============================================================================
+# Child Table Models (sorted deepest-first so nested models are defined before their parents)
+# ============================================================================
+
 class FederatedUpgradeNodeList(BaseModel):
     """
     Child table model for node-list.
@@ -39,27 +58,73 @@ class FederatedUpgradeNodeList(BaseModel):
         """Pydantic model configuration."""
         extra = "allow"  # Allow additional fields from API
         str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
     
-    serial: str = Field(max_length=79, default="", description="Serial number of the node to include.")    
+    serial: str = Field(max_length=79, description="Serial number of the node to include.")    
     timing: Literal["immediate", "scheduled"] = Field(default="immediate", description="Run immediately or at a scheduled time.")    
     maximum_minutes: int = Field(ge=5, le=10080, default=15, description="Maximum number of minutes to allow for immediate upgrade preparation.")    
-    time: str = Field(default="", description="Scheduled upgrade execution time in UTC (hh:mm yyyy/mm/dd UTC).")    
-    setup_time: str = Field(default="", description="Upgrade preparation start time in UTC (hh:mm yyyy/mm/dd UTC).")    
-    upgrade_path: str = Field(default="", description="Fortinet OS image versions to upgrade through in major-minor-patch format, such as 7-0-4.")    
-    device_type: DeviceTypeEnum = Field(default="fortigate", description="Fortinet device type.")    
+    time: str = Field(description="Scheduled upgrade execution time in UTC (hh:mm yyyy/mm/dd UTC).")    
+    setup_time: str = Field(description="Upgrade preparation start time in UTC (hh:mm yyyy/mm/dd UTC).")    
+    upgrade_path: str = Field(description="Fortinet OS image versions to upgrade through in major-minor-patch format, such as 7-0-4.")    
+    device_type: FederatedUpgradeNodeListDeviceTypeEnum = Field(default=FederatedUpgradeNodeListDeviceTypeEnum.FORTIGATE, description="Fortinet device type.")    
     allow_download: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable download firmware images.")    
-    coordinating_fortigate: str | None = Field(max_length=79, default="", description="Serial number of the FortiGate unit that controls this device.")    
-    failure_reason: FailureReasonEnum | None = Field(default="none", description="Upgrade failure reason.")
+    coordinating_fortigate: str | None = Field(max_length=79, default=None, description="Serial number of the FortiGate unit that controls this device.")    
+    failure_reason: FederatedUpgradeNodeListFailureReasonEnum | None = Field(default=FederatedUpgradeNodeListFailureReasonEnum.NONE, description="Upgrade failure reason.")
+class FederatedUpgradeKnownHaMembers(BaseModel):
+    """
+    Child table model for known-ha-members.
+    
+    Known members of the HA cluster. If a member is missing at upgrade time, the upgrade will be cancelled.
+    """
+    
+    class Config:
+        """Pydantic model configuration."""
+        extra = "allow"  # Allow additional fields from API
+        str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
+    
+    serial: str = Field(max_length=79, description="Serial number of HA member")
 # ============================================================================
 # Enum Definitions (for fields with 4+ allowed values)
 # ============================================================================
 
 class FederatedUpgradeStatusEnum(str, Enum):
     """Allowed values for status field."""
-    DISABLED = "disabled"    INITIALIZED = "initialized"    DOWNLOADING = "downloading"    DEVICE_DISCONNECTED = "device-disconnected"    READY = "ready"    COORDINATING = "coordinating"    STAGING = "staging"    FINAL_CHECK = "final-check"    UPGRADE_DEVICES = "upgrade-devices"    CANCELLED = "cancelled"    CONFIRMED = "confirmed"    DONE = "done"    FAILED = "failed"
-class FederatedUpgradeFailure_reasonEnum(str, Enum):
+    DISABLED = "disabled"
+    INITIALIZED = "initialized"
+    DOWNLOADING = "downloading"
+    DEVICE_DISCONNECTED = "device-disconnected"
+    READY = "ready"
+    COORDINATING = "coordinating"
+    STAGING = "staging"
+    FINAL_CHECK = "final-check"
+    UPGRADE_DEVICES = "upgrade-devices"
+    CANCELLED = "cancelled"
+    CONFIRMED = "confirmed"
+    DONE = "done"
+    FAILED = "failed"
+
+class FederatedUpgradeFailureReasonEnum(str, Enum):
     """Allowed values for failure_reason field."""
-    NONE = "none"    INTERNAL = "internal"    TIMEOUT = "timeout"    DEVICE_TYPE_UNSUPPORTED = "device-type-unsupported"    DOWNLOAD_FAILED = "download-failed"    DEVICE_MISSING = "device-missing"    VERSION_UNAVAILABLE = "version-unavailable"    STAGING_FAILED = "staging-failed"    REBOOT_FAILED = "reboot-failed"    DEVICE_NOT_RECONNECTED = "device-not-reconnected"    NODE_NOT_READY = "node-not-ready"    NO_FINAL_CONFIRMATION = "no-final-confirmation"    NO_CONFIRMATION_QUERY = "no-confirmation-query"    CONFIG_ERROR_LOG_NONEMPTY = "config-error-log-nonempty"    CSF_TREE_NOT_SUPPORTED = "csf-tree-not-supported"    FIRMWARE_CHANGED = "firmware-changed"    NODE_FAILED = "node-failed"    IMAGE_MISSING = "image-missing"
+    NONE = "none"
+    INTERNAL = "internal"
+    TIMEOUT = "timeout"
+    DEVICE_TYPE_UNSUPPORTED = "device-type-unsupported"
+    DOWNLOAD_FAILED = "download-failed"
+    DEVICE_MISSING = "device-missing"
+    VERSION_UNAVAILABLE = "version-unavailable"
+    STAGING_FAILED = "staging-failed"
+    REBOOT_FAILED = "reboot-failed"
+    DEVICE_NOT_RECONNECTED = "device-not-reconnected"
+    NODE_NOT_READY = "node-not-ready"
+    NO_FINAL_CONFIRMATION = "no-final-confirmation"
+    NO_CONFIRMATION_QUERY = "no-confirmation-query"
+    CONFIG_ERROR_LOG_NONEMPTY = "config-error-log-nonempty"
+    CSF_TREE_NOT_SUPPORTED = "csf-tree-not-supported"
+    FIRMWARE_CHANGED = "firmware-changed"
+    NODE_FAILED = "node-failed"
+    IMAGE_MISSING = "image-missing"
+
 
 # ============================================================================
 # Main Model
@@ -84,18 +149,18 @@ class FederatedUpgradeModel(BaseModel):
     # Model Fields
     # ========================================================================
     
-    status: StatusEnum = Field(default="disabled", description="Current status of the upgrade.")    
+    status: FederatedUpgradeStatusEnum = Field(default=FederatedUpgradeStatusEnum.DISABLED, description="Current status of the upgrade.")    
     source: Literal["user", "auto-firmware-upgrade", "forced-upgrade"] | None = Field(default="user", description="Source that set up the federated upgrade config.")    
-    failure_reason: FailureReasonEnum | None = Field(default="none", description="Reason for upgrade failure.")    
-    failure_device: str | None = Field(max_length=79, default="", description="Serial number of the node to include.")    
+    failure_reason: FederatedUpgradeFailureReasonEnum | None = Field(default=FederatedUpgradeFailureReasonEnum.NONE, description="Reason for upgrade failure.")    
+    failure_device: str | None = Field(max_length=79, default=None, description="Serial number of the node to include.")    
     upgrade_id: int | None = Field(ge=0, le=4294967295, default=0, description="Unique identifier for this upgrade.")    
     next_path_index: int = Field(ge=0, le=10, default=0, description="The index of the next image to upgrade to.")    
     ignore_signing_errors: Literal["enable", "disable"] | None = Field(default="disable", description="Allow/reject use of FortiGate firmware images that are unsigned.")    
-    ha_reboot_controller: str | None = Field(max_length=79, default="", description="Serial number of the FortiGate unit that will control the reboot process for the federated upgrade of the HA cluster.")    
-    known_ha_members: list[KnownHaMembers] = Field(description="Known members of the HA cluster. If a member is missing at upgrade time, the upgrade will be cancelled.")    
-    initial_version: str | None = Field(default="", description="Firmware version when the upgrade was set up.")    
-    starter_admin: str | None = Field(max_length=64, default="", description="Admin that started the upgrade.")    
-    node_list: list[NodeList] = Field(default=None, description="Nodes which will be included in the upgrade.")    
+    ha_reboot_controller: str | None = Field(max_length=79, default=None, description="Serial number of the FortiGate unit that will control the reboot process for the federated upgrade of the HA cluster.")    
+    known_ha_members: list[FederatedUpgradeKnownHaMembers] = Field(description="Known members of the HA cluster. If a member is missing at upgrade time, the upgrade will be cancelled.")    
+    initial_version: str | None = Field(default=None, description="Firmware version when the upgrade was set up.")    
+    starter_admin: str | None = Field(max_length=64, default=None, description="Admin that started the upgrade.")    
+    node_list: list[FederatedUpgradeNodeList] = Field(default_factory=list, description="Nodes which will be included in the upgrade.")    
     # ========================================================================
     # Custom Validators
     # ========================================================================
@@ -144,5 +209,5 @@ __all__ = [
 # ============================================================================
 # Generated by hfortix generator v0.6.0
 # Schema: 1.7.0
-# Generated: 2026-01-17T05:32:18.892943Z
+# Generated: 2026-01-17T17:25:22.623650Z
 # ============================================================================

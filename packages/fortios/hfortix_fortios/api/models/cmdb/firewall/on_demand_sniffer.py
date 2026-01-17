@@ -11,35 +11,13 @@ from pydantic import BaseModel, Field, field_validator
 from typing import Any, Literal, Optional
 
 # ============================================================================
-# Child Table Models
+# Enum Definitions for Child Table Fields (for fields with 4+ allowed values)
 # ============================================================================
 
-class OnDemandSnifferHosts(BaseModel):
-    """
-    Child table model for hosts.
-    
-    IPv4 or IPv6 hosts to filter in this traffic sniffer.
-    """
-    
-    class Config:
-        """Pydantic model configuration."""
-        extra = "allow"  # Allow additional fields from API
-        str_strip_whitespace = True
-    
-    host: str = Field(max_length=255, default="", description="IPv4 or IPv6 host.")
-class OnDemandSnifferPorts(BaseModel):
-    """
-    Child table model for ports.
-    
-    Ports to filter for in this traffic sniffer.
-    """
-    
-    class Config:
-        """Pydantic model configuration."""
-        extra = "allow"  # Allow additional fields from API
-        str_strip_whitespace = True
-    
-    port: int = Field(ge=1, le=65536, default=0, description="Port to filter in this traffic sniffer.")
+# ============================================================================
+# Child Table Models (sorted deepest-first so nested models are defined before their parents)
+# ============================================================================
+
 class OnDemandSnifferProtocols(BaseModel):
     """
     Child table model for protocols.
@@ -51,8 +29,37 @@ class OnDemandSnifferProtocols(BaseModel):
         """Pydantic model configuration."""
         extra = "allow"  # Allow additional fields from API
         str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
     
     protocol: int = Field(ge=0, le=255, default=0, description="Integer value for the protocol type as defined by IANA (0 - 255).")
+class OnDemandSnifferPorts(BaseModel):
+    """
+    Child table model for ports.
+    
+    Ports to filter for in this traffic sniffer.
+    """
+    
+    class Config:
+        """Pydantic model configuration."""
+        extra = "allow"  # Allow additional fields from API
+        str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
+    
+    port: int = Field(ge=1, le=65536, default=0, description="Port to filter in this traffic sniffer.")
+class OnDemandSnifferHosts(BaseModel):
+    """
+    Child table model for hosts.
+    
+    IPv4 or IPv6 hosts to filter in this traffic sniffer.
+    """
+    
+    class Config:
+        """Pydantic model configuration."""
+        extra = "allow"  # Allow additional fields from API
+        str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
+    
+    host: str = Field(max_length=255, description="IPv4 or IPv6 host.")
 # ============================================================================
 # Enum Definitions (for fields with 4+ allowed values)
 # ============================================================================
@@ -81,12 +88,12 @@ class OnDemandSnifferModel(BaseModel):
     # Model Fields
     # ========================================================================
     
-    name: str | None = Field(max_length=35, default="", description="On-demand packet sniffer name.")    
-    interface: str = Field(max_length=35, default="", description="Interface name that on-demand packet sniffer will take place.")  # datasource: ['system.interface.name']    
+    name: str | None = Field(max_length=35, default=None, description="On-demand packet sniffer name.")    
+    interface: str = Field(max_length=35, description="Interface name that on-demand packet sniffer will take place.")  # datasource: ['system.interface.name']    
     max_packet_count: int = Field(ge=1, le=20000, default=0, description="Maximum number of packets to capture per on-demand packet sniffer.")    
-    hosts: list[Hosts] = Field(default=None, description="IPv4 or IPv6 hosts to filter in this traffic sniffer.")    
-    ports: list[Ports] = Field(default=None, description="Ports to filter for in this traffic sniffer.")    
-    protocols: list[Protocols] = Field(default=None, description="Protocols to filter in this traffic sniffer.")    
+    hosts: list[OnDemandSnifferHosts] = Field(default_factory=list, description="IPv4 or IPv6 hosts to filter in this traffic sniffer.")    
+    ports: list[OnDemandSnifferPorts] = Field(default_factory=list, description="Ports to filter for in this traffic sniffer.")    
+    protocols: list[OnDemandSnifferProtocols] = Field(default_factory=list, description="Protocols to filter in this traffic sniffer.")    
     non_ip_packet: Literal["enable", "disable"] | None = Field(default="disable", description="Include non-IP packets.")    
     advanced_filter: str | None = Field(max_length=255, default=None, description="Advanced freeform filter that will be used over existing filter settings if set. Can only be used by super admin.")    
     # ========================================================================
@@ -168,7 +175,7 @@ class OnDemandSnifferModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.on_demand_sniffer.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate scalar field
         value = getattr(self, "interface", None)
@@ -228,5 +235,5 @@ __all__ = [
 # ============================================================================
 # Generated by hfortix generator v0.6.0
 # Schema: 1.7.0
-# Generated: 2026-01-17T05:32:19.867334Z
+# Generated: 2026-01-17T17:25:23.479890Z
 # ============================================================================

@@ -1,370 +1,158 @@
-from typing import TypedDict, Literal, Any, Coroutine, Union, overload, Generator, final
-from typing_extensions import NotRequired
-from hfortix_fortios.models import FortiObject, FortiObjectList
+""" - Type Stubs
 
-# ============================================================================
-# Nested TypedDicts for table field children (dict mode)
-# These MUST be defined before the Payload class to use them as type hints
-# ============================================================================
+Auto-generated stub file for type checking and IDE support.
 
-class CentralManagementServerlistItem(TypedDict, total=False):
-    """Type hints for server-list table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    Use this when building payloads for POST/PUT requests.
-    
-    **Available fields:**
-        - id: int
-        - server_type: "update" | "rating" | "vpatch-query" | "iot-collect"
-        - addr_type: "ipv4" | "ipv6" | "fqdn"
-        - server_address: str
-        - server_address6: str
-        - fqdn: str
-    
-    **Example:**
-        entry: CentralManagementServerlistItem = {
-            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
-        }
-    """
-    
-    id: int  # ID. | Default: 0 | Min: 0 | Max: 4294967295
-    server_type: Literal["update", "rating", "vpatch-query", "iot-collect"]  # FortiGuard service type.
-    addr_type: Literal["ipv4", "ipv6", "fqdn"]  # Indicate whether the FortiGate communicates with t | Default: ipv4
-    server_address: str  # IPv4 address of override server. | Default: 0.0.0.0
-    server_address6: str  # IPv6 address of override server. | Default: ::
-    fqdn: str  # FQDN address of override server. | MaxLen: 255
+Endpoint: system/central_management
+Category: cmdb
+"""
+
+from __future__ import annotations
+
+from typing import (
+    Any,
+    ClassVar,
+    Literal,
+    TypedDict,
+)
+
+from hfortix_fortios.models import (
+    FortiObject,
+    FortiObjectList,
+)
 
 
-# ============================================================================
-# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional)
-# ============================================================================
-# NOTE: We intentionally DON'T use NotRequired wrapper because:
-# 1. total=False already makes all fields optional
-# 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
-class CentralManagementPayload(TypedDict, total=False):
-    """
-    Type hints for system/central_management payload fields.
-    
-    Configure central management.
-    
-    **Related Resources:**
+# ================================================================
+# TypedDict Payloads
+# ================================================================
 
-    Dependencies (resources this endpoint references):
-        - :class:`~.certificate.ca.CaEndpoint` (via: ca-cert)
-        - :class:`~.certificate.local.LocalEndpoint` (via: local-cert)
-        - :class:`~.system.accprofile.AccprofileEndpoint` (via: fortigate-cloud-sso-default-profile)
-        - :class:`~.system.interface.InterfaceEndpoint` (via: interface)
-        - :class:`~.system.vdom.VdomEndpoint` (via: vdom)
-
-    **Usage:**
-        payload: CentralManagementPayload = {
-            "field": "value",  # <- autocomplete shows all fields
-        }
-    """
-    mode: Literal["normal", "backup"]  # Central management mode. | Default: normal
-    type: Literal["fortimanager", "fortiguard", "none"]  # Central management type. | Default: fortiguard
-    fortigate_cloud_sso_default_profile: str  # Override access profile. Permission is set to read | MaxLen: 35
-    schedule_config_restore: Literal["enable", "disable"]  # Enable/disable allowing the central management ser | Default: enable
-    schedule_script_restore: Literal["enable", "disable"]  # Enable/disable allowing the central management ser | Default: enable
-    allow_push_configuration: Literal["enable", "disable"]  # Enable/disable allowing the central management ser | Default: enable
-    allow_push_firmware: Literal["enable", "disable"]  # Enable/disable allowing the central management ser | Default: enable
-    allow_remote_firmware_upgrade: Literal["enable", "disable"]  # Enable/disable remotely upgrading the firmware on | Default: enable
-    allow_monitor: Literal["enable", "disable"]  # Enable/disable allowing the central management ser | Default: enable
-    serial_number: str  # Serial number.
-    fmg: str  # IP address or FQDN of the FortiManager.
-    fmg_source_ip: str  # IPv4 source address that this FortiGate uses when | Default: 0.0.0.0
-    fmg_source_ip6: str  # IPv6 source address that this FortiGate uses when | Default: ::
-    local_cert: str  # Certificate to be used by FGFM protocol. | MaxLen: 35
-    ca_cert: str  # CA certificate to be used by FGFM protocol.
-    vdom: str  # Virtual domain (VDOM) name to use when communicati | Default: root | MaxLen: 31
-    server_list: list[CentralManagementServerlistItem]  # Additional severs that the FortiGate can use for u
-    fmg_update_port: Literal["8890", "443"]  # Port used to communicate with FortiManager that is | Default: 8890
-    fmg_update_http_header: Literal["enable", "disable"]  # Enable/disable inclusion of HTTP header in update | Default: disable
-    include_default_servers: Literal["enable", "disable"]  # Enable/disable inclusion of public FortiGuard serv | Default: enable
-    enc_algorithm: Literal["default", "high", "low"]  # Encryption strength for communications between the | Default: high
-    interface_select_method: Literal["auto", "sdwan", "specify"]  # Specify how to select outgoing interface to reach | Default: auto
-    interface: str  # Specify outgoing interface to reach server. | MaxLen: 15
-    vrf_select: int  # VRF ID used for connection to server. | Default: 0 | Min: 0 | Max: 511
-
-# ============================================================================
-# Nested classes for table field children (object mode - for API responses)
-# ============================================================================
-
-@final
-class CentralManagementServerlistObject:
-    """Typed object for server-list table items.
-    
-    Provides IDE autocomplete for nested table field attributes.
-    At runtime, this is a FortiObject instance.
-    """
-    
-    # ID. | Default: 0 | Min: 0 | Max: 4294967295
+class CentralManagementServerlistItem:
+    """Nested item for server-list field - supports attribute access."""
     id: int
-    # FortiGuard service type.
     server_type: Literal["update", "rating", "vpatch-query", "iot-collect"]
-    # Indicate whether the FortiGate communicates with the overrid | Default: ipv4
     addr_type: Literal["ipv4", "ipv6", "fqdn"]
-    # IPv4 address of override server. | Default: 0.0.0.0
     server_address: str
-    # IPv6 address of override server. | Default: ::
     server_address6: str
-    # FQDN address of override server. | MaxLen: 255
     fqdn: str
-    
-    # Common API response fields
-    status: str
-    http_status: int | None
-    http_status_code: int | None
-    http_method: str | None
-    http_response_time: float | None
-    vdom: str | None
-    
-    # Methods from FortiObject
-    @property
-    def dict(self) -> dict[str, Any]:
-        """Convert to dictionary."""
-        ...
-    @property
-    def json(self) -> str:
-        """Get pretty-printed JSON string."""
-        ...
-    @property
-    def raw(self) -> dict[str, Any]:
-        """Get raw API response data."""
-        ...
-    def get_full(self, name: str) -> Any: ...
-    def to_dict(self) -> FortiObject: ...
-    def keys(self) -> Any: ...
-    def values(self) -> Generator[Any, None, None]: ...
-    def items(self) -> Generator[tuple[str, Any], None, None]: ...
-    def get(self, key: str, default: Any = None) -> Any: ...
 
 
-
-
-# Response TypedDict for GET returns (all fields present in API response)
-class CentralManagementResponse(TypedDict):
-    """
-    Type hints for system/central_management API response fields.
-    
-    All fields are present in the response from the FortiGate API.
-    """
-    mode: Literal["normal", "backup"]  # Central management mode. | Default: normal
-    type: Literal["fortimanager", "fortiguard", "none"]  # Central management type. | Default: fortiguard
-    fortigate_cloud_sso_default_profile: str  # Override access profile. Permission is set to read | MaxLen: 35
-    schedule_config_restore: Literal["enable", "disable"]  # Enable/disable allowing the central management ser | Default: enable
-    schedule_script_restore: Literal["enable", "disable"]  # Enable/disable allowing the central management ser | Default: enable
-    allow_push_configuration: Literal["enable", "disable"]  # Enable/disable allowing the central management ser | Default: enable
-    allow_push_firmware: Literal["enable", "disable"]  # Enable/disable allowing the central management ser | Default: enable
-    allow_remote_firmware_upgrade: Literal["enable", "disable"]  # Enable/disable remotely upgrading the firmware on | Default: enable
-    allow_monitor: Literal["enable", "disable"]  # Enable/disable allowing the central management ser | Default: enable
-    serial_number: str  # Serial number.
-    fmg: str  # IP address or FQDN of the FortiManager.
-    fmg_source_ip: str  # IPv4 source address that this FortiGate uses when | Default: 0.0.0.0
-    fmg_source_ip6: str  # IPv6 source address that this FortiGate uses when | Default: ::
-    local_cert: str  # Certificate to be used by FGFM protocol. | MaxLen: 35
-    ca_cert: str  # CA certificate to be used by FGFM protocol.
-    vdom: str  # Virtual domain (VDOM) name to use when communicati | Default: root | MaxLen: 31
-    server_list: list[CentralManagementServerlistItem]  # Additional severs that the FortiGate can use for u
-    fmg_update_port: Literal["8890", "443"]  # Port used to communicate with FortiManager that is | Default: 8890
-    fmg_update_http_header: Literal["enable", "disable"]  # Enable/disable inclusion of HTTP header in update | Default: disable
-    include_default_servers: Literal["enable", "disable"]  # Enable/disable inclusion of public FortiGuard serv | Default: enable
-    enc_algorithm: Literal["default", "high", "low"]  # Encryption strength for communications between the | Default: high
-    interface_select_method: Literal["auto", "sdwan", "specify"]  # Specify how to select outgoing interface to reach | Default: auto
-    interface: str  # Specify outgoing interface to reach server. | MaxLen: 15
-    vrf_select: int  # VRF ID used for connection to server. | Default: 0 | Min: 0 | Max: 511
-
-
-@final
-class CentralManagementObject:
-    """Typed FortiObject for system/central_management with IDE autocomplete support.
-    
-    This is a typed wrapper that provides IDE autocomplete for API response fields.
-    At runtime, this is actually a FortiObject instance.
-    """
-    
-    # Central management mode. | Default: normal
+class CentralManagementPayload(TypedDict, total=False):
+    """Payload type for CentralManagement operations."""
     mode: Literal["normal", "backup"]
-    # Central management type. | Default: fortiguard
     type: Literal["fortimanager", "fortiguard", "none"]
-    # Override access profile. Permission is set to read-only with | MaxLen: 35
     fortigate_cloud_sso_default_profile: str
-    # Enable/disable allowing the central management server to res | Default: enable
     schedule_config_restore: Literal["enable", "disable"]
-    # Enable/disable allowing the central management server to res | Default: enable
     schedule_script_restore: Literal["enable", "disable"]
-    # Enable/disable allowing the central management server to pus | Default: enable
     allow_push_configuration: Literal["enable", "disable"]
-    # Enable/disable allowing the central management server to pus | Default: enable
     allow_push_firmware: Literal["enable", "disable"]
-    # Enable/disable remotely upgrading the firmware on this Forti | Default: enable
     allow_remote_firmware_upgrade: Literal["enable", "disable"]
-    # Enable/disable allowing the central management server to rem | Default: enable
     allow_monitor: Literal["enable", "disable"]
-    # Serial number.
     serial_number: str
-    # IP address or FQDN of the FortiManager.
     fmg: str
-    # IPv4 source address that this FortiGate uses when communicat | Default: 0.0.0.0
     fmg_source_ip: str
-    # IPv6 source address that this FortiGate uses when communicat | Default: ::
     fmg_source_ip6: str
-    # Certificate to be used by FGFM protocol. | MaxLen: 35
     local_cert: str
-    # CA certificate to be used by FGFM protocol.
     ca_cert: str
-    # Virtual domain (VDOM) name to use when communicating with Fo | Default: root | MaxLen: 31
     vdom: str
-    # Additional severs that the FortiGate can use for updates
-    server_list: list[CentralManagementServerlistObject]
-    # Port used to communicate with FortiManager that is acting as | Default: 8890
+    server_list: str | list[str] | list[dict[str, Any]] | list[CentralManagementServerlistItem]
     fmg_update_port: Literal["8890", "443"]
-    # Enable/disable inclusion of HTTP header in update request. | Default: disable
     fmg_update_http_header: Literal["enable", "disable"]
-    # Enable/disable inclusion of public FortiGuard servers in the | Default: enable
     include_default_servers: Literal["enable", "disable"]
-    # Encryption strength for communications between the FortiGate | Default: high
     enc_algorithm: Literal["default", "high", "low"]
-    # Specify how to select outgoing interface to reach server. | Default: auto
     interface_select_method: Literal["auto", "sdwan", "specify"]
-    # Specify outgoing interface to reach server. | MaxLen: 15
     interface: str
-    # VRF ID used for connection to server. | Default: 0 | Min: 0 | Max: 511
     vrf_select: int
-    
-    # Common API response fields
-    status: str
-    http_status: int | None
-    http_status_code: int | None
-    http_method: str | None
-    http_response_time: float | None
-    vdom: str | None
-    
-    # Methods from FortiObject
-    @property
-    def dict(self) -> dict[str, Any]:
-        """Convert to dictionary."""
-        ...
-    @property
-    def json(self) -> str:
-        """Get pretty-printed JSON string."""
-        ...
-    @property
-    def raw(self) -> dict[str, Any]:
-        """Get raw API response data."""
-        ...
-    def get_full(self, name: str) -> Any: ...
-    def to_dict(self) -> CentralManagementPayload: ...
-    def keys(self) -> Any: ...
-    def values(self) -> Generator[Any, None, None]: ...
-    def items(self) -> Generator[tuple[str, Any], None, None]: ...
-    def get(self, key: str, default: Any = None) -> Any: ...
 
+
+# ================================================================
+# Response Types (TypedDict for dict-style access)
+# ================================================================
+
+class CentralManagementResponse(TypedDict, total=False):
+    """Response type for CentralManagement - use with .dict property for typed dict access."""
+    mode: Literal["normal", "backup"]
+    type: Literal["fortimanager", "fortiguard", "none"]
+    fortigate_cloud_sso_default_profile: str
+    schedule_config_restore: Literal["enable", "disable"]
+    schedule_script_restore: Literal["enable", "disable"]
+    allow_push_configuration: Literal["enable", "disable"]
+    allow_push_firmware: Literal["enable", "disable"]
+    allow_remote_firmware_upgrade: Literal["enable", "disable"]
+    allow_monitor: Literal["enable", "disable"]
+    serial_number: str
+    fmg: str
+    fmg_source_ip: str
+    fmg_source_ip6: str
+    local_cert: str
+    ca_cert: str
+    vdom: str
+    server_list: list[CentralManagementServerlistItem]
+    fmg_update_port: Literal["8890", "443"]
+    fmg_update_http_header: Literal["enable", "disable"]
+    include_default_servers: Literal["enable", "disable"]
+    enc_algorithm: Literal["default", "high", "low"]
+    interface_select_method: Literal["auto", "sdwan", "specify"]
+    interface: str
+    vrf_select: int
+
+
+# ================================================================
+# Response Types (Class for attribute access)
+# ================================================================
+
+
+class CentralManagementObject(FortiObject):
+    """Typed FortiObject for CentralManagement with field access."""
+    mode: Literal["normal", "backup"]
+    type: Literal["fortimanager", "fortiguard", "none"]
+    fortigate_cloud_sso_default_profile: str
+    schedule_config_restore: Literal["enable", "disable"]
+    schedule_script_restore: Literal["enable", "disable"]
+    allow_push_configuration: Literal["enable", "disable"]
+    allow_push_firmware: Literal["enable", "disable"]
+    allow_remote_firmware_upgrade: Literal["enable", "disable"]
+    allow_monitor: Literal["enable", "disable"]
+    serial_number: str
+    fmg: str
+    fmg_source_ip: str
+    fmg_source_ip6: str
+    local_cert: str
+    ca_cert: str
+    server_list: list[CentralManagementServerlistItem]
+    fmg_update_port: Literal["8890", "443"]
+    fmg_update_http_header: Literal["enable", "disable"]
+    include_default_servers: Literal["enable", "disable"]
+    enc_algorithm: Literal["default", "high", "low"]
+    interface_select_method: Literal["auto", "sdwan", "specify"]
+    interface: str
+    vrf_select: int
+
+
+# ================================================================
+# Main Endpoint Class
+# ================================================================
 
 class CentralManagement:
     """
-    Configure central management.
     
-    Path: system/central_management
+    Endpoint: system/central_management
     Category: cmdb
     """
     
+    # Class attributes for introspection
+    endpoint: ClassVar[str] = ...
+    path: ClassVar[str] = ...
+    category: ClassVar[str] = ...
+    capabilities: ClassVar[dict[str, Any]] = ...
+    
     def __init__(self, client: Any) -> None:
-        """Initialize endpoint with HTTP client.
-        
-        Args:
-            client: HTTP client instance for API communication
-        """
+        """Initialize endpoint with HTTP client."""
         ...
     
     # ================================================================
-    # GET OVERLOADS - Always returns FortiObject (or ContentResponse for file endpoints)
-    # Pylance matches overloads top-to-bottom, so these must come first!
+    # GET Methods
     # ================================================================
     
-    # With mkey as positional arg -> returns FortiObject
-    @overload
-    def get(
-        self,
-        name: str,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-    ) -> CentralManagementObject: ...
-    
-    # With mkey as keyword arg -> returns FortiObject
-    @overload
-    def get(
-        self,
-        *,
-        name: str,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-    ) -> CentralManagementObject: ...
-    
-    # Without mkey -> returns list of FortiObjects
-    @overload
-    def get(
-        self,
-        name: None = None,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-    ) -> CentralManagementObject: ...
-    
-    # ================================================================
-    # (removed - all GET now returns FortiObject)
-    # ================================================================
-    
-    # With mkey as positional arg -> returns single object
-    @overload
-    def get(
-        self,
-        name: str,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-    ) -> CentralManagementObject: ...
-    
-    # With mkey as keyword arg -> returns single object
-    @overload
-    def get(
-        self,
-        *,
-        name: str,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-    ) -> CentralManagementObject: ...
-    
-    # With no mkey -> returns list of objects
-    @overload
+    # Singleton endpoint (no mkey)
     def get(
         self,
         *,
@@ -376,89 +164,20 @@ class CentralManagement:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
+        error_mode: Literal["raise", "return", "print"] | None = ...,
+        error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> CentralManagementObject: ...
-    
-    # Dict mode with mkey provided as positional arg (single dict)
-    @overload
-    def get(
-        self,
-        name: str,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-    ) -> CentralManagementObject: ...
-    
-    # Dict mode with mkey provided as keyword arg (single dict)
-    @overload
-    def get(
-        self,
-        *,
-        name: str,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-    ) -> CentralManagementObject: ...
-    
-    # Dict mode - list of dicts (no mkey/name provided) - keyword-only signature
-    @overload
-    def get(
-        self,
-        *,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-    ) -> CentralManagementObject: ...
-    
-    # Fallback overload for all other cases
-    @overload
-    def get(
-        self,
-        name: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-    ) -> dict[str, Any] | FortiObject: ...
-    
-    def get(
-        self,
-        name: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-    ) -> CentralManagementObject | dict[str, Any]: ...
     
     def get_schema(
         self,
         format: str = ...,
     ) -> FortiObject: ...
+
+
+    # ================================================================
+    # PUT Method
+    # ================================================================
     
-    # PUT overloads
-    @overload
     def put(
         self,
         payload_dict: CentralManagementPayload | None = ...,
@@ -477,7 +196,7 @@ class CentralManagement:
         fmg_source_ip6: str | None = ...,
         local_cert: str | None = ...,
         ca_cert: str | None = ...,
-        server_list: str | list[str] | list[CentralManagementServerlistItem] | None = ...,
+        server_list: str | list[str] | list[dict[str, Any]] | list[CentralManagementServerlistItem] | None = ...,
         fmg_update_port: Literal["8890", "443"] | None = ...,
         fmg_update_http_header: Literal["enable", "disable"] | None = ...,
         include_default_servers: Literal["enable", "disable"] | None = ...,
@@ -485,94 +204,14 @@ class CentralManagement:
         interface_select_method: Literal["auto", "sdwan", "specify"] | None = ...,
         interface: str | None = ...,
         vrf_select: int | None = ...,
+        error_mode: Literal["raise", "return", "print"] | None = ...,
+        error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> CentralManagementObject: ...
-    
-    @overload
-    def put(
-        self,
-        payload_dict: CentralManagementPayload | None = ...,
-        mode: Literal["normal", "backup"] | None = ...,
-        type: Literal["fortimanager", "fortiguard", "none"] | None = ...,
-        fortigate_cloud_sso_default_profile: str | None = ...,
-        schedule_config_restore: Literal["enable", "disable"] | None = ...,
-        schedule_script_restore: Literal["enable", "disable"] | None = ...,
-        allow_push_configuration: Literal["enable", "disable"] | None = ...,
-        allow_push_firmware: Literal["enable", "disable"] | None = ...,
-        allow_remote_firmware_upgrade: Literal["enable", "disable"] | None = ...,
-        allow_monitor: Literal["enable", "disable"] | None = ...,
-        serial_number: str | None = ...,
-        fmg: str | None = ...,
-        fmg_source_ip: str | None = ...,
-        fmg_source_ip6: str | None = ...,
-        local_cert: str | None = ...,
-        ca_cert: str | None = ...,
-        server_list: str | list[str] | list[CentralManagementServerlistItem] | None = ...,
-        fmg_update_port: Literal["8890", "443"] | None = ...,
-        fmg_update_http_header: Literal["enable", "disable"] | None = ...,
-        include_default_servers: Literal["enable", "disable"] | None = ...,
-        enc_algorithm: Literal["default", "high", "low"] | None = ...,
-        interface_select_method: Literal["auto", "sdwan", "specify"] | None = ...,
-        interface: str | None = ...,
-        vrf_select: int | None = ...,
-    ) -> FortiObject: ...
-    
-    # Default overload
-    @overload
-    def put(
-        self,
-        payload_dict: CentralManagementPayload | None = ...,
-        mode: Literal["normal", "backup"] | None = ...,
-        type: Literal["fortimanager", "fortiguard", "none"] | None = ...,
-        fortigate_cloud_sso_default_profile: str | None = ...,
-        schedule_config_restore: Literal["enable", "disable"] | None = ...,
-        schedule_script_restore: Literal["enable", "disable"] | None = ...,
-        allow_push_configuration: Literal["enable", "disable"] | None = ...,
-        allow_push_firmware: Literal["enable", "disable"] | None = ...,
-        allow_remote_firmware_upgrade: Literal["enable", "disable"] | None = ...,
-        allow_monitor: Literal["enable", "disable"] | None = ...,
-        serial_number: str | None = ...,
-        fmg: str | None = ...,
-        fmg_source_ip: str | None = ...,
-        fmg_source_ip6: str | None = ...,
-        local_cert: str | None = ...,
-        ca_cert: str | None = ...,
-        server_list: str | list[str] | list[CentralManagementServerlistItem] | None = ...,
-        fmg_update_port: Literal["8890", "443"] | None = ...,
-        fmg_update_http_header: Literal["enable", "disable"] | None = ...,
-        include_default_servers: Literal["enable", "disable"] | None = ...,
-        enc_algorithm: Literal["default", "high", "low"] | None = ...,
-        interface_select_method: Literal["auto", "sdwan", "specify"] | None = ...,
-        interface: str | None = ...,
-        vrf_select: int | None = ...,
-    ) -> FortiObject: ...
-    
-    def put(
-        self,
-        payload_dict: CentralManagementPayload | None = ...,
-        mode: Literal["normal", "backup"] | None = ...,
-        type: Literal["fortimanager", "fortiguard", "none"] | None = ...,
-        fortigate_cloud_sso_default_profile: str | None = ...,
-        schedule_config_restore: Literal["enable", "disable"] | None = ...,
-        schedule_script_restore: Literal["enable", "disable"] | None = ...,
-        allow_push_configuration: Literal["enable", "disable"] | None = ...,
-        allow_push_firmware: Literal["enable", "disable"] | None = ...,
-        allow_remote_firmware_upgrade: Literal["enable", "disable"] | None = ...,
-        allow_monitor: Literal["enable", "disable"] | None = ...,
-        serial_number: str | None = ...,
-        fmg: str | None = ...,
-        fmg_source_ip: str | None = ...,
-        fmg_source_ip6: str | None = ...,
-        local_cert: str | None = ...,
-        ca_cert: str | None = ...,
-        server_list: str | list[str] | list[CentralManagementServerlistItem] | None = ...,
-        fmg_update_port: Literal["8890", "443"] | None = ...,
-        fmg_update_http_header: Literal["enable", "disable"] | None = ...,
-        include_default_servers: Literal["enable", "disable"] | None = ...,
-        enc_algorithm: Literal["default", "high", "low"] | None = ...,
-        interface_select_method: Literal["auto", "sdwan", "specify"] | None = ...,
-        interface: str | None = ...,
-        vrf_select: int | None = ...,
-    ) -> FortiObject: ...
+
+
+    # ================================================================
+    # Utility Methods
+    # ================================================================
     
     def exists(
         self,
@@ -597,7 +236,7 @@ class CentralManagement:
         fmg_source_ip6: str | None = ...,
         local_cert: str | None = ...,
         ca_cert: str | None = ...,
-        server_list: str | list[str] | list[CentralManagementServerlistItem] | None = ...,
+        server_list: str | list[str] | list[dict[str, Any]] | list[CentralManagementServerlistItem] | None = ...,
         fmg_update_port: Literal["8890", "443"] | None = ...,
         fmg_update_http_header: Literal["enable", "disable"] | None = ...,
         include_default_servers: Literal["enable", "disable"] | None = ...,
@@ -605,6 +244,8 @@ class CentralManagement:
         interface_select_method: Literal["auto", "sdwan", "specify"] | None = ...,
         interface: str | None = ...,
         vrf_select: int | None = ...,
+        error_mode: Literal["raise", "return", "print"] | None = ...,
+        error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> FortiObject: ...
     
     # Helper methods
@@ -612,7 +253,7 @@ class CentralManagement:
     def help(field_name: str | None = ...) -> str: ...
     
     @staticmethod
-    def fields(detailed: bool = ...) -> Union[list[str], list[dict[str, Any]]]: ...
+    def fields(detailed: bool = ...) -> list[str] | list[dict[str, Any]]: ...
     
     @staticmethod
     def field_info(field_name: str) -> FortiObject: ...
@@ -628,9 +269,6 @@ class CentralManagement:
     
     @staticmethod
     def schema() -> FortiObject: ...
-
-
-# ================================================================
 
 
 __all__ = [

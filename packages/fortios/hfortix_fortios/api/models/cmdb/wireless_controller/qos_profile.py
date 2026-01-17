@@ -7,11 +7,15 @@ Generated from FortiOS schema version unknown.
 
 from __future__ import annotations
 
-from pydantic import BaseModel, Field, field_validator
+from pydantic import BaseModel, Field
 from typing import Any, Literal, Optional
 
 # ============================================================================
-# Child Table Models
+# Enum Definitions for Child Table Fields (for fields with 4+ allowed values)
+# ============================================================================
+
+# ============================================================================
+# Child Table Models (sorted deepest-first so nested models are defined before their parents)
 # ============================================================================
 
 class QosProfileDscpWmmVo(BaseModel):
@@ -25,8 +29,9 @@ class QosProfileDscpWmmVo(BaseModel):
         """Pydantic model configuration."""
         extra = "allow"  # Allow additional fields from API
         str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
     
-    id: int | None = Field(ge=0, le=63, default=0, description="DSCP WMM mapping numbers (0 - 63).")
+    id_: int | None = Field(ge=0, le=63, default=0, serialization_alias="id", description="DSCP WMM mapping numbers (0 - 63).")
 class QosProfileDscpWmmVi(BaseModel):
     """
     Child table model for dscp-wmm-vi.
@@ -38,21 +43,9 @@ class QosProfileDscpWmmVi(BaseModel):
         """Pydantic model configuration."""
         extra = "allow"  # Allow additional fields from API
         str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
     
-    id: int | None = Field(ge=0, le=63, default=0, description="DSCP WMM mapping numbers (0 - 63).")
-class QosProfileDscpWmmBe(BaseModel):
-    """
-    Child table model for dscp-wmm-be.
-    
-    DSCP mapping for best effort access (default = 0 24).
-    """
-    
-    class Config:
-        """Pydantic model configuration."""
-        extra = "allow"  # Allow additional fields from API
-        str_strip_whitespace = True
-    
-    id: int | None = Field(ge=0, le=63, default=0, description="DSCP WMM mapping numbers (0 - 63).")
+    id_: int | None = Field(ge=0, le=63, default=0, serialization_alias="id", description="DSCP WMM mapping numbers (0 - 63).")
 class QosProfileDscpWmmBk(BaseModel):
     """
     Child table model for dscp-wmm-bk.
@@ -64,8 +57,23 @@ class QosProfileDscpWmmBk(BaseModel):
         """Pydantic model configuration."""
         extra = "allow"  # Allow additional fields from API
         str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
     
-    id: int | None = Field(ge=0, le=63, default=0, description="DSCP WMM mapping numbers (0 - 63).")
+    id_: int | None = Field(ge=0, le=63, default=0, serialization_alias="id", description="DSCP WMM mapping numbers (0 - 63).")
+class QosProfileDscpWmmBe(BaseModel):
+    """
+    Child table model for dscp-wmm-be.
+    
+    DSCP mapping for best effort access (default = 0 24).
+    """
+    
+    class Config:
+        """Pydantic model configuration."""
+        extra = "allow"  # Allow additional fields from API
+        str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
+    
+    id_: int | None = Field(ge=0, le=63, default=0, serialization_alias="id", description="DSCP WMM mapping numbers (0 - 63).")
 # ============================================================================
 # Enum Definitions (for fields with 4+ allowed values)
 # ============================================================================
@@ -94,8 +102,8 @@ class QosProfileModel(BaseModel):
     # Model Fields
     # ========================================================================
     
-    name: str | None = Field(max_length=35, default="", description="WiFi QoS profile name.")    
-    comment: str | None = Field(max_length=63, default="", description="Comment.")    
+    name: str | None = Field(max_length=35, default=None, description="WiFi QoS profile name.")    
+    comment: str | None = Field(max_length=63, default=None, description="Comment.")    
     uplink: int | None = Field(ge=0, le=2097152, default=0, description="Maximum uplink bandwidth for Virtual Access Points (VAPs) (0 - 2097152 Kbps, default = 0, 0 means no limit).")    
     downlink: int | None = Field(ge=0, le=2097152, default=0, description="Maximum downlink bandwidth for Virtual Access Points (VAPs) (0 - 2097152 Kbps, default = 0, 0 means no limit).")    
     uplink_sta: int | None = Field(ge=0, le=2097152, default=0, description="Maximum uplink bandwidth for clients (0 - 2097152 Kbps, default = 0, 0 means no limit).")    
@@ -108,10 +116,10 @@ class QosProfileModel(BaseModel):
     bandwidth_admission_control: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable WMM bandwidth admission control.")    
     bandwidth_capacity: int | None = Field(ge=1, le=600000, default=2000, description="Maximum bandwidth capacity allowed (1 - 600000 Kbps, default = 2000).")    
     dscp_wmm_mapping: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable Differentiated Services Code Point (DSCP) mapping.")    
-    dscp_wmm_vo: list[DscpWmmVo] = Field(default=None, description="DSCP mapping for voice access (default = 48 56).")    
-    dscp_wmm_vi: list[DscpWmmVi] = Field(default=None, description="DSCP mapping for video access (default = 32 40).")    
-    dscp_wmm_be: list[DscpWmmBe] = Field(default=None, description="DSCP mapping for best effort access (default = 0 24).")    
-    dscp_wmm_bk: list[DscpWmmBk] = Field(default=None, description="DSCP mapping for background access (default = 8 16).")    
+    dscp_wmm_vo: list[QosProfileDscpWmmVo] = Field(default_factory=list, description="DSCP mapping for voice access (default = 48 56).")    
+    dscp_wmm_vi: list[QosProfileDscpWmmVi] = Field(default_factory=list, description="DSCP mapping for video access (default = 32 40).")    
+    dscp_wmm_be: list[QosProfileDscpWmmBe] = Field(default_factory=list, description="DSCP mapping for best effort access (default = 0 24).")    
+    dscp_wmm_bk: list[QosProfileDscpWmmBk] = Field(default_factory=list, description="DSCP mapping for background access (default = 8 16).")    
     wmm_dscp_marking: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable WMM Differentiated Services Code Point (DSCP) marking.")    
     wmm_vo_dscp: int | None = Field(ge=0, le=63, default=48, description="DSCP marking for voice access (default = 48).")    
     wmm_vi_dscp: int | None = Field(ge=0, le=63, default=32, description="DSCP marking for video access (default = 32).")    
@@ -165,5 +173,5 @@ __all__ = [
 # ============================================================================
 # Generated by hfortix generator v0.6.0
 # Schema: 1.7.0
-# Generated: 2026-01-17T05:32:19.463680Z
+# Generated: 2026-01-17T17:25:23.141896Z
 # ============================================================================

@@ -52,6 +52,7 @@ from hfortix_fortios._helpers.metadata_mixin import MetadataMixin
 
 # List normalizers
 from hfortix_fortios._helpers.normalizers import (
+    normalize_day_field,
     normalize_member_list,
     normalize_table_field,
     normalize_to_name_list,

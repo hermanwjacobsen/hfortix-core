@@ -705,6 +705,24 @@ class VlanPolicy(CRUDEndpoint, MetadataMixin):
             - put(): Update existing object
             - exists(): Check existence manually
         """
+        # Apply normalization for table fields (supports flexible input formats)
+        if allowed_vlans is not None:
+            allowed_vlans = normalize_table_field(
+                allowed_vlans,
+                mkey="vlan-name",
+                required_fields=['vlan-name'],
+                field_name="allowed_vlans",
+                example="[{'vlan-name': 'value'}]",
+            )
+        if untagged_vlans is not None:
+            untagged_vlans = normalize_table_field(
+                untagged_vlans,
+                mkey="vlan-name",
+                required_fields=['vlan-name'],
+                field_name="untagged_vlans",
+                example="[{'vlan-name': 'value'}]",
+            )
+        
         # Build payload using helper function with auto-normalization
         payload_data = build_api_payload(
             name=name,

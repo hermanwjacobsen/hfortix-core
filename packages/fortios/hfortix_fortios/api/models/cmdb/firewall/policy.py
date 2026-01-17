@@ -12,113 +12,13 @@ from typing import Any, Literal, Optional
 from uuid import UUID
 
 # ============================================================================
-# Child Table Models
+# Enum Definitions for Child Table Fields (for fields with 4+ allowed values)
 # ============================================================================
 
-class PolicySrcintf(BaseModel):
-    """
-    Child table model for srcintf.
-    
-    Incoming (ingress) interface.
-    """
-    
-    class Config:
-        """Pydantic model configuration."""
-        extra = "allow"  # Allow additional fields from API
-        str_strip_whitespace = True
-    
-    name: str | None = Field(max_length=79, default="", description="Interface name.")  # datasource: ['system.interface.name', 'system.zone.name', 'system.sdwan.zone.name']
-class PolicyDstintf(BaseModel):
-    """
-    Child table model for dstintf.
-    
-    Outgoing (egress) interface.
-    """
-    
-    class Config:
-        """Pydantic model configuration."""
-        extra = "allow"  # Allow additional fields from API
-        str_strip_whitespace = True
-    
-    name: str | None = Field(max_length=79, default="", description="Interface name.")  # datasource: ['system.interface.name', 'system.zone.name', 'system.sdwan.zone.name']
-class PolicySrcaddr(BaseModel):
-    """
-    Child table model for srcaddr.
-    
-    Source IPv4 address and address group names.
-    """
-    
-    class Config:
-        """Pydantic model configuration."""
-        extra = "allow"  # Allow additional fields from API
-        str_strip_whitespace = True
-    
-    name: str = Field(max_length=79, default="", description="Address name.")  # datasource: ['firewall.address.name', 'firewall.addrgrp.name', 'system.external-resource.name']
-class PolicyDstaddr(BaseModel):
-    """
-    Child table model for dstaddr.
-    
-    Destination IPv4 address and address group names.
-    """
-    
-    class Config:
-        """Pydantic model configuration."""
-        extra = "allow"  # Allow additional fields from API
-        str_strip_whitespace = True
-    
-    name: str = Field(max_length=79, default="", description="Address name.")  # datasource: ['firewall.address.name', 'firewall.addrgrp.name', 'firewall.vip.name', 'firewall.vipgrp.name', 'system.external-resource.name']
-class PolicySrcaddr6(BaseModel):
-    """
-    Child table model for srcaddr6.
-    
-    Source IPv6 address name and address group names.
-    """
-    
-    class Config:
-        """Pydantic model configuration."""
-        extra = "allow"  # Allow additional fields from API
-        str_strip_whitespace = True
-    
-    name: str = Field(max_length=79, default="", description="Address name.")  # datasource: ['firewall.address6.name', 'system.external-resource.name', 'firewall.addrgrp6.name']
-class PolicyDstaddr6(BaseModel):
-    """
-    Child table model for dstaddr6.
-    
-    Destination IPv6 address name and address group names.
-    """
-    
-    class Config:
-        """Pydantic model configuration."""
-        extra = "allow"  # Allow additional fields from API
-        str_strip_whitespace = True
-    
-    name: str = Field(max_length=79, default="", description="Address name.")  # datasource: ['firewall.address6.name', 'firewall.addrgrp6.name', 'firewall.vip6.name', 'firewall.vipgrp6.name', 'system.external-resource.name']
-class PolicyZtnaEmsTag(BaseModel):
-    """
-    Child table model for ztna-ems-tag.
-    
-    Source ztna-ems-tag names.
-    """
-    
-    class Config:
-        """Pydantic model configuration."""
-        extra = "allow"  # Allow additional fields from API
-        str_strip_whitespace = True
-    
-    name: str = Field(max_length=79, default="", description="Address name.")  # datasource: ['firewall.address.name', 'firewall.addrgrp.name']
-class PolicyZtnaEmsTagSecondary(BaseModel):
-    """
-    Child table model for ztna-ems-tag-secondary.
-    
-    Source ztna-ems-tag-secondary names.
-    """
-    
-    class Config:
-        """Pydantic model configuration."""
-        extra = "allow"  # Allow additional fields from API
-        str_strip_whitespace = True
-    
-    name: str = Field(max_length=79, default="", description="Address name.")  # datasource: ['firewall.address.name', 'firewall.addrgrp.name']
+# ============================================================================
+# Child Table Models (sorted deepest-first so nested models are defined before their parents)
+# ============================================================================
+
 class PolicyZtnaGeoTag(BaseModel):
     """
     Child table model for ztna-geo-tag.
@@ -130,346 +30,37 @@ class PolicyZtnaGeoTag(BaseModel):
         """Pydantic model configuration."""
         extra = "allow"  # Allow additional fields from API
         str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
     
-    name: str = Field(max_length=79, default="", description="Address name.")  # datasource: ['firewall.address.name', 'firewall.addrgrp.name']
-class PolicyInternetServiceName(BaseModel):
+    name: str = Field(max_length=79, description="Address name.")  # datasource: ['firewall.address.name', 'firewall.addrgrp.name']
+class PolicyZtnaEmsTagSecondary(BaseModel):
     """
-    Child table model for internet-service-name.
+    Child table model for ztna-ems-tag-secondary.
     
-    Internet Service name.
-    """
-    
-    class Config:
-        """Pydantic model configuration."""
-        extra = "allow"  # Allow additional fields from API
-        str_strip_whitespace = True
-    
-    name: str = Field(max_length=79, default="", description="Internet Service name.")  # datasource: ['firewall.internet-service-name.name']
-class PolicyInternetServiceGroup(BaseModel):
-    """
-    Child table model for internet-service-group.
-    
-    Internet Service group name.
+    Source ztna-ems-tag-secondary names.
     """
     
     class Config:
         """Pydantic model configuration."""
         extra = "allow"  # Allow additional fields from API
         str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
     
-    name: str = Field(max_length=79, default="", description="Internet Service group name.")  # datasource: ['firewall.internet-service-group.name']
-class PolicyInternetServiceCustom(BaseModel):
+    name: str = Field(max_length=79, description="Address name.")  # datasource: ['firewall.address.name', 'firewall.addrgrp.name']
+class PolicyZtnaEmsTag(BaseModel):
     """
-    Child table model for internet-service-custom.
+    Child table model for ztna-ems-tag.
     
-    Custom Internet Service name.
-    """
-    
-    class Config:
-        """Pydantic model configuration."""
-        extra = "allow"  # Allow additional fields from API
-        str_strip_whitespace = True
-    
-    name: str = Field(max_length=79, default="", description="Custom Internet Service name.")  # datasource: ['firewall.internet-service-custom.name']
-class PolicyNetworkServiceDynamic(BaseModel):
-    """
-    Child table model for network-service-dynamic.
-    
-    Dynamic Network Service name.
+    Source ztna-ems-tag names.
     """
     
     class Config:
         """Pydantic model configuration."""
         extra = "allow"  # Allow additional fields from API
         str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
     
-    name: str = Field(max_length=79, default="", description="Dynamic Network Service name.")  # datasource: ['firewall.network-service-dynamic.name']
-class PolicyInternetServiceCustomGroup(BaseModel):
-    """
-    Child table model for internet-service-custom-group.
-    
-    Custom Internet Service group name.
-    """
-    
-    class Config:
-        """Pydantic model configuration."""
-        extra = "allow"  # Allow additional fields from API
-        str_strip_whitespace = True
-    
-    name: str = Field(max_length=79, default="", description="Custom Internet Service group name.")  # datasource: ['firewall.internet-service-custom-group.name']
-class PolicyInternetServiceSrcName(BaseModel):
-    """
-    Child table model for internet-service-src-name.
-    
-    Internet Service source name.
-    """
-    
-    class Config:
-        """Pydantic model configuration."""
-        extra = "allow"  # Allow additional fields from API
-        str_strip_whitespace = True
-    
-    name: str = Field(max_length=79, default="", description="Internet Service name.")  # datasource: ['firewall.internet-service-name.name']
-class PolicyInternetServiceSrcGroup(BaseModel):
-    """
-    Child table model for internet-service-src-group.
-    
-    Internet Service source group name.
-    """
-    
-    class Config:
-        """Pydantic model configuration."""
-        extra = "allow"  # Allow additional fields from API
-        str_strip_whitespace = True
-    
-    name: str = Field(max_length=79, default="", description="Internet Service group name.")  # datasource: ['firewall.internet-service-group.name']
-class PolicyInternetServiceSrcCustom(BaseModel):
-    """
-    Child table model for internet-service-src-custom.
-    
-    Custom Internet Service source name.
-    """
-    
-    class Config:
-        """Pydantic model configuration."""
-        extra = "allow"  # Allow additional fields from API
-        str_strip_whitespace = True
-    
-    name: str = Field(max_length=79, default="", description="Custom Internet Service name.")  # datasource: ['firewall.internet-service-custom.name']
-class PolicyNetworkServiceSrcDynamic(BaseModel):
-    """
-    Child table model for network-service-src-dynamic.
-    
-    Dynamic Network Service source name.
-    """
-    
-    class Config:
-        """Pydantic model configuration."""
-        extra = "allow"  # Allow additional fields from API
-        str_strip_whitespace = True
-    
-    name: str = Field(max_length=79, default="", description="Dynamic Network Service name.")  # datasource: ['firewall.network-service-dynamic.name']
-class PolicyInternetServiceSrcCustomGroup(BaseModel):
-    """
-    Child table model for internet-service-src-custom-group.
-    
-    Custom Internet Service source group name.
-    """
-    
-    class Config:
-        """Pydantic model configuration."""
-        extra = "allow"  # Allow additional fields from API
-        str_strip_whitespace = True
-    
-    name: str = Field(max_length=79, default="", description="Custom Internet Service group name.")  # datasource: ['firewall.internet-service-custom-group.name']
-class PolicySrcVendorMac(BaseModel):
-    """
-    Child table model for src-vendor-mac.
-    
-    Vendor MAC source ID.
-    """
-    
-    class Config:
-        """Pydantic model configuration."""
-        extra = "allow"  # Allow additional fields from API
-        str_strip_whitespace = True
-    
-    id: int = Field(ge=0, le=4294967295, default=0, description="Vendor MAC ID.")  # datasource: ['firewall.vendor-mac.id']
-class PolicyInternetService6Name(BaseModel):
-    """
-    Child table model for internet-service6-name.
-    
-    IPv6 Internet Service name.
-    """
-    
-    class Config:
-        """Pydantic model configuration."""
-        extra = "allow"  # Allow additional fields from API
-        str_strip_whitespace = True
-    
-    name: str = Field(max_length=79, default="", description="IPv6 Internet Service name.")  # datasource: ['firewall.internet-service-name.name']
-class PolicyInternetService6Group(BaseModel):
-    """
-    Child table model for internet-service6-group.
-    
-    Internet Service group name.
-    """
-    
-    class Config:
-        """Pydantic model configuration."""
-        extra = "allow"  # Allow additional fields from API
-        str_strip_whitespace = True
-    
-    name: str = Field(max_length=79, default="", description="Internet Service group name.")  # datasource: ['firewall.internet-service-group.name']
-class PolicyInternetService6Custom(BaseModel):
-    """
-    Child table model for internet-service6-custom.
-    
-    Custom IPv6 Internet Service name.
-    """
-    
-    class Config:
-        """Pydantic model configuration."""
-        extra = "allow"  # Allow additional fields from API
-        str_strip_whitespace = True
-    
-    name: str = Field(max_length=79, default="", description="Custom Internet Service name.")  # datasource: ['firewall.internet-service-custom.name']
-class PolicyInternetService6CustomGroup(BaseModel):
-    """
-    Child table model for internet-service6-custom-group.
-    
-    Custom Internet Service6 group name.
-    """
-    
-    class Config:
-        """Pydantic model configuration."""
-        extra = "allow"  # Allow additional fields from API
-        str_strip_whitespace = True
-    
-    name: str = Field(max_length=79, default="", description="Custom Internet Service6 group name.")  # datasource: ['firewall.internet-service-custom-group.name']
-class PolicyInternetService6SrcName(BaseModel):
-    """
-    Child table model for internet-service6-src-name.
-    
-    IPv6 Internet Service source name.
-    """
-    
-    class Config:
-        """Pydantic model configuration."""
-        extra = "allow"  # Allow additional fields from API
-        str_strip_whitespace = True
-    
-    name: str = Field(max_length=79, default="", description="Internet Service name.")  # datasource: ['firewall.internet-service-name.name']
-class PolicyInternetService6SrcGroup(BaseModel):
-    """
-    Child table model for internet-service6-src-group.
-    
-    Internet Service6 source group name.
-    """
-    
-    class Config:
-        """Pydantic model configuration."""
-        extra = "allow"  # Allow additional fields from API
-        str_strip_whitespace = True
-    
-    name: str = Field(max_length=79, default="", description="Internet Service group name.")  # datasource: ['firewall.internet-service-group.name']
-class PolicyInternetService6SrcCustom(BaseModel):
-    """
-    Child table model for internet-service6-src-custom.
-    
-    Custom IPv6 Internet Service source name.
-    """
-    
-    class Config:
-        """Pydantic model configuration."""
-        extra = "allow"  # Allow additional fields from API
-        str_strip_whitespace = True
-    
-    name: str = Field(max_length=79, default="", description="Custom Internet Service name.")  # datasource: ['firewall.internet-service-custom.name']
-class PolicyInternetService6SrcCustomGroup(BaseModel):
-    """
-    Child table model for internet-service6-src-custom-group.
-    
-    Custom Internet Service6 source group name.
-    """
-    
-    class Config:
-        """Pydantic model configuration."""
-        extra = "allow"  # Allow additional fields from API
-        str_strip_whitespace = True
-    
-    name: str = Field(max_length=79, default="", description="Custom Internet Service6 group name.")  # datasource: ['firewall.internet-service-custom-group.name']
-class PolicyRtpAddr(BaseModel):
-    """
-    Child table model for rtp-addr.
-    
-    Address names if this is an RTP NAT policy.
-    """
-    
-    class Config:
-        """Pydantic model configuration."""
-        extra = "allow"  # Allow additional fields from API
-        str_strip_whitespace = True
-    
-    name: str = Field(max_length=79, default="", description="Address name.")  # datasource: ['firewall.internet-service-custom-group.name', 'firewall.addrgrp.name']
-class PolicyService(BaseModel):
-    """
-    Child table model for service.
-    
-    Service and service group names.
-    """
-    
-    class Config:
-        """Pydantic model configuration."""
-        extra = "allow"  # Allow additional fields from API
-        str_strip_whitespace = True
-    
-    name: str = Field(max_length=79, default="", description="Service and service group names.")  # datasource: ['firewall.service.custom.name', 'firewall.service.group.name']
-class PolicyPcpPoolname(BaseModel):
-    """
-    Child table model for pcp-poolname.
-    
-    PCP pool names.
-    """
-    
-    class Config:
-        """Pydantic model configuration."""
-        extra = "allow"  # Allow additional fields from API
-        str_strip_whitespace = True
-    
-    name: str = Field(max_length=79, default="", description="PCP pool name.")  # datasource: ['system.pcp-server.pools.name']
-class PolicyPoolname(BaseModel):
-    """
-    Child table model for poolname.
-    
-    IP Pool names.
-    """
-    
-    class Config:
-        """Pydantic model configuration."""
-        extra = "allow"  # Allow additional fields from API
-        str_strip_whitespace = True
-    
-    name: str = Field(max_length=79, default="", description="IP pool name.")  # datasource: ['firewall.ippool.name']
-class PolicyPoolname6(BaseModel):
-    """
-    Child table model for poolname6.
-    
-    IPv6 pool names.
-    """
-    
-    class Config:
-        """Pydantic model configuration."""
-        extra = "allow"  # Allow additional fields from API
-        str_strip_whitespace = True
-    
-    name: str = Field(max_length=79, default="", description="IPv6 pool name.")  # datasource: ['firewall.ippool6.name']
-class PolicyNtlmEnabledBrowsers(BaseModel):
-    """
-    Child table model for ntlm-enabled-browsers.
-    
-    HTTP-User-Agent value of supported browsers.
-    """
-    
-    class Config:
-        """Pydantic model configuration."""
-        extra = "allow"  # Allow additional fields from API
-        str_strip_whitespace = True
-    
-    user_agent_string: str | None = Field(max_length=79, default="", description="User agent string.")
-class PolicyGroups(BaseModel):
-    """
-    Child table model for groups.
-    
-    Names of user groups that can authenticate with this policy.
-    """
-    
-    class Config:
-        """Pydantic model configuration."""
-        extra = "allow"  # Allow additional fields from API
-        str_strip_whitespace = True
-    
-    name: str | None = Field(max_length=79, default="", description="Group name.")  # datasource: ['user.group.name']
+    name: str = Field(max_length=79, description="Address name.")  # datasource: ['firewall.address.name', 'firewall.addrgrp.name']
 class PolicyUsers(BaseModel):
     """
     Child table model for users.
@@ -481,34 +72,65 @@ class PolicyUsers(BaseModel):
         """Pydantic model configuration."""
         extra = "allow"  # Allow additional fields from API
         str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
     
-    name: str = Field(max_length=79, default="", description="Names of individual users that can authenticate with this policy.")  # datasource: ['user.local.name', 'user.certificate.name']
-class PolicyFssoGroups(BaseModel):
+    name: str = Field(max_length=79, description="Names of individual users that can authenticate with this policy.")  # datasource: ['user.local.name', 'user.certificate.name']
+class PolicySrcintf(BaseModel):
     """
-    Child table model for fsso-groups.
+    Child table model for srcintf.
     
-    Names of FSSO groups.
-    """
-    
-    class Config:
-        """Pydantic model configuration."""
-        extra = "allow"  # Allow additional fields from API
-        str_strip_whitespace = True
-    
-    name: str = Field(max_length=511, default="", description="Names of FSSO groups.")  # datasource: ['user.adgrp.name']
-class PolicyCustomLogFields(BaseModel):
-    """
-    Child table model for custom-log-fields.
-    
-    Custom fields to append to log messages for this policy.
+    Incoming (ingress) interface.
     """
     
     class Config:
         """Pydantic model configuration."""
         extra = "allow"  # Allow additional fields from API
         str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
     
-    field_id: str | None = Field(max_length=35, default="", description="Custom log field.")  # datasource: ['log.custom-field.id']
+    name: str | None = Field(max_length=79, default=None, description="Interface name.")  # datasource: ['system.interface.name', 'system.zone.name', 'system.sdwan.zone.name']
+class PolicySrcaddr6(BaseModel):
+    """
+    Child table model for srcaddr6.
+    
+    Source IPv6 address name and address group names.
+    """
+    
+    class Config:
+        """Pydantic model configuration."""
+        extra = "allow"  # Allow additional fields from API
+        str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
+    
+    name: str = Field(max_length=79, description="Address name.")  # datasource: ['firewall.address6.name', 'system.external-resource.name', 'firewall.addrgrp6.name']
+class PolicySrcaddr(BaseModel):
+    """
+    Child table model for srcaddr.
+    
+    Source IPv4 address and address group names.
+    """
+    
+    class Config:
+        """Pydantic model configuration."""
+        extra = "allow"  # Allow additional fields from API
+        str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
+    
+    name: str = Field(max_length=79, description="Address name.")  # datasource: ['firewall.address.name', 'firewall.addrgrp.name', 'system.external-resource.name']
+class PolicySrcVendorMac(BaseModel):
+    """
+    Child table model for src-vendor-mac.
+    
+    Vendor MAC source ID.
+    """
+    
+    class Config:
+        """Pydantic model configuration."""
+        extra = "allow"  # Allow additional fields from API
+        str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
+    
+    id_: int = Field(ge=0, le=4294967295, default=0, serialization_alias="id", description="Vendor MAC ID.")  # datasource: ['firewall.vendor-mac.id']
 class PolicySgt(BaseModel):
     """
     Child table model for sgt.
@@ -520,47 +142,149 @@ class PolicySgt(BaseModel):
         """Pydantic model configuration."""
         extra = "allow"  # Allow additional fields from API
         str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
     
-    id: int = Field(ge=1, le=65535, default=0, description="Security group tag (1 - 65535).")
-class PolicyInternetServiceFortiguard(BaseModel):
+    id_: int = Field(ge=1, le=65535, default=0, serialization_alias="id", description="Security group tag (1 - 65535).")
+class PolicyService(BaseModel):
     """
-    Child table model for internet-service-fortiguard.
+    Child table model for service.
     
-    FortiGuard Internet Service name.
-    """
-    
-    class Config:
-        """Pydantic model configuration."""
-        extra = "allow"  # Allow additional fields from API
-        str_strip_whitespace = True
-    
-    name: str = Field(max_length=79, default="", description="FortiGuard Internet Service name.")  # datasource: ['firewall.internet-service-fortiguard.name']
-class PolicyInternetServiceSrcFortiguard(BaseModel):
-    """
-    Child table model for internet-service-src-fortiguard.
-    
-    FortiGuard Internet Service source name.
+    Service and service group names.
     """
     
     class Config:
         """Pydantic model configuration."""
         extra = "allow"  # Allow additional fields from API
         str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
     
-    name: str = Field(max_length=79, default="", description="FortiGuard Internet Service name.")  # datasource: ['firewall.internet-service-fortiguard.name']
-class PolicyInternetService6Fortiguard(BaseModel):
+    name: str = Field(max_length=79, description="Service and service group names.")  # datasource: ['firewall.service.custom.name', 'firewall.service.group.name']
+class PolicyRtpAddr(BaseModel):
     """
-    Child table model for internet-service6-fortiguard.
+    Child table model for rtp-addr.
     
-    FortiGuard IPv6 Internet Service name.
+    Address names if this is an RTP NAT policy.
     """
     
     class Config:
         """Pydantic model configuration."""
         extra = "allow"  # Allow additional fields from API
         str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
     
-    name: str = Field(max_length=79, default="", description="FortiGuard Internet Service name.")  # datasource: ['firewall.internet-service-fortiguard.name']
+    name: str = Field(max_length=79, description="Address name.")  # datasource: ['firewall.internet-service-custom-group.name', 'firewall.addrgrp.name']
+class PolicyPoolname6(BaseModel):
+    """
+    Child table model for poolname6.
+    
+    IPv6 pool names.
+    """
+    
+    class Config:
+        """Pydantic model configuration."""
+        extra = "allow"  # Allow additional fields from API
+        str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
+    
+    name: str = Field(max_length=79, description="IPv6 pool name.")  # datasource: ['firewall.ippool6.name']
+class PolicyPoolname(BaseModel):
+    """
+    Child table model for poolname.
+    
+    IP Pool names.
+    """
+    
+    class Config:
+        """Pydantic model configuration."""
+        extra = "allow"  # Allow additional fields from API
+        str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
+    
+    name: str = Field(max_length=79, description="IP pool name.")  # datasource: ['firewall.ippool.name']
+class PolicyPcpPoolname(BaseModel):
+    """
+    Child table model for pcp-poolname.
+    
+    PCP pool names.
+    """
+    
+    class Config:
+        """Pydantic model configuration."""
+        extra = "allow"  # Allow additional fields from API
+        str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
+    
+    name: str = Field(max_length=79, description="PCP pool name.")  # datasource: ['system.pcp-server.pools.name']
+class PolicyNtlmEnabledBrowsers(BaseModel):
+    """
+    Child table model for ntlm-enabled-browsers.
+    
+    HTTP-User-Agent value of supported browsers.
+    """
+    
+    class Config:
+        """Pydantic model configuration."""
+        extra = "allow"  # Allow additional fields from API
+        str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
+    
+    user_agent_string: str | None = Field(max_length=79, default=None, description="User agent string.")
+class PolicyNetworkServiceSrcDynamic(BaseModel):
+    """
+    Child table model for network-service-src-dynamic.
+    
+    Dynamic Network Service source name.
+    """
+    
+    class Config:
+        """Pydantic model configuration."""
+        extra = "allow"  # Allow additional fields from API
+        str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
+    
+    name: str = Field(max_length=79, description="Dynamic Network Service name.")  # datasource: ['firewall.network-service-dynamic.name']
+class PolicyNetworkServiceDynamic(BaseModel):
+    """
+    Child table model for network-service-dynamic.
+    
+    Dynamic Network Service name.
+    """
+    
+    class Config:
+        """Pydantic model configuration."""
+        extra = "allow"  # Allow additional fields from API
+        str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
+    
+    name: str = Field(max_length=79, description="Dynamic Network Service name.")  # datasource: ['firewall.network-service-dynamic.name']
+class PolicyInternetService6SrcName(BaseModel):
+    """
+    Child table model for internet-service6-src-name.
+    
+    IPv6 Internet Service source name.
+    """
+    
+    class Config:
+        """Pydantic model configuration."""
+        extra = "allow"  # Allow additional fields from API
+        str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
+    
+    name: str = Field(max_length=79, description="Internet Service name.")  # datasource: ['firewall.internet-service-name.name']
+class PolicyInternetService6SrcGroup(BaseModel):
+    """
+    Child table model for internet-service6-src-group.
+    
+    Internet Service6 source group name.
+    """
+    
+    class Config:
+        """Pydantic model configuration."""
+        extra = "allow"  # Allow additional fields from API
+        str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
+    
+    name: str = Field(max_length=79, description="Internet Service group name.")  # datasource: ['firewall.internet-service-group.name']
 class PolicyInternetService6SrcFortiguard(BaseModel):
     """
     Child table model for internet-service6-src-fortiguard.
@@ -572,8 +296,331 @@ class PolicyInternetService6SrcFortiguard(BaseModel):
         """Pydantic model configuration."""
         extra = "allow"  # Allow additional fields from API
         str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
     
-    name: str = Field(max_length=79, default="", description="FortiGuard Internet Service name.")  # datasource: ['firewall.internet-service-fortiguard.name']
+    name: str = Field(max_length=79, description="FortiGuard Internet Service name.")  # datasource: ['firewall.internet-service-fortiguard.name']
+class PolicyInternetService6SrcCustomGroup(BaseModel):
+    """
+    Child table model for internet-service6-src-custom-group.
+    
+    Custom Internet Service6 source group name.
+    """
+    
+    class Config:
+        """Pydantic model configuration."""
+        extra = "allow"  # Allow additional fields from API
+        str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
+    
+    name: str = Field(max_length=79, description="Custom Internet Service6 group name.")  # datasource: ['firewall.internet-service-custom-group.name']
+class PolicyInternetService6SrcCustom(BaseModel):
+    """
+    Child table model for internet-service6-src-custom.
+    
+    Custom IPv6 Internet Service source name.
+    """
+    
+    class Config:
+        """Pydantic model configuration."""
+        extra = "allow"  # Allow additional fields from API
+        str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
+    
+    name: str = Field(max_length=79, description="Custom Internet Service name.")  # datasource: ['firewall.internet-service-custom.name']
+class PolicyInternetService6Name(BaseModel):
+    """
+    Child table model for internet-service6-name.
+    
+    IPv6 Internet Service name.
+    """
+    
+    class Config:
+        """Pydantic model configuration."""
+        extra = "allow"  # Allow additional fields from API
+        str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
+    
+    name: str = Field(max_length=79, description="IPv6 Internet Service name.")  # datasource: ['firewall.internet-service-name.name']
+class PolicyInternetService6Group(BaseModel):
+    """
+    Child table model for internet-service6-group.
+    
+    Internet Service group name.
+    """
+    
+    class Config:
+        """Pydantic model configuration."""
+        extra = "allow"  # Allow additional fields from API
+        str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
+    
+    name: str = Field(max_length=79, description="Internet Service group name.")  # datasource: ['firewall.internet-service-group.name']
+class PolicyInternetService6Fortiguard(BaseModel):
+    """
+    Child table model for internet-service6-fortiguard.
+    
+    FortiGuard IPv6 Internet Service name.
+    """
+    
+    class Config:
+        """Pydantic model configuration."""
+        extra = "allow"  # Allow additional fields from API
+        str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
+    
+    name: str = Field(max_length=79, description="FortiGuard Internet Service name.")  # datasource: ['firewall.internet-service-fortiguard.name']
+class PolicyInternetService6CustomGroup(BaseModel):
+    """
+    Child table model for internet-service6-custom-group.
+    
+    Custom Internet Service6 group name.
+    """
+    
+    class Config:
+        """Pydantic model configuration."""
+        extra = "allow"  # Allow additional fields from API
+        str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
+    
+    name: str = Field(max_length=79, description="Custom Internet Service6 group name.")  # datasource: ['firewall.internet-service-custom-group.name']
+class PolicyInternetService6Custom(BaseModel):
+    """
+    Child table model for internet-service6-custom.
+    
+    Custom IPv6 Internet Service name.
+    """
+    
+    class Config:
+        """Pydantic model configuration."""
+        extra = "allow"  # Allow additional fields from API
+        str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
+    
+    name: str = Field(max_length=79, description="Custom Internet Service name.")  # datasource: ['firewall.internet-service-custom.name']
+class PolicyInternetServiceSrcName(BaseModel):
+    """
+    Child table model for internet-service-src-name.
+    
+    Internet Service source name.
+    """
+    
+    class Config:
+        """Pydantic model configuration."""
+        extra = "allow"  # Allow additional fields from API
+        str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
+    
+    name: str = Field(max_length=79, description="Internet Service name.")  # datasource: ['firewall.internet-service-name.name']
+class PolicyInternetServiceSrcGroup(BaseModel):
+    """
+    Child table model for internet-service-src-group.
+    
+    Internet Service source group name.
+    """
+    
+    class Config:
+        """Pydantic model configuration."""
+        extra = "allow"  # Allow additional fields from API
+        str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
+    
+    name: str = Field(max_length=79, description="Internet Service group name.")  # datasource: ['firewall.internet-service-group.name']
+class PolicyInternetServiceSrcFortiguard(BaseModel):
+    """
+    Child table model for internet-service-src-fortiguard.
+    
+    FortiGuard Internet Service source name.
+    """
+    
+    class Config:
+        """Pydantic model configuration."""
+        extra = "allow"  # Allow additional fields from API
+        str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
+    
+    name: str = Field(max_length=79, description="FortiGuard Internet Service name.")  # datasource: ['firewall.internet-service-fortiguard.name']
+class PolicyInternetServiceSrcCustomGroup(BaseModel):
+    """
+    Child table model for internet-service-src-custom-group.
+    
+    Custom Internet Service source group name.
+    """
+    
+    class Config:
+        """Pydantic model configuration."""
+        extra = "allow"  # Allow additional fields from API
+        str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
+    
+    name: str = Field(max_length=79, description="Custom Internet Service group name.")  # datasource: ['firewall.internet-service-custom-group.name']
+class PolicyInternetServiceSrcCustom(BaseModel):
+    """
+    Child table model for internet-service-src-custom.
+    
+    Custom Internet Service source name.
+    """
+    
+    class Config:
+        """Pydantic model configuration."""
+        extra = "allow"  # Allow additional fields from API
+        str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
+    
+    name: str = Field(max_length=79, description="Custom Internet Service name.")  # datasource: ['firewall.internet-service-custom.name']
+class PolicyInternetServiceName(BaseModel):
+    """
+    Child table model for internet-service-name.
+    
+    Internet Service name.
+    """
+    
+    class Config:
+        """Pydantic model configuration."""
+        extra = "allow"  # Allow additional fields from API
+        str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
+    
+    name: str = Field(max_length=79, description="Internet Service name.")  # datasource: ['firewall.internet-service-name.name']
+class PolicyInternetServiceGroup(BaseModel):
+    """
+    Child table model for internet-service-group.
+    
+    Internet Service group name.
+    """
+    
+    class Config:
+        """Pydantic model configuration."""
+        extra = "allow"  # Allow additional fields from API
+        str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
+    
+    name: str = Field(max_length=79, description="Internet Service group name.")  # datasource: ['firewall.internet-service-group.name']
+class PolicyInternetServiceFortiguard(BaseModel):
+    """
+    Child table model for internet-service-fortiguard.
+    
+    FortiGuard Internet Service name.
+    """
+    
+    class Config:
+        """Pydantic model configuration."""
+        extra = "allow"  # Allow additional fields from API
+        str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
+    
+    name: str = Field(max_length=79, description="FortiGuard Internet Service name.")  # datasource: ['firewall.internet-service-fortiguard.name']
+class PolicyInternetServiceCustomGroup(BaseModel):
+    """
+    Child table model for internet-service-custom-group.
+    
+    Custom Internet Service group name.
+    """
+    
+    class Config:
+        """Pydantic model configuration."""
+        extra = "allow"  # Allow additional fields from API
+        str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
+    
+    name: str = Field(max_length=79, description="Custom Internet Service group name.")  # datasource: ['firewall.internet-service-custom-group.name']
+class PolicyInternetServiceCustom(BaseModel):
+    """
+    Child table model for internet-service-custom.
+    
+    Custom Internet Service name.
+    """
+    
+    class Config:
+        """Pydantic model configuration."""
+        extra = "allow"  # Allow additional fields from API
+        str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
+    
+    name: str = Field(max_length=79, description="Custom Internet Service name.")  # datasource: ['firewall.internet-service-custom.name']
+class PolicyGroups(BaseModel):
+    """
+    Child table model for groups.
+    
+    Names of user groups that can authenticate with this policy.
+    """
+    
+    class Config:
+        """Pydantic model configuration."""
+        extra = "allow"  # Allow additional fields from API
+        str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
+    
+    name: str | None = Field(max_length=79, default=None, description="Group name.")  # datasource: ['user.group.name']
+class PolicyFssoGroups(BaseModel):
+    """
+    Child table model for fsso-groups.
+    
+    Names of FSSO groups.
+    """
+    
+    class Config:
+        """Pydantic model configuration."""
+        extra = "allow"  # Allow additional fields from API
+        str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
+    
+    name: str = Field(max_length=511, description="Names of FSSO groups.")  # datasource: ['user.adgrp.name']
+class PolicyDstintf(BaseModel):
+    """
+    Child table model for dstintf.
+    
+    Outgoing (egress) interface.
+    """
+    
+    class Config:
+        """Pydantic model configuration."""
+        extra = "allow"  # Allow additional fields from API
+        str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
+    
+    name: str | None = Field(max_length=79, default=None, description="Interface name.")  # datasource: ['system.interface.name', 'system.zone.name', 'system.sdwan.zone.name']
+class PolicyDstaddr6(BaseModel):
+    """
+    Child table model for dstaddr6.
+    
+    Destination IPv6 address name and address group names.
+    """
+    
+    class Config:
+        """Pydantic model configuration."""
+        extra = "allow"  # Allow additional fields from API
+        str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
+    
+    name: str = Field(max_length=79, description="Address name.")  # datasource: ['firewall.address6.name', 'firewall.addrgrp6.name', 'firewall.vip6.name', 'firewall.vipgrp6.name', 'system.external-resource.name']
+class PolicyDstaddr(BaseModel):
+    """
+    Child table model for dstaddr.
+    
+    Destination IPv4 address and address group names.
+    """
+    
+    class Config:
+        """Pydantic model configuration."""
+        extra = "allow"  # Allow additional fields from API
+        str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
+    
+    name: str = Field(max_length=79, description="Address name.")  # datasource: ['firewall.address.name', 'firewall.addrgrp.name', 'firewall.vip.name', 'firewall.vipgrp.name', 'system.external-resource.name']
+class PolicyCustomLogFields(BaseModel):
+    """
+    Child table model for custom-log-fields.
+    
+    Custom fields to append to log messages for this policy.
+    """
+    
+    class Config:
+        """Pydantic model configuration."""
+        extra = "allow"  # Allow additional fields from API
+        str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
+    
+    field_id: str | None = Field(max_length=35, default=None, description="Custom log field.")  # datasource: ['log.custom-field.id']
 # ============================================================================
 # Enum Definitions (for fields with 4+ allowed values)
 # ============================================================================
@@ -604,62 +651,62 @@ class PolicyModel(BaseModel):
     
     policyid: int | None = Field(ge=0, le=4294967294, default=0, description="Policy ID (0 - 4294967294).")    
     status: Literal["enable", "disable"] | None = Field(default="enable", description="Enable or disable this policy.")    
-    name: str | None = Field(max_length=35, default="", description="Policy name.")    
+    name: str | None = Field(max_length=35, default=None, description="Policy name.")    
     uuid: str | None = Field(default="00000000-0000-0000-0000-000000000000", description="Universally Unique Identifier (UUID; automatically assigned but can be manually reset).")    
-    srcintf: list[Srcintf] = Field(description="Incoming (ingress) interface.")    
-    dstintf: list[Dstintf] = Field(description="Outgoing (egress) interface.")    
+    srcintf: list[PolicySrcintf] = Field(description="Incoming (ingress) interface.")    
+    dstintf: list[PolicyDstintf] = Field(description="Outgoing (egress) interface.")    
     action: Literal["accept", "deny", "ipsec"] | None = Field(default="deny", description="Policy action (accept/deny/ipsec).")    
     nat64: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable NAT64.")    
     nat46: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable NAT46.")    
     ztna_status: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable zero trust access.")    
     ztna_device_ownership: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable zero trust device ownership.")    
-    srcaddr: list[Srcaddr] = Field(default=None, description="Source IPv4 address and address group names.")    
-    dstaddr: list[Dstaddr] = Field(default=None, description="Destination IPv4 address and address group names.")    
-    srcaddr6: list[Srcaddr6] = Field(default=None, description="Source IPv6 address name and address group names.")    
-    dstaddr6: list[Dstaddr6] = Field(default=None, description="Destination IPv6 address name and address group names.")    
-    ztna_ems_tag: list[ZtnaEmsTag] = Field(default=None, description="Source ztna-ems-tag names.")    
-    ztna_ems_tag_secondary: list[ZtnaEmsTagSecondary] = Field(default=None, description="Source ztna-ems-tag-secondary names.")    
+    srcaddr: list[PolicySrcaddr] = Field(default_factory=list, description="Source IPv4 address and address group names.")    
+    dstaddr: list[PolicyDstaddr] = Field(default_factory=list, description="Destination IPv4 address and address group names.")    
+    srcaddr6: list[PolicySrcaddr6] = Field(default_factory=list, description="Source IPv6 address name and address group names.")    
+    dstaddr6: list[PolicyDstaddr6] = Field(default_factory=list, description="Destination IPv6 address name and address group names.")    
+    ztna_ems_tag: list[PolicyZtnaEmsTag] = Field(default_factory=list, description="Source ztna-ems-tag names.")    
+    ztna_ems_tag_secondary: list[PolicyZtnaEmsTagSecondary] = Field(default_factory=list, description="Source ztna-ems-tag-secondary names.")    
     ztna_tags_match_logic: Literal["or", "and"] | None = Field(default="or", description="ZTNA tag matching logic.")    
-    ztna_geo_tag: list[ZtnaGeoTag] = Field(default=None, description="Source ztna-geo-tag names.")    
+    ztna_geo_tag: list[PolicyZtnaGeoTag] = Field(default_factory=list, description="Source ztna-geo-tag names.")    
     internet_service: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable use of Internet Services for this policy. If enabled, destination address and service are not used.")    
-    internet_service_name: list[InternetServiceName] = Field(default=None, description="Internet Service name.")    
-    internet_service_group: list[InternetServiceGroup] = Field(default=None, description="Internet Service group name.")    
-    internet_service_custom: list[InternetServiceCustom] = Field(default=None, description="Custom Internet Service name.")    
-    network_service_dynamic: list[NetworkServiceDynamic] = Field(default=None, description="Dynamic Network Service name.")    
-    internet_service_custom_group: list[InternetServiceCustomGroup] = Field(default=None, description="Custom Internet Service group name.")    
+    internet_service_name: list[PolicyInternetServiceName] = Field(default_factory=list, description="Internet Service name.")    
+    internet_service_group: list[PolicyInternetServiceGroup] = Field(default_factory=list, description="Internet Service group name.")    
+    internet_service_custom: list[PolicyInternetServiceCustom] = Field(default_factory=list, description="Custom Internet Service name.")    
+    network_service_dynamic: list[PolicyNetworkServiceDynamic] = Field(default_factory=list, description="Dynamic Network Service name.")    
+    internet_service_custom_group: list[PolicyInternetServiceCustomGroup] = Field(default_factory=list, description="Custom Internet Service group name.")    
     internet_service_src: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable use of Internet Services in source for this policy. If enabled, source address is not used.")    
-    internet_service_src_name: list[InternetServiceSrcName] = Field(default=None, description="Internet Service source name.")    
-    internet_service_src_group: list[InternetServiceSrcGroup] = Field(default=None, description="Internet Service source group name.")    
-    internet_service_src_custom: list[InternetServiceSrcCustom] = Field(default=None, description="Custom Internet Service source name.")    
-    network_service_src_dynamic: list[NetworkServiceSrcDynamic] = Field(default=None, description="Dynamic Network Service source name.")    
-    internet_service_src_custom_group: list[InternetServiceSrcCustomGroup] = Field(default=None, description="Custom Internet Service source group name.")    
+    internet_service_src_name: list[PolicyInternetServiceSrcName] = Field(default_factory=list, description="Internet Service source name.")    
+    internet_service_src_group: list[PolicyInternetServiceSrcGroup] = Field(default_factory=list, description="Internet Service source group name.")    
+    internet_service_src_custom: list[PolicyInternetServiceSrcCustom] = Field(default_factory=list, description="Custom Internet Service source name.")    
+    network_service_src_dynamic: list[PolicyNetworkServiceSrcDynamic] = Field(default_factory=list, description="Dynamic Network Service source name.")    
+    internet_service_src_custom_group: list[PolicyInternetServiceSrcCustomGroup] = Field(default_factory=list, description="Custom Internet Service source group name.")    
     reputation_minimum: int | None = Field(ge=0, le=4294967295, default=0, description="Minimum Reputation to take action.")  # datasource: ['firewall.internet-service-reputation.id']    
     reputation_direction: Literal["source", "destination"] | None = Field(default="destination", description="Direction of the initial traffic for reputation to take effect.")    
-    src_vendor_mac: list[SrcVendorMac] = Field(default=None, description="Vendor MAC source ID.")    
+    src_vendor_mac: list[PolicySrcVendorMac] = Field(default_factory=list, description="Vendor MAC source ID.")    
     internet_service6: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable use of IPv6 Internet Services for this policy. If enabled, destination address and service are not used.")    
-    internet_service6_name: list[InternetService6Name] = Field(default=None, description="IPv6 Internet Service name.")    
-    internet_service6_group: list[InternetService6Group] = Field(default=None, description="Internet Service group name.")    
-    internet_service6_custom: list[InternetService6Custom] = Field(default=None, description="Custom IPv6 Internet Service name.")    
-    internet_service6_custom_group: list[InternetService6CustomGroup] = Field(default=None, description="Custom Internet Service6 group name.")    
+    internet_service6_name: list[PolicyInternetService6Name] = Field(default_factory=list, description="IPv6 Internet Service name.")    
+    internet_service6_group: list[PolicyInternetService6Group] = Field(default_factory=list, description="Internet Service group name.")    
+    internet_service6_custom: list[PolicyInternetService6Custom] = Field(default_factory=list, description="Custom IPv6 Internet Service name.")    
+    internet_service6_custom_group: list[PolicyInternetService6CustomGroup] = Field(default_factory=list, description="Custom Internet Service6 group name.")    
     internet_service6_src: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable use of IPv6 Internet Services in source for this policy. If enabled, source address is not used.")    
-    internet_service6_src_name: list[InternetService6SrcName] = Field(default=None, description="IPv6 Internet Service source name.")    
-    internet_service6_src_group: list[InternetService6SrcGroup] = Field(default=None, description="Internet Service6 source group name.")    
-    internet_service6_src_custom: list[InternetService6SrcCustom] = Field(default=None, description="Custom IPv6 Internet Service source name.")    
-    internet_service6_src_custom_group: list[InternetService6SrcCustomGroup] = Field(default=None, description="Custom Internet Service6 source group name.")    
+    internet_service6_src_name: list[PolicyInternetService6SrcName] = Field(default_factory=list, description="IPv6 Internet Service source name.")    
+    internet_service6_src_group: list[PolicyInternetService6SrcGroup] = Field(default_factory=list, description="Internet Service6 source group name.")    
+    internet_service6_src_custom: list[PolicyInternetService6SrcCustom] = Field(default_factory=list, description="Custom IPv6 Internet Service source name.")    
+    internet_service6_src_custom_group: list[PolicyInternetService6SrcCustomGroup] = Field(default_factory=list, description="Custom Internet Service6 source group name.")    
     reputation_minimum6: int | None = Field(ge=0, le=4294967295, default=0, description="IPv6 Minimum Reputation to take action.")  # datasource: ['firewall.internet-service-reputation.id']    
     reputation_direction6: Literal["source", "destination"] | None = Field(default="destination", description="Direction of the initial traffic for IPv6 reputation to take effect.")    
     rtp_nat: Literal["disable", "enable"] | None = Field(default="disable", description="Enable Real Time Protocol (RTP) NAT.")    
-    rtp_addr: list[RtpAddr] = Field(description="Address names if this is an RTP NAT policy.")    
+    rtp_addr: list[PolicyRtpAddr] = Field(description="Address names if this is an RTP NAT policy.")    
     send_deny_packet: Literal["disable", "enable"] | None = Field(default="disable", description="Enable to send a reply when a session is denied or blocked by a firewall policy.")    
     firewall_session_dirty: Literal["check-all", "check-new"] | None = Field(default="check-all", description="How to handle sessions if the configuration of this firewall policy changes.")    
-    schedule: str = Field(max_length=35, default="", description="Schedule name.")  # datasource: ['firewall.schedule.onetime.name', 'firewall.schedule.recurring.name', 'firewall.schedule.group.name']    
+    schedule: str = Field(max_length=35, description="Schedule name.")  # datasource: ['firewall.schedule.onetime.name', 'firewall.schedule.recurring.name', 'firewall.schedule.group.name']    
     schedule_timeout: Literal["enable", "disable"] | None = Field(default="disable", description="Enable to force current sessions to end when the schedule object times out. Disable allows them to end from inactivity.")    
     policy_expiry: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable policy expiry.")    
     policy_expiry_date: Any = Field(default="0000-00-00 00:00:00", description="Policy expiry date (YYYY-MM-DD HH:MM:SS).")    
-    policy_expiry_date_utc: str | None = Field(default="", description="Policy expiry date and time, in epoch format.")    
-    service: list[Service] = Field(default=None, description="Service and service group names.")    
-    tos_mask: str | None = Field(default="", description="Non-zero bit positions are used for comparison while zero bit positions are ignored.")    
-    tos: str | None = Field(default="", description="ToS (Type of Service) value used for comparison.")    
+    policy_expiry_date_utc: str | None = Field(default=None, description="Policy expiry date and time, in epoch format.")    
+    service: list[PolicyService] = Field(default_factory=list, description="Service and service group names.")    
+    tos_mask: str | None = Field(default=None, description="Non-zero bit positions are used for comparison while zero bit positions are ignored.")    
+    tos: str | None = Field(default=None, description="ToS (Type of Service) value used for comparison.")    
     tos_negate: Literal["enable", "disable"] | None = Field(default="disable", description="Enable negated TOS match.")    
     anti_replay: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable anti-replay check.")    
     tcp_session_without_syn: Literal["all", "data-only", "disable"] | None = Field(default="disable", description="Enable/disable creation of TCP session without SYN flag.")    
@@ -673,29 +720,29 @@ class PolicyModel(BaseModel):
     http_policy_redirect: Literal["enable", "disable", "legacy"] | None = Field(default="disable", description="Redirect HTTP(S) traffic to matching transparent web proxy policy.")    
     ssh_policy_redirect: Literal["enable", "disable"] | None = Field(default="disable", description="Redirect SSH traffic to matching transparent proxy policy.")    
     ztna_policy_redirect: Literal["enable", "disable"] | None = Field(default="disable", description="Redirect ZTNA traffic to matching Access-Proxy proxy-policy.")    
-    webproxy_profile: str | None = Field(max_length=63, default="", description="Webproxy profile name.")  # datasource: ['web-proxy.profile.name']    
+    webproxy_profile: str | None = Field(max_length=63, default=None, description="Webproxy profile name.")  # datasource: ['web-proxy.profile.name']    
     profile_type: Literal["single", "group"] | None = Field(default="single", description="Determine whether the firewall policy allows security profile groups or single profiles only.")    
-    profile_group: str | None = Field(max_length=47, default="", description="Name of profile group.")  # datasource: ['firewall.profile-group.name']    
+    profile_group: str | None = Field(max_length=47, default=None, description="Name of profile group.")  # datasource: ['firewall.profile-group.name']    
     profile_protocol_options: str | None = Field(max_length=47, default="default", description="Name of an existing Protocol options profile.")  # datasource: ['firewall.profile-protocol-options.name']    
     ssl_ssh_profile: str | None = Field(max_length=47, default="no-inspection", description="Name of an existing SSL SSH profile.")  # datasource: ['firewall.ssl-ssh-profile.name']    
-    av_profile: str | None = Field(max_length=47, default="", description="Name of an existing Antivirus profile.")  # datasource: ['antivirus.profile.name']    
-    webfilter_profile: str | None = Field(max_length=47, default="", description="Name of an existing Web filter profile.")  # datasource: ['webfilter.profile.name']    
-    dnsfilter_profile: str | None = Field(max_length=47, default="", description="Name of an existing DNS filter profile.")  # datasource: ['dnsfilter.profile.name']    
-    emailfilter_profile: str | None = Field(max_length=47, default="", description="Name of an existing email filter profile.")  # datasource: ['emailfilter.profile.name']    
-    dlp_profile: str | None = Field(max_length=47, default="", description="Name of an existing DLP profile.")  # datasource: ['dlp.profile.name']    
-    file_filter_profile: str | None = Field(max_length=47, default="", description="Name of an existing file-filter profile.")  # datasource: ['file-filter.profile.name']    
-    ips_sensor: str | None = Field(max_length=47, default="", description="Name of an existing IPS sensor.")  # datasource: ['ips.sensor.name']    
-    application_list: str | None = Field(max_length=47, default="", description="Name of an existing Application list.")  # datasource: ['application.list.name']    
-    voip_profile: str | None = Field(max_length=47, default="", description="Name of an existing VoIP (voipd) profile.")  # datasource: ['voip.profile.name']    
-    ips_voip_filter: str | None = Field(max_length=47, default="", description="Name of an existing VoIP (ips) profile.")  # datasource: ['voip.profile.name']    
-    sctp_filter_profile: str | None = Field(max_length=47, default="", description="Name of an existing SCTP filter profile.")  # datasource: ['sctp-filter.profile.name']    
-    diameter_filter_profile: str | None = Field(max_length=47, default="", description="Name of an existing Diameter filter profile.")  # datasource: ['diameter-filter.profile.name']    
-    virtual_patch_profile: str | None = Field(max_length=47, default="", description="Name of an existing virtual-patch profile.")  # datasource: ['virtual-patch.profile.name']    
-    icap_profile: str | None = Field(max_length=47, default="", description="Name of an existing ICAP profile.")  # datasource: ['icap.profile.name']    
-    videofilter_profile: str | None = Field(max_length=47, default="", description="Name of an existing VideoFilter profile.")  # datasource: ['videofilter.profile.name']    
-    waf_profile: str | None = Field(max_length=47, default="", description="Name of an existing Web application firewall profile.")  # datasource: ['waf.profile.name']    
-    ssh_filter_profile: str | None = Field(max_length=47, default="", description="Name of an existing SSH filter profile.")  # datasource: ['ssh-filter.profile.name']    
-    casb_profile: str | None = Field(max_length=47, default="", description="Name of an existing CASB profile.")  # datasource: ['casb.profile.name']    
+    av_profile: str | None = Field(max_length=47, default=None, description="Name of an existing Antivirus profile.")  # datasource: ['antivirus.profile.name']    
+    webfilter_profile: str | None = Field(max_length=47, default=None, description="Name of an existing Web filter profile.")  # datasource: ['webfilter.profile.name']    
+    dnsfilter_profile: str | None = Field(max_length=47, default=None, description="Name of an existing DNS filter profile.")  # datasource: ['dnsfilter.profile.name']    
+    emailfilter_profile: str | None = Field(max_length=47, default=None, description="Name of an existing email filter profile.")  # datasource: ['emailfilter.profile.name']    
+    dlp_profile: str | None = Field(max_length=47, default=None, description="Name of an existing DLP profile.")  # datasource: ['dlp.profile.name']    
+    file_filter_profile: str | None = Field(max_length=47, default=None, description="Name of an existing file-filter profile.")  # datasource: ['file-filter.profile.name']    
+    ips_sensor: str | None = Field(max_length=47, default=None, description="Name of an existing IPS sensor.")  # datasource: ['ips.sensor.name']    
+    application_list: str | None = Field(max_length=47, default=None, description="Name of an existing Application list.")  # datasource: ['application.list.name']    
+    voip_profile: str | None = Field(max_length=47, default=None, description="Name of an existing VoIP (voipd) profile.")  # datasource: ['voip.profile.name']    
+    ips_voip_filter: str | None = Field(max_length=47, default=None, description="Name of an existing VoIP (ips) profile.")  # datasource: ['voip.profile.name']    
+    sctp_filter_profile: str | None = Field(max_length=47, default=None, description="Name of an existing SCTP filter profile.")  # datasource: ['sctp-filter.profile.name']    
+    diameter_filter_profile: str | None = Field(max_length=47, default=None, description="Name of an existing Diameter filter profile.")  # datasource: ['diameter-filter.profile.name']    
+    virtual_patch_profile: str | None = Field(max_length=47, default=None, description="Name of an existing virtual-patch profile.")  # datasource: ['virtual-patch.profile.name']    
+    icap_profile: str | None = Field(max_length=47, default=None, description="Name of an existing ICAP profile.")  # datasource: ['icap.profile.name']    
+    videofilter_profile: str | None = Field(max_length=47, default=None, description="Name of an existing VideoFilter profile.")  # datasource: ['videofilter.profile.name']    
+    waf_profile: str | None = Field(max_length=47, default=None, description="Name of an existing Web application firewall profile.")  # datasource: ['waf.profile.name']    
+    ssh_filter_profile: str | None = Field(max_length=47, default=None, description="Name of an existing SSH filter profile.")  # datasource: ['ssh-filter.profile.name']    
+    casb_profile: str | None = Field(max_length=47, default=None, description="Name of an existing CASB profile.")  # datasource: ['casb.profile.name']    
     logtraffic: Literal["all", "utm", "disable"] | None = Field(default="utm", description="Enable or disable logging. Log all sessions or security profile sessions.")    
     logtraffic_start: Literal["enable", "disable"] | None = Field(default="disable", description="Record logs when a session starts.")    
     log_http_transaction: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable HTTP transaction log.")    
@@ -704,27 +751,27 @@ class PolicyModel(BaseModel):
     wanopt: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable WAN optimization.")    
     wanopt_detection: Literal["active", "passive", "off"] | None = Field(default="active", description="WAN optimization auto-detection mode.")    
     wanopt_passive_opt: Literal["default", "transparent", "non-transparent"] | None = Field(default="default", description="WAN optimization passive mode options. This option decides what IP address will be used to connect server.")    
-    wanopt_profile: str = Field(max_length=35, default="", description="WAN optimization profile.")  # datasource: ['wanopt.profile.name']    
-    wanopt_peer: str = Field(max_length=35, default="", description="WAN optimization peer.")  # datasource: ['wanopt.peer.peer-host-id']    
+    wanopt_profile: str = Field(max_length=35, description="WAN optimization profile.")  # datasource: ['wanopt.profile.name']    
+    wanopt_peer: str = Field(max_length=35, description="WAN optimization peer.")  # datasource: ['wanopt.peer.peer-host-id']    
     webcache: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable web cache.")    
     webcache_https: Literal["disable", "enable"] | None = Field(default="disable", description="Enable/disable web cache for HTTPS.")    
-    webproxy_forward_server: str | None = Field(max_length=63, default="", description="Webproxy forward server name.")  # datasource: ['web-proxy.forward-server.name', 'web-proxy.forward-server-group.name']    
-    traffic_shaper: str | None = Field(max_length=35, default="", description="Traffic shaper.")  # datasource: ['firewall.shaper.traffic-shaper.name']    
-    traffic_shaper_reverse: str | None = Field(max_length=35, default="", description="Reverse traffic shaper.")  # datasource: ['firewall.shaper.traffic-shaper.name']    
-    per_ip_shaper: str | None = Field(max_length=35, default="", description="Per-IP traffic shaper.")  # datasource: ['firewall.shaper.per-ip-shaper.name']    
+    webproxy_forward_server: str | None = Field(max_length=63, default=None, description="Webproxy forward server name.")  # datasource: ['web-proxy.forward-server.name', 'web-proxy.forward-server-group.name']    
+    traffic_shaper: str | None = Field(max_length=35, default=None, description="Traffic shaper.")  # datasource: ['firewall.shaper.traffic-shaper.name']    
+    traffic_shaper_reverse: str | None = Field(max_length=35, default=None, description="Reverse traffic shaper.")  # datasource: ['firewall.shaper.traffic-shaper.name']    
+    per_ip_shaper: str | None = Field(max_length=35, default=None, description="Per-IP traffic shaper.")  # datasource: ['firewall.shaper.per-ip-shaper.name']    
     nat: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable source NAT.")    
     pcp_outbound: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable PCP outbound SNAT.")    
     pcp_inbound: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable PCP inbound DNAT.")    
-    pcp_poolname: list[PcpPoolname] = Field(default=None, description="PCP pool names.")    
+    pcp_poolname: list[PolicyPcpPoolname] = Field(default_factory=list, description="PCP pool names.")    
     permit_any_host: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable fullcone NAT. Accept UDP packets from any host.")    
     permit_stun_host: Literal["enable", "disable"] | None = Field(default="disable", description="Accept UDP packets from any Session Traversal Utilities for NAT (STUN) host.")    
     fixedport: Literal["enable", "disable"] | None = Field(default="disable", description="Enable to prevent source NAT from changing a session's source port.")    
     port_preserve: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable preservation of the original source port from source NAT if it has not been used.")    
     port_random: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable random source port selection for source NAT.")    
     ippool: Literal["enable", "disable"] | None = Field(default="disable", description="Enable to use IP Pools for source NAT.")    
-    poolname: list[Poolname] = Field(default=None, description="IP Pool names.")    
-    poolname6: list[Poolname6] = Field(default=None, description="IPv6 pool names.")    
-    session_ttl: str | None = Field(default="", description="TTL in seconds for sessions accepted by this policy (0 means use the system default session TTL).")    
+    poolname: list[PolicyPoolname] = Field(default_factory=list, description="IP Pool names.")    
+    poolname6: list[PolicyPoolname6] = Field(default_factory=list, description="IPv6 pool names.")    
+    session_ttl: str | None = Field(default=None, description="TTL in seconds for sessions accepted by this policy (0 means use the system default session TTL).")    
     vlan_cos_fwd: int | None = Field(ge=0, le=7, default=255, description="VLAN forward direction user priority: 255 passthrough, 0 lowest, 7 highest.")    
     vlan_cos_rev: int | None = Field(ge=0, le=7, default=255, description="VLAN reverse direction user priority: 255 passthrough, 0 lowest, 7 highest.")    
     inbound: Literal["enable", "disable"] | None = Field(default="disable", description="Policy-based IPsec VPN: only traffic from the remote network can initiate a VPN.")    
@@ -735,33 +782,33 @@ class PolicyModel(BaseModel):
     wccp: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable forwarding traffic matching this policy to a configured WCCP server.")    
     ntlm: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable NTLM authentication.")    
     ntlm_guest: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable NTLM guest user access.")    
-    ntlm_enabled_browsers: list[NtlmEnabledBrowsers] = Field(default=None, description="HTTP-User-Agent value of supported browsers.")    
-    fsso_agent_for_ntlm: str | None = Field(max_length=35, default="", description="FSSO agent to use for NTLM authentication.")  # datasource: ['user.fsso.name']    
-    groups: list[Groups] = Field(default=None, description="Names of user groups that can authenticate with this policy.")    
-    users: list[Users] = Field(default=None, description="Names of individual users that can authenticate with this policy.")    
-    fsso_groups: list[FssoGroups] = Field(default=None, description="Names of FSSO groups.")    
+    ntlm_enabled_browsers: list[PolicyNtlmEnabledBrowsers] = Field(default_factory=list, description="HTTP-User-Agent value of supported browsers.")    
+    fsso_agent_for_ntlm: str | None = Field(max_length=35, default=None, description="FSSO agent to use for NTLM authentication.")  # datasource: ['user.fsso.name']    
+    groups: list[PolicyGroups] = Field(default_factory=list, description="Names of user groups that can authenticate with this policy.")    
+    users: list[PolicyUsers] = Field(default_factory=list, description="Names of individual users that can authenticate with this policy.")    
+    fsso_groups: list[PolicyFssoGroups] = Field(default_factory=list, description="Names of FSSO groups.")    
     auth_path: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable authentication-based routing.")    
     disclaimer: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable user authentication disclaimer.")    
     email_collect: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable email collection.")    
-    vpntunnel: str = Field(max_length=35, default="", description="Policy-based IPsec VPN: name of the IPsec VPN Phase 1.")  # datasource: ['vpn.ipsec.phase1.name', 'vpn.ipsec.manualkey.name']    
+    vpntunnel: str = Field(max_length=35, description="Policy-based IPsec VPN: name of the IPsec VPN Phase 1.")  # datasource: ['vpn.ipsec.phase1.name', 'vpn.ipsec.manualkey.name']    
     natip: str | None = Field(default="0.0.0.0 0.0.0.0", description="Policy-based IPsec VPN: source NAT IP address for outgoing traffic.")    
     match_vip: Literal["enable", "disable"] | None = Field(default="enable", description="Enable to match packets that have had their destination addresses changed by a VIP.")    
     match_vip_only: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable matching of only those packets that have had their destination addresses changed by a VIP.")    
     diffserv_copy: Literal["enable", "disable"] | None = Field(default="disable", description="Enable to copy packet's DiffServ values from session's original direction to its reply direction.")    
     diffserv_forward: Literal["enable", "disable"] | None = Field(default="disable", description="Enable to change packet's DiffServ values to the specified diffservcode-forward value.")    
     diffserv_reverse: Literal["enable", "disable"] | None = Field(default="disable", description="Enable to change packet's reverse (reply) DiffServ values to the specified diffservcode-rev value.")    
-    diffservcode_forward: str | None = Field(default="", description="Change packet's DiffServ to this value.")    
-    diffservcode_rev: str | None = Field(default="", description="Change packet's reverse (reply) DiffServ to this value.")    
+    diffservcode_forward: str | None = Field(default=None, description="Change packet's DiffServ to this value.")    
+    diffservcode_rev: str | None = Field(default=None, description="Change packet's reverse (reply) DiffServ to this value.")    
     tcp_mss_sender: int | None = Field(ge=0, le=65535, default=0, description="Sender TCP maximum segment size (MSS).")    
     tcp_mss_receiver: int | None = Field(ge=0, le=65535, default=0, description="Receiver TCP maximum segment size (MSS).")    
     comments: str | None = Field(max_length=1023, default=None, description="Comment.")    
-    auth_cert: str | None = Field(max_length=35, default="", description="HTTPS server certificate for policy authentication.")  # datasource: ['vpn.certificate.local.name']    
-    auth_redirect_addr: str | None = Field(max_length=63, default="", description="HTTP-to-HTTPS redirect address for firewall authentication.")    
+    auth_cert: str | None = Field(max_length=35, default=None, description="HTTPS server certificate for policy authentication.")  # datasource: ['vpn.certificate.local.name']    
+    auth_redirect_addr: str | None = Field(max_length=63, default=None, description="HTTP-to-HTTPS redirect address for firewall authentication.")    
     redirect_url: str | None = Field(max_length=1023, default=None, description="URL users are directed to after seeing and accepting the disclaimer or authenticating.")    
-    identity_based_route: str | None = Field(max_length=35, default="", description="Name of identity-based routing rule.")  # datasource: ['firewall.identity-based-route.name']    
+    identity_based_route: str | None = Field(max_length=35, default=None, description="Name of identity-based routing rule.")  # datasource: ['firewall.identity-based-route.name']    
     block_notification: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable block notification.")    
-    custom_log_fields: list[CustomLogFields] = Field(default=None, description="Custom fields to append to log messages for this policy.")    
-    replacemsg_override_group: str | None = Field(max_length=35, default="", description="Override the default replacement message group for this policy.")  # datasource: ['system.replacemsg-group.name']    
+    custom_log_fields: list[PolicyCustomLogFields] = Field(default_factory=list, description="Custom fields to append to log messages for this policy.")    
+    replacemsg_override_group: str | None = Field(max_length=35, default=None, description="Override the default replacement message group for this policy.")  # datasource: ['system.replacemsg-group.name']    
     srcaddr_negate: Literal["enable", "disable"] | None = Field(default="disable", description="When enabled srcaddr specifies what the source address must NOT be.")    
     srcaddr6_negate: Literal["enable", "disable"] | None = Field(default="disable", description="When enabled srcaddr6 specifies what the source address must NOT be.")    
     dstaddr_negate: Literal["enable", "disable"] | None = Field(default="disable", description="When enabled dstaddr specifies what the destination address must NOT be.")    
@@ -774,18 +821,18 @@ class PolicyModel(BaseModel):
     internet_service6_src_negate: Literal["enable", "disable"] | None = Field(default="disable", description="When enabled internet-service6-src specifies what the service must NOT be.")    
     timeout_send_rst: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable sending RST packets when TCP sessions expire.")    
     captive_portal_exempt: Literal["enable", "disable"] | None = Field(default="disable", description="Enable to exempt some users from the captive portal.")    
-    decrypted_traffic_mirror: str | None = Field(max_length=35, default="", description="Decrypted traffic mirror.")  # datasource: ['firewall.decrypted-traffic-mirror.name']    
+    decrypted_traffic_mirror: str | None = Field(max_length=35, default=None, description="Decrypted traffic mirror.")  # datasource: ['firewall.decrypted-traffic-mirror.name']    
     dsri: Literal["enable", "disable"] | None = Field(default="disable", description="Enable DSRI to ignore HTTP server responses.")    
     radius_mac_auth_bypass: Literal["enable", "disable"] | None = Field(default="disable", description="Enable MAC authentication bypass. The bypassed MAC address must be received from RADIUS server.")    
     radius_ip_auth_bypass: Literal["enable", "disable"] | None = Field(default="disable", description="Enable IP authentication bypass. The bypassed IP address must be received from RADIUS server.")    
     delay_tcp_npu_session: Literal["enable", "disable"] | None = Field(default="disable", description="Enable TCP NPU session delay to guarantee packet order of 3-way handshake.")    
-    vlan_filter: str | None = Field(default="", description="VLAN ranges to allow")    
+    vlan_filter: str | None = Field(default=None, description="VLAN ranges to allow")    
     sgt_check: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable security group tags (SGT) check.")    
-    sgt: list[Sgt] = Field(default=None, description="Security group tags.")    
-    internet_service_fortiguard: list[InternetServiceFortiguard] = Field(default=None, description="FortiGuard Internet Service name.")    
-    internet_service_src_fortiguard: list[InternetServiceSrcFortiguard] = Field(default=None, description="FortiGuard Internet Service source name.")    
-    internet_service6_fortiguard: list[InternetService6Fortiguard] = Field(default=None, description="FortiGuard IPv6 Internet Service name.")    
-    internet_service6_src_fortiguard: list[InternetService6SrcFortiguard] = Field(default=None, description="FortiGuard IPv6 Internet Service source name.")    
+    sgt: list[PolicySgt] = Field(default_factory=list, description="Security group tags.")    
+    internet_service_fortiguard: list[PolicyInternetServiceFortiguard] = Field(default_factory=list, description="FortiGuard Internet Service name.")    
+    internet_service_src_fortiguard: list[PolicyInternetServiceSrcFortiguard] = Field(default_factory=list, description="FortiGuard Internet Service source name.")    
+    internet_service6_fortiguard: list[PolicyInternetService6Fortiguard] = Field(default_factory=list, description="FortiGuard IPv6 Internet Service name.")    
+    internet_service6_src_fortiguard: list[PolicyInternetService6SrcFortiguard] = Field(default_factory=list, description="FortiGuard IPv6 Internet Service source name.")    
     # ========================================================================
     # Custom Validators
     # ========================================================================
@@ -1405,7 +1452,7 @@ class PolicyModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.policy.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate child table items
         values = getattr(self, "srcintf", [])
@@ -1467,7 +1514,7 @@ class PolicyModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.policy.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate child table items
         values = getattr(self, "dstintf", [])
@@ -1529,7 +1576,7 @@ class PolicyModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.policy.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate child table items
         values = getattr(self, "srcaddr", [])
@@ -1551,7 +1598,7 @@ class PolicyModel(BaseModel):
                 found = True
             elif await client.api.cmdb.firewall.addrgrp.exists(value):
                 found = True
-            elif await client.api.cmdb.system.external-resource.exists(value):
+            elif await client.api.cmdb.system.external_resource.exists(value):
                 found = True
             
             if not found:
@@ -1591,7 +1638,7 @@ class PolicyModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.policy.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate child table items
         values = getattr(self, "dstaddr", [])
@@ -1617,7 +1664,7 @@ class PolicyModel(BaseModel):
                 found = True
             elif await client.api.cmdb.firewall.vipgrp.exists(value):
                 found = True
-            elif await client.api.cmdb.system.external-resource.exists(value):
+            elif await client.api.cmdb.system.external_resource.exists(value):
                 found = True
             
             if not found:
@@ -1657,7 +1704,7 @@ class PolicyModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.policy.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate child table items
         values = getattr(self, "srcaddr6", [])
@@ -1677,7 +1724,7 @@ class PolicyModel(BaseModel):
             found = False
             if await client.api.cmdb.firewall.address6.exists(value):
                 found = True
-            elif await client.api.cmdb.system.external-resource.exists(value):
+            elif await client.api.cmdb.system.external_resource.exists(value):
                 found = True
             elif await client.api.cmdb.firewall.addrgrp6.exists(value):
                 found = True
@@ -1719,7 +1766,7 @@ class PolicyModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.policy.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate child table items
         values = getattr(self, "dstaddr6", [])
@@ -1745,7 +1792,7 @@ class PolicyModel(BaseModel):
                 found = True
             elif await client.api.cmdb.firewall.vipgrp6.exists(value):
                 found = True
-            elif await client.api.cmdb.system.external-resource.exists(value):
+            elif await client.api.cmdb.system.external_resource.exists(value):
                 found = True
             
             if not found:
@@ -1785,7 +1832,7 @@ class PolicyModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.policy.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate child table items
         values = getattr(self, "ztna_ems_tag", [])
@@ -1845,7 +1892,7 @@ class PolicyModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.policy.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate child table items
         values = getattr(self, "ztna_ems_tag_secondary", [])
@@ -1905,7 +1952,7 @@ class PolicyModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.policy.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate child table items
         values = getattr(self, "ztna_geo_tag", [])
@@ -1965,7 +2012,7 @@ class PolicyModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.policy.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate child table items
         values = getattr(self, "internet_service_name", [])
@@ -1983,7 +2030,7 @@ class PolicyModel(BaseModel):
             
             # Check all datasource endpoints
             found = False
-            if await client.api.cmdb.firewall.internet-service-name.exists(value):
+            if await client.api.cmdb.firewall.internet_service_name.exists(value):
                 found = True
             
             if not found:
@@ -2023,7 +2070,7 @@ class PolicyModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.policy.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate child table items
         values = getattr(self, "internet_service_group", [])
@@ -2041,7 +2088,7 @@ class PolicyModel(BaseModel):
             
             # Check all datasource endpoints
             found = False
-            if await client.api.cmdb.firewall.internet-service-group.exists(value):
+            if await client.api.cmdb.firewall.internet_service_group.exists(value):
                 found = True
             
             if not found:
@@ -2081,7 +2128,7 @@ class PolicyModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.policy.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate child table items
         values = getattr(self, "internet_service_custom", [])
@@ -2099,7 +2146,7 @@ class PolicyModel(BaseModel):
             
             # Check all datasource endpoints
             found = False
-            if await client.api.cmdb.firewall.internet-service-custom.exists(value):
+            if await client.api.cmdb.firewall.internet_service_custom.exists(value):
                 found = True
             
             if not found:
@@ -2139,7 +2186,7 @@ class PolicyModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.policy.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate child table items
         values = getattr(self, "network_service_dynamic", [])
@@ -2157,7 +2204,7 @@ class PolicyModel(BaseModel):
             
             # Check all datasource endpoints
             found = False
-            if await client.api.cmdb.firewall.network-service-dynamic.exists(value):
+            if await client.api.cmdb.firewall.network_service_dynamic.exists(value):
                 found = True
             
             if not found:
@@ -2197,7 +2244,7 @@ class PolicyModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.policy.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate child table items
         values = getattr(self, "internet_service_custom_group", [])
@@ -2215,7 +2262,7 @@ class PolicyModel(BaseModel):
             
             # Check all datasource endpoints
             found = False
-            if await client.api.cmdb.firewall.internet-service-custom-group.exists(value):
+            if await client.api.cmdb.firewall.internet_service_custom_group.exists(value):
                 found = True
             
             if not found:
@@ -2255,7 +2302,7 @@ class PolicyModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.policy.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate child table items
         values = getattr(self, "internet_service_src_name", [])
@@ -2273,7 +2320,7 @@ class PolicyModel(BaseModel):
             
             # Check all datasource endpoints
             found = False
-            if await client.api.cmdb.firewall.internet-service-name.exists(value):
+            if await client.api.cmdb.firewall.internet_service_name.exists(value):
                 found = True
             
             if not found:
@@ -2313,7 +2360,7 @@ class PolicyModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.policy.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate child table items
         values = getattr(self, "internet_service_src_group", [])
@@ -2331,7 +2378,7 @@ class PolicyModel(BaseModel):
             
             # Check all datasource endpoints
             found = False
-            if await client.api.cmdb.firewall.internet-service-group.exists(value):
+            if await client.api.cmdb.firewall.internet_service_group.exists(value):
                 found = True
             
             if not found:
@@ -2371,7 +2418,7 @@ class PolicyModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.policy.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate child table items
         values = getattr(self, "internet_service_src_custom", [])
@@ -2389,7 +2436,7 @@ class PolicyModel(BaseModel):
             
             # Check all datasource endpoints
             found = False
-            if await client.api.cmdb.firewall.internet-service-custom.exists(value):
+            if await client.api.cmdb.firewall.internet_service_custom.exists(value):
                 found = True
             
             if not found:
@@ -2429,7 +2476,7 @@ class PolicyModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.policy.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate child table items
         values = getattr(self, "network_service_src_dynamic", [])
@@ -2447,7 +2494,7 @@ class PolicyModel(BaseModel):
             
             # Check all datasource endpoints
             found = False
-            if await client.api.cmdb.firewall.network-service-dynamic.exists(value):
+            if await client.api.cmdb.firewall.network_service_dynamic.exists(value):
                 found = True
             
             if not found:
@@ -2487,7 +2534,7 @@ class PolicyModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.policy.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate child table items
         values = getattr(self, "internet_service_src_custom_group", [])
@@ -2505,7 +2552,7 @@ class PolicyModel(BaseModel):
             
             # Check all datasource endpoints
             found = False
-            if await client.api.cmdb.firewall.internet-service-custom-group.exists(value):
+            if await client.api.cmdb.firewall.internet_service_custom_group.exists(value):
                 found = True
             
             if not found:
@@ -2545,7 +2592,7 @@ class PolicyModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.policy.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate scalar field
         value = getattr(self, "reputation_minimum", None)
@@ -2554,7 +2601,7 @@ class PolicyModel(BaseModel):
         
         # Check all datasource endpoints
         found = False
-        if await client.api.cmdb.firewall.internet-service-reputation.exists(value):
+        if await client.api.cmdb.firewall.internet_service_reputation.exists(value):
             found = True
         
         if not found:
@@ -2594,7 +2641,7 @@ class PolicyModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.policy.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate child table items
         values = getattr(self, "src_vendor_mac", [])
@@ -2612,7 +2659,7 @@ class PolicyModel(BaseModel):
             
             # Check all datasource endpoints
             found = False
-            if await client.api.cmdb.firewall.vendor-mac.exists(value):
+            if await client.api.cmdb.firewall.vendor_mac.exists(value):
                 found = True
             
             if not found:
@@ -2652,7 +2699,7 @@ class PolicyModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.policy.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate child table items
         values = getattr(self, "internet_service6_name", [])
@@ -2670,7 +2717,7 @@ class PolicyModel(BaseModel):
             
             # Check all datasource endpoints
             found = False
-            if await client.api.cmdb.firewall.internet-service-name.exists(value):
+            if await client.api.cmdb.firewall.internet_service_name.exists(value):
                 found = True
             
             if not found:
@@ -2710,7 +2757,7 @@ class PolicyModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.policy.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate child table items
         values = getattr(self, "internet_service6_group", [])
@@ -2728,7 +2775,7 @@ class PolicyModel(BaseModel):
             
             # Check all datasource endpoints
             found = False
-            if await client.api.cmdb.firewall.internet-service-group.exists(value):
+            if await client.api.cmdb.firewall.internet_service_group.exists(value):
                 found = True
             
             if not found:
@@ -2768,7 +2815,7 @@ class PolicyModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.policy.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate child table items
         values = getattr(self, "internet_service6_custom", [])
@@ -2786,7 +2833,7 @@ class PolicyModel(BaseModel):
             
             # Check all datasource endpoints
             found = False
-            if await client.api.cmdb.firewall.internet-service-custom.exists(value):
+            if await client.api.cmdb.firewall.internet_service_custom.exists(value):
                 found = True
             
             if not found:
@@ -2826,7 +2873,7 @@ class PolicyModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.policy.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate child table items
         values = getattr(self, "internet_service6_custom_group", [])
@@ -2844,7 +2891,7 @@ class PolicyModel(BaseModel):
             
             # Check all datasource endpoints
             found = False
-            if await client.api.cmdb.firewall.internet-service-custom-group.exists(value):
+            if await client.api.cmdb.firewall.internet_service_custom_group.exists(value):
                 found = True
             
             if not found:
@@ -2884,7 +2931,7 @@ class PolicyModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.policy.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate child table items
         values = getattr(self, "internet_service6_src_name", [])
@@ -2902,7 +2949,7 @@ class PolicyModel(BaseModel):
             
             # Check all datasource endpoints
             found = False
-            if await client.api.cmdb.firewall.internet-service-name.exists(value):
+            if await client.api.cmdb.firewall.internet_service_name.exists(value):
                 found = True
             
             if not found:
@@ -2942,7 +2989,7 @@ class PolicyModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.policy.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate child table items
         values = getattr(self, "internet_service6_src_group", [])
@@ -2960,7 +3007,7 @@ class PolicyModel(BaseModel):
             
             # Check all datasource endpoints
             found = False
-            if await client.api.cmdb.firewall.internet-service-group.exists(value):
+            if await client.api.cmdb.firewall.internet_service_group.exists(value):
                 found = True
             
             if not found:
@@ -3000,7 +3047,7 @@ class PolicyModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.policy.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate child table items
         values = getattr(self, "internet_service6_src_custom", [])
@@ -3018,7 +3065,7 @@ class PolicyModel(BaseModel):
             
             # Check all datasource endpoints
             found = False
-            if await client.api.cmdb.firewall.internet-service-custom.exists(value):
+            if await client.api.cmdb.firewall.internet_service_custom.exists(value):
                 found = True
             
             if not found:
@@ -3058,7 +3105,7 @@ class PolicyModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.policy.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate child table items
         values = getattr(self, "internet_service6_src_custom_group", [])
@@ -3076,7 +3123,7 @@ class PolicyModel(BaseModel):
             
             # Check all datasource endpoints
             found = False
-            if await client.api.cmdb.firewall.internet-service-custom-group.exists(value):
+            if await client.api.cmdb.firewall.internet_service_custom_group.exists(value):
                 found = True
             
             if not found:
@@ -3116,7 +3163,7 @@ class PolicyModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.policy.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate scalar field
         value = getattr(self, "reputation_minimum6", None)
@@ -3125,7 +3172,7 @@ class PolicyModel(BaseModel):
         
         # Check all datasource endpoints
         found = False
-        if await client.api.cmdb.firewall.internet-service-reputation.exists(value):
+        if await client.api.cmdb.firewall.internet_service_reputation.exists(value):
             found = True
         
         if not found:
@@ -3165,7 +3212,7 @@ class PolicyModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.policy.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate child table items
         values = getattr(self, "rtp_addr", [])
@@ -3183,7 +3230,7 @@ class PolicyModel(BaseModel):
             
             # Check all datasource endpoints
             found = False
-            if await client.api.cmdb.firewall.internet-service-custom-group.exists(value):
+            if await client.api.cmdb.firewall.internet_service_custom_group.exists(value):
                 found = True
             elif await client.api.cmdb.firewall.addrgrp.exists(value):
                 found = True
@@ -3225,7 +3272,7 @@ class PolicyModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.policy.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate scalar field
         value = getattr(self, "schedule", None)
@@ -3278,7 +3325,7 @@ class PolicyModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.policy.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate child table items
         values = getattr(self, "service", [])
@@ -3338,7 +3385,7 @@ class PolicyModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.policy.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate scalar field
         value = getattr(self, "webproxy_profile", None)
@@ -3347,7 +3394,7 @@ class PolicyModel(BaseModel):
         
         # Check all datasource endpoints
         found = False
-        if await client.api.cmdb.web-proxy.profile.exists(value):
+        if await client.api.cmdb.web_proxy.profile.exists(value):
             found = True
         
         if not found:
@@ -3387,7 +3434,7 @@ class PolicyModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.policy.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate scalar field
         value = getattr(self, "profile_group", None)
@@ -3396,7 +3443,7 @@ class PolicyModel(BaseModel):
         
         # Check all datasource endpoints
         found = False
-        if await client.api.cmdb.firewall.profile-group.exists(value):
+        if await client.api.cmdb.firewall.profile_group.exists(value):
             found = True
         
         if not found:
@@ -3436,7 +3483,7 @@ class PolicyModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.policy.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate scalar field
         value = getattr(self, "profile_protocol_options", None)
@@ -3445,7 +3492,7 @@ class PolicyModel(BaseModel):
         
         # Check all datasource endpoints
         found = False
-        if await client.api.cmdb.firewall.profile-protocol-options.exists(value):
+        if await client.api.cmdb.firewall.profile_protocol_options.exists(value):
             found = True
         
         if not found:
@@ -3485,7 +3532,7 @@ class PolicyModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.policy.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate scalar field
         value = getattr(self, "ssl_ssh_profile", None)
@@ -3494,7 +3541,7 @@ class PolicyModel(BaseModel):
         
         # Check all datasource endpoints
         found = False
-        if await client.api.cmdb.firewall.ssl-ssh-profile.exists(value):
+        if await client.api.cmdb.firewall.ssl_ssh_profile.exists(value):
             found = True
         
         if not found:
@@ -3534,7 +3581,7 @@ class PolicyModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.policy.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate scalar field
         value = getattr(self, "av_profile", None)
@@ -3583,7 +3630,7 @@ class PolicyModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.policy.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate scalar field
         value = getattr(self, "webfilter_profile", None)
@@ -3632,7 +3679,7 @@ class PolicyModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.policy.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate scalar field
         value = getattr(self, "dnsfilter_profile", None)
@@ -3681,7 +3728,7 @@ class PolicyModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.policy.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate scalar field
         value = getattr(self, "emailfilter_profile", None)
@@ -3730,7 +3777,7 @@ class PolicyModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.policy.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate scalar field
         value = getattr(self, "dlp_profile", None)
@@ -3779,7 +3826,7 @@ class PolicyModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.policy.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate scalar field
         value = getattr(self, "file_filter_profile", None)
@@ -3788,7 +3835,7 @@ class PolicyModel(BaseModel):
         
         # Check all datasource endpoints
         found = False
-        if await client.api.cmdb.file-filter.profile.exists(value):
+        if await client.api.cmdb.file_filter.profile.exists(value):
             found = True
         
         if not found:
@@ -3828,7 +3875,7 @@ class PolicyModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.policy.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate scalar field
         value = getattr(self, "ips_sensor", None)
@@ -3877,7 +3924,7 @@ class PolicyModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.policy.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate scalar field
         value = getattr(self, "application_list", None)
@@ -3926,7 +3973,7 @@ class PolicyModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.policy.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate scalar field
         value = getattr(self, "voip_profile", None)
@@ -3975,7 +4022,7 @@ class PolicyModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.policy.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate scalar field
         value = getattr(self, "ips_voip_filter", None)
@@ -4024,7 +4071,7 @@ class PolicyModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.policy.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate scalar field
         value = getattr(self, "sctp_filter_profile", None)
@@ -4033,7 +4080,7 @@ class PolicyModel(BaseModel):
         
         # Check all datasource endpoints
         found = False
-        if await client.api.cmdb.sctp-filter.profile.exists(value):
+        if await client.api.cmdb.sctp_filter.profile.exists(value):
             found = True
         
         if not found:
@@ -4073,7 +4120,7 @@ class PolicyModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.policy.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate scalar field
         value = getattr(self, "diameter_filter_profile", None)
@@ -4082,7 +4129,7 @@ class PolicyModel(BaseModel):
         
         # Check all datasource endpoints
         found = False
-        if await client.api.cmdb.diameter-filter.profile.exists(value):
+        if await client.api.cmdb.diameter_filter.profile.exists(value):
             found = True
         
         if not found:
@@ -4122,7 +4169,7 @@ class PolicyModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.policy.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate scalar field
         value = getattr(self, "virtual_patch_profile", None)
@@ -4131,7 +4178,7 @@ class PolicyModel(BaseModel):
         
         # Check all datasource endpoints
         found = False
-        if await client.api.cmdb.virtual-patch.profile.exists(value):
+        if await client.api.cmdb.virtual_patch.profile.exists(value):
             found = True
         
         if not found:
@@ -4171,7 +4218,7 @@ class PolicyModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.policy.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate scalar field
         value = getattr(self, "icap_profile", None)
@@ -4220,7 +4267,7 @@ class PolicyModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.policy.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate scalar field
         value = getattr(self, "videofilter_profile", None)
@@ -4269,7 +4316,7 @@ class PolicyModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.policy.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate scalar field
         value = getattr(self, "waf_profile", None)
@@ -4318,7 +4365,7 @@ class PolicyModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.policy.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate scalar field
         value = getattr(self, "ssh_filter_profile", None)
@@ -4327,7 +4374,7 @@ class PolicyModel(BaseModel):
         
         # Check all datasource endpoints
         found = False
-        if await client.api.cmdb.ssh-filter.profile.exists(value):
+        if await client.api.cmdb.ssh_filter.profile.exists(value):
             found = True
         
         if not found:
@@ -4367,7 +4414,7 @@ class PolicyModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.policy.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate scalar field
         value = getattr(self, "casb_profile", None)
@@ -4416,7 +4463,7 @@ class PolicyModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.policy.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate scalar field
         value = getattr(self, "wanopt_profile", None)
@@ -4465,7 +4512,7 @@ class PolicyModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.policy.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate scalar field
         value = getattr(self, "wanopt_peer", None)
@@ -4514,7 +4561,7 @@ class PolicyModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.policy.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate scalar field
         value = getattr(self, "webproxy_forward_server", None)
@@ -4523,9 +4570,9 @@ class PolicyModel(BaseModel):
         
         # Check all datasource endpoints
         found = False
-        if await client.api.cmdb.web-proxy.forward-server.exists(value):
+        if await client.api.cmdb.web_proxy.forward_server.exists(value):
             found = True
-        elif await client.api.cmdb.web-proxy.forward-server-group.exists(value):
+        elif await client.api.cmdb.web_proxy.forward_server_group.exists(value):
             found = True
         
         if not found:
@@ -4565,7 +4612,7 @@ class PolicyModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.policy.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate scalar field
         value = getattr(self, "traffic_shaper", None)
@@ -4574,7 +4621,7 @@ class PolicyModel(BaseModel):
         
         # Check all datasource endpoints
         found = False
-        if await client.api.cmdb.firewall.shaper.traffic-shaper.exists(value):
+        if await client.api.cmdb.firewall.shaper.traffic_shaper.exists(value):
             found = True
         
         if not found:
@@ -4614,7 +4661,7 @@ class PolicyModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.policy.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate scalar field
         value = getattr(self, "traffic_shaper_reverse", None)
@@ -4623,7 +4670,7 @@ class PolicyModel(BaseModel):
         
         # Check all datasource endpoints
         found = False
-        if await client.api.cmdb.firewall.shaper.traffic-shaper.exists(value):
+        if await client.api.cmdb.firewall.shaper.traffic_shaper.exists(value):
             found = True
         
         if not found:
@@ -4663,7 +4710,7 @@ class PolicyModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.policy.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate scalar field
         value = getattr(self, "per_ip_shaper", None)
@@ -4672,7 +4719,7 @@ class PolicyModel(BaseModel):
         
         # Check all datasource endpoints
         found = False
-        if await client.api.cmdb.firewall.shaper.per-ip-shaper.exists(value):
+        if await client.api.cmdb.firewall.shaper.per_ip_shaper.exists(value):
             found = True
         
         if not found:
@@ -4712,7 +4759,7 @@ class PolicyModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.policy.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate child table items
         values = getattr(self, "pcp_poolname", [])
@@ -4730,7 +4777,7 @@ class PolicyModel(BaseModel):
             
             # Check all datasource endpoints
             found = False
-            if await client.api.cmdb.system.pcp-server.pools.exists(value):
+            if await client.api.cmdb.system.pcp_server.pools.exists(value):
                 found = True
             
             if not found:
@@ -4770,7 +4817,7 @@ class PolicyModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.policy.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate child table items
         values = getattr(self, "poolname", [])
@@ -4828,7 +4875,7 @@ class PolicyModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.policy.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate child table items
         values = getattr(self, "poolname6", [])
@@ -4886,7 +4933,7 @@ class PolicyModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.policy.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate scalar field
         value = getattr(self, "fsso_agent_for_ntlm", None)
@@ -4935,7 +4982,7 @@ class PolicyModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.policy.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate child table items
         values = getattr(self, "groups", [])
@@ -4993,7 +5040,7 @@ class PolicyModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.policy.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate child table items
         values = getattr(self, "users", [])
@@ -5053,7 +5100,7 @@ class PolicyModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.policy.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate child table items
         values = getattr(self, "fsso_groups", [])
@@ -5111,7 +5158,7 @@ class PolicyModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.policy.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate scalar field
         value = getattr(self, "vpntunnel", None)
@@ -5162,7 +5209,7 @@ class PolicyModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.policy.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate scalar field
         value = getattr(self, "auth_cert", None)
@@ -5211,7 +5258,7 @@ class PolicyModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.policy.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate scalar field
         value = getattr(self, "identity_based_route", None)
@@ -5220,7 +5267,7 @@ class PolicyModel(BaseModel):
         
         # Check all datasource endpoints
         found = False
-        if await client.api.cmdb.firewall.identity-based-route.exists(value):
+        if await client.api.cmdb.firewall.identity_based_route.exists(value):
             found = True
         
         if not found:
@@ -5260,7 +5307,7 @@ class PolicyModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.policy.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate child table items
         values = getattr(self, "custom_log_fields", [])
@@ -5278,7 +5325,7 @@ class PolicyModel(BaseModel):
             
             # Check all datasource endpoints
             found = False
-            if await client.api.cmdb.log.custom-field.exists(value):
+            if await client.api.cmdb.log.custom_field.exists(value):
                 found = True
             
             if not found:
@@ -5318,7 +5365,7 @@ class PolicyModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.policy.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate scalar field
         value = getattr(self, "replacemsg_override_group", None)
@@ -5327,7 +5374,7 @@ class PolicyModel(BaseModel):
         
         # Check all datasource endpoints
         found = False
-        if await client.api.cmdb.system.replacemsg-group.exists(value):
+        if await client.api.cmdb.system.replacemsg_group.exists(value):
             found = True
         
         if not found:
@@ -5367,7 +5414,7 @@ class PolicyModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.policy.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate scalar field
         value = getattr(self, "decrypted_traffic_mirror", None)
@@ -5376,7 +5423,7 @@ class PolicyModel(BaseModel):
         
         # Check all datasource endpoints
         found = False
-        if await client.api.cmdb.firewall.decrypted-traffic-mirror.exists(value):
+        if await client.api.cmdb.firewall.decrypted_traffic_mirror.exists(value):
             found = True
         
         if not found:
@@ -5416,7 +5463,7 @@ class PolicyModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.policy.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate child table items
         values = getattr(self, "internet_service_fortiguard", [])
@@ -5434,7 +5481,7 @@ class PolicyModel(BaseModel):
             
             # Check all datasource endpoints
             found = False
-            if await client.api.cmdb.firewall.internet-service-fortiguard.exists(value):
+            if await client.api.cmdb.firewall.internet_service_fortiguard.exists(value):
                 found = True
             
             if not found:
@@ -5474,7 +5521,7 @@ class PolicyModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.policy.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate child table items
         values = getattr(self, "internet_service_src_fortiguard", [])
@@ -5492,7 +5539,7 @@ class PolicyModel(BaseModel):
             
             # Check all datasource endpoints
             found = False
-            if await client.api.cmdb.firewall.internet-service-fortiguard.exists(value):
+            if await client.api.cmdb.firewall.internet_service_fortiguard.exists(value):
                 found = True
             
             if not found:
@@ -5532,7 +5579,7 @@ class PolicyModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.policy.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate child table items
         values = getattr(self, "internet_service6_fortiguard", [])
@@ -5550,7 +5597,7 @@ class PolicyModel(BaseModel):
             
             # Check all datasource endpoints
             found = False
-            if await client.api.cmdb.firewall.internet-service-fortiguard.exists(value):
+            if await client.api.cmdb.firewall.internet_service_fortiguard.exists(value):
                 found = True
             
             if not found:
@@ -5590,7 +5637,7 @@ class PolicyModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.policy.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate child table items
         values = getattr(self, "internet_service6_src_fortiguard", [])
@@ -5608,7 +5655,7 @@ class PolicyModel(BaseModel):
             
             # Check all datasource endpoints
             found = False
-            if await client.api.cmdb.firewall.internet-service-fortiguard.exists(value):
+            if await client.api.cmdb.firewall.internet_service_fortiguard.exists(value):
                 found = True
             
             if not found:
@@ -5813,5 +5860,5 @@ __all__ = [
 # ============================================================================
 # Generated by hfortix generator v0.6.0
 # Schema: 1.7.0
-# Generated: 2026-01-17T05:32:20.057884Z
+# Generated: 2026-01-17T17:25:23.641629Z
 # ============================================================================

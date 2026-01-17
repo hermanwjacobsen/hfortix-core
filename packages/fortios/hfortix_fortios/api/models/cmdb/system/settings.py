@@ -12,7 +12,11 @@ from typing import Any, Literal, Optional
 from enum import Enum
 
 # ============================================================================
-# Child Table Models
+# Enum Definitions for Child Table Fields (for fields with 4+ allowed values)
+# ============================================================================
+
+# ============================================================================
+# Child Table Models (sorted deepest-first so nested models are defined before their parents)
 # ============================================================================
 
 class SettingsGuiDefaultPolicyColumns(BaseModel):
@@ -26,18 +30,27 @@ class SettingsGuiDefaultPolicyColumns(BaseModel):
         """Pydantic model configuration."""
         extra = "allow"  # Allow additional fields from API
         str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
     
-    name: str = Field(max_length=79, default="", description="Select column name.")
+    name: str = Field(max_length=79, description="Select column name.")
 # ============================================================================
 # Enum Definitions (for fields with 4+ allowed values)
 # ============================================================================
 
-class SettingsVpn_stats_logEnum(str, Enum):
+class SettingsVpnStatsLogEnum(str, Enum):
     """Allowed values for vpn_stats_log field."""
-    IPSEC = "ipsec"    PPTP = "pptp"    L2TP = "l2tp"    SSL = "ssl"
-class SettingsV4_ecmp_modeEnum(str, Enum):
+    IPSEC = "ipsec"
+    PPTP = "pptp"
+    L2TP = "l2tp"
+    SSL = "ssl"
+
+class SettingsV4EcmpModeEnum(str, Enum):
     """Allowed values for v4_ecmp_mode field."""
-    SOURCE_IP_BASED = "source-ip-based"    WEIGHT_BASED = "weight-based"    USAGE_BASED = "usage-based"    SOURCE_DEST_IP_BASED = "source-dest-ip-based"
+    SOURCE_IP_BASED = "source-ip-based"
+    WEIGHT_BASED = "weight-based"
+    USAGE_BASED = "usage-based"
+    SOURCE_DEST_IP_BASED = "source-dest-ip-based"
+
 
 # ============================================================================
 # Main Model
@@ -64,19 +77,19 @@ class SettingsModel(BaseModel):
     
     comments: str | None = Field(max_length=255, default=None, description="VDOM comments.")    
     vdom_type: Literal["traffic", "lan-extension", "admin"] = Field(default="traffic", description="Vdom type (traffic, lan-extension or admin).")    
-    lan_extension_controller_addr: str | None = Field(max_length=255, default="", description="Controller IP address or FQDN to connect.")    
+    lan_extension_controller_addr: str | None = Field(max_length=255, default=None, description="Controller IP address or FQDN to connect.")    
     lan_extension_controller_port: int | None = Field(ge=1024, le=65535, default=5246, description="Controller port to connect.")    
     opmode: Literal["nat", "transparent"] = Field(default="nat", description="Firewall operation mode (NAT or Transparent).")    
     ngfw_mode: Literal["profile-based", "policy-based"] | None = Field(default="profile-based", description="Next Generation Firewall (NGFW) mode.")    
     http_external_dest: Literal["fortiweb", "forticache"] | None = Field(default="fortiweb", description="Offload HTTP traffic to FortiWeb or FortiCache.")    
     firewall_session_dirty: Literal["check-all", "check-new", "check-policy-option"] | None = Field(default="check-all", description="Select how to manage sessions affected by firewall policy configuration changes.")    
-    manageip: str = Field(default="", description="Transparent mode IPv4 management IP address and netmask.")    
+    manageip: str = Field(description="Transparent mode IPv4 management IP address and netmask.")    
     gateway: str | None = Field(default="0.0.0.0", description="Transparent mode IPv4 default gateway IP address.")    
     ip: Any = Field(default="0.0.0.0 0.0.0.0", description="IP address and netmask.")    
     manageip6: str | None = Field(default="::/0", description="Transparent mode IPv6 management IP address and netmask.")    
     gateway6: str | None = Field(default="::", description="Transparent mode IPv6 default gateway IP address.")    
     ip6: str | None = Field(default="::/0", description="IPv6 address prefix for NAT mode.")    
-    device: str = Field(max_length=35, default="", description="Interface to use for management access for NAT mode.")  # datasource: ['system.interface.name']    
+    device: str = Field(max_length=35, description="Interface to use for management access for NAT mode.")  # datasource: ['system.interface.name']    
     bfd: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable Bi-directional Forwarding Detection (BFD) on all interfaces.")    
     bfd_desired_min_tx: int | None = Field(ge=1, le=100000, default=250, description="BFD desired minimal transmit interval (1 - 100000 ms, default = 250).")    
     bfd_required_min_rx: int | None = Field(ge=1, le=100000, default=250, description="BFD required minimal receive interval (1 - 100000 ms, default = 250).")    
@@ -84,21 +97,21 @@ class SettingsModel(BaseModel):
     bfd_dont_enforce_src_port: Literal["enable", "disable"] | None = Field(default="disable", description="Enable to not enforce verifying the source port of BFD Packets.")    
     utf8_spam_tagging: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable converting antispam tags to UTF-8 for better non-ASCII character support.")    
     wccp_cache_engine: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable WCCP cache engine.")    
-    vpn_stats_log: list[VpnStatsLog] = Field(default="ipsec pptp l2tp ssl", description="Enable/disable periodic VPN log statistics for one or more types of VPN. Separate names with a space.")    
+    vpn_stats_log: list[SettingsVpnStatsLogEnum] = Field(default_factory=list, description="Enable/disable periodic VPN log statistics for one or more types of VPN. Separate names with a space.")    
     vpn_stats_period: int | None = Field(ge=0, le=4294967295, default=600, description="Period to send VPN log statistics (0 or 60 - 86400 sec).")    
-    v4_ecmp_mode: V4EcmpModeEnum | None = Field(default="source-ip-based", description="IPv4 Equal-cost multi-path (ECMP) routing and load balancing mode.")    
+    v4_ecmp_mode: SettingsV4EcmpModeEnum | None = Field(default=SettingsV4EcmpModeEnum.SOURCE_IP_BASED, description="IPv4 Equal-cost multi-path (ECMP) routing and load balancing mode.")    
     mac_ttl: int | None = Field(ge=300, le=8640000, default=300, description="Duration of MAC addresses in Transparent mode (300 - 8640000 sec, default = 300).")    
     fw_session_hairpin: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable checking for a matching policy each time hairpin traffic goes through the FortiGate.")    
     prp_trailer_action: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable action to take on PRP trailer.")    
     snat_hairpin_traffic: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable source NAT (SNAT) for VIP hairpin traffic.")    
     dhcp_proxy: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable the DHCP Proxy.")    
     dhcp_proxy_interface_select_method: Literal["auto", "sdwan", "specify"] | None = Field(default="auto", description="Specify how to select outgoing interface to reach server.")    
-    dhcp_proxy_interface: str = Field(max_length=15, default="", description="Specify outgoing interface to reach server.")  # datasource: ['system.interface.name']    
+    dhcp_proxy_interface: str = Field(max_length=15, description="Specify outgoing interface to reach server.")  # datasource: ['system.interface.name']    
     dhcp_proxy_vrf_select: int | None = Field(ge=0, le=511, default=0, description="VRF ID used for connection to server.")    
-    dhcp_server_ip: list[DhcpServerIp] = Field(default="", description="DHCP Server IPv4 address.")    
-    dhcp6_server_ip: list[Dhcp6ServerIp] = Field(default="", description="DHCPv6 server IPv6 address.")    
+    dhcp_server_ip: list[str] = Field(default_factory=list, description="DHCP Server IPv4 address.")    
+    dhcp6_server_ip: list[str] = Field(default_factory=list, description="DHCPv6 server IPv6 address.")    
     central_nat: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable central NAT.")    
-    gui_default_policy_columns: list[GuiDefaultPolicyColumns] = Field(default=None, description="Default columns to display for policy lists on GUI.")    
+    gui_default_policy_columns: list[SettingsGuiDefaultPolicyColumns] = Field(default_factory=list, description="Default columns to display for policy lists on GUI.")    
     lldp_reception: Literal["enable", "disable", "global"] | None = Field(default="global", description="Enable/disable Link Layer Discovery Protocol (LLDP) reception for this VDOM or apply global settings to this VDOM.")    
     lldp_transmission: Literal["enable", "disable", "global"] | None = Field(default="global", description="Enable/disable Link Layer Discovery Protocol (LLDP) transmission for this VDOM or apply global settings to this VDOM.")    
     link_down_access: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable link down access traffic.")    
@@ -122,8 +135,8 @@ class SettingsModel(BaseModel):
     sip_nat_trace: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable recording the original SIP source IP address when NAT is used.")    
     h323_direct_model: Literal["disable", "enable"] | None = Field(default="disable", description="Enable/disable H323 direct model.")    
     status: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable this VDOM.")    
-    sip_tcp_port: list[SipTcpPort] = Field(ge=1, le=65535, default=5060, description="TCP port the SIP proxy monitors for SIP traffic (0 - 65535, default = 5060).")    
-    sip_udp_port: list[SipUdpPort] = Field(ge=1, le=65535, default=5060, description="UDP port the SIP proxy monitors for SIP traffic (0 - 65535, default = 5060).")    
+    sip_tcp_port: list[int] = Field(ge=1, le=65535, default_factory=list, description="TCP port the SIP proxy monitors for SIP traffic (0 - 65535, default = 5060).")    
+    sip_udp_port: list[int] = Field(ge=1, le=65535, default_factory=list, description="UDP port the SIP proxy monitors for SIP traffic (0 - 65535, default = 5060).")    
     sip_ssl_port: int | None = Field(ge=0, le=65535, default=5061, description="TCP port the SIP proxy monitors for SIP SSL/TLS traffic (0 - 65535, default = 5061).")    
     sccp_port: int | None = Field(ge=0, le=65535, default=2000, description="TCP port the SCCP proxy monitors for SCCP traffic (0 - 65535, default = 2000).")    
     multicast_forward: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable multicast forwarding.")    
@@ -298,7 +311,7 @@ class SettingsModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.system.settings.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate scalar field
         value = getattr(self, "device", None)
@@ -347,7 +360,7 @@ class SettingsModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.system.settings.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate scalar field
         value = getattr(self, "dhcp_proxy_interface", None)
@@ -409,5 +422,5 @@ __all__ = [
 # ============================================================================
 # Generated by hfortix generator v0.6.0
 # Schema: 1.7.0
-# Generated: 2026-01-17T05:32:18.050837Z
+# Generated: 2026-01-17T17:25:21.874654Z
 # ============================================================================

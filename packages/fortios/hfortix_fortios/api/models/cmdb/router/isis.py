@@ -12,9 +12,83 @@ from typing import Any, Literal, Optional
 from enum import Enum
 
 # ============================================================================
-# Child Table Models
+# Enum Definitions for Child Table Fields (for fields with 4+ allowed values)
 # ============================================================================
 
+# ============================================================================
+# Child Table Models (sorted deepest-first so nested models are defined before their parents)
+# ============================================================================
+
+class IsisSummaryAddress6(BaseModel):
+    """
+    Child table model for summary-address6.
+    
+    IS-IS IPv6 summary address.
+    """
+    
+    class Config:
+        """Pydantic model configuration."""
+        extra = "allow"  # Allow additional fields from API
+        str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
+    
+    id_: int | None = Field(ge=0, le=4294967295, default=0, serialization_alias="id", description="Prefix entry ID.")    
+    prefix6: str = Field(default="::/0", description="IPv6 prefix.")    
+    level: Literal["level-1-2", "level-1", "level-2"] | None = Field(default="level-2", description="Level.")
+class IsisSummaryAddress(BaseModel):
+    """
+    Child table model for summary-address.
+    
+    IS-IS summary addresses.
+    """
+    
+    class Config:
+        """Pydantic model configuration."""
+        extra = "allow"  # Allow additional fields from API
+        str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
+    
+    id_: int | None = Field(ge=0, le=4294967295, default=0, serialization_alias="id", description="Summary address entry ID.")    
+    prefix: Any = Field(default="0.0.0.0 0.0.0.0", description="Prefix.")    
+    level: Literal["level-1-2", "level-1", "level-2"] | None = Field(default="level-2", description="Level.")
+class IsisRedistribute6(BaseModel):
+    """
+    Child table model for redistribute6.
+    
+    IS-IS IPv6 redistribution for routing protocols.
+    """
+    
+    class Config:
+        """Pydantic model configuration."""
+        extra = "allow"  # Allow additional fields from API
+        str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
+    
+    protocol: str = Field(max_length=35, description="Protocol name.")    
+    status: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable redistribution.")    
+    metric: int | None = Field(ge=0, le=4261412864, default=0, description="Metric.")    
+    metric_type: Literal["external", "internal"] | None = Field(default="internal", description="Metric type.")    
+    level: Literal["level-1-2", "level-1", "level-2"] | None = Field(default="level-2", description="Level.")    
+    routemap: str | None = Field(max_length=35, default=None, description="Route map name.")  # datasource: ['router.route-map.name']
+class IsisRedistribute(BaseModel):
+    """
+    Child table model for redistribute.
+    
+    IS-IS redistribute protocols.
+    """
+    
+    class Config:
+        """Pydantic model configuration."""
+        extra = "allow"  # Allow additional fields from API
+        str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
+    
+    protocol: str = Field(max_length=35, description="Protocol name.")    
+    status: Literal["enable", "disable"] | None = Field(default="disable", description="Status.")    
+    metric: int | None = Field(ge=0, le=4261412864, default=0, description="Metric.")    
+    metric_type: Literal["external", "internal"] | None = Field(default="internal", description="Metric type.")    
+    level: Literal["level-1-2", "level-1", "level-2"] | None = Field(default="level-2", description="Level.")    
+    routemap: str | None = Field(max_length=35, default=None, description="Route map name.")  # datasource: ['router.route-map.name']
 class IsisIsisNet(BaseModel):
     """
     Child table model for isis-net.
@@ -26,9 +100,10 @@ class IsisIsisNet(BaseModel):
         """Pydantic model configuration."""
         extra = "allow"  # Allow additional fields from API
         str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
     
-    id: int | None = Field(ge=0, le=4294967295, default=0, description="ISIS network ID.")    
-    net: str | None = Field(default="", description="IS-IS networks (format = xx.xxxx.  .xxxx.xx.).")
+    id_: int | None = Field(ge=0, le=4294967295, default=0, serialization_alias="id", description="ISIS network ID.")    
+    net: str | None = Field(default=None, description="IS-IS networks (format = xx.xxxx.  .xxxx.xx.).")
 class IsisIsisInterface(BaseModel):
     """
     Child table model for isis-interface.
@@ -40,11 +115,12 @@ class IsisIsisInterface(BaseModel):
         """Pydantic model configuration."""
         extra = "allow"  # Allow additional fields from API
         str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
     
-    name: str | None = Field(max_length=15, default="", description="IS-IS interface name.")  # datasource: ['system.interface.name']    
+    name: str | None = Field(max_length=15, default=None, description="IS-IS interface name.")  # datasource: ['system.interface.name']    
     status: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable interface for IS-IS.")    
     status6: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable IPv6 interface for IS-IS.")    
-    network_type: Literal["broadcast", "point-to-point", "loopback"] | None = Field(default="", description="IS-IS interface's network type.")    
+    network_type: Literal["broadcast", "point-to-point", "loopback"] | None = Field(default=None, description="IS-IS interface's network type.")    
     circuit_type: Literal["level-1-2", "level-1", "level-2"] | None = Field(default="level-1-2", description="IS-IS interface's circuit type.")    
     csnp_interval_l1: int | None = Field(ge=1, le=65535, default=10, description="Level 1 CSNP interval.")    
     csnp_interval_l2: int | None = Field(ge=1, le=65535, default=10, description="Level 2 CSNP interval.")    
@@ -61,8 +137,8 @@ class IsisIsisInterface(BaseModel):
     wide_metric_l2: int | None = Field(ge=1, le=16777214, default=10, description="Level 2 wide metric for interface.")    
     auth_password_l1: Any = Field(max_length=128, default=None, description="Authentication password for level 1 PDUs.")    
     auth_password_l2: Any = Field(max_length=128, default=None, description="Authentication password for level 2 PDUs.")    
-    auth_keychain_l1: str | None = Field(max_length=35, default="", description="Authentication key-chain for level 1 PDUs.")  # datasource: ['router.key-chain.name']    
-    auth_keychain_l2: str | None = Field(max_length=35, default="", description="Authentication key-chain for level 2 PDUs.")  # datasource: ['router.key-chain.name']    
+    auth_keychain_l1: str | None = Field(max_length=35, default=None, description="Authentication key-chain for level 1 PDUs.")  # datasource: ['router.key-chain.name']    
+    auth_keychain_l2: str | None = Field(max_length=35, default=None, description="Authentication key-chain for level 2 PDUs.")  # datasource: ['router.key-chain.name']    
     auth_send_only_l1: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable authentication send-only for level 1 PDUs.")    
     auth_send_only_l2: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable authentication send-only for level 2 PDUs.")    
     auth_mode_l1: Literal["md5", "password"] | None = Field(default="password", description="Level 1 authentication mode.")    
@@ -71,79 +147,26 @@ class IsisIsisInterface(BaseModel):
     priority_l2: int | None = Field(ge=0, le=127, default=64, description="Level 2 priority.")    
     mesh_group: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable IS-IS mesh group.")    
     mesh_group_id: int | None = Field(ge=0, le=4294967295, default=0, description="Mesh group ID <0-4294967295>, 0: mesh-group blocked.")
-class IsisSummaryAddress(BaseModel):
-    """
-    Child table model for summary-address.
-    
-    IS-IS summary addresses.
-    """
-    
-    class Config:
-        """Pydantic model configuration."""
-        extra = "allow"  # Allow additional fields from API
-        str_strip_whitespace = True
-    
-    id: int | None = Field(ge=0, le=4294967295, default=0, description="Summary address entry ID.")    
-    prefix: Any = Field(default="0.0.0.0 0.0.0.0", description="Prefix.")    
-    level: Literal["level-1-2", "level-1", "level-2"] | None = Field(default="level-2", description="Level.")
-class IsisSummaryAddress6(BaseModel):
-    """
-    Child table model for summary-address6.
-    
-    IS-IS IPv6 summary address.
-    """
-    
-    class Config:
-        """Pydantic model configuration."""
-        extra = "allow"  # Allow additional fields from API
-        str_strip_whitespace = True
-    
-    id: int | None = Field(ge=0, le=4294967295, default=0, description="Prefix entry ID.")    
-    prefix6: str = Field(default="::/0", description="IPv6 prefix.")    
-    level: Literal["level-1-2", "level-1", "level-2"] | None = Field(default="level-2", description="Level.")
-class IsisRedistribute(BaseModel):
-    """
-    Child table model for redistribute.
-    
-    IS-IS redistribute protocols.
-    """
-    
-    class Config:
-        """Pydantic model configuration."""
-        extra = "allow"  # Allow additional fields from API
-        str_strip_whitespace = True
-    
-    protocol: str = Field(max_length=35, default="", description="Protocol name.")    
-    status: Literal["enable", "disable"] | None = Field(default="disable", description="Status.")    
-    metric: int | None = Field(ge=0, le=4261412864, default=0, description="Metric.")    
-    metric_type: Literal["external", "internal"] | None = Field(default="internal", description="Metric type.")    
-    level: Literal["level-1-2", "level-1", "level-2"] | None = Field(default="level-2", description="Level.")    
-    routemap: str | None = Field(max_length=35, default="", description="Route map name.")  # datasource: ['router.route-map.name']
-class IsisRedistribute6(BaseModel):
-    """
-    Child table model for redistribute6.
-    
-    IS-IS IPv6 redistribution for routing protocols.
-    """
-    
-    class Config:
-        """Pydantic model configuration."""
-        extra = "allow"  # Allow additional fields from API
-        str_strip_whitespace = True
-    
-    protocol: str = Field(max_length=35, default="", description="Protocol name.")    
-    status: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable redistribution.")    
-    metric: int | None = Field(ge=0, le=4261412864, default=0, description="Metric.")    
-    metric_type: Literal["external", "internal"] | None = Field(default="internal", description="Metric type.")    
-    level: Literal["level-1-2", "level-1", "level-2"] | None = Field(default="level-2", description="Level.")    
-    routemap: str | None = Field(max_length=35, default="", description="Route map name.")  # datasource: ['router.route-map.name']
 # ============================================================================
 # Enum Definitions (for fields with 4+ allowed values)
 # ============================================================================
 
-class IsisMetric_styleEnum(str, Enum):
+class IsisMetricStyleEnum(str, Enum):
     """Allowed values for metric_style field."""
-    NARROW = "narrow"    WIDE = "wide"    TRANSITION = "transition"    NARROW_TRANSITION = "narrow-transition"    NARROW_TRANSITION_L1 = "narrow-transition-l1"    NARROW_TRANSITION_L2 = "narrow-transition-l2"    WIDE_L1 = "wide-l1"    WIDE_L2 = "wide-l2"    WIDE_TRANSITION = "wide-transition"    WIDE_TRANSITION_L1 = "wide-transition-l1"    WIDE_TRANSITION_L2 = "wide-transition-l2"    TRANSITION_L1 = "transition-l1"    TRANSITION_L2 = "transition-l2"
+    NARROW = "narrow"
+    WIDE = "wide"
+    TRANSITION = "transition"
+    NARROW_TRANSITION = "narrow-transition"
+    NARROW_TRANSITION_L1 = "narrow-transition-l1"
+    NARROW_TRANSITION_L2 = "narrow-transition-l2"
+    WIDE_L1 = "wide-l1"
+    WIDE_L2 = "wide-l2"
+    WIDE_TRANSITION = "wide-transition"
+    WIDE_TRANSITION_L1 = "wide-transition-l1"
+    WIDE_TRANSITION_L2 = "wide-transition-l2"
+    TRANSITION_L1 = "transition-l1"
+    TRANSITION_L2 = "transition-l2"
+
 
 # ============================================================================
 # Main Model
@@ -175,8 +198,8 @@ class IsisModel(BaseModel):
     auth_mode_l2: Literal["password", "md5"] | None = Field(default="password", description="Level 2 authentication mode.")    
     auth_password_l1: Any = Field(max_length=128, default=None, description="Authentication password for level 1 PDUs.")    
     auth_password_l2: Any = Field(max_length=128, default=None, description="Authentication password for level 2 PDUs.")    
-    auth_keychain_l1: str | None = Field(max_length=35, default="", description="Authentication key-chain for level 1 PDUs.")  # datasource: ['router.key-chain.name']    
-    auth_keychain_l2: str | None = Field(max_length=35, default="", description="Authentication key-chain for level 2 PDUs.")  # datasource: ['router.key-chain.name']    
+    auth_keychain_l1: str | None = Field(max_length=35, default=None, description="Authentication key-chain for level 1 PDUs.")  # datasource: ['router.key-chain.name']    
+    auth_keychain_l2: str | None = Field(max_length=35, default=None, description="Authentication key-chain for level 2 PDUs.")  # datasource: ['router.key-chain.name']    
     auth_sendonly_l1: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable level 1 authentication send-only.")    
     auth_sendonly_l2: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable level 2 authentication send-only.")    
     ignore_lsp_errors: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable ignoring of LSP errors with bad checksums.")    
@@ -184,31 +207,31 @@ class IsisModel(BaseModel):
     lsp_gen_interval_l2: int | None = Field(ge=1, le=120, default=30, description="Minimum interval for level 2 LSP regenerating.")    
     lsp_refresh_interval: int | None = Field(ge=1, le=65535, default=900, description="LSP refresh time in seconds.")    
     max_lsp_lifetime: int | None = Field(ge=350, le=65535, default=1200, description="Maximum LSP lifetime in seconds.")    
-    spf_interval_exp_l1: str | None = Field(default="", description="Level 1 SPF calculation delay.")    
-    spf_interval_exp_l2: str | None = Field(default="", description="Level 2 SPF calculation delay.")    
+    spf_interval_exp_l1: str | None = Field(default=None, description="Level 1 SPF calculation delay.")    
+    spf_interval_exp_l2: str | None = Field(default=None, description="Level 2 SPF calculation delay.")    
     dynamic_hostname: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable dynamic hostname.")    
     adjacency_check: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable adjacency check.")    
     adjacency_check6: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable IPv6 adjacency check.")    
     overload_bit: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable signal other routers not to use us in SPF.")    
-    overload_bit_suppress: list[OverloadBitSuppress] = Field(default="", description="Suppress overload-bit for the specific prefixes.")    
+    overload_bit_suppress: list[Literal["external", "interlevel"]] = Field(default_factory=list, description="Suppress overload-bit for the specific prefixes.")    
     overload_bit_on_startup: int | None = Field(ge=5, le=86400, default=0, description="Overload-bit only temporarily after reboot.")    
     default_originate: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable distribution of default route information.")    
     default_originate6: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable distribution of default IPv6 route information.")    
-    metric_style: MetricStyleEnum | None = Field(default="narrow", description="Use old-style (ISO 10589) or new-style packet formats.")    
+    metric_style: IsisMetricStyleEnum | None = Field(default=IsisMetricStyleEnum.NARROW, description="Use old-style (ISO 10589) or new-style packet formats.")    
     redistribute_l1: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable redistribution of level 1 routes into level 2.")    
-    redistribute_l1_list: str | None = Field(max_length=35, default="", description="Access-list for route redistribution from l1 to l2.")  # datasource: ['router.access-list.name']    
+    redistribute_l1_list: str | None = Field(max_length=35, default=None, description="Access-list for route redistribution from l1 to l2.")  # datasource: ['router.access-list.name']    
     redistribute_l2: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable redistribution of level 2 routes into level 1.")    
-    redistribute_l2_list: str | None = Field(max_length=35, default="", description="Access-list for route redistribution from l2 to l1.")  # datasource: ['router.access-list.name']    
+    redistribute_l2_list: str | None = Field(max_length=35, default=None, description="Access-list for route redistribution from l2 to l1.")  # datasource: ['router.access-list.name']    
     redistribute6_l1: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable redistribution of level 1 IPv6 routes into level 2.")    
-    redistribute6_l1_list: str | None = Field(max_length=35, default="", description="Access-list for IPv6 route redistribution from l1 to l2.")  # datasource: ['router.access-list6.name']    
+    redistribute6_l1_list: str | None = Field(max_length=35, default=None, description="Access-list for IPv6 route redistribution from l1 to l2.")  # datasource: ['router.access-list6.name']    
     redistribute6_l2: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable redistribution of level 2 IPv6 routes into level 1.")    
-    redistribute6_l2_list: str | None = Field(max_length=35, default="", description="Access-list for IPv6 route redistribution from l2 to l1.")  # datasource: ['router.access-list6.name']    
-    isis_net: list[IsisNet] = Field(default=None, description="IS-IS net configuration.")    
-    isis_interface: list[IsisInterface] = Field(default=None, description="IS-IS interface configuration.")    
-    summary_address: list[SummaryAddress] = Field(default=None, description="IS-IS summary addresses.")    
-    summary_address6: list[SummaryAddress6] = Field(default=None, description="IS-IS IPv6 summary address.")    
-    redistribute: list[Redistribute] = Field(default=None, description="IS-IS redistribute protocols.")    
-    redistribute6: list[Redistribute6] = Field(default=None, description="IS-IS IPv6 redistribution for routing protocols.")    
+    redistribute6_l2_list: str | None = Field(max_length=35, default=None, description="Access-list for IPv6 route redistribution from l2 to l1.")  # datasource: ['router.access-list6.name']    
+    isis_net: list[IsisIsisNet] = Field(default_factory=list, description="IS-IS net configuration.")    
+    isis_interface: list[IsisIsisInterface] = Field(default_factory=list, description="IS-IS interface configuration.")    
+    summary_address: list[IsisSummaryAddress] = Field(default_factory=list, description="IS-IS summary addresses.")    
+    summary_address6: list[IsisSummaryAddress6] = Field(default_factory=list, description="IS-IS IPv6 summary address.")    
+    redistribute: list[IsisRedistribute] = Field(default_factory=list, description="IS-IS redistribute protocols.")    
+    redistribute6: list[IsisRedistribute6] = Field(default_factory=list, description="IS-IS IPv6 redistribution for routing protocols.")    
     # ========================================================================
     # Custom Validators
     # ========================================================================
@@ -363,7 +386,7 @@ class IsisModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.router.isis.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate scalar field
         value = getattr(self, "auth_keychain_l1", None)
@@ -372,7 +395,7 @@ class IsisModel(BaseModel):
         
         # Check all datasource endpoints
         found = False
-        if await client.api.cmdb.router.key-chain.exists(value):
+        if await client.api.cmdb.router.key_chain.exists(value):
             found = True
         
         if not found:
@@ -412,7 +435,7 @@ class IsisModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.router.isis.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate scalar field
         value = getattr(self, "auth_keychain_l2", None)
@@ -421,7 +444,7 @@ class IsisModel(BaseModel):
         
         # Check all datasource endpoints
         found = False
-        if await client.api.cmdb.router.key-chain.exists(value):
+        if await client.api.cmdb.router.key_chain.exists(value):
             found = True
         
         if not found:
@@ -461,7 +484,7 @@ class IsisModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.router.isis.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate scalar field
         value = getattr(self, "redistribute_l1_list", None)
@@ -470,7 +493,7 @@ class IsisModel(BaseModel):
         
         # Check all datasource endpoints
         found = False
-        if await client.api.cmdb.router.access-list.exists(value):
+        if await client.api.cmdb.router.access_list.exists(value):
             found = True
         
         if not found:
@@ -510,7 +533,7 @@ class IsisModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.router.isis.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate scalar field
         value = getattr(self, "redistribute_l2_list", None)
@@ -519,7 +542,7 @@ class IsisModel(BaseModel):
         
         # Check all datasource endpoints
         found = False
-        if await client.api.cmdb.router.access-list.exists(value):
+        if await client.api.cmdb.router.access_list.exists(value):
             found = True
         
         if not found:
@@ -559,7 +582,7 @@ class IsisModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.router.isis.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate scalar field
         value = getattr(self, "redistribute6_l1_list", None)
@@ -568,7 +591,7 @@ class IsisModel(BaseModel):
         
         # Check all datasource endpoints
         found = False
-        if await client.api.cmdb.router.access-list6.exists(value):
+        if await client.api.cmdb.router.access_list6.exists(value):
             found = True
         
         if not found:
@@ -608,7 +631,7 @@ class IsisModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.router.isis.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate scalar field
         value = getattr(self, "redistribute6_l2_list", None)
@@ -617,7 +640,7 @@ class IsisModel(BaseModel):
         
         # Check all datasource endpoints
         found = False
-        if await client.api.cmdb.router.access-list6.exists(value):
+        if await client.api.cmdb.router.access_list6.exists(value):
             found = True
         
         if not found:
@@ -657,7 +680,7 @@ class IsisModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.router.isis.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate child table items
         values = getattr(self, "isis_interface", [])
@@ -675,7 +698,7 @@ class IsisModel(BaseModel):
             
             # Check all datasource endpoints
             found = False
-            if await client.api.cmdb.router.key-chain.exists(value):
+            if await client.api.cmdb.router.key_chain.exists(value):
                 found = True
             
             if not found:
@@ -715,7 +738,7 @@ class IsisModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.router.isis.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate child table items
         values = getattr(self, "redistribute", [])
@@ -733,7 +756,7 @@ class IsisModel(BaseModel):
             
             # Check all datasource endpoints
             found = False
-            if await client.api.cmdb.router.route-map.exists(value):
+            if await client.api.cmdb.router.route_map.exists(value):
                 found = True
             
             if not found:
@@ -773,7 +796,7 @@ class IsisModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.router.isis.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate child table items
         values = getattr(self, "redistribute6", [])
@@ -791,7 +814,7 @@ class IsisModel(BaseModel):
             
             # Check all datasource endpoints
             found = False
-            if await client.api.cmdb.router.route-map.exists(value):
+            if await client.api.cmdb.router.route_map.exists(value):
                 found = True
             
             if not found:
@@ -858,5 +881,5 @@ __all__ = [
 # ============================================================================
 # Generated by hfortix generator v0.6.0
 # Schema: 1.7.0
-# Generated: 2026-01-17T05:32:18.971570Z
+# Generated: 2026-01-17T17:25:22.692790Z
 # ============================================================================

@@ -630,6 +630,16 @@ class Profile(CRUDEndpoint, MetadataMixin):
             - put(): Update existing object
             - exists(): Check existence manually
         """
+        # Apply normalization for table fields (supports flexible input formats)
+        if saas_application is not None:
+            saas_application = normalize_table_field(
+                saas_application,
+                mkey="name",
+                required_fields=['name', 'safe-search-control', 'tenant-control-tenants', 'domain-control-domains'],
+                field_name="saas_application",
+                example="[{'name': 'value', 'safe-search-control': 'value', 'tenant-control-tenants': 'value', 'domain-control-domains': 'value'}]",
+            )
+        
         # Build payload using helper function with auto-normalization
         payload_data = build_api_payload(
             name=name,

@@ -12,9 +12,119 @@ from typing import Any, Literal, Optional
 from enum import Enum
 
 # ============================================================================
-# Child Table Models
+# Enum Definitions for Child Table Fields (for fields with 4+ allowed values)
 # ============================================================================
 
+class UserActivityMatchRulesTypeEnum(str, Enum):
+    """Allowed values for type_ field in match.rules."""
+    DOMAINS = "domains"
+    HOST = "host"
+    PATH = "path"
+    HEADER = "header"
+    HEADER_VALUE = "header-value"
+    METHOD = "method"
+    BODY = "body"
+
+class UserActivityControlOptionsOperationsActionEnum(str, Enum):
+    """Allowed values for action field in control-options.operations."""
+    APPEND = "append"
+    PREPEND = "prepend"
+    REPLACE = "replace"
+    NEW = "new"
+    NEW_ON_NOT_FOUND = "new-on-not-found"
+    DELETE = "delete"
+
+# ============================================================================
+# Child Table Models (sorted deepest-first so nested models are defined before their parents)
+# ============================================================================
+
+class UserActivityMatchTenantExtractionFilters(BaseModel):
+    """
+    Child table model for match.tenant-extraction.filters.
+    
+    CASB user activity tenant extraction filters.
+    """
+    
+    class Config:
+        """Pydantic model configuration."""
+        extra = "allow"  # Allow additional fields from API
+        str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
+    
+    id_: int | None = Field(ge=0, le=4294967295, default=0, serialization_alias="id", description="CASB tenant extraction filter ID.")    
+    direction: Literal["request", "response"] | None = Field(default="request", description="CASB tenant extraction filter direction.")    
+    place: Literal["path", "header", "body"] | None = Field(default="header", description="CASB tenant extraction filter place type.")    
+    header_name: str | None = Field(max_length=255, default=None, description="CASB tenant extraction filter header name.")    
+    body_type: Literal["json"] | None = Field(default="json", description="CASB tenant extraction filter body type.")
+class UserActivityMatchTenantExtraction(BaseModel):
+    """
+    Child table model for match.tenant-extraction.
+    
+    CASB user activity tenant extraction.
+    """
+    
+    class Config:
+        """Pydantic model configuration."""
+        extra = "allow"  # Allow additional fields from API
+        str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
+    
+    status: Literal["disable", "enable"] | None = Field(default="disable", description="Enable/disable CASB tenant extraction.")    
+    type_: Literal["json-query"] | None = Field(default="json-query", serialization_alias="type", description="CASB user activity tenant extraction type.")    
+    jq: str | None = Field(max_length=1023, default=None, description="CASB user activity tenant extraction jq script.")    
+    filters: list[UserActivityMatchTenantExtractionFilters] = Field(default_factory=list, description="CASB user activity tenant extraction filters.")
+class UserActivityMatchRulesMethods(BaseModel):
+    """
+    Child table model for match.rules.methods.
+    
+    CASB user activity method list.
+    """
+    
+    class Config:
+        """Pydantic model configuration."""
+        extra = "allow"  # Allow additional fields from API
+        str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
+    
+    method: str | None = Field(max_length=79, default=None, description="User activity method.")
+class UserActivityMatchRulesDomains(BaseModel):
+    """
+    Child table model for match.rules.domains.
+    
+    CASB user activity domain list.
+    """
+    
+    class Config:
+        """Pydantic model configuration."""
+        extra = "allow"  # Allow additional fields from API
+        str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
+    
+    domain: str = Field(max_length=127, description="Domain list separated by space.")
+class UserActivityMatchRules(BaseModel):
+    """
+    Child table model for match.rules.
+    
+    CASB user activity rules.
+    """
+    
+    class Config:
+        """Pydantic model configuration."""
+        extra = "allow"  # Allow additional fields from API
+        str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
+    
+    id_: int | None = Field(ge=0, le=4294967295, default=0, serialization_alias="id", description="CASB user activity rule ID.")    
+    type_: UserActivityMatchRulesTypeEnum | None = Field(default=UserActivityMatchRulesTypeEnum.HOST, serialization_alias="type", description="CASB user activity rule type.")    
+    domains: list[UserActivityMatchRulesDomains] = Field(default_factory=list, description="CASB user activity domain list.")    
+    methods: list[UserActivityMatchRulesMethods] = Field(default_factory=list, description="CASB user activity method list.")    
+    match_pattern: Literal["simple", "substr", "regexp"] | None = Field(default="simple", description="CASB user activity rule match pattern.")    
+    match_value: str | None = Field(max_length=1023, default=None, description="CASB user activity rule match value.")    
+    header_name: str | None = Field(max_length=255, default=None, description="CASB user activity rule header name.")    
+    body_type: Literal["json"] | None = Field(default="json", description="CASB user activity match rule body type.")    
+    jq: str | None = Field(max_length=255, default=None, description="CASB user activity rule match jq script.")    
+    case_sensitive: Literal["enable", "disable"] | None = Field(default="disable", description="CASB user activity match case sensitive.")    
+    negate: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable what the matching strategy must not be.")
 class UserActivityMatch(BaseModel):
     """
     Child table model for match.
@@ -26,11 +136,50 @@ class UserActivityMatch(BaseModel):
         """Pydantic model configuration."""
         extra = "allow"  # Allow additional fields from API
         str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
     
-    id: int | None = Field(ge=0, le=4294967295, default=0, description="CASB user activity match rules ID.")    
+    id_: int | None = Field(ge=0, le=4294967295, default=0, serialization_alias="id", description="CASB user activity match rules ID.")    
     strategy: Literal["and", "or"] | None = Field(default="and", description="CASB user activity rules strategy.")    
-    rules: list[Rules] = Field(default=None, description="CASB user activity rules.")    
-    tenant_extraction: list[TenantExtraction] = Field(default=None, description="CASB user activity tenant extraction.")
+    rules: list[UserActivityMatchRules] = Field(default_factory=list, description="CASB user activity rules.")    
+    tenant_extraction: list[UserActivityMatchTenantExtraction] = Field(default_factory=list, description="CASB user activity tenant extraction.")
+class UserActivityControlOptionsOperationsValues(BaseModel):
+    """
+    Child table model for control-options.operations.values.
+    
+    CASB operation new values.
+    """
+    
+    class Config:
+        """Pydantic model configuration."""
+        extra = "allow"  # Allow additional fields from API
+        str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
+    
+    value: str | None = Field(max_length=79, default=None, description="Operation value.")
+class UserActivityControlOptionsOperations(BaseModel):
+    """
+    Child table model for control-options.operations.
+    
+    CASB control option operations.
+    """
+    
+    class Config:
+        """Pydantic model configuration."""
+        extra = "allow"  # Allow additional fields from API
+        str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
+    
+    name: str | None = Field(max_length=79, default=None, description="CASB control option operation name.")    
+    target: Literal["header", "path", "body"] | None = Field(default="header", description="CASB operation target.")    
+    action: UserActivityControlOptionsOperationsActionEnum | None = Field(default=UserActivityControlOptionsOperationsActionEnum.APPEND, description="CASB operation action.")    
+    direction: Literal["request", "response"] | None = Field(default="request", description="CASB operation direction.")    
+    header_name: str | None = Field(max_length=255, default=None, description="CASB operation header name to search.")    
+    search_pattern: Literal["simple", "substr", "regexp"] | None = Field(default="simple", description="CASB operation search pattern.")    
+    search_key: str | None = Field(max_length=1023, default=None, description="CASB operation key to search.")    
+    case_sensitive: Literal["enable", "disable"] | None = Field(default="disable", description="CASB operation search case sensitive.")    
+    value_from_input: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable value from user input.")    
+    value_name_from_input: str | None = Field(max_length=79, default=None, description="CASB operation value name from user input.")    
+    values: list[UserActivityControlOptionsOperationsValues] = Field(description="CASB operation new values.")
 class UserActivityControlOptions(BaseModel):
     """
     Child table model for control-options.
@@ -42,17 +191,24 @@ class UserActivityControlOptions(BaseModel):
         """Pydantic model configuration."""
         extra = "allow"  # Allow additional fields from API
         str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
     
-    name: str | None = Field(max_length=79, default="", description="CASB control option name.")    
+    name: str | None = Field(max_length=79, default=None, description="CASB control option name.")    
     status: Literal["enable", "disable"] | None = Field(default="enable", description="CASB control option status.")    
-    operations: list[Operations] = Field(default=None, description="CASB control option operations.")
+    operations: list[UserActivityControlOptionsOperations] = Field(default_factory=list, description="CASB control option operations.")
 # ============================================================================
 # Enum Definitions (for fields with 4+ allowed values)
 # ============================================================================
 
 class UserActivityCategoryEnum(str, Enum):
     """Allowed values for category field."""
-    ACTIVITY_CONTROL = "activity-control"    TENANT_CONTROL = "tenant-control"    DOMAIN_CONTROL = "domain-control"    SAFE_SEARCH_CONTROL = "safe-search-control"    ADVANCED_TENANT_CONTROL = "advanced-tenant-control"    OTHER = "other"
+    ACTIVITY_CONTROL = "activity-control"
+    TENANT_CONTROL = "tenant-control"
+    DOMAIN_CONTROL = "domain-control"
+    SAFE_SEARCH_CONTROL = "safe-search-control"
+    ADVANCED_TENANT_CONTROL = "advanced-tenant-control"
+    OTHER = "other"
+
 
 # ============================================================================
 # Main Model
@@ -64,7 +220,7 @@ class UserActivityModel(BaseModel):
     
     Configure CASB user activity.
     
-    Validation Rules:        - name: max_length=79 pattern=        - uuid: max_length=36 pattern=        - status: pattern=        - description: max_length=63 pattern=        - type: pattern=        - casb_name: max_length=79 pattern=        - application: max_length=79 pattern=        - category: pattern=        - match_strategy: pattern=        - match: pattern=        - control_options: pattern=    """
+    Validation Rules:        - name: max_length=79 pattern=        - uuid: max_length=36 pattern=        - status: pattern=        - description: max_length=63 pattern=        - type_: pattern=        - casb_name: max_length=79 pattern=        - application: max_length=79 pattern=        - category: pattern=        - match_strategy: pattern=        - match: pattern=        - control_options: pattern=    """
     
     class Config:
         """Pydantic model configuration."""
@@ -77,17 +233,17 @@ class UserActivityModel(BaseModel):
     # Model Fields
     # ========================================================================
     
-    name: str | None = Field(max_length=79, default="", description="CASB user activity name.")    
-    uuid: str | None = Field(max_length=36, default="", description="Universally Unique Identifier (UUID; automatically assigned but can be manually reset).")    
+    name: str | None = Field(max_length=79, default=None, description="CASB user activity name.")    
+    uuid: str | None = Field(max_length=36, default=None, description="Universally Unique Identifier (UUID; automatically assigned but can be manually reset).")    
     status: Literal["enable", "disable"] | None = Field(default="enable", description="CASB user activity status.")    
-    description: str | None = Field(max_length=63, default="", description="CASB user activity description.")    
-    type: Literal["built-in", "customized"] | None = Field(default="customized", description="CASB user activity type.")    
-    casb_name: str | None = Field(max_length=79, default="", description="CASB user activity signature name.")    
-    application: str = Field(max_length=79, default="", description="CASB SaaS application name.")  # datasource: ['casb.saas-application.name']    
-    category: CategoryEnum | None = Field(default="activity-control", description="CASB user activity category.")    
+    description: str | None = Field(max_length=63, default=None, description="CASB user activity description.")    
+    type_: Literal["built-in", "customized"] | None = Field(default="customized", serialization_alias="type", description="CASB user activity type.")    
+    casb_name: str | None = Field(max_length=79, default=None, description="CASB user activity signature name.")    
+    application: str = Field(max_length=79, description="CASB SaaS application name.")  # datasource: ['casb.saas-application.name']    
+    category: UserActivityCategoryEnum | None = Field(default=UserActivityCategoryEnum.ACTIVITY_CONTROL, description="CASB user activity category.")    
     match_strategy: Literal["and", "or"] | None = Field(default="or", description="CASB user activity match strategy.")    
-    match: list[Match] = Field(default=None, description="CASB user activity match rules.")    
-    control_options: list[ControlOptions] = Field(default=None, description="CASB control options.")    
+    match: list[UserActivityMatch] = Field(default_factory=list, description="CASB user activity match rules.")    
+    control_options: list[UserActivityControlOptions] = Field(default_factory=list, description="CASB control options.")    
     # ========================================================================
     # Custom Validators
     # ========================================================================
@@ -167,7 +323,7 @@ class UserActivityModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.casb.user_activity.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate scalar field
         value = getattr(self, "application", None)
@@ -176,7 +332,7 @@ class UserActivityModel(BaseModel):
         
         # Check all datasource endpoints
         found = False
-        if await client.api.cmdb.casb.saas-application.exists(value):
+        if await client.api.cmdb.casb.saas_application.exists(value):
             found = True
         
         if not found:
@@ -221,11 +377,11 @@ Dict = dict[str, Any]  # For backward compatibility
 # ============================================================================
 
 __all__ = [
-    "UserActivityModel",    "UserActivityMatch",    "UserActivityControlOptions",]
+    "UserActivityModel",    "UserActivityMatch",    "UserActivityMatch.Rules",    "UserActivityMatch.Rules.Domains",    "UserActivityMatch.Rules.Methods",    "UserActivityMatch.TenantExtraction",    "UserActivityMatch.TenantExtraction.Filters",    "UserActivityControlOptions",    "UserActivityControlOptions.Operations",    "UserActivityControlOptions.Operations.Values",]
 
 
 # ============================================================================
 # Generated by hfortix generator v0.6.0
 # Schema: 1.7.0
-# Generated: 2026-01-17T05:32:18.587559Z
+# Generated: 2026-01-17T17:25:22.356086Z
 # ============================================================================

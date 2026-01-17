@@ -11,9 +11,32 @@ from pydantic import BaseModel, Field, field_validator
 from typing import Any, Literal, Optional
 
 # ============================================================================
-# Child Table Models
+# Enum Definitions for Child Table Fields (for fields with 4+ allowed values)
 # ============================================================================
 
+# ============================================================================
+# Child Table Models (sorted deepest-first so nested models are defined before their parents)
+# ============================================================================
+
+class AttributeMatchMatchRule(BaseModel):
+    """
+    Child table model for match.rule.
+    
+    CASB attribute match rule.
+    """
+    
+    class Config:
+        """Pydantic model configuration."""
+        extra = "allow"  # Allow additional fields from API
+        str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
+    
+    id_: int | None = Field(ge=0, le=4294967295, default=0, serialization_alias="id", description="CASB attribute rule ID.")    
+    attribute: str | None = Field(max_length=79, default=None, description="CASB attribute match name.")    
+    match_pattern: Literal["simple", "substr", "regexp"] | None = Field(default="simple", description="CASB attribute match pattern.")    
+    match_value: str | None = Field(max_length=1023, default=None, description="CASB attribute match value.")    
+    case_sensitive: Literal["enable", "disable"] | None = Field(default="disable", description="CASB attribute match case sensitive.")    
+    negate: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable what the matching strategy must not be.")
 class AttributeMatchMatch(BaseModel):
     """
     Child table model for match.
@@ -25,10 +48,11 @@ class AttributeMatchMatch(BaseModel):
         """Pydantic model configuration."""
         extra = "allow"  # Allow additional fields from API
         str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
     
-    id: int | None = Field(ge=0, le=4294967295, default=0, description="CASB attribute match rule ID.")    
+    id_: int | None = Field(ge=0, le=4294967295, default=0, serialization_alias="id", description="CASB attribute match rule ID.")    
     rule_strategy: Literal["and", "or"] | None = Field(default="and", description="CASB attribute match rule strategy.")    
-    rule: list[Rule] = Field(default=None, description="CASB attribute match rule.")
+    rule: list[AttributeMatchMatchRule] = Field(default_factory=list, description="CASB attribute match rule.")
 # ============================================================================
 # Enum Definitions (for fields with 4+ allowed values)
 # ============================================================================
@@ -57,10 +81,10 @@ class AttributeMatchModel(BaseModel):
     # Model Fields
     # ========================================================================
     
-    name: str | None = Field(max_length=79, default="", description="CASB attribute match name.")    
-    application: str = Field(max_length=79, default="", description="CASB attribute application name.")  # datasource: ['casb.saas-application.name']    
+    name: str | None = Field(max_length=79, default=None, description="CASB attribute match name.")    
+    application: str = Field(max_length=79, description="CASB attribute application name.")  # datasource: ['casb.saas-application.name']    
     match_strategy: Literal["or", "and", "subset"] | None = Field(default="or", description="CASB attribute match strategy.")    
-    match: list[Match] = Field(default=None, description="CASB tenant match rules.")    
+    match: list[AttributeMatchMatch] = Field(default_factory=list, description="CASB tenant match rules.")    
     # ========================================================================
     # Custom Validators
     # ========================================================================
@@ -140,7 +164,7 @@ class AttributeMatchModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.casb.attribute_match.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate scalar field
         value = getattr(self, "application", None)
@@ -149,7 +173,7 @@ class AttributeMatchModel(BaseModel):
         
         # Check all datasource endpoints
         found = False
-        if await client.api.cmdb.casb.saas-application.exists(value):
+        if await client.api.cmdb.casb.saas_application.exists(value):
             found = True
         
         if not found:
@@ -194,11 +218,11 @@ Dict = dict[str, Any]  # For backward compatibility
 # ============================================================================
 
 __all__ = [
-    "AttributeMatchModel",    "AttributeMatchMatch",]
+    "AttributeMatchModel",    "AttributeMatchMatch",    "AttributeMatchMatch.Rule",]
 
 
 # ============================================================================
 # Generated by hfortix generator v0.6.0
 # Schema: 1.7.0
-# Generated: 2026-01-17T05:32:16.666801Z
+# Generated: 2026-01-17T17:25:20.674584Z
 # ============================================================================

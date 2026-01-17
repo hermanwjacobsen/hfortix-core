@@ -1,192 +1,100 @@
-from typing import TypedDict, Literal, Any, Coroutine, Union, overload, Generator, final
-from typing_extensions import NotRequired
-from hfortix_fortios.models import FortiObject, FortiObjectList
+""" - Type Stubs
 
-# ============================================================================
-# Nested TypedDicts for table field children (dict mode)
-# These MUST be defined before the Payload class to use them as type hints
-# ============================================================================
+Auto-generated stub file for type checking and IDE support.
 
-class H2qpAdviceOfChargeAoclistItem(TypedDict, total=False):
-    """Type hints for aoc-list table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    Use this when building payloads for POST/PUT requests.
-    
-    **Available fields:**
-        - name: str
-        - type: "time-based" | "volume-based" | "time-and-volume-based" | "unlimited"
-        - nai_realm_encoding: str
-        - nai_realm: str
-        - plan_info: str
-    
-    **Example:**
-        entry: H2qpAdviceOfChargeAoclistItem = {
-            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
-        }
-    """
-    
-    name: str  # Advice of charge ID. | MaxLen: 35
-    type: Literal["time-based", "volume-based", "time-and-volume-based", "unlimited"]  # Usage charge type. | Default: time-based
-    nai_realm_encoding: str  # NAI realm encoding. | MaxLen: 1
-    nai_realm: str  # NAI realm list name. | MaxLen: 255
-    plan_info: str  # Plan info.
+Endpoint: wireless_controller/hotspot20/h2qp_advice_of_charge
+Category: cmdb
+"""
+
+from __future__ import annotations
+
+from typing import (
+    Any,
+    ClassVar,
+    Literal,
+    TypedDict,
+    overload,
+)
+
+from hfortix_fortios.models import (
+    FortiObject,
+    FortiObjectList,
+)
 
 
-# ============================================================================
-# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional)
-# ============================================================================
-# NOTE: We intentionally DON'T use NotRequired wrapper because:
-# 1. total=False already makes all fields optional
-# 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
-class H2qpAdviceOfChargePayload(TypedDict, total=False):
-    """
-    Type hints for wireless_controller/hotspot20/h2qp_advice_of_charge payload fields.
-    
-    Configure advice of charge.
-    
-    **Usage:**
-        payload: H2qpAdviceOfChargePayload = {
-            "field": "value",  # <- autocomplete shows all fields
-        }
-    """
-    name: str  # Plan name. | MaxLen: 35
-    aoc_list: list[H2qpAdviceOfChargeAoclistItem]  # AOC list.
+# ================================================================
+# TypedDict Payloads
+# ================================================================
 
-# ============================================================================
-# Nested classes for table field children (object mode - for API responses)
-# ============================================================================
-
-@final
-class H2qpAdviceOfChargeAoclistObject:
-    """Typed object for aoc-list table items.
-    
-    Provides IDE autocomplete for nested table field attributes.
-    At runtime, this is a FortiObject instance.
-    """
-    
-    # Advice of charge ID. | MaxLen: 35
+class H2qpAdviceOfChargeAoclistItem:
+    """Nested item for aoc-list field - supports attribute access."""
     name: str
-    # Usage charge type. | Default: time-based
     type: Literal["time-based", "volume-based", "time-and-volume-based", "unlimited"]
-    # NAI realm encoding. | MaxLen: 1
     nai_realm_encoding: str
-    # NAI realm list name. | MaxLen: 255
     nai_realm: str
-    # Plan info.
     plan_info: str
-    
-    # Common API response fields
-    status: str
-    http_status: int | None
-    http_status_code: int | None
-    http_method: str | None
-    http_response_time: float | None
-    vdom: str | None
-    
-    # Methods from FortiObject
-    @property
-    def dict(self) -> dict[str, Any]:
-        """Convert to dictionary."""
-        ...
-    @property
-    def json(self) -> str:
-        """Get pretty-printed JSON string."""
-        ...
-    @property
-    def raw(self) -> dict[str, Any]:
-        """Get raw API response data."""
-        ...
-    def get_full(self, name: str) -> Any: ...
-    def to_dict(self) -> FortiObject: ...
-    def keys(self) -> Any: ...
-    def values(self) -> Generator[Any, None, None]: ...
-    def items(self) -> Generator[tuple[str, Any], None, None]: ...
-    def get(self, key: str, default: Any = None) -> Any: ...
 
 
-
-
-# Response TypedDict for GET returns (all fields present in API response)
-class H2qpAdviceOfChargeResponse(TypedDict):
-    """
-    Type hints for wireless_controller/hotspot20/h2qp_advice_of_charge API response fields.
-    
-    All fields are present in the response from the FortiGate API.
-    """
-    name: str  # Plan name. | MaxLen: 35
-    aoc_list: list[H2qpAdviceOfChargeAoclistItem]  # AOC list.
-
-
-@final
-class H2qpAdviceOfChargeObject:
-    """Typed FortiObject for wireless_controller/hotspot20/h2qp_advice_of_charge with IDE autocomplete support.
-    
-    This is a typed wrapper that provides IDE autocomplete for API response fields.
-    At runtime, this is actually a FortiObject instance.
-    """
-    
-    # Plan name. | MaxLen: 35
+class H2qpAdviceOfChargePayload(TypedDict, total=False):
+    """Payload type for H2qpAdviceOfCharge operations."""
     name: str
-    # AOC list.
-    aoc_list: list[H2qpAdviceOfChargeAoclistObject]
-    
-    # Common API response fields
-    status: str
-    http_status: int | None
-    http_status_code: int | None
-    http_method: str | None
-    http_response_time: float | None
-    vdom: str | None
-    
-    # Methods from FortiObject
-    @property
-    def dict(self) -> dict[str, Any]:
-        """Convert to dictionary."""
-        ...
-    @property
-    def json(self) -> str:
-        """Get pretty-printed JSON string."""
-        ...
-    @property
-    def raw(self) -> dict[str, Any]:
-        """Get raw API response data."""
-        ...
-    def get_full(self, name: str) -> Any: ...
-    def to_dict(self) -> H2qpAdviceOfChargePayload: ...
-    def keys(self) -> Any: ...
-    def values(self) -> Generator[Any, None, None]: ...
-    def items(self) -> Generator[tuple[str, Any], None, None]: ...
-    def get(self, key: str, default: Any = None) -> Any: ...
+    aoc_list: str | list[str] | list[dict[str, Any]] | list[H2qpAdviceOfChargeAoclistItem]
 
+
+# ================================================================
+# Response Types (TypedDict for dict-style access)
+# ================================================================
+
+class H2qpAdviceOfChargeResponse(TypedDict, total=False):
+    """Response type for H2qpAdviceOfCharge - use with .dict property for typed dict access."""
+    name: str
+    aoc_list: list[H2qpAdviceOfChargeAoclistItem]
+
+
+# ================================================================
+# Response Types (Class for attribute access)
+# ================================================================
+
+
+class H2qpAdviceOfChargeObject(FortiObject):
+    """Typed FortiObject for H2qpAdviceOfCharge with field access."""
+    name: str
+    aoc_list: list[H2qpAdviceOfChargeAoclistItem]
+
+
+# ================================================================
+# Main Endpoint Class
+# ================================================================
 
 class H2qpAdviceOfCharge:
     """
-    Configure advice of charge.
     
-    Path: wireless_controller/hotspot20/h2qp_advice_of_charge
+    Endpoint: wireless_controller/hotspot20/h2qp_advice_of_charge
     Category: cmdb
-    Primary Key: name
+    MKey: name
     """
     
+    # Class attributes for introspection
+    endpoint: ClassVar[str] = ...
+    path: ClassVar[str] = ...
+    category: ClassVar[str] = ...
+    mkey: ClassVar[str] = ...
+    capabilities: ClassVar[dict[str, Any]] = ...
+    
     def __init__(self, client: Any) -> None:
-        """Initialize endpoint with HTTP client.
-        
-        Args:
-            client: HTTP client instance for API communication
-        """
+        """Initialize endpoint with HTTP client."""
         ...
     
     # ================================================================
-    # GET OVERLOADS - Always returns FortiObject (or ContentResponse for file endpoints)
-    # Pylance matches overloads top-to-bottom, so these must come first!
+    # GET Methods
     # ================================================================
     
-    # With mkey as positional arg -> returns FortiObject
+    # CMDB with mkey - overloads for single vs list returns
     @overload
     def get(
         self,
         name: str,
+        *,
         filter: str | list[str] | None = ...,
         count: int | None = ...,
         start: int | None = ...,
@@ -196,14 +104,14 @@ class H2qpAdviceOfCharge:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        error_mode: Literal["raise", "return", "print"] | None = ...,
+        error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> H2qpAdviceOfChargeObject: ...
     
-    # With mkey as keyword arg -> returns FortiObject
     @overload
     def get(
         self,
         *,
-        name: str,
         filter: str | list[str] | None = ...,
         count: int | None = ...,
         start: int | None = ...,
@@ -213,264 +121,59 @@ class H2qpAdviceOfCharge:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> H2qpAdviceOfChargeObject: ...
-    
-    # Without mkey -> returns list of FortiObjects
-    @overload
-    def get(
-        self,
-        name: None = None,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
+        error_mode: Literal["raise", "return", "print"] | None = ...,
+        error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> FortiObjectList[H2qpAdviceOfChargeObject]: ...
-    
-    # ================================================================
-    # (removed - all GET now returns FortiObject)
-    # ================================================================
-    
-    # With mkey as positional arg -> returns single object
-    @overload
-    def get(
-        self,
-        name: str,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> H2qpAdviceOfChargeObject: ...
-    
-    # With mkey as keyword arg -> returns single object
-    @overload
-    def get(
-        self,
-        *,
-        name: str,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> H2qpAdviceOfChargeObject: ...
-    
-    # With no mkey -> returns list of objects
-    @overload
-    def get(
-        self,
-        *,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObjectList[H2qpAdviceOfChargeObject]: ...
-    
-    # Dict mode with mkey provided as positional arg (single dict)
-    @overload
-    def get(
-        self,
-        name: str,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> H2qpAdviceOfChargeObject: ...
-    
-    # Dict mode with mkey provided as keyword arg (single dict)
-    @overload
-    def get(
-        self,
-        *,
-        name: str,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> H2qpAdviceOfChargeObject: ...
-    
-    # Dict mode - list of dicts (no mkey/name provided) - keyword-only signature
-    @overload
-    def get(
-        self,
-        *,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObjectList[H2qpAdviceOfChargeObject]: ...
-    
-    # Fallback overload for all other cases
-    @overload
-    def get(
-        self,
-        name: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> Union[dict[str, Any], list[dict[str, Any]], FortiObject, list[FortiObject]]: ...
-    
-    def get(
-        self,
-        name: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> H2qpAdviceOfChargeObject | list[H2qpAdviceOfChargeObject] | dict[str, Any] | list[dict[str, Any]]: ...
     
     def get_schema(
         self,
         vdom: str | None = ...,
         format: str = ...,
     ) -> FortiObject: ...
+
+    # ================================================================
+    # POST Method
+    # ================================================================
     
-    # POST overloads
-    @overload
     def post(
         self,
         payload_dict: H2qpAdviceOfChargePayload | None = ...,
         name: str | None = ...,
-        aoc_list: str | list[str] | list[H2qpAdviceOfChargeAoclistItem] | None = ...,
+        aoc_list: str | list[str] | list[dict[str, Any]] | list[H2qpAdviceOfChargeAoclistItem] | None = ...,
         vdom: str | bool | None = ...,
+        error_mode: Literal["raise", "return", "print"] | None = ...,
+        error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> H2qpAdviceOfChargeObject: ...
+
+    # ================================================================
+    # PUT Method
+    # ================================================================
     
-    @overload
-    def post(
-        self,
-        payload_dict: H2qpAdviceOfChargePayload | None = ...,
-        name: str | None = ...,
-        aoc_list: str | list[str] | list[H2qpAdviceOfChargeAoclistItem] | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
-    
-    # Default overload
-    @overload
-    def post(
-        self,
-        payload_dict: H2qpAdviceOfChargePayload | None = ...,
-        name: str | None = ...,
-        aoc_list: str | list[str] | list[H2qpAdviceOfChargeAoclistItem] | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
-    
-    def post(
-        self,
-        payload_dict: H2qpAdviceOfChargePayload | None = ...,
-        name: str | None = ...,
-        aoc_list: str | list[str] | list[H2qpAdviceOfChargeAoclistItem] | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
-    
-    # PUT overloads
-    @overload
     def put(
         self,
         payload_dict: H2qpAdviceOfChargePayload | None = ...,
         name: str | None = ...,
-        aoc_list: str | list[str] | list[H2qpAdviceOfChargeAoclistItem] | None = ...,
+        aoc_list: str | list[str] | list[dict[str, Any]] | list[H2qpAdviceOfChargeAoclistItem] | None = ...,
         vdom: str | bool | None = ...,
+        error_mode: Literal["raise", "return", "print"] | None = ...,
+        error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> H2qpAdviceOfChargeObject: ...
-    
-    @overload
-    def put(
-        self,
-        payload_dict: H2qpAdviceOfChargePayload | None = ...,
-        name: str | None = ...,
-        aoc_list: str | list[str] | list[H2qpAdviceOfChargeAoclistItem] | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
-    
-    # Default overload
-    @overload
-    def put(
-        self,
-        payload_dict: H2qpAdviceOfChargePayload | None = ...,
-        name: str | None = ...,
-        aoc_list: str | list[str] | list[H2qpAdviceOfChargeAoclistItem] | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
-    
-    def put(
-        self,
-        payload_dict: H2qpAdviceOfChargePayload | None = ...,
-        name: str | None = ...,
-        aoc_list: str | list[str] | list[H2qpAdviceOfChargeAoclistItem] | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
-    
-    # DELETE overloads
-    @overload
-    def delete(
-        self,
-        name: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> H2qpAdviceOfChargeObject: ...
-    
-    @overload
-    def delete(
-        self,
-        name: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
-    
-    # Default overload
-    @overload
-    def delete(
-        self,
-        name: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+
+    # ================================================================
+    # DELETE Method
+    # ================================================================
     
     def delete(
         self,
         name: str | None = ...,
         vdom: str | bool | None = ...,
+        error_mode: Literal["raise", "return", "print"] | None = ...,
+        error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> FortiObject: ...
+
+    # ================================================================
+    # Utility Methods
+    # ================================================================
     
     def exists(
         self,
@@ -482,8 +185,10 @@ class H2qpAdviceOfCharge:
         self,
         payload_dict: H2qpAdviceOfChargePayload | None = ...,
         name: str | None = ...,
-        aoc_list: str | list[str] | list[H2qpAdviceOfChargeAoclistItem] | None = ...,
+        aoc_list: str | list[str] | list[dict[str, Any]] | list[H2qpAdviceOfChargeAoclistItem] | None = ...,
         vdom: str | bool | None = ...,
+        error_mode: Literal["raise", "return", "print"] | None = ...,
+        error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> FortiObject: ...
     
     # Helper methods
@@ -491,7 +196,7 @@ class H2qpAdviceOfCharge:
     def help(field_name: str | None = ...) -> str: ...
     
     @staticmethod
-    def fields(detailed: bool = ...) -> Union[list[str], list[dict[str, Any]]]: ...
+    def fields(detailed: bool = ...) -> list[str] | list[dict[str, Any]]: ...
     
     @staticmethod
     def field_info(field_name: str) -> FortiObject: ...
@@ -507,9 +212,6 @@ class H2qpAdviceOfCharge:
     
     @staticmethod
     def schema() -> FortiObject: ...
-
-
-# ================================================================
 
 
 __all__ = [

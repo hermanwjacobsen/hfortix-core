@@ -1587,6 +1587,136 @@ class ManagedSwitch(CRUDEndpoint, MetadataMixin):
             - put(): Update existing object
             - exists(): Check existence manually
         """
+        # Apply normalization for table fields (supports flexible input formats)
+        if route_offload_router is not None:
+            route_offload_router = normalize_table_field(
+                route_offload_router,
+                mkey="vlan-name",
+                required_fields=['router-ip'],
+                field_name="route_offload_router",
+                example="[{'router-ip': '192.168.1.10'}]",
+            )
+        if vlan is not None:
+            vlan = normalize_table_field(
+                vlan,
+                mkey="vlan-name",
+                required_fields=['assignment-priority'],
+                field_name="vlan",
+                example="[{'assignment-priority': 1}]",
+            )
+        if ports is not None:
+            ports = normalize_table_field(
+                ports,
+                mkey="port-name",
+                required_fields=['port-name'],
+                field_name="ports",
+                example="[{'port-name': 'value'}]",
+            )
+        if ip_source_guard is not None:
+            ip_source_guard = normalize_table_field(
+                ip_source_guard,
+                mkey="port",
+                required_fields=['binding-entry'],
+                field_name="ip_source_guard",
+                example="[{'binding-entry': 'value'}]",
+            )
+        if stp_instance is not None:
+            stp_instance = normalize_table_field(
+                stp_instance,
+                mkey="id",
+                required_fields=['id'],
+                field_name="stp_instance",
+                example="[{'id': 1}]",
+            )
+        if snmp_community is not None:
+            snmp_community = normalize_table_field(
+                snmp_community,
+                mkey="id",
+                required_fields=['id', 'name'],
+                field_name="snmp_community",
+                example="[{'id': 1, 'name': 'value'}]",
+            )
+        if snmp_user is not None:
+            snmp_user = normalize_table_field(
+                snmp_user,
+                mkey="name",
+                required_fields=['auth-pwd', 'priv-pwd'],
+                field_name="snmp_user",
+                example="[{'auth-pwd': 'value', 'priv-pwd': 'value'}]",
+            )
+        if remote_log is not None:
+            remote_log = normalize_table_field(
+                remote_log,
+                mkey="name",
+                required_fields=['name', 'server'],
+                field_name="remote_log",
+                example="[{'name': 'value', 'server': '192.168.1.10'}]",
+            )
+        if mirror is not None:
+            mirror = normalize_table_field(
+                mirror,
+                mkey="name",
+                required_fields=['name'],
+                field_name="mirror",
+                example="[{'name': 'value'}]",
+            )
+        if static_mac is not None:
+            static_mac = normalize_table_field(
+                static_mac,
+                mkey="id",
+                required_fields=['id'],
+                field_name="static_mac",
+                example="[{'id': 1}]",
+            )
+        if custom_command is not None:
+            custom_command = normalize_table_field(
+                custom_command,
+                mkey="command-entry",
+                required_fields=['command-name'],
+                field_name="custom_command",
+                example="[{'command-name': 'value'}]",
+            )
+        if dhcp_snooping_static_client is not None:
+            dhcp_snooping_static_client = normalize_table_field(
+                dhcp_snooping_static_client,
+                mkey="name",
+                required_fields=['vlan', 'ip', 'mac', 'port'],
+                field_name="dhcp_snooping_static_client",
+                example="[{'vlan': 'value', 'ip': '192.168.1.10', 'mac': 'value', 'port': 443}]",
+            )
+        if router_vrf is not None:
+            router_vrf = normalize_table_field(
+                router_vrf,
+                mkey="name",
+                required_fields=['name', 'vrfid'],
+                field_name="router_vrf",
+                example="[{'name': 'value', 'vrfid': 1}]",
+            )
+        if system_interface is not None:
+            system_interface = normalize_table_field(
+                system_interface,
+                mkey="name",
+                required_fields=['ip', 'vlan', 'interface'],
+                field_name="system_interface",
+                example="[{'ip': '192.168.1.10', 'vlan': 'value', 'interface': 'value'}]",
+            )
+        if router_static is not None:
+            router_static = normalize_table_field(
+                router_static,
+                mkey="id",
+                required_fields=['dst', 'gateway'],
+                field_name="router_static",
+                example="[{'dst': 'value', 'gateway': '192.168.1.10'}]",
+            )
+        if system_dhcp_server is not None:
+            system_dhcp_server = normalize_table_field(
+                system_dhcp_server,
+                mkey="id",
+                required_fields=['netmask', 'interface'],
+                field_name="system_dhcp_server",
+                example="[{'netmask': 'value', 'interface': 'value'}]",
+            )
+        
         # Build payload using helper function with auto-normalization
         payload_data = build_api_payload(
             switch_id=switch_id,

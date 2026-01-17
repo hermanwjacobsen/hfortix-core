@@ -12,22 +12,13 @@ from typing import Any, Literal, Optional
 from uuid import UUID
 
 # ============================================================================
-# Child Table Models
+# Enum Definitions for Child Table Fields (for fields with 4+ allowed values)
 # ============================================================================
 
-class LocalInPolicyIntf(BaseModel):
-    """
-    Child table model for intf.
-    
-    Incoming interface name from available options.
-    """
-    
-    class Config:
-        """Pydantic model configuration."""
-        extra = "allow"  # Allow additional fields from API
-        str_strip_whitespace = True
-    
-    name: str = Field(max_length=79, default="", description="Address name.")  # datasource: ['system.zone.name', 'system.sdwan.zone.name', 'system.interface.name']
+# ============================================================================
+# Child Table Models (sorted deepest-first so nested models are defined before their parents)
+# ============================================================================
+
 class LocalInPolicySrcaddr(BaseModel):
     """
     Child table model for srcaddr.
@@ -39,86 +30,9 @@ class LocalInPolicySrcaddr(BaseModel):
         """Pydantic model configuration."""
         extra = "allow"  # Allow additional fields from API
         str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
     
-    name: str = Field(max_length=79, default="", description="Address name.")  # datasource: ['firewall.address.name', 'firewall.addrgrp.name', 'system.external-resource.name']
-class LocalInPolicyDstaddr(BaseModel):
-    """
-    Child table model for dstaddr.
-    
-    Destination address object from available options.
-    """
-    
-    class Config:
-        """Pydantic model configuration."""
-        extra = "allow"  # Allow additional fields from API
-        str_strip_whitespace = True
-    
-    name: str = Field(max_length=79, default="", description="Address name.")  # datasource: ['firewall.address.name', 'firewall.addrgrp.name', 'system.external-resource.name']
-class LocalInPolicyInternetServiceSrcName(BaseModel):
-    """
-    Child table model for internet-service-src-name.
-    
-    Internet Service source name.
-    """
-    
-    class Config:
-        """Pydantic model configuration."""
-        extra = "allow"  # Allow additional fields from API
-        str_strip_whitespace = True
-    
-    name: str = Field(max_length=79, default="", description="Internet Service name.")  # datasource: ['firewall.internet-service-name.name']
-class LocalInPolicyInternetServiceSrcGroup(BaseModel):
-    """
-    Child table model for internet-service-src-group.
-    
-    Internet Service source group name.
-    """
-    
-    class Config:
-        """Pydantic model configuration."""
-        extra = "allow"  # Allow additional fields from API
-        str_strip_whitespace = True
-    
-    name: str = Field(max_length=79, default="", description="Internet Service group name.")  # datasource: ['firewall.internet-service-group.name']
-class LocalInPolicyInternetServiceSrcCustom(BaseModel):
-    """
-    Child table model for internet-service-src-custom.
-    
-    Custom Internet Service source name.
-    """
-    
-    class Config:
-        """Pydantic model configuration."""
-        extra = "allow"  # Allow additional fields from API
-        str_strip_whitespace = True
-    
-    name: str = Field(max_length=79, default="", description="Custom Internet Service name.")  # datasource: ['firewall.internet-service-custom.name']
-class LocalInPolicyInternetServiceSrcCustomGroup(BaseModel):
-    """
-    Child table model for internet-service-src-custom-group.
-    
-    Custom Internet Service source group name.
-    """
-    
-    class Config:
-        """Pydantic model configuration."""
-        extra = "allow"  # Allow additional fields from API
-        str_strip_whitespace = True
-    
-    name: str = Field(max_length=79, default="", description="Custom Internet Service group name.")  # datasource: ['firewall.internet-service-custom-group.name']
-class LocalInPolicyInternetServiceSrcFortiguard(BaseModel):
-    """
-    Child table model for internet-service-src-fortiguard.
-    
-    FortiGuard Internet Service source name.
-    """
-    
-    class Config:
-        """Pydantic model configuration."""
-        extra = "allow"  # Allow additional fields from API
-        str_strip_whitespace = True
-    
-    name: str = Field(max_length=79, default="", description="FortiGuard Internet Service name.")  # datasource: ['firewall.internet-service-fortiguard.name']
+    name: str = Field(max_length=79, description="Address name.")  # datasource: ['firewall.address.name', 'firewall.addrgrp.name', 'system.external-resource.name']
 class LocalInPolicyService(BaseModel):
     """
     Child table model for service.
@@ -130,8 +44,107 @@ class LocalInPolicyService(BaseModel):
         """Pydantic model configuration."""
         extra = "allow"  # Allow additional fields from API
         str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
     
-    name: str = Field(max_length=79, default="", description="Service name.")  # datasource: ['firewall.service.custom.name', 'firewall.service.group.name']
+    name: str = Field(max_length=79, description="Service name.")  # datasource: ['firewall.service.custom.name', 'firewall.service.group.name']
+class LocalInPolicyIntf(BaseModel):
+    """
+    Child table model for intf.
+    
+    Incoming interface name from available options.
+    """
+    
+    class Config:
+        """Pydantic model configuration."""
+        extra = "allow"  # Allow additional fields from API
+        str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
+    
+    name: str = Field(max_length=79, description="Address name.")  # datasource: ['system.zone.name', 'system.sdwan.zone.name', 'system.interface.name']
+class LocalInPolicyInternetServiceSrcName(BaseModel):
+    """
+    Child table model for internet-service-src-name.
+    
+    Internet Service source name.
+    """
+    
+    class Config:
+        """Pydantic model configuration."""
+        extra = "allow"  # Allow additional fields from API
+        str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
+    
+    name: str = Field(max_length=79, description="Internet Service name.")  # datasource: ['firewall.internet-service-name.name']
+class LocalInPolicyInternetServiceSrcGroup(BaseModel):
+    """
+    Child table model for internet-service-src-group.
+    
+    Internet Service source group name.
+    """
+    
+    class Config:
+        """Pydantic model configuration."""
+        extra = "allow"  # Allow additional fields from API
+        str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
+    
+    name: str = Field(max_length=79, description="Internet Service group name.")  # datasource: ['firewall.internet-service-group.name']
+class LocalInPolicyInternetServiceSrcFortiguard(BaseModel):
+    """
+    Child table model for internet-service-src-fortiguard.
+    
+    FortiGuard Internet Service source name.
+    """
+    
+    class Config:
+        """Pydantic model configuration."""
+        extra = "allow"  # Allow additional fields from API
+        str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
+    
+    name: str = Field(max_length=79, description="FortiGuard Internet Service name.")  # datasource: ['firewall.internet-service-fortiguard.name']
+class LocalInPolicyInternetServiceSrcCustomGroup(BaseModel):
+    """
+    Child table model for internet-service-src-custom-group.
+    
+    Custom Internet Service source group name.
+    """
+    
+    class Config:
+        """Pydantic model configuration."""
+        extra = "allow"  # Allow additional fields from API
+        str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
+    
+    name: str = Field(max_length=79, description="Custom Internet Service group name.")  # datasource: ['firewall.internet-service-custom-group.name']
+class LocalInPolicyInternetServiceSrcCustom(BaseModel):
+    """
+    Child table model for internet-service-src-custom.
+    
+    Custom Internet Service source name.
+    """
+    
+    class Config:
+        """Pydantic model configuration."""
+        extra = "allow"  # Allow additional fields from API
+        str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
+    
+    name: str = Field(max_length=79, description="Custom Internet Service name.")  # datasource: ['firewall.internet-service-custom.name']
+class LocalInPolicyDstaddr(BaseModel):
+    """
+    Child table model for dstaddr.
+    
+    Destination address object from available options.
+    """
+    
+    class Config:
+        """Pydantic model configuration."""
+        extra = "allow"  # Allow additional fields from API
+        str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
+    
+    name: str = Field(max_length=79, description="Address name.")  # datasource: ['firewall.address.name', 'firewall.addrgrp.name', 'system.external-resource.name']
 # ============================================================================
 # Enum Definitions (for fields with 4+ allowed values)
 # ============================================================================
@@ -163,22 +176,22 @@ class LocalInPolicyModel(BaseModel):
     policyid: int | None = Field(ge=0, le=4294967295, default=0, description="User defined local in policy ID.")    
     uuid: str | None = Field(default="00000000-0000-0000-0000-000000000000", description="Universally Unique Identifier (UUID; automatically assigned but can be manually reset).")    
     ha_mgmt_intf_only: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable dedicating the HA management interface only for local-in policy.")    
-    intf: list[Intf] = Field(description="Incoming interface name from available options.")    
-    srcaddr: list[Srcaddr] = Field(description="Source address object from available options.")    
+    intf: list[LocalInPolicyIntf] = Field(description="Incoming interface name from available options.")    
+    srcaddr: list[LocalInPolicySrcaddr] = Field(description="Source address object from available options.")    
     srcaddr_negate: Literal["enable", "disable"] | None = Field(default="disable", description="When enabled srcaddr specifies what the source address must NOT be.")    
-    dstaddr: list[Dstaddr] = Field(description="Destination address object from available options.")    
+    dstaddr: list[LocalInPolicyDstaddr] = Field(description="Destination address object from available options.")    
     internet_service_src: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable use of Internet Services in source for this local-in policy. If enabled, source address is not used.")    
-    internet_service_src_name: list[InternetServiceSrcName] = Field(default=None, description="Internet Service source name.")    
-    internet_service_src_group: list[InternetServiceSrcGroup] = Field(default=None, description="Internet Service source group name.")    
-    internet_service_src_custom: list[InternetServiceSrcCustom] = Field(default=None, description="Custom Internet Service source name.")    
-    internet_service_src_custom_group: list[InternetServiceSrcCustomGroup] = Field(default=None, description="Custom Internet Service source group name.")    
-    internet_service_src_fortiguard: list[InternetServiceSrcFortiguard] = Field(default=None, description="FortiGuard Internet Service source name.")    
+    internet_service_src_name: list[LocalInPolicyInternetServiceSrcName] = Field(default_factory=list, description="Internet Service source name.")    
+    internet_service_src_group: list[LocalInPolicyInternetServiceSrcGroup] = Field(default_factory=list, description="Internet Service source group name.")    
+    internet_service_src_custom: list[LocalInPolicyInternetServiceSrcCustom] = Field(default_factory=list, description="Custom Internet Service source name.")    
+    internet_service_src_custom_group: list[LocalInPolicyInternetServiceSrcCustomGroup] = Field(default_factory=list, description="Custom Internet Service source group name.")    
+    internet_service_src_fortiguard: list[LocalInPolicyInternetServiceSrcFortiguard] = Field(default_factory=list, description="FortiGuard Internet Service source name.")    
     dstaddr_negate: Literal["enable", "disable"] | None = Field(default="disable", description="When enabled dstaddr specifies what the destination address must NOT be.")    
     action: Literal["accept", "deny"] | None = Field(default="deny", description="Action performed on traffic matching the policy (default = deny).")    
-    service: list[Service] = Field(description="Service object from available options.")    
+    service: list[LocalInPolicyService] = Field(description="Service object from available options.")    
     service_negate: Literal["enable", "disable"] | None = Field(default="disable", description="When enabled service specifies what the service must NOT be.")    
     internet_service_src_negate: Literal["enable", "disable"] | None = Field(default="disable", description="When enabled internet-service-src specifies what the service must NOT be.")    
-    schedule: str = Field(max_length=35, default="", description="Schedule object from available options.")  # datasource: ['firewall.schedule.onetime.name', 'firewall.schedule.recurring.name', 'firewall.schedule.group.name']    
+    schedule: str = Field(max_length=35, description="Schedule object from available options.")  # datasource: ['firewall.schedule.onetime.name', 'firewall.schedule.recurring.name', 'firewall.schedule.group.name']    
     status: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable this local-in policy.")    
     virtual_patch: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable virtual patching.")    
     logtraffic: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable local-in traffic logging.")    
@@ -262,7 +275,7 @@ class LocalInPolicyModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.local_in_policy.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate child table items
         values = getattr(self, "intf", [])
@@ -324,7 +337,7 @@ class LocalInPolicyModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.local_in_policy.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate child table items
         values = getattr(self, "srcaddr", [])
@@ -346,7 +359,7 @@ class LocalInPolicyModel(BaseModel):
                 found = True
             elif await client.api.cmdb.firewall.addrgrp.exists(value):
                 found = True
-            elif await client.api.cmdb.system.external-resource.exists(value):
+            elif await client.api.cmdb.system.external_resource.exists(value):
                 found = True
             
             if not found:
@@ -386,7 +399,7 @@ class LocalInPolicyModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.local_in_policy.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate child table items
         values = getattr(self, "dstaddr", [])
@@ -408,7 +421,7 @@ class LocalInPolicyModel(BaseModel):
                 found = True
             elif await client.api.cmdb.firewall.addrgrp.exists(value):
                 found = True
-            elif await client.api.cmdb.system.external-resource.exists(value):
+            elif await client.api.cmdb.system.external_resource.exists(value):
                 found = True
             
             if not found:
@@ -448,7 +461,7 @@ class LocalInPolicyModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.local_in_policy.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate child table items
         values = getattr(self, "internet_service_src_name", [])
@@ -466,7 +479,7 @@ class LocalInPolicyModel(BaseModel):
             
             # Check all datasource endpoints
             found = False
-            if await client.api.cmdb.firewall.internet-service-name.exists(value):
+            if await client.api.cmdb.firewall.internet_service_name.exists(value):
                 found = True
             
             if not found:
@@ -506,7 +519,7 @@ class LocalInPolicyModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.local_in_policy.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate child table items
         values = getattr(self, "internet_service_src_group", [])
@@ -524,7 +537,7 @@ class LocalInPolicyModel(BaseModel):
             
             # Check all datasource endpoints
             found = False
-            if await client.api.cmdb.firewall.internet-service-group.exists(value):
+            if await client.api.cmdb.firewall.internet_service_group.exists(value):
                 found = True
             
             if not found:
@@ -564,7 +577,7 @@ class LocalInPolicyModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.local_in_policy.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate child table items
         values = getattr(self, "internet_service_src_custom", [])
@@ -582,7 +595,7 @@ class LocalInPolicyModel(BaseModel):
             
             # Check all datasource endpoints
             found = False
-            if await client.api.cmdb.firewall.internet-service-custom.exists(value):
+            if await client.api.cmdb.firewall.internet_service_custom.exists(value):
                 found = True
             
             if not found:
@@ -622,7 +635,7 @@ class LocalInPolicyModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.local_in_policy.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate child table items
         values = getattr(self, "internet_service_src_custom_group", [])
@@ -640,7 +653,7 @@ class LocalInPolicyModel(BaseModel):
             
             # Check all datasource endpoints
             found = False
-            if await client.api.cmdb.firewall.internet-service-custom-group.exists(value):
+            if await client.api.cmdb.firewall.internet_service_custom_group.exists(value):
                 found = True
             
             if not found:
@@ -680,7 +693,7 @@ class LocalInPolicyModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.local_in_policy.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate child table items
         values = getattr(self, "internet_service_src_fortiguard", [])
@@ -698,7 +711,7 @@ class LocalInPolicyModel(BaseModel):
             
             # Check all datasource endpoints
             found = False
-            if await client.api.cmdb.firewall.internet-service-fortiguard.exists(value):
+            if await client.api.cmdb.firewall.internet_service_fortiguard.exists(value):
                 found = True
             
             if not found:
@@ -738,7 +751,7 @@ class LocalInPolicyModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.local_in_policy.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate child table items
         values = getattr(self, "service", [])
@@ -798,7 +811,7 @@ class LocalInPolicyModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.local_in_policy.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate scalar field
         value = getattr(self, "schedule", None)
@@ -880,5 +893,5 @@ __all__ = [
 # ============================================================================
 # Generated by hfortix generator v0.6.0
 # Schema: 1.7.0
-# Generated: 2026-01-17T05:32:17.461629Z
+# Generated: 2026-01-17T17:25:21.350114Z
 # ============================================================================

@@ -11,7 +11,11 @@ from pydantic import BaseModel, Field, field_validator
 from typing import Any, Literal, Optional
 
 # ============================================================================
-# Child Table Models
+# Enum Definitions for Child Table Fields (for fields with 4+ allowed values)
+# ============================================================================
+
+# ============================================================================
+# Child Table Models (sorted deepest-first so nested models are defined before their parents)
 # ============================================================================
 
 class ApiUserVdom(BaseModel):
@@ -25,8 +29,9 @@ class ApiUserVdom(BaseModel):
         """Pydantic model configuration."""
         extra = "allow"  # Allow additional fields from API
         str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
     
-    name: str = Field(max_length=79, default="", description="Virtual domain name.")  # datasource: ['system.vdom.name']
+    name: str = Field(max_length=79, description="Virtual domain name.")  # datasource: ['system.vdom.name']
 class ApiUserTrusthost(BaseModel):
     """
     Child table model for trusthost.
@@ -38,9 +43,10 @@ class ApiUserTrusthost(BaseModel):
         """Pydantic model configuration."""
         extra = "allow"  # Allow additional fields from API
         str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
     
-    id: int | None = Field(ge=0, le=4294967295, default=0, description="ID.")    
-    type: Literal["ipv4-trusthost", "ipv6-trusthost"] | None = Field(default="ipv4-trusthost", description="Trusthost type.")    
+    id_: int | None = Field(ge=0, le=4294967295, default=0, serialization_alias="id", description="ID.")    
+    type_: Literal["ipv4-trusthost", "ipv6-trusthost"] | None = Field(default="ipv4-trusthost", serialization_alias="type", description="Trusthost type.")    
     ipv4_trusthost: str | None = Field(default="0.0.0.0 0.0.0.0", description="IPv4 trusted host address.")    
     ipv6_trusthost: str | None = Field(default="::/0", description="IPv6 trusted host address.")
 # ============================================================================
@@ -71,16 +77,16 @@ class ApiUserModel(BaseModel):
     # Model Fields
     # ========================================================================
     
-    name: str | None = Field(max_length=35, default="", description="User name.")    
+    name: str | None = Field(max_length=35, default=None, description="User name.")    
     comments: str | None = Field(max_length=255, default=None, description="Comment.")    
     api_key: Any = Field(max_length=128, default=None, description="Admin user password.")    
-    accprofile: str = Field(max_length=35, default="", description="Admin user access profile.")  # datasource: ['system.accprofile.name']    
-    vdom: list[Vdom] = Field(default=None, description="Virtual domains.")    
-    schedule: str | None = Field(max_length=35, default="", description="Schedule name.")    
-    cors_allow_origin: str | None = Field(max_length=269, default="", description="Value for Access-Control-Allow-Origin on API responses. Avoid using '*' if possible.")    
+    accprofile: str = Field(max_length=35, description="Admin user access profile.")  # datasource: ['system.accprofile.name']    
+    vdom: list[ApiUserVdom] = Field(default_factory=list, description="Virtual domains.")    
+    schedule: str | None = Field(max_length=35, default=None, description="Schedule name.")    
+    cors_allow_origin: str | None = Field(max_length=269, default=None, description="Value for Access-Control-Allow-Origin on API responses. Avoid using '*' if possible.")    
     peer_auth: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable peer authentication.")    
-    peer_group: str = Field(max_length=35, default="", description="Peer group name.")    
-    trusthost: list[Trusthost] = Field(default=None, description="Trusthost.")    
+    peer_group: str = Field(max_length=35, description="Peer group name.")    
+    trusthost: list[ApiUserTrusthost] = Field(default_factory=list, description="Trusthost.")    
     # ========================================================================
     # Custom Validators
     # ========================================================================
@@ -160,7 +166,7 @@ class ApiUserModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.system.api_user.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate scalar field
         value = getattr(self, "accprofile", None)
@@ -209,7 +215,7 @@ class ApiUserModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.system.api_user.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate child table items
         values = getattr(self, "vdom", [])
@@ -280,5 +286,5 @@ __all__ = [
 # ============================================================================
 # Generated by hfortix generator v0.6.0
 # Schema: 1.7.0
-# Generated: 2026-01-17T05:32:18.521048Z
+# Generated: 2026-01-17T17:25:22.296848Z
 # ============================================================================

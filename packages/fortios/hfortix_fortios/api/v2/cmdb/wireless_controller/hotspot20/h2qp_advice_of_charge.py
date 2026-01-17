@@ -626,6 +626,16 @@ class H2qpAdviceOfCharge(CRUDEndpoint, MetadataMixin):
             - put(): Update existing object
             - exists(): Check existence manually
         """
+        # Apply normalization for table fields (supports flexible input formats)
+        if aoc_list is not None:
+            aoc_list = normalize_table_field(
+                aoc_list,
+                mkey="name",
+                required_fields=['type'],
+                field_name="aoc_list",
+                example="[{'type': 'time-based'}]",
+            )
+        
         # Build payload using helper function with auto-normalization
         payload_data = build_api_payload(
             name=name,

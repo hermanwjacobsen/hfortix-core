@@ -364,6 +364,8 @@ class Community(CRUDEndpoint, MetadataMixin):
                 example="[{'name': 'value'}]",
             )
         
+        # Apply normalization for multi-value option fields (space-separated strings)
+        
         # Build payload using helper function with auto-normalization
         # This automatically converts strings/lists to [{'name': '...'}] format for list fields
         # To disable auto-normalization, use build_cmdb_payload directly
@@ -540,6 +542,8 @@ class Community(CRUDEndpoint, MetadataMixin):
                 field_name="vdoms",
                 example="[{'name': 'value'}]",
             )
+        
+        # Apply normalization for multi-value option fields (space-separated strings)
         
         # Build payload using helper function with auto-normalization
         # This automatically converts strings/lists to [{'name': '...'}] format for list fields
@@ -794,6 +798,34 @@ class Community(CRUDEndpoint, MetadataMixin):
             - put(): Update existing object
             - exists(): Check existence manually
         """
+        # Apply normalization for table fields (supports flexible input formats)
+        if hosts is not None:
+            hosts = normalize_table_field(
+                hosts,
+                mkey="id",
+                required_fields=['id', 'ip', 'interface'],
+                field_name="hosts",
+                example="[{'id': 1, 'ip': '192.168.1.10', 'interface': 'value'}]",
+            )
+        if hosts6 is not None:
+            hosts6 = normalize_table_field(
+                hosts6,
+                mkey="id",
+                required_fields=['id', 'ipv6', 'interface'],
+                field_name="hosts6",
+                example="[{'id': 1, 'ipv6': 'value', 'interface': 'value'}]",
+            )
+        if vdoms is not None:
+            vdoms = normalize_table_field(
+                vdoms,
+                mkey="name",
+                required_fields=['name'],
+                field_name="vdoms",
+                example="[{'name': 'value'}]",
+            )
+        
+        # Apply normalization for multi-value option fields (space-separated strings)
+        
         # Build payload using helper function with auto-normalization
         payload_data = build_api_payload(
             id=id,

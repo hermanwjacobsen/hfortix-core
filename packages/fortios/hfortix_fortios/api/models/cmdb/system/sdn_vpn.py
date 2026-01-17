@@ -25,7 +25,7 @@ class SdnVpnModel(BaseModel):
     
     Configure public cloud VPN service.
     
-    Validation Rules:        - name: max_length=35 pattern=        - sdn: max_length=35 pattern=        - remote_type: pattern=        - routing_type: pattern=        - vgw_id: max_length=63 pattern=        - tgw_id: max_length=63 pattern=        - subnet_id: max_length=63 pattern=        - bgp_as: min=1 max=4294967295 pattern=        - cgw_gateway: pattern=        - nat_traversal: pattern=        - tunnel_interface: max_length=15 pattern=        - internal_interface: max_length=15 pattern=        - local_cidr: pattern=        - remote_cidr: pattern=        - cgw_name: max_length=35 pattern=        - psksecret: pattern=        - type: min=0 max=65535 pattern=        - status: min=0 max=255 pattern=        - code: min=0 max=255 pattern=    """
+    Validation Rules:        - name: max_length=35 pattern=        - sdn: max_length=35 pattern=        - remote_type: pattern=        - routing_type: pattern=        - vgw_id: max_length=63 pattern=        - tgw_id: max_length=63 pattern=        - subnet_id: max_length=63 pattern=        - bgp_as: min=1 max=4294967295 pattern=        - cgw_gateway: pattern=        - nat_traversal: pattern=        - tunnel_interface: max_length=15 pattern=        - internal_interface: max_length=15 pattern=        - local_cidr: pattern=        - remote_cidr: pattern=        - cgw_name: max_length=35 pattern=        - psksecret: pattern=        - type_: min=0 max=65535 pattern=        - status: min=0 max=255 pattern=        - code: min=0 max=255 pattern=    """
     
     class Config:
         """Pydantic model configuration."""
@@ -38,23 +38,23 @@ class SdnVpnModel(BaseModel):
     # Model Fields
     # ========================================================================
     
-    name: str | None = Field(max_length=35, default="", description="Public cloud VPN name.")    
-    sdn: str = Field(max_length=35, default="", description="SDN connector name.")  # datasource: ['system.sdn-connector.name']    
+    name: str | None = Field(max_length=35, default=None, description="Public cloud VPN name.")    
+    sdn: str = Field(max_length=35, description="SDN connector name.")  # datasource: ['system.sdn-connector.name']    
     remote_type: Literal["vgw", "tgw"] = Field(default="vgw", description="Type of remote device.")    
     routing_type: Literal["static", "dynamic"] = Field(default="dynamic", description="Type of routing.")    
-    vgw_id: str = Field(max_length=63, default="", description="Virtual private gateway id.")    
-    tgw_id: str = Field(max_length=63, default="", description="Transit gateway id.")    
-    subnet_id: str | None = Field(max_length=63, default="", description="AWS subnet id for TGW route propagation.")    
+    vgw_id: str = Field(max_length=63, description="Virtual private gateway id.")    
+    tgw_id: str = Field(max_length=63, description="Transit gateway id.")    
+    subnet_id: str | None = Field(max_length=63, default=None, description="AWS subnet id for TGW route propagation.")    
     bgp_as: int = Field(ge=1, le=4294967295, default=65000, description="BGP Router AS number.")    
     cgw_gateway: str = Field(default="0.0.0.0", description="Public IP address of the customer gateway.")    
     nat_traversal: Literal["disable", "enable"] | None = Field(default="enable", description="Enable/disable use for NAT traversal. Please enable if your FortiGate device is behind a NAT/PAT device.")    
-    tunnel_interface: str = Field(max_length=15, default="", description="Tunnel interface with public IP.")  # datasource: ['system.interface.name']    
-    internal_interface: str = Field(max_length=15, default="", description="Internal interface with local subnet.")  # datasource: ['system.interface.name']    
+    tunnel_interface: str = Field(max_length=15, description="Tunnel interface with public IP.")  # datasource: ['system.interface.name']    
+    internal_interface: str = Field(max_length=15, description="Internal interface with local subnet.")  # datasource: ['system.interface.name']    
     local_cidr: str = Field(default="0.0.0.0 0.0.0.0", description="Local subnet address and subnet mask.")    
     remote_cidr: str = Field(default="0.0.0.0 0.0.0.0", description="Remote subnet address and subnet mask.")    
-    cgw_name: str | None = Field(max_length=35, default="", description="AWS customer gateway name to be created.")    
+    cgw_name: str | None = Field(max_length=35, default=None, description="AWS customer gateway name to be created.")    
     psksecret: Any = Field(default=None, description="Pre-shared secret for PSK authentication. Auto-generated if not specified")    
-    type: int | None = Field(ge=0, le=65535, default=0, description="SDN VPN type.")    
+    type_: int | None = Field(ge=0, le=65535, default=0, serialization_alias="type", description="SDN VPN type.")    
     status: int | None = Field(ge=0, le=255, default=0, description="SDN VPN status.")    
     code: int | None = Field(ge=0, le=255, default=0, description="SDN VPN error code.")    
     # ========================================================================
@@ -166,7 +166,7 @@ class SdnVpnModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.system.sdn_vpn.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate scalar field
         value = getattr(self, "sdn", None)
@@ -175,7 +175,7 @@ class SdnVpnModel(BaseModel):
         
         # Check all datasource endpoints
         found = False
-        if await client.api.cmdb.system.sdn-connector.exists(value):
+        if await client.api.cmdb.system.sdn_connector.exists(value):
             found = True
         
         if not found:
@@ -215,7 +215,7 @@ class SdnVpnModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.system.sdn_vpn.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate scalar field
         value = getattr(self, "tunnel_interface", None)
@@ -264,7 +264,7 @@ class SdnVpnModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.system.sdn_vpn.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate scalar field
         value = getattr(self, "internal_interface", None)
@@ -328,5 +328,5 @@ __all__ = [
 # ============================================================================
 # Generated by hfortix generator v0.6.0
 # Schema: 1.7.0
-# Generated: 2026-01-17T05:32:20.224495Z
+# Generated: 2026-01-17T17:25:23.764458Z
 # ============================================================================

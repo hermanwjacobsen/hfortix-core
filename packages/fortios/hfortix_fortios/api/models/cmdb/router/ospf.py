@@ -12,36 +12,86 @@ from typing import Any, Literal, Optional
 from enum import Enum
 
 # ============================================================================
-# Child Table Models
+# Enum Definitions for Child Table Fields (for fields with 4+ allowed values)
 # ============================================================================
 
-class OspfArea(BaseModel):
+class OspfOspfInterfaceNetworkTypeEnum(str, Enum):
+    """Allowed values for network_type field in ospf-interface."""
+    BROADCAST = "broadcast"
+    NON_BROADCAST = "non-broadcast"
+    POINT_TO_POINT = "point-to-point"
+    POINT_TO_MULTIPOINT = "point-to-multipoint"
+    POINT_TO_MULTIPOINT_NON_BROADCAST = "point-to-multipoint-non-broadcast"
+
+# ============================================================================
+# Child Table Models (sorted deepest-first so nested models are defined before their parents)
+# ============================================================================
+
+class OspfSummaryAddress(BaseModel):
     """
-    Child table model for area.
+    Child table model for summary-address.
     
-    OSPF area configuration.
+    IP address summary configuration.
     """
     
     class Config:
         """Pydantic model configuration."""
         extra = "allow"  # Allow additional fields from API
         str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
     
-    id: str | None = Field(default="0.0.0.0", description="Area entry IP address.")    
-    shortcut: Literal["disable", "enable", "default"] | None = Field(default="disable", description="Enable/disable shortcut option.")    
-    authentication: Literal["none", "text", "message-digest"] | None = Field(default="none", description="Authentication type.")    
-    default_cost: int | None = Field(ge=0, le=4294967295, default=10, description="Summary default cost of stub or NSSA area.")    
-    nssa_translator_role: Literal["candidate", "never", "always"] | None = Field(default="candidate", description="NSSA translator role type.")    
-    stub_type: Literal["no-summary", "summary"] | None = Field(default="summary", description="Stub summary setting.")    
-    type: Literal["regular", "nssa", "stub"] | None = Field(default="regular", description="Area type setting.")    
-    nssa_default_information_originate: Literal["enable", "always", "disable"] | None = Field(default="disable", description="Redistribute, advertise, or do not originate Type-7 default route into NSSA area.")    
-    nssa_default_information_originate_metric: int | None = Field(ge=0, le=16777214, default=10, description="OSPF default metric.")    
-    nssa_default_information_originate_metric_type: Literal["1", "2"] | None = Field(default="2", description="OSPF metric type for default routes.")    
-    nssa_redistribution: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable redistribute into NSSA area.")    
-    comments: str | None = Field(max_length=255, default=None, description="Comment.")    
-    range: list[Range] = Field(default=None, description="OSPF area range configuration.")    
-    virtual_link: list[VirtualLink] = Field(default=None, description="OSPF virtual link configuration.")    
-    filter_list: list[FilterList] = Field(default=None, description="OSPF area filter-list configuration.")
+    id_: int | None = Field(ge=0, le=4294967295, default=0, serialization_alias="id", description="Summary address entry ID.")    
+    prefix: str = Field(default="0.0.0.0 0.0.0.0", description="Prefix.")    
+    tag: int | None = Field(ge=0, le=4294967295, default=0, description="Tag value.")    
+    advertise: Literal["disable", "enable"] | None = Field(default="enable", description="Enable/disable advertise status.")
+class OspfRedistribute(BaseModel):
+    """
+    Child table model for redistribute.
+    
+    Redistribute configuration.
+    """
+    
+    class Config:
+        """Pydantic model configuration."""
+        extra = "allow"  # Allow additional fields from API
+        str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
+    
+    name: str = Field(max_length=35, description="Redistribute name.")    
+    status: Literal["enable", "disable"] | None = Field(default="disable", description="Status.")    
+    metric: int | None = Field(ge=0, le=16777214, default=0, description="Redistribute metric setting.")    
+    routemap: str | None = Field(max_length=35, default=None, description="Route map name.")  # datasource: ['router.route-map.name']    
+    metric_type: Literal["1", "2"] | None = Field(default="2", description="Metric type.")    
+    tag: int | None = Field(ge=0, le=4294967295, default=0, description="Tag value.")
+class OspfPassiveInterface(BaseModel):
+    """
+    Child table model for passive-interface.
+    
+    Passive interface configuration.
+    """
+    
+    class Config:
+        """Pydantic model configuration."""
+        extra = "allow"  # Allow additional fields from API
+        str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
+    
+    name: str = Field(max_length=79, description="Passive interface name.")  # datasource: ['system.interface.name']
+class OspfOspfInterfaceMd5Keys(BaseModel):
+    """
+    Child table model for ospf-interface.md5-keys.
+    
+    MD5 key.
+    """
+    
+    class Config:
+        """Pydantic model configuration."""
+        extra = "allow"  # Allow additional fields from API
+        str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
+    
+    id_: int = Field(ge=1, le=255, default=0, serialization_alias="id", description="Key ID (1 - 255).")    
+    key_string: Any = Field(max_length=16, description="Password for the key.")
 class OspfOspfInterface(BaseModel):
     """
     Child table model for ospf-interface.
@@ -53,15 +103,16 @@ class OspfOspfInterface(BaseModel):
         """Pydantic model configuration."""
         extra = "allow"  # Allow additional fields from API
         str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
     
-    name: str | None = Field(max_length=35, default="", description="Interface entry name.")    
+    name: str | None = Field(max_length=35, default=None, description="Interface entry name.")    
     comments: str | None = Field(max_length=255, default=None, description="Comment.")    
-    interface: str = Field(max_length=15, default="", description="Configuration interface name.")  # datasource: ['system.interface.name']    
+    interface: str = Field(max_length=15, description="Configuration interface name.")  # datasource: ['system.interface.name']    
     ip: str | None = Field(default="0.0.0.0", description="IP address.")    
     linkdown_fast_failover: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable fast link failover.")    
     authentication: Literal["none", "text", "message-digest"] | None = Field(default="none", description="Authentication type.")    
     authentication_key: Any = Field(max_length=8, default=None, description="Authentication key.")    
-    keychain: str | None = Field(max_length=35, default="", description="Message-digest key-chain name.")  # datasource: ['router.key-chain.name']    
+    keychain: str | None = Field(max_length=35, default=None, description="Message-digest key-chain name.")  # datasource: ['router.key-chain.name']    
     prefix_length: int | None = Field(ge=0, le=32, default=0, description="Prefix length.")    
     retransmit_interval: int | None = Field(ge=1, le=65535, default=5, description="Retransmit interval.")    
     transmit_delay: int | None = Field(ge=1, le=65535, default=1, description="Transmit delay.")    
@@ -73,11 +124,11 @@ class OspfOspfInterface(BaseModel):
     database_filter_out: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable control of flooding out LSAs.")    
     mtu: int | None = Field(ge=576, le=65535, default=0, description="MTU for database description packets.")    
     mtu_ignore: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable ignore MTU.")    
-    network_type: NetworkTypeEnum | None = Field(default="broadcast", description="Network type.")    
+    network_type: OspfOspfInterfaceNetworkTypeEnum | None = Field(default=OspfOspfInterfaceNetworkTypeEnum.BROADCAST, description="Network type.")    
     bfd: Literal["global", "enable", "disable"] | None = Field(default="global", description="Bidirectional Forwarding Detection (BFD).")    
     status: Literal["disable", "enable"] | None = Field(default="enable", description="Enable/disable status.")    
     resync_timeout: int | None = Field(ge=1, le=3600, default=40, description="Graceful restart neighbor resynchronization timeout.")    
-    md5_keys: list[Md5Keys] = Field(default=None, description="MD5 key.")
+    md5_keys: list[OspfOspfInterfaceMd5Keys] = Field(default_factory=list, description="MD5 key.")
 class OspfNetwork(BaseModel):
     """
     Child table model for network.
@@ -89,8 +140,9 @@ class OspfNetwork(BaseModel):
         """Pydantic model configuration."""
         extra = "allow"  # Allow additional fields from API
         str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
     
-    id: int | None = Field(ge=0, le=4294967295, default=0, description="Network entry ID.")    
+    id_: int | None = Field(ge=0, le=4294967295, default=0, serialization_alias="id", description="Network entry ID.")    
     prefix: str = Field(default="0.0.0.0 0.0.0.0", description="Prefix.")    
     area: str = Field(default="0.0.0.0", description="Attach the network to area.")    
     comments: str | None = Field(max_length=255, default=None, description="Comment.")
@@ -105,41 +157,13 @@ class OspfNeighbor(BaseModel):
         """Pydantic model configuration."""
         extra = "allow"  # Allow additional fields from API
         str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
     
-    id: int | None = Field(ge=0, le=4294967295, default=0, description="Neighbor entry ID.")    
+    id_: int | None = Field(ge=0, le=4294967295, default=0, serialization_alias="id", description="Neighbor entry ID.")    
     ip: str = Field(default="0.0.0.0", description="Interface IP address of the neighbor.")    
     poll_interval: int | None = Field(ge=1, le=65535, default=10, description="Poll interval time in seconds.")    
     cost: int | None = Field(ge=0, le=65535, default=0, description="Cost of the interface, value range from 0 to 65535, 0 means auto-cost.")    
     priority: int | None = Field(ge=0, le=255, default=1, description="Priority.")
-class OspfPassiveInterface(BaseModel):
-    """
-    Child table model for passive-interface.
-    
-    Passive interface configuration.
-    """
-    
-    class Config:
-        """Pydantic model configuration."""
-        extra = "allow"  # Allow additional fields from API
-        str_strip_whitespace = True
-    
-    name: str = Field(max_length=79, default="", description="Passive interface name.")  # datasource: ['system.interface.name']
-class OspfSummaryAddress(BaseModel):
-    """
-    Child table model for summary-address.
-    
-    IP address summary configuration.
-    """
-    
-    class Config:
-        """Pydantic model configuration."""
-        extra = "allow"  # Allow additional fields from API
-        str_strip_whitespace = True
-    
-    id: int | None = Field(ge=0, le=4294967295, default=0, description="Summary address entry ID.")    
-    prefix: str = Field(default="0.0.0.0 0.0.0.0", description="Prefix.")    
-    tag: int | None = Field(ge=0, le=4294967295, default=0, description="Tag value.")    
-    advertise: Literal["disable", "enable"] | None = Field(default="enable", description="Enable/disable advertise status.")
 class OspfDistributeList(BaseModel):
     """
     Child table model for distribute-list.
@@ -151,35 +175,122 @@ class OspfDistributeList(BaseModel):
         """Pydantic model configuration."""
         extra = "allow"  # Allow additional fields from API
         str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
     
-    id: int | None = Field(ge=0, le=4294967295, default=0, description="Distribute list entry ID.")    
-    access_list: str = Field(max_length=35, default="", description="Access list name.")  # datasource: ['router.access-list.name']    
+    id_: int | None = Field(ge=0, le=4294967295, default=0, serialization_alias="id", description="Distribute list entry ID.")    
+    access_list: str = Field(max_length=35, description="Access list name.")  # datasource: ['router.access-list.name']    
     protocol: Literal["connected", "static", "rip"] = Field(default="connected", description="Protocol type.")
-class OspfRedistribute(BaseModel):
+class OspfAreaVirtualLinkMd5Keys(BaseModel):
     """
-    Child table model for redistribute.
+    Child table model for area.virtual-link.md5-keys.
     
-    Redistribute configuration.
+    MD5 key.
     """
     
     class Config:
         """Pydantic model configuration."""
         extra = "allow"  # Allow additional fields from API
         str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
     
-    name: str = Field(max_length=35, default="", description="Redistribute name.")    
-    status: Literal["enable", "disable"] | None = Field(default="disable", description="Status.")    
-    metric: int | None = Field(ge=0, le=16777214, default=0, description="Redistribute metric setting.")    
-    routemap: str | None = Field(max_length=35, default="", description="Route map name.")  # datasource: ['router.route-map.name']    
-    metric_type: Literal["1", "2"] | None = Field(default="2", description="Metric type.")    
-    tag: int | None = Field(ge=0, le=4294967295, default=0, description="Tag value.")
+    id_: int = Field(ge=1, le=255, default=0, serialization_alias="id", description="Key ID (1 - 255).")    
+    key_string: Any = Field(max_length=16, description="Password for the key.")
+class OspfAreaVirtualLink(BaseModel):
+    """
+    Child table model for area.virtual-link.
+    
+    OSPF virtual link configuration.
+    """
+    
+    class Config:
+        """Pydantic model configuration."""
+        extra = "allow"  # Allow additional fields from API
+        str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
+    
+    name: str | None = Field(max_length=35, default=None, description="Virtual link entry name.")    
+    authentication: Literal["none", "text", "message-digest"] | None = Field(default="none", description="Authentication type.")    
+    authentication_key: Any = Field(max_length=8, default=None, description="Authentication key.")    
+    keychain: str | None = Field(max_length=35, default=None, description="Message-digest key-chain name.")  # datasource: ['router.key-chain.name']    
+    dead_interval: int | None = Field(ge=1, le=65535, default=40, description="Dead interval.")    
+    hello_interval: int | None = Field(ge=1, le=65535, default=10, description="Hello interval.")    
+    retransmit_interval: int | None = Field(ge=1, le=65535, default=5, description="Retransmit interval.")    
+    transmit_delay: int | None = Field(ge=1, le=65535, default=1, description="Transmit delay.")    
+    peer: str = Field(default="0.0.0.0", description="Peer IP.")    
+    md5_keys: list[OspfAreaVirtualLinkMd5Keys] = Field(default_factory=list, description="MD5 key.")
+class OspfAreaRange(BaseModel):
+    """
+    Child table model for area.range.
+    
+    OSPF area range configuration.
+    """
+    
+    class Config:
+        """Pydantic model configuration."""
+        extra = "allow"  # Allow additional fields from API
+        str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
+    
+    id_: int | None = Field(ge=0, le=4294967295, default=0, serialization_alias="id", description="Range entry ID.")    
+    prefix: Any = Field(default="0.0.0.0 0.0.0.0", description="Prefix.")    
+    advertise: Literal["disable", "enable"] | None = Field(default="enable", description="Enable/disable advertise status.")    
+    substitute: Any = Field(default="0.0.0.0 0.0.0.0", description="Substitute prefix.")    
+    substitute_status: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable substitute status.")
+class OspfAreaFilterList(BaseModel):
+    """
+    Child table model for area.filter-list.
+    
+    OSPF area filter-list configuration.
+    """
+    
+    class Config:
+        """Pydantic model configuration."""
+        extra = "allow"  # Allow additional fields from API
+        str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
+    
+    id_: int | None = Field(ge=0, le=4294967295, default=0, serialization_alias="id", description="Filter list entry ID.")    
+    list_: str = Field(max_length=35, serialization_alias="list", description="Access-list or prefix-list name.")  # datasource: ['router.access-list.name', 'router.prefix-list.name']    
+    direction: Literal["in", "out"] = Field(default="out", description="Direction.")
+class OspfArea(BaseModel):
+    """
+    Child table model for area.
+    
+    OSPF area configuration.
+    """
+    
+    class Config:
+        """Pydantic model configuration."""
+        extra = "allow"  # Allow additional fields from API
+        str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
+    
+    id_: str | None = Field(default="0.0.0.0", serialization_alias="id", description="Area entry IP address.")    
+    shortcut: Literal["disable", "enable", "default"] | None = Field(default="disable", description="Enable/disable shortcut option.")    
+    authentication: Literal["none", "text", "message-digest"] | None = Field(default="none", description="Authentication type.")    
+    default_cost: int | None = Field(ge=0, le=4294967295, default=10, description="Summary default cost of stub or NSSA area.")    
+    nssa_translator_role: Literal["candidate", "never", "always"] | None = Field(default="candidate", description="NSSA translator role type.")    
+    stub_type: Literal["no-summary", "summary"] | None = Field(default="summary", description="Stub summary setting.")    
+    type_: Literal["regular", "nssa", "stub"] | None = Field(default="regular", serialization_alias="type", description="Area type setting.")    
+    nssa_default_information_originate: Literal["enable", "always", "disable"] | None = Field(default="disable", description="Redistribute, advertise, or do not originate Type-7 default route into NSSA area.")    
+    nssa_default_information_originate_metric: int | None = Field(ge=0, le=16777214, default=10, description="OSPF default metric.")    
+    nssa_default_information_originate_metric_type: Literal["1", "2"] | None = Field(default="2", description="OSPF metric type for default routes.")    
+    nssa_redistribution: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable redistribute into NSSA area.")    
+    comments: str | None = Field(max_length=255, default=None, description="Comment.")    
+    range_: list[OspfAreaRange] = Field(default_factory=list, serialization_alias="range", description="OSPF area range configuration.")    
+    virtual_link: list[OspfAreaVirtualLink] = Field(default_factory=list, description="OSPF virtual link configuration.")    
+    filter_list: list[OspfAreaFilterList] = Field(default_factory=list, description="OSPF area filter-list configuration.")
 # ============================================================================
 # Enum Definitions (for fields with 4+ allowed values)
 # ============================================================================
 
-class OspfAbr_typeEnum(str, Enum):
+class OspfAbrTypeEnum(str, Enum):
     """Allowed values for abr_type field."""
-    CISCO = "cisco"    IBM = "ibm"    SHORTCUT = "shortcut"    STANDARD = "standard"
+    CISCO = "cisco"
+    IBM = "ibm"
+    SHORTCUT = "shortcut"
+    STANDARD = "standard"
+
 
 # ============================================================================
 # Main Model
@@ -204,7 +315,7 @@ class OspfModel(BaseModel):
     # Model Fields
     # ========================================================================
     
-    abr_type: AbrTypeEnum | None = Field(default="standard", description="Area border router type.")    
+    abr_type: OspfAbrTypeEnum | None = Field(default=OspfAbrTypeEnum.STANDARD, description="Area border router type.")    
     auto_cost_ref_bandwidth: int | None = Field(ge=1, le=1000000, default=1000, description="Reference bandwidth in terms of megabits per second.")    
     distance_external: int | None = Field(ge=1, le=255, default=110, description="Administrative external distance.")    
     distance_inter_area: int | None = Field(ge=1, le=255, default=110, description="Administrative inter-area distance.")    
@@ -215,28 +326,28 @@ class OspfModel(BaseModel):
     default_information_originate: Literal["enable", "always", "disable"] | None = Field(default="disable", description="Enable/disable generation of default route.")    
     default_information_metric: int | None = Field(ge=1, le=16777214, default=10, description="Default information metric.")    
     default_information_metric_type: Literal["1", "2"] | None = Field(default="2", description="Default information metric type.")    
-    default_information_route_map: str | None = Field(max_length=35, default="", description="Default information route map.")  # datasource: ['router.route-map.name']    
+    default_information_route_map: str | None = Field(max_length=35, default=None, description="Default information route map.")  # datasource: ['router.route-map.name']    
     default_metric: int | None = Field(ge=1, le=16777214, default=10, description="Default metric of redistribute routes.")    
     distance: int | None = Field(ge=1, le=255, default=110, description="Distance of the route.")    
     lsa_refresh_interval: int | None = Field(ge=0, le=5, default=5, description="The minimal OSPF LSA update time interval")    
     rfc1583_compatible: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable RFC1583 compatibility.")    
     router_id: str = Field(default="0.0.0.0", description="Router ID.")    
-    spf_timers: str | None = Field(default="", description="SPF calculation frequency.")    
+    spf_timers: str | None = Field(default=None, description="SPF calculation frequency.")    
     bfd: Literal["enable", "disable"] | None = Field(default="disable", description="Bidirectional Forwarding Detection (BFD).")    
     log_neighbour_changes: Literal["enable", "disable"] | None = Field(default="enable", description="Log of OSPF neighbor changes.")    
-    distribute_list_in: str | None = Field(max_length=35, default="", description="Filter incoming routes.")  # datasource: ['router.access-list.name', 'router.prefix-list.name']    
-    distribute_route_map_in: str | None = Field(max_length=35, default="", description="Filter incoming external routes by route-map.")  # datasource: ['router.route-map.name']    
+    distribute_list_in: str | None = Field(max_length=35, default=None, description="Filter incoming routes.")  # datasource: ['router.access-list.name', 'router.prefix-list.name']    
+    distribute_route_map_in: str | None = Field(max_length=35, default=None, description="Filter incoming external routes by route-map.")  # datasource: ['router.route-map.name']    
     restart_mode: Literal["none", "lls", "graceful-restart"] | None = Field(default="none", description="OSPF restart mode (graceful or LLS).")    
     restart_period: int | None = Field(ge=1, le=3600, default=120, description="Graceful restart period.")    
     restart_on_topology_change: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable continuing graceful restart upon topology change.")    
-    area: list[Area] = Field(default=None, description="OSPF area configuration.")    
-    ospf_interface: list[OspfInterface] = Field(default=None, description="OSPF interface configuration.")    
-    network: list[Network] = Field(default=None, description="OSPF network configuration.")    
-    neighbor: list[Neighbor] = Field(default=None, description="OSPF neighbor configuration are used when OSPF runs on non-broadcast media.")    
-    passive_interface: list[PassiveInterface] = Field(default=None, description="Passive interface configuration.")    
-    summary_address: list[SummaryAddress] = Field(default=None, description="IP address summary configuration.")    
-    distribute_list: list[DistributeList] = Field(default=None, description="Distribute list configuration.")    
-    redistribute: list[Redistribute] = Field(default=None, description="Redistribute configuration.")    
+    area: list[OspfArea] = Field(default_factory=list, description="OSPF area configuration.")    
+    ospf_interface: list[OspfOspfInterface] = Field(default_factory=list, description="OSPF interface configuration.")    
+    network: list[OspfNetwork] = Field(default_factory=list, description="OSPF network configuration.")    
+    neighbor: list[OspfNeighbor] = Field(default_factory=list, description="OSPF neighbor configuration are used when OSPF runs on non-broadcast media.")    
+    passive_interface: list[OspfPassiveInterface] = Field(default_factory=list, description="Passive interface configuration.")    
+    summary_address: list[OspfSummaryAddress] = Field(default_factory=list, description="IP address summary configuration.")    
+    distribute_list: list[OspfDistributeList] = Field(default_factory=list, description="Distribute list configuration.")    
+    redistribute: list[OspfRedistribute] = Field(default_factory=list, description="Redistribute configuration.")    
     # ========================================================================
     # Custom Validators
     # ========================================================================
@@ -346,7 +457,7 @@ class OspfModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.router.ospf.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate scalar field
         value = getattr(self, "default_information_route_map", None)
@@ -355,7 +466,7 @@ class OspfModel(BaseModel):
         
         # Check all datasource endpoints
         found = False
-        if await client.api.cmdb.router.route-map.exists(value):
+        if await client.api.cmdb.router.route_map.exists(value):
             found = True
         
         if not found:
@@ -395,7 +506,7 @@ class OspfModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.router.ospf.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate scalar field
         value = getattr(self, "distribute_list_in", None)
@@ -404,9 +515,9 @@ class OspfModel(BaseModel):
         
         # Check all datasource endpoints
         found = False
-        if await client.api.cmdb.router.access-list.exists(value):
+        if await client.api.cmdb.router.access_list.exists(value):
             found = True
-        elif await client.api.cmdb.router.prefix-list.exists(value):
+        elif await client.api.cmdb.router.prefix_list.exists(value):
             found = True
         
         if not found:
@@ -446,7 +557,7 @@ class OspfModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.router.ospf.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate scalar field
         value = getattr(self, "distribute_route_map_in", None)
@@ -455,7 +566,7 @@ class OspfModel(BaseModel):
         
         # Check all datasource endpoints
         found = False
-        if await client.api.cmdb.router.route-map.exists(value):
+        if await client.api.cmdb.router.route_map.exists(value):
             found = True
         
         if not found:
@@ -495,7 +606,7 @@ class OspfModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.router.ospf.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate child table items
         values = getattr(self, "ospf_interface", [])
@@ -513,7 +624,7 @@ class OspfModel(BaseModel):
             
             # Check all datasource endpoints
             found = False
-            if await client.api.cmdb.router.key-chain.exists(value):
+            if await client.api.cmdb.router.key_chain.exists(value):
                 found = True
             
             if not found:
@@ -553,7 +664,7 @@ class OspfModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.router.ospf.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate child table items
         values = getattr(self, "passive_interface", [])
@@ -611,7 +722,7 @@ class OspfModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.router.ospf.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate child table items
         values = getattr(self, "distribute_list", [])
@@ -629,7 +740,7 @@ class OspfModel(BaseModel):
             
             # Check all datasource endpoints
             found = False
-            if await client.api.cmdb.router.access-list.exists(value):
+            if await client.api.cmdb.router.access_list.exists(value):
                 found = True
             
             if not found:
@@ -669,7 +780,7 @@ class OspfModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.router.ospf.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate child table items
         values = getattr(self, "redistribute", [])
@@ -687,7 +798,7 @@ class OspfModel(BaseModel):
             
             # Check all datasource endpoints
             found = False
-            if await client.api.cmdb.router.route-map.exists(value):
+            if await client.api.cmdb.router.route_map.exists(value):
                 found = True
             
             if not found:
@@ -744,11 +855,11 @@ Dict = dict[str, Any]  # For backward compatibility
 # ============================================================================
 
 __all__ = [
-    "OspfModel",    "OspfArea",    "OspfOspfInterface",    "OspfNetwork",    "OspfNeighbor",    "OspfPassiveInterface",    "OspfSummaryAddress",    "OspfDistributeList",    "OspfRedistribute",]
+    "OspfModel",    "OspfArea",    "OspfArea.Range",    "OspfArea.VirtualLink",    "OspfArea.VirtualLink.Md5Keys",    "OspfArea.FilterList",    "OspfOspfInterface",    "OspfOspfInterface.Md5Keys",    "OspfNetwork",    "OspfNeighbor",    "OspfPassiveInterface",    "OspfSummaryAddress",    "OspfDistributeList",    "OspfRedistribute",]
 
 
 # ============================================================================
 # Generated by hfortix generator v0.6.0
 # Schema: 1.7.0
-# Generated: 2026-01-17T05:32:17.889462Z
+# Generated: 2026-01-17T17:25:21.728810Z
 # ============================================================================

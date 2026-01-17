@@ -646,6 +646,16 @@ class Keyword(CRUDEndpoint, MetadataMixin):
             - put(): Update existing object
             - exists(): Check existence manually
         """
+        # Apply normalization for table fields (supports flexible input formats)
+        if word is not None:
+            word = normalize_table_field(
+                word,
+                mkey="name",
+                required_fields=['pattern-type', 'status'],
+                field_name="word",
+                example="[{'pattern-type': 'wildcard', 'status': 'enable'}]",
+            )
+        
         # Build payload using helper function with auto-normalization
         payload_data = build_api_payload(
             id=id,

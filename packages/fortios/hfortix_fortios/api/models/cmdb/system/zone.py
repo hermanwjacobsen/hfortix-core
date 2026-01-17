@@ -11,9 +11,27 @@ from pydantic import BaseModel, Field, field_validator
 from typing import Any, Literal, Optional
 
 # ============================================================================
-# Child Table Models
+# Enum Definitions for Child Table Fields (for fields with 4+ allowed values)
 # ============================================================================
 
+# ============================================================================
+# Child Table Models (sorted deepest-first so nested models are defined before their parents)
+# ============================================================================
+
+class ZoneTaggingTags(BaseModel):
+    """
+    Child table model for tagging.tags.
+    
+    Tags.
+    """
+    
+    class Config:
+        """Pydantic model configuration."""
+        extra = "allow"  # Allow additional fields from API
+        str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
+    
+    name: str | None = Field(max_length=79, default=None, description="Tag name.")  # datasource: ['system.object-tagging.tags.name']
 class ZoneTagging(BaseModel):
     """
     Child table model for tagging.
@@ -25,10 +43,11 @@ class ZoneTagging(BaseModel):
         """Pydantic model configuration."""
         extra = "allow"  # Allow additional fields from API
         str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
     
-    name: str | None = Field(max_length=63, default="", description="Tagging entry name.")    
-    category: str | None = Field(max_length=63, default="", description="Tag category.")  # datasource: ['system.object-tagging.category']    
-    tags: list[Tags] = Field(default=None, description="Tags.")
+    name: str | None = Field(max_length=63, default=None, description="Tagging entry name.")    
+    category: str | None = Field(max_length=63, default=None, description="Tag category.")  # datasource: ['system.object-tagging.category']    
+    tags: list[ZoneTaggingTags] = Field(default_factory=list, description="Tags.")
 class ZoneInterface(BaseModel):
     """
     Child table model for interface.
@@ -40,8 +59,9 @@ class ZoneInterface(BaseModel):
         """Pydantic model configuration."""
         extra = "allow"  # Allow additional fields from API
         str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
     
-    interface_name: str = Field(max_length=79, default="", description="Select interfaces to add to the zone.")  # datasource: ['system.interface.name']
+    interface_name: str = Field(max_length=79, description="Select interfaces to add to the zone.")  # datasource: ['system.interface.name']
 # ============================================================================
 # Enum Definitions (for fields with 4+ allowed values)
 # ============================================================================
@@ -70,11 +90,11 @@ class ZoneModel(BaseModel):
     # Model Fields
     # ========================================================================
     
-    name: str | None = Field(max_length=35, default="", description="Zone name.")    
-    tagging: list[Tagging] = Field(default=None, description="Config object tagging.")    
-    description: str | None = Field(max_length=127, default="", description="Description.")    
+    name: str | None = Field(max_length=35, default=None, description="Zone name.")    
+    tagging: list[ZoneTagging] = Field(default_factory=list, description="Config object tagging.")    
+    description: str | None = Field(max_length=127, default=None, description="Description.")    
     intrazone: Literal["allow", "deny"] | None = Field(default="deny", description="Allow or deny traffic routing between different interfaces in the same zone (default = deny).")    
-    interface: list[Interface] = Field(default=None, description="Add interfaces to this zone. Interfaces must not be assigned to another zone or have firewall policies defined.")    
+    interface: list[ZoneInterface] = Field(default_factory=list, description="Add interfaces to this zone. Interfaces must not be assigned to another zone or have firewall policies defined.")    
     # ========================================================================
     # Custom Validators
     # ========================================================================
@@ -139,7 +159,7 @@ class ZoneModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.system.zone.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate child table items
         values = getattr(self, "tagging", [])
@@ -157,7 +177,7 @@ class ZoneModel(BaseModel):
             
             # Check all datasource endpoints
             found = False
-            if await client.api.cmdb.system.object-tagging.exists(value):
+            if await client.api.cmdb.system.object_tagging.exists(value):
                 found = True
             
             if not found:
@@ -197,7 +217,7 @@ class ZoneModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.system.zone.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate child table items
         values = getattr(self, "interface", [])
@@ -262,11 +282,11 @@ Dict = dict[str, Any]  # For backward compatibility
 # ============================================================================
 
 __all__ = [
-    "ZoneModel",    "ZoneTagging",    "ZoneInterface",]
+    "ZoneModel",    "ZoneTagging",    "ZoneTagging.Tags",    "ZoneInterface",]
 
 
 # ============================================================================
 # Generated by hfortix generator v0.6.0
 # Schema: 1.7.0
-# Generated: 2026-01-17T05:32:18.932695Z
+# Generated: 2026-01-17T17:25:22.660009Z
 # ============================================================================

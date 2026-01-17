@@ -12,7 +12,11 @@ from typing import Any, Literal, Optional
 from enum import Enum
 
 # ============================================================================
-# Child Table Models
+# Enum Definitions for Child Table Fields (for fields with 4+ allowed values)
+# ============================================================================
+
+# ============================================================================
+# Child Table Models (sorted deepest-first so nested models are defined before their parents)
 # ============================================================================
 
 class GlobalDisableDiscovery(BaseModel):
@@ -26,8 +30,9 @@ class GlobalDisableDiscovery(BaseModel):
         """Pydantic model configuration."""
         extra = "allow"  # Allow additional fields from API
         str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
     
-    name: str | None = Field(max_length=79, default="", description="FortiSwitch Serial-number.")
+    name: str | None = Field(max_length=79, default=None, description="FortiSwitch Serial-number.")
 class GlobalCustomCommand(BaseModel):
     """
     Child table model for custom-command.
@@ -39,19 +44,30 @@ class GlobalCustomCommand(BaseModel):
         """Pydantic model configuration."""
         extra = "allow"  # Allow additional fields from API
         str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
     
-    command_entry: str | None = Field(max_length=35, default="", description="List of FortiSwitch commands.")    
-    command_name: str = Field(max_length=35, default="", description="Name of custom command to push to all FortiSwitches in VDOM.")  # datasource: ['switch-controller.custom-command.command-name']
+    command_entry: str | None = Field(max_length=35, default=None, description="List of FortiSwitch commands.")    
+    command_name: str = Field(max_length=35, description="Name of custom command to push to all FortiSwitches in VDOM.")  # datasource: ['switch-controller.custom-command.command-name']
 # ============================================================================
 # Enum Definitions (for fields with 4+ allowed values)
 # ============================================================================
 
-class GlobalDhcp_option82_circuit_idEnum(str, Enum):
+class GlobalDhcpOption82CircuitIdEnum(str, Enum):
     """Allowed values for dhcp_option82_circuit_id field."""
-    INTFNAME = "intfname"    VLAN = "vlan"    HOSTNAME = "hostname"    MODE = "mode"    DESCRIPTION = "description"
-class GlobalUpdate_user_deviceEnum(str, Enum):
+    INTFNAME = "intfname"
+    VLAN = "vlan"
+    HOSTNAME = "hostname"
+    MODE = "mode"
+    DESCRIPTION = "description"
+
+class GlobalUpdateUserDeviceEnum(str, Enum):
     """Allowed values for update_user_device field."""
-    MAC_CACHE = "mac-cache"    LLDP = "lldp"    DHCP_SNOOPING = "dhcp-snooping"    L2_DB = "l2-db"    L3_DB = "l3-db"
+    MAC_CACHE = "mac-cache"
+    LLDP = "lldp"
+    DHCP_SNOOPING = "dhcp-snooping"
+    L2_DB = "l2-db"
+    L3_DB = "l3-db"
+
 
 # ============================================================================
 # Main Model
@@ -81,13 +97,13 @@ class GlobalModel(BaseModel):
     vlan_all_mode: Literal["all", "defined"] | None = Field(default="defined", description="VLAN configuration mode, user-defined-vlans or all-possible-vlans.")    
     vlan_optimization: Literal["prune", "configured", "none"] | None = Field(default="configured", description="FortiLink VLAN optimization.")    
     vlan_identity: Literal["description", "name"] | None = Field(default="name", description="Identity of the VLAN. Commonly used for RADIUS Tunnel-Private-Group-Id.")    
-    disable_discovery: list[DisableDiscovery] = Field(default=None, description="Prevent this FortiSwitch from discovering.")    
+    disable_discovery: list[GlobalDisableDiscovery] = Field(default_factory=list, description="Prevent this FortiSwitch from discovering.")    
     mac_retention_period: int | None = Field(ge=0, le=168, default=24, description="Time in hours after which an inactive MAC is removed from client DB (0 = aged out based on mac-aging-interval).")    
-    default_virtual_switch_vlan: str | None = Field(max_length=15, default="", description="Default VLAN for ports when added to the virtual-switch.")  # datasource: ['system.interface.name']    
+    default_virtual_switch_vlan: str | None = Field(max_length=15, default=None, description="Default VLAN for ports when added to the virtual-switch.")  # datasource: ['system.interface.name']    
     dhcp_server_access_list: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable DHCP snooping server access list.")    
     dhcp_option82_format: Literal["ascii", "legacy"] | None = Field(default="ascii", description="DHCP option-82 format string.")    
-    dhcp_option82_circuit_id: list[DhcpOption82CircuitId] = Field(default="intfname vlan mode", description="List the parameters to be included to inform about client identification.")    
-    dhcp_option82_remote_id: list[DhcpOption82RemoteId] = Field(default="mac", description="List the parameters to be included to inform about client identification.")    
+    dhcp_option82_circuit_id: list[GlobalDhcpOption82CircuitIdEnum] = Field(default_factory=list, description="List the parameters to be included to inform about client identification.")    
+    dhcp_option82_remote_id: list[Literal["mac", "hostname", "ip"]] = Field(default_factory=list, description="List the parameters to be included to inform about client identification.")    
     dhcp_snoop_client_req: Literal["drop-untrusted", "forward-untrusted"] | None = Field(default="drop-untrusted", description="Client DHCP packet broadcast mode.")    
     dhcp_snoop_client_db_exp: int | None = Field(ge=300, le=259200, default=86400, description="Expiry time for DHCP snooping server database entries (300 - 259200 sec, default = 86400 sec).")    
     dhcp_snoop_db_per_port_learn_limit: int | None = Field(ge=0, le=2048, default=64, description="Per Interface dhcp-server entries learn limit (0 - 1024, default = 64).")    
@@ -97,8 +113,8 @@ class GlobalModel(BaseModel):
     mac_event_logging: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable MAC address event logging.")    
     bounce_quarantined_link: Literal["disable", "enable"] | None = Field(default="disable", description="Enable/disable bouncing (administratively bring the link down, up) of a switch port where a quarantined device was seen last. Helps to re-initiate the DHCP process for a device.")    
     quarantine_mode: Literal["by-vlan", "by-redirect"] | None = Field(default="by-vlan", description="Quarantine mode.")    
-    update_user_device: list[UpdateUserDevice] = Field(default="mac-cache lldp dhcp-snooping l2-db l3-db", description="Control which sources update the device user list.")    
-    custom_command: list[CustomCommand] = Field(default=None, description="List of custom commands to be pushed to all FortiSwitches in the VDOM.")    
+    update_user_device: list[GlobalUpdateUserDeviceEnum] = Field(default_factory=list, description="Control which sources update the device user list.")    
+    custom_command: list[GlobalCustomCommand] = Field(default_factory=list, description="List of custom commands to be pushed to all FortiSwitches in the VDOM.")    
     fips_enforce: Literal["disable", "enable"] | None = Field(default="enable", description="Enable/disable enforcement of FIPS on managed FortiSwitch devices.")    
     firmware_provision_on_authorization: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable automatic provisioning of latest firmware on authorization.")    
     switch_on_deauth: Literal["no-op", "factory-reset"] | None = Field(default="no-op", description="No-operation/Factory-reset the managed FortiSwitch on deauthorization.")    
@@ -182,7 +198,7 @@ class GlobalModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.switch_controller.global_.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate scalar field
         value = getattr(self, "default_virtual_switch_vlan", None)
@@ -231,7 +247,7 @@ class GlobalModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.switch_controller.global_.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate child table items
         values = getattr(self, "custom_command", [])
@@ -249,7 +265,7 @@ class GlobalModel(BaseModel):
             
             # Check all datasource endpoints
             found = False
-            if await client.api.cmdb.switch-controller.custom-command.exists(value):
+            if await client.api.cmdb.switch_controller.custom_command.exists(value):
                 found = True
             
             if not found:
@@ -302,5 +318,5 @@ __all__ = [
 # ============================================================================
 # Generated by hfortix generator v0.6.0
 # Schema: 1.7.0
-# Generated: 2026-01-17T05:32:16.463771Z
+# Generated: 2026-01-17T17:25:20.503855Z
 # ============================================================================

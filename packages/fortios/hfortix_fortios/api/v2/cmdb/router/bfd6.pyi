@@ -1,348 +1,101 @@
-from typing import TypedDict, Literal, Any, Coroutine, Union, overload, Generator, final
-from typing_extensions import NotRequired
-from hfortix_fortios.models import FortiObject, FortiObjectList
+""" - Type Stubs
 
-# ============================================================================
-# Nested TypedDicts for table field children (dict mode)
-# These MUST be defined before the Payload class to use them as type hints
-# ============================================================================
+Auto-generated stub file for type checking and IDE support.
 
-class Bfd6NeighborItem(TypedDict, total=False):
-    """Type hints for neighbor table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    Use this when building payloads for POST/PUT requests.
-    
-    **Available fields:**
-        - ip6_address: str
-        - interface: str
-    
-    **Example:**
-        entry: Bfd6NeighborItem = {
-            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
-        }
-    """
-    
-    ip6_address: str  # IPv6 address of the BFD neighbor. | Default: ::
-    interface: str  # Interface to the BFD neighbor. | MaxLen: 15
+Endpoint: router/bfd6
+Category: cmdb
+"""
+
+from __future__ import annotations
+
+from typing import (
+    Any,
+    ClassVar,
+    Literal,
+    TypedDict,
+)
+
+from hfortix_fortios.models import (
+    FortiObject,
+    FortiObjectList,
+)
 
 
-class Bfd6MultihoptemplateItem(TypedDict, total=False):
-    """Type hints for multihop-template table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    Use this when building payloads for POST/PUT requests.
-    
-    **Available fields:**
-        - id: int
-        - src: str
-        - dst: str
-        - bfd_desired_min_tx: int
-        - bfd_required_min_rx: int
-        - bfd_detect_mult: int
-        - auth_mode: "none" | "md5"
-        - md5_key: str
-    
-    **Example:**
-        entry: Bfd6MultihoptemplateItem = {
-            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
-        }
-    """
-    
-    id: int  # ID. | Default: 0 | Min: 0 | Max: 4294967295
-    src: str  # Source prefix. | Default: ::/0
-    dst: str  # Destination prefix. | Default: ::/0
-    bfd_desired_min_tx: int  # BFD desired minimal transmit interval | Default: 250 | Min: 100 | Max: 30000
-    bfd_required_min_rx: int  # BFD required minimal receive interval | Default: 250 | Min: 100 | Max: 30000
-    bfd_detect_mult: int  # BFD detection multiplier. | Default: 3 | Min: 3 | Max: 50
-    auth_mode: Literal["none", "md5"]  # Authentication mode. | Default: none
-    md5_key: str  # MD5 key of key ID 1. | MaxLen: 16
+# ================================================================
+# TypedDict Payloads
+# ================================================================
 
-
-# ============================================================================
-# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional)
-# ============================================================================
-# NOTE: We intentionally DON'T use NotRequired wrapper because:
-# 1. total=False already makes all fields optional
-# 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
-class Bfd6Payload(TypedDict, total=False):
-    """
-    Type hints for router/bfd6 payload fields.
-    
-    Configure IPv6 BFD.
-    
-    **Usage:**
-        payload: Bfd6Payload = {
-            "field": "value",  # <- autocomplete shows all fields
-        }
-    """
-    neighbor: list[Bfd6NeighborItem]  # Configure neighbor of IPv6 BFD.
-    multihop_template: list[Bfd6MultihoptemplateItem]  # BFD IPv6 multi-hop template table.
-
-# ============================================================================
-# Nested classes for table field children (object mode - for API responses)
-# ============================================================================
-
-@final
-class Bfd6NeighborObject:
-    """Typed object for neighbor table items.
-    
-    Provides IDE autocomplete for nested table field attributes.
-    At runtime, this is a FortiObject instance.
-    """
-    
-    # IPv6 address of the BFD neighbor. | Default: ::
+class Bfd6NeighborItem:
+    """Nested item for neighbor field - supports attribute access."""
     ip6_address: str
-    # Interface to the BFD neighbor. | MaxLen: 15
     interface: str
-    
-    # Common API response fields
-    status: str
-    http_status: int | None
-    http_status_code: int | None
-    http_method: str | None
-    http_response_time: float | None
-    vdom: str | None
-    
-    # Methods from FortiObject
-    @property
-    def dict(self) -> dict[str, Any]:
-        """Convert to dictionary."""
-        ...
-    @property
-    def json(self) -> str:
-        """Get pretty-printed JSON string."""
-        ...
-    @property
-    def raw(self) -> dict[str, Any]:
-        """Get raw API response data."""
-        ...
-    def get_full(self, name: str) -> Any: ...
-    def to_dict(self) -> FortiObject: ...
-    def keys(self) -> Any: ...
-    def values(self) -> Generator[Any, None, None]: ...
-    def items(self) -> Generator[tuple[str, Any], None, None]: ...
-    def get(self, key: str, default: Any = None) -> Any: ...
 
 
-@final
-class Bfd6MultihoptemplateObject:
-    """Typed object for multihop-template table items.
-    
-    Provides IDE autocomplete for nested table field attributes.
-    At runtime, this is a FortiObject instance.
-    """
-    
-    # ID. | Default: 0 | Min: 0 | Max: 4294967295
+class Bfd6MultihoptemplateItem:
+    """Nested item for multihop-template field - supports attribute access."""
     id: int
-    # Source prefix. | Default: ::/0
     src: str
-    # Destination prefix. | Default: ::/0
     dst: str
-    # BFD desired minimal transmit interval (milliseconds). | Default: 250 | Min: 100 | Max: 30000
     bfd_desired_min_tx: int
-    # BFD required minimal receive interval (milliseconds). | Default: 250 | Min: 100 | Max: 30000
     bfd_required_min_rx: int
-    # BFD detection multiplier. | Default: 3 | Min: 3 | Max: 50
     bfd_detect_mult: int
-    # Authentication mode. | Default: none
     auth_mode: Literal["none", "md5"]
-    # MD5 key of key ID 1. | MaxLen: 16
     md5_key: str
-    
-    # Common API response fields
-    status: str
-    http_status: int | None
-    http_status_code: int | None
-    http_method: str | None
-    http_response_time: float | None
-    vdom: str | None
-    
-    # Methods from FortiObject
-    @property
-    def dict(self) -> dict[str, Any]:
-        """Convert to dictionary."""
-        ...
-    @property
-    def json(self) -> str:
-        """Get pretty-printed JSON string."""
-        ...
-    @property
-    def raw(self) -> dict[str, Any]:
-        """Get raw API response data."""
-        ...
-    def get_full(self, name: str) -> Any: ...
-    def to_dict(self) -> FortiObject: ...
-    def keys(self) -> Any: ...
-    def values(self) -> Generator[Any, None, None]: ...
-    def items(self) -> Generator[tuple[str, Any], None, None]: ...
-    def get(self, key: str, default: Any = None) -> Any: ...
 
 
+class Bfd6Payload(TypedDict, total=False):
+    """Payload type for Bfd6 operations."""
+    neighbor: str | list[str] | list[dict[str, Any]] | list[Bfd6NeighborItem]
+    multihop_template: str | list[str] | list[dict[str, Any]] | list[Bfd6MultihoptemplateItem]
 
 
-# Response TypedDict for GET returns (all fields present in API response)
-class Bfd6Response(TypedDict):
-    """
-    Type hints for router/bfd6 API response fields.
-    
-    All fields are present in the response from the FortiGate API.
-    """
-    neighbor: list[Bfd6NeighborItem]  # Configure neighbor of IPv6 BFD.
-    multihop_template: list[Bfd6MultihoptemplateItem]  # BFD IPv6 multi-hop template table.
+# ================================================================
+# Response Types (TypedDict for dict-style access)
+# ================================================================
+
+class Bfd6Response(TypedDict, total=False):
+    """Response type for Bfd6 - use with .dict property for typed dict access."""
+    neighbor: list[Bfd6NeighborItem]
+    multihop_template: list[Bfd6MultihoptemplateItem]
 
 
-@final
-class Bfd6Object:
-    """Typed FortiObject for router/bfd6 with IDE autocomplete support.
-    
-    This is a typed wrapper that provides IDE autocomplete for API response fields.
-    At runtime, this is actually a FortiObject instance.
-    """
-    
-    # Configure neighbor of IPv6 BFD.
-    neighbor: list[Bfd6NeighborObject]
-    # BFD IPv6 multi-hop template table.
-    multihop_template: list[Bfd6MultihoptemplateObject]
-    
-    # Common API response fields
-    status: str
-    http_status: int | None
-    http_status_code: int | None
-    http_method: str | None
-    http_response_time: float | None
-    vdom: str | None
-    
-    # Methods from FortiObject
-    @property
-    def dict(self) -> dict[str, Any]:
-        """Convert to dictionary."""
-        ...
-    @property
-    def json(self) -> str:
-        """Get pretty-printed JSON string."""
-        ...
-    @property
-    def raw(self) -> dict[str, Any]:
-        """Get raw API response data."""
-        ...
-    def get_full(self, name: str) -> Any: ...
-    def to_dict(self) -> Bfd6Payload: ...
-    def keys(self) -> Any: ...
-    def values(self) -> Generator[Any, None, None]: ...
-    def items(self) -> Generator[tuple[str, Any], None, None]: ...
-    def get(self, key: str, default: Any = None) -> Any: ...
+# ================================================================
+# Response Types (Class for attribute access)
+# ================================================================
 
+
+class Bfd6Object(FortiObject):
+    """Typed FortiObject for Bfd6 with field access."""
+    neighbor: list[Bfd6NeighborItem]
+    multihop_template: list[Bfd6MultihoptemplateItem]
+
+
+# ================================================================
+# Main Endpoint Class
+# ================================================================
 
 class Bfd6:
     """
-    Configure IPv6 BFD.
     
-    Path: router/bfd6
+    Endpoint: router/bfd6
     Category: cmdb
     """
     
+    # Class attributes for introspection
+    endpoint: ClassVar[str] = ...
+    path: ClassVar[str] = ...
+    category: ClassVar[str] = ...
+    capabilities: ClassVar[dict[str, Any]] = ...
+    
     def __init__(self, client: Any) -> None:
-        """Initialize endpoint with HTTP client.
-        
-        Args:
-            client: HTTP client instance for API communication
-        """
+        """Initialize endpoint with HTTP client."""
         ...
     
     # ================================================================
-    # GET OVERLOADS - Always returns FortiObject (or ContentResponse for file endpoints)
-    # Pylance matches overloads top-to-bottom, so these must come first!
+    # GET Methods
     # ================================================================
     
-    # With mkey as positional arg -> returns FortiObject
-    @overload
-    def get(
-        self,
-        name: str,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> Bfd6Object: ...
-    
-    # With mkey as keyword arg -> returns FortiObject
-    @overload
-    def get(
-        self,
-        *,
-        name: str,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> Bfd6Object: ...
-    
-    # Without mkey -> returns list of FortiObjects
-    @overload
-    def get(
-        self,
-        name: None = None,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> Bfd6Object: ...
-    
-    # ================================================================
-    # (removed - all GET now returns FortiObject)
-    # ================================================================
-    
-    # With mkey as positional arg -> returns single object
-    @overload
-    def get(
-        self,
-        name: str,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> Bfd6Object: ...
-    
-    # With mkey as keyword arg -> returns single object
-    @overload
-    def get(
-        self,
-        *,
-        name: str,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> Bfd6Object: ...
-    
-    # With no mkey -> returns list of objects
-    @overload
+    # Singleton endpoint (no mkey)
     def get(
         self,
         *,
@@ -355,129 +108,35 @@ class Bfd6:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        error_mode: Literal["raise", "return", "print"] | None = ...,
+        error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> Bfd6Object: ...
-    
-    # Dict mode with mkey provided as positional arg (single dict)
-    @overload
-    def get(
-        self,
-        name: str,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> Bfd6Object: ...
-    
-    # Dict mode with mkey provided as keyword arg (single dict)
-    @overload
-    def get(
-        self,
-        *,
-        name: str,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> Bfd6Object: ...
-    
-    # Dict mode - list of dicts (no mkey/name provided) - keyword-only signature
-    @overload
-    def get(
-        self,
-        *,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> Bfd6Object: ...
-    
-    # Fallback overload for all other cases
-    @overload
-    def get(
-        self,
-        name: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> dict[str, Any] | FortiObject: ...
-    
-    def get(
-        self,
-        name: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> Bfd6Object | dict[str, Any]: ...
     
     def get_schema(
         self,
         vdom: str | None = ...,
         format: str = ...,
     ) -> FortiObject: ...
+
+
+    # ================================================================
+    # PUT Method
+    # ================================================================
     
-    # PUT overloads
-    @overload
     def put(
         self,
         payload_dict: Bfd6Payload | None = ...,
-        neighbor: str | list[str] | list[Bfd6NeighborItem] | None = ...,
-        multihop_template: str | list[str] | list[Bfd6MultihoptemplateItem] | None = ...,
+        neighbor: str | list[str] | list[dict[str, Any]] | list[Bfd6NeighborItem] | None = ...,
+        multihop_template: str | list[str] | list[dict[str, Any]] | list[Bfd6MultihoptemplateItem] | None = ...,
         vdom: str | bool | None = ...,
+        error_mode: Literal["raise", "return", "print"] | None = ...,
+        error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> Bfd6Object: ...
-    
-    @overload
-    def put(
-        self,
-        payload_dict: Bfd6Payload | None = ...,
-        neighbor: str | list[str] | list[Bfd6NeighborItem] | None = ...,
-        multihop_template: str | list[str] | list[Bfd6MultihoptemplateItem] | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
-    
-    # Default overload
-    @overload
-    def put(
-        self,
-        payload_dict: Bfd6Payload | None = ...,
-        neighbor: str | list[str] | list[Bfd6NeighborItem] | None = ...,
-        multihop_template: str | list[str] | list[Bfd6MultihoptemplateItem] | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
-    
-    def put(
-        self,
-        payload_dict: Bfd6Payload | None = ...,
-        neighbor: str | list[str] | list[Bfd6NeighborItem] | None = ...,
-        multihop_template: str | list[str] | list[Bfd6MultihoptemplateItem] | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+
+
+    # ================================================================
+    # Utility Methods
+    # ================================================================
     
     def exists(
         self,
@@ -488,9 +147,11 @@ class Bfd6:
     def set(
         self,
         payload_dict: Bfd6Payload | None = ...,
-        neighbor: str | list[str] | list[Bfd6NeighborItem] | None = ...,
-        multihop_template: str | list[str] | list[Bfd6MultihoptemplateItem] | None = ...,
+        neighbor: str | list[str] | list[dict[str, Any]] | list[Bfd6NeighborItem] | None = ...,
+        multihop_template: str | list[str] | list[dict[str, Any]] | list[Bfd6MultihoptemplateItem] | None = ...,
         vdom: str | bool | None = ...,
+        error_mode: Literal["raise", "return", "print"] | None = ...,
+        error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> FortiObject: ...
     
     # Helper methods
@@ -498,7 +159,7 @@ class Bfd6:
     def help(field_name: str | None = ...) -> str: ...
     
     @staticmethod
-    def fields(detailed: bool = ...) -> Union[list[str], list[dict[str, Any]]]: ...
+    def fields(detailed: bool = ...) -> list[str] | list[dict[str, Any]]: ...
     
     @staticmethod
     def field_info(field_name: str) -> FortiObject: ...
@@ -514,9 +175,6 @@ class Bfd6:
     
     @staticmethod
     def schema() -> FortiObject: ...
-
-
-# ================================================================
 
 
 __all__ = [

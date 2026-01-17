@@ -626,6 +626,16 @@ class AnqpNaiRealm(CRUDEndpoint, MetadataMixin):
             - put(): Update existing object
             - exists(): Check existence manually
         """
+        # Apply normalization for table fields (supports flexible input formats)
+        if nai_list is not None:
+            nai_list = normalize_table_field(
+                nai_list,
+                mkey="name",
+                required_fields=['name'],
+                field_name="nai_list",
+                example="[{'name': 'value'}]",
+            )
+        
         # Build payload using helper function with auto-normalization
         payload_data = build_api_payload(
             name=name,

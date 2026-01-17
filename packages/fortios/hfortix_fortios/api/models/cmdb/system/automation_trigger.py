@@ -12,7 +12,11 @@ from typing import Any, Literal, Optional
 from enum import Enum
 
 # ============================================================================
-# Child Table Models
+# Enum Definitions for Child Table Fields (for fields with 4+ allowed values)
+# ============================================================================
+
+# ============================================================================
+# Child Table Models (sorted deepest-first so nested models are defined before their parents)
 # ============================================================================
 
 class AutomationTriggerVdom(BaseModel):
@@ -26,8 +30,9 @@ class AutomationTriggerVdom(BaseModel):
         """Pydantic model configuration."""
         extra = "allow"  # Allow additional fields from API
         str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
     
-    name: str | None = Field(max_length=79, default="", description="Virtual domain name.")  # datasource: ['system.vdom.name']
+    name: str | None = Field(max_length=79, default=None, description="Virtual domain name.")  # datasource: ['system.vdom.name']
 class AutomationTriggerLogid(BaseModel):
     """
     Child table model for logid.
@@ -39,8 +44,9 @@ class AutomationTriggerLogid(BaseModel):
         """Pydantic model configuration."""
         extra = "allow"  # Allow additional fields from API
         str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
     
-    id: int = Field(ge=1, le=65535, default=0, description="Log ID.")
+    id_: int = Field(ge=1, le=65535, default=0, serialization_alias="id", description="Log ID.")
 class AutomationTriggerFields(BaseModel):
     """
     Child table model for fields.
@@ -52,29 +58,75 @@ class AutomationTriggerFields(BaseModel):
         """Pydantic model configuration."""
         extra = "allow"  # Allow additional fields from API
         str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
     
-    id: int | None = Field(ge=0, le=4294967295, default=0, description="Entry ID.")    
-    name: str | None = Field(max_length=35, default="", description="Name.")    
+    id_: int | None = Field(ge=0, le=4294967295, default=0, serialization_alias="id", description="Entry ID.")    
+    name: str | None = Field(max_length=35, default=None, description="Name.")    
     value: str | None = Field(max_length=63, default=None, description="Value.")
 # ============================================================================
 # Enum Definitions (for fields with 4+ allowed values)
 # ============================================================================
 
-class AutomationTriggerEvent_typeEnum(str, Enum):
+class AutomationTriggerEventTypeEnum(str, Enum):
     """Allowed values for event_type field."""
-    IOC = "ioc"    EVENT_LOG = "event-log"    REBOOT = "reboot"    LOW_MEMORY = "low-memory"    HIGH_CPU = "high-cpu"    LICENSE_NEAR_EXPIRY = "license-near-expiry"    LOCAL_CERT_NEAR_EXPIRY = "local-cert-near-expiry"    HA_FAILOVER = "ha-failover"    CONFIG_CHANGE = "config-change"    SECURITY_RATING_SUMMARY = "security-rating-summary"    VIRUS_IPS_DB_UPDATED = "virus-ips-db-updated"    FAZ_EVENT = "faz-event"    INCOMING_WEBHOOK = "incoming-webhook"    FABRIC_EVENT = "fabric-event"    IPS_LOGS = "ips-logs"    ANOMALY_LOGS = "anomaly-logs"    VIRUS_LOGS = "virus-logs"    SSH_LOGS = "ssh-logs"    WEBFILTER_VIOLATION = "webfilter-violation"    TRAFFIC_VIOLATION = "traffic-violation"    STITCH = "stitch"
-class AutomationTriggerLicense_typeEnum(str, Enum):
+    IOC = "ioc"
+    EVENT_LOG = "event-log"
+    REBOOT = "reboot"
+    LOW_MEMORY = "low-memory"
+    HIGH_CPU = "high-cpu"
+    LICENSE_NEAR_EXPIRY = "license-near-expiry"
+    LOCAL_CERT_NEAR_EXPIRY = "local-cert-near-expiry"
+    HA_FAILOVER = "ha-failover"
+    CONFIG_CHANGE = "config-change"
+    SECURITY_RATING_SUMMARY = "security-rating-summary"
+    VIRUS_IPS_DB_UPDATED = "virus-ips-db-updated"
+    FAZ_EVENT = "faz-event"
+    INCOMING_WEBHOOK = "incoming-webhook"
+    FABRIC_EVENT = "fabric-event"
+    IPS_LOGS = "ips-logs"
+    ANOMALY_LOGS = "anomaly-logs"
+    VIRUS_LOGS = "virus-logs"
+    SSH_LOGS = "ssh-logs"
+    WEBFILTER_VIOLATION = "webfilter-violation"
+    TRAFFIC_VIOLATION = "traffic-violation"
+    STITCH = "stitch"
+
+class AutomationTriggerLicenseTypeEnum(str, Enum):
     """Allowed values for license_type field."""
-    FORTICARE_SUPPORT = "forticare-support"    FORTIGUARD_WEBFILTER = "fortiguard-webfilter"    FORTIGUARD_ANTISPAM = "fortiguard-antispam"    FORTIGUARD_ANTIVIRUS = "fortiguard-antivirus"    FORTIGUARD_IPS = "fortiguard-ips"    FORTIGUARD_MANAGEMENT = "fortiguard-management"    FORTICLOUD = "forticloud"    ANY = "any"
-class AutomationTriggerReport_typeEnum(str, Enum):
+    FORTICARE_SUPPORT = "forticare-support"
+    FORTIGUARD_WEBFILTER = "fortiguard-webfilter"
+    FORTIGUARD_ANTISPAM = "fortiguard-antispam"
+    FORTIGUARD_ANTIVIRUS = "fortiguard-antivirus"
+    FORTIGUARD_IPS = "fortiguard-ips"
+    FORTIGUARD_MANAGEMENT = "fortiguard-management"
+    FORTICLOUD = "forticloud"
+    ANY = "any"
+
+class AutomationTriggerReportTypeEnum(str, Enum):
     """Allowed values for report_type field."""
-    POSTURE = "posture"    COVERAGE = "coverage"    OPTIMIZATION = "optimization"    ANY = "any"
-class AutomationTriggerTrigger_frequencyEnum(str, Enum):
+    POSTURE = "posture"
+    COVERAGE = "coverage"
+    OPTIMIZATION = "optimization"
+    ANY = "any"
+
+class AutomationTriggerTriggerFrequencyEnum(str, Enum):
     """Allowed values for trigger_frequency field."""
-    HOURLY = "hourly"    DAILY = "daily"    WEEKLY = "weekly"    MONTHLY = "monthly"    ONCE = "once"
-class AutomationTriggerTrigger_weekdayEnum(str, Enum):
+    HOURLY = "hourly"
+    DAILY = "daily"
+    WEEKLY = "weekly"
+    MONTHLY = "monthly"
+    ONCE = "once"
+
+class AutomationTriggerTriggerWeekdayEnum(str, Enum):
     """Allowed values for trigger_weekday field."""
-    SUNDAY = "sunday"    MONDAY = "monday"    TUESDAY = "tuesday"    WEDNESDAY = "wednesday"    THURSDAY = "thursday"    FRIDAY = "friday"    SATURDAY = "saturday"
+    SUNDAY = "sunday"
+    MONDAY = "monday"
+    TUESDAY = "tuesday"
+    WEDNESDAY = "wednesday"
+    THURSDAY = "thursday"
+    FRIDAY = "friday"
+    SATURDAY = "saturday"
+
 
 # ============================================================================
 # Main Model
@@ -99,22 +151,22 @@ class AutomationTriggerModel(BaseModel):
     # Model Fields
     # ========================================================================
     
-    name: str | None = Field(max_length=35, default="", description="Name.")    
+    name: str | None = Field(max_length=35, default=None, description="Name.")    
     description: str | None = Field(max_length=255, default=None, description="Description.")    
     trigger_type: Literal["event-based", "scheduled"] | None = Field(default="event-based", description="Trigger type.")    
-    event_type: EventTypeEnum | None = Field(default="ioc", description="Event type.")    
-    vdom: list[Vdom] = Field(default=None, description="Virtual domain(s) that this trigger is valid for.")    
-    license_type: LicenseTypeEnum | None = Field(default="forticare-support", description="License type.")    
-    report_type: ReportTypeEnum | None = Field(default="posture", description="Security Rating report.")    
-    stitch_name: str = Field(max_length=35, default="", description="Triggering stitch name.")  # datasource: ['system.automation-stitch.name']    
-    logid: list[Logid] = Field(default=None, description="Log IDs to trigger event.")    
-    trigger_frequency: TriggerFrequencyEnum | None = Field(default="daily", description="Scheduled trigger frequency (default = daily).")    
-    trigger_weekday: TriggerWeekdayEnum | None = Field(default="", description="Day of week for trigger.")    
+    event_type: AutomationTriggerEventTypeEnum | None = Field(default=AutomationTriggerEventTypeEnum.IOC, description="Event type.")    
+    vdom: list[AutomationTriggerVdom] = Field(default_factory=list, description="Virtual domain(s) that this trigger is valid for.")    
+    license_type: AutomationTriggerLicenseTypeEnum | None = Field(default=AutomationTriggerLicenseTypeEnum.FORTICARE_SUPPORT, description="License type.")    
+    report_type: AutomationTriggerReportTypeEnum | None = Field(default=AutomationTriggerReportTypeEnum.POSTURE, description="Security Rating report.")    
+    stitch_name: str = Field(max_length=35, description="Triggering stitch name.")  # datasource: ['system.automation-stitch.name']    
+    logid: list[AutomationTriggerLogid] = Field(default_factory=list, description="Log IDs to trigger event.")    
+    trigger_frequency: AutomationTriggerTriggerFrequencyEnum | None = Field(default=AutomationTriggerTriggerFrequencyEnum.DAILY, description="Scheduled trigger frequency (default = daily).")    
+    trigger_weekday: AutomationTriggerTriggerWeekdayEnum | None = Field(default=None, description="Day of week for trigger.")    
     trigger_day: int | None = Field(ge=1, le=31, default=1, description="Day within a month to trigger.")    
     trigger_hour: int | None = Field(ge=0, le=23, default=0, description="Hour of the day on which to trigger (0 - 23, default = 1).")    
     trigger_minute: int | None = Field(ge=0, le=59, default=0, description="Minute of the hour on which to trigger (0 - 59, default = 0).")    
     trigger_datetime: Any = Field(default="0000-00-00 00:00:00", description="Trigger date and time (YYYY-MM-DD HH:MM:SS).")    
-    fields: list[Fields] = Field(default=None, description="Customized trigger field settings.")    
+    fields: list[AutomationTriggerFields] = Field(default_factory=list, description="Customized trigger field settings.")    
     faz_event_name: str = Field(max_length=255, description="FortiAnalyzer event handler name.")    
     faz_event_severity: str | None = Field(max_length=255, default=None, description="FortiAnalyzer event severity.")    
     faz_event_tags: str | None = Field(max_length=255, default=None, description="FortiAnalyzer event tags.")    
@@ -200,7 +252,7 @@ class AutomationTriggerModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.system.automation_trigger.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate child table items
         values = getattr(self, "vdom", [])
@@ -258,7 +310,7 @@ class AutomationTriggerModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.system.automation_trigger.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate scalar field
         value = getattr(self, "stitch_name", None)
@@ -267,7 +319,7 @@ class AutomationTriggerModel(BaseModel):
         
         # Check all datasource endpoints
         found = False
-        if await client.api.cmdb.system.automation-stitch.exists(value):
+        if await client.api.cmdb.system.automation_stitch.exists(value):
             found = True
         
         if not found:
@@ -320,5 +372,5 @@ __all__ = [
 # ============================================================================
 # Generated by hfortix generator v0.6.0
 # Schema: 1.7.0
-# Generated: 2026-01-17T05:32:17.116918Z
+# Generated: 2026-01-17T17:25:21.050844Z
 # ============================================================================

@@ -352,6 +352,8 @@ class List(CRUDEndpoint, MetadataMixin):
                 example="[{'id': 1, 'port': 1}]",
             )
         
+        # Apply normalization for multi-value option fields (space-separated strings)
+        
         # Build payload using helper function with auto-normalization
         # This automatically converts strings/lists to [{'name': '...'}] format for list fields
         # To disable auto-normalization, use build_cmdb_payload directly
@@ -516,6 +518,8 @@ class List(CRUDEndpoint, MetadataMixin):
                 field_name="default_network_services",
                 example="[{'id': 1, 'port': 1}]",
             )
+        
+        # Apply normalization for multi-value option fields (space-separated strings)
         
         # Build payload using helper function with auto-normalization
         # This automatically converts strings/lists to [{'name': '...'}] format for list fields
@@ -773,6 +777,26 @@ class List(CRUDEndpoint, MetadataMixin):
             - put(): Update existing object
             - exists(): Check existence manually
         """
+        # Apply normalization for table fields (supports flexible input formats)
+        if entries is not None:
+            entries = normalize_table_field(
+                entries,
+                mkey="id",
+                required_fields=['id'],
+                field_name="entries",
+                example="[{'id': 1}]",
+            )
+        if default_network_services is not None:
+            default_network_services = normalize_table_field(
+                default_network_services,
+                mkey="id",
+                required_fields=['id', 'port'],
+                field_name="default_network_services",
+                example="[{'id': 1, 'port': 1}]",
+            )
+        
+        # Apply normalization for multi-value option fields (space-separated strings)
+        
         # Build payload using helper function with auto-normalization
         payload_data = build_api_payload(
             name=name,

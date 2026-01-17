@@ -8,32 +8,16 @@ Generated from FortiOS schema version unknown.
 from __future__ import annotations
 
 from pydantic import BaseModel, Field
-from typing import Any, Optional
+from typing import Any, Literal, Optional
 
 # ============================================================================
-# Child Table Models
+# Enum Definitions for Child Table Fields (for fields with 4+ allowed values)
 # ============================================================================
 
-class AccessControlListLayer3Ipv4Rules(BaseModel):
-    """
-    Child table model for layer3-ipv4-rules.
-    
-    AP ACL layer3 ipv4 rule list.
-    """
-    
-    class Config:
-        """Pydantic model configuration."""
-        extra = "allow"  # Allow additional fields from API
-        str_strip_whitespace = True
-    
-    rule_id: int | None = Field(ge=1, le=65535, default=0, description="Rule ID (1 - 65535).")    
-    comment: str | None = Field(max_length=63, default="", description="Description.")    
-    srcaddr: str | None = Field(default="", description="Source IP address (any | local-LAN | IPv4 address[/<network mask | mask length>], default = any).")    
-    srcport: int | None = Field(ge=0, le=65535, default=0, description="Source port (0 - 65535, default = 0, meaning any).")    
-    dstaddr: str | None = Field(default="", description="Destination IP address (any | local-LAN | IPv4 address[/<network mask | mask length>], default = any).")    
-    dstport: int | None = Field(ge=0, le=65535, default=0, description="Destination port (0 - 65535, default = 0, meaning any).")    
-    protocol: int | None = Field(ge=0, le=255, default=255, description="Protocol type as defined by IANA (0 - 255, default = 255, meaning any).")    
-    action: Literal["allow", "deny"] | None = Field(default="", description="Policy action (allow | deny).")
+# ============================================================================
+# Child Table Models (sorted deepest-first so nested models are defined before their parents)
+# ============================================================================
+
 class AccessControlListLayer3Ipv6Rules(BaseModel):
     """
     Child table model for layer3-ipv6-rules.
@@ -45,15 +29,37 @@ class AccessControlListLayer3Ipv6Rules(BaseModel):
         """Pydantic model configuration."""
         extra = "allow"  # Allow additional fields from API
         str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
     
     rule_id: int | None = Field(ge=1, le=65535, default=0, description="Rule ID (1 - 65535).")    
-    comment: str | None = Field(max_length=63, default="", description="Description.")    
-    srcaddr: str | None = Field(default="", description="Source IPv6 address (any | local-LAN | IPv6 address[/prefix length]), default = any.")    
+    comment: str | None = Field(max_length=63, default=None, description="Description.")    
+    srcaddr: str | None = Field(default=None, description="Source IPv6 address (any | local-LAN | IPv6 address[/prefix length]), default = any.")    
     srcport: int | None = Field(ge=0, le=65535, default=0, description="Source port (0 - 65535, default = 0, meaning any).")    
-    dstaddr: str | None = Field(default="", description="Destination IPv6 address (any | local-LAN | IPv6 address[/prefix length]), default = any.")    
+    dstaddr: str | None = Field(default=None, description="Destination IPv6 address (any | local-LAN | IPv6 address[/prefix length]), default = any.")    
     dstport: int | None = Field(ge=0, le=65535, default=0, description="Destination port (0 - 65535, default = 0, meaning any).")    
     protocol: int | None = Field(ge=0, le=255, default=255, description="Protocol type as defined by IANA (0 - 255, default = 255, meaning any).")    
-    action: Literal["allow", "deny"] | None = Field(default="", description="Policy action (allow | deny).")
+    action: Literal["allow", "deny"] | None = Field(default=None, description="Policy action (allow | deny).")
+class AccessControlListLayer3Ipv4Rules(BaseModel):
+    """
+    Child table model for layer3-ipv4-rules.
+    
+    AP ACL layer3 ipv4 rule list.
+    """
+    
+    class Config:
+        """Pydantic model configuration."""
+        extra = "allow"  # Allow additional fields from API
+        str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
+    
+    rule_id: int | None = Field(ge=1, le=65535, default=0, description="Rule ID (1 - 65535).")    
+    comment: str | None = Field(max_length=63, default=None, description="Description.")    
+    srcaddr: str | None = Field(default=None, description="Source IP address (any | local-LAN | IPv4 address[/<network mask | mask length>], default = any).")    
+    srcport: int | None = Field(ge=0, le=65535, default=0, description="Source port (0 - 65535, default = 0, meaning any).")    
+    dstaddr: str | None = Field(default=None, description="Destination IP address (any | local-LAN | IPv4 address[/<network mask | mask length>], default = any).")    
+    dstport: int | None = Field(ge=0, le=65535, default=0, description="Destination port (0 - 65535, default = 0, meaning any).")    
+    protocol: int | None = Field(ge=0, le=255, default=255, description="Protocol type as defined by IANA (0 - 255, default = 255, meaning any).")    
+    action: Literal["allow", "deny"] | None = Field(default=None, description="Policy action (allow | deny).")
 # ============================================================================
 # Enum Definitions (for fields with 4+ allowed values)
 # ============================================================================
@@ -82,10 +88,10 @@ class AccessControlListModel(BaseModel):
     # Model Fields
     # ========================================================================
     
-    name: str | None = Field(max_length=35, default="", description="AP access control list name.")    
-    comment: str | None = Field(max_length=63, default="", description="Description.")    
-    layer3_ipv4_rules: list[Layer3Ipv4Rules] = Field(default=None, description="AP ACL layer3 ipv4 rule list.")    
-    layer3_ipv6_rules: list[Layer3Ipv6Rules] = Field(default=None, description="AP ACL layer3 ipv6 rule list.")    
+    name: str | None = Field(max_length=35, default=None, description="AP access control list name.")    
+    comment: str | None = Field(max_length=63, default=None, description="Description.")    
+    layer3_ipv4_rules: list[AccessControlListLayer3Ipv4Rules] = Field(default_factory=list, description="AP ACL layer3 ipv4 rule list.")    
+    layer3_ipv6_rules: list[AccessControlListLayer3Ipv6Rules] = Field(default_factory=list, description="AP ACL layer3 ipv6 rule list.")    
     # ========================================================================
     # Custom Validators
     # ========================================================================
@@ -134,5 +140,5 @@ __all__ = [
 # ============================================================================
 # Generated by hfortix generator v0.6.0
 # Schema: 1.7.0
-# Generated: 2026-01-17T05:32:18.164874Z
+# Generated: 2026-01-17T17:25:21.977469Z
 # ============================================================================

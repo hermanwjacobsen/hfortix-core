@@ -5,6 +5,86 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.5.98] - 2025-05-23
+
+### Fixed
+
+- **Stub generator `status` field**: Removed `status` from `reserved_fields` list - base class has `http_status` (for API response status), but `status` (enable/disable) is a valid object field that should be generated in child class stubs
+- **Stub template multi-value option fields**: Fixed `endpoint_class.pyi.j2` template for fields with `options` + `is_list=True` (e.g., `firewall.schedule/recurring.day`). FortiOS returns space-separated strings like `"monday tuesday wednesday"`, not lists. Response/Object types now use `str`, Payload accepts `str | list[str]` for convenience
+- **Stub method parameters for multi-value fields**: Fixed `post()`, `put()`, and `set()` method signatures in `.pyi` stubs to use `str | list[str]` instead of `Literal[...] | list[str]` for space-separated multi-value option fields
+
+### Added
+
+- **`normalize_day_field()` helper**: New normalizer in `_helpers/normalizers.py` for schedule day fields. Accepts `str`, `list[str]`, or comma-separated string and normalizes to space-separated format for FortiOS API. Includes validation of day names.
+- **Generator: auto-normalize multi-value option fields**: Added `extract_multivalue_option_fields()` to schema parser and integrated into `endpoint_class.py.j2` template. Endpoints with `day` fields (like `firewall.schedule/recurring`) now automatically normalize input via `normalize_day_field()` in `post()`, `put()`, and `set()` methods.
+
+### Tests
+
+- **53 new CMDB endpoint tests** covering 11 firewall-related endpoints:
+  | File | Tests | Endpoint |
+  |------|-------|----------|
+  | `firewall_ipmacbinding.py` | 3 | `firewall.ipmacbinding/setting` |
+  | `firewall_ipmacbinding_table.py` | 5 | `firewall.ipmacbinding/table` |
+  | `firewall_schedule_group.py` | 5 | `firewall.schedule/group` |
+  | `firewall_schedule_onetime.py` | 5 | `firewall.schedule/onetime` |
+  | `firewall_schedule_recurring.py` | 5 | `firewall.schedule/recurring` |
+  | `firewall_service_category.py` | 5 | `firewall.service/category` |
+  | `firewall_service_custom.py` | 5 | `firewall.service/custom` |
+  | `firewall_service_group.py` | 5 | `firewall.service/group` |
+  | `firewall_shaper_per_ip_shaper.py` | 5 | `firewall.shaper/per-ip-shaper` |
+  | `firewall_shaper_traffic_shaper.py` | 5 | `firewall.shaper/traffic-shaper` |
+  | `filefilter.py` | 5 | `file-filter/profile` |
+
+### Improved
+
+- **Test infrastructure**: Dynamic xdist grouping using `Path(__file__).stem`
+- **Deletion verification**: Cleaner pattern using get-all + check not in list
+
+## [0.5.97] - 2026-01-17
+
+### Fixed - **Pydantic Model Generator & Stub Type Fixes**
+
+#### Pydantic Model Generator Fixes (`generators/model_generator.py`)
+- ✅ **Duplicate enum members**: Schema may contain duplicate enum options - generator now deduplicates while preserving order
+- ✅ **String defaults for int fields**: Fields typed as `int` but with string defaults like `"unspecified"` now use `None` instead
+- ✅ **Type tracking**: Added `python_type` to field_info for proper type checking during default value generation
+
+#### Core Stubs (`models.pyi`)
+- ✅ **`dict` shadowing fix**: Added `import builtins` and use `builtins.dict` for `raw` property return types
+- ✅ **Overload implementations removed**: Removed non-stub implementation signatures from `process_response` and `__getitem__`
+- ✅ **`__getitem__` signature**: Use `SupportsIndex` parameter to match base `list` class signature
+
+#### Stub Template (`endpoint_class.pyi.j2`)
+- ✅ **Reserved field names**: Skip generating fields that conflict with `FortiObject` base class properties (`vdom`, `serial`, `version`, `revision`, `status`, `list`, etc.)
+- ✅ **`__init__` method**: Added missing `__init__(self, client: Any) -> None` to all generated endpoint class stubs
+
+#### Other Stub Fixes
+- ✅ **`api/utils.pyi`**: Removed obsolete `FortiOSDictMode`, `FortiOSObjectMode` imports (classes were removed in previous version)
+- ✅ **`fmg_proxy/client.pyi`**: Use `TypeAlias` for `FMGSession` type alias
+- ✅ **`monitor/system/time/__init__.pyi`**: Renamed `set` to `set_` to avoid conflict with inherited `set()` method
+- ✅ **`performance_test.py`**: Added type ignore for `asyncio.gather` call
+
+#### Test Generator & Pydantic Model Enum Formatting
+- ✅ **Test generator global-scope fix**: Tests no longer generate `auto_test_get_with_vdom` for global-scope endpoints that don't support `vdom` parameter
+- ✅ **Pydantic model enum fix**: Fixed template to generate enum values on separate lines instead of single line (was causing syntax errors)
+- ✅ **All tests regenerated**: 1066 test files regenerated with global-scope awareness
+
+### Added
+
+- 📄 **ENDPOINT_SCOPE_REFERENCE.md**: New documentation listing all global-only, read-only, and combined endpoints
+
+### Improved
+
+- 🎯 **IDE Autocompletion**: Significantly improved Pylance/mypy type inference for all endpoint classes
+  - All endpoint stubs now have proper `__init__` signatures
+  - Reserved field names no longer conflict with `FortiObject` base class
+  - Clean type checking with zero mypy errors across 3465 source files
+
+### Result
+- **All 1062 endpoints regenerated**
+- **mypy passes**: `Success: no issues found in 3465 source files`
+- **Pylance**: No more `Expected 0 positional arguments` errors on `super().__init__(client)`
+
 ## [0.5.96] - 2026-01-17
 
 ### Fixed - **Regenerated All Endpoints with Integer Parameter Types**

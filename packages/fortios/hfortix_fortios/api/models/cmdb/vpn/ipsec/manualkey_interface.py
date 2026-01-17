@@ -15,12 +15,28 @@ from enum import Enum
 # Enum Definitions (for fields with 4+ allowed values)
 # ============================================================================
 
-class ManualkeyInterfaceAuth_algEnum(str, Enum):
+class ManualkeyInterfaceAuthAlgEnum(str, Enum):
     """Allowed values for auth_alg field."""
-    NULL = "null"    MD5 = "md5"    SHA1 = "sha1"    SHA256 = "sha256"    SHA384 = "sha384"    SHA512 = "sha512"
-class ManualkeyInterfaceEnc_algEnum(str, Enum):
+    NULL = "null"
+    MD5 = "md5"
+    SHA1 = "sha1"
+    SHA256 = "sha256"
+    SHA384 = "sha384"
+    SHA512 = "sha512"
+
+class ManualkeyInterfaceEncAlgEnum(str, Enum):
     """Allowed values for enc_alg field."""
-    NULL = "null"    DES = "des"    3DES = "3des"    AES128 = "aes128"    AES192 = "aes192"    AES256 = "aes256"    ARIA128 = "aria128"    ARIA192 = "aria192"    ARIA256 = "aria256"    SEED = "seed"
+    NULL = "null"
+    DES = "des"
+    V_3DES = "3des"
+    AES128 = "aes128"
+    AES192 = "aes192"
+    AES256 = "aes256"
+    ARIA128 = "aria128"
+    ARIA192 = "aria192"
+    ARIA256 = "aria256"
+    SEED = "seed"
+
 
 # ============================================================================
 # Main Model
@@ -45,20 +61,20 @@ class ManualkeyInterfaceModel(BaseModel):
     # Model Fields
     # ========================================================================
     
-    name: str | None = Field(max_length=15, default="", description="IPsec tunnel name.")    
-    interface: str = Field(max_length=15, default="", description="Name of the physical, aggregate, or VLAN interface.")  # datasource: ['system.interface.name']    
+    name: str | None = Field(max_length=15, default=None, description="IPsec tunnel name.")    
+    interface: str = Field(max_length=15, description="Name of the physical, aggregate, or VLAN interface.")  # datasource: ['system.interface.name']    
     ip_version: Literal["4", "6"] | None = Field(default="4", description="IP version to use for VPN interface.")    
     addr_type: Literal["4", "6"] | None = Field(default="4", description="IP version to use for IP packets.")    
     remote_gw: str = Field(default="0.0.0.0", description="IPv4 address of the remote gateway's external interface.")    
     remote_gw6: str = Field(default="::", description="Remote IPv6 address of VPN gateway.")    
     local_gw: str | None = Field(default="0.0.0.0", description="IPv4 address of the local gateway's external interface.")    
     local_gw6: str | None = Field(default="::", description="Local IPv6 address of VPN gateway.")    
-    auth_alg: AuthAlgEnum = Field(default="null", description="Authentication algorithm. Must be the same for both ends of the tunnel.")    
-    enc_alg: EncAlgEnum = Field(default="null", description="Encryption algorithm. Must be the same for both ends of the tunnel.")    
-    auth_key: str = Field(default="", description="Hexadecimal authentication key in 16-digit (8-byte) segments separated by hyphens.")    
-    enc_key: str = Field(default="", description="Hexadecimal encryption key in 16-digit (8-byte) segments separated by hyphens.")    
-    local_spi: str = Field(default="", description="Local SPI, a hexadecimal 8-digit (4-byte) tag. Discerns between two traffic streams with different encryption rules.")    
-    remote_spi: str = Field(default="", description="Remote SPI, a hexadecimal 8-digit (4-byte) tag. Discerns between two traffic streams with different encryption rules.")    
+    auth_alg: ManualkeyInterfaceAuthAlgEnum = Field(default=ManualkeyInterfaceAuthAlgEnum.NULL, description="Authentication algorithm. Must be the same for both ends of the tunnel.")    
+    enc_alg: ManualkeyInterfaceEncAlgEnum = Field(default=ManualkeyInterfaceEncAlgEnum.NULL, description="Encryption algorithm. Must be the same for both ends of the tunnel.")    
+    auth_key: str = Field(description="Hexadecimal authentication key in 16-digit (8-byte) segments separated by hyphens.")    
+    enc_key: str = Field(description="Hexadecimal encryption key in 16-digit (8-byte) segments separated by hyphens.")    
+    local_spi: str = Field(description="Local SPI, a hexadecimal 8-digit (4-byte) tag. Discerns between two traffic streams with different encryption rules.")    
+    remote_spi: str = Field(description="Remote SPI, a hexadecimal 8-digit (4-byte) tag. Discerns between two traffic streams with different encryption rules.")    
     npu_offload: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable offloading IPsec VPN manual key sessions to NPUs.")    
     # ========================================================================
     # Custom Validators
@@ -139,7 +155,7 @@ class ManualkeyInterfaceModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.vpn.ipsec.manualkey_interface.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate scalar field
         value = getattr(self, "interface", None)
@@ -199,5 +215,5 @@ __all__ = [
 # ============================================================================
 # Generated by hfortix generator v0.6.0
 # Schema: 1.7.0
-# Generated: 2026-01-17T05:32:16.700051Z
+# Generated: 2026-01-17T17:25:20.701294Z
 # ============================================================================

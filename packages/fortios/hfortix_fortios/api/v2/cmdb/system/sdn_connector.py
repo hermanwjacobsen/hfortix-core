@@ -1301,6 +1301,88 @@ class SdnConnector(CRUDEndpoint, MetadataMixin):
             - put(): Update existing object
             - exists(): Check existence manually
         """
+        # Apply normalization for table fields (supports flexible input formats)
+        if server_list is not None:
+            server_list = normalize_table_field(
+                server_list,
+                mkey="ip",
+                required_fields=['ip'],
+                field_name="server_list",
+                example="[{'ip': '192.168.1.10'}]",
+            )
+        if external_account_list is not None:
+            external_account_list = normalize_table_field(
+                external_account_list,
+                mkey="role-arn",
+                required_fields=['role-arn', 'region-list'],
+                field_name="external_account_list",
+                example="[{'role-arn': 'value', 'region-list': 'value'}]",
+            )
+        if nic is not None:
+            nic = normalize_table_field(
+                nic,
+                mkey="name",
+                required_fields=['name'],
+                field_name="nic",
+                example="[{'name': 'value'}]",
+            )
+        if route_table is not None:
+            route_table = normalize_table_field(
+                route_table,
+                mkey="name",
+                required_fields=['name'],
+                field_name="route_table",
+                example="[{'name': 'value'}]",
+            )
+        if compartment_list is not None:
+            compartment_list = normalize_table_field(
+                compartment_list,
+                mkey="compartment-id",
+                required_fields=['compartment-id'],
+                field_name="compartment_list",
+                example="[{'compartment-id': 'value'}]",
+            )
+        if oci_region_list is not None:
+            oci_region_list = normalize_table_field(
+                oci_region_list,
+                mkey="region",
+                required_fields=['region'],
+                field_name="oci_region_list",
+                example="[{'region': 'value'}]",
+            )
+        if external_ip is not None:
+            external_ip = normalize_table_field(
+                external_ip,
+                mkey="name",
+                required_fields=['name'],
+                field_name="external_ip",
+                example="[{'name': 'value'}]",
+            )
+        if route is not None:
+            route = normalize_table_field(
+                route,
+                mkey="name",
+                required_fields=['name'],
+                field_name="route",
+                example="[{'name': 'value'}]",
+            )
+        if gcp_project_list is not None:
+            gcp_project_list = normalize_table_field(
+                gcp_project_list,
+                mkey="id",
+                required_fields=['id'],
+                field_name="gcp_project_list",
+                example="[{'id': 1}]",
+            )
+        if forwarding_rule is not None:
+            forwarding_rule = normalize_table_field(
+                forwarding_rule,
+                mkey="rule-name",
+                required_fields=['rule-name', 'target'],
+                field_name="forwarding_rule",
+                example="[{'rule-name': 'value', 'target': 'value'}]",
+            )
+        
         # Build payload using helper function with auto-normalization
         payload_data = build_api_payload(
             name=name,

@@ -658,6 +658,16 @@ class MpskProfile(CRUDEndpoint, MetadataMixin):
             - put(): Update existing object
             - exists(): Check existence manually
         """
+        # Apply normalization for table fields (supports flexible input formats)
+        if mpsk_group is not None:
+            mpsk_group = normalize_table_field(
+                mpsk_group,
+                mkey="name",
+                required_fields=['name'],
+                field_name="mpsk_group",
+                example="[{'name': 'value'}]",
+            )
+        
         # Build payload using helper function with auto-normalization
         payload_data = build_api_payload(
             name=name,

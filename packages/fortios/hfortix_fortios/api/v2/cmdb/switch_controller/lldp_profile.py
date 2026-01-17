@@ -374,6 +374,8 @@ class LldpProfile(CRUDEndpoint, MetadataMixin):
                 example="[{'oui': 'value'}]",
             )
         
+        # Apply normalization for multi-value option fields (space-separated strings)
+        
         # Build payload using helper function with auto-normalization
         # This automatically converts strings/lists to [{'name': '...'}] format for list fields
         # To disable auto-normalization, use build_cmdb_payload directly
@@ -556,6 +558,8 @@ class LldpProfile(CRUDEndpoint, MetadataMixin):
                 field_name="custom_tlvs",
                 example="[{'oui': 'value'}]",
             )
+        
+        # Apply normalization for multi-value option fields (space-separated strings)
         
         # Build payload using helper function with auto-normalization
         # This automatically converts strings/lists to [{'name': '...'}] format for list fields
@@ -816,6 +820,34 @@ class LldpProfile(CRUDEndpoint, MetadataMixin):
             - put(): Update existing object
             - exists(): Check existence manually
         """
+        # Apply normalization for table fields (supports flexible input formats)
+        if med_network_policy is not None:
+            med_network_policy = normalize_table_field(
+                med_network_policy,
+                mkey="name",
+                required_fields=['name'],
+                field_name="med_network_policy",
+                example="[{'name': 'value'}]",
+            )
+        if med_location_service is not None:
+            med_location_service = normalize_table_field(
+                med_location_service,
+                mkey="name",
+                required_fields=['name'],
+                field_name="med_location_service",
+                example="[{'name': 'value'}]",
+            )
+        if custom_tlvs is not None:
+            custom_tlvs = normalize_table_field(
+                custom_tlvs,
+                mkey="name",
+                required_fields=['oui'],
+                field_name="custom_tlvs",
+                example="[{'oui': 'value'}]",
+            )
+        
+        # Apply normalization for multi-value option fields (space-separated strings)
+        
         # Build payload using helper function with auto-normalization
         payload_data = build_api_payload(
             name=name,

@@ -17,37 +17,236 @@ from enum import Enum
 
 class Phase2ProposalEnum(str, Enum):
     """Allowed values for proposal field."""
-    NULL_MD5 = "null-md5"    NULL_SHA1 = "null-sha1"    NULL_SHA256 = "null-sha256"    NULL_SHA384 = "null-sha384"    NULL_SHA512 = "null-sha512"    DES_NULL = "des-null"    DES_MD5 = "des-md5"    DES_SHA1 = "des-sha1"    DES_SHA256 = "des-sha256"    DES_SHA384 = "des-sha384"    DES_SHA512 = "des-sha512"    3DES_NULL = "3des-null"    3DES_MD5 = "3des-md5"    3DES_SHA1 = "3des-sha1"    3DES_SHA256 = "3des-sha256"    3DES_SHA384 = "3des-sha384"    3DES_SHA512 = "3des-sha512"    AES128_NULL = "aes128-null"    AES128_MD5 = "aes128-md5"    AES128_SHA1 = "aes128-sha1"    AES128_SHA256 = "aes128-sha256"    AES128_SHA384 = "aes128-sha384"    AES128_SHA512 = "aes128-sha512"    AES128GCM = "aes128gcm"    AES192_NULL = "aes192-null"    AES192_MD5 = "aes192-md5"    AES192_SHA1 = "aes192-sha1"    AES192_SHA256 = "aes192-sha256"    AES192_SHA384 = "aes192-sha384"    AES192_SHA512 = "aes192-sha512"    AES256_NULL = "aes256-null"    AES256_MD5 = "aes256-md5"    AES256_SHA1 = "aes256-sha1"    AES256_SHA256 = "aes256-sha256"    AES256_SHA384 = "aes256-sha384"    AES256_SHA512 = "aes256-sha512"    AES256GCM = "aes256gcm"    CHACHA20POLY1305 = "chacha20poly1305"    ARIA128_NULL = "aria128-null"    ARIA128_MD5 = "aria128-md5"    ARIA128_SHA1 = "aria128-sha1"    ARIA128_SHA256 = "aria128-sha256"    ARIA128_SHA384 = "aria128-sha384"    ARIA128_SHA512 = "aria128-sha512"    ARIA192_NULL = "aria192-null"    ARIA192_MD5 = "aria192-md5"    ARIA192_SHA1 = "aria192-sha1"    ARIA192_SHA256 = "aria192-sha256"    ARIA192_SHA384 = "aria192-sha384"    ARIA192_SHA512 = "aria192-sha512"    ARIA256_NULL = "aria256-null"    ARIA256_MD5 = "aria256-md5"    ARIA256_SHA1 = "aria256-sha1"    ARIA256_SHA256 = "aria256-sha256"    ARIA256_SHA384 = "aria256-sha384"    ARIA256_SHA512 = "aria256-sha512"    SEED_NULL = "seed-null"    SEED_MD5 = "seed-md5"    SEED_SHA1 = "seed-sha1"    SEED_SHA256 = "seed-sha256"    SEED_SHA384 = "seed-sha384"    SEED_SHA512 = "seed-sha512"
+    NULL_MD5 = "null-md5"
+    NULL_SHA1 = "null-sha1"
+    NULL_SHA256 = "null-sha256"
+    NULL_SHA384 = "null-sha384"
+    NULL_SHA512 = "null-sha512"
+    DES_NULL = "des-null"
+    DES_MD5 = "des-md5"
+    DES_SHA1 = "des-sha1"
+    DES_SHA256 = "des-sha256"
+    DES_SHA384 = "des-sha384"
+    DES_SHA512 = "des-sha512"
+    V_3DES_NULL = "3des-null"
+    V_3DES_MD5 = "3des-md5"
+    V_3DES_SHA1 = "3des-sha1"
+    V_3DES_SHA256 = "3des-sha256"
+    V_3DES_SHA384 = "3des-sha384"
+    V_3DES_SHA512 = "3des-sha512"
+    AES128_NULL = "aes128-null"
+    AES128_MD5 = "aes128-md5"
+    AES128_SHA1 = "aes128-sha1"
+    AES128_SHA256 = "aes128-sha256"
+    AES128_SHA384 = "aes128-sha384"
+    AES128_SHA512 = "aes128-sha512"
+    AES128GCM = "aes128gcm"
+    AES192_NULL = "aes192-null"
+    AES192_MD5 = "aes192-md5"
+    AES192_SHA1 = "aes192-sha1"
+    AES192_SHA256 = "aes192-sha256"
+    AES192_SHA384 = "aes192-sha384"
+    AES192_SHA512 = "aes192-sha512"
+    AES256_NULL = "aes256-null"
+    AES256_MD5 = "aes256-md5"
+    AES256_SHA1 = "aes256-sha1"
+    AES256_SHA256 = "aes256-sha256"
+    AES256_SHA384 = "aes256-sha384"
+    AES256_SHA512 = "aes256-sha512"
+    AES256GCM = "aes256gcm"
+    CHACHA20POLY1305 = "chacha20poly1305"
+    ARIA128_NULL = "aria128-null"
+    ARIA128_MD5 = "aria128-md5"
+    ARIA128_SHA1 = "aria128-sha1"
+    ARIA128_SHA256 = "aria128-sha256"
+    ARIA128_SHA384 = "aria128-sha384"
+    ARIA128_SHA512 = "aria128-sha512"
+    ARIA192_NULL = "aria192-null"
+    ARIA192_MD5 = "aria192-md5"
+    ARIA192_SHA1 = "aria192-sha1"
+    ARIA192_SHA256 = "aria192-sha256"
+    ARIA192_SHA384 = "aria192-sha384"
+    ARIA192_SHA512 = "aria192-sha512"
+    ARIA256_NULL = "aria256-null"
+    ARIA256_MD5 = "aria256-md5"
+    ARIA256_SHA1 = "aria256-sha1"
+    ARIA256_SHA256 = "aria256-sha256"
+    ARIA256_SHA384 = "aria256-sha384"
+    ARIA256_SHA512 = "aria256-sha512"
+    SEED_NULL = "seed-null"
+    SEED_MD5 = "seed-md5"
+    SEED_SHA1 = "seed-sha1"
+    SEED_SHA256 = "seed-sha256"
+    SEED_SHA384 = "seed-sha384"
+    SEED_SHA512 = "seed-sha512"
+
 class Phase2DhgrpEnum(str, Enum):
     """Allowed values for dhgrp field."""
-    1 = "1"    2 = "2"    5 = "5"    14 = "14"    15 = "15"    16 = "16"    17 = "17"    18 = "18"    19 = "19"    20 = "20"    21 = "21"    27 = "27"    28 = "28"    29 = "29"    30 = "30"    31 = "31"    32 = "32"
+    V_1 = "1"
+    V_2 = "2"
+    V_5 = "5"
+    V_14 = "14"
+    V_15 = "15"
+    V_16 = "16"
+    V_17 = "17"
+    V_18 = "18"
+    V_19 = "19"
+    V_20 = "20"
+    V_21 = "21"
+    V_27 = "27"
+    V_28 = "28"
+    V_29 = "29"
+    V_30 = "30"
+    V_31 = "31"
+    V_32 = "32"
+
 class Phase2Addke1Enum(str, Enum):
     """Allowed values for addke1 field."""
-    0 = "0"    35 = "35"    36 = "36"    37 = "37"    1080 = "1080"    1081 = "1081"    1082 = "1082"    1083 = "1083"    1084 = "1084"    1085 = "1085"    1089 = "1089"    1090 = "1090"    1091 = "1091"    1092 = "1092"    1093 = "1093"    1094 = "1094"
+    V_0 = "0"
+    V_35 = "35"
+    V_36 = "36"
+    V_37 = "37"
+    V_1080 = "1080"
+    V_1081 = "1081"
+    V_1082 = "1082"
+    V_1083 = "1083"
+    V_1084 = "1084"
+    V_1085 = "1085"
+    V_1089 = "1089"
+    V_1090 = "1090"
+    V_1091 = "1091"
+    V_1092 = "1092"
+    V_1093 = "1093"
+    V_1094 = "1094"
+
 class Phase2Addke2Enum(str, Enum):
     """Allowed values for addke2 field."""
-    0 = "0"    35 = "35"    36 = "36"    37 = "37"    1080 = "1080"    1081 = "1081"    1082 = "1082"    1083 = "1083"    1084 = "1084"    1085 = "1085"    1089 = "1089"    1090 = "1090"    1091 = "1091"    1092 = "1092"    1093 = "1093"    1094 = "1094"
+    V_0 = "0"
+    V_35 = "35"
+    V_36 = "36"
+    V_37 = "37"
+    V_1080 = "1080"
+    V_1081 = "1081"
+    V_1082 = "1082"
+    V_1083 = "1083"
+    V_1084 = "1084"
+    V_1085 = "1085"
+    V_1089 = "1089"
+    V_1090 = "1090"
+    V_1091 = "1091"
+    V_1092 = "1092"
+    V_1093 = "1093"
+    V_1094 = "1094"
+
 class Phase2Addke3Enum(str, Enum):
     """Allowed values for addke3 field."""
-    0 = "0"    35 = "35"    36 = "36"    37 = "37"    1080 = "1080"    1081 = "1081"    1082 = "1082"    1083 = "1083"    1084 = "1084"    1085 = "1085"    1089 = "1089"    1090 = "1090"    1091 = "1091"    1092 = "1092"    1093 = "1093"    1094 = "1094"
+    V_0 = "0"
+    V_35 = "35"
+    V_36 = "36"
+    V_37 = "37"
+    V_1080 = "1080"
+    V_1081 = "1081"
+    V_1082 = "1082"
+    V_1083 = "1083"
+    V_1084 = "1084"
+    V_1085 = "1085"
+    V_1089 = "1089"
+    V_1090 = "1090"
+    V_1091 = "1091"
+    V_1092 = "1092"
+    V_1093 = "1093"
+    V_1094 = "1094"
+
 class Phase2Addke4Enum(str, Enum):
     """Allowed values for addke4 field."""
-    0 = "0"    35 = "35"    36 = "36"    37 = "37"    1080 = "1080"    1081 = "1081"    1082 = "1082"    1083 = "1083"    1084 = "1084"    1085 = "1085"    1089 = "1089"    1090 = "1090"    1091 = "1091"    1092 = "1092"    1093 = "1093"    1094 = "1094"
+    V_0 = "0"
+    V_35 = "35"
+    V_36 = "36"
+    V_37 = "37"
+    V_1080 = "1080"
+    V_1081 = "1081"
+    V_1082 = "1082"
+    V_1083 = "1083"
+    V_1084 = "1084"
+    V_1085 = "1085"
+    V_1089 = "1089"
+    V_1090 = "1090"
+    V_1091 = "1091"
+    V_1092 = "1092"
+    V_1093 = "1093"
+    V_1094 = "1094"
+
 class Phase2Addke5Enum(str, Enum):
     """Allowed values for addke5 field."""
-    0 = "0"    35 = "35"    36 = "36"    37 = "37"    1080 = "1080"    1081 = "1081"    1082 = "1082"    1083 = "1083"    1084 = "1084"    1085 = "1085"    1089 = "1089"    1090 = "1090"    1091 = "1091"    1092 = "1092"    1093 = "1093"    1094 = "1094"
+    V_0 = "0"
+    V_35 = "35"
+    V_36 = "36"
+    V_37 = "37"
+    V_1080 = "1080"
+    V_1081 = "1081"
+    V_1082 = "1082"
+    V_1083 = "1083"
+    V_1084 = "1084"
+    V_1085 = "1085"
+    V_1089 = "1089"
+    V_1090 = "1090"
+    V_1091 = "1091"
+    V_1092 = "1092"
+    V_1093 = "1093"
+    V_1094 = "1094"
+
 class Phase2Addke6Enum(str, Enum):
     """Allowed values for addke6 field."""
-    0 = "0"    35 = "35"    36 = "36"    37 = "37"    1080 = "1080"    1081 = "1081"    1082 = "1082"    1083 = "1083"    1084 = "1084"    1085 = "1085"    1089 = "1089"    1090 = "1090"    1091 = "1091"    1092 = "1092"    1093 = "1093"    1094 = "1094"
+    V_0 = "0"
+    V_35 = "35"
+    V_36 = "36"
+    V_37 = "37"
+    V_1080 = "1080"
+    V_1081 = "1081"
+    V_1082 = "1082"
+    V_1083 = "1083"
+    V_1084 = "1084"
+    V_1085 = "1085"
+    V_1089 = "1089"
+    V_1090 = "1090"
+    V_1091 = "1091"
+    V_1092 = "1092"
+    V_1093 = "1093"
+    V_1094 = "1094"
+
 class Phase2Addke7Enum(str, Enum):
     """Allowed values for addke7 field."""
-    0 = "0"    35 = "35"    36 = "36"    37 = "37"    1080 = "1080"    1081 = "1081"    1082 = "1082"    1083 = "1083"    1084 = "1084"    1085 = "1085"    1089 = "1089"    1090 = "1090"    1091 = "1091"    1092 = "1092"    1093 = "1093"    1094 = "1094"
-class Phase2Src_addr_typeEnum(str, Enum):
+    V_0 = "0"
+    V_35 = "35"
+    V_36 = "36"
+    V_37 = "37"
+    V_1080 = "1080"
+    V_1081 = "1081"
+    V_1082 = "1082"
+    V_1083 = "1083"
+    V_1084 = "1084"
+    V_1085 = "1085"
+    V_1089 = "1089"
+    V_1090 = "1090"
+    V_1091 = "1091"
+    V_1092 = "1092"
+    V_1093 = "1093"
+    V_1094 = "1094"
+
+class Phase2SrcAddrTypeEnum(str, Enum):
     """Allowed values for src_addr_type field."""
-    SUBNET = "subnet"    RANGE = "range"    IP = "ip"    NAME = "name"
-class Phase2Dst_addr_typeEnum(str, Enum):
+    SUBNET = "subnet"
+    RANGE = "range"
+    IP = "ip"
+    NAME = "name"
+
+class Phase2DstAddrTypeEnum(str, Enum):
     """Allowed values for dst_addr_type field."""
-    SUBNET = "subnet"    RANGE = "range"    IP = "ip"    NAME = "name"
+    SUBNET = "subnet"
+    RANGE = "range"
+    IP = "ip"
+    NAME = "name"
+
 
 # ============================================================================
 # Main Model
@@ -72,21 +271,21 @@ class Phase2Model(BaseModel):
     # Model Fields
     # ========================================================================
     
-    name: str | None = Field(max_length=35, default="", description="IPsec tunnel name.")    
-    phase1name: str = Field(max_length=35, default="", description="Phase 1 determines the options required for phase 2.")  # datasource: ['vpn.ipsec.phase1.name']    
+    name: str | None = Field(max_length=35, default=None, description="IPsec tunnel name.")    
+    phase1name: str = Field(max_length=35, description="Phase 1 determines the options required for phase 2.")  # datasource: ['vpn.ipsec.phase1.name']    
     dhcp_ipsec: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable DHCP-IPsec.")    
     use_natip: Literal["enable", "disable"] | None = Field(default="enable", description="Enable to use the FortiGate public IP as the source selector when outbound NAT is used.")    
     selector_match: Literal["exact", "subset", "auto"] | None = Field(default="auto", description="Match type to use when comparing selectors.")    
-    proposal: list[Proposal] = Field(default="", description="Phase2 proposal.")    
+    proposal: list[Phase2ProposalEnum] = Field(description="Phase2 proposal.")    
     pfs: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable PFS feature.")    
-    dhgrp: list[Dhgrp] = Field(default="20", description="Phase2 DH group.")    
-    addke1: list[Addke1] = Field(default="", description="phase2 ADDKE1 group.")    
-    addke2: list[Addke2] = Field(default="", description="phase2 ADDKE2 group.")    
-    addke3: list[Addke3] = Field(default="", description="phase2 ADDKE3 group.")    
-    addke4: list[Addke4] = Field(default="", description="phase2 ADDKE4 group.")    
-    addke5: list[Addke5] = Field(default="", description="phase2 ADDKE5 group.")    
-    addke6: list[Addke6] = Field(default="", description="phase2 ADDKE6 group.")    
-    addke7: list[Addke7] = Field(default="", description="phase2 ADDKE7 group.")    
+    dhgrp: list[Phase2DhgrpEnum] = Field(default_factory=list, description="Phase2 DH group.")    
+    addke1: list[Phase2Addke1Enum] = Field(default_factory=list, description="phase2 ADDKE1 group.")    
+    addke2: list[Phase2Addke2Enum] = Field(default_factory=list, description="phase2 ADDKE2 group.")    
+    addke3: list[Phase2Addke3Enum] = Field(default_factory=list, description="phase2 ADDKE3 group.")    
+    addke4: list[Phase2Addke4Enum] = Field(default_factory=list, description="phase2 ADDKE4 group.")    
+    addke5: list[Phase2Addke5Enum] = Field(default_factory=list, description="phase2 ADDKE5 group.")    
+    addke6: list[Phase2Addke6Enum] = Field(default_factory=list, description="phase2 ADDKE6 group.")    
+    addke7: list[Phase2Addke7Enum] = Field(default_factory=list, description="phase2 ADDKE7 group.")    
     replay: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable replay detection.")    
     keepalive: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable keep alive.")    
     auto_negotiate: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable IPsec SA auto-negotiation.")    
@@ -102,11 +301,11 @@ class Phase2Model(BaseModel):
     comments: str | None = Field(max_length=255, default=None, description="Comment.")    
     initiator_ts_narrow: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable traffic selector narrowing for IKEv2 initiator.")    
     diffserv: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable applying DSCP value to the IPsec tunnel outer IP header.")    
-    diffservcode: str | None = Field(default="", description="DSCP value to be applied to the IPsec tunnel outer IP header.")    
+    diffservcode: str | None = Field(default=None, description="DSCP value to be applied to the IPsec tunnel outer IP header.")    
     protocol: int | None = Field(ge=0, le=255, default=0, description="Quick mode protocol selector (1 - 255 or 0 for all).")    
-    src_name: str = Field(max_length=79, default="", description="Local proxy ID name.")  # datasource: ['firewall.address.name', 'firewall.addrgrp.name']    
-    src_name6: str = Field(max_length=79, default="", description="Local proxy ID name.")  # datasource: ['firewall.address6.name', 'firewall.addrgrp6.name']    
-    src_addr_type: SrcAddrTypeEnum | None = Field(default="subnet", description="Local proxy ID type.")    
+    src_name: str = Field(max_length=79, description="Local proxy ID name.")  # datasource: ['firewall.address.name', 'firewall.addrgrp.name']    
+    src_name6: str = Field(max_length=79, description="Local proxy ID name.")  # datasource: ['firewall.address6.name', 'firewall.addrgrp6.name']    
+    src_addr_type: Phase2SrcAddrTypeEnum | None = Field(default=Phase2SrcAddrTypeEnum.SUBNET, description="Local proxy ID type.")    
     src_start_ip: str | None = Field(default="0.0.0.0", description="Local proxy ID start.")    
     src_start_ip6: str | None = Field(default="::", description="Local proxy ID IPv6 start.")    
     src_end_ip: str | None = Field(default="0.0.0.0", description="Local proxy ID end.")    
@@ -114,9 +313,9 @@ class Phase2Model(BaseModel):
     src_subnet: Any = Field(default="0.0.0.0 0.0.0.0", description="Local proxy ID subnet.")    
     src_subnet6: str | None = Field(default="::/0", description="Local proxy ID IPv6 subnet.")    
     src_port: int | None = Field(ge=0, le=65535, default=0, description="Quick mode source port (1 - 65535 or 0 for all).")    
-    dst_name: str = Field(max_length=79, default="", description="Remote proxy ID name.")  # datasource: ['firewall.address.name', 'firewall.addrgrp.name']    
-    dst_name6: str = Field(max_length=79, default="", description="Remote proxy ID name.")  # datasource: ['firewall.address6.name', 'firewall.addrgrp6.name']    
-    dst_addr_type: DstAddrTypeEnum | None = Field(default="subnet", description="Remote proxy ID type.")    
+    dst_name: str = Field(max_length=79, description="Remote proxy ID name.")  # datasource: ['firewall.address.name', 'firewall.addrgrp.name']    
+    dst_name6: str = Field(max_length=79, description="Remote proxy ID name.")  # datasource: ['firewall.address6.name', 'firewall.addrgrp6.name']    
+    dst_addr_type: Phase2DstAddrTypeEnum | None = Field(default=Phase2DstAddrTypeEnum.SUBNET, description="Remote proxy ID type.")    
     dst_start_ip: str | None = Field(default="0.0.0.0", description="Remote proxy ID IPv4 start.")    
     dst_start_ip6: str | None = Field(default="::", description="Remote proxy ID IPv6 start.")    
     dst_end_ip: str | None = Field(default="0.0.0.0", description="Remote proxy ID IPv4 end.")    
@@ -263,7 +462,7 @@ class Phase2Model(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.vpn.ipsec.phase2.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate scalar field
         value = getattr(self, "phase1name", None)
@@ -312,7 +511,7 @@ class Phase2Model(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.vpn.ipsec.phase2.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate scalar field
         value = getattr(self, "src_name", None)
@@ -363,7 +562,7 @@ class Phase2Model(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.vpn.ipsec.phase2.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate scalar field
         value = getattr(self, "src_name6", None)
@@ -414,7 +613,7 @@ class Phase2Model(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.vpn.ipsec.phase2.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate scalar field
         value = getattr(self, "dst_name", None)
@@ -465,7 +664,7 @@ class Phase2Model(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.vpn.ipsec.phase2.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate scalar field
         value = getattr(self, "dst_name6", None)
@@ -535,5 +734,5 @@ __all__ = [
 # ============================================================================
 # Generated by hfortix generator v0.6.0
 # Schema: 1.7.0
-# Generated: 2026-01-17T05:32:17.023736Z
+# Generated: 2026-01-17T17:25:20.967337Z
 # ============================================================================

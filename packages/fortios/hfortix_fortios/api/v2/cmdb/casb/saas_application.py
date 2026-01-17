@@ -744,6 +744,32 @@ class SaasApplication(CRUDEndpoint, MetadataMixin):
             - put(): Update existing object
             - exists(): Check existence manually
         """
+        # Apply normalization for table fields (supports flexible input formats)
+        if domains is not None:
+            domains = normalize_table_field(
+                domains,
+                mkey="domain",
+                required_fields=['domain'],
+                field_name="domains",
+                example="[{'domain': 'value'}]",
+            )
+        if output_attributes is not None:
+            output_attributes = normalize_table_field(
+                output_attributes,
+                mkey="name",
+                required_fields=['name'],
+                field_name="output_attributes",
+                example="[{'name': 'value'}]",
+            )
+        if input_attributes is not None:
+            input_attributes = normalize_table_field(
+                input_attributes,
+                mkey="name",
+                required_fields=['name'],
+                field_name="input_attributes",
+                example="[{'name': 'value'}]",
+            )
+        
         # Build payload using helper function with auto-normalization
         payload_data = build_api_payload(
             name=name,

@@ -1094,6 +1094,48 @@ class Address(CRUDEndpoint, MetadataMixin):
             - put(): Update existing object
             - exists(): Check existence manually
         """
+        # Apply normalization for table fields (supports flexible input formats)
+        if macaddr is not None:
+            macaddr = normalize_table_field(
+                macaddr,
+                mkey="macaddr",
+                required_fields=['macaddr'],
+                field_name="macaddr",
+                example="[{'macaddr': 'value'}]",
+            )
+        if fsso_group is not None:
+            fsso_group = normalize_table_field(
+                fsso_group,
+                mkey="name",
+                required_fields=['name'],
+                field_name="fsso_group",
+                example="[{'name': 'value'}]",
+            )
+        if sso_attribute_value is not None:
+            sso_attribute_value = normalize_table_field(
+                sso_attribute_value,
+                mkey="name",
+                required_fields=['name'],
+                field_name="sso_attribute_value",
+                example="[{'name': 'value'}]",
+            )
+        if list is not None:
+            list = normalize_table_field(
+                list,
+                mkey="ip",
+                required_fields=['ip'],
+                field_name="list",
+                example="[{'ip': '192.168.1.10'}]",
+            )
+        if tagging is not None:
+            tagging = normalize_table_field(
+                tagging,
+                mkey="name",
+                required_fields=['name'],
+                field_name="tagging",
+                example="[{'name': 'value'}]",
+            )
+        
         # Build payload using helper function with auto-normalization
         payload_data = build_api_payload(
             name=name,

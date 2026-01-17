@@ -630,6 +630,16 @@ class AccessList6(CRUDEndpoint, MetadataMixin):
             - put(): Update existing object
             - exists(): Check existence manually
         """
+        # Apply normalization for table fields (supports flexible input formats)
+        if rule is not None:
+            rule = normalize_table_field(
+                rule,
+                mkey="id",
+                required_fields=['id', 'prefix6'],
+                field_name="rule",
+                example="[{'id': 1, 'prefix6': 'value'}]",
+            )
+        
         # Build payload using helper function with auto-normalization
         payload_data = build_api_payload(
             name=name,

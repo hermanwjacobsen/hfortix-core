@@ -79,7 +79,7 @@ VALID_QUERY_ACTION = ["default", "schema"]
 # ============================================================================
 
 
-def validate_vpn_certificate_crl_import__get(
+def validate_vpn_certificate_crl_import_get(
     attr: str | None = None,
     filters: dict[str, Any] | None = None,
     **params: Any,
@@ -103,7 +103,7 @@ def validate_vpn_certificate_crl_import__get(
 # ============================================================================
 
 
-def validate_vpn_certificate_crl_import__post(
+def validate_vpn_certificate_crl_import_post(
     payload: dict,
     **params: Any,
 ) -> tuple[bool, str | None]:
@@ -127,7 +127,7 @@ def validate_vpn_certificate_crl_import__post(
 # ============================================================================
 
 
-def validate_vpn_certificate_crl_import__put(
+def validate_vpn_certificate_crl_import_put(
     payload: dict,
     **params: Any,
 ) -> tuple[bool, str | None]:

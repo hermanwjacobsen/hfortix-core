@@ -786,6 +786,16 @@ class ArrpProfile(CRUDEndpoint, MetadataMixin):
             - put(): Update existing object
             - exists(): Check existence manually
         """
+        # Apply normalization for table fields (supports flexible input formats)
+        if darrp_optimize_schedules is not None:
+            darrp_optimize_schedules = normalize_table_field(
+                darrp_optimize_schedules,
+                mkey="name",
+                required_fields=['name'],
+                field_name="darrp_optimize_schedules",
+                example="[{'name': 'value'}]",
+            )
+        
         # Build payload using helper function with auto-normalization
         payload_data = build_api_payload(
             name=name,

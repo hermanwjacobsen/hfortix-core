@@ -12,9 +12,86 @@ from typing import Any, Literal, Optional
 from enum import Enum
 
 # ============================================================================
-# Child Table Models
+# Enum Definitions for Child Table Fields (for fields with 4+ allowed values)
 # ============================================================================
 
+class SslSshProfileSslExemptTypeEnum(str, Enum):
+    """Allowed values for type_ field in ssl-exempt."""
+    FORTIGUARD_CATEGORY = "fortiguard-category"
+    ADDRESS = "address"
+    ADDRESS6 = "address6"
+    WILDCARD_FQDN = "wildcard-fqdn"
+    REGEX = "regex"
+
+class SslSshProfileSslMinAllowedSslVersionEnum(str, Enum):
+    """Allowed values for min_allowed_ssl_version field in ssl."""
+    SSL_3_0 = "ssl-3.0"
+    TLS_1_0 = "tls-1.0"
+    TLS_1_1 = "tls-1.1"
+    TLS_1_2 = "tls-1.2"
+    TLS_1_3 = "tls-1.3"
+
+class SslSshProfileHttpsMinAllowedSslVersionEnum(str, Enum):
+    """Allowed values for min_allowed_ssl_version field in https."""
+    SSL_3_0 = "ssl-3.0"
+    TLS_1_0 = "tls-1.0"
+    TLS_1_1 = "tls-1.1"
+    TLS_1_2 = "tls-1.2"
+    TLS_1_3 = "tls-1.3"
+
+class SslSshProfileFtpsMinAllowedSslVersionEnum(str, Enum):
+    """Allowed values for min_allowed_ssl_version field in ftps."""
+    SSL_3_0 = "ssl-3.0"
+    TLS_1_0 = "tls-1.0"
+    TLS_1_1 = "tls-1.1"
+    TLS_1_2 = "tls-1.2"
+    TLS_1_3 = "tls-1.3"
+
+# ============================================================================
+# Child Table Models (sorted deepest-first so nested models are defined before their parents)
+# ============================================================================
+
+class SslSshProfileSslServer(BaseModel):
+    """
+    Child table model for ssl-server.
+    
+    SSL server settings used for client certificate request.
+    """
+    
+    class Config:
+        """Pydantic model configuration."""
+        extra = "allow"  # Allow additional fields from API
+        str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
+    
+    id_: int | None = Field(ge=0, le=4294967295, default=0, serialization_alias="id", description="SSL server ID.")    
+    ip: str = Field(default="0.0.0.0", description="IPv4 address of the SSL server.")    
+    https_client_certificate: Literal["bypass", "inspect", "block"] | None = Field(default="bypass", description="Action based on received client certificate during the HTTPS handshake.")    
+    smtps_client_certificate: Literal["bypass", "inspect", "block"] | None = Field(default="bypass", description="Action based on received client certificate during the SMTPS handshake.")    
+    pop3s_client_certificate: Literal["bypass", "inspect", "block"] | None = Field(default="bypass", description="Action based on received client certificate during the POP3S handshake.")    
+    imaps_client_certificate: Literal["bypass", "inspect", "block"] | None = Field(default="bypass", description="Action based on received client certificate during the IMAPS handshake.")    
+    ftps_client_certificate: Literal["bypass", "inspect", "block"] | None = Field(default="bypass", description="Action based on received client certificate during the FTPS handshake.")    
+    ssl_other_client_certificate: Literal["bypass", "inspect", "block"] | None = Field(default="bypass", description="Action based on received client certificate during an SSL protocol handshake.")
+class SslSshProfileSslExempt(BaseModel):
+    """
+    Child table model for ssl-exempt.
+    
+    Servers to exempt from SSL inspection.
+    """
+    
+    class Config:
+        """Pydantic model configuration."""
+        extra = "allow"  # Allow additional fields from API
+        str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
+    
+    id_: int | None = Field(ge=0, le=512, default=0, serialization_alias="id", description="ID number.")    
+    type_: SslSshProfileSslExemptTypeEnum = Field(default=SslSshProfileSslExemptTypeEnum.FORTIGUARD_CATEGORY, serialization_alias="type", description="Type of address object (IPv4 or IPv6) or FortiGuard category.")    
+    fortiguard_category: int | None = Field(ge=0, le=255, default=0, description="FortiGuard category ID.")    
+    address: str | None = Field(max_length=79, default=None, description="IPv4 address object.")  # datasource: ['firewall.address.name', 'firewall.addrgrp.name']    
+    address6: str | None = Field(max_length=79, default=None, description="IPv6 address object.")  # datasource: ['firewall.address6.name', 'firewall.addrgrp6.name']    
+    wildcard_fqdn: str | None = Field(max_length=79, default=None, description="Exempt servers by wildcard FQDN.")  # datasource: ['firewall.wildcard-fqdn.custom.name', 'firewall.wildcard-fqdn.group.name']    
+    regex: str | None = Field(max_length=255, default=None, description="Exempt servers by regular expression.")
 class SslSshProfileSsl(BaseModel):
     """
     Child table model for ssl.
@@ -26,6 +103,7 @@ class SslSshProfileSsl(BaseModel):
         """Pydantic model configuration."""
         extra = "allow"  # Allow additional fields from API
         str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
     
     inspect_all: Literal["disable", "certificate-inspection", "deep-inspection"] | None = Field(default="disable", description="Level of SSL inspection.")    
     client_certificate: Literal["bypass", "inspect", "block"] | None = Field(default="bypass", description="Action based on received client certificate.")    
@@ -40,7 +118,119 @@ class SslSshProfileSsl(BaseModel):
     sni_server_cert_check: Literal["enable", "strict", "disable"] | None = Field(default="enable", description="Check the SNI in the client hello message with the CN or SAN fields in the returned server certificate.")    
     cert_probe_failure: Literal["allow", "block"] | None = Field(default="allow", description="Action based on certificate probe failure.")    
     encrypted_client_hello: Literal["allow", "block"] | None = Field(default="block", description="Block/allow session based on existence of encrypted-client-hello.")    
-    min_allowed_ssl_version: MinAllowedSslVersionEnum | None = Field(default="tls-1.1", description="Minimum SSL version to be allowed.")
+    min_allowed_ssl_version: SslSshProfileSslMinAllowedSslVersionEnum | None = Field(default=SslSshProfileSslMinAllowedSslVersionEnum.TLS_1_1, description="Minimum SSL version to be allowed.")
+class SslSshProfileSsh(BaseModel):
+    """
+    Child table model for ssh.
+    
+    Configure SSH options.
+    """
+    
+    class Config:
+        """Pydantic model configuration."""
+        extra = "allow"  # Allow additional fields from API
+        str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
+    
+    ports: list[int] = Field(ge=1, le=65535, description="Ports to use for scanning (1 - 65535, default = 443).")    
+    status: Literal["disable", "deep-inspection"] | None = Field(default="disable", description="Configure protocol inspection status.")    
+    inspect_all: Literal["disable", "deep-inspection"] | None = Field(default="disable", description="Level of SSL inspection.")    
+    proxy_after_tcp_handshake: Literal["enable", "disable"] | None = Field(default="disable", description="Proxy traffic after the TCP 3-way handshake has been established (not before).")    
+    unsupported_version: Literal["bypass", "block"] | None = Field(default="bypass", description="Action based on SSH version being unsupported.")    
+    ssh_tun_policy_check: Literal["disable", "enable"] | None = Field(default="disable", description="Enable/disable SSH tunnel policy check.")    
+    ssh_algorithm: Literal["compatible", "high-encryption"] | None = Field(default="compatible", description="Relative strength of encryption algorithms accepted during negotiation.")
+class SslSshProfileSmtps(BaseModel):
+    """
+    Child table model for smtps.
+    
+    Configure SMTPS options.
+    """
+    
+    class Config:
+        """Pydantic model configuration."""
+        extra = "allow"  # Allow additional fields from API
+        str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
+    
+    ports: list[int] = Field(ge=1, le=65535, description="Ports to use for scanning (1 - 65535, default = 443).")    
+    status: Literal["disable", "deep-inspection"] | None = Field(default="deep-inspection", description="Configure protocol inspection status.")    
+    proxy_after_tcp_handshake: Literal["enable", "disable"] | None = Field(default="disable", description="Proxy traffic after the TCP 3-way handshake has been established (not before).")    
+    client_certificate: Literal["bypass", "inspect", "block"] | None = Field(default="inspect", description="Action based on received client certificate.")    
+    unsupported_ssl_version: Literal["allow", "block"] | None = Field(default="block", description="Action based on the SSL version used being unsupported.")    
+    unsupported_ssl_cipher: Literal["allow", "block"] | None = Field(default="allow", description="Action based on the SSL cipher used being unsupported.")    
+    unsupported_ssl_negotiation: Literal["allow", "block"] | None = Field(default="allow", description="Action based on the SSL negotiation used being unsupported.")    
+    expired_server_cert: Literal["allow", "block", "ignore"] | None = Field(default="block", description="Action based on server certificate is expired.")    
+    revoked_server_cert: Literal["allow", "block", "ignore"] | None = Field(default="block", description="Action based on server certificate is revoked.")    
+    untrusted_server_cert: Literal["allow", "block", "ignore"] | None = Field(default="allow", description="Action based on server certificate is not issued by a trusted CA.")    
+    cert_validation_timeout: Literal["allow", "block", "ignore"] | None = Field(default="allow", description="Action based on certificate validation timeout.")    
+    cert_validation_failure: Literal["allow", "block", "ignore"] | None = Field(default="block", description="Action based on certificate validation failure.")    
+    sni_server_cert_check: Literal["enable", "strict", "disable"] | None = Field(default="enable", description="Check the SNI in the client hello message with the CN or SAN fields in the returned server certificate.")
+class SslSshProfileServerCert(BaseModel):
+    """
+    Child table model for server-cert.
+    
+    Certificate used by SSL Inspection to replace server certificate.
+    """
+    
+    class Config:
+        """Pydantic model configuration."""
+        extra = "allow"  # Allow additional fields from API
+        str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
+    
+    name: str | None = Field(max_length=79, default="Fortinet_SSL", description="Certificate list.")  # datasource: ['vpn.certificate.local.name']
+class SslSshProfilePop3S(BaseModel):
+    """
+    Child table model for pop3s.
+    
+    Configure POP3S options.
+    """
+    
+    class Config:
+        """Pydantic model configuration."""
+        extra = "allow"  # Allow additional fields from API
+        str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
+    
+    ports: list[int] = Field(ge=1, le=65535, description="Ports to use for scanning (1 - 65535, default = 443).")    
+    status: Literal["disable", "deep-inspection"] | None = Field(default="deep-inspection", description="Configure protocol inspection status.")    
+    proxy_after_tcp_handshake: Literal["enable", "disable"] | None = Field(default="disable", description="Proxy traffic after the TCP 3-way handshake has been established (not before).")    
+    client_certificate: Literal["bypass", "inspect", "block"] | None = Field(default="inspect", description="Action based on received client certificate.")    
+    unsupported_ssl_version: Literal["allow", "block"] | None = Field(default="block", description="Action based on the SSL version used being unsupported.")    
+    unsupported_ssl_cipher: Literal["allow", "block"] | None = Field(default="allow", description="Action based on the SSL cipher used being unsupported.")    
+    unsupported_ssl_negotiation: Literal["allow", "block"] | None = Field(default="allow", description="Action based on the SSL negotiation used being unsupported.")    
+    expired_server_cert: Literal["allow", "block", "ignore"] | None = Field(default="block", description="Action based on server certificate is expired.")    
+    revoked_server_cert: Literal["allow", "block", "ignore"] | None = Field(default="block", description="Action based on server certificate is revoked.")    
+    untrusted_server_cert: Literal["allow", "block", "ignore"] | None = Field(default="allow", description="Action based on server certificate is not issued by a trusted CA.")    
+    cert_validation_timeout: Literal["allow", "block", "ignore"] | None = Field(default="allow", description="Action based on certificate validation timeout.")    
+    cert_validation_failure: Literal["allow", "block", "ignore"] | None = Field(default="block", description="Action based on certificate validation failure.")    
+    sni_server_cert_check: Literal["enable", "strict", "disable"] | None = Field(default="enable", description="Check the SNI in the client hello message with the CN or SAN fields in the returned server certificate.")
+class SslSshProfileImaps(BaseModel):
+    """
+    Child table model for imaps.
+    
+    Configure IMAPS options.
+    """
+    
+    class Config:
+        """Pydantic model configuration."""
+        extra = "allow"  # Allow additional fields from API
+        str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
+    
+    ports: list[int] = Field(ge=1, le=65535, description="Ports to use for scanning (1 - 65535, default = 443).")    
+    status: Literal["disable", "deep-inspection"] | None = Field(default="deep-inspection", description="Configure protocol inspection status.")    
+    proxy_after_tcp_handshake: Literal["enable", "disable"] | None = Field(default="disable", description="Proxy traffic after the TCP 3-way handshake has been established (not before).")    
+    client_certificate: Literal["bypass", "inspect", "block"] | None = Field(default="inspect", description="Action based on received client certificate.")    
+    unsupported_ssl_version: Literal["allow", "block"] | None = Field(default="block", description="Action based on the SSL version used being unsupported.")    
+    unsupported_ssl_cipher: Literal["allow", "block"] | None = Field(default="allow", description="Action based on the SSL cipher used being unsupported.")    
+    unsupported_ssl_negotiation: Literal["allow", "block"] | None = Field(default="allow", description="Action based on the SSL negotiation used being unsupported.")    
+    expired_server_cert: Literal["allow", "block", "ignore"] | None = Field(default="block", description="Action based on server certificate is expired.")    
+    revoked_server_cert: Literal["allow", "block", "ignore"] | None = Field(default="block", description="Action based on server certificate is revoked.")    
+    untrusted_server_cert: Literal["allow", "block", "ignore"] | None = Field(default="allow", description="Action based on server certificate is not issued by a trusted CA.")    
+    cert_validation_timeout: Literal["allow", "block", "ignore"] | None = Field(default="allow", description="Action based on certificate validation timeout.")    
+    cert_validation_failure: Literal["allow", "block", "ignore"] | None = Field(default="block", description="Action based on certificate validation failure.")    
+    sni_server_cert_check: Literal["enable", "strict", "disable"] | None = Field(default="enable", description="Check the SNI in the client hello message with the CN or SAN fields in the returned server certificate.")
 class SslSshProfileHttps(BaseModel):
     """
     Child table model for https.
@@ -52,8 +242,9 @@ class SslSshProfileHttps(BaseModel):
         """Pydantic model configuration."""
         extra = "allow"  # Allow additional fields from API
         str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
     
-    ports: list[Ports] = Field(ge=1, le=65535, default="", description="Ports to use for scanning (1 - 65535, default = 443).")    
+    ports: list[int] = Field(ge=1, le=65535, description="Ports to use for scanning (1 - 65535, default = 443).")    
     status: Literal["disable", "certificate-inspection", "deep-inspection"] | None = Field(default="deep-inspection", description="Configure protocol inspection status.")    
     quic: Literal["inspect", "bypass", "block"] | None = Field(default="inspect", description="QUIC inspection status (default = inspect).")    
     udp_not_quic: Literal["allow", "block"] | None = Field(default="allow", description="Action to be taken when matched UDP packet is not QUIC.")    
@@ -70,7 +261,7 @@ class SslSshProfileHttps(BaseModel):
     sni_server_cert_check: Literal["enable", "strict", "disable"] | None = Field(default="enable", description="Check the SNI in the client hello message with the CN or SAN fields in the returned server certificate.")    
     cert_probe_failure: Literal["allow", "block"] | None = Field(default="allow", description="Action based on certificate probe failure.")    
     encrypted_client_hello: Literal["allow", "block"] | None = Field(default="block", description="Block/allow session based on existence of encrypted-client-hello.")    
-    min_allowed_ssl_version: MinAllowedSslVersionEnum | None = Field(default="tls-1.1", description="Minimum SSL version to be allowed.")
+    min_allowed_ssl_version: SslSshProfileHttpsMinAllowedSslVersionEnum | None = Field(default=SslSshProfileHttpsMinAllowedSslVersionEnum.TLS_1_1, description="Minimum SSL version to be allowed.")
 class SslSshProfileFtps(BaseModel):
     """
     Child table model for ftps.
@@ -82,8 +273,9 @@ class SslSshProfileFtps(BaseModel):
         """Pydantic model configuration."""
         extra = "allow"  # Allow additional fields from API
         str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
     
-    ports: list[Ports] = Field(ge=1, le=65535, default="", description="Ports to use for scanning (1 - 65535, default = 443).")    
+    ports: list[int] = Field(ge=1, le=65535, description="Ports to use for scanning (1 - 65535, default = 443).")    
     status: Literal["disable", "deep-inspection"] | None = Field(default="deep-inspection", description="Configure protocol inspection status.")    
     client_certificate: Literal["bypass", "inspect", "block"] | None = Field(default="bypass", description="Action based on received client certificate.")    
     unsupported_ssl_version: Literal["allow", "block"] | None = Field(default="block", description="Action based on the SSL version used being unsupported.")    
@@ -95,101 +287,22 @@ class SslSshProfileFtps(BaseModel):
     cert_validation_timeout: Literal["allow", "block", "ignore"] | None = Field(default="allow", description="Action based on certificate validation timeout.")    
     cert_validation_failure: Literal["allow", "block", "ignore"] | None = Field(default="block", description="Action based on certificate validation failure.")    
     sni_server_cert_check: Literal["enable", "strict", "disable"] | None = Field(default="enable", description="Check the SNI in the client hello message with the CN or SAN fields in the returned server certificate.")    
-    min_allowed_ssl_version: MinAllowedSslVersionEnum | None = Field(default="tls-1.1", description="Minimum SSL version to be allowed.")
-class SslSshProfileImaps(BaseModel):
+    min_allowed_ssl_version: SslSshProfileFtpsMinAllowedSslVersionEnum | None = Field(default=SslSshProfileFtpsMinAllowedSslVersionEnum.TLS_1_1, description="Minimum SSL version to be allowed.")
+class SslSshProfileEchOuterSni(BaseModel):
     """
-    Child table model for imaps.
+    Child table model for ech-outer-sni.
     
-    Configure IMAPS options.
-    """
-    
-    class Config:
-        """Pydantic model configuration."""
-        extra = "allow"  # Allow additional fields from API
-        str_strip_whitespace = True
-    
-    ports: list[Ports] = Field(ge=1, le=65535, default="", description="Ports to use for scanning (1 - 65535, default = 443).")    
-    status: Literal["disable", "deep-inspection"] | None = Field(default="deep-inspection", description="Configure protocol inspection status.")    
-    proxy_after_tcp_handshake: Literal["enable", "disable"] | None = Field(default="disable", description="Proxy traffic after the TCP 3-way handshake has been established (not before).")    
-    client_certificate: Literal["bypass", "inspect", "block"] | None = Field(default="inspect", description="Action based on received client certificate.")    
-    unsupported_ssl_version: Literal["allow", "block"] | None = Field(default="block", description="Action based on the SSL version used being unsupported.")    
-    unsupported_ssl_cipher: Literal["allow", "block"] | None = Field(default="allow", description="Action based on the SSL cipher used being unsupported.")    
-    unsupported_ssl_negotiation: Literal["allow", "block"] | None = Field(default="allow", description="Action based on the SSL negotiation used being unsupported.")    
-    expired_server_cert: Literal["allow", "block", "ignore"] | None = Field(default="block", description="Action based on server certificate is expired.")    
-    revoked_server_cert: Literal["allow", "block", "ignore"] | None = Field(default="block", description="Action based on server certificate is revoked.")    
-    untrusted_server_cert: Literal["allow", "block", "ignore"] | None = Field(default="allow", description="Action based on server certificate is not issued by a trusted CA.")    
-    cert_validation_timeout: Literal["allow", "block", "ignore"] | None = Field(default="allow", description="Action based on certificate validation timeout.")    
-    cert_validation_failure: Literal["allow", "block", "ignore"] | None = Field(default="block", description="Action based on certificate validation failure.")    
-    sni_server_cert_check: Literal["enable", "strict", "disable"] | None = Field(default="enable", description="Check the SNI in the client hello message with the CN or SAN fields in the returned server certificate.")
-class SslSshProfilePop3s(BaseModel):
-    """
-    Child table model for pop3s.
-    
-    Configure POP3S options.
+    ClientHelloOuter SNIs to be blocked.
     """
     
     class Config:
         """Pydantic model configuration."""
         extra = "allow"  # Allow additional fields from API
         str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
     
-    ports: list[Ports] = Field(ge=1, le=65535, default="", description="Ports to use for scanning (1 - 65535, default = 443).")    
-    status: Literal["disable", "deep-inspection"] | None = Field(default="deep-inspection", description="Configure protocol inspection status.")    
-    proxy_after_tcp_handshake: Literal["enable", "disable"] | None = Field(default="disable", description="Proxy traffic after the TCP 3-way handshake has been established (not before).")    
-    client_certificate: Literal["bypass", "inspect", "block"] | None = Field(default="inspect", description="Action based on received client certificate.")    
-    unsupported_ssl_version: Literal["allow", "block"] | None = Field(default="block", description="Action based on the SSL version used being unsupported.")    
-    unsupported_ssl_cipher: Literal["allow", "block"] | None = Field(default="allow", description="Action based on the SSL cipher used being unsupported.")    
-    unsupported_ssl_negotiation: Literal["allow", "block"] | None = Field(default="allow", description="Action based on the SSL negotiation used being unsupported.")    
-    expired_server_cert: Literal["allow", "block", "ignore"] | None = Field(default="block", description="Action based on server certificate is expired.")    
-    revoked_server_cert: Literal["allow", "block", "ignore"] | None = Field(default="block", description="Action based on server certificate is revoked.")    
-    untrusted_server_cert: Literal["allow", "block", "ignore"] | None = Field(default="allow", description="Action based on server certificate is not issued by a trusted CA.")    
-    cert_validation_timeout: Literal["allow", "block", "ignore"] | None = Field(default="allow", description="Action based on certificate validation timeout.")    
-    cert_validation_failure: Literal["allow", "block", "ignore"] | None = Field(default="block", description="Action based on certificate validation failure.")    
-    sni_server_cert_check: Literal["enable", "strict", "disable"] | None = Field(default="enable", description="Check the SNI in the client hello message with the CN or SAN fields in the returned server certificate.")
-class SslSshProfileSmtps(BaseModel):
-    """
-    Child table model for smtps.
-    
-    Configure SMTPS options.
-    """
-    
-    class Config:
-        """Pydantic model configuration."""
-        extra = "allow"  # Allow additional fields from API
-        str_strip_whitespace = True
-    
-    ports: list[Ports] = Field(ge=1, le=65535, default="", description="Ports to use for scanning (1 - 65535, default = 443).")    
-    status: Literal["disable", "deep-inspection"] | None = Field(default="deep-inspection", description="Configure protocol inspection status.")    
-    proxy_after_tcp_handshake: Literal["enable", "disable"] | None = Field(default="disable", description="Proxy traffic after the TCP 3-way handshake has been established (not before).")    
-    client_certificate: Literal["bypass", "inspect", "block"] | None = Field(default="inspect", description="Action based on received client certificate.")    
-    unsupported_ssl_version: Literal["allow", "block"] | None = Field(default="block", description="Action based on the SSL version used being unsupported.")    
-    unsupported_ssl_cipher: Literal["allow", "block"] | None = Field(default="allow", description="Action based on the SSL cipher used being unsupported.")    
-    unsupported_ssl_negotiation: Literal["allow", "block"] | None = Field(default="allow", description="Action based on the SSL negotiation used being unsupported.")    
-    expired_server_cert: Literal["allow", "block", "ignore"] | None = Field(default="block", description="Action based on server certificate is expired.")    
-    revoked_server_cert: Literal["allow", "block", "ignore"] | None = Field(default="block", description="Action based on server certificate is revoked.")    
-    untrusted_server_cert: Literal["allow", "block", "ignore"] | None = Field(default="allow", description="Action based on server certificate is not issued by a trusted CA.")    
-    cert_validation_timeout: Literal["allow", "block", "ignore"] | None = Field(default="allow", description="Action based on certificate validation timeout.")    
-    cert_validation_failure: Literal["allow", "block", "ignore"] | None = Field(default="block", description="Action based on certificate validation failure.")    
-    sni_server_cert_check: Literal["enable", "strict", "disable"] | None = Field(default="enable", description="Check the SNI in the client hello message with the CN or SAN fields in the returned server certificate.")
-class SslSshProfileSsh(BaseModel):
-    """
-    Child table model for ssh.
-    
-    Configure SSH options.
-    """
-    
-    class Config:
-        """Pydantic model configuration."""
-        extra = "allow"  # Allow additional fields from API
-        str_strip_whitespace = True
-    
-    ports: list[Ports] = Field(ge=1, le=65535, default="", description="Ports to use for scanning (1 - 65535, default = 443).")    
-    status: Literal["disable", "deep-inspection"] | None = Field(default="disable", description="Configure protocol inspection status.")    
-    inspect_all: Literal["disable", "deep-inspection"] | None = Field(default="disable", description="Level of SSL inspection.")    
-    proxy_after_tcp_handshake: Literal["enable", "disable"] | None = Field(default="disable", description="Proxy traffic after the TCP 3-way handshake has been established (not before).")    
-    unsupported_version: Literal["bypass", "block"] | None = Field(default="bypass", description="Action based on SSH version being unsupported.")    
-    ssh_tun_policy_check: Literal["disable", "enable"] | None = Field(default="disable", description="Enable/disable SSH tunnel policy check.")    
-    ssh_algorithm: Literal["compatible", "high-encryption"] | None = Field(default="compatible", description="Relative strength of encryption algorithms accepted during negotiation.")
+    name: str = Field(max_length=79, description="ClientHelloOuter SNI name.")    
+    sni: str = Field(max_length=255, description="ClientHelloOuter SNI to be blocked.")
 class SslSshProfileDot(BaseModel):
     """
     Child table model for dot.
@@ -201,6 +314,7 @@ class SslSshProfileDot(BaseModel):
         """Pydantic model configuration."""
         extra = "allow"  # Allow additional fields from API
         str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
     
     status: Literal["disable", "deep-inspection"] | None = Field(default="disable", description="Configure protocol inspection status.")    
     quic: Literal["inspect", "bypass", "block"] | None = Field(default="inspect", description="QUIC inspection status (default = inspect).")    
@@ -216,79 +330,17 @@ class SslSshProfileDot(BaseModel):
     cert_validation_timeout: Literal["allow", "block", "ignore"] | None = Field(default="allow", description="Action based on certificate validation timeout.")    
     cert_validation_failure: Literal["allow", "block", "ignore"] | None = Field(default="block", description="Action based on certificate validation failure.")    
     sni_server_cert_check: Literal["enable", "strict", "disable"] | None = Field(default="enable", description="Check the SNI in the client hello message with the CN or SAN fields in the returned server certificate.")
-class SslSshProfileSslExempt(BaseModel):
-    """
-    Child table model for ssl-exempt.
-    
-    Servers to exempt from SSL inspection.
-    """
-    
-    class Config:
-        """Pydantic model configuration."""
-        extra = "allow"  # Allow additional fields from API
-        str_strip_whitespace = True
-    
-    id: int | None = Field(ge=0, le=512, default=0, description="ID number.")    
-    type: TypeEnum = Field(default="fortiguard-category", description="Type of address object (IPv4 or IPv6) or FortiGuard category.")    
-    fortiguard_category: int | None = Field(ge=0, le=255, default=0, description="FortiGuard category ID.")    
-    address: str | None = Field(max_length=79, default="", description="IPv4 address object.")  # datasource: ['firewall.address.name', 'firewall.addrgrp.name']    
-    address6: str | None = Field(max_length=79, default="", description="IPv6 address object.")  # datasource: ['firewall.address6.name', 'firewall.addrgrp6.name']    
-    wildcard_fqdn: str | None = Field(max_length=79, default="", description="Exempt servers by wildcard FQDN.")  # datasource: ['firewall.wildcard-fqdn.custom.name', 'firewall.wildcard-fqdn.group.name']    
-    regex: str | None = Field(max_length=255, default="", description="Exempt servers by regular expression.")
-class SslSshProfileEchOuterSni(BaseModel):
-    """
-    Child table model for ech-outer-sni.
-    
-    ClientHelloOuter SNIs to be blocked.
-    """
-    
-    class Config:
-        """Pydantic model configuration."""
-        extra = "allow"  # Allow additional fields from API
-        str_strip_whitespace = True
-    
-    name: str = Field(max_length=79, default="", description="ClientHelloOuter SNI name.")    
-    sni: str = Field(max_length=255, default="", description="ClientHelloOuter SNI to be blocked.")
-class SslSshProfileServerCert(BaseModel):
-    """
-    Child table model for server-cert.
-    
-    Certificate used by SSL Inspection to replace server certificate.
-    """
-    
-    class Config:
-        """Pydantic model configuration."""
-        extra = "allow"  # Allow additional fields from API
-        str_strip_whitespace = True
-    
-    name: str | None = Field(max_length=79, default="Fortinet_SSL", description="Certificate list.")  # datasource: ['vpn.certificate.local.name']
-class SslSshProfileSslServer(BaseModel):
-    """
-    Child table model for ssl-server.
-    
-    SSL server settings used for client certificate request.
-    """
-    
-    class Config:
-        """Pydantic model configuration."""
-        extra = "allow"  # Allow additional fields from API
-        str_strip_whitespace = True
-    
-    id: int | None = Field(ge=0, le=4294967295, default=0, description="SSL server ID.")    
-    ip: str = Field(default="0.0.0.0", description="IPv4 address of the SSL server.")    
-    https_client_certificate: Literal["bypass", "inspect", "block"] | None = Field(default="bypass", description="Action based on received client certificate during the HTTPS handshake.")    
-    smtps_client_certificate: Literal["bypass", "inspect", "block"] | None = Field(default="bypass", description="Action based on received client certificate during the SMTPS handshake.")    
-    pop3s_client_certificate: Literal["bypass", "inspect", "block"] | None = Field(default="bypass", description="Action based on received client certificate during the POP3S handshake.")    
-    imaps_client_certificate: Literal["bypass", "inspect", "block"] | None = Field(default="bypass", description="Action based on received client certificate during the IMAPS handshake.")    
-    ftps_client_certificate: Literal["bypass", "inspect", "block"] | None = Field(default="bypass", description="Action based on received client certificate during the FTPS handshake.")    
-    ssl_other_client_certificate: Literal["bypass", "inspect", "block"] | None = Field(default="bypass", description="Action based on received client certificate during an SSL protocol handshake.")
 # ============================================================================
 # Enum Definitions (for fields with 4+ allowed values)
 # ============================================================================
 
-class SslSshProfileSupported_alpnEnum(str, Enum):
+class SslSshProfileSupportedAlpnEnum(str, Enum):
     """Allowed values for supported_alpn field."""
-    HTTP1_1 = "http1-1"    HTTP2 = "http2"    ALL = "all"    NONE = "none"
+    HTTP1_1 = "http1-1"
+    HTTP2 = "http2"
+    ALL = "all"
+    NONE = "none"
+
 
 # ============================================================================
 # Main Model
@@ -313,26 +365,26 @@ class SslSshProfileModel(BaseModel):
     # Model Fields
     # ========================================================================
     
-    name: str = Field(max_length=47, default="", description="Name.")    
+    name: str = Field(max_length=47, description="Name.")    
     comment: str | None = Field(max_length=255, default=None, description="Optional comments.")    
-    ssl: list[Ssl] = Field(default=None, description="Configure SSL options.")    
-    https: list[Https] = Field(default=None, description="Configure HTTPS options.")    
-    ftps: list[Ftps] = Field(default=None, description="Configure FTPS options.")    
-    imaps: list[Imaps] = Field(default=None, description="Configure IMAPS options.")    
-    pop3s: list[Pop3S] = Field(default=None, description="Configure POP3S options.")    
-    smtps: list[Smtps] = Field(default=None, description="Configure SMTPS options.")    
-    ssh: list[Ssh] = Field(default=None, description="Configure SSH options.")    
-    dot: list[Dot] = Field(default=None, description="Configure DNS over TLS options.")    
+    ssl: list[SslSshProfileSsl] = Field(default_factory=list, description="Configure SSL options.")    
+    https: list[SslSshProfileHttps] = Field(default_factory=list, description="Configure HTTPS options.")    
+    ftps: list[SslSshProfileFtps] = Field(default_factory=list, description="Configure FTPS options.")    
+    imaps: list[SslSshProfileImaps] = Field(default_factory=list, description="Configure IMAPS options.")    
+    pop3s: list[SslSshProfilePop3S] = Field(default_factory=list, description="Configure POP3S options.")    
+    smtps: list[SslSshProfileSmtps] = Field(default_factory=list, description="Configure SMTPS options.")    
+    ssh: list[SslSshProfileSsh] = Field(default_factory=list, description="Configure SSH options.")    
+    dot: list[SslSshProfileDot] = Field(default_factory=list, description="Configure DNS over TLS options.")    
     allowlist: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable exempting servers by FortiGuard allowlist.")    
     block_blocklisted_certificates: Literal["disable", "enable"] | None = Field(default="enable", description="Enable/disable blocking SSL-based botnet communication by FortiGuard certificate blocklist.")    
-    ssl_exempt: list[SslExempt] = Field(default=None, description="Servers to exempt from SSL inspection.")    
-    ech_outer_sni: list[EchOuterSni] = Field(default=None, description="ClientHelloOuter SNIs to be blocked.")    
+    ssl_exempt: list[SslSshProfileSslExempt] = Field(default_factory=list, description="Servers to exempt from SSL inspection.")    
+    ech_outer_sni: list[SslSshProfileEchOuterSni] = Field(default_factory=list, description="ClientHelloOuter SNIs to be blocked.")    
     server_cert_mode: Literal["re-sign", "replace"] = Field(default="re-sign", description="Re-sign or replace the server's certificate.")    
     use_ssl_server: Literal["disable", "enable"] | None = Field(default="disable", description="Enable/disable the use of SSL server table for SSL offloading.")    
     caname: str = Field(max_length=35, default="Fortinet_CA_SSL", description="CA certificate used by SSL Inspection.")  # datasource: ['vpn.certificate.local.name', 'vpn.certificate.hsm-local.name']    
     untrusted_caname: str = Field(max_length=35, default="Fortinet_CA_Untrusted", description="Untrusted CA certificate used by SSL Inspection.")  # datasource: ['vpn.certificate.local.name', 'vpn.certificate.hsm-local.name']    
-    server_cert: list[ServerCert] = Field(default=None, description="Certificate used by SSL Inspection to replace server certificate.")    
-    ssl_server: list[SslServer] = Field(description="SSL server settings used for client certificate request.")    
+    server_cert: list[SslSshProfileServerCert] = Field(default_factory=list, description="Certificate used by SSL Inspection to replace server certificate.")    
+    ssl_server: list[SslSshProfileSslServer] = Field(description="SSL server settings used for client certificate request.")    
     ssl_exemption_ip_rating: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable IP based URL rating.")    
     ssl_exemption_log: Literal["disable", "enable"] | None = Field(default="disable", description="Enable/disable logging of SSL exemptions.")    
     ssl_anomaly_log: Literal["disable", "enable"] | None = Field(default="enable", description="Enable/disable logging of SSL anomalies.")    
@@ -341,7 +393,7 @@ class SslSshProfileModel(BaseModel):
     ssl_handshake_log: Literal["disable", "enable"] | None = Field(default="disable", description="Enable/disable logging of TLS handshakes.")    
     rpc_over_https: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable inspection of RPC over HTTPS.")    
     mapi_over_https: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable inspection of MAPI over HTTPS.")    
-    supported_alpn: SupportedAlpnEnum | None = Field(default="all", description="Configure ALPN option.")    
+    supported_alpn: SslSshProfileSupportedAlpnEnum | None = Field(default=SslSshProfileSupportedAlpnEnum.ALL, description="Configure ALPN option.")    
     # ========================================================================
     # Custom Validators
     # ========================================================================
@@ -436,7 +488,7 @@ class SslSshProfileModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.ssl_ssh_profile.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate child table items
         values = getattr(self, "ssl_exempt", [])
@@ -454,9 +506,9 @@ class SslSshProfileModel(BaseModel):
             
             # Check all datasource endpoints
             found = False
-            if await client.api.cmdb.firewall.wildcard-fqdn.custom.exists(value):
+            if await client.api.cmdb.firewall.wildcard_fqdn.custom.exists(value):
                 found = True
-            elif await client.api.cmdb.firewall.wildcard-fqdn.group.exists(value):
+            elif await client.api.cmdb.firewall.wildcard_fqdn.group.exists(value):
                 found = True
             
             if not found:
@@ -496,7 +548,7 @@ class SslSshProfileModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.ssl_ssh_profile.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate scalar field
         value = getattr(self, "caname", None)
@@ -507,7 +559,7 @@ class SslSshProfileModel(BaseModel):
         found = False
         if await client.api.cmdb.vpn.certificate.local.exists(value):
             found = True
-        elif await client.api.cmdb.vpn.certificate.hsm-local.exists(value):
+        elif await client.api.cmdb.vpn.certificate.hsm_local.exists(value):
             found = True
         
         if not found:
@@ -547,7 +599,7 @@ class SslSshProfileModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.ssl_ssh_profile.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate scalar field
         value = getattr(self, "untrusted_caname", None)
@@ -558,7 +610,7 @@ class SslSshProfileModel(BaseModel):
         found = False
         if await client.api.cmdb.vpn.certificate.local.exists(value):
             found = True
-        elif await client.api.cmdb.vpn.certificate.hsm-local.exists(value):
+        elif await client.api.cmdb.vpn.certificate.hsm_local.exists(value):
             found = True
         
         if not found:
@@ -598,7 +650,7 @@ class SslSshProfileModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.ssl_ssh_profile.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate child table items
         values = getattr(self, "server_cert", [])
@@ -667,11 +719,11 @@ Dict = dict[str, Any]  # For backward compatibility
 # ============================================================================
 
 __all__ = [
-    "SslSshProfileModel",    "SslSshProfileSsl",    "SslSshProfileHttps",    "SslSshProfileFtps",    "SslSshProfileImaps",    "SslSshProfilePop3s",    "SslSshProfileSmtps",    "SslSshProfileSsh",    "SslSshProfileDot",    "SslSshProfileSslExempt",    "SslSshProfileEchOuterSni",    "SslSshProfileServerCert",    "SslSshProfileSslServer",]
+    "SslSshProfileModel",    "SslSshProfileSsl",    "SslSshProfileHttps",    "SslSshProfileFtps",    "SslSshProfileImaps",    "SslSshProfilePop3S",    "SslSshProfileSmtps",    "SslSshProfileSsh",    "SslSshProfileDot",    "SslSshProfileSslExempt",    "SslSshProfileEchOuterSni",    "SslSshProfileServerCert",    "SslSshProfileSslServer",]
 
 
 # ============================================================================
 # Generated by hfortix generator v0.6.0
 # Schema: 1.7.0
-# Generated: 2026-01-17T05:32:16.351792Z
+# Generated: 2026-01-17T17:25:20.414117Z
 # ============================================================================

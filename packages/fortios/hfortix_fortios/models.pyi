@@ -4,7 +4,8 @@ Type stubs for FortiOS Object Models
 Provides type hints for zero-maintenance object wrappers for FortiOS API responses.
 """
 
-from typing import Any, Generator, Generic, Iterator, Literal, TypeVar, overload
+import builtins
+from typing import Any, Generator, Generic, Iterator, Literal, SupportsIndex, TypeVar, overload
 
 _T = TypeVar("_T")
 _DataT = TypeVar("_DataT", bound=dict[str, Any])
@@ -166,35 +167,10 @@ class FortiObject(Generic[_DataT]):
         """
         ...
 
-    def __getattr__(self, name: str) -> list | str | int | bool | dict | None:
-        """
-        Dynamic attribute access with automatic member_table flattening.
-
-        For most FortiOS fields (strings, ints, etc.), returns the value as-is.
-        For member_table fields (lists of dicts with 'name' key), automatically
-        flattens to a FortiList of name strings for cleaner access with helper methods.
-
-        NOTE: For autocomplete on list fields, use typing.cast():
-            from typing import cast
-            srcintf = cast(FortiList, policy.srcintf)
-            srcintf.csv()  # <-- Now has full autocomplete!
-
-        Args:
-            name: Attribute name to access
-
-        Returns:
-            Field value - FortiList for list fields, original value otherwise
-
-        Raises:
-            AttributeError: If accessing private attributes (starting with '_')
-
-        Examples:
-            >>> obj.srcaddr  # Member table
-            ['addr1', 'addr2']
-            >>> obj.action  # Regular field
-            'accept'
-        """
-        ...
+    # NOTE: __getattr__ is intentionally omitted from the stub.
+    # This allows typed subclasses (like AddressObject) to properly
+    # report errors for nonexistent fields. The runtime implementation
+    # still has __getattr__ for dynamic access.
 
     def get_full(self, name: str) -> Any:
         """
@@ -266,7 +242,7 @@ class FortiObject(Generic[_DataT]):
         ...
     
     @property
-    def raw(self) -> dict[str, Any]:
+    def raw(self) -> builtins.dict[str, Any]:
         """
         Get the raw/full API response envelope.
 
@@ -311,29 +287,10 @@ class FortiObject(Generic[_DataT]):
         """
         ...
 
-    def __getitem__(self, key: str) -> Any:
-        """
-        Dictionary-style access to fields.
-
-        Provides dict-like bracket notation access to object fields,
-        with the same auto-flattening behavior as attribute access.
-
-        Args:
-            key: Field name to access
-
-        Returns:
-            Field value, with member_table fields auto-flattened
-
-        Raises:
-            KeyError: If the field does not exist
-
-        Examples:
-            >>> obj['srcaddr']
-            ['addr1', 'addr2']
-            >>> obj['action']
-            'accept'
-        """
-        ...
+    # NOTE: __getitem__ is intentionally omitted from the stub.
+    # This forces users to use attribute access (obj.field) for typed access,
+    # or convert to dict first (obj.dict["field"]) for dict-style access.
+    # The runtime implementation still supports obj["field"] for convenience.
 
     def __len__(self) -> int:
         """
@@ -479,10 +436,9 @@ class FortiObjectList(list[_ObjectT], Generic[_ObjectT]):
         ...
     
     @overload
-    def __getitem__(self, index: int) -> _ObjectT: ...
+    def __getitem__(self, index: SupportsIndex, /) -> _ObjectT: ...
     @overload
-    def __getitem__(self, index: slice) -> list[_ObjectT]: ...
-    def __getitem__(self, index: int | slice) -> _ObjectT | list[_ObjectT]: ...
+    def __getitem__(self, index: slice, /) -> list[_ObjectT]: ...
 
     # ========================================================================
     # Response timing properties
@@ -573,7 +529,7 @@ class FortiObjectList(list[_ObjectT], Generic[_ObjectT]):
         ...
     
     @property
-    def raw(self) -> dict[str, Any] | list[dict[str, Any]]:
+    def raw(self) -> builtins.dict[str, Any] | builtins.list[builtins.dict[str, Any]]:
         """
         Get the full API response envelope.
         
@@ -820,45 +776,4 @@ def process_response(
     response_time: float | None = None,
 ) -> Any:
     """Fallback for non-dict/list types - returns result as-is."""
-    ...
-
-def process_response(
-    result: Any,
-    unwrap_single: bool = False,
-    raw_envelope: dict[str, Any] | None = None,
-    response_time: float | None = None,
-) -> Any:
-    """
-    Process API response - always returns FortiObject instances.
-
-    Args:
-        result: Raw API response (list or dict)
-        unwrap_single: If True and result is single-item list, return just the item
-        raw_envelope: Optional full API envelope to attach to FortiObjectList
-        response_time: Optional response time in seconds for the HTTP request
-
-    Returns:
-        Processed response - FortiObject, FortiObjectList, or dict with FortiObjects
-
-    Examples:
-        >>> # List response - returns FortiObjectList
-        >>> result = [{"name": "policy1", "srcaddr": [{"name": "addr1"}]}]
-        >>> objects = process_response(result)
-        >>> objects[0].name
-        'policy1'
-        >>> objects.raw  # Access full API envelope
-        {'http_status': 200, 'results': [...]}
-
-        >>> # Single item with unwrap_single
-        >>> result = [{"name": "policy1"}]
-        >>> obj = process_response(result, unwrap_single=True)
-        >>> obj.name
-        'policy1'
-
-        >>> # Dict response with 'results' key
-        >>> result = {'results': [{"name": "policy1"}], 'http_status': 200}
-        >>> response = process_response(result)
-        >>> response[0].name  # FortiObjectList
-        'policy1'
-    """
     ...

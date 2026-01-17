@@ -1,229 +1,118 @@
-from typing import TypedDict, Literal, Any, Coroutine, Union, overload, Generator, final
-from typing_extensions import NotRequired
-from hfortix_fortios.models import FortiObject, FortiObjectList
+""" - Type Stubs
 
-# ============================================================================
-# Nested TypedDicts for table field children (dict mode)
-# These MUST be defined before the Payload class to use them as type hints
-# ============================================================================
+Auto-generated stub file for type checking and IDE support.
 
-class ProfileFiltersItem(TypedDict, total=False):
-    """Type hints for filters table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    Use this when building payloads for POST/PUT requests.
-    
-    **Available fields:**
-        - id: int
-        - comment: str
-        - type: "category" | "channel" | "title" | "description"
-        - keyword: int
-        - category: str
-        - channel: str
-        - action: "allow" | "monitor" | "block"
-        - log: "enable" | "disable"
-    
-    **Example:**
-        entry: ProfileFiltersItem = {
-            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
-        }
-    """
-    
-    id: int  # ID. | Default: 0 | Min: 0 | Max: 4294967295
-    comment: str  # Comment. | MaxLen: 255
-    type: Literal["category", "channel", "title", "description"]  # Filter type. | Default: category
-    keyword: int  # Video filter keyword ID. | Default: 0 | Min: 0 | Max: 4294967295
-    category: str  # FortiGuard category ID. | MaxLen: 7
-    channel: str  # Channel ID. | MaxLen: 255
-    action: Literal["allow", "monitor", "block"]  # Video filter action. | Default: monitor
-    log: Literal["enable", "disable"]  # Enable/disable logging. | Default: enable
+Endpoint: videofilter/profile
+Category: cmdb
+"""
+
+from __future__ import annotations
+
+from typing import (
+    Any,
+    ClassVar,
+    Literal,
+    TypedDict,
+    overload,
+)
+
+from hfortix_fortios.models import (
+    FortiObject,
+    FortiObjectList,
+)
 
 
-# ============================================================================
-# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional)
-# ============================================================================
-# NOTE: We intentionally DON'T use NotRequired wrapper because:
-# 1. total=False already makes all fields optional
-# 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
-class ProfilePayload(TypedDict, total=False):
-    """
-    Type hints for videofilter/profile payload fields.
-    
-    Configure VideoFilter profile.
-    
-    **Related Resources:**
+# ================================================================
+# TypedDict Payloads
+# ================================================================
 
-    Dependencies (resources this endpoint references):
-        - :class:`~.system.replacemsg-group.ReplacemsgGroupEndpoint` (via: replacemsg-group)
-
-    **Usage:**
-        payload: ProfilePayload = {
-            "field": "value",  # <- autocomplete shows all fields
-        }
-    """
-    name: str  # Name. | MaxLen: 47
-    comment: str  # Comment. | MaxLen: 255
-    filters: list[ProfileFiltersItem]  # YouTube filter entries.
-    youtube: Literal["enable", "disable"]  # Enable/disable YouTube video source. | Default: enable
-    vimeo: Literal["enable", "disable"]  # Enable/disable Vimeo video source. | Default: enable
-    dailymotion: Literal["enable", "disable"]  # Enable/disable Dailymotion video source. | Default: enable
-    replacemsg_group: str  # Replacement message group. | MaxLen: 35
-
-# ============================================================================
-# Nested classes for table field children (object mode - for API responses)
-# ============================================================================
-
-@final
-class ProfileFiltersObject:
-    """Typed object for filters table items.
-    
-    Provides IDE autocomplete for nested table field attributes.
-    At runtime, this is a FortiObject instance.
-    """
-    
-    # ID. | Default: 0 | Min: 0 | Max: 4294967295
+class ProfileFiltersItem:
+    """Nested item for filters field - supports attribute access."""
     id: int
-    # Comment. | MaxLen: 255
     comment: str
-    # Filter type. | Default: category
     type: Literal["category", "channel", "title", "description"]
-    # Video filter keyword ID. | Default: 0 | Min: 0 | Max: 4294967295
     keyword: int
-    # FortiGuard category ID. | MaxLen: 7
     category: str
-    # Channel ID. | MaxLen: 255
     channel: str
-    # Video filter action. | Default: monitor
     action: Literal["allow", "monitor", "block"]
-    # Enable/disable logging. | Default: enable
     log: Literal["enable", "disable"]
-    
-    # Common API response fields
-    status: str
-    http_status: int | None
-    http_status_code: int | None
-    http_method: str | None
-    http_response_time: float | None
-    vdom: str | None
-    
-    # Methods from FortiObject
-    @property
-    def dict(self) -> dict[str, Any]:
-        """Convert to dictionary."""
-        ...
-    @property
-    def json(self) -> str:
-        """Get pretty-printed JSON string."""
-        ...
-    @property
-    def raw(self) -> dict[str, Any]:
-        """Get raw API response data."""
-        ...
-    def get_full(self, name: str) -> Any: ...
-    def to_dict(self) -> FortiObject: ...
-    def keys(self) -> Any: ...
-    def values(self) -> Generator[Any, None, None]: ...
-    def items(self) -> Generator[tuple[str, Any], None, None]: ...
-    def get(self, key: str, default: Any = None) -> Any: ...
 
 
-
-
-# Response TypedDict for GET returns (all fields present in API response)
-class ProfileResponse(TypedDict):
-    """
-    Type hints for videofilter/profile API response fields.
-    
-    All fields are present in the response from the FortiGate API.
-    """
-    name: str  # Name. | MaxLen: 47
-    comment: str  # Comment. | MaxLen: 255
-    filters: list[ProfileFiltersItem]  # YouTube filter entries.
-    youtube: Literal["enable", "disable"]  # Enable/disable YouTube video source. | Default: enable
-    vimeo: Literal["enable", "disable"]  # Enable/disable Vimeo video source. | Default: enable
-    dailymotion: Literal["enable", "disable"]  # Enable/disable Dailymotion video source. | Default: enable
-    replacemsg_group: str  # Replacement message group. | MaxLen: 35
-
-
-@final
-class ProfileObject:
-    """Typed FortiObject for videofilter/profile with IDE autocomplete support.
-    
-    This is a typed wrapper that provides IDE autocomplete for API response fields.
-    At runtime, this is actually a FortiObject instance.
-    """
-    
-    # Name. | MaxLen: 47
+class ProfilePayload(TypedDict, total=False):
+    """Payload type for Profile operations."""
     name: str
-    # Comment. | MaxLen: 255
     comment: str
-    # YouTube filter entries.
-    filters: list[ProfileFiltersObject]
-    # Enable/disable YouTube video source. | Default: enable
+    filters: str | list[str] | list[dict[str, Any]] | list[ProfileFiltersItem]
     youtube: Literal["enable", "disable"]
-    # Enable/disable Vimeo video source. | Default: enable
     vimeo: Literal["enable", "disable"]
-    # Enable/disable Dailymotion video source. | Default: enable
     dailymotion: Literal["enable", "disable"]
-    # Replacement message group. | MaxLen: 35
     replacemsg_group: str
-    
-    # Common API response fields
-    status: str
-    http_status: int | None
-    http_status_code: int | None
-    http_method: str | None
-    http_response_time: float | None
-    vdom: str | None
-    
-    # Methods from FortiObject
-    @property
-    def dict(self) -> dict[str, Any]:
-        """Convert to dictionary."""
-        ...
-    @property
-    def json(self) -> str:
-        """Get pretty-printed JSON string."""
-        ...
-    @property
-    def raw(self) -> dict[str, Any]:
-        """Get raw API response data."""
-        ...
-    def get_full(self, name: str) -> Any: ...
-    def to_dict(self) -> ProfilePayload: ...
-    def keys(self) -> Any: ...
-    def values(self) -> Generator[Any, None, None]: ...
-    def items(self) -> Generator[tuple[str, Any], None, None]: ...
-    def get(self, key: str, default: Any = None) -> Any: ...
 
+
+# ================================================================
+# Response Types (TypedDict for dict-style access)
+# ================================================================
+
+class ProfileResponse(TypedDict, total=False):
+    """Response type for Profile - use with .dict property for typed dict access."""
+    name: str
+    comment: str
+    filters: list[ProfileFiltersItem]
+    youtube: Literal["enable", "disable"]
+    vimeo: Literal["enable", "disable"]
+    dailymotion: Literal["enable", "disable"]
+    replacemsg_group: str
+
+
+# ================================================================
+# Response Types (Class for attribute access)
+# ================================================================
+
+
+class ProfileObject(FortiObject):
+    """Typed FortiObject for Profile with field access."""
+    name: str
+    comment: str
+    filters: list[ProfileFiltersItem]
+    youtube: Literal["enable", "disable"]
+    vimeo: Literal["enable", "disable"]
+    dailymotion: Literal["enable", "disable"]
+    replacemsg_group: str
+
+
+# ================================================================
+# Main Endpoint Class
+# ================================================================
 
 class Profile:
     """
-    Configure VideoFilter profile.
     
-    Path: videofilter/profile
+    Endpoint: videofilter/profile
     Category: cmdb
-    Primary Key: name
+    MKey: name
     """
     
+    # Class attributes for introspection
+    endpoint: ClassVar[str] = ...
+    path: ClassVar[str] = ...
+    category: ClassVar[str] = ...
+    mkey: ClassVar[str] = ...
+    capabilities: ClassVar[dict[str, Any]] = ...
+    
     def __init__(self, client: Any) -> None:
-        """Initialize endpoint with HTTP client.
-        
-        Args:
-            client: HTTP client instance for API communication
-        """
+        """Initialize endpoint with HTTP client."""
         ...
     
     # ================================================================
-    # GET OVERLOADS - Always returns FortiObject (or ContentResponse for file endpoints)
-    # Pylance matches overloads top-to-bottom, so these must come first!
+    # GET Methods
     # ================================================================
     
-    # With mkey as positional arg -> returns FortiObject
+    # CMDB with mkey - overloads for single vs list returns
     @overload
     def get(
         self,
         name: str,
+        *,
         filter: str | list[str] | None = ...,
         count: int | None = ...,
         start: int | None = ...,
@@ -233,14 +122,14 @@ class Profile:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        error_mode: Literal["raise", "return", "print"] | None = ...,
+        error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> ProfileObject: ...
     
-    # With mkey as keyword arg -> returns FortiObject
     @overload
     def get(
         self,
         *,
-        name: str,
         filter: str | list[str] | None = ...,
         count: int | None = ...,
         start: int | None = ...,
@@ -250,304 +139,69 @@ class Profile:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> ProfileObject: ...
-    
-    # Without mkey -> returns list of FortiObjects
-    @overload
-    def get(
-        self,
-        name: None = None,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
+        error_mode: Literal["raise", "return", "print"] | None = ...,
+        error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> FortiObjectList[ProfileObject]: ...
-    
-    # ================================================================
-    # (removed - all GET now returns FortiObject)
-    # ================================================================
-    
-    # With mkey as positional arg -> returns single object
-    @overload
-    def get(
-        self,
-        name: str,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> ProfileObject: ...
-    
-    # With mkey as keyword arg -> returns single object
-    @overload
-    def get(
-        self,
-        *,
-        name: str,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> ProfileObject: ...
-    
-    # With no mkey -> returns list of objects
-    @overload
-    def get(
-        self,
-        *,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObjectList[ProfileObject]: ...
-    
-    # Dict mode with mkey provided as positional arg (single dict)
-    @overload
-    def get(
-        self,
-        name: str,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> ProfileObject: ...
-    
-    # Dict mode with mkey provided as keyword arg (single dict)
-    @overload
-    def get(
-        self,
-        *,
-        name: str,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> ProfileObject: ...
-    
-    # Dict mode - list of dicts (no mkey/name provided) - keyword-only signature
-    @overload
-    def get(
-        self,
-        *,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObjectList[ProfileObject]: ...
-    
-    # Fallback overload for all other cases
-    @overload
-    def get(
-        self,
-        name: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> Union[dict[str, Any], list[dict[str, Any]], FortiObject, list[FortiObject]]: ...
-    
-    def get(
-        self,
-        name: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> ProfileObject | list[ProfileObject] | dict[str, Any] | list[dict[str, Any]]: ...
     
     def get_schema(
         self,
         vdom: str | None = ...,
         format: str = ...,
     ) -> FortiObject: ...
+
+    # ================================================================
+    # POST Method
+    # ================================================================
     
-    # POST overloads
-    @overload
     def post(
         self,
         payload_dict: ProfilePayload | None = ...,
         name: str | None = ...,
         comment: str | None = ...,
-        filters: str | list[str] | list[ProfileFiltersItem] | None = ...,
+        filters: str | list[str] | list[dict[str, Any]] | list[ProfileFiltersItem] | None = ...,
         youtube: Literal["enable", "disable"] | None = ...,
         vimeo: Literal["enable", "disable"] | None = ...,
         dailymotion: Literal["enable", "disable"] | None = ...,
         replacemsg_group: str | None = ...,
         vdom: str | bool | None = ...,
+        error_mode: Literal["raise", "return", "print"] | None = ...,
+        error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> ProfileObject: ...
+
+    # ================================================================
+    # PUT Method
+    # ================================================================
     
-    @overload
-    def post(
-        self,
-        payload_dict: ProfilePayload | None = ...,
-        name: str | None = ...,
-        comment: str | None = ...,
-        filters: str | list[str] | list[ProfileFiltersItem] | None = ...,
-        youtube: Literal["enable", "disable"] | None = ...,
-        vimeo: Literal["enable", "disable"] | None = ...,
-        dailymotion: Literal["enable", "disable"] | None = ...,
-        replacemsg_group: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
-    
-    # Default overload
-    @overload
-    def post(
-        self,
-        payload_dict: ProfilePayload | None = ...,
-        name: str | None = ...,
-        comment: str | None = ...,
-        filters: str | list[str] | list[ProfileFiltersItem] | None = ...,
-        youtube: Literal["enable", "disable"] | None = ...,
-        vimeo: Literal["enable", "disable"] | None = ...,
-        dailymotion: Literal["enable", "disable"] | None = ...,
-        replacemsg_group: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
-    
-    def post(
-        self,
-        payload_dict: ProfilePayload | None = ...,
-        name: str | None = ...,
-        comment: str | None = ...,
-        filters: str | list[str] | list[ProfileFiltersItem] | None = ...,
-        youtube: Literal["enable", "disable"] | None = ...,
-        vimeo: Literal["enable", "disable"] | None = ...,
-        dailymotion: Literal["enable", "disable"] | None = ...,
-        replacemsg_group: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
-    
-    # PUT overloads
-    @overload
     def put(
         self,
         payload_dict: ProfilePayload | None = ...,
         name: str | None = ...,
         comment: str | None = ...,
-        filters: str | list[str] | list[ProfileFiltersItem] | None = ...,
+        filters: str | list[str] | list[dict[str, Any]] | list[ProfileFiltersItem] | None = ...,
         youtube: Literal["enable", "disable"] | None = ...,
         vimeo: Literal["enable", "disable"] | None = ...,
         dailymotion: Literal["enable", "disable"] | None = ...,
         replacemsg_group: str | None = ...,
         vdom: str | bool | None = ...,
+        error_mode: Literal["raise", "return", "print"] | None = ...,
+        error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> ProfileObject: ...
-    
-    @overload
-    def put(
-        self,
-        payload_dict: ProfilePayload | None = ...,
-        name: str | None = ...,
-        comment: str | None = ...,
-        filters: str | list[str] | list[ProfileFiltersItem] | None = ...,
-        youtube: Literal["enable", "disable"] | None = ...,
-        vimeo: Literal["enable", "disable"] | None = ...,
-        dailymotion: Literal["enable", "disable"] | None = ...,
-        replacemsg_group: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
-    
-    # Default overload
-    @overload
-    def put(
-        self,
-        payload_dict: ProfilePayload | None = ...,
-        name: str | None = ...,
-        comment: str | None = ...,
-        filters: str | list[str] | list[ProfileFiltersItem] | None = ...,
-        youtube: Literal["enable", "disable"] | None = ...,
-        vimeo: Literal["enable", "disable"] | None = ...,
-        dailymotion: Literal["enable", "disable"] | None = ...,
-        replacemsg_group: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
-    
-    def put(
-        self,
-        payload_dict: ProfilePayload | None = ...,
-        name: str | None = ...,
-        comment: str | None = ...,
-        filters: str | list[str] | list[ProfileFiltersItem] | None = ...,
-        youtube: Literal["enable", "disable"] | None = ...,
-        vimeo: Literal["enable", "disable"] | None = ...,
-        dailymotion: Literal["enable", "disable"] | None = ...,
-        replacemsg_group: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
-    
-    # DELETE overloads
-    @overload
-    def delete(
-        self,
-        name: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> ProfileObject: ...
-    
-    @overload
-    def delete(
-        self,
-        name: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
-    
-    # Default overload
-    @overload
-    def delete(
-        self,
-        name: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+
+    # ================================================================
+    # DELETE Method
+    # ================================================================
     
     def delete(
         self,
         name: str | None = ...,
         vdom: str | bool | None = ...,
+        error_mode: Literal["raise", "return", "print"] | None = ...,
+        error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> FortiObject: ...
+
+    # ================================================================
+    # Utility Methods
+    # ================================================================
     
     def exists(
         self,
@@ -560,12 +214,14 @@ class Profile:
         payload_dict: ProfilePayload | None = ...,
         name: str | None = ...,
         comment: str | None = ...,
-        filters: str | list[str] | list[ProfileFiltersItem] | None = ...,
+        filters: str | list[str] | list[dict[str, Any]] | list[ProfileFiltersItem] | None = ...,
         youtube: Literal["enable", "disable"] | None = ...,
         vimeo: Literal["enable", "disable"] | None = ...,
         dailymotion: Literal["enable", "disable"] | None = ...,
         replacemsg_group: str | None = ...,
         vdom: str | bool | None = ...,
+        error_mode: Literal["raise", "return", "print"] | None = ...,
+        error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> FortiObject: ...
     
     # Helper methods
@@ -573,7 +229,7 @@ class Profile:
     def help(field_name: str | None = ...) -> str: ...
     
     @staticmethod
-    def fields(detailed: bool = ...) -> Union[list[str], list[dict[str, Any]]]: ...
+    def fields(detailed: bool = ...) -> list[str] | list[dict[str, Any]]: ...
     
     @staticmethod
     def field_info(field_name: str) -> FortiObject: ...
@@ -589,9 +245,6 @@ class Profile:
     
     @staticmethod
     def schema() -> FortiObject: ...
-
-
-# ================================================================
 
 
 __all__ = [

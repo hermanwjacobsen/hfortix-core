@@ -638,6 +638,16 @@ class ContentHeader(CRUDEndpoint, MetadataMixin):
             - put(): Update existing object
             - exists(): Check existence manually
         """
+        # Apply normalization for table fields (supports flexible input formats)
+        if entries is not None:
+            entries = normalize_table_field(
+                entries,
+                mkey="pattern",
+                required_fields=['action', 'category'],
+                field_name="entries",
+                example="[{'action': 'block', 'category': 'value'}]",
+            )
+        
         # Build payload using helper function with auto-normalization
         payload_data = build_api_payload(
             id=id,

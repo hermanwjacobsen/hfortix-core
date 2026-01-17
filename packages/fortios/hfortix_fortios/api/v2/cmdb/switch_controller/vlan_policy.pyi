@@ -1,263 +1,119 @@
-from typing import TypedDict, Literal, Any, Coroutine, Union, overload, Generator, final
-from typing_extensions import NotRequired
-from hfortix_fortios.models import FortiObject, FortiObjectList
+""" - Type Stubs
 
-# ============================================================================
-# Nested TypedDicts for table field children (dict mode)
-# These MUST be defined before the Payload class to use them as type hints
-# ============================================================================
+Auto-generated stub file for type checking and IDE support.
 
-class VlanPolicyAllowedvlansItem(TypedDict, total=False):
-    """Type hints for allowed-vlans table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    Use this when building payloads for POST/PUT requests.
-    
-    **Available fields:**
-        - vlan_name: str
-    
-    **Example:**
-        entry: VlanPolicyAllowedvlansItem = {
-            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
-        }
-    """
-    
-    vlan_name: str  # VLAN name. | MaxLen: 79
+Endpoint: switch_controller/vlan_policy
+Category: cmdb
+"""
+
+from __future__ import annotations
+
+from typing import (
+    Any,
+    ClassVar,
+    Literal,
+    TypedDict,
+    overload,
+)
+
+from hfortix_fortios.models import (
+    FortiObject,
+    FortiObjectList,
+)
 
 
-class VlanPolicyUntaggedvlansItem(TypedDict, total=False):
-    """Type hints for untagged-vlans table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    Use this when building payloads for POST/PUT requests.
-    
-    **Available fields:**
-        - vlan_name: str
-    
-    **Example:**
-        entry: VlanPolicyUntaggedvlansItem = {
-            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
-        }
-    """
-    
-    vlan_name: str  # VLAN name. | MaxLen: 79
+# ================================================================
+# TypedDict Payloads
+# ================================================================
+
+class VlanPolicyAllowedvlansItem:
+    """Nested item for allowed-vlans field - supports attribute access."""
+    vlan_name: str
 
 
-# ============================================================================
-# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional)
-# ============================================================================
-# NOTE: We intentionally DON'T use NotRequired wrapper because:
-# 1. total=False already makes all fields optional
-# 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
+class VlanPolicyUntaggedvlansItem:
+    """Nested item for untagged-vlans field - supports attribute access."""
+    vlan_name: str
+
+
 class VlanPolicyPayload(TypedDict, total=False):
-    """
-    Type hints for switch_controller/vlan_policy payload fields.
-    
-    Configure VLAN policy to be applied on the managed FortiSwitch ports through dynamic-port-policy.
-    
-    **Related Resources:**
-
-    Dependencies (resources this endpoint references):
-        - :class:`~.system.interface.InterfaceEndpoint` (via: fortilink, vlan)
-
-    **Usage:**
-        payload: VlanPolicyPayload = {
-            "field": "value",  # <- autocomplete shows all fields
-        }
-    """
-    name: str  # VLAN policy name. | MaxLen: 63
-    description: str  # Description for the VLAN policy. | MaxLen: 63
-    fortilink: str  # FortiLink interface for which this VLAN policy bel | MaxLen: 15
-    vlan: str  # Native VLAN to be applied when using this VLAN pol | MaxLen: 15
-    allowed_vlans: list[VlanPolicyAllowedvlansItem]  # Allowed VLANs to be applied when using this VLAN p
-    untagged_vlans: list[VlanPolicyUntaggedvlansItem]  # Untagged VLANs to be applied when using this VLAN
-    allowed_vlans_all: Literal["enable", "disable"]  # Enable/disable all defined VLANs when using this V | Default: disable
-    discard_mode: Literal["none", "all-untagged", "all-tagged"]  # Discard mode to be applied when using this VLAN po | Default: none
-
-# ============================================================================
-# Nested classes for table field children (object mode - for API responses)
-# ============================================================================
-
-@final
-class VlanPolicyAllowedvlansObject:
-    """Typed object for allowed-vlans table items.
-    
-    Provides IDE autocomplete for nested table field attributes.
-    At runtime, this is a FortiObject instance.
-    """
-    
-    # VLAN name. | MaxLen: 79
-    vlan_name: str
-    
-    # Common API response fields
-    status: str
-    http_status: int | None
-    http_status_code: int | None
-    http_method: str | None
-    http_response_time: float | None
-    vdom: str | None
-    
-    # Methods from FortiObject
-    @property
-    def dict(self) -> dict[str, Any]:
-        """Convert to dictionary."""
-        ...
-    @property
-    def json(self) -> str:
-        """Get pretty-printed JSON string."""
-        ...
-    @property
-    def raw(self) -> dict[str, Any]:
-        """Get raw API response data."""
-        ...
-    def get_full(self, name: str) -> Any: ...
-    def to_dict(self) -> FortiObject: ...
-    def keys(self) -> Any: ...
-    def values(self) -> Generator[Any, None, None]: ...
-    def items(self) -> Generator[tuple[str, Any], None, None]: ...
-    def get(self, key: str, default: Any = None) -> Any: ...
-
-
-@final
-class VlanPolicyUntaggedvlansObject:
-    """Typed object for untagged-vlans table items.
-    
-    Provides IDE autocomplete for nested table field attributes.
-    At runtime, this is a FortiObject instance.
-    """
-    
-    # VLAN name. | MaxLen: 79
-    vlan_name: str
-    
-    # Common API response fields
-    status: str
-    http_status: int | None
-    http_status_code: int | None
-    http_method: str | None
-    http_response_time: float | None
-    vdom: str | None
-    
-    # Methods from FortiObject
-    @property
-    def dict(self) -> dict[str, Any]:
-        """Convert to dictionary."""
-        ...
-    @property
-    def json(self) -> str:
-        """Get pretty-printed JSON string."""
-        ...
-    @property
-    def raw(self) -> dict[str, Any]:
-        """Get raw API response data."""
-        ...
-    def get_full(self, name: str) -> Any: ...
-    def to_dict(self) -> FortiObject: ...
-    def keys(self) -> Any: ...
-    def values(self) -> Generator[Any, None, None]: ...
-    def items(self) -> Generator[tuple[str, Any], None, None]: ...
-    def get(self, key: str, default: Any = None) -> Any: ...
-
-
-
-
-# Response TypedDict for GET returns (all fields present in API response)
-class VlanPolicyResponse(TypedDict):
-    """
-    Type hints for switch_controller/vlan_policy API response fields.
-    
-    All fields are present in the response from the FortiGate API.
-    """
-    name: str  # VLAN policy name. | MaxLen: 63
-    description: str  # Description for the VLAN policy. | MaxLen: 63
-    fortilink: str  # FortiLink interface for which this VLAN policy bel | MaxLen: 15
-    vlan: str  # Native VLAN to be applied when using this VLAN pol | MaxLen: 15
-    allowed_vlans: list[VlanPolicyAllowedvlansItem]  # Allowed VLANs to be applied when using this VLAN p
-    untagged_vlans: list[VlanPolicyUntaggedvlansItem]  # Untagged VLANs to be applied when using this VLAN
-    allowed_vlans_all: Literal["enable", "disable"]  # Enable/disable all defined VLANs when using this V | Default: disable
-    discard_mode: Literal["none", "all-untagged", "all-tagged"]  # Discard mode to be applied when using this VLAN po | Default: none
-
-
-@final
-class VlanPolicyObject:
-    """Typed FortiObject for switch_controller/vlan_policy with IDE autocomplete support.
-    
-    This is a typed wrapper that provides IDE autocomplete for API response fields.
-    At runtime, this is actually a FortiObject instance.
-    """
-    
-    # VLAN policy name. | MaxLen: 63
+    """Payload type for VlanPolicy operations."""
     name: str
-    # Description for the VLAN policy. | MaxLen: 63
     description: str
-    # FortiLink interface for which this VLAN policy belongs to. | MaxLen: 15
     fortilink: str
-    # Native VLAN to be applied when using this VLAN policy. | MaxLen: 15
     vlan: str
-    # Allowed VLANs to be applied when using this VLAN policy.
-    allowed_vlans: list[VlanPolicyAllowedvlansObject]
-    # Untagged VLANs to be applied when using this VLAN policy.
-    untagged_vlans: list[VlanPolicyUntaggedvlansObject]
-    # Enable/disable all defined VLANs when using this VLAN policy | Default: disable
+    allowed_vlans: str | list[str] | list[dict[str, Any]] | list[VlanPolicyAllowedvlansItem]
+    untagged_vlans: str | list[str] | list[dict[str, Any]] | list[VlanPolicyUntaggedvlansItem]
     allowed_vlans_all: Literal["enable", "disable"]
-    # Discard mode to be applied when using this VLAN policy. | Default: none
     discard_mode: Literal["none", "all-untagged", "all-tagged"]
-    
-    # Common API response fields
-    status: str
-    http_status: int | None
-    http_status_code: int | None
-    http_method: str | None
-    http_response_time: float | None
-    vdom: str | None
-    
-    # Methods from FortiObject
-    @property
-    def dict(self) -> dict[str, Any]:
-        """Convert to dictionary."""
-        ...
-    @property
-    def json(self) -> str:
-        """Get pretty-printed JSON string."""
-        ...
-    @property
-    def raw(self) -> dict[str, Any]:
-        """Get raw API response data."""
-        ...
-    def get_full(self, name: str) -> Any: ...
-    def to_dict(self) -> VlanPolicyPayload: ...
-    def keys(self) -> Any: ...
-    def values(self) -> Generator[Any, None, None]: ...
-    def items(self) -> Generator[tuple[str, Any], None, None]: ...
-    def get(self, key: str, default: Any = None) -> Any: ...
 
+
+# ================================================================
+# Response Types (TypedDict for dict-style access)
+# ================================================================
+
+class VlanPolicyResponse(TypedDict, total=False):
+    """Response type for VlanPolicy - use with .dict property for typed dict access."""
+    name: str
+    description: str
+    fortilink: str
+    vlan: str
+    allowed_vlans: list[VlanPolicyAllowedvlansItem]
+    untagged_vlans: list[VlanPolicyUntaggedvlansItem]
+    allowed_vlans_all: Literal["enable", "disable"]
+    discard_mode: Literal["none", "all-untagged", "all-tagged"]
+
+
+# ================================================================
+# Response Types (Class for attribute access)
+# ================================================================
+
+
+class VlanPolicyObject(FortiObject):
+    """Typed FortiObject for VlanPolicy with field access."""
+    name: str
+    description: str
+    fortilink: str
+    vlan: str
+    allowed_vlans: list[VlanPolicyAllowedvlansItem]
+    untagged_vlans: list[VlanPolicyUntaggedvlansItem]
+    allowed_vlans_all: Literal["enable", "disable"]
+    discard_mode: Literal["none", "all-untagged", "all-tagged"]
+
+
+# ================================================================
+# Main Endpoint Class
+# ================================================================
 
 class VlanPolicy:
     """
-    Configure VLAN policy to be applied on the managed FortiSwitch ports through dynamic-port-policy.
     
-    Path: switch_controller/vlan_policy
+    Endpoint: switch_controller/vlan_policy
     Category: cmdb
-    Primary Key: name
+    MKey: name
     """
     
+    # Class attributes for introspection
+    endpoint: ClassVar[str] = ...
+    path: ClassVar[str] = ...
+    category: ClassVar[str] = ...
+    mkey: ClassVar[str] = ...
+    capabilities: ClassVar[dict[str, Any]] = ...
+    
     def __init__(self, client: Any) -> None:
-        """Initialize endpoint with HTTP client.
-        
-        Args:
-            client: HTTP client instance for API communication
-        """
+        """Initialize endpoint with HTTP client."""
         ...
     
     # ================================================================
-    # GET OVERLOADS - Always returns FortiObject (or ContentResponse for file endpoints)
-    # Pylance matches overloads top-to-bottom, so these must come first!
+    # GET Methods
     # ================================================================
     
-    # With mkey as positional arg -> returns FortiObject
+    # CMDB with mkey - overloads for single vs list returns
     @overload
     def get(
         self,
         name: str,
+        *,
         filter: str | list[str] | None = ...,
         count: int | None = ...,
         start: int | None = ...,
@@ -267,14 +123,14 @@ class VlanPolicy:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        error_mode: Literal["raise", "return", "print"] | None = ...,
+        error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> VlanPolicyObject: ...
     
-    # With mkey as keyword arg -> returns FortiObject
     @overload
     def get(
         self,
         *,
-        name: str,
         filter: str | list[str] | None = ...,
         count: int | None = ...,
         start: int | None = ...,
@@ -284,164 +140,20 @@ class VlanPolicy:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> VlanPolicyObject: ...
-    
-    # Without mkey -> returns list of FortiObjects
-    @overload
-    def get(
-        self,
-        name: None = None,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
+        error_mode: Literal["raise", "return", "print"] | None = ...,
+        error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> FortiObjectList[VlanPolicyObject]: ...
-    
-    # ================================================================
-    # (removed - all GET now returns FortiObject)
-    # ================================================================
-    
-    # With mkey as positional arg -> returns single object
-    @overload
-    def get(
-        self,
-        name: str,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> VlanPolicyObject: ...
-    
-    # With mkey as keyword arg -> returns single object
-    @overload
-    def get(
-        self,
-        *,
-        name: str,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> VlanPolicyObject: ...
-    
-    # With no mkey -> returns list of objects
-    @overload
-    def get(
-        self,
-        *,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObjectList[VlanPolicyObject]: ...
-    
-    # Dict mode with mkey provided as positional arg (single dict)
-    @overload
-    def get(
-        self,
-        name: str,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> VlanPolicyObject: ...
-    
-    # Dict mode with mkey provided as keyword arg (single dict)
-    @overload
-    def get(
-        self,
-        *,
-        name: str,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> VlanPolicyObject: ...
-    
-    # Dict mode - list of dicts (no mkey/name provided) - keyword-only signature
-    @overload
-    def get(
-        self,
-        *,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObjectList[VlanPolicyObject]: ...
-    
-    # Fallback overload for all other cases
-    @overload
-    def get(
-        self,
-        name: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> Union[dict[str, Any], list[dict[str, Any]], FortiObject, list[FortiObject]]: ...
-    
-    def get(
-        self,
-        name: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> VlanPolicyObject | list[VlanPolicyObject] | dict[str, Any] | list[dict[str, Any]]: ...
     
     def get_schema(
         self,
         vdom: str | None = ...,
         format: str = ...,
     ) -> FortiObject: ...
+
+    # ================================================================
+    # POST Method
+    # ================================================================
     
-    # POST overloads
-    @overload
     def post(
         self,
         payload_dict: VlanPolicyPayload | None = ...,
@@ -449,60 +161,19 @@ class VlanPolicy:
         description: str | None = ...,
         fortilink: str | None = ...,
         vlan: str | None = ...,
-        allowed_vlans: str | list[str] | list[VlanPolicyAllowedvlansItem] | None = ...,
-        untagged_vlans: str | list[str] | list[VlanPolicyUntaggedvlansItem] | None = ...,
+        allowed_vlans: str | list[str] | list[dict[str, Any]] | list[VlanPolicyAllowedvlansItem] | None = ...,
+        untagged_vlans: str | list[str] | list[dict[str, Any]] | list[VlanPolicyUntaggedvlansItem] | None = ...,
         allowed_vlans_all: Literal["enable", "disable"] | None = ...,
         discard_mode: Literal["none", "all-untagged", "all-tagged"] | None = ...,
         vdom: str | bool | None = ...,
+        error_mode: Literal["raise", "return", "print"] | None = ...,
+        error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> VlanPolicyObject: ...
+
+    # ================================================================
+    # PUT Method
+    # ================================================================
     
-    @overload
-    def post(
-        self,
-        payload_dict: VlanPolicyPayload | None = ...,
-        name: str | None = ...,
-        description: str | None = ...,
-        fortilink: str | None = ...,
-        vlan: str | None = ...,
-        allowed_vlans: str | list[str] | list[VlanPolicyAllowedvlansItem] | None = ...,
-        untagged_vlans: str | list[str] | list[VlanPolicyUntaggedvlansItem] | None = ...,
-        allowed_vlans_all: Literal["enable", "disable"] | None = ...,
-        discard_mode: Literal["none", "all-untagged", "all-tagged"] | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
-    
-    # Default overload
-    @overload
-    def post(
-        self,
-        payload_dict: VlanPolicyPayload | None = ...,
-        name: str | None = ...,
-        description: str | None = ...,
-        fortilink: str | None = ...,
-        vlan: str | None = ...,
-        allowed_vlans: str | list[str] | list[VlanPolicyAllowedvlansItem] | None = ...,
-        untagged_vlans: str | list[str] | list[VlanPolicyUntaggedvlansItem] | None = ...,
-        allowed_vlans_all: Literal["enable", "disable"] | None = ...,
-        discard_mode: Literal["none", "all-untagged", "all-tagged"] | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
-    
-    def post(
-        self,
-        payload_dict: VlanPolicyPayload | None = ...,
-        name: str | None = ...,
-        description: str | None = ...,
-        fortilink: str | None = ...,
-        vlan: str | None = ...,
-        allowed_vlans: str | list[str] | list[VlanPolicyAllowedvlansItem] | None = ...,
-        untagged_vlans: str | list[str] | list[VlanPolicyUntaggedvlansItem] | None = ...,
-        allowed_vlans_all: Literal["enable", "disable"] | None = ...,
-        discard_mode: Literal["none", "all-untagged", "all-tagged"] | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
-    
-    # PUT overloads
-    @overload
     def put(
         self,
         payload_dict: VlanPolicyPayload | None = ...,
@@ -510,86 +181,30 @@ class VlanPolicy:
         description: str | None = ...,
         fortilink: str | None = ...,
         vlan: str | None = ...,
-        allowed_vlans: str | list[str] | list[VlanPolicyAllowedvlansItem] | None = ...,
-        untagged_vlans: str | list[str] | list[VlanPolicyUntaggedvlansItem] | None = ...,
+        allowed_vlans: str | list[str] | list[dict[str, Any]] | list[VlanPolicyAllowedvlansItem] | None = ...,
+        untagged_vlans: str | list[str] | list[dict[str, Any]] | list[VlanPolicyUntaggedvlansItem] | None = ...,
         allowed_vlans_all: Literal["enable", "disable"] | None = ...,
         discard_mode: Literal["none", "all-untagged", "all-tagged"] | None = ...,
         vdom: str | bool | None = ...,
+        error_mode: Literal["raise", "return", "print"] | None = ...,
+        error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> VlanPolicyObject: ...
-    
-    @overload
-    def put(
-        self,
-        payload_dict: VlanPolicyPayload | None = ...,
-        name: str | None = ...,
-        description: str | None = ...,
-        fortilink: str | None = ...,
-        vlan: str | None = ...,
-        allowed_vlans: str | list[str] | list[VlanPolicyAllowedvlansItem] | None = ...,
-        untagged_vlans: str | list[str] | list[VlanPolicyUntaggedvlansItem] | None = ...,
-        allowed_vlans_all: Literal["enable", "disable"] | None = ...,
-        discard_mode: Literal["none", "all-untagged", "all-tagged"] | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
-    
-    # Default overload
-    @overload
-    def put(
-        self,
-        payload_dict: VlanPolicyPayload | None = ...,
-        name: str | None = ...,
-        description: str | None = ...,
-        fortilink: str | None = ...,
-        vlan: str | None = ...,
-        allowed_vlans: str | list[str] | list[VlanPolicyAllowedvlansItem] | None = ...,
-        untagged_vlans: str | list[str] | list[VlanPolicyUntaggedvlansItem] | None = ...,
-        allowed_vlans_all: Literal["enable", "disable"] | None = ...,
-        discard_mode: Literal["none", "all-untagged", "all-tagged"] | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
-    
-    def put(
-        self,
-        payload_dict: VlanPolicyPayload | None = ...,
-        name: str | None = ...,
-        description: str | None = ...,
-        fortilink: str | None = ...,
-        vlan: str | None = ...,
-        allowed_vlans: str | list[str] | list[VlanPolicyAllowedvlansItem] | None = ...,
-        untagged_vlans: str | list[str] | list[VlanPolicyUntaggedvlansItem] | None = ...,
-        allowed_vlans_all: Literal["enable", "disable"] | None = ...,
-        discard_mode: Literal["none", "all-untagged", "all-tagged"] | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
-    
-    # DELETE overloads
-    @overload
-    def delete(
-        self,
-        name: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> VlanPolicyObject: ...
-    
-    @overload
-    def delete(
-        self,
-        name: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
-    
-    # Default overload
-    @overload
-    def delete(
-        self,
-        name: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+
+    # ================================================================
+    # DELETE Method
+    # ================================================================
     
     def delete(
         self,
         name: str | None = ...,
         vdom: str | bool | None = ...,
+        error_mode: Literal["raise", "return", "print"] | None = ...,
+        error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> FortiObject: ...
+
+    # ================================================================
+    # Utility Methods
+    # ================================================================
     
     def exists(
         self,
@@ -604,11 +219,13 @@ class VlanPolicy:
         description: str | None = ...,
         fortilink: str | None = ...,
         vlan: str | None = ...,
-        allowed_vlans: str | list[str] | list[VlanPolicyAllowedvlansItem] | None = ...,
-        untagged_vlans: str | list[str] | list[VlanPolicyUntaggedvlansItem] | None = ...,
+        allowed_vlans: str | list[str] | list[dict[str, Any]] | list[VlanPolicyAllowedvlansItem] | None = ...,
+        untagged_vlans: str | list[str] | list[dict[str, Any]] | list[VlanPolicyUntaggedvlansItem] | None = ...,
         allowed_vlans_all: Literal["enable", "disable"] | None = ...,
         discard_mode: Literal["none", "all-untagged", "all-tagged"] | None = ...,
         vdom: str | bool | None = ...,
+        error_mode: Literal["raise", "return", "print"] | None = ...,
+        error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> FortiObject: ...
     
     # Helper methods
@@ -616,7 +233,7 @@ class VlanPolicy:
     def help(field_name: str | None = ...) -> str: ...
     
     @staticmethod
-    def fields(detailed: bool = ...) -> Union[list[str], list[dict[str, Any]]]: ...
+    def fields(detailed: bool = ...) -> list[str] | list[dict[str, Any]]: ...
     
     @staticmethod
     def field_info(field_name: str) -> FortiObject: ...
@@ -632,9 +249,6 @@ class VlanPolicy:
     
     @staticmethod
     def schema() -> FortiObject: ...
-
-
-# ================================================================
 
 
 __all__ = [

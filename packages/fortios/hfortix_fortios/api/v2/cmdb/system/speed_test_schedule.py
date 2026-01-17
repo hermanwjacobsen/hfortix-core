@@ -794,6 +794,16 @@ class SpeedTestSchedule(CRUDEndpoint, MetadataMixin):
             - put(): Update existing object
             - exists(): Check existence manually
         """
+        # Apply normalization for table fields (supports flexible input formats)
+        if schedules is not None:
+            schedules = normalize_table_field(
+                schedules,
+                mkey="name",
+                required_fields=['name'],
+                field_name="schedules",
+                example="[{'name': 'value'}]",
+            )
+        
         # Build payload using helper function with auto-normalization
         payload_data = build_api_payload(
             interface=interface,

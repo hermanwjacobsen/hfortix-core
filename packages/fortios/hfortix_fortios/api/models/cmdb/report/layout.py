@@ -7,14 +7,107 @@ Generated from FortiOS schema version unknown.
 
 from __future__ import annotations
 
-from pydantic import BaseModel, Field, field_validator
+from pydantic import BaseModel, Field
 from typing import Any, Literal, Optional
 from enum import Enum
 
 # ============================================================================
-# Child Table Models
+# Enum Definitions for Child Table Fields (for fields with 4+ allowed values)
 # ============================================================================
 
+class LayoutBodyItemTypeEnum(str, Enum):
+    """Allowed values for type_ field in body-item."""
+    TEXT = "text"
+    IMAGE = "image"
+    CHART = "chart"
+    MISC = "misc"
+
+class LayoutBodyItemTextComponentEnum(str, Enum):
+    """Allowed values for text_component field in body-item."""
+    TEXT = "text"
+    HEADING1 = "heading1"
+    HEADING2 = "heading2"
+    HEADING3 = "heading3"
+
+class LayoutBodyItemMiscComponentEnum(str, Enum):
+    """Allowed values for misc_component field in body-item."""
+    HLINE = "hline"
+    PAGE_BREAK = "page-break"
+    COLUMN_BREAK = "column-break"
+    SECTION_START = "section-start"
+
+# ============================================================================
+# Child Table Models (sorted deepest-first so nested models are defined before their parents)
+# ============================================================================
+
+class LayoutPageHeaderHeaderItem(BaseModel):
+    """
+    Child table model for page.header.header-item.
+    
+    Configure report header item.
+    """
+    
+    class Config:
+        """Pydantic model configuration."""
+        extra = "allow"  # Allow additional fields from API
+        str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
+    
+    id_: int | None = Field(ge=0, le=4294967295, default=0, serialization_alias="id", description="Report item ID.")    
+    description: str | None = Field(max_length=63, default=None, description="Description.")    
+    type_: Literal["text", "image"] | None = Field(default="text", serialization_alias="type", description="Report item type.")    
+    style: str | None = Field(max_length=71, default=None, description="Report item style.")    
+    content: str | None = Field(max_length=511, default=None, description="Report item text content.")    
+    img_src: str | None = Field(max_length=127, default=None, description="Report item image file name.")
+class LayoutPageHeader(BaseModel):
+    """
+    Child table model for page.header.
+    
+    Configure report page header.
+    """
+    
+    class Config:
+        """Pydantic model configuration."""
+        extra = "allow"  # Allow additional fields from API
+        str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
+    
+    style: str | None = Field(max_length=71, default=None, description="Report header style.")    
+    header_item: list[LayoutPageHeaderHeaderItem] = Field(default_factory=list, description="Configure report header item.")
+class LayoutPageFooterFooterItem(BaseModel):
+    """
+    Child table model for page.footer.footer-item.
+    
+    Configure report footer item.
+    """
+    
+    class Config:
+        """Pydantic model configuration."""
+        extra = "allow"  # Allow additional fields from API
+        str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
+    
+    id_: int | None = Field(ge=0, le=4294967295, default=0, serialization_alias="id", description="Report item ID.")    
+    description: str | None = Field(max_length=63, default=None, description="Description.")    
+    type_: Literal["text", "image"] | None = Field(default="text", serialization_alias="type", description="Report item type.")    
+    style: str | None = Field(max_length=71, default=None, description="Report item style.")    
+    content: str | None = Field(max_length=511, default=None, description="Report item text content.")    
+    img_src: str | None = Field(max_length=127, default=None, description="Report item image file name.")
+class LayoutPageFooter(BaseModel):
+    """
+    Child table model for page.footer.
+    
+    Configure report page footer.
+    """
+    
+    class Config:
+        """Pydantic model configuration."""
+        extra = "allow"  # Allow additional fields from API
+        str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
+    
+    style: str | None = Field(max_length=71, default=None, description="Report footer style.")    
+    footer_item: list[LayoutPageFooterFooterItem] = Field(default_factory=list, description="Configure report footer item.")
 class LayoutPage(BaseModel):
     """
     Child table model for page.
@@ -26,13 +119,30 @@ class LayoutPage(BaseModel):
         """Pydantic model configuration."""
         extra = "allow"  # Allow additional fields from API
         str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
     
     paper: Literal["a4", "letter"] | None = Field(default="a4", description="Report page paper.")    
-    column_break_before: list[ColumnBreakBefore] = Field(default="", description="Report page auto column break before heading.")    
-    page_break_before: list[PageBreakBefore] = Field(default="", description="Report page auto page break before heading.")    
-    options: list[Options] = Field(default="", description="Report page options.")    
-    header: list[Header] = Field(default=None, description="Configure report page header.")    
-    footer: list[Footer] = Field(default=None, description="Configure report page footer.")
+    column_break_before: list[Literal["heading1", "heading2", "heading3"]] = Field(default_factory=list, description="Report page auto column break before heading.")    
+    page_break_before: list[Literal["heading1", "heading2", "heading3"]] = Field(default_factory=list, description="Report page auto page break before heading.")    
+    options: list[Literal["header-on-first-page", "footer-on-first-page"]] = Field(default_factory=list, description="Report page options.")    
+    header: list[LayoutPageHeader] = Field(default_factory=list, description="Configure report page header.")    
+    footer: list[LayoutPageFooter] = Field(default_factory=list, description="Configure report page footer.")
+class LayoutBodyItemParameters(BaseModel):
+    """
+    Child table model for body-item.parameters.
+    
+    Parameters.
+    """
+    
+    class Config:
+        """Pydantic model configuration."""
+        extra = "allow"  # Allow additional fields from API
+        str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
+    
+    id_: int = Field(ge=0, le=4294967295, default=0, serialization_alias="id", description="ID.")    
+    name: str = Field(max_length=127, description="Field name that match field of parameters defined in dataset.")    
+    value: str = Field(max_length=1023, description="Value to replace corresponding field of parameters defined in dataset.")
 class LayoutBodyItem(BaseModel):
     """
     Child table model for body-item.
@@ -44,30 +154,43 @@ class LayoutBodyItem(BaseModel):
         """Pydantic model configuration."""
         extra = "allow"  # Allow additional fields from API
         str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
     
-    id: int | None = Field(ge=0, le=4294967295, default=0, description="Report item ID.")    
-    description: str | None = Field(max_length=63, default="", description="Description.")    
-    type: TypeEnum | None = Field(default="text", description="Report item type.")    
-    style: str | None = Field(max_length=71, default="", description="Report item style.")    
+    id_: int | None = Field(ge=0, le=4294967295, default=0, serialization_alias="id", description="Report item ID.")    
+    description: str | None = Field(max_length=63, default=None, description="Description.")    
+    type_: LayoutBodyItemTypeEnum | None = Field(default=LayoutBodyItemTypeEnum.TEXT, serialization_alias="type", description="Report item type.")    
+    style: str | None = Field(max_length=71, default=None, description="Report item style.")    
     top_n: int | None = Field(ge=0, le=4294967295, default=0, description="Value of top.")    
-    parameters: list[Parameters] = Field(default=None, description="Parameters.")    
-    text_component: TextComponentEnum | None = Field(default="text", description="Report item text component.")    
-    content: str | None = Field(max_length=511, default="", description="Report item text content.")    
-    img_src: str | None = Field(max_length=127, default="", description="Report item image file name.")    
-    chart: str | None = Field(max_length=71, default="", description="Report item chart name.")    
-    chart_options: list[ChartOptions] = Field(default="include-no-data hide-title show-caption", description="Report chart options.")    
-    misc_component: MiscComponentEnum | None = Field(default="hline", description="Report item miscellaneous component.")    
-    title: str | None = Field(max_length=511, default="", description="Report section title.")
+    parameters: list[LayoutBodyItemParameters] = Field(default_factory=list, description="Parameters.")    
+    text_component: LayoutBodyItemTextComponentEnum | None = Field(default=LayoutBodyItemTextComponentEnum.TEXT, description="Report item text component.")    
+    content: str | None = Field(max_length=511, default=None, description="Report item text content.")    
+    img_src: str | None = Field(max_length=127, default=None, description="Report item image file name.")    
+    chart: str | None = Field(max_length=71, default=None, description="Report item chart name.")    
+    chart_options: list[Literal["include-no-data", "hide-title", "show-caption"]] = Field(default_factory=list, description="Report chart options.")    
+    misc_component: LayoutBodyItemMiscComponentEnum | None = Field(default=LayoutBodyItemMiscComponentEnum.HLINE, description="Report item miscellaneous component.")    
+    title: str | None = Field(max_length=511, default=None, description="Report section title.")
 # ============================================================================
 # Enum Definitions (for fields with 4+ allowed values)
 # ============================================================================
 
 class LayoutOptionsEnum(str, Enum):
     """Allowed values for options field."""
-    INCLUDE_TABLE_OF_CONTENT = "include-table-of-content"    AUTO_NUMBERING_HEADING = "auto-numbering-heading"    VIEW_CHART_AS_HEADING = "view-chart-as-heading"    SHOW_HTML_NAVBAR_BEFORE_HEADING = "show-html-navbar-before-heading"    DUMMY_OPTION = "dummy-option"
+    INCLUDE_TABLE_OF_CONTENT = "include-table-of-content"
+    AUTO_NUMBERING_HEADING = "auto-numbering-heading"
+    VIEW_CHART_AS_HEADING = "view-chart-as-heading"
+    SHOW_HTML_NAVBAR_BEFORE_HEADING = "show-html-navbar-before-heading"
+    DUMMY_OPTION = "dummy-option"
+
 class LayoutDayEnum(str, Enum):
     """Allowed values for day field."""
-    SUNDAY = "sunday"    MONDAY = "monday"    TUESDAY = "tuesday"    WEDNESDAY = "wednesday"    THURSDAY = "thursday"    FRIDAY = "friday"    SATURDAY = "saturday"
+    SUNDAY = "sunday"
+    MONDAY = "monday"
+    TUESDAY = "tuesday"
+    WEDNESDAY = "wednesday"
+    THURSDAY = "thursday"
+    FRIDAY = "friday"
+    SATURDAY = "saturday"
+
 
 # ============================================================================
 # Main Model
@@ -79,7 +202,7 @@ class LayoutModel(BaseModel):
     
     Report layout configuration.
     
-    Validation Rules:        - name: max_length=35 pattern=        - title: max_length=127 pattern=        - subtitle: max_length=127 pattern=        - description: max_length=127 pattern=        - style_theme: max_length=35 pattern=        - options: pattern=        - format: pattern=        - schedule_type: pattern=        - day: pattern=        - time: pattern=        - cutoff_option: pattern=        - cutoff_time: pattern=        - email_send: pattern=        - email_recipients: max_length=511 pattern=        - max_pdf_report: min=1 max=365 pattern=        - page: pattern=        - body_item: pattern=    """
+    Validation Rules:        - name: max_length=35 pattern=        - title: max_length=127 pattern=        - subtitle: max_length=127 pattern=        - description: max_length=127 pattern=        - style_theme: max_length=35 pattern=        - options: pattern=        - format_: pattern=        - schedule_type: pattern=        - day: pattern=        - time: pattern=        - cutoff_option: pattern=        - cutoff_time: pattern=        - email_send: pattern=        - email_recipients: max_length=511 pattern=        - max_pdf_report: min=1 max=365 pattern=        - page: pattern=        - body_item: pattern=    """
     
     class Config:
         """Pydantic model configuration."""
@@ -92,23 +215,23 @@ class LayoutModel(BaseModel):
     # Model Fields
     # ========================================================================
     
-    name: str | None = Field(max_length=35, default="", description="Report layout name.")    
-    title: str | None = Field(max_length=127, default="", description="Report title.")    
-    subtitle: str | None = Field(max_length=127, default="", description="Report subtitle.")    
-    description: str | None = Field(max_length=127, default="", description="Description.")    
-    style_theme: str = Field(max_length=35, default="", description="Report style theme.")    
-    options: list[Options] = Field(default="include-table-of-content auto-numbering-heading view-chart-as-heading", description="Report layout options.")    
-    format: list[Format] = Field(default="pdf", description="Report format.")    
+    name: str | None = Field(max_length=35, default=None, description="Report layout name.")    
+    title: str | None = Field(max_length=127, default=None, description="Report title.")    
+    subtitle: str | None = Field(max_length=127, default=None, description="Report subtitle.")    
+    description: str | None = Field(max_length=127, default=None, description="Description.")    
+    style_theme: str = Field(max_length=35, description="Report style theme.")    
+    options: list[LayoutOptionsEnum] = Field(default_factory=list, description="Report layout options.")    
+    format_: list[Literal["pdf"]] = Field(default_factory=list, serialization_alias="format", description="Report format.")    
     schedule_type: Literal["demand", "daily", "weekly"] | None = Field(default="daily", description="Report schedule type.")    
-    day: DayEnum | None = Field(default="sunday", description="Schedule days of week to generate report.")    
-    time: str | None = Field(default="", description="Schedule time to generate report (format = hh:mm).")    
+    day: LayoutDayEnum | None = Field(default=LayoutDayEnum.SUNDAY, description="Schedule days of week to generate report.")    
+    time: str | None = Field(default=None, description="Schedule time to generate report (format = hh:mm).")    
     cutoff_option: Literal["run-time", "custom"] | None = Field(default="run-time", description="Cutoff-option is either run-time or custom.")    
-    cutoff_time: str | None = Field(default="", description="Custom cutoff time to generate report (format = hh:mm).")    
+    cutoff_time: str | None = Field(default=None, description="Custom cutoff time to generate report (format = hh:mm).")    
     email_send: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable sending emails after reports are generated.")    
-    email_recipients: str | None = Field(max_length=511, default="", description="Email recipients for generated reports.")    
+    email_recipients: str | None = Field(max_length=511, default=None, description="Email recipients for generated reports.")    
     max_pdf_report: int | None = Field(ge=1, le=365, default=31, description="Maximum number of PDF reports to keep at one time (oldest report is overwritten).")    
-    page: list[Page] = Field(default=None, description="Configure report page.")    
-    body_item: list[BodyItem] = Field(default=None, description="Configure report body item.")    
+    page: list[LayoutPage] = Field(default_factory=list, description="Configure report page.")    
+    body_item: list[LayoutBodyItem] = Field(default_factory=list, description="Configure report body item.")    
     # ========================================================================
     # Custom Validators
     # ========================================================================
@@ -151,11 +274,11 @@ Dict = dict[str, Any]  # For backward compatibility
 # ============================================================================
 
 __all__ = [
-    "LayoutModel",    "LayoutPage",    "LayoutBodyItem",]
+    "LayoutModel",    "LayoutPage",    "LayoutPage.Header",    "LayoutPage.Header.HeaderItem",    "LayoutPage.Footer",    "LayoutPage.Footer.FooterItem",    "LayoutBodyItem",    "LayoutBodyItem.Parameters",]
 
 
 # ============================================================================
 # Generated by hfortix generator v0.6.0
 # Schema: 1.7.0
-# Generated: 2026-01-17T05:32:19.064522Z
+# Generated: 2026-01-17T17:25:22.777912Z
 # ============================================================================

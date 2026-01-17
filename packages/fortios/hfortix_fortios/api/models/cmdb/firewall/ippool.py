@@ -16,8 +16,12 @@ from enum import Enum
 # ============================================================================
 
 class IppoolTypeEnum(str, Enum):
-    """Allowed values for type field."""
-    OVERLOAD = "overload"    ONE_TO_ONE = "one-to-one"    FIXED_PORT_RANGE = "fixed-port-range"    PORT_BLOCK_ALLOCATION = "port-block-allocation"
+    """Allowed values for type_ field."""
+    OVERLOAD = "overload"
+    ONE_TO_ONE = "one-to-one"
+    FIXED_PORT_RANGE = "fixed-port-range"
+    PORT_BLOCK_ALLOCATION = "port-block-allocation"
+
 
 # ============================================================================
 # Main Model
@@ -29,7 +33,7 @@ class IppoolModel(BaseModel):
     
     Configure IPv4 IP pools.
     
-    Validation Rules:        - name: max_length=79 pattern=        - type: pattern=        - startip: pattern=        - endip: pattern=        - startport: min=1024 max=65535 pattern=        - endport: min=1024 max=65535 pattern=        - source_startip: pattern=        - source_endip: pattern=        - block_size: min=64 max=4096 pattern=        - port_per_user: min=32 max=60417 pattern=        - num_blocks_per_user: min=1 max=128 pattern=        - pba_timeout: min=3 max=86400 pattern=        - pba_interim_log: min=600 max=86400 pattern=        - permit_any_host: pattern=        - arp_reply: pattern=        - arp_intf: max_length=15 pattern=        - associated_interface: max_length=15 pattern=        - comments: max_length=255 pattern=        - nat64: pattern=        - add_nat64_route: pattern=        - source_prefix6: pattern=        - client_prefix_length: min=1 max=128 pattern=        - tcp_session_quota: min=0 max=2097000 pattern=        - udp_session_quota: min=0 max=2097000 pattern=        - icmp_session_quota: min=0 max=2097000 pattern=        - privileged_port_use_pba: pattern=        - subnet_broadcast_in_ippool: pattern=    """
+    Validation Rules:        - name: max_length=79 pattern=        - type_: pattern=        - startip: pattern=        - endip: pattern=        - startport: min=1024 max=65535 pattern=        - endport: min=1024 max=65535 pattern=        - source_startip: pattern=        - source_endip: pattern=        - block_size: min=64 max=4096 pattern=        - port_per_user: min=32 max=60417 pattern=        - num_blocks_per_user: min=1 max=128 pattern=        - pba_timeout: min=3 max=86400 pattern=        - pba_interim_log: min=600 max=86400 pattern=        - permit_any_host: pattern=        - arp_reply: pattern=        - arp_intf: max_length=15 pattern=        - associated_interface: max_length=15 pattern=        - comments: max_length=255 pattern=        - nat64: pattern=        - add_nat64_route: pattern=        - source_prefix6: pattern=        - client_prefix_length: min=1 max=128 pattern=        - tcp_session_quota: min=0 max=2097000 pattern=        - udp_session_quota: min=0 max=2097000 pattern=        - icmp_session_quota: min=0 max=2097000 pattern=        - privileged_port_use_pba: pattern=        - subnet_broadcast_in_ippool: pattern=    """
     
     class Config:
         """Pydantic model configuration."""
@@ -42,8 +46,8 @@ class IppoolModel(BaseModel):
     # Model Fields
     # ========================================================================
     
-    name: str | None = Field(max_length=79, default="", description="IP pool name.")    
-    type: TypeEnum | None = Field(default="overload", description="IP pool type: overload, one-to-one, fixed-port-range, port-block-allocation, cgn-resource-allocation (hyperscale vdom only)")    
+    name: str | None = Field(max_length=79, default=None, description="IP pool name.")    
+    type_: IppoolTypeEnum | None = Field(default=IppoolTypeEnum.OVERLOAD, serialization_alias="type", description="IP pool type: overload, one-to-one, fixed-port-range, port-block-allocation, cgn-resource-allocation (hyperscale vdom only)")    
     startip: str = Field(default="0.0.0.0", description="First IPv4 address (inclusive) in the range for the address pool (format xxx.xxx.xxx.xxx, Default: 0.0.0.0).")    
     endip: str = Field(default="0.0.0.0", description="Final IPv4 address (inclusive) in the range for the address pool (format xxx.xxx.xxx.xxx, Default: 0.0.0.0).")    
     startport: int = Field(ge=1024, le=65535, default=5117, description="First port number (inclusive) in the range for the address pool (1024 - 65535, Default: 5117).")    
@@ -57,8 +61,8 @@ class IppoolModel(BaseModel):
     pba_interim_log: int | None = Field(ge=600, le=86400, default=0, description="Port block allocation interim logging interval (600 - 86400 seconds, default = 0 which disables interim logging).")    
     permit_any_host: Literal["disable", "enable"] | None = Field(default="disable", description="Enable/disable fullcone NAT. Accept UDP packets from any host.")    
     arp_reply: Literal["disable", "enable"] | None = Field(default="enable", description="Enable/disable replying to ARP requests when an IP Pool is added to a policy (default = enable).")    
-    arp_intf: str | None = Field(max_length=15, default="", description="Select an interface from available options that will reply to ARP requests. (If blank, any is selected).")  # datasource: ['system.interface.name']    
-    associated_interface: str | None = Field(max_length=15, default="", description="Associated interface name.")  # datasource: ['system.interface.name']    
+    arp_intf: str | None = Field(max_length=15, default=None, description="Select an interface from available options that will reply to ARP requests. (If blank, any is selected).")  # datasource: ['system.interface.name']    
+    associated_interface: str | None = Field(max_length=15, default=None, description="Associated interface name.")  # datasource: ['system.interface.name']    
     comments: str | None = Field(max_length=255, default=None, description="Comment.")    
     nat64: Literal["disable", "enable"] | None = Field(default="disable", description="Enable/disable NAT64.")    
     add_nat64_route: Literal["disable", "enable"] | None = Field(default="enable", description="Enable/disable adding NAT64 route.")    
@@ -68,7 +72,7 @@ class IppoolModel(BaseModel):
     udp_session_quota: int | None = Field(ge=0, le=2097000, default=0, description="Maximum number of concurrent UDP sessions allowed per client (0 - 2097000, default = 0 which means no limit).")    
     icmp_session_quota: int | None = Field(ge=0, le=2097000, default=0, description="Maximum number of concurrent ICMP sessions allowed per client (0 - 2097000, default = 0 which means no limit).")    
     privileged_port_use_pba: Literal["disable", "enable"] | None = Field(default="disable", description="Enable/disable selection of the external port from the port block allocation for NAT'ing privileged ports (deafult = disable).")    
-    subnet_broadcast_in_ippool: Literal["disable"] | None = Field(default="", description="Enable/disable inclusion of the subnetwork address and broadcast IP address in the NAT64 IP pool.")    
+    subnet_broadcast_in_ippool: Literal["disable"] | None = Field(default=None, description="Enable/disable inclusion of the subnetwork address and broadcast IP address in the NAT64 IP pool.")    
     # ========================================================================
     # Custom Validators
     # ========================================================================
@@ -163,7 +167,7 @@ class IppoolModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.ippool.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate scalar field
         value = getattr(self, "arp_intf", None)
@@ -212,7 +216,7 @@ class IppoolModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.ippool.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate scalar field
         value = getattr(self, "associated_interface", None)
@@ -274,5 +278,5 @@ __all__ = [
 # ============================================================================
 # Generated by hfortix generator v0.6.0
 # Schema: 1.7.0
-# Generated: 2026-01-17T05:32:18.775490Z
+# Generated: 2026-01-17T17:25:22.517758Z
 # ============================================================================

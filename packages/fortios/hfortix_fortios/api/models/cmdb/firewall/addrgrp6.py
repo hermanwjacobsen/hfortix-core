@@ -12,35 +12,27 @@ from typing import Any, Literal, Optional
 from uuid import UUID
 
 # ============================================================================
-# Child Table Models
+# Enum Definitions for Child Table Fields (for fields with 4+ allowed values)
 # ============================================================================
 
-class Addrgrp6Member(BaseModel):
+# ============================================================================
+# Child Table Models (sorted deepest-first so nested models are defined before their parents)
+# ============================================================================
+
+class Addrgrp6TaggingTags(BaseModel):
     """
-    Child table model for member.
+    Child table model for tagging.tags.
     
-    Address objects contained within the group.
-    """
-    
-    class Config:
-        """Pydantic model configuration."""
-        extra = "allow"  # Allow additional fields from API
-        str_strip_whitespace = True
-    
-    name: str = Field(max_length=79, default="", description="Address6/addrgrp6 name.")  # datasource: ['firewall.address6.name', 'firewall.addrgrp6.name']
-class Addrgrp6ExcludeMember(BaseModel):
-    """
-    Child table model for exclude-member.
-    
-    Address6 exclusion member.
+    Tags.
     """
     
     class Config:
         """Pydantic model configuration."""
         extra = "allow"  # Allow additional fields from API
         str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
     
-    name: str = Field(max_length=79, default="", description="Address6 name.")  # datasource: ['firewall.address6.name', 'firewall.addrgrp6.name']
+    name: str | None = Field(max_length=79, default=None, description="Tag name.")  # datasource: ['system.object-tagging.tags.name']
 class Addrgrp6Tagging(BaseModel):
     """
     Child table model for tagging.
@@ -52,10 +44,39 @@ class Addrgrp6Tagging(BaseModel):
         """Pydantic model configuration."""
         extra = "allow"  # Allow additional fields from API
         str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
     
-    name: str | None = Field(max_length=63, default="", description="Tagging entry name.")    
-    category: str | None = Field(max_length=63, default="", description="Tag category.")  # datasource: ['system.object-tagging.category']    
-    tags: list[Tags] = Field(default=None, description="Tags.")
+    name: str | None = Field(max_length=63, default=None, description="Tagging entry name.")    
+    category: str | None = Field(max_length=63, default=None, description="Tag category.")  # datasource: ['system.object-tagging.category']    
+    tags: list[Addrgrp6TaggingTags] = Field(default_factory=list, description="Tags.")
+class Addrgrp6Member(BaseModel):
+    """
+    Child table model for member.
+    
+    Address objects contained within the group.
+    """
+    
+    class Config:
+        """Pydantic model configuration."""
+        extra = "allow"  # Allow additional fields from API
+        str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
+    
+    name: str = Field(max_length=79, description="Address6/addrgrp6 name.")  # datasource: ['firewall.address6.name', 'firewall.addrgrp6.name']
+class Addrgrp6ExcludeMember(BaseModel):
+    """
+    Child table model for exclude-member.
+    
+    Address6 exclusion member.
+    """
+    
+    class Config:
+        """Pydantic model configuration."""
+        extra = "allow"  # Allow additional fields from API
+        str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
+    
+    name: str = Field(max_length=79, description="Address6 name.")  # datasource: ['firewall.address6.name', 'firewall.addrgrp6.name']
 # ============================================================================
 # Enum Definitions (for fields with 4+ allowed values)
 # ============================================================================
@@ -84,14 +105,14 @@ class Addrgrp6Model(BaseModel):
     # Model Fields
     # ========================================================================
     
-    name: str = Field(max_length=79, default="", description="IPv6 address group name.")    
+    name: str = Field(max_length=79, description="IPv6 address group name.")    
     uuid: str | None = Field(default="00000000-0000-0000-0000-000000000000", description="Universally Unique Identifier (UUID; automatically assigned but can be manually reset).")    
     color: int | None = Field(ge=0, le=32, default=0, description="Integer value to determine the color of the icon in the GUI (1 - 32, default = 0, which sets the value to 1).")    
     comment: str | None = Field(max_length=255, default=None, description="Comment.")    
-    member: list[Member] = Field(default=None, description="Address objects contained within the group.")    
+    member: list[Addrgrp6Member] = Field(default_factory=list, description="Address objects contained within the group.")    
     exclude: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable address6 exclusion.")    
-    exclude_member: list[ExcludeMember] = Field(description="Address6 exclusion member.")    
-    tagging: list[Tagging] = Field(default=None, description="Config object tagging.")    
+    exclude_member: list[Addrgrp6ExcludeMember] = Field(description="Address6 exclusion member.")    
+    tagging: list[Addrgrp6Tagging] = Field(default_factory=list, description="Config object tagging.")    
     fabric_object: Literal["enable", "disable"] | None = Field(default="disable", description="Security Fabric global object setting.")    
     # ========================================================================
     # Custom Validators
@@ -157,7 +178,7 @@ class Addrgrp6Model(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.addrgrp6.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate child table items
         values = getattr(self, "member", [])
@@ -217,7 +238,7 @@ class Addrgrp6Model(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.addrgrp6.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate child table items
         values = getattr(self, "exclude_member", [])
@@ -277,7 +298,7 @@ class Addrgrp6Model(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.addrgrp6.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate child table items
         values = getattr(self, "tagging", [])
@@ -295,7 +316,7 @@ class Addrgrp6Model(BaseModel):
             
             # Check all datasource endpoints
             found = False
-            if await client.api.cmdb.system.object-tagging.exists(value):
+            if await client.api.cmdb.system.object_tagging.exists(value):
                 found = True
             
             if not found:
@@ -344,11 +365,11 @@ Dict = dict[str, Any]  # For backward compatibility
 # ============================================================================
 
 __all__ = [
-    "Addrgrp6Model",    "Addrgrp6Member",    "Addrgrp6ExcludeMember",    "Addrgrp6Tagging",]
+    "Addrgrp6Model",    "Addrgrp6Member",    "Addrgrp6ExcludeMember",    "Addrgrp6Tagging",    "Addrgrp6Tagging.Tags",]
 
 
 # ============================================================================
 # Generated by hfortix generator v0.6.0
 # Schema: 1.7.0
-# Generated: 2026-01-17T05:32:17.308697Z
+# Generated: 2026-01-17T17:25:21.211762Z
 # ============================================================================

@@ -860,6 +860,32 @@ class Group(CRUDEndpoint, MetadataMixin):
             - put(): Update existing object
             - exists(): Check existence manually
         """
+        # Apply normalization for table fields (supports flexible input formats)
+        if member is not None:
+            member = normalize_table_field(
+                member,
+                mkey="name",
+                required_fields=['name'],
+                field_name="member",
+                example="[{'name': 'value'}]",
+            )
+        if match is not None:
+            match = normalize_table_field(
+                match,
+                mkey="id",
+                required_fields=['id', 'server-name', 'group-name'],
+                field_name="match",
+                example="[{'id': 1, 'server-name': 'value', 'group-name': 'value'}]",
+            )
+        if guest is not None:
+            guest = normalize_table_field(
+                guest,
+                mkey="id",
+                required_fields=['id'],
+                field_name="guest",
+                example="[{'id': 1}]",
+            )
+        
         # Build payload using helper function with auto-normalization
         payload_data = build_api_payload(
             name=name,

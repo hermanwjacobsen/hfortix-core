@@ -626,6 +626,16 @@ class Custom(CRUDEndpoint, MetadataMixin):
             - put(): Update existing object
             - exists(): Check existence manually
         """
+        # Apply normalization for table fields (supports flexible input formats)
+        if switch_binding is not None:
+            switch_binding = normalize_table_field(
+                switch_binding,
+                mkey="switch-id",
+                required_fields=['switch-id'],
+                field_name="switch_binding",
+                example="[{'switch-id': 'value'}]",
+            )
+        
         # Build payload using helper function with auto-normalization
         payload_data = build_api_payload(
             name=name,

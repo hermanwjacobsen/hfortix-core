@@ -1,265 +1,121 @@
-from typing import TypedDict, Literal, Any, Coroutine, Union, overload, Generator, final
-from typing_extensions import NotRequired
-from hfortix_fortios.models import FortiObject, FortiObjectList
+""" - Type Stubs
 
-# ============================================================================
-# Nested TypedDicts for table field children (dict mode)
-# These MUST be defined before the Payload class to use them as type hints
-# ============================================================================
+Auto-generated stub file for type checking and IDE support.
 
-class DynamicPortPolicyPolicyItem(TypedDict, total=False):
-    """Type hints for policy table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    Use this when building payloads for POST/PUT requests.
-    
-    **Available fields:**
-        - name: str
-        - description: str
-        - status: "enable" | "disable"
-        - category: "device" | "interface-tag"
-        - match_type: "dynamic" | "override"
-        - match_period: int
-        - match_remove: "default" | "link-down"
-        - interface_tags: str
-        - mac: str
-        - hw_vendor: str
-        - type: str
-        - family: str
-        - host: str
-        - lldp_profile: str
-        - qos_policy: str
-        - 1x_802: str
-        - vlan_policy: str
-        - bounce_port_link: "disable" | "enable"
-        - bounce_port_duration: int
-        - poe_reset: "disable" | "enable"
-    
-    **Example:**
-        entry: DynamicPortPolicyPolicyItem = {
-            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
-        }
-    """
-    
-    name: str  # Policy name. | MaxLen: 63
-    description: str  # Description for the policy. | MaxLen: 63
-    status: Literal["enable", "disable"]  # Enable/disable policy. | Default: enable
-    category: Literal["device", "interface-tag"]  # Category of Dynamic port policy. | Default: device
-    match_type: Literal["dynamic", "override"]  # Match and retain the devices based on the type. | Default: dynamic
-    match_period: int  # Number of days the matched devices will be retaine | Default: 0 | Min: 0 | Max: 120
-    match_remove: Literal["default", "link-down"]  # Options to remove the matched override devices. | Default: default
-    interface_tags: str  # Match policy based on the FortiSwitch interface ob
-    mac: str  # Match policy based on MAC address. | MaxLen: 17
-    hw_vendor: str  # Match policy based on hardware vendor. | MaxLen: 15
-    type: str  # Match policy based on type. | MaxLen: 15
-    family: str  # Match policy based on family. | MaxLen: 31
-    host: str  # Match policy based on host. | MaxLen: 64
-    lldp_profile: str  # LLDP profile to be applied when using this policy. | MaxLen: 63
-    qos_policy: str  # QoS policy to be applied when using this policy. | MaxLen: 63
-    1x_802: str  # 802.1x security policy to be applied when using th | MaxLen: 31
-    vlan_policy: str  # VLAN policy to be applied when using this policy. | MaxLen: 63
-    bounce_port_link: Literal["disable", "enable"]  # Enable/disable bouncing | Default: enable
-    bounce_port_duration: int  # Bounce duration in seconds of a switch port where | Default: 5 | Min: 1 | Max: 30
-    poe_reset: Literal["disable", "enable"]  # Enable/disable POE reset of a switch port where th | Default: disable
+Endpoint: switch_controller/dynamic_port_policy
+Category: cmdb
+"""
+
+from __future__ import annotations
+
+from typing import (
+    Any,
+    ClassVar,
+    Literal,
+    TypedDict,
+    overload,
+)
+
+from hfortix_fortios.models import (
+    FortiObject,
+    FortiObjectList,
+)
 
 
-# ============================================================================
-# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional)
-# ============================================================================
-# NOTE: We intentionally DON'T use NotRequired wrapper because:
-# 1. total=False already makes all fields optional
-# 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
-class DynamicPortPolicyPayload(TypedDict, total=False):
-    """
-    Type hints for switch_controller/dynamic_port_policy payload fields.
-    
-    Configure Dynamic port policy to be applied on the managed FortiSwitch ports through DPP device.
-    
-    **Related Resources:**
+# ================================================================
+# TypedDict Payloads
+# ================================================================
 
-    Dependencies (resources this endpoint references):
-        - :class:`~.system.interface.InterfaceEndpoint` (via: fortilink)
-
-    **Usage:**
-        payload: DynamicPortPolicyPayload = {
-            "field": "value",  # <- autocomplete shows all fields
-        }
-    """
-    name: str  # Dynamic port policy name. | MaxLen: 63
-    description: str  # Description for the Dynamic port policy. | MaxLen: 63
-    fortilink: str  # FortiLink interface for which this Dynamic port po | MaxLen: 15
-    policy: list[DynamicPortPolicyPolicyItem]  # Port policies with matching criteria and actions.
-
-# ============================================================================
-# Nested classes for table field children (object mode - for API responses)
-# ============================================================================
-
-@final
-class DynamicPortPolicyPolicyObject:
-    """Typed object for policy table items.
-    
-    Provides IDE autocomplete for nested table field attributes.
-    At runtime, this is a FortiObject instance.
-    """
-    
-    # Policy name. | MaxLen: 63
+class DynamicPortPolicyPolicyItem:
+    """Nested item for policy field - supports attribute access."""
     name: str
-    # Description for the policy. | MaxLen: 63
     description: str
-    # Enable/disable policy. | Default: enable
     status: Literal["enable", "disable"]
-    # Category of Dynamic port policy. | Default: device
     category: Literal["device", "interface-tag"]
-    # Match and retain the devices based on the type. | Default: dynamic
     match_type: Literal["dynamic", "override"]
-    # Number of days the matched devices will be retained | Default: 0 | Min: 0 | Max: 120
     match_period: int
-    # Options to remove the matched override devices. | Default: default
     match_remove: Literal["default", "link-down"]
-    # Match policy based on the FortiSwitch interface object tags.
     interface_tags: str
-    # Match policy based on MAC address. | MaxLen: 17
     mac: str
-    # Match policy based on hardware vendor. | MaxLen: 15
     hw_vendor: str
-    # Match policy based on type. | MaxLen: 15
     type: str
-    # Match policy based on family. | MaxLen: 31
     family: str
-    # Match policy based on host. | MaxLen: 64
     host: str
-    # LLDP profile to be applied when using this policy. | MaxLen: 63
     lldp_profile: str
-    # QoS policy to be applied when using this policy. | MaxLen: 63
     qos_policy: str
-    # 802.1x security policy to be applied when using this policy. | MaxLen: 31
-    1x_802: str
-    # VLAN policy to be applied when using this policy. | MaxLen: 63
+    x802_1x: str
     vlan_policy: str
-    # Enable/disable bouncing | Default: enable
     bounce_port_link: Literal["disable", "enable"]
-    # Bounce duration in seconds of a switch port where this polic | Default: 5 | Min: 1 | Max: 30
     bounce_port_duration: int
-    # Enable/disable POE reset of a switch port where this policy | Default: disable
     poe_reset: Literal["disable", "enable"]
-    
-    # Common API response fields
-    status: str
-    http_status: int | None
-    http_status_code: int | None
-    http_method: str | None
-    http_response_time: float | None
-    vdom: str | None
-    
-    # Methods from FortiObject
-    @property
-    def dict(self) -> dict[str, Any]:
-        """Convert to dictionary."""
-        ...
-    @property
-    def json(self) -> str:
-        """Get pretty-printed JSON string."""
-        ...
-    @property
-    def raw(self) -> dict[str, Any]:
-        """Get raw API response data."""
-        ...
-    def get_full(self, name: str) -> Any: ...
-    def to_dict(self) -> FortiObject: ...
-    def keys(self) -> Any: ...
-    def values(self) -> Generator[Any, None, None]: ...
-    def items(self) -> Generator[tuple[str, Any], None, None]: ...
-    def get(self, key: str, default: Any = None) -> Any: ...
 
 
-
-
-# Response TypedDict for GET returns (all fields present in API response)
-class DynamicPortPolicyResponse(TypedDict):
-    """
-    Type hints for switch_controller/dynamic_port_policy API response fields.
-    
-    All fields are present in the response from the FortiGate API.
-    """
-    name: str  # Dynamic port policy name. | MaxLen: 63
-    description: str  # Description for the Dynamic port policy. | MaxLen: 63
-    fortilink: str  # FortiLink interface for which this Dynamic port po | MaxLen: 15
-    policy: list[DynamicPortPolicyPolicyItem]  # Port policies with matching criteria and actions.
-
-
-@final
-class DynamicPortPolicyObject:
-    """Typed FortiObject for switch_controller/dynamic_port_policy with IDE autocomplete support.
-    
-    This is a typed wrapper that provides IDE autocomplete for API response fields.
-    At runtime, this is actually a FortiObject instance.
-    """
-    
-    # Dynamic port policy name. | MaxLen: 63
+class DynamicPortPolicyPayload(TypedDict, total=False):
+    """Payload type for DynamicPortPolicy operations."""
     name: str
-    # Description for the Dynamic port policy. | MaxLen: 63
     description: str
-    # FortiLink interface for which this Dynamic port policy belon | MaxLen: 15
     fortilink: str
-    # Port policies with matching criteria and actions.
-    policy: list[DynamicPortPolicyPolicyObject]
-    
-    # Common API response fields
-    status: str
-    http_status: int | None
-    http_status_code: int | None
-    http_method: str | None
-    http_response_time: float | None
-    vdom: str | None
-    
-    # Methods from FortiObject
-    @property
-    def dict(self) -> dict[str, Any]:
-        """Convert to dictionary."""
-        ...
-    @property
-    def json(self) -> str:
-        """Get pretty-printed JSON string."""
-        ...
-    @property
-    def raw(self) -> dict[str, Any]:
-        """Get raw API response data."""
-        ...
-    def get_full(self, name: str) -> Any: ...
-    def to_dict(self) -> DynamicPortPolicyPayload: ...
-    def keys(self) -> Any: ...
-    def values(self) -> Generator[Any, None, None]: ...
-    def items(self) -> Generator[tuple[str, Any], None, None]: ...
-    def get(self, key: str, default: Any = None) -> Any: ...
+    policy: str | list[str] | list[dict[str, Any]] | list[DynamicPortPolicyPolicyItem]
 
+
+# ================================================================
+# Response Types (TypedDict for dict-style access)
+# ================================================================
+
+class DynamicPortPolicyResponse(TypedDict, total=False):
+    """Response type for DynamicPortPolicy - use with .dict property for typed dict access."""
+    name: str
+    description: str
+    fortilink: str
+    policy: list[DynamicPortPolicyPolicyItem]
+
+
+# ================================================================
+# Response Types (Class for attribute access)
+# ================================================================
+
+
+class DynamicPortPolicyObject(FortiObject):
+    """Typed FortiObject for DynamicPortPolicy with field access."""
+    name: str
+    description: str
+    fortilink: str
+    policy: list[DynamicPortPolicyPolicyItem]
+
+
+# ================================================================
+# Main Endpoint Class
+# ================================================================
 
 class DynamicPortPolicy:
     """
-    Configure Dynamic port policy to be applied on the managed FortiSwitch ports through DPP device.
     
-    Path: switch_controller/dynamic_port_policy
+    Endpoint: switch_controller/dynamic_port_policy
     Category: cmdb
-    Primary Key: name
+    MKey: name
     """
     
+    # Class attributes for introspection
+    endpoint: ClassVar[str] = ...
+    path: ClassVar[str] = ...
+    category: ClassVar[str] = ...
+    mkey: ClassVar[str] = ...
+    capabilities: ClassVar[dict[str, Any]] = ...
+    
     def __init__(self, client: Any) -> None:
-        """Initialize endpoint with HTTP client.
-        
-        Args:
-            client: HTTP client instance for API communication
-        """
+        """Initialize endpoint with HTTP client."""
         ...
     
     # ================================================================
-    # GET OVERLOADS - Always returns FortiObject (or ContentResponse for file endpoints)
-    # Pylance matches overloads top-to-bottom, so these must come first!
+    # GET Methods
     # ================================================================
     
-    # With mkey as positional arg -> returns FortiObject
+    # CMDB with mkey - overloads for single vs list returns
     @overload
     def get(
         self,
         name: str,
+        *,
         filter: str | list[str] | None = ...,
         count: int | None = ...,
         start: int | None = ...,
@@ -269,14 +125,14 @@ class DynamicPortPolicy:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        error_mode: Literal["raise", "return", "print"] | None = ...,
+        error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> DynamicPortPolicyObject: ...
     
-    # With mkey as keyword arg -> returns FortiObject
     @overload
     def get(
         self,
         *,
-        name: str,
         filter: str | list[str] | None = ...,
         count: int | None = ...,
         start: int | None = ...,
@@ -286,280 +142,63 @@ class DynamicPortPolicy:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> DynamicPortPolicyObject: ...
-    
-    # Without mkey -> returns list of FortiObjects
-    @overload
-    def get(
-        self,
-        name: None = None,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
+        error_mode: Literal["raise", "return", "print"] | None = ...,
+        error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> FortiObjectList[DynamicPortPolicyObject]: ...
-    
-    # ================================================================
-    # (removed - all GET now returns FortiObject)
-    # ================================================================
-    
-    # With mkey as positional arg -> returns single object
-    @overload
-    def get(
-        self,
-        name: str,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> DynamicPortPolicyObject: ...
-    
-    # With mkey as keyword arg -> returns single object
-    @overload
-    def get(
-        self,
-        *,
-        name: str,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> DynamicPortPolicyObject: ...
-    
-    # With no mkey -> returns list of objects
-    @overload
-    def get(
-        self,
-        *,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObjectList[DynamicPortPolicyObject]: ...
-    
-    # Dict mode with mkey provided as positional arg (single dict)
-    @overload
-    def get(
-        self,
-        name: str,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> DynamicPortPolicyObject: ...
-    
-    # Dict mode with mkey provided as keyword arg (single dict)
-    @overload
-    def get(
-        self,
-        *,
-        name: str,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> DynamicPortPolicyObject: ...
-    
-    # Dict mode - list of dicts (no mkey/name provided) - keyword-only signature
-    @overload
-    def get(
-        self,
-        *,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObjectList[DynamicPortPolicyObject]: ...
-    
-    # Fallback overload for all other cases
-    @overload
-    def get(
-        self,
-        name: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> Union[dict[str, Any], list[dict[str, Any]], FortiObject, list[FortiObject]]: ...
-    
-    def get(
-        self,
-        name: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> DynamicPortPolicyObject | list[DynamicPortPolicyObject] | dict[str, Any] | list[dict[str, Any]]: ...
     
     def get_schema(
         self,
         vdom: str | None = ...,
         format: str = ...,
     ) -> FortiObject: ...
+
+    # ================================================================
+    # POST Method
+    # ================================================================
     
-    # POST overloads
-    @overload
     def post(
         self,
         payload_dict: DynamicPortPolicyPayload | None = ...,
         name: str | None = ...,
         description: str | None = ...,
         fortilink: str | None = ...,
-        policy: str | list[str] | list[DynamicPortPolicyPolicyItem] | None = ...,
+        policy: str | list[str] | list[dict[str, Any]] | list[DynamicPortPolicyPolicyItem] | None = ...,
         vdom: str | bool | None = ...,
+        error_mode: Literal["raise", "return", "print"] | None = ...,
+        error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> DynamicPortPolicyObject: ...
+
+    # ================================================================
+    # PUT Method
+    # ================================================================
     
-    @overload
-    def post(
-        self,
-        payload_dict: DynamicPortPolicyPayload | None = ...,
-        name: str | None = ...,
-        description: str | None = ...,
-        fortilink: str | None = ...,
-        policy: str | list[str] | list[DynamicPortPolicyPolicyItem] | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
-    
-    # Default overload
-    @overload
-    def post(
-        self,
-        payload_dict: DynamicPortPolicyPayload | None = ...,
-        name: str | None = ...,
-        description: str | None = ...,
-        fortilink: str | None = ...,
-        policy: str | list[str] | list[DynamicPortPolicyPolicyItem] | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
-    
-    def post(
-        self,
-        payload_dict: DynamicPortPolicyPayload | None = ...,
-        name: str | None = ...,
-        description: str | None = ...,
-        fortilink: str | None = ...,
-        policy: str | list[str] | list[DynamicPortPolicyPolicyItem] | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
-    
-    # PUT overloads
-    @overload
     def put(
         self,
         payload_dict: DynamicPortPolicyPayload | None = ...,
         name: str | None = ...,
         description: str | None = ...,
         fortilink: str | None = ...,
-        policy: str | list[str] | list[DynamicPortPolicyPolicyItem] | None = ...,
+        policy: str | list[str] | list[dict[str, Any]] | list[DynamicPortPolicyPolicyItem] | None = ...,
         vdom: str | bool | None = ...,
+        error_mode: Literal["raise", "return", "print"] | None = ...,
+        error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> DynamicPortPolicyObject: ...
-    
-    @overload
-    def put(
-        self,
-        payload_dict: DynamicPortPolicyPayload | None = ...,
-        name: str | None = ...,
-        description: str | None = ...,
-        fortilink: str | None = ...,
-        policy: str | list[str] | list[DynamicPortPolicyPolicyItem] | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
-    
-    # Default overload
-    @overload
-    def put(
-        self,
-        payload_dict: DynamicPortPolicyPayload | None = ...,
-        name: str | None = ...,
-        description: str | None = ...,
-        fortilink: str | None = ...,
-        policy: str | list[str] | list[DynamicPortPolicyPolicyItem] | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
-    
-    def put(
-        self,
-        payload_dict: DynamicPortPolicyPayload | None = ...,
-        name: str | None = ...,
-        description: str | None = ...,
-        fortilink: str | None = ...,
-        policy: str | list[str] | list[DynamicPortPolicyPolicyItem] | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
-    
-    # DELETE overloads
-    @overload
-    def delete(
-        self,
-        name: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> DynamicPortPolicyObject: ...
-    
-    @overload
-    def delete(
-        self,
-        name: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
-    
-    # Default overload
-    @overload
-    def delete(
-        self,
-        name: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+
+    # ================================================================
+    # DELETE Method
+    # ================================================================
     
     def delete(
         self,
         name: str | None = ...,
         vdom: str | bool | None = ...,
+        error_mode: Literal["raise", "return", "print"] | None = ...,
+        error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> FortiObject: ...
+
+    # ================================================================
+    # Utility Methods
+    # ================================================================
     
     def exists(
         self,
@@ -573,8 +212,10 @@ class DynamicPortPolicy:
         name: str | None = ...,
         description: str | None = ...,
         fortilink: str | None = ...,
-        policy: str | list[str] | list[DynamicPortPolicyPolicyItem] | None = ...,
+        policy: str | list[str] | list[dict[str, Any]] | list[DynamicPortPolicyPolicyItem] | None = ...,
         vdom: str | bool | None = ...,
+        error_mode: Literal["raise", "return", "print"] | None = ...,
+        error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> FortiObject: ...
     
     # Helper methods
@@ -582,7 +223,7 @@ class DynamicPortPolicy:
     def help(field_name: str | None = ...) -> str: ...
     
     @staticmethod
-    def fields(detailed: bool = ...) -> Union[list[str], list[dict[str, Any]]]: ...
+    def fields(detailed: bool = ...) -> list[str] | list[dict[str, Any]]: ...
     
     @staticmethod
     def field_info(field_name: str) -> FortiObject: ...
@@ -598,9 +239,6 @@ class DynamicPortPolicy:
     
     @staticmethod
     def schema() -> FortiObject: ...
-
-
-# ================================================================
 
 
 __all__ = [

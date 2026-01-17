@@ -7,40 +7,18 @@ Generated from FortiOS schema version unknown.
 
 from __future__ import annotations
 
-from pydantic import BaseModel, Field, field_validator
+from pydantic import BaseModel, Field
 from typing import Any, Literal, Optional
 from enum import Enum
 
 # ============================================================================
-# Child Table Models
+# Enum Definitions for Child Table Fields (for fields with 4+ allowed values)
 # ============================================================================
 
-class GroupApplication(BaseModel):
-    """
-    Child table model for application.
-    
-    Application ID list.
-    """
-    
-    class Config:
-        """Pydantic model configuration."""
-        extra = "allow"  # Allow additional fields from API
-        str_strip_whitespace = True
-    
-    id: int = Field(ge=0, le=4294967295, default=0, description="Application IDs.")
-class GroupCategory(BaseModel):
-    """
-    Child table model for category.
-    
-    Application category ID list.
-    """
-    
-    class Config:
-        """Pydantic model configuration."""
-        extra = "allow"  # Allow additional fields from API
-        str_strip_whitespace = True
-    
-    id: int = Field(ge=0, le=4294967295, default=0, description="Category IDs.")
+# ============================================================================
+# Child Table Models (sorted deepest-first so nested models are defined before their parents)
+# ============================================================================
+
 class GroupRisk(BaseModel):
     """
     Child table model for risk.
@@ -52,15 +30,49 @@ class GroupRisk(BaseModel):
         """Pydantic model configuration."""
         extra = "allow"  # Allow additional fields from API
         str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
     
     level: int = Field(ge=0, le=4294967295, default=0, description="Risk, or impact, of allowing traffic from this application to occur (1 - 5; Low, Elevated, Medium, High, and Critical).")
+class GroupCategory(BaseModel):
+    """
+    Child table model for category.
+    
+    Application category ID list.
+    """
+    
+    class Config:
+        """Pydantic model configuration."""
+        extra = "allow"  # Allow additional fields from API
+        str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
+    
+    id_: int = Field(ge=0, le=4294967295, default=0, serialization_alias="id", description="Category IDs.")
+class GroupApplication(BaseModel):
+    """
+    Child table model for application.
+    
+    Application ID list.
+    """
+    
+    class Config:
+        """Pydantic model configuration."""
+        extra = "allow"  # Allow additional fields from API
+        str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
+    
+    id_: int = Field(ge=0, le=4294967295, default=0, serialization_alias="id", description="Application IDs.")
 # ============================================================================
 # Enum Definitions (for fields with 4+ allowed values)
 # ============================================================================
 
 class GroupPopularityEnum(str, Enum):
     """Allowed values for popularity field."""
-    1 = "1"    2 = "2"    3 = "3"    4 = "4"    5 = "5"
+    V_1 = "1"
+    V_2 = "2"
+    V_3 = "3"
+    V_4 = "4"
+    V_5 = "5"
+
 
 # ============================================================================
 # Main Model
@@ -72,7 +84,7 @@ class GroupModel(BaseModel):
     
     Configure firewall application groups.
     
-    Validation Rules:        - name: max_length=63 pattern=        - comment: max_length=255 pattern=        - type: pattern=        - application: pattern=        - category: pattern=        - risk: pattern=        - protocols: pattern=        - vendor: pattern=        - technology: pattern=        - behavior: pattern=        - popularity: pattern=    """
+    Validation Rules:        - name: max_length=63 pattern=        - comment: max_length=255 pattern=        - type_: pattern=        - application: pattern=        - category: pattern=        - risk: pattern=        - protocols: pattern=        - vendor: pattern=        - technology: pattern=        - behavior: pattern=        - popularity: pattern=    """
     
     class Config:
         """Pydantic model configuration."""
@@ -85,17 +97,17 @@ class GroupModel(BaseModel):
     # Model Fields
     # ========================================================================
     
-    name: str | None = Field(max_length=63, default="", description="Application group name.")    
+    name: str | None = Field(max_length=63, default=None, description="Application group name.")    
     comment: str | None = Field(max_length=255, default=None, description="Comments.")    
-    type: Literal["application", "filter"] | None = Field(default="application", description="Application group type.")    
-    application: list[Application] = Field(default=None, description="Application ID list.")    
-    category: list[Category] = Field(default=None, description="Application category ID list.")    
-    risk: list[Risk] = Field(default=None, description="Risk, or impact, of allowing traffic from this application to occur (1 - 5; Low, Elevated, Medium, High, and Critical).")    
-    protocols: list[Protocols] = Field(default="all", description="Application protocol filter.")    
-    vendor: list[Vendor] = Field(default="all", description="Application vendor filter.")    
-    technology: list[Technology] = Field(default="all", description="Application technology filter.")    
-    behavior: list[Behavior] = Field(default="all", description="Application behavior filter.")    
-    popularity: list[Popularity] = Field(default="1 2 3 4 5", description="Application popularity filter (1 - 5, from least to most popular).")    
+    type_: Literal["application", "filter"] | None = Field(default="application", serialization_alias="type", description="Application group type.")    
+    application: list[GroupApplication] = Field(default_factory=list, description="Application ID list.")    
+    category: list[GroupCategory] = Field(default_factory=list, description="Application category ID list.")    
+    risk: list[GroupRisk] = Field(default_factory=list, description="Risk, or impact, of allowing traffic from this application to occur (1 - 5; Low, Elevated, Medium, High, and Critical).")    
+    protocols: list[str] = Field(default_factory=list, description="Application protocol filter.")    
+    vendor: list[str] = Field(default_factory=list, description="Application vendor filter.")    
+    technology: list[str] = Field(default_factory=list, description="Application technology filter.")    
+    behavior: list[str] = Field(default_factory=list, description="Application behavior filter.")    
+    popularity: list[GroupPopularityEnum] = Field(default_factory=list, description="Application popularity filter (1 - 5, from least to most popular).")    
     # ========================================================================
     # Custom Validators
     # ========================================================================
@@ -144,5 +156,5 @@ __all__ = [
 # ============================================================================
 # Generated by hfortix generator v0.6.0
 # Schema: 1.7.0
-# Generated: 2026-01-17T05:32:18.353879Z
+# Generated: 2026-01-17T17:25:22.139528Z
 # ============================================================================

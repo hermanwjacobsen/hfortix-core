@@ -47,6 +47,7 @@ from hfortix_fortios._helpers import (
     build_cmdb_payload,  # Keep for backward compatibility / manual usage
     is_success,
     quote_path_param,  # URL encoding for path parameters
+    normalize_day_field,  # For day field normalization
 )
 # Import metadata mixin for schema introspection
 from hfortix_fortios._helpers.metadata_mixin import MetadataMixin
@@ -290,6 +291,10 @@ class Recurring(CRUDEndpoint, MetadataMixin):
             - post(): Create new object
             - set(): Intelligent create or update
         """
+        # Apply normalization for multi-value option fields (space-separated strings)
+        if day is not None:
+            day = normalize_day_field(day)
+        
         # Build payload using helper function with auto-normalization
         # This automatically converts strings/lists to [{'name': '...'}] format for list fields
         # To disable auto-normalization, use build_cmdb_payload directly
@@ -402,6 +407,10 @@ class Recurring(CRUDEndpoint, MetadataMixin):
             - put(): Update existing object
             - set(): Intelligent create or update
         """
+        # Apply normalization for multi-value option fields (space-separated strings)
+        if day is not None:
+            day = normalize_day_field(day)
+        
         # Build payload using helper function with auto-normalization
         # This automatically converts strings/lists to [{'name': '...'}] format for list fields
         # To disable auto-normalization, use build_cmdb_payload directly
@@ -631,6 +640,10 @@ class Recurring(CRUDEndpoint, MetadataMixin):
             - put(): Update existing object
             - exists(): Check existence manually
         """
+        # Apply normalization for multi-value option fields (space-separated strings)
+        if day is not None:
+            day = normalize_day_field(day)
+        
         # Build payload using helper function with auto-normalization
         payload_data = build_api_payload(
             name=name,

@@ -12,24 +12,20 @@ from typing import Any, Literal, Optional
 from enum import Enum
 
 # ============================================================================
-# Child Table Models
+# Enum Definitions for Child Table Fields (for fields with 4+ allowed values)
 # ============================================================================
 
-class SettingAuthPorts(BaseModel):
-    """
-    Child table model for auth-ports.
-    
-    Set up non-standard ports for authentication with HTTP, HTTPS, FTP, and TELNET.
-    """
-    
-    class Config:
-        """Pydantic model configuration."""
-        extra = "allow"  # Allow additional fields from API
-        str_strip_whitespace = True
-    
-    id: int = Field(ge=0, le=4294967295, default=0, description="ID.")    
-    type: TypeEnum | None = Field(default="http", description="Service type.")    
-    port: int | None = Field(ge=1, le=65535, default=1024, description="Non-standard port for firewall user authentication.")
+class SettingAuthPortsTypeEnum(str, Enum):
+    """Allowed values for type_ field in auth-ports."""
+    HTTP = "http"
+    HTTPS = "https"
+    FTP = "ftp"
+    TELNET = "telnet"
+
+# ============================================================================
+# Child Table Models (sorted deepest-first so nested models are defined before their parents)
+# ============================================================================
+
 class SettingCorsAllowedOrigins(BaseModel):
     """
     Child table model for cors-allowed-origins.
@@ -41,21 +37,53 @@ class SettingCorsAllowedOrigins(BaseModel):
         """Pydantic model configuration."""
         extra = "allow"  # Allow additional fields from API
         str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
     
-    name: str | None = Field(max_length=79, default="", description="Allowed origin for CORS.")
+    name: str | None = Field(max_length=79, default=None, description="Allowed origin for CORS.")
+class SettingAuthPorts(BaseModel):
+    """
+    Child table model for auth-ports.
+    
+    Set up non-standard ports for authentication with HTTP, HTTPS, FTP, and TELNET.
+    """
+    
+    class Config:
+        """Pydantic model configuration."""
+        extra = "allow"  # Allow additional fields from API
+        str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
+    
+    id_: int = Field(ge=0, le=4294967295, default=0, serialization_alias="id", description="ID.")    
+    type_: SettingAuthPortsTypeEnum | None = Field(default=SettingAuthPortsTypeEnum.HTTP, serialization_alias="type", description="Service type.")    
+    port: int | None = Field(ge=1, le=65535, default=1024, description="Non-standard port for firewall user authentication.")
 # ============================================================================
 # Enum Definitions (for fields with 4+ allowed values)
 # ============================================================================
 
-class SettingAuth_typeEnum(str, Enum):
+class SettingAuthTypeEnum(str, Enum):
     """Allowed values for auth_type field."""
-    HTTP = "http"    HTTPS = "https"    FTP = "ftp"    TELNET = "telnet"
-class SettingAuth_ssl_min_proto_versionEnum(str, Enum):
+    HTTP = "http"
+    HTTPS = "https"
+    FTP = "ftp"
+    TELNET = "telnet"
+
+class SettingAuthSslMinProtoVersionEnum(str, Enum):
     """Allowed values for auth_ssl_min_proto_version field."""
-    DEFAULT = "default"    SSLV3 = "SSLv3"    TLSV1 = "TLSv1"    TLSV1_1 = "TLSv1-1"    TLSV1_2 = "TLSv1-2"    TLSV1_3 = "TLSv1-3"
-class SettingAuth_ssl_max_proto_versionEnum(str, Enum):
+    DEFAULT = "default"
+    SSLV3 = "SSLv3"
+    TLSV1 = "TLSv1"
+    TLSV1_1 = "TLSv1-1"
+    TLSV1_2 = "TLSv1-2"
+    TLSV1_3 = "TLSv1-3"
+
+class SettingAuthSslMaxProtoVersionEnum(str, Enum):
     """Allowed values for auth_ssl_max_proto_version field."""
-    SSLV3 = "sslv3"    TLSV1 = "tlsv1"    TLSV1_1 = "tlsv1-1"    TLSV1_2 = "tlsv1-2"    TLSV1_3 = "tlsv1-3"
+    SSLV3 = "sslv3"
+    TLSV1 = "tlsv1"
+    TLSV1_1 = "tlsv1-1"
+    TLSV1_2 = "tlsv1-2"
+    TLSV1_3 = "tlsv1-3"
+
 
 # ============================================================================
 # Main Model
@@ -80,9 +108,9 @@ class SettingModel(BaseModel):
     # Model Fields
     # ========================================================================
     
-    auth_type: list[AuthType] = Field(default="http https ftp telnet", description="Supported firewall policy authentication protocols/methods.")    
-    auth_cert: str | None = Field(max_length=35, default="", description="HTTPS server certificate for policy authentication.")  # datasource: ['vpn.certificate.local.name']    
-    auth_ca_cert: str | None = Field(max_length=35, default="", description="HTTPS CA certificate for policy authentication.")  # datasource: ['vpn.certificate.local.name']    
+    auth_type: list[SettingAuthTypeEnum] = Field(default_factory=list, description="Supported firewall policy authentication protocols/methods.")    
+    auth_cert: str | None = Field(max_length=35, default=None, description="HTTPS server certificate for policy authentication.")  # datasource: ['vpn.certificate.local.name']    
+    auth_ca_cert: str | None = Field(max_length=35, default=None, description="HTTPS CA certificate for policy authentication.")  # datasource: ['vpn.certificate.local.name']    
     auth_secure_http: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable redirecting HTTP user authentication to more secure HTTPS.")    
     auth_http_basic: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable use of HTTP basic authentication for identity-based firewall policies.")    
     auth_ssl_allow_renegotiation: Literal["enable", "disable"] | None = Field(default="disable", description="Allow/forbid SSL re-negotiation for HTTPS authentication.")    
@@ -97,13 +125,13 @@ class SettingModel(BaseModel):
     auth_lockout_threshold: int | None = Field(ge=1, le=10, default=3, description="Maximum number of failed login attempts before login lockout is triggered.")    
     auth_lockout_duration: int | None = Field(ge=0, le=4294967295, default=0, description="Lockout period in seconds after too many login failures.")    
     per_policy_disclaimer: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable per policy disclaimer.")    
-    auth_ports: list[AuthPorts] = Field(default=None, description="Set up non-standard ports for authentication with HTTP, HTTPS, FTP, and TELNET.")    
-    auth_ssl_min_proto_version: AuthSslMinProtoVersionEnum | None = Field(default="default", description="Minimum supported protocol version for SSL/TLS connections (default is to follow system global setting).")    
-    auth_ssl_max_proto_version: AuthSslMaxProtoVersionEnum | None = Field(default="", description="Maximum supported protocol version for SSL/TLS connections (default is no limit).")    
+    auth_ports: list[SettingAuthPorts] = Field(default_factory=list, description="Set up non-standard ports for authentication with HTTP, HTTPS, FTP, and TELNET.")    
+    auth_ssl_min_proto_version: SettingAuthSslMinProtoVersionEnum | None = Field(default=SettingAuthSslMinProtoVersionEnum.DEFAULT, description="Minimum supported protocol version for SSL/TLS connections (default is to follow system global setting).")    
+    auth_ssl_max_proto_version: SettingAuthSslMaxProtoVersionEnum | None = Field(default=None, description="Maximum supported protocol version for SSL/TLS connections (default is no limit).")    
     auth_ssl_sigalgs: Literal["no-rsa-pss", "all"] | None = Field(default="all", description="Set signature algorithms related to HTTPS authentication (affects TLS version <= 1.2 only, default is to enable all).")    
-    default_user_password_policy: str | None = Field(max_length=35, default="", description="Default password policy to apply to all local users unless otherwise specified, as defined in config user password-policy.")  # datasource: ['user.password-policy.name']    
+    default_user_password_policy: str | None = Field(max_length=35, default=None, description="Default password policy to apply to all local users unless otherwise specified, as defined in config user password-policy.")  # datasource: ['user.password-policy.name']    
     cors: Literal["disable", "enable"] | None = Field(default="disable", description="Enable/disable allowed origins white list for CORS.")    
-    cors_allowed_origins: list[CorsAllowedOrigins] = Field(default=None, description="Allowed origins white list for CORS.")    
+    cors_allowed_origins: list[SettingCorsAllowedOrigins] = Field(default_factory=list, description="Allowed origins white list for CORS.")    
     # ========================================================================
     # Custom Validators
     # ========================================================================
@@ -213,7 +241,7 @@ class SettingModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.user.setting.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate scalar field
         value = getattr(self, "auth_cert", None)
@@ -262,7 +290,7 @@ class SettingModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.user.setting.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate scalar field
         value = getattr(self, "auth_ca_cert", None)
@@ -311,7 +339,7 @@ class SettingModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.user.setting.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate scalar field
         value = getattr(self, "default_user_password_policy", None)
@@ -320,7 +348,7 @@ class SettingModel(BaseModel):
         
         # Check all datasource endpoints
         found = False
-        if await client.api.cmdb.user.password-policy.exists(value):
+        if await client.api.cmdb.user.password_policy.exists(value):
             found = True
         
         if not found:
@@ -375,5 +403,5 @@ __all__ = [
 # ============================================================================
 # Generated by hfortix generator v0.6.0
 # Schema: 1.7.0
-# Generated: 2026-01-17T05:32:18.302240Z
+# Generated: 2026-01-17T17:25:22.095244Z
 # ============================================================================

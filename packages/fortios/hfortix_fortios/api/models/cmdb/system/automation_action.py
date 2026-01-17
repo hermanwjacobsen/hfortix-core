@@ -12,22 +12,27 @@ from typing import Any, Literal, Optional
 from enum import Enum
 
 # ============================================================================
-# Child Table Models
+# Enum Definitions for Child Table Fields (for fields with 4+ allowed values)
 # ============================================================================
 
-class AutomationActionEmailTo(BaseModel):
+# ============================================================================
+# Child Table Models (sorted deepest-first so nested models are defined before their parents)
+# ============================================================================
+
+class AutomationActionSdnConnector(BaseModel):
     """
-    Child table model for email-to.
+    Child table model for sdn-connector.
     
-    Email addresses.
+    NSX SDN connector names.
     """
     
     class Config:
         """Pydantic model configuration."""
         extra = "allow"  # Allow additional fields from API
         str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
     
-    name: str = Field(max_length=255, default="", description="Email address.")
+    name: str | None = Field(max_length=79, default=None, description="SDN connector name.")  # datasource: ['system.sdn-connector.name']
 class AutomationActionHttpHeaders(BaseModel):
     """
     Child table model for http-headers.
@@ -39,8 +44,9 @@ class AutomationActionHttpHeaders(BaseModel):
         """Pydantic model configuration."""
         extra = "allow"  # Allow additional fields from API
         str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
     
-    id: int | None = Field(ge=0, le=4294967295, default=0, description="Entry ID.")    
+    id_: int | None = Field(ge=0, le=4294967295, default=0, serialization_alias="id", description="Entry ID.")    
     key: str = Field(max_length=1023, description="Request header key.")    
     value: str = Field(max_length=4095, description="Request header value.")
 class AutomationActionFormData(BaseModel):
@@ -54,33 +60,60 @@ class AutomationActionFormData(BaseModel):
         """Pydantic model configuration."""
         extra = "allow"  # Allow additional fields from API
         str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
     
-    id: int | None = Field(ge=0, le=4294967295, default=0, description="Entry ID.")    
+    id_: int | None = Field(ge=0, le=4294967295, default=0, serialization_alias="id", description="Entry ID.")    
     key: str = Field(max_length=1023, description="Key of the part of Multipart/form-data.")    
     value: str = Field(max_length=4095, description="Value of the part of Multipart/form-data.")
-class AutomationActionSdnConnector(BaseModel):
+class AutomationActionEmailTo(BaseModel):
     """
-    Child table model for sdn-connector.
+    Child table model for email-to.
     
-    NSX SDN connector names.
+    Email addresses.
     """
     
     class Config:
         """Pydantic model configuration."""
         extra = "allow"  # Allow additional fields from API
         str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
     
-    name: str | None = Field(max_length=79, default="", description="SDN connector name.")  # datasource: ['system.sdn-connector.name']
+    name: str = Field(max_length=255, description="Email address.")
 # ============================================================================
 # Enum Definitions (for fields with 4+ allowed values)
 # ============================================================================
 
-class AutomationActionAction_typeEnum(str, Enum):
+class AutomationActionActionTypeEnum(str, Enum):
     """Allowed values for action_type field."""
-    EMAIL = "email"    FORTIEXPLORER_NOTIFICATION = "fortiexplorer-notification"    ALERT = "alert"    DISABLE_SSID = "disable-ssid"    SYSTEM_ACTIONS = "system-actions"    QUARANTINE = "quarantine"    QUARANTINE_FORTICLIENT = "quarantine-forticlient"    QUARANTINE_NSX = "quarantine-nsx"    QUARANTINE_FORTINAC = "quarantine-fortinac"    BAN_IP = "ban-ip"    AWS_LAMBDA = "aws-lambda"    AZURE_FUNCTION = "azure-function"    GOOGLE_CLOUD_FUNCTION = "google-cloud-function"    ALICLOUD_FUNCTION = "alicloud-function"    WEBHOOK = "webhook"    CLI_SCRIPT = "cli-script"    DIAGNOSE_SCRIPT = "diagnose-script"    REGULAR_EXPRESSION = "regular-expression"    SLACK_NOTIFICATION = "slack-notification"    MICROSOFT_TEAMS_NOTIFICATION = "microsoft-teams-notification"
+    EMAIL = "email"
+    FORTIEXPLORER_NOTIFICATION = "fortiexplorer-notification"
+    ALERT = "alert"
+    DISABLE_SSID = "disable-ssid"
+    SYSTEM_ACTIONS = "system-actions"
+    QUARANTINE = "quarantine"
+    QUARANTINE_FORTICLIENT = "quarantine-forticlient"
+    QUARANTINE_NSX = "quarantine-nsx"
+    QUARANTINE_FORTINAC = "quarantine-fortinac"
+    BAN_IP = "ban-ip"
+    AWS_LAMBDA = "aws-lambda"
+    AZURE_FUNCTION = "azure-function"
+    GOOGLE_CLOUD_FUNCTION = "google-cloud-function"
+    ALICLOUD_FUNCTION = "alicloud-function"
+    WEBHOOK = "webhook"
+    CLI_SCRIPT = "cli-script"
+    DIAGNOSE_SCRIPT = "diagnose-script"
+    REGULAR_EXPRESSION = "regular-expression"
+    SLACK_NOTIFICATION = "slack-notification"
+    MICROSOFT_TEAMS_NOTIFICATION = "microsoft-teams-notification"
+
 class AutomationActionMethodEnum(str, Enum):
     """Allowed values for method field."""
-    POST = "post"    PUT = "put"    GET = "get"    PATCH = "patch"    DELETE = "delete"
+    POST = "post"
+    PUT = "put"
+    GET = "get"
+    PATCH = "patch"
+    DELETE = "delete"
+
 
 # ============================================================================
 # Main Model
@@ -105,13 +138,13 @@ class AutomationActionModel(BaseModel):
     # Model Fields
     # ========================================================================
     
-    name: str | None = Field(max_length=64, default="", description="Name.")    
+    name: str | None = Field(max_length=64, default=None, description="Name.")    
     description: str | None = Field(max_length=255, default=None, description="Description.")    
-    action_type: ActionTypeEnum | None = Field(default="alert", description="Action type.")    
-    system_action: Literal["reboot", "shutdown", "backup-config"] = Field(default="", description="System action type.")    
-    tls_certificate: str | None = Field(max_length=35, default="", description="Custom TLS certificate for API request.")  # datasource: ['certificate.local.name']    
+    action_type: AutomationActionActionTypeEnum | None = Field(default=AutomationActionActionTypeEnum.ALERT, description="Action type.")    
+    system_action: Literal["reboot", "shutdown", "backup-config"] = Field(description="System action type.")    
+    tls_certificate: str | None = Field(max_length=35, default=None, description="Custom TLS certificate for API request.")  # datasource: ['certificate.local.name']    
     forticare_email: Literal["enable", "disable"] = Field(default="disable", description="Enable/disable use of your FortiCare email address as the email-to address.")    
-    email_to: list[EmailTo] = Field(default=None, description="Email addresses.")    
+    email_to: list[AutomationActionEmailTo] = Field(default_factory=list, description="Email addresses.")    
     email_from: str | None = Field(max_length=127, default=None, description="Email sender name.")    
     email_subject: str | None = Field(max_length=511, default=None, description="Email subject.")    
     minimum_interval: int | None = Field(ge=0, le=2592000, default=0, description="Limit execution to no more than once in this interval (in seconds).")    
@@ -119,24 +152,19 @@ class AutomationActionModel(BaseModel):
     azure_function_authorization: Literal["anonymous", "function", "admin"] = Field(default="anonymous", description="Azure function authorization level.")    
     azure_api_key: Any = Field(max_length=123, default=None, description="Azure function API key.")    
     alicloud_function_authorization: Literal["anonymous", "function"] = Field(default="anonymous", description="AliCloud function authorization type.")    
-    alicloud_access_key_id: str = Field(max_length=35, default="", description="AliCloud AccessKey ID.")    
+    alicloud_access_key_id: str = Field(max_length=35, description="AliCloud AccessKey ID.")    
     alicloud_access_key_secret: Any = Field(max_length=59, description="AliCloud AccessKey secret.")    
     message_type: Literal["text", "json", "form-data"] = Field(default="text", description="Message type.")    
-    message: str = Field(max_length=4095, default="Time: %%log.date%% %%log.time%%
-Device: %%log.devid%% (%%log.vd%%)
-Level: %%log.level%%
-Event: %%log.logdesc%%
-Raw log:
-%%log%%", description="Message content.")    
+    message: str = Field(max_length=4095, default="Time: %%log.date%% %%log.time%%\nDevice: %%log.devid%% (%%log.vd%%)\nLevel: %%log.level%%\nEvent: %%log.logdesc%%\nRaw log:\n%%log%%", description="Message content.")    
     replacement_message: Literal["enable", "disable"] = Field(default="disable", description="Enable/disable replacement message.")    
-    replacemsg_group: str | None = Field(max_length=35, default="", description="Replacement message group.")  # datasource: ['system.replacemsg-group.name']    
+    replacemsg_group: str | None = Field(max_length=35, default=None, description="Replacement message group.")  # datasource: ['system.replacemsg-group.name']    
     protocol: Literal["http", "https"] = Field(default="http", description="Request protocol.")    
-    method: MethodEnum = Field(default="post", description="Request method (POST, PUT, GET, PATCH or DELETE).")    
+    method: AutomationActionMethodEnum = Field(default=AutomationActionMethodEnum.POST, description="Request method (POST, PUT, GET, PATCH or DELETE).")    
     uri: str = Field(max_length=1023, description="Request API URI.")    
     http_body: str | None = Field(max_length=4095, default=None, description="Request body (if necessary). Should be serialized json string.")    
     port: int | None = Field(ge=1, le=65535, default=0, description="Protocol port.")    
-    http_headers: list[HttpHeaders] = Field(default=None, description="Request headers.")    
-    form_data: list[FormData] = Field(default=None, description="Form data parts for content type multipart/form-data.")    
+    http_headers: list[AutomationActionHttpHeaders] = Field(default_factory=list, description="Request headers.")    
+    form_data: list[AutomationActionFormData] = Field(default_factory=list, description="Form data parts for content type multipart/form-data.")    
     verify_host_cert: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable verification of the remote host certificate.")    
     script: str = Field(max_length=1023, description="CLI script.")    
     output_size: int | None = Field(ge=1, le=1024, default=10, description="Number of megabytes to limit script output to (1 - 1024, default = 10).")    
@@ -145,11 +173,11 @@ Raw log:
     output_interval: int | None = Field(ge=0, le=36000, default=0, description="Collect the outputs for each output-interval in seconds (0 = no intermediate output).")    
     file_only: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable the output in files only.")    
     execute_security_fabric: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable execution of CLI script on all or only one FortiGate unit in the Security Fabric.")    
-    accprofile: str | None = Field(max_length=35, default="", description="Access profile for CLI script action to access FortiGate features.")  # datasource: ['system.accprofile.name']    
+    accprofile: str | None = Field(max_length=35, default=None, description="Access profile for CLI script action to access FortiGate features.")  # datasource: ['system.accprofile.name']    
     regular_expression: str = Field(max_length=1023, description="Regular expression string.")    
     log_debug_print: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable logging debug print output from diagnose action.")    
-    security_tag: str = Field(max_length=255, default="", description="NSX security tag.")    
-    sdn_connector: list[SdnConnector] = Field(default=None, description="NSX SDN connector names.")    
+    security_tag: str = Field(max_length=255, description="NSX security tag.")    
+    sdn_connector: list[AutomationActionSdnConnector] = Field(default_factory=list, description="NSX SDN connector names.")    
     # ========================================================================
     # Custom Validators
     # ========================================================================
@@ -259,7 +287,7 @@ Raw log:
             ... else:
             ...     result = await fgt.api.cmdb.system.automation_action.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate scalar field
         value = getattr(self, "tls_certificate", None)
@@ -308,7 +336,7 @@ Raw log:
             ... else:
             ...     result = await fgt.api.cmdb.system.automation_action.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate scalar field
         value = getattr(self, "replacemsg_group", None)
@@ -317,7 +345,7 @@ Raw log:
         
         # Check all datasource endpoints
         found = False
-        if await client.api.cmdb.system.replacemsg-group.exists(value):
+        if await client.api.cmdb.system.replacemsg_group.exists(value):
             found = True
         
         if not found:
@@ -357,7 +385,7 @@ Raw log:
             ... else:
             ...     result = await fgt.api.cmdb.system.automation_action.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate scalar field
         value = getattr(self, "accprofile", None)
@@ -406,7 +434,7 @@ Raw log:
             ... else:
             ...     result = await fgt.api.cmdb.system.automation_action.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate child table items
         values = getattr(self, "sdn_connector", [])
@@ -424,7 +452,7 @@ Raw log:
             
             # Check all datasource endpoints
             found = False
-            if await client.api.cmdb.system.sdn-connector.exists(value):
+            if await client.api.cmdb.system.sdn_connector.exists(value):
                 found = True
             
             if not found:
@@ -481,5 +509,5 @@ __all__ = [
 # ============================================================================
 # Generated by hfortix generator v0.6.0
 # Schema: 1.7.0
-# Generated: 2026-01-17T05:32:17.800379Z
+# Generated: 2026-01-17T17:25:21.647137Z
 # ============================================================================
