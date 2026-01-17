@@ -133,7 +133,7 @@ class Status:
         ...
     
     # ================================================================
-    # GET OVERLOADS - Always returns FortiObject
+    # GET OVERLOADS - Always returns FortiObject (or ContentResponse for file endpoints)
     # Pylance matches overloads top-to-bottom, so these must come first!
     # ================================================================
     
@@ -142,7 +142,7 @@ class Status:
     def get(
         self,
         *,
-        ems_id: str | None = ...,
+        ems_id: int | None = ...,
         scope: Literal["vdom", "global"] | None = ...,
         filter: str | list[str] | None = ...,
         count: int | None = ...,

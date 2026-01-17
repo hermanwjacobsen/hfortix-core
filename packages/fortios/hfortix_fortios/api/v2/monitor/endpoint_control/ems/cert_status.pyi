@@ -116,7 +116,7 @@ class CertStatus:
         ...
     
     # ================================================================
-    # GET OVERLOADS - Always returns FortiObject
+    # GET OVERLOADS - Always returns FortiObject (or ContentResponse for file endpoints)
     # Pylance matches overloads top-to-bottom, so these must come first!
     # ================================================================
     
@@ -125,7 +125,7 @@ class CertStatus:
     def get(
         self,
         *,
-        ems_id: str,
+        ems_id: int,
         scope: Literal["vdom", "global"] | None = ...,
         with_cert: str | None = ...,
         filter: str | list[str] | None = ...,

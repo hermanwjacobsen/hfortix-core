@@ -106,7 +106,7 @@ class VlanProbe:
         ...
     
     # ================================================================
-    # GET OVERLOADS - Always returns FortiObject
+    # GET OVERLOADS - Always returns FortiObject (or ContentResponse for file endpoints)
     # Pylance matches overloads top-to-bottom, so these must come first!
     # ================================================================
     
@@ -115,7 +115,7 @@ class VlanProbe:
     def get(
         self,
         *,
-        ap_interface: str,
+        ap_interface: int,
         wtp: str,
         filter: str | list[str] | None = ...,
         count: int | None = ...,

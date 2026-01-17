@@ -127,7 +127,7 @@ class HistoricalStatistics:
         ...
     
     # ================================================================
-    # GET OVERLOADS - Always returns FortiObject
+    # GET OVERLOADS - Always returns FortiObject (or ContentResponse for file endpoints)
     # Pylance matches overloads top-to-bottom, so these must come first!
     # ================================================================
     
@@ -137,12 +137,12 @@ class HistoricalStatistics:
         self,
         *,
         filter: str | None = ...,
-        sessionid: str | None = ...,
+        sessionid: int | None = ...,
         device: Literal["disk", "fortianalyzer", "forticloud"] | None = ...,
         report_by: str | None = ...,
         sort_by: str | None = ...,
         chart_only: str | None = ...,
-        end: str | None = ...,
+        end: int | None = ...,
         ip_version: Literal["*ipv4", "ipv6", "ipboth"] | None = ...,
         filter: str | list[str] | None = ...,
         count: int | None = ...,

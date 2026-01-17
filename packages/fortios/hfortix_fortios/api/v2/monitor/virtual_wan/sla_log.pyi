@@ -131,7 +131,7 @@ class SlaLog:
         ...
     
     # ================================================================
-    # GET OVERLOADS - Always returns FortiObject
+    # GET OVERLOADS - Always returns FortiObject (or ContentResponse for file endpoints)
     # Pylance matches overloads top-to-bottom, so these must come first!
     # ================================================================
     
@@ -142,11 +142,11 @@ class SlaLog:
         *,
         sla: str | None = ...,
         interface: str | None = ...,
-        since: str | None = ...,
-        seconds: str | None = ...,
+        since: int | None = ...,
+        seconds: int | None = ...,
         latest: str | None = ...,
-        min_sample_interval: str | None = ...,
-        sampling_interval: str | None = ...,
+        min_sample_interval: int | None = ...,
+        sampling_interval: int | None = ...,
         skip_vpn_child: str | None = ...,
         include_sla_targets_met: str | None = ...,
         filter: str | list[str] | None = ...,

@@ -103,7 +103,7 @@ class CentralSnatMap:
         ...
     
     # ================================================================
-    # GET OVERLOADS - Always returns FortiObject
+    # GET OVERLOADS - Always returns FortiObject (or ContentResponse for file endpoints)
     # Pylance matches overloads top-to-bottom, so these must come first!
     # ================================================================
     
@@ -112,7 +112,7 @@ class CentralSnatMap:
     def get(
         self,
         *,
-        policyid: str | None = ...,
+        policyid: int | None = ...,
         ip_version: Literal["ipv4", "ipv6"] | None = ...,
         filter: str | list[str] | None = ...,
         count: int | None = ...,

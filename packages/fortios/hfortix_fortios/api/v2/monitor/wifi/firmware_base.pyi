@@ -103,7 +103,7 @@ class Firmware:
         ...
     
     # ================================================================
-    # GET OVERLOADS - Always returns FortiObject
+    # GET OVERLOADS - Always returns FortiObject (or ContentResponse for file endpoints)
     # Pylance matches overloads top-to-bottom, so these must come first!
     # ================================================================
     
@@ -112,7 +112,7 @@ class Firmware:
     def get(
         self,
         *,
-        timeout: str | None = ...,
+        timeout: int | None = ...,
         version: str | None = ...,
         filter: str | list[str] | None = ...,
         count: int | None = ...,

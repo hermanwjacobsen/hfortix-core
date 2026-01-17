@@ -127,7 +127,7 @@ class Answers:
         ...
     
     # ================================================================
-    # GET OVERLOADS - Always returns FortiObject
+    # GET OVERLOADS - Always returns FortiObject (or ContentResponse for file endpoints)
     # Pylance matches overloads top-to-bottom, so these must come first!
     # ================================================================
     
@@ -136,11 +136,11 @@ class Answers:
     def get(
         self,
         *,
-        page: str | None = ...,
-        pagesize: str | None = ...,
+        page: int | None = ...,
+        pagesize: int | None = ...,
         sortkey: str | None = ...,
         topics: str | None = ...,
-        limit: str | None = ...,
+        limit: int | None = ...,
         filter: str | list[str] | None = ...,
         count: int | None = ...,
         start: int | None = ...,

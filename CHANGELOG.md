@@ -5,6 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.5.96] - 2026-01-17
+
+### Fixed - **Regenerated All Endpoints with Integer Parameter Types**
+
+- ✅ **Full regeneration**: All monitor/service endpoints regenerated with correct integer query parameter types
+- ✅ **config_revision.info.get()**: Now accepts `config_id: int` instead of `str`
+- ✅ **All integer params fixed**: Any endpoint with integer query parameters now has correct types in stubs
+
 ## [0.5.95] - 2026-01-17
 
 ### Fixed - **ContentResponse Stub & Query Parameter Types**

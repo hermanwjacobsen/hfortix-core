@@ -103,7 +103,7 @@ class BlacklistedCertificates:
         ...
     
     # ================================================================
-    # GET OVERLOADS - Always returns FortiObject
+    # GET OVERLOADS - Always returns FortiObject (or ContentResponse for file endpoints)
     # Pylance matches overloads top-to-bottom, so these must come first!
     # ================================================================
     
@@ -112,8 +112,8 @@ class BlacklistedCertificates:
     def get(
         self,
         *,
-        start: str,
-        count: str,
+        start: int,
+        count: int,
         filter: str | list[str] | None = ...,
         count: int | None = ...,
         start: int | None = ...,

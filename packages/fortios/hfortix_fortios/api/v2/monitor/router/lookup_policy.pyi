@@ -114,7 +114,7 @@ class LookupPolicy:
         ...
     
     # ================================================================
-    # GET OVERLOADS - Always returns FortiObject
+    # GET OVERLOADS - Always returns FortiObject (or ContentResponse for file endpoints)
     # Pylance matches overloads top-to-bottom, so these must come first!
     # ================================================================
     
@@ -126,10 +126,10 @@ class LookupPolicy:
         ipv6: str | None = ...,
         destination: str,
         source: str | None = ...,
-        destination_port: str | None = ...,
-        source_port: str | None = ...,
+        destination_port: int | None = ...,
+        source_port: int | None = ...,
         interface_name: str | None = ...,
-        protocol_number: str | None = ...,
+        protocol_number: int | None = ...,
         filter: str | list[str] | None = ...,
         count: int | None = ...,
         start: int | None = ...,

@@ -107,7 +107,7 @@ class InterfaceLog:
         ...
     
     # ================================================================
-    # GET OVERLOADS - Always returns FortiObject
+    # GET OVERLOADS - Always returns FortiObject (or ContentResponse for file endpoints)
     # Pylance matches overloads top-to-bottom, so these must come first!
     # ================================================================
     
@@ -117,8 +117,8 @@ class InterfaceLog:
         self,
         *,
         interface: str | None = ...,
-        since: str | None = ...,
-        seconds: str | None = ...,
+        since: int | None = ...,
+        seconds: int | None = ...,
         filter: str | list[str] | None = ...,
         count: int | None = ...,
         start: int | None = ...,

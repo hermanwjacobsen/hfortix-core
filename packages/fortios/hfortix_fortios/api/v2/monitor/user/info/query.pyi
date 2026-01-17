@@ -113,7 +113,7 @@ class Query:
         ...
     
     # ================================================================
-    # GET OVERLOADS - Always returns FortiObject
+    # GET OVERLOADS - Always returns FortiObject (or ContentResponse for file endpoints)
     # Pylance matches overloads top-to-bottom, so these must come first!
     # ================================================================
     
@@ -122,11 +122,11 @@ class Query:
     def get(
         self,
         *,
-        timestamp_from: str | None = ...,
-        timestamp_to: str | None = ...,
+        timestamp_from: int | None = ...,
+        timestamp_to: int | None = ...,
         filters: Literal["exact", "contains", "greaterThanEqualTo", "lessThanEqualTo"] | None = ...,
         query_type: Literal["latest", "unified_latest", "unified_history"] | None = ...,
-        query_id: str | None = ...,
+        query_id: int | None = ...,
         cache_query: str | None = ...,
         key_only: str | None = ...,
         filter_logic: Literal["and", "or"] | None = ...,

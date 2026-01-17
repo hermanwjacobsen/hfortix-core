@@ -111,7 +111,7 @@ class InternetServiceMatch:
         ...
     
     # ================================================================
-    # GET OVERLOADS - Always returns FortiObject
+    # GET OVERLOADS - Always returns FortiObject (or ContentResponse for file endpoints)
     # Pylance matches overloads top-to-bottom, so these must come first!
     # ================================================================
     
@@ -123,7 +123,7 @@ class InternetServiceMatch:
         ip: str,
         is_ipv6: str | None = ...,
         ipv4_mask: str | None = ...,
-        ipv6_prefix: str | None = ...,
+        ipv6_prefix: int | None = ...,
         filter: str | list[str] | None = ...,
         count: int | None = ...,
         start: int | None = ...,

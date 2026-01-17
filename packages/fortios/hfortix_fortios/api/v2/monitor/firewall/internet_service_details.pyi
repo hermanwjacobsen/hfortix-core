@@ -119,7 +119,7 @@ class InternetServiceDetails:
         ...
     
     # ================================================================
-    # GET OVERLOADS - Always returns FortiObject
+    # GET OVERLOADS - Always returns FortiObject (or ContentResponse for file endpoints)
     # Pylance matches overloads top-to-bottom, so these must come first!
     # ================================================================
     
@@ -128,10 +128,10 @@ class InternetServiceDetails:
     def get(
         self,
         *,
-        id: str,
-        country_id: str | None = ...,
-        region_id: str | None = ...,
-        city_id: str | None = ...,
+        id: int,
+        country_id: int | None = ...,
+        region_id: int | None = ...,
+        city_id: int | None = ...,
         summary_only: str | None = ...,
         ipv6_only: str | None = ...,
         filter: str | list[str] | None = ...,

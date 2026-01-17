@@ -119,7 +119,7 @@ class Stats:
         ...
     
     # ================================================================
-    # GET OVERLOADS - Always returns FortiObject
+    # GET OVERLOADS - Always returns FortiObject (or ContentResponse for file endpoints)
     # Pylance matches overloads top-to-bottom, so these must come first!
     # ================================================================
     
@@ -130,8 +130,8 @@ class Stats:
         *,
         stat_query_type: Literal["device", "fortiswitch_client", "forticlient"] | None = ...,
         stat_key: Literal["os_name", "hardware_type", "detected_interface", "is_online", "max_vuln_level", "fortiswitch_id", "fortiswitch_port_name"],
-        timestamp_from: str | None = ...,
-        timestamp_to: str,
+        timestamp_from: int | None = ...,
+        timestamp_to: int,
         filters: Literal["exact", "contains"] | None = ...,
         filter_logic: Literal["and", "or"] | None = ...,
         filter: str | list[str] | None = ...,

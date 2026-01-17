@@ -107,7 +107,7 @@ class Download:
         ...
     
     # ================================================================
-    # GET OVERLOADS - Always returns FortiObject
+    # GET OVERLOADS - Always returns FortiObject (or ContentResponse for file endpoints)
     # Pylance matches overloads top-to-bottom, so these must come first!
     # ================================================================
     
@@ -116,7 +116,7 @@ class Download:
     def get(
         self,
         *,
-        mkey: str,
+        mkey: int,
         srcip: str,
         dstip: str,
         filter: str | list[str] | None = ...,
