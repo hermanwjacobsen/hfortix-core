@@ -26,12 +26,66 @@ from hfortix_fortios.models import (
 # TypedDict Payloads
 # ================================================================
 
+class LocationAddresscivicDict(TypedDict, total=False):
+    """Nested object type for address-civic field."""
+    additional: str
+    additional_code: str
+    block: str
+    branch_road: str
+    building: str
+    city: str
+    city_division: str
+    country: str
+    country_subdivision: str
+    county: str
+    direction: str
+    floor: str
+    landmark: str
+    language: str
+    name: str
+    number: str
+    number_suffix: str
+    place_type: str
+    post_office_box: str
+    postal_community: str
+    primary_road: str
+    road_section: str
+    room: str
+    script: str
+    seat: str
+    street: str
+    street_name_post_mod: str
+    street_name_pre_mod: str
+    street_suffix: str
+    sub_branch_road: str
+    trailing_str_suffix: str
+    unit: str
+    zip: str
+    parent_key: str
+
+
+class LocationCoordinatesDict(TypedDict, total=False):
+    """Nested object type for coordinates field."""
+    altitude: str
+    altitude_unit: Literal["m", "f"]
+    datum: Literal["WGS84", "NAD83", "NAD83/MLLW"]
+    latitude: str
+    longitude: str
+    parent_key: str
+
+
+class LocationElinnumberDict(TypedDict, total=False):
+    """Nested object type for elin-number field."""
+    elin_num: str
+    parent_key: str
+
+
 class LocationPayload(TypedDict, total=False):
     """Payload type for Location operations."""
     name: str
-    address_civic: str
-    coordinates: str
-    elin_number: str
+    address_civic: LocationAddresscivicDict
+    coordinates: LocationCoordinatesDict
+    elin_number: LocationElinnumberDict
 
 
 # ================================================================
@@ -41,9 +95,9 @@ class LocationPayload(TypedDict, total=False):
 class LocationResponse(TypedDict, total=False):
     """Response type for Location - use with .dict property for typed dict access."""
     name: str
-    address_civic: str
-    coordinates: str
-    elin_number: str
+    address_civic: LocationAddresscivicDict
+    coordinates: LocationCoordinatesDict
+    elin_number: LocationElinnumberDict
 
 
 # ================================================================
@@ -54,9 +108,9 @@ class LocationResponse(TypedDict, total=False):
 class LocationObject(FortiObject):
     """Typed FortiObject for Location with field access."""
     name: str
-    address_civic: str
-    coordinates: str
-    elin_number: str
+    address_civic: LocationAddresscivicDict
+    coordinates: LocationCoordinatesDict
+    elin_number: LocationElinnumberDict
 
 
 # ================================================================
@@ -136,9 +190,9 @@ class Location:
         self,
         payload_dict: LocationPayload | None = ...,
         name: str | None = ...,
-        address_civic: str | None = ...,
-        coordinates: str | None = ...,
-        elin_number: str | None = ...,
+        address_civic: LocationAddresscivicDict | None = ...,
+        coordinates: LocationCoordinatesDict | None = ...,
+        elin_number: LocationElinnumberDict | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -152,9 +206,9 @@ class Location:
         self,
         payload_dict: LocationPayload | None = ...,
         name: str | None = ...,
-        address_civic: str | None = ...,
-        coordinates: str | None = ...,
-        elin_number: str | None = ...,
+        address_civic: LocationAddresscivicDict | None = ...,
+        coordinates: LocationCoordinatesDict | None = ...,
+        elin_number: LocationElinnumberDict | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -186,9 +240,9 @@ class Location:
         self,
         payload_dict: LocationPayload | None = ...,
         name: str | None = ...,
-        address_civic: str | None = ...,
-        coordinates: str | None = ...,
-        elin_number: str | None = ...,
+        address_civic: LocationAddresscivicDict | None = ...,
+        coordinates: LocationCoordinatesDict | None = ...,
+        elin_number: LocationElinnumberDict | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,

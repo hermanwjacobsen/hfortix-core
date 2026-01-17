@@ -26,6 +26,64 @@ from hfortix_fortios.models import (
 # TypedDict Payloads
 # ================================================================
 
+class AccprofileNetgrppermissionDict(TypedDict, total=False):
+    """Nested object type for netgrp-permission field."""
+    cfg: Literal["none", "read", "read-write"]
+    packet_capture: Literal["none", "read", "read-write"]
+    route_cfg: Literal["none", "read", "read-write"]
+
+
+class AccprofileSysgrppermissionDict(TypedDict, total=False):
+    """Nested object type for sysgrp-permission field."""
+    admin: Literal["none", "read", "read-write"]
+    upd: Literal["none", "read", "read-write"]
+    cfg: Literal["none", "read", "read-write"]
+    mnt: Literal["none", "read", "read-write"]
+
+
+class AccprofileFwgrppermissionDict(TypedDict, total=False):
+    """Nested object type for fwgrp-permission field."""
+    policy: Literal["none", "read", "read-write"]
+    address: Literal["none", "read", "read-write"]
+    service: Literal["none", "read", "read-write"]
+    schedule: Literal["none", "read", "read-write"]
+    others: Literal["none", "read", "read-write"]
+
+
+class AccprofileLoggrppermissionDict(TypedDict, total=False):
+    """Nested object type for loggrp-permission field."""
+    config: Literal["none", "read", "read-write"]
+    data_access: Literal["none", "read", "read-write"]
+    report_access: Literal["none", "read", "read-write"]
+    threat_weight: Literal["none", "read", "read-write"]
+
+
+class AccprofileUtmgrppermissionDict(TypedDict, total=False):
+    """Nested object type for utmgrp-permission field."""
+    antivirus: Literal["none", "read", "read-write"]
+    ips: Literal["none", "read", "read-write"]
+    webfilter: Literal["none", "read", "read-write"]
+    emailfilter: Literal["none", "read", "read-write"]
+    dlp: Literal["none", "read", "read-write"]
+    file_filter: Literal["none", "read", "read-write"]
+    application_control: Literal["none", "read", "read-write"]
+    icap: Literal["none", "read", "read-write"]
+    voip: Literal["none", "read", "read-write"]
+    waf: Literal["none", "read", "read-write"]
+    dnsfilter: Literal["none", "read", "read-write"]
+    endpoint_control: Literal["none", "read", "read-write"]
+    videofilter: Literal["none", "read", "read-write"]
+    virtual_patch: Literal["none", "read", "read-write"]
+    casb: Literal["none", "read", "read-write"]
+    telemetry: Literal["none", "read", "read-write"]
+
+
+class AccprofileSecfabgrppermissionDict(TypedDict, total=False):
+    """Nested object type for secfabgrp-permission field."""
+    csfsys: Literal["none", "read", "read-write"]
+    csffoo: Literal["none", "read", "read-write"]
+
+
 class AccprofilePayload(TypedDict, total=False):
     """Payload type for Accprofile operations."""
     name: str
@@ -42,12 +100,12 @@ class AccprofilePayload(TypedDict, total=False):
     utmgrp: Literal["none", "read", "read-write", "custom"]
     wanoptgrp: Literal["none", "read", "read-write"]
     wifi: Literal["none", "read", "read-write"]
-    netgrp_permission: str
-    sysgrp_permission: str
-    fwgrp_permission: str
-    loggrp_permission: str
-    utmgrp_permission: str
-    secfabgrp_permission: str
+    netgrp_permission: AccprofileNetgrppermissionDict
+    sysgrp_permission: AccprofileSysgrppermissionDict
+    fwgrp_permission: AccprofileFwgrppermissionDict
+    loggrp_permission: AccprofileLoggrppermissionDict
+    utmgrp_permission: AccprofileUtmgrppermissionDict
+    secfabgrp_permission: AccprofileSecfabgrppermissionDict
     admintimeout_override: Literal["enable", "disable"]
     admintimeout: int
     cli_diagnose: Literal["enable", "disable"]
@@ -79,12 +137,12 @@ class AccprofileResponse(TypedDict, total=False):
     utmgrp: Literal["none", "read", "read-write", "custom"]
     wanoptgrp: Literal["none", "read", "read-write"]
     wifi: Literal["none", "read", "read-write"]
-    netgrp_permission: str
-    sysgrp_permission: str
-    fwgrp_permission: str
-    loggrp_permission: str
-    utmgrp_permission: str
-    secfabgrp_permission: str
+    netgrp_permission: AccprofileNetgrppermissionDict
+    sysgrp_permission: AccprofileSysgrppermissionDict
+    fwgrp_permission: AccprofileFwgrppermissionDict
+    loggrp_permission: AccprofileLoggrppermissionDict
+    utmgrp_permission: AccprofileUtmgrppermissionDict
+    secfabgrp_permission: AccprofileSecfabgrppermissionDict
     admintimeout_override: Literal["enable", "disable"]
     admintimeout: int
     cli_diagnose: Literal["enable", "disable"]
@@ -117,12 +175,12 @@ class AccprofileObject(FortiObject):
     utmgrp: Literal["none", "read", "read-write", "custom"]
     wanoptgrp: Literal["none", "read", "read-write"]
     wifi: Literal["none", "read", "read-write"]
-    netgrp_permission: str
-    sysgrp_permission: str
-    fwgrp_permission: str
-    loggrp_permission: str
-    utmgrp_permission: str
-    secfabgrp_permission: str
+    netgrp_permission: AccprofileNetgrppermissionDict
+    sysgrp_permission: AccprofileSysgrppermissionDict
+    fwgrp_permission: AccprofileFwgrppermissionDict
+    loggrp_permission: AccprofileLoggrppermissionDict
+    utmgrp_permission: AccprofileUtmgrppermissionDict
+    secfabgrp_permission: AccprofileSecfabgrppermissionDict
     admintimeout_override: Literal["enable", "disable"]
     admintimeout: int
     cli_diagnose: Literal["enable", "disable"]
@@ -221,12 +279,12 @@ class Accprofile:
         utmgrp: Literal["none", "read", "read-write", "custom"] | None = ...,
         wanoptgrp: Literal["none", "read", "read-write"] | None = ...,
         wifi: Literal["none", "read", "read-write"] | None = ...,
-        netgrp_permission: str | None = ...,
-        sysgrp_permission: str | None = ...,
-        fwgrp_permission: str | None = ...,
-        loggrp_permission: str | None = ...,
-        utmgrp_permission: str | None = ...,
-        secfabgrp_permission: str | None = ...,
+        netgrp_permission: AccprofileNetgrppermissionDict | None = ...,
+        sysgrp_permission: AccprofileSysgrppermissionDict | None = ...,
+        fwgrp_permission: AccprofileFwgrppermissionDict | None = ...,
+        loggrp_permission: AccprofileLoggrppermissionDict | None = ...,
+        utmgrp_permission: AccprofileUtmgrppermissionDict | None = ...,
+        secfabgrp_permission: AccprofileSecfabgrppermissionDict | None = ...,
         admintimeout_override: Literal["enable", "disable"] | None = ...,
         admintimeout: int | None = ...,
         cli_diagnose: Literal["enable", "disable"] | None = ...,
@@ -261,12 +319,12 @@ class Accprofile:
         utmgrp: Literal["none", "read", "read-write", "custom"] | None = ...,
         wanoptgrp: Literal["none", "read", "read-write"] | None = ...,
         wifi: Literal["none", "read", "read-write"] | None = ...,
-        netgrp_permission: str | None = ...,
-        sysgrp_permission: str | None = ...,
-        fwgrp_permission: str | None = ...,
-        loggrp_permission: str | None = ...,
-        utmgrp_permission: str | None = ...,
-        secfabgrp_permission: str | None = ...,
+        netgrp_permission: AccprofileNetgrppermissionDict | None = ...,
+        sysgrp_permission: AccprofileSysgrppermissionDict | None = ...,
+        fwgrp_permission: AccprofileFwgrppermissionDict | None = ...,
+        loggrp_permission: AccprofileLoggrppermissionDict | None = ...,
+        utmgrp_permission: AccprofileUtmgrppermissionDict | None = ...,
+        secfabgrp_permission: AccprofileSecfabgrppermissionDict | None = ...,
         admintimeout_override: Literal["enable", "disable"] | None = ...,
         admintimeout: int | None = ...,
         cli_diagnose: Literal["enable", "disable"] | None = ...,
@@ -317,12 +375,12 @@ class Accprofile:
         utmgrp: Literal["none", "read", "read-write", "custom"] | None = ...,
         wanoptgrp: Literal["none", "read", "read-write"] | None = ...,
         wifi: Literal["none", "read", "read-write"] | None = ...,
-        netgrp_permission: str | None = ...,
-        sysgrp_permission: str | None = ...,
-        fwgrp_permission: str | None = ...,
-        loggrp_permission: str | None = ...,
-        utmgrp_permission: str | None = ...,
-        secfabgrp_permission: str | None = ...,
+        netgrp_permission: AccprofileNetgrppermissionDict | None = ...,
+        sysgrp_permission: AccprofileSysgrppermissionDict | None = ...,
+        fwgrp_permission: AccprofileFwgrppermissionDict | None = ...,
+        loggrp_permission: AccprofileLoggrppermissionDict | None = ...,
+        utmgrp_permission: AccprofileUtmgrppermissionDict | None = ...,
+        secfabgrp_permission: AccprofileSecfabgrppermissionDict | None = ...,
         admintimeout_override: Literal["enable", "disable"] | None = ...,
         admintimeout: int | None = ...,
         cli_diagnose: Literal["enable", "disable"] | None = ...,

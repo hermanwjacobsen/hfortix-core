@@ -26,6 +26,143 @@ from hfortix_fortios.models import (
 # TypedDict Payloads
 # ================================================================
 
+class SslSshProfileSslDict(TypedDict, total=False):
+    """Nested object type for ssl field."""
+    inspect_all: Literal["disable", "certificate-inspection", "deep-inspection"]
+    client_certificate: Literal["bypass", "inspect", "block"]
+    unsupported_ssl_version: Literal["allow", "block"]
+    unsupported_ssl_cipher: Literal["allow", "block"]
+    unsupported_ssl_negotiation: Literal["allow", "block"]
+    expired_server_cert: Literal["allow", "block", "ignore"]
+    revoked_server_cert: Literal["allow", "block", "ignore"]
+    untrusted_server_cert: Literal["allow", "block", "ignore"]
+    cert_validation_timeout: Literal["allow", "block", "ignore"]
+    cert_validation_failure: Literal["allow", "block", "ignore"]
+    sni_server_cert_check: Literal["enable", "strict", "disable"]
+    cert_probe_failure: Literal["allow", "block"]
+    encrypted_client_hello: Literal["allow", "block"]
+    min_allowed_ssl_version: Literal["ssl-3.0", "tls-1.0", "tls-1.1", "tls-1.2", "tls-1.3"]
+
+
+class SslSshProfileHttpsDict(TypedDict, total=False):
+    """Nested object type for https field."""
+    ports: int | list[int]
+    status: Literal["disable", "certificate-inspection", "deep-inspection"]
+    quic: Literal["inspect", "bypass", "block"]
+    udp_not_quic: Literal["allow", "block"]
+    proxy_after_tcp_handshake: Literal["enable", "disable"]
+    client_certificate: Literal["bypass", "inspect", "block"]
+    unsupported_ssl_version: Literal["allow", "block"]
+    unsupported_ssl_cipher: Literal["allow", "block"]
+    unsupported_ssl_negotiation: Literal["allow", "block"]
+    expired_server_cert: Literal["allow", "block", "ignore"]
+    revoked_server_cert: Literal["allow", "block", "ignore"]
+    untrusted_server_cert: Literal["allow", "block", "ignore"]
+    cert_validation_timeout: Literal["allow", "block", "ignore"]
+    cert_validation_failure: Literal["allow", "block", "ignore"]
+    sni_server_cert_check: Literal["enable", "strict", "disable"]
+    cert_probe_failure: Literal["allow", "block"]
+    encrypted_client_hello: Literal["allow", "block"]
+    min_allowed_ssl_version: Literal["ssl-3.0", "tls-1.0", "tls-1.1", "tls-1.2", "tls-1.3"]
+
+
+class SslSshProfileFtpsDict(TypedDict, total=False):
+    """Nested object type for ftps field."""
+    ports: int | list[int]
+    status: Literal["disable", "deep-inspection"]
+    client_certificate: Literal["bypass", "inspect", "block"]
+    unsupported_ssl_version: Literal["allow", "block"]
+    unsupported_ssl_cipher: Literal["allow", "block"]
+    unsupported_ssl_negotiation: Literal["allow", "block"]
+    expired_server_cert: Literal["allow", "block", "ignore"]
+    revoked_server_cert: Literal["allow", "block", "ignore"]
+    untrusted_server_cert: Literal["allow", "block", "ignore"]
+    cert_validation_timeout: Literal["allow", "block", "ignore"]
+    cert_validation_failure: Literal["allow", "block", "ignore"]
+    sni_server_cert_check: Literal["enable", "strict", "disable"]
+    min_allowed_ssl_version: Literal["ssl-3.0", "tls-1.0", "tls-1.1", "tls-1.2", "tls-1.3"]
+
+
+class SslSshProfileImapsDict(TypedDict, total=False):
+    """Nested object type for imaps field."""
+    ports: int | list[int]
+    status: Literal["disable", "deep-inspection"]
+    proxy_after_tcp_handshake: Literal["enable", "disable"]
+    client_certificate: Literal["bypass", "inspect", "block"]
+    unsupported_ssl_version: Literal["allow", "block"]
+    unsupported_ssl_cipher: Literal["allow", "block"]
+    unsupported_ssl_negotiation: Literal["allow", "block"]
+    expired_server_cert: Literal["allow", "block", "ignore"]
+    revoked_server_cert: Literal["allow", "block", "ignore"]
+    untrusted_server_cert: Literal["allow", "block", "ignore"]
+    cert_validation_timeout: Literal["allow", "block", "ignore"]
+    cert_validation_failure: Literal["allow", "block", "ignore"]
+    sni_server_cert_check: Literal["enable", "strict", "disable"]
+
+
+class SslSshProfilePop3sDict(TypedDict, total=False):
+    """Nested object type for pop3s field."""
+    ports: int | list[int]
+    status: Literal["disable", "deep-inspection"]
+    proxy_after_tcp_handshake: Literal["enable", "disable"]
+    client_certificate: Literal["bypass", "inspect", "block"]
+    unsupported_ssl_version: Literal["allow", "block"]
+    unsupported_ssl_cipher: Literal["allow", "block"]
+    unsupported_ssl_negotiation: Literal["allow", "block"]
+    expired_server_cert: Literal["allow", "block", "ignore"]
+    revoked_server_cert: Literal["allow", "block", "ignore"]
+    untrusted_server_cert: Literal["allow", "block", "ignore"]
+    cert_validation_timeout: Literal["allow", "block", "ignore"]
+    cert_validation_failure: Literal["allow", "block", "ignore"]
+    sni_server_cert_check: Literal["enable", "strict", "disable"]
+
+
+class SslSshProfileSmtpsDict(TypedDict, total=False):
+    """Nested object type for smtps field."""
+    ports: int | list[int]
+    status: Literal["disable", "deep-inspection"]
+    proxy_after_tcp_handshake: Literal["enable", "disable"]
+    client_certificate: Literal["bypass", "inspect", "block"]
+    unsupported_ssl_version: Literal["allow", "block"]
+    unsupported_ssl_cipher: Literal["allow", "block"]
+    unsupported_ssl_negotiation: Literal["allow", "block"]
+    expired_server_cert: Literal["allow", "block", "ignore"]
+    revoked_server_cert: Literal["allow", "block", "ignore"]
+    untrusted_server_cert: Literal["allow", "block", "ignore"]
+    cert_validation_timeout: Literal["allow", "block", "ignore"]
+    cert_validation_failure: Literal["allow", "block", "ignore"]
+    sni_server_cert_check: Literal["enable", "strict", "disable"]
+
+
+class SslSshProfileSshDict(TypedDict, total=False):
+    """Nested object type for ssh field."""
+    ports: int | list[int]
+    status: Literal["disable", "deep-inspection"]
+    inspect_all: Literal["disable", "deep-inspection"]
+    proxy_after_tcp_handshake: Literal["enable", "disable"]
+    unsupported_version: Literal["bypass", "block"]
+    ssh_tun_policy_check: Literal["disable", "enable"]
+    ssh_algorithm: Literal["compatible", "high-encryption"]
+
+
+class SslSshProfileDotDict(TypedDict, total=False):
+    """Nested object type for dot field."""
+    status: Literal["disable", "deep-inspection"]
+    quic: Literal["inspect", "bypass", "block"]
+    udp_not_quic: Literal["allow", "block"]
+    proxy_after_tcp_handshake: Literal["enable", "disable"]
+    client_certificate: Literal["bypass", "inspect", "block"]
+    unsupported_ssl_version: Literal["allow", "block"]
+    unsupported_ssl_cipher: Literal["allow", "block"]
+    unsupported_ssl_negotiation: Literal["allow", "block"]
+    expired_server_cert: Literal["allow", "block", "ignore"]
+    revoked_server_cert: Literal["allow", "block", "ignore"]
+    untrusted_server_cert: Literal["allow", "block", "ignore"]
+    cert_validation_timeout: Literal["allow", "block", "ignore"]
+    cert_validation_failure: Literal["allow", "block", "ignore"]
+    sni_server_cert_check: Literal["enable", "strict", "disable"]
+
+
 class SslSshProfileSslexemptItem:
     """Nested item for ssl-exempt field - supports attribute access."""
     id: int
@@ -64,14 +201,14 @@ class SslSshProfilePayload(TypedDict, total=False):
     """Payload type for SslSshProfile operations."""
     name: str
     comment: str
-    ssl: str
-    https: str
-    ftps: str
-    imaps: str
-    pop3s: str
-    smtps: str
-    ssh: str
-    dot: str
+    ssl: SslSshProfileSslDict
+    https: SslSshProfileHttpsDict
+    ftps: SslSshProfileFtpsDict
+    imaps: SslSshProfileImapsDict
+    pop3s: SslSshProfilePop3sDict
+    smtps: SslSshProfileSmtpsDict
+    ssh: SslSshProfileSshDict
+    dot: SslSshProfileDotDict
     allowlist: Literal["enable", "disable"]
     block_blocklisted_certificates: Literal["disable", "enable"]
     ssl_exempt: str | list[str] | list[dict[str, Any]] | list[SslSshProfileSslexemptItem]
@@ -101,14 +238,14 @@ class SslSshProfileResponse(TypedDict, total=False):
     """Response type for SslSshProfile - use with .dict property for typed dict access."""
     name: str
     comment: str
-    ssl: str
-    https: str
-    ftps: str
-    imaps: str
-    pop3s: str
-    smtps: str
-    ssh: str
-    dot: str
+    ssl: SslSshProfileSslDict
+    https: SslSshProfileHttpsDict
+    ftps: SslSshProfileFtpsDict
+    imaps: SslSshProfileImapsDict
+    pop3s: SslSshProfilePop3sDict
+    smtps: SslSshProfileSmtpsDict
+    ssh: SslSshProfileSshDict
+    dot: SslSshProfileDotDict
     allowlist: Literal["enable", "disable"]
     block_blocklisted_certificates: Literal["disable", "enable"]
     ssl_exempt: list[SslSshProfileSslexemptItem]
@@ -139,14 +276,14 @@ class SslSshProfileObject(FortiObject):
     """Typed FortiObject for SslSshProfile with field access."""
     name: str
     comment: str
-    ssl: str
-    https: str
-    ftps: str
-    imaps: str
-    pop3s: str
-    smtps: str
-    ssh: str
-    dot: str
+    ssl: SslSshProfileSslDict
+    https: SslSshProfileHttpsDict
+    ftps: SslSshProfileFtpsDict
+    imaps: SslSshProfileImapsDict
+    pop3s: SslSshProfilePop3sDict
+    smtps: SslSshProfileSmtpsDict
+    ssh: SslSshProfileSshDict
+    dot: SslSshProfileDotDict
     allowlist: Literal["enable", "disable"]
     block_blocklisted_certificates: Literal["disable", "enable"]
     ssl_exempt: list[SslSshProfileSslexemptItem]
@@ -246,14 +383,14 @@ class SslSshProfile:
         payload_dict: SslSshProfilePayload | None = ...,
         name: str | None = ...,
         comment: str | None = ...,
-        ssl: str | None = ...,
-        https: str | None = ...,
-        ftps: str | None = ...,
-        imaps: str | None = ...,
-        pop3s: str | None = ...,
-        smtps: str | None = ...,
-        ssh: str | None = ...,
-        dot: str | None = ...,
+        ssl: SslSshProfileSslDict | None = ...,
+        https: SslSshProfileHttpsDict | None = ...,
+        ftps: SslSshProfileFtpsDict | None = ...,
+        imaps: SslSshProfileImapsDict | None = ...,
+        pop3s: SslSshProfilePop3sDict | None = ...,
+        smtps: SslSshProfileSmtpsDict | None = ...,
+        ssh: SslSshProfileSshDict | None = ...,
+        dot: SslSshProfileDotDict | None = ...,
         allowlist: Literal["enable", "disable"] | None = ...,
         block_blocklisted_certificates: Literal["disable", "enable"] | None = ...,
         ssl_exempt: str | list[str] | list[dict[str, Any]] | list[SslSshProfileSslexemptItem] | None = ...,
@@ -287,14 +424,14 @@ class SslSshProfile:
         payload_dict: SslSshProfilePayload | None = ...,
         name: str | None = ...,
         comment: str | None = ...,
-        ssl: str | None = ...,
-        https: str | None = ...,
-        ftps: str | None = ...,
-        imaps: str | None = ...,
-        pop3s: str | None = ...,
-        smtps: str | None = ...,
-        ssh: str | None = ...,
-        dot: str | None = ...,
+        ssl: SslSshProfileSslDict | None = ...,
+        https: SslSshProfileHttpsDict | None = ...,
+        ftps: SslSshProfileFtpsDict | None = ...,
+        imaps: SslSshProfileImapsDict | None = ...,
+        pop3s: SslSshProfilePop3sDict | None = ...,
+        smtps: SslSshProfileSmtpsDict | None = ...,
+        ssh: SslSshProfileSshDict | None = ...,
+        dot: SslSshProfileDotDict | None = ...,
         allowlist: Literal["enable", "disable"] | None = ...,
         block_blocklisted_certificates: Literal["disable", "enable"] | None = ...,
         ssl_exempt: str | list[str] | list[dict[str, Any]] | list[SslSshProfileSslexemptItem] | None = ...,
@@ -346,14 +483,14 @@ class SslSshProfile:
         payload_dict: SslSshProfilePayload | None = ...,
         name: str | None = ...,
         comment: str | None = ...,
-        ssl: str | None = ...,
-        https: str | None = ...,
-        ftps: str | None = ...,
-        imaps: str | None = ...,
-        pop3s: str | None = ...,
-        smtps: str | None = ...,
-        ssh: str | None = ...,
-        dot: str | None = ...,
+        ssl: SslSshProfileSslDict | None = ...,
+        https: SslSshProfileHttpsDict | None = ...,
+        ftps: SslSshProfileFtpsDict | None = ...,
+        imaps: SslSshProfileImapsDict | None = ...,
+        pop3s: SslSshProfilePop3sDict | None = ...,
+        smtps: SslSshProfileSmtpsDict | None = ...,
+        ssh: SslSshProfileSshDict | None = ...,
+        dot: SslSshProfileDotDict | None = ...,
         allowlist: Literal["enable", "disable"] | None = ...,
         block_blocklisted_certificates: Literal["disable", "enable"] | None = ...,
         ssl_exempt: str | list[str] | list[dict[str, Any]] | list[SslSshProfileSslexemptItem] | None = ...,

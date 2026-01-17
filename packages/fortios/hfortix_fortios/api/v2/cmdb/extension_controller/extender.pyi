@@ -26,6 +26,20 @@ from hfortix_fortios.models import (
 # TypedDict Payloads
 # ================================================================
 
+class ExtenderWanextensionDict(TypedDict, total=False):
+    """Nested object type for wan-extension field."""
+    modem1_extension: str
+    modem2_extension: str
+    modem1_pdn1_interface: str
+    modem1_pdn2_interface: str
+    modem1_pdn3_interface: str
+    modem1_pdn4_interface: str
+    modem2_pdn1_interface: str
+    modem2_pdn2_interface: str
+    modem2_pdn3_interface: str
+    modem2_pdn4_interface: str
+
+
 class ExtenderPayload(TypedDict, total=False):
     """Payload type for Extender operations."""
     name: str
@@ -45,7 +59,7 @@ class ExtenderPayload(TypedDict, total=False):
     override_enforce_bandwidth: Literal["enable", "disable"]
     enforce_bandwidth: Literal["enable", "disable"]
     bandwidth_limit: int
-    wan_extension: str
+    wan_extension: ExtenderWanextensionDict
     firmware_provision_latest: Literal["disable", "once"]
 
 
@@ -72,7 +86,7 @@ class ExtenderResponse(TypedDict, total=False):
     override_enforce_bandwidth: Literal["enable", "disable"]
     enforce_bandwidth: Literal["enable", "disable"]
     bandwidth_limit: int
-    wan_extension: str
+    wan_extension: ExtenderWanextensionDict
     firmware_provision_latest: Literal["disable", "once"]
 
 
@@ -99,7 +113,7 @@ class ExtenderObject(FortiObject):
     override_enforce_bandwidth: Literal["enable", "disable"]
     enforce_bandwidth: Literal["enable", "disable"]
     bandwidth_limit: int
-    wan_extension: str
+    wan_extension: ExtenderWanextensionDict
     firmware_provision_latest: Literal["disable", "once"]
 
 
@@ -195,7 +209,7 @@ class Extender:
         override_enforce_bandwidth: Literal["enable", "disable"] | None = ...,
         enforce_bandwidth: Literal["enable", "disable"] | None = ...,
         bandwidth_limit: int | None = ...,
-        wan_extension: str | None = ...,
+        wan_extension: ExtenderWanextensionDict | None = ...,
         firmware_provision_latest: Literal["disable", "once"] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
@@ -225,7 +239,7 @@ class Extender:
         override_enforce_bandwidth: Literal["enable", "disable"] | None = ...,
         enforce_bandwidth: Literal["enable", "disable"] | None = ...,
         bandwidth_limit: int | None = ...,
-        wan_extension: str | None = ...,
+        wan_extension: ExtenderWanextensionDict | None = ...,
         firmware_provision_latest: Literal["disable", "once"] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
@@ -273,7 +287,7 @@ class Extender:
         override_enforce_bandwidth: Literal["enable", "disable"] | None = ...,
         enforce_bandwidth: Literal["enable", "disable"] | None = ...,
         bandwidth_limit: int | None = ...,
-        wan_extension: str | None = ...,
+        wan_extension: ExtenderWanextensionDict | None = ...,
         firmware_provision_latest: Literal["disable", "once"] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,

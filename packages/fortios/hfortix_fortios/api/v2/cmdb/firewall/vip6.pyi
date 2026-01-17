@@ -31,6 +31,18 @@ class Vip6SrcfilterItem:
     range: str
 
 
+class Vip6QuicDict(TypedDict, total=False):
+    """Nested object type for quic field."""
+    max_idle_timeout: int
+    max_udp_payload_size: int
+    active_connection_id_limit: int
+    ack_delay_exponent: int
+    max_ack_delay: int
+    max_datagram_frame_size: int
+    active_migration: Literal["enable", "disable"]
+    grease_quic_bit: Literal["enable", "disable"]
+
+
 class Vip6RealserversItem:
     """Nested item for realservers field - supports attribute access."""
     id: int
@@ -43,7 +55,7 @@ class Vip6RealserversItem:
     http_host: str
     translate_host: Literal["enable", "disable"]
     max_connections: int
-    monitor: str
+    monitor: str | list[str]
     client_ip: str
     verify_cert: Literal["enable", "disable"]
 
@@ -96,7 +108,7 @@ class Vip6Payload(TypedDict, total=False):
     persistence: Literal["none", "http-cookie", "ssl-session-id"]
     h2_support: Literal["enable", "disable"]
     h3_support: Literal["enable", "disable"]
-    quic: str
+    quic: Vip6QuicDict
     nat66: Literal["disable", "enable"]
     nat64: Literal["disable", "enable"]
     add_nat64_route: Literal["disable", "enable"]
@@ -187,7 +199,7 @@ class Vip6Response(TypedDict, total=False):
     persistence: Literal["none", "http-cookie", "ssl-session-id"]
     h2_support: Literal["enable", "disable"]
     h3_support: Literal["enable", "disable"]
-    quic: str
+    quic: Vip6QuicDict
     nat66: Literal["disable", "enable"]
     nat64: Literal["disable", "enable"]
     add_nat64_route: Literal["disable", "enable"]
@@ -279,7 +291,7 @@ class Vip6Object(FortiObject):
     persistence: Literal["none", "http-cookie", "ssl-session-id"]
     h2_support: Literal["enable", "disable"]
     h3_support: Literal["enable", "disable"]
-    quic: str
+    quic: Vip6QuicDict
     nat66: Literal["disable", "enable"]
     nat64: Literal["disable", "enable"]
     add_nat64_route: Literal["disable", "enable"]
@@ -440,7 +452,7 @@ class Vip6:
         persistence: Literal["none", "http-cookie", "ssl-session-id"] | None = ...,
         h2_support: Literal["enable", "disable"] | None = ...,
         h3_support: Literal["enable", "disable"] | None = ...,
-        quic: str | None = ...,
+        quic: Vip6QuicDict | None = ...,
         nat66: Literal["disable", "enable"] | None = ...,
         nat64: Literal["disable", "enable"] | None = ...,
         add_nat64_route: Literal["disable", "enable"] | None = ...,
@@ -535,7 +547,7 @@ class Vip6:
         persistence: Literal["none", "http-cookie", "ssl-session-id"] | None = ...,
         h2_support: Literal["enable", "disable"] | None = ...,
         h3_support: Literal["enable", "disable"] | None = ...,
-        quic: str | None = ...,
+        quic: Vip6QuicDict | None = ...,
         nat66: Literal["disable", "enable"] | None = ...,
         nat64: Literal["disable", "enable"] | None = ...,
         add_nat64_route: Literal["disable", "enable"] | None = ...,
@@ -648,7 +660,7 @@ class Vip6:
         persistence: Literal["none", "http-cookie", "ssl-session-id"] | None = ...,
         h2_support: Literal["enable", "disable"] | None = ...,
         h3_support: Literal["enable", "disable"] | None = ...,
-        quic: str | None = ...,
+        quic: Vip6QuicDict | None = ...,
         nat66: Literal["disable", "enable"] | None = ...,
         nat64: Literal["disable", "enable"] | None = ...,
         add_nat64_route: Literal["disable", "enable"] | None = ...,

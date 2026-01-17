@@ -32,7 +32,7 @@ class CsfTrustedlistItem:
     serial: str
     certificate: str
     action: Literal["accept", "deny"]
-    ha_members: str
+    ha_members: str | list[str]
     downstream_authorization: Literal["enable", "disable"]
     index: int
 
@@ -42,7 +42,7 @@ class CsfFabricconnectorItem:
     serial: str
     accprofile: str
     configuration_write_access: Literal["enable", "disable"]
-    vdom: str
+    vdom: str | list[str]
 
 
 class CsfPayload(TypedDict, total=False):

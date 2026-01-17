@@ -32,6 +32,110 @@ class WtpSplittunnelingaclItem:
     dest_ip: str
 
 
+class WtpLanDict(TypedDict, total=False):
+    """Nested object type for lan field."""
+    port_mode: Literal["offline", "nat-to-wan", "bridge-to-wan", "bridge-to-ssid"]
+    port_ssid: str
+    port1_mode: Literal["offline", "nat-to-wan", "bridge-to-wan", "bridge-to-ssid"]
+    port1_ssid: str
+    port2_mode: Literal["offline", "nat-to-wan", "bridge-to-wan", "bridge-to-ssid"]
+    port2_ssid: str
+    port3_mode: Literal["offline", "nat-to-wan", "bridge-to-wan", "bridge-to-ssid"]
+    port3_ssid: str
+    port4_mode: Literal["offline", "nat-to-wan", "bridge-to-wan", "bridge-to-ssid"]
+    port4_ssid: str
+    port5_mode: Literal["offline", "nat-to-wan", "bridge-to-wan", "bridge-to-ssid"]
+    port5_ssid: str
+    port6_mode: Literal["offline", "nat-to-wan", "bridge-to-wan", "bridge-to-ssid"]
+    port6_ssid: str
+    port7_mode: Literal["offline", "nat-to-wan", "bridge-to-wan", "bridge-to-ssid"]
+    port7_ssid: str
+    port8_mode: Literal["offline", "nat-to-wan", "bridge-to-wan", "bridge-to-ssid"]
+    port8_ssid: str
+    port_esl_mode: Literal["offline", "nat-to-wan", "bridge-to-wan", "bridge-to-ssid"]
+    port_esl_ssid: str
+
+
+class WtpRadio1Dict(TypedDict, total=False):
+    """Nested object type for radio-1 field."""
+    override_band: Literal["enable", "disable"]
+    band: Literal["802.11a", "802.11b", "802.11g", "802.11n-2G", "802.11n-5G", "802.11ac-2G", "802.11ac-5G", "802.11ax-2G", "802.11ax-5G", "802.11ax-6G", "802.11be-2G", "802.11be-5G", "802.11be-6G"]
+    override_txpower: Literal["enable", "disable"]
+    auto_power_level: Literal["enable", "disable"]
+    auto_power_high: int
+    auto_power_low: int
+    auto_power_target: str
+    power_mode: Literal["dBm", "percentage"]
+    power_level: int
+    power_value: int
+    override_vaps: Literal["enable", "disable"]
+    vap_all: Literal["tunnel", "bridge", "manual"]
+    vaps: str | list[str]
+    override_channel: Literal["enable", "disable"]
+    channel: str | list[str]
+    drma_manual_mode: Literal["ap", "monitor", "ncf", "ncf-peek"]
+
+
+class WtpRadio2Dict(TypedDict, total=False):
+    """Nested object type for radio-2 field."""
+    override_band: Literal["enable", "disable"]
+    band: Literal["802.11a", "802.11b", "802.11g", "802.11n-2G", "802.11n-5G", "802.11ac-2G", "802.11ac-5G", "802.11ax-2G", "802.11ax-5G", "802.11ax-6G", "802.11be-2G", "802.11be-5G", "802.11be-6G"]
+    override_txpower: Literal["enable", "disable"]
+    auto_power_level: Literal["enable", "disable"]
+    auto_power_high: int
+    auto_power_low: int
+    auto_power_target: str
+    power_mode: Literal["dBm", "percentage"]
+    power_level: int
+    power_value: int
+    override_vaps: Literal["enable", "disable"]
+    vap_all: Literal["tunnel", "bridge", "manual"]
+    vaps: str | list[str]
+    override_channel: Literal["enable", "disable"]
+    channel: str | list[str]
+    drma_manual_mode: Literal["ap", "monitor", "ncf", "ncf-peek"]
+
+
+class WtpRadio3Dict(TypedDict, total=False):
+    """Nested object type for radio-3 field."""
+    override_band: Literal["enable", "disable"]
+    band: Literal["802.11a", "802.11b", "802.11g", "802.11n-2G", "802.11n-5G", "802.11ac-2G", "802.11ac-5G", "802.11ax-2G", "802.11ax-5G", "802.11ax-6G", "802.11be-2G", "802.11be-5G", "802.11be-6G"]
+    override_txpower: Literal["enable", "disable"]
+    auto_power_level: Literal["enable", "disable"]
+    auto_power_high: int
+    auto_power_low: int
+    auto_power_target: str
+    power_mode: Literal["dBm", "percentage"]
+    power_level: int
+    power_value: int
+    override_vaps: Literal["enable", "disable"]
+    vap_all: Literal["tunnel", "bridge", "manual"]
+    vaps: str | list[str]
+    override_channel: Literal["enable", "disable"]
+    channel: str | list[str]
+    drma_manual_mode: Literal["ap", "monitor", "ncf", "ncf-peek"]
+
+
+class WtpRadio4Dict(TypedDict, total=False):
+    """Nested object type for radio-4 field."""
+    override_band: Literal["enable", "disable"]
+    band: Literal["802.11a", "802.11b", "802.11g", "802.11n-2G", "802.11n-5G", "802.11ac-2G", "802.11ac-5G", "802.11ax-2G", "802.11ax-5G", "802.11ax-6G", "802.11be-2G", "802.11be-5G", "802.11be-6G"]
+    override_txpower: Literal["enable", "disable"]
+    auto_power_level: Literal["enable", "disable"]
+    auto_power_high: int
+    auto_power_low: int
+    auto_power_target: str
+    power_mode: Literal["dBm", "percentage"]
+    power_level: int
+    power_value: int
+    override_vaps: Literal["enable", "disable"]
+    vap_all: Literal["tunnel", "bridge", "manual"]
+    vaps: str | list[str]
+    override_channel: Literal["enable", "disable"]
+    channel: str | list[str]
+    drma_manual_mode: Literal["ap", "monitor", "ncf", "ncf-peek"]
+
+
 class WtpPayload(TypedDict, total=False):
     """Payload type for Wtp operations."""
     wtp_id: str
@@ -64,7 +168,7 @@ class WtpPayload(TypedDict, total=False):
     split_tunneling_acl_local_ap_subnet: Literal["enable", "disable"]
     split_tunneling_acl: str | list[str] | list[dict[str, Any]] | list[WtpSplittunnelingaclItem]
     override_lan: Literal["enable", "disable"]
-    lan: str
+    lan: WtpLanDict
     override_allowaccess: Literal["enable", "disable"]
     allowaccess: str | list[str]
     override_login_passwd_change: Literal["enable", "disable"]
@@ -72,10 +176,10 @@ class WtpPayload(TypedDict, total=False):
     login_passwd: str
     override_default_mesh_root: Literal["enable", "disable"]
     default_mesh_root: Literal["enable", "disable"]
-    radio_1: str
-    radio_2: str
-    radio_3: str
-    radio_4: str
+    radio_1: WtpRadio1Dict
+    radio_2: WtpRadio2Dict
+    radio_3: WtpRadio3Dict
+    radio_4: WtpRadio4Dict
     image_download: Literal["enable", "disable"]
     mesh_bridge_enable: Literal["default", "enable", "disable"]
     purdue_level: Literal["1", "1.5", "2", "2.5", "3", "3.5", "4", "5", "5.5"]
@@ -119,7 +223,7 @@ class WtpResponse(TypedDict, total=False):
     split_tunneling_acl_local_ap_subnet: Literal["enable", "disable"]
     split_tunneling_acl: list[WtpSplittunnelingaclItem]
     override_lan: Literal["enable", "disable"]
-    lan: str
+    lan: WtpLanDict
     override_allowaccess: Literal["enable", "disable"]
     allowaccess: str
     override_login_passwd_change: Literal["enable", "disable"]
@@ -127,10 +231,10 @@ class WtpResponse(TypedDict, total=False):
     login_passwd: str
     override_default_mesh_root: Literal["enable", "disable"]
     default_mesh_root: Literal["enable", "disable"]
-    radio_1: str
-    radio_2: str
-    radio_3: str
-    radio_4: str
+    radio_1: WtpRadio1Dict
+    radio_2: WtpRadio2Dict
+    radio_3: WtpRadio3Dict
+    radio_4: WtpRadio4Dict
     image_download: Literal["enable", "disable"]
     mesh_bridge_enable: Literal["default", "enable", "disable"]
     purdue_level: Literal["1", "1.5", "2", "2.5", "3", "3.5", "4", "5", "5.5"]
@@ -175,7 +279,7 @@ class WtpObject(FortiObject):
     split_tunneling_acl_local_ap_subnet: Literal["enable", "disable"]
     split_tunneling_acl: list[WtpSplittunnelingaclItem]
     override_lan: Literal["enable", "disable"]
-    lan: str
+    lan: WtpLanDict
     override_allowaccess: Literal["enable", "disable"]
     allowaccess: str
     override_login_passwd_change: Literal["enable", "disable"]
@@ -183,10 +287,10 @@ class WtpObject(FortiObject):
     login_passwd: str
     override_default_mesh_root: Literal["enable", "disable"]
     default_mesh_root: Literal["enable", "disable"]
-    radio_1: str
-    radio_2: str
-    radio_3: str
-    radio_4: str
+    radio_1: WtpRadio1Dict
+    radio_2: WtpRadio2Dict
+    radio_3: WtpRadio3Dict
+    radio_4: WtpRadio4Dict
     image_download: Literal["enable", "disable"]
     mesh_bridge_enable: Literal["default", "enable", "disable"]
     purdue_level: Literal["1", "1.5", "2", "2.5", "3", "3.5", "4", "5", "5.5"]
@@ -300,7 +404,7 @@ class Wtp:
         split_tunneling_acl_local_ap_subnet: Literal["enable", "disable"] | None = ...,
         split_tunneling_acl: str | list[str] | list[dict[str, Any]] | list[WtpSplittunnelingaclItem] | None = ...,
         override_lan: Literal["enable", "disable"] | None = ...,
-        lan: str | None = ...,
+        lan: WtpLanDict | None = ...,
         override_allowaccess: Literal["enable", "disable"] | None = ...,
         allowaccess: str | list[str] | None = ...,
         override_login_passwd_change: Literal["enable", "disable"] | None = ...,
@@ -308,10 +412,10 @@ class Wtp:
         login_passwd: str | None = ...,
         override_default_mesh_root: Literal["enable", "disable"] | None = ...,
         default_mesh_root: Literal["enable", "disable"] | None = ...,
-        radio_1: str | None = ...,
-        radio_2: str | None = ...,
-        radio_3: str | None = ...,
-        radio_4: str | None = ...,
+        radio_1: WtpRadio1Dict | None = ...,
+        radio_2: WtpRadio2Dict | None = ...,
+        radio_3: WtpRadio3Dict | None = ...,
+        radio_4: WtpRadio4Dict | None = ...,
         image_download: Literal["enable", "disable"] | None = ...,
         mesh_bridge_enable: Literal["default", "enable", "disable"] | None = ...,
         purdue_level: Literal["1", "1.5", "2", "2.5", "3", "3.5", "4", "5", "5.5"] | None = ...,
@@ -359,7 +463,7 @@ class Wtp:
         split_tunneling_acl_local_ap_subnet: Literal["enable", "disable"] | None = ...,
         split_tunneling_acl: str | list[str] | list[dict[str, Any]] | list[WtpSplittunnelingaclItem] | None = ...,
         override_lan: Literal["enable", "disable"] | None = ...,
-        lan: str | None = ...,
+        lan: WtpLanDict | None = ...,
         override_allowaccess: Literal["enable", "disable"] | None = ...,
         allowaccess: str | list[str] | None = ...,
         override_login_passwd_change: Literal["enable", "disable"] | None = ...,
@@ -367,10 +471,10 @@ class Wtp:
         login_passwd: str | None = ...,
         override_default_mesh_root: Literal["enable", "disable"] | None = ...,
         default_mesh_root: Literal["enable", "disable"] | None = ...,
-        radio_1: str | None = ...,
-        radio_2: str | None = ...,
-        radio_3: str | None = ...,
-        radio_4: str | None = ...,
+        radio_1: WtpRadio1Dict | None = ...,
+        radio_2: WtpRadio2Dict | None = ...,
+        radio_3: WtpRadio3Dict | None = ...,
+        radio_4: WtpRadio4Dict | None = ...,
         image_download: Literal["enable", "disable"] | None = ...,
         mesh_bridge_enable: Literal["default", "enable", "disable"] | None = ...,
         purdue_level: Literal["1", "1.5", "2", "2.5", "3", "3.5", "4", "5", "5.5"] | None = ...,
@@ -436,7 +540,7 @@ class Wtp:
         split_tunneling_acl_local_ap_subnet: Literal["enable", "disable"] | None = ...,
         split_tunneling_acl: str | list[str] | list[dict[str, Any]] | list[WtpSplittunnelingaclItem] | None = ...,
         override_lan: Literal["enable", "disable"] | None = ...,
-        lan: str | None = ...,
+        lan: WtpLanDict | None = ...,
         override_allowaccess: Literal["enable", "disable"] | None = ...,
         allowaccess: Literal["https", "ssh", "snmp"] | list[str] | None = ...,
         override_login_passwd_change: Literal["enable", "disable"] | None = ...,
@@ -444,10 +548,10 @@ class Wtp:
         login_passwd: str | None = ...,
         override_default_mesh_root: Literal["enable", "disable"] | None = ...,
         default_mesh_root: Literal["enable", "disable"] | None = ...,
-        radio_1: str | None = ...,
-        radio_2: str | None = ...,
-        radio_3: str | None = ...,
-        radio_4: str | None = ...,
+        radio_1: WtpRadio1Dict | None = ...,
+        radio_2: WtpRadio2Dict | None = ...,
+        radio_3: WtpRadio3Dict | None = ...,
+        radio_4: WtpRadio4Dict | None = ...,
         image_download: Literal["enable", "disable"] | None = ...,
         mesh_bridge_enable: Literal["default", "enable", "disable"] | None = ...,
         purdue_level: Literal["1", "1.5", "2", "2.5", "3", "3.5", "4", "5", "5.5"] | None = ...,

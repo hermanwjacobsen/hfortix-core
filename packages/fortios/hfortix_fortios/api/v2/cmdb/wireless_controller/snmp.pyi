@@ -34,8 +34,8 @@ class SnmpCommunityItem:
     query_v2c_status: Literal["enable", "disable"]
     trap_v1_status: Literal["enable", "disable"]
     trap_v2c_status: Literal["enable", "disable"]
-    hosts: str
-    hosts6: str
+    hosts: str | list[str]
+    hosts6: str | list[str]
 
 
 class SnmpUserItem:
@@ -49,8 +49,8 @@ class SnmpUserItem:
     auth_pwd: str
     priv_proto: Literal["aes", "des", "aes256", "aes256cisco"]
     priv_pwd: str
-    notify_hosts: str
-    notify_hosts6: str
+    notify_hosts: str | list[str]
+    notify_hosts6: str | list[str]
 
 
 class SnmpPayload(TypedDict, total=False):

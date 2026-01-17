@@ -25,6 +25,37 @@ from hfortix_fortios.models import (
 # TypedDict Payloads
 # ================================================================
 
+class MulticastPimsmglobalDict(TypedDict, total=False):
+    """Nested object type for pim-sm-global field."""
+    message_interval: int
+    join_prune_holdtime: int
+    accept_register_list: str
+    accept_source_list: str
+    bsr_candidate: Literal["enable", "disable"]
+    bsr_interface: str
+    bsr_priority: int
+    bsr_hash: int
+    bsr_allow_quick_refresh: Literal["enable", "disable"]
+    cisco_crp_prefix: Literal["enable", "disable"]
+    cisco_register_checksum: Literal["enable", "disable"]
+    cisco_register_checksum_group: str
+    cisco_ignore_rp_set_priority: Literal["enable", "disable"]
+    register_rp_reachability: Literal["enable", "disable"]
+    register_source: Literal["disable", "interface", "ip-address"]
+    register_source_interface: str
+    register_source_ip: str
+    register_supression: int
+    null_register_retries: int
+    rp_register_keepalive: int
+    spt_threshold: Literal["enable", "disable"]
+    spt_threshold_group: str
+    ssm: Literal["enable", "disable"]
+    ssm_range: str
+    register_rate_limit: int
+    pim_use_sdwan: Literal["enable", "disable"]
+    rp_address: str | list[str]
+
+
 class MulticastPimsmglobalvrfItem:
     """Nested item for pim-sm-global-vrf field - supports attribute access."""
     vrf: int
@@ -34,7 +65,7 @@ class MulticastPimsmglobalvrfItem:
     bsr_hash: int
     bsr_allow_quick_refresh: Literal["enable", "disable"]
     cisco_crp_prefix: Literal["enable", "disable"]
-    rp_address: str
+    rp_address: str | list[str]
 
 
 class MulticastInterfaceItem:
@@ -59,7 +90,7 @@ class MulticastInterfaceItem:
     static_group: str
     rpf_nbr_fail_back: Literal["enable", "disable"]
     rpf_nbr_fail_back_filter: str
-    join_group: str
+    join_group: str | list[str]
     igmp: str
 
 
@@ -68,7 +99,7 @@ class MulticastPayload(TypedDict, total=False):
     route_threshold: int
     route_limit: int
     multicast_routing: Literal["enable", "disable"]
-    pim_sm_global: str
+    pim_sm_global: MulticastPimsmglobalDict
     pim_sm_global_vrf: str | list[str] | list[dict[str, Any]] | list[MulticastPimsmglobalvrfItem]
     interface: str | list[str] | list[dict[str, Any]] | list[MulticastInterfaceItem]
 
@@ -82,7 +113,7 @@ class MulticastResponse(TypedDict, total=False):
     route_threshold: int
     route_limit: int
     multicast_routing: Literal["enable", "disable"]
-    pim_sm_global: str
+    pim_sm_global: MulticastPimsmglobalDict
     pim_sm_global_vrf: list[MulticastPimsmglobalvrfItem]
     interface: list[MulticastInterfaceItem]
 
@@ -97,7 +128,7 @@ class MulticastObject(FortiObject):
     route_threshold: int
     route_limit: int
     multicast_routing: Literal["enable", "disable"]
-    pim_sm_global: str
+    pim_sm_global: MulticastPimsmglobalDict
     pim_sm_global_vrf: list[MulticastPimsmglobalvrfItem]
     interface: list[MulticastInterfaceItem]
 
@@ -161,7 +192,7 @@ class Multicast:
         route_threshold: int | None = ...,
         route_limit: int | None = ...,
         multicast_routing: Literal["enable", "disable"] | None = ...,
-        pim_sm_global: str | None = ...,
+        pim_sm_global: MulticastPimsmglobalDict | None = ...,
         pim_sm_global_vrf: str | list[str] | list[dict[str, Any]] | list[MulticastPimsmglobalvrfItem] | None = ...,
         interface: str | list[str] | list[dict[str, Any]] | list[MulticastInterfaceItem] | None = ...,
         vdom: str | bool | None = ...,
@@ -186,7 +217,7 @@ class Multicast:
         route_threshold: int | None = ...,
         route_limit: int | None = ...,
         multicast_routing: Literal["enable", "disable"] | None = ...,
-        pim_sm_global: str | None = ...,
+        pim_sm_global: MulticastPimsmglobalDict | None = ...,
         pim_sm_global_vrf: str | list[str] | list[dict[str, Any]] | list[MulticastPimsmglobalvrfItem] | None = ...,
         interface: str | list[str] | list[dict[str, Any]] | list[MulticastInterfaceItem] | None = ...,
         vdom: str | bool | None = ...,

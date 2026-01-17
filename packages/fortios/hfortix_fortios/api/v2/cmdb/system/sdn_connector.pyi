@@ -35,14 +35,14 @@ class SdnConnectorExternalaccountlistItem:
     """Nested item for external-account-list field - supports attribute access."""
     role_arn: str
     external_id: str
-    region_list: str
+    region_list: str | list[str]
 
 
 class SdnConnectorNicItem:
     """Nested item for nic field - supports attribute access."""
     name: str
     peer_nic: str
-    ip: str
+    ip: str | list[str]
 
 
 class SdnConnectorRoutetableItem:
@@ -50,7 +50,7 @@ class SdnConnectorRoutetableItem:
     name: str
     subscription_id: str
     resource_group: str
-    route: str
+    route: str | list[str]
 
 
 class SdnConnectorCompartmentlistItem:
@@ -76,7 +76,7 @@ class SdnConnectorRouteItem:
 class SdnConnectorGcpprojectlistItem:
     """Nested item for gcp-project-list field - supports attribute access."""
     id: str
-    gcp_zone_list: str
+    gcp_zone_list: str | list[str]
 
 
 class SdnConnectorForwardingruleItem:

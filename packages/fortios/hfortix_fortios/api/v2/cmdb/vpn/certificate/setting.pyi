@@ -25,6 +25,13 @@ from hfortix_fortios.models import (
 # TypedDict Payloads
 # ================================================================
 
+class SettingCrlverificationDict(TypedDict, total=False):
+    """Nested object type for crl-verification field."""
+    expiry: Literal["ignore", "revoke"]
+    leaf_crl_absence: Literal["ignore", "revoke"]
+    chain_crl_absence: Literal["ignore", "revoke"]
+
+
 class SettingPayload(TypedDict, total=False):
     """Payload type for Setting operations."""
     ocsp_status: Literal["enable", "mandatory", "disable"]
@@ -44,7 +51,7 @@ class SettingPayload(TypedDict, total=False):
     subject_set: Literal["subset", "superset"]
     cn_match: Literal["substring", "value"]
     cn_allow_multi: Literal["disable", "enable"]
-    crl_verification: str
+    crl_verification: SettingCrlverificationDict
     strict_ocsp_check: Literal["enable", "disable"]
     ssl_min_proto_version: Literal["default", "SSLv3", "TLSv1", "TLSv1-1", "TLSv1-2", "TLSv1-3"]
     cmp_save_extra_certs: Literal["enable", "disable"]
@@ -85,7 +92,7 @@ class SettingResponse(TypedDict, total=False):
     subject_set: Literal["subset", "superset"]
     cn_match: Literal["substring", "value"]
     cn_allow_multi: Literal["disable", "enable"]
-    crl_verification: str
+    crl_verification: SettingCrlverificationDict
     strict_ocsp_check: Literal["enable", "disable"]
     ssl_min_proto_version: Literal["default", "SSLv3", "TLSv1", "TLSv1-1", "TLSv1-2", "TLSv1-3"]
     cmp_save_extra_certs: Literal["enable", "disable"]
@@ -127,7 +134,7 @@ class SettingObject(FortiObject):
     subject_set: Literal["subset", "superset"]
     cn_match: Literal["substring", "value"]
     cn_allow_multi: Literal["disable", "enable"]
-    crl_verification: str
+    crl_verification: SettingCrlverificationDict
     strict_ocsp_check: Literal["enable", "disable"]
     ssl_min_proto_version: Literal["default", "SSLv3", "TLSv1", "TLSv1-1", "TLSv1-2", "TLSv1-3"]
     cmp_save_extra_certs: Literal["enable", "disable"]
@@ -218,7 +225,7 @@ class Setting:
         subject_set: Literal["subset", "superset"] | None = ...,
         cn_match: Literal["substring", "value"] | None = ...,
         cn_allow_multi: Literal["disable", "enable"] | None = ...,
-        crl_verification: str | None = ...,
+        crl_verification: SettingCrlverificationDict | None = ...,
         strict_ocsp_check: Literal["enable", "disable"] | None = ...,
         ssl_min_proto_version: Literal["default", "SSLv3", "TLSv1", "TLSv1-1", "TLSv1-2", "TLSv1-3"] | None = ...,
         cmp_save_extra_certs: Literal["enable", "disable"] | None = ...,
@@ -270,7 +277,7 @@ class Setting:
         subject_set: Literal["subset", "superset"] | None = ...,
         cn_match: Literal["substring", "value"] | None = ...,
         cn_allow_multi: Literal["disable", "enable"] | None = ...,
-        crl_verification: str | None = ...,
+        crl_verification: SettingCrlverificationDict | None = ...,
         strict_ocsp_check: Literal["enable", "disable"] | None = ...,
         ssl_min_proto_version: Literal["default", "SSLv3", "TLSv1", "TLSv1-1", "TLSv1-2", "TLSv1-3"] | None = ...,
         cmp_save_extra_certs: Literal["enable", "disable"] | None = ...,

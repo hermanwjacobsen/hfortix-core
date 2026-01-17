@@ -34,7 +34,7 @@ class ProfileRulesItem:
     action: Literal["log-only", "block"]
     direction: Literal["incoming", "outgoing", "any"]
     password_protected: Literal["yes", "any"]
-    file_type: str
+    file_type: str | list[str]
 
 
 class ProfilePayload(TypedDict, total=False):

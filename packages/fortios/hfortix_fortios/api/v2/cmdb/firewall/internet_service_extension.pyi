@@ -31,9 +31,9 @@ class InternetServiceExtensionEntryItem:
     id: int
     addr_mode: Literal["ipv4", "ipv6"]
     protocol: int
-    port_range: str
-    dst: str
-    dst6: str
+    port_range: str | list[str]
+    dst: str | list[str]
+    dst6: str | list[str]
 
 
 class InternetServiceExtensionDisableentryItem:
@@ -41,9 +41,9 @@ class InternetServiceExtensionDisableentryItem:
     id: int
     addr_mode: Literal["ipv4", "ipv6"]
     protocol: int
-    port_range: str
-    ip_range: str
-    ip6_range: str
+    port_range: str | list[str]
+    ip_range: str | list[str]
+    ip6_range: str | list[str]
 
 
 class InternetServiceExtensionPayload(TypedDict, total=False):

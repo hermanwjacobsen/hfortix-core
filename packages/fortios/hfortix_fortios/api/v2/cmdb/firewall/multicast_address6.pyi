@@ -30,7 +30,7 @@ class MulticastAddress6TaggingItem:
     """Nested item for tagging field - supports attribute access."""
     name: str
     category: str
-    tags: str
+    tags: str | list[str]
 
 
 class MulticastAddress6Payload(TypedDict, total=False):

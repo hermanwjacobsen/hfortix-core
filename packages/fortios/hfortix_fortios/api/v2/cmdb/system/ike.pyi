@@ -25,6 +25,125 @@ from hfortix_fortios.models import (
 # TypedDict Payloads
 # ================================================================
 
+class IkeDhgroup1Dict(TypedDict, total=False):
+    """Nested object type for dh-group-1 field."""
+    mode: Literal["software", "hardware", "global"]
+    keypair_cache: Literal["global", "custom"]
+    keypair_count: int
+
+
+class IkeDhgroup2Dict(TypedDict, total=False):
+    """Nested object type for dh-group-2 field."""
+    mode: Literal["software", "hardware", "global"]
+    keypair_cache: Literal["global", "custom"]
+    keypair_count: int
+
+
+class IkeDhgroup5Dict(TypedDict, total=False):
+    """Nested object type for dh-group-5 field."""
+    mode: Literal["software", "hardware", "global"]
+    keypair_cache: Literal["global", "custom"]
+    keypair_count: int
+
+
+class IkeDhgroup14Dict(TypedDict, total=False):
+    """Nested object type for dh-group-14 field."""
+    mode: Literal["software", "hardware", "global"]
+    keypair_cache: Literal["global", "custom"]
+    keypair_count: int
+
+
+class IkeDhgroup15Dict(TypedDict, total=False):
+    """Nested object type for dh-group-15 field."""
+    mode: Literal["software", "hardware", "global"]
+    keypair_cache: Literal["global", "custom"]
+    keypair_count: int
+
+
+class IkeDhgroup16Dict(TypedDict, total=False):
+    """Nested object type for dh-group-16 field."""
+    mode: Literal["software", "hardware", "global"]
+    keypair_cache: Literal["global", "custom"]
+    keypair_count: int
+
+
+class IkeDhgroup17Dict(TypedDict, total=False):
+    """Nested object type for dh-group-17 field."""
+    mode: Literal["software", "hardware", "global"]
+    keypair_cache: Literal["global", "custom"]
+    keypair_count: int
+
+
+class IkeDhgroup18Dict(TypedDict, total=False):
+    """Nested object type for dh-group-18 field."""
+    mode: Literal["software", "hardware", "global"]
+    keypair_cache: Literal["global", "custom"]
+    keypair_count: int
+
+
+class IkeDhgroup19Dict(TypedDict, total=False):
+    """Nested object type for dh-group-19 field."""
+    mode: Literal["software", "hardware", "global"]
+    keypair_cache: Literal["global", "custom"]
+    keypair_count: int
+
+
+class IkeDhgroup20Dict(TypedDict, total=False):
+    """Nested object type for dh-group-20 field."""
+    mode: Literal["software", "hardware", "global"]
+    keypair_cache: Literal["global", "custom"]
+    keypair_count: int
+
+
+class IkeDhgroup21Dict(TypedDict, total=False):
+    """Nested object type for dh-group-21 field."""
+    mode: Literal["software", "hardware", "global"]
+    keypair_cache: Literal["global", "custom"]
+    keypair_count: int
+
+
+class IkeDhgroup27Dict(TypedDict, total=False):
+    """Nested object type for dh-group-27 field."""
+    mode: Literal["software", "hardware", "global"]
+    keypair_cache: Literal["global", "custom"]
+    keypair_count: int
+
+
+class IkeDhgroup28Dict(TypedDict, total=False):
+    """Nested object type for dh-group-28 field."""
+    mode: Literal["software", "hardware", "global"]
+    keypair_cache: Literal["global", "custom"]
+    keypair_count: int
+
+
+class IkeDhgroup29Dict(TypedDict, total=False):
+    """Nested object type for dh-group-29 field."""
+    mode: Literal["software", "hardware", "global"]
+    keypair_cache: Literal["global", "custom"]
+    keypair_count: int
+
+
+class IkeDhgroup30Dict(TypedDict, total=False):
+    """Nested object type for dh-group-30 field."""
+    mode: Literal["software", "hardware", "global"]
+    keypair_cache: Literal["global", "custom"]
+    keypair_count: int
+
+
+class IkeDhgroup31Dict(TypedDict, total=False):
+    """Nested object type for dh-group-31 field."""
+    mode: Literal["software", "hardware", "global"]
+    keypair_cache: Literal["global", "custom"]
+    keypair_count: int
+
+
+class IkeDhgroup32Dict(TypedDict, total=False):
+    """Nested object type for dh-group-32 field."""
+    mode: Literal["software", "hardware", "global"]
+    keypair_cache: Literal["global", "custom"]
+    keypair_count: int
+
+
 class IkePayload(TypedDict, total=False):
     """Payload type for Ike operations."""
     embryonic_limit: int
@@ -34,23 +153,23 @@ class IkePayload(TypedDict, total=False):
     dh_keypair_cache: Literal["enable", "disable"]
     dh_keypair_count: int
     dh_keypair_throttle: Literal["enable", "disable"]
-    dh_group_1: str
-    dh_group_2: str
-    dh_group_5: str
-    dh_group_14: str
-    dh_group_15: str
-    dh_group_16: str
-    dh_group_17: str
-    dh_group_18: str
-    dh_group_19: str
-    dh_group_20: str
-    dh_group_21: str
-    dh_group_27: str
-    dh_group_28: str
-    dh_group_29: str
-    dh_group_30: str
-    dh_group_31: str
-    dh_group_32: str
+    dh_group_1: IkeDhgroup1Dict
+    dh_group_2: IkeDhgroup2Dict
+    dh_group_5: IkeDhgroup5Dict
+    dh_group_14: IkeDhgroup14Dict
+    dh_group_15: IkeDhgroup15Dict
+    dh_group_16: IkeDhgroup16Dict
+    dh_group_17: IkeDhgroup17Dict
+    dh_group_18: IkeDhgroup18Dict
+    dh_group_19: IkeDhgroup19Dict
+    dh_group_20: IkeDhgroup20Dict
+    dh_group_21: IkeDhgroup21Dict
+    dh_group_27: IkeDhgroup27Dict
+    dh_group_28: IkeDhgroup28Dict
+    dh_group_29: IkeDhgroup29Dict
+    dh_group_30: IkeDhgroup30Dict
+    dh_group_31: IkeDhgroup31Dict
+    dh_group_32: IkeDhgroup32Dict
 
 
 # ================================================================
@@ -66,23 +185,23 @@ class IkeResponse(TypedDict, total=False):
     dh_keypair_cache: Literal["enable", "disable"]
     dh_keypair_count: int
     dh_keypair_throttle: Literal["enable", "disable"]
-    dh_group_1: str
-    dh_group_2: str
-    dh_group_5: str
-    dh_group_14: str
-    dh_group_15: str
-    dh_group_16: str
-    dh_group_17: str
-    dh_group_18: str
-    dh_group_19: str
-    dh_group_20: str
-    dh_group_21: str
-    dh_group_27: str
-    dh_group_28: str
-    dh_group_29: str
-    dh_group_30: str
-    dh_group_31: str
-    dh_group_32: str
+    dh_group_1: IkeDhgroup1Dict
+    dh_group_2: IkeDhgroup2Dict
+    dh_group_5: IkeDhgroup5Dict
+    dh_group_14: IkeDhgroup14Dict
+    dh_group_15: IkeDhgroup15Dict
+    dh_group_16: IkeDhgroup16Dict
+    dh_group_17: IkeDhgroup17Dict
+    dh_group_18: IkeDhgroup18Dict
+    dh_group_19: IkeDhgroup19Dict
+    dh_group_20: IkeDhgroup20Dict
+    dh_group_21: IkeDhgroup21Dict
+    dh_group_27: IkeDhgroup27Dict
+    dh_group_28: IkeDhgroup28Dict
+    dh_group_29: IkeDhgroup29Dict
+    dh_group_30: IkeDhgroup30Dict
+    dh_group_31: IkeDhgroup31Dict
+    dh_group_32: IkeDhgroup32Dict
 
 
 # ================================================================
@@ -99,23 +218,23 @@ class IkeObject(FortiObject):
     dh_keypair_cache: Literal["enable", "disable"]
     dh_keypair_count: int
     dh_keypair_throttle: Literal["enable", "disable"]
-    dh_group_1: str
-    dh_group_2: str
-    dh_group_5: str
-    dh_group_14: str
-    dh_group_15: str
-    dh_group_16: str
-    dh_group_17: str
-    dh_group_18: str
-    dh_group_19: str
-    dh_group_20: str
-    dh_group_21: str
-    dh_group_27: str
-    dh_group_28: str
-    dh_group_29: str
-    dh_group_30: str
-    dh_group_31: str
-    dh_group_32: str
+    dh_group_1: IkeDhgroup1Dict
+    dh_group_2: IkeDhgroup2Dict
+    dh_group_5: IkeDhgroup5Dict
+    dh_group_14: IkeDhgroup14Dict
+    dh_group_15: IkeDhgroup15Dict
+    dh_group_16: IkeDhgroup16Dict
+    dh_group_17: IkeDhgroup17Dict
+    dh_group_18: IkeDhgroup18Dict
+    dh_group_19: IkeDhgroup19Dict
+    dh_group_20: IkeDhgroup20Dict
+    dh_group_21: IkeDhgroup21Dict
+    dh_group_27: IkeDhgroup27Dict
+    dh_group_28: IkeDhgroup28Dict
+    dh_group_29: IkeDhgroup29Dict
+    dh_group_30: IkeDhgroup30Dict
+    dh_group_31: IkeDhgroup31Dict
+    dh_group_32: IkeDhgroup32Dict
 
 
 # ================================================================
@@ -179,23 +298,23 @@ class Ike:
         dh_keypair_cache: Literal["enable", "disable"] | None = ...,
         dh_keypair_count: int | None = ...,
         dh_keypair_throttle: Literal["enable", "disable"] | None = ...,
-        dh_group_1: str | None = ...,
-        dh_group_2: str | None = ...,
-        dh_group_5: str | None = ...,
-        dh_group_14: str | None = ...,
-        dh_group_15: str | None = ...,
-        dh_group_16: str | None = ...,
-        dh_group_17: str | None = ...,
-        dh_group_18: str | None = ...,
-        dh_group_19: str | None = ...,
-        dh_group_20: str | None = ...,
-        dh_group_21: str | None = ...,
-        dh_group_27: str | None = ...,
-        dh_group_28: str | None = ...,
-        dh_group_29: str | None = ...,
-        dh_group_30: str | None = ...,
-        dh_group_31: str | None = ...,
-        dh_group_32: str | None = ...,
+        dh_group_1: IkeDhgroup1Dict | None = ...,
+        dh_group_2: IkeDhgroup2Dict | None = ...,
+        dh_group_5: IkeDhgroup5Dict | None = ...,
+        dh_group_14: IkeDhgroup14Dict | None = ...,
+        dh_group_15: IkeDhgroup15Dict | None = ...,
+        dh_group_16: IkeDhgroup16Dict | None = ...,
+        dh_group_17: IkeDhgroup17Dict | None = ...,
+        dh_group_18: IkeDhgroup18Dict | None = ...,
+        dh_group_19: IkeDhgroup19Dict | None = ...,
+        dh_group_20: IkeDhgroup20Dict | None = ...,
+        dh_group_21: IkeDhgroup21Dict | None = ...,
+        dh_group_27: IkeDhgroup27Dict | None = ...,
+        dh_group_28: IkeDhgroup28Dict | None = ...,
+        dh_group_29: IkeDhgroup29Dict | None = ...,
+        dh_group_30: IkeDhgroup30Dict | None = ...,
+        dh_group_31: IkeDhgroup31Dict | None = ...,
+        dh_group_32: IkeDhgroup32Dict | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> IkeObject: ...
@@ -220,23 +339,23 @@ class Ike:
         dh_keypair_cache: Literal["enable", "disable"] | None = ...,
         dh_keypair_count: int | None = ...,
         dh_keypair_throttle: Literal["enable", "disable"] | None = ...,
-        dh_group_1: str | None = ...,
-        dh_group_2: str | None = ...,
-        dh_group_5: str | None = ...,
-        dh_group_14: str | None = ...,
-        dh_group_15: str | None = ...,
-        dh_group_16: str | None = ...,
-        dh_group_17: str | None = ...,
-        dh_group_18: str | None = ...,
-        dh_group_19: str | None = ...,
-        dh_group_20: str | None = ...,
-        dh_group_21: str | None = ...,
-        dh_group_27: str | None = ...,
-        dh_group_28: str | None = ...,
-        dh_group_29: str | None = ...,
-        dh_group_30: str | None = ...,
-        dh_group_31: str | None = ...,
-        dh_group_32: str | None = ...,
+        dh_group_1: IkeDhgroup1Dict | None = ...,
+        dh_group_2: IkeDhgroup2Dict | None = ...,
+        dh_group_5: IkeDhgroup5Dict | None = ...,
+        dh_group_14: IkeDhgroup14Dict | None = ...,
+        dh_group_15: IkeDhgroup15Dict | None = ...,
+        dh_group_16: IkeDhgroup16Dict | None = ...,
+        dh_group_17: IkeDhgroup17Dict | None = ...,
+        dh_group_18: IkeDhgroup18Dict | None = ...,
+        dh_group_19: IkeDhgroup19Dict | None = ...,
+        dh_group_20: IkeDhgroup20Dict | None = ...,
+        dh_group_21: IkeDhgroup21Dict | None = ...,
+        dh_group_27: IkeDhgroup27Dict | None = ...,
+        dh_group_28: IkeDhgroup28Dict | None = ...,
+        dh_group_29: IkeDhgroup29Dict | None = ...,
+        dh_group_30: IkeDhgroup30Dict | None = ...,
+        dh_group_31: IkeDhgroup31Dict | None = ...,
+        dh_group_32: IkeDhgroup32Dict | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> FortiObject: ...

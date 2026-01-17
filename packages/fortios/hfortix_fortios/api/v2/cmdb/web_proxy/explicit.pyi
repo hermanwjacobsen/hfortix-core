@@ -34,9 +34,9 @@ class ExplicitPacpolicyItem:
     """Nested item for pac-policy field - supports attribute access."""
     policyid: int
     status: Literal["enable", "disable"]
-    srcaddr: str
-    srcaddr6: str
-    dstaddr: str
+    srcaddr: str | list[str]
+    srcaddr6: str | list[str]
+    dstaddr: str | list[str]
     pac_file_name: str
     pac_file_data: str
     comments: str

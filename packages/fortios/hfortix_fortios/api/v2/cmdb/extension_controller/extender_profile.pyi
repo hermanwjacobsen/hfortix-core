@@ -26,6 +26,33 @@ from hfortix_fortios.models import (
 # TypedDict Payloads
 # ================================================================
 
+class ExtenderProfileCellularDict(TypedDict, total=False):
+    """Nested object type for cellular field."""
+    dataplan: str | list[str]
+    controller_report: str
+    sms_notification: str
+    modem1: str
+    modem2: str
+
+
+class ExtenderProfileWifiDict(TypedDict, total=False):
+    """Nested object type for wifi field."""
+    country: Literal["--", "AF", "AL", "DZ", "AS", "AO", "AR", "AM", "AU", "AT", "AZ", "BS", "BH", "BD", "BB", "BY", "BE", "BZ", "BJ", "BM", "BT", "BO", "BA", "BW", "BR", "BN", "BG", "BF", "KH", "CM", "KY", "CF", "TD", "CL", "CN", "CX", "CO", "CG", "CD", "CR", "HR", "CY", "CZ", "DK", "DJ", "DM", "DO", "EC", "EG", "SV", "ET", "EE", "GF", "PF", "FO", "FJ", "FI", "FR", "GA", "GE", "GM", "DE", "GH", "GI", "GR", "GL", "GD", "GP", "GU", "GT", "GY", "HT", "HN", "HK", "HU", "IS", "IN", "ID", "IQ", "IE", "IM", "IL", "IT", "CI", "JM", "JO", "KZ", "KE", "KR", "KW", "LA", "LV", "LB", "LS", "LR", "LY", "LI", "LT", "LU", "MO", "MK", "MG", "MW", "MY", "MV", "ML", "MT", "MH", "MQ", "MR", "MU", "YT", "MX", "FM", "MD", "MC", "MN", "MA", "MZ", "MM", "NA", "NP", "NL", "AN", "AW", "NZ", "NI", "NE", "NG", "NO", "MP", "OM", "PK", "PW", "PA", "PG", "PY", "PE", "PH", "PL", "PT", "PR", "QA", "RE", "RO", "RU", "RW", "BL", "KN", "LC", "MF", "PM", "VC", "SA", "SN", "RS", "ME", "SL", "SG", "SK", "SI", "SO", "ZA", "ES", "LK", "SR", "SZ", "SE", "CH", "TW", "TZ", "TH", "TL", "TG", "TT", "TN", "TR", "TM", "AE", "TC", "UG", "UA", "GB", "US", "PS", "UY", "UZ", "VU", "VE", "VN", "VI", "WF", "YE", "ZM", "ZW", "JP", "CA"]
+    radio_1: str
+    radio_2: str
+
+
+class ExtenderProfileLanextensionDict(TypedDict, total=False):
+    """Nested object type for lan-extension field."""
+    link_loadbalance: Literal["activebackup", "loadbalance"]
+    ipsec_tunnel: str
+    backhaul_interface: str
+    backhaul_ip: str
+    backhaul: str | list[str]
+    downlinks: str | list[str]
+    traffic_split_services: str | list[str]
+
+
 class ExtenderProfilePayload(TypedDict, total=False):
     """Payload type for ExtenderProfile operations."""
     name: str
@@ -37,9 +64,9 @@ class ExtenderProfilePayload(TypedDict, total=False):
     login_password: str
     enforce_bandwidth: Literal["enable", "disable"]
     bandwidth_limit: int
-    cellular: str
-    wifi: str
-    lan_extension: str
+    cellular: ExtenderProfileCellularDict
+    wifi: ExtenderProfileWifiDict
+    lan_extension: ExtenderProfileLanextensionDict
 
 
 # ================================================================
@@ -57,9 +84,9 @@ class ExtenderProfileResponse(TypedDict, total=False):
     login_password: str
     enforce_bandwidth: Literal["enable", "disable"]
     bandwidth_limit: int
-    cellular: str
-    wifi: str
-    lan_extension: str
+    cellular: ExtenderProfileCellularDict
+    wifi: ExtenderProfileWifiDict
+    lan_extension: ExtenderProfileLanextensionDict
 
 
 # ================================================================
@@ -78,9 +105,9 @@ class ExtenderProfileObject(FortiObject):
     login_password: str
     enforce_bandwidth: Literal["enable", "disable"]
     bandwidth_limit: int
-    cellular: str
-    wifi: str
-    lan_extension: str
+    cellular: ExtenderProfileCellularDict
+    wifi: ExtenderProfileWifiDict
+    lan_extension: ExtenderProfileLanextensionDict
 
 
 # ================================================================
@@ -168,9 +195,9 @@ class ExtenderProfile:
         login_password: str | None = ...,
         enforce_bandwidth: Literal["enable", "disable"] | None = ...,
         bandwidth_limit: int | None = ...,
-        cellular: str | None = ...,
-        wifi: str | None = ...,
-        lan_extension: str | None = ...,
+        cellular: ExtenderProfileCellularDict | None = ...,
+        wifi: ExtenderProfileWifiDict | None = ...,
+        lan_extension: ExtenderProfileLanextensionDict | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -192,9 +219,9 @@ class ExtenderProfile:
         login_password: str | None = ...,
         enforce_bandwidth: Literal["enable", "disable"] | None = ...,
         bandwidth_limit: int | None = ...,
-        cellular: str | None = ...,
-        wifi: str | None = ...,
-        lan_extension: str | None = ...,
+        cellular: ExtenderProfileCellularDict | None = ...,
+        wifi: ExtenderProfileWifiDict | None = ...,
+        lan_extension: ExtenderProfileLanextensionDict | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -234,9 +261,9 @@ class ExtenderProfile:
         login_password: str | None = ...,
         enforce_bandwidth: Literal["enable", "disable"] | None = ...,
         bandwidth_limit: int | None = ...,
-        cellular: str | None = ...,
-        wifi: str | None = ...,
-        lan_extension: str | None = ...,
+        cellular: ExtenderProfileCellularDict | None = ...,
+        wifi: ExtenderProfileWifiDict | None = ...,
+        lan_extension: ExtenderProfileLanextensionDict | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,

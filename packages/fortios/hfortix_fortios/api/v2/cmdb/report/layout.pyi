@@ -26,6 +26,16 @@ from hfortix_fortios.models import (
 # TypedDict Payloads
 # ================================================================
 
+class LayoutPageDict(TypedDict, total=False):
+    """Nested object type for page field."""
+    paper: Literal["a4", "letter"]
+    column_break_before: Literal["heading1", "heading2", "heading3"]
+    page_break_before: Literal["heading1", "heading2", "heading3"]
+    options: Literal["header-on-first-page", "footer-on-first-page"]
+    header: str
+    footer: str
+
+
 class LayoutBodyitemItem:
     """Nested item for body-item field - supports attribute access."""
     id: int
@@ -33,7 +43,7 @@ class LayoutBodyitemItem:
     type: Literal["text", "image", "chart", "misc"]
     style: str
     top_n: int
-    parameters: str
+    parameters: str | list[str]
     text_component: Literal["text", "heading1", "heading2", "heading3"]
     content: str
     img_src: str
@@ -60,7 +70,7 @@ class LayoutPayload(TypedDict, total=False):
     email_send: Literal["enable", "disable"]
     email_recipients: str
     max_pdf_report: int
-    page: str
+    page: LayoutPageDict
     body_item: str | list[str] | list[dict[str, Any]] | list[LayoutBodyitemItem]
 
 
@@ -85,7 +95,7 @@ class LayoutResponse(TypedDict, total=False):
     email_send: Literal["enable", "disable"]
     email_recipients: str
     max_pdf_report: int
-    page: str
+    page: LayoutPageDict
     body_item: list[LayoutBodyitemItem]
 
 
@@ -111,7 +121,7 @@ class LayoutObject(FortiObject):
     email_send: Literal["enable", "disable"]
     email_recipients: str
     max_pdf_report: int
-    page: str
+    page: LayoutPageDict
     body_item: list[LayoutBodyitemItem]
 
 
@@ -206,7 +216,7 @@ class Layout:
         email_send: Literal["enable", "disable"] | None = ...,
         email_recipients: str | None = ...,
         max_pdf_report: int | None = ...,
-        page: str | None = ...,
+        page: LayoutPageDict | None = ...,
         body_item: str | list[str] | list[dict[str, Any]] | list[LayoutBodyitemItem] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
@@ -235,7 +245,7 @@ class Layout:
         email_send: Literal["enable", "disable"] | None = ...,
         email_recipients: str | None = ...,
         max_pdf_report: int | None = ...,
-        page: str | None = ...,
+        page: LayoutPageDict | None = ...,
         body_item: str | list[str] | list[dict[str, Any]] | list[LayoutBodyitemItem] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
@@ -282,7 +292,7 @@ class Layout:
         email_send: Literal["enable", "disable"] | None = ...,
         email_recipients: str | None = ...,
         max_pdf_report: int | None = ...,
-        page: str | None = ...,
+        page: LayoutPageDict | None = ...,
         body_item: str | list[str] | list[dict[str, Any]] | list[LayoutBodyitemItem] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,

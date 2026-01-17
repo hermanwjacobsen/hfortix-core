@@ -30,7 +30,7 @@ class AttributeMatchMatchItem:
     """Nested item for match field - supports attribute access."""
     id: int
     rule_strategy: Literal["and", "or"]
-    rule: str
+    rule: str | list[str]
 
 
 class AttributeMatchPayload(TypedDict, total=False):

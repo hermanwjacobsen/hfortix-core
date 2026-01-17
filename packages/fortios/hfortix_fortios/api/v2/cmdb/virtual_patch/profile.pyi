@@ -30,8 +30,8 @@ class ProfileExemptionItem:
     """Nested item for exemption field - supports attribute access."""
     id: int
     status: Literal["enable", "disable"]
-    rule: str
-    device: str
+    rule: str | list[str]
+    device: str | list[str]
 
 
 class ProfilePayload(TypedDict, total=False):

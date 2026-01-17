@@ -71,7 +71,7 @@ class SdwanHealthcheckItem:
     probe_packets: Literal["disable", "enable"]
     addr_mode: Literal["ipv4", "ipv6"]
     system_dns: Literal["disable", "enable"]
-    server: str
+    server: str | list[str]
     detect_mode: Literal["active", "passive", "prefer-passive", "remote", "agent-based"]
     protocol: Literal["ping", "tcp-echo", "udp-echo", "http", "https", "twamp", "dns", "tcp-connect", "ftp"]
     port: int
@@ -112,14 +112,14 @@ class SdwanHealthcheckItem:
     vrf: int
     source: str
     source6: str
-    members: str
+    members: str | list[str]
     mos_codec: Literal["g711", "g722", "g729"]
     class_id: int
     packet_loss_weight: int
     latency_weight: int
     jitter_weight: int
     bandwidth_weight: int
-    sla: str
+    sla: str | list[str]
 
 
 class SdwanServiceItem:
@@ -128,9 +128,9 @@ class SdwanServiceItem:
     name: str
     addr_mode: Literal["ipv4", "ipv6"]
     load_balance: Literal["enable", "disable"]
-    input_device: str
+    input_device: str | list[str]
     input_device_negate: Literal["enable", "disable"]
-    input_zone: str
+    input_zone: str | list[str]
     mode: Literal["auto", "manual", "priority", "sla"]
     zone_mode: Literal["enable", "disable"]
     minimum_sla_meet_members: int
@@ -146,24 +146,24 @@ class SdwanServiceItem:
     end_port: int
     start_src_port: int
     end_src_port: int
-    dst: str
+    dst: str | list[str]
     dst_negate: Literal["enable", "disable"]
-    src: str
-    dst6: str
-    src6: str
+    src: str | list[str]
+    dst6: str | list[str]
+    src6: str | list[str]
     src_negate: Literal["enable", "disable"]
-    users: str
-    groups: str
+    users: str | list[str]
+    groups: str | list[str]
     internet_service: Literal["enable", "disable"]
-    internet_service_custom: str
-    internet_service_custom_group: str
-    internet_service_fortiguard: str
-    internet_service_name: str
-    internet_service_group: str
-    internet_service_app_ctrl: str
-    internet_service_app_ctrl_group: str
-    internet_service_app_ctrl_category: str
-    health_check: str
+    internet_service_custom: str | list[str]
+    internet_service_custom_group: str | list[str]
+    internet_service_fortiguard: str | list[str]
+    internet_service_name: str | list[str]
+    internet_service_group: str | list[str]
+    internet_service_app_ctrl: str | list[str]
+    internet_service_app_ctrl_group: str | list[str]
+    internet_service_app_ctrl_category: str | list[str]
+    health_check: str | list[str]
     link_cost_factor: Literal["latency", "jitter", "packet-loss", "inbandwidth", "outbandwidth", "bibandwidth", "custom-profile-1"]
     packet_loss_weight: int
     latency_weight: int
@@ -176,9 +176,9 @@ class SdwanServiceItem:
     dscp_reverse: Literal["enable", "disable"]
     dscp_forward_tag: str
     dscp_reverse_tag: str
-    sla: str
-    priority_members: str
-    priority_zone: str
+    sla: str | list[str]
+    priority_members: str | list[str]
+    priority_zone: str | list[str]
     status: Literal["enable", "disable"]
     gateway: Literal["enable", "disable"]
     default: Literal["enable", "disable"]
@@ -195,7 +195,7 @@ class SdwanServiceItem:
 class SdwanNeighborItem:
     """Nested item for neighbor field - supports attribute access."""
     ip: str
-    member: str
+    member: str | list[str]
     service_id: int
     minimum_sla_meet_members: int
     mode: Literal["sla", "speedtest"]
@@ -208,14 +208,14 @@ class SdwanNeighborItem:
 class SdwanDuplicationItem:
     """Nested item for duplication field - supports attribute access."""
     id: int
-    service_id: str
-    srcaddr: str
-    dstaddr: str
-    srcaddr6: str
-    dstaddr6: str
-    srcintf: str
-    dstintf: str
-    service: str
+    service_id: str | list[str]
+    srcaddr: str | list[str]
+    dstaddr: str | list[str]
+    srcaddr6: str | list[str]
+    dstaddr6: str | list[str]
+    srcintf: str | list[str]
+    dstintf: str | list[str]
+    service: str | list[str]
     packet_duplication: Literal["disable", "force", "on-demand"]
     sla_match_service: Literal["enable", "disable"]
     packet_de_duplication: Literal["enable", "disable"]

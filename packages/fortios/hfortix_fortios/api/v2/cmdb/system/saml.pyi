@@ -38,7 +38,7 @@ class SamlServiceprovidersItem:
     idp_entity_id: str
     idp_single_sign_on_url: str
     idp_single_logout_url: str
-    assertion_attributes: str
+    assertion_attributes: str | list[str]
 
 
 class SamlPayload(TypedDict, total=False):

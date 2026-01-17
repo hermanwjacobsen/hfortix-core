@@ -49,18 +49,18 @@ class RouteMapRuleItem:
     set_aggregator_as: int
     set_aggregator_ip: str
     set_aspath_action: Literal["prepend", "replace"]
-    set_aspath: str
+    set_aspath: str | list[str]
     set_atomic_aggregate: Literal["enable", "disable"]
     set_community_delete: str
-    set_community: str
+    set_community: str | list[str]
     set_community_additive: Literal["enable", "disable"]
     set_dampening_reachability_half_life: int
     set_dampening_reuse: int
     set_dampening_suppress: int
     set_dampening_max_suppress: int
     set_dampening_unreachability_half_life: int
-    set_extcommunity_rt: str
-    set_extcommunity_soo: str
+    set_extcommunity_rt: str | list[str]
+    set_extcommunity_soo: str | list[str]
     set_ip_nexthop: str
     set_ip_prefsrc: str
     set_vpnv4_nexthop: str

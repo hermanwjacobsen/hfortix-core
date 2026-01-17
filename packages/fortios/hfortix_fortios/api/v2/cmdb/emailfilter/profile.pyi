@@ -26,6 +26,58 @@ from hfortix_fortios.models import (
 # TypedDict Payloads
 # ================================================================
 
+class ProfileImapDict(TypedDict, total=False):
+    """Nested object type for imap field."""
+    log_all: Literal["disable", "enable"]
+    action: Literal["pass", "tag"]
+    tag_type: Literal["subject", "header", "spaminfo"]
+    tag_msg: str
+
+
+class ProfilePop3Dict(TypedDict, total=False):
+    """Nested object type for pop3 field."""
+    log_all: Literal["disable", "enable"]
+    action: Literal["pass", "tag"]
+    tag_type: Literal["subject", "header", "spaminfo"]
+    tag_msg: str
+
+
+class ProfileSmtpDict(TypedDict, total=False):
+    """Nested object type for smtp field."""
+    log_all: Literal["disable", "enable"]
+    action: Literal["pass", "tag", "discard"]
+    tag_type: Literal["subject", "header", "spaminfo"]
+    tag_msg: str
+    hdrip: Literal["disable", "enable"]
+    local_override: Literal["disable", "enable"]
+
+
+class ProfileMapiDict(TypedDict, total=False):
+    """Nested object type for mapi field."""
+    log_all: Literal["disable", "enable"]
+    action: Literal["pass", "discard"]
+
+
+class ProfileMsnhotmailDict(TypedDict, total=False):
+    """Nested object type for msn-hotmail field."""
+    log_all: Literal["disable", "enable"]
+
+
+class ProfileYahoomailDict(TypedDict, total=False):
+    """Nested object type for yahoo-mail field."""
+    log_all: Literal["disable", "enable"]
+
+
+class ProfileGmailDict(TypedDict, total=False):
+    """Nested object type for gmail field."""
+    log_all: Literal["disable", "enable"]
+
+
+class ProfileOtherwebmailsDict(TypedDict, total=False):
+    """Nested object type for other-webmails field."""
+    log_all: Literal["disable", "enable"]
+
+
 class ProfilePayload(TypedDict, total=False):
     """Payload type for Profile operations."""
     name: str
@@ -37,14 +89,14 @@ class ProfilePayload(TypedDict, total=False):
     spam_filtering: Literal["enable", "disable"]
     external: Literal["enable", "disable"]
     options: str | list[str]
-    imap: str
-    pop3: str
-    smtp: str
-    mapi: str
-    msn_hotmail: str
-    yahoo_mail: str
-    gmail: str
-    other_webmails: str
+    imap: ProfileImapDict
+    pop3: ProfilePop3Dict
+    smtp: ProfileSmtpDict
+    mapi: ProfileMapiDict
+    msn_hotmail: ProfileMsnhotmailDict
+    yahoo_mail: ProfileYahoomailDict
+    gmail: ProfileGmailDict
+    other_webmails: ProfileOtherwebmailsDict
     spam_bword_threshold: int
     spam_bword_table: int
     spam_bal_table: int
@@ -68,14 +120,14 @@ class ProfileResponse(TypedDict, total=False):
     spam_filtering: Literal["enable", "disable"]
     external: Literal["enable", "disable"]
     options: str
-    imap: str
-    pop3: str
-    smtp: str
-    mapi: str
-    msn_hotmail: str
-    yahoo_mail: str
-    gmail: str
-    other_webmails: str
+    imap: ProfileImapDict
+    pop3: ProfilePop3Dict
+    smtp: ProfileSmtpDict
+    mapi: ProfileMapiDict
+    msn_hotmail: ProfileMsnhotmailDict
+    yahoo_mail: ProfileYahoomailDict
+    gmail: ProfileGmailDict
+    other_webmails: ProfileOtherwebmailsDict
     spam_bword_threshold: int
     spam_bword_table: int
     spam_bal_table: int
@@ -100,14 +152,14 @@ class ProfileObject(FortiObject):
     spam_filtering: Literal["enable", "disable"]
     external: Literal["enable", "disable"]
     options: str
-    imap: str
-    pop3: str
-    smtp: str
-    mapi: str
-    msn_hotmail: str
-    yahoo_mail: str
-    gmail: str
-    other_webmails: str
+    imap: ProfileImapDict
+    pop3: ProfilePop3Dict
+    smtp: ProfileSmtpDict
+    mapi: ProfileMapiDict
+    msn_hotmail: ProfileMsnhotmailDict
+    yahoo_mail: ProfileYahoomailDict
+    gmail: ProfileGmailDict
+    other_webmails: ProfileOtherwebmailsDict
     spam_bword_threshold: int
     spam_bword_table: int
     spam_bal_table: int
@@ -201,14 +253,14 @@ class Profile:
         spam_filtering: Literal["enable", "disable"] | None = ...,
         external: Literal["enable", "disable"] | None = ...,
         options: str | list[str] | None = ...,
-        imap: str | None = ...,
-        pop3: str | None = ...,
-        smtp: str | None = ...,
-        mapi: str | None = ...,
-        msn_hotmail: str | None = ...,
-        yahoo_mail: str | None = ...,
-        gmail: str | None = ...,
-        other_webmails: str | None = ...,
+        imap: ProfileImapDict | None = ...,
+        pop3: ProfilePop3Dict | None = ...,
+        smtp: ProfileSmtpDict | None = ...,
+        mapi: ProfileMapiDict | None = ...,
+        msn_hotmail: ProfileMsnhotmailDict | None = ...,
+        yahoo_mail: ProfileYahoomailDict | None = ...,
+        gmail: ProfileGmailDict | None = ...,
+        other_webmails: ProfileOtherwebmailsDict | None = ...,
         spam_bword_threshold: int | None = ...,
         spam_bword_table: int | None = ...,
         spam_bal_table: int | None = ...,
@@ -236,14 +288,14 @@ class Profile:
         spam_filtering: Literal["enable", "disable"] | None = ...,
         external: Literal["enable", "disable"] | None = ...,
         options: str | list[str] | None = ...,
-        imap: str | None = ...,
-        pop3: str | None = ...,
-        smtp: str | None = ...,
-        mapi: str | None = ...,
-        msn_hotmail: str | None = ...,
-        yahoo_mail: str | None = ...,
-        gmail: str | None = ...,
-        other_webmails: str | None = ...,
+        imap: ProfileImapDict | None = ...,
+        pop3: ProfilePop3Dict | None = ...,
+        smtp: ProfileSmtpDict | None = ...,
+        mapi: ProfileMapiDict | None = ...,
+        msn_hotmail: ProfileMsnhotmailDict | None = ...,
+        yahoo_mail: ProfileYahoomailDict | None = ...,
+        gmail: ProfileGmailDict | None = ...,
+        other_webmails: ProfileOtherwebmailsDict | None = ...,
         spam_bword_threshold: int | None = ...,
         spam_bword_table: int | None = ...,
         spam_bal_table: int | None = ...,
@@ -289,14 +341,14 @@ class Profile:
         spam_filtering: Literal["enable", "disable"] | None = ...,
         external: Literal["enable", "disable"] | None = ...,
         options: Literal["bannedword", "spambal", "spamfsip", "spamfssubmit", "spamfschksum", "spamfsurl", "spamhelodns", "spamraddrdns", "spamrbl", "spamhdrcheck", "spamfsphish"] | list[str] | None = ...,
-        imap: str | None = ...,
-        pop3: str | None = ...,
-        smtp: str | None = ...,
-        mapi: str | None = ...,
-        msn_hotmail: str | None = ...,
-        yahoo_mail: str | None = ...,
-        gmail: str | None = ...,
-        other_webmails: str | None = ...,
+        imap: ProfileImapDict | None = ...,
+        pop3: ProfilePop3Dict | None = ...,
+        smtp: ProfileSmtpDict | None = ...,
+        mapi: ProfileMapiDict | None = ...,
+        msn_hotmail: ProfileMsnhotmailDict | None = ...,
+        yahoo_mail: ProfileYahoomailDict | None = ...,
+        gmail: ProfileGmailDict | None = ...,
+        other_webmails: ProfileOtherwebmailsDict | None = ...,
         spam_bword_threshold: int | None = ...,
         spam_bword_table: int | None = ...,
         spam_bal_table: int | None = ...,

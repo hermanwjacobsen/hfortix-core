@@ -26,6 +26,17 @@ from hfortix_fortios.models import (
 # TypedDict Payloads
 # ================================================================
 
+class ProfileDomainfilterDict(TypedDict, total=False):
+    """Nested object type for domain-filter field."""
+    domain_filter_table: int
+
+
+class ProfileFtgddnsDict(TypedDict, total=False):
+    """Nested object type for ftgd-dns field."""
+    options: Literal["error-allow", "ftgd-disable"]
+    filters: str | list[str]
+
+
 class ProfileExternalipblocklistItem:
     """Nested item for external-ip-blocklist field - supports attribute access."""
     name: str
@@ -53,8 +64,8 @@ class ProfilePayload(TypedDict, total=False):
     """Payload type for Profile operations."""
     name: str
     comment: str
-    domain_filter: str
-    ftgd_dns: str
+    domain_filter: ProfileDomainfilterDict
+    ftgd_dns: ProfileFtgddnsDict
     log_all_domain: Literal["enable", "disable"]
     sdns_ftgd_err_log: Literal["enable", "disable"]
     sdns_domain_log: Literal["enable", "disable"]
@@ -78,8 +89,8 @@ class ProfileResponse(TypedDict, total=False):
     """Response type for Profile - use with .dict property for typed dict access."""
     name: str
     comment: str
-    domain_filter: str
-    ftgd_dns: str
+    domain_filter: ProfileDomainfilterDict
+    ftgd_dns: ProfileFtgddnsDict
     log_all_domain: Literal["enable", "disable"]
     sdns_ftgd_err_log: Literal["enable", "disable"]
     sdns_domain_log: Literal["enable", "disable"]
@@ -104,8 +115,8 @@ class ProfileObject(FortiObject):
     """Typed FortiObject for Profile with field access."""
     name: str
     comment: str
-    domain_filter: str
-    ftgd_dns: str
+    domain_filter: ProfileDomainfilterDict
+    ftgd_dns: ProfileFtgddnsDict
     log_all_domain: Literal["enable", "disable"]
     sdns_ftgd_err_log: Literal["enable", "disable"]
     sdns_domain_log: Literal["enable", "disable"]
@@ -199,8 +210,8 @@ class Profile:
         payload_dict: ProfilePayload | None = ...,
         name: str | None = ...,
         comment: str | None = ...,
-        domain_filter: str | None = ...,
-        ftgd_dns: str | None = ...,
+        domain_filter: ProfileDomainfilterDict | None = ...,
+        ftgd_dns: ProfileFtgddnsDict | None = ...,
         log_all_domain: Literal["enable", "disable"] | None = ...,
         sdns_ftgd_err_log: Literal["enable", "disable"] | None = ...,
         sdns_domain_log: Literal["enable", "disable"] | None = ...,
@@ -228,8 +239,8 @@ class Profile:
         payload_dict: ProfilePayload | None = ...,
         name: str | None = ...,
         comment: str | None = ...,
-        domain_filter: str | None = ...,
-        ftgd_dns: str | None = ...,
+        domain_filter: ProfileDomainfilterDict | None = ...,
+        ftgd_dns: ProfileFtgddnsDict | None = ...,
         log_all_domain: Literal["enable", "disable"] | None = ...,
         sdns_ftgd_err_log: Literal["enable", "disable"] | None = ...,
         sdns_domain_log: Literal["enable", "disable"] | None = ...,
@@ -275,8 +286,8 @@ class Profile:
         payload_dict: ProfilePayload | None = ...,
         name: str | None = ...,
         comment: str | None = ...,
-        domain_filter: str | None = ...,
-        ftgd_dns: str | None = ...,
+        domain_filter: ProfileDomainfilterDict | None = ...,
+        ftgd_dns: ProfileFtgddnsDict | None = ...,
         log_all_domain: Literal["enable", "disable"] | None = ...,
         sdns_ftgd_err_log: Literal["enable", "disable"] | None = ...,
         sdns_domain_log: Literal["enable", "disable"] | None = ...,

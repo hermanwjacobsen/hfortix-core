@@ -30,8 +30,8 @@ class ProfileHeadersItem:
     """Nested item for headers field - supports attribute access."""
     id: int
     name: str
-    dstaddr: str
-    dstaddr6: str
+    dstaddr: str | list[str]
+    dstaddr6: str | list[str]
     action: Literal["add-to-request", "add-to-response", "remove-from-request", "remove-from-response", "monitor-request", "monitor-response"]
     content: str
     base64_encoding: Literal["disable", "enable"]

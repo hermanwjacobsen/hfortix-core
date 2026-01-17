@@ -31,7 +31,7 @@ class InternetServiceAdditionEntryItem:
     id: int
     addr_mode: Literal["ipv4", "ipv6"]
     protocol: int
-    port_range: str
+    port_range: str | list[str]
 
 
 class InternetServiceAdditionPayload(TypedDict, total=False):

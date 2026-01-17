@@ -208,8 +208,8 @@ class BgpNeighborItem:
     adv_additional_path_vpnv6: int
     password: str
     auth_options: str
-    conditional_advertise: str
-    conditional_advertise6: str
+    conditional_advertise: str | list[str]
+    conditional_advertise6: str | list[str]
 
 
 class BgpNeighborgroupItem:
@@ -439,10 +439,10 @@ class BgpVrfItem:
     vrf: str
     role: Literal["standalone", "ce", "pe"]
     rd: str
-    export_rt: str
-    import_rt: str
+    export_rt: str | list[str]
+    import_rt: str | list[str]
     import_route_map: str
-    leak_target: str
+    leak_target: str | list[str]
 
 
 class BgpVrf6Item:
@@ -450,10 +450,10 @@ class BgpVrf6Item:
     vrf: str
     role: Literal["standalone", "ce", "pe"]
     rd: str
-    export_rt: str
-    import_rt: str
+    export_rt: str | list[str]
+    import_rt: str | list[str]
     import_route_map: str
-    leak_target: str
+    leak_target: str | list[str]
 
 
 class BgpPayload(TypedDict, total=False):

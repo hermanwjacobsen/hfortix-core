@@ -35,10 +35,10 @@ class ProfileRuleItem:
     proto: Literal["smtp", "pop3", "imap", "http-get", "http-post", "ftp", "nntp", "mapi", "ssh", "cifs"]
     filter_by: Literal["sensor", "label", "fingerprint", "encrypted", "none"]
     file_size: int
-    sensitivity: str
+    sensitivity: str | list[str]
     match_percentage: int
     file_type: int
-    sensor: str
+    sensor: str | list[str]
     label: str
     archive: Literal["disable", "enable"]
     action: Literal["allow", "log-only", "block", "quarantine-ip"]

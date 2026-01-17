@@ -26,12 +26,27 @@ from hfortix_fortios.models import (
 # TypedDict Payloads
 # ================================================================
 
+class IngressActionDict(TypedDict, total=False):
+    """Nested object type for action field."""
+    drop: Literal["enable", "disable"]
+    count: Literal["enable", "disable"]
+
+
+class IngressClassifierDict(TypedDict, total=False):
+    """Nested object type for classifier field."""
+    dst_ip_prefix: str
+    dst_mac: str
+    src_ip_prefix: str
+    src_mac: str
+    vlan: int
+
+
 class IngressPayload(TypedDict, total=False):
     """Payload type for Ingress operations."""
     id: int
     description: str
-    action: str
-    classifier: str
+    action: IngressActionDict
+    classifier: IngressClassifierDict
 
 
 # ================================================================
@@ -42,8 +57,8 @@ class IngressResponse(TypedDict, total=False):
     """Response type for Ingress - use with .dict property for typed dict access."""
     id: int
     description: str
-    action: str
-    classifier: str
+    action: IngressActionDict
+    classifier: IngressClassifierDict
 
 
 # ================================================================
@@ -55,8 +70,8 @@ class IngressObject(FortiObject):
     """Typed FortiObject for Ingress with field access."""
     id: int
     description: str
-    action: str
-    classifier: str
+    action: IngressActionDict
+    classifier: IngressClassifierDict
 
 
 # ================================================================
@@ -137,8 +152,8 @@ class Ingress:
         payload_dict: IngressPayload | None = ...,
         id: int | None = ...,
         description: str | None = ...,
-        action: str | None = ...,
-        classifier: str | None = ...,
+        action: IngressActionDict | None = ...,
+        classifier: IngressClassifierDict | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -153,8 +168,8 @@ class Ingress:
         payload_dict: IngressPayload | None = ...,
         id: int | None = ...,
         description: str | None = ...,
-        action: str | None = ...,
-        classifier: str | None = ...,
+        action: IngressActionDict | None = ...,
+        classifier: IngressClassifierDict | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -187,8 +202,8 @@ class Ingress:
         payload_dict: IngressPayload | None = ...,
         id: int | None = ...,
         description: str | None = ...,
-        action: str | None = ...,
-        classifier: str | None = ...,
+        action: IngressActionDict | None = ...,
+        classifier: IngressClassifierDict | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,

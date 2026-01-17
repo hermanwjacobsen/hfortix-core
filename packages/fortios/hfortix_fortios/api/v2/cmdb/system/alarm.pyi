@@ -38,7 +38,7 @@ class AlarmGroupsItem:
     log_full_warning_threshold: int
     encryption_failure_threshold: int
     decryption_failure_threshold: int
-    fw_policy_violations: str
+    fw_policy_violations: str | list[str]
     fw_policy_id: int
     fw_policy_id_threshold: int
 

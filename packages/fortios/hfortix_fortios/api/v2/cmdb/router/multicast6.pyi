@@ -32,12 +32,19 @@ class Multicast6InterfaceItem:
     hello_holdtime: int
 
 
+class Multicast6PimsmglobalDict(TypedDict, total=False):
+    """Nested object type for pim-sm-global field."""
+    register_rate_limit: int
+    pim_use_sdwan: Literal["enable", "disable"]
+    rp_address: str | list[str]
+
+
 class Multicast6Payload(TypedDict, total=False):
     """Payload type for Multicast6 operations."""
     multicast_routing: Literal["enable", "disable"]
     multicast_pmtu: Literal["enable", "disable"]
     interface: str | list[str] | list[dict[str, Any]] | list[Multicast6InterfaceItem]
-    pim_sm_global: str
+    pim_sm_global: Multicast6PimsmglobalDict
 
 
 # ================================================================
@@ -49,7 +56,7 @@ class Multicast6Response(TypedDict, total=False):
     multicast_routing: Literal["enable", "disable"]
     multicast_pmtu: Literal["enable", "disable"]
     interface: list[Multicast6InterfaceItem]
-    pim_sm_global: str
+    pim_sm_global: Multicast6PimsmglobalDict
 
 
 # ================================================================
@@ -62,7 +69,7 @@ class Multicast6Object(FortiObject):
     multicast_routing: Literal["enable", "disable"]
     multicast_pmtu: Literal["enable", "disable"]
     interface: list[Multicast6InterfaceItem]
-    pim_sm_global: str
+    pim_sm_global: Multicast6PimsmglobalDict
 
 
 # ================================================================
@@ -124,7 +131,7 @@ class Multicast6:
         multicast_routing: Literal["enable", "disable"] | None = ...,
         multicast_pmtu: Literal["enable", "disable"] | None = ...,
         interface: str | list[str] | list[dict[str, Any]] | list[Multicast6InterfaceItem] | None = ...,
-        pim_sm_global: str | None = ...,
+        pim_sm_global: Multicast6PimsmglobalDict | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -147,7 +154,7 @@ class Multicast6:
         multicast_routing: Literal["enable", "disable"] | None = ...,
         multicast_pmtu: Literal["enable", "disable"] | None = ...,
         interface: str | list[str] | list[dict[str, Any]] | list[Multicast6InterfaceItem] | None = ...,
-        pim_sm_global: str | None = ...,
+        pim_sm_global: Multicast6PimsmglobalDict | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,

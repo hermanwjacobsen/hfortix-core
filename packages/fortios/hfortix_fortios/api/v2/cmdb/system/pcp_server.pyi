@@ -30,7 +30,7 @@ class PcpServerPoolsItem:
     name: str
     description: str
     id: int
-    client_subnet: str
+    client_subnet: str | list[str]
     ext_intf: str
     arp_reply: Literal["disable", "enable"]
     extip: str
@@ -41,10 +41,10 @@ class PcpServerPoolsItem:
     mapping_filter_limit: int
     allow_opcode: Literal["map", "peer", "announce"]
     third_party: Literal["allow", "disallow"]
-    third_party_subnet: str
+    third_party_subnet: str | list[str]
     multicast_announcement: Literal["enable", "disable"]
     announcement_count: int
-    intl_intf: str
+    intl_intf: str | list[str]
     recycle_delay: int
 
 

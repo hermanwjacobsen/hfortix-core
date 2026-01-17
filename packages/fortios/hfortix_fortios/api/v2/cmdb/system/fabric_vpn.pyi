@@ -49,7 +49,7 @@ class FabricVpnAdvertisedsubnetsItem:
     access: Literal["inbound", "bidirectional"]
     bgp_network: int
     firewall_address: str
-    policies: int
+    policies: int | list[int]
 
 
 class FabricVpnPayload(TypedDict, total=False):

@@ -31,7 +31,7 @@ class MpskProfileMpskgroupItem:
     name: str
     vlan_type: Literal["no-vlan", "fixed-vlan"]
     vlan_id: int
-    mpsk_key: str
+    mpsk_key: str | list[str]
 
 
 class MpskProfilePayload(TypedDict, total=False):

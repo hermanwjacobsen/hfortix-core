@@ -26,12 +26,19 @@ from hfortix_fortios.models import (
 # TypedDict Payloads
 # ================================================================
 
+class FortigateProfileLanextensionDict(TypedDict, total=False):
+    """Nested object type for lan-extension field."""
+    ipsec_tunnel: str
+    backhaul_interface: str
+    backhaul_ip: str
+
+
 class FortigateProfilePayload(TypedDict, total=False):
     """Payload type for FortigateProfile operations."""
     name: str
     id: int
     extension: Literal["lan-extension"]
-    lan_extension: str
+    lan_extension: FortigateProfileLanextensionDict
 
 
 # ================================================================
@@ -43,7 +50,7 @@ class FortigateProfileResponse(TypedDict, total=False):
     name: str
     id: int
     extension: Literal["lan-extension"]
-    lan_extension: str
+    lan_extension: FortigateProfileLanextensionDict
 
 
 # ================================================================
@@ -56,7 +63,7 @@ class FortigateProfileObject(FortiObject):
     name: str
     id: int
     extension: Literal["lan-extension"]
-    lan_extension: str
+    lan_extension: FortigateProfileLanextensionDict
 
 
 # ================================================================
@@ -138,7 +145,7 @@ class FortigateProfile:
         name: str | None = ...,
         id: int | None = ...,
         extension: Literal["lan-extension"] | None = ...,
-        lan_extension: str | None = ...,
+        lan_extension: FortigateProfileLanextensionDict | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -154,7 +161,7 @@ class FortigateProfile:
         name: str | None = ...,
         id: int | None = ...,
         extension: Literal["lan-extension"] | None = ...,
-        lan_extension: str | None = ...,
+        lan_extension: FortigateProfileLanextensionDict | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -188,7 +195,7 @@ class FortigateProfile:
         name: str | None = ...,
         id: int | None = ...,
         extension: Literal["lan-extension"] | None = ...,
-        lan_extension: str | None = ...,
+        lan_extension: FortigateProfileLanextensionDict | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,

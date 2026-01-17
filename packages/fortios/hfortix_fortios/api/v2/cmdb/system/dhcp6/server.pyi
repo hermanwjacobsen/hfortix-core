@@ -32,9 +32,9 @@ class ServerOptionsItem:
     code: int
     type: Literal["hex", "string", "ip6", "fqdn"]
     value: str
-    ip6: str
+    ip6: str | list[str]
     vci_match: Literal["disable", "enable"]
-    vci_string: str
+    vci_string: str | list[str]
 
 
 class ServerPrefixrangeItem:
@@ -51,7 +51,7 @@ class ServerIprangeItem:
     start_ip: str
     end_ip: str
     vci_match: Literal["disable", "enable"]
-    vci_string: str
+    vci_string: str | list[str]
 
 
 class ServerPayload(TypedDict, total=False):

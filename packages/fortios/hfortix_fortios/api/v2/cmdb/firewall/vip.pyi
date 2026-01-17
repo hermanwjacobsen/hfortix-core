@@ -41,6 +41,18 @@ class VipExtaddrItem:
     name: str
 
 
+class VipQuicDict(TypedDict, total=False):
+    """Nested object type for quic field."""
+    max_idle_timeout: int
+    max_udp_payload_size: int
+    active_connection_id_limit: int
+    ack_delay_exponent: int
+    max_ack_delay: int
+    max_datagram_frame_size: int
+    active_migration: Literal["enable", "disable"]
+    grease_quic_bit: Literal["enable", "disable"]
+
+
 class VipMappedipItem:
     """Nested item for mappedip field - supports attribute access."""
     range: str
@@ -65,7 +77,7 @@ class VipRealserversItem:
     http_host: str
     translate_host: Literal["enable", "disable"]
     max_connections: int
-    monitor: str
+    monitor: str | list[str]
     client_ip: str
     verify_cert: Literal["enable", "disable"]
 
@@ -117,7 +129,7 @@ class VipPayload(TypedDict, total=False):
     extaddr: str | list[str] | list[dict[str, Any]] | list[VipExtaddrItem]
     h2_support: Literal["enable", "disable"]
     h3_support: Literal["enable", "disable"]
-    quic: str
+    quic: VipQuicDict
     nat44: Literal["disable", "enable"]
     nat46: Literal["disable", "enable"]
     add_nat46_route: Literal["disable", "enable"]
@@ -223,7 +235,7 @@ class VipResponse(TypedDict, total=False):
     extaddr: list[VipExtaddrItem]
     h2_support: Literal["enable", "disable"]
     h3_support: Literal["enable", "disable"]
-    quic: str
+    quic: VipQuicDict
     nat44: Literal["disable", "enable"]
     nat46: Literal["disable", "enable"]
     add_nat46_route: Literal["disable", "enable"]
@@ -330,7 +342,7 @@ class VipObject(FortiObject):
     extaddr: list[VipExtaddrItem]
     h2_support: Literal["enable", "disable"]
     h3_support: Literal["enable", "disable"]
-    quic: str
+    quic: VipQuicDict
     nat44: Literal["disable", "enable"]
     nat46: Literal["disable", "enable"]
     add_nat46_route: Literal["disable", "enable"]
@@ -506,7 +518,7 @@ class Vip:
         extaddr: str | list[str] | list[dict[str, Any]] | list[VipExtaddrItem] | None = ...,
         h2_support: Literal["enable", "disable"] | None = ...,
         h3_support: Literal["enable", "disable"] | None = ...,
-        quic: str | None = ...,
+        quic: VipQuicDict | None = ...,
         nat44: Literal["disable", "enable"] | None = ...,
         nat46: Literal["disable", "enable"] | None = ...,
         add_nat46_route: Literal["disable", "enable"] | None = ...,
@@ -616,7 +628,7 @@ class Vip:
         extaddr: str | list[str] | list[dict[str, Any]] | list[VipExtaddrItem] | None = ...,
         h2_support: Literal["enable", "disable"] | None = ...,
         h3_support: Literal["enable", "disable"] | None = ...,
-        quic: str | None = ...,
+        quic: VipQuicDict | None = ...,
         nat44: Literal["disable", "enable"] | None = ...,
         nat46: Literal["disable", "enable"] | None = ...,
         add_nat46_route: Literal["disable", "enable"] | None = ...,
@@ -744,7 +756,7 @@ class Vip:
         extaddr: str | list[str] | list[dict[str, Any]] | list[VipExtaddrItem] | None = ...,
         h2_support: Literal["enable", "disable"] | None = ...,
         h3_support: Literal["enable", "disable"] | None = ...,
-        quic: str | None = ...,
+        quic: VipQuicDict | None = ...,
         nat44: Literal["disable", "enable"] | None = ...,
         nat46: Literal["disable", "enable"] | None = ...,
         add_nat46_route: Literal["disable", "enable"] | None = ...,

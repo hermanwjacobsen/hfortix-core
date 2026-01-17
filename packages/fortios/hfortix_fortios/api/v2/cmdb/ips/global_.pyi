@@ -25,6 +25,15 @@ from hfortix_fortios.models import (
 # TypedDict Payloads
 # ================================================================
 
+class GlobalTlsactiveprobeDict(TypedDict, total=False):
+    """Nested object type for tls-active-probe field."""
+    interface_select_method: Literal["auto", "sdwan", "specify"]
+    interface: str
+    vdom: str
+    source_ip: str
+    source_ip6: str
+
+
 class GlobalPayload(TypedDict, total=False):
     """Payload type for Global operations."""
     fail_open: Literal["enable", "disable"]
@@ -42,7 +51,7 @@ class GlobalPayload(TypedDict, total=False):
     ngfw_max_scan_range: int
     av_mem_limit: int
     machine_learning_detection: Literal["enable", "disable"]
-    tls_active_probe: str
+    tls_active_probe: GlobalTlsactiveprobeDict
 
 
 # ================================================================
@@ -66,7 +75,7 @@ class GlobalResponse(TypedDict, total=False):
     ngfw_max_scan_range: int
     av_mem_limit: int
     machine_learning_detection: Literal["enable", "disable"]
-    tls_active_probe: str
+    tls_active_probe: GlobalTlsactiveprobeDict
 
 
 # ================================================================
@@ -91,7 +100,7 @@ class GlobalObject(FortiObject):
     ngfw_max_scan_range: int
     av_mem_limit: int
     machine_learning_detection: Literal["enable", "disable"]
-    tls_active_probe: str
+    tls_active_probe: GlobalTlsactiveprobeDict
 
 
 # ================================================================
@@ -163,7 +172,7 @@ class Global:
         ngfw_max_scan_range: int | None = ...,
         av_mem_limit: int | None = ...,
         machine_learning_detection: Literal["enable", "disable"] | None = ...,
-        tls_active_probe: str | None = ...,
+        tls_active_probe: GlobalTlsactiveprobeDict | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> GlobalObject: ...
@@ -196,7 +205,7 @@ class Global:
         ngfw_max_scan_range: int | None = ...,
         av_mem_limit: int | None = ...,
         machine_learning_detection: Literal["enable", "disable"] | None = ...,
-        tls_active_probe: str | None = ...,
+        tls_active_probe: GlobalTlsactiveprobeDict | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> FortiObject: ...

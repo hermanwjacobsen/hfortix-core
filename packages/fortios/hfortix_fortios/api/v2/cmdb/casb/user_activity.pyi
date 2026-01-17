@@ -30,7 +30,7 @@ class UserActivityMatchItem:
     """Nested item for match field - supports attribute access."""
     id: int
     strategy: Literal["and", "or"]
-    rules: str
+    rules: str | list[str]
     tenant_extraction: str
 
 
@@ -38,7 +38,7 @@ class UserActivityControloptionsItem:
     """Nested item for control-options field - supports attribute access."""
     name: str
     status: Literal["enable", "disable"]
-    operations: str
+    operations: str | list[str]
 
 
 class UserActivityPayload(TypedDict, total=False):
