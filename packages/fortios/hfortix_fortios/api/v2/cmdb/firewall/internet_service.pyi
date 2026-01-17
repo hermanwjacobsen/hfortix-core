@@ -135,6 +135,14 @@ class InternetService:
     Primary Key: id
     """
     
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client.
+        
+        Args:
+            client: HTTP client instance for API communication
+        """
+        ...
+    
     # ================================================================
     # GET OVERLOADS - Always returns FortiObject
     # Pylance matches overloads top-to-bottom, so these must come first!
@@ -153,7 +161,6 @@ class InternetService:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> InternetServiceObject: ...
     
     # With mkey as keyword arg -> returns FortiObject
@@ -170,7 +177,6 @@ class InternetService:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> InternetServiceObject: ...
     
     # Without mkey -> returns list of FortiObjects
@@ -186,7 +192,6 @@ class InternetService:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObjectList[InternetServiceObject]: ...
     
     # ================================================================
@@ -206,7 +211,6 @@ class InternetService:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> InternetServiceObject: ...
     
     # With mkey as keyword arg -> returns single object
@@ -223,7 +227,6 @@ class InternetService:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> InternetServiceObject: ...
     
     # With no mkey -> returns list of objects
@@ -239,7 +242,6 @@ class InternetService:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObjectList[InternetServiceObject]: ...
     
     # Dict mode with mkey provided as positional arg (single dict)
@@ -255,7 +257,6 @@ class InternetService:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> InternetServiceObject: ...
     
     # Dict mode with mkey provided as keyword arg (single dict)
@@ -272,7 +273,6 @@ class InternetService:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> InternetServiceObject: ...
     
     # Dict mode - list of dicts (no mkey/name provided) - keyword-only signature
@@ -288,7 +288,6 @@ class InternetService:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObjectList[InternetServiceObject]: ...
     
     # Fallback overload for all other cases
@@ -304,7 +303,6 @@ class InternetService:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> Union[dict[str, Any], list[dict[str, Any]], FortiObject, list[FortiObject]]: ...
     
     def get(
@@ -318,12 +316,10 @@ class InternetService:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> InternetServiceObject | list[InternetServiceObject] | dict[str, Any] | list[dict[str, Any]]: ...
     
     def get_schema(
         self,
-        vdom: str | None = ...,
         format: str = ...,
     ) -> FortiObject: ...
     
@@ -344,7 +340,6 @@ class InternetService:
         extra_ip6_range_number: int | None = ...,
         singularity: int | None = ...,
         obsolete: int | None = ...,
-        vdom: str | bool | None = ...,
     ) -> InternetServiceObject: ...
     
     @overload
@@ -363,7 +358,6 @@ class InternetService:
         extra_ip6_range_number: int | None = ...,
         singularity: int | None = ...,
         obsolete: int | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     # Default overload
@@ -383,7 +377,6 @@ class InternetService:
         extra_ip6_range_number: int | None = ...,
         singularity: int | None = ...,
         obsolete: int | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     def post(
@@ -401,7 +394,6 @@ class InternetService:
         extra_ip6_range_number: int | None = ...,
         singularity: int | None = ...,
         obsolete: int | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     # PUT overloads
@@ -421,7 +413,6 @@ class InternetService:
         extra_ip6_range_number: int | None = ...,
         singularity: int | None = ...,
         obsolete: int | None = ...,
-        vdom: str | bool | None = ...,
     ) -> InternetServiceObject: ...
     
     @overload
@@ -440,7 +431,6 @@ class InternetService:
         extra_ip6_range_number: int | None = ...,
         singularity: int | None = ...,
         obsolete: int | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     # Default overload
@@ -460,7 +450,6 @@ class InternetService:
         extra_ip6_range_number: int | None = ...,
         singularity: int | None = ...,
         obsolete: int | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     def put(
@@ -478,7 +467,6 @@ class InternetService:
         extra_ip6_range_number: int | None = ...,
         singularity: int | None = ...,
         obsolete: int | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     # DELETE overloads
@@ -486,14 +474,12 @@ class InternetService:
     def delete(
         self,
         id: int | None = ...,
-        vdom: str | bool | None = ...,
     ) -> InternetServiceObject: ...
     
     @overload
     def delete(
         self,
         id: int | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     # Default overload
@@ -501,19 +487,16 @@ class InternetService:
     def delete(
         self,
         id: int | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     def delete(
         self,
         id: int | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     def exists(
         self,
         id: int,
-        vdom: str | bool | None = ...,
     ) -> bool: ...
     
     def set(
@@ -531,7 +514,6 @@ class InternetService:
         extra_ip6_range_number: int | None = ...,
         singularity: int | None = ...,
         obsolete: int | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     # Helper methods

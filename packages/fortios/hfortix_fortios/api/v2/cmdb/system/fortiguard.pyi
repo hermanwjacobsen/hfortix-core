@@ -332,6 +332,14 @@ class Fortiguard:
     Category: cmdb
     """
     
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client.
+        
+        Args:
+            client: HTTP client instance for API communication
+        """
+        ...
+    
     # ================================================================
     # GET OVERLOADS - Always returns FortiObject
     # Pylance matches overloads top-to-bottom, so these must come first!
@@ -350,7 +358,6 @@ class Fortiguard:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiguardObject: ...
     
     # With mkey as keyword arg -> returns FortiObject
@@ -367,7 +374,6 @@ class Fortiguard:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiguardObject: ...
     
     # Without mkey -> returns list of FortiObjects
@@ -383,7 +389,6 @@ class Fortiguard:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiguardObject: ...
     
     # ================================================================
@@ -403,7 +408,6 @@ class Fortiguard:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiguardObject: ...
     
     # With mkey as keyword arg -> returns single object
@@ -420,7 +424,6 @@ class Fortiguard:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiguardObject: ...
     
     # With no mkey -> returns list of objects
@@ -436,7 +439,6 @@ class Fortiguard:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiguardObject: ...
     
     # Dict mode with mkey provided as positional arg (single dict)
@@ -452,7 +454,6 @@ class Fortiguard:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiguardObject: ...
     
     # Dict mode with mkey provided as keyword arg (single dict)
@@ -469,7 +470,6 @@ class Fortiguard:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiguardObject: ...
     
     # Dict mode - list of dicts (no mkey/name provided) - keyword-only signature
@@ -485,7 +485,6 @@ class Fortiguard:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiguardObject: ...
     
     # Fallback overload for all other cases
@@ -501,7 +500,6 @@ class Fortiguard:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> dict[str, Any] | FortiObject: ...
     
     def get(
@@ -515,12 +513,10 @@ class Fortiguard:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiguardObject | dict[str, Any]: ...
     
     def get_schema(
         self,
-        vdom: str | None = ...,
         format: str = ...,
     ) -> FortiObject: ...
     
@@ -588,7 +584,6 @@ class Fortiguard:
         interface_select_method: Literal["auto", "sdwan", "specify"] | None = ...,
         interface: str | None = ...,
         vrf_select: int | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiguardObject: ...
     
     @overload
@@ -654,7 +649,6 @@ class Fortiguard:
         interface_select_method: Literal["auto", "sdwan", "specify"] | None = ...,
         interface: str | None = ...,
         vrf_select: int | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     # Default overload
@@ -721,7 +715,6 @@ class Fortiguard:
         interface_select_method: Literal["auto", "sdwan", "specify"] | None = ...,
         interface: str | None = ...,
         vrf_select: int | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     def put(
@@ -786,13 +779,11 @@ class Fortiguard:
         interface_select_method: Literal["auto", "sdwan", "specify"] | None = ...,
         interface: str | None = ...,
         vrf_select: int | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     def exists(
         self,
         name: str,
-        vdom: str | bool | None = ...,
     ) -> bool: ...
     
     def set(
@@ -857,7 +848,6 @@ class Fortiguard:
         interface_select_method: Literal["auto", "sdwan", "specify"] | None = ...,
         interface: str | None = ...,
         vrf_select: int | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     # Helper methods

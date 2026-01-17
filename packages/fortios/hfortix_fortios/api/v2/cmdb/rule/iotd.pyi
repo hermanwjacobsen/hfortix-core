@@ -267,6 +267,14 @@ class Iotd:
     Primary Key: name
     """
     
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client.
+        
+        Args:
+            client: HTTP client instance for API communication
+        """
+        ...
+    
     # ================================================================
     # GET OVERLOADS - Always returns FortiObject
     # Pylance matches overloads top-to-bottom, so these must come first!
@@ -285,7 +293,6 @@ class Iotd:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> IotdObject: ...
     
     # With mkey as keyword arg -> returns FortiObject
@@ -302,7 +309,6 @@ class Iotd:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> IotdObject: ...
     
     # Without mkey -> returns list of FortiObjects
@@ -318,7 +324,6 @@ class Iotd:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObjectList[IotdObject]: ...
     
     # ================================================================
@@ -338,7 +343,6 @@ class Iotd:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> IotdObject: ...
     
     # With mkey as keyword arg -> returns single object
@@ -355,7 +359,6 @@ class Iotd:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> IotdObject: ...
     
     # With no mkey -> returns list of objects
@@ -371,7 +374,6 @@ class Iotd:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObjectList[IotdObject]: ...
     
     # Dict mode with mkey provided as positional arg (single dict)
@@ -387,7 +389,6 @@ class Iotd:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> IotdObject: ...
     
     # Dict mode with mkey provided as keyword arg (single dict)
@@ -404,7 +405,6 @@ class Iotd:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> IotdObject: ...
     
     # Dict mode - list of dicts (no mkey/name provided) - keyword-only signature
@@ -420,7 +420,6 @@ class Iotd:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObjectList[IotdObject]: ...
     
     # Fallback overload for all other cases
@@ -436,7 +435,6 @@ class Iotd:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> Union[dict[str, Any], list[dict[str, Any]], FortiObject, list[FortiObject]]: ...
     
     def get(
@@ -450,12 +448,10 @@ class Iotd:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> IotdObject | list[IotdObject] | dict[str, Any] | list[dict[str, Any]]: ...
     
     def get_schema(
         self,
-        vdom: str | None = ...,
         format: str = ...,
     ) -> FortiObject: ...
     
@@ -477,7 +473,6 @@ class Iotd:
         parameters: str | list[str] | list[IotdParametersItem] | None = ...,
         metadata: str | list[str] | list[IotdMetadataItem] | None = ...,
         status: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> IotdObject: ...
     
     @overload
@@ -497,7 +492,6 @@ class Iotd:
         parameters: str | list[str] | list[IotdParametersItem] | None = ...,
         metadata: str | list[str] | list[IotdMetadataItem] | None = ...,
         status: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     # Default overload
@@ -518,7 +512,6 @@ class Iotd:
         parameters: str | list[str] | list[IotdParametersItem] | None = ...,
         metadata: str | list[str] | list[IotdMetadataItem] | None = ...,
         status: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     def post(
@@ -537,7 +530,6 @@ class Iotd:
         parameters: str | list[str] | list[IotdParametersItem] | None = ...,
         metadata: str | list[str] | list[IotdMetadataItem] | None = ...,
         status: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     # PUT overloads
@@ -558,7 +550,6 @@ class Iotd:
         parameters: str | list[str] | list[IotdParametersItem] | None = ...,
         metadata: str | list[str] | list[IotdMetadataItem] | None = ...,
         status: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> IotdObject: ...
     
     @overload
@@ -578,7 +569,6 @@ class Iotd:
         parameters: str | list[str] | list[IotdParametersItem] | None = ...,
         metadata: str | list[str] | list[IotdMetadataItem] | None = ...,
         status: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     # Default overload
@@ -599,7 +589,6 @@ class Iotd:
         parameters: str | list[str] | list[IotdParametersItem] | None = ...,
         metadata: str | list[str] | list[IotdMetadataItem] | None = ...,
         status: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     def put(
@@ -618,7 +607,6 @@ class Iotd:
         parameters: str | list[str] | list[IotdParametersItem] | None = ...,
         metadata: str | list[str] | list[IotdMetadataItem] | None = ...,
         status: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     # DELETE overloads
@@ -626,14 +614,12 @@ class Iotd:
     def delete(
         self,
         name: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> IotdObject: ...
     
     @overload
     def delete(
         self,
         name: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     # Default overload
@@ -641,19 +627,16 @@ class Iotd:
     def delete(
         self,
         name: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     def delete(
         self,
         name: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     def exists(
         self,
         name: str,
-        vdom: str | bool | None = ...,
     ) -> bool: ...
     
     def set(
@@ -672,7 +655,6 @@ class Iotd:
         parameters: str | list[str] | list[IotdParametersItem] | None = ...,
         metadata: str | list[str] | list[IotdMetadataItem] | None = ...,
         status: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     # Helper methods

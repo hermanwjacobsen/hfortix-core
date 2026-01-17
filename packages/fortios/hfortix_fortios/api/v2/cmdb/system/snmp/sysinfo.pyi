@@ -138,6 +138,14 @@ class Sysinfo:
     Category: cmdb
     """
     
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client.
+        
+        Args:
+            client: HTTP client instance for API communication
+        """
+        ...
+    
     # ================================================================
     # GET OVERLOADS - Always returns FortiObject
     # Pylance matches overloads top-to-bottom, so these must come first!
@@ -156,7 +164,6 @@ class Sysinfo:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> SysinfoObject: ...
     
     # With mkey as keyword arg -> returns FortiObject
@@ -173,7 +180,6 @@ class Sysinfo:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> SysinfoObject: ...
     
     # Without mkey -> returns list of FortiObjects
@@ -189,7 +195,6 @@ class Sysinfo:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> SysinfoObject: ...
     
     # ================================================================
@@ -209,7 +214,6 @@ class Sysinfo:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> SysinfoObject: ...
     
     # With mkey as keyword arg -> returns single object
@@ -226,7 +230,6 @@ class Sysinfo:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> SysinfoObject: ...
     
     # With no mkey -> returns list of objects
@@ -242,7 +245,6 @@ class Sysinfo:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> SysinfoObject: ...
     
     # Dict mode with mkey provided as positional arg (single dict)
@@ -258,7 +260,6 @@ class Sysinfo:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> SysinfoObject: ...
     
     # Dict mode with mkey provided as keyword arg (single dict)
@@ -275,7 +276,6 @@ class Sysinfo:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> SysinfoObject: ...
     
     # Dict mode - list of dicts (no mkey/name provided) - keyword-only signature
@@ -291,7 +291,6 @@ class Sysinfo:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> SysinfoObject: ...
     
     # Fallback overload for all other cases
@@ -307,7 +306,6 @@ class Sysinfo:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> dict[str, Any] | FortiObject: ...
     
     def get(
@@ -321,12 +319,10 @@ class Sysinfo:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> SysinfoObject | dict[str, Any]: ...
     
     def get_schema(
         self,
-        vdom: str | None = ...,
         format: str = ...,
     ) -> FortiObject: ...
     
@@ -348,7 +344,6 @@ class Sysinfo:
         trap_freeable_memory_threshold: int | None = ...,
         append_index: Literal["enable", "disable"] | None = ...,
         non_mgmt_vdom_query: Literal["enable", "disable"] | None = ...,
-        vdom: str | bool | None = ...,
     ) -> SysinfoObject: ...
     
     @overload
@@ -368,7 +363,6 @@ class Sysinfo:
         trap_freeable_memory_threshold: int | None = ...,
         append_index: Literal["enable", "disable"] | None = ...,
         non_mgmt_vdom_query: Literal["enable", "disable"] | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     # Default overload
@@ -389,7 +383,6 @@ class Sysinfo:
         trap_freeable_memory_threshold: int | None = ...,
         append_index: Literal["enable", "disable"] | None = ...,
         non_mgmt_vdom_query: Literal["enable", "disable"] | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     def put(
@@ -408,13 +401,11 @@ class Sysinfo:
         trap_freeable_memory_threshold: int | None = ...,
         append_index: Literal["enable", "disable"] | None = ...,
         non_mgmt_vdom_query: Literal["enable", "disable"] | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     def exists(
         self,
         name: str,
-        vdom: str | bool | None = ...,
     ) -> bool: ...
     
     def set(
@@ -433,7 +424,6 @@ class Sysinfo:
         trap_freeable_memory_threshold: int | None = ...,
         append_index: Literal["enable", "disable"] | None = ...,
         non_mgmt_vdom_query: Literal["enable", "disable"] | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     # Helper methods

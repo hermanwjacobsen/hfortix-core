@@ -94,6 +94,14 @@ class Console:
     Category: cmdb
     """
     
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client.
+        
+        Args:
+            client: HTTP client instance for API communication
+        """
+        ...
+    
     # ================================================================
     # GET OVERLOADS - Always returns FortiObject
     # Pylance matches overloads top-to-bottom, so these must come first!
@@ -112,7 +120,6 @@ class Console:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> ConsoleObject: ...
     
     # With mkey as keyword arg -> returns FortiObject
@@ -129,7 +136,6 @@ class Console:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> ConsoleObject: ...
     
     # Without mkey -> returns list of FortiObjects
@@ -145,7 +151,6 @@ class Console:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> ConsoleObject: ...
     
     # ================================================================
@@ -165,7 +170,6 @@ class Console:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> ConsoleObject: ...
     
     # With mkey as keyword arg -> returns single object
@@ -182,7 +186,6 @@ class Console:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> ConsoleObject: ...
     
     # With no mkey -> returns list of objects
@@ -198,7 +201,6 @@ class Console:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> ConsoleObject: ...
     
     # Dict mode with mkey provided as positional arg (single dict)
@@ -214,7 +216,6 @@ class Console:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> ConsoleObject: ...
     
     # Dict mode with mkey provided as keyword arg (single dict)
@@ -231,7 +232,6 @@ class Console:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> ConsoleObject: ...
     
     # Dict mode - list of dicts (no mkey/name provided) - keyword-only signature
@@ -247,7 +247,6 @@ class Console:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> ConsoleObject: ...
     
     # Fallback overload for all other cases
@@ -263,7 +262,6 @@ class Console:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> dict[str, Any] | FortiObject: ...
     
     def get(
@@ -277,12 +275,10 @@ class Console:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> ConsoleObject | dict[str, Any]: ...
     
     def get_schema(
         self,
-        vdom: str | None = ...,
         format: str = ...,
     ) -> FortiObject: ...
     
@@ -293,7 +289,6 @@ class Console:
         payload_dict: ConsolePayload | None = ...,
         output: Literal["standard", "more"] | None = ...,
         login: Literal["enable", "disable"] | None = ...,
-        vdom: str | bool | None = ...,
     ) -> ConsoleObject: ...
     
     @overload
@@ -302,7 +297,6 @@ class Console:
         payload_dict: ConsolePayload | None = ...,
         output: Literal["standard", "more"] | None = ...,
         login: Literal["enable", "disable"] | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     # Default overload
@@ -312,7 +306,6 @@ class Console:
         payload_dict: ConsolePayload | None = ...,
         output: Literal["standard", "more"] | None = ...,
         login: Literal["enable", "disable"] | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     def put(
@@ -320,13 +313,11 @@ class Console:
         payload_dict: ConsolePayload | None = ...,
         output: Literal["standard", "more"] | None = ...,
         login: Literal["enable", "disable"] | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     def exists(
         self,
         name: str,
-        vdom: str | bool | None = ...,
     ) -> bool: ...
     
     def set(
@@ -334,7 +325,6 @@ class Console:
         payload_dict: ConsolePayload | None = ...,
         output: Literal["standard", "more"] | None = ...,
         login: Literal["enable", "disable"] | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     # Helper methods

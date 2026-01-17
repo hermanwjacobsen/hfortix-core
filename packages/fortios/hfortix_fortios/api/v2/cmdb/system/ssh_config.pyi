@@ -114,6 +114,14 @@ class SshConfig:
     Category: cmdb
     """
     
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client.
+        
+        Args:
+            client: HTTP client instance for API communication
+        """
+        ...
+    
     # ================================================================
     # GET OVERLOADS - Always returns FortiObject
     # Pylance matches overloads top-to-bottom, so these must come first!
@@ -132,7 +140,6 @@ class SshConfig:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> SshConfigObject: ...
     
     # With mkey as keyword arg -> returns FortiObject
@@ -149,7 +156,6 @@ class SshConfig:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> SshConfigObject: ...
     
     # Without mkey -> returns list of FortiObjects
@@ -165,7 +171,6 @@ class SshConfig:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> SshConfigObject: ...
     
     # ================================================================
@@ -185,7 +190,6 @@ class SshConfig:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> SshConfigObject: ...
     
     # With mkey as keyword arg -> returns single object
@@ -202,7 +206,6 @@ class SshConfig:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> SshConfigObject: ...
     
     # With no mkey -> returns list of objects
@@ -218,7 +221,6 @@ class SshConfig:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> SshConfigObject: ...
     
     # Dict mode with mkey provided as positional arg (single dict)
@@ -234,7 +236,6 @@ class SshConfig:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> SshConfigObject: ...
     
     # Dict mode with mkey provided as keyword arg (single dict)
@@ -251,7 +252,6 @@ class SshConfig:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> SshConfigObject: ...
     
     # Dict mode - list of dicts (no mkey/name provided) - keyword-only signature
@@ -267,7 +267,6 @@ class SshConfig:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> SshConfigObject: ...
     
     # Fallback overload for all other cases
@@ -283,7 +282,6 @@ class SshConfig:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> dict[str, Any] | FortiObject: ...
     
     def get(
@@ -297,12 +295,10 @@ class SshConfig:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> SshConfigObject | dict[str, Any]: ...
     
     def get_schema(
         self,
-        vdom: str | None = ...,
         format: str = ...,
     ) -> FortiObject: ...
     
@@ -318,7 +314,6 @@ class SshConfig:
         ssh_hsk_override: Literal["disable", "enable"] | None = ...,
         ssh_hsk_password: str | None = ...,
         ssh_hsk: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> SshConfigObject: ...
     
     @overload
@@ -332,7 +327,6 @@ class SshConfig:
         ssh_hsk_override: Literal["disable", "enable"] | None = ...,
         ssh_hsk_password: str | None = ...,
         ssh_hsk: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     # Default overload
@@ -347,7 +341,6 @@ class SshConfig:
         ssh_hsk_override: Literal["disable", "enable"] | None = ...,
         ssh_hsk_password: str | None = ...,
         ssh_hsk: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     def put(
@@ -360,13 +353,11 @@ class SshConfig:
         ssh_hsk_override: Literal["disable", "enable"] | None = ...,
         ssh_hsk_password: str | None = ...,
         ssh_hsk: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     def exists(
         self,
         name: str,
-        vdom: str | bool | None = ...,
     ) -> bool: ...
     
     def set(
@@ -379,7 +370,6 @@ class SshConfig:
         ssh_hsk_override: Literal["disable", "enable"] | None = ...,
         ssh_hsk_password: str | None = ...,
         ssh_hsk: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     # Helper methods

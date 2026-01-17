@@ -213,6 +213,14 @@ class Fmwp:
     Primary Key: name
     """
     
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client.
+        
+        Args:
+            client: HTTP client instance for API communication
+        """
+        ...
+    
     # ================================================================
     # GET OVERLOADS - Always returns FortiObject
     # Pylance matches overloads top-to-bottom, so these must come first!
@@ -231,7 +239,6 @@ class Fmwp:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FmwpObject: ...
     
     # With mkey as keyword arg -> returns FortiObject
@@ -248,7 +255,6 @@ class Fmwp:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FmwpObject: ...
     
     # Without mkey -> returns list of FortiObjects
@@ -264,7 +270,6 @@ class Fmwp:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObjectList[FmwpObject]: ...
     
     # ================================================================
@@ -284,7 +289,6 @@ class Fmwp:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FmwpObject: ...
     
     # With mkey as keyword arg -> returns single object
@@ -301,7 +305,6 @@ class Fmwp:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FmwpObject: ...
     
     # With no mkey -> returns list of objects
@@ -317,7 +320,6 @@ class Fmwp:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObjectList[FmwpObject]: ...
     
     # Dict mode with mkey provided as positional arg (single dict)
@@ -333,7 +335,6 @@ class Fmwp:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FmwpObject: ...
     
     # Dict mode with mkey provided as keyword arg (single dict)
@@ -350,7 +351,6 @@ class Fmwp:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FmwpObject: ...
     
     # Dict mode - list of dicts (no mkey/name provided) - keyword-only signature
@@ -366,7 +366,6 @@ class Fmwp:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObjectList[FmwpObject]: ...
     
     # Fallback overload for all other cases
@@ -382,7 +381,6 @@ class Fmwp:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> Union[dict[str, Any], list[dict[str, Any]], FortiObject, list[FortiObject]]: ...
     
     def get(
@@ -396,12 +394,10 @@ class Fmwp:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FmwpObject | list[FmwpObject] | dict[str, Any] | list[dict[str, Any]]: ...
     
     def get_schema(
         self,
-        vdom: str | None = ...,
         format: str = ...,
     ) -> FortiObject: ...
     
@@ -425,7 +421,6 @@ class Fmwp:
         rev: int | None = ...,
         date: int | None = ...,
         metadata: str | list[str] | list[FmwpMetadataItem] | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FmwpObject: ...
     
     @overload
@@ -447,7 +442,6 @@ class Fmwp:
         rev: int | None = ...,
         date: int | None = ...,
         metadata: str | list[str] | list[FmwpMetadataItem] | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     # Default overload
@@ -470,7 +464,6 @@ class Fmwp:
         rev: int | None = ...,
         date: int | None = ...,
         metadata: str | list[str] | list[FmwpMetadataItem] | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     def post(
@@ -491,7 +484,6 @@ class Fmwp:
         rev: int | None = ...,
         date: int | None = ...,
         metadata: str | list[str] | list[FmwpMetadataItem] | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     # PUT overloads
@@ -514,7 +506,6 @@ class Fmwp:
         rev: int | None = ...,
         date: int | None = ...,
         metadata: str | list[str] | list[FmwpMetadataItem] | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FmwpObject: ...
     
     @overload
@@ -536,7 +527,6 @@ class Fmwp:
         rev: int | None = ...,
         date: int | None = ...,
         metadata: str | list[str] | list[FmwpMetadataItem] | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     # Default overload
@@ -559,7 +549,6 @@ class Fmwp:
         rev: int | None = ...,
         date: int | None = ...,
         metadata: str | list[str] | list[FmwpMetadataItem] | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     def put(
@@ -580,7 +569,6 @@ class Fmwp:
         rev: int | None = ...,
         date: int | None = ...,
         metadata: str | list[str] | list[FmwpMetadataItem] | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     # DELETE overloads
@@ -588,14 +576,12 @@ class Fmwp:
     def delete(
         self,
         name: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FmwpObject: ...
     
     @overload
     def delete(
         self,
         name: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     # Default overload
@@ -603,19 +589,16 @@ class Fmwp:
     def delete(
         self,
         name: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     def delete(
         self,
         name: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     def exists(
         self,
         name: str,
-        vdom: str | bool | None = ...,
     ) -> bool: ...
     
     def set(
@@ -636,7 +619,6 @@ class Fmwp:
         rev: int | None = ...,
         date: int | None = ...,
         metadata: str | list[str] | list[FmwpMetadataItem] | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     # Helper methods

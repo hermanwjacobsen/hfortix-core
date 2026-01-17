@@ -258,6 +258,14 @@ class Acme:
     Category: cmdb
     """
     
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client.
+        
+        Args:
+            client: HTTP client instance for API communication
+        """
+        ...
+    
     # ================================================================
     # GET OVERLOADS - Always returns FortiObject
     # Pylance matches overloads top-to-bottom, so these must come first!
@@ -276,7 +284,6 @@ class Acme:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> AcmeObject: ...
     
     # With mkey as keyword arg -> returns FortiObject
@@ -293,7 +300,6 @@ class Acme:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> AcmeObject: ...
     
     # Without mkey -> returns list of FortiObjects
@@ -309,7 +315,6 @@ class Acme:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> AcmeObject: ...
     
     # ================================================================
@@ -329,7 +334,6 @@ class Acme:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> AcmeObject: ...
     
     # With mkey as keyword arg -> returns single object
@@ -346,7 +350,6 @@ class Acme:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> AcmeObject: ...
     
     # With no mkey -> returns list of objects
@@ -362,7 +365,6 @@ class Acme:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> AcmeObject: ...
     
     # Dict mode with mkey provided as positional arg (single dict)
@@ -378,7 +380,6 @@ class Acme:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> AcmeObject: ...
     
     # Dict mode with mkey provided as keyword arg (single dict)
@@ -395,7 +396,6 @@ class Acme:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> AcmeObject: ...
     
     # Dict mode - list of dicts (no mkey/name provided) - keyword-only signature
@@ -411,7 +411,6 @@ class Acme:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> AcmeObject: ...
     
     # Fallback overload for all other cases
@@ -427,7 +426,6 @@ class Acme:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> dict[str, Any] | FortiObject: ...
     
     def get(
@@ -441,12 +439,10 @@ class Acme:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> AcmeObject | dict[str, Any]: ...
     
     def get_schema(
         self,
-        vdom: str | None = ...,
         format: str = ...,
     ) -> FortiObject: ...
     
@@ -462,7 +458,6 @@ class Acme:
         accounts: str | list[str] | list[AcmeAccountsItem] | None = ...,
         acc_details: str | None = ...,
         status: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> AcmeObject: ...
     
     @overload
@@ -476,7 +471,6 @@ class Acme:
         accounts: str | list[str] | list[AcmeAccountsItem] | None = ...,
         acc_details: str | None = ...,
         status: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     # Default overload
@@ -491,7 +485,6 @@ class Acme:
         accounts: str | list[str] | list[AcmeAccountsItem] | None = ...,
         acc_details: str | None = ...,
         status: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     def put(
@@ -504,13 +497,11 @@ class Acme:
         accounts: str | list[str] | list[AcmeAccountsItem] | None = ...,
         acc_details: str | None = ...,
         status: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     def exists(
         self,
         name: str,
-        vdom: str | bool | None = ...,
     ) -> bool: ...
     
     def set(
@@ -523,7 +514,6 @@ class Acme:
         accounts: str | list[str] | list[AcmeAccountsItem] | None = ...,
         acc_details: str | None = ...,
         status: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     # Helper methods

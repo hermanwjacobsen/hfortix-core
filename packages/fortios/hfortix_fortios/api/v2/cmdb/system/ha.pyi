@@ -765,6 +765,14 @@ class Ha:
     Category: cmdb
     """
     
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client.
+        
+        Args:
+            client: HTTP client instance for API communication
+        """
+        ...
+    
     # ================================================================
     # GET OVERLOADS - Always returns FortiObject
     # Pylance matches overloads top-to-bottom, so these must come first!
@@ -783,7 +791,6 @@ class Ha:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> HaObject: ...
     
     # With mkey as keyword arg -> returns FortiObject
@@ -800,7 +807,6 @@ class Ha:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> HaObject: ...
     
     # Without mkey -> returns list of FortiObjects
@@ -816,7 +822,6 @@ class Ha:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> HaObject: ...
     
     # ================================================================
@@ -836,7 +841,6 @@ class Ha:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> HaObject: ...
     
     # With mkey as keyword arg -> returns single object
@@ -853,7 +857,6 @@ class Ha:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> HaObject: ...
     
     # With no mkey -> returns list of objects
@@ -869,7 +872,6 @@ class Ha:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> HaObject: ...
     
     # Dict mode with mkey provided as positional arg (single dict)
@@ -885,7 +887,6 @@ class Ha:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> HaObject: ...
     
     # Dict mode with mkey provided as keyword arg (single dict)
@@ -902,7 +903,6 @@ class Ha:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> HaObject: ...
     
     # Dict mode - list of dicts (no mkey/name provided) - keyword-only signature
@@ -918,7 +918,6 @@ class Ha:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> HaObject: ...
     
     # Fallback overload for all other cases
@@ -934,7 +933,6 @@ class Ha:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> dict[str, Any] | FortiObject: ...
     
     def get(
@@ -948,12 +946,10 @@ class Ha:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> HaObject | dict[str, Any]: ...
     
     def get_schema(
         self,
-        vdom: str | None = ...,
         format: str = ...,
     ) -> FortiObject: ...
     
@@ -1043,7 +1039,6 @@ class Ha:
         ipsec_phase2_proposal: Literal["aes128-sha1", "aes128-sha256", "aes128-sha384", "aes128-sha512", "aes192-sha1", "aes192-sha256", "aes192-sha384", "aes192-sha512", "aes256-sha1", "aes256-sha256", "aes256-sha384", "aes256-sha512", "aes128gcm", "aes256gcm", "chacha20poly1305"] | list[str] | None = ...,
         bounce_intf_upon_failover: Literal["enable", "disable"] | None = ...,
         status: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> HaObject: ...
     
     @overload
@@ -1131,7 +1126,6 @@ class Ha:
         ipsec_phase2_proposal: Literal["aes128-sha1", "aes128-sha256", "aes128-sha384", "aes128-sha512", "aes192-sha1", "aes192-sha256", "aes192-sha384", "aes192-sha512", "aes256-sha1", "aes256-sha256", "aes256-sha384", "aes256-sha512", "aes128gcm", "aes256gcm", "chacha20poly1305"] | list[str] | None = ...,
         bounce_intf_upon_failover: Literal["enable", "disable"] | None = ...,
         status: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     # Default overload
@@ -1220,7 +1214,6 @@ class Ha:
         ipsec_phase2_proposal: Literal["aes128-sha1", "aes128-sha256", "aes128-sha384", "aes128-sha512", "aes192-sha1", "aes192-sha256", "aes192-sha384", "aes192-sha512", "aes256-sha1", "aes256-sha256", "aes256-sha384", "aes256-sha512", "aes128gcm", "aes256gcm", "chacha20poly1305"] | list[str] | None = ...,
         bounce_intf_upon_failover: Literal["enable", "disable"] | None = ...,
         status: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     def put(
@@ -1307,13 +1300,11 @@ class Ha:
         ipsec_phase2_proposal: Literal["aes128-sha1", "aes128-sha256", "aes128-sha384", "aes128-sha512", "aes192-sha1", "aes192-sha256", "aes192-sha384", "aes192-sha512", "aes256-sha1", "aes256-sha256", "aes256-sha384", "aes256-sha512", "aes128gcm", "aes256gcm", "chacha20poly1305"] | list[str] | None = ...,
         bounce_intf_upon_failover: Literal["enable", "disable"] | None = ...,
         status: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     def exists(
         self,
         name: str,
-        vdom: str | bool | None = ...,
     ) -> bool: ...
     
     def set(
@@ -1400,7 +1391,6 @@ class Ha:
         ipsec_phase2_proposal: Literal["aes128-sha1", "aes128-sha256", "aes128-sha384", "aes128-sha512", "aes192-sha1", "aes192-sha256", "aes192-sha384", "aes192-sha512", "aes256-sha1", "aes256-sha256", "aes256-sha384", "aes256-sha512", "aes128gcm", "aes256gcm", "chacha20poly1305"] | list[str] | None = ...,
         bounce_intf_upon_failover: Literal["enable", "disable"] | None = ...,
         status: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     # Helper methods

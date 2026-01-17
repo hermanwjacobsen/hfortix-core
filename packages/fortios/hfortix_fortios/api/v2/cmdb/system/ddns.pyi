@@ -288,6 +288,14 @@ class Ddns:
     Primary Key: ddnsid
     """
     
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client.
+        
+        Args:
+            client: HTTP client instance for API communication
+        """
+        ...
+    
     # ================================================================
     # GET OVERLOADS - Always returns FortiObject
     # Pylance matches overloads top-to-bottom, so these must come first!
@@ -306,7 +314,6 @@ class Ddns:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> DdnsObject: ...
     
     # With mkey as keyword arg -> returns FortiObject
@@ -323,7 +330,6 @@ class Ddns:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> DdnsObject: ...
     
     # Without mkey -> returns list of FortiObjects
@@ -339,7 +345,6 @@ class Ddns:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObjectList[DdnsObject]: ...
     
     # ================================================================
@@ -359,7 +364,6 @@ class Ddns:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> DdnsObject: ...
     
     # With mkey as keyword arg -> returns single object
@@ -376,7 +380,6 @@ class Ddns:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> DdnsObject: ...
     
     # With no mkey -> returns list of objects
@@ -392,7 +395,6 @@ class Ddns:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObjectList[DdnsObject]: ...
     
     # Dict mode with mkey provided as positional arg (single dict)
@@ -408,7 +410,6 @@ class Ddns:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> DdnsObject: ...
     
     # Dict mode with mkey provided as keyword arg (single dict)
@@ -425,7 +426,6 @@ class Ddns:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> DdnsObject: ...
     
     # Dict mode - list of dicts (no mkey/name provided) - keyword-only signature
@@ -441,7 +441,6 @@ class Ddns:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObjectList[DdnsObject]: ...
     
     # Fallback overload for all other cases
@@ -457,7 +456,6 @@ class Ddns:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> Union[dict[str, Any], list[dict[str, Any]], FortiObject, list[FortiObject]]: ...
     
     def get(
@@ -471,12 +469,10 @@ class Ddns:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> DdnsObject | list[DdnsObject] | dict[str, Any] | list[dict[str, Any]]: ...
     
     def get_schema(
         self,
-        vdom: str | None = ...,
         format: str = ...,
     ) -> FortiObject: ...
     
@@ -505,7 +501,6 @@ class Ddns:
         ssl_certificate: str | None = ...,
         bound_ip: str | None = ...,
         monitor_interface: str | list[str] | list[DdnsMonitorinterfaceItem] | None = ...,
-        vdom: str | bool | None = ...,
     ) -> DdnsObject: ...
     
     @overload
@@ -532,7 +527,6 @@ class Ddns:
         ssl_certificate: str | None = ...,
         bound_ip: str | None = ...,
         monitor_interface: str | list[str] | list[DdnsMonitorinterfaceItem] | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     # Default overload
@@ -560,7 +554,6 @@ class Ddns:
         ssl_certificate: str | None = ...,
         bound_ip: str | None = ...,
         monitor_interface: str | list[str] | list[DdnsMonitorinterfaceItem] | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     def post(
@@ -586,7 +579,6 @@ class Ddns:
         ssl_certificate: str | None = ...,
         bound_ip: str | None = ...,
         monitor_interface: str | list[str] | list[DdnsMonitorinterfaceItem] | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     # PUT overloads
@@ -614,7 +606,6 @@ class Ddns:
         ssl_certificate: str | None = ...,
         bound_ip: str | None = ...,
         monitor_interface: str | list[str] | list[DdnsMonitorinterfaceItem] | None = ...,
-        vdom: str | bool | None = ...,
     ) -> DdnsObject: ...
     
     @overload
@@ -641,7 +632,6 @@ class Ddns:
         ssl_certificate: str | None = ...,
         bound_ip: str | None = ...,
         monitor_interface: str | list[str] | list[DdnsMonitorinterfaceItem] | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     # Default overload
@@ -669,7 +659,6 @@ class Ddns:
         ssl_certificate: str | None = ...,
         bound_ip: str | None = ...,
         monitor_interface: str | list[str] | list[DdnsMonitorinterfaceItem] | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     def put(
@@ -695,7 +684,6 @@ class Ddns:
         ssl_certificate: str | None = ...,
         bound_ip: str | None = ...,
         monitor_interface: str | list[str] | list[DdnsMonitorinterfaceItem] | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     # DELETE overloads
@@ -703,14 +691,12 @@ class Ddns:
     def delete(
         self,
         ddnsid: int | None = ...,
-        vdom: str | bool | None = ...,
     ) -> DdnsObject: ...
     
     @overload
     def delete(
         self,
         ddnsid: int | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     # Default overload
@@ -718,19 +704,16 @@ class Ddns:
     def delete(
         self,
         ddnsid: int | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     def delete(
         self,
         ddnsid: int | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     def exists(
         self,
         ddnsid: int,
-        vdom: str | bool | None = ...,
     ) -> bool: ...
     
     def set(
@@ -756,7 +739,6 @@ class Ddns:
         ssl_certificate: str | None = ...,
         bound_ip: str | None = ...,
         monitor_interface: str | list[str] | list[DdnsMonitorinterfaceItem] | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     # Helper methods

@@ -145,6 +145,14 @@ class Crl:
     Primary Key: name
     """
     
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client.
+        
+        Args:
+            client: HTTP client instance for API communication
+        """
+        ...
+    
     # ================================================================
     # GET OVERLOADS - Always returns FortiObject
     # Pylance matches overloads top-to-bottom, so these must come first!
@@ -163,7 +171,6 @@ class Crl:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> CrlObject: ...
     
     # With mkey as keyword arg -> returns FortiObject
@@ -180,7 +187,6 @@ class Crl:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> CrlObject: ...
     
     # Without mkey -> returns list of FortiObjects
@@ -196,7 +202,6 @@ class Crl:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObjectList[CrlObject]: ...
     
     # ================================================================
@@ -216,7 +221,6 @@ class Crl:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> CrlObject: ...
     
     # With mkey as keyword arg -> returns single object
@@ -233,7 +237,6 @@ class Crl:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> CrlObject: ...
     
     # With no mkey -> returns list of objects
@@ -249,7 +252,6 @@ class Crl:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObjectList[CrlObject]: ...
     
     # Dict mode with mkey provided as positional arg (single dict)
@@ -265,7 +267,6 @@ class Crl:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> CrlObject: ...
     
     # Dict mode with mkey provided as keyword arg (single dict)
@@ -282,7 +283,6 @@ class Crl:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> CrlObject: ...
     
     # Dict mode - list of dicts (no mkey/name provided) - keyword-only signature
@@ -298,7 +298,6 @@ class Crl:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObjectList[CrlObject]: ...
     
     # Fallback overload for all other cases
@@ -314,7 +313,6 @@ class Crl:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> Union[dict[str, Any], list[dict[str, Any]], FortiObject, list[FortiObject]]: ...
     
     def get(
@@ -328,12 +326,10 @@ class Crl:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> CrlObject | list[CrlObject] | dict[str, Any] | list[dict[str, Any]]: ...
     
     def get_schema(
         self,
-        vdom: str | None = ...,
         format: str = ...,
     ) -> FortiObject: ...
     
@@ -355,7 +351,6 @@ class Crl:
         scep_cert: str | None = ...,
         update_interval: int | None = ...,
         source_ip: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> CrlObject: ...
     
     @overload
@@ -375,7 +370,6 @@ class Crl:
         scep_cert: str | None = ...,
         update_interval: int | None = ...,
         source_ip: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     # Default overload
@@ -396,7 +390,6 @@ class Crl:
         scep_cert: str | None = ...,
         update_interval: int | None = ...,
         source_ip: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     def put(
@@ -415,13 +408,11 @@ class Crl:
         scep_cert: str | None = ...,
         update_interval: int | None = ...,
         source_ip: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     def exists(
         self,
         name: str,
-        vdom: str | bool | None = ...,
     ) -> bool: ...
     
     def set(
@@ -440,7 +431,6 @@ class Crl:
         scep_cert: str | None = ...,
         update_interval: int | None = ...,
         source_ip: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     # Helper methods

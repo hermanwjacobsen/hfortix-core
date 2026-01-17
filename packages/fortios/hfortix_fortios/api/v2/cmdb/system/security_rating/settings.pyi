@@ -90,6 +90,14 @@ class Settings:
     Category: cmdb
     """
     
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client.
+        
+        Args:
+            client: HTTP client instance for API communication
+        """
+        ...
+    
     # ================================================================
     # GET OVERLOADS - Always returns FortiObject
     # Pylance matches overloads top-to-bottom, so these must come first!
@@ -108,7 +116,6 @@ class Settings:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> SettingsObject: ...
     
     # With mkey as keyword arg -> returns FortiObject
@@ -125,7 +132,6 @@ class Settings:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> SettingsObject: ...
     
     # Without mkey -> returns list of FortiObjects
@@ -141,7 +147,6 @@ class Settings:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> SettingsObject: ...
     
     # ================================================================
@@ -161,7 +166,6 @@ class Settings:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> SettingsObject: ...
     
     # With mkey as keyword arg -> returns single object
@@ -178,7 +182,6 @@ class Settings:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> SettingsObject: ...
     
     # With no mkey -> returns list of objects
@@ -194,7 +197,6 @@ class Settings:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> SettingsObject: ...
     
     # Dict mode with mkey provided as positional arg (single dict)
@@ -210,7 +212,6 @@ class Settings:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> SettingsObject: ...
     
     # Dict mode with mkey provided as keyword arg (single dict)
@@ -227,7 +228,6 @@ class Settings:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> SettingsObject: ...
     
     # Dict mode - list of dicts (no mkey/name provided) - keyword-only signature
@@ -243,7 +243,6 @@ class Settings:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> SettingsObject: ...
     
     # Fallback overload for all other cases
@@ -259,7 +258,6 @@ class Settings:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> dict[str, Any] | FortiObject: ...
     
     def get(
@@ -273,12 +271,10 @@ class Settings:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> SettingsObject | dict[str, Any]: ...
     
     def get_schema(
         self,
-        vdom: str | None = ...,
         format: str = ...,
     ) -> FortiObject: ...
     
@@ -288,7 +284,6 @@ class Settings:
         self,
         payload_dict: SettingsPayload | None = ...,
         override_sync: Literal["enable", "disable"] | None = ...,
-        vdom: str | bool | None = ...,
     ) -> SettingsObject: ...
     
     @overload
@@ -296,7 +291,6 @@ class Settings:
         self,
         payload_dict: SettingsPayload | None = ...,
         override_sync: Literal["enable", "disable"] | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     # Default overload
@@ -305,27 +299,23 @@ class Settings:
         self,
         payload_dict: SettingsPayload | None = ...,
         override_sync: Literal["enable", "disable"] | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     def put(
         self,
         payload_dict: SettingsPayload | None = ...,
         override_sync: Literal["enable", "disable"] | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     def exists(
         self,
         name: str,
-        vdom: str | bool | None = ...,
     ) -> bool: ...
     
     def set(
         self,
         payload_dict: SettingsPayload | None = ...,
         override_sync: Literal["enable", "disable"] | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     # Helper methods

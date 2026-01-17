@@ -320,6 +320,14 @@ class Dns:
     Category: cmdb
     """
     
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client.
+        
+        Args:
+            client: HTTP client instance for API communication
+        """
+        ...
+    
     # ================================================================
     # GET OVERLOADS - Always returns FortiObject
     # Pylance matches overloads top-to-bottom, so these must come first!
@@ -338,7 +346,6 @@ class Dns:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> DnsObject: ...
     
     # With mkey as keyword arg -> returns FortiObject
@@ -355,7 +362,6 @@ class Dns:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> DnsObject: ...
     
     # Without mkey -> returns list of FortiObjects
@@ -371,7 +377,6 @@ class Dns:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> DnsObject: ...
     
     # ================================================================
@@ -391,7 +396,6 @@ class Dns:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> DnsObject: ...
     
     # With mkey as keyword arg -> returns single object
@@ -408,7 +412,6 @@ class Dns:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> DnsObject: ...
     
     # With no mkey -> returns list of objects
@@ -424,7 +427,6 @@ class Dns:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> DnsObject: ...
     
     # Dict mode with mkey provided as positional arg (single dict)
@@ -440,7 +442,6 @@ class Dns:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> DnsObject: ...
     
     # Dict mode with mkey provided as keyword arg (single dict)
@@ -457,7 +458,6 @@ class Dns:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> DnsObject: ...
     
     # Dict mode - list of dicts (no mkey/name provided) - keyword-only signature
@@ -473,7 +473,6 @@ class Dns:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> DnsObject: ...
     
     # Fallback overload for all other cases
@@ -489,7 +488,6 @@ class Dns:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> dict[str, Any] | FortiObject: ...
     
     def get(
@@ -503,12 +501,10 @@ class Dns:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> DnsObject | dict[str, Any]: ...
     
     def get_schema(
         self,
-        vdom: str | None = ...,
         format: str = ...,
     ) -> FortiObject: ...
     
@@ -545,7 +541,6 @@ class Dns:
         fqdn_min_refresh: int | None = ...,
         hostname_ttl: int | None = ...,
         hostname_limit: int | None = ...,
-        vdom: str | bool | None = ...,
     ) -> DnsObject: ...
     
     @overload
@@ -580,7 +575,6 @@ class Dns:
         fqdn_min_refresh: int | None = ...,
         hostname_ttl: int | None = ...,
         hostname_limit: int | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     # Default overload
@@ -616,7 +610,6 @@ class Dns:
         fqdn_min_refresh: int | None = ...,
         hostname_ttl: int | None = ...,
         hostname_limit: int | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     def put(
@@ -650,13 +643,11 @@ class Dns:
         fqdn_min_refresh: int | None = ...,
         hostname_ttl: int | None = ...,
         hostname_limit: int | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     def exists(
         self,
         name: str,
-        vdom: str | bool | None = ...,
     ) -> bool: ...
     
     def set(
@@ -690,7 +681,6 @@ class Dns:
         fqdn_min_refresh: int | None = ...,
         hostname_ttl: int | None = ...,
         hostname_limit: int | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     # Helper methods

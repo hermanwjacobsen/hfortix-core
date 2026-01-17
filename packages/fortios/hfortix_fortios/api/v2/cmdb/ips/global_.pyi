@@ -150,6 +150,14 @@ class Global:
     Category: cmdb
     """
     
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client.
+        
+        Args:
+            client: HTTP client instance for API communication
+        """
+        ...
+    
     # ================================================================
     # GET OVERLOADS - Always returns FortiObject
     # Pylance matches overloads top-to-bottom, so these must come first!
@@ -168,7 +176,6 @@ class Global:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> GlobalObject: ...
     
     # With mkey as keyword arg -> returns FortiObject
@@ -185,7 +192,6 @@ class Global:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> GlobalObject: ...
     
     # Without mkey -> returns list of FortiObjects
@@ -201,7 +207,6 @@ class Global:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> GlobalObject: ...
     
     # ================================================================
@@ -221,7 +226,6 @@ class Global:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> GlobalObject: ...
     
     # With mkey as keyword arg -> returns single object
@@ -238,7 +242,6 @@ class Global:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> GlobalObject: ...
     
     # With no mkey -> returns list of objects
@@ -254,7 +257,6 @@ class Global:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> GlobalObject: ...
     
     # Dict mode with mkey provided as positional arg (single dict)
@@ -270,7 +272,6 @@ class Global:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> GlobalObject: ...
     
     # Dict mode with mkey provided as keyword arg (single dict)
@@ -287,7 +288,6 @@ class Global:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> GlobalObject: ...
     
     # Dict mode - list of dicts (no mkey/name provided) - keyword-only signature
@@ -303,7 +303,6 @@ class Global:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> GlobalObject: ...
     
     # Fallback overload for all other cases
@@ -319,7 +318,6 @@ class Global:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> dict[str, Any] | FortiObject: ...
     
     def get(
@@ -333,12 +331,10 @@ class Global:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> GlobalObject | dict[str, Any]: ...
     
     def get_schema(
         self,
-        vdom: str | None = ...,
         format: str = ...,
     ) -> FortiObject: ...
     
@@ -363,7 +359,6 @@ class Global:
         av_mem_limit: int | None = ...,
         machine_learning_detection: Literal["enable", "disable"] | None = ...,
         tls_active_probe: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> GlobalObject: ...
     
     @overload
@@ -386,7 +381,6 @@ class Global:
         av_mem_limit: int | None = ...,
         machine_learning_detection: Literal["enable", "disable"] | None = ...,
         tls_active_probe: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     # Default overload
@@ -410,7 +404,6 @@ class Global:
         av_mem_limit: int | None = ...,
         machine_learning_detection: Literal["enable", "disable"] | None = ...,
         tls_active_probe: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     def put(
@@ -432,13 +425,11 @@ class Global:
         av_mem_limit: int | None = ...,
         machine_learning_detection: Literal["enable", "disable"] | None = ...,
         tls_active_probe: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     def exists(
         self,
         name: str,
-        vdom: str | bool | None = ...,
     ) -> bool: ...
     
     def set(
@@ -460,7 +451,6 @@ class Global:
         av_mem_limit: int | None = ...,
         machine_learning_detection: Literal["enable", "disable"] | None = ...,
         tls_active_probe: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     # Helper methods

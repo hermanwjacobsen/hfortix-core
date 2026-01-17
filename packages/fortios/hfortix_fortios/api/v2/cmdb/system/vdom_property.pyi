@@ -176,6 +176,14 @@ class VdomProperty:
     Primary Key: name
     """
     
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client.
+        
+        Args:
+            client: HTTP client instance for API communication
+        """
+        ...
+    
     # ================================================================
     # GET OVERLOADS - Always returns FortiObject
     # Pylance matches overloads top-to-bottom, so these must come first!
@@ -194,7 +202,6 @@ class VdomProperty:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> VdomPropertyObject: ...
     
     # With mkey as keyword arg -> returns FortiObject
@@ -211,7 +218,6 @@ class VdomProperty:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> VdomPropertyObject: ...
     
     # Without mkey -> returns list of FortiObjects
@@ -227,7 +233,6 @@ class VdomProperty:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObjectList[VdomPropertyObject]: ...
     
     # ================================================================
@@ -247,7 +252,6 @@ class VdomProperty:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> VdomPropertyObject: ...
     
     # With mkey as keyword arg -> returns single object
@@ -264,7 +268,6 @@ class VdomProperty:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> VdomPropertyObject: ...
     
     # With no mkey -> returns list of objects
@@ -280,7 +283,6 @@ class VdomProperty:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObjectList[VdomPropertyObject]: ...
     
     # Dict mode with mkey provided as positional arg (single dict)
@@ -296,7 +298,6 @@ class VdomProperty:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> VdomPropertyObject: ...
     
     # Dict mode with mkey provided as keyword arg (single dict)
@@ -313,7 +314,6 @@ class VdomProperty:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> VdomPropertyObject: ...
     
     # Dict mode - list of dicts (no mkey/name provided) - keyword-only signature
@@ -329,7 +329,6 @@ class VdomProperty:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObjectList[VdomPropertyObject]: ...
     
     # Fallback overload for all other cases
@@ -345,7 +344,6 @@ class VdomProperty:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> Union[dict[str, Any], list[dict[str, Any]], FortiObject, list[FortiObject]]: ...
     
     def get(
@@ -359,12 +357,10 @@ class VdomProperty:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> VdomPropertyObject | list[VdomPropertyObject] | dict[str, Any] | list[dict[str, Any]]: ...
     
     def get_schema(
         self,
-        vdom: str | None = ...,
         format: str = ...,
     ) -> FortiObject: ...
     
@@ -394,7 +390,6 @@ class VdomProperty:
         sslvpn: str | list[str] | None = ...,
         proxy: str | list[str] | None = ...,
         log_disk_quota: str | list[str] | None = ...,
-        vdom: str | bool | None = ...,
     ) -> VdomPropertyObject: ...
     
     @overload
@@ -422,7 +417,6 @@ class VdomProperty:
         sslvpn: str | list[str] | None = ...,
         proxy: str | list[str] | None = ...,
         log_disk_quota: str | list[str] | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     # Default overload
@@ -451,7 +445,6 @@ class VdomProperty:
         sslvpn: str | list[str] | None = ...,
         proxy: str | list[str] | None = ...,
         log_disk_quota: str | list[str] | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     def post(
@@ -478,7 +471,6 @@ class VdomProperty:
         sslvpn: str | list[str] | None = ...,
         proxy: str | list[str] | None = ...,
         log_disk_quota: str | list[str] | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     # PUT overloads
@@ -507,7 +499,6 @@ class VdomProperty:
         sslvpn: str | list[str] | None = ...,
         proxy: str | list[str] | None = ...,
         log_disk_quota: str | list[str] | None = ...,
-        vdom: str | bool | None = ...,
     ) -> VdomPropertyObject: ...
     
     @overload
@@ -535,7 +526,6 @@ class VdomProperty:
         sslvpn: str | list[str] | None = ...,
         proxy: str | list[str] | None = ...,
         log_disk_quota: str | list[str] | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     # Default overload
@@ -564,7 +554,6 @@ class VdomProperty:
         sslvpn: str | list[str] | None = ...,
         proxy: str | list[str] | None = ...,
         log_disk_quota: str | list[str] | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     def put(
@@ -591,7 +580,6 @@ class VdomProperty:
         sslvpn: str | list[str] | None = ...,
         proxy: str | list[str] | None = ...,
         log_disk_quota: str | list[str] | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     # DELETE overloads
@@ -599,14 +587,12 @@ class VdomProperty:
     def delete(
         self,
         name: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> VdomPropertyObject: ...
     
     @overload
     def delete(
         self,
         name: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     # Default overload
@@ -614,19 +600,16 @@ class VdomProperty:
     def delete(
         self,
         name: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     def delete(
         self,
         name: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     def exists(
         self,
         name: str,
-        vdom: str | bool | None = ...,
     ) -> bool: ...
     
     def set(
@@ -653,7 +636,6 @@ class VdomProperty:
         sslvpn: str | list[str] | None = ...,
         proxy: str | list[str] | None = ...,
         log_disk_quota: str | list[str] | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     # Helper methods

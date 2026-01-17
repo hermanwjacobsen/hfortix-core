@@ -91,6 +91,14 @@ class Timezone:
     Primary Key: name
     """
     
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client.
+        
+        Args:
+            client: HTTP client instance for API communication
+        """
+        ...
+    
     # ================================================================
     # GET OVERLOADS - Always returns FortiObject
     # Pylance matches overloads top-to-bottom, so these must come first!
@@ -109,7 +117,6 @@ class Timezone:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> TimezoneObject: ...
     
     # With mkey as keyword arg -> returns FortiObject
@@ -126,7 +133,6 @@ class Timezone:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> TimezoneObject: ...
     
     # Without mkey -> returns list of FortiObjects
@@ -142,7 +148,6 @@ class Timezone:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObjectList[TimezoneObject]: ...
     
     # ================================================================
@@ -162,7 +167,6 @@ class Timezone:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> TimezoneObject: ...
     
     # With mkey as keyword arg -> returns single object
@@ -179,7 +183,6 @@ class Timezone:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> TimezoneObject: ...
     
     # With no mkey -> returns list of objects
@@ -195,7 +198,6 @@ class Timezone:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObjectList[TimezoneObject]: ...
     
     # Dict mode with mkey provided as positional arg (single dict)
@@ -211,7 +213,6 @@ class Timezone:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> TimezoneObject: ...
     
     # Dict mode with mkey provided as keyword arg (single dict)
@@ -228,7 +229,6 @@ class Timezone:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> TimezoneObject: ...
     
     # Dict mode - list of dicts (no mkey/name provided) - keyword-only signature
@@ -244,7 +244,6 @@ class Timezone:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObjectList[TimezoneObject]: ...
     
     # Fallback overload for all other cases
@@ -260,7 +259,6 @@ class Timezone:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> Union[dict[str, Any], list[dict[str, Any]], FortiObject, list[FortiObject]]: ...
     
     def get(
@@ -274,12 +272,10 @@ class Timezone:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> TimezoneObject | list[TimezoneObject] | dict[str, Any] | list[dict[str, Any]]: ...
     
     def get_schema(
         self,
-        vdom: str | None = ...,
         format: str = ...,
     ) -> FortiObject: ...
     
@@ -289,7 +285,6 @@ class Timezone:
         self,
         payload_dict: TimezonePayload | None = ...,
         name: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> TimezoneObject: ...
     
     @overload
@@ -297,7 +292,6 @@ class Timezone:
         self,
         payload_dict: TimezonePayload | None = ...,
         name: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     # Default overload
@@ -306,14 +300,12 @@ class Timezone:
         self,
         payload_dict: TimezonePayload | None = ...,
         name: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     def post(
         self,
         payload_dict: TimezonePayload | None = ...,
         name: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     # PUT overloads
@@ -322,7 +314,6 @@ class Timezone:
         self,
         payload_dict: TimezonePayload | None = ...,
         name: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> TimezoneObject: ...
     
     @overload
@@ -330,7 +321,6 @@ class Timezone:
         self,
         payload_dict: TimezonePayload | None = ...,
         name: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     # Default overload
@@ -339,14 +329,12 @@ class Timezone:
         self,
         payload_dict: TimezonePayload | None = ...,
         name: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     def put(
         self,
         payload_dict: TimezonePayload | None = ...,
         name: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     # DELETE overloads
@@ -354,14 +342,12 @@ class Timezone:
     def delete(
         self,
         name: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> TimezoneObject: ...
     
     @overload
     def delete(
         self,
         name: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     # Default overload
@@ -369,26 +355,22 @@ class Timezone:
     def delete(
         self,
         name: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     def delete(
         self,
         name: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     def exists(
         self,
         name: str,
-        vdom: str | bool | None = ...,
     ) -> bool: ...
     
     def set(
         self,
         payload_dict: TimezonePayload | None = ...,
         name: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     # Helper methods

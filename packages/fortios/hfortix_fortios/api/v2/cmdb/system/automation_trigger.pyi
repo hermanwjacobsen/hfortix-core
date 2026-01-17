@@ -362,6 +362,14 @@ class AutomationTrigger:
     Primary Key: name
     """
     
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client.
+        
+        Args:
+            client: HTTP client instance for API communication
+        """
+        ...
+    
     # ================================================================
     # GET OVERLOADS - Always returns FortiObject
     # Pylance matches overloads top-to-bottom, so these must come first!
@@ -380,7 +388,6 @@ class AutomationTrigger:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> AutomationTriggerObject: ...
     
     # With mkey as keyword arg -> returns FortiObject
@@ -397,7 +404,6 @@ class AutomationTrigger:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> AutomationTriggerObject: ...
     
     # Without mkey -> returns list of FortiObjects
@@ -413,7 +419,6 @@ class AutomationTrigger:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObjectList[AutomationTriggerObject]: ...
     
     # ================================================================
@@ -433,7 +438,6 @@ class AutomationTrigger:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> AutomationTriggerObject: ...
     
     # With mkey as keyword arg -> returns single object
@@ -450,7 +454,6 @@ class AutomationTrigger:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> AutomationTriggerObject: ...
     
     # With no mkey -> returns list of objects
@@ -466,7 +469,6 @@ class AutomationTrigger:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObjectList[AutomationTriggerObject]: ...
     
     # Dict mode with mkey provided as positional arg (single dict)
@@ -482,7 +484,6 @@ class AutomationTrigger:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> AutomationTriggerObject: ...
     
     # Dict mode with mkey provided as keyword arg (single dict)
@@ -499,7 +500,6 @@ class AutomationTrigger:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> AutomationTriggerObject: ...
     
     # Dict mode - list of dicts (no mkey/name provided) - keyword-only signature
@@ -515,7 +515,6 @@ class AutomationTrigger:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObjectList[AutomationTriggerObject]: ...
     
     # Fallback overload for all other cases
@@ -531,7 +530,6 @@ class AutomationTrigger:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> Union[dict[str, Any], list[dict[str, Any]], FortiObject, list[FortiObject]]: ...
     
     def get(
@@ -545,12 +543,10 @@ class AutomationTrigger:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> AutomationTriggerObject | list[AutomationTriggerObject] | dict[str, Any] | list[dict[str, Any]]: ...
     
     def get_schema(
         self,
-        vdom: str | None = ...,
         format: str = ...,
     ) -> FortiObject: ...
     
@@ -580,7 +576,6 @@ class AutomationTrigger:
         serial: str | None = ...,
         fabric_event_name: str | None = ...,
         fabric_event_severity: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> AutomationTriggerObject: ...
     
     @overload
@@ -608,7 +603,6 @@ class AutomationTrigger:
         serial: str | None = ...,
         fabric_event_name: str | None = ...,
         fabric_event_severity: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     # Default overload
@@ -637,7 +631,6 @@ class AutomationTrigger:
         serial: str | None = ...,
         fabric_event_name: str | None = ...,
         fabric_event_severity: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     def post(
@@ -664,7 +657,6 @@ class AutomationTrigger:
         serial: str | None = ...,
         fabric_event_name: str | None = ...,
         fabric_event_severity: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     # PUT overloads
@@ -693,7 +685,6 @@ class AutomationTrigger:
         serial: str | None = ...,
         fabric_event_name: str | None = ...,
         fabric_event_severity: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> AutomationTriggerObject: ...
     
     @overload
@@ -721,7 +712,6 @@ class AutomationTrigger:
         serial: str | None = ...,
         fabric_event_name: str | None = ...,
         fabric_event_severity: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     # Default overload
@@ -750,7 +740,6 @@ class AutomationTrigger:
         serial: str | None = ...,
         fabric_event_name: str | None = ...,
         fabric_event_severity: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     def put(
@@ -777,7 +766,6 @@ class AutomationTrigger:
         serial: str | None = ...,
         fabric_event_name: str | None = ...,
         fabric_event_severity: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     # DELETE overloads
@@ -785,14 +773,12 @@ class AutomationTrigger:
     def delete(
         self,
         name: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> AutomationTriggerObject: ...
     
     @overload
     def delete(
         self,
         name: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     # Default overload
@@ -800,19 +786,16 @@ class AutomationTrigger:
     def delete(
         self,
         name: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     def delete(
         self,
         name: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     def exists(
         self,
         name: str,
-        vdom: str | bool | None = ...,
     ) -> bool: ...
     
     def set(
@@ -839,7 +822,6 @@ class AutomationTrigger:
         serial: str | None = ...,
         fabric_event_name: str | None = ...,
         fabric_event_severity: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     # Helper methods

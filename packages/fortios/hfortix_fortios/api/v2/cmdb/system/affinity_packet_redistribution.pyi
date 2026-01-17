@@ -112,6 +112,14 @@ class AffinityPacketRedistribution:
     Primary Key: id
     """
     
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client.
+        
+        Args:
+            client: HTTP client instance for API communication
+        """
+        ...
+    
     # ================================================================
     # GET OVERLOADS - Always returns FortiObject
     # Pylance matches overloads top-to-bottom, so these must come first!
@@ -130,7 +138,6 @@ class AffinityPacketRedistribution:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> AffinityPacketRedistributionObject: ...
     
     # With mkey as keyword arg -> returns FortiObject
@@ -147,7 +154,6 @@ class AffinityPacketRedistribution:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> AffinityPacketRedistributionObject: ...
     
     # Without mkey -> returns list of FortiObjects
@@ -163,7 +169,6 @@ class AffinityPacketRedistribution:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObjectList[AffinityPacketRedistributionObject]: ...
     
     # ================================================================
@@ -183,7 +188,6 @@ class AffinityPacketRedistribution:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> AffinityPacketRedistributionObject: ...
     
     # With mkey as keyword arg -> returns single object
@@ -200,7 +204,6 @@ class AffinityPacketRedistribution:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> AffinityPacketRedistributionObject: ...
     
     # With no mkey -> returns list of objects
@@ -216,7 +219,6 @@ class AffinityPacketRedistribution:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObjectList[AffinityPacketRedistributionObject]: ...
     
     # Dict mode with mkey provided as positional arg (single dict)
@@ -232,7 +234,6 @@ class AffinityPacketRedistribution:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> AffinityPacketRedistributionObject: ...
     
     # Dict mode with mkey provided as keyword arg (single dict)
@@ -249,7 +250,6 @@ class AffinityPacketRedistribution:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> AffinityPacketRedistributionObject: ...
     
     # Dict mode - list of dicts (no mkey/name provided) - keyword-only signature
@@ -265,7 +265,6 @@ class AffinityPacketRedistribution:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObjectList[AffinityPacketRedistributionObject]: ...
     
     # Fallback overload for all other cases
@@ -281,7 +280,6 @@ class AffinityPacketRedistribution:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> Union[dict[str, Any], list[dict[str, Any]], FortiObject, list[FortiObject]]: ...
     
     def get(
@@ -295,12 +293,10 @@ class AffinityPacketRedistribution:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> AffinityPacketRedistributionObject | list[AffinityPacketRedistributionObject] | dict[str, Any] | list[dict[str, Any]]: ...
     
     def get_schema(
         self,
-        vdom: str | None = ...,
         format: str = ...,
     ) -> FortiObject: ...
     
@@ -314,7 +310,6 @@ class AffinityPacketRedistribution:
         rxqid: int | None = ...,
         round_robin: Literal["enable", "disable"] | None = ...,
         affinity_cpumask: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> AffinityPacketRedistributionObject: ...
     
     @overload
@@ -326,7 +321,6 @@ class AffinityPacketRedistribution:
         rxqid: int | None = ...,
         round_robin: Literal["enable", "disable"] | None = ...,
         affinity_cpumask: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     # Default overload
@@ -339,7 +333,6 @@ class AffinityPacketRedistribution:
         rxqid: int | None = ...,
         round_robin: Literal["enable", "disable"] | None = ...,
         affinity_cpumask: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     def post(
@@ -350,7 +343,6 @@ class AffinityPacketRedistribution:
         rxqid: int | None = ...,
         round_robin: Literal["enable", "disable"] | None = ...,
         affinity_cpumask: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     # PUT overloads
@@ -363,7 +355,6 @@ class AffinityPacketRedistribution:
         rxqid: int | None = ...,
         round_robin: Literal["enable", "disable"] | None = ...,
         affinity_cpumask: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> AffinityPacketRedistributionObject: ...
     
     @overload
@@ -375,7 +366,6 @@ class AffinityPacketRedistribution:
         rxqid: int | None = ...,
         round_robin: Literal["enable", "disable"] | None = ...,
         affinity_cpumask: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     # Default overload
@@ -388,7 +378,6 @@ class AffinityPacketRedistribution:
         rxqid: int | None = ...,
         round_robin: Literal["enable", "disable"] | None = ...,
         affinity_cpumask: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     def put(
@@ -399,7 +388,6 @@ class AffinityPacketRedistribution:
         rxqid: int | None = ...,
         round_robin: Literal["enable", "disable"] | None = ...,
         affinity_cpumask: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     # DELETE overloads
@@ -407,14 +395,12 @@ class AffinityPacketRedistribution:
     def delete(
         self,
         id: int | None = ...,
-        vdom: str | bool | None = ...,
     ) -> AffinityPacketRedistributionObject: ...
     
     @overload
     def delete(
         self,
         id: int | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     # Default overload
@@ -422,19 +408,16 @@ class AffinityPacketRedistribution:
     def delete(
         self,
         id: int | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     def delete(
         self,
         id: int | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     def exists(
         self,
         id: int,
-        vdom: str | bool | None = ...,
     ) -> bool: ...
     
     def set(
@@ -445,7 +428,6 @@ class AffinityPacketRedistribution:
         rxqid: int | None = ...,
         round_robin: Literal["enable", "disable"] | None = ...,
         affinity_cpumask: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     # Helper methods

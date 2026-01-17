@@ -278,6 +278,14 @@ class Netflow:
     Category: cmdb
     """
     
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client.
+        
+        Args:
+            client: HTTP client instance for API communication
+        """
+        ...
+    
     # ================================================================
     # GET OVERLOADS - Always returns FortiObject
     # Pylance matches overloads top-to-bottom, so these must come first!
@@ -296,7 +304,6 @@ class Netflow:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> NetflowObject: ...
     
     # With mkey as keyword arg -> returns FortiObject
@@ -313,7 +320,6 @@ class Netflow:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> NetflowObject: ...
     
     # Without mkey -> returns list of FortiObjects
@@ -329,7 +335,6 @@ class Netflow:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> NetflowObject: ...
     
     # ================================================================
@@ -349,7 +354,6 @@ class Netflow:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> NetflowObject: ...
     
     # With mkey as keyword arg -> returns single object
@@ -366,7 +370,6 @@ class Netflow:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> NetflowObject: ...
     
     # With no mkey -> returns list of objects
@@ -382,7 +385,6 @@ class Netflow:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> NetflowObject: ...
     
     # Dict mode with mkey provided as positional arg (single dict)
@@ -398,7 +400,6 @@ class Netflow:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> NetflowObject: ...
     
     # Dict mode with mkey provided as keyword arg (single dict)
@@ -415,7 +416,6 @@ class Netflow:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> NetflowObject: ...
     
     # Dict mode - list of dicts (no mkey/name provided) - keyword-only signature
@@ -431,7 +431,6 @@ class Netflow:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> NetflowObject: ...
     
     # Fallback overload for all other cases
@@ -447,7 +446,6 @@ class Netflow:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> dict[str, Any] | FortiObject: ...
     
     def get(
@@ -461,12 +459,10 @@ class Netflow:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> NetflowObject | dict[str, Any]: ...
     
     def get_schema(
         self,
-        vdom: str | None = ...,
         format: str = ...,
     ) -> FortiObject: ...
     
@@ -482,7 +478,6 @@ class Netflow:
         session_cache_size: Literal["min", "default", "max"] | None = ...,
         exclusion_filters: str | list[str] | list[NetflowExclusionfiltersItem] | None = ...,
         collectors: str | list[str] | list[NetflowCollectorsItem] | None = ...,
-        vdom: str | bool | None = ...,
     ) -> NetflowObject: ...
     
     @overload
@@ -496,7 +491,6 @@ class Netflow:
         session_cache_size: Literal["min", "default", "max"] | None = ...,
         exclusion_filters: str | list[str] | list[NetflowExclusionfiltersItem] | None = ...,
         collectors: str | list[str] | list[NetflowCollectorsItem] | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     # Default overload
@@ -511,7 +505,6 @@ class Netflow:
         session_cache_size: Literal["min", "default", "max"] | None = ...,
         exclusion_filters: str | list[str] | list[NetflowExclusionfiltersItem] | None = ...,
         collectors: str | list[str] | list[NetflowCollectorsItem] | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     def put(
@@ -524,13 +517,11 @@ class Netflow:
         session_cache_size: Literal["min", "default", "max"] | None = ...,
         exclusion_filters: str | list[str] | list[NetflowExclusionfiltersItem] | None = ...,
         collectors: str | list[str] | list[NetflowCollectorsItem] | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     def exists(
         self,
         name: str,
-        vdom: str | bool | None = ...,
     ) -> bool: ...
     
     def set(
@@ -543,7 +534,6 @@ class Netflow:
         session_cache_size: Literal["min", "default", "max"] | None = ...,
         exclusion_filters: str | list[str] | list[NetflowExclusionfiltersItem] | None = ...,
         collectors: str | list[str] | list[NetflowCollectorsItem] | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     # Helper methods

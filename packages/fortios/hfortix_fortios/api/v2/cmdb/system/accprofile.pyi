@@ -203,6 +203,14 @@ class Accprofile:
     Primary Key: name
     """
     
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client.
+        
+        Args:
+            client: HTTP client instance for API communication
+        """
+        ...
+    
     # ================================================================
     # GET OVERLOADS - Always returns FortiObject
     # Pylance matches overloads top-to-bottom, so these must come first!
@@ -221,7 +229,6 @@ class Accprofile:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> AccprofileObject: ...
     
     # With mkey as keyword arg -> returns FortiObject
@@ -238,7 +245,6 @@ class Accprofile:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> AccprofileObject: ...
     
     # Without mkey -> returns list of FortiObjects
@@ -254,7 +260,6 @@ class Accprofile:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObjectList[AccprofileObject]: ...
     
     # ================================================================
@@ -274,7 +279,6 @@ class Accprofile:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> AccprofileObject: ...
     
     # With mkey as keyword arg -> returns single object
@@ -291,7 +295,6 @@ class Accprofile:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> AccprofileObject: ...
     
     # With no mkey -> returns list of objects
@@ -307,7 +310,6 @@ class Accprofile:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObjectList[AccprofileObject]: ...
     
     # Dict mode with mkey provided as positional arg (single dict)
@@ -323,7 +325,6 @@ class Accprofile:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> AccprofileObject: ...
     
     # Dict mode with mkey provided as keyword arg (single dict)
@@ -340,7 +341,6 @@ class Accprofile:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> AccprofileObject: ...
     
     # Dict mode - list of dicts (no mkey/name provided) - keyword-only signature
@@ -356,7 +356,6 @@ class Accprofile:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObjectList[AccprofileObject]: ...
     
     # Fallback overload for all other cases
@@ -372,7 +371,6 @@ class Accprofile:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> Union[dict[str, Any], list[dict[str, Any]], FortiObject, list[FortiObject]]: ...
     
     def get(
@@ -386,12 +384,10 @@ class Accprofile:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> AccprofileObject | list[AccprofileObject] | dict[str, Any] | list[dict[str, Any]]: ...
     
     def get_schema(
         self,
-        vdom: str | None = ...,
         format: str = ...,
     ) -> FortiObject: ...
     
@@ -429,7 +425,6 @@ class Accprofile:
         cli_config: Literal["enable", "disable"] | None = ...,
         system_execute_ssh: Literal["enable", "disable"] | None = ...,
         system_execute_telnet: Literal["enable", "disable"] | None = ...,
-        vdom: str | bool | None = ...,
     ) -> AccprofileObject: ...
     
     @overload
@@ -465,7 +460,6 @@ class Accprofile:
         cli_config: Literal["enable", "disable"] | None = ...,
         system_execute_ssh: Literal["enable", "disable"] | None = ...,
         system_execute_telnet: Literal["enable", "disable"] | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     # Default overload
@@ -502,7 +496,6 @@ class Accprofile:
         cli_config: Literal["enable", "disable"] | None = ...,
         system_execute_ssh: Literal["enable", "disable"] | None = ...,
         system_execute_telnet: Literal["enable", "disable"] | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     def post(
@@ -537,7 +530,6 @@ class Accprofile:
         cli_config: Literal["enable", "disable"] | None = ...,
         system_execute_ssh: Literal["enable", "disable"] | None = ...,
         system_execute_telnet: Literal["enable", "disable"] | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     # PUT overloads
@@ -574,7 +566,6 @@ class Accprofile:
         cli_config: Literal["enable", "disable"] | None = ...,
         system_execute_ssh: Literal["enable", "disable"] | None = ...,
         system_execute_telnet: Literal["enable", "disable"] | None = ...,
-        vdom: str | bool | None = ...,
     ) -> AccprofileObject: ...
     
     @overload
@@ -610,7 +601,6 @@ class Accprofile:
         cli_config: Literal["enable", "disable"] | None = ...,
         system_execute_ssh: Literal["enable", "disable"] | None = ...,
         system_execute_telnet: Literal["enable", "disable"] | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     # Default overload
@@ -647,7 +637,6 @@ class Accprofile:
         cli_config: Literal["enable", "disable"] | None = ...,
         system_execute_ssh: Literal["enable", "disable"] | None = ...,
         system_execute_telnet: Literal["enable", "disable"] | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     def put(
@@ -682,7 +671,6 @@ class Accprofile:
         cli_config: Literal["enable", "disable"] | None = ...,
         system_execute_ssh: Literal["enable", "disable"] | None = ...,
         system_execute_telnet: Literal["enable", "disable"] | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     # DELETE overloads
@@ -690,14 +678,12 @@ class Accprofile:
     def delete(
         self,
         name: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> AccprofileObject: ...
     
     @overload
     def delete(
         self,
         name: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     # Default overload
@@ -705,19 +691,16 @@ class Accprofile:
     def delete(
         self,
         name: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     def delete(
         self,
         name: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     def exists(
         self,
         name: str,
-        vdom: str | bool | None = ...,
     ) -> bool: ...
     
     def set(
@@ -752,7 +735,6 @@ class Accprofile:
         cli_config: Literal["enable", "disable"] | None = ...,
         system_execute_ssh: Literal["enable", "disable"] | None = ...,
         system_execute_telnet: Literal["enable", "disable"] | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     # Helper methods

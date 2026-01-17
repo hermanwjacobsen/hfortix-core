@@ -103,6 +103,14 @@ class Remote:
     Primary Key: name
     """
     
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client.
+        
+        Args:
+            client: HTTP client instance for API communication
+        """
+        ...
+    
     # ================================================================
     # GET OVERLOADS - Always returns FortiObject
     # Pylance matches overloads top-to-bottom, so these must come first!
@@ -121,7 +129,6 @@ class Remote:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> RemoteObject: ...
     
     # With mkey as keyword arg -> returns FortiObject
@@ -138,7 +145,6 @@ class Remote:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> RemoteObject: ...
     
     # Without mkey -> returns list of FortiObjects
@@ -154,7 +160,6 @@ class Remote:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObjectList[RemoteObject]: ...
     
     # ================================================================
@@ -174,7 +179,6 @@ class Remote:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> RemoteObject: ...
     
     # With mkey as keyword arg -> returns single object
@@ -191,7 +195,6 @@ class Remote:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> RemoteObject: ...
     
     # With no mkey -> returns list of objects
@@ -207,7 +210,6 @@ class Remote:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObjectList[RemoteObject]: ...
     
     # Dict mode with mkey provided as positional arg (single dict)
@@ -223,7 +225,6 @@ class Remote:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> RemoteObject: ...
     
     # Dict mode with mkey provided as keyword arg (single dict)
@@ -240,7 +241,6 @@ class Remote:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> RemoteObject: ...
     
     # Dict mode - list of dicts (no mkey/name provided) - keyword-only signature
@@ -256,7 +256,6 @@ class Remote:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObjectList[RemoteObject]: ...
     
     # Fallback overload for all other cases
@@ -272,7 +271,6 @@ class Remote:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> Union[dict[str, Any], list[dict[str, Any]], FortiObject, list[FortiObject]]: ...
     
     def get(
@@ -286,12 +284,10 @@ class Remote:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> RemoteObject | list[RemoteObject] | dict[str, Any] | list[dict[str, Any]]: ...
     
     def get_schema(
         self,
-        vdom: str | None = ...,
         format: str = ...,
     ) -> FortiObject: ...
     
@@ -304,7 +300,6 @@ class Remote:
         remote: str | None = ...,
         range: Literal["global", "vdom"] | None = ...,
         source: Literal["factory", "user", "bundle"] | None = ...,
-        vdom: str | bool | None = ...,
     ) -> RemoteObject: ...
     
     @overload
@@ -315,7 +310,6 @@ class Remote:
         remote: str | None = ...,
         range: Literal["global", "vdom"] | None = ...,
         source: Literal["factory", "user", "bundle"] | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     # Default overload
@@ -327,7 +321,6 @@ class Remote:
         remote: str | None = ...,
         range: Literal["global", "vdom"] | None = ...,
         source: Literal["factory", "user", "bundle"] | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     def put(
@@ -337,13 +330,11 @@ class Remote:
         remote: str | None = ...,
         range: Literal["global", "vdom"] | None = ...,
         source: Literal["factory", "user", "bundle"] | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     def exists(
         self,
         name: str,
-        vdom: str | bool | None = ...,
     ) -> bool: ...
     
     def set(
@@ -353,7 +344,6 @@ class Remote:
         remote: str | None = ...,
         range: Literal["global", "vdom"] | None = ...,
         source: Literal["factory", "user", "bundle"] | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     # Helper methods

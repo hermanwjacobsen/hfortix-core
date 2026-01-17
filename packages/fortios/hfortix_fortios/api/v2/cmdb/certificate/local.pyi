@@ -258,6 +258,14 @@ class Local:
     Primary Key: name
     """
     
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client.
+        
+        Args:
+            client: HTTP client instance for API communication
+        """
+        ...
+    
     # ================================================================
     # GET OVERLOADS - Always returns FortiObject
     # Pylance matches overloads top-to-bottom, so these must come first!
@@ -276,7 +284,6 @@ class Local:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> LocalObject: ...
     
     # With mkey as keyword arg -> returns FortiObject
@@ -293,7 +300,6 @@ class Local:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> LocalObject: ...
     
     # Without mkey -> returns list of FortiObjects
@@ -309,7 +315,6 @@ class Local:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObjectList[LocalObject]: ...
     
     # ================================================================
@@ -329,7 +334,6 @@ class Local:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> LocalObject: ...
     
     # With mkey as keyword arg -> returns single object
@@ -346,7 +350,6 @@ class Local:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> LocalObject: ...
     
     # With no mkey -> returns list of objects
@@ -362,7 +365,6 @@ class Local:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObjectList[LocalObject]: ...
     
     # Dict mode with mkey provided as positional arg (single dict)
@@ -378,7 +380,6 @@ class Local:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> LocalObject: ...
     
     # Dict mode with mkey provided as keyword arg (single dict)
@@ -395,7 +396,6 @@ class Local:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> LocalObject: ...
     
     # Dict mode - list of dicts (no mkey/name provided) - keyword-only signature
@@ -411,7 +411,6 @@ class Local:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObjectList[LocalObject]: ...
     
     # Fallback overload for all other cases
@@ -427,7 +426,6 @@ class Local:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> Union[dict[str, Any], list[dict[str, Any]], FortiObject, list[FortiObject]]: ...
     
     def get(
@@ -441,12 +439,10 @@ class Local:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> LocalObject | list[LocalObject] | dict[str, Any] | list[dict[str, Any]]: ...
     
     def get_schema(
         self,
-        vdom: str | None = ...,
         format: str = ...,
     ) -> FortiObject: ...
     
@@ -496,7 +492,6 @@ class Local:
         est_srp_password: str | None = ...,
         est_regeneration_method: Literal["create-new-key", "use-existing-key"] | None = ...,
         details: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> LocalObject: ...
     
     @overload
@@ -544,7 +539,6 @@ class Local:
         est_srp_password: str | None = ...,
         est_regeneration_method: Literal["create-new-key", "use-existing-key"] | None = ...,
         details: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     # Default overload
@@ -593,7 +587,6 @@ class Local:
         est_srp_password: str | None = ...,
         est_regeneration_method: Literal["create-new-key", "use-existing-key"] | None = ...,
         details: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     def put(
@@ -640,13 +633,11 @@ class Local:
         est_srp_password: str | None = ...,
         est_regeneration_method: Literal["create-new-key", "use-existing-key"] | None = ...,
         details: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     def exists(
         self,
         name: str,
-        vdom: str | bool | None = ...,
     ) -> bool: ...
     
     def set(
@@ -693,7 +684,6 @@ class Local:
         est_srp_password: str | None = ...,
         est_regeneration_method: Literal["create-new-key", "use-existing-key"] | None = ...,
         details: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     # Helper methods

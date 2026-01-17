@@ -158,6 +158,14 @@ class ResourceLimits:
     Category: cmdb
     """
     
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client.
+        
+        Args:
+            client: HTTP client instance for API communication
+        """
+        ...
+    
     # ================================================================
     # GET OVERLOADS - Always returns FortiObject
     # Pylance matches overloads top-to-bottom, so these must come first!
@@ -176,7 +184,6 @@ class ResourceLimits:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> ResourceLimitsObject: ...
     
     # With mkey as keyword arg -> returns FortiObject
@@ -193,7 +200,6 @@ class ResourceLimits:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> ResourceLimitsObject: ...
     
     # Without mkey -> returns list of FortiObjects
@@ -209,7 +215,6 @@ class ResourceLimits:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> ResourceLimitsObject: ...
     
     # ================================================================
@@ -229,7 +234,6 @@ class ResourceLimits:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> ResourceLimitsObject: ...
     
     # With mkey as keyword arg -> returns single object
@@ -246,7 +250,6 @@ class ResourceLimits:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> ResourceLimitsObject: ...
     
     # With no mkey -> returns list of objects
@@ -262,7 +265,6 @@ class ResourceLimits:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> ResourceLimitsObject: ...
     
     # Dict mode with mkey provided as positional arg (single dict)
@@ -278,7 +280,6 @@ class ResourceLimits:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> ResourceLimitsObject: ...
     
     # Dict mode with mkey provided as keyword arg (single dict)
@@ -295,7 +296,6 @@ class ResourceLimits:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> ResourceLimitsObject: ...
     
     # Dict mode - list of dicts (no mkey/name provided) - keyword-only signature
@@ -311,7 +311,6 @@ class ResourceLimits:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> ResourceLimitsObject: ...
     
     # Fallback overload for all other cases
@@ -327,7 +326,6 @@ class ResourceLimits:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> dict[str, Any] | FortiObject: ...
     
     def get(
@@ -341,12 +339,10 @@ class ResourceLimits:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> ResourceLimitsObject | dict[str, Any]: ...
     
     def get_schema(
         self,
-        vdom: str | None = ...,
         format: str = ...,
     ) -> FortiObject: ...
     
@@ -373,7 +369,6 @@ class ResourceLimits:
         sslvpn: int | None = ...,
         proxy: int | None = ...,
         log_disk_quota: int | None = ...,
-        vdom: str | bool | None = ...,
     ) -> ResourceLimitsObject: ...
     
     @overload
@@ -398,7 +393,6 @@ class ResourceLimits:
         sslvpn: int | None = ...,
         proxy: int | None = ...,
         log_disk_quota: int | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     # Default overload
@@ -424,7 +418,6 @@ class ResourceLimits:
         sslvpn: int | None = ...,
         proxy: int | None = ...,
         log_disk_quota: int | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     def put(
@@ -448,13 +441,11 @@ class ResourceLimits:
         sslvpn: int | None = ...,
         proxy: int | None = ...,
         log_disk_quota: int | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     def exists(
         self,
         name: str,
-        vdom: str | bool | None = ...,
     ) -> bool: ...
     
     def set(
@@ -478,7 +469,6 @@ class ResourceLimits:
         sslvpn: int | None = ...,
         proxy: int | None = ...,
         log_disk_quota: int | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     # Helper methods

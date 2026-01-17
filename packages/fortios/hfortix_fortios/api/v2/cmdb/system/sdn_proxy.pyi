@@ -111,6 +111,14 @@ class SdnProxy:
     Primary Key: name
     """
     
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client.
+        
+        Args:
+            client: HTTP client instance for API communication
+        """
+        ...
+    
     # ================================================================
     # GET OVERLOADS - Always returns FortiObject
     # Pylance matches overloads top-to-bottom, so these must come first!
@@ -129,7 +137,6 @@ class SdnProxy:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> SdnProxyObject: ...
     
     # With mkey as keyword arg -> returns FortiObject
@@ -146,7 +153,6 @@ class SdnProxy:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> SdnProxyObject: ...
     
     # Without mkey -> returns list of FortiObjects
@@ -162,7 +168,6 @@ class SdnProxy:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObjectList[SdnProxyObject]: ...
     
     # ================================================================
@@ -182,7 +187,6 @@ class SdnProxy:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> SdnProxyObject: ...
     
     # With mkey as keyword arg -> returns single object
@@ -199,7 +203,6 @@ class SdnProxy:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> SdnProxyObject: ...
     
     # With no mkey -> returns list of objects
@@ -215,7 +218,6 @@ class SdnProxy:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObjectList[SdnProxyObject]: ...
     
     # Dict mode with mkey provided as positional arg (single dict)
@@ -231,7 +233,6 @@ class SdnProxy:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> SdnProxyObject: ...
     
     # Dict mode with mkey provided as keyword arg (single dict)
@@ -248,7 +249,6 @@ class SdnProxy:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> SdnProxyObject: ...
     
     # Dict mode - list of dicts (no mkey/name provided) - keyword-only signature
@@ -264,7 +264,6 @@ class SdnProxy:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObjectList[SdnProxyObject]: ...
     
     # Fallback overload for all other cases
@@ -280,7 +279,6 @@ class SdnProxy:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> Union[dict[str, Any], list[dict[str, Any]], FortiObject, list[FortiObject]]: ...
     
     def get(
@@ -294,12 +292,10 @@ class SdnProxy:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> SdnProxyObject | list[SdnProxyObject] | dict[str, Any] | list[dict[str, Any]]: ...
     
     def get_schema(
         self,
-        vdom: str | None = ...,
         format: str = ...,
     ) -> FortiObject: ...
     
@@ -314,7 +310,6 @@ class SdnProxy:
         server_port: int | None = ...,
         username: str | None = ...,
         password: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> SdnProxyObject: ...
     
     @overload
@@ -327,7 +322,6 @@ class SdnProxy:
         server_port: int | None = ...,
         username: str | None = ...,
         password: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     # Default overload
@@ -341,7 +335,6 @@ class SdnProxy:
         server_port: int | None = ...,
         username: str | None = ...,
         password: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     def post(
@@ -353,7 +346,6 @@ class SdnProxy:
         server_port: int | None = ...,
         username: str | None = ...,
         password: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     # PUT overloads
@@ -367,7 +359,6 @@ class SdnProxy:
         server_port: int | None = ...,
         username: str | None = ...,
         password: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> SdnProxyObject: ...
     
     @overload
@@ -380,7 +371,6 @@ class SdnProxy:
         server_port: int | None = ...,
         username: str | None = ...,
         password: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     # Default overload
@@ -394,7 +384,6 @@ class SdnProxy:
         server_port: int | None = ...,
         username: str | None = ...,
         password: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     def put(
@@ -406,7 +395,6 @@ class SdnProxy:
         server_port: int | None = ...,
         username: str | None = ...,
         password: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     # DELETE overloads
@@ -414,14 +402,12 @@ class SdnProxy:
     def delete(
         self,
         name: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> SdnProxyObject: ...
     
     @overload
     def delete(
         self,
         name: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     # Default overload
@@ -429,19 +415,16 @@ class SdnProxy:
     def delete(
         self,
         name: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     def delete(
         self,
         name: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     def exists(
         self,
         name: str,
-        vdom: str | bool | None = ...,
     ) -> bool: ...
     
     def set(
@@ -453,7 +436,6 @@ class SdnProxy:
         server_port: int | None = ...,
         username: str | None = ...,
         password: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     # Helper methods

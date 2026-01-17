@@ -90,7 +90,6 @@ class AutomationCondition(CRUDEndpoint, MetadataMixin):
         count: int | None = None,
         start: int | None = None,
         payload_dict: dict[str, Any] | None = None,
-        vdom: str | bool | None = None,
         error_mode: Literal["raise", "return", "print"] | None = None,
         error_format: Literal["detailed", "simple", "code_only"] | None = None,
     ):  # type: ignore[no-untyped-def]
@@ -117,7 +116,6 @@ class AutomationCondition(CRUDEndpoint, MetadataMixin):
                 - scope (str): Query scope - "global", "vdom", or "both"
                 - action (str): Special actions - "schema", "default"
                 See FortiOS REST API documentation for complete list.
-            vdom: Virtual domain name. Use True for global, string for specific VDOM, None for default.
             error_mode: Override client-level error_mode. "raise" raises exceptions, "return" returns error dict, "print" prints errors.
             error_format: Override client-level error_format. "detailed" provides full context, "simple" is concise, "code_only" returns just status code.
 
@@ -182,12 +180,11 @@ class AutomationCondition(CRUDEndpoint, MetadataMixin):
             unwrap_single = False
         
         return self._client.get(
-            "cmdb", endpoint, params=params, vdom=vdom, unwrap_single=unwrap_single
+            "cmdb", endpoint, params=params, vdom=False, unwrap_single=unwrap_single
         )
 
     def get_schema(
         self,
-        vdom: str | None = None,
         format: str = "schema",
     ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """
@@ -201,7 +198,6 @@ class AutomationCondition(CRUDEndpoint, MetadataMixin):
         vary between FortiOS versions.
         
         Args:
-            vdom: Virtual domain. None uses default VDOM.
             format: Schema format - "schema" (FortiOS native) or "json-schema" (JSON Schema standard).
                 Defaults to "schema".
                 
@@ -220,7 +216,7 @@ class AutomationCondition(CRUDEndpoint, MetadataMixin):
             Not all endpoints support all schema formats. The "schema" format
             is most widely supported.
         """
-        return self.get(action=format, vdom=vdom)
+        return self.get(action=format)
 
 
     # ========================================================================
@@ -242,7 +238,6 @@ class AutomationCondition(CRUDEndpoint, MetadataMixin):
         q_before: str | None = None,
         q_after: str | None = None,
         q_scope: str | None = None,
-        vdom: str | bool | None = None,
         error_mode: Literal["raise", "return", "print"] | None = None,
         error_format: Literal["detailed", "simple", "code_only"] | None = None,
     ):  # type: ignore[no-untyped-def]
@@ -261,7 +256,6 @@ class AutomationCondition(CRUDEndpoint, MetadataMixin):
             vdom: Virtual domain which the tunnel belongs to.
             vpn_tunnel_name: VPN tunnel name.
             vpn_tunnel_state: VPN tunnel state.
-            vdom: Virtual domain name.
             error_mode: Override client-level error_mode. "raise" raises exceptions, "return" returns error dict, "print" prints errors.
             error_format: Override client-level error_format. "detailed" provides full context, "simple" is concise, "code_only" returns just status code.
 
@@ -330,7 +324,7 @@ class AutomationCondition(CRUDEndpoint, MetadataMixin):
             params["scope"] = q_scope
         
         return self._client.put(
-            "cmdb", endpoint, data=payload_data, params=params, vdom=vdom        )
+            "cmdb", endpoint, data=payload_data, params=params, vdom=False        )
 
     # ========================================================================
     # POST Method
@@ -350,7 +344,6 @@ class AutomationCondition(CRUDEndpoint, MetadataMixin):
         q_action: Literal["clone"] | None = None,
         q_nkey: str | None = None,
         q_scope: str | None = None,
-        vdom: str | bool | None = None,
         error_mode: Literal["raise", "return", "print"] | None = None,
         error_format: Literal["detailed", "simple", "code_only"] | None = None,
     ):  # type: ignore[no-untyped-def]
@@ -369,7 +362,6 @@ class AutomationCondition(CRUDEndpoint, MetadataMixin):
             vdom: Virtual domain which the tunnel belongs to.
             vpn_tunnel_name: VPN tunnel name.
             vpn_tunnel_state: VPN tunnel state.
-            vdom: Virtual domain name. Use True for global, string for specific VDOM.
             error_mode: Override client-level error_mode. "raise" raises exceptions, "return" returns error dict, "print" prints errors.
             error_format: Override client-level error_format. "detailed" provides full context, "simple" is concise, "code_only" returns just status code.
 
@@ -435,7 +427,7 @@ class AutomationCondition(CRUDEndpoint, MetadataMixin):
             params["scope"] = q_scope
         
         return self._client.post(
-            "cmdb", endpoint, data=payload_data, params=params, vdom=vdom        )
+            "cmdb", endpoint, data=payload_data, params=params, vdom=False        )
 
     # ========================================================================
     # DELETE Method
@@ -446,7 +438,6 @@ class AutomationCondition(CRUDEndpoint, MetadataMixin):
         self,
         name: str | None = None,
         q_scope: str | None = None,
-        vdom: str | bool | None = None,
         error_mode: Literal["raise", "return", "print"] | None = None,
         error_format: Literal["detailed", "simple", "code_only"] | None = None,
     ):  # type: ignore[no-untyped-def]
@@ -457,7 +448,6 @@ class AutomationCondition(CRUDEndpoint, MetadataMixin):
 
         Args:
             name: Primary key identifier
-            vdom: Virtual domain name
             error_mode: Override client-level error_mode. "raise" raises exceptions, "return" returns error dict, "print" prints errors.
             error_format: Override client-level error_format. "detailed" provides full context, "simple" is concise, "code_only" returns just status code.
 
@@ -489,12 +479,11 @@ class AutomationCondition(CRUDEndpoint, MetadataMixin):
             params["scope"] = q_scope
         
         return self._client.delete(
-            "cmdb", endpoint, params=params, vdom=vdom        )
+            "cmdb", endpoint, params=params, vdom=False        )
 
     def exists(
         self,
         name: str,
-        vdom: str | bool | None = None,
     ) -> Union[bool, Coroutine[Any, Any, bool]]:
         """
         Check if system/automation_condition object exists.
@@ -503,7 +492,6 @@ class AutomationCondition(CRUDEndpoint, MetadataMixin):
 
         Args:
             name: Primary key identifier
-            vdom: Virtual domain name
 
         Returns:
             True if object exists, False otherwise
@@ -537,7 +525,7 @@ class AutomationCondition(CRUDEndpoint, MetadataMixin):
                 "cmdb",
                 endpoint,
                 params=None,
-                vdom=vdom,
+                vdom=False,
                 raw_json=True,
                 silent=True,
             )
@@ -566,7 +554,6 @@ class AutomationCondition(CRUDEndpoint, MetadataMixin):
         mem_usage_percent: int | None = None,
         vpn_tunnel_name: str | None = None,
         vpn_tunnel_state: Literal["tunnel-up", "tunnel-down"] | None = None,
-        vdom: str | bool | None = None,
         error_mode: Literal["raise", "return", "print"] | None = None,
         error_format: Literal["detailed", "simple", "code_only"] | None = None,
         **kwargs: Any,
@@ -586,7 +573,6 @@ class AutomationCondition(CRUDEndpoint, MetadataMixin):
             mem_usage_percent: Field mem-usage-percent
             vpn_tunnel_name: Field vpn-tunnel-name
             vpn_tunnel_state: Field vpn-tunnel-state
-            vdom: Virtual domain name
             **kwargs: Additional parameters passed to PUT or POST
 
         Returns:
@@ -642,12 +628,12 @@ class AutomationCondition(CRUDEndpoint, MetadataMixin):
             raise ValueError("name is required for set()")
         
         # Check if resource exists
-        if self.exists(name=mkey_value, vdom=vdom):
+        if self.exists(name=mkey_value):
             # Update existing resource
-            return self.put(payload_dict=payload_data, vdom=vdom, **kwargs)
+            return self.put(payload_dict=payload_data, **kwargs)
         else:
             # Create new resource
-            return self.post(payload_dict=payload_data, vdom=vdom, **kwargs)
+            return self.post(payload_dict=payload_data, **kwargs)
 
     # ========================================================================
     # Action: Move
@@ -658,7 +644,6 @@ class AutomationCondition(CRUDEndpoint, MetadataMixin):
         name: str,
         action: Literal["before", "after"],
         reference_name: str,
-        vdom: str | bool | None = None,
         **kwargs: Any,
     ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """
@@ -670,7 +655,6 @@ class AutomationCondition(CRUDEndpoint, MetadataMixin):
             name: Identifier of object to move
             action: Move "before" or "after" reference object
             reference_name: Identifier of reference object
-            vdom: Virtual domain name
             **kwargs: Additional parameters
             
         Returns:
@@ -691,7 +675,6 @@ class AutomationCondition(CRUDEndpoint, MetadataMixin):
                 "name": name,
                 "action": "move",
                 action: reference_name,
-                "vdom": vdom,
                 **kwargs,
             },
         )
@@ -704,7 +687,6 @@ class AutomationCondition(CRUDEndpoint, MetadataMixin):
         self,
         name: str,
         new_name: str,
-        vdom: str | bool | None = None,
         **kwargs: Any,
     ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """
@@ -715,7 +697,6 @@ class AutomationCondition(CRUDEndpoint, MetadataMixin):
         Args:
             name: Identifier of object to clone
             new_name: Identifier for the cloned object
-            vdom: Virtual domain name
             **kwargs: Additional parameters
             
         Returns:
@@ -735,7 +716,6 @@ class AutomationCondition(CRUDEndpoint, MetadataMixin):
                 "name": name,
                 "new_name": new_name,
                 "action": "clone",
-                "vdom": vdom,
                 **kwargs,
             },
         )

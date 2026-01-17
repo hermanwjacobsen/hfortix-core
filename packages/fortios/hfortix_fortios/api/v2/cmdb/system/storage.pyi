@@ -123,6 +123,14 @@ class Storage:
     Primary Key: name
     """
     
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client.
+        
+        Args:
+            client: HTTP client instance for API communication
+        """
+        ...
+    
     # ================================================================
     # GET OVERLOADS - Always returns FortiObject
     # Pylance matches overloads top-to-bottom, so these must come first!
@@ -141,7 +149,6 @@ class Storage:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> StorageObject: ...
     
     # With mkey as keyword arg -> returns FortiObject
@@ -158,7 +165,6 @@ class Storage:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> StorageObject: ...
     
     # Without mkey -> returns list of FortiObjects
@@ -174,7 +180,6 @@ class Storage:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObjectList[StorageObject]: ...
     
     # ================================================================
@@ -194,7 +199,6 @@ class Storage:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> StorageObject: ...
     
     # With mkey as keyword arg -> returns single object
@@ -211,7 +215,6 @@ class Storage:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> StorageObject: ...
     
     # With no mkey -> returns list of objects
@@ -227,7 +230,6 @@ class Storage:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObjectList[StorageObject]: ...
     
     # Dict mode with mkey provided as positional arg (single dict)
@@ -243,7 +245,6 @@ class Storage:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> StorageObject: ...
     
     # Dict mode with mkey provided as keyword arg (single dict)
@@ -260,7 +261,6 @@ class Storage:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> StorageObject: ...
     
     # Dict mode - list of dicts (no mkey/name provided) - keyword-only signature
@@ -276,7 +276,6 @@ class Storage:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObjectList[StorageObject]: ...
     
     # Fallback overload for all other cases
@@ -292,7 +291,6 @@ class Storage:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> Union[dict[str, Any], list[dict[str, Any]], FortiObject, list[FortiObject]]: ...
     
     def get(
@@ -306,12 +304,10 @@ class Storage:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> StorageObject | list[StorageObject] | dict[str, Any] | list[dict[str, Any]]: ...
     
     def get_schema(
         self,
-        vdom: str | None = ...,
         format: str = ...,
     ) -> FortiObject: ...
     
@@ -329,7 +325,6 @@ class Storage:
         size: int | None = ...,
         usage: Literal["log", "wanopt"] | None = ...,
         wanopt_mode: Literal["mix", "wanopt", "webcache"] | None = ...,
-        vdom: str | bool | None = ...,
     ) -> StorageObject: ...
     
     @overload
@@ -345,7 +340,6 @@ class Storage:
         size: int | None = ...,
         usage: Literal["log", "wanopt"] | None = ...,
         wanopt_mode: Literal["mix", "wanopt", "webcache"] | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     # Default overload
@@ -362,7 +356,6 @@ class Storage:
         size: int | None = ...,
         usage: Literal["log", "wanopt"] | None = ...,
         wanopt_mode: Literal["mix", "wanopt", "webcache"] | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     def post(
@@ -377,7 +370,6 @@ class Storage:
         size: int | None = ...,
         usage: Literal["log", "wanopt"] | None = ...,
         wanopt_mode: Literal["mix", "wanopt", "webcache"] | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     # PUT overloads
@@ -394,7 +386,6 @@ class Storage:
         size: int | None = ...,
         usage: Literal["log", "wanopt"] | None = ...,
         wanopt_mode: Literal["mix", "wanopt", "webcache"] | None = ...,
-        vdom: str | bool | None = ...,
     ) -> StorageObject: ...
     
     @overload
@@ -410,7 +401,6 @@ class Storage:
         size: int | None = ...,
         usage: Literal["log", "wanopt"] | None = ...,
         wanopt_mode: Literal["mix", "wanopt", "webcache"] | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     # Default overload
@@ -427,7 +417,6 @@ class Storage:
         size: int | None = ...,
         usage: Literal["log", "wanopt"] | None = ...,
         wanopt_mode: Literal["mix", "wanopt", "webcache"] | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     def put(
@@ -442,7 +431,6 @@ class Storage:
         size: int | None = ...,
         usage: Literal["log", "wanopt"] | None = ...,
         wanopt_mode: Literal["mix", "wanopt", "webcache"] | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     # DELETE overloads
@@ -450,14 +438,12 @@ class Storage:
     def delete(
         self,
         name: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> StorageObject: ...
     
     @overload
     def delete(
         self,
         name: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     # Default overload
@@ -465,19 +451,16 @@ class Storage:
     def delete(
         self,
         name: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     def delete(
         self,
         name: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     def exists(
         self,
         name: str,
-        vdom: str | bool | None = ...,
     ) -> bool: ...
     
     def set(
@@ -492,7 +475,6 @@ class Storage:
         size: int | None = ...,
         usage: Literal["log", "wanopt"] | None = ...,
         wanopt_mode: Literal["mix", "wanopt", "webcache"] | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     # Helper methods

@@ -182,6 +182,14 @@ class Ike:
     Category: cmdb
     """
     
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client.
+        
+        Args:
+            client: HTTP client instance for API communication
+        """
+        ...
+    
     # ================================================================
     # GET OVERLOADS - Always returns FortiObject
     # Pylance matches overloads top-to-bottom, so these must come first!
@@ -200,7 +208,6 @@ class Ike:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> IkeObject: ...
     
     # With mkey as keyword arg -> returns FortiObject
@@ -217,7 +224,6 @@ class Ike:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> IkeObject: ...
     
     # Without mkey -> returns list of FortiObjects
@@ -233,7 +239,6 @@ class Ike:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> IkeObject: ...
     
     # ================================================================
@@ -253,7 +258,6 @@ class Ike:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> IkeObject: ...
     
     # With mkey as keyword arg -> returns single object
@@ -270,7 +274,6 @@ class Ike:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> IkeObject: ...
     
     # With no mkey -> returns list of objects
@@ -286,7 +289,6 @@ class Ike:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> IkeObject: ...
     
     # Dict mode with mkey provided as positional arg (single dict)
@@ -302,7 +304,6 @@ class Ike:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> IkeObject: ...
     
     # Dict mode with mkey provided as keyword arg (single dict)
@@ -319,7 +320,6 @@ class Ike:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> IkeObject: ...
     
     # Dict mode - list of dicts (no mkey/name provided) - keyword-only signature
@@ -335,7 +335,6 @@ class Ike:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> IkeObject: ...
     
     # Fallback overload for all other cases
@@ -351,7 +350,6 @@ class Ike:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> dict[str, Any] | FortiObject: ...
     
     def get(
@@ -365,12 +363,10 @@ class Ike:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> IkeObject | dict[str, Any]: ...
     
     def get_schema(
         self,
-        vdom: str | None = ...,
         format: str = ...,
     ) -> FortiObject: ...
     
@@ -403,7 +399,6 @@ class Ike:
         dh_group_30: str | None = ...,
         dh_group_31: str | None = ...,
         dh_group_32: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> IkeObject: ...
     
     @overload
@@ -434,7 +429,6 @@ class Ike:
         dh_group_30: str | None = ...,
         dh_group_31: str | None = ...,
         dh_group_32: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     # Default overload
@@ -466,7 +460,6 @@ class Ike:
         dh_group_30: str | None = ...,
         dh_group_31: str | None = ...,
         dh_group_32: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     def put(
@@ -496,13 +489,11 @@ class Ike:
         dh_group_30: str | None = ...,
         dh_group_31: str | None = ...,
         dh_group_32: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     def exists(
         self,
         name: str,
-        vdom: str | bool | None = ...,
     ) -> bool: ...
     
     def set(
@@ -532,7 +523,6 @@ class Ike:
         dh_group_30: str | None = ...,
         dh_group_31: str | None = ...,
         dh_group_32: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     # Helper methods

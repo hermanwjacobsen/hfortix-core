@@ -104,7 +104,6 @@ class Name(CRUDEndpoint, MetadataMixin):
         count: int | None = None,
         start: int | None = None,
         payload_dict: dict[str, Any] | None = None,
-        vdom: str | bool | None = None,
         error_mode: Literal["raise", "return", "print"] | None = None,
         error_format: Literal["detailed", "simple", "code_only"] | None = None,
     ):  # type: ignore[no-untyped-def]
@@ -131,7 +130,6 @@ class Name(CRUDEndpoint, MetadataMixin):
                 - scope (str): Query scope - "global", "vdom", or "both"
                 - action (str): Special actions - "schema", "default"
                 See FortiOS REST API documentation for complete list.
-            vdom: Virtual domain name. Use True for global, string for specific VDOM, None for default.
             error_mode: Override client-level error_mode. "raise" raises exceptions, "return" returns error dict, "print" prints errors.
             error_format: Override client-level error_format. "detailed" provides full context, "simple" is concise, "code_only" returns just status code.
 
@@ -210,7 +208,7 @@ class Name(CRUDEndpoint, MetadataMixin):
         
         # Fetch data and cache if this is a list query
         response = self._client.get(
-            "cmdb", endpoint, params=params, vdom=vdom, unwrap_single=unwrap_single
+            "cmdb", endpoint, params=params, vdom=False, unwrap_single=unwrap_single
         )
         
         # Cache the response for list queries
@@ -224,7 +222,6 @@ class Name(CRUDEndpoint, MetadataMixin):
 
     def get_schema(
         self,
-        vdom: str | None = None,
         format: str = "schema",
     ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """
@@ -238,7 +235,6 @@ class Name(CRUDEndpoint, MetadataMixin):
         vary between FortiOS versions.
         
         Args:
-            vdom: Virtual domain. None uses default VDOM.
             format: Schema format - "schema" (FortiOS native) or "json-schema" (JSON Schema standard).
                 Defaults to "schema".
                 
@@ -257,7 +253,7 @@ class Name(CRUDEndpoint, MetadataMixin):
             Not all endpoints support all schema formats. The "schema" format
             is most widely supported.
         """
-        return self.get(action=format, vdom=vdom)
+        return self.get(action=format)
 
 
     # ========================================================================
@@ -285,7 +281,6 @@ class Name(CRUDEndpoint, MetadataMixin):
         q_before: str | None = None,
         q_after: str | None = None,
         q_scope: str | None = None,
-        vdom: str | bool | None = None,
         error_mode: Literal["raise", "return", "print"] | None = None,
         error_format: Literal["detailed", "simple", "code_only"] | None = None,
     ):  # type: ignore[no-untyped-def]
@@ -319,7 +314,6 @@ class Name(CRUDEndpoint, MetadataMixin):
                   - List of strings: ["val1", "val2"] → [{'id': 'val1'}, ...]
                   - List of dicts: [{'id': 1}] (recommended)
             status: print all application information
-            vdom: Virtual domain name.
             error_mode: Override client-level error_mode. "raise" raises exceptions, "return" returns error dict, "print" prints errors.
             error_format: Override client-level error_format. "detailed" provides full context, "simple" is concise, "code_only" returns just status code.
 
@@ -412,7 +406,7 @@ class Name(CRUDEndpoint, MetadataMixin):
             params["scope"] = q_scope
         
         return self._client.put(
-            "cmdb", endpoint, data=payload_data, params=params, vdom=vdom        )
+            "cmdb", endpoint, data=payload_data, params=params, vdom=False        )
 
     # ========================================================================
     # POST Method
@@ -438,7 +432,6 @@ class Name(CRUDEndpoint, MetadataMixin):
         q_action: Literal["clone"] | None = None,
         q_nkey: str | None = None,
         q_scope: str | None = None,
-        vdom: str | bool | None = None,
         error_mode: Literal["raise", "return", "print"] | None = None,
         error_format: Literal["detailed", "simple", "code_only"] | None = None,
     ):  # type: ignore[no-untyped-def]
@@ -472,7 +465,6 @@ class Name(CRUDEndpoint, MetadataMixin):
                   - List of strings: ["val1", "val2"] → [{'id': 'val1'}, ...]
                   - List of dicts: [{'id': 1}] (recommended)
             status: print all application information
-            vdom: Virtual domain name. Use True for global, string for specific VDOM.
             error_mode: Override client-level error_mode. "raise" raises exceptions, "return" returns error dict, "print" prints errors.
             error_format: Override client-level error_format. "detailed" provides full context, "simple" is concise, "code_only" returns just status code.
 
@@ -562,7 +554,7 @@ class Name(CRUDEndpoint, MetadataMixin):
             params["scope"] = q_scope
         
         return self._client.post(
-            "cmdb", endpoint, data=payload_data, params=params, vdom=vdom        )
+            "cmdb", endpoint, data=payload_data, params=params, vdom=False        )
 
     # ========================================================================
     # DELETE Method
@@ -573,7 +565,6 @@ class Name(CRUDEndpoint, MetadataMixin):
         self,
         name: str | None = None,
         q_scope: str | None = None,
-        vdom: str | bool | None = None,
         error_mode: Literal["raise", "return", "print"] | None = None,
         error_format: Literal["detailed", "simple", "code_only"] | None = None,
     ):  # type: ignore[no-untyped-def]
@@ -584,7 +575,6 @@ class Name(CRUDEndpoint, MetadataMixin):
 
         Args:
             name: Primary key identifier
-            vdom: Virtual domain name
             error_mode: Override client-level error_mode. "raise" raises exceptions, "return" returns error dict, "print" prints errors.
             error_format: Override client-level error_format. "detailed" provides full context, "simple" is concise, "code_only" returns just status code.
 
@@ -616,12 +606,11 @@ class Name(CRUDEndpoint, MetadataMixin):
             params["scope"] = q_scope
         
         return self._client.delete(
-            "cmdb", endpoint, params=params, vdom=vdom        )
+            "cmdb", endpoint, params=params, vdom=False        )
 
     def exists(
         self,
         name: str,
-        vdom: str | bool | None = None,
     ) -> Union[bool, Coroutine[Any, Any, bool]]:
         """
         Check if application/name object exists.
@@ -630,7 +619,6 @@ class Name(CRUDEndpoint, MetadataMixin):
 
         Args:
             name: Primary key identifier
-            vdom: Virtual domain name
 
         Returns:
             True if object exists, False otherwise
@@ -652,7 +640,7 @@ class Name(CRUDEndpoint, MetadataMixin):
         """
         # For readonly endpoints, check by fetching all items and scanning
         # This is necessary because readonly endpoints don't support direct ID queries
-        result = self.get(vdom=vdom)
+        result = self.get()
         response = result.raw if hasattr(result, 'raw') else result
         
         if isinstance(response, dict):
@@ -703,7 +691,6 @@ class Name(CRUDEndpoint, MetadataMixin):
         parameters: str | list[str] | list[dict[str, Any]] | None = None,
         metadata: str | list[str] | list[dict[str, Any]] | None = None,
         status: Any | None = None,
-        vdom: str | bool | None = None,
         error_mode: Literal["raise", "return", "print"] | None = None,
         error_format: Literal["detailed", "simple", "code_only"] | None = None,
         **kwargs: Any,
@@ -729,7 +716,6 @@ class Name(CRUDEndpoint, MetadataMixin):
             parameters: Field parameters
             metadata: Field metadata
             status: Field status
-            vdom: Virtual domain name
             **kwargs: Additional parameters passed to PUT or POST
 
         Returns:
@@ -791,12 +777,12 @@ class Name(CRUDEndpoint, MetadataMixin):
             raise ValueError("name is required for set()")
         
         # Check if resource exists
-        if self.exists(name=mkey_value, vdom=vdom):
+        if self.exists(name=mkey_value):
             # Update existing resource
-            return self.put(payload_dict=payload_data, vdom=vdom, **kwargs)
+            return self.put(payload_dict=payload_data, **kwargs)
         else:
             # Create new resource
-            return self.post(payload_dict=payload_data, vdom=vdom, **kwargs)
+            return self.post(payload_dict=payload_data, **kwargs)
 
     # ========================================================================
     # Action: Move
@@ -807,7 +793,6 @@ class Name(CRUDEndpoint, MetadataMixin):
         name: str,
         action: Literal["before", "after"],
         reference_name: str,
-        vdom: str | bool | None = None,
         **kwargs: Any,
     ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """
@@ -819,7 +804,6 @@ class Name(CRUDEndpoint, MetadataMixin):
             name: Identifier of object to move
             action: Move "before" or "after" reference object
             reference_name: Identifier of reference object
-            vdom: Virtual domain name
             **kwargs: Additional parameters
             
         Returns:
@@ -840,7 +824,6 @@ class Name(CRUDEndpoint, MetadataMixin):
                 "name": name,
                 "action": "move",
                 action: reference_name,
-                "vdom": vdom,
                 **kwargs,
             },
         )
@@ -853,7 +836,6 @@ class Name(CRUDEndpoint, MetadataMixin):
         self,
         name: str,
         new_name: str,
-        vdom: str | bool | None = None,
         **kwargs: Any,
     ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """
@@ -864,7 +846,6 @@ class Name(CRUDEndpoint, MetadataMixin):
         Args:
             name: Identifier of object to clone
             new_name: Identifier for the cloned object
-            vdom: Virtual domain name
             **kwargs: Additional parameters
             
         Returns:
@@ -884,7 +865,6 @@ class Name(CRUDEndpoint, MetadataMixin):
                 "name": name,
                 "new_name": new_name,
                 "action": "clone",
-                "vdom": vdom,
                 **kwargs,
             },
         )

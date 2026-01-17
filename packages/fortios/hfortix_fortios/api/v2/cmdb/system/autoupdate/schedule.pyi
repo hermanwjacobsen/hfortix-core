@@ -102,6 +102,14 @@ class Schedule:
     Category: cmdb
     """
     
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client.
+        
+        Args:
+            client: HTTP client instance for API communication
+        """
+        ...
+    
     # ================================================================
     # GET OVERLOADS - Always returns FortiObject
     # Pylance matches overloads top-to-bottom, so these must come first!
@@ -120,7 +128,6 @@ class Schedule:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> ScheduleObject: ...
     
     # With mkey as keyword arg -> returns FortiObject
@@ -137,7 +144,6 @@ class Schedule:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> ScheduleObject: ...
     
     # Without mkey -> returns list of FortiObjects
@@ -153,7 +159,6 @@ class Schedule:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> ScheduleObject: ...
     
     # ================================================================
@@ -173,7 +178,6 @@ class Schedule:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> ScheduleObject: ...
     
     # With mkey as keyword arg -> returns single object
@@ -190,7 +194,6 @@ class Schedule:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> ScheduleObject: ...
     
     # With no mkey -> returns list of objects
@@ -206,7 +209,6 @@ class Schedule:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> ScheduleObject: ...
     
     # Dict mode with mkey provided as positional arg (single dict)
@@ -222,7 +224,6 @@ class Schedule:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> ScheduleObject: ...
     
     # Dict mode with mkey provided as keyword arg (single dict)
@@ -239,7 +240,6 @@ class Schedule:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> ScheduleObject: ...
     
     # Dict mode - list of dicts (no mkey/name provided) - keyword-only signature
@@ -255,7 +255,6 @@ class Schedule:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> ScheduleObject: ...
     
     # Fallback overload for all other cases
@@ -271,7 +270,6 @@ class Schedule:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> dict[str, Any] | FortiObject: ...
     
     def get(
@@ -285,12 +283,10 @@ class Schedule:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> ScheduleObject | dict[str, Any]: ...
     
     def get_schema(
         self,
-        vdom: str | None = ...,
         format: str = ...,
     ) -> FortiObject: ...
     
@@ -303,7 +299,6 @@ class Schedule:
         frequency: Literal["every", "daily", "weekly", "automatic"] | None = ...,
         time: str | None = ...,
         day: Literal["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"] | None = ...,
-        vdom: str | bool | None = ...,
     ) -> ScheduleObject: ...
     
     @overload
@@ -314,7 +309,6 @@ class Schedule:
         frequency: Literal["every", "daily", "weekly", "automatic"] | None = ...,
         time: str | None = ...,
         day: Literal["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"] | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     # Default overload
@@ -326,7 +320,6 @@ class Schedule:
         frequency: Literal["every", "daily", "weekly", "automatic"] | None = ...,
         time: str | None = ...,
         day: Literal["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"] | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     def put(
@@ -336,13 +329,11 @@ class Schedule:
         frequency: Literal["every", "daily", "weekly", "automatic"] | None = ...,
         time: str | None = ...,
         day: Literal["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"] | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     def exists(
         self,
         name: str,
-        vdom: str | bool | None = ...,
     ) -> bool: ...
     
     def set(
@@ -352,7 +343,6 @@ class Schedule:
         frequency: Literal["every", "daily", "weekly", "automatic"] | None = ...,
         time: str | None = ...,
         day: Literal["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"] | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     # Helper methods

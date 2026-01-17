@@ -157,6 +157,14 @@ class Region:
     Primary Key: id
     """
     
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client.
+        
+        Args:
+            client: HTTP client instance for API communication
+        """
+        ...
+    
     # ================================================================
     # GET OVERLOADS - Always returns FortiObject
     # Pylance matches overloads top-to-bottom, so these must come first!
@@ -175,7 +183,6 @@ class Region:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> RegionObject: ...
     
     # With mkey as keyword arg -> returns FortiObject
@@ -192,7 +199,6 @@ class Region:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> RegionObject: ...
     
     # Without mkey -> returns list of FortiObjects
@@ -208,7 +214,6 @@ class Region:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObjectList[RegionObject]: ...
     
     # ================================================================
@@ -228,7 +233,6 @@ class Region:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> RegionObject: ...
     
     # With mkey as keyword arg -> returns single object
@@ -245,7 +249,6 @@ class Region:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> RegionObject: ...
     
     # With no mkey -> returns list of objects
@@ -261,7 +264,6 @@ class Region:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObjectList[RegionObject]: ...
     
     # Dict mode with mkey provided as positional arg (single dict)
@@ -277,7 +279,6 @@ class Region:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> RegionObject: ...
     
     # Dict mode with mkey provided as keyword arg (single dict)
@@ -294,7 +295,6 @@ class Region:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> RegionObject: ...
     
     # Dict mode - list of dicts (no mkey/name provided) - keyword-only signature
@@ -310,7 +310,6 @@ class Region:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObjectList[RegionObject]: ...
     
     # Fallback overload for all other cases
@@ -326,7 +325,6 @@ class Region:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> Union[dict[str, Any], list[dict[str, Any]], FortiObject, list[FortiObject]]: ...
     
     def get(
@@ -340,12 +338,10 @@ class Region:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> RegionObject | list[RegionObject] | dict[str, Any] | list[dict[str, Any]]: ...
     
     def get_schema(
         self,
-        vdom: str | None = ...,
         format: str = ...,
     ) -> FortiObject: ...
     
@@ -357,7 +353,6 @@ class Region:
         id: int | None = ...,
         name: str | None = ...,
         city: str | list[str] | list[RegionCityItem] | None = ...,
-        vdom: str | bool | None = ...,
     ) -> RegionObject: ...
     
     @overload
@@ -367,7 +362,6 @@ class Region:
         id: int | None = ...,
         name: str | None = ...,
         city: str | list[str] | list[RegionCityItem] | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     # Default overload
@@ -378,7 +372,6 @@ class Region:
         id: int | None = ...,
         name: str | None = ...,
         city: str | list[str] | list[RegionCityItem] | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     def post(
@@ -387,7 +380,6 @@ class Region:
         id: int | None = ...,
         name: str | None = ...,
         city: str | list[str] | list[RegionCityItem] | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     # PUT overloads
@@ -398,7 +390,6 @@ class Region:
         id: int | None = ...,
         name: str | None = ...,
         city: str | list[str] | list[RegionCityItem] | None = ...,
-        vdom: str | bool | None = ...,
     ) -> RegionObject: ...
     
     @overload
@@ -408,7 +399,6 @@ class Region:
         id: int | None = ...,
         name: str | None = ...,
         city: str | list[str] | list[RegionCityItem] | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     # Default overload
@@ -419,7 +409,6 @@ class Region:
         id: int | None = ...,
         name: str | None = ...,
         city: str | list[str] | list[RegionCityItem] | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     def put(
@@ -428,7 +417,6 @@ class Region:
         id: int | None = ...,
         name: str | None = ...,
         city: str | list[str] | list[RegionCityItem] | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     # DELETE overloads
@@ -436,14 +424,12 @@ class Region:
     def delete(
         self,
         id: int | None = ...,
-        vdom: str | bool | None = ...,
     ) -> RegionObject: ...
     
     @overload
     def delete(
         self,
         id: int | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     # Default overload
@@ -451,19 +437,16 @@ class Region:
     def delete(
         self,
         id: int | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     def delete(
         self,
         id: int | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     def exists(
         self,
         id: int,
-        vdom: str | bool | None = ...,
     ) -> bool: ...
     
     def set(
@@ -472,7 +455,6 @@ class Region:
         id: int | None = ...,
         name: str | None = ...,
         city: str | list[str] | list[RegionCityItem] | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     # Helper methods

@@ -423,6 +423,14 @@ class StandaloneCluster:
     Category: cmdb
     """
     
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client.
+        
+        Args:
+            client: HTTP client instance for API communication
+        """
+        ...
+    
     # ================================================================
     # GET OVERLOADS - Always returns FortiObject
     # Pylance matches overloads top-to-bottom, so these must come first!
@@ -441,7 +449,6 @@ class StandaloneCluster:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> StandaloneClusterObject: ...
     
     # With mkey as keyword arg -> returns FortiObject
@@ -458,7 +465,6 @@ class StandaloneCluster:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> StandaloneClusterObject: ...
     
     # Without mkey -> returns list of FortiObjects
@@ -474,7 +480,6 @@ class StandaloneCluster:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> StandaloneClusterObject: ...
     
     # ================================================================
@@ -494,7 +499,6 @@ class StandaloneCluster:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> StandaloneClusterObject: ...
     
     # With mkey as keyword arg -> returns single object
@@ -511,7 +515,6 @@ class StandaloneCluster:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> StandaloneClusterObject: ...
     
     # With no mkey -> returns list of objects
@@ -527,7 +530,6 @@ class StandaloneCluster:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> StandaloneClusterObject: ...
     
     # Dict mode with mkey provided as positional arg (single dict)
@@ -543,7 +545,6 @@ class StandaloneCluster:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> StandaloneClusterObject: ...
     
     # Dict mode with mkey provided as keyword arg (single dict)
@@ -560,7 +561,6 @@ class StandaloneCluster:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> StandaloneClusterObject: ...
     
     # Dict mode - list of dicts (no mkey/name provided) - keyword-only signature
@@ -576,7 +576,6 @@ class StandaloneCluster:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> StandaloneClusterObject: ...
     
     # Fallback overload for all other cases
@@ -592,7 +591,6 @@ class StandaloneCluster:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> dict[str, Any] | FortiObject: ...
     
     def get(
@@ -606,12 +604,10 @@ class StandaloneCluster:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> StandaloneClusterObject | dict[str, Any]: ...
     
     def get_schema(
         self,
-        vdom: str | None = ...,
         format: str = ...,
     ) -> FortiObject: ...
     
@@ -633,7 +629,6 @@ class StandaloneCluster:
         monitor_prefix: str | list[str] | list[StandaloneClusterMonitorprefixItem] | None = ...,
         helper_traffic_bounce: Literal["enable", "disable"] | None = ...,
         utm_traffic_bounce: Literal["enable", "disable"] | None = ...,
-        vdom: str | bool | None = ...,
     ) -> StandaloneClusterObject: ...
     
     @overload
@@ -653,7 +648,6 @@ class StandaloneCluster:
         monitor_prefix: str | list[str] | list[StandaloneClusterMonitorprefixItem] | None = ...,
         helper_traffic_bounce: Literal["enable", "disable"] | None = ...,
         utm_traffic_bounce: Literal["enable", "disable"] | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     # Default overload
@@ -674,7 +668,6 @@ class StandaloneCluster:
         monitor_prefix: str | list[str] | list[StandaloneClusterMonitorprefixItem] | None = ...,
         helper_traffic_bounce: Literal["enable", "disable"] | None = ...,
         utm_traffic_bounce: Literal["enable", "disable"] | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     def put(
@@ -693,13 +686,11 @@ class StandaloneCluster:
         monitor_prefix: str | list[str] | list[StandaloneClusterMonitorprefixItem] | None = ...,
         helper_traffic_bounce: Literal["enable", "disable"] | None = ...,
         utm_traffic_bounce: Literal["enable", "disable"] | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     def exists(
         self,
         name: str,
-        vdom: str | bool | None = ...,
     ) -> bool: ...
     
     def set(
@@ -718,7 +709,6 @@ class StandaloneCluster:
         monitor_prefix: str | list[str] | list[StandaloneClusterMonitorprefixItem] | None = ...,
         helper_traffic_bounce: Literal["enable", "disable"] | None = ...,
         utm_traffic_bounce: Literal["enable", "disable"] | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     # Helper methods

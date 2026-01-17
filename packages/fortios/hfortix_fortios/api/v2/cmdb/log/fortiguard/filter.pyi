@@ -204,6 +204,14 @@ class Filter:
     Category: cmdb
     """
     
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client.
+        
+        Args:
+            client: HTTP client instance for API communication
+        """
+        ...
+    
     # ================================================================
     # GET OVERLOADS - Always returns FortiObject
     # Pylance matches overloads top-to-bottom, so these must come first!
@@ -222,7 +230,6 @@ class Filter:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FilterObject: ...
     
     # With mkey as keyword arg -> returns FortiObject
@@ -239,7 +246,6 @@ class Filter:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FilterObject: ...
     
     # Without mkey -> returns list of FortiObjects
@@ -255,7 +261,6 @@ class Filter:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FilterObject: ...
     
     # ================================================================
@@ -275,7 +280,6 @@ class Filter:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FilterObject: ...
     
     # With mkey as keyword arg -> returns single object
@@ -292,7 +296,6 @@ class Filter:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FilterObject: ...
     
     # With no mkey -> returns list of objects
@@ -308,7 +311,6 @@ class Filter:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FilterObject: ...
     
     # Dict mode with mkey provided as positional arg (single dict)
@@ -324,7 +326,6 @@ class Filter:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FilterObject: ...
     
     # Dict mode with mkey provided as keyword arg (single dict)
@@ -341,7 +342,6 @@ class Filter:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FilterObject: ...
     
     # Dict mode - list of dicts (no mkey/name provided) - keyword-only signature
@@ -357,7 +357,6 @@ class Filter:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FilterObject: ...
     
     # Fallback overload for all other cases
@@ -373,7 +372,6 @@ class Filter:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> dict[str, Any] | FortiObject: ...
     
     def get(
@@ -387,12 +385,10 @@ class Filter:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FilterObject | dict[str, Any]: ...
     
     def get_schema(
         self,
-        vdom: str | None = ...,
         format: str = ...,
     ) -> FortiObject: ...
     
@@ -413,7 +409,6 @@ class Filter:
         gtp: Literal["enable", "disable"] | None = ...,
         forti_switch: Literal["enable", "disable"] | None = ...,
         free_style: str | list[str] | list[FilterFreestyleItem] | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FilterObject: ...
     
     @overload
@@ -432,7 +427,6 @@ class Filter:
         gtp: Literal["enable", "disable"] | None = ...,
         forti_switch: Literal["enable", "disable"] | None = ...,
         free_style: str | list[str] | list[FilterFreestyleItem] | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     # Default overload
@@ -452,7 +446,6 @@ class Filter:
         gtp: Literal["enable", "disable"] | None = ...,
         forti_switch: Literal["enable", "disable"] | None = ...,
         free_style: str | list[str] | list[FilterFreestyleItem] | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     def put(
@@ -470,13 +463,11 @@ class Filter:
         gtp: Literal["enable", "disable"] | None = ...,
         forti_switch: Literal["enable", "disable"] | None = ...,
         free_style: str | list[str] | list[FilterFreestyleItem] | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     def exists(
         self,
         name: str,
-        vdom: str | bool | None = ...,
     ) -> bool: ...
     
     def set(
@@ -494,7 +485,6 @@ class Filter:
         gtp: Literal["enable", "disable"] | None = ...,
         forti_switch: Literal["enable", "disable"] | None = ...,
         free_style: str | list[str] | list[FilterFreestyleItem] | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     # Helper methods

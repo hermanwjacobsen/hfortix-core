@@ -168,6 +168,14 @@ class Sflow:
     Category: cmdb
     """
     
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client.
+        
+        Args:
+            client: HTTP client instance for API communication
+        """
+        ...
+    
     # ================================================================
     # GET OVERLOADS - Always returns FortiObject
     # Pylance matches overloads top-to-bottom, so these must come first!
@@ -186,7 +194,6 @@ class Sflow:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> SflowObject: ...
     
     # With mkey as keyword arg -> returns FortiObject
@@ -203,7 +210,6 @@ class Sflow:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> SflowObject: ...
     
     # Without mkey -> returns list of FortiObjects
@@ -219,7 +225,6 @@ class Sflow:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> SflowObject: ...
     
     # ================================================================
@@ -239,7 +244,6 @@ class Sflow:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> SflowObject: ...
     
     # With mkey as keyword arg -> returns single object
@@ -256,7 +260,6 @@ class Sflow:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> SflowObject: ...
     
     # With no mkey -> returns list of objects
@@ -272,7 +275,6 @@ class Sflow:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> SflowObject: ...
     
     # Dict mode with mkey provided as positional arg (single dict)
@@ -288,7 +290,6 @@ class Sflow:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> SflowObject: ...
     
     # Dict mode with mkey provided as keyword arg (single dict)
@@ -305,7 +306,6 @@ class Sflow:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> SflowObject: ...
     
     # Dict mode - list of dicts (no mkey/name provided) - keyword-only signature
@@ -321,7 +321,6 @@ class Sflow:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> SflowObject: ...
     
     # Fallback overload for all other cases
@@ -337,7 +336,6 @@ class Sflow:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> dict[str, Any] | FortiObject: ...
     
     def get(
@@ -351,12 +349,10 @@ class Sflow:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> SflowObject | dict[str, Any]: ...
     
     def get_schema(
         self,
-        vdom: str | None = ...,
         format: str = ...,
     ) -> FortiObject: ...
     
@@ -366,7 +362,6 @@ class Sflow:
         self,
         payload_dict: SflowPayload | None = ...,
         collectors: str | list[str] | list[SflowCollectorsItem] | None = ...,
-        vdom: str | bool | None = ...,
     ) -> SflowObject: ...
     
     @overload
@@ -374,7 +369,6 @@ class Sflow:
         self,
         payload_dict: SflowPayload | None = ...,
         collectors: str | list[str] | list[SflowCollectorsItem] | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     # Default overload
@@ -383,27 +377,23 @@ class Sflow:
         self,
         payload_dict: SflowPayload | None = ...,
         collectors: str | list[str] | list[SflowCollectorsItem] | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     def put(
         self,
         payload_dict: SflowPayload | None = ...,
         collectors: str | list[str] | list[SflowCollectorsItem] | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     def exists(
         self,
         name: str,
-        vdom: str | bool | None = ...,
     ) -> bool: ...
     
     def set(
         self,
         payload_dict: SflowPayload | None = ...,
         collectors: str | list[str] | list[SflowCollectorsItem] | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     # Helper methods

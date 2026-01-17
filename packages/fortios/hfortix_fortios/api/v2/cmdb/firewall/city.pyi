@@ -95,6 +95,14 @@ class City:
     Primary Key: id
     """
     
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client.
+        
+        Args:
+            client: HTTP client instance for API communication
+        """
+        ...
+    
     # ================================================================
     # GET OVERLOADS - Always returns FortiObject
     # Pylance matches overloads top-to-bottom, so these must come first!
@@ -113,7 +121,6 @@ class City:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> CityObject: ...
     
     # With mkey as keyword arg -> returns FortiObject
@@ -130,7 +137,6 @@ class City:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> CityObject: ...
     
     # Without mkey -> returns list of FortiObjects
@@ -146,7 +152,6 @@ class City:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObjectList[CityObject]: ...
     
     # ================================================================
@@ -166,7 +171,6 @@ class City:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> CityObject: ...
     
     # With mkey as keyword arg -> returns single object
@@ -183,7 +187,6 @@ class City:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> CityObject: ...
     
     # With no mkey -> returns list of objects
@@ -199,7 +202,6 @@ class City:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObjectList[CityObject]: ...
     
     # Dict mode with mkey provided as positional arg (single dict)
@@ -215,7 +217,6 @@ class City:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> CityObject: ...
     
     # Dict mode with mkey provided as keyword arg (single dict)
@@ -232,7 +233,6 @@ class City:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> CityObject: ...
     
     # Dict mode - list of dicts (no mkey/name provided) - keyword-only signature
@@ -248,7 +248,6 @@ class City:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObjectList[CityObject]: ...
     
     # Fallback overload for all other cases
@@ -264,7 +263,6 @@ class City:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> Union[dict[str, Any], list[dict[str, Any]], FortiObject, list[FortiObject]]: ...
     
     def get(
@@ -278,12 +276,10 @@ class City:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> CityObject | list[CityObject] | dict[str, Any] | list[dict[str, Any]]: ...
     
     def get_schema(
         self,
-        vdom: str | None = ...,
         format: str = ...,
     ) -> FortiObject: ...
     
@@ -294,7 +290,6 @@ class City:
         payload_dict: CityPayload | None = ...,
         id: int | None = ...,
         name: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> CityObject: ...
     
     @overload
@@ -303,7 +298,6 @@ class City:
         payload_dict: CityPayload | None = ...,
         id: int | None = ...,
         name: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     # Default overload
@@ -313,7 +307,6 @@ class City:
         payload_dict: CityPayload | None = ...,
         id: int | None = ...,
         name: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     def post(
@@ -321,7 +314,6 @@ class City:
         payload_dict: CityPayload | None = ...,
         id: int | None = ...,
         name: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     # PUT overloads
@@ -331,7 +323,6 @@ class City:
         payload_dict: CityPayload | None = ...,
         id: int | None = ...,
         name: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> CityObject: ...
     
     @overload
@@ -340,7 +331,6 @@ class City:
         payload_dict: CityPayload | None = ...,
         id: int | None = ...,
         name: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     # Default overload
@@ -350,7 +340,6 @@ class City:
         payload_dict: CityPayload | None = ...,
         id: int | None = ...,
         name: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     def put(
@@ -358,7 +347,6 @@ class City:
         payload_dict: CityPayload | None = ...,
         id: int | None = ...,
         name: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     # DELETE overloads
@@ -366,14 +354,12 @@ class City:
     def delete(
         self,
         id: int | None = ...,
-        vdom: str | bool | None = ...,
     ) -> CityObject: ...
     
     @overload
     def delete(
         self,
         id: int | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     # Default overload
@@ -381,19 +367,16 @@ class City:
     def delete(
         self,
         id: int | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     def delete(
         self,
         id: int | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     def exists(
         self,
         id: int,
-        vdom: str | bool | None = ...,
     ) -> bool: ...
     
     def set(
@@ -401,7 +384,6 @@ class City:
         payload_dict: CityPayload | None = ...,
         id: int | None = ...,
         name: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     # Helper methods

@@ -99,6 +99,14 @@ class ReplacemsgImage:
     Primary Key: name
     """
     
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client.
+        
+        Args:
+            client: HTTP client instance for API communication
+        """
+        ...
+    
     # ================================================================
     # GET OVERLOADS - Always returns FortiObject
     # Pylance matches overloads top-to-bottom, so these must come first!
@@ -117,7 +125,6 @@ class ReplacemsgImage:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> ReplacemsgImageObject: ...
     
     # With mkey as keyword arg -> returns FortiObject
@@ -134,7 +141,6 @@ class ReplacemsgImage:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> ReplacemsgImageObject: ...
     
     # Without mkey -> returns list of FortiObjects
@@ -150,7 +156,6 @@ class ReplacemsgImage:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObjectList[ReplacemsgImageObject]: ...
     
     # ================================================================
@@ -170,7 +175,6 @@ class ReplacemsgImage:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> ReplacemsgImageObject: ...
     
     # With mkey as keyword arg -> returns single object
@@ -187,7 +191,6 @@ class ReplacemsgImage:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> ReplacemsgImageObject: ...
     
     # With no mkey -> returns list of objects
@@ -203,7 +206,6 @@ class ReplacemsgImage:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObjectList[ReplacemsgImageObject]: ...
     
     # Dict mode with mkey provided as positional arg (single dict)
@@ -219,7 +221,6 @@ class ReplacemsgImage:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> ReplacemsgImageObject: ...
     
     # Dict mode with mkey provided as keyword arg (single dict)
@@ -236,7 +237,6 @@ class ReplacemsgImage:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> ReplacemsgImageObject: ...
     
     # Dict mode - list of dicts (no mkey/name provided) - keyword-only signature
@@ -252,7 +252,6 @@ class ReplacemsgImage:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObjectList[ReplacemsgImageObject]: ...
     
     # Fallback overload for all other cases
@@ -268,7 +267,6 @@ class ReplacemsgImage:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> Union[dict[str, Any], list[dict[str, Any]], FortiObject, list[FortiObject]]: ...
     
     def get(
@@ -282,12 +280,10 @@ class ReplacemsgImage:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> ReplacemsgImageObject | list[ReplacemsgImageObject] | dict[str, Any] | list[dict[str, Any]]: ...
     
     def get_schema(
         self,
-        vdom: str | None = ...,
         format: str = ...,
     ) -> FortiObject: ...
     
@@ -299,7 +295,6 @@ class ReplacemsgImage:
         name: str | None = ...,
         image_type: Literal["gif", "jpg", "tiff", "png"] | None = ...,
         image_base64: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> ReplacemsgImageObject: ...
     
     @overload
@@ -309,7 +304,6 @@ class ReplacemsgImage:
         name: str | None = ...,
         image_type: Literal["gif", "jpg", "tiff", "png"] | None = ...,
         image_base64: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     # Default overload
@@ -320,7 +314,6 @@ class ReplacemsgImage:
         name: str | None = ...,
         image_type: Literal["gif", "jpg", "tiff", "png"] | None = ...,
         image_base64: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     def post(
@@ -329,7 +322,6 @@ class ReplacemsgImage:
         name: str | None = ...,
         image_type: Literal["gif", "jpg", "tiff", "png"] | None = ...,
         image_base64: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     # PUT overloads
@@ -340,7 +332,6 @@ class ReplacemsgImage:
         name: str | None = ...,
         image_type: Literal["gif", "jpg", "tiff", "png"] | None = ...,
         image_base64: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> ReplacemsgImageObject: ...
     
     @overload
@@ -350,7 +341,6 @@ class ReplacemsgImage:
         name: str | None = ...,
         image_type: Literal["gif", "jpg", "tiff", "png"] | None = ...,
         image_base64: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     # Default overload
@@ -361,7 +351,6 @@ class ReplacemsgImage:
         name: str | None = ...,
         image_type: Literal["gif", "jpg", "tiff", "png"] | None = ...,
         image_base64: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     def put(
@@ -370,7 +359,6 @@ class ReplacemsgImage:
         name: str | None = ...,
         image_type: Literal["gif", "jpg", "tiff", "png"] | None = ...,
         image_base64: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     # DELETE overloads
@@ -378,14 +366,12 @@ class ReplacemsgImage:
     def delete(
         self,
         name: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> ReplacemsgImageObject: ...
     
     @overload
     def delete(
         self,
         name: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     # Default overload
@@ -393,19 +379,16 @@ class ReplacemsgImage:
     def delete(
         self,
         name: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     def delete(
         self,
         name: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     def exists(
         self,
         name: str,
-        vdom: str | bool | None = ...,
     ) -> bool: ...
     
     def set(
@@ -414,7 +397,6 @@ class ReplacemsgImage:
         name: str | None = ...,
         image_type: Literal["gif", "jpg", "tiff", "png"] | None = ...,
         image_base64: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     # Helper methods

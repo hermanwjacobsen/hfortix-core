@@ -120,6 +120,14 @@ class CloudService:
     Primary Key: name
     """
     
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client.
+        
+        Args:
+            client: HTTP client instance for API communication
+        """
+        ...
+    
     # ================================================================
     # GET OVERLOADS - Always returns FortiObject
     # Pylance matches overloads top-to-bottom, so these must come first!
@@ -138,7 +146,6 @@ class CloudService:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> CloudServiceObject: ...
     
     # With mkey as keyword arg -> returns FortiObject
@@ -155,7 +162,6 @@ class CloudService:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> CloudServiceObject: ...
     
     # Without mkey -> returns list of FortiObjects
@@ -171,7 +177,6 @@ class CloudService:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObjectList[CloudServiceObject]: ...
     
     # ================================================================
@@ -191,7 +196,6 @@ class CloudService:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> CloudServiceObject: ...
     
     # With mkey as keyword arg -> returns single object
@@ -208,7 +212,6 @@ class CloudService:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> CloudServiceObject: ...
     
     # With no mkey -> returns list of objects
@@ -224,7 +227,6 @@ class CloudService:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObjectList[CloudServiceObject]: ...
     
     # Dict mode with mkey provided as positional arg (single dict)
@@ -240,7 +242,6 @@ class CloudService:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> CloudServiceObject: ...
     
     # Dict mode with mkey provided as keyword arg (single dict)
@@ -257,7 +258,6 @@ class CloudService:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> CloudServiceObject: ...
     
     # Dict mode - list of dicts (no mkey/name provided) - keyword-only signature
@@ -273,7 +273,6 @@ class CloudService:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObjectList[CloudServiceObject]: ...
     
     # Fallback overload for all other cases
@@ -289,7 +288,6 @@ class CloudService:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> Union[dict[str, Any], list[dict[str, Any]], FortiObject, list[FortiObject]]: ...
     
     def get(
@@ -303,12 +301,10 @@ class CloudService:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> CloudServiceObject | list[CloudServiceObject] | dict[str, Any] | list[dict[str, Any]]: ...
     
     def get_schema(
         self,
-        vdom: str | None = ...,
         format: str = ...,
     ) -> FortiObject: ...
     
@@ -324,7 +320,6 @@ class CloudService:
         gck_private_key: str | None = ...,
         gck_keyid: str | None = ...,
         gck_access_token_lifetime: int | None = ...,
-        vdom: str | bool | None = ...,
     ) -> CloudServiceObject: ...
     
     @overload
@@ -338,7 +333,6 @@ class CloudService:
         gck_private_key: str | None = ...,
         gck_keyid: str | None = ...,
         gck_access_token_lifetime: int | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     # Default overload
@@ -353,7 +347,6 @@ class CloudService:
         gck_private_key: str | None = ...,
         gck_keyid: str | None = ...,
         gck_access_token_lifetime: int | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     def post(
@@ -366,7 +359,6 @@ class CloudService:
         gck_private_key: str | None = ...,
         gck_keyid: str | None = ...,
         gck_access_token_lifetime: int | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     # PUT overloads
@@ -381,7 +373,6 @@ class CloudService:
         gck_private_key: str | None = ...,
         gck_keyid: str | None = ...,
         gck_access_token_lifetime: int | None = ...,
-        vdom: str | bool | None = ...,
     ) -> CloudServiceObject: ...
     
     @overload
@@ -395,7 +386,6 @@ class CloudService:
         gck_private_key: str | None = ...,
         gck_keyid: str | None = ...,
         gck_access_token_lifetime: int | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     # Default overload
@@ -410,7 +400,6 @@ class CloudService:
         gck_private_key: str | None = ...,
         gck_keyid: str | None = ...,
         gck_access_token_lifetime: int | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     def put(
@@ -423,7 +412,6 @@ class CloudService:
         gck_private_key: str | None = ...,
         gck_keyid: str | None = ...,
         gck_access_token_lifetime: int | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     # DELETE overloads
@@ -431,14 +419,12 @@ class CloudService:
     def delete(
         self,
         name: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> CloudServiceObject: ...
     
     @overload
     def delete(
         self,
         name: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     # Default overload
@@ -446,19 +432,16 @@ class CloudService:
     def delete(
         self,
         name: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     def delete(
         self,
         name: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     def exists(
         self,
         name: str,
-        vdom: str | bool | None = ...,
     ) -> bool: ...
     
     def set(
@@ -471,7 +454,6 @@ class CloudService:
         gck_private_key: str | None = ...,
         gck_keyid: str | None = ...,
         gck_access_token_lifetime: int | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     # Helper methods

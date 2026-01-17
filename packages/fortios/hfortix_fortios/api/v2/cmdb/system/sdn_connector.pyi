@@ -932,6 +932,14 @@ class SdnConnector:
     Primary Key: name
     """
     
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client.
+        
+        Args:
+            client: HTTP client instance for API communication
+        """
+        ...
+    
     # ================================================================
     # GET OVERLOADS - Always returns FortiObject
     # Pylance matches overloads top-to-bottom, so these must come first!
@@ -950,7 +958,6 @@ class SdnConnector:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> SdnConnectorObject: ...
     
     # With mkey as keyword arg -> returns FortiObject
@@ -967,7 +974,6 @@ class SdnConnector:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> SdnConnectorObject: ...
     
     # Without mkey -> returns list of FortiObjects
@@ -983,7 +989,6 @@ class SdnConnector:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObjectList[SdnConnectorObject]: ...
     
     # ================================================================
@@ -1003,7 +1008,6 @@ class SdnConnector:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> SdnConnectorObject: ...
     
     # With mkey as keyword arg -> returns single object
@@ -1020,7 +1024,6 @@ class SdnConnector:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> SdnConnectorObject: ...
     
     # With no mkey -> returns list of objects
@@ -1036,7 +1039,6 @@ class SdnConnector:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObjectList[SdnConnectorObject]: ...
     
     # Dict mode with mkey provided as positional arg (single dict)
@@ -1052,7 +1054,6 @@ class SdnConnector:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> SdnConnectorObject: ...
     
     # Dict mode with mkey provided as keyword arg (single dict)
@@ -1069,7 +1070,6 @@ class SdnConnector:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> SdnConnectorObject: ...
     
     # Dict mode - list of dicts (no mkey/name provided) - keyword-only signature
@@ -1085,7 +1085,6 @@ class SdnConnector:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObjectList[SdnConnectorObject]: ...
     
     # Fallback overload for all other cases
@@ -1101,7 +1100,6 @@ class SdnConnector:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> Union[dict[str, Any], list[dict[str, Any]], FortiObject, list[FortiObject]]: ...
     
     def get(
@@ -1115,12 +1113,10 @@ class SdnConnector:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> SdnConnectorObject | list[SdnConnectorObject] | dict[str, Any] | list[dict[str, Any]]: ...
     
     def get_schema(
         self,
-        vdom: str | None = ...,
         format: str = ...,
     ) -> FortiObject: ...
     
@@ -1183,7 +1179,6 @@ class SdnConnector:
         ibm_region: Literal["dallas", "washington-dc", "london", "frankfurt", "sydney", "tokyo", "osaka", "toronto", "sao-paulo", "madrid"] | None = ...,
         par_id: str | None = ...,
         update_interval: int | None = ...,
-        vdom: str | bool | None = ...,
     ) -> SdnConnectorObject: ...
     
     @overload
@@ -1244,7 +1239,6 @@ class SdnConnector:
         ibm_region: Literal["dallas", "washington-dc", "london", "frankfurt", "sydney", "tokyo", "osaka", "toronto", "sao-paulo", "madrid"] | None = ...,
         par_id: str | None = ...,
         update_interval: int | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     # Default overload
@@ -1306,7 +1300,6 @@ class SdnConnector:
         ibm_region: Literal["dallas", "washington-dc", "london", "frankfurt", "sydney", "tokyo", "osaka", "toronto", "sao-paulo", "madrid"] | None = ...,
         par_id: str | None = ...,
         update_interval: int | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     def post(
@@ -1366,7 +1359,6 @@ class SdnConnector:
         ibm_region: Literal["dallas", "washington-dc", "london", "frankfurt", "sydney", "tokyo", "osaka", "toronto", "sao-paulo", "madrid"] | None = ...,
         par_id: str | None = ...,
         update_interval: int | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     # PUT overloads
@@ -1428,7 +1420,6 @@ class SdnConnector:
         ibm_region: Literal["dallas", "washington-dc", "london", "frankfurt", "sydney", "tokyo", "osaka", "toronto", "sao-paulo", "madrid"] | None = ...,
         par_id: str | None = ...,
         update_interval: int | None = ...,
-        vdom: str | bool | None = ...,
     ) -> SdnConnectorObject: ...
     
     @overload
@@ -1489,7 +1480,6 @@ class SdnConnector:
         ibm_region: Literal["dallas", "washington-dc", "london", "frankfurt", "sydney", "tokyo", "osaka", "toronto", "sao-paulo", "madrid"] | None = ...,
         par_id: str | None = ...,
         update_interval: int | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     # Default overload
@@ -1551,7 +1541,6 @@ class SdnConnector:
         ibm_region: Literal["dallas", "washington-dc", "london", "frankfurt", "sydney", "tokyo", "osaka", "toronto", "sao-paulo", "madrid"] | None = ...,
         par_id: str | None = ...,
         update_interval: int | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     def put(
@@ -1611,7 +1600,6 @@ class SdnConnector:
         ibm_region: Literal["dallas", "washington-dc", "london", "frankfurt", "sydney", "tokyo", "osaka", "toronto", "sao-paulo", "madrid"] | None = ...,
         par_id: str | None = ...,
         update_interval: int | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     # DELETE overloads
@@ -1619,14 +1607,12 @@ class SdnConnector:
     def delete(
         self,
         name: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> SdnConnectorObject: ...
     
     @overload
     def delete(
         self,
         name: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     # Default overload
@@ -1634,19 +1620,16 @@ class SdnConnector:
     def delete(
         self,
         name: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     def delete(
         self,
         name: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     def exists(
         self,
         name: str,
-        vdom: str | bool | None = ...,
     ) -> bool: ...
     
     def set(
@@ -1706,7 +1689,6 @@ class SdnConnector:
         ibm_region: Literal["dallas", "washington-dc", "london", "frankfurt", "sydney", "tokyo", "osaka", "toronto", "sao-paulo", "madrid"] | None = ...,
         par_id: str | None = ...,
         update_interval: int | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     # Helper methods

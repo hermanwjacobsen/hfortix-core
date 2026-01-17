@@ -124,6 +124,14 @@ class AutomationCondition:
     Primary Key: name
     """
     
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client.
+        
+        Args:
+            client: HTTP client instance for API communication
+        """
+        ...
+    
     # ================================================================
     # GET OVERLOADS - Always returns FortiObject
     # Pylance matches overloads top-to-bottom, so these must come first!
@@ -142,7 +150,6 @@ class AutomationCondition:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> AutomationConditionObject: ...
     
     # With mkey as keyword arg -> returns FortiObject
@@ -159,7 +166,6 @@ class AutomationCondition:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> AutomationConditionObject: ...
     
     # Without mkey -> returns list of FortiObjects
@@ -175,7 +181,6 @@ class AutomationCondition:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObjectList[AutomationConditionObject]: ...
     
     # ================================================================
@@ -195,7 +200,6 @@ class AutomationCondition:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> AutomationConditionObject: ...
     
     # With mkey as keyword arg -> returns single object
@@ -212,7 +216,6 @@ class AutomationCondition:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> AutomationConditionObject: ...
     
     # With no mkey -> returns list of objects
@@ -228,7 +231,6 @@ class AutomationCondition:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObjectList[AutomationConditionObject]: ...
     
     # Dict mode with mkey provided as positional arg (single dict)
@@ -244,7 +246,6 @@ class AutomationCondition:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> AutomationConditionObject: ...
     
     # Dict mode with mkey provided as keyword arg (single dict)
@@ -261,7 +262,6 @@ class AutomationCondition:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> AutomationConditionObject: ...
     
     # Dict mode - list of dicts (no mkey/name provided) - keyword-only signature
@@ -277,7 +277,6 @@ class AutomationCondition:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObjectList[AutomationConditionObject]: ...
     
     # Fallback overload for all other cases
@@ -293,7 +292,6 @@ class AutomationCondition:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> Union[dict[str, Any], list[dict[str, Any]], FortiObject, list[FortiObject]]: ...
     
     def get(
@@ -307,12 +305,10 @@ class AutomationCondition:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> AutomationConditionObject | list[AutomationConditionObject] | dict[str, Any] | list[dict[str, Any]]: ...
     
     def get_schema(
         self,
-        vdom: str | None = ...,
         format: str = ...,
     ) -> FortiObject: ...
     
@@ -328,7 +324,6 @@ class AutomationCondition:
         mem_usage_percent: int | None = ...,
         vpn_tunnel_name: str | None = ...,
         vpn_tunnel_state: Literal["tunnel-up", "tunnel-down"] | None = ...,
-        vdom: str | bool | None = ...,
     ) -> AutomationConditionObject: ...
     
     @overload
@@ -342,7 +337,6 @@ class AutomationCondition:
         mem_usage_percent: int | None = ...,
         vpn_tunnel_name: str | None = ...,
         vpn_tunnel_state: Literal["tunnel-up", "tunnel-down"] | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     # Default overload
@@ -357,7 +351,6 @@ class AutomationCondition:
         mem_usage_percent: int | None = ...,
         vpn_tunnel_name: str | None = ...,
         vpn_tunnel_state: Literal["tunnel-up", "tunnel-down"] | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     def post(
@@ -370,7 +363,6 @@ class AutomationCondition:
         mem_usage_percent: int | None = ...,
         vpn_tunnel_name: str | None = ...,
         vpn_tunnel_state: Literal["tunnel-up", "tunnel-down"] | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     # PUT overloads
@@ -385,7 +377,6 @@ class AutomationCondition:
         mem_usage_percent: int | None = ...,
         vpn_tunnel_name: str | None = ...,
         vpn_tunnel_state: Literal["tunnel-up", "tunnel-down"] | None = ...,
-        vdom: str | bool | None = ...,
     ) -> AutomationConditionObject: ...
     
     @overload
@@ -399,7 +390,6 @@ class AutomationCondition:
         mem_usage_percent: int | None = ...,
         vpn_tunnel_name: str | None = ...,
         vpn_tunnel_state: Literal["tunnel-up", "tunnel-down"] | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     # Default overload
@@ -414,7 +404,6 @@ class AutomationCondition:
         mem_usage_percent: int | None = ...,
         vpn_tunnel_name: str | None = ...,
         vpn_tunnel_state: Literal["tunnel-up", "tunnel-down"] | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     def put(
@@ -427,7 +416,6 @@ class AutomationCondition:
         mem_usage_percent: int | None = ...,
         vpn_tunnel_name: str | None = ...,
         vpn_tunnel_state: Literal["tunnel-up", "tunnel-down"] | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     # DELETE overloads
@@ -435,14 +423,12 @@ class AutomationCondition:
     def delete(
         self,
         name: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> AutomationConditionObject: ...
     
     @overload
     def delete(
         self,
         name: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     # Default overload
@@ -450,19 +436,16 @@ class AutomationCondition:
     def delete(
         self,
         name: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     def delete(
         self,
         name: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     def exists(
         self,
         name: str,
-        vdom: str | bool | None = ...,
     ) -> bool: ...
     
     def set(
@@ -475,7 +458,6 @@ class AutomationCondition:
         mem_usage_percent: int | None = ...,
         vpn_tunnel_name: str | None = ...,
         vpn_tunnel_state: Literal["tunnel-up", "tunnel-down"] | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     # Helper methods

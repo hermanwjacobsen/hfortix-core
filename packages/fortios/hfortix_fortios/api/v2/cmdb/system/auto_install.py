@@ -90,7 +90,6 @@ class AutoInstall(CRUDEndpoint, MetadataMixin):
         count: int | None = None,
         start: int | None = None,
         payload_dict: dict[str, Any] | None = None,
-        vdom: str | bool | None = None,
         error_mode: Literal["raise", "return", "print"] | None = None,
         error_format: Literal["detailed", "simple", "code_only"] | None = None,
     ):  # type: ignore[no-untyped-def]
@@ -116,7 +115,6 @@ class AutoInstall(CRUDEndpoint, MetadataMixin):
                 - scope (str): Query scope - "global", "vdom", or "both"
                 - action (str): Special actions - "schema", "default"
                 See FortiOS REST API documentation for complete list.
-            vdom: Virtual domain name. Use True for global, string for specific VDOM, None for default.
             error_mode: Override client-level error_mode. "raise" raises exceptions, "return" returns error dict, "print" prints errors.
             error_format: Override client-level error_format. "detailed" provides full context, "simple" is concise, "code_only" returns just status code.
 
@@ -177,12 +175,11 @@ class AutoInstall(CRUDEndpoint, MetadataMixin):
             unwrap_single = False
         
         return self._client.get(
-            "cmdb", endpoint, params=params, vdom=vdom, unwrap_single=unwrap_single
+            "cmdb", endpoint, params=params, vdom=False, unwrap_single=unwrap_single
         )
 
     def get_schema(
         self,
-        vdom: str | None = None,
         format: str = "schema",
     ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """
@@ -196,7 +193,6 @@ class AutoInstall(CRUDEndpoint, MetadataMixin):
         vary between FortiOS versions.
         
         Args:
-            vdom: Virtual domain. None uses default VDOM.
             format: Schema format - "schema" (FortiOS native) or "json-schema" (JSON Schema standard).
                 Defaults to "schema".
                 
@@ -215,7 +211,7 @@ class AutoInstall(CRUDEndpoint, MetadataMixin):
             Not all endpoints support all schema formats. The "schema" format
             is most widely supported.
         """
-        return self.get(action=format, vdom=vdom)
+        return self.get(action=format)
 
 
     # ========================================================================
@@ -234,7 +230,6 @@ class AutoInstall(CRUDEndpoint, MetadataMixin):
         q_before: str | None = None,
         q_after: str | None = None,
         q_scope: str | None = None,
-        vdom: str | bool | None = None,
         error_mode: Literal["raise", "return", "print"] | None = None,
         error_format: Literal["detailed", "simple", "code_only"] | None = None,
     ):  # type: ignore[no-untyped-def]
@@ -249,7 +244,6 @@ class AutoInstall(CRUDEndpoint, MetadataMixin):
             auto_install_image: Enable/disable auto install the image in USB disk.
             default_config_file: Default config file name in USB disk.
             default_image_file: Default image file name in USB disk.
-            vdom: Virtual domain name.
             error_mode: Override client-level error_mode. "raise" raises exceptions, "return" returns error dict, "print" prints errors.
             error_format: Override client-level error_format. "detailed" provides full context, "simple" is concise, "code_only" returns just status code.
 
@@ -313,7 +307,7 @@ class AutoInstall(CRUDEndpoint, MetadataMixin):
             params["scope"] = q_scope
         
         return self._client.put(
-            "cmdb", endpoint, data=payload_data, params=params, vdom=vdom        )
+            "cmdb", endpoint, data=payload_data, params=params, vdom=False        )
 
 
 
@@ -328,7 +322,6 @@ class AutoInstall(CRUDEndpoint, MetadataMixin):
         name: str,
         action: Literal["before", "after"],
         reference_name: str,
-        vdom: str | bool | None = None,
         **kwargs: Any,
     ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """
@@ -340,7 +333,6 @@ class AutoInstall(CRUDEndpoint, MetadataMixin):
             name: Name of object to move
             action: Move "before" or "after" reference object
             reference_name: Name of reference object
-            vdom: Virtual domain name
             **kwargs: Additional parameters
             
         Returns:
@@ -361,7 +353,6 @@ class AutoInstall(CRUDEndpoint, MetadataMixin):
                 "name": name,
                 "action": "move",
                 action: reference_name,
-                "vdom": vdom,
                 **kwargs,
             },
         )
@@ -374,7 +365,6 @@ class AutoInstall(CRUDEndpoint, MetadataMixin):
         self,
         name: str,
         new_name: str,
-        vdom: str | bool | None = None,
         **kwargs: Any,
     ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """
@@ -385,7 +375,6 @@ class AutoInstall(CRUDEndpoint, MetadataMixin):
         Args:
             name: Name of object to clone
             new_name: Name for the cloned object
-            vdom: Virtual domain name
             **kwargs: Additional parameters
             
         Returns:
@@ -405,7 +394,6 @@ class AutoInstall(CRUDEndpoint, MetadataMixin):
                 "name": name,
                 "new_name": new_name,
                 "action": "clone",
-                "vdom": vdom,
                 **kwargs,
             },
         )
@@ -417,14 +405,12 @@ class AutoInstall(CRUDEndpoint, MetadataMixin):
     def exists(
         self,
         name: str,
-        vdom: str | bool | None = None,
     ) -> bool:
         """
         Check if system/auto_install object exists.
         
         Args:
             name: Name to check
-            vdom: Virtual domain name
             
         Returns:
             True if object exists, False otherwise
@@ -448,7 +434,7 @@ class AutoInstall(CRUDEndpoint, MetadataMixin):
                 "cmdb",
                 endpoint,
                 params=None,
-                vdom=vdom,
+                vdom=False,
                 raw_json=True,
                 silent=True,
             )

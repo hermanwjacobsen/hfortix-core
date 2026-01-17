@@ -310,6 +310,14 @@ class AutomationStitch:
     Primary Key: name
     """
     
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client.
+        
+        Args:
+            client: HTTP client instance for API communication
+        """
+        ...
+    
     # ================================================================
     # GET OVERLOADS - Always returns FortiObject
     # Pylance matches overloads top-to-bottom, so these must come first!
@@ -328,7 +336,6 @@ class AutomationStitch:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> AutomationStitchObject: ...
     
     # With mkey as keyword arg -> returns FortiObject
@@ -345,7 +352,6 @@ class AutomationStitch:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> AutomationStitchObject: ...
     
     # Without mkey -> returns list of FortiObjects
@@ -361,7 +367,6 @@ class AutomationStitch:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObjectList[AutomationStitchObject]: ...
     
     # ================================================================
@@ -381,7 +386,6 @@ class AutomationStitch:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> AutomationStitchObject: ...
     
     # With mkey as keyword arg -> returns single object
@@ -398,7 +402,6 @@ class AutomationStitch:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> AutomationStitchObject: ...
     
     # With no mkey -> returns list of objects
@@ -414,7 +417,6 @@ class AutomationStitch:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObjectList[AutomationStitchObject]: ...
     
     # Dict mode with mkey provided as positional arg (single dict)
@@ -430,7 +432,6 @@ class AutomationStitch:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> AutomationStitchObject: ...
     
     # Dict mode with mkey provided as keyword arg (single dict)
@@ -447,7 +448,6 @@ class AutomationStitch:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> AutomationStitchObject: ...
     
     # Dict mode - list of dicts (no mkey/name provided) - keyword-only signature
@@ -463,7 +463,6 @@ class AutomationStitch:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObjectList[AutomationStitchObject]: ...
     
     # Fallback overload for all other cases
@@ -479,7 +478,6 @@ class AutomationStitch:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> Union[dict[str, Any], list[dict[str, Any]], FortiObject, list[FortiObject]]: ...
     
     def get(
@@ -493,12 +491,10 @@ class AutomationStitch:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> AutomationStitchObject | list[AutomationStitchObject] | dict[str, Any] | list[dict[str, Any]]: ...
     
     def get_schema(
         self,
-        vdom: str | None = ...,
         format: str = ...,
     ) -> FortiObject: ...
     
@@ -515,7 +511,6 @@ class AutomationStitch:
         condition_logic: Literal["and", "or"] | None = ...,
         actions: str | list[str] | list[AutomationStitchActionsItem] | None = ...,
         destination: str | list[str] | list[AutomationStitchDestinationItem] | None = ...,
-        vdom: str | bool | None = ...,
     ) -> AutomationStitchObject: ...
     
     @overload
@@ -530,7 +525,6 @@ class AutomationStitch:
         condition_logic: Literal["and", "or"] | None = ...,
         actions: str | list[str] | list[AutomationStitchActionsItem] | None = ...,
         destination: str | list[str] | list[AutomationStitchDestinationItem] | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     # Default overload
@@ -546,7 +540,6 @@ class AutomationStitch:
         condition_logic: Literal["and", "or"] | None = ...,
         actions: str | list[str] | list[AutomationStitchActionsItem] | None = ...,
         destination: str | list[str] | list[AutomationStitchDestinationItem] | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     def post(
@@ -560,7 +553,6 @@ class AutomationStitch:
         condition_logic: Literal["and", "or"] | None = ...,
         actions: str | list[str] | list[AutomationStitchActionsItem] | None = ...,
         destination: str | list[str] | list[AutomationStitchDestinationItem] | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     # PUT overloads
@@ -576,7 +568,6 @@ class AutomationStitch:
         condition_logic: Literal["and", "or"] | None = ...,
         actions: str | list[str] | list[AutomationStitchActionsItem] | None = ...,
         destination: str | list[str] | list[AutomationStitchDestinationItem] | None = ...,
-        vdom: str | bool | None = ...,
     ) -> AutomationStitchObject: ...
     
     @overload
@@ -591,7 +582,6 @@ class AutomationStitch:
         condition_logic: Literal["and", "or"] | None = ...,
         actions: str | list[str] | list[AutomationStitchActionsItem] | None = ...,
         destination: str | list[str] | list[AutomationStitchDestinationItem] | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     # Default overload
@@ -607,7 +597,6 @@ class AutomationStitch:
         condition_logic: Literal["and", "or"] | None = ...,
         actions: str | list[str] | list[AutomationStitchActionsItem] | None = ...,
         destination: str | list[str] | list[AutomationStitchDestinationItem] | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     def put(
@@ -621,7 +610,6 @@ class AutomationStitch:
         condition_logic: Literal["and", "or"] | None = ...,
         actions: str | list[str] | list[AutomationStitchActionsItem] | None = ...,
         destination: str | list[str] | list[AutomationStitchDestinationItem] | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     # DELETE overloads
@@ -629,14 +617,12 @@ class AutomationStitch:
     def delete(
         self,
         name: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> AutomationStitchObject: ...
     
     @overload
     def delete(
         self,
         name: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     # Default overload
@@ -644,19 +630,16 @@ class AutomationStitch:
     def delete(
         self,
         name: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     def delete(
         self,
         name: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     def exists(
         self,
         name: str,
-        vdom: str | bool | None = ...,
     ) -> bool: ...
     
     def set(
@@ -670,7 +653,6 @@ class AutomationStitch:
         condition_logic: Literal["and", "or"] | None = ...,
         actions: str | list[str] | list[AutomationStitchActionsItem] | None = ...,
         destination: str | list[str] | list[AutomationStitchDestinationItem] | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     # Helper methods

@@ -115,6 +115,14 @@ class AutoScript:
     Primary Key: name
     """
     
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client.
+        
+        Args:
+            client: HTTP client instance for API communication
+        """
+        ...
+    
     # ================================================================
     # GET OVERLOADS - Always returns FortiObject
     # Pylance matches overloads top-to-bottom, so these must come first!
@@ -133,7 +141,6 @@ class AutoScript:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> AutoScriptObject: ...
     
     # With mkey as keyword arg -> returns FortiObject
@@ -150,7 +157,6 @@ class AutoScript:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> AutoScriptObject: ...
     
     # Without mkey -> returns list of FortiObjects
@@ -166,7 +172,6 @@ class AutoScript:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObjectList[AutoScriptObject]: ...
     
     # ================================================================
@@ -186,7 +191,6 @@ class AutoScript:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> AutoScriptObject: ...
     
     # With mkey as keyword arg -> returns single object
@@ -203,7 +207,6 @@ class AutoScript:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> AutoScriptObject: ...
     
     # With no mkey -> returns list of objects
@@ -219,7 +222,6 @@ class AutoScript:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObjectList[AutoScriptObject]: ...
     
     # Dict mode with mkey provided as positional arg (single dict)
@@ -235,7 +237,6 @@ class AutoScript:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> AutoScriptObject: ...
     
     # Dict mode with mkey provided as keyword arg (single dict)
@@ -252,7 +253,6 @@ class AutoScript:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> AutoScriptObject: ...
     
     # Dict mode - list of dicts (no mkey/name provided) - keyword-only signature
@@ -268,7 +268,6 @@ class AutoScript:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObjectList[AutoScriptObject]: ...
     
     # Fallback overload for all other cases
@@ -284,7 +283,6 @@ class AutoScript:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> Union[dict[str, Any], list[dict[str, Any]], FortiObject, list[FortiObject]]: ...
     
     def get(
@@ -298,12 +296,10 @@ class AutoScript:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> AutoScriptObject | list[AutoScriptObject] | dict[str, Any] | list[dict[str, Any]]: ...
     
     def get_schema(
         self,
-        vdom: str | None = ...,
         format: str = ...,
     ) -> FortiObject: ...
     
@@ -319,7 +315,6 @@ class AutoScript:
         script: str | None = ...,
         output_size: int | None = ...,
         timeout: int | None = ...,
-        vdom: str | bool | None = ...,
     ) -> AutoScriptObject: ...
     
     @overload
@@ -333,7 +328,6 @@ class AutoScript:
         script: str | None = ...,
         output_size: int | None = ...,
         timeout: int | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     # Default overload
@@ -348,7 +342,6 @@ class AutoScript:
         script: str | None = ...,
         output_size: int | None = ...,
         timeout: int | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     def post(
@@ -361,7 +354,6 @@ class AutoScript:
         script: str | None = ...,
         output_size: int | None = ...,
         timeout: int | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     # PUT overloads
@@ -376,7 +368,6 @@ class AutoScript:
         script: str | None = ...,
         output_size: int | None = ...,
         timeout: int | None = ...,
-        vdom: str | bool | None = ...,
     ) -> AutoScriptObject: ...
     
     @overload
@@ -390,7 +381,6 @@ class AutoScript:
         script: str | None = ...,
         output_size: int | None = ...,
         timeout: int | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     # Default overload
@@ -405,7 +395,6 @@ class AutoScript:
         script: str | None = ...,
         output_size: int | None = ...,
         timeout: int | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     def put(
@@ -418,7 +407,6 @@ class AutoScript:
         script: str | None = ...,
         output_size: int | None = ...,
         timeout: int | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     # DELETE overloads
@@ -426,14 +414,12 @@ class AutoScript:
     def delete(
         self,
         name: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> AutoScriptObject: ...
     
     @overload
     def delete(
         self,
         name: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     # Default overload
@@ -441,19 +427,16 @@ class AutoScript:
     def delete(
         self,
         name: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     def delete(
         self,
         name: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     def exists(
         self,
         name: str,
-        vdom: str | bool | None = ...,
     ) -> bool: ...
     
     def set(
@@ -466,7 +449,6 @@ class AutoScript:
         script: str | None = ...,
         output_size: int | None = ...,
         timeout: int | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     # Helper methods

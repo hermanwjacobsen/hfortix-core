@@ -90,7 +90,6 @@ class IpsUrlfilterDns(CRUDEndpoint, MetadataMixin):
         count: int | None = None,
         start: int | None = None,
         payload_dict: dict[str, Any] | None = None,
-        vdom: str | bool | None = None,
         error_mode: Literal["raise", "return", "print"] | None = None,
         error_format: Literal["detailed", "simple", "code_only"] | None = None,
     ):  # type: ignore[no-untyped-def]
@@ -117,7 +116,6 @@ class IpsUrlfilterDns(CRUDEndpoint, MetadataMixin):
                 - scope (str): Query scope - "global", "vdom", or "both"
                 - action (str): Special actions - "schema", "default"
                 See FortiOS REST API documentation for complete list.
-            vdom: Virtual domain name. Use True for global, string for specific VDOM, None for default.
             error_mode: Override client-level error_mode. "raise" raises exceptions, "return" returns error dict, "print" prints errors.
             error_format: Override client-level error_format. "detailed" provides full context, "simple" is concise, "code_only" returns just status code.
 
@@ -182,12 +180,11 @@ class IpsUrlfilterDns(CRUDEndpoint, MetadataMixin):
             unwrap_single = False
         
         return self._client.get(
-            "cmdb", endpoint, params=params, vdom=vdom, unwrap_single=unwrap_single
+            "cmdb", endpoint, params=params, vdom=False, unwrap_single=unwrap_single
         )
 
     def get_schema(
         self,
-        vdom: str | None = None,
         format: str = "schema",
     ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """
@@ -201,7 +198,6 @@ class IpsUrlfilterDns(CRUDEndpoint, MetadataMixin):
         vary between FortiOS versions.
         
         Args:
-            vdom: Virtual domain. None uses default VDOM.
             format: Schema format - "schema" (FortiOS native) or "json-schema" (JSON Schema standard).
                 Defaults to "schema".
                 
@@ -220,7 +216,7 @@ class IpsUrlfilterDns(CRUDEndpoint, MetadataMixin):
             Not all endpoints support all schema formats. The "schema" format
             is most widely supported.
         """
-        return self.get(action=format, vdom=vdom)
+        return self.get(action=format)
 
 
     # ========================================================================
@@ -238,7 +234,6 @@ class IpsUrlfilterDns(CRUDEndpoint, MetadataMixin):
         q_before: str | None = None,
         q_after: str | None = None,
         q_scope: str | None = None,
-        vdom: str | bool | None = None,
         error_mode: Literal["raise", "return", "print"] | None = None,
         error_format: Literal["detailed", "simple", "code_only"] | None = None,
     ):  # type: ignore[no-untyped-def]
@@ -252,7 +247,6 @@ class IpsUrlfilterDns(CRUDEndpoint, MetadataMixin):
             address: DNS server IP address.
             status: Enable/disable using this DNS server for IPS URL filter DNS queries.
             ipv6_capability: Enable/disable this server for IPv6 queries.
-            vdom: Virtual domain name.
             error_mode: Override client-level error_mode. "raise" raises exceptions, "return" returns error dict, "print" prints errors.
             error_format: Override client-level error_format. "detailed" provides full context, "simple" is concise, "code_only" returns just status code.
 
@@ -317,7 +311,7 @@ class IpsUrlfilterDns(CRUDEndpoint, MetadataMixin):
             params["scope"] = q_scope
         
         return self._client.put(
-            "cmdb", endpoint, data=payload_data, params=params, vdom=vdom        )
+            "cmdb", endpoint, data=payload_data, params=params, vdom=False        )
 
     # ========================================================================
     # POST Method
@@ -333,7 +327,6 @@ class IpsUrlfilterDns(CRUDEndpoint, MetadataMixin):
         q_action: Literal["clone"] | None = None,
         q_nkey: str | None = None,
         q_scope: str | None = None,
-        vdom: str | bool | None = None,
         error_mode: Literal["raise", "return", "print"] | None = None,
         error_format: Literal["detailed", "simple", "code_only"] | None = None,
     ):  # type: ignore[no-untyped-def]
@@ -347,7 +340,6 @@ class IpsUrlfilterDns(CRUDEndpoint, MetadataMixin):
             address: DNS server IP address.
             status: Enable/disable using this DNS server for IPS URL filter DNS queries.
             ipv6_capability: Enable/disable this server for IPv6 queries.
-            vdom: Virtual domain name. Use True for global, string for specific VDOM.
             error_mode: Override client-level error_mode. "raise" raises exceptions, "return" returns error dict, "print" prints errors.
             error_format: Override client-level error_format. "detailed" provides full context, "simple" is concise, "code_only" returns just status code.
 
@@ -409,7 +401,7 @@ class IpsUrlfilterDns(CRUDEndpoint, MetadataMixin):
             params["scope"] = q_scope
         
         return self._client.post(
-            "cmdb", endpoint, data=payload_data, params=params, vdom=vdom        )
+            "cmdb", endpoint, data=payload_data, params=params, vdom=False        )
 
     # ========================================================================
     # DELETE Method
@@ -420,7 +412,6 @@ class IpsUrlfilterDns(CRUDEndpoint, MetadataMixin):
         self,
         address: str | None = None,
         q_scope: str | None = None,
-        vdom: str | bool | None = None,
         error_mode: Literal["raise", "return", "print"] | None = None,
         error_format: Literal["detailed", "simple", "code_only"] | None = None,
     ):  # type: ignore[no-untyped-def]
@@ -431,7 +422,6 @@ class IpsUrlfilterDns(CRUDEndpoint, MetadataMixin):
 
         Args:
             address: Primary key identifier
-            vdom: Virtual domain name
             error_mode: Override client-level error_mode. "raise" raises exceptions, "return" returns error dict, "print" prints errors.
             error_format: Override client-level error_format. "detailed" provides full context, "simple" is concise, "code_only" returns just status code.
 
@@ -463,12 +453,11 @@ class IpsUrlfilterDns(CRUDEndpoint, MetadataMixin):
             params["scope"] = q_scope
         
         return self._client.delete(
-            "cmdb", endpoint, params=params, vdom=vdom        )
+            "cmdb", endpoint, params=params, vdom=False        )
 
     def exists(
         self,
         address: str,
-        vdom: str | bool | None = None,
     ) -> Union[bool, Coroutine[Any, Any, bool]]:
         """
         Check if system/ips_urlfilter_dns object exists.
@@ -477,7 +466,6 @@ class IpsUrlfilterDns(CRUDEndpoint, MetadataMixin):
 
         Args:
             address: Primary key identifier
-            vdom: Virtual domain name
 
         Returns:
             True if object exists, False otherwise
@@ -511,7 +499,7 @@ class IpsUrlfilterDns(CRUDEndpoint, MetadataMixin):
                 "cmdb",
                 endpoint,
                 params=None,
-                vdom=vdom,
+                vdom=False,
                 raw_json=True,
                 silent=True,
             )
@@ -536,7 +524,6 @@ class IpsUrlfilterDns(CRUDEndpoint, MetadataMixin):
         address: str | None = None,
         status: Literal["enable", "disable"] | None = None,
         ipv6_capability: Literal["enable", "disable"] | None = None,
-        vdom: str | bool | None = None,
         error_mode: Literal["raise", "return", "print"] | None = None,
         error_format: Literal["detailed", "simple", "code_only"] | None = None,
         **kwargs: Any,
@@ -552,7 +539,6 @@ class IpsUrlfilterDns(CRUDEndpoint, MetadataMixin):
             address: Field address
             status: Field status
             ipv6_capability: Field ipv6-capability
-            vdom: Virtual domain name
             **kwargs: Additional parameters passed to PUT or POST
 
         Returns:
@@ -604,12 +590,12 @@ class IpsUrlfilterDns(CRUDEndpoint, MetadataMixin):
             raise ValueError("address is required for set()")
         
         # Check if resource exists
-        if self.exists(address=mkey_value, vdom=vdom):
+        if self.exists(address=mkey_value):
             # Update existing resource
-            return self.put(payload_dict=payload_data, vdom=vdom, **kwargs)
+            return self.put(payload_dict=payload_data, **kwargs)
         else:
             # Create new resource
-            return self.post(payload_dict=payload_data, vdom=vdom, **kwargs)
+            return self.post(payload_dict=payload_data, **kwargs)
 
     # ========================================================================
     # Action: Move
@@ -620,7 +606,6 @@ class IpsUrlfilterDns(CRUDEndpoint, MetadataMixin):
         address: str,
         action: Literal["before", "after"],
         reference_address: str,
-        vdom: str | bool | None = None,
         **kwargs: Any,
     ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """
@@ -632,7 +617,6 @@ class IpsUrlfilterDns(CRUDEndpoint, MetadataMixin):
             address: Identifier of object to move
             action: Move "before" or "after" reference object
             reference_address: Identifier of reference object
-            vdom: Virtual domain name
             **kwargs: Additional parameters
             
         Returns:
@@ -653,7 +637,6 @@ class IpsUrlfilterDns(CRUDEndpoint, MetadataMixin):
                 "address": address,
                 "action": "move",
                 action: reference_address,
-                "vdom": vdom,
                 **kwargs,
             },
         )
@@ -666,7 +649,6 @@ class IpsUrlfilterDns(CRUDEndpoint, MetadataMixin):
         self,
         address: str,
         new_address: str,
-        vdom: str | bool | None = None,
         **kwargs: Any,
     ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """
@@ -677,7 +659,6 @@ class IpsUrlfilterDns(CRUDEndpoint, MetadataMixin):
         Args:
             address: Identifier of object to clone
             new_address: Identifier for the cloned object
-            vdom: Virtual domain name
             **kwargs: Additional parameters
             
         Returns:
@@ -697,7 +678,6 @@ class IpsUrlfilterDns(CRUDEndpoint, MetadataMixin):
                 "address": address,
                 "new_address": new_address,
                 "action": "clone",
-                "vdom": vdom,
                 **kwargs,
             },
         )

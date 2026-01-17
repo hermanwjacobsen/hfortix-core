@@ -1261,6 +1261,7 @@ def process_response(
     unwrap_single: bool = False,
     raw_envelope: dict | None = None,
     response_time: float | None = None,
+    endpoint_path: str | None = None,
 ) -> Any:
     """
     Process API response - always returns FortiObject instances.
@@ -1272,9 +1273,10 @@ def process_response(
         unwrap_single: If True and result is single-item list, return just the item
         raw_envelope: Optional full API envelope to attach to FortiObjectList
         response_time: Optional response time in seconds for the HTTP request
+        endpoint_path: Optional endpoint path for content endpoint detection
 
     Returns:
-        Processed response - FortiObject, FortiObjectList, or dict with FortiObjects
+        Processed response - FortiObject, FortiObjectList, ContentResponse, or dict with FortiObjects
 
     Examples:
         >>> # List response - returns FortiObjectList
@@ -1300,6 +1302,14 @@ def process_response(
         'policy1'
         >>> response['http_status']
         200
+        
+        >>> # Content response (file download)
+        >>> result = {'content': b'data...', 'content_type': 'text/plain', 'http_status': 200}
+        >>> response = process_response(result)
+        >>> response.content
+        b'data...'
+        >>> response.text
+        'data...'
     """
     # Wrap in FortiObject based on response type
     if isinstance(result, list):
@@ -1319,6 +1329,11 @@ def process_response(
         return FortiObjectList(wrapped, raw_envelope=raw_envelope, response_time=response_time)
     
     elif isinstance(result, dict):
+        # Check if this is a content response (file download endpoints)
+        # Content responses have 'content' key without 'results' key
+        if "content" in result and "results" not in result:
+            return ContentResponse(result, raw_envelope=result, response_time=response_time, endpoint_path=endpoint_path)
+        
         # Check if this is a full response envelope with 'results' key
         if "results" in result:
             results_data = result["results"]

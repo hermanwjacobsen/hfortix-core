@@ -104,6 +104,14 @@ class RmonStat:
     Primary Key: id
     """
     
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client.
+        
+        Args:
+            client: HTTP client instance for API communication
+        """
+        ...
+    
     # ================================================================
     # GET OVERLOADS - Always returns FortiObject
     # Pylance matches overloads top-to-bottom, so these must come first!
@@ -122,7 +130,6 @@ class RmonStat:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> RmonStatObject: ...
     
     # With mkey as keyword arg -> returns FortiObject
@@ -139,7 +146,6 @@ class RmonStat:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> RmonStatObject: ...
     
     # Without mkey -> returns list of FortiObjects
@@ -155,7 +161,6 @@ class RmonStat:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObjectList[RmonStatObject]: ...
     
     # ================================================================
@@ -175,7 +180,6 @@ class RmonStat:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> RmonStatObject: ...
     
     # With mkey as keyword arg -> returns single object
@@ -192,7 +196,6 @@ class RmonStat:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> RmonStatObject: ...
     
     # With no mkey -> returns list of objects
@@ -208,7 +211,6 @@ class RmonStat:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObjectList[RmonStatObject]: ...
     
     # Dict mode with mkey provided as positional arg (single dict)
@@ -224,7 +226,6 @@ class RmonStat:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> RmonStatObject: ...
     
     # Dict mode with mkey provided as keyword arg (single dict)
@@ -241,7 +242,6 @@ class RmonStat:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> RmonStatObject: ...
     
     # Dict mode - list of dicts (no mkey/name provided) - keyword-only signature
@@ -257,7 +257,6 @@ class RmonStat:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObjectList[RmonStatObject]: ...
     
     # Fallback overload for all other cases
@@ -273,7 +272,6 @@ class RmonStat:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> Union[dict[str, Any], list[dict[str, Any]], FortiObject, list[FortiObject]]: ...
     
     def get(
@@ -287,12 +285,10 @@ class RmonStat:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> RmonStatObject | list[RmonStatObject] | dict[str, Any] | list[dict[str, Any]]: ...
     
     def get_schema(
         self,
-        vdom: str | None = ...,
         format: str = ...,
     ) -> FortiObject: ...
     
@@ -304,7 +300,6 @@ class RmonStat:
         id: int | None = ...,
         source: str | None = ...,
         owner: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> RmonStatObject: ...
     
     @overload
@@ -314,7 +309,6 @@ class RmonStat:
         id: int | None = ...,
         source: str | None = ...,
         owner: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     # Default overload
@@ -325,7 +319,6 @@ class RmonStat:
         id: int | None = ...,
         source: str | None = ...,
         owner: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     def post(
@@ -334,7 +327,6 @@ class RmonStat:
         id: int | None = ...,
         source: str | None = ...,
         owner: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     # PUT overloads
@@ -345,7 +337,6 @@ class RmonStat:
         id: int | None = ...,
         source: str | None = ...,
         owner: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> RmonStatObject: ...
     
     @overload
@@ -355,7 +346,6 @@ class RmonStat:
         id: int | None = ...,
         source: str | None = ...,
         owner: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     # Default overload
@@ -366,7 +356,6 @@ class RmonStat:
         id: int | None = ...,
         source: str | None = ...,
         owner: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     def put(
@@ -375,7 +364,6 @@ class RmonStat:
         id: int | None = ...,
         source: str | None = ...,
         owner: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     # DELETE overloads
@@ -383,14 +371,12 @@ class RmonStat:
     def delete(
         self,
         id: int | None = ...,
-        vdom: str | bool | None = ...,
     ) -> RmonStatObject: ...
     
     @overload
     def delete(
         self,
         id: int | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     # Default overload
@@ -398,19 +384,16 @@ class RmonStat:
     def delete(
         self,
         id: int | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     def delete(
         self,
         id: int | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     def exists(
         self,
         id: int,
-        vdom: str | bool | None = ...,
     ) -> bool: ...
     
     def set(
@@ -419,7 +402,6 @@ class RmonStat:
         id: int | None = ...,
         source: str | None = ...,
         owner: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     # Helper methods

@@ -161,6 +161,14 @@ class Decoder:
     Primary Key: name
     """
     
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client.
+        
+        Args:
+            client: HTTP client instance for API communication
+        """
+        ...
+    
     # ================================================================
     # GET OVERLOADS - Always returns FortiObject
     # Pylance matches overloads top-to-bottom, so these must come first!
@@ -179,7 +187,6 @@ class Decoder:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> DecoderObject: ...
     
     # With mkey as keyword arg -> returns FortiObject
@@ -196,7 +203,6 @@ class Decoder:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> DecoderObject: ...
     
     # Without mkey -> returns list of FortiObjects
@@ -212,7 +218,6 @@ class Decoder:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObjectList[DecoderObject]: ...
     
     # ================================================================
@@ -232,7 +237,6 @@ class Decoder:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> DecoderObject: ...
     
     # With mkey as keyword arg -> returns single object
@@ -249,7 +253,6 @@ class Decoder:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> DecoderObject: ...
     
     # With no mkey -> returns list of objects
@@ -265,7 +268,6 @@ class Decoder:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObjectList[DecoderObject]: ...
     
     # Dict mode with mkey provided as positional arg (single dict)
@@ -281,7 +283,6 @@ class Decoder:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> DecoderObject: ...
     
     # Dict mode with mkey provided as keyword arg (single dict)
@@ -298,7 +299,6 @@ class Decoder:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> DecoderObject: ...
     
     # Dict mode - list of dicts (no mkey/name provided) - keyword-only signature
@@ -314,7 +314,6 @@ class Decoder:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObjectList[DecoderObject]: ...
     
     # Fallback overload for all other cases
@@ -330,7 +329,6 @@ class Decoder:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> Union[dict[str, Any], list[dict[str, Any]], FortiObject, list[FortiObject]]: ...
     
     def get(
@@ -344,12 +342,10 @@ class Decoder:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> DecoderObject | list[DecoderObject] | dict[str, Any] | list[dict[str, Any]]: ...
     
     def get_schema(
         self,
-        vdom: str | None = ...,
         format: str = ...,
     ) -> FortiObject: ...
     
@@ -361,7 +357,6 @@ class Decoder:
         name: str | None = ...,
         parameter: str | list[str] | list[DecoderParameterItem] | None = ...,
         status: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> DecoderObject: ...
     
     @overload
@@ -371,7 +366,6 @@ class Decoder:
         name: str | None = ...,
         parameter: str | list[str] | list[DecoderParameterItem] | None = ...,
         status: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     # Default overload
@@ -382,7 +376,6 @@ class Decoder:
         name: str | None = ...,
         parameter: str | list[str] | list[DecoderParameterItem] | None = ...,
         status: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     def post(
@@ -391,7 +384,6 @@ class Decoder:
         name: str | None = ...,
         parameter: str | list[str] | list[DecoderParameterItem] | None = ...,
         status: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     # PUT overloads
@@ -402,7 +394,6 @@ class Decoder:
         name: str | None = ...,
         parameter: str | list[str] | list[DecoderParameterItem] | None = ...,
         status: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> DecoderObject: ...
     
     @overload
@@ -412,7 +403,6 @@ class Decoder:
         name: str | None = ...,
         parameter: str | list[str] | list[DecoderParameterItem] | None = ...,
         status: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     # Default overload
@@ -423,7 +413,6 @@ class Decoder:
         name: str | None = ...,
         parameter: str | list[str] | list[DecoderParameterItem] | None = ...,
         status: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     def put(
@@ -432,7 +421,6 @@ class Decoder:
         name: str | None = ...,
         parameter: str | list[str] | list[DecoderParameterItem] | None = ...,
         status: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     # DELETE overloads
@@ -440,14 +428,12 @@ class Decoder:
     def delete(
         self,
         name: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> DecoderObject: ...
     
     @overload
     def delete(
         self,
         name: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     # Default overload
@@ -455,19 +441,16 @@ class Decoder:
     def delete(
         self,
         name: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     def delete(
         self,
         name: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     def exists(
         self,
         name: str,
-        vdom: str | bool | None = ...,
     ) -> bool: ...
     
     def set(
@@ -476,7 +459,6 @@ class Decoder:
         name: str | None = ...,
         parameter: str | list[str] | list[DecoderParameterItem] | None = ...,
         status: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     # Helper methods

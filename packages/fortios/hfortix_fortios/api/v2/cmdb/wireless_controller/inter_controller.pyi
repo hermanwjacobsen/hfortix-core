@@ -184,6 +184,14 @@ class InterController:
     Category: cmdb
     """
     
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client.
+        
+        Args:
+            client: HTTP client instance for API communication
+        """
+        ...
+    
     # ================================================================
     # GET OVERLOADS - Always returns FortiObject
     # Pylance matches overloads top-to-bottom, so these must come first!
@@ -202,7 +210,6 @@ class InterController:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> InterControllerObject: ...
     
     # With mkey as keyword arg -> returns FortiObject
@@ -219,7 +226,6 @@ class InterController:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> InterControllerObject: ...
     
     # Without mkey -> returns list of FortiObjects
@@ -235,7 +241,6 @@ class InterController:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> InterControllerObject: ...
     
     # ================================================================
@@ -255,7 +260,6 @@ class InterController:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> InterControllerObject: ...
     
     # With mkey as keyword arg -> returns single object
@@ -272,7 +276,6 @@ class InterController:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> InterControllerObject: ...
     
     # With no mkey -> returns list of objects
@@ -288,7 +291,6 @@ class InterController:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> InterControllerObject: ...
     
     # Dict mode with mkey provided as positional arg (single dict)
@@ -304,7 +306,6 @@ class InterController:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> InterControllerObject: ...
     
     # Dict mode with mkey provided as keyword arg (single dict)
@@ -321,7 +322,6 @@ class InterController:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> InterControllerObject: ...
     
     # Dict mode - list of dicts (no mkey/name provided) - keyword-only signature
@@ -337,7 +337,6 @@ class InterController:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> InterControllerObject: ...
     
     # Fallback overload for all other cases
@@ -353,7 +352,6 @@ class InterController:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> dict[str, Any] | FortiObject: ...
     
     def get(
@@ -367,12 +365,10 @@ class InterController:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> InterControllerObject | dict[str, Any]: ...
     
     def get_schema(
         self,
-        vdom: str | None = ...,
         format: str = ...,
     ) -> FortiObject: ...
     
@@ -388,7 +384,6 @@ class InterController:
         fast_failover_max: int | None = ...,
         fast_failover_wait: int | None = ...,
         inter_controller_peer: str | list[str] | list[InterControllerIntercontrollerpeerItem] | None = ...,
-        vdom: str | bool | None = ...,
     ) -> InterControllerObject: ...
     
     @overload
@@ -402,7 +397,6 @@ class InterController:
         fast_failover_max: int | None = ...,
         fast_failover_wait: int | None = ...,
         inter_controller_peer: str | list[str] | list[InterControllerIntercontrollerpeerItem] | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     # Default overload
@@ -417,7 +411,6 @@ class InterController:
         fast_failover_max: int | None = ...,
         fast_failover_wait: int | None = ...,
         inter_controller_peer: str | list[str] | list[InterControllerIntercontrollerpeerItem] | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     def put(
@@ -430,13 +423,11 @@ class InterController:
         fast_failover_max: int | None = ...,
         fast_failover_wait: int | None = ...,
         inter_controller_peer: str | list[str] | list[InterControllerIntercontrollerpeerItem] | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     def exists(
         self,
         name: str,
-        vdom: str | bool | None = ...,
     ) -> bool: ...
     
     def set(
@@ -449,7 +440,6 @@ class InterController:
         fast_failover_max: int | None = ...,
         fast_failover_wait: int | None = ...,
         inter_controller_peer: str | list[str] | list[InterControllerIntercontrollerpeerItem] | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     # Helper methods

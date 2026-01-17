@@ -98,6 +98,14 @@ class HaMonitor:
     Category: cmdb
     """
     
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client.
+        
+        Args:
+            client: HTTP client instance for API communication
+        """
+        ...
+    
     # ================================================================
     # GET OVERLOADS - Always returns FortiObject
     # Pylance matches overloads top-to-bottom, so these must come first!
@@ -116,7 +124,6 @@ class HaMonitor:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> HaMonitorObject: ...
     
     # With mkey as keyword arg -> returns FortiObject
@@ -133,7 +140,6 @@ class HaMonitor:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> HaMonitorObject: ...
     
     # Without mkey -> returns list of FortiObjects
@@ -149,7 +155,6 @@ class HaMonitor:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> HaMonitorObject: ...
     
     # ================================================================
@@ -169,7 +174,6 @@ class HaMonitor:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> HaMonitorObject: ...
     
     # With mkey as keyword arg -> returns single object
@@ -186,7 +190,6 @@ class HaMonitor:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> HaMonitorObject: ...
     
     # With no mkey -> returns list of objects
@@ -202,7 +205,6 @@ class HaMonitor:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> HaMonitorObject: ...
     
     # Dict mode with mkey provided as positional arg (single dict)
@@ -218,7 +220,6 @@ class HaMonitor:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> HaMonitorObject: ...
     
     # Dict mode with mkey provided as keyword arg (single dict)
@@ -235,7 +236,6 @@ class HaMonitor:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> HaMonitorObject: ...
     
     # Dict mode - list of dicts (no mkey/name provided) - keyword-only signature
@@ -251,7 +251,6 @@ class HaMonitor:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> HaMonitorObject: ...
     
     # Fallback overload for all other cases
@@ -267,7 +266,6 @@ class HaMonitor:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> dict[str, Any] | FortiObject: ...
     
     def get(
@@ -281,12 +279,10 @@ class HaMonitor:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> HaMonitorObject | dict[str, Any]: ...
     
     def get_schema(
         self,
-        vdom: str | None = ...,
         format: str = ...,
     ) -> FortiObject: ...
     
@@ -298,7 +294,6 @@ class HaMonitor:
         monitor_vlan: Literal["enable", "disable"] | None = ...,
         vlan_hb_interval: int | None = ...,
         vlan_hb_lost_threshold: int | None = ...,
-        vdom: str | bool | None = ...,
     ) -> HaMonitorObject: ...
     
     @overload
@@ -308,7 +303,6 @@ class HaMonitor:
         monitor_vlan: Literal["enable", "disable"] | None = ...,
         vlan_hb_interval: int | None = ...,
         vlan_hb_lost_threshold: int | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     # Default overload
@@ -319,7 +313,6 @@ class HaMonitor:
         monitor_vlan: Literal["enable", "disable"] | None = ...,
         vlan_hb_interval: int | None = ...,
         vlan_hb_lost_threshold: int | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     def put(
@@ -328,13 +321,11 @@ class HaMonitor:
         monitor_vlan: Literal["enable", "disable"] | None = ...,
         vlan_hb_interval: int | None = ...,
         vlan_hb_lost_threshold: int | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     def exists(
         self,
         name: str,
-        vdom: str | bool | None = ...,
     ) -> bool: ...
     
     def set(
@@ -343,7 +334,6 @@ class HaMonitor:
         monitor_vlan: Literal["enable", "disable"] | None = ...,
         vlan_hb_interval: int | None = ...,
         vlan_hb_lost_threshold: int | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     # Helper methods

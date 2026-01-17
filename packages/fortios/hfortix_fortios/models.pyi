@@ -4,7 +4,7 @@ Type stubs for FortiOS Object Models
 Provides type hints for zero-maintenance object wrappers for FortiOS API responses.
 """
 
-from typing import Any, Generator, Generic, Literal, TypeVar, overload
+from typing import Any, Generator, Generic, Iterator, Literal, TypeVar, overload
 
 _T = TypeVar("_T")
 _DataT = TypeVar("_DataT", bound=dict[str, Any])
@@ -469,6 +469,20 @@ class FortiObjectList(list[_ObjectT], Generic[_ObjectT]):
             response_time: Response time in seconds (optional)
         """
         ...
+
+    # ========================================================================
+    # Iterator and indexing support for proper type inference
+    # ========================================================================
+    
+    def __iter__(self) -> Iterator[_ObjectT]:
+        """Iterate over FortiObject items."""
+        ...
+    
+    @overload
+    def __getitem__(self, index: int) -> _ObjectT: ...
+    @overload
+    def __getitem__(self, index: slice) -> list[_ObjectT]: ...
+    def __getitem__(self, index: int | slice) -> _ObjectT | list[_ObjectT]: ...
 
     # ========================================================================
     # Response timing properties

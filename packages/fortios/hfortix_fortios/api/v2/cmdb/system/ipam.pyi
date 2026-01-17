@@ -274,6 +274,14 @@ class Ipam:
     Category: cmdb
     """
     
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client.
+        
+        Args:
+            client: HTTP client instance for API communication
+        """
+        ...
+    
     # ================================================================
     # GET OVERLOADS - Always returns FortiObject
     # Pylance matches overloads top-to-bottom, so these must come first!
@@ -292,7 +300,6 @@ class Ipam:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> IpamObject: ...
     
     # With mkey as keyword arg -> returns FortiObject
@@ -309,7 +316,6 @@ class Ipam:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> IpamObject: ...
     
     # Without mkey -> returns list of FortiObjects
@@ -325,7 +331,6 @@ class Ipam:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> IpamObject: ...
     
     # ================================================================
@@ -345,7 +350,6 @@ class Ipam:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> IpamObject: ...
     
     # With mkey as keyword arg -> returns single object
@@ -362,7 +366,6 @@ class Ipam:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> IpamObject: ...
     
     # With no mkey -> returns list of objects
@@ -378,7 +381,6 @@ class Ipam:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> IpamObject: ...
     
     # Dict mode with mkey provided as positional arg (single dict)
@@ -394,7 +396,6 @@ class Ipam:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> IpamObject: ...
     
     # Dict mode with mkey provided as keyword arg (single dict)
@@ -411,7 +412,6 @@ class Ipam:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> IpamObject: ...
     
     # Dict mode - list of dicts (no mkey/name provided) - keyword-only signature
@@ -427,7 +427,6 @@ class Ipam:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> IpamObject: ...
     
     # Fallback overload for all other cases
@@ -443,7 +442,6 @@ class Ipam:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> dict[str, Any] | FortiObject: ...
     
     def get(
@@ -457,12 +455,10 @@ class Ipam:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> IpamObject | dict[str, Any]: ...
     
     def get_schema(
         self,
-        vdom: str | None = ...,
         format: str = ...,
     ) -> FortiObject: ...
     
@@ -480,7 +476,6 @@ class Ipam:
         manage_ssid_addresses: Literal["disable", "enable"] | None = ...,
         pools: str | list[str] | list[IpamPoolsItem] | None = ...,
         rules: str | list[str] | list[IpamRulesItem] | None = ...,
-        vdom: str | bool | None = ...,
     ) -> IpamObject: ...
     
     @overload
@@ -496,7 +491,6 @@ class Ipam:
         manage_ssid_addresses: Literal["disable", "enable"] | None = ...,
         pools: str | list[str] | list[IpamPoolsItem] | None = ...,
         rules: str | list[str] | list[IpamRulesItem] | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     # Default overload
@@ -513,7 +507,6 @@ class Ipam:
         manage_ssid_addresses: Literal["disable", "enable"] | None = ...,
         pools: str | list[str] | list[IpamPoolsItem] | None = ...,
         rules: str | list[str] | list[IpamRulesItem] | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     def put(
@@ -528,13 +521,11 @@ class Ipam:
         manage_ssid_addresses: Literal["disable", "enable"] | None = ...,
         pools: str | list[str] | list[IpamPoolsItem] | None = ...,
         rules: str | list[str] | list[IpamRulesItem] | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     def exists(
         self,
         name: str,
-        vdom: str | bool | None = ...,
     ) -> bool: ...
     
     def set(
@@ -549,7 +540,6 @@ class Ipam:
         manage_ssid_addresses: Literal["disable", "enable"] | None = ...,
         pools: str | list[str] | list[IpamPoolsItem] | None = ...,
         rules: str | list[str] | list[IpamRulesItem] | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     # Helper methods

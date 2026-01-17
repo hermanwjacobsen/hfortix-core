@@ -103,6 +103,14 @@ class Admin:
     Primary Key: msg-type
     """
     
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client.
+        
+        Args:
+            client: HTTP client instance for API communication
+        """
+        ...
+    
     # ================================================================
     # GET OVERLOADS - Always returns FortiObject
     # Pylance matches overloads top-to-bottom, so these must come first!
@@ -121,7 +129,6 @@ class Admin:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> AdminObject: ...
     
     # With mkey as keyword arg -> returns FortiObject
@@ -138,7 +145,6 @@ class Admin:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> AdminObject: ...
     
     # Without mkey -> returns list of FortiObjects
@@ -154,7 +160,6 @@ class Admin:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObjectList[AdminObject]: ...
     
     # ================================================================
@@ -174,7 +179,6 @@ class Admin:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> AdminObject: ...
     
     # With mkey as keyword arg -> returns single object
@@ -191,7 +195,6 @@ class Admin:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> AdminObject: ...
     
     # With no mkey -> returns list of objects
@@ -207,7 +210,6 @@ class Admin:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObjectList[AdminObject]: ...
     
     # Dict mode with mkey provided as positional arg (single dict)
@@ -223,7 +225,6 @@ class Admin:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> AdminObject: ...
     
     # Dict mode with mkey provided as keyword arg (single dict)
@@ -240,7 +241,6 @@ class Admin:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> AdminObject: ...
     
     # Dict mode - list of dicts (no mkey/name provided) - keyword-only signature
@@ -256,7 +256,6 @@ class Admin:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObjectList[AdminObject]: ...
     
     # Fallback overload for all other cases
@@ -272,7 +271,6 @@ class Admin:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> Union[dict[str, Any], list[dict[str, Any]], FortiObject, list[FortiObject]]: ...
     
     def get(
@@ -286,12 +284,10 @@ class Admin:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> AdminObject | list[AdminObject] | dict[str, Any] | list[dict[str, Any]]: ...
     
     def get_schema(
         self,
-        vdom: str | None = ...,
         format: str = ...,
     ) -> FortiObject: ...
     
@@ -304,7 +300,6 @@ class Admin:
         buffer: str | None = ...,
         header: Literal["none", "http", "8bit"] | None = ...,
         format: Literal["none", "text", "html"] | None = ...,
-        vdom: str | bool | None = ...,
     ) -> AdminObject: ...
     
     @overload
@@ -315,7 +310,6 @@ class Admin:
         buffer: str | None = ...,
         header: Literal["none", "http", "8bit"] | None = ...,
         format: Literal["none", "text", "html"] | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     # Default overload
@@ -327,7 +321,6 @@ class Admin:
         buffer: str | None = ...,
         header: Literal["none", "http", "8bit"] | None = ...,
         format: Literal["none", "text", "html"] | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     def post(
@@ -337,7 +330,6 @@ class Admin:
         buffer: str | None = ...,
         header: Literal["none", "http", "8bit"] | None = ...,
         format: Literal["none", "text", "html"] | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     # PUT overloads
@@ -349,7 +341,6 @@ class Admin:
         buffer: str | None = ...,
         header: Literal["none", "http", "8bit"] | None = ...,
         format: Literal["none", "text", "html"] | None = ...,
-        vdom: str | bool | None = ...,
     ) -> AdminObject: ...
     
     @overload
@@ -360,7 +351,6 @@ class Admin:
         buffer: str | None = ...,
         header: Literal["none", "http", "8bit"] | None = ...,
         format: Literal["none", "text", "html"] | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     # Default overload
@@ -372,7 +362,6 @@ class Admin:
         buffer: str | None = ...,
         header: Literal["none", "http", "8bit"] | None = ...,
         format: Literal["none", "text", "html"] | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     def put(
@@ -382,7 +371,6 @@ class Admin:
         buffer: str | None = ...,
         header: Literal["none", "http", "8bit"] | None = ...,
         format: Literal["none", "text", "html"] | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     # DELETE overloads
@@ -390,14 +378,12 @@ class Admin:
     def delete(
         self,
         msg_type: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> AdminObject: ...
     
     @overload
     def delete(
         self,
         msg_type: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     # Default overload
@@ -405,19 +391,16 @@ class Admin:
     def delete(
         self,
         msg_type: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     def delete(
         self,
         msg_type: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     def exists(
         self,
         msg_type: str,
-        vdom: str | bool | None = ...,
     ) -> bool: ...
     
     def set(
@@ -427,7 +410,6 @@ class Admin:
         buffer: str | None = ...,
         header: Literal["none", "http", "8bit"] | None = ...,
         format: Literal["none", "text", "html"] | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     # Helper methods

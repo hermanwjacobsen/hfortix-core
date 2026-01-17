@@ -517,6 +517,14 @@ class AutomationAction:
     Primary Key: name
     """
     
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client.
+        
+        Args:
+            client: HTTP client instance for API communication
+        """
+        ...
+    
     # ================================================================
     # GET OVERLOADS - Always returns FortiObject
     # Pylance matches overloads top-to-bottom, so these must come first!
@@ -535,7 +543,6 @@ class AutomationAction:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> AutomationActionObject: ...
     
     # With mkey as keyword arg -> returns FortiObject
@@ -552,7 +559,6 @@ class AutomationAction:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> AutomationActionObject: ...
     
     # Without mkey -> returns list of FortiObjects
@@ -568,7 +574,6 @@ class AutomationAction:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObjectList[AutomationActionObject]: ...
     
     # ================================================================
@@ -588,7 +593,6 @@ class AutomationAction:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> AutomationActionObject: ...
     
     # With mkey as keyword arg -> returns single object
@@ -605,7 +609,6 @@ class AutomationAction:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> AutomationActionObject: ...
     
     # With no mkey -> returns list of objects
@@ -621,7 +624,6 @@ class AutomationAction:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObjectList[AutomationActionObject]: ...
     
     # Dict mode with mkey provided as positional arg (single dict)
@@ -637,7 +639,6 @@ class AutomationAction:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> AutomationActionObject: ...
     
     # Dict mode with mkey provided as keyword arg (single dict)
@@ -654,7 +655,6 @@ class AutomationAction:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> AutomationActionObject: ...
     
     # Dict mode - list of dicts (no mkey/name provided) - keyword-only signature
@@ -670,7 +670,6 @@ class AutomationAction:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObjectList[AutomationActionObject]: ...
     
     # Fallback overload for all other cases
@@ -686,7 +685,6 @@ class AutomationAction:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> Union[dict[str, Any], list[dict[str, Any]], FortiObject, list[FortiObject]]: ...
     
     def get(
@@ -700,12 +698,10 @@ class AutomationAction:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> AutomationActionObject | list[AutomationActionObject] | dict[str, Any] | list[dict[str, Any]]: ...
     
     def get_schema(
         self,
-        vdom: str | None = ...,
         format: str = ...,
     ) -> FortiObject: ...
     
@@ -754,7 +750,6 @@ class AutomationAction:
         log_debug_print: Literal["enable", "disable"] | None = ...,
         security_tag: str | None = ...,
         sdn_connector: str | list[str] | list[AutomationActionSdnconnectorItem] | None = ...,
-        vdom: str | bool | None = ...,
     ) -> AutomationActionObject: ...
     
     @overload
@@ -801,7 +796,6 @@ class AutomationAction:
         log_debug_print: Literal["enable", "disable"] | None = ...,
         security_tag: str | None = ...,
         sdn_connector: str | list[str] | list[AutomationActionSdnconnectorItem] | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     # Default overload
@@ -849,7 +843,6 @@ class AutomationAction:
         log_debug_print: Literal["enable", "disable"] | None = ...,
         security_tag: str | None = ...,
         sdn_connector: str | list[str] | list[AutomationActionSdnconnectorItem] | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     def post(
@@ -895,7 +888,6 @@ class AutomationAction:
         log_debug_print: Literal["enable", "disable"] | None = ...,
         security_tag: str | None = ...,
         sdn_connector: str | list[str] | list[AutomationActionSdnconnectorItem] | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     # PUT overloads
@@ -943,7 +935,6 @@ class AutomationAction:
         log_debug_print: Literal["enable", "disable"] | None = ...,
         security_tag: str | None = ...,
         sdn_connector: str | list[str] | list[AutomationActionSdnconnectorItem] | None = ...,
-        vdom: str | bool | None = ...,
     ) -> AutomationActionObject: ...
     
     @overload
@@ -990,7 +981,6 @@ class AutomationAction:
         log_debug_print: Literal["enable", "disable"] | None = ...,
         security_tag: str | None = ...,
         sdn_connector: str | list[str] | list[AutomationActionSdnconnectorItem] | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     # Default overload
@@ -1038,7 +1028,6 @@ class AutomationAction:
         log_debug_print: Literal["enable", "disable"] | None = ...,
         security_tag: str | None = ...,
         sdn_connector: str | list[str] | list[AutomationActionSdnconnectorItem] | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     def put(
@@ -1084,7 +1073,6 @@ class AutomationAction:
         log_debug_print: Literal["enable", "disable"] | None = ...,
         security_tag: str | None = ...,
         sdn_connector: str | list[str] | list[AutomationActionSdnconnectorItem] | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     # DELETE overloads
@@ -1092,14 +1080,12 @@ class AutomationAction:
     def delete(
         self,
         name: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> AutomationActionObject: ...
     
     @overload
     def delete(
         self,
         name: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     # Default overload
@@ -1107,19 +1093,16 @@ class AutomationAction:
     def delete(
         self,
         name: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     def delete(
         self,
         name: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     def exists(
         self,
         name: str,
-        vdom: str | bool | None = ...,
     ) -> bool: ...
     
     def set(
@@ -1165,7 +1148,6 @@ class AutomationAction:
         log_debug_print: Literal["enable", "disable"] | None = ...,
         security_tag: str | None = ...,
         sdn_connector: str | list[str] | list[AutomationActionSdnconnectorItem] | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     # Helper methods

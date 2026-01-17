@@ -99,6 +99,14 @@ class IpsUrlfilterDns:
     Primary Key: address
     """
     
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client.
+        
+        Args:
+            client: HTTP client instance for API communication
+        """
+        ...
+    
     # ================================================================
     # GET OVERLOADS - Always returns FortiObject
     # Pylance matches overloads top-to-bottom, so these must come first!
@@ -117,7 +125,6 @@ class IpsUrlfilterDns:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> IpsUrlfilterDnsObject: ...
     
     # With mkey as keyword arg -> returns FortiObject
@@ -134,7 +141,6 @@ class IpsUrlfilterDns:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> IpsUrlfilterDnsObject: ...
     
     # Without mkey -> returns list of FortiObjects
@@ -150,7 +156,6 @@ class IpsUrlfilterDns:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObjectList[IpsUrlfilterDnsObject]: ...
     
     # ================================================================
@@ -170,7 +175,6 @@ class IpsUrlfilterDns:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> IpsUrlfilterDnsObject: ...
     
     # With mkey as keyword arg -> returns single object
@@ -187,7 +191,6 @@ class IpsUrlfilterDns:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> IpsUrlfilterDnsObject: ...
     
     # With no mkey -> returns list of objects
@@ -203,7 +206,6 @@ class IpsUrlfilterDns:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObjectList[IpsUrlfilterDnsObject]: ...
     
     # Dict mode with mkey provided as positional arg (single dict)
@@ -219,7 +221,6 @@ class IpsUrlfilterDns:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> IpsUrlfilterDnsObject: ...
     
     # Dict mode with mkey provided as keyword arg (single dict)
@@ -236,7 +237,6 @@ class IpsUrlfilterDns:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> IpsUrlfilterDnsObject: ...
     
     # Dict mode - list of dicts (no mkey/name provided) - keyword-only signature
@@ -252,7 +252,6 @@ class IpsUrlfilterDns:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObjectList[IpsUrlfilterDnsObject]: ...
     
     # Fallback overload for all other cases
@@ -268,7 +267,6 @@ class IpsUrlfilterDns:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> Union[dict[str, Any], list[dict[str, Any]], FortiObject, list[FortiObject]]: ...
     
     def get(
@@ -282,12 +280,10 @@ class IpsUrlfilterDns:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> IpsUrlfilterDnsObject | list[IpsUrlfilterDnsObject] | dict[str, Any] | list[dict[str, Any]]: ...
     
     def get_schema(
         self,
-        vdom: str | None = ...,
         format: str = ...,
     ) -> FortiObject: ...
     
@@ -299,7 +295,6 @@ class IpsUrlfilterDns:
         address: str | None = ...,
         status: Literal["enable", "disable"] | None = ...,
         ipv6_capability: Literal["enable", "disable"] | None = ...,
-        vdom: str | bool | None = ...,
     ) -> IpsUrlfilterDnsObject: ...
     
     @overload
@@ -309,7 +304,6 @@ class IpsUrlfilterDns:
         address: str | None = ...,
         status: Literal["enable", "disable"] | None = ...,
         ipv6_capability: Literal["enable", "disable"] | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     # Default overload
@@ -320,7 +314,6 @@ class IpsUrlfilterDns:
         address: str | None = ...,
         status: Literal["enable", "disable"] | None = ...,
         ipv6_capability: Literal["enable", "disable"] | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     def post(
@@ -329,7 +322,6 @@ class IpsUrlfilterDns:
         address: str | None = ...,
         status: Literal["enable", "disable"] | None = ...,
         ipv6_capability: Literal["enable", "disable"] | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     # PUT overloads
@@ -340,7 +332,6 @@ class IpsUrlfilterDns:
         address: str | None = ...,
         status: Literal["enable", "disable"] | None = ...,
         ipv6_capability: Literal["enable", "disable"] | None = ...,
-        vdom: str | bool | None = ...,
     ) -> IpsUrlfilterDnsObject: ...
     
     @overload
@@ -350,7 +341,6 @@ class IpsUrlfilterDns:
         address: str | None = ...,
         status: Literal["enable", "disable"] | None = ...,
         ipv6_capability: Literal["enable", "disable"] | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     # Default overload
@@ -361,7 +351,6 @@ class IpsUrlfilterDns:
         address: str | None = ...,
         status: Literal["enable", "disable"] | None = ...,
         ipv6_capability: Literal["enable", "disable"] | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     def put(
@@ -370,7 +359,6 @@ class IpsUrlfilterDns:
         address: str | None = ...,
         status: Literal["enable", "disable"] | None = ...,
         ipv6_capability: Literal["enable", "disable"] | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     # DELETE overloads
@@ -378,14 +366,12 @@ class IpsUrlfilterDns:
     def delete(
         self,
         address: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> IpsUrlfilterDnsObject: ...
     
     @overload
     def delete(
         self,
         address: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     # Default overload
@@ -393,19 +379,16 @@ class IpsUrlfilterDns:
     def delete(
         self,
         address: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     def delete(
         self,
         address: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     def exists(
         self,
         address: str,
-        vdom: str | bool | None = ...,
     ) -> bool: ...
     
     def set(
@@ -414,7 +397,6 @@ class IpsUrlfilterDns:
         address: str | None = ...,
         status: Literal["enable", "disable"] | None = ...,
         ipv6_capability: Literal["enable", "disable"] | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     # Helper methods

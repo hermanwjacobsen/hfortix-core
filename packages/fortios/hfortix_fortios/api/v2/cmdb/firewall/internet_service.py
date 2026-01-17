@@ -86,7 +86,6 @@ class InternetService(CRUDEndpoint, MetadataMixin):
         count: int | None = None,
         start: int | None = None,
         payload_dict: dict[str, Any] | None = None,
-        vdom: str | bool | None = None,
         error_mode: Literal["raise", "return", "print"] | None = None,
         error_format: Literal["detailed", "simple", "code_only"] | None = None,
     ):  # type: ignore[no-untyped-def]
@@ -113,7 +112,6 @@ class InternetService(CRUDEndpoint, MetadataMixin):
                 - scope (str): Query scope - "global", "vdom", or "both"
                 - action (str): Special actions - "schema", "default"
                 See FortiOS REST API documentation for complete list.
-            vdom: Virtual domain name. Use True for global, string for specific VDOM, None for default.
             error_mode: Override client-level error_mode. "raise" raises exceptions, "return" returns error dict, "print" prints errors.
             error_format: Override client-level error_format. "detailed" provides full context, "simple" is concise, "code_only" returns just status code.
 
@@ -192,7 +190,7 @@ class InternetService(CRUDEndpoint, MetadataMixin):
         
         # Fetch data and cache if this is a list query
         response = self._client.get(
-            "cmdb", endpoint, params=params, vdom=vdom, unwrap_single=unwrap_single
+            "cmdb", endpoint, params=params, vdom=False, unwrap_single=unwrap_single
         )
         
         # Cache the response for list queries
@@ -206,7 +204,6 @@ class InternetService(CRUDEndpoint, MetadataMixin):
 
     def get_schema(
         self,
-        vdom: str | None = None,
         format: str = "schema",
     ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """
@@ -220,7 +217,6 @@ class InternetService(CRUDEndpoint, MetadataMixin):
         vary between FortiOS versions.
         
         Args:
-            vdom: Virtual domain. None uses default VDOM.
             format: Schema format - "schema" (FortiOS native) or "json-schema" (JSON Schema standard).
                 Defaults to "schema".
                 
@@ -239,7 +235,7 @@ class InternetService(CRUDEndpoint, MetadataMixin):
             Not all endpoints support all schema formats. The "schema" format
             is most widely supported.
         """
-        return self.get(action=format, vdom=vdom)
+        return self.get(action=format)
 
 
     # ========================================================================
@@ -266,7 +262,6 @@ class InternetService(CRUDEndpoint, MetadataMixin):
         q_before: str | None = None,
         q_after: str | None = None,
         q_scope: str | None = None,
-        vdom: str | bool | None = None,
         error_mode: Literal["raise", "return", "print"] | None = None,
         error_format: Literal["detailed", "simple", "code_only"] | None = None,
     ):  # type: ignore[no-untyped-def]
@@ -289,7 +284,6 @@ class InternetService(CRUDEndpoint, MetadataMixin):
             extra_ip6_range_number: Extra number of IPv6 ranges.
             singularity: Singular level of the Internet Service.
             obsolete: Indicates whether the Internet Service can be used.
-            vdom: Virtual domain name.
             error_mode: Override client-level error_mode. "raise" raises exceptions, "return" returns error dict, "print" prints errors.
             error_format: Override client-level error_format. "detailed" provides full context, "simple" is concise, "code_only" returns just status code.
 
@@ -363,7 +357,7 @@ class InternetService(CRUDEndpoint, MetadataMixin):
             params["scope"] = q_scope
         
         return self._client.put(
-            "cmdb", endpoint, data=payload_data, params=params, vdom=vdom        )
+            "cmdb", endpoint, data=payload_data, params=params, vdom=False        )
 
     # ========================================================================
     # POST Method
@@ -388,7 +382,6 @@ class InternetService(CRUDEndpoint, MetadataMixin):
         q_action: Literal["clone"] | None = None,
         q_nkey: str | None = None,
         q_scope: str | None = None,
-        vdom: str | bool | None = None,
         error_mode: Literal["raise", "return", "print"] | None = None,
         error_format: Literal["detailed", "simple", "code_only"] | None = None,
     ):  # type: ignore[no-untyped-def]
@@ -411,7 +404,6 @@ class InternetService(CRUDEndpoint, MetadataMixin):
             extra_ip6_range_number: Extra number of IPv6 ranges.
             singularity: Singular level of the Internet Service.
             obsolete: Indicates whether the Internet Service can be used.
-            vdom: Virtual domain name. Use True for global, string for specific VDOM.
             error_mode: Override client-level error_mode. "raise" raises exceptions, "return" returns error dict, "print" prints errors.
             error_format: Override client-level error_format. "detailed" provides full context, "simple" is concise, "code_only" returns just status code.
 
@@ -482,7 +474,7 @@ class InternetService(CRUDEndpoint, MetadataMixin):
             params["scope"] = q_scope
         
         return self._client.post(
-            "cmdb", endpoint, data=payload_data, params=params, vdom=vdom        )
+            "cmdb", endpoint, data=payload_data, params=params, vdom=False        )
 
     # ========================================================================
     # DELETE Method
@@ -493,7 +485,6 @@ class InternetService(CRUDEndpoint, MetadataMixin):
         self,
         id: int | None = None,
         q_scope: str | None = None,
-        vdom: str | bool | None = None,
         error_mode: Literal["raise", "return", "print"] | None = None,
         error_format: Literal["detailed", "simple", "code_only"] | None = None,
     ):  # type: ignore[no-untyped-def]
@@ -504,7 +495,6 @@ class InternetService(CRUDEndpoint, MetadataMixin):
 
         Args:
             id: Primary key identifier
-            vdom: Virtual domain name
             error_mode: Override client-level error_mode. "raise" raises exceptions, "return" returns error dict, "print" prints errors.
             error_format: Override client-level error_format. "detailed" provides full context, "simple" is concise, "code_only" returns just status code.
 
@@ -536,12 +526,11 @@ class InternetService(CRUDEndpoint, MetadataMixin):
             params["scope"] = q_scope
         
         return self._client.delete(
-            "cmdb", endpoint, params=params, vdom=vdom        )
+            "cmdb", endpoint, params=params, vdom=False        )
 
     def exists(
         self,
         id: int,
-        vdom: str | bool | None = None,
     ) -> Union[bool, Coroutine[Any, Any, bool]]:
         """
         Check if firewall/internet_service object exists.
@@ -550,7 +539,6 @@ class InternetService(CRUDEndpoint, MetadataMixin):
 
         Args:
             id: Primary key identifier
-            vdom: Virtual domain name
 
         Returns:
             True if object exists, False otherwise
@@ -572,7 +560,7 @@ class InternetService(CRUDEndpoint, MetadataMixin):
         """
         # For readonly endpoints, check by fetching all items and scanning
         # This is necessary because readonly endpoints don't support direct ID queries
-        result = self.get(vdom=vdom)
+        result = self.get()
         response = result.raw if hasattr(result, 'raw') else result
         
         if isinstance(response, dict):
@@ -622,7 +610,6 @@ class InternetService(CRUDEndpoint, MetadataMixin):
         extra_ip6_range_number: int | None = None,
         singularity: int | None = None,
         obsolete: int | None = None,
-        vdom: str | bool | None = None,
         error_mode: Literal["raise", "return", "print"] | None = None,
         error_format: Literal["detailed", "simple", "code_only"] | None = None,
         **kwargs: Any,
@@ -647,7 +634,6 @@ class InternetService(CRUDEndpoint, MetadataMixin):
             extra_ip6_range_number: Field extra-ip6-range-number
             singularity: Field singularity
             obsolete: Field obsolete
-            vdom: Virtual domain name
             **kwargs: Additional parameters passed to PUT or POST
 
         Returns:
@@ -708,12 +694,12 @@ class InternetService(CRUDEndpoint, MetadataMixin):
             raise ValueError("id is required for set()")
         
         # Check if resource exists
-        if self.exists(id=mkey_value, vdom=vdom):
+        if self.exists(id=mkey_value):
             # Update existing resource
-            return self.put(payload_dict=payload_data, vdom=vdom, **kwargs)
+            return self.put(payload_dict=payload_data, **kwargs)
         else:
             # Create new resource
-            return self.post(payload_dict=payload_data, vdom=vdom, **kwargs)
+            return self.post(payload_dict=payload_data, **kwargs)
 
     # ========================================================================
     # Action: Move
@@ -724,7 +710,6 @@ class InternetService(CRUDEndpoint, MetadataMixin):
         id: int,
         action: Literal["before", "after"],
         reference_id: int,
-        vdom: str | bool | None = None,
         **kwargs: Any,
     ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """
@@ -736,7 +721,6 @@ class InternetService(CRUDEndpoint, MetadataMixin):
             id: Identifier of object to move
             action: Move "before" or "after" reference object
             reference_id: Identifier of reference object
-            vdom: Virtual domain name
             **kwargs: Additional parameters
             
         Returns:
@@ -757,7 +741,6 @@ class InternetService(CRUDEndpoint, MetadataMixin):
                 "id": id,
                 "action": "move",
                 action: reference_id,
-                "vdom": vdom,
                 **kwargs,
             },
         )
@@ -770,7 +753,6 @@ class InternetService(CRUDEndpoint, MetadataMixin):
         self,
         id: int,
         new_id: int,
-        vdom: str | bool | None = None,
         **kwargs: Any,
     ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """
@@ -781,7 +763,6 @@ class InternetService(CRUDEndpoint, MetadataMixin):
         Args:
             id: Identifier of object to clone
             new_id: Identifier for the cloned object
-            vdom: Virtual domain name
             **kwargs: Additional parameters
             
         Returns:
@@ -801,7 +782,6 @@ class InternetService(CRUDEndpoint, MetadataMixin):
                 "id": id,
                 "new_id": new_id,
                 "action": "clone",
-                "vdom": vdom,
                 **kwargs,
             },
         )

@@ -169,6 +169,14 @@ class InternetServiceDefinition:
     Primary Key: id
     """
     
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client.
+        
+        Args:
+            client: HTTP client instance for API communication
+        """
+        ...
+    
     # ================================================================
     # GET OVERLOADS - Always returns FortiObject
     # Pylance matches overloads top-to-bottom, so these must come first!
@@ -187,7 +195,6 @@ class InternetServiceDefinition:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> InternetServiceDefinitionObject: ...
     
     # With mkey as keyword arg -> returns FortiObject
@@ -204,7 +211,6 @@ class InternetServiceDefinition:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> InternetServiceDefinitionObject: ...
     
     # Without mkey -> returns list of FortiObjects
@@ -220,7 +226,6 @@ class InternetServiceDefinition:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObjectList[InternetServiceDefinitionObject]: ...
     
     # ================================================================
@@ -240,7 +245,6 @@ class InternetServiceDefinition:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> InternetServiceDefinitionObject: ...
     
     # With mkey as keyword arg -> returns single object
@@ -257,7 +261,6 @@ class InternetServiceDefinition:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> InternetServiceDefinitionObject: ...
     
     # With no mkey -> returns list of objects
@@ -273,7 +276,6 @@ class InternetServiceDefinition:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObjectList[InternetServiceDefinitionObject]: ...
     
     # Dict mode with mkey provided as positional arg (single dict)
@@ -289,7 +291,6 @@ class InternetServiceDefinition:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> InternetServiceDefinitionObject: ...
     
     # Dict mode with mkey provided as keyword arg (single dict)
@@ -306,7 +307,6 @@ class InternetServiceDefinition:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> InternetServiceDefinitionObject: ...
     
     # Dict mode - list of dicts (no mkey/name provided) - keyword-only signature
@@ -322,7 +322,6 @@ class InternetServiceDefinition:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObjectList[InternetServiceDefinitionObject]: ...
     
     # Fallback overload for all other cases
@@ -338,7 +337,6 @@ class InternetServiceDefinition:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> Union[dict[str, Any], list[dict[str, Any]], FortiObject, list[FortiObject]]: ...
     
     def get(
@@ -352,12 +350,10 @@ class InternetServiceDefinition:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> InternetServiceDefinitionObject | list[InternetServiceDefinitionObject] | dict[str, Any] | list[dict[str, Any]]: ...
     
     def get_schema(
         self,
-        vdom: str | None = ...,
         format: str = ...,
     ) -> FortiObject: ...
     
@@ -368,7 +364,6 @@ class InternetServiceDefinition:
         payload_dict: InternetServiceDefinitionPayload | None = ...,
         id: int | None = ...,
         entry: str | list[str] | list[InternetServiceDefinitionEntryItem] | None = ...,
-        vdom: str | bool | None = ...,
     ) -> InternetServiceDefinitionObject: ...
     
     @overload
@@ -377,7 +372,6 @@ class InternetServiceDefinition:
         payload_dict: InternetServiceDefinitionPayload | None = ...,
         id: int | None = ...,
         entry: str | list[str] | list[InternetServiceDefinitionEntryItem] | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     # Default overload
@@ -387,7 +381,6 @@ class InternetServiceDefinition:
         payload_dict: InternetServiceDefinitionPayload | None = ...,
         id: int | None = ...,
         entry: str | list[str] | list[InternetServiceDefinitionEntryItem] | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     def post(
@@ -395,7 +388,6 @@ class InternetServiceDefinition:
         payload_dict: InternetServiceDefinitionPayload | None = ...,
         id: int | None = ...,
         entry: str | list[str] | list[InternetServiceDefinitionEntryItem] | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     # PUT overloads
@@ -405,7 +397,6 @@ class InternetServiceDefinition:
         payload_dict: InternetServiceDefinitionPayload | None = ...,
         id: int | None = ...,
         entry: str | list[str] | list[InternetServiceDefinitionEntryItem] | None = ...,
-        vdom: str | bool | None = ...,
     ) -> InternetServiceDefinitionObject: ...
     
     @overload
@@ -414,7 +405,6 @@ class InternetServiceDefinition:
         payload_dict: InternetServiceDefinitionPayload | None = ...,
         id: int | None = ...,
         entry: str | list[str] | list[InternetServiceDefinitionEntryItem] | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     # Default overload
@@ -424,7 +414,6 @@ class InternetServiceDefinition:
         payload_dict: InternetServiceDefinitionPayload | None = ...,
         id: int | None = ...,
         entry: str | list[str] | list[InternetServiceDefinitionEntryItem] | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     def put(
@@ -432,7 +421,6 @@ class InternetServiceDefinition:
         payload_dict: InternetServiceDefinitionPayload | None = ...,
         id: int | None = ...,
         entry: str | list[str] | list[InternetServiceDefinitionEntryItem] | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     # DELETE overloads
@@ -440,14 +428,12 @@ class InternetServiceDefinition:
     def delete(
         self,
         id: int | None = ...,
-        vdom: str | bool | None = ...,
     ) -> InternetServiceDefinitionObject: ...
     
     @overload
     def delete(
         self,
         id: int | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     # Default overload
@@ -455,19 +441,16 @@ class InternetServiceDefinition:
     def delete(
         self,
         id: int | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     def delete(
         self,
         id: int | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     def exists(
         self,
         id: int,
-        vdom: str | bool | None = ...,
     ) -> bool: ...
     
     def set(
@@ -475,7 +458,6 @@ class InternetServiceDefinition:
         payload_dict: InternetServiceDefinitionPayload | None = ...,
         id: int | None = ...,
         entry: str | list[str] | list[InternetServiceDefinitionEntryItem] | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     # Helper methods

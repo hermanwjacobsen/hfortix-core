@@ -185,6 +185,14 @@ class Ptp:
     Category: cmdb
     """
     
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client.
+        
+        Args:
+            client: HTTP client instance for API communication
+        """
+        ...
+    
     # ================================================================
     # GET OVERLOADS - Always returns FortiObject
     # Pylance matches overloads top-to-bottom, so these must come first!
@@ -203,7 +211,6 @@ class Ptp:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> PtpObject: ...
     
     # With mkey as keyword arg -> returns FortiObject
@@ -220,7 +227,6 @@ class Ptp:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> PtpObject: ...
     
     # Without mkey -> returns list of FortiObjects
@@ -236,7 +242,6 @@ class Ptp:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> PtpObject: ...
     
     # ================================================================
@@ -256,7 +261,6 @@ class Ptp:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> PtpObject: ...
     
     # With mkey as keyword arg -> returns single object
@@ -273,7 +277,6 @@ class Ptp:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> PtpObject: ...
     
     # With no mkey -> returns list of objects
@@ -289,7 +292,6 @@ class Ptp:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> PtpObject: ...
     
     # Dict mode with mkey provided as positional arg (single dict)
@@ -305,7 +307,6 @@ class Ptp:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> PtpObject: ...
     
     # Dict mode with mkey provided as keyword arg (single dict)
@@ -322,7 +323,6 @@ class Ptp:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> PtpObject: ...
     
     # Dict mode - list of dicts (no mkey/name provided) - keyword-only signature
@@ -338,7 +338,6 @@ class Ptp:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> PtpObject: ...
     
     # Fallback overload for all other cases
@@ -354,7 +353,6 @@ class Ptp:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> dict[str, Any] | FortiObject: ...
     
     def get(
@@ -368,12 +366,10 @@ class Ptp:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> PtpObject | dict[str, Any]: ...
     
     def get_schema(
         self,
-        vdom: str | None = ...,
         format: str = ...,
     ) -> FortiObject: ...
     
@@ -389,7 +385,6 @@ class Ptp:
         interface: str | None = ...,
         server_mode: Literal["enable", "disable"] | None = ...,
         server_interface: str | list[str] | list[PtpServerinterfaceItem] | None = ...,
-        vdom: str | bool | None = ...,
     ) -> PtpObject: ...
     
     @overload
@@ -403,7 +398,6 @@ class Ptp:
         interface: str | None = ...,
         server_mode: Literal["enable", "disable"] | None = ...,
         server_interface: str | list[str] | list[PtpServerinterfaceItem] | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     # Default overload
@@ -418,7 +412,6 @@ class Ptp:
         interface: str | None = ...,
         server_mode: Literal["enable", "disable"] | None = ...,
         server_interface: str | list[str] | list[PtpServerinterfaceItem] | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     def put(
@@ -431,13 +424,11 @@ class Ptp:
         interface: str | None = ...,
         server_mode: Literal["enable", "disable"] | None = ...,
         server_interface: str | list[str] | list[PtpServerinterfaceItem] | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     def exists(
         self,
         name: str,
-        vdom: str | bool | None = ...,
     ) -> bool: ...
     
     def set(
@@ -450,7 +441,6 @@ class Ptp:
         interface: str | None = ...,
         server_mode: Literal["enable", "disable"] | None = ...,
         server_interface: str | list[str] | list[PtpServerinterfaceItem] | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     # Helper methods

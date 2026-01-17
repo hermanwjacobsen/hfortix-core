@@ -286,6 +286,14 @@ class FederatedUpgrade:
     Category: cmdb
     """
     
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client.
+        
+        Args:
+            client: HTTP client instance for API communication
+        """
+        ...
+    
     # ================================================================
     # GET OVERLOADS - Always returns FortiObject
     # Pylance matches overloads top-to-bottom, so these must come first!
@@ -304,7 +312,6 @@ class FederatedUpgrade:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FederatedUpgradeObject: ...
     
     # With mkey as keyword arg -> returns FortiObject
@@ -321,7 +328,6 @@ class FederatedUpgrade:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FederatedUpgradeObject: ...
     
     # Without mkey -> returns list of FortiObjects
@@ -337,7 +343,6 @@ class FederatedUpgrade:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FederatedUpgradeObject: ...
     
     # ================================================================
@@ -357,7 +362,6 @@ class FederatedUpgrade:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FederatedUpgradeObject: ...
     
     # With mkey as keyword arg -> returns single object
@@ -374,7 +378,6 @@ class FederatedUpgrade:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FederatedUpgradeObject: ...
     
     # With no mkey -> returns list of objects
@@ -390,7 +393,6 @@ class FederatedUpgrade:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FederatedUpgradeObject: ...
     
     # Dict mode with mkey provided as positional arg (single dict)
@@ -406,7 +408,6 @@ class FederatedUpgrade:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FederatedUpgradeObject: ...
     
     # Dict mode with mkey provided as keyword arg (single dict)
@@ -423,7 +424,6 @@ class FederatedUpgrade:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FederatedUpgradeObject: ...
     
     # Dict mode - list of dicts (no mkey/name provided) - keyword-only signature
@@ -439,7 +439,6 @@ class FederatedUpgrade:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FederatedUpgradeObject: ...
     
     # Fallback overload for all other cases
@@ -455,7 +454,6 @@ class FederatedUpgrade:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> dict[str, Any] | FortiObject: ...
     
     def get(
@@ -469,12 +467,10 @@ class FederatedUpgrade:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FederatedUpgradeObject | dict[str, Any]: ...
     
     def get_schema(
         self,
-        vdom: str | None = ...,
         format: str = ...,
     ) -> FortiObject: ...
     
@@ -495,7 +491,6 @@ class FederatedUpgrade:
         initial_version: str | None = ...,
         starter_admin: str | None = ...,
         node_list: str | list[str] | list[FederatedUpgradeNodelistItem] | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FederatedUpgradeObject: ...
     
     @overload
@@ -514,7 +509,6 @@ class FederatedUpgrade:
         initial_version: str | None = ...,
         starter_admin: str | None = ...,
         node_list: str | list[str] | list[FederatedUpgradeNodelistItem] | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     # Default overload
@@ -534,7 +528,6 @@ class FederatedUpgrade:
         initial_version: str | None = ...,
         starter_admin: str | None = ...,
         node_list: str | list[str] | list[FederatedUpgradeNodelistItem] | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     def put(
@@ -552,13 +545,11 @@ class FederatedUpgrade:
         initial_version: str | None = ...,
         starter_admin: str | None = ...,
         node_list: str | list[str] | list[FederatedUpgradeNodelistItem] | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     def exists(
         self,
         name: str,
-        vdom: str | bool | None = ...,
     ) -> bool: ...
     
     def set(
@@ -576,7 +567,6 @@ class FederatedUpgrade:
         initial_version: str | None = ...,
         starter_admin: str | None = ...,
         node_list: str | list[str] | list[FederatedUpgradeNodelistItem] | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     # Helper methods

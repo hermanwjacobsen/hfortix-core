@@ -290,6 +290,14 @@ class Ntp:
     Category: cmdb
     """
     
+    def __init__(self, client: Any) -> None:
+        """Initialize endpoint with HTTP client.
+        
+        Args:
+            client: HTTP client instance for API communication
+        """
+        ...
+    
     # ================================================================
     # GET OVERLOADS - Always returns FortiObject
     # Pylance matches overloads top-to-bottom, so these must come first!
@@ -308,7 +316,6 @@ class Ntp:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> NtpObject: ...
     
     # With mkey as keyword arg -> returns FortiObject
@@ -325,7 +332,6 @@ class Ntp:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> NtpObject: ...
     
     # Without mkey -> returns list of FortiObjects
@@ -341,7 +347,6 @@ class Ntp:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> NtpObject: ...
     
     # ================================================================
@@ -361,7 +366,6 @@ class Ntp:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> NtpObject: ...
     
     # With mkey as keyword arg -> returns single object
@@ -378,7 +382,6 @@ class Ntp:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> NtpObject: ...
     
     # With no mkey -> returns list of objects
@@ -394,7 +397,6 @@ class Ntp:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> NtpObject: ...
     
     # Dict mode with mkey provided as positional arg (single dict)
@@ -410,7 +412,6 @@ class Ntp:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> NtpObject: ...
     
     # Dict mode with mkey provided as keyword arg (single dict)
@@ -427,7 +428,6 @@ class Ntp:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> NtpObject: ...
     
     # Dict mode - list of dicts (no mkey/name provided) - keyword-only signature
@@ -443,7 +443,6 @@ class Ntp:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> NtpObject: ...
     
     # Fallback overload for all other cases
@@ -459,7 +458,6 @@ class Ntp:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> dict[str, Any] | FortiObject: ...
     
     def get(
@@ -473,12 +471,10 @@ class Ntp:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-        vdom: str | bool | None = ...,
     ) -> NtpObject | dict[str, Any]: ...
     
     def get_schema(
         self,
-        vdom: str | None = ...,
         format: str = ...,
     ) -> FortiObject: ...
     
@@ -499,7 +495,6 @@ class Ntp:
         key: str | None = ...,
         key_id: int | None = ...,
         interface: str | list[str] | list[NtpInterfaceItem] | None = ...,
-        vdom: str | bool | None = ...,
     ) -> NtpObject: ...
     
     @overload
@@ -518,7 +513,6 @@ class Ntp:
         key: str | None = ...,
         key_id: int | None = ...,
         interface: str | list[str] | list[NtpInterfaceItem] | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     # Default overload
@@ -538,7 +532,6 @@ class Ntp:
         key: str | None = ...,
         key_id: int | None = ...,
         interface: str | list[str] | list[NtpInterfaceItem] | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     def put(
@@ -556,13 +549,11 @@ class Ntp:
         key: str | None = ...,
         key_id: int | None = ...,
         interface: str | list[str] | list[NtpInterfaceItem] | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     def exists(
         self,
         name: str,
-        vdom: str | bool | None = ...,
     ) -> bool: ...
     
     def set(
@@ -580,7 +571,6 @@ class Ntp:
         key: str | None = ...,
         key_id: int | None = ...,
         interface: str | list[str] | list[NtpInterfaceItem] | None = ...,
-        vdom: str | bool | None = ...,
     ) -> FortiObject: ...
     
     # Helper methods
