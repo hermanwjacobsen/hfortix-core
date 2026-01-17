@@ -316,10 +316,11 @@ class ObjectTagging(CRUDEndpoint, MetadataMixin):
                 example="[{'name': 'value'}]",
             )
         
-        # Build payload using helper function with auto-normalization
-        # This automatically converts strings/lists to [{'name': '...'}] format for list fields
-        # To disable auto-normalization, use build_cmdb_payload directly
+        # Build payload using helper function
+        # Note: auto_normalize=False because this endpoint has unitary fields
+        # (like 'interface') that would be incorrectly converted to list format
         payload_data = build_api_payload(
+            auto_normalize=False,
             category=category,
             address=address,
             device=device,
@@ -440,10 +441,11 @@ class ObjectTagging(CRUDEndpoint, MetadataMixin):
                 example="[{'name': 'value'}]",
             )
         
-        # Build payload using helper function with auto-normalization
-        # This automatically converts strings/lists to [{'name': '...'}] format for list fields
-        # To disable auto-normalization, use build_cmdb_payload directly
+        # Build payload using helper function
+        # Note: auto_normalize=False because this endpoint has unitary fields
+        # (like 'interface') that would be incorrectly converted to list format
         payload_data = build_api_payload(
+            auto_normalize=False,
             category=category,
             address=address,
             device=device,
@@ -676,8 +678,11 @@ class ObjectTagging(CRUDEndpoint, MetadataMixin):
                 example="[{'name': 'value'}]",
             )
         
-        # Build payload using helper function with auto-normalization
+        # Build payload using helper function
+        # Note: auto_normalize=False because this endpoint has unitary fields
+        # (like 'interface') that would be incorrectly converted to list format
         payload_data = build_api_payload(
+            auto_normalize=False,
             category=category,
             address=address,
             device=device,

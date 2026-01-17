@@ -312,9 +312,7 @@ class Address6Template(CRUDEndpoint, MetadataMixin):
                 example="[{'id': 1, 'name': 'value', 'bits': 1, 'exclusive': 'enable'}]",
             )
         
-        # Build payload using helper function with auto-normalization
-        # This automatically converts strings/lists to [{'name': '...'}] format for list fields
-        # To disable auto-normalization, use build_cmdb_payload directly
+        # Build payload using helper function
         payload_data = build_api_payload(
             name=name,
             uuid=uuid,
@@ -431,9 +429,7 @@ class Address6Template(CRUDEndpoint, MetadataMixin):
                 example="[{'id': 1, 'name': 'value', 'bits': 1, 'exclusive': 'enable'}]",
             )
         
-        # Build payload using helper function with auto-normalization
-        # This automatically converts strings/lists to [{'name': '...'}] format for list fields
-        # To disable auto-normalization, use build_cmdb_payload directly
+        # Build payload using helper function
         payload_data = build_api_payload(
             name=name,
             uuid=uuid,
@@ -664,7 +660,7 @@ class Address6Template(CRUDEndpoint, MetadataMixin):
                 example="[{'id': 1, 'name': 'value', 'bits': 1, 'exclusive': 'enable'}]",
             )
         
-        # Build payload using helper function with auto-normalization
+        # Build payload using helper function
         payload_data = build_api_payload(
             name=name,
             uuid=uuid,

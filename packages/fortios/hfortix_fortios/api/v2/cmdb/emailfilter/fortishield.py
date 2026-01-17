@@ -269,9 +269,7 @@ class Fortishield(CRUDEndpoint, MetadataMixin):
             - post(): Create new object
             - set(): Intelligent create or update
         """
-        # Build payload using helper function with auto-normalization
-        # This automatically converts strings/lists to [{'name': '...'}] format for list fields
-        # To disable auto-normalization, use build_cmdb_payload directly
+        # Build payload using helper function
         payload_data = build_api_payload(
             spam_submit_srv=spam_submit_srv,
             spam_submit_force=spam_submit_force,

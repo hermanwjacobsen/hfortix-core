@@ -275,9 +275,7 @@ class IgmpSnooping(CRUDEndpoint, MetadataMixin):
             - post(): Create new object
             - set(): Intelligent create or update
         """
-        # Build payload using helper function with auto-normalization
-        # This automatically converts strings/lists to [{'name': '...'}] format for list fields
-        # To disable auto-normalization, use build_cmdb_payload directly
+        # Build payload using helper function
         payload_data = build_api_payload(
             aging_time=aging_time,
             flood_unknown_multicast=flood_unknown_multicast,

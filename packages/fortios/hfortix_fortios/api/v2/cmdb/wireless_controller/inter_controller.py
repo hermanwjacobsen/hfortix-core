@@ -305,9 +305,7 @@ class InterController(CRUDEndpoint, MetadataMixin):
                 example="[{'id': 1}]",
             )
         
-        # Build payload using helper function with auto-normalization
-        # This automatically converts strings/lists to [{'name': '...'}] format for list fields
-        # To disable auto-normalization, use build_cmdb_payload directly
+        # Build payload using helper function
         payload_data = build_api_payload(
             inter_controller_mode=inter_controller_mode,
             l3_roaming=l3_roaming,

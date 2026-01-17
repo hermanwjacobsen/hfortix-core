@@ -315,9 +315,7 @@ class Bfd(CRUDEndpoint, MetadataMixin):
                 example="[{'id': 1, 'src': 'value', 'dst': 'value'}]",
             )
         
-        # Build payload using helper function with auto-normalization
-        # This automatically converts strings/lists to [{'name': '...'}] format for list fields
-        # To disable auto-normalization, use build_cmdb_payload directly
+        # Build payload using helper function
         payload_data = build_api_payload(
             neighbor=neighbor,
             multihop_template=multihop_template,

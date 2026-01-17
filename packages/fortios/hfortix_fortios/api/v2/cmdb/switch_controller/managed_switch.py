@@ -692,9 +692,7 @@ class ManagedSwitch(CRUDEndpoint, MetadataMixin):
                 example="[{'netmask': 'value', 'interface': 'value'}]",
             )
         
-        # Build payload using helper function with auto-normalization
-        # This automatically converts strings/lists to [{'name': '...'}] format for list fields
-        # To disable auto-normalization, use build_cmdb_payload directly
+        # Build payload using helper function
         payload_data = build_api_payload(
             switch_id=switch_id,
             sn=sn,
@@ -1178,9 +1176,7 @@ class ManagedSwitch(CRUDEndpoint, MetadataMixin):
                 example="[{'netmask': 'value', 'interface': 'value'}]",
             )
         
-        # Build payload using helper function with auto-normalization
-        # This automatically converts strings/lists to [{'name': '...'}] format for list fields
-        # To disable auto-normalization, use build_cmdb_payload directly
+        # Build payload using helper function
         payload_data = build_api_payload(
             switch_id=switch_id,
             sn=sn,
@@ -1717,7 +1713,7 @@ class ManagedSwitch(CRUDEndpoint, MetadataMixin):
                 example="[{'netmask': 'value', 'interface': 'value'}]",
             )
         
-        # Build payload using helper function with auto-normalization
+        # Build payload using helper function
         payload_data = build_api_payload(
             switch_id=switch_id,
             sn=sn,

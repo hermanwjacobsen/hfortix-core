@@ -321,9 +321,7 @@ class Acme(CRUDEndpoint, MetadataMixin):
                 example="[{'status': 'value', 'url': 'value', 'ca_url': 'value', 'email': 'value', 'privatekey': 'value'}]",
             )
         
-        # Build payload using helper function with auto-normalization
-        # This automatically converts strings/lists to [{'name': '...'}] format for list fields
-        # To disable auto-normalization, use build_cmdb_payload directly
+        # Build payload using helper function
         payload_data = build_api_payload(
             interface=interface,
             use_ha_direct=use_ha_direct,

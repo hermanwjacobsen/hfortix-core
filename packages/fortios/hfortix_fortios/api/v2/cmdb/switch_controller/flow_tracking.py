@@ -345,9 +345,7 @@ class FlowTracking(CRUDEndpoint, MetadataMixin):
                 example="[{'ip': '192.168.1.10'}]",
             )
         
-        # Build payload using helper function with auto-normalization
-        # This automatically converts strings/lists to [{'name': '...'}] format for list fields
-        # To disable auto-normalization, use build_cmdb_payload directly
+        # Build payload using helper function
         payload_data = build_api_payload(
             sample_mode=sample_mode,
             sample_rate=sample_rate,

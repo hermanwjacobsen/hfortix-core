@@ -371,9 +371,7 @@ class Global(CRUDEndpoint, MetadataMixin):
         
         # Apply normalization for multi-value option fields (space-separated strings)
         
-        # Build payload using helper function with auto-normalization
-        # This automatically converts strings/lists to [{'name': '...'}] format for list fields
-        # To disable auto-normalization, use build_cmdb_payload directly
+        # Build payload using helper function
         payload_data = build_api_payload(
             mac_aging_interval=mac_aging_interval,
             https_image_push=https_image_push,

@@ -333,9 +333,7 @@ class DeviceUpgrade(CRUDEndpoint, MetadataMixin):
                 example="[{'serial': 'value'}]",
             )
         
-        # Build payload using helper function with auto-normalization
-        # This automatically converts strings/lists to [{'name': '...'}] format for list fields
-        # To disable auto-normalization, use build_cmdb_payload directly
+        # Build payload using helper function
         payload_data = build_api_payload(
             status=status,
             ha_reboot_controller=ha_reboot_controller,
@@ -482,9 +480,7 @@ class DeviceUpgrade(CRUDEndpoint, MetadataMixin):
                 example="[{'serial': 'value'}]",
             )
         
-        # Build payload using helper function with auto-normalization
-        # This automatically converts strings/lists to [{'name': '...'}] format for list fields
-        # To disable auto-normalization, use build_cmdb_payload directly
+        # Build payload using helper function
         payload_data = build_api_payload(
             status=status,
             ha_reboot_controller=ha_reboot_controller,
@@ -742,7 +738,7 @@ class DeviceUpgrade(CRUDEndpoint, MetadataMixin):
                 example="[{'serial': 'value'}]",
             )
         
-        # Build payload using helper function with auto-normalization
+        # Build payload using helper function
         payload_data = build_api_payload(
             status=status,
             ha_reboot_controller=ha_reboot_controller,

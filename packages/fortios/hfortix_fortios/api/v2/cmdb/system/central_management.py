@@ -336,10 +336,11 @@ class CentralManagement(CRUDEndpoint, MetadataMixin):
                 example="[{'server-type': 'update', 'server-address': '192.168.1.10', 'server-address6': 'value', 'fqdn': 'value'}]",
             )
         
-        # Build payload using helper function with auto-normalization
-        # This automatically converts strings/lists to [{'name': '...'}] format for list fields
-        # To disable auto-normalization, use build_cmdb_payload directly
+        # Build payload using helper function
+        # Note: auto_normalize=False because this endpoint has unitary fields
+        # (like 'interface') that would be incorrectly converted to list format
         payload_data = build_api_payload(
+            auto_normalize=False,
             mode=mode,
             type=type,
             fortigate_cloud_sso_default_profile=fortigate_cloud_sso_default_profile,

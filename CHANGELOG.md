@@ -5,6 +5,19 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.5.99] - 2026-01-17
+
+### Fixed
+
+- **Generator: Unitary field auto-normalize conflict**: Fixed bug where fields like `interface` in `firewall.DoS-policy` were incorrectly auto-normalized to list format `[{"name": "..."}]` when they should remain as simple strings. The generator now detects unitary fields that conflict with `COMMON_LIST_FIELDS` and sets `auto_normalize=False` in `build_api_payload()` calls.
+- **Affected endpoints**: `firewall/DoS_policy`, `firewall/DoS_policy6`, `firewall/interface_policy`, and ~20 other endpoints with unitary `interface`, `srcintf`, `dstintf`, or `member` fields that were being incorrectly converted.
+
+### Technical Details
+
+- Added `get_unitary_list_field_conflicts()` function to `schema_parser.py` to detect schema fields that are in `COMMON_LIST_FIELDS` but have `category="unitary"`
+- Updated `endpoint_generator.py` to pass `has_unitary_list_conflicts` flag to template context
+- Modified `endpoint_class.py.j2` template to conditionally set `auto_normalize=False` with explanatory comment when conflicts exist
+
 ## [0.5.98] - 2025-05-23
 
 ### Fixed

@@ -312,9 +312,7 @@ class MulticastAddress6(CRUDEndpoint, MetadataMixin):
                 example="[{'name': 'value'}]",
             )
         
-        # Build payload using helper function with auto-normalization
-        # This automatically converts strings/lists to [{'name': '...'}] format for list fields
-        # To disable auto-normalization, use build_cmdb_payload directly
+        # Build payload using helper function
         payload_data = build_api_payload(
             name=name,
             ip6=ip6,
@@ -430,9 +428,7 @@ class MulticastAddress6(CRUDEndpoint, MetadataMixin):
                 example="[{'name': 'value'}]",
             )
         
-        # Build payload using helper function with auto-normalization
-        # This automatically converts strings/lists to [{'name': '...'}] format for list fields
-        # To disable auto-normalization, use build_cmdb_payload directly
+        # Build payload using helper function
         payload_data = build_api_payload(
             name=name,
             ip6=ip6,
@@ -660,7 +656,7 @@ class MulticastAddress6(CRUDEndpoint, MetadataMixin):
                 example="[{'name': 'value'}]",
             )
         
-        # Build payload using helper function with auto-normalization
+        # Build payload using helper function
         payload_data = build_api_payload(
             name=name,
             ip6=ip6,
