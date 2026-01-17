@@ -5,6 +5,25 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.5.95] - 2026-01-17
+
+### Fixed - **ContentResponse Stub & Query Parameter Types**
+
+- ✅ **ContentResponse return type**: Generator now uses `CONTENT_ENDPOINTS` registry to return `ContentResponse` instead of `FortiObject` for file/download endpoints
+- ✅ **Query parameter types**: Fixed stub generation to use correct types (`int` vs `str`) based on schema `type` field
+- ✅ **config_id parameter**: `config_revision.file.get(config_id=45)` now accepts `int` instead of requiring `str`
+
+**Fixed Pylance errors:**
+```python
+# Before: Pylance error - expected str, got int
+result = fgt.api.monitor.system.config_revision.file.get(config_id=45)  # ❌
+
+# After: Works correctly with int
+result = fgt.api.monitor.system.config_revision.file.get(config_id=45)  # ✅
+result.content  # ✅ bytes - autocomplete works
+result.text     # ✅ str - autocomplete works
+```
+
 ## [0.5.94] - 2026-01-17
 
 ### Added - **ContentResponse for Binary/File Download Endpoints**

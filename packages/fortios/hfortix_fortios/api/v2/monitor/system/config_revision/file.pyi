@@ -1,6 +1,6 @@
 from typing import TypedDict, Literal, Any, Coroutine, Union, overload, Generator, final
 from typing_extensions import NotRequired
-from hfortix_fortios.models import FortiObject, FortiObjectList
+from hfortix_fortios.models import FortiObject, FortiObjectList, ContentResponse
 
 # ============================================================================
 # Nested TypedDicts for table field children (dict mode)
@@ -99,22 +99,24 @@ class File:
         ...
     
     # ================================================================
-    # GET OVERLOADS - Always returns FortiObject
+    # GET OVERLOADS - Always returns FortiObject (or ContentResponse for file endpoints)
     # Pylance matches overloads top-to-bottom, so these must come first!
     # ================================================================
     
-    # Service/Monitor endpoint with query parameters
+    # Content endpoint - returns ContentResponse (binary/text content)
     @overload
     def get(
         self,
         *,
-        config_id: str | None = ...,
+        config_id: int | None = ...,
         filter: str | list[str] | None = ...,
         count: int | None = ...,
         start: int | None = ...,
         payload_dict: dict[str, Any] | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FileObject: ...
+        error_mode: Literal["raise", "return", "print"] | None = ...,
+        error_format: Literal["detailed", "simple", "code_only"] | None = ...,
+    ) -> ContentResponse: ...
     
     
     # ================================================================
