@@ -5,6 +5,46 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.5.94] - 2026-01-17
+
+### Added - **ContentResponse for Binary/File Download Endpoints**
+
+- ✅ **New `ContentResponse` class**: Wraps responses from endpoints that return binary/text content (config files, certificates, logs, etc.)
+- ✅ **Consistent API**: Same properties as `FortiObject` (`.http_status_code`, `.vdom`, `.raw`, etc.) plus content-specific properties
+- ✅ **Content properties**: `.content` (bytes), `.content_type` (MIME type), `.text` (decoded string)
+- ✅ **Convenience methods**: `.to_text()`, `.to_dict()`, `.to_json()`, `.save(path)`
+- ✅ **FortiOS config parser**: `parse_fortios_config()` function parses FortiOS config format to nested dict
+- ✅ **Endpoint registry**: `CONTENT_ENDPOINTS` dict to track which endpoints return content (add as discovered)
+
+**New exports from `hfortix_fortios`:**
+- `ContentResponse` - Response class for content endpoints
+- `CONTENT_ENDPOINTS` - Registry of content-returning endpoints
+- `is_content_endpoint(path)` - Check if endpoint returns content
+- `parse_fortios_config(text)` - Parse FortiOS config to dict
+
+**Example usage:**
+```python
+# Download config revision
+result = fgt.api.monitor.system.config_revision.file.get(config_id=45)
+
+# Access content
+result.content       # Raw bytes
+result.text          # As UTF-8 string
+result.content_type  # 'text/plain'
+
+# Standard API fields still available
+result.http_status_code  # 200
+result.vdom              # 'root'
+result.raw               # Full API envelope
+
+# Parse FortiOS config format
+config = result.to_dict()
+config['system global']['hostname']  # 'my-firewall'
+
+# Save to file
+result.save('/tmp/backup.conf')
+```
+
 ## [0.5.93] - 2026-01-17
 
 ### Fixed - **Generator: Remove `vdom` Parameter from Global-Only Endpoints**

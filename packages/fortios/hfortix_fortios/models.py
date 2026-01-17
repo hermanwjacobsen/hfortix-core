@@ -745,6 +745,517 @@ class FortiObjectList(list):
         return self.dict
 
 
+# ============================================================================
+# Content Response for Binary/File Download Endpoints
+# ============================================================================
+
+# Registry of endpoints that return binary/text content instead of structured JSON.
+# These endpoints return raw content (config files, certificates, logs, etc.)
+# Add endpoints here as they are discovered through testing.
+#
+# Format: "api_type.module.endpoint" -> metadata dict
+# Example: "monitor.system.config_revision.file" for /api/v2/monitor/system/config-revision/file
+CONTENT_ENDPOINTS: dict[str, dict[str, Any]] = {
+    # Config revision file download - returns FortiOS config in text format
+    "monitor.system.config_revision.file": {
+        "content_type": "text/plain",
+        "parseable": True,  # FortiOS config format can be parsed
+        "description": "Download a specific configuration revision",
+    },
+    # Add more endpoints as discovered through testing:
+    # "monitor.system.certificate.download": {
+    #     "content_type": "application/x-pem-file",
+    #     "parseable": False,
+    # },
+    # "monitor.system.crash_log.download": {
+    #     "content_type": "text/plain",
+    #     "parseable": False,
+    # },
+}
+
+
+def is_content_endpoint(endpoint_path: str) -> bool:
+    """
+    Check if an endpoint returns binary/text content.
+    
+    Args:
+        endpoint_path: Endpoint path in format "api_type.module.endpoint"
+                      e.g., "monitor.system.config_revision.file"
+    
+    Returns:
+        True if endpoint is registered as a content endpoint
+    """
+    return endpoint_path in CONTENT_ENDPOINTS
+
+
+class ContentResponse:
+    """
+    Response wrapper for endpoints that return binary/text content.
+    
+    Some FortiOS endpoints return raw content (config files, certificates,
+    crash logs, etc.) instead of structured JSON. This class provides a
+    consistent interface for accessing both the content and standard
+    API response metadata.
+    
+    Properties:
+        content: Raw bytes content from the response
+        content_type: MIME type of the content (e.g., "text/plain")
+        text: Content decoded as UTF-8 string
+        
+        # Standard API response fields (same as FortiObject):
+        http_status_code: HTTP status code (200, 404, etc.)
+        http_status: API status ('success' or 'error')
+        http_method: HTTP method used
+        http_response_time: Response time in milliseconds
+        vdom: Virtual domain name
+        serial: Device serial number
+        version: FortiOS version
+        build: FortiOS build number
+        raw: Full API response envelope
+        
+        # Endpoint-specific fields from query params:
+        # These are dynamically available based on the endpoint schema
+    
+    Methods:
+        to_text(encoding): Decode content with specified encoding
+        to_dict(): Parse FortiOS config format to dictionary (if parseable)
+        to_json(): Get parsed content as JSON string
+        save(path): Save content to file
+    
+    Examples:
+        >>> # Download config revision
+        >>> result = fgt.api.monitor.system.config_revision.file.get(config_id=45)
+        >>> 
+        >>> # Access raw content
+        >>> result.content
+        b'#config-version=FGVM64-7.6.5...'
+        >>> 
+        >>> # Get as text
+        >>> result.text
+        '#config-version=FGVM64-7.6.5...'
+        >>> 
+        >>> # Access standard response fields
+        >>> result.http_status_code
+        200
+        >>> result.content_type
+        'text/plain'
+        >>> 
+        >>> # Access endpoint-specific fields
+        >>> result.config_id
+        45
+        >>> 
+        >>> # Parse FortiOS config to dict (if supported)
+        >>> config = result.to_dict()
+        >>> config['global']['system global']['admin-host']
+        'fw.wjacobsen.fo'
+        >>> 
+        >>> # Save to file
+        >>> result.save('/tmp/config_backup.conf')
+    """
+    
+    def __init__(
+        self,
+        data: dict[str, Any],
+        raw_envelope: dict[str, Any] | None = None,
+        response_time: float | None = None,
+        endpoint_path: str | None = None,
+    ):
+        """
+        Initialize ContentResponse.
+        
+        Args:
+            data: Response data containing 'content' and 'content_type'
+            raw_envelope: Full API response envelope
+            response_time: Response time in seconds
+            endpoint_path: Endpoint path for metadata lookup
+        """
+        self._data = data
+        self._raw_envelope = raw_envelope or data
+        self._response_time = response_time
+        self._endpoint_path = endpoint_path
+        self._endpoint_meta = CONTENT_ENDPOINTS.get(endpoint_path or "", {})
+    
+    # ========================================================================
+    # Content Properties
+    # ========================================================================
+    
+    @property
+    def content(self) -> bytes:
+        """
+        Raw bytes content from the response.
+        
+        Returns:
+            Content as bytes. If content was a string, encodes to UTF-8.
+        """
+        raw_content = self._data.get("content", b"")
+        if isinstance(raw_content, str):
+            return raw_content.encode("utf-8")
+        return raw_content
+    
+    @property
+    def content_type(self) -> str:
+        """
+        MIME type of the content.
+        
+        Returns:
+            Content type string (e.g., "text/plain", "application/octet-stream")
+        """
+        return self._data.get("content_type", "application/octet-stream")
+    
+    @property
+    def text(self) -> str:
+        """
+        Content decoded as UTF-8 string.
+        
+        Convenience property for text content. For binary content,
+        use .content instead.
+        
+        Returns:
+            Content as string
+        """
+        return self.to_text()
+    
+    # ========================================================================
+    # Standard API Response Properties (consistent with FortiObject)
+    # ========================================================================
+    
+    @property
+    def http_status_code(self) -> int | None:
+        """HTTP status code (200, 404, 500, etc.)."""
+        return self._raw_envelope.get("http_status")
+    
+    @property
+    def http_status(self) -> str | None:
+        """API response status ('success' or 'error')."""
+        return self._raw_envelope.get("status")
+    
+    @property
+    def http_method(self) -> str | None:
+        """HTTP method used (GET, POST, PUT, DELETE)."""
+        return self._raw_envelope.get("http_method")
+    
+    @property
+    def vdom(self) -> str | None:
+        """Virtual domain name."""
+        return self._raw_envelope.get("vdom")
+    
+    @property
+    def serial(self) -> str | None:
+        """Device serial number."""
+        return self._raw_envelope.get("serial")
+    
+    @property
+    def version(self) -> str | None:
+        """FortiOS version string (e.g., 'v7.6.5')."""
+        return self._raw_envelope.get("version")
+    
+    @property
+    def build(self) -> int | None:
+        """FortiOS firmware build number."""
+        return self._raw_envelope.get("build")
+    
+    @property
+    def revision(self) -> str | None:
+        """Configuration revision number."""
+        return self._raw_envelope.get("revision")
+    
+    @property
+    def http_response_time(self) -> float | None:
+        """
+        Response time in milliseconds for this API request.
+        
+        Returns None if timing was not tracked.
+        """
+        return self._response_time * 1000 if self._response_time else None
+    
+    @property
+    def http_stats(self) -> dict[str, Any]:
+        """
+        HTTP request/response statistics summary.
+        
+        Returns:
+            Dictionary with http_status_code, http_response_time, http_method,
+            http_status, vdom, and content_type
+        """
+        return {
+            "http_status_code": self.http_status_code,
+            "http_response_time": self.http_response_time,
+            "http_method": self.http_method,
+            "http_status": self.http_status,
+            "vdom": self.vdom,
+            "content_type": self.content_type,
+        }
+    
+    @property
+    def raw(self) -> dict[str, Any]:
+        """
+        Full API response envelope.
+        
+        Returns:
+            Complete API response dict
+        """
+        return self._raw_envelope
+    
+    # ========================================================================
+    # Dynamic Attribute Access (for endpoint-specific fields)
+    # ========================================================================
+    
+    def __getattr__(self, name: str) -> Any:
+        """
+        Dynamic attribute access for endpoint-specific fields.
+        
+        Allows access to query parameters that were echoed back in the response
+        (e.g., config_id for config revision downloads).
+        
+        Args:
+            name: Attribute name
+        
+        Returns:
+            Field value from response data
+        
+        Raises:
+            AttributeError: If attribute not found
+        """
+        if name.startswith("_"):
+            raise AttributeError(f"'{type(self).__name__}' has no attribute '{name}'")
+        
+        # Try exact key, then snake_case -> hyphen-case
+        key = name if name in self._data else name.replace("_", "-")
+        
+        if key in self._data:
+            return self._data[key]
+        
+        # Also check raw envelope for metadata
+        if key in self._raw_envelope:
+            return self._raw_envelope[key]
+        
+        raise AttributeError(f"'{type(self).__name__}' has no attribute '{name}'")
+    
+    # ========================================================================
+    # Content Processing Methods
+    # ========================================================================
+    
+    def to_text(self, encoding: str = "utf-8") -> str:
+        """
+        Decode content to string with specified encoding.
+        
+        Args:
+            encoding: Character encoding (default: utf-8)
+        
+        Returns:
+            Decoded string content
+        """
+        content = self.content
+        if isinstance(content, bytes):
+            return content.decode(encoding)
+        return str(content)
+    
+    def to_dict(self) -> dict[str, Any]:
+        """
+        Parse content to dictionary (for parseable content types).
+        
+        For FortiOS config files, parses the config format into a
+        nested dictionary structure.
+        
+        Returns:
+            Parsed content as dictionary
+        
+        Raises:
+            ValueError: If content type is not parseable
+        
+        Examples:
+            >>> config = result.to_dict()
+            >>> config['global']['system global']['admin-host']
+            'fw.wjacobsen.fo'
+        """
+        if not self._endpoint_meta.get("parseable", False):
+            raise ValueError(
+                f"Content type '{self.content_type}' is not parseable. "
+                f"Use .content or .text for raw access."
+            )
+        
+        return parse_fortios_config(self.text)
+    
+    def to_json(self, indent: int = 2) -> str:
+        """
+        Get parsed content as JSON string.
+        
+        Args:
+            indent: JSON indentation (default: 2)
+        
+        Returns:
+            JSON string of parsed content
+        
+        Raises:
+            ValueError: If content type is not parseable
+        """
+        return json_module.dumps(self.to_dict(), indent=indent)
+    
+    def save(self, path: str, mode: str = "wb") -> None:
+        """
+        Save content to file.
+        
+        Args:
+            path: File path to save to
+            mode: File open mode ('wb' for binary, 'w' for text)
+        
+        Examples:
+            >>> result.save('/tmp/config_backup.conf')
+            >>> result.save('/tmp/config.txt', mode='w')  # As text
+        """
+        content = self.content if "b" in mode else self.text
+        with open(path, mode) as f:
+            f.write(content)  # type: ignore
+    
+    # ========================================================================
+    # String Representations
+    # ========================================================================
+    
+    def __repr__(self) -> str:
+        """Detailed string representation."""
+        size = len(self.content)
+        size_str = f"{size} bytes" if size < 1024 else f"{size/1024:.1f} KB"
+        return (
+            f"ContentResponse("
+            f"content_type='{self.content_type}', "
+            f"size={size_str}, "
+            f"http_status={self.http_status_code}"
+            f")"
+        )
+    
+    def __str__(self) -> str:
+        """User-friendly string representation."""
+        return self.__repr__()
+
+
+def parse_fortios_config(content: str) -> dict[str, Any]:
+    """
+    Parse FortiOS configuration file format to dictionary.
+    
+    Parses the hierarchical FortiOS config format:
+        config <section>
+            edit <name>
+                set <key> <value>
+                config <subsection>
+                    ...
+                end
+            next
+        end
+    
+    Args:
+        content: FortiOS config file content as string
+    
+    Returns:
+        Nested dictionary representing the config structure
+    
+    Examples:
+        >>> config = parse_fortios_config('''
+        ... config system global
+        ...     set hostname "my-firewall"
+        ...     set admin-port 443
+        ... end
+        ... ''')
+        >>> config['system global']['hostname']
+        'my-firewall'
+    """
+    import re
+    
+    result: dict[str, Any] = {}
+    lines = content.strip().split('\n')
+    
+    # Stack to track nested config blocks
+    # Each entry: (section_name, section_dict, is_edit_block)
+    stack: list[tuple[str, dict, bool]] = [("root", result, False)]
+    
+    i = 0
+    while i < len(lines):
+        line = lines[i].strip()
+        i += 1
+        
+        # Skip empty lines and comments
+        if not line or line.startswith('#'):
+            # Extract header comments as metadata
+            if line.startswith('#') and '=' in line:
+                # Parse header like #config-version=FGVM64-7.6.5-FW-build3651
+                if '_metadata' not in result:
+                    result['_metadata'] = {}
+                parts = line[1:].split(':', 1)
+                if '=' in parts[0]:
+                    key, value = parts[0].split('=', 1)
+                    result['_metadata'][key.strip()] = value.strip()
+            continue
+        
+        # Handle "config <section>" - start a new config block
+        if line.startswith('config '):
+            section_name = line[7:].strip()
+            current_name, current_dict, _ = stack[-1]
+            
+            # Create new section dict
+            if section_name not in current_dict:
+                current_dict[section_name] = {}
+            
+            stack.append((section_name, current_dict[section_name], False))
+            continue
+        
+        # Handle "edit <name>" - start an edit block within config
+        if line.startswith('edit '):
+            edit_name = line[5:].strip().strip('"')
+            current_name, current_dict, _ = stack[-1]
+            
+            # Create entry for this edit block
+            if edit_name not in current_dict:
+                current_dict[edit_name] = {}
+            
+            stack.append((edit_name, current_dict[edit_name], True))
+            continue
+        
+        # Handle "set <key> <value>"
+        if line.startswith('set '):
+            match = re.match(r'set\s+(\S+)\s+(.*)', line)
+            if match:
+                key = match.group(1)
+                value = match.group(2).strip()
+                
+                # Remove quotes from string values
+                if value.startswith('"') and value.endswith('"'):
+                    value = value[1:-1]
+                # Try to convert to int
+                elif value.isdigit():
+                    value = int(value)  # type: ignore
+                # Handle enable/disable as booleans
+                elif value == 'enable':
+                    value = True  # type: ignore
+                elif value == 'disable':
+                    value = False  # type: ignore
+                
+                _, current_dict, _ = stack[-1]
+                current_dict[key] = value
+            continue
+        
+        # Handle "unset <key>"
+        if line.startswith('unset '):
+            key = line[6:].strip()
+            _, current_dict, _ = stack[-1]
+            current_dict[key] = None
+            continue
+        
+        # Handle "next" - close edit block
+        if line == 'next':
+            if len(stack) > 1:
+                _, _, is_edit = stack[-1]
+                if is_edit:
+                    stack.pop()
+            continue
+        
+        # Handle "end" - close config block
+        if line == 'end':
+            if len(stack) > 1:
+                stack.pop()
+            continue
+    
+    return result
+
+
 def process_response(
     result: Any,
     unwrap_single: bool = False,

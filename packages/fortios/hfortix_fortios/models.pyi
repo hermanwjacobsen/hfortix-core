@@ -573,6 +573,199 @@ class FortiObjectList(list[_ObjectT], Generic[_ObjectT]):
         ...
 
 
+# ============================================================================
+# Content Response for Binary/File Download Endpoints
+# ============================================================================
+
+CONTENT_ENDPOINTS: dict[str, dict[str, Any]]
+"""
+Registry of endpoints that return binary/text content.
+
+Format: "api_type.module.endpoint" -> metadata dict
+"""
+
+def is_content_endpoint(endpoint_path: str) -> bool:
+    """
+    Check if an endpoint returns binary/text content.
+    
+    Args:
+        endpoint_path: Endpoint path in format "api_type.module.endpoint"
+    
+    Returns:
+        True if endpoint is registered as a content endpoint
+    """
+    ...
+
+
+class ContentResponse:
+    """
+    Response wrapper for endpoints that return binary/text content.
+    
+    Some FortiOS endpoints return raw content (config files, certificates,
+    crash logs, etc.) instead of structured JSON. This class provides a
+    consistent interface for accessing both the content and standard
+    API response metadata.
+    
+    Examples:
+        >>> result = fgt.api.monitor.system.config_revision.file.get(config_id=45)
+        >>> result.content  # Raw bytes
+        b'#config-version=...'
+        >>> result.text  # As string
+        '#config-version=...'
+        >>> result.content_type
+        'text/plain'
+        >>> result.http_status_code
+        200
+        >>> result.to_dict()  # Parse FortiOS config
+        {'global': {'system global': {...}}}
+    """
+    
+    _data: dict[str, Any]
+    _raw_envelope: dict[str, Any]
+    _response_time: float | None
+    _endpoint_path: str | None
+    _endpoint_meta: dict[str, Any]
+    
+    def __init__(
+        self,
+        data: dict[str, Any],
+        raw_envelope: dict[str, Any] | None = None,
+        response_time: float | None = None,
+        endpoint_path: str | None = None,
+    ) -> None: ...
+    
+    # Content Properties
+    
+    @property
+    def content(self) -> bytes:
+        """Raw bytes content from the response."""
+        ...
+    
+    @property
+    def content_type(self) -> str:
+        """MIME type of the content (e.g., 'text/plain')."""
+        ...
+    
+    @property
+    def text(self) -> str:
+        """Content decoded as UTF-8 string."""
+        ...
+    
+    # Standard API Response Properties
+    
+    @property
+    def http_status_code(self) -> int | None:
+        """HTTP status code (200, 404, 500, etc.)."""
+        ...
+    
+    @property
+    def http_status(self) -> str | None:
+        """API response status ('success' or 'error')."""
+        ...
+    
+    @property
+    def http_method(self) -> str | None:
+        """HTTP method used (GET, POST, PUT, DELETE)."""
+        ...
+    
+    @property
+    def vdom(self) -> str | None:
+        """Virtual domain name."""
+        ...
+    
+    @property
+    def serial(self) -> str | None:
+        """Device serial number."""
+        ...
+    
+    @property
+    def version(self) -> str | None:
+        """FortiOS version string (e.g., 'v7.6.5')."""
+        ...
+    
+    @property
+    def build(self) -> int | None:
+        """FortiOS firmware build number."""
+        ...
+    
+    @property
+    def revision(self) -> str | None:
+        """Configuration revision number."""
+        ...
+    
+    @property
+    def http_response_time(self) -> float | None:
+        """Response time in milliseconds for this API request."""
+        ...
+    
+    @property
+    def http_stats(self) -> dict[str, Any]:
+        """HTTP request/response statistics summary."""
+        ...
+    
+    @property
+    def raw(self) -> dict[str, Any]:
+        """Full API response envelope."""
+        ...
+    
+    # Content Processing Methods
+    
+    def to_text(self, encoding: str = "utf-8") -> str:
+        """Decode content to string with specified encoding."""
+        ...
+    
+    def to_dict(self) -> dict[str, Any]:
+        """
+        Parse content to dictionary (for parseable content types).
+        
+        Raises:
+            ValueError: If content type is not parseable
+        """
+        ...
+    
+    def to_json(self, indent: int = 2) -> str:
+        """
+        Get parsed content as JSON string.
+        
+        Raises:
+            ValueError: If content type is not parseable
+        """
+        ...
+    
+    def save(self, path: str, mode: str = "wb") -> None:
+        """Save content to file."""
+        ...
+    
+    def __getattr__(self, name: str) -> Any:
+        """Dynamic attribute access for endpoint-specific fields."""
+        ...
+    
+    def __repr__(self) -> str: ...
+    def __str__(self) -> str: ...
+
+
+def parse_fortios_config(content: str) -> dict[str, Any]:
+    """
+    Parse FortiOS configuration file format to dictionary.
+    
+    Args:
+        content: FortiOS config file content as string
+    
+    Returns:
+        Nested dictionary representing the config structure
+    
+    Examples:
+        >>> config = parse_fortios_config('''
+        ... config system global
+        ...     set hostname "my-firewall"
+        ... end
+        ... ''')
+        >>> config['system global']['hostname']
+        'my-firewall'
+    """
+    ...
+
+
 # Overloads for process_response to provide accurate return types
 @overload
 def process_response(

@@ -6,6 +6,10 @@ import logging
 from .client import FortiOS as FortiOS
 from .models import FortiObject as FortiObject
 from .models import FortiObjectList as FortiObjectList
+from .models import ContentResponse as ContentResponse
+from .models import CONTENT_ENDPOINTS as CONTENT_ENDPOINTS
+from .models import is_content_endpoint as is_content_endpoint
+from .models import parse_fortios_config as parse_fortios_config
 
 # FortiManager proxy support
 from .fmg_proxy import FortiManagerProxy as FortiManagerProxy
@@ -75,6 +79,10 @@ __all__ = [
     "FortiOS",
     "FortiObject",
     "FortiObjectList",
+    "ContentResponse",
+    "CONTENT_ENDPOINTS",
+    "is_content_endpoint",
+    "parse_fortios_config",
     "configure_logging",
     # FortiManager proxy
     "FortiManagerProxy",

@@ -49,7 +49,7 @@ from hfortix_core import (
 from .client import FortiOS
 from .formatting import to_csv, to_dict, to_json, to_multiline, to_quoted
 from .help import help
-from .models import FortiObject, FortiObjectList
+from .models import FortiObject, FortiObjectList, ContentResponse, CONTENT_ENDPOINTS, is_content_endpoint, parse_fortios_config
 
 # FortiManager proxy support
 from .fmg_proxy import (
@@ -79,6 +79,10 @@ __all__ = [
     "FortiOS",
     "FortiObject",
     "FortiObjectList",
+    "ContentResponse",
+    "CONTENT_ENDPOINTS",
+    "is_content_endpoint",
+    "parse_fortios_config",
     "configure_logging",
     # FortiManager proxy
     "FortiManagerProxy",
