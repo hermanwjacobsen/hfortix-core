@@ -1429,6 +1429,56 @@ class Vip6(CRUDEndpoint, MetadataMixin):
             - put(): Update existing object
             - exists(): Check existence manually
         """
+        # Apply normalization for table fields (supports flexible input formats)
+        if src_filter is not None:
+            src_filter = normalize_table_field(
+                src_filter,
+                mkey="range",
+                required_fields=['range'],
+                field_name="src_filter",
+                example="[{'range': 'value'}]",
+            )
+        if realservers is not None:
+            realservers = normalize_table_field(
+                realservers,
+                mkey="id",
+                required_fields=['ip'],
+                field_name="realservers",
+                example="[{'ip': '192.168.1.10'}]",
+            )
+        if ssl_certificate is not None:
+            ssl_certificate = normalize_table_field(
+                ssl_certificate,
+                mkey="name",
+                required_fields=['name'],
+                field_name="ssl_certificate",
+                example="[{'name': 'value'}]",
+            )
+        if ssl_cipher_suites is not None:
+            ssl_cipher_suites = normalize_table_field(
+                ssl_cipher_suites,
+                mkey="priority",
+                required_fields=['cipher'],
+                field_name="ssl_cipher_suites",
+                example="[{'cipher': 'TLS-AES-128-GCM-SHA256'}]",
+            )
+        if ssl_server_cipher_suites is not None:
+            ssl_server_cipher_suites = normalize_table_field(
+                ssl_server_cipher_suites,
+                mkey="priority",
+                required_fields=['cipher'],
+                field_name="ssl_server_cipher_suites",
+                example="[{'cipher': 'TLS-AES-128-GCM-SHA256'}]",
+            )
+        if monitor is not None:
+            monitor = normalize_table_field(
+                monitor,
+                mkey="name",
+                required_fields=['name'],
+                field_name="monitor",
+                example="[{'name': 'value'}]",
+            )
+        
         # Build payload using helper function with auto-normalization
         payload_data = build_api_payload(
             name=name,

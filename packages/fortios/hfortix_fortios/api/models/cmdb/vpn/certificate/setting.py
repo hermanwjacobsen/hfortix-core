@@ -12,7 +12,11 @@ from typing import Any, Literal, Optional
 from enum import Enum
 
 # ============================================================================
-# Child Table Models
+# Enum Definitions for Child Table Fields (for fields with 4+ allowed values)
+# ============================================================================
+
+# ============================================================================
+# Child Table Models (sorted deepest-first so nested models are defined before their parents)
 # ============================================================================
 
 class SettingCrlVerification(BaseModel):
@@ -26,6 +30,7 @@ class SettingCrlVerification(BaseModel):
         """Pydantic model configuration."""
         extra = "allow"  # Allow additional fields from API
         str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
     
     expiry: Literal["ignore", "revoke"] | None = Field(default="ignore", description="CRL verification option when CRL is expired (default = ignore).")    
     leaf_crl_absence: Literal["ignore", "revoke"] | None = Field(default="ignore", description="CRL verification option when leaf CRL is absent (default = ignore).")    
@@ -34,9 +39,15 @@ class SettingCrlVerification(BaseModel):
 # Enum Definitions (for fields with 4+ allowed values)
 # ============================================================================
 
-class SettingSsl_min_proto_versionEnum(str, Enum):
+class SettingSslMinProtoVersionEnum(str, Enum):
     """Allowed values for ssl_min_proto_version field."""
-    DEFAULT = "default"    SSLV3 = "SSLv3"    TLSV1 = "TLSv1"    TLSV1_1 = "TLSv1-1"    TLSV1_2 = "TLSv1-2"    TLSV1_3 = "TLSv1-3"
+    DEFAULT = "default"
+    SSLV3 = "SSLv3"
+    TLSV1 = "TLSv1"
+    TLSV1_1 = "TLSv1-1"
+    TLSV1_2 = "TLSv1-2"
+    TLSV1_3 = "TLSv1-3"
+
 
 # ============================================================================
 # Main Model
@@ -63,14 +74,14 @@ class SettingModel(BaseModel):
     
     ocsp_status: Literal["enable", "mandatory", "disable"] | None = Field(default="disable", description="Enable/disable receiving certificates using the OCSP.")    
     ocsp_option: Literal["certificate", "server"] | None = Field(default="server", description="Specify whether the OCSP URL is from certificate or configured OCSP server.")    
-    proxy: str | None = Field(max_length=127, default="", description="Proxy server FQDN or IP for OCSP/CA queries during certificate verification.")    
+    proxy: str | None = Field(max_length=127, default=None, description="Proxy server FQDN or IP for OCSP/CA queries during certificate verification.")    
     proxy_port: int | None = Field(ge=1, le=65535, default=8080, description="Proxy server port (1 - 65535, default = 8080).")    
-    proxy_username: str | None = Field(max_length=63, default="", description="Proxy server user name.")    
+    proxy_username: str | None = Field(max_length=63, default=None, description="Proxy server user name.")    
     proxy_password: Any = Field(max_length=128, default=None, description="Proxy server password.")    
-    source_ip: str | None = Field(max_length=63, default="", description="Source IP address for dynamic AIA and OCSP queries.")    
-    ocsp_default_server: str | None = Field(max_length=35, default="", description="Default OCSP server.")  # datasource: ['vpn.certificate.ocsp-server.name']    
+    source_ip: str | None = Field(max_length=63, default=None, description="Source IP address for dynamic AIA and OCSP queries.")    
+    ocsp_default_server: str | None = Field(max_length=35, default=None, description="Default OCSP server.")  # datasource: ['vpn.certificate.ocsp-server.name']    
     interface_select_method: Literal["auto", "sdwan", "specify"] | None = Field(default="auto", description="Specify how to select outgoing interface to reach server.")    
-    interface: str = Field(max_length=15, default="", description="Specify outgoing interface to reach server.")  # datasource: ['system.interface.name']    
+    interface: str = Field(max_length=15, description="Specify outgoing interface to reach server.")  # datasource: ['system.interface.name']    
     vrf_select: int | None = Field(ge=0, le=511, default=0, description="VRF ID used for connection to server.")    
     check_ca_cert: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable verification of the user certificate and pass authentication if any CA in the chain is trusted (default = enable).")    
     check_ca_chain: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable verification of the entire certificate chain and pass authentication only if the chain is complete and all of the CAs in the chain are trusted (default = disable).")    
@@ -78,9 +89,9 @@ class SettingModel(BaseModel):
     subject_set: Literal["subset", "superset"] | None = Field(default="subset", description="When searching for a matching certificate, control how to do RDN set matching with certificate subject name (default = subset).")    
     cn_match: Literal["substring", "value"] | None = Field(default="substring", description="When searching for a matching certificate, control how to do CN value matching with certificate subject name (default = substring).")    
     cn_allow_multi: Literal["disable", "enable"] | None = Field(default="enable", description="When searching for a matching certificate, allow multiple CN fields in certificate subject name (default = enable).")    
-    crl_verification: list[CrlVerification] = Field(default=None, description="CRL verification options.")    
+    crl_verification: list[SettingCrlVerification] = Field(default_factory=list, description="CRL verification options.")    
     strict_ocsp_check: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable strict mode OCSP checking.")    
-    ssl_min_proto_version: SslMinProtoVersionEnum | None = Field(default="default", description="Minimum supported protocol version for SSL/TLS connections (default is to follow system global setting).")    
+    ssl_min_proto_version: SettingSslMinProtoVersionEnum | None = Field(default=SettingSslMinProtoVersionEnum.DEFAULT, description="Minimum supported protocol version for SSL/TLS connections (default is to follow system global setting).")    
     cmp_save_extra_certs: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable saving extra certificates in CMP mode (default = disable).")    
     cmp_key_usage_checking: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable server certificate key usage checking in CMP mode (default = enable).")    
     cert_expire_warning: int | None = Field(ge=0, le=100, default=14, description="Number of days before a certificate expires to send a warning. Set to 0 to disable sending of the warning (0 - 100, default = 14).")    
@@ -338,7 +349,7 @@ class SettingModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.vpn.certificate.setting.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate scalar field
         value = getattr(self, "ocsp_default_server", None)
@@ -347,7 +358,7 @@ class SettingModel(BaseModel):
         
         # Check all datasource endpoints
         found = False
-        if await client.api.cmdb.vpn.certificate.ocsp-server.exists(value):
+        if await client.api.cmdb.vpn.certificate.ocsp_server.exists(value):
             found = True
         
         if not found:
@@ -387,7 +398,7 @@ class SettingModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.vpn.certificate.setting.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate scalar field
         value = getattr(self, "interface", None)
@@ -436,7 +447,7 @@ class SettingModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.vpn.certificate.setting.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate scalar field
         value = getattr(self, "certname_rsa1024", None)
@@ -485,7 +496,7 @@ class SettingModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.vpn.certificate.setting.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate scalar field
         value = getattr(self, "certname_rsa2048", None)
@@ -534,7 +545,7 @@ class SettingModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.vpn.certificate.setting.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate scalar field
         value = getattr(self, "certname_rsa4096", None)
@@ -583,7 +594,7 @@ class SettingModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.vpn.certificate.setting.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate scalar field
         value = getattr(self, "certname_dsa1024", None)
@@ -632,7 +643,7 @@ class SettingModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.vpn.certificate.setting.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate scalar field
         value = getattr(self, "certname_dsa2048", None)
@@ -681,7 +692,7 @@ class SettingModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.vpn.certificate.setting.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate scalar field
         value = getattr(self, "certname_ecdsa256", None)
@@ -730,7 +741,7 @@ class SettingModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.vpn.certificate.setting.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate scalar field
         value = getattr(self, "certname_ecdsa384", None)
@@ -779,7 +790,7 @@ class SettingModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.vpn.certificate.setting.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate scalar field
         value = getattr(self, "certname_ecdsa521", None)
@@ -828,7 +839,7 @@ class SettingModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.vpn.certificate.setting.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate scalar field
         value = getattr(self, "certname_ed25519", None)
@@ -877,7 +888,7 @@ class SettingModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.vpn.certificate.setting.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate scalar field
         value = getattr(self, "certname_ed448", None)
@@ -959,5 +970,5 @@ __all__ = [
 # ============================================================================
 # Generated by hfortix generator v0.6.0
 # Schema: 1.7.0
-# Generated: 2026-01-17T05:32:19.256619Z
+# Generated: 2026-01-17T17:25:22.956600Z
 # ============================================================================

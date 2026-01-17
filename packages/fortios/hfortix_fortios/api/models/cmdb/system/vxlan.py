@@ -12,22 +12,13 @@ from typing import Any, Literal, Optional
 from enum import Enum
 
 # ============================================================================
-# Child Table Models
+# Enum Definitions for Child Table Fields (for fields with 4+ allowed values)
 # ============================================================================
 
-class VxlanRemoteIp(BaseModel):
-    """
-    Child table model for remote-ip.
-    
-    IPv4 address of the VXLAN interface on the device at the remote end of the VXLAN.
-    """
-    
-    class Config:
-        """Pydantic model configuration."""
-        extra = "allow"  # Allow additional fields from API
-        str_strip_whitespace = True
-    
-    ip: str = Field(max_length=15, default="", description="IPv4 address.")
+# ============================================================================
+# Child Table Models (sorted deepest-first so nested models are defined before their parents)
+# ============================================================================
+
 class VxlanRemoteIp6(BaseModel):
     """
     Child table model for remote-ip6.
@@ -39,15 +30,34 @@ class VxlanRemoteIp6(BaseModel):
         """Pydantic model configuration."""
         extra = "allow"  # Allow additional fields from API
         str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
     
-    ip6: str = Field(max_length=45, default="", description="IPv6 address.")
+    ip6: str = Field(max_length=45, description="IPv6 address.")
+class VxlanRemoteIp(BaseModel):
+    """
+    Child table model for remote-ip.
+    
+    IPv4 address of the VXLAN interface on the device at the remote end of the VXLAN.
+    """
+    
+    class Config:
+        """Pydantic model configuration."""
+        extra = "allow"  # Allow additional fields from API
+        str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
+    
+    ip: str = Field(max_length=15, description="IPv4 address.")
 # ============================================================================
 # Enum Definitions (for fields with 4+ allowed values)
 # ============================================================================
 
-class VxlanIp_versionEnum(str, Enum):
+class VxlanIpVersionEnum(str, Enum):
     """Allowed values for ip_version field."""
-    IPV4_UNICAST = "ipv4-unicast"    IPV6_UNICAST = "ipv6-unicast"    IPV4_MULTICAST = "ipv4-multicast"    IPV6_MULTICAST = "ipv6-multicast"
+    IPV4_UNICAST = "ipv4-unicast"
+    IPV6_UNICAST = "ipv6-unicast"
+    IPV4_MULTICAST = "ipv4-multicast"
+    IPV6_MULTICAST = "ipv6-multicast"
+
 
 # ============================================================================
 # Main Model
@@ -72,13 +82,13 @@ class VxlanModel(BaseModel):
     # Model Fields
     # ========================================================================
     
-    name: str | None = Field(max_length=15, default="", description="VXLAN device or interface name. Must be a unique interface name.")    
-    interface: str = Field(max_length=15, default="", description="Outgoing interface for VXLAN encapsulated traffic.")  # datasource: ['system.interface.name']    
+    name: str | None = Field(max_length=15, default=None, description="VXLAN device or interface name. Must be a unique interface name.")    
+    interface: str = Field(max_length=15, description="Outgoing interface for VXLAN encapsulated traffic.")  # datasource: ['system.interface.name']    
     vni: int = Field(ge=1, le=16777215, default=0, description="VXLAN network ID.")    
-    ip_version: IpVersionEnum = Field(default="ipv4-unicast", description="IP version to use for the VXLAN interface and so for communication over the VXLAN. IPv4 or IPv6 unicast or multicast.")    
-    remote_ip: list[RemoteIp] = Field(default=None, description="IPv4 address of the VXLAN interface on the device at the remote end of the VXLAN.")    
+    ip_version: VxlanIpVersionEnum = Field(default=VxlanIpVersionEnum.IPV4_UNICAST, description="IP version to use for the VXLAN interface and so for communication over the VXLAN. IPv4 or IPv6 unicast or multicast.")    
+    remote_ip: list[VxlanRemoteIp] = Field(default_factory=list, description="IPv4 address of the VXLAN interface on the device at the remote end of the VXLAN.")    
     local_ip: str | None = Field(default="0.0.0.0", description="IPv4 address to use as the source address for egress VXLAN packets.")    
-    remote_ip6: list[RemoteIp6] = Field(description="IPv6 IP address of the VXLAN interface on the device at the remote end of the VXLAN.")    
+    remote_ip6: list[VxlanRemoteIp6] = Field(description="IPv6 IP address of the VXLAN interface on the device at the remote end of the VXLAN.")    
     local_ip6: str | None = Field(default="::", description="IPv6 address to use as the source address for egress VXLAN packets.")    
     dstport: int | None = Field(ge=1, le=65535, default=4789, description="VXLAN destination port (1 - 65535, default = 4789).")    
     multicast_ttl: int = Field(ge=1, le=255, default=0, description="VXLAN multicast TTL (1-255, default = 0).")    
@@ -178,7 +188,7 @@ class VxlanModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.system.vxlan.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate scalar field
         value = getattr(self, "interface", None)
@@ -227,7 +237,7 @@ class VxlanModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.system.vxlan.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate scalar field
         value = getattr(self, "evpn_id", None)
@@ -289,5 +299,5 @@ __all__ = [
 # ============================================================================
 # Generated by hfortix generator v0.6.0
 # Schema: 1.7.0
-# Generated: 2026-01-17T05:32:20.090442Z
+# Generated: 2026-01-17T17:25:23.668204Z
 # ============================================================================

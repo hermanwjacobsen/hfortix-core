@@ -12,22 +12,13 @@ from typing import Any, Literal, Optional
 from enum import Enum
 
 # ============================================================================
-# Child Table Models
+# Enum Definitions for Child Table Fields (for fields with 4+ allowed values)
 # ============================================================================
 
-class DdnsDdnsServerAddr(BaseModel):
-    """
-    Child table model for ddns-server-addr.
-    
-    Generic DDNS server IP/FQDN list.
-    """
-    
-    class Config:
-        """Pydantic model configuration."""
-        extra = "allow"  # Allow additional fields from API
-        str_strip_whitespace = True
-    
-    addr: str = Field(max_length=256, default="", description="IP address or FQDN of the server.")
+# ============================================================================
+# Child Table Models (sorted deepest-first so nested models are defined before their parents)
+# ============================================================================
+
 class DdnsMonitorInterface(BaseModel):
     """
     Child table model for monitor-interface.
@@ -39,15 +30,41 @@ class DdnsMonitorInterface(BaseModel):
         """Pydantic model configuration."""
         extra = "allow"  # Allow additional fields from API
         str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
     
-    interface_name: str = Field(max_length=79, default="", description="Interface name.")  # datasource: ['system.interface.name']
+    interface_name: str = Field(max_length=79, description="Interface name.")  # datasource: ['system.interface.name']
+class DdnsDdnsServerAddr(BaseModel):
+    """
+    Child table model for ddns-server-addr.
+    
+    Generic DDNS server IP/FQDN list.
+    """
+    
+    class Config:
+        """Pydantic model configuration."""
+        extra = "allow"  # Allow additional fields from API
+        str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
+    
+    addr: str = Field(max_length=256, description="IP address or FQDN of the server.")
 # ============================================================================
 # Enum Definitions (for fields with 4+ allowed values)
 # ============================================================================
 
-class DdnsDdns_serverEnum(str, Enum):
+class DdnsDdnsServerEnum(str, Enum):
     """Allowed values for ddns_server field."""
-    DYNDNS_ORG = "dyndns.org"    DYNS_NET = "dyns.net"    TZO_COM = "tzo.com"    VAVIC_COM = "vavic.com"    DIPDNS_NET = "dipdns.net"    NOW_NET_CN = "now.net.cn"    DHS_ORG = "dhs.org"    EASYDNS_COM = "easydns.com"    GENERICDDNS = "genericDDNS"    FORTIGUARDDDNS = "FortiGuardDDNS"    NOIP_COM = "noip.com"
+    DYNDNS_ORG = "dyndns.org"
+    DYNS_NET = "dyns.net"
+    TZO_COM = "tzo.com"
+    VAVIC_COM = "vavic.com"
+    DIPDNS_NET = "dipdns.net"
+    NOW_NET_CN = "now.net.cn"
+    DHS_ORG = "dhs.org"
+    EASYDNS_COM = "easydns.com"
+    GENERICDDNS = "genericDDNS"
+    FORTIGUARDDDNS = "FortiGuardDDNS"
+    NOIP_COM = "noip.com"
+
 
 # ============================================================================
 # Main Model
@@ -73,25 +90,25 @@ class DdnsModel(BaseModel):
     # ========================================================================
     
     ddnsid: int | None = Field(ge=0, le=4294967295, default=0, description="DDNS ID.")    
-    ddns_server: DdnsServerEnum = Field(default="", description="Select a DDNS service provider.")    
+    ddns_server: DdnsDdnsServerEnum = Field(description="Select a DDNS service provider.")    
     addr_type: Literal["ipv4", "ipv6"] | None = Field(default="ipv4", description="Address type of interface address in DDNS update.")    
     server_type: Literal["ipv4", "ipv6"] | None = Field(default="ipv4", description="Address type of the DDNS server.")    
-    ddns_server_addr: list[DdnsServerAddr] = Field(default=None, description="Generic DDNS server IP/FQDN list.")    
-    ddns_zone: str | None = Field(max_length=64, default="", description="Zone of your domain name (for example, DDNS.com).")    
+    ddns_server_addr: list[DdnsDdnsServerAddr] = Field(default_factory=list, description="Generic DDNS server IP/FQDN list.")    
+    ddns_zone: str | None = Field(max_length=64, default=None, description="Zone of your domain name (for example, DDNS.com).")    
     ddns_ttl: int | None = Field(ge=60, le=86400, default=300, description="Time-to-live for DDNS packets.")    
     ddns_auth: Literal["disable", "tsig"] | None = Field(default="disable", description="Enable/disable TSIG authentication for your DDNS server.")    
-    ddns_keyname: str | None = Field(max_length=64, default="", description="DDNS update key name.")    
+    ddns_keyname: str | None = Field(max_length=64, default=None, description="DDNS update key name.")    
     ddns_key: Any = Field(default=None, description="DDNS update key (base 64 encoding).")    
-    ddns_domain: str | None = Field(max_length=64, default="", description="Your fully qualified domain name. For example, yourname.ddns.com.")    
-    ddns_username: str | None = Field(max_length=64, default="", description="DDNS user name.")    
-    ddns_sn: str | None = Field(max_length=64, default="", description="DDNS Serial Number.")    
+    ddns_domain: str | None = Field(max_length=64, default=None, description="Your fully qualified domain name. For example, yourname.ddns.com.")    
+    ddns_username: str | None = Field(max_length=64, default=None, description="DDNS user name.")    
+    ddns_sn: str | None = Field(max_length=64, default=None, description="DDNS Serial Number.")    
     ddns_password: Any = Field(max_length=128, default=None, description="DDNS password.")    
     use_public_ip: Literal["disable", "enable"] | None = Field(default="disable", description="Enable/disable use of public IP address.")    
     update_interval: int | None = Field(ge=60, le=2592000, default=0, description="DDNS update interval (60 - 2592000 sec, 0 means default).")    
     clear_text: Literal["disable", "enable"] | None = Field(default="disable", description="Enable/disable use of clear text connections.")    
     ssl_certificate: str | None = Field(max_length=35, default="Fortinet_Factory", description="Name of local certificate for SSL connections.")  # datasource: ['certificate.local.name']    
-    bound_ip: str | None = Field(max_length=46, default="", description="Bound IP address.")    
-    monitor_interface: list[MonitorInterface] = Field(description="Monitored interface.")    
+    bound_ip: str | None = Field(max_length=46, default=None, description="Bound IP address.")    
+    monitor_interface: list[DdnsMonitorInterface] = Field(description="Monitored interface.")    
     # ========================================================================
     # Custom Validators
     # ========================================================================
@@ -171,7 +188,7 @@ class DdnsModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.system.ddns.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate scalar field
         value = getattr(self, "ssl_certificate", None)
@@ -220,7 +237,7 @@ class DdnsModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.system.ddns.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate child table items
         values = getattr(self, "monitor_interface", [])
@@ -291,5 +308,5 @@ __all__ = [
 # ============================================================================
 # Generated by hfortix generator v0.6.0
 # Schema: 1.7.0
-# Generated: 2026-01-17T05:32:19.702646Z
+# Generated: 2026-01-17T17:25:23.355284Z
 # ============================================================================

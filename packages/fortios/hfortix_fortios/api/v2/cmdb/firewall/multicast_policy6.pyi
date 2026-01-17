@@ -1,302 +1,146 @@
-from typing import TypedDict, Literal, Any, Coroutine, Union, overload, Generator, final
-from typing_extensions import NotRequired
-from hfortix_fortios.models import FortiObject, FortiObjectList
+""" - Type Stubs
 
-# ============================================================================
-# Nested TypedDicts for table field children (dict mode)
-# These MUST be defined before the Payload class to use them as type hints
-# ============================================================================
+Auto-generated stub file for type checking and IDE support.
 
-class MulticastPolicy6SrcaddrItem(TypedDict, total=False):
-    """Type hints for srcaddr table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    Use this when building payloads for POST/PUT requests.
-    
-    **Available fields:**
-        - name: str
-    
-    **Example:**
-        entry: MulticastPolicy6SrcaddrItem = {
-            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
-        }
-    """
-    
-    name: str  # Address name. | MaxLen: 79
+Endpoint: firewall/multicast_policy6
+Category: cmdb
+"""
+
+from __future__ import annotations
+
+from typing import (
+    Any,
+    ClassVar,
+    Literal,
+    TypedDict,
+    overload,
+)
+
+from hfortix_fortios.models import (
+    FortiObject,
+    FortiObjectList,
+)
 
 
-class MulticastPolicy6DstaddrItem(TypedDict, total=False):
-    """Type hints for dstaddr table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    Use this when building payloads for POST/PUT requests.
-    
-    **Available fields:**
-        - name: str
-    
-    **Example:**
-        entry: MulticastPolicy6DstaddrItem = {
-            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
-        }
-    """
-    
-    name: str  # Address name. | MaxLen: 79
+# ================================================================
+# TypedDict Payloads
+# ================================================================
+
+class MulticastPolicy6SrcaddrItem:
+    """Nested item for srcaddr field - supports attribute access."""
+    name: str
 
 
-# ============================================================================
-# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional)
-# ============================================================================
-# NOTE: We intentionally DON'T use NotRequired wrapper because:
-# 1. total=False already makes all fields optional
-# 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
+class MulticastPolicy6DstaddrItem:
+    """Nested item for dstaddr field - supports attribute access."""
+    name: str
+
+
 class MulticastPolicy6Payload(TypedDict, total=False):
-    """
-    Type hints for firewall/multicast_policy6 payload fields.
-    
-    Configure IPv6 multicast NAT policies.
-    
-    **Related Resources:**
-
-    Dependencies (resources this endpoint references):
-        - :class:`~.ips.sensor.SensorEndpoint` (via: ips-sensor)
-        - :class:`~.system.interface.InterfaceEndpoint` (via: dstintf, srcintf)
-        - :class:`~.system.sdwan.zone.ZoneEndpoint` (via: dstintf, srcintf)
-        - :class:`~.system.zone.ZoneEndpoint` (via: dstintf, srcintf)
-
-    **Usage:**
-        payload: MulticastPolicy6Payload = {
-            "field": "value",  # <- autocomplete shows all fields
-        }
-    """
-    id: int  # Policy ID (0 - 4294967294). | Default: 0 | Min: 0 | Max: 4294967294
-    uuid: str  # Universally Unique Identifier | Default: 00000000-0000-0000-0000-000000000000
-    status: Literal["enable", "disable"]  # Enable/disable this policy. | Default: enable
-    name: str  # Policy name. | MaxLen: 35
-    srcintf: str  # IPv6 source interface name. | MaxLen: 35
-    dstintf: str  # IPv6 destination interface name. | MaxLen: 35
-    srcaddr: list[MulticastPolicy6SrcaddrItem]  # IPv6 source address name.
-    dstaddr: list[MulticastPolicy6DstaddrItem]  # IPv6 destination address name.
-    action: Literal["accept", "deny"]  # Accept or deny traffic matching the policy. | Default: accept
-    protocol: int  # Integer value for the protocol type as defined by | Default: 0 | Min: 0 | Max: 255
-    start_port: int  # Integer value for starting TCP/UDP/SCTP destinatio | Default: 1 | Min: 0 | Max: 65535
-    end_port: int  # Integer value for ending TCP/UDP/SCTP destination | Default: 65535 | Min: 0 | Max: 65535
-    utm_status: Literal["enable", "disable"]  # Enable to add an IPS security profile to the polic | Default: disable
-    ips_sensor: str  # Name of an existing IPS sensor. | MaxLen: 47
-    logtraffic: Literal["all", "utm", "disable"]  # Enable or disable logging. Log all sessions or sec | Default: utm
-    auto_asic_offload: Literal["enable", "disable"]  # Enable/disable offloading policy traffic for hardw | Default: enable
-    comments: str  # Comment. | MaxLen: 1023
-
-# ============================================================================
-# Nested classes for table field children (object mode - for API responses)
-# ============================================================================
-
-@final
-class MulticastPolicy6SrcaddrObject:
-    """Typed object for srcaddr table items.
-    
-    Provides IDE autocomplete for nested table field attributes.
-    At runtime, this is a FortiObject instance.
-    """
-    
-    # Address name. | MaxLen: 79
-    name: str
-    
-    # Common API response fields
-    status: str
-    http_status: int | None
-    http_status_code: int | None
-    http_method: str | None
-    http_response_time: float | None
-    vdom: str | None
-    
-    # Methods from FortiObject
-    @property
-    def dict(self) -> dict[str, Any]:
-        """Convert to dictionary."""
-        ...
-    @property
-    def json(self) -> str:
-        """Get pretty-printed JSON string."""
-        ...
-    @property
-    def raw(self) -> dict[str, Any]:
-        """Get raw API response data."""
-        ...
-    def get_full(self, name: str) -> Any: ...
-    def to_dict(self) -> FortiObject: ...
-    def keys(self) -> Any: ...
-    def values(self) -> Generator[Any, None, None]: ...
-    def items(self) -> Generator[tuple[str, Any], None, None]: ...
-    def get(self, key: str, default: Any = None) -> Any: ...
-
-
-@final
-class MulticastPolicy6DstaddrObject:
-    """Typed object for dstaddr table items.
-    
-    Provides IDE autocomplete for nested table field attributes.
-    At runtime, this is a FortiObject instance.
-    """
-    
-    # Address name. | MaxLen: 79
-    name: str
-    
-    # Common API response fields
-    status: str
-    http_status: int | None
-    http_status_code: int | None
-    http_method: str | None
-    http_response_time: float | None
-    vdom: str | None
-    
-    # Methods from FortiObject
-    @property
-    def dict(self) -> dict[str, Any]:
-        """Convert to dictionary."""
-        ...
-    @property
-    def json(self) -> str:
-        """Get pretty-printed JSON string."""
-        ...
-    @property
-    def raw(self) -> dict[str, Any]:
-        """Get raw API response data."""
-        ...
-    def get_full(self, name: str) -> Any: ...
-    def to_dict(self) -> FortiObject: ...
-    def keys(self) -> Any: ...
-    def values(self) -> Generator[Any, None, None]: ...
-    def items(self) -> Generator[tuple[str, Any], None, None]: ...
-    def get(self, key: str, default: Any = None) -> Any: ...
-
-
-
-
-# Response TypedDict for GET returns (all fields present in API response)
-class MulticastPolicy6Response(TypedDict):
-    """
-    Type hints for firewall/multicast_policy6 API response fields.
-    
-    All fields are present in the response from the FortiGate API.
-    """
-    id: int  # Policy ID (0 - 4294967294). | Default: 0 | Min: 0 | Max: 4294967294
-    uuid: str  # Universally Unique Identifier | Default: 00000000-0000-0000-0000-000000000000
-    status: Literal["enable", "disable"]  # Enable/disable this policy. | Default: enable
-    name: str  # Policy name. | MaxLen: 35
-    srcintf: str  # IPv6 source interface name. | MaxLen: 35
-    dstintf: str  # IPv6 destination interface name. | MaxLen: 35
-    srcaddr: list[MulticastPolicy6SrcaddrItem]  # IPv6 source address name.
-    dstaddr: list[MulticastPolicy6DstaddrItem]  # IPv6 destination address name.
-    action: Literal["accept", "deny"]  # Accept or deny traffic matching the policy. | Default: accept
-    protocol: int  # Integer value for the protocol type as defined by | Default: 0 | Min: 0 | Max: 255
-    start_port: int  # Integer value for starting TCP/UDP/SCTP destinatio | Default: 1 | Min: 0 | Max: 65535
-    end_port: int  # Integer value for ending TCP/UDP/SCTP destination | Default: 65535 | Min: 0 | Max: 65535
-    utm_status: Literal["enable", "disable"]  # Enable to add an IPS security profile to the polic | Default: disable
-    ips_sensor: str  # Name of an existing IPS sensor. | MaxLen: 47
-    logtraffic: Literal["all", "utm", "disable"]  # Enable or disable logging. Log all sessions or sec | Default: utm
-    auto_asic_offload: Literal["enable", "disable"]  # Enable/disable offloading policy traffic for hardw | Default: enable
-    comments: str  # Comment. | MaxLen: 1023
-
-
-@final
-class MulticastPolicy6Object:
-    """Typed FortiObject for firewall/multicast_policy6 with IDE autocomplete support.
-    
-    This is a typed wrapper that provides IDE autocomplete for API response fields.
-    At runtime, this is actually a FortiObject instance.
-    """
-    
-    # Policy ID (0 - 4294967294). | Default: 0 | Min: 0 | Max: 4294967294
+    """Payload type for MulticastPolicy6 operations."""
     id: int
-    # Universally Unique Identifier | Default: 00000000-0000-0000-0000-000000000000
     uuid: str
-    # Enable/disable this policy. | Default: enable
     status: Literal["enable", "disable"]
-    # Policy name. | MaxLen: 35
     name: str
-    # IPv6 source interface name. | MaxLen: 35
     srcintf: str
-    # IPv6 destination interface name. | MaxLen: 35
     dstintf: str
-    # IPv6 source address name.
-    srcaddr: list[MulticastPolicy6SrcaddrObject]
-    # IPv6 destination address name.
-    dstaddr: list[MulticastPolicy6DstaddrObject]
-    # Accept or deny traffic matching the policy. | Default: accept
+    srcaddr: str | list[str] | list[dict[str, Any]] | list[MulticastPolicy6SrcaddrItem]
+    dstaddr: str | list[str] | list[dict[str, Any]] | list[MulticastPolicy6DstaddrItem]
     action: Literal["accept", "deny"]
-    # Integer value for the protocol type as defined by IANA | Default: 0 | Min: 0 | Max: 255
     protocol: int
-    # Integer value for starting TCP/UDP/SCTP destination port in | Default: 1 | Min: 0 | Max: 65535
     start_port: int
-    # Integer value for ending TCP/UDP/SCTP destination port in ra | Default: 65535 | Min: 0 | Max: 65535
     end_port: int
-    # Enable to add an IPS security profile to the policy. | Default: disable
     utm_status: Literal["enable", "disable"]
-    # Name of an existing IPS sensor. | MaxLen: 47
     ips_sensor: str
-    # Enable or disable logging. Log all sessions or security prof | Default: utm
     logtraffic: Literal["all", "utm", "disable"]
-    # Enable/disable offloading policy traffic for hardware accele | Default: enable
     auto_asic_offload: Literal["enable", "disable"]
-    # Comment. | MaxLen: 1023
     comments: str
-    
-    # Common API response fields
-    status: str
-    http_status: int | None
-    http_status_code: int | None
-    http_method: str | None
-    http_response_time: float | None
-    vdom: str | None
-    
-    # Methods from FortiObject
-    @property
-    def dict(self) -> dict[str, Any]:
-        """Convert to dictionary."""
-        ...
-    @property
-    def json(self) -> str:
-        """Get pretty-printed JSON string."""
-        ...
-    @property
-    def raw(self) -> dict[str, Any]:
-        """Get raw API response data."""
-        ...
-    def get_full(self, name: str) -> Any: ...
-    def to_dict(self) -> MulticastPolicy6Payload: ...
-    def keys(self) -> Any: ...
-    def values(self) -> Generator[Any, None, None]: ...
-    def items(self) -> Generator[tuple[str, Any], None, None]: ...
-    def get(self, key: str, default: Any = None) -> Any: ...
 
+
+# ================================================================
+# Response Types (TypedDict for dict-style access)
+# ================================================================
+
+class MulticastPolicy6Response(TypedDict, total=False):
+    """Response type for MulticastPolicy6 - use with .dict property for typed dict access."""
+    id: int
+    uuid: str
+    status: Literal["enable", "disable"]
+    name: str
+    srcintf: str
+    dstintf: str
+    srcaddr: list[MulticastPolicy6SrcaddrItem]
+    dstaddr: list[MulticastPolicy6DstaddrItem]
+    action: Literal["accept", "deny"]
+    protocol: int
+    start_port: int
+    end_port: int
+    utm_status: Literal["enable", "disable"]
+    ips_sensor: str
+    logtraffic: Literal["all", "utm", "disable"]
+    auto_asic_offload: Literal["enable", "disable"]
+    comments: str
+
+
+# ================================================================
+# Response Types (Class for attribute access)
+# ================================================================
+
+
+class MulticastPolicy6Object(FortiObject):
+    """Typed FortiObject for MulticastPolicy6 with field access."""
+    id: int
+    uuid: str
+    status: Literal["enable", "disable"]
+    name: str
+    srcintf: str
+    dstintf: str
+    srcaddr: list[MulticastPolicy6SrcaddrItem]
+    dstaddr: list[MulticastPolicy6DstaddrItem]
+    action: Literal["accept", "deny"]
+    protocol: int
+    start_port: int
+    end_port: int
+    utm_status: Literal["enable", "disable"]
+    ips_sensor: str
+    logtraffic: Literal["all", "utm", "disable"]
+    auto_asic_offload: Literal["enable", "disable"]
+    comments: str
+
+
+# ================================================================
+# Main Endpoint Class
+# ================================================================
 
 class MulticastPolicy6:
     """
-    Configure IPv6 multicast NAT policies.
     
-    Path: firewall/multicast_policy6
+    Endpoint: firewall/multicast_policy6
     Category: cmdb
-    Primary Key: id
+    MKey: id
     """
     
+    # Class attributes for introspection
+    endpoint: ClassVar[str] = ...
+    path: ClassVar[str] = ...
+    category: ClassVar[str] = ...
+    mkey: ClassVar[str] = ...
+    capabilities: ClassVar[dict[str, Any]] = ...
+    
     def __init__(self, client: Any) -> None:
-        """Initialize endpoint with HTTP client.
-        
-        Args:
-            client: HTTP client instance for API communication
-        """
+        """Initialize endpoint with HTTP client."""
         ...
     
     # ================================================================
-    # GET OVERLOADS - Always returns FortiObject (or ContentResponse for file endpoints)
-    # Pylance matches overloads top-to-bottom, so these must come first!
+    # GET Methods
     # ================================================================
     
-    # With mkey as positional arg -> returns FortiObject
+    # CMDB with mkey - overloads for single vs list returns
     @overload
     def get(
         self,
         id: int,
+        *,
         filter: str | list[str] | None = ...,
         count: int | None = ...,
         start: int | None = ...,
@@ -306,14 +150,14 @@ class MulticastPolicy6:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        error_mode: Literal["raise", "return", "print"] | None = ...,
+        error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> MulticastPolicy6Object: ...
     
-    # With mkey as keyword arg -> returns FortiObject
     @overload
     def get(
         self,
         *,
-        id: int,
         filter: str | list[str] | None = ...,
         count: int | None = ...,
         start: int | None = ...,
@@ -323,164 +167,20 @@ class MulticastPolicy6:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> MulticastPolicy6Object: ...
-    
-    # Without mkey -> returns list of FortiObjects
-    @overload
-    def get(
-        self,
-        id: None = None,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
+        error_mode: Literal["raise", "return", "print"] | None = ...,
+        error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> FortiObjectList[MulticastPolicy6Object]: ...
-    
-    # ================================================================
-    # (removed - all GET now returns FortiObject)
-    # ================================================================
-    
-    # With mkey as positional arg -> returns single object
-    @overload
-    def get(
-        self,
-        id: int,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> MulticastPolicy6Object: ...
-    
-    # With mkey as keyword arg -> returns single object
-    @overload
-    def get(
-        self,
-        *,
-        id: int,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> MulticastPolicy6Object: ...
-    
-    # With no mkey -> returns list of objects
-    @overload
-    def get(
-        self,
-        *,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObjectList[MulticastPolicy6Object]: ...
-    
-    # Dict mode with mkey provided as positional arg (single dict)
-    @overload
-    def get(
-        self,
-        id: int,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> MulticastPolicy6Object: ...
-    
-    # Dict mode with mkey provided as keyword arg (single dict)
-    @overload
-    def get(
-        self,
-        *,
-        id: int,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> MulticastPolicy6Object: ...
-    
-    # Dict mode - list of dicts (no mkey/name provided) - keyword-only signature
-    @overload
-    def get(
-        self,
-        *,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObjectList[MulticastPolicy6Object]: ...
-    
-    # Fallback overload for all other cases
-    @overload
-    def get(
-        self,
-        id: int | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> Union[dict[str, Any], list[dict[str, Any]], FortiObject, list[FortiObject]]: ...
-    
-    def get(
-        self,
-        id: int | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> MulticastPolicy6Object | list[MulticastPolicy6Object] | dict[str, Any] | list[dict[str, Any]]: ...
     
     def get_schema(
         self,
         vdom: str | None = ...,
         format: str = ...,
     ) -> FortiObject: ...
+
+    # ================================================================
+    # POST Method
+    # ================================================================
     
-    # POST overloads
-    @overload
     def post(
         self,
         payload_dict: MulticastPolicy6Payload | None = ...,
@@ -490,8 +190,8 @@ class MulticastPolicy6:
         name: str | None = ...,
         srcintf: str | None = ...,
         dstintf: str | None = ...,
-        srcaddr: str | list[str] | list[MulticastPolicy6SrcaddrItem] | None = ...,
-        dstaddr: str | list[str] | list[MulticastPolicy6DstaddrItem] | None = ...,
+        srcaddr: str | list[str] | list[dict[str, Any]] | list[MulticastPolicy6SrcaddrItem] | None = ...,
+        dstaddr: str | list[str] | list[dict[str, Any]] | list[MulticastPolicy6DstaddrItem] | None = ...,
         action: Literal["accept", "deny"] | None = ...,
         protocol: int | None = ...,
         start_port: int | None = ...,
@@ -502,82 +202,14 @@ class MulticastPolicy6:
         auto_asic_offload: Literal["enable", "disable"] | None = ...,
         comments: str | None = ...,
         vdom: str | bool | None = ...,
+        error_mode: Literal["raise", "return", "print"] | None = ...,
+        error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> MulticastPolicy6Object: ...
+
+    # ================================================================
+    # PUT Method
+    # ================================================================
     
-    @overload
-    def post(
-        self,
-        payload_dict: MulticastPolicy6Payload | None = ...,
-        id: int | None = ...,
-        uuid: str | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
-        name: str | None = ...,
-        srcintf: str | None = ...,
-        dstintf: str | None = ...,
-        srcaddr: str | list[str] | list[MulticastPolicy6SrcaddrItem] | None = ...,
-        dstaddr: str | list[str] | list[MulticastPolicy6DstaddrItem] | None = ...,
-        action: Literal["accept", "deny"] | None = ...,
-        protocol: int | None = ...,
-        start_port: int | None = ...,
-        end_port: int | None = ...,
-        utm_status: Literal["enable", "disable"] | None = ...,
-        ips_sensor: str | None = ...,
-        logtraffic: Literal["all", "utm", "disable"] | None = ...,
-        auto_asic_offload: Literal["enable", "disable"] | None = ...,
-        comments: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
-    
-    # Default overload
-    @overload
-    def post(
-        self,
-        payload_dict: MulticastPolicy6Payload | None = ...,
-        id: int | None = ...,
-        uuid: str | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
-        name: str | None = ...,
-        srcintf: str | None = ...,
-        dstintf: str | None = ...,
-        srcaddr: str | list[str] | list[MulticastPolicy6SrcaddrItem] | None = ...,
-        dstaddr: str | list[str] | list[MulticastPolicy6DstaddrItem] | None = ...,
-        action: Literal["accept", "deny"] | None = ...,
-        protocol: int | None = ...,
-        start_port: int | None = ...,
-        end_port: int | None = ...,
-        utm_status: Literal["enable", "disable"] | None = ...,
-        ips_sensor: str | None = ...,
-        logtraffic: Literal["all", "utm", "disable"] | None = ...,
-        auto_asic_offload: Literal["enable", "disable"] | None = ...,
-        comments: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
-    
-    def post(
-        self,
-        payload_dict: MulticastPolicy6Payload | None = ...,
-        id: int | None = ...,
-        uuid: str | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
-        name: str | None = ...,
-        srcintf: str | None = ...,
-        dstintf: str | None = ...,
-        srcaddr: str | list[str] | list[MulticastPolicy6SrcaddrItem] | None = ...,
-        dstaddr: str | list[str] | list[MulticastPolicy6DstaddrItem] | None = ...,
-        action: Literal["accept", "deny"] | None = ...,
-        protocol: int | None = ...,
-        start_port: int | None = ...,
-        end_port: int | None = ...,
-        utm_status: Literal["enable", "disable"] | None = ...,
-        ips_sensor: str | None = ...,
-        logtraffic: Literal["all", "utm", "disable"] | None = ...,
-        auto_asic_offload: Literal["enable", "disable"] | None = ...,
-        comments: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
-    
-    # PUT overloads
-    @overload
     def put(
         self,
         payload_dict: MulticastPolicy6Payload | None = ...,
@@ -587,8 +219,8 @@ class MulticastPolicy6:
         name: str | None = ...,
         srcintf: str | None = ...,
         dstintf: str | None = ...,
-        srcaddr: str | list[str] | list[MulticastPolicy6SrcaddrItem] | None = ...,
-        dstaddr: str | list[str] | list[MulticastPolicy6DstaddrItem] | None = ...,
+        srcaddr: str | list[str] | list[dict[str, Any]] | list[MulticastPolicy6SrcaddrItem] | None = ...,
+        dstaddr: str | list[str] | list[dict[str, Any]] | list[MulticastPolicy6DstaddrItem] | None = ...,
         action: Literal["accept", "deny"] | None = ...,
         protocol: int | None = ...,
         start_port: int | None = ...,
@@ -599,108 +231,25 @@ class MulticastPolicy6:
         auto_asic_offload: Literal["enable", "disable"] | None = ...,
         comments: str | None = ...,
         vdom: str | bool | None = ...,
+        error_mode: Literal["raise", "return", "print"] | None = ...,
+        error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> MulticastPolicy6Object: ...
-    
-    @overload
-    def put(
-        self,
-        payload_dict: MulticastPolicy6Payload | None = ...,
-        id: int | None = ...,
-        uuid: str | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
-        name: str | None = ...,
-        srcintf: str | None = ...,
-        dstintf: str | None = ...,
-        srcaddr: str | list[str] | list[MulticastPolicy6SrcaddrItem] | None = ...,
-        dstaddr: str | list[str] | list[MulticastPolicy6DstaddrItem] | None = ...,
-        action: Literal["accept", "deny"] | None = ...,
-        protocol: int | None = ...,
-        start_port: int | None = ...,
-        end_port: int | None = ...,
-        utm_status: Literal["enable", "disable"] | None = ...,
-        ips_sensor: str | None = ...,
-        logtraffic: Literal["all", "utm", "disable"] | None = ...,
-        auto_asic_offload: Literal["enable", "disable"] | None = ...,
-        comments: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
-    
-    # Default overload
-    @overload
-    def put(
-        self,
-        payload_dict: MulticastPolicy6Payload | None = ...,
-        id: int | None = ...,
-        uuid: str | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
-        name: str | None = ...,
-        srcintf: str | None = ...,
-        dstintf: str | None = ...,
-        srcaddr: str | list[str] | list[MulticastPolicy6SrcaddrItem] | None = ...,
-        dstaddr: str | list[str] | list[MulticastPolicy6DstaddrItem] | None = ...,
-        action: Literal["accept", "deny"] | None = ...,
-        protocol: int | None = ...,
-        start_port: int | None = ...,
-        end_port: int | None = ...,
-        utm_status: Literal["enable", "disable"] | None = ...,
-        ips_sensor: str | None = ...,
-        logtraffic: Literal["all", "utm", "disable"] | None = ...,
-        auto_asic_offload: Literal["enable", "disable"] | None = ...,
-        comments: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
-    
-    def put(
-        self,
-        payload_dict: MulticastPolicy6Payload | None = ...,
-        id: int | None = ...,
-        uuid: str | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
-        name: str | None = ...,
-        srcintf: str | None = ...,
-        dstintf: str | None = ...,
-        srcaddr: str | list[str] | list[MulticastPolicy6SrcaddrItem] | None = ...,
-        dstaddr: str | list[str] | list[MulticastPolicy6DstaddrItem] | None = ...,
-        action: Literal["accept", "deny"] | None = ...,
-        protocol: int | None = ...,
-        start_port: int | None = ...,
-        end_port: int | None = ...,
-        utm_status: Literal["enable", "disable"] | None = ...,
-        ips_sensor: str | None = ...,
-        logtraffic: Literal["all", "utm", "disable"] | None = ...,
-        auto_asic_offload: Literal["enable", "disable"] | None = ...,
-        comments: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
-    
-    # DELETE overloads
-    @overload
-    def delete(
-        self,
-        id: int | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> MulticastPolicy6Object: ...
-    
-    @overload
-    def delete(
-        self,
-        id: int | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
-    
-    # Default overload
-    @overload
-    def delete(
-        self,
-        id: int | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+
+    # ================================================================
+    # DELETE Method
+    # ================================================================
     
     def delete(
         self,
         id: int | None = ...,
         vdom: str | bool | None = ...,
+        error_mode: Literal["raise", "return", "print"] | None = ...,
+        error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> FortiObject: ...
+
+    # ================================================================
+    # Utility Methods
+    # ================================================================
     
     def exists(
         self,
@@ -717,8 +266,8 @@ class MulticastPolicy6:
         name: str | None = ...,
         srcintf: str | None = ...,
         dstintf: str | None = ...,
-        srcaddr: str | list[str] | list[MulticastPolicy6SrcaddrItem] | None = ...,
-        dstaddr: str | list[str] | list[MulticastPolicy6DstaddrItem] | None = ...,
+        srcaddr: str | list[str] | list[dict[str, Any]] | list[MulticastPolicy6SrcaddrItem] | None = ...,
+        dstaddr: str | list[str] | list[dict[str, Any]] | list[MulticastPolicy6DstaddrItem] | None = ...,
         action: Literal["accept", "deny"] | None = ...,
         protocol: int | None = ...,
         start_port: int | None = ...,
@@ -729,6 +278,8 @@ class MulticastPolicy6:
         auto_asic_offload: Literal["enable", "disable"] | None = ...,
         comments: str | None = ...,
         vdom: str | bool | None = ...,
+        error_mode: Literal["raise", "return", "print"] | None = ...,
+        error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> FortiObject: ...
     
     # Helper methods
@@ -736,7 +287,7 @@ class MulticastPolicy6:
     def help(field_name: str | None = ...) -> str: ...
     
     @staticmethod
-    def fields(detailed: bool = ...) -> Union[list[str], list[dict[str, Any]]]: ...
+    def fields(detailed: bool = ...) -> list[str] | list[dict[str, Any]]: ...
     
     @staticmethod
     def field_info(field_name: str) -> FortiObject: ...
@@ -752,9 +303,6 @@ class MulticastPolicy6:
     
     @staticmethod
     def schema() -> FortiObject: ...
-
-
-# ================================================================
 
 
 __all__ = [

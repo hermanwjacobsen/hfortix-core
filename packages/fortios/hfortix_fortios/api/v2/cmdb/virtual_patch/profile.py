@@ -314,6 +314,8 @@ class Profile(CRUDEndpoint, MetadataMixin):
                 example="[{'id': 1}]",
             )
         
+        # Apply normalization for multi-value option fields (space-separated strings)
+        
         # Build payload using helper function with auto-normalization
         # This automatically converts strings/lists to [{'name': '...'}] format for list fields
         # To disable auto-normalization, use build_cmdb_payload directly
@@ -434,6 +436,8 @@ class Profile(CRUDEndpoint, MetadataMixin):
                 field_name="exemption",
                 example="[{'id': 1}]",
             )
+        
+        # Apply normalization for multi-value option fields (space-separated strings)
         
         # Build payload using helper function with auto-normalization
         # This automatically converts strings/lists to [{'name': '...'}] format for list fields
@@ -658,6 +662,18 @@ class Profile(CRUDEndpoint, MetadataMixin):
             - put(): Update existing object
             - exists(): Check existence manually
         """
+        # Apply normalization for table fields (supports flexible input formats)
+        if exemption is not None:
+            exemption = normalize_table_field(
+                exemption,
+                mkey="id",
+                required_fields=['id'],
+                field_name="exemption",
+                example="[{'id': 1}]",
+            )
+        
+        # Apply normalization for multi-value option fields (space-separated strings)
+        
         # Build payload using helper function with auto-normalization
         payload_data = build_api_payload(
             name=name,

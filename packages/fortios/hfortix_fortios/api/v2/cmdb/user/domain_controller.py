@@ -829,6 +829,24 @@ class DomainController(CRUDEndpoint, MetadataMixin):
             - put(): Update existing object
             - exists(): Check existence manually
         """
+        # Apply normalization for table fields (supports flexible input formats)
+        if extra_server is not None:
+            extra_server = normalize_table_field(
+                extra_server,
+                mkey="id",
+                required_fields=['id', 'ip-address', 'source-ip-address'],
+                field_name="extra_server",
+                example="[{'id': 1, 'ip-address': '192.168.1.10', 'source-ip-address': '192.168.1.10'}]",
+            )
+        if ldap_server is not None:
+            ldap_server = normalize_table_field(
+                ldap_server,
+                mkey="name",
+                required_fields=['name'],
+                field_name="ldap_server",
+                example="[{'name': 'value'}]",
+            )
+        
         # Build payload using helper function with auto-normalization
         payload_data = build_api_payload(
             name=name,

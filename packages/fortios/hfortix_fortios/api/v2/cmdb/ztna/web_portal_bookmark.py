@@ -700,6 +700,32 @@ class WebPortalBookmark(CRUDEndpoint, MetadataMixin):
             - put(): Update existing object
             - exists(): Check existence manually
         """
+        # Apply normalization for table fields (supports flexible input formats)
+        if users is not None:
+            users = normalize_table_field(
+                users,
+                mkey="name",
+                required_fields=['name'],
+                field_name="users",
+                example="[{'name': 'value'}]",
+            )
+        if groups is not None:
+            groups = normalize_table_field(
+                groups,
+                mkey="name",
+                required_fields=['name'],
+                field_name="groups",
+                example="[{'name': 'value'}]",
+            )
+        if bookmarks is not None:
+            bookmarks = normalize_table_field(
+                bookmarks,
+                mkey="name",
+                required_fields=['apptype', 'url', 'host', 'folder'],
+                field_name="bookmarks",
+                example="[{'apptype': 'ftp', 'url': 'value', 'host': 'value', 'folder': 'value'}]",
+            )
+        
         # Build payload using helper function with auto-normalization
         payload_data = build_api_payload(
             name=name,

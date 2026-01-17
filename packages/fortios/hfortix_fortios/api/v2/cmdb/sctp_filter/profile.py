@@ -634,6 +634,16 @@ class Profile(CRUDEndpoint, MetadataMixin):
             - put(): Update existing object
             - exists(): Check existence manually
         """
+        # Apply normalization for table fields (supports flexible input formats)
+        if ppid_filters is not None:
+            ppid_filters = normalize_table_field(
+                ppid_filters,
+                mkey="id",
+                required_fields=['ppid'],
+                field_name="ppid_filters",
+                example="[{'ppid': 1}]",
+            )
+        
         # Build payload using helper function with auto-normalization
         payload_data = build_api_payload(
             name=name,

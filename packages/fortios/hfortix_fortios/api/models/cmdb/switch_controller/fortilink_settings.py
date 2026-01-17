@@ -11,9 +11,27 @@ from pydantic import BaseModel, Field, field_validator
 from typing import Any, Literal, Optional
 
 # ============================================================================
-# Child Table Models
+# Enum Definitions for Child Table Fields (for fields with 4+ allowed values)
 # ============================================================================
 
+# ============================================================================
+# Child Table Models (sorted deepest-first so nested models are defined before their parents)
+# ============================================================================
+
+class FortilinkSettingsNacPortsNacSegmentVlans(BaseModel):
+    """
+    Child table model for nac-ports.nac-segment-vlans.
+    
+    Configure NAC segment VLANs.
+    """
+    
+    class Config:
+        """Pydantic model configuration."""
+        extra = "allow"  # Allow additional fields from API
+        str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
+    
+    vlan_name: str = Field(max_length=79, description="VLAN interface name.")  # datasource: ['system.interface.name']
 class FortilinkSettingsNacPorts(BaseModel):
     """
     Child table model for nac-ports.
@@ -25,12 +43,13 @@ class FortilinkSettingsNacPorts(BaseModel):
         """Pydantic model configuration."""
         extra = "allow"  # Allow additional fields from API
         str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
     
-    onboarding_vlan: str = Field(max_length=15, default="", description="Default NAC Onboarding VLAN when NAC devices are discovered.")  # datasource: ['system.interface.name']    
+    onboarding_vlan: str = Field(max_length=15, description="Default NAC Onboarding VLAN when NAC devices are discovered.")  # datasource: ['system.interface.name']    
     lan_segment: Literal["enabled", "disabled"] | None = Field(default="disabled", description="Enable/disable LAN segment feature on the FortiLink interface.")    
-    nac_lan_interface: str = Field(max_length=15, default="", description="Configure NAC LAN interface.")  # datasource: ['system.interface.name']    
-    nac_segment_vlans: list[NacSegmentVlans] = Field(description="Configure NAC segment VLANs.")    
-    parent_key: str | None = Field(max_length=35, default="", description="Parent key name.")    
+    nac_lan_interface: str = Field(max_length=15, description="Configure NAC LAN interface.")  # datasource: ['system.interface.name']    
+    nac_segment_vlans: list[FortilinkSettingsNacPortsNacSegmentVlans] = Field(description="Configure NAC segment VLANs.")    
+    parent_key: str | None = Field(max_length=35, default=None, description="Parent key name.")    
     member_change: int | None = Field(ge=0, le=255, default=0, description="Member change flag.")
 # ============================================================================
 # Enum Definitions (for fields with 4+ allowed values)
@@ -60,12 +79,12 @@ class FortilinkSettingsModel(BaseModel):
     # Model Fields
     # ========================================================================
     
-    name: str | None = Field(max_length=35, default="", description="FortiLink settings name.")    
-    fortilink: str | None = Field(max_length=15, default="", description="FortiLink interface to which this fortilink-setting belongs.")  # datasource: ['system.interface.name']    
+    name: str | None = Field(max_length=35, default=None, description="FortiLink settings name.")    
+    fortilink: str | None = Field(max_length=15, default=None, description="FortiLink interface to which this fortilink-setting belongs.")  # datasource: ['system.interface.name']    
     inactive_timer: int | None = Field(ge=1, le=1440, default=15, description="Time interval(minutes) to be included in the inactive devices expiry calculation (mac age-out + inactive-time + periodic scan interval).")    
     link_down_flush: Literal["disable", "enable"] | None = Field(default="enable", description="Clear NAC and dynamic devices on switch ports on link down event.")    
     access_vlan_mode: Literal["legacy", "fail-open", "fail-close"] | None = Field(default="legacy", description="Intra VLAN traffic behavior with loss of connection to the FortiGate.")    
-    nac_ports: list[NacPorts] = Field(default=None, description="NAC specific configuration.")    
+    nac_ports: list[FortilinkSettingsNacPorts] = Field(default_factory=list, description="NAC specific configuration.")    
     # ========================================================================
     # Custom Validators
     # ========================================================================
@@ -145,7 +164,7 @@ class FortilinkSettingsModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.switch_controller.fortilink_settings.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate scalar field
         value = getattr(self, "fortilink", None)
@@ -194,7 +213,7 @@ class FortilinkSettingsModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.switch_controller.fortilink_settings.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate child table items
         values = getattr(self, "nac_ports", [])
@@ -259,11 +278,11 @@ Dict = dict[str, Any]  # For backward compatibility
 # ============================================================================
 
 __all__ = [
-    "FortilinkSettingsModel",    "FortilinkSettingsNacPorts",]
+    "FortilinkSettingsModel",    "FortilinkSettingsNacPorts",    "FortilinkSettingsNacPorts.NacSegmentVlans",]
 
 
 # ============================================================================
 # Generated by hfortix generator v0.6.0
 # Schema: 1.7.0
-# Generated: 2026-01-17T05:32:17.555661Z
+# Generated: 2026-01-17T17:25:21.419889Z
 # ============================================================================

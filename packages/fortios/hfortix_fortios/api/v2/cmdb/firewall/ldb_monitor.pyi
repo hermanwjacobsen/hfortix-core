@@ -1,162 +1,124 @@
-from typing import TypedDict, Literal, Any, Coroutine, Union, overload, Generator, final
-from typing_extensions import NotRequired
-from hfortix_fortios.models import FortiObject, FortiObjectList
+""" - Type Stubs
 
-# ============================================================================
-# Nested TypedDicts for table field children (dict mode)
-# These MUST be defined before the Payload class to use them as type hints
-# ============================================================================
+Auto-generated stub file for type checking and IDE support.
 
-# ============================================================================
-# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional)
-# ============================================================================
-# NOTE: We intentionally DON'T use NotRequired wrapper because:
-# 1. total=False already makes all fields optional
-# 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
+Endpoint: firewall/ldb_monitor
+Category: cmdb
+"""
+
+from __future__ import annotations
+
+from typing import (
+    Any,
+    ClassVar,
+    Literal,
+    TypedDict,
+    overload,
+)
+
+from hfortix_fortios.models import (
+    FortiObject,
+    FortiObjectList,
+)
+
+
+# ================================================================
+# TypedDict Payloads
+# ================================================================
+
 class LdbMonitorPayload(TypedDict, total=False):
-    """
-    Type hints for firewall/ldb_monitor payload fields.
-    
-    Configure server load balancing health monitors.
-    
-    **Usage:**
-        payload: LdbMonitorPayload = {
-            "field": "value",  # <- autocomplete shows all fields
-        }
-    """
-    name: str  # Monitor name. | MaxLen: 35
-    type: Literal["ping", "tcp", "http", "https", "dns"]  # Select the Monitor type used by the health check m
-    interval: int  # Time between health checks | Default: 10 | Min: 5 | Max: 65535
-    timeout: int  # Time to wait to receive response to a health check | Default: 2 | Min: 1 | Max: 255
-    retry: int  # Number health check attempts before the server is | Default: 3 | Min: 1 | Max: 255
-    port: int  # Service port used to perform the health check. If | Default: 0 | Min: 0 | Max: 65535
-    src_ip: str  # Source IP for ldb-monitor. | Default: 0.0.0.0
-    http_get: str  # Request URI used to send a GET request to check th | MaxLen: 255
-    http_match: str  # String to match the value expected in response to | MaxLen: 255
-    http_max_redirects: int  # The maximum number of HTTP redirects to be allowed | Default: 0 | Min: 0 | Max: 5
-    dns_protocol: Literal["udp", "tcp"]  # Select the protocol used by the DNS health check m | Default: udp
-    dns_request_domain: str  # Fully qualified domain name to resolve for the DNS | MaxLen: 255
-    dns_match_ip: str  # Response IP expected from DNS server. | Default: 0.0.0.0
-
-# ============================================================================
-# Nested classes for table field children (object mode - for API responses)
-# ============================================================================
-
-
-
-# Response TypedDict for GET returns (all fields present in API response)
-class LdbMonitorResponse(TypedDict):
-    """
-    Type hints for firewall/ldb_monitor API response fields.
-    
-    All fields are present in the response from the FortiGate API.
-    """
-    name: str  # Monitor name. | MaxLen: 35
-    type: Literal["ping", "tcp", "http", "https", "dns"]  # Select the Monitor type used by the health check m
-    interval: int  # Time between health checks | Default: 10 | Min: 5 | Max: 65535
-    timeout: int  # Time to wait to receive response to a health check | Default: 2 | Min: 1 | Max: 255
-    retry: int  # Number health check attempts before the server is | Default: 3 | Min: 1 | Max: 255
-    port: int  # Service port used to perform the health check. If | Default: 0 | Min: 0 | Max: 65535
-    src_ip: str  # Source IP for ldb-monitor. | Default: 0.0.0.0
-    http_get: str  # Request URI used to send a GET request to check th | MaxLen: 255
-    http_match: str  # String to match the value expected in response to | MaxLen: 255
-    http_max_redirects: int  # The maximum number of HTTP redirects to be allowed | Default: 0 | Min: 0 | Max: 5
-    dns_protocol: Literal["udp", "tcp"]  # Select the protocol used by the DNS health check m | Default: udp
-    dns_request_domain: str  # Fully qualified domain name to resolve for the DNS | MaxLen: 255
-    dns_match_ip: str  # Response IP expected from DNS server. | Default: 0.0.0.0
-
-
-@final
-class LdbMonitorObject:
-    """Typed FortiObject for firewall/ldb_monitor with IDE autocomplete support.
-    
-    This is a typed wrapper that provides IDE autocomplete for API response fields.
-    At runtime, this is actually a FortiObject instance.
-    """
-    
-    # Monitor name. | MaxLen: 35
+    """Payload type for LdbMonitor operations."""
     name: str
-    # Select the Monitor type used by the health check monitor to
     type: Literal["ping", "tcp", "http", "https", "dns"]
-    # Time between health checks (5 - 65535 sec, default = 10). | Default: 10 | Min: 5 | Max: 65535
     interval: int
-    # Time to wait to receive response to a health check from a se | Default: 2 | Min: 1 | Max: 255
     timeout: int
-    # Number health check attempts before the server is considered | Default: 3 | Min: 1 | Max: 255
     retry: int
-    # Service port used to perform the health check. If 0, health | Default: 0 | Min: 0 | Max: 65535
     port: int
-    # Source IP for ldb-monitor. | Default: 0.0.0.0
     src_ip: str
-    # Request URI used to send a GET request to check the health o | MaxLen: 255
     http_get: str
-    # String to match the value expected in response to an HTTP-GE | MaxLen: 255
     http_match: str
-    # The maximum number of HTTP redirects to be allowed | Default: 0 | Min: 0 | Max: 5
     http_max_redirects: int
-    # Select the protocol used by the DNS health check monitor to | Default: udp
     dns_protocol: Literal["udp", "tcp"]
-    # Fully qualified domain name to resolve for the DNS probe. | MaxLen: 255
     dns_request_domain: str
-    # Response IP expected from DNS server. | Default: 0.0.0.0
     dns_match_ip: str
-    
-    # Common API response fields
-    status: str
-    http_status: int | None
-    http_status_code: int | None
-    http_method: str | None
-    http_response_time: float | None
-    vdom: str | None
-    
-    # Methods from FortiObject
-    @property
-    def dict(self) -> dict[str, Any]:
-        """Convert to dictionary."""
-        ...
-    @property
-    def json(self) -> str:
-        """Get pretty-printed JSON string."""
-        ...
-    @property
-    def raw(self) -> dict[str, Any]:
-        """Get raw API response data."""
-        ...
-    def get_full(self, name: str) -> Any: ...
-    def to_dict(self) -> LdbMonitorPayload: ...
-    def keys(self) -> Any: ...
-    def values(self) -> Generator[Any, None, None]: ...
-    def items(self) -> Generator[tuple[str, Any], None, None]: ...
-    def get(self, key: str, default: Any = None) -> Any: ...
 
+
+# ================================================================
+# Response Types (TypedDict for dict-style access)
+# ================================================================
+
+class LdbMonitorResponse(TypedDict, total=False):
+    """Response type for LdbMonitor - use with .dict property for typed dict access."""
+    name: str
+    type: Literal["ping", "tcp", "http", "https", "dns"]
+    interval: int
+    timeout: int
+    retry: int
+    port: int
+    src_ip: str
+    http_get: str
+    http_match: str
+    http_max_redirects: int
+    dns_protocol: Literal["udp", "tcp"]
+    dns_request_domain: str
+    dns_match_ip: str
+
+
+# ================================================================
+# Response Types (Class for attribute access)
+# ================================================================
+
+
+class LdbMonitorObject(FortiObject):
+    """Typed FortiObject for LdbMonitor with field access."""
+    name: str
+    type: Literal["ping", "tcp", "http", "https", "dns"]
+    interval: int
+    timeout: int
+    retry: int
+    port: int
+    src_ip: str
+    http_get: str
+    http_match: str
+    http_max_redirects: int
+    dns_protocol: Literal["udp", "tcp"]
+    dns_request_domain: str
+    dns_match_ip: str
+
+
+# ================================================================
+# Main Endpoint Class
+# ================================================================
 
 class LdbMonitor:
     """
-    Configure server load balancing health monitors.
     
-    Path: firewall/ldb_monitor
+    Endpoint: firewall/ldb_monitor
     Category: cmdb
-    Primary Key: name
+    MKey: name
     """
     
+    # Class attributes for introspection
+    endpoint: ClassVar[str] = ...
+    path: ClassVar[str] = ...
+    category: ClassVar[str] = ...
+    mkey: ClassVar[str] = ...
+    capabilities: ClassVar[dict[str, Any]] = ...
+    
     def __init__(self, client: Any) -> None:
-        """Initialize endpoint with HTTP client.
-        
-        Args:
-            client: HTTP client instance for API communication
-        """
+        """Initialize endpoint with HTTP client."""
         ...
     
     # ================================================================
-    # GET OVERLOADS - Always returns FortiObject (or ContentResponse for file endpoints)
-    # Pylance matches overloads top-to-bottom, so these must come first!
+    # GET Methods
     # ================================================================
     
-    # With mkey as positional arg -> returns FortiObject
+    # CMDB with mkey - overloads for single vs list returns
     @overload
     def get(
         self,
         name: str,
+        *,
         filter: str | list[str] | None = ...,
         count: int | None = ...,
         start: int | None = ...,
@@ -166,14 +128,14 @@ class LdbMonitor:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        error_mode: Literal["raise", "return", "print"] | None = ...,
+        error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> LdbMonitorObject: ...
     
-    # With mkey as keyword arg -> returns FortiObject
     @overload
     def get(
         self,
         *,
-        name: str,
         filter: str | list[str] | None = ...,
         count: int | None = ...,
         start: int | None = ...,
@@ -183,164 +145,20 @@ class LdbMonitor:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> LdbMonitorObject: ...
-    
-    # Without mkey -> returns list of FortiObjects
-    @overload
-    def get(
-        self,
-        name: None = None,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
+        error_mode: Literal["raise", "return", "print"] | None = ...,
+        error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> FortiObjectList[LdbMonitorObject]: ...
-    
-    # ================================================================
-    # (removed - all GET now returns FortiObject)
-    # ================================================================
-    
-    # With mkey as positional arg -> returns single object
-    @overload
-    def get(
-        self,
-        name: str,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> LdbMonitorObject: ...
-    
-    # With mkey as keyword arg -> returns single object
-    @overload
-    def get(
-        self,
-        *,
-        name: str,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> LdbMonitorObject: ...
-    
-    # With no mkey -> returns list of objects
-    @overload
-    def get(
-        self,
-        *,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObjectList[LdbMonitorObject]: ...
-    
-    # Dict mode with mkey provided as positional arg (single dict)
-    @overload
-    def get(
-        self,
-        name: str,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> LdbMonitorObject: ...
-    
-    # Dict mode with mkey provided as keyword arg (single dict)
-    @overload
-    def get(
-        self,
-        *,
-        name: str,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> LdbMonitorObject: ...
-    
-    # Dict mode - list of dicts (no mkey/name provided) - keyword-only signature
-    @overload
-    def get(
-        self,
-        *,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObjectList[LdbMonitorObject]: ...
-    
-    # Fallback overload for all other cases
-    @overload
-    def get(
-        self,
-        name: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> Union[dict[str, Any], list[dict[str, Any]], FortiObject, list[FortiObject]]: ...
-    
-    def get(
-        self,
-        name: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> LdbMonitorObject | list[LdbMonitorObject] | dict[str, Any] | list[dict[str, Any]]: ...
     
     def get_schema(
         self,
         vdom: str | None = ...,
         format: str = ...,
     ) -> FortiObject: ...
+
+    # ================================================================
+    # POST Method
+    # ================================================================
     
-    # POST overloads
-    @overload
     def post(
         self,
         payload_dict: LdbMonitorPayload | None = ...,
@@ -358,70 +176,14 @@ class LdbMonitor:
         dns_request_domain: str | None = ...,
         dns_match_ip: str | None = ...,
         vdom: str | bool | None = ...,
+        error_mode: Literal["raise", "return", "print"] | None = ...,
+        error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> LdbMonitorObject: ...
+
+    # ================================================================
+    # PUT Method
+    # ================================================================
     
-    @overload
-    def post(
-        self,
-        payload_dict: LdbMonitorPayload | None = ...,
-        name: str | None = ...,
-        type: Literal["ping", "tcp", "http", "https", "dns"] | None = ...,
-        interval: int | None = ...,
-        timeout: int | None = ...,
-        retry: int | None = ...,
-        port: int | None = ...,
-        src_ip: str | None = ...,
-        http_get: str | None = ...,
-        http_match: str | None = ...,
-        http_max_redirects: int | None = ...,
-        dns_protocol: Literal["udp", "tcp"] | None = ...,
-        dns_request_domain: str | None = ...,
-        dns_match_ip: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
-    
-    # Default overload
-    @overload
-    def post(
-        self,
-        payload_dict: LdbMonitorPayload | None = ...,
-        name: str | None = ...,
-        type: Literal["ping", "tcp", "http", "https", "dns"] | None = ...,
-        interval: int | None = ...,
-        timeout: int | None = ...,
-        retry: int | None = ...,
-        port: int | None = ...,
-        src_ip: str | None = ...,
-        http_get: str | None = ...,
-        http_match: str | None = ...,
-        http_max_redirects: int | None = ...,
-        dns_protocol: Literal["udp", "tcp"] | None = ...,
-        dns_request_domain: str | None = ...,
-        dns_match_ip: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
-    
-    def post(
-        self,
-        payload_dict: LdbMonitorPayload | None = ...,
-        name: str | None = ...,
-        type: Literal["ping", "tcp", "http", "https", "dns"] | None = ...,
-        interval: int | None = ...,
-        timeout: int | None = ...,
-        retry: int | None = ...,
-        port: int | None = ...,
-        src_ip: str | None = ...,
-        http_get: str | None = ...,
-        http_match: str | None = ...,
-        http_max_redirects: int | None = ...,
-        dns_protocol: Literal["udp", "tcp"] | None = ...,
-        dns_request_domain: str | None = ...,
-        dns_match_ip: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
-    
-    # PUT overloads
-    @overload
     def put(
         self,
         payload_dict: LdbMonitorPayload | None = ...,
@@ -439,96 +201,25 @@ class LdbMonitor:
         dns_request_domain: str | None = ...,
         dns_match_ip: str | None = ...,
         vdom: str | bool | None = ...,
+        error_mode: Literal["raise", "return", "print"] | None = ...,
+        error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> LdbMonitorObject: ...
-    
-    @overload
-    def put(
-        self,
-        payload_dict: LdbMonitorPayload | None = ...,
-        name: str | None = ...,
-        type: Literal["ping", "tcp", "http", "https", "dns"] | None = ...,
-        interval: int | None = ...,
-        timeout: int | None = ...,
-        retry: int | None = ...,
-        port: int | None = ...,
-        src_ip: str | None = ...,
-        http_get: str | None = ...,
-        http_match: str | None = ...,
-        http_max_redirects: int | None = ...,
-        dns_protocol: Literal["udp", "tcp"] | None = ...,
-        dns_request_domain: str | None = ...,
-        dns_match_ip: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
-    
-    # Default overload
-    @overload
-    def put(
-        self,
-        payload_dict: LdbMonitorPayload | None = ...,
-        name: str | None = ...,
-        type: Literal["ping", "tcp", "http", "https", "dns"] | None = ...,
-        interval: int | None = ...,
-        timeout: int | None = ...,
-        retry: int | None = ...,
-        port: int | None = ...,
-        src_ip: str | None = ...,
-        http_get: str | None = ...,
-        http_match: str | None = ...,
-        http_max_redirects: int | None = ...,
-        dns_protocol: Literal["udp", "tcp"] | None = ...,
-        dns_request_domain: str | None = ...,
-        dns_match_ip: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
-    
-    def put(
-        self,
-        payload_dict: LdbMonitorPayload | None = ...,
-        name: str | None = ...,
-        type: Literal["ping", "tcp", "http", "https", "dns"] | None = ...,
-        interval: int | None = ...,
-        timeout: int | None = ...,
-        retry: int | None = ...,
-        port: int | None = ...,
-        src_ip: str | None = ...,
-        http_get: str | None = ...,
-        http_match: str | None = ...,
-        http_max_redirects: int | None = ...,
-        dns_protocol: Literal["udp", "tcp"] | None = ...,
-        dns_request_domain: str | None = ...,
-        dns_match_ip: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
-    
-    # DELETE overloads
-    @overload
-    def delete(
-        self,
-        name: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> LdbMonitorObject: ...
-    
-    @overload
-    def delete(
-        self,
-        name: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
-    
-    # Default overload
-    @overload
-    def delete(
-        self,
-        name: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+
+    # ================================================================
+    # DELETE Method
+    # ================================================================
     
     def delete(
         self,
         name: str | None = ...,
         vdom: str | bool | None = ...,
+        error_mode: Literal["raise", "return", "print"] | None = ...,
+        error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> FortiObject: ...
+
+    # ================================================================
+    # Utility Methods
+    # ================================================================
     
     def exists(
         self,
@@ -553,6 +244,8 @@ class LdbMonitor:
         dns_request_domain: str | None = ...,
         dns_match_ip: str | None = ...,
         vdom: str | bool | None = ...,
+        error_mode: Literal["raise", "return", "print"] | None = ...,
+        error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> FortiObject: ...
     
     # Helper methods
@@ -560,7 +253,7 @@ class LdbMonitor:
     def help(field_name: str | None = ...) -> str: ...
     
     @staticmethod
-    def fields(detailed: bool = ...) -> Union[list[str], list[dict[str, Any]]]: ...
+    def fields(detailed: bool = ...) -> list[str] | list[dict[str, Any]]: ...
     
     @staticmethod
     def field_info(field_name: str) -> FortiObject: ...
@@ -576,9 +269,6 @@ class LdbMonitor:
     
     @staticmethod
     def schema() -> FortiObject: ...
-
-
-# ================================================================
 
 
 __all__ = [

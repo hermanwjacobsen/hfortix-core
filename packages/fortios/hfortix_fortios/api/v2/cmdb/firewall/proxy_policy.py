@@ -2049,6 +2049,216 @@ class ProxyPolicy(CRUDEndpoint, MetadataMixin):
             - put(): Update existing object
             - exists(): Check existence manually
         """
+        # Apply normalization for table fields (supports flexible input formats)
+        if access_proxy is not None:
+            access_proxy = normalize_table_field(
+                access_proxy,
+                mkey="name",
+                required_fields=['name'],
+                field_name="access_proxy",
+                example="[{'name': 'value'}]",
+            )
+        if access_proxy6 is not None:
+            access_proxy6 = normalize_table_field(
+                access_proxy6,
+                mkey="name",
+                required_fields=['name'],
+                field_name="access_proxy6",
+                example="[{'name': 'value'}]",
+            )
+        if ztna_proxy is not None:
+            ztna_proxy = normalize_table_field(
+                ztna_proxy,
+                mkey="name",
+                required_fields=['name'],
+                field_name="ztna_proxy",
+                example="[{'name': 'value'}]",
+            )
+        if srcintf is not None:
+            srcintf = normalize_table_field(
+                srcintf,
+                mkey="name",
+                required_fields=['name'],
+                field_name="srcintf",
+                example="[{'name': 'value'}]",
+            )
+        if dstintf is not None:
+            dstintf = normalize_table_field(
+                dstintf,
+                mkey="name",
+                required_fields=['name'],
+                field_name="dstintf",
+                example="[{'name': 'value'}]",
+            )
+        if srcaddr is not None:
+            srcaddr = normalize_table_field(
+                srcaddr,
+                mkey="name",
+                required_fields=['name'],
+                field_name="srcaddr",
+                example="[{'name': 'value'}]",
+            )
+        if poolname is not None:
+            poolname = normalize_table_field(
+                poolname,
+                mkey="name",
+                required_fields=['name'],
+                field_name="poolname",
+                example="[{'name': 'value'}]",
+            )
+        if poolname6 is not None:
+            poolname6 = normalize_table_field(
+                poolname6,
+                mkey="name",
+                required_fields=['name'],
+                field_name="poolname6",
+                example="[{'name': 'value'}]",
+            )
+        if dstaddr is not None:
+            dstaddr = normalize_table_field(
+                dstaddr,
+                mkey="name",
+                required_fields=['name'],
+                field_name="dstaddr",
+                example="[{'name': 'value'}]",
+            )
+        if ztna_ems_tag is not None:
+            ztna_ems_tag = normalize_table_field(
+                ztna_ems_tag,
+                mkey="name",
+                required_fields=['name'],
+                field_name="ztna_ems_tag",
+                example="[{'name': 'value'}]",
+            )
+        if url_risk is not None:
+            url_risk = normalize_table_field(
+                url_risk,
+                mkey="name",
+                required_fields=['name'],
+                field_name="url_risk",
+                example="[{'name': 'value'}]",
+            )
+        if internet_service_name is not None:
+            internet_service_name = normalize_table_field(
+                internet_service_name,
+                mkey="name",
+                required_fields=['name'],
+                field_name="internet_service_name",
+                example="[{'name': 'value'}]",
+            )
+        if internet_service_group is not None:
+            internet_service_group = normalize_table_field(
+                internet_service_group,
+                mkey="name",
+                required_fields=['name'],
+                field_name="internet_service_group",
+                example="[{'name': 'value'}]",
+            )
+        if internet_service_custom is not None:
+            internet_service_custom = normalize_table_field(
+                internet_service_custom,
+                mkey="name",
+                required_fields=['name'],
+                field_name="internet_service_custom",
+                example="[{'name': 'value'}]",
+            )
+        if internet_service_custom_group is not None:
+            internet_service_custom_group = normalize_table_field(
+                internet_service_custom_group,
+                mkey="name",
+                required_fields=['name'],
+                field_name="internet_service_custom_group",
+                example="[{'name': 'value'}]",
+            )
+        if internet_service_fortiguard is not None:
+            internet_service_fortiguard = normalize_table_field(
+                internet_service_fortiguard,
+                mkey="name",
+                required_fields=['name'],
+                field_name="internet_service_fortiguard",
+                example="[{'name': 'value'}]",
+            )
+        if internet_service6_name is not None:
+            internet_service6_name = normalize_table_field(
+                internet_service6_name,
+                mkey="name",
+                required_fields=['name'],
+                field_name="internet_service6_name",
+                example="[{'name': 'value'}]",
+            )
+        if internet_service6_group is not None:
+            internet_service6_group = normalize_table_field(
+                internet_service6_group,
+                mkey="name",
+                required_fields=['name'],
+                field_name="internet_service6_group",
+                example="[{'name': 'value'}]",
+            )
+        if internet_service6_custom is not None:
+            internet_service6_custom = normalize_table_field(
+                internet_service6_custom,
+                mkey="name",
+                required_fields=['name'],
+                field_name="internet_service6_custom",
+                example="[{'name': 'value'}]",
+            )
+        if internet_service6_custom_group is not None:
+            internet_service6_custom_group = normalize_table_field(
+                internet_service6_custom_group,
+                mkey="name",
+                required_fields=['name'],
+                field_name="internet_service6_custom_group",
+                example="[{'name': 'value'}]",
+            )
+        if internet_service6_fortiguard is not None:
+            internet_service6_fortiguard = normalize_table_field(
+                internet_service6_fortiguard,
+                mkey="name",
+                required_fields=['name'],
+                field_name="internet_service6_fortiguard",
+                example="[{'name': 'value'}]",
+            )
+        if service is not None:
+            service = normalize_table_field(
+                service,
+                mkey="name",
+                required_fields=['name'],
+                field_name="service",
+                example="[{'name': 'value'}]",
+            )
+        if srcaddr6 is not None:
+            srcaddr6 = normalize_table_field(
+                srcaddr6,
+                mkey="name",
+                required_fields=['name'],
+                field_name="srcaddr6",
+                example="[{'name': 'value'}]",
+            )
+        if dstaddr6 is not None:
+            dstaddr6 = normalize_table_field(
+                dstaddr6,
+                mkey="name",
+                required_fields=['name'],
+                field_name="dstaddr6",
+                example="[{'name': 'value'}]",
+            )
+        if groups is not None:
+            groups = normalize_table_field(
+                groups,
+                mkey="name",
+                required_fields=['name'],
+                field_name="groups",
+                example="[{'name': 'value'}]",
+            )
+        if users is not None:
+            users = normalize_table_field(
+                users,
+                mkey="name",
+                required_fields=['name'],
+                field_name="users",
+                example="[{'name': 'value'}]",
+            )
+        
         # Build payload using helper function with auto-normalization
         payload_data = build_api_payload(
             uuid=uuid,

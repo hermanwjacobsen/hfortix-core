@@ -38,14 +38,14 @@ class SettingModel(BaseModel):
     # Model Fields
     # ========================================================================
     
-    caname: str | None = Field(max_length=35, default="", description="CA certificate used by SSH Inspection.")  # datasource: ['firewall.ssh.local-ca.name']    
-    untrusted_caname: str | None = Field(max_length=35, default="", description="Untrusted CA certificate used by SSH Inspection.")  # datasource: ['firewall.ssh.local-ca.name']    
-    hostkey_rsa2048: str | None = Field(max_length=35, default="", description="RSA certificate used by SSH proxy.")  # datasource: ['firewall.ssh.local-key.name']    
-    hostkey_dsa1024: str | None = Field(max_length=35, default="", description="DSA certificate used by SSH proxy.")  # datasource: ['firewall.ssh.local-key.name']    
-    hostkey_ecdsa256: str | None = Field(max_length=35, default="", description="ECDSA nid256 certificate used by SSH proxy.")  # datasource: ['firewall.ssh.local-key.name']    
-    hostkey_ecdsa384: str | None = Field(max_length=35, default="", description="ECDSA nid384 certificate used by SSH proxy.")  # datasource: ['firewall.ssh.local-key.name']    
-    hostkey_ecdsa521: str | None = Field(max_length=35, default="", description="ECDSA nid384 certificate used by SSH proxy.")  # datasource: ['firewall.ssh.local-key.name']    
-    hostkey_ed25519: str | None = Field(max_length=35, default="", description="ED25519 hostkey used by SSH proxy.")  # datasource: ['firewall.ssh.local-key.name']    
+    caname: str | None = Field(max_length=35, default=None, description="CA certificate used by SSH Inspection.")  # datasource: ['firewall.ssh.local-ca.name']    
+    untrusted_caname: str | None = Field(max_length=35, default=None, description="Untrusted CA certificate used by SSH Inspection.")  # datasource: ['firewall.ssh.local-ca.name']    
+    hostkey_rsa2048: str | None = Field(max_length=35, default=None, description="RSA certificate used by SSH proxy.")  # datasource: ['firewall.ssh.local-key.name']    
+    hostkey_dsa1024: str | None = Field(max_length=35, default=None, description="DSA certificate used by SSH proxy.")  # datasource: ['firewall.ssh.local-key.name']    
+    hostkey_ecdsa256: str | None = Field(max_length=35, default=None, description="ECDSA nid256 certificate used by SSH proxy.")  # datasource: ['firewall.ssh.local-key.name']    
+    hostkey_ecdsa384: str | None = Field(max_length=35, default=None, description="ECDSA nid384 certificate used by SSH proxy.")  # datasource: ['firewall.ssh.local-key.name']    
+    hostkey_ecdsa521: str | None = Field(max_length=35, default=None, description="ECDSA nid384 certificate used by SSH proxy.")  # datasource: ['firewall.ssh.local-key.name']    
+    hostkey_ed25519: str | None = Field(max_length=35, default=None, description="ED25519 hostkey used by SSH proxy.")  # datasource: ['firewall.ssh.local-key.name']    
     host_trusted_checking: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable host trusted checking.")    
     # ========================================================================
     # Custom Validators
@@ -231,7 +231,7 @@ class SettingModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.ssh.setting.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate scalar field
         value = getattr(self, "caname", None)
@@ -240,7 +240,7 @@ class SettingModel(BaseModel):
         
         # Check all datasource endpoints
         found = False
-        if await client.api.cmdb.firewall.ssh.local-ca.exists(value):
+        if await client.api.cmdb.firewall.ssh.local_ca.exists(value):
             found = True
         
         if not found:
@@ -280,7 +280,7 @@ class SettingModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.ssh.setting.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate scalar field
         value = getattr(self, "untrusted_caname", None)
@@ -289,7 +289,7 @@ class SettingModel(BaseModel):
         
         # Check all datasource endpoints
         found = False
-        if await client.api.cmdb.firewall.ssh.local-ca.exists(value):
+        if await client.api.cmdb.firewall.ssh.local_ca.exists(value):
             found = True
         
         if not found:
@@ -329,7 +329,7 @@ class SettingModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.ssh.setting.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate scalar field
         value = getattr(self, "hostkey_rsa2048", None)
@@ -338,7 +338,7 @@ class SettingModel(BaseModel):
         
         # Check all datasource endpoints
         found = False
-        if await client.api.cmdb.firewall.ssh.local-key.exists(value):
+        if await client.api.cmdb.firewall.ssh.local_key.exists(value):
             found = True
         
         if not found:
@@ -378,7 +378,7 @@ class SettingModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.ssh.setting.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate scalar field
         value = getattr(self, "hostkey_dsa1024", None)
@@ -387,7 +387,7 @@ class SettingModel(BaseModel):
         
         # Check all datasource endpoints
         found = False
-        if await client.api.cmdb.firewall.ssh.local-key.exists(value):
+        if await client.api.cmdb.firewall.ssh.local_key.exists(value):
             found = True
         
         if not found:
@@ -427,7 +427,7 @@ class SettingModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.ssh.setting.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate scalar field
         value = getattr(self, "hostkey_ecdsa256", None)
@@ -436,7 +436,7 @@ class SettingModel(BaseModel):
         
         # Check all datasource endpoints
         found = False
-        if await client.api.cmdb.firewall.ssh.local-key.exists(value):
+        if await client.api.cmdb.firewall.ssh.local_key.exists(value):
             found = True
         
         if not found:
@@ -476,7 +476,7 @@ class SettingModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.ssh.setting.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate scalar field
         value = getattr(self, "hostkey_ecdsa384", None)
@@ -485,7 +485,7 @@ class SettingModel(BaseModel):
         
         # Check all datasource endpoints
         found = False
-        if await client.api.cmdb.firewall.ssh.local-key.exists(value):
+        if await client.api.cmdb.firewall.ssh.local_key.exists(value):
             found = True
         
         if not found:
@@ -525,7 +525,7 @@ class SettingModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.ssh.setting.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate scalar field
         value = getattr(self, "hostkey_ecdsa521", None)
@@ -534,7 +534,7 @@ class SettingModel(BaseModel):
         
         # Check all datasource endpoints
         found = False
-        if await client.api.cmdb.firewall.ssh.local-key.exists(value):
+        if await client.api.cmdb.firewall.ssh.local_key.exists(value):
             found = True
         
         if not found:
@@ -574,7 +574,7 @@ class SettingModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.ssh.setting.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate scalar field
         value = getattr(self, "hostkey_ed25519", None)
@@ -583,7 +583,7 @@ class SettingModel(BaseModel):
         
         # Check all datasource endpoints
         found = False
-        if await client.api.cmdb.firewall.ssh.local-key.exists(value):
+        if await client.api.cmdb.firewall.ssh.local_key.exists(value):
             found = True
         
         if not found:
@@ -648,5 +648,5 @@ __all__ = [
 # ============================================================================
 # Generated by hfortix generator v0.6.0
 # Schema: 1.7.0
-# Generated: 2026-01-17T05:32:20.192376Z
+# Generated: 2026-01-17T17:25:23.738461Z
 # ============================================================================

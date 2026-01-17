@@ -12,7 +12,11 @@ from typing import Any, Literal, Optional
 from enum import Enum
 
 # ============================================================================
-# Child Table Models
+# Enum Definitions for Child Table Fields (for fields with 4+ allowed values)
+# ============================================================================
+
+# ============================================================================
+# Child Table Models (sorted deepest-first so nested models are defined before their parents)
 # ============================================================================
 
 class SpeedTestScheduleSchedules(BaseModel):
@@ -26,15 +30,20 @@ class SpeedTestScheduleSchedules(BaseModel):
         """Pydantic model configuration."""
         extra = "allow"  # Allow additional fields from API
         str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
     
-    name: str = Field(max_length=31, default="", description="Name of a firewall recurring schedule.")  # datasource: ['firewall.schedule.recurring.name']
+    name: str = Field(max_length=31, description="Name of a firewall recurring schedule.")  # datasource: ['firewall.schedule.recurring.name']
 # ============================================================================
 # Enum Definitions (for fields with 4+ allowed values)
 # ============================================================================
 
-class SpeedTestScheduleUpdate_shaperEnum(str, Enum):
+class SpeedTestScheduleUpdateShaperEnum(str, Enum):
     """Allowed values for update_shaper field."""
-    DISABLE = "disable"    LOCAL = "local"    REMOTE = "remote"    BOTH = "both"
+    DISABLE = "disable"
+    LOCAL = "local"
+    REMOTE = "remote"
+    BOTH = "both"
+
 
 # ============================================================================
 # Main Model
@@ -59,16 +68,16 @@ class SpeedTestScheduleModel(BaseModel):
     # Model Fields
     # ========================================================================
     
-    interface: str | None = Field(max_length=35, default="", description="Interface name.")  # datasource: ['system.interface.name']    
+    interface: str | None = Field(max_length=35, default=None, description="Interface name.")  # datasource: ['system.interface.name']    
     status: Literal["disable", "enable"] | None = Field(default="enable", description="Enable/disable scheduled speed test.")    
-    diffserv: str | None = Field(default="", description="DSCP used for speed test.")    
-    server_name: str | None = Field(max_length=35, default="", description="Speed test server name in system.speed-test-server list or leave it as empty to choose default server \"FTNT_Auto\".")  # datasource: ['system.speed-test-server.name']    
+    diffserv: str | None = Field(default=None, description="DSCP used for speed test.")    
+    server_name: str | None = Field(max_length=35, default=None, description="Speed test server name in system.speed-test-server list or leave it as empty to choose default server \"FTNT_Auto\".")  # datasource: ['system.speed-test-server.name']    
     mode: Literal["UDP", "TCP", "Auto"] | None = Field(default="Auto", description="Protocol Auto(default), TCP or UDP used for speed test.")    
-    schedules: list[Schedules] = Field(description="Schedules for the interface.")    
+    schedules: list[SpeedTestScheduleSchedules] = Field(description="Schedules for the interface.")    
     dynamic_server: Literal["disable", "enable"] | None = Field(default="disable", description="Enable/disable dynamic server option.")    
     ctrl_port: int | None = Field(ge=1, le=65535, default=5200, description="Port of the controller to get access token.")    
     server_port: int | None = Field(ge=1, le=65535, default=5201, description="Port of the server to run speed test.")    
-    update_shaper: UpdateShaperEnum | None = Field(default="disable", description="Set egress shaper based on the test result.")    
+    update_shaper: SpeedTestScheduleUpdateShaperEnum | None = Field(default=SpeedTestScheduleUpdateShaperEnum.DISABLE, description="Set egress shaper based on the test result.")    
     update_inbandwidth: Literal["disable", "enable"] | None = Field(default="disable", description="Enable/disable bypassing interface's inbound bandwidth setting.")    
     update_outbandwidth: Literal["disable", "enable"] | None = Field(default="disable", description="Enable/disable bypassing interface's outbound bandwidth setting.")    
     update_interface_shaping: Literal["disable", "enable"] | None = Field(default="disable", description="Enable/disable using the speedtest results as reference for interface shaping (overriding configured in/outbandwidth).")    
@@ -176,7 +185,7 @@ class SpeedTestScheduleModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.system.speed_test_schedule.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate scalar field
         value = getattr(self, "interface", None)
@@ -225,7 +234,7 @@ class SpeedTestScheduleModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.system.speed_test_schedule.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate scalar field
         value = getattr(self, "server_name", None)
@@ -234,7 +243,7 @@ class SpeedTestScheduleModel(BaseModel):
         
         # Check all datasource endpoints
         found = False
-        if await client.api.cmdb.system.speed-test-server.exists(value):
+        if await client.api.cmdb.system.speed_test_server.exists(value):
             found = True
         
         if not found:
@@ -274,7 +283,7 @@ class SpeedTestScheduleModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.system.speed_test_schedule.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate child table items
         values = getattr(self, "schedules", [])
@@ -347,5 +356,5 @@ __all__ = [
 # ============================================================================
 # Generated by hfortix generator v0.6.0
 # Schema: 1.7.0
-# Generated: 2026-01-17T05:32:16.600752Z
+# Generated: 2026-01-17T17:25:20.626030Z
 # ============================================================================

@@ -1,375 +1,123 @@
-from typing import TypedDict, Literal, Any, Coroutine, Union, overload, Generator, final
-from typing_extensions import NotRequired
-from hfortix_fortios.models import FortiObject, FortiObjectList
+""" - Type Stubs
 
-# ============================================================================
-# Nested TypedDicts for table field children (dict mode)
-# These MUST be defined before the Payload class to use them as type hints
-# ============================================================================
+Auto-generated stub file for type checking and IDE support.
 
-class IpamPoolsItem(TypedDict, total=False):
-    """Type hints for pools table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    Use this when building payloads for POST/PUT requests.
-    
-    **Available fields:**
-        - name: str
-        - description: str
-        - subnet: str
-        - exclude: str
-    
-    **Example:**
-        entry: IpamPoolsItem = {
-            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
-        }
-    """
-    
-    name: str  # IPAM pool name. | MaxLen: 79
-    description: str  # Description. | MaxLen: 127
-    subnet: str  # Configure IPAM pool subnet, Class A - Class B subn | Default: 0.0.0.0 0.0.0.0
-    exclude: str  # Configure pool exclude subnets.
+Endpoint: system/ipam
+Category: cmdb
+"""
+
+from __future__ import annotations
+
+from typing import (
+    Any,
+    ClassVar,
+    Literal,
+    TypedDict,
+)
+
+from hfortix_fortios.models import (
+    FortiObject,
+    FortiObjectList,
+)
 
 
-class IpamRulesItem(TypedDict, total=False):
-    """Type hints for rules table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    Use this when building payloads for POST/PUT requests.
-    
-    **Available fields:**
-        - name: str
-        - description: str
-        - device: str
-        - interface: str
-        - role: "any" | "lan" | "wan" | "dmz" | "undefined"
-        - pool: str
-        - dhcp: "enable" | "disable"
-    
-    **Example:**
-        entry: IpamRulesItem = {
-            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
-        }
-    """
-    
-    name: str  # IPAM rule name. | MaxLen: 79
-    description: str  # Description. | MaxLen: 127
-    device: str  # Configure serial number or wildcard of FortiGate t
-    interface: str  # Configure name or wildcard of interface to match.
-    role: Literal["any", "lan", "wan", "dmz", "undefined"]  # Configure role of interface to match. | Default: any
-    pool: str  # Configure name of IPAM pool to use.
-    dhcp: Literal["enable", "disable"]  # Enable/disable DHCP server for matching IPAM inter | Default: disable
+# ================================================================
+# TypedDict Payloads
+# ================================================================
 
-
-# ============================================================================
-# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional)
-# ============================================================================
-# NOTE: We intentionally DON'T use NotRequired wrapper because:
-# 1. total=False already makes all fields optional
-# 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
-class IpamPayload(TypedDict, total=False):
-    """
-    Type hints for system/ipam payload fields.
-    
-    Configure IP address management services.
-    
-    **Usage:**
-        payload: IpamPayload = {
-            "field": "value",  # <- autocomplete shows all fields
-        }
-    """
-    status: Literal["enable", "disable"]  # Enable/disable IP address management services. | Default: disable
-    server_type: Literal["fabric-root"]  # Configure the type of IPAM server to use. | Default: fabric-root
-    automatic_conflict_resolution: Literal["disable", "enable"]  # Enable/disable automatic conflict resolution. | Default: disable
-    require_subnet_size_match: Literal["disable", "enable"]  # Enable/disable reassignment of subnets to make req | Default: enable
-    manage_lan_addresses: Literal["disable", "enable"]  # Enable/disable default management of LAN interface | Default: enable
-    manage_lan_extension_addresses: Literal["disable", "enable"]  # Enable/disable default management of FortiExtender | Default: enable
-    manage_ssid_addresses: Literal["disable", "enable"]  # Enable/disable default management of FortiAP SSID | Default: enable
-    pools: list[IpamPoolsItem]  # Configure IPAM pools.
-    rules: list[IpamRulesItem]  # Configure IPAM allocation rules.
-
-# ============================================================================
-# Nested classes for table field children (object mode - for API responses)
-# ============================================================================
-
-@final
-class IpamPoolsObject:
-    """Typed object for pools table items.
-    
-    Provides IDE autocomplete for nested table field attributes.
-    At runtime, this is a FortiObject instance.
-    """
-    
-    # IPAM pool name. | MaxLen: 79
+class IpamPoolsItem:
+    """Nested item for pools field - supports attribute access."""
     name: str
-    # Description. | MaxLen: 127
     description: str
-    # Configure IPAM pool subnet, Class A - Class B subnet. | Default: 0.0.0.0 0.0.0.0
     subnet: str
-    # Configure pool exclude subnets.
     exclude: str
-    
-    # Common API response fields
-    status: str
-    http_status: int | None
-    http_status_code: int | None
-    http_method: str | None
-    http_response_time: float | None
-    vdom: str | None
-    
-    # Methods from FortiObject
-    @property
-    def dict(self) -> dict[str, Any]:
-        """Convert to dictionary."""
-        ...
-    @property
-    def json(self) -> str:
-        """Get pretty-printed JSON string."""
-        ...
-    @property
-    def raw(self) -> dict[str, Any]:
-        """Get raw API response data."""
-        ...
-    def get_full(self, name: str) -> Any: ...
-    def to_dict(self) -> FortiObject: ...
-    def keys(self) -> Any: ...
-    def values(self) -> Generator[Any, None, None]: ...
-    def items(self) -> Generator[tuple[str, Any], None, None]: ...
-    def get(self, key: str, default: Any = None) -> Any: ...
 
 
-@final
-class IpamRulesObject:
-    """Typed object for rules table items.
-    
-    Provides IDE autocomplete for nested table field attributes.
-    At runtime, this is a FortiObject instance.
-    """
-    
-    # IPAM rule name. | MaxLen: 79
+class IpamRulesItem:
+    """Nested item for rules field - supports attribute access."""
     name: str
-    # Description. | MaxLen: 127
     description: str
-    # Configure serial number or wildcard of FortiGate to match.
     device: str
-    # Configure name or wildcard of interface to match.
     interface: str
-    # Configure role of interface to match. | Default: any
     role: Literal["any", "lan", "wan", "dmz", "undefined"]
-    # Configure name of IPAM pool to use.
     pool: str
-    # Enable/disable DHCP server for matching IPAM interfaces. | Default: disable
     dhcp: Literal["enable", "disable"]
-    
-    # Common API response fields
-    status: str
-    http_status: int | None
-    http_status_code: int | None
-    http_method: str | None
-    http_response_time: float | None
-    vdom: str | None
-    
-    # Methods from FortiObject
-    @property
-    def dict(self) -> dict[str, Any]:
-        """Convert to dictionary."""
-        ...
-    @property
-    def json(self) -> str:
-        """Get pretty-printed JSON string."""
-        ...
-    @property
-    def raw(self) -> dict[str, Any]:
-        """Get raw API response data."""
-        ...
-    def get_full(self, name: str) -> Any: ...
-    def to_dict(self) -> FortiObject: ...
-    def keys(self) -> Any: ...
-    def values(self) -> Generator[Any, None, None]: ...
-    def items(self) -> Generator[tuple[str, Any], None, None]: ...
-    def get(self, key: str, default: Any = None) -> Any: ...
 
 
-
-
-# Response TypedDict for GET returns (all fields present in API response)
-class IpamResponse(TypedDict):
-    """
-    Type hints for system/ipam API response fields.
-    
-    All fields are present in the response from the FortiGate API.
-    """
-    status: Literal["enable", "disable"]  # Enable/disable IP address management services. | Default: disable
-    server_type: Literal["fabric-root"]  # Configure the type of IPAM server to use. | Default: fabric-root
-    automatic_conflict_resolution: Literal["disable", "enable"]  # Enable/disable automatic conflict resolution. | Default: disable
-    require_subnet_size_match: Literal["disable", "enable"]  # Enable/disable reassignment of subnets to make req | Default: enable
-    manage_lan_addresses: Literal["disable", "enable"]  # Enable/disable default management of LAN interface | Default: enable
-    manage_lan_extension_addresses: Literal["disable", "enable"]  # Enable/disable default management of FortiExtender | Default: enable
-    manage_ssid_addresses: Literal["disable", "enable"]  # Enable/disable default management of FortiAP SSID | Default: enable
-    pools: list[IpamPoolsItem]  # Configure IPAM pools.
-    rules: list[IpamRulesItem]  # Configure IPAM allocation rules.
-
-
-@final
-class IpamObject:
-    """Typed FortiObject for system/ipam with IDE autocomplete support.
-    
-    This is a typed wrapper that provides IDE autocomplete for API response fields.
-    At runtime, this is actually a FortiObject instance.
-    """
-    
-    # Enable/disable IP address management services. | Default: disable
+class IpamPayload(TypedDict, total=False):
+    """Payload type for Ipam operations."""
     status: Literal["enable", "disable"]
-    # Configure the type of IPAM server to use. | Default: fabric-root
     server_type: Literal["fabric-root"]
-    # Enable/disable automatic conflict resolution. | Default: disable
     automatic_conflict_resolution: Literal["disable", "enable"]
-    # Enable/disable reassignment of subnets to make requested and | Default: enable
     require_subnet_size_match: Literal["disable", "enable"]
-    # Enable/disable default management of LAN interface addresses | Default: enable
     manage_lan_addresses: Literal["disable", "enable"]
-    # Enable/disable default management of FortiExtender LAN exten | Default: enable
     manage_lan_extension_addresses: Literal["disable", "enable"]
-    # Enable/disable default management of FortiAP SSID addresses. | Default: enable
     manage_ssid_addresses: Literal["disable", "enable"]
-    # Configure IPAM pools.
-    pools: list[IpamPoolsObject]
-    # Configure IPAM allocation rules.
-    rules: list[IpamRulesObject]
-    
-    # Common API response fields
-    status: str
-    http_status: int | None
-    http_status_code: int | None
-    http_method: str | None
-    http_response_time: float | None
-    vdom: str | None
-    
-    # Methods from FortiObject
-    @property
-    def dict(self) -> dict[str, Any]:
-        """Convert to dictionary."""
-        ...
-    @property
-    def json(self) -> str:
-        """Get pretty-printed JSON string."""
-        ...
-    @property
-    def raw(self) -> dict[str, Any]:
-        """Get raw API response data."""
-        ...
-    def get_full(self, name: str) -> Any: ...
-    def to_dict(self) -> IpamPayload: ...
-    def keys(self) -> Any: ...
-    def values(self) -> Generator[Any, None, None]: ...
-    def items(self) -> Generator[tuple[str, Any], None, None]: ...
-    def get(self, key: str, default: Any = None) -> Any: ...
+    pools: str | list[str] | list[dict[str, Any]] | list[IpamPoolsItem]
+    rules: str | list[str] | list[dict[str, Any]] | list[IpamRulesItem]
 
+
+# ================================================================
+# Response Types (TypedDict for dict-style access)
+# ================================================================
+
+class IpamResponse(TypedDict, total=False):
+    """Response type for Ipam - use with .dict property for typed dict access."""
+    status: Literal["enable", "disable"]
+    server_type: Literal["fabric-root"]
+    automatic_conflict_resolution: Literal["disable", "enable"]
+    require_subnet_size_match: Literal["disable", "enable"]
+    manage_lan_addresses: Literal["disable", "enable"]
+    manage_lan_extension_addresses: Literal["disable", "enable"]
+    manage_ssid_addresses: Literal["disable", "enable"]
+    pools: list[IpamPoolsItem]
+    rules: list[IpamRulesItem]
+
+
+# ================================================================
+# Response Types (Class for attribute access)
+# ================================================================
+
+
+class IpamObject(FortiObject):
+    """Typed FortiObject for Ipam with field access."""
+    status: Literal["enable", "disable"]
+    server_type: Literal["fabric-root"]
+    automatic_conflict_resolution: Literal["disable", "enable"]
+    require_subnet_size_match: Literal["disable", "enable"]
+    manage_lan_addresses: Literal["disable", "enable"]
+    manage_lan_extension_addresses: Literal["disable", "enable"]
+    manage_ssid_addresses: Literal["disable", "enable"]
+    pools: list[IpamPoolsItem]
+    rules: list[IpamRulesItem]
+
+
+# ================================================================
+# Main Endpoint Class
+# ================================================================
 
 class Ipam:
     """
-    Configure IP address management services.
     
-    Path: system/ipam
+    Endpoint: system/ipam
     Category: cmdb
     """
     
+    # Class attributes for introspection
+    endpoint: ClassVar[str] = ...
+    path: ClassVar[str] = ...
+    category: ClassVar[str] = ...
+    capabilities: ClassVar[dict[str, Any]] = ...
+    
     def __init__(self, client: Any) -> None:
-        """Initialize endpoint with HTTP client.
-        
-        Args:
-            client: HTTP client instance for API communication
-        """
+        """Initialize endpoint with HTTP client."""
         ...
     
     # ================================================================
-    # GET OVERLOADS - Always returns FortiObject (or ContentResponse for file endpoints)
-    # Pylance matches overloads top-to-bottom, so these must come first!
+    # GET Methods
     # ================================================================
     
-    # With mkey as positional arg -> returns FortiObject
-    @overload
-    def get(
-        self,
-        name: str,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-    ) -> IpamObject: ...
-    
-    # With mkey as keyword arg -> returns FortiObject
-    @overload
-    def get(
-        self,
-        *,
-        name: str,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-    ) -> IpamObject: ...
-    
-    # Without mkey -> returns list of FortiObjects
-    @overload
-    def get(
-        self,
-        name: None = None,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-    ) -> IpamObject: ...
-    
-    # ================================================================
-    # (removed - all GET now returns FortiObject)
-    # ================================================================
-    
-    # With mkey as positional arg -> returns single object
-    @overload
-    def get(
-        self,
-        name: str,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-    ) -> IpamObject: ...
-    
-    # With mkey as keyword arg -> returns single object
-    @overload
-    def get(
-        self,
-        *,
-        name: str,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-    ) -> IpamObject: ...
-    
-    # With no mkey -> returns list of objects
-    @overload
+    # Singleton endpoint (no mkey)
     def get(
         self,
         *,
@@ -381,89 +129,20 @@ class Ipam:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
+        error_mode: Literal["raise", "return", "print"] | None = ...,
+        error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> IpamObject: ...
-    
-    # Dict mode with mkey provided as positional arg (single dict)
-    @overload
-    def get(
-        self,
-        name: str,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-    ) -> IpamObject: ...
-    
-    # Dict mode with mkey provided as keyword arg (single dict)
-    @overload
-    def get(
-        self,
-        *,
-        name: str,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-    ) -> IpamObject: ...
-    
-    # Dict mode - list of dicts (no mkey/name provided) - keyword-only signature
-    @overload
-    def get(
-        self,
-        *,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-    ) -> IpamObject: ...
-    
-    # Fallback overload for all other cases
-    @overload
-    def get(
-        self,
-        name: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-    ) -> dict[str, Any] | FortiObject: ...
-    
-    def get(
-        self,
-        name: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-    ) -> IpamObject | dict[str, Any]: ...
     
     def get_schema(
         self,
         format: str = ...,
     ) -> FortiObject: ...
+
+
+    # ================================================================
+    # PUT Method
+    # ================================================================
     
-    # PUT overloads
-    @overload
     def put(
         self,
         payload_dict: IpamPayload | None = ...,
@@ -474,54 +153,16 @@ class Ipam:
         manage_lan_addresses: Literal["disable", "enable"] | None = ...,
         manage_lan_extension_addresses: Literal["disable", "enable"] | None = ...,
         manage_ssid_addresses: Literal["disable", "enable"] | None = ...,
-        pools: str | list[str] | list[IpamPoolsItem] | None = ...,
-        rules: str | list[str] | list[IpamRulesItem] | None = ...,
+        pools: str | list[str] | list[dict[str, Any]] | list[IpamPoolsItem] | None = ...,
+        rules: str | list[str] | list[dict[str, Any]] | list[IpamRulesItem] | None = ...,
+        error_mode: Literal["raise", "return", "print"] | None = ...,
+        error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> IpamObject: ...
-    
-    @overload
-    def put(
-        self,
-        payload_dict: IpamPayload | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
-        server_type: Literal["fabric-root"] | None = ...,
-        automatic_conflict_resolution: Literal["disable", "enable"] | None = ...,
-        require_subnet_size_match: Literal["disable", "enable"] | None = ...,
-        manage_lan_addresses: Literal["disable", "enable"] | None = ...,
-        manage_lan_extension_addresses: Literal["disable", "enable"] | None = ...,
-        manage_ssid_addresses: Literal["disable", "enable"] | None = ...,
-        pools: str | list[str] | list[IpamPoolsItem] | None = ...,
-        rules: str | list[str] | list[IpamRulesItem] | None = ...,
-    ) -> FortiObject: ...
-    
-    # Default overload
-    @overload
-    def put(
-        self,
-        payload_dict: IpamPayload | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
-        server_type: Literal["fabric-root"] | None = ...,
-        automatic_conflict_resolution: Literal["disable", "enable"] | None = ...,
-        require_subnet_size_match: Literal["disable", "enable"] | None = ...,
-        manage_lan_addresses: Literal["disable", "enable"] | None = ...,
-        manage_lan_extension_addresses: Literal["disable", "enable"] | None = ...,
-        manage_ssid_addresses: Literal["disable", "enable"] | None = ...,
-        pools: str | list[str] | list[IpamPoolsItem] | None = ...,
-        rules: str | list[str] | list[IpamRulesItem] | None = ...,
-    ) -> FortiObject: ...
-    
-    def put(
-        self,
-        payload_dict: IpamPayload | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
-        server_type: Literal["fabric-root"] | None = ...,
-        automatic_conflict_resolution: Literal["disable", "enable"] | None = ...,
-        require_subnet_size_match: Literal["disable", "enable"] | None = ...,
-        manage_lan_addresses: Literal["disable", "enable"] | None = ...,
-        manage_lan_extension_addresses: Literal["disable", "enable"] | None = ...,
-        manage_ssid_addresses: Literal["disable", "enable"] | None = ...,
-        pools: str | list[str] | list[IpamPoolsItem] | None = ...,
-        rules: str | list[str] | list[IpamRulesItem] | None = ...,
-    ) -> FortiObject: ...
+
+
+    # ================================================================
+    # Utility Methods
+    # ================================================================
     
     def exists(
         self,
@@ -538,8 +179,10 @@ class Ipam:
         manage_lan_addresses: Literal["disable", "enable"] | None = ...,
         manage_lan_extension_addresses: Literal["disable", "enable"] | None = ...,
         manage_ssid_addresses: Literal["disable", "enable"] | None = ...,
-        pools: str | list[str] | list[IpamPoolsItem] | None = ...,
-        rules: str | list[str] | list[IpamRulesItem] | None = ...,
+        pools: str | list[str] | list[dict[str, Any]] | list[IpamPoolsItem] | None = ...,
+        rules: str | list[str] | list[dict[str, Any]] | list[IpamRulesItem] | None = ...,
+        error_mode: Literal["raise", "return", "print"] | None = ...,
+        error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> FortiObject: ...
     
     # Helper methods
@@ -547,7 +190,7 @@ class Ipam:
     def help(field_name: str | None = ...) -> str: ...
     
     @staticmethod
-    def fields(detailed: bool = ...) -> Union[list[str], list[dict[str, Any]]]: ...
+    def fields(detailed: bool = ...) -> list[str] | list[dict[str, Any]]: ...
     
     @staticmethod
     def field_info(field_name: str) -> FortiObject: ...
@@ -563,9 +206,6 @@ class Ipam:
     
     @staticmethod
     def schema() -> FortiObject: ...
-
-
-# ================================================================
 
 
 __all__ = [

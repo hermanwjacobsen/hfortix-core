@@ -330,6 +330,8 @@ class SnmpCommunity(CRUDEndpoint, MetadataMixin):
                 example="[{'id': 1, 'ip': '192.168.1.10'}]",
             )
         
+        # Apply normalization for multi-value option fields (space-separated strings)
+        
         # Build payload using helper function with auto-normalization
         # This automatically converts strings/lists to [{'name': '...'}] format for list fields
         # To disable auto-normalization, use build_cmdb_payload directly
@@ -475,6 +477,8 @@ class SnmpCommunity(CRUDEndpoint, MetadataMixin):
                 field_name="hosts",
                 example="[{'id': 1, 'ip': '192.168.1.10'}]",
             )
+        
+        # Apply normalization for multi-value option fields (space-separated strings)
         
         # Build payload using helper function with auto-normalization
         # This automatically converts strings/lists to [{'name': '...'}] format for list fields
@@ -726,6 +730,18 @@ class SnmpCommunity(CRUDEndpoint, MetadataMixin):
             - put(): Update existing object
             - exists(): Check existence manually
         """
+        # Apply normalization for table fields (supports flexible input formats)
+        if hosts is not None:
+            hosts = normalize_table_field(
+                hosts,
+                mkey="id",
+                required_fields=['id', 'ip'],
+                field_name="hosts",
+                example="[{'id': 1, 'ip': '192.168.1.10'}]",
+            )
+        
+        # Apply normalization for multi-value option fields (space-separated strings)
+        
         # Build payload using helper function with auto-normalization
         payload_data = build_api_payload(
             id=id,

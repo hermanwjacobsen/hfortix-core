@@ -11,23 +11,14 @@ from pydantic import BaseModel, Field, field_validator
 from typing import Any, Literal, Optional
 
 # ============================================================================
-# Child Table Models
+# Enum Definitions for Child Table Fields (for fields with 4+ allowed values)
 # ============================================================================
 
-class WidsProfileApScanChannelList2g5g(BaseModel):
-    """
-    Child table model for ap-scan-channel-list-2G-5G.
-    
-    Selected ap scan channel list for 2.4G and 5G bands.
-    """
-    
-    class Config:
-        """Pydantic model configuration."""
-        extra = "allow"  # Allow additional fields from API
-        str_strip_whitespace = True
-    
-    chan: str = Field(max_length=3, default="", description="Channel number.")
-class WidsProfileApScanChannelList6g(BaseModel):
+# ============================================================================
+# Child Table Models (sorted deepest-first so nested models are defined before their parents)
+# ============================================================================
+
+class WidsProfileApScanChannelList6G(BaseModel):
     """
     Child table model for ap-scan-channel-list-6G.
     
@@ -38,8 +29,23 @@ class WidsProfileApScanChannelList6g(BaseModel):
         """Pydantic model configuration."""
         extra = "allow"  # Allow additional fields from API
         str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
     
-    chan: str = Field(max_length=3, default="", description="Channel 6g number.")
+    chan: str = Field(max_length=3, description="Channel 6g number.")
+class WidsProfileApScanChannelList2G5G(BaseModel):
+    """
+    Child table model for ap-scan-channel-list-2G-5G.
+    
+    Selected ap scan channel list for 2.4G and 5G bands.
+    """
+    
+    class Config:
+        """Pydantic model configuration."""
+        extra = "allow"  # Allow additional fields from API
+        str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
+    
+    chan: str = Field(max_length=3, description="Channel number.")
 class WidsProfileApBgscanDisableSchedules(BaseModel):
     """
     Child table model for ap-bgscan-disable-schedules.
@@ -51,8 +57,9 @@ class WidsProfileApBgscanDisableSchedules(BaseModel):
         """Pydantic model configuration."""
         extra = "allow"  # Allow additional fields from API
         str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
     
-    name: str = Field(max_length=35, default="", description="Schedule name.")  # datasource: ['firewall.schedule.group.name', 'firewall.schedule.recurring.name', 'firewall.schedule.onetime.name']
+    name: str = Field(max_length=35, description="Schedule name.")  # datasource: ['firewall.schedule.group.name', 'firewall.schedule.recurring.name', 'firewall.schedule.onetime.name']
 # ============================================================================
 # Enum Definitions (for fields with 4+ allowed values)
 # ============================================================================
@@ -81,18 +88,18 @@ class WidsProfileModel(BaseModel):
     # Model Fields
     # ========================================================================
     
-    name: str | None = Field(max_length=35, default="", description="WIDS profile name.")    
-    comment: str | None = Field(max_length=63, default="", description="Comment.")    
+    name: str | None = Field(max_length=35, default=None, description="WIDS profile name.")    
+    comment: str | None = Field(max_length=63, default=None, description="Comment.")    
     sensor_mode: Literal["disable", "foreign", "both"] | None = Field(default="disable", description="Scan nearby WiFi stations (default = disable).")    
     ap_scan: Literal["disable", "enable"] | None = Field(default="disable", description="Enable/disable rogue AP detection.")    
-    ap_scan_channel_list_2G_5G: list[ApScanChannelList2G5G] = Field(default=None, description="Selected ap scan channel list for 2.4G and 5G bands.")    
-    ap_scan_channel_list_6G: list[ApScanChannelList6G] = Field(default=None, description="Selected ap scan channel list for 6G band.")    
+    ap_scan_channel_list_2G_5G: list[WidsProfileApScanChannelList2G5G] = Field(default_factory=list, description="Selected ap scan channel list for 2.4G and 5G bands.")    
+    ap_scan_channel_list_6G: list[WidsProfileApScanChannelList6G] = Field(default_factory=list, description="Selected ap scan channel list for 6G band.")    
     ap_bgscan_period: int | None = Field(ge=10, le=3600, default=600, description="Period between background scans (10 - 3600 sec, default = 600).")    
     ap_bgscan_intv: int | None = Field(ge=1, le=600, default=3, description="Period between successive channel scans (1 - 600 sec, default = 3).")    
     ap_bgscan_duration: int | None = Field(ge=10, le=1000, default=30, description="Listen time on scanning a channel (10 - 1000 msec, default = 30).")    
     ap_bgscan_idle: int | None = Field(ge=0, le=1000, default=20, description="Wait time for channel inactivity before scanning this channel (0 - 1000 msec, default = 20).")    
     ap_bgscan_report_intv: int | None = Field(ge=15, le=600, default=30, description="Period between background scan reports (15 - 600 sec, default = 30).")    
-    ap_bgscan_disable_schedules: list[ApBgscanDisableSchedules] = Field(default=None, description="Firewall schedules for turning off FortiAP radio background scan. Background scan will be disabled when at least one of the schedules is valid. Separate multiple schedule names with a space.")    
+    ap_bgscan_disable_schedules: list[WidsProfileApBgscanDisableSchedules] = Field(default_factory=list, description="Firewall schedules for turning off FortiAP radio background scan. Background scan will be disabled when at least one of the schedules is valid. Separate multiple schedule names with a space.")    
     ap_fgscan_report_intv: int | None = Field(ge=15, le=600, default=15, description="Period between foreground scan reports (15 - 600 sec, default = 15).")    
     ap_scan_passive: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable passive scanning. Enable means do not send probe request on any channels (default = disable).")    
     ap_scan_threshold: str | None = Field(max_length=7, default="-90", description="Minimum signal level/threshold in dBm required for the AP to report detected rogue AP (-95 to -20, default = -90).")    
@@ -255,7 +262,7 @@ class WidsProfileModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.wireless_controller.wids_profile.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate child table items
         values = getattr(self, "ap_bgscan_disable_schedules", [])
@@ -322,11 +329,11 @@ Dict = dict[str, Any]  # For backward compatibility
 # ============================================================================
 
 __all__ = [
-    "WidsProfileModel",    "WidsProfileApScanChannelList2g5g",    "WidsProfileApScanChannelList6g",    "WidsProfileApBgscanDisableSchedules",]
+    "WidsProfileModel",    "WidsProfileApScanChannelList2G5G",    "WidsProfileApScanChannelList6G",    "WidsProfileApBgscanDisableSchedules",]
 
 
 # ============================================================================
 # Generated by hfortix generator v0.6.0
 # Schema: 1.7.0
-# Generated: 2026-01-17T05:32:18.223941Z
+# Generated: 2026-01-17T17:25:22.024804Z
 # ============================================================================

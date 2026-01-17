@@ -1,955 +1,308 @@
-from typing import TypedDict, Literal, Any, Coroutine, Union, overload, Generator, final
-from typing_extensions import NotRequired
-from hfortix_fortios.models import FortiObject, FortiObjectList
+""" - Type Stubs
 
-# ============================================================================
-# Nested TypedDicts for table field children (dict mode)
-# These MUST be defined before the Payload class to use them as type hints
-# ============================================================================
+Auto-generated stub file for type checking and IDE support.
 
-class SdnConnectorServerlistItem(TypedDict, total=False):
-    """Type hints for server-list table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    Use this when building payloads for POST/PUT requests.
-    
-    **Available fields:**
-        - ip: str
-    
-    **Example:**
-        entry: SdnConnectorServerlistItem = {
-            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
-        }
-    """
-    
-    ip: str  # IPv4 address. | MaxLen: 15
+Endpoint: system/sdn_connector
+Category: cmdb
+"""
+
+from __future__ import annotations
+
+from typing import (
+    Any,
+    ClassVar,
+    Literal,
+    TypedDict,
+    overload,
+)
+
+from hfortix_fortios.models import (
+    FortiObject,
+    FortiObjectList,
+)
 
 
-class SdnConnectorExternalaccountlistItem(TypedDict, total=False):
-    """Type hints for external-account-list table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    Use this when building payloads for POST/PUT requests.
-    
-    **Available fields:**
-        - role_arn: str
-        - external_id: str
-        - region_list: str
-    
-    **Example:**
-        entry: SdnConnectorExternalaccountlistItem = {
-            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
-        }
-    """
-    
-    role_arn: str  # AWS role ARN to assume. | MaxLen: 2047
-    external_id: str  # AWS external ID. | MaxLen: 1399
-    region_list: str  # AWS region name list.
+# ================================================================
+# TypedDict Payloads
+# ================================================================
 
-
-class SdnConnectorNicItem(TypedDict, total=False):
-    """Type hints for nic table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    Use this when building payloads for POST/PUT requests.
-    
-    **Available fields:**
-        - name: str
-        - peer_nic: str
-        - ip: str
-    
-    **Example:**
-        entry: SdnConnectorNicItem = {
-            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
-        }
-    """
-    
-    name: str  # Network interface name. | MaxLen: 63
-    peer_nic: str  # Peer network interface name. | MaxLen: 63
-    ip: str  # Configure IP configuration.
-
-
-class SdnConnectorRoutetableItem(TypedDict, total=False):
-    """Type hints for route-table table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    Use this when building payloads for POST/PUT requests.
-    
-    **Available fields:**
-        - name: str
-        - subscription_id: str
-        - resource_group: str
-        - route: str
-    
-    **Example:**
-        entry: SdnConnectorRoutetableItem = {
-            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
-        }
-    """
-    
-    name: str  # Route table name. | MaxLen: 63
-    subscription_id: str  # Subscription ID of Azure route table. | MaxLen: 63
-    resource_group: str  # Resource group of Azure route table. | MaxLen: 63
-    route: str  # Configure Azure route.
-
-
-class SdnConnectorCompartmentlistItem(TypedDict, total=False):
-    """Type hints for compartment-list table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    Use this when building payloads for POST/PUT requests.
-    
-    **Available fields:**
-        - compartment_id: str
-    
-    **Example:**
-        entry: SdnConnectorCompartmentlistItem = {
-            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
-        }
-    """
-    
-    compartment_id: str  # OCI compartment ID. | MaxLen: 127
-
-
-class SdnConnectorOciregionlistItem(TypedDict, total=False):
-    """Type hints for oci-region-list table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    Use this when building payloads for POST/PUT requests.
-    
-    **Available fields:**
-        - region: str
-    
-    **Example:**
-        entry: SdnConnectorOciregionlistItem = {
-            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
-        }
-    """
-    
-    region: str  # OCI region. | MaxLen: 31
-
-
-class SdnConnectorExternalipItem(TypedDict, total=False):
-    """Type hints for external-ip table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    Use this when building payloads for POST/PUT requests.
-    
-    **Available fields:**
-        - name: str
-    
-    **Example:**
-        entry: SdnConnectorExternalipItem = {
-            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
-        }
-    """
-    
-    name: str  # External IP name. | MaxLen: 63
-
-
-class SdnConnectorRouteItem(TypedDict, total=False):
-    """Type hints for route table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    Use this when building payloads for POST/PUT requests.
-    
-    **Available fields:**
-        - name: str
-    
-    **Example:**
-        entry: SdnConnectorRouteItem = {
-            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
-        }
-    """
-    
-    name: str  # Route name. | MaxLen: 63
-
-
-class SdnConnectorGcpprojectlistItem(TypedDict, total=False):
-    """Type hints for gcp-project-list table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    Use this when building payloads for POST/PUT requests.
-    
-    **Available fields:**
-        - id: str
-        - gcp_zone_list: str
-    
-    **Example:**
-        entry: SdnConnectorGcpprojectlistItem = {
-            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
-        }
-    """
-    
-    id: str  # GCP project ID. | MaxLen: 127
-    gcp_zone_list: str  # Configure GCP zone list.
-
-
-class SdnConnectorForwardingruleItem(TypedDict, total=False):
-    """Type hints for forwarding-rule table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    Use this when building payloads for POST/PUT requests.
-    
-    **Available fields:**
-        - rule_name: str
-        - target: str
-    
-    **Example:**
-        entry: SdnConnectorForwardingruleItem = {
-            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
-        }
-    """
-    
-    rule_name: str  # Forwarding rule name. | MaxLen: 63
-    target: str  # Target instance name. | MaxLen: 63
-
-
-# ============================================================================
-# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional)
-# ============================================================================
-# NOTE: We intentionally DON'T use NotRequired wrapper because:
-# 1. total=False already makes all fields optional
-# 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
-class SdnConnectorPayload(TypedDict, total=False):
-    """
-    Type hints for system/sdn_connector payload fields.
-    
-    Configure connection to SDN Connector.
-    
-    **Related Resources:**
-
-    Dependencies (resources this endpoint references):
-        - :class:`~.certificate.ca.CaEndpoint` (via: server-ca-cert)
-        - :class:`~.certificate.local.LocalEndpoint` (via: oci-cert)
-        - :class:`~.certificate.remote.RemoteEndpoint` (via: server-ca-cert, server-cert)
-        - :class:`~.system.sdn-proxy.SdnProxyEndpoint` (via: proxy)
-        - :class:`~.system.vdom.VdomEndpoint` (via: vdom)
-
-    **Usage:**
-        payload: SdnConnectorPayload = {
-            "field": "value",  # <- autocomplete shows all fields
-        }
-    """
-    name: str  # SDN connector name. | MaxLen: 35
-    status: Literal["disable", "enable"]  # Enable/disable connection to the remote SDN connec | Default: enable
-    type: Literal["aci", "alicloud", "aws", "azure", "gcp", "nsx", "nuage", "oci", "openstack", "kubernetes", "vmware", "sepm", "aci-direct", "ibm", "nutanix", "sap"]  # Type of SDN connector. | Default: aws
-    proxy: str  # SDN proxy. | MaxLen: 35
-    use_metadata_iam: Literal["disable", "enable"]  # Enable/disable use of IAM role from metadata to ca | Default: disable
-    microsoft_365: Literal["disable", "enable"]  # Enable to use as Microsoft 365 connector. | Default: disable
-    ha_status: Literal["disable", "enable"]  # Enable/disable use for FortiGate HA service. | Default: disable
-    verify_certificate: Literal["disable", "enable"]  # Enable/disable server certificate verification. | Default: enable
-    vdom: str  # Virtual domain name of the remote SDN connector. | MaxLen: 31
-    server: str  # Server address of the remote SDN connector. | MaxLen: 127
-    server_list: list[SdnConnectorServerlistItem]  # Server address list of the remote SDN connector.
-    server_port: int  # Port number of the remote SDN connector. | Default: 0 | Min: 0 | Max: 65535
-    message_server_port: int  # HTTP port number of the SAP message server. | Default: 0 | Min: 0 | Max: 65535
-    username: str  # Username of the remote SDN connector as login cred | MaxLen: 64
-    password: str  # Password of the remote SDN connector as login cred
-    vcenter_server: str  # vCenter server address for NSX quarantine. | MaxLen: 127
-    vcenter_username: str  # vCenter server username for NSX quarantine. | MaxLen: 64
-    vcenter_password: str  # vCenter server password for NSX quarantine.
-    access_key: str  # AWS / ACS access key ID. | MaxLen: 31
-    secret_key: str  # AWS / ACS secret access key. | MaxLen: 59
-    region: str  # AWS / ACS region name. | MaxLen: 31
-    vpc_id: str  # AWS VPC ID. | MaxLen: 31
-    alt_resource_ip: Literal["disable", "enable"]  # Enable/disable AWS alternative resource IP. | Default: disable
-    external_account_list: list[SdnConnectorExternalaccountlistItem]  # Configure AWS external account list.
-    tenant_id: str  # Tenant ID (directory ID). | MaxLen: 127
-    client_id: str  # Azure client ID (application ID). | MaxLen: 63
-    client_secret: str  # Azure client secret (application key). | MaxLen: 59
-    subscription_id: str  # Azure subscription ID. | MaxLen: 63
-    resource_group: str  # Azure resource group. | MaxLen: 63
-    login_endpoint: str  # Azure Stack login endpoint. | MaxLen: 127
-    resource_url: str  # Azure Stack resource URL. | MaxLen: 127
-    azure_region: Literal["global", "china", "germany", "usgov", "local"]  # Azure server region. | Default: global
-    nic: list[SdnConnectorNicItem]  # Configure Azure network interface.
-    route_table: list[SdnConnectorRoutetableItem]  # Configure Azure route table.
-    user_id: str  # User ID. | MaxLen: 127
-    compartment_list: list[SdnConnectorCompartmentlistItem]  # Configure OCI compartment list.
-    oci_region_list: list[SdnConnectorOciregionlistItem]  # Configure OCI region list.
-    oci_region_type: Literal["commercial", "government"]  # OCI region type. | Default: commercial
-    oci_cert: str  # OCI certificate. | MaxLen: 63
-    oci_fingerprint: str  # OCI pubkey fingerprint. | MaxLen: 63
-    external_ip: list[SdnConnectorExternalipItem]  # Configure GCP external IP.
-    route: list[SdnConnectorRouteItem]  # Configure GCP route.
-    gcp_project_list: list[SdnConnectorGcpprojectlistItem]  # Configure GCP project list.
-    forwarding_rule: list[SdnConnectorForwardingruleItem]  # Configure GCP forwarding rule.
-    service_account: str  # GCP service account email. | MaxLen: 127
-    private_key: str  # Private key of GCP service account.
-    secret_token: str  # Secret token of Kubernetes service account.
-    domain: str  # Domain name. | MaxLen: 127
-    group_name: str  # Full path group name of computers. | MaxLen: 127
-    server_cert: str  # Trust servers that contain this certificate only. | MaxLen: 127
-    server_ca_cert: str  # Trust only those servers whose certificate is dire | MaxLen: 127
-    api_key: str  # IBM cloud API key or service ID API key. | MaxLen: 59
-    ibm_region: Literal["dallas", "washington-dc", "london", "frankfurt", "sydney", "tokyo", "osaka", "toronto", "sao-paulo", "madrid"]  # IBM cloud region name. | Default: dallas
-    par_id: str  # Public address range ID. | MaxLen: 63
-    update_interval: int  # Dynamic object update interval | Default: 60 | Min: 0 | Max: 3600
-
-# ============================================================================
-# Nested classes for table field children (object mode - for API responses)
-# ============================================================================
-
-@final
-class SdnConnectorServerlistObject:
-    """Typed object for server-list table items.
-    
-    Provides IDE autocomplete for nested table field attributes.
-    At runtime, this is a FortiObject instance.
-    """
-    
-    # IPv4 address. | MaxLen: 15
+class SdnConnectorServerlistItem:
+    """Nested item for server-list field - supports attribute access."""
     ip: str
-    
-    # Common API response fields
-    status: str
-    http_status: int | None
-    http_status_code: int | None
-    http_method: str | None
-    http_response_time: float | None
-    vdom: str | None
-    
-    # Methods from FortiObject
-    @property
-    def dict(self) -> dict[str, Any]:
-        """Convert to dictionary."""
-        ...
-    @property
-    def json(self) -> str:
-        """Get pretty-printed JSON string."""
-        ...
-    @property
-    def raw(self) -> dict[str, Any]:
-        """Get raw API response data."""
-        ...
-    def get_full(self, name: str) -> Any: ...
-    def to_dict(self) -> FortiObject: ...
-    def keys(self) -> Any: ...
-    def values(self) -> Generator[Any, None, None]: ...
-    def items(self) -> Generator[tuple[str, Any], None, None]: ...
-    def get(self, key: str, default: Any = None) -> Any: ...
 
 
-@final
-class SdnConnectorExternalaccountlistObject:
-    """Typed object for external-account-list table items.
-    
-    Provides IDE autocomplete for nested table field attributes.
-    At runtime, this is a FortiObject instance.
-    """
-    
-    # AWS role ARN to assume. | MaxLen: 2047
+class SdnConnectorExternalaccountlistItem:
+    """Nested item for external-account-list field - supports attribute access."""
     role_arn: str
-    # AWS external ID. | MaxLen: 1399
     external_id: str
-    # AWS region name list.
     region_list: str
-    
-    # Common API response fields
-    status: str
-    http_status: int | None
-    http_status_code: int | None
-    http_method: str | None
-    http_response_time: float | None
-    vdom: str | None
-    
-    # Methods from FortiObject
-    @property
-    def dict(self) -> dict[str, Any]:
-        """Convert to dictionary."""
-        ...
-    @property
-    def json(self) -> str:
-        """Get pretty-printed JSON string."""
-        ...
-    @property
-    def raw(self) -> dict[str, Any]:
-        """Get raw API response data."""
-        ...
-    def get_full(self, name: str) -> Any: ...
-    def to_dict(self) -> FortiObject: ...
-    def keys(self) -> Any: ...
-    def values(self) -> Generator[Any, None, None]: ...
-    def items(self) -> Generator[tuple[str, Any], None, None]: ...
-    def get(self, key: str, default: Any = None) -> Any: ...
 
 
-@final
-class SdnConnectorNicObject:
-    """Typed object for nic table items.
-    
-    Provides IDE autocomplete for nested table field attributes.
-    At runtime, this is a FortiObject instance.
-    """
-    
-    # Network interface name. | MaxLen: 63
+class SdnConnectorNicItem:
+    """Nested item for nic field - supports attribute access."""
     name: str
-    # Peer network interface name. | MaxLen: 63
     peer_nic: str
-    # Configure IP configuration.
     ip: str
-    
-    # Common API response fields
-    status: str
-    http_status: int | None
-    http_status_code: int | None
-    http_method: str | None
-    http_response_time: float | None
-    vdom: str | None
-    
-    # Methods from FortiObject
-    @property
-    def dict(self) -> dict[str, Any]:
-        """Convert to dictionary."""
-        ...
-    @property
-    def json(self) -> str:
-        """Get pretty-printed JSON string."""
-        ...
-    @property
-    def raw(self) -> dict[str, Any]:
-        """Get raw API response data."""
-        ...
-    def get_full(self, name: str) -> Any: ...
-    def to_dict(self) -> FortiObject: ...
-    def keys(self) -> Any: ...
-    def values(self) -> Generator[Any, None, None]: ...
-    def items(self) -> Generator[tuple[str, Any], None, None]: ...
-    def get(self, key: str, default: Any = None) -> Any: ...
 
 
-@final
-class SdnConnectorRoutetableObject:
-    """Typed object for route-table table items.
-    
-    Provides IDE autocomplete for nested table field attributes.
-    At runtime, this is a FortiObject instance.
-    """
-    
-    # Route table name. | MaxLen: 63
+class SdnConnectorRoutetableItem:
+    """Nested item for route-table field - supports attribute access."""
     name: str
-    # Subscription ID of Azure route table. | MaxLen: 63
     subscription_id: str
-    # Resource group of Azure route table. | MaxLen: 63
     resource_group: str
-    # Configure Azure route.
     route: str
-    
-    # Common API response fields
-    status: str
-    http_status: int | None
-    http_status_code: int | None
-    http_method: str | None
-    http_response_time: float | None
-    vdom: str | None
-    
-    # Methods from FortiObject
-    @property
-    def dict(self) -> dict[str, Any]:
-        """Convert to dictionary."""
-        ...
-    @property
-    def json(self) -> str:
-        """Get pretty-printed JSON string."""
-        ...
-    @property
-    def raw(self) -> dict[str, Any]:
-        """Get raw API response data."""
-        ...
-    def get_full(self, name: str) -> Any: ...
-    def to_dict(self) -> FortiObject: ...
-    def keys(self) -> Any: ...
-    def values(self) -> Generator[Any, None, None]: ...
-    def items(self) -> Generator[tuple[str, Any], None, None]: ...
-    def get(self, key: str, default: Any = None) -> Any: ...
 
 
-@final
-class SdnConnectorCompartmentlistObject:
-    """Typed object for compartment-list table items.
-    
-    Provides IDE autocomplete for nested table field attributes.
-    At runtime, this is a FortiObject instance.
-    """
-    
-    # OCI compartment ID. | MaxLen: 127
+class SdnConnectorCompartmentlistItem:
+    """Nested item for compartment-list field - supports attribute access."""
     compartment_id: str
-    
-    # Common API response fields
-    status: str
-    http_status: int | None
-    http_status_code: int | None
-    http_method: str | None
-    http_response_time: float | None
-    vdom: str | None
-    
-    # Methods from FortiObject
-    @property
-    def dict(self) -> dict[str, Any]:
-        """Convert to dictionary."""
-        ...
-    @property
-    def json(self) -> str:
-        """Get pretty-printed JSON string."""
-        ...
-    @property
-    def raw(self) -> dict[str, Any]:
-        """Get raw API response data."""
-        ...
-    def get_full(self, name: str) -> Any: ...
-    def to_dict(self) -> FortiObject: ...
-    def keys(self) -> Any: ...
-    def values(self) -> Generator[Any, None, None]: ...
-    def items(self) -> Generator[tuple[str, Any], None, None]: ...
-    def get(self, key: str, default: Any = None) -> Any: ...
 
 
-@final
-class SdnConnectorOciregionlistObject:
-    """Typed object for oci-region-list table items.
-    
-    Provides IDE autocomplete for nested table field attributes.
-    At runtime, this is a FortiObject instance.
-    """
-    
-    # OCI region. | MaxLen: 31
+class SdnConnectorOciregionlistItem:
+    """Nested item for oci-region-list field - supports attribute access."""
     region: str
-    
-    # Common API response fields
-    status: str
-    http_status: int | None
-    http_status_code: int | None
-    http_method: str | None
-    http_response_time: float | None
-    vdom: str | None
-    
-    # Methods from FortiObject
-    @property
-    def dict(self) -> dict[str, Any]:
-        """Convert to dictionary."""
-        ...
-    @property
-    def json(self) -> str:
-        """Get pretty-printed JSON string."""
-        ...
-    @property
-    def raw(self) -> dict[str, Any]:
-        """Get raw API response data."""
-        ...
-    def get_full(self, name: str) -> Any: ...
-    def to_dict(self) -> FortiObject: ...
-    def keys(self) -> Any: ...
-    def values(self) -> Generator[Any, None, None]: ...
-    def items(self) -> Generator[tuple[str, Any], None, None]: ...
-    def get(self, key: str, default: Any = None) -> Any: ...
 
 
-@final
-class SdnConnectorExternalipObject:
-    """Typed object for external-ip table items.
-    
-    Provides IDE autocomplete for nested table field attributes.
-    At runtime, this is a FortiObject instance.
-    """
-    
-    # External IP name. | MaxLen: 63
+class SdnConnectorExternalipItem:
+    """Nested item for external-ip field - supports attribute access."""
     name: str
-    
-    # Common API response fields
-    status: str
-    http_status: int | None
-    http_status_code: int | None
-    http_method: str | None
-    http_response_time: float | None
-    vdom: str | None
-    
-    # Methods from FortiObject
-    @property
-    def dict(self) -> dict[str, Any]:
-        """Convert to dictionary."""
-        ...
-    @property
-    def json(self) -> str:
-        """Get pretty-printed JSON string."""
-        ...
-    @property
-    def raw(self) -> dict[str, Any]:
-        """Get raw API response data."""
-        ...
-    def get_full(self, name: str) -> Any: ...
-    def to_dict(self) -> FortiObject: ...
-    def keys(self) -> Any: ...
-    def values(self) -> Generator[Any, None, None]: ...
-    def items(self) -> Generator[tuple[str, Any], None, None]: ...
-    def get(self, key: str, default: Any = None) -> Any: ...
 
 
-@final
-class SdnConnectorRouteObject:
-    """Typed object for route table items.
-    
-    Provides IDE autocomplete for nested table field attributes.
-    At runtime, this is a FortiObject instance.
-    """
-    
-    # Route name. | MaxLen: 63
+class SdnConnectorRouteItem:
+    """Nested item for route field - supports attribute access."""
     name: str
-    
-    # Common API response fields
-    status: str
-    http_status: int | None
-    http_status_code: int | None
-    http_method: str | None
-    http_response_time: float | None
-    vdom: str | None
-    
-    # Methods from FortiObject
-    @property
-    def dict(self) -> dict[str, Any]:
-        """Convert to dictionary."""
-        ...
-    @property
-    def json(self) -> str:
-        """Get pretty-printed JSON string."""
-        ...
-    @property
-    def raw(self) -> dict[str, Any]:
-        """Get raw API response data."""
-        ...
-    def get_full(self, name: str) -> Any: ...
-    def to_dict(self) -> FortiObject: ...
-    def keys(self) -> Any: ...
-    def values(self) -> Generator[Any, None, None]: ...
-    def items(self) -> Generator[tuple[str, Any], None, None]: ...
-    def get(self, key: str, default: Any = None) -> Any: ...
 
 
-@final
-class SdnConnectorGcpprojectlistObject:
-    """Typed object for gcp-project-list table items.
-    
-    Provides IDE autocomplete for nested table field attributes.
-    At runtime, this is a FortiObject instance.
-    """
-    
-    # GCP project ID. | MaxLen: 127
+class SdnConnectorGcpprojectlistItem:
+    """Nested item for gcp-project-list field - supports attribute access."""
     id: str
-    # Configure GCP zone list.
     gcp_zone_list: str
-    
-    # Common API response fields
-    status: str
-    http_status: int | None
-    http_status_code: int | None
-    http_method: str | None
-    http_response_time: float | None
-    vdom: str | None
-    
-    # Methods from FortiObject
-    @property
-    def dict(self) -> dict[str, Any]:
-        """Convert to dictionary."""
-        ...
-    @property
-    def json(self) -> str:
-        """Get pretty-printed JSON string."""
-        ...
-    @property
-    def raw(self) -> dict[str, Any]:
-        """Get raw API response data."""
-        ...
-    def get_full(self, name: str) -> Any: ...
-    def to_dict(self) -> FortiObject: ...
-    def keys(self) -> Any: ...
-    def values(self) -> Generator[Any, None, None]: ...
-    def items(self) -> Generator[tuple[str, Any], None, None]: ...
-    def get(self, key: str, default: Any = None) -> Any: ...
 
 
-@final
-class SdnConnectorForwardingruleObject:
-    """Typed object for forwarding-rule table items.
-    
-    Provides IDE autocomplete for nested table field attributes.
-    At runtime, this is a FortiObject instance.
-    """
-    
-    # Forwarding rule name. | MaxLen: 63
+class SdnConnectorForwardingruleItem:
+    """Nested item for forwarding-rule field - supports attribute access."""
     rule_name: str
-    # Target instance name. | MaxLen: 63
     target: str
-    
-    # Common API response fields
-    status: str
-    http_status: int | None
-    http_status_code: int | None
-    http_method: str | None
-    http_response_time: float | None
-    vdom: str | None
-    
-    # Methods from FortiObject
-    @property
-    def dict(self) -> dict[str, Any]:
-        """Convert to dictionary."""
-        ...
-    @property
-    def json(self) -> str:
-        """Get pretty-printed JSON string."""
-        ...
-    @property
-    def raw(self) -> dict[str, Any]:
-        """Get raw API response data."""
-        ...
-    def get_full(self, name: str) -> Any: ...
-    def to_dict(self) -> FortiObject: ...
-    def keys(self) -> Any: ...
-    def values(self) -> Generator[Any, None, None]: ...
-    def items(self) -> Generator[tuple[str, Any], None, None]: ...
-    def get(self, key: str, default: Any = None) -> Any: ...
 
 
-
-
-# Response TypedDict for GET returns (all fields present in API response)
-class SdnConnectorResponse(TypedDict):
-    """
-    Type hints for system/sdn_connector API response fields.
-    
-    All fields are present in the response from the FortiGate API.
-    """
-    name: str  # SDN connector name. | MaxLen: 35
-    status: Literal["disable", "enable"]  # Enable/disable connection to the remote SDN connec | Default: enable
-    type: Literal["aci", "alicloud", "aws", "azure", "gcp", "nsx", "nuage", "oci", "openstack", "kubernetes", "vmware", "sepm", "aci-direct", "ibm", "nutanix", "sap"]  # Type of SDN connector. | Default: aws
-    proxy: str  # SDN proxy. | MaxLen: 35
-    use_metadata_iam: Literal["disable", "enable"]  # Enable/disable use of IAM role from metadata to ca | Default: disable
-    microsoft_365: Literal["disable", "enable"]  # Enable to use as Microsoft 365 connector. | Default: disable
-    ha_status: Literal["disable", "enable"]  # Enable/disable use for FortiGate HA service. | Default: disable
-    verify_certificate: Literal["disable", "enable"]  # Enable/disable server certificate verification. | Default: enable
-    vdom: str  # Virtual domain name of the remote SDN connector. | MaxLen: 31
-    server: str  # Server address of the remote SDN connector. | MaxLen: 127
-    server_list: list[SdnConnectorServerlistItem]  # Server address list of the remote SDN connector.
-    server_port: int  # Port number of the remote SDN connector. | Default: 0 | Min: 0 | Max: 65535
-    message_server_port: int  # HTTP port number of the SAP message server. | Default: 0 | Min: 0 | Max: 65535
-    username: str  # Username of the remote SDN connector as login cred | MaxLen: 64
-    password: str  # Password of the remote SDN connector as login cred
-    vcenter_server: str  # vCenter server address for NSX quarantine. | MaxLen: 127
-    vcenter_username: str  # vCenter server username for NSX quarantine. | MaxLen: 64
-    vcenter_password: str  # vCenter server password for NSX quarantine.
-    access_key: str  # AWS / ACS access key ID. | MaxLen: 31
-    secret_key: str  # AWS / ACS secret access key. | MaxLen: 59
-    region: str  # AWS / ACS region name. | MaxLen: 31
-    vpc_id: str  # AWS VPC ID. | MaxLen: 31
-    alt_resource_ip: Literal["disable", "enable"]  # Enable/disable AWS alternative resource IP. | Default: disable
-    external_account_list: list[SdnConnectorExternalaccountlistItem]  # Configure AWS external account list.
-    tenant_id: str  # Tenant ID (directory ID). | MaxLen: 127
-    client_id: str  # Azure client ID (application ID). | MaxLen: 63
-    client_secret: str  # Azure client secret (application key). | MaxLen: 59
-    subscription_id: str  # Azure subscription ID. | MaxLen: 63
-    resource_group: str  # Azure resource group. | MaxLen: 63
-    login_endpoint: str  # Azure Stack login endpoint. | MaxLen: 127
-    resource_url: str  # Azure Stack resource URL. | MaxLen: 127
-    azure_region: Literal["global", "china", "germany", "usgov", "local"]  # Azure server region. | Default: global
-    nic: list[SdnConnectorNicItem]  # Configure Azure network interface.
-    route_table: list[SdnConnectorRoutetableItem]  # Configure Azure route table.
-    user_id: str  # User ID. | MaxLen: 127
-    compartment_list: list[SdnConnectorCompartmentlistItem]  # Configure OCI compartment list.
-    oci_region_list: list[SdnConnectorOciregionlistItem]  # Configure OCI region list.
-    oci_region_type: Literal["commercial", "government"]  # OCI region type. | Default: commercial
-    oci_cert: str  # OCI certificate. | MaxLen: 63
-    oci_fingerprint: str  # OCI pubkey fingerprint. | MaxLen: 63
-    external_ip: list[SdnConnectorExternalipItem]  # Configure GCP external IP.
-    route: list[SdnConnectorRouteItem]  # Configure GCP route.
-    gcp_project_list: list[SdnConnectorGcpprojectlistItem]  # Configure GCP project list.
-    forwarding_rule: list[SdnConnectorForwardingruleItem]  # Configure GCP forwarding rule.
-    service_account: str  # GCP service account email. | MaxLen: 127
-    private_key: str  # Private key of GCP service account.
-    secret_token: str  # Secret token of Kubernetes service account.
-    domain: str  # Domain name. | MaxLen: 127
-    group_name: str  # Full path group name of computers. | MaxLen: 127
-    server_cert: str  # Trust servers that contain this certificate only. | MaxLen: 127
-    server_ca_cert: str  # Trust only those servers whose certificate is dire | MaxLen: 127
-    api_key: str  # IBM cloud API key or service ID API key. | MaxLen: 59
-    ibm_region: Literal["dallas", "washington-dc", "london", "frankfurt", "sydney", "tokyo", "osaka", "toronto", "sao-paulo", "madrid"]  # IBM cloud region name. | Default: dallas
-    par_id: str  # Public address range ID. | MaxLen: 63
-    update_interval: int  # Dynamic object update interval | Default: 60 | Min: 0 | Max: 3600
-
-
-@final
-class SdnConnectorObject:
-    """Typed FortiObject for system/sdn_connector with IDE autocomplete support.
-    
-    This is a typed wrapper that provides IDE autocomplete for API response fields.
-    At runtime, this is actually a FortiObject instance.
-    """
-    
-    # SDN connector name. | MaxLen: 35
+class SdnConnectorPayload(TypedDict, total=False):
+    """Payload type for SdnConnector operations."""
     name: str
-    # Enable/disable connection to the remote SDN connector. | Default: enable
     status: Literal["disable", "enable"]
-    # Type of SDN connector. | Default: aws
     type: Literal["aci", "alicloud", "aws", "azure", "gcp", "nsx", "nuage", "oci", "openstack", "kubernetes", "vmware", "sepm", "aci-direct", "ibm", "nutanix", "sap"]
-    # SDN proxy. | MaxLen: 35
     proxy: str
-    # Enable/disable use of IAM role from metadata to call API. | Default: disable
     use_metadata_iam: Literal["disable", "enable"]
-    # Enable to use as Microsoft 365 connector. | Default: disable
     microsoft_365: Literal["disable", "enable"]
-    # Enable/disable use for FortiGate HA service. | Default: disable
     ha_status: Literal["disable", "enable"]
-    # Enable/disable server certificate verification. | Default: enable
     verify_certificate: Literal["disable", "enable"]
-    # Virtual domain name of the remote SDN connector. | MaxLen: 31
     vdom: str
-    # Server address of the remote SDN connector. | MaxLen: 127
     server: str
-    # Server address list of the remote SDN connector.
-    server_list: list[SdnConnectorServerlistObject]
-    # Port number of the remote SDN connector. | Default: 0 | Min: 0 | Max: 65535
+    server_list: str | list[str] | list[dict[str, Any]] | list[SdnConnectorServerlistItem]
     server_port: int
-    # HTTP port number of the SAP message server. | Default: 0 | Min: 0 | Max: 65535
     message_server_port: int
-    # Username of the remote SDN connector as login credentials. | MaxLen: 64
     username: str
-    # Password of the remote SDN connector as login credentials.
     password: str
-    # vCenter server address for NSX quarantine. | MaxLen: 127
     vcenter_server: str
-    # vCenter server username for NSX quarantine. | MaxLen: 64
     vcenter_username: str
-    # vCenter server password for NSX quarantine.
     vcenter_password: str
-    # AWS / ACS access key ID. | MaxLen: 31
     access_key: str
-    # AWS / ACS secret access key. | MaxLen: 59
     secret_key: str
-    # AWS / ACS region name. | MaxLen: 31
     region: str
-    # AWS VPC ID. | MaxLen: 31
     vpc_id: str
-    # Enable/disable AWS alternative resource IP. | Default: disable
     alt_resource_ip: Literal["disable", "enable"]
-    # Configure AWS external account list.
-    external_account_list: list[SdnConnectorExternalaccountlistObject]
-    # Tenant ID (directory ID). | MaxLen: 127
+    external_account_list: str | list[str] | list[dict[str, Any]] | list[SdnConnectorExternalaccountlistItem]
     tenant_id: str
-    # Azure client ID (application ID). | MaxLen: 63
     client_id: str
-    # Azure client secret (application key). | MaxLen: 59
     client_secret: str
-    # Azure subscription ID. | MaxLen: 63
     subscription_id: str
-    # Azure resource group. | MaxLen: 63
     resource_group: str
-    # Azure Stack login endpoint. | MaxLen: 127
     login_endpoint: str
-    # Azure Stack resource URL. | MaxLen: 127
     resource_url: str
-    # Azure server region. | Default: global
     azure_region: Literal["global", "china", "germany", "usgov", "local"]
-    # Configure Azure network interface.
-    nic: list[SdnConnectorNicObject]
-    # Configure Azure route table.
-    route_table: list[SdnConnectorRoutetableObject]
-    # User ID. | MaxLen: 127
+    nic: str | list[str] | list[dict[str, Any]] | list[SdnConnectorNicItem]
+    route_table: str | list[str] | list[dict[str, Any]] | list[SdnConnectorRoutetableItem]
     user_id: str
-    # Configure OCI compartment list.
-    compartment_list: list[SdnConnectorCompartmentlistObject]
-    # Configure OCI region list.
-    oci_region_list: list[SdnConnectorOciregionlistObject]
-    # OCI region type. | Default: commercial
+    compartment_list: str | list[str] | list[dict[str, Any]] | list[SdnConnectorCompartmentlistItem]
+    oci_region_list: str | list[str] | list[dict[str, Any]] | list[SdnConnectorOciregionlistItem]
     oci_region_type: Literal["commercial", "government"]
-    # OCI certificate. | MaxLen: 63
     oci_cert: str
-    # OCI pubkey fingerprint. | MaxLen: 63
     oci_fingerprint: str
-    # Configure GCP external IP.
-    external_ip: list[SdnConnectorExternalipObject]
-    # Configure GCP route.
-    route: list[SdnConnectorRouteObject]
-    # Configure GCP project list.
-    gcp_project_list: list[SdnConnectorGcpprojectlistObject]
-    # Configure GCP forwarding rule.
-    forwarding_rule: list[SdnConnectorForwardingruleObject]
-    # GCP service account email. | MaxLen: 127
+    external_ip: str | list[str] | list[dict[str, Any]] | list[SdnConnectorExternalipItem]
+    route: str | list[str] | list[dict[str, Any]] | list[SdnConnectorRouteItem]
+    gcp_project_list: str | list[str] | list[dict[str, Any]] | list[SdnConnectorGcpprojectlistItem]
+    forwarding_rule: str | list[str] | list[dict[str, Any]] | list[SdnConnectorForwardingruleItem]
     service_account: str
-    # Private key of GCP service account.
     private_key: str
-    # Secret token of Kubernetes service account.
     secret_token: str
-    # Domain name. | MaxLen: 127
     domain: str
-    # Full path group name of computers. | MaxLen: 127
     group_name: str
-    # Trust servers that contain this certificate only. | MaxLen: 127
     server_cert: str
-    # Trust only those servers whose certificate is directly/indir | MaxLen: 127
     server_ca_cert: str
-    # IBM cloud API key or service ID API key. | MaxLen: 59
     api_key: str
-    # IBM cloud region name. | Default: dallas
     ibm_region: Literal["dallas", "washington-dc", "london", "frankfurt", "sydney", "tokyo", "osaka", "toronto", "sao-paulo", "madrid"]
-    # Public address range ID. | MaxLen: 63
     par_id: str
-    # Dynamic object update interval | Default: 60 | Min: 0 | Max: 3600
     update_interval: int
-    
-    # Common API response fields
-    status: str
-    http_status: int | None
-    http_status_code: int | None
-    http_method: str | None
-    http_response_time: float | None
-    vdom: str | None
-    
-    # Methods from FortiObject
-    @property
-    def dict(self) -> dict[str, Any]:
-        """Convert to dictionary."""
-        ...
-    @property
-    def json(self) -> str:
-        """Get pretty-printed JSON string."""
-        ...
-    @property
-    def raw(self) -> dict[str, Any]:
-        """Get raw API response data."""
-        ...
-    def get_full(self, name: str) -> Any: ...
-    def to_dict(self) -> SdnConnectorPayload: ...
-    def keys(self) -> Any: ...
-    def values(self) -> Generator[Any, None, None]: ...
-    def items(self) -> Generator[tuple[str, Any], None, None]: ...
-    def get(self, key: str, default: Any = None) -> Any: ...
 
+
+# ================================================================
+# Response Types (TypedDict for dict-style access)
+# ================================================================
+
+class SdnConnectorResponse(TypedDict, total=False):
+    """Response type for SdnConnector - use with .dict property for typed dict access."""
+    name: str
+    status: Literal["disable", "enable"]
+    type: Literal["aci", "alicloud", "aws", "azure", "gcp", "nsx", "nuage", "oci", "openstack", "kubernetes", "vmware", "sepm", "aci-direct", "ibm", "nutanix", "sap"]
+    proxy: str
+    use_metadata_iam: Literal["disable", "enable"]
+    microsoft_365: Literal["disable", "enable"]
+    ha_status: Literal["disable", "enable"]
+    verify_certificate: Literal["disable", "enable"]
+    vdom: str
+    server: str
+    server_list: list[SdnConnectorServerlistItem]
+    server_port: int
+    message_server_port: int
+    username: str
+    password: str
+    vcenter_server: str
+    vcenter_username: str
+    vcenter_password: str
+    access_key: str
+    secret_key: str
+    region: str
+    vpc_id: str
+    alt_resource_ip: Literal["disable", "enable"]
+    external_account_list: list[SdnConnectorExternalaccountlistItem]
+    tenant_id: str
+    client_id: str
+    client_secret: str
+    subscription_id: str
+    resource_group: str
+    login_endpoint: str
+    resource_url: str
+    azure_region: Literal["global", "china", "germany", "usgov", "local"]
+    nic: list[SdnConnectorNicItem]
+    route_table: list[SdnConnectorRoutetableItem]
+    user_id: str
+    compartment_list: list[SdnConnectorCompartmentlistItem]
+    oci_region_list: list[SdnConnectorOciregionlistItem]
+    oci_region_type: Literal["commercial", "government"]
+    oci_cert: str
+    oci_fingerprint: str
+    external_ip: list[SdnConnectorExternalipItem]
+    route: list[SdnConnectorRouteItem]
+    gcp_project_list: list[SdnConnectorGcpprojectlistItem]
+    forwarding_rule: list[SdnConnectorForwardingruleItem]
+    service_account: str
+    private_key: str
+    secret_token: str
+    domain: str
+    group_name: str
+    server_cert: str
+    server_ca_cert: str
+    api_key: str
+    ibm_region: Literal["dallas", "washington-dc", "london", "frankfurt", "sydney", "tokyo", "osaka", "toronto", "sao-paulo", "madrid"]
+    par_id: str
+    update_interval: int
+
+
+# ================================================================
+# Response Types (Class for attribute access)
+# ================================================================
+
+
+class SdnConnectorObject(FortiObject):
+    """Typed FortiObject for SdnConnector with field access."""
+    name: str
+    status: Literal["disable", "enable"]
+    type: Literal["aci", "alicloud", "aws", "azure", "gcp", "nsx", "nuage", "oci", "openstack", "kubernetes", "vmware", "sepm", "aci-direct", "ibm", "nutanix", "sap"]
+    proxy: str
+    use_metadata_iam: Literal["disable", "enable"]
+    microsoft_365: Literal["disable", "enable"]
+    ha_status: Literal["disable", "enable"]
+    verify_certificate: Literal["disable", "enable"]
+    server: str
+    server_list: list[SdnConnectorServerlistItem]
+    server_port: int
+    message_server_port: int
+    username: str
+    password: str
+    vcenter_server: str
+    vcenter_username: str
+    vcenter_password: str
+    access_key: str
+    secret_key: str
+    region: str
+    vpc_id: str
+    alt_resource_ip: Literal["disable", "enable"]
+    external_account_list: list[SdnConnectorExternalaccountlistItem]
+    tenant_id: str
+    client_id: str
+    client_secret: str
+    subscription_id: str
+    resource_group: str
+    login_endpoint: str
+    resource_url: str
+    azure_region: Literal["global", "china", "germany", "usgov", "local"]
+    nic: list[SdnConnectorNicItem]
+    route_table: list[SdnConnectorRoutetableItem]
+    user_id: str
+    compartment_list: list[SdnConnectorCompartmentlistItem]
+    oci_region_list: list[SdnConnectorOciregionlistItem]
+    oci_region_type: Literal["commercial", "government"]
+    oci_cert: str
+    oci_fingerprint: str
+    external_ip: list[SdnConnectorExternalipItem]
+    route: list[SdnConnectorRouteItem]
+    gcp_project_list: list[SdnConnectorGcpprojectlistItem]
+    forwarding_rule: list[SdnConnectorForwardingruleItem]
+    service_account: str
+    private_key: str
+    secret_token: str
+    domain: str
+    group_name: str
+    server_cert: str
+    server_ca_cert: str
+    api_key: str
+    ibm_region: Literal["dallas", "washington-dc", "london", "frankfurt", "sydney", "tokyo", "osaka", "toronto", "sao-paulo", "madrid"]
+    par_id: str
+    update_interval: int
+
+
+# ================================================================
+# Main Endpoint Class
+# ================================================================
 
 class SdnConnector:
     """
-    Configure connection to SDN Connector.
     
-    Path: system/sdn_connector
+    Endpoint: system/sdn_connector
     Category: cmdb
-    Primary Key: name
+    MKey: name
     """
     
+    # Class attributes for introspection
+    endpoint: ClassVar[str] = ...
+    path: ClassVar[str] = ...
+    category: ClassVar[str] = ...
+    mkey: ClassVar[str] = ...
+    capabilities: ClassVar[dict[str, Any]] = ...
+    
     def __init__(self, client: Any) -> None:
-        """Initialize endpoint with HTTP client.
-        
-        Args:
-            client: HTTP client instance for API communication
-        """
+        """Initialize endpoint with HTTP client."""
         ...
     
     # ================================================================
-    # GET OVERLOADS - Always returns FortiObject (or ContentResponse for file endpoints)
-    # Pylance matches overloads top-to-bottom, so these must come first!
+    # GET Methods
     # ================================================================
     
-    # With mkey as positional arg -> returns FortiObject
+    # CMDB with mkey - overloads for single vs list returns
     @overload
     def get(
         self,
         name: str,
+        *,
         filter: str | list[str] | None = ...,
         count: int | None = ...,
         start: int | None = ...,
@@ -958,14 +311,14 @@ class SdnConnector:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
+        error_mode: Literal["raise", "return", "print"] | None = ...,
+        error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> SdnConnectorObject: ...
     
-    # With mkey as keyword arg -> returns FortiObject
     @overload
     def get(
         self,
         *,
-        name: str,
         filter: str | list[str] | None = ...,
         count: int | None = ...,
         start: int | None = ...,
@@ -974,154 +327,19 @@ class SdnConnector:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-    ) -> SdnConnectorObject: ...
-    
-    # Without mkey -> returns list of FortiObjects
-    @overload
-    def get(
-        self,
-        name: None = None,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
+        error_mode: Literal["raise", "return", "print"] | None = ...,
+        error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> FortiObjectList[SdnConnectorObject]: ...
-    
-    # ================================================================
-    # (removed - all GET now returns FortiObject)
-    # ================================================================
-    
-    # With mkey as positional arg -> returns single object
-    @overload
-    def get(
-        self,
-        name: str,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-    ) -> SdnConnectorObject: ...
-    
-    # With mkey as keyword arg -> returns single object
-    @overload
-    def get(
-        self,
-        *,
-        name: str,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-    ) -> SdnConnectorObject: ...
-    
-    # With no mkey -> returns list of objects
-    @overload
-    def get(
-        self,
-        *,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-    ) -> FortiObjectList[SdnConnectorObject]: ...
-    
-    # Dict mode with mkey provided as positional arg (single dict)
-    @overload
-    def get(
-        self,
-        name: str,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-    ) -> SdnConnectorObject: ...
-    
-    # Dict mode with mkey provided as keyword arg (single dict)
-    @overload
-    def get(
-        self,
-        *,
-        name: str,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-    ) -> SdnConnectorObject: ...
-    
-    # Dict mode - list of dicts (no mkey/name provided) - keyword-only signature
-    @overload
-    def get(
-        self,
-        *,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-    ) -> FortiObjectList[SdnConnectorObject]: ...
-    
-    # Fallback overload for all other cases
-    @overload
-    def get(
-        self,
-        name: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-    ) -> Union[dict[str, Any], list[dict[str, Any]], FortiObject, list[FortiObject]]: ...
-    
-    def get(
-        self,
-        name: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-    ) -> SdnConnectorObject | list[SdnConnectorObject] | dict[str, Any] | list[dict[str, Any]]: ...
     
     def get_schema(
         self,
         format: str = ...,
     ) -> FortiObject: ...
+
+    # ================================================================
+    # POST Method
+    # ================================================================
     
-    # POST overloads
-    @overload
     def post(
         self,
         payload_dict: SdnConnectorPayload | None = ...,
@@ -1134,7 +352,7 @@ class SdnConnector:
         ha_status: Literal["disable", "enable"] | None = ...,
         verify_certificate: Literal["disable", "enable"] | None = ...,
         server: str | None = ...,
-        server_list: str | list[str] | list[SdnConnectorServerlistItem] | None = ...,
+        server_list: str | list[str] | list[dict[str, Any]] | list[SdnConnectorServerlistItem] | None = ...,
         server_port: int | None = ...,
         message_server_port: int | None = ...,
         username: str | None = ...,
@@ -1147,7 +365,7 @@ class SdnConnector:
         region: str | None = ...,
         vpc_id: str | None = ...,
         alt_resource_ip: Literal["disable", "enable"] | None = ...,
-        external_account_list: str | list[str] | list[SdnConnectorExternalaccountlistItem] | None = ...,
+        external_account_list: str | list[str] | list[dict[str, Any]] | list[SdnConnectorExternalaccountlistItem] | None = ...,
         tenant_id: str | None = ...,
         client_id: str | None = ...,
         client_secret: str | None = ...,
@@ -1156,18 +374,18 @@ class SdnConnector:
         login_endpoint: str | None = ...,
         resource_url: str | None = ...,
         azure_region: Literal["global", "china", "germany", "usgov", "local"] | None = ...,
-        nic: str | list[str] | list[SdnConnectorNicItem] | None = ...,
-        route_table: str | list[str] | list[SdnConnectorRoutetableItem] | None = ...,
+        nic: str | list[str] | list[dict[str, Any]] | list[SdnConnectorNicItem] | None = ...,
+        route_table: str | list[str] | list[dict[str, Any]] | list[SdnConnectorRoutetableItem] | None = ...,
         user_id: str | None = ...,
-        compartment_list: str | list[str] | list[SdnConnectorCompartmentlistItem] | None = ...,
-        oci_region_list: str | list[str] | list[SdnConnectorOciregionlistItem] | None = ...,
+        compartment_list: str | list[str] | list[dict[str, Any]] | list[SdnConnectorCompartmentlistItem] | None = ...,
+        oci_region_list: str | list[str] | list[dict[str, Any]] | list[SdnConnectorOciregionlistItem] | None = ...,
         oci_region_type: Literal["commercial", "government"] | None = ...,
         oci_cert: str | None = ...,
         oci_fingerprint: str | None = ...,
-        external_ip: str | list[str] | list[SdnConnectorExternalipItem] | None = ...,
-        route: str | list[str] | list[SdnConnectorRouteItem] | None = ...,
-        gcp_project_list: str | list[str] | list[SdnConnectorGcpprojectlistItem] | None = ...,
-        forwarding_rule: str | list[str] | list[SdnConnectorForwardingruleItem] | None = ...,
+        external_ip: str | list[str] | list[dict[str, Any]] | list[SdnConnectorExternalipItem] | None = ...,
+        route: str | list[str] | list[dict[str, Any]] | list[SdnConnectorRouteItem] | None = ...,
+        gcp_project_list: str | list[str] | list[dict[str, Any]] | list[SdnConnectorGcpprojectlistItem] | None = ...,
+        forwarding_rule: str | list[str] | list[dict[str, Any]] | list[SdnConnectorForwardingruleItem] | None = ...,
         service_account: str | None = ...,
         private_key: str | None = ...,
         secret_token: str | None = ...,
@@ -1179,190 +397,14 @@ class SdnConnector:
         ibm_region: Literal["dallas", "washington-dc", "london", "frankfurt", "sydney", "tokyo", "osaka", "toronto", "sao-paulo", "madrid"] | None = ...,
         par_id: str | None = ...,
         update_interval: int | None = ...,
+        error_mode: Literal["raise", "return", "print"] | None = ...,
+        error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> SdnConnectorObject: ...
+
+    # ================================================================
+    # PUT Method
+    # ================================================================
     
-    @overload
-    def post(
-        self,
-        payload_dict: SdnConnectorPayload | None = ...,
-        name: str | None = ...,
-        status: Literal["disable", "enable"] | None = ...,
-        type: Literal["aci", "alicloud", "aws", "azure", "gcp", "nsx", "nuage", "oci", "openstack", "kubernetes", "vmware", "sepm", "aci-direct", "ibm", "nutanix", "sap"] | None = ...,
-        proxy: str | None = ...,
-        use_metadata_iam: Literal["disable", "enable"] | None = ...,
-        microsoft_365: Literal["disable", "enable"] | None = ...,
-        ha_status: Literal["disable", "enable"] | None = ...,
-        verify_certificate: Literal["disable", "enable"] | None = ...,
-        server: str | None = ...,
-        server_list: str | list[str] | list[SdnConnectorServerlistItem] | None = ...,
-        server_port: int | None = ...,
-        message_server_port: int | None = ...,
-        username: str | None = ...,
-        password: str | None = ...,
-        vcenter_server: str | None = ...,
-        vcenter_username: str | None = ...,
-        vcenter_password: str | None = ...,
-        access_key: str | None = ...,
-        secret_key: str | None = ...,
-        region: str | None = ...,
-        vpc_id: str | None = ...,
-        alt_resource_ip: Literal["disable", "enable"] | None = ...,
-        external_account_list: str | list[str] | list[SdnConnectorExternalaccountlistItem] | None = ...,
-        tenant_id: str | None = ...,
-        client_id: str | None = ...,
-        client_secret: str | None = ...,
-        subscription_id: str | None = ...,
-        resource_group: str | None = ...,
-        login_endpoint: str | None = ...,
-        resource_url: str | None = ...,
-        azure_region: Literal["global", "china", "germany", "usgov", "local"] | None = ...,
-        nic: str | list[str] | list[SdnConnectorNicItem] | None = ...,
-        route_table: str | list[str] | list[SdnConnectorRoutetableItem] | None = ...,
-        user_id: str | None = ...,
-        compartment_list: str | list[str] | list[SdnConnectorCompartmentlistItem] | None = ...,
-        oci_region_list: str | list[str] | list[SdnConnectorOciregionlistItem] | None = ...,
-        oci_region_type: Literal["commercial", "government"] | None = ...,
-        oci_cert: str | None = ...,
-        oci_fingerprint: str | None = ...,
-        external_ip: str | list[str] | list[SdnConnectorExternalipItem] | None = ...,
-        route: str | list[str] | list[SdnConnectorRouteItem] | None = ...,
-        gcp_project_list: str | list[str] | list[SdnConnectorGcpprojectlistItem] | None = ...,
-        forwarding_rule: str | list[str] | list[SdnConnectorForwardingruleItem] | None = ...,
-        service_account: str | None = ...,
-        private_key: str | None = ...,
-        secret_token: str | None = ...,
-        domain: str | None = ...,
-        group_name: str | None = ...,
-        server_cert: str | None = ...,
-        server_ca_cert: str | None = ...,
-        api_key: str | None = ...,
-        ibm_region: Literal["dallas", "washington-dc", "london", "frankfurt", "sydney", "tokyo", "osaka", "toronto", "sao-paulo", "madrid"] | None = ...,
-        par_id: str | None = ...,
-        update_interval: int | None = ...,
-    ) -> FortiObject: ...
-    
-    # Default overload
-    @overload
-    def post(
-        self,
-        payload_dict: SdnConnectorPayload | None = ...,
-        name: str | None = ...,
-        status: Literal["disable", "enable"] | None = ...,
-        type: Literal["aci", "alicloud", "aws", "azure", "gcp", "nsx", "nuage", "oci", "openstack", "kubernetes", "vmware", "sepm", "aci-direct", "ibm", "nutanix", "sap"] | None = ...,
-        proxy: str | None = ...,
-        use_metadata_iam: Literal["disable", "enable"] | None = ...,
-        microsoft_365: Literal["disable", "enable"] | None = ...,
-        ha_status: Literal["disable", "enable"] | None = ...,
-        verify_certificate: Literal["disable", "enable"] | None = ...,
-        server: str | None = ...,
-        server_list: str | list[str] | list[SdnConnectorServerlistItem] | None = ...,
-        server_port: int | None = ...,
-        message_server_port: int | None = ...,
-        username: str | None = ...,
-        password: str | None = ...,
-        vcenter_server: str | None = ...,
-        vcenter_username: str | None = ...,
-        vcenter_password: str | None = ...,
-        access_key: str | None = ...,
-        secret_key: str | None = ...,
-        region: str | None = ...,
-        vpc_id: str | None = ...,
-        alt_resource_ip: Literal["disable", "enable"] | None = ...,
-        external_account_list: str | list[str] | list[SdnConnectorExternalaccountlistItem] | None = ...,
-        tenant_id: str | None = ...,
-        client_id: str | None = ...,
-        client_secret: str | None = ...,
-        subscription_id: str | None = ...,
-        resource_group: str | None = ...,
-        login_endpoint: str | None = ...,
-        resource_url: str | None = ...,
-        azure_region: Literal["global", "china", "germany", "usgov", "local"] | None = ...,
-        nic: str | list[str] | list[SdnConnectorNicItem] | None = ...,
-        route_table: str | list[str] | list[SdnConnectorRoutetableItem] | None = ...,
-        user_id: str | None = ...,
-        compartment_list: str | list[str] | list[SdnConnectorCompartmentlistItem] | None = ...,
-        oci_region_list: str | list[str] | list[SdnConnectorOciregionlistItem] | None = ...,
-        oci_region_type: Literal["commercial", "government"] | None = ...,
-        oci_cert: str | None = ...,
-        oci_fingerprint: str | None = ...,
-        external_ip: str | list[str] | list[SdnConnectorExternalipItem] | None = ...,
-        route: str | list[str] | list[SdnConnectorRouteItem] | None = ...,
-        gcp_project_list: str | list[str] | list[SdnConnectorGcpprojectlistItem] | None = ...,
-        forwarding_rule: str | list[str] | list[SdnConnectorForwardingruleItem] | None = ...,
-        service_account: str | None = ...,
-        private_key: str | None = ...,
-        secret_token: str | None = ...,
-        domain: str | None = ...,
-        group_name: str | None = ...,
-        server_cert: str | None = ...,
-        server_ca_cert: str | None = ...,
-        api_key: str | None = ...,
-        ibm_region: Literal["dallas", "washington-dc", "london", "frankfurt", "sydney", "tokyo", "osaka", "toronto", "sao-paulo", "madrid"] | None = ...,
-        par_id: str | None = ...,
-        update_interval: int | None = ...,
-    ) -> FortiObject: ...
-    
-    def post(
-        self,
-        payload_dict: SdnConnectorPayload | None = ...,
-        name: str | None = ...,
-        status: Literal["disable", "enable"] | None = ...,
-        type: Literal["aci", "alicloud", "aws", "azure", "gcp", "nsx", "nuage", "oci", "openstack", "kubernetes", "vmware", "sepm", "aci-direct", "ibm", "nutanix", "sap"] | None = ...,
-        proxy: str | None = ...,
-        use_metadata_iam: Literal["disable", "enable"] | None = ...,
-        microsoft_365: Literal["disable", "enable"] | None = ...,
-        ha_status: Literal["disable", "enable"] | None = ...,
-        verify_certificate: Literal["disable", "enable"] | None = ...,
-        server: str | None = ...,
-        server_list: str | list[str] | list[SdnConnectorServerlistItem] | None = ...,
-        server_port: int | None = ...,
-        message_server_port: int | None = ...,
-        username: str | None = ...,
-        password: str | None = ...,
-        vcenter_server: str | None = ...,
-        vcenter_username: str | None = ...,
-        vcenter_password: str | None = ...,
-        access_key: str | None = ...,
-        secret_key: str | None = ...,
-        region: str | None = ...,
-        vpc_id: str | None = ...,
-        alt_resource_ip: Literal["disable", "enable"] | None = ...,
-        external_account_list: str | list[str] | list[SdnConnectorExternalaccountlistItem] | None = ...,
-        tenant_id: str | None = ...,
-        client_id: str | None = ...,
-        client_secret: str | None = ...,
-        subscription_id: str | None = ...,
-        resource_group: str | None = ...,
-        login_endpoint: str | None = ...,
-        resource_url: str | None = ...,
-        azure_region: Literal["global", "china", "germany", "usgov", "local"] | None = ...,
-        nic: str | list[str] | list[SdnConnectorNicItem] | None = ...,
-        route_table: str | list[str] | list[SdnConnectorRoutetableItem] | None = ...,
-        user_id: str | None = ...,
-        compartment_list: str | list[str] | list[SdnConnectorCompartmentlistItem] | None = ...,
-        oci_region_list: str | list[str] | list[SdnConnectorOciregionlistItem] | None = ...,
-        oci_region_type: Literal["commercial", "government"] | None = ...,
-        oci_cert: str | None = ...,
-        oci_fingerprint: str | None = ...,
-        external_ip: str | list[str] | list[SdnConnectorExternalipItem] | None = ...,
-        route: str | list[str] | list[SdnConnectorRouteItem] | None = ...,
-        gcp_project_list: str | list[str] | list[SdnConnectorGcpprojectlistItem] | None = ...,
-        forwarding_rule: str | list[str] | list[SdnConnectorForwardingruleItem] | None = ...,
-        service_account: str | None = ...,
-        private_key: str | None = ...,
-        secret_token: str | None = ...,
-        domain: str | None = ...,
-        group_name: str | None = ...,
-        server_cert: str | None = ...,
-        server_ca_cert: str | None = ...,
-        api_key: str | None = ...,
-        ibm_region: Literal["dallas", "washington-dc", "london", "frankfurt", "sydney", "tokyo", "osaka", "toronto", "sao-paulo", "madrid"] | None = ...,
-        par_id: str | None = ...,
-        update_interval: int | None = ...,
-    ) -> FortiObject: ...
-    
-    # PUT overloads
-    @overload
     def put(
         self,
         payload_dict: SdnConnectorPayload | None = ...,
@@ -1375,7 +417,7 @@ class SdnConnector:
         ha_status: Literal["disable", "enable"] | None = ...,
         verify_certificate: Literal["disable", "enable"] | None = ...,
         server: str | None = ...,
-        server_list: str | list[str] | list[SdnConnectorServerlistItem] | None = ...,
+        server_list: str | list[str] | list[dict[str, Any]] | list[SdnConnectorServerlistItem] | None = ...,
         server_port: int | None = ...,
         message_server_port: int | None = ...,
         username: str | None = ...,
@@ -1388,7 +430,7 @@ class SdnConnector:
         region: str | None = ...,
         vpc_id: str | None = ...,
         alt_resource_ip: Literal["disable", "enable"] | None = ...,
-        external_account_list: str | list[str] | list[SdnConnectorExternalaccountlistItem] | None = ...,
+        external_account_list: str | list[str] | list[dict[str, Any]] | list[SdnConnectorExternalaccountlistItem] | None = ...,
         tenant_id: str | None = ...,
         client_id: str | None = ...,
         client_secret: str | None = ...,
@@ -1397,18 +439,18 @@ class SdnConnector:
         login_endpoint: str | None = ...,
         resource_url: str | None = ...,
         azure_region: Literal["global", "china", "germany", "usgov", "local"] | None = ...,
-        nic: str | list[str] | list[SdnConnectorNicItem] | None = ...,
-        route_table: str | list[str] | list[SdnConnectorRoutetableItem] | None = ...,
+        nic: str | list[str] | list[dict[str, Any]] | list[SdnConnectorNicItem] | None = ...,
+        route_table: str | list[str] | list[dict[str, Any]] | list[SdnConnectorRoutetableItem] | None = ...,
         user_id: str | None = ...,
-        compartment_list: str | list[str] | list[SdnConnectorCompartmentlistItem] | None = ...,
-        oci_region_list: str | list[str] | list[SdnConnectorOciregionlistItem] | None = ...,
+        compartment_list: str | list[str] | list[dict[str, Any]] | list[SdnConnectorCompartmentlistItem] | None = ...,
+        oci_region_list: str | list[str] | list[dict[str, Any]] | list[SdnConnectorOciregionlistItem] | None = ...,
         oci_region_type: Literal["commercial", "government"] | None = ...,
         oci_cert: str | None = ...,
         oci_fingerprint: str | None = ...,
-        external_ip: str | list[str] | list[SdnConnectorExternalipItem] | None = ...,
-        route: str | list[str] | list[SdnConnectorRouteItem] | None = ...,
-        gcp_project_list: str | list[str] | list[SdnConnectorGcpprojectlistItem] | None = ...,
-        forwarding_rule: str | list[str] | list[SdnConnectorForwardingruleItem] | None = ...,
+        external_ip: str | list[str] | list[dict[str, Any]] | list[SdnConnectorExternalipItem] | None = ...,
+        route: str | list[str] | list[dict[str, Any]] | list[SdnConnectorRouteItem] | None = ...,
+        gcp_project_list: str | list[str] | list[dict[str, Any]] | list[SdnConnectorGcpprojectlistItem] | None = ...,
+        forwarding_rule: str | list[str] | list[dict[str, Any]] | list[SdnConnectorForwardingruleItem] | None = ...,
         service_account: str | None = ...,
         private_key: str | None = ...,
         secret_token: str | None = ...,
@@ -1420,212 +462,24 @@ class SdnConnector:
         ibm_region: Literal["dallas", "washington-dc", "london", "frankfurt", "sydney", "tokyo", "osaka", "toronto", "sao-paulo", "madrid"] | None = ...,
         par_id: str | None = ...,
         update_interval: int | None = ...,
+        error_mode: Literal["raise", "return", "print"] | None = ...,
+        error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> SdnConnectorObject: ...
-    
-    @overload
-    def put(
-        self,
-        payload_dict: SdnConnectorPayload | None = ...,
-        name: str | None = ...,
-        status: Literal["disable", "enable"] | None = ...,
-        type: Literal["aci", "alicloud", "aws", "azure", "gcp", "nsx", "nuage", "oci", "openstack", "kubernetes", "vmware", "sepm", "aci-direct", "ibm", "nutanix", "sap"] | None = ...,
-        proxy: str | None = ...,
-        use_metadata_iam: Literal["disable", "enable"] | None = ...,
-        microsoft_365: Literal["disable", "enable"] | None = ...,
-        ha_status: Literal["disable", "enable"] | None = ...,
-        verify_certificate: Literal["disable", "enable"] | None = ...,
-        server: str | None = ...,
-        server_list: str | list[str] | list[SdnConnectorServerlistItem] | None = ...,
-        server_port: int | None = ...,
-        message_server_port: int | None = ...,
-        username: str | None = ...,
-        password: str | None = ...,
-        vcenter_server: str | None = ...,
-        vcenter_username: str | None = ...,
-        vcenter_password: str | None = ...,
-        access_key: str | None = ...,
-        secret_key: str | None = ...,
-        region: str | None = ...,
-        vpc_id: str | None = ...,
-        alt_resource_ip: Literal["disable", "enable"] | None = ...,
-        external_account_list: str | list[str] | list[SdnConnectorExternalaccountlistItem] | None = ...,
-        tenant_id: str | None = ...,
-        client_id: str | None = ...,
-        client_secret: str | None = ...,
-        subscription_id: str | None = ...,
-        resource_group: str | None = ...,
-        login_endpoint: str | None = ...,
-        resource_url: str | None = ...,
-        azure_region: Literal["global", "china", "germany", "usgov", "local"] | None = ...,
-        nic: str | list[str] | list[SdnConnectorNicItem] | None = ...,
-        route_table: str | list[str] | list[SdnConnectorRoutetableItem] | None = ...,
-        user_id: str | None = ...,
-        compartment_list: str | list[str] | list[SdnConnectorCompartmentlistItem] | None = ...,
-        oci_region_list: str | list[str] | list[SdnConnectorOciregionlistItem] | None = ...,
-        oci_region_type: Literal["commercial", "government"] | None = ...,
-        oci_cert: str | None = ...,
-        oci_fingerprint: str | None = ...,
-        external_ip: str | list[str] | list[SdnConnectorExternalipItem] | None = ...,
-        route: str | list[str] | list[SdnConnectorRouteItem] | None = ...,
-        gcp_project_list: str | list[str] | list[SdnConnectorGcpprojectlistItem] | None = ...,
-        forwarding_rule: str | list[str] | list[SdnConnectorForwardingruleItem] | None = ...,
-        service_account: str | None = ...,
-        private_key: str | None = ...,
-        secret_token: str | None = ...,
-        domain: str | None = ...,
-        group_name: str | None = ...,
-        server_cert: str | None = ...,
-        server_ca_cert: str | None = ...,
-        api_key: str | None = ...,
-        ibm_region: Literal["dallas", "washington-dc", "london", "frankfurt", "sydney", "tokyo", "osaka", "toronto", "sao-paulo", "madrid"] | None = ...,
-        par_id: str | None = ...,
-        update_interval: int | None = ...,
-    ) -> FortiObject: ...
-    
-    # Default overload
-    @overload
-    def put(
-        self,
-        payload_dict: SdnConnectorPayload | None = ...,
-        name: str | None = ...,
-        status: Literal["disable", "enable"] | None = ...,
-        type: Literal["aci", "alicloud", "aws", "azure", "gcp", "nsx", "nuage", "oci", "openstack", "kubernetes", "vmware", "sepm", "aci-direct", "ibm", "nutanix", "sap"] | None = ...,
-        proxy: str | None = ...,
-        use_metadata_iam: Literal["disable", "enable"] | None = ...,
-        microsoft_365: Literal["disable", "enable"] | None = ...,
-        ha_status: Literal["disable", "enable"] | None = ...,
-        verify_certificate: Literal["disable", "enable"] | None = ...,
-        server: str | None = ...,
-        server_list: str | list[str] | list[SdnConnectorServerlistItem] | None = ...,
-        server_port: int | None = ...,
-        message_server_port: int | None = ...,
-        username: str | None = ...,
-        password: str | None = ...,
-        vcenter_server: str | None = ...,
-        vcenter_username: str | None = ...,
-        vcenter_password: str | None = ...,
-        access_key: str | None = ...,
-        secret_key: str | None = ...,
-        region: str | None = ...,
-        vpc_id: str | None = ...,
-        alt_resource_ip: Literal["disable", "enable"] | None = ...,
-        external_account_list: str | list[str] | list[SdnConnectorExternalaccountlistItem] | None = ...,
-        tenant_id: str | None = ...,
-        client_id: str | None = ...,
-        client_secret: str | None = ...,
-        subscription_id: str | None = ...,
-        resource_group: str | None = ...,
-        login_endpoint: str | None = ...,
-        resource_url: str | None = ...,
-        azure_region: Literal["global", "china", "germany", "usgov", "local"] | None = ...,
-        nic: str | list[str] | list[SdnConnectorNicItem] | None = ...,
-        route_table: str | list[str] | list[SdnConnectorRoutetableItem] | None = ...,
-        user_id: str | None = ...,
-        compartment_list: str | list[str] | list[SdnConnectorCompartmentlistItem] | None = ...,
-        oci_region_list: str | list[str] | list[SdnConnectorOciregionlistItem] | None = ...,
-        oci_region_type: Literal["commercial", "government"] | None = ...,
-        oci_cert: str | None = ...,
-        oci_fingerprint: str | None = ...,
-        external_ip: str | list[str] | list[SdnConnectorExternalipItem] | None = ...,
-        route: str | list[str] | list[SdnConnectorRouteItem] | None = ...,
-        gcp_project_list: str | list[str] | list[SdnConnectorGcpprojectlistItem] | None = ...,
-        forwarding_rule: str | list[str] | list[SdnConnectorForwardingruleItem] | None = ...,
-        service_account: str | None = ...,
-        private_key: str | None = ...,
-        secret_token: str | None = ...,
-        domain: str | None = ...,
-        group_name: str | None = ...,
-        server_cert: str | None = ...,
-        server_ca_cert: str | None = ...,
-        api_key: str | None = ...,
-        ibm_region: Literal["dallas", "washington-dc", "london", "frankfurt", "sydney", "tokyo", "osaka", "toronto", "sao-paulo", "madrid"] | None = ...,
-        par_id: str | None = ...,
-        update_interval: int | None = ...,
-    ) -> FortiObject: ...
-    
-    def put(
-        self,
-        payload_dict: SdnConnectorPayload | None = ...,
-        name: str | None = ...,
-        status: Literal["disable", "enable"] | None = ...,
-        type: Literal["aci", "alicloud", "aws", "azure", "gcp", "nsx", "nuage", "oci", "openstack", "kubernetes", "vmware", "sepm", "aci-direct", "ibm", "nutanix", "sap"] | None = ...,
-        proxy: str | None = ...,
-        use_metadata_iam: Literal["disable", "enable"] | None = ...,
-        microsoft_365: Literal["disable", "enable"] | None = ...,
-        ha_status: Literal["disable", "enable"] | None = ...,
-        verify_certificate: Literal["disable", "enable"] | None = ...,
-        server: str | None = ...,
-        server_list: str | list[str] | list[SdnConnectorServerlistItem] | None = ...,
-        server_port: int | None = ...,
-        message_server_port: int | None = ...,
-        username: str | None = ...,
-        password: str | None = ...,
-        vcenter_server: str | None = ...,
-        vcenter_username: str | None = ...,
-        vcenter_password: str | None = ...,
-        access_key: str | None = ...,
-        secret_key: str | None = ...,
-        region: str | None = ...,
-        vpc_id: str | None = ...,
-        alt_resource_ip: Literal["disable", "enable"] | None = ...,
-        external_account_list: str | list[str] | list[SdnConnectorExternalaccountlistItem] | None = ...,
-        tenant_id: str | None = ...,
-        client_id: str | None = ...,
-        client_secret: str | None = ...,
-        subscription_id: str | None = ...,
-        resource_group: str | None = ...,
-        login_endpoint: str | None = ...,
-        resource_url: str | None = ...,
-        azure_region: Literal["global", "china", "germany", "usgov", "local"] | None = ...,
-        nic: str | list[str] | list[SdnConnectorNicItem] | None = ...,
-        route_table: str | list[str] | list[SdnConnectorRoutetableItem] | None = ...,
-        user_id: str | None = ...,
-        compartment_list: str | list[str] | list[SdnConnectorCompartmentlistItem] | None = ...,
-        oci_region_list: str | list[str] | list[SdnConnectorOciregionlistItem] | None = ...,
-        oci_region_type: Literal["commercial", "government"] | None = ...,
-        oci_cert: str | None = ...,
-        oci_fingerprint: str | None = ...,
-        external_ip: str | list[str] | list[SdnConnectorExternalipItem] | None = ...,
-        route: str | list[str] | list[SdnConnectorRouteItem] | None = ...,
-        gcp_project_list: str | list[str] | list[SdnConnectorGcpprojectlistItem] | None = ...,
-        forwarding_rule: str | list[str] | list[SdnConnectorForwardingruleItem] | None = ...,
-        service_account: str | None = ...,
-        private_key: str | None = ...,
-        secret_token: str | None = ...,
-        domain: str | None = ...,
-        group_name: str | None = ...,
-        server_cert: str | None = ...,
-        server_ca_cert: str | None = ...,
-        api_key: str | None = ...,
-        ibm_region: Literal["dallas", "washington-dc", "london", "frankfurt", "sydney", "tokyo", "osaka", "toronto", "sao-paulo", "madrid"] | None = ...,
-        par_id: str | None = ...,
-        update_interval: int | None = ...,
-    ) -> FortiObject: ...
-    
-    # DELETE overloads
-    @overload
-    def delete(
-        self,
-        name: str | None = ...,
-    ) -> SdnConnectorObject: ...
-    
-    @overload
-    def delete(
-        self,
-        name: str | None = ...,
-    ) -> FortiObject: ...
-    
-    # Default overload
-    @overload
-    def delete(
-        self,
-        name: str | None = ...,
-    ) -> FortiObject: ...
+
+    # ================================================================
+    # DELETE Method
+    # ================================================================
     
     def delete(
         self,
         name: str | None = ...,
+        error_mode: Literal["raise", "return", "print"] | None = ...,
+        error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> FortiObject: ...
+
+    # ================================================================
+    # Utility Methods
+    # ================================================================
     
     def exists(
         self,
@@ -1644,7 +498,7 @@ class SdnConnector:
         ha_status: Literal["disable", "enable"] | None = ...,
         verify_certificate: Literal["disable", "enable"] | None = ...,
         server: str | None = ...,
-        server_list: str | list[str] | list[SdnConnectorServerlistItem] | None = ...,
+        server_list: str | list[str] | list[dict[str, Any]] | list[SdnConnectorServerlistItem] | None = ...,
         server_port: int | None = ...,
         message_server_port: int | None = ...,
         username: str | None = ...,
@@ -1657,7 +511,7 @@ class SdnConnector:
         region: str | None = ...,
         vpc_id: str | None = ...,
         alt_resource_ip: Literal["disable", "enable"] | None = ...,
-        external_account_list: str | list[str] | list[SdnConnectorExternalaccountlistItem] | None = ...,
+        external_account_list: str | list[str] | list[dict[str, Any]] | list[SdnConnectorExternalaccountlistItem] | None = ...,
         tenant_id: str | None = ...,
         client_id: str | None = ...,
         client_secret: str | None = ...,
@@ -1666,18 +520,18 @@ class SdnConnector:
         login_endpoint: str | None = ...,
         resource_url: str | None = ...,
         azure_region: Literal["global", "china", "germany", "usgov", "local"] | None = ...,
-        nic: str | list[str] | list[SdnConnectorNicItem] | None = ...,
-        route_table: str | list[str] | list[SdnConnectorRoutetableItem] | None = ...,
+        nic: str | list[str] | list[dict[str, Any]] | list[SdnConnectorNicItem] | None = ...,
+        route_table: str | list[str] | list[dict[str, Any]] | list[SdnConnectorRoutetableItem] | None = ...,
         user_id: str | None = ...,
-        compartment_list: str | list[str] | list[SdnConnectorCompartmentlistItem] | None = ...,
-        oci_region_list: str | list[str] | list[SdnConnectorOciregionlistItem] | None = ...,
+        compartment_list: str | list[str] | list[dict[str, Any]] | list[SdnConnectorCompartmentlistItem] | None = ...,
+        oci_region_list: str | list[str] | list[dict[str, Any]] | list[SdnConnectorOciregionlistItem] | None = ...,
         oci_region_type: Literal["commercial", "government"] | None = ...,
         oci_cert: str | None = ...,
         oci_fingerprint: str | None = ...,
-        external_ip: str | list[str] | list[SdnConnectorExternalipItem] | None = ...,
-        route: str | list[str] | list[SdnConnectorRouteItem] | None = ...,
-        gcp_project_list: str | list[str] | list[SdnConnectorGcpprojectlistItem] | None = ...,
-        forwarding_rule: str | list[str] | list[SdnConnectorForwardingruleItem] | None = ...,
+        external_ip: str | list[str] | list[dict[str, Any]] | list[SdnConnectorExternalipItem] | None = ...,
+        route: str | list[str] | list[dict[str, Any]] | list[SdnConnectorRouteItem] | None = ...,
+        gcp_project_list: str | list[str] | list[dict[str, Any]] | list[SdnConnectorGcpprojectlistItem] | None = ...,
+        forwarding_rule: str | list[str] | list[dict[str, Any]] | list[SdnConnectorForwardingruleItem] | None = ...,
         service_account: str | None = ...,
         private_key: str | None = ...,
         secret_token: str | None = ...,
@@ -1689,6 +543,8 @@ class SdnConnector:
         ibm_region: Literal["dallas", "washington-dc", "london", "frankfurt", "sydney", "tokyo", "osaka", "toronto", "sao-paulo", "madrid"] | None = ...,
         par_id: str | None = ...,
         update_interval: int | None = ...,
+        error_mode: Literal["raise", "return", "print"] | None = ...,
+        error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> FortiObject: ...
     
     # Helper methods
@@ -1696,7 +552,7 @@ class SdnConnector:
     def help(field_name: str | None = ...) -> str: ...
     
     @staticmethod
-    def fields(detailed: bool = ...) -> Union[list[str], list[dict[str, Any]]]: ...
+    def fields(detailed: bool = ...) -> list[str] | list[dict[str, Any]]: ...
     
     @staticmethod
     def field_info(field_name: str) -> FortiObject: ...
@@ -1712,9 +568,6 @@ class SdnConnector:
     
     @staticmethod
     def schema() -> FortiObject: ...
-
-
-# ================================================================
 
 
 __all__ = [

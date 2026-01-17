@@ -7,12 +7,16 @@ Generated from FortiOS schema version unknown.
 
 from __future__ import annotations
 
-from pydantic import BaseModel, Field, field_validator
+from pydantic import BaseModel, Field
 from typing import Any, Literal, Optional
 from enum import Enum
 
 # ============================================================================
-# Child Table Models
+# Enum Definitions for Child Table Fields (for fields with 4+ allowed values)
+# ============================================================================
+
+# ============================================================================
+# Child Table Models (sorted deepest-first so nested models are defined before their parents)
 # ============================================================================
 
 class ExchangeKdcIp(BaseModel):
@@ -26,18 +30,30 @@ class ExchangeKdcIp(BaseModel):
         """Pydantic model configuration."""
         extra = "allow"  # Allow additional fields from API
         str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
     
-    ipv4: str = Field(max_length=79, default="", description="KDC IPv4 addresses for Kerberos authentication.")
+    ipv4: str = Field(max_length=79, description="KDC IPv4 addresses for Kerberos authentication.")
 # ============================================================================
 # Enum Definitions (for fields with 4+ allowed values)
 # ============================================================================
 
-class ExchangeAuth_levelEnum(str, Enum):
+class ExchangeAuthLevelEnum(str, Enum):
     """Allowed values for auth_level field."""
-    CONNECT = "connect"    CALL = "call"    PACKET = "packet"    INTEGRITY = "integrity"    PRIVACY = "privacy"
-class ExchangeSsl_min_proto_versionEnum(str, Enum):
+    CONNECT = "connect"
+    CALL = "call"
+    PACKET = "packet"
+    INTEGRITY = "integrity"
+    PRIVACY = "privacy"
+
+class ExchangeSslMinProtoVersionEnum(str, Enum):
     """Allowed values for ssl_min_proto_version field."""
-    DEFAULT = "default"    SSLV3 = "SSLv3"    TLSV1 = "TLSv1"    TLSV1_1 = "TLSv1-1"    TLSV1_2 = "TLSv1-2"    TLSV1_3 = "TLSv1-3"
+    DEFAULT = "default"
+    SSLV3 = "SSLv3"
+    TLSV1 = "TLSv1"
+    TLSV1_1 = "TLSv1-1"
+    TLSV1_2 = "TLSv1-2"
+    TLSV1_3 = "TLSv1-3"
+
 
 # ============================================================================
 # Main Model
@@ -62,20 +78,20 @@ class ExchangeModel(BaseModel):
     # Model Fields
     # ========================================================================
     
-    name: str | None = Field(max_length=35, default="", description="MS Exchange server entry name.")    
-    server_name: str = Field(max_length=63, default="", description="MS Exchange server hostname.")    
-    domain_name: str = Field(max_length=79, default="", description="MS Exchange server fully qualified domain name.")    
-    username: str = Field(max_length=64, default="", description="User name used to sign in to the server. Must have proper permissions for service.")    
+    name: str | None = Field(max_length=35, default=None, description="MS Exchange server entry name.")    
+    server_name: str = Field(max_length=63, description="MS Exchange server hostname.")    
+    domain_name: str = Field(max_length=79, description="MS Exchange server fully qualified domain name.")    
+    username: str = Field(max_length=64, description="User name used to sign in to the server. Must have proper permissions for service.")    
     password: Any = Field(max_length=128, description="Password for the specified username.")    
     ip: str | None = Field(default="0.0.0.0", description="Server IPv4 address.")    
     connect_protocol: Literal["rpc-over-tcp", "rpc-over-http", "rpc-over-https"] | None = Field(default="rpc-over-https", description="Connection protocol used to connect to MS Exchange service.")    
     validate_server_certificate: Literal["disable", "enable"] | None = Field(default="disable", description="Enable/disable exchange server certificate validation.")    
     auth_type: Literal["spnego", "ntlm", "kerberos"] | None = Field(default="kerberos", description="Authentication security type used for the RPC protocol layer.")    
-    auth_level: AuthLevelEnum | None = Field(default="privacy", description="Authentication security level used for the RPC protocol layer.")    
+    auth_level: ExchangeAuthLevelEnum | None = Field(default=ExchangeAuthLevelEnum.PRIVACY, description="Authentication security level used for the RPC protocol layer.")    
     http_auth_type: Literal["basic", "ntlm"] | None = Field(default="ntlm", description="Authentication security type used for the HTTP transport.")    
-    ssl_min_proto_version: SslMinProtoVersionEnum | None = Field(default="default", description="Minimum SSL/TLS protocol version for HTTPS transport (default is to follow system global setting).")    
+    ssl_min_proto_version: ExchangeSslMinProtoVersionEnum | None = Field(default=ExchangeSslMinProtoVersionEnum.DEFAULT, description="Minimum SSL/TLS protocol version for HTTPS transport (default is to follow system global setting).")    
     auto_discover_kdc: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable automatic discovery of KDC IP addresses.")    
-    kdc_ip: list[KdcIp] = Field(default=None, description="KDC IPv4 addresses for Kerberos authentication.")    
+    kdc_ip: list[ExchangeKdcIp] = Field(default_factory=list, description="KDC IPv4 addresses for Kerberos authentication.")    
     # ========================================================================
     # Custom Validators
     # ========================================================================
@@ -124,5 +140,5 @@ __all__ = [
 # ============================================================================
 # Generated by hfortix generator v0.6.0
 # Schema: 1.7.0
-# Generated: 2026-01-17T05:32:19.203399Z
+# Generated: 2026-01-17T17:25:22.906687Z
 # ============================================================================

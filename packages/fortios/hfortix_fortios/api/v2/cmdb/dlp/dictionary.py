@@ -654,6 +654,16 @@ class Dictionary(CRUDEndpoint, MetadataMixin):
             - put(): Update existing object
             - exists(): Check existence manually
         """
+        # Apply normalization for table fields (supports flexible input formats)
+        if entries is not None:
+            entries = normalize_table_field(
+                entries,
+                mkey="id",
+                required_fields=['type', 'pattern'],
+                field_name="entries",
+                example="[{'type': 'value', 'pattern': 'value'}]",
+            )
+        
         # Build payload using helper function with auto-normalization
         payload_data = build_api_payload(
             uuid=uuid,

@@ -7,45 +7,17 @@ Generated from FortiOS schema version unknown.
 
 from __future__ import annotations
 
-from pydantic import BaseModel, Field, field_validator
+from pydantic import BaseModel, Field
 from typing import Any, Literal, Optional
 
 # ============================================================================
-# Child Table Models
+# Enum Definitions for Child Table Fields (for fields with 4+ allowed values)
 # ============================================================================
 
-class ReplacemsgGroupMail(BaseModel):
-    """
-    Child table model for mail.
-    
-    Replacement message table entries.
-    """
-    
-    class Config:
-        """Pydantic model configuration."""
-        extra = "allow"  # Allow additional fields from API
-        str_strip_whitespace = True
-    
-    msg_type: str = Field(max_length=28, default="", description="Message type.")    
-    buffer: str | None = Field(max_length=32768, default=None, description="Message string.")    
-    header: Literal["none", "http", "8bit"] | None = Field(default="none", description="Header flag.")    
-    format: Literal["none", "text", "html"] | None = Field(default="none", description="Format flag.")
-class ReplacemsgGroupHttp(BaseModel):
-    """
-    Child table model for http.
-    
-    Replacement message table entries.
-    """
-    
-    class Config:
-        """Pydantic model configuration."""
-        extra = "allow"  # Allow additional fields from API
-        str_strip_whitespace = True
-    
-    msg_type: str = Field(max_length=28, default="", description="Message type.")    
-    buffer: str | None = Field(max_length=32768, default=None, description="Message string.")    
-    header: Literal["none", "http", "8bit"] | None = Field(default="none", description="Header flag.")    
-    format: Literal["none", "text", "html"] | None = Field(default="none", description="Format flag.")
+# ============================================================================
+# Child Table Models (sorted deepest-first so nested models are defined before their parents)
+# ============================================================================
+
 class ReplacemsgGroupWebproxy(BaseModel):
     """
     Child table model for webproxy.
@@ -57,155 +29,12 @@ class ReplacemsgGroupWebproxy(BaseModel):
         """Pydantic model configuration."""
         extra = "allow"  # Allow additional fields from API
         str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
     
-    msg_type: str = Field(max_length=28, default="", description="Message type.")    
+    msg_type: str = Field(max_length=28, description="Message type.")    
     buffer: str | None = Field(max_length=32768, default=None, description="Message string.")    
     header: Literal["none", "http", "8bit"] | None = Field(default="none", description="Header flag.")    
-    format: Literal["none", "text", "html"] | None = Field(default="none", description="Format flag.")
-class ReplacemsgGroupFtp(BaseModel):
-    """
-    Child table model for ftp.
-    
-    Replacement message table entries.
-    """
-    
-    class Config:
-        """Pydantic model configuration."""
-        extra = "allow"  # Allow additional fields from API
-        str_strip_whitespace = True
-    
-    msg_type: str = Field(max_length=28, default="", description="Message type.")    
-    buffer: str | None = Field(max_length=32768, default=None, description="Message string.")    
-    header: Literal["none", "http", "8bit"] | None = Field(default="none", description="Header flag.")    
-    format: Literal["none", "text", "html"] | None = Field(default="none", description="Format flag.")
-class ReplacemsgGroupFortiguardWf(BaseModel):
-    """
-    Child table model for fortiguard-wf.
-    
-    Replacement message table entries.
-    """
-    
-    class Config:
-        """Pydantic model configuration."""
-        extra = "allow"  # Allow additional fields from API
-        str_strip_whitespace = True
-    
-    msg_type: str = Field(max_length=28, default="", description="Message type.")    
-    buffer: str | None = Field(max_length=32768, default=None, description="Message string.")    
-    header: Literal["none", "http", "8bit"] | None = Field(default="none", description="Header flag.")    
-    format: Literal["none", "text", "html"] | None = Field(default="none", description="Format flag.")
-class ReplacemsgGroupSpam(BaseModel):
-    """
-    Child table model for spam.
-    
-    Replacement message table entries.
-    """
-    
-    class Config:
-        """Pydantic model configuration."""
-        extra = "allow"  # Allow additional fields from API
-        str_strip_whitespace = True
-    
-    msg_type: str = Field(max_length=28, default="", description="Message type.")    
-    buffer: str | None = Field(max_length=32768, default=None, description="Message string.")    
-    header: Literal["none", "http", "8bit"] | None = Field(default="none", description="Header flag.")    
-    format: Literal["none", "text", "html"] | None = Field(default="none", description="Format flag.")
-class ReplacemsgGroupAlertmail(BaseModel):
-    """
-    Child table model for alertmail.
-    
-    Replacement message table entries.
-    """
-    
-    class Config:
-        """Pydantic model configuration."""
-        extra = "allow"  # Allow additional fields from API
-        str_strip_whitespace = True
-    
-    msg_type: str = Field(max_length=28, default="", description="Message type.")    
-    buffer: str | None = Field(max_length=32768, default=None, description="Message string.")    
-    header: Literal["none", "http", "8bit"] | None = Field(default="none", description="Header flag.")    
-    format: Literal["none", "text", "html"] | None = Field(default="none", description="Format flag.")
-class ReplacemsgGroupAdmin(BaseModel):
-    """
-    Child table model for admin.
-    
-    Replacement message table entries.
-    """
-    
-    class Config:
-        """Pydantic model configuration."""
-        extra = "allow"  # Allow additional fields from API
-        str_strip_whitespace = True
-    
-    msg_type: str = Field(max_length=28, default="", description="Message type.")    
-    buffer: str | None = Field(max_length=32768, default=None, description="Message string.")    
-    header: Literal["none", "http", "8bit"] | None = Field(default="none", description="Header flag.")    
-    format: Literal["none", "text", "html"] | None = Field(default="none", description="Format flag.")
-class ReplacemsgGroupAuth(BaseModel):
-    """
-    Child table model for auth.
-    
-    Replacement message table entries.
-    """
-    
-    class Config:
-        """Pydantic model configuration."""
-        extra = "allow"  # Allow additional fields from API
-        str_strip_whitespace = True
-    
-    msg_type: str = Field(max_length=28, default="", description="Message type.")    
-    buffer: str | None = Field(max_length=32768, default=None, description="Message string.")    
-    header: Literal["none", "http", "8bit"] | None = Field(default="none", description="Header flag.")    
-    format: Literal["none", "text", "html"] | None = Field(default="none", description="Format flag.")
-class ReplacemsgGroupSslvpn(BaseModel):
-    """
-    Child table model for sslvpn.
-    
-    Replacement message table entries.
-    """
-    
-    class Config:
-        """Pydantic model configuration."""
-        extra = "allow"  # Allow additional fields from API
-        str_strip_whitespace = True
-    
-    msg_type: str = Field(max_length=28, default="", description="Message type.")    
-    buffer: str | None = Field(max_length=32768, default=None, description="Message string.")    
-    header: Literal["none", "http", "8bit"] | None = Field(default="none", description="Header flag.")    
-    format: Literal["none", "text", "html"] | None = Field(default="none", description="Format flag.")
-class ReplacemsgGroupNacQuar(BaseModel):
-    """
-    Child table model for nac-quar.
-    
-    Replacement message table entries.
-    """
-    
-    class Config:
-        """Pydantic model configuration."""
-        extra = "allow"  # Allow additional fields from API
-        str_strip_whitespace = True
-    
-    msg_type: str = Field(max_length=28, default="", description="Message type.")    
-    buffer: str | None = Field(max_length=32768, default=None, description="Message string.")    
-    header: Literal["none", "http", "8bit"] | None = Field(default="none", description="Header flag.")    
-    format: Literal["none", "text", "html"] | None = Field(default="none", description="Format flag.")
-class ReplacemsgGroupTrafficQuota(BaseModel):
-    """
-    Child table model for traffic-quota.
-    
-    Replacement message table entries.
-    """
-    
-    class Config:
-        """Pydantic model configuration."""
-        extra = "allow"  # Allow additional fields from API
-        str_strip_whitespace = True
-    
-    msg_type: str = Field(max_length=28, default="", description="Message type.")    
-    buffer: str | None = Field(max_length=32768, default=None, description="Message string.")    
-    header: Literal["none", "http", "8bit"] | None = Field(default="none", description="Header flag.")    
-    format: Literal["none", "text", "html"] | None = Field(default="none", description="Format flag.")
+    format_: Literal["none", "text", "html"] | None = Field(default="none", serialization_alias="format", description="Format flag.")
 class ReplacemsgGroupUtm(BaseModel):
     """
     Child table model for utm.
@@ -217,14 +46,15 @@ class ReplacemsgGroupUtm(BaseModel):
         """Pydantic model configuration."""
         extra = "allow"  # Allow additional fields from API
         str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
     
-    msg_type: str = Field(max_length=28, default="", description="Message type.")    
+    msg_type: str = Field(max_length=28, description="Message type.")    
     buffer: str | None = Field(max_length=32768, default=None, description="Message string.")    
     header: Literal["none", "http", "8bit"] | None = Field(default="none", description="Header flag.")    
-    format: Literal["none", "text", "html"] | None = Field(default="none", description="Format flag.")
-class ReplacemsgGroupCustomMessage(BaseModel):
+    format_: Literal["none", "text", "html"] | None = Field(default="none", serialization_alias="format", description="Format flag.")
+class ReplacemsgGroupTrafficQuota(BaseModel):
     """
-    Child table model for custom-message.
+    Child table model for traffic-quota.
     
     Replacement message table entries.
     """
@@ -233,11 +63,80 @@ class ReplacemsgGroupCustomMessage(BaseModel):
         """Pydantic model configuration."""
         extra = "allow"  # Allow additional fields from API
         str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
     
-    msg_type: str = Field(max_length=28, default="", description="Message type.")    
+    msg_type: str = Field(max_length=28, description="Message type.")    
     buffer: str | None = Field(max_length=32768, default=None, description="Message string.")    
     header: Literal["none", "http", "8bit"] | None = Field(default="none", description="Header flag.")    
-    format: Literal["none", "text", "html"] | None = Field(default="none", description="Format flag.")
+    format_: Literal["none", "text", "html"] | None = Field(default="none", serialization_alias="format", description="Format flag.")
+class ReplacemsgGroupSslvpn(BaseModel):
+    """
+    Child table model for sslvpn.
+    
+    Replacement message table entries.
+    """
+    
+    class Config:
+        """Pydantic model configuration."""
+        extra = "allow"  # Allow additional fields from API
+        str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
+    
+    msg_type: str = Field(max_length=28, description="Message type.")    
+    buffer: str | None = Field(max_length=32768, default=None, description="Message string.")    
+    header: Literal["none", "http", "8bit"] | None = Field(default="none", description="Header flag.")    
+    format_: Literal["none", "text", "html"] | None = Field(default="none", serialization_alias="format", description="Format flag.")
+class ReplacemsgGroupSpam(BaseModel):
+    """
+    Child table model for spam.
+    
+    Replacement message table entries.
+    """
+    
+    class Config:
+        """Pydantic model configuration."""
+        extra = "allow"  # Allow additional fields from API
+        str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
+    
+    msg_type: str = Field(max_length=28, description="Message type.")    
+    buffer: str | None = Field(max_length=32768, default=None, description="Message string.")    
+    header: Literal["none", "http", "8bit"] | None = Field(default="none", description="Header flag.")    
+    format_: Literal["none", "text", "html"] | None = Field(default="none", serialization_alias="format", description="Format flag.")
+class ReplacemsgGroupNacQuar(BaseModel):
+    """
+    Child table model for nac-quar.
+    
+    Replacement message table entries.
+    """
+    
+    class Config:
+        """Pydantic model configuration."""
+        extra = "allow"  # Allow additional fields from API
+        str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
+    
+    msg_type: str = Field(max_length=28, description="Message type.")    
+    buffer: str | None = Field(max_length=32768, default=None, description="Message string.")    
+    header: Literal["none", "http", "8bit"] | None = Field(default="none", description="Header flag.")    
+    format_: Literal["none", "text", "html"] | None = Field(default="none", serialization_alias="format", description="Format flag.")
+class ReplacemsgGroupMail(BaseModel):
+    """
+    Child table model for mail.
+    
+    Replacement message table entries.
+    """
+    
+    class Config:
+        """Pydantic model configuration."""
+        extra = "allow"  # Allow additional fields from API
+        str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
+    
+    msg_type: str = Field(max_length=28, description="Message type.")    
+    buffer: str | None = Field(max_length=32768, default=None, description="Message string.")    
+    header: Literal["none", "http", "8bit"] | None = Field(default="none", description="Header flag.")    
+    format_: Literal["none", "text", "html"] | None = Field(default="none", serialization_alias="format", description="Format flag.")
 class ReplacemsgGroupIcap(BaseModel):
     """
     Child table model for icap.
@@ -249,11 +148,80 @@ class ReplacemsgGroupIcap(BaseModel):
         """Pydantic model configuration."""
         extra = "allow"  # Allow additional fields from API
         str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
     
-    msg_type: str = Field(max_length=28, default="", description="Message type.")    
+    msg_type: str = Field(max_length=28, description="Message type.")    
     buffer: str | None = Field(max_length=32768, default=None, description="Message string.")    
     header: Literal["none", "http", "8bit"] | None = Field(default="none", description="Header flag.")    
-    format: Literal["none", "text", "html"] | None = Field(default="none", description="Format flag.")
+    format_: Literal["none", "text", "html"] | None = Field(default="none", serialization_alias="format", description="Format flag.")
+class ReplacemsgGroupHttp(BaseModel):
+    """
+    Child table model for http.
+    
+    Replacement message table entries.
+    """
+    
+    class Config:
+        """Pydantic model configuration."""
+        extra = "allow"  # Allow additional fields from API
+        str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
+    
+    msg_type: str = Field(max_length=28, description="Message type.")    
+    buffer: str | None = Field(max_length=32768, default=None, description="Message string.")    
+    header: Literal["none", "http", "8bit"] | None = Field(default="none", description="Header flag.")    
+    format_: Literal["none", "text", "html"] | None = Field(default="none", serialization_alias="format", description="Format flag.")
+class ReplacemsgGroupFtp(BaseModel):
+    """
+    Child table model for ftp.
+    
+    Replacement message table entries.
+    """
+    
+    class Config:
+        """Pydantic model configuration."""
+        extra = "allow"  # Allow additional fields from API
+        str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
+    
+    msg_type: str = Field(max_length=28, description="Message type.")    
+    buffer: str | None = Field(max_length=32768, default=None, description="Message string.")    
+    header: Literal["none", "http", "8bit"] | None = Field(default="none", description="Header flag.")    
+    format_: Literal["none", "text", "html"] | None = Field(default="none", serialization_alias="format", description="Format flag.")
+class ReplacemsgGroupFortiguardWf(BaseModel):
+    """
+    Child table model for fortiguard-wf.
+    
+    Replacement message table entries.
+    """
+    
+    class Config:
+        """Pydantic model configuration."""
+        extra = "allow"  # Allow additional fields from API
+        str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
+    
+    msg_type: str = Field(max_length=28, description="Message type.")    
+    buffer: str | None = Field(max_length=32768, default=None, description="Message string.")    
+    header: Literal["none", "http", "8bit"] | None = Field(default="none", description="Header flag.")    
+    format_: Literal["none", "text", "html"] | None = Field(default="none", serialization_alias="format", description="Format flag.")
+class ReplacemsgGroupCustomMessage(BaseModel):
+    """
+    Child table model for custom-message.
+    
+    Replacement message table entries.
+    """
+    
+    class Config:
+        """Pydantic model configuration."""
+        extra = "allow"  # Allow additional fields from API
+        str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
+    
+    msg_type: str = Field(max_length=28, description="Message type.")    
+    buffer: str | None = Field(max_length=32768, default=None, description="Message string.")    
+    header: Literal["none", "http", "8bit"] | None = Field(default="none", description="Header flag.")    
+    format_: Literal["none", "text", "html"] | None = Field(default="none", serialization_alias="format", description="Format flag.")
 class ReplacemsgGroupAutomation(BaseModel):
     """
     Child table model for automation.
@@ -265,11 +233,63 @@ class ReplacemsgGroupAutomation(BaseModel):
         """Pydantic model configuration."""
         extra = "allow"  # Allow additional fields from API
         str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
     
-    msg_type: str = Field(max_length=28, default="", description="Message type.")    
+    msg_type: str = Field(max_length=28, description="Message type.")    
     buffer: str | None = Field(max_length=32768, default=None, description="Message string.")    
     header: Literal["none", "http", "8bit"] | None = Field(default="none", description="Header flag.")    
-    format: Literal["none", "text", "html"] | None = Field(default="none", description="Format flag.")
+    format_: Literal["none", "text", "html"] | None = Field(default="none", serialization_alias="format", description="Format flag.")
+class ReplacemsgGroupAuth(BaseModel):
+    """
+    Child table model for auth.
+    
+    Replacement message table entries.
+    """
+    
+    class Config:
+        """Pydantic model configuration."""
+        extra = "allow"  # Allow additional fields from API
+        str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
+    
+    msg_type: str = Field(max_length=28, description="Message type.")    
+    buffer: str | None = Field(max_length=32768, default=None, description="Message string.")    
+    header: Literal["none", "http", "8bit"] | None = Field(default="none", description="Header flag.")    
+    format_: Literal["none", "text", "html"] | None = Field(default="none", serialization_alias="format", description="Format flag.")
+class ReplacemsgGroupAlertmail(BaseModel):
+    """
+    Child table model for alertmail.
+    
+    Replacement message table entries.
+    """
+    
+    class Config:
+        """Pydantic model configuration."""
+        extra = "allow"  # Allow additional fields from API
+        str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
+    
+    msg_type: str = Field(max_length=28, description="Message type.")    
+    buffer: str | None = Field(max_length=32768, default=None, description="Message string.")    
+    header: Literal["none", "http", "8bit"] | None = Field(default="none", description="Header flag.")    
+    format_: Literal["none", "text", "html"] | None = Field(default="none", serialization_alias="format", description="Format flag.")
+class ReplacemsgGroupAdmin(BaseModel):
+    """
+    Child table model for admin.
+    
+    Replacement message table entries.
+    """
+    
+    class Config:
+        """Pydantic model configuration."""
+        extra = "allow"  # Allow additional fields from API
+        str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
+    
+    msg_type: str = Field(max_length=28, description="Message type.")    
+    buffer: str | None = Field(max_length=32768, default=None, description="Message string.")    
+    header: Literal["none", "http", "8bit"] | None = Field(default="none", description="Header flag.")    
+    format_: Literal["none", "text", "html"] | None = Field(default="none", serialization_alias="format", description="Format flag.")
 # ============================================================================
 # Enum Definitions (for fields with 4+ allowed values)
 # ============================================================================
@@ -298,25 +318,25 @@ class ReplacemsgGroupModel(BaseModel):
     # Model Fields
     # ========================================================================
     
-    name: str | None = Field(max_length=35, default="", description="Group name.")    
+    name: str | None = Field(max_length=35, default=None, description="Group name.")    
     comment: str | None = Field(max_length=255, default=None, description="Comment.")    
     group_type: Literal["default", "utm", "auth"] = Field(default="default", description="Group type.")    
-    mail: list[Mail] = Field(default=None, description="Replacement message table entries.")    
-    http: list[Http] = Field(default=None, description="Replacement message table entries.")    
-    webproxy: list[Webproxy] = Field(default=None, description="Replacement message table entries.")    
-    ftp: list[Ftp] = Field(default=None, description="Replacement message table entries.")    
-    fortiguard_wf: list[FortiguardWf] = Field(default=None, description="Replacement message table entries.")    
-    spam: list[Spam] = Field(default=None, description="Replacement message table entries.")    
-    alertmail: list[Alertmail] = Field(default=None, description="Replacement message table entries.")    
-    admin: list[Admin] = Field(default=None, description="Replacement message table entries.")    
-    auth: list[Auth] = Field(default=None, description="Replacement message table entries.")    
-    sslvpn: list[Sslvpn] = Field(default=None, description="Replacement message table entries.")    
-    nac_quar: list[NacQuar] = Field(default=None, description="Replacement message table entries.")    
-    traffic_quota: list[TrafficQuota] = Field(default=None, description="Replacement message table entries.")    
-    utm: list[Utm] = Field(default=None, description="Replacement message table entries.")    
-    custom_message: list[CustomMessage] = Field(default=None, description="Replacement message table entries.")    
-    icap: list[Icap] = Field(default=None, description="Replacement message table entries.")    
-    automation: list[Automation] = Field(default=None, description="Replacement message table entries.")    
+    mail: list[ReplacemsgGroupMail] = Field(default_factory=list, description="Replacement message table entries.")    
+    http: list[ReplacemsgGroupHttp] = Field(default_factory=list, description="Replacement message table entries.")    
+    webproxy: list[ReplacemsgGroupWebproxy] = Field(default_factory=list, description="Replacement message table entries.")    
+    ftp: list[ReplacemsgGroupFtp] = Field(default_factory=list, description="Replacement message table entries.")    
+    fortiguard_wf: list[ReplacemsgGroupFortiguardWf] = Field(default_factory=list, description="Replacement message table entries.")    
+    spam: list[ReplacemsgGroupSpam] = Field(default_factory=list, description="Replacement message table entries.")    
+    alertmail: list[ReplacemsgGroupAlertmail] = Field(default_factory=list, description="Replacement message table entries.")    
+    admin: list[ReplacemsgGroupAdmin] = Field(default_factory=list, description="Replacement message table entries.")    
+    auth: list[ReplacemsgGroupAuth] = Field(default_factory=list, description="Replacement message table entries.")    
+    sslvpn: list[ReplacemsgGroupSslvpn] = Field(default_factory=list, description="Replacement message table entries.")    
+    nac_quar: list[ReplacemsgGroupNacQuar] = Field(default_factory=list, description="Replacement message table entries.")    
+    traffic_quota: list[ReplacemsgGroupTrafficQuota] = Field(default_factory=list, description="Replacement message table entries.")    
+    utm: list[ReplacemsgGroupUtm] = Field(default_factory=list, description="Replacement message table entries.")    
+    custom_message: list[ReplacemsgGroupCustomMessage] = Field(default_factory=list, description="Replacement message table entries.")    
+    icap: list[ReplacemsgGroupIcap] = Field(default_factory=list, description="Replacement message table entries.")    
+    automation: list[ReplacemsgGroupAutomation] = Field(default_factory=list, description="Replacement message table entries.")    
     # ========================================================================
     # Custom Validators
     # ========================================================================
@@ -365,5 +385,5 @@ __all__ = [
 # ============================================================================
 # Generated by hfortix generator v0.6.0
 # Schema: 1.7.0
-# Generated: 2026-01-17T05:32:17.922809Z
+# Generated: 2026-01-17T17:25:21.760006Z
 # ============================================================================

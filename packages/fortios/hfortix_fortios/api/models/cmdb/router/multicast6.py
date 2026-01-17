@@ -11,24 +11,28 @@ from pydantic import BaseModel, Field, field_validator
 from typing import Any, Literal, Optional
 
 # ============================================================================
-# Child Table Models
+# Enum Definitions for Child Table Fields (for fields with 4+ allowed values)
 # ============================================================================
 
-class Multicast6Interface(BaseModel):
+# ============================================================================
+# Child Table Models (sorted deepest-first so nested models are defined before their parents)
+# ============================================================================
+
+class Multicast6PimSmGlobalRpAddress(BaseModel):
     """
-    Child table model for interface.
+    Child table model for pim-sm-global.rp-address.
     
-    Protocol Independent Multicast (PIM) interfaces.
+    Statically configured RP addresses.
     """
     
     class Config:
         """Pydantic model configuration."""
         extra = "allow"  # Allow additional fields from API
         str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
     
-    name: str | None = Field(max_length=15, default="", description="Interface name.")  # datasource: ['system.interface.name']    
-    hello_interval: int | None = Field(ge=1, le=65535, default=30, description="Interval between sending PIM hello messages in seconds (1 - 65535, default = 30).")    
-    hello_holdtime: int | None = Field(ge=1, le=65535, default="", description="Time before old neighbor information expires in seconds (1 - 65535, default = 105).")
+    id_: int | None = Field(ge=0, le=4294967295, default=0, serialization_alias="id", description="ID of the entry.")    
+    ip6_address: str = Field(default="::", description="RP router IPv6 address.")
 class Multicast6PimSmGlobal(BaseModel):
     """
     Child table model for pim-sm-global.
@@ -40,10 +44,27 @@ class Multicast6PimSmGlobal(BaseModel):
         """Pydantic model configuration."""
         extra = "allow"  # Allow additional fields from API
         str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
     
     register_rate_limit: int | None = Field(ge=0, le=65535, default=0, description="Limit of packets/sec per source registered through this RP (0 means unlimited).")    
     pim_use_sdwan: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable use of SDWAN when checking RPF neighbor and sending of REG packet.")    
-    rp_address: list[RpAddress] = Field(default=None, description="Statically configured RP addresses.")
+    rp_address: list[Multicast6PimSmGlobalRpAddress] = Field(default_factory=list, description="Statically configured RP addresses.")
+class Multicast6Interface(BaseModel):
+    """
+    Child table model for interface.
+    
+    Protocol Independent Multicast (PIM) interfaces.
+    """
+    
+    class Config:
+        """Pydantic model configuration."""
+        extra = "allow"  # Allow additional fields from API
+        str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
+    
+    name: str | None = Field(max_length=15, default=None, description="Interface name.")  # datasource: ['system.interface.name']    
+    hello_interval: int | None = Field(ge=1, le=65535, default=30, description="Interval between sending PIM hello messages in seconds (1 - 65535, default = 30).")    
+    hello_holdtime: int | None = Field(ge=1, le=65535, default=None, description="Time before old neighbor information expires in seconds (1 - 65535, default = 105).")
 # ============================================================================
 # Enum Definitions (for fields with 4+ allowed values)
 # ============================================================================
@@ -74,8 +95,8 @@ class Multicast6Model(BaseModel):
     
     multicast_routing: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable IPv6 multicast routing.")    
     multicast_pmtu: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable PMTU for IPv6 multicast.")    
-    interface: list[Interface] = Field(default=None, description="Protocol Independent Multicast (PIM) interfaces.")    
-    pim_sm_global: list[PimSmGlobal] = Field(default=None, description="PIM sparse-mode global settings.")    
+    interface: list[Multicast6Interface] = Field(default_factory=list, description="Protocol Independent Multicast (PIM) interfaces.")    
+    pim_sm_global: list[Multicast6PimSmGlobal] = Field(default_factory=list, description="PIM sparse-mode global settings.")    
     # ========================================================================
     # Custom Validators
     # ========================================================================
@@ -140,7 +161,7 @@ class Multicast6Model(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.router.multicast6.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate child table items
         values = getattr(self, "interface", [])
@@ -203,11 +224,11 @@ Dict = dict[str, Any]  # For backward compatibility
 # ============================================================================
 
 __all__ = [
-    "Multicast6Model",    "Multicast6Interface",    "Multicast6PimSmGlobal",]
+    "Multicast6Model",    "Multicast6Interface",    "Multicast6PimSmGlobal",    "Multicast6PimSmGlobal.RpAddress",]
 
 
 # ============================================================================
 # Generated by hfortix generator v0.6.0
 # Schema: 1.7.0
-# Generated: 2026-01-17T05:32:16.308919Z
+# Generated: 2026-01-17T17:25:20.377309Z
 # ============================================================================

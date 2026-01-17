@@ -1,379 +1,120 @@
-from typing import TypedDict, Literal, Any, Coroutine, Union, overload, Generator, final
-from typing_extensions import NotRequired
-from hfortix_fortios.models import FortiObject, FortiObjectList
+""" - Type Stubs
 
-# ============================================================================
-# Nested TypedDicts for table field children (dict mode)
-# These MUST be defined before the Payload class to use them as type hints
-# ============================================================================
+Auto-generated stub file for type checking and IDE support.
 
-class NetflowExclusionfiltersItem(TypedDict, total=False):
-    """Type hints for exclusion-filters table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    Use this when building payloads for POST/PUT requests.
-    
-    **Available fields:**
-        - id: int
-        - source_ip: str
-        - destination_ip: str
-        - source_port: str
-        - destination_port: str
-        - protocol: int
-    
-    **Example:**
-        entry: NetflowExclusionfiltersItem = {
-            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
-        }
-    """
-    
-    id: int  # Filter ID. | Default: 0 | Min: 0 | Max: 4294967295
-    source_ip: str  # Session source address.
-    destination_ip: str  # Session destination address.
-    source_port: str  # Session source port number or range.
-    destination_port: str  # Session destination port number or range.
-    protocol: int  # Session IP protocol | Default: 255 | Min: 0 | Max: 255
+Endpoint: system/netflow
+Category: cmdb
+"""
+
+from __future__ import annotations
+
+from typing import (
+    Any,
+    ClassVar,
+    Literal,
+    TypedDict,
+)
+
+from hfortix_fortios.models import (
+    FortiObject,
+    FortiObjectList,
+)
 
 
-class NetflowCollectorsItem(TypedDict, total=False):
-    """Type hints for collectors table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    Use this when building payloads for POST/PUT requests.
-    
-    **Available fields:**
-        - id: int
-        - collector_ip: str
-        - collector_port: int
-        - source_ip: str
-        - source_ip_interface: str
-        - interface_select_method: "auto" | "sdwan" | "specify"
-        - interface: str
-        - vrf_select: int
-    
-    **Example:**
-        entry: NetflowCollectorsItem = {
-            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
-        }
-    """
-    
-    id: int  # ID. | Default: 0 | Min: 1 | Max: 6
-    collector_ip: str  # Collector IP. | MaxLen: 63
-    collector_port: int  # NetFlow collector port number. | Default: 2055 | Min: 0 | Max: 65535
-    source_ip: str  # Source IP address for communication with the NetFl | MaxLen: 63
-    source_ip_interface: str  # Name of the interface used to determine the source | MaxLen: 15
-    interface_select_method: Literal["auto", "sdwan", "specify"]  # Specify how to select outgoing interface to reach | Default: auto
-    interface: str  # Specify outgoing interface to reach server. | MaxLen: 15
-    vrf_select: int  # VRF ID used for connection to server. | Default: 0 | Min: 0 | Max: 511
+# ================================================================
+# TypedDict Payloads
+# ================================================================
 
-
-# ============================================================================
-# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional)
-# ============================================================================
-# NOTE: We intentionally DON'T use NotRequired wrapper because:
-# 1. total=False already makes all fields optional
-# 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
-class NetflowPayload(TypedDict, total=False):
-    """
-    Type hints for system/netflow payload fields.
-    
-    Configure NetFlow.
-    
-    **Usage:**
-        payload: NetflowPayload = {
-            "field": "value",  # <- autocomplete shows all fields
-        }
-    """
-    active_flow_timeout: int  # Timeout to report active flows | Default: 1800 | Min: 60 | Max: 3600
-    inactive_flow_timeout: int  # Timeout for periodic report of finished flows | Default: 15 | Min: 10 | Max: 600
-    template_tx_timeout: int  # Timeout for periodic template flowset transmission | Default: 1800 | Min: 60 | Max: 86400
-    template_tx_counter: int  # Counter of flowset records before resending a temp | Default: 20 | Min: 10 | Max: 6000
-    session_cache_size: Literal["min", "default", "max"]  # Maximum RAM usage allowed for Netflow session cach | Default: default
-    exclusion_filters: list[NetflowExclusionfiltersItem]  # Exclusion filters
-    collectors: list[NetflowCollectorsItem]  # Netflow collectors.
-
-# ============================================================================
-# Nested classes for table field children (object mode - for API responses)
-# ============================================================================
-
-@final
-class NetflowExclusionfiltersObject:
-    """Typed object for exclusion-filters table items.
-    
-    Provides IDE autocomplete for nested table field attributes.
-    At runtime, this is a FortiObject instance.
-    """
-    
-    # Filter ID. | Default: 0 | Min: 0 | Max: 4294967295
+class NetflowExclusionfiltersItem:
+    """Nested item for exclusion-filters field - supports attribute access."""
     id: int
-    # Session source address.
     source_ip: str
-    # Session destination address.
     destination_ip: str
-    # Session source port number or range.
     source_port: str
-    # Session destination port number or range.
     destination_port: str
-    # Session IP protocol (0 - 255, default = 255, meaning any). | Default: 255 | Min: 0 | Max: 255
     protocol: int
-    
-    # Common API response fields
-    status: str
-    http_status: int | None
-    http_status_code: int | None
-    http_method: str | None
-    http_response_time: float | None
-    vdom: str | None
-    
-    # Methods from FortiObject
-    @property
-    def dict(self) -> dict[str, Any]:
-        """Convert to dictionary."""
-        ...
-    @property
-    def json(self) -> str:
-        """Get pretty-printed JSON string."""
-        ...
-    @property
-    def raw(self) -> dict[str, Any]:
-        """Get raw API response data."""
-        ...
-    def get_full(self, name: str) -> Any: ...
-    def to_dict(self) -> FortiObject: ...
-    def keys(self) -> Any: ...
-    def values(self) -> Generator[Any, None, None]: ...
-    def items(self) -> Generator[tuple[str, Any], None, None]: ...
-    def get(self, key: str, default: Any = None) -> Any: ...
 
 
-@final
-class NetflowCollectorsObject:
-    """Typed object for collectors table items.
-    
-    Provides IDE autocomplete for nested table field attributes.
-    At runtime, this is a FortiObject instance.
-    """
-    
-    # ID. | Default: 0 | Min: 1 | Max: 6
+class NetflowCollectorsItem:
+    """Nested item for collectors field - supports attribute access."""
     id: int
-    # Collector IP. | MaxLen: 63
     collector_ip: str
-    # NetFlow collector port number. | Default: 2055 | Min: 0 | Max: 65535
     collector_port: int
-    # Source IP address for communication with the NetFlow agent. | MaxLen: 63
     source_ip: str
-    # Name of the interface used to determine the source IP for ex | MaxLen: 15
     source_ip_interface: str
-    # Specify how to select outgoing interface to reach server. | Default: auto
     interface_select_method: Literal["auto", "sdwan", "specify"]
-    # Specify outgoing interface to reach server. | MaxLen: 15
     interface: str
-    # VRF ID used for connection to server. | Default: 0 | Min: 0 | Max: 511
     vrf_select: int
-    
-    # Common API response fields
-    status: str
-    http_status: int | None
-    http_status_code: int | None
-    http_method: str | None
-    http_response_time: float | None
-    vdom: str | None
-    
-    # Methods from FortiObject
-    @property
-    def dict(self) -> dict[str, Any]:
-        """Convert to dictionary."""
-        ...
-    @property
-    def json(self) -> str:
-        """Get pretty-printed JSON string."""
-        ...
-    @property
-    def raw(self) -> dict[str, Any]:
-        """Get raw API response data."""
-        ...
-    def get_full(self, name: str) -> Any: ...
-    def to_dict(self) -> FortiObject: ...
-    def keys(self) -> Any: ...
-    def values(self) -> Generator[Any, None, None]: ...
-    def items(self) -> Generator[tuple[str, Any], None, None]: ...
-    def get(self, key: str, default: Any = None) -> Any: ...
 
 
-
-
-# Response TypedDict for GET returns (all fields present in API response)
-class NetflowResponse(TypedDict):
-    """
-    Type hints for system/netflow API response fields.
-    
-    All fields are present in the response from the FortiGate API.
-    """
-    active_flow_timeout: int  # Timeout to report active flows | Default: 1800 | Min: 60 | Max: 3600
-    inactive_flow_timeout: int  # Timeout for periodic report of finished flows | Default: 15 | Min: 10 | Max: 600
-    template_tx_timeout: int  # Timeout for periodic template flowset transmission | Default: 1800 | Min: 60 | Max: 86400
-    template_tx_counter: int  # Counter of flowset records before resending a temp | Default: 20 | Min: 10 | Max: 6000
-    session_cache_size: Literal["min", "default", "max"]  # Maximum RAM usage allowed for Netflow session cach | Default: default
-    exclusion_filters: list[NetflowExclusionfiltersItem]  # Exclusion filters
-    collectors: list[NetflowCollectorsItem]  # Netflow collectors.
-
-
-@final
-class NetflowObject:
-    """Typed FortiObject for system/netflow with IDE autocomplete support.
-    
-    This is a typed wrapper that provides IDE autocomplete for API response fields.
-    At runtime, this is actually a FortiObject instance.
-    """
-    
-    # Timeout to report active flows | Default: 1800 | Min: 60 | Max: 3600
+class NetflowPayload(TypedDict, total=False):
+    """Payload type for Netflow operations."""
     active_flow_timeout: int
-    # Timeout for periodic report of finished flows | Default: 15 | Min: 10 | Max: 600
     inactive_flow_timeout: int
-    # Timeout for periodic template flowset transmission | Default: 1800 | Min: 60 | Max: 86400
     template_tx_timeout: int
-    # Counter of flowset records before resending a template flows | Default: 20 | Min: 10 | Max: 6000
     template_tx_counter: int
-    # Maximum RAM usage allowed for Netflow session cache. | Default: default
     session_cache_size: Literal["min", "default", "max"]
-    # Exclusion filters
-    exclusion_filters: list[NetflowExclusionfiltersObject]
-    # Netflow collectors.
-    collectors: list[NetflowCollectorsObject]
-    
-    # Common API response fields
-    status: str
-    http_status: int | None
-    http_status_code: int | None
-    http_method: str | None
-    http_response_time: float | None
-    vdom: str | None
-    
-    # Methods from FortiObject
-    @property
-    def dict(self) -> dict[str, Any]:
-        """Convert to dictionary."""
-        ...
-    @property
-    def json(self) -> str:
-        """Get pretty-printed JSON string."""
-        ...
-    @property
-    def raw(self) -> dict[str, Any]:
-        """Get raw API response data."""
-        ...
-    def get_full(self, name: str) -> Any: ...
-    def to_dict(self) -> NetflowPayload: ...
-    def keys(self) -> Any: ...
-    def values(self) -> Generator[Any, None, None]: ...
-    def items(self) -> Generator[tuple[str, Any], None, None]: ...
-    def get(self, key: str, default: Any = None) -> Any: ...
+    exclusion_filters: str | list[str] | list[dict[str, Any]] | list[NetflowExclusionfiltersItem]
+    collectors: str | list[str] | list[dict[str, Any]] | list[NetflowCollectorsItem]
 
+
+# ================================================================
+# Response Types (TypedDict for dict-style access)
+# ================================================================
+
+class NetflowResponse(TypedDict, total=False):
+    """Response type for Netflow - use with .dict property for typed dict access."""
+    active_flow_timeout: int
+    inactive_flow_timeout: int
+    template_tx_timeout: int
+    template_tx_counter: int
+    session_cache_size: Literal["min", "default", "max"]
+    exclusion_filters: list[NetflowExclusionfiltersItem]
+    collectors: list[NetflowCollectorsItem]
+
+
+# ================================================================
+# Response Types (Class for attribute access)
+# ================================================================
+
+
+class NetflowObject(FortiObject):
+    """Typed FortiObject for Netflow with field access."""
+    active_flow_timeout: int
+    inactive_flow_timeout: int
+    template_tx_timeout: int
+    template_tx_counter: int
+    session_cache_size: Literal["min", "default", "max"]
+    exclusion_filters: list[NetflowExclusionfiltersItem]
+    collectors: list[NetflowCollectorsItem]
+
+
+# ================================================================
+# Main Endpoint Class
+# ================================================================
 
 class Netflow:
     """
-    Configure NetFlow.
     
-    Path: system/netflow
+    Endpoint: system/netflow
     Category: cmdb
     """
     
+    # Class attributes for introspection
+    endpoint: ClassVar[str] = ...
+    path: ClassVar[str] = ...
+    category: ClassVar[str] = ...
+    capabilities: ClassVar[dict[str, Any]] = ...
+    
     def __init__(self, client: Any) -> None:
-        """Initialize endpoint with HTTP client.
-        
-        Args:
-            client: HTTP client instance for API communication
-        """
+        """Initialize endpoint with HTTP client."""
         ...
     
     # ================================================================
-    # GET OVERLOADS - Always returns FortiObject (or ContentResponse for file endpoints)
-    # Pylance matches overloads top-to-bottom, so these must come first!
+    # GET Methods
     # ================================================================
     
-    # With mkey as positional arg -> returns FortiObject
-    @overload
-    def get(
-        self,
-        name: str,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-    ) -> NetflowObject: ...
-    
-    # With mkey as keyword arg -> returns FortiObject
-    @overload
-    def get(
-        self,
-        *,
-        name: str,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-    ) -> NetflowObject: ...
-    
-    # Without mkey -> returns list of FortiObjects
-    @overload
-    def get(
-        self,
-        name: None = None,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-    ) -> NetflowObject: ...
-    
-    # ================================================================
-    # (removed - all GET now returns FortiObject)
-    # ================================================================
-    
-    # With mkey as positional arg -> returns single object
-    @overload
-    def get(
-        self,
-        name: str,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-    ) -> NetflowObject: ...
-    
-    # With mkey as keyword arg -> returns single object
-    @overload
-    def get(
-        self,
-        *,
-        name: str,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-    ) -> NetflowObject: ...
-    
-    # With no mkey -> returns list of objects
-    @overload
+    # Singleton endpoint (no mkey)
     def get(
         self,
         *,
@@ -385,89 +126,20 @@ class Netflow:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
+        error_mode: Literal["raise", "return", "print"] | None = ...,
+        error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> NetflowObject: ...
-    
-    # Dict mode with mkey provided as positional arg (single dict)
-    @overload
-    def get(
-        self,
-        name: str,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-    ) -> NetflowObject: ...
-    
-    # Dict mode with mkey provided as keyword arg (single dict)
-    @overload
-    def get(
-        self,
-        *,
-        name: str,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-    ) -> NetflowObject: ...
-    
-    # Dict mode - list of dicts (no mkey/name provided) - keyword-only signature
-    @overload
-    def get(
-        self,
-        *,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-    ) -> NetflowObject: ...
-    
-    # Fallback overload for all other cases
-    @overload
-    def get(
-        self,
-        name: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-    ) -> dict[str, Any] | FortiObject: ...
-    
-    def get(
-        self,
-        name: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-    ) -> NetflowObject | dict[str, Any]: ...
     
     def get_schema(
         self,
         format: str = ...,
     ) -> FortiObject: ...
+
+
+    # ================================================================
+    # PUT Method
+    # ================================================================
     
-    # PUT overloads
-    @overload
     def put(
         self,
         payload_dict: NetflowPayload | None = ...,
@@ -476,48 +148,16 @@ class Netflow:
         template_tx_timeout: int | None = ...,
         template_tx_counter: int | None = ...,
         session_cache_size: Literal["min", "default", "max"] | None = ...,
-        exclusion_filters: str | list[str] | list[NetflowExclusionfiltersItem] | None = ...,
-        collectors: str | list[str] | list[NetflowCollectorsItem] | None = ...,
+        exclusion_filters: str | list[str] | list[dict[str, Any]] | list[NetflowExclusionfiltersItem] | None = ...,
+        collectors: str | list[str] | list[dict[str, Any]] | list[NetflowCollectorsItem] | None = ...,
+        error_mode: Literal["raise", "return", "print"] | None = ...,
+        error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> NetflowObject: ...
-    
-    @overload
-    def put(
-        self,
-        payload_dict: NetflowPayload | None = ...,
-        active_flow_timeout: int | None = ...,
-        inactive_flow_timeout: int | None = ...,
-        template_tx_timeout: int | None = ...,
-        template_tx_counter: int | None = ...,
-        session_cache_size: Literal["min", "default", "max"] | None = ...,
-        exclusion_filters: str | list[str] | list[NetflowExclusionfiltersItem] | None = ...,
-        collectors: str | list[str] | list[NetflowCollectorsItem] | None = ...,
-    ) -> FortiObject: ...
-    
-    # Default overload
-    @overload
-    def put(
-        self,
-        payload_dict: NetflowPayload | None = ...,
-        active_flow_timeout: int | None = ...,
-        inactive_flow_timeout: int | None = ...,
-        template_tx_timeout: int | None = ...,
-        template_tx_counter: int | None = ...,
-        session_cache_size: Literal["min", "default", "max"] | None = ...,
-        exclusion_filters: str | list[str] | list[NetflowExclusionfiltersItem] | None = ...,
-        collectors: str | list[str] | list[NetflowCollectorsItem] | None = ...,
-    ) -> FortiObject: ...
-    
-    def put(
-        self,
-        payload_dict: NetflowPayload | None = ...,
-        active_flow_timeout: int | None = ...,
-        inactive_flow_timeout: int | None = ...,
-        template_tx_timeout: int | None = ...,
-        template_tx_counter: int | None = ...,
-        session_cache_size: Literal["min", "default", "max"] | None = ...,
-        exclusion_filters: str | list[str] | list[NetflowExclusionfiltersItem] | None = ...,
-        collectors: str | list[str] | list[NetflowCollectorsItem] | None = ...,
-    ) -> FortiObject: ...
+
+
+    # ================================================================
+    # Utility Methods
+    # ================================================================
     
     def exists(
         self,
@@ -532,8 +172,10 @@ class Netflow:
         template_tx_timeout: int | None = ...,
         template_tx_counter: int | None = ...,
         session_cache_size: Literal["min", "default", "max"] | None = ...,
-        exclusion_filters: str | list[str] | list[NetflowExclusionfiltersItem] | None = ...,
-        collectors: str | list[str] | list[NetflowCollectorsItem] | None = ...,
+        exclusion_filters: str | list[str] | list[dict[str, Any]] | list[NetflowExclusionfiltersItem] | None = ...,
+        collectors: str | list[str] | list[dict[str, Any]] | list[NetflowCollectorsItem] | None = ...,
+        error_mode: Literal["raise", "return", "print"] | None = ...,
+        error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> FortiObject: ...
     
     # Helper methods
@@ -541,7 +183,7 @@ class Netflow:
     def help(field_name: str | None = ...) -> str: ...
     
     @staticmethod
-    def fields(detailed: bool = ...) -> Union[list[str], list[dict[str, Any]]]: ...
+    def fields(detailed: bool = ...) -> list[str] | list[dict[str, Any]]: ...
     
     @staticmethod
     def field_info(field_name: str) -> FortiObject: ...
@@ -557,9 +199,6 @@ class Netflow:
     
     @staticmethod
     def schema() -> FortiObject: ...
-
-
-# ================================================================
 
 
 __all__ = [

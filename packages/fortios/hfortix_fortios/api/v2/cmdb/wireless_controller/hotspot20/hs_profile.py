@@ -954,6 +954,16 @@ class HsProfile(CRUDEndpoint, MetadataMixin):
             - put(): Update existing object
             - exists(): Check existence manually
         """
+        # Apply normalization for table fields (supports flexible input formats)
+        if osu_provider is not None:
+            osu_provider = normalize_table_field(
+                osu_provider,
+                mkey="name",
+                required_fields=['name'],
+                field_name="osu_provider",
+                example="[{'name': 'value'}]",
+            )
+        
         # Build payload using helper function with auto-normalization
         payload_data = build_api_payload(
             name=name,

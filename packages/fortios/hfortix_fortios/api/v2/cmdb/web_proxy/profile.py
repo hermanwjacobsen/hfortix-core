@@ -714,6 +714,16 @@ class Profile(CRUDEndpoint, MetadataMixin):
             - put(): Update existing object
             - exists(): Check existence manually
         """
+        # Apply normalization for table fields (supports flexible input formats)
+        if headers is not None:
+            headers = normalize_table_field(
+                headers,
+                mkey="id",
+                required_fields=['id'],
+                field_name="headers",
+                example="[{'id': 1}]",
+            )
+        
         # Build payload using helper function with auto-normalization
         payload_data = build_api_payload(
             name=name,

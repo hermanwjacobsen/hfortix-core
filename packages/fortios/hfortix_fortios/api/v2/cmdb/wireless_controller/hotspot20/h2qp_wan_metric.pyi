@@ -1,146 +1,112 @@
-from typing import TypedDict, Literal, Any, Coroutine, Union, overload, Generator, final
-from typing_extensions import NotRequired
-from hfortix_fortios.models import FortiObject, FortiObjectList
+""" - Type Stubs
 
-# ============================================================================
-# Nested TypedDicts for table field children (dict mode)
-# These MUST be defined before the Payload class to use them as type hints
-# ============================================================================
+Auto-generated stub file for type checking and IDE support.
 
-# ============================================================================
-# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional)
-# ============================================================================
-# NOTE: We intentionally DON'T use NotRequired wrapper because:
-# 1. total=False already makes all fields optional
-# 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
+Endpoint: wireless_controller/hotspot20/h2qp_wan_metric
+Category: cmdb
+"""
+
+from __future__ import annotations
+
+from typing import (
+    Any,
+    ClassVar,
+    Literal,
+    TypedDict,
+    overload,
+)
+
+from hfortix_fortios.models import (
+    FortiObject,
+    FortiObjectList,
+)
+
+
+# ================================================================
+# TypedDict Payloads
+# ================================================================
+
 class H2qpWanMetricPayload(TypedDict, total=False):
-    """
-    Type hints for wireless_controller/hotspot20/h2qp_wan_metric payload fields.
-    
-    Configure WAN metrics.
-    
-    **Usage:**
-        payload: H2qpWanMetricPayload = {
-            "field": "value",  # <- autocomplete shows all fields
-        }
-    """
-    name: str  # WAN metric name. | MaxLen: 35
-    link_status: Literal["up", "down", "in-test"]  # Link status. | Default: up
-    symmetric_wan_link: Literal["symmetric", "asymmetric"]  # WAN link symmetry. | Default: asymmetric
-    link_at_capacity: Literal["enable", "disable"]  # Link at capacity. | Default: disable
-    uplink_speed: int  # Uplink speed (in kilobits/s). | Default: 2400 | Min: 0 | Max: 4294967295
-    downlink_speed: int  # Downlink speed (in kilobits/s). | Default: 2400 | Min: 0 | Max: 4294967295
-    uplink_load: int  # Uplink load. | Default: 0 | Min: 0 | Max: 255
-    downlink_load: int  # Downlink load. | Default: 0 | Min: 0 | Max: 255
-    load_measurement_duration: int  # Load measurement duration (in tenths of a second). | Default: 0 | Min: 0 | Max: 65535
-
-# ============================================================================
-# Nested classes for table field children (object mode - for API responses)
-# ============================================================================
-
-
-
-# Response TypedDict for GET returns (all fields present in API response)
-class H2qpWanMetricResponse(TypedDict):
-    """
-    Type hints for wireless_controller/hotspot20/h2qp_wan_metric API response fields.
-    
-    All fields are present in the response from the FortiGate API.
-    """
-    name: str  # WAN metric name. | MaxLen: 35
-    link_status: Literal["up", "down", "in-test"]  # Link status. | Default: up
-    symmetric_wan_link: Literal["symmetric", "asymmetric"]  # WAN link symmetry. | Default: asymmetric
-    link_at_capacity: Literal["enable", "disable"]  # Link at capacity. | Default: disable
-    uplink_speed: int  # Uplink speed (in kilobits/s). | Default: 2400 | Min: 0 | Max: 4294967295
-    downlink_speed: int  # Downlink speed (in kilobits/s). | Default: 2400 | Min: 0 | Max: 4294967295
-    uplink_load: int  # Uplink load. | Default: 0 | Min: 0 | Max: 255
-    downlink_load: int  # Downlink load. | Default: 0 | Min: 0 | Max: 255
-    load_measurement_duration: int  # Load measurement duration (in tenths of a second). | Default: 0 | Min: 0 | Max: 65535
-
-
-@final
-class H2qpWanMetricObject:
-    """Typed FortiObject for wireless_controller/hotspot20/h2qp_wan_metric with IDE autocomplete support.
-    
-    This is a typed wrapper that provides IDE autocomplete for API response fields.
-    At runtime, this is actually a FortiObject instance.
-    """
-    
-    # WAN metric name. | MaxLen: 35
+    """Payload type for H2qpWanMetric operations."""
     name: str
-    # Link status. | Default: up
     link_status: Literal["up", "down", "in-test"]
-    # WAN link symmetry. | Default: asymmetric
     symmetric_wan_link: Literal["symmetric", "asymmetric"]
-    # Link at capacity. | Default: disable
     link_at_capacity: Literal["enable", "disable"]
-    # Uplink speed (in kilobits/s). | Default: 2400 | Min: 0 | Max: 4294967295
     uplink_speed: int
-    # Downlink speed (in kilobits/s). | Default: 2400 | Min: 0 | Max: 4294967295
     downlink_speed: int
-    # Uplink load. | Default: 0 | Min: 0 | Max: 255
     uplink_load: int
-    # Downlink load. | Default: 0 | Min: 0 | Max: 255
     downlink_load: int
-    # Load measurement duration (in tenths of a second). | Default: 0 | Min: 0 | Max: 65535
     load_measurement_duration: int
-    
-    # Common API response fields
-    status: str
-    http_status: int | None
-    http_status_code: int | None
-    http_method: str | None
-    http_response_time: float | None
-    vdom: str | None
-    
-    # Methods from FortiObject
-    @property
-    def dict(self) -> dict[str, Any]:
-        """Convert to dictionary."""
-        ...
-    @property
-    def json(self) -> str:
-        """Get pretty-printed JSON string."""
-        ...
-    @property
-    def raw(self) -> dict[str, Any]:
-        """Get raw API response data."""
-        ...
-    def get_full(self, name: str) -> Any: ...
-    def to_dict(self) -> H2qpWanMetricPayload: ...
-    def keys(self) -> Any: ...
-    def values(self) -> Generator[Any, None, None]: ...
-    def items(self) -> Generator[tuple[str, Any], None, None]: ...
-    def get(self, key: str, default: Any = None) -> Any: ...
 
+
+# ================================================================
+# Response Types (TypedDict for dict-style access)
+# ================================================================
+
+class H2qpWanMetricResponse(TypedDict, total=False):
+    """Response type for H2qpWanMetric - use with .dict property for typed dict access."""
+    name: str
+    link_status: Literal["up", "down", "in-test"]
+    symmetric_wan_link: Literal["symmetric", "asymmetric"]
+    link_at_capacity: Literal["enable", "disable"]
+    uplink_speed: int
+    downlink_speed: int
+    uplink_load: int
+    downlink_load: int
+    load_measurement_duration: int
+
+
+# ================================================================
+# Response Types (Class for attribute access)
+# ================================================================
+
+
+class H2qpWanMetricObject(FortiObject):
+    """Typed FortiObject for H2qpWanMetric with field access."""
+    name: str
+    link_status: Literal["up", "down", "in-test"]
+    symmetric_wan_link: Literal["symmetric", "asymmetric"]
+    link_at_capacity: Literal["enable", "disable"]
+    uplink_speed: int
+    downlink_speed: int
+    uplink_load: int
+    downlink_load: int
+    load_measurement_duration: int
+
+
+# ================================================================
+# Main Endpoint Class
+# ================================================================
 
 class H2qpWanMetric:
     """
-    Configure WAN metrics.
     
-    Path: wireless_controller/hotspot20/h2qp_wan_metric
+    Endpoint: wireless_controller/hotspot20/h2qp_wan_metric
     Category: cmdb
-    Primary Key: name
+    MKey: name
     """
     
+    # Class attributes for introspection
+    endpoint: ClassVar[str] = ...
+    path: ClassVar[str] = ...
+    category: ClassVar[str] = ...
+    mkey: ClassVar[str] = ...
+    capabilities: ClassVar[dict[str, Any]] = ...
+    
     def __init__(self, client: Any) -> None:
-        """Initialize endpoint with HTTP client.
-        
-        Args:
-            client: HTTP client instance for API communication
-        """
+        """Initialize endpoint with HTTP client."""
         ...
     
     # ================================================================
-    # GET OVERLOADS - Always returns FortiObject (or ContentResponse for file endpoints)
-    # Pylance matches overloads top-to-bottom, so these must come first!
+    # GET Methods
     # ================================================================
     
-    # With mkey as positional arg -> returns FortiObject
+    # CMDB with mkey - overloads for single vs list returns
     @overload
     def get(
         self,
         name: str,
+        *,
         filter: str | list[str] | None = ...,
         count: int | None = ...,
         start: int | None = ...,
@@ -150,14 +116,14 @@ class H2qpWanMetric:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        error_mode: Literal["raise", "return", "print"] | None = ...,
+        error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> H2qpWanMetricObject: ...
     
-    # With mkey as keyword arg -> returns FortiObject
     @overload
     def get(
         self,
         *,
-        name: str,
         filter: str | list[str] | None = ...,
         count: int | None = ...,
         start: int | None = ...,
@@ -167,164 +133,20 @@ class H2qpWanMetric:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> H2qpWanMetricObject: ...
-    
-    # Without mkey -> returns list of FortiObjects
-    @overload
-    def get(
-        self,
-        name: None = None,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
+        error_mode: Literal["raise", "return", "print"] | None = ...,
+        error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> FortiObjectList[H2qpWanMetricObject]: ...
-    
-    # ================================================================
-    # (removed - all GET now returns FortiObject)
-    # ================================================================
-    
-    # With mkey as positional arg -> returns single object
-    @overload
-    def get(
-        self,
-        name: str,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> H2qpWanMetricObject: ...
-    
-    # With mkey as keyword arg -> returns single object
-    @overload
-    def get(
-        self,
-        *,
-        name: str,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> H2qpWanMetricObject: ...
-    
-    # With no mkey -> returns list of objects
-    @overload
-    def get(
-        self,
-        *,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObjectList[H2qpWanMetricObject]: ...
-    
-    # Dict mode with mkey provided as positional arg (single dict)
-    @overload
-    def get(
-        self,
-        name: str,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> H2qpWanMetricObject: ...
-    
-    # Dict mode with mkey provided as keyword arg (single dict)
-    @overload
-    def get(
-        self,
-        *,
-        name: str,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> H2qpWanMetricObject: ...
-    
-    # Dict mode - list of dicts (no mkey/name provided) - keyword-only signature
-    @overload
-    def get(
-        self,
-        *,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObjectList[H2qpWanMetricObject]: ...
-    
-    # Fallback overload for all other cases
-    @overload
-    def get(
-        self,
-        name: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> Union[dict[str, Any], list[dict[str, Any]], FortiObject, list[FortiObject]]: ...
-    
-    def get(
-        self,
-        name: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> H2qpWanMetricObject | list[H2qpWanMetricObject] | dict[str, Any] | list[dict[str, Any]]: ...
     
     def get_schema(
         self,
         vdom: str | None = ...,
         format: str = ...,
     ) -> FortiObject: ...
+
+    # ================================================================
+    # POST Method
+    # ================================================================
     
-    # POST overloads
-    @overload
     def post(
         self,
         payload_dict: H2qpWanMetricPayload | None = ...,
@@ -338,58 +160,14 @@ class H2qpWanMetric:
         downlink_load: int | None = ...,
         load_measurement_duration: int | None = ...,
         vdom: str | bool | None = ...,
+        error_mode: Literal["raise", "return", "print"] | None = ...,
+        error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> H2qpWanMetricObject: ...
+
+    # ================================================================
+    # PUT Method
+    # ================================================================
     
-    @overload
-    def post(
-        self,
-        payload_dict: H2qpWanMetricPayload | None = ...,
-        name: str | None = ...,
-        link_status: Literal["up", "down", "in-test"] | None = ...,
-        symmetric_wan_link: Literal["symmetric", "asymmetric"] | None = ...,
-        link_at_capacity: Literal["enable", "disable"] | None = ...,
-        uplink_speed: int | None = ...,
-        downlink_speed: int | None = ...,
-        uplink_load: int | None = ...,
-        downlink_load: int | None = ...,
-        load_measurement_duration: int | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
-    
-    # Default overload
-    @overload
-    def post(
-        self,
-        payload_dict: H2qpWanMetricPayload | None = ...,
-        name: str | None = ...,
-        link_status: Literal["up", "down", "in-test"] | None = ...,
-        symmetric_wan_link: Literal["symmetric", "asymmetric"] | None = ...,
-        link_at_capacity: Literal["enable", "disable"] | None = ...,
-        uplink_speed: int | None = ...,
-        downlink_speed: int | None = ...,
-        uplink_load: int | None = ...,
-        downlink_load: int | None = ...,
-        load_measurement_duration: int | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
-    
-    def post(
-        self,
-        payload_dict: H2qpWanMetricPayload | None = ...,
-        name: str | None = ...,
-        link_status: Literal["up", "down", "in-test"] | None = ...,
-        symmetric_wan_link: Literal["symmetric", "asymmetric"] | None = ...,
-        link_at_capacity: Literal["enable", "disable"] | None = ...,
-        uplink_speed: int | None = ...,
-        downlink_speed: int | None = ...,
-        uplink_load: int | None = ...,
-        downlink_load: int | None = ...,
-        load_measurement_duration: int | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
-    
-    # PUT overloads
-    @overload
     def put(
         self,
         payload_dict: H2qpWanMetricPayload | None = ...,
@@ -403,84 +181,25 @@ class H2qpWanMetric:
         downlink_load: int | None = ...,
         load_measurement_duration: int | None = ...,
         vdom: str | bool | None = ...,
+        error_mode: Literal["raise", "return", "print"] | None = ...,
+        error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> H2qpWanMetricObject: ...
-    
-    @overload
-    def put(
-        self,
-        payload_dict: H2qpWanMetricPayload | None = ...,
-        name: str | None = ...,
-        link_status: Literal["up", "down", "in-test"] | None = ...,
-        symmetric_wan_link: Literal["symmetric", "asymmetric"] | None = ...,
-        link_at_capacity: Literal["enable", "disable"] | None = ...,
-        uplink_speed: int | None = ...,
-        downlink_speed: int | None = ...,
-        uplink_load: int | None = ...,
-        downlink_load: int | None = ...,
-        load_measurement_duration: int | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
-    
-    # Default overload
-    @overload
-    def put(
-        self,
-        payload_dict: H2qpWanMetricPayload | None = ...,
-        name: str | None = ...,
-        link_status: Literal["up", "down", "in-test"] | None = ...,
-        symmetric_wan_link: Literal["symmetric", "asymmetric"] | None = ...,
-        link_at_capacity: Literal["enable", "disable"] | None = ...,
-        uplink_speed: int | None = ...,
-        downlink_speed: int | None = ...,
-        uplink_load: int | None = ...,
-        downlink_load: int | None = ...,
-        load_measurement_duration: int | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
-    
-    def put(
-        self,
-        payload_dict: H2qpWanMetricPayload | None = ...,
-        name: str | None = ...,
-        link_status: Literal["up", "down", "in-test"] | None = ...,
-        symmetric_wan_link: Literal["symmetric", "asymmetric"] | None = ...,
-        link_at_capacity: Literal["enable", "disable"] | None = ...,
-        uplink_speed: int | None = ...,
-        downlink_speed: int | None = ...,
-        uplink_load: int | None = ...,
-        downlink_load: int | None = ...,
-        load_measurement_duration: int | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
-    
-    # DELETE overloads
-    @overload
-    def delete(
-        self,
-        name: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> H2qpWanMetricObject: ...
-    
-    @overload
-    def delete(
-        self,
-        name: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
-    
-    # Default overload
-    @overload
-    def delete(
-        self,
-        name: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+
+    # ================================================================
+    # DELETE Method
+    # ================================================================
     
     def delete(
         self,
         name: str | None = ...,
         vdom: str | bool | None = ...,
+        error_mode: Literal["raise", "return", "print"] | None = ...,
+        error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> FortiObject: ...
+
+    # ================================================================
+    # Utility Methods
+    # ================================================================
     
     def exists(
         self,
@@ -501,6 +220,8 @@ class H2qpWanMetric:
         downlink_load: int | None = ...,
         load_measurement_duration: int | None = ...,
         vdom: str | bool | None = ...,
+        error_mode: Literal["raise", "return", "print"] | None = ...,
+        error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> FortiObject: ...
     
     # Helper methods
@@ -508,7 +229,7 @@ class H2qpWanMetric:
     def help(field_name: str | None = ...) -> str: ...
     
     @staticmethod
-    def fields(detailed: bool = ...) -> Union[list[str], list[dict[str, Any]]]: ...
+    def fields(detailed: bool = ...) -> list[str] | list[dict[str, Any]]: ...
     
     @staticmethod
     def field_info(field_name: str) -> FortiObject: ...
@@ -524,9 +245,6 @@ class H2qpWanMetric:
     
     @staticmethod
     def schema() -> FortiObject: ...
-
-
-# ================================================================
 
 
 __all__ = [

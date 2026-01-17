@@ -7,26 +7,26 @@ Generated from FortiOS schema version unknown.
 
 from __future__ import annotations
 
-from pydantic import BaseModel, Field, field_validator
+from pydantic import BaseModel, Field
 from typing import Any, Literal, Optional
+from enum import Enum
 
 # ============================================================================
-# Child Table Models
+# Enum Definitions for Child Table Fields (for fields with 4+ allowed values)
 # ============================================================================
 
-class SaasApplicationDomains(BaseModel):
-    """
-    Child table model for domains.
-    
-    SaaS application domain list.
-    """
-    
-    class Config:
-        """Pydantic model configuration."""
-        extra = "allow"  # Allow additional fields from API
-        str_strip_whitespace = True
-    
-    domain: str = Field(max_length=127, default="", description="Domain list separated by space.")
+class SaasApplicationOutputAttributesTypeEnum(str, Enum):
+    """Allowed values for type_ field in output-attributes."""
+    STRING = "string"
+    STRING_LIST = "string-list"
+    INTEGER = "integer"
+    INTEGER_LIST = "integer-list"
+    BOOLEAN = "boolean"
+
+# ============================================================================
+# Child Table Models (sorted deepest-first so nested models are defined before their parents)
+# ============================================================================
+
 class SaasApplicationOutputAttributes(BaseModel):
     """
     Child table model for output-attributes.
@@ -38,10 +38,11 @@ class SaasApplicationOutputAttributes(BaseModel):
         """Pydantic model configuration."""
         extra = "allow"  # Allow additional fields from API
         str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
     
-    name: str | None = Field(max_length=79, default="", description="CASB attribute name.")    
-    description: str | None = Field(max_length=63, default="", description="CASB attribute description.")    
-    type: TypeEnum | None = Field(default="string", description="CASB attribute format type.")    
+    name: str | None = Field(max_length=79, default=None, description="CASB attribute name.")    
+    description: str | None = Field(max_length=63, default=None, description="CASB attribute description.")    
+    type_: SaasApplicationOutputAttributesTypeEnum | None = Field(default=SaasApplicationOutputAttributesTypeEnum.STRING, serialization_alias="type", description="CASB attribute format type.")    
     optional: Literal["enable", "disable"] | None = Field(default="disable", description="CASB output attribute optional.")
 class SaasApplicationInputAttributes(BaseModel):
     """
@@ -54,13 +55,28 @@ class SaasApplicationInputAttributes(BaseModel):
         """Pydantic model configuration."""
         extra = "allow"  # Allow additional fields from API
         str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
     
-    name: str | None = Field(max_length=79, default="", description="CASB attribute name.")    
-    description: str | None = Field(max_length=63, default="", description="CASB attribute description.")    
-    type: Literal["string"] | None = Field(default="string", description="CASB attribute format type.")    
+    name: str | None = Field(max_length=79, default=None, description="CASB attribute name.")    
+    description: str | None = Field(max_length=63, default=None, description="CASB attribute description.")    
+    type_: Literal["string"] | None = Field(default="string", serialization_alias="type", description="CASB attribute format type.")    
     required: Literal["enable", "disable"] | None = Field(default="enable", description="CASB input attribute required.")    
     default: Literal["string", "string-list"] | None = Field(default="string", description="CASB attribute default value.")    
     fallback_input: Literal["enable", "disable"] | None = Field(default="disable", description="CASB attribute legacy input.")
+class SaasApplicationDomains(BaseModel):
+    """
+    Child table model for domains.
+    
+    SaaS application domain list.
+    """
+    
+    class Config:
+        """Pydantic model configuration."""
+        extra = "allow"  # Allow additional fields from API
+        str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
+    
+    domain: str = Field(max_length=127, description="Domain list separated by space.")
 # ============================================================================
 # Enum Definitions (for fields with 4+ allowed values)
 # ============================================================================
@@ -76,7 +92,7 @@ class SaasApplicationModel(BaseModel):
     
     Configure CASB SaaS application.
     
-    Validation Rules:        - name: max_length=79 pattern=        - uuid: max_length=36 pattern=        - status: pattern=        - type: pattern=        - casb_name: max_length=79 pattern=        - description: max_length=63 pattern=        - domains: pattern=        - output_attributes: pattern=        - input_attributes: pattern=    """
+    Validation Rules:        - name: max_length=79 pattern=        - uuid: max_length=36 pattern=        - status: pattern=        - type_: pattern=        - casb_name: max_length=79 pattern=        - description: max_length=63 pattern=        - domains: pattern=        - output_attributes: pattern=        - input_attributes: pattern=    """
     
     class Config:
         """Pydantic model configuration."""
@@ -89,15 +105,15 @@ class SaasApplicationModel(BaseModel):
     # Model Fields
     # ========================================================================
     
-    name: str | None = Field(max_length=79, default="", description="SaaS application name.")    
-    uuid: str | None = Field(max_length=36, default="", description="Universally Unique Identifier (UUID; automatically assigned but can be manually reset).")    
+    name: str | None = Field(max_length=79, default=None, description="SaaS application name.")    
+    uuid: str | None = Field(max_length=36, default=None, description="Universally Unique Identifier (UUID; automatically assigned but can be manually reset).")    
     status: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable setting.")    
-    type: Literal["built-in", "customized"] | None = Field(default="customized", description="SaaS application type.")    
-    casb_name: str | None = Field(max_length=79, default="", description="SaaS application signature name.")    
-    description: str | None = Field(max_length=63, default="", description="SaaS application description.")    
-    domains: list[Domains] = Field(default=None, description="SaaS application domain list.")    
-    output_attributes: list[OutputAttributes] = Field(default=None, description="SaaS application output attributes.")    
-    input_attributes: list[InputAttributes] = Field(default=None, description="SaaS application input attributes.")    
+    type_: Literal["built-in", "customized"] | None = Field(default="customized", serialization_alias="type", description="SaaS application type.")    
+    casb_name: str | None = Field(max_length=79, default=None, description="SaaS application signature name.")    
+    description: str | None = Field(max_length=63, default=None, description="SaaS application description.")    
+    domains: list[SaasApplicationDomains] = Field(default_factory=list, description="SaaS application domain list.")    
+    output_attributes: list[SaasApplicationOutputAttributes] = Field(default_factory=list, description="SaaS application output attributes.")    
+    input_attributes: list[SaasApplicationInputAttributes] = Field(default_factory=list, description="SaaS application input attributes.")    
     # ========================================================================
     # Custom Validators
     # ========================================================================
@@ -146,5 +162,5 @@ __all__ = [
 # ============================================================================
 # Generated by hfortix generator v0.6.0
 # Schema: 1.7.0
-# Generated: 2026-01-17T05:32:17.859045Z
+# Generated: 2026-01-17T17:25:21.701296Z
 # ============================================================================

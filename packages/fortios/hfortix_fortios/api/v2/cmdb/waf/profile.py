@@ -682,6 +682,16 @@ class Profile(CRUDEndpoint, MetadataMixin):
             - put(): Update existing object
             - exists(): Check existence manually
         """
+        # Apply normalization for table fields (supports flexible input formats)
+        if url_access is not None:
+            url_access = normalize_table_field(
+                url_access,
+                mkey="id",
+                required_fields=['address'],
+                field_name="url_access",
+                example="[{'address': 'value'}]",
+            )
+        
         # Build payload using helper function with auto-normalization
         payload_data = build_api_payload(
             name=name,

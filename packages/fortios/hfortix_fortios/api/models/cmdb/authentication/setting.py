@@ -11,7 +11,11 @@ from pydantic import BaseModel, Field, field_validator
 from typing import Any, Literal, Optional
 
 # ============================================================================
-# Child Table Models
+# Enum Definitions for Child Table Fields (for fields with 4+ allowed values)
+# ============================================================================
+
+# ============================================================================
+# Child Table Models (sorted deepest-first so nested models are defined before their parents)
 # ============================================================================
 
 class SettingUserCertCa(BaseModel):
@@ -25,8 +29,9 @@ class SettingUserCertCa(BaseModel):
         """Pydantic model configuration."""
         extra = "allow"  # Allow additional fields from API
         str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
     
-    name: str | None = Field(max_length=79, default="", description="CA certificate list.")  # datasource: ['vpn.certificate.ca.name', 'vpn.certificate.local.name']
+    name: str | None = Field(max_length=79, default=None, description="CA certificate list.")  # datasource: ['vpn.certificate.ca.name', 'vpn.certificate.local.name']
 class SettingDevRange(BaseModel):
     """
     Child table model for dev-range.
@@ -38,8 +43,9 @@ class SettingDevRange(BaseModel):
         """Pydantic model configuration."""
         extra = "allow"  # Allow additional fields from API
         str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
     
-    name: str = Field(max_length=79, default="", description="Address name.")  # datasource: ['firewall.address.name', 'firewall.addrgrp.name']
+    name: str = Field(max_length=79, description="Address name.")  # datasource: ['firewall.address.name', 'firewall.addrgrp.name']
 # ============================================================================
 # Enum Definitions (for fields with 4+ allowed values)
 # ============================================================================
@@ -68,9 +74,9 @@ class SettingModel(BaseModel):
     # Model Fields
     # ========================================================================
     
-    active_auth_scheme: str | None = Field(max_length=35, default="", description="Active authentication method (scheme name).")  # datasource: ['authentication.scheme.name']    
-    sso_auth_scheme: str | None = Field(max_length=35, default="", description="Single-Sign-On authentication method (scheme name).")  # datasource: ['authentication.scheme.name']    
-    update_time: str | None = Field(default="", description="Time of the last update.")    
+    active_auth_scheme: str | None = Field(max_length=35, default=None, description="Active authentication method (scheme name).")  # datasource: ['authentication.scheme.name']    
+    sso_auth_scheme: str | None = Field(max_length=35, default=None, description="Single-Sign-On authentication method (scheme name).")  # datasource: ['authentication.scheme.name']    
+    update_time: str | None = Field(default=None, description="Time of the last update.")    
     persistent_cookie: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable persistent cookie on web portal authentication (default = enable).")    
     ip_auth_cookie: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable persistent cookie on IP based web portal authentication (default = disable).")    
     cookie_max_age: int | None = Field(ge=30, le=10080, default=480, description="Persistent web portal cookie maximum age in minutes (30 - 10080 (1 week), default = 480 (8 hours)).")    
@@ -78,17 +84,17 @@ class SettingModel(BaseModel):
     captive_portal_type: Literal["fqdn", "ip"] | None = Field(default="fqdn", description="Captive portal type.")    
     captive_portal_ip: str | None = Field(default="0.0.0.0", description="Captive portal IP address.")    
     captive_portal_ip6: str | None = Field(default="::", description="Captive portal IPv6 address.")    
-    captive_portal: str | None = Field(max_length=255, default="", description="Captive portal host name.")  # datasource: ['firewall.address.name']    
-    captive_portal6: str | None = Field(max_length=255, default="", description="IPv6 captive portal host name.")  # datasource: ['firewall.address6.name']    
+    captive_portal: str | None = Field(max_length=255, default=None, description="Captive portal host name.")  # datasource: ['firewall.address.name']    
+    captive_portal6: str | None = Field(max_length=255, default=None, description="IPv6 captive portal host name.")  # datasource: ['firewall.address6.name']    
     cert_auth: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable redirecting certificate authentication to HTTPS portal.")    
-    cert_captive_portal: str | None = Field(max_length=255, default="", description="Certificate captive portal host name.")  # datasource: ['firewall.address.name']    
+    cert_captive_portal: str | None = Field(max_length=255, default=None, description="Certificate captive portal host name.")  # datasource: ['firewall.address.name']    
     cert_captive_portal_ip: str | None = Field(default="0.0.0.0", description="Certificate captive portal IP address.")    
     cert_captive_portal_port: int | None = Field(ge=1, le=65535, default=7832, description="Certificate captive portal port number (1 - 65535, default = 7832).")    
     captive_portal_port: int | None = Field(ge=1, le=65535, default=7830, description="Captive portal port number (1 - 65535, default = 7830).")    
     auth_https: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable redirecting HTTP user authentication to HTTPS.")    
     captive_portal_ssl_port: int | None = Field(ge=1, le=65535, default=7831, description="Captive portal SSL port number (1 - 65535, default = 7831).")    
-    user_cert_ca: list[UserCertCa] = Field(default=None, description="CA certificate used for client certificate verification.")    
-    dev_range: list[DevRange] = Field(default=None, description="Address range for the IP based device query.")    
+    user_cert_ca: list[SettingUserCertCa] = Field(default_factory=list, description="CA certificate used for client certificate verification.")    
+    dev_range: list[SettingDevRange] = Field(default_factory=list, description="Address range for the IP based device query.")    
     # ========================================================================
     # Custom Validators
     # ========================================================================
@@ -228,7 +234,7 @@ class SettingModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.authentication.setting.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate scalar field
         value = getattr(self, "active_auth_scheme", None)
@@ -277,7 +283,7 @@ class SettingModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.authentication.setting.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate scalar field
         value = getattr(self, "sso_auth_scheme", None)
@@ -326,7 +332,7 @@ class SettingModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.authentication.setting.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate scalar field
         value = getattr(self, "captive_portal", None)
@@ -375,7 +381,7 @@ class SettingModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.authentication.setting.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate scalar field
         value = getattr(self, "captive_portal6", None)
@@ -424,7 +430,7 @@ class SettingModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.authentication.setting.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate scalar field
         value = getattr(self, "cert_captive_portal", None)
@@ -473,7 +479,7 @@ class SettingModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.authentication.setting.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate child table items
         values = getattr(self, "user_cert_ca", [])
@@ -533,7 +539,7 @@ class SettingModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.authentication.setting.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate child table items
         values = getattr(self, "dev_range", [])
@@ -616,5 +622,5 @@ __all__ = [
 # ============================================================================
 # Generated by hfortix generator v0.6.0
 # Schema: 1.7.0
-# Generated: 2026-01-17T05:32:16.565334Z
+# Generated: 2026-01-17T17:25:20.594874Z
 # ============================================================================

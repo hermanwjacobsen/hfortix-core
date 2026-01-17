@@ -12,7 +12,11 @@ from typing import Any, Literal, Optional
 from enum import Enum
 
 # ============================================================================
-# Child Table Models
+# Enum Definitions for Child Table Fields (for fields with 4+ allowed values)
+# ============================================================================
+
+# ============================================================================
+# Child Table Models (sorted deepest-first so nested models are defined before their parents)
 # ============================================================================
 
 class RadiusClass(BaseModel):
@@ -26,8 +30,9 @@ class RadiusClass(BaseModel):
         """Pydantic model configuration."""
         extra = "allow"  # Allow additional fields from API
         str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
     
-    name: str | None = Field(max_length=79, default="", description="Class name.")
+    name: str | None = Field(max_length=79, default=None, description="Class name.")
 class RadiusAccountingServer(BaseModel):
     """
     Child table model for accounting-server.
@@ -39,50 +44,158 @@ class RadiusAccountingServer(BaseModel):
         """Pydantic model configuration."""
         extra = "allow"  # Allow additional fields from API
         str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
     
-    id: int | None = Field(ge=0, le=4294967295, default=0, description="ID (0 - 4294967295).")    
+    id_: int | None = Field(ge=0, le=4294967295, default=0, serialization_alias="id", description="ID (0 - 4294967295).")    
     status: Literal["enable", "disable"] | None = Field(default="disable", description="Status.")    
-    server: str = Field(max_length=63, default="", description="Server CN domain name or IP address.")    
+    server: str = Field(max_length=63, description="Server CN domain name or IP address.")    
     secret: Any = Field(max_length=128, description="Secret key.")    
     port: int | None = Field(ge=0, le=65535, default=0, description="RADIUS accounting port number.")    
-    source_ip: str | None = Field(max_length=63, default="", description="Source IP address for communications to the RADIUS server.")    
+    source_ip: str | None = Field(max_length=63, default=None, description="Source IP address for communications to the RADIUS server.")    
     interface_select_method: Literal["auto", "sdwan", "specify"] | None = Field(default="auto", description="Specify how to select outgoing interface to reach server.")    
-    interface: str = Field(max_length=15, default="", description="Specify outgoing interface to reach server.")  # datasource: ['system.interface.name']    
+    interface: str = Field(max_length=15, description="Specify outgoing interface to reach server.")  # datasource: ['system.interface.name']    
     vrf_select: int | None = Field(ge=0, le=511, default=0, description="VRF ID used for connection to server.")
 # ============================================================================
 # Enum Definitions (for fields with 4+ allowed values)
 # ============================================================================
 
-class RadiusAuth_typeEnum(str, Enum):
+class RadiusAuthTypeEnum(str, Enum):
     """Allowed values for auth_type field."""
-    AUTO = "auto"    MS_CHAP_V2 = "ms_chap_v2"    MS_CHAP = "ms_chap"    CHAP = "chap"    PAP = "pap"
-class RadiusMac_username_delimiterEnum(str, Enum):
+    AUTO = "auto"
+    MS_CHAP_V2 = "ms_chap_v2"
+    MS_CHAP = "ms_chap"
+    CHAP = "chap"
+    PAP = "pap"
+
+class RadiusMacUsernameDelimiterEnum(str, Enum):
     """Allowed values for mac_username_delimiter field."""
-    HYPHEN = "hyphen"    SINGLE_HYPHEN = "single-hyphen"    COLON = "colon"    NONE = "none"
-class RadiusMac_password_delimiterEnum(str, Enum):
+    HYPHEN = "hyphen"
+    SINGLE_HYPHEN = "single-hyphen"
+    COLON = "colon"
+    NONE = "none"
+
+class RadiusMacPasswordDelimiterEnum(str, Enum):
     """Allowed values for mac_password_delimiter field."""
-    HYPHEN = "hyphen"    SINGLE_HYPHEN = "single-hyphen"    COLON = "colon"    NONE = "none"
-class RadiusSwitch_controller_service_typeEnum(str, Enum):
+    HYPHEN = "hyphen"
+    SINGLE_HYPHEN = "single-hyphen"
+    COLON = "colon"
+    NONE = "none"
+
+class RadiusSwitchControllerServiceTypeEnum(str, Enum):
     """Allowed values for switch_controller_service_type field."""
-    LOGIN = "login"    FRAMED = "framed"    CALLBACK_LOGIN = "callback-login"    CALLBACK_FRAMED = "callback-framed"    OUTBOUND = "outbound"    ADMINISTRATIVE = "administrative"    NAS_PROMPT = "nas-prompt"    AUTHENTICATE_ONLY = "authenticate-only"    CALLBACK_NAS_PROMPT = "callback-nas-prompt"    CALL_CHECK = "call-check"    CALLBACK_ADMINISTRATIVE = "callback-administrative"
-class RadiusTls_min_proto_versionEnum(str, Enum):
+    LOGIN = "login"
+    FRAMED = "framed"
+    CALLBACK_LOGIN = "callback-login"
+    CALLBACK_FRAMED = "callback-framed"
+    OUTBOUND = "outbound"
+    ADMINISTRATIVE = "administrative"
+    NAS_PROMPT = "nas-prompt"
+    AUTHENTICATE_ONLY = "authenticate-only"
+    CALLBACK_NAS_PROMPT = "callback-nas-prompt"
+    CALL_CHECK = "call-check"
+    CALLBACK_ADMINISTRATIVE = "callback-administrative"
+
+class RadiusTlsMinProtoVersionEnum(str, Enum):
     """Allowed values for tls_min_proto_version field."""
-    DEFAULT = "default"    SSLV3 = "SSLv3"    TLSV1 = "TLSv1"    TLSV1_1 = "TLSv1-1"    TLSV1_2 = "TLSv1-2"    TLSV1_3 = "TLSv1-3"
-class RadiusAccount_key_cert_fieldEnum(str, Enum):
+    DEFAULT = "default"
+    SSLV3 = "SSLv3"
+    TLSV1 = "TLSv1"
+    TLSV1_1 = "TLSv1-1"
+    TLSV1_2 = "TLSv1-2"
+    TLSV1_3 = "TLSv1-3"
+
+class RadiusAccountKeyCertFieldEnum(str, Enum):
     """Allowed values for account_key_cert_field field."""
-    OTHERNAME = "othername"    RFC822NAME = "rfc822name"    DNSNAME = "dnsname"    CN = "cn"
-class RadiusRsso_endpoint_attributeEnum(str, Enum):
+    OTHERNAME = "othername"
+    RFC822NAME = "rfc822name"
+    DNSNAME = "dnsname"
+    CN = "cn"
+
+class RadiusRssoEndpointAttributeEnum(str, Enum):
     """Allowed values for rsso_endpoint_attribute field."""
-    USER_NAME = "User-Name"    NAS_IP_ADDRESS = "NAS-IP-Address"    FRAMED_IP_ADDRESS = "Framed-IP-Address"    FRAMED_IP_NETMASK = "Framed-IP-Netmask"    FILTER_ID = "Filter-Id"    LOGIN_IP_HOST = "Login-IP-Host"    REPLY_MESSAGE = "Reply-Message"    CALLBACK_NUMBER = "Callback-Number"    CALLBACK_ID = "Callback-Id"    FRAMED_ROUTE = "Framed-Route"    FRAMED_IPX_NETWORK = "Framed-IPX-Network"    CLASS = "Class"    CALLED_STATION_ID = "Called-Station-Id"    CALLING_STATION_ID = "Calling-Station-Id"    NAS_IDENTIFIER = "NAS-Identifier"    PROXY_STATE = "Proxy-State"    LOGIN_LAT_SERVICE = "Login-LAT-Service"    LOGIN_LAT_NODE = "Login-LAT-Node"    LOGIN_LAT_GROUP = "Login-LAT-Group"    FRAMED_APPLETALK_ZONE = "Framed-AppleTalk-Zone"    ACCT_SESSION_ID = "Acct-Session-Id"    ACCT_MULTI_SESSION_ID = "Acct-Multi-Session-Id"
-class RadiusRsso_endpoint_block_attributeEnum(str, Enum):
+    USER_NAME = "User-Name"
+    NAS_IP_ADDRESS = "NAS-IP-Address"
+    FRAMED_IP_ADDRESS = "Framed-IP-Address"
+    FRAMED_IP_NETMASK = "Framed-IP-Netmask"
+    FILTER_ID = "Filter-Id"
+    LOGIN_IP_HOST = "Login-IP-Host"
+    REPLY_MESSAGE = "Reply-Message"
+    CALLBACK_NUMBER = "Callback-Number"
+    CALLBACK_ID = "Callback-Id"
+    FRAMED_ROUTE = "Framed-Route"
+    FRAMED_IPX_NETWORK = "Framed-IPX-Network"
+    CLASS = "Class"
+    CALLED_STATION_ID = "Called-Station-Id"
+    CALLING_STATION_ID = "Calling-Station-Id"
+    NAS_IDENTIFIER = "NAS-Identifier"
+    PROXY_STATE = "Proxy-State"
+    LOGIN_LAT_SERVICE = "Login-LAT-Service"
+    LOGIN_LAT_NODE = "Login-LAT-Node"
+    LOGIN_LAT_GROUP = "Login-LAT-Group"
+    FRAMED_APPLETALK_ZONE = "Framed-AppleTalk-Zone"
+    ACCT_SESSION_ID = "Acct-Session-Id"
+    ACCT_MULTI_SESSION_ID = "Acct-Multi-Session-Id"
+
+class RadiusRssoEndpointBlockAttributeEnum(str, Enum):
     """Allowed values for rsso_endpoint_block_attribute field."""
-    USER_NAME = "User-Name"    NAS_IP_ADDRESS = "NAS-IP-Address"    FRAMED_IP_ADDRESS = "Framed-IP-Address"    FRAMED_IP_NETMASK = "Framed-IP-Netmask"    FILTER_ID = "Filter-Id"    LOGIN_IP_HOST = "Login-IP-Host"    REPLY_MESSAGE = "Reply-Message"    CALLBACK_NUMBER = "Callback-Number"    CALLBACK_ID = "Callback-Id"    FRAMED_ROUTE = "Framed-Route"    FRAMED_IPX_NETWORK = "Framed-IPX-Network"    CLASS = "Class"    CALLED_STATION_ID = "Called-Station-Id"    CALLING_STATION_ID = "Calling-Station-Id"    NAS_IDENTIFIER = "NAS-Identifier"    PROXY_STATE = "Proxy-State"    LOGIN_LAT_SERVICE = "Login-LAT-Service"    LOGIN_LAT_NODE = "Login-LAT-Node"    LOGIN_LAT_GROUP = "Login-LAT-Group"    FRAMED_APPLETALK_ZONE = "Framed-AppleTalk-Zone"    ACCT_SESSION_ID = "Acct-Session-Id"    ACCT_MULTI_SESSION_ID = "Acct-Multi-Session-Id"
-class RadiusSso_attributeEnum(str, Enum):
+    USER_NAME = "User-Name"
+    NAS_IP_ADDRESS = "NAS-IP-Address"
+    FRAMED_IP_ADDRESS = "Framed-IP-Address"
+    FRAMED_IP_NETMASK = "Framed-IP-Netmask"
+    FILTER_ID = "Filter-Id"
+    LOGIN_IP_HOST = "Login-IP-Host"
+    REPLY_MESSAGE = "Reply-Message"
+    CALLBACK_NUMBER = "Callback-Number"
+    CALLBACK_ID = "Callback-Id"
+    FRAMED_ROUTE = "Framed-Route"
+    FRAMED_IPX_NETWORK = "Framed-IPX-Network"
+    CLASS = "Class"
+    CALLED_STATION_ID = "Called-Station-Id"
+    CALLING_STATION_ID = "Calling-Station-Id"
+    NAS_IDENTIFIER = "NAS-Identifier"
+    PROXY_STATE = "Proxy-State"
+    LOGIN_LAT_SERVICE = "Login-LAT-Service"
+    LOGIN_LAT_NODE = "Login-LAT-Node"
+    LOGIN_LAT_GROUP = "Login-LAT-Group"
+    FRAMED_APPLETALK_ZONE = "Framed-AppleTalk-Zone"
+    ACCT_SESSION_ID = "Acct-Session-Id"
+    ACCT_MULTI_SESSION_ID = "Acct-Multi-Session-Id"
+
+class RadiusSsoAttributeEnum(str, Enum):
     """Allowed values for sso_attribute field."""
-    USER_NAME = "User-Name"    NAS_IP_ADDRESS = "NAS-IP-Address"    FRAMED_IP_ADDRESS = "Framed-IP-Address"    FRAMED_IP_NETMASK = "Framed-IP-Netmask"    FILTER_ID = "Filter-Id"    LOGIN_IP_HOST = "Login-IP-Host"    REPLY_MESSAGE = "Reply-Message"    CALLBACK_NUMBER = "Callback-Number"    CALLBACK_ID = "Callback-Id"    FRAMED_ROUTE = "Framed-Route"    FRAMED_IPX_NETWORK = "Framed-IPX-Network"    CLASS = "Class"    CALLED_STATION_ID = "Called-Station-Id"    CALLING_STATION_ID = "Calling-Station-Id"    NAS_IDENTIFIER = "NAS-Identifier"    PROXY_STATE = "Proxy-State"    LOGIN_LAT_SERVICE = "Login-LAT-Service"    LOGIN_LAT_NODE = "Login-LAT-Node"    LOGIN_LAT_GROUP = "Login-LAT-Group"    FRAMED_APPLETALK_ZONE = "Framed-AppleTalk-Zone"    ACCT_SESSION_ID = "Acct-Session-Id"    ACCT_MULTI_SESSION_ID = "Acct-Multi-Session-Id"
-class RadiusRsso_log_flagsEnum(str, Enum):
+    USER_NAME = "User-Name"
+    NAS_IP_ADDRESS = "NAS-IP-Address"
+    FRAMED_IP_ADDRESS = "Framed-IP-Address"
+    FRAMED_IP_NETMASK = "Framed-IP-Netmask"
+    FILTER_ID = "Filter-Id"
+    LOGIN_IP_HOST = "Login-IP-Host"
+    REPLY_MESSAGE = "Reply-Message"
+    CALLBACK_NUMBER = "Callback-Number"
+    CALLBACK_ID = "Callback-Id"
+    FRAMED_ROUTE = "Framed-Route"
+    FRAMED_IPX_NETWORK = "Framed-IPX-Network"
+    CLASS = "Class"
+    CALLED_STATION_ID = "Called-Station-Id"
+    CALLING_STATION_ID = "Calling-Station-Id"
+    NAS_IDENTIFIER = "NAS-Identifier"
+    PROXY_STATE = "Proxy-State"
+    LOGIN_LAT_SERVICE = "Login-LAT-Service"
+    LOGIN_LAT_NODE = "Login-LAT-Node"
+    LOGIN_LAT_GROUP = "Login-LAT-Group"
+    FRAMED_APPLETALK_ZONE = "Framed-AppleTalk-Zone"
+    ACCT_SESSION_ID = "Acct-Session-Id"
+    ACCT_MULTI_SESSION_ID = "Acct-Multi-Session-Id"
+
+class RadiusRssoLogFlagsEnum(str, Enum):
     """Allowed values for rsso_log_flags field."""
-    PROTOCOL_ERROR = "protocol-error"    PROFILE_MISSING = "profile-missing"    ACCOUNTING_STOP_MISSED = "accounting-stop-missed"    ACCOUNTING_EVENT = "accounting-event"    ENDPOINT_BLOCK = "endpoint-block"    RADIUSD_OTHER = "radiusd-other"    NONE = "none"
+    PROTOCOL_ERROR = "protocol-error"
+    PROFILE_MISSING = "profile-missing"
+    ACCOUNTING_STOP_MISSED = "accounting-stop-missed"
+    ACCOUNTING_EVENT = "accounting-event"
+    ENDPOINT_BLOCK = "endpoint-block"
+    RADIUSD_OTHER = "radiusd-other"
+    NONE = "none"
+
 
 # ============================================================================
 # Main Model
@@ -107,12 +220,12 @@ class RadiusModel(BaseModel):
     # Model Fields
     # ========================================================================
     
-    name: str | None = Field(max_length=35, default="", description="RADIUS server entry name.")    
-    server: str = Field(max_length=63, default="", description="Primary RADIUS server CN domain name or IP address.")    
+    name: str | None = Field(max_length=35, default=None, description="RADIUS server entry name.")    
+    server: str = Field(max_length=63, description="Primary RADIUS server CN domain name or IP address.")    
     secret: Any = Field(max_length=128, description="Pre-shared secret key used to access the primary RADIUS server.")    
-    secondary_server: str | None = Field(max_length=63, default="", description="Secondary RADIUS CN domain name or IP address.")    
+    secondary_server: str | None = Field(max_length=63, default=None, description="Secondary RADIUS CN domain name or IP address.")    
     secondary_secret: Any = Field(max_length=128, default=None, description="Secret key to access the secondary server.")    
-    tertiary_server: str | None = Field(max_length=63, default="", description="Tertiary RADIUS CN domain name or IP address.")    
+    tertiary_server: str | None = Field(max_length=63, default=None, description="Tertiary RADIUS CN domain name or IP address.")    
     tertiary_secret: Any = Field(max_length=128, default=None, description="Secret key to access the tertiary server.")    
     timeout: int | None = Field(ge=1, le=300, default=5, description="Time in seconds to retry connecting server.")    
     status_ttl: int | None = Field(ge=0, le=600, default=300, description="Time for which server reachability is cached so that when a server is unreachable, it will not be retried for at least this period of time (0 = cache disabled, default = 300).")    
@@ -122,53 +235,53 @@ class RadiusModel(BaseModel):
     nas_ip: str | None = Field(default="0.0.0.0", description="IP address used to communicate with the RADIUS server and used as NAS-IP-Address and Called-Station-ID attributes.")    
     nas_id_type: Literal["legacy", "custom", "hostname"] | None = Field(default="legacy", description="NAS identifier type configuration (default = legacy).")    
     call_station_id_type: Literal["legacy", "IP", "MAC"] | None = Field(default="legacy", description="Calling & Called station identifier type configuration (default = legacy), this option is not available for 802.1x authentication. ")    
-    nas_id: str | None = Field(max_length=255, default="", description="Custom NAS identifier.")    
+    nas_id: str | None = Field(max_length=255, default=None, description="Custom NAS identifier.")    
     acct_interim_interval: int | None = Field(ge=60, le=86400, default=0, description="Time in seconds between each accounting interim update message.")    
     radius_coa: Literal["enable", "disable"] | None = Field(default="disable", description="Enable to allow a mechanism to change the attributes of an authentication, authorization, and accounting session after it is authenticated.")    
     radius_port: int | None = Field(ge=0, le=65535, default=0, description="RADIUS service port number.")    
     h3c_compatibility: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable compatibility with the H3C, a mechanism that performs security checking for authentication.")    
-    auth_type: AuthTypeEnum | None = Field(default="auto", description="Authentication methods/protocols permitted for this RADIUS server.")    
-    source_ip: str | None = Field(max_length=63, default="", description="Source IP address for communications to the RADIUS server.")    
-    source_ip_interface: str | None = Field(max_length=15, default="", description="Source interface for communication with the RADIUS server.")  # datasource: ['system.interface.name']    
+    auth_type: RadiusAuthTypeEnum | None = Field(default=RadiusAuthTypeEnum.AUTO, description="Authentication methods/protocols permitted for this RADIUS server.")    
+    source_ip: str | None = Field(max_length=63, default=None, description="Source IP address for communications to the RADIUS server.")    
+    source_ip_interface: str | None = Field(max_length=15, default=None, description="Source interface for communication with the RADIUS server.")  # datasource: ['system.interface.name']    
     username_case_sensitive: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable case sensitive user names.")    
-    group_override_attr_type: Literal["filter-Id", "class"] | None = Field(default="", description="RADIUS attribute type to override user group information.")    
-    class_: list[Class] = Field(default=None, description="Class attribute name(s).")    
+    group_override_attr_type: Literal["filter-Id", "class"] | None = Field(default=None, description="RADIUS attribute type to override user group information.")    
+    class_: list[RadiusClass] = Field(default_factory=list, serialization_alias="class", description="Class attribute name(s).")    
     password_renewal: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable password renewal.")    
     require_message_authenticator: Literal["enable", "disable"] | None = Field(default="enable", description="Require message authenticator in authentication response.")    
     password_encoding: Literal["auto", "ISO-8859-1"] | None = Field(default="auto", description="Password encoding.")    
-    mac_username_delimiter: MacUsernameDelimiterEnum | None = Field(default="hyphen", description="MAC authentication username delimiter (default = hyphen).")    
-    mac_password_delimiter: MacPasswordDelimiterEnum | None = Field(default="hyphen", description="MAC authentication password delimiter (default = hyphen).")    
+    mac_username_delimiter: RadiusMacUsernameDelimiterEnum | None = Field(default=RadiusMacUsernameDelimiterEnum.HYPHEN, description="MAC authentication username delimiter (default = hyphen).")    
+    mac_password_delimiter: RadiusMacPasswordDelimiterEnum | None = Field(default=RadiusMacPasswordDelimiterEnum.HYPHEN, description="MAC authentication password delimiter (default = hyphen).")    
     mac_case: Literal["uppercase", "lowercase"] | None = Field(default="lowercase", description="MAC authentication case (default = lowercase).")    
     acct_all_servers: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable sending of accounting messages to all configured servers (default = disable).")    
     switch_controller_acct_fast_framedip_detect: int | None = Field(ge=2, le=600, default=2, description="Switch controller accounting message Framed-IP detection from DHCP snooping (seconds, default=2).")    
     interface_select_method: Literal["auto", "sdwan", "specify"] | None = Field(default="auto", description="Specify how to select outgoing interface to reach server.")    
-    interface: str = Field(max_length=15, default="", description="Specify outgoing interface to reach server.")  # datasource: ['system.interface.name']    
+    interface: str = Field(max_length=15, description="Specify outgoing interface to reach server.")  # datasource: ['system.interface.name']    
     vrf_select: int | None = Field(ge=0, le=511, default=0, description="VRF ID used for connection to server.")    
-    switch_controller_service_type: list[SwitchControllerServiceType] = Field(default="", description="RADIUS service type.")    
+    switch_controller_service_type: list[RadiusSwitchControllerServiceTypeEnum] = Field(default_factory=list, description="RADIUS service type.")    
     transport_protocol: Literal["udp", "tcp", "tls"] | None = Field(default="udp", description="Transport protocol to be used (default = udp).")    
-    tls_min_proto_version: TlsMinProtoVersionEnum | None = Field(default="default", description="Minimum supported protocol version for TLS connections (default is to follow system global setting).")    
-    ca_cert: str | None = Field(max_length=79, default="", description="CA of server to trust under TLS.")  # datasource: ['vpn.certificate.ca.name']    
-    client_cert: str | None = Field(max_length=35, default="", description="Client certificate to use under TLS.")  # datasource: ['vpn.certificate.local.name']    
+    tls_min_proto_version: RadiusTlsMinProtoVersionEnum | None = Field(default=RadiusTlsMinProtoVersionEnum.DEFAULT, description="Minimum supported protocol version for TLS connections (default is to follow system global setting).")    
+    ca_cert: str | None = Field(max_length=79, default=None, description="CA of server to trust under TLS.")  # datasource: ['vpn.certificate.ca.name']    
+    client_cert: str | None = Field(max_length=35, default=None, description="Client certificate to use under TLS.")  # datasource: ['vpn.certificate.local.name']    
     server_identity_check: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable RADIUS server identity check (verify server domain name/IP address against the server certificate).")    
     account_key_processing: Literal["same", "strip"] | None = Field(default="same", description="Account key processing operation. The FortiGate will keep either the whole domain or strip the domain from the subject identity.")    
-    account_key_cert_field: AccountKeyCertFieldEnum | None = Field(default="othername", description="Define subject identity field in certificate for user access right checking.")    
+    account_key_cert_field: RadiusAccountKeyCertFieldEnum | None = Field(default=RadiusAccountKeyCertFieldEnum.OTHERNAME, description="Define subject identity field in certificate for user access right checking.")    
     rsso: Literal["enable", "disable"] = Field(default="disable", description="Enable/disable RADIUS based single sign on feature.")    
     rsso_radius_server_port: int = Field(ge=0, le=65535, default=1813, description="UDP port to listen on for RADIUS Start and Stop records.")    
     rsso_radius_response: Literal["enable", "disable"] = Field(default="disable", description="Enable/disable sending RADIUS response packets after receiving Start and Stop records.")    
     rsso_validate_request_secret: Literal["enable", "disable"] = Field(default="disable", description="Enable/disable validating the RADIUS request shared secret in the Start or End record.")    
     rsso_secret: Any = Field(max_length=31, description="RADIUS secret used by the RADIUS accounting server.")    
-    rsso_endpoint_attribute: RssoEndpointAttributeEnum = Field(default="Calling-Station-Id", description="RADIUS attributes used to extract the user end point identifier from the RADIUS Start record.")    
-    rsso_endpoint_block_attribute: RssoEndpointBlockAttributeEnum = Field(default="", description="RADIUS attributes used to block a user.")    
-    sso_attribute: SsoAttributeEnum = Field(default="Class", description="RADIUS attribute that contains the profile group name to be extracted from the RADIUS Start record.")    
-    sso_attribute_key: str | None = Field(max_length=35, default="", description="Key prefix for SSO group value in the SSO attribute.")    
+    rsso_endpoint_attribute: RadiusRssoEndpointAttributeEnum = Field(default=RadiusRssoEndpointAttributeEnum.CALLING_STATION_ID, description="RADIUS attributes used to extract the user end point identifier from the RADIUS Start record.")    
+    rsso_endpoint_block_attribute: RadiusRssoEndpointBlockAttributeEnum = Field(description="RADIUS attributes used to block a user.")    
+    sso_attribute: RadiusSsoAttributeEnum = Field(default=RadiusSsoAttributeEnum.CLASS, description="RADIUS attribute that contains the profile group name to be extracted from the RADIUS Start record.")    
+    sso_attribute_key: str | None = Field(max_length=35, default=None, description="Key prefix for SSO group value in the SSO attribute.")    
     sso_attribute_value_override: Literal["enable", "disable"] = Field(default="enable", description="Enable/disable override old attribute value with new value for the same endpoint.")    
     rsso_context_timeout: int = Field(ge=0, le=4294967295, default=28800, description="Time in seconds before the logged out user is removed from the \"user context list\" of logged on users.")    
     rsso_log_period: int = Field(ge=0, le=4294967295, default=0, description="Time interval in seconds that group event log messages will be generated for dynamic profile events.")    
-    rsso_log_flags: list[RssoLogFlags] = Field(default="protocol-error profile-missing accounting-stop-missed accounting-event endpoint-block radiusd-other", description="Events to log.")    
+    rsso_log_flags: list[RadiusRssoLogFlagsEnum] = Field(default_factory=list, description="Events to log.")    
     rsso_flush_ip_session: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable flushing user IP sessions on RADIUS accounting Stop messages.")    
     rsso_ep_one_ip_only: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable the replacement of old IP addresses with new ones for the same endpoint on RADIUS accounting Start messages.")    
     delimiter: Literal["plus", "comma"] | None = Field(default="plus", description="Configure delimiter to be used for separating profile group names in the SSO attribute (default = plus character \"+\").")    
-    accounting_server: list[AccountingServer] = Field(default=None, description="Additional accounting servers.")    
+    accounting_server: list[RadiusAccountingServer] = Field(default_factory=list, description="Additional accounting servers.")    
     # ========================================================================
     # Custom Validators
     # ========================================================================
@@ -293,7 +406,7 @@ class RadiusModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.user.radius.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate scalar field
         value = getattr(self, "source_ip_interface", None)
@@ -342,7 +455,7 @@ class RadiusModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.user.radius.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate scalar field
         value = getattr(self, "interface", None)
@@ -391,7 +504,7 @@ class RadiusModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.user.radius.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate scalar field
         value = getattr(self, "ca_cert", None)
@@ -440,7 +553,7 @@ class RadiusModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.user.radius.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate scalar field
         value = getattr(self, "client_cert", None)
@@ -489,7 +602,7 @@ class RadiusModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.user.radius.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate child table items
         values = getattr(self, "accounting_server", [])
@@ -566,5 +679,5 @@ __all__ = [
 # ============================================================================
 # Generated by hfortix generator v0.6.0
 # Schema: 1.7.0
-# Generated: 2026-01-17T05:32:19.732934Z
+# Generated: 2026-01-17T17:25:23.377070Z
 # ============================================================================

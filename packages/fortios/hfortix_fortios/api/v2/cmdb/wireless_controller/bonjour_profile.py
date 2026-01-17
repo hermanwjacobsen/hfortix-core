@@ -642,6 +642,16 @@ class BonjourProfile(CRUDEndpoint, MetadataMixin):
             - put(): Update existing object
             - exists(): Check existence manually
         """
+        # Apply normalization for table fields (supports flexible input formats)
+        if policy_list is not None:
+            policy_list = normalize_table_field(
+                policy_list,
+                mkey="policy-id",
+                required_fields=['policy-id'],
+                field_name="policy_list",
+                example="[{'policy-id': 1}]",
+            )
+        
         # Build payload using helper function with auto-normalization
         payload_data = build_api_payload(
             name=name,

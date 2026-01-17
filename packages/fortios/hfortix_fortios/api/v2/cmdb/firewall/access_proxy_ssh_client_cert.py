@@ -682,6 +682,16 @@ class AccessProxySshClientCert(CRUDEndpoint, MetadataMixin):
             - put(): Update existing object
             - exists(): Check existence manually
         """
+        # Apply normalization for table fields (supports flexible input formats)
+        if cert_extension is not None:
+            cert_extension = normalize_table_field(
+                cert_extension,
+                mkey="name",
+                required_fields=['name'],
+                field_name="cert_extension",
+                example="[{'name': 'value'}]",
+            )
+        
         # Build payload using helper function with auto-normalization
         payload_data = build_api_payload(
             name=name,

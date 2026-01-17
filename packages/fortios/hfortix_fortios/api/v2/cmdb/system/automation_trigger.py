@@ -828,6 +828,32 @@ class AutomationTrigger(CRUDEndpoint, MetadataMixin):
             - put(): Update existing object
             - exists(): Check existence manually
         """
+        # Apply normalization for table fields (supports flexible input formats)
+        if vdom is not None:
+            vdom = normalize_table_field(
+                vdom,
+                mkey="name",
+                required_fields=['name'],
+                field_name="vdom",
+                example="[{'name': 'value'}]",
+            )
+        if logid is not None:
+            logid = normalize_table_field(
+                logid,
+                mkey="id",
+                required_fields=['id'],
+                field_name="logid",
+                example="[{'id': 1}]",
+            )
+        if fields is not None:
+            fields = normalize_table_field(
+                fields,
+                mkey="id",
+                required_fields=['id'],
+                field_name="fields",
+                example="[{'id': 1}]",
+            )
+        
         # Build payload using helper function with auto-normalization
         payload_data = build_api_payload(
             name=name,

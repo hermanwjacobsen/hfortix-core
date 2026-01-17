@@ -1,146 +1,112 @@
-from typing import TypedDict, Literal, Any, Coroutine, Union, overload, Generator, final
-from typing_extensions import NotRequired
-from hfortix_fortios.models import FortiObject, FortiObjectList
+""" - Type Stubs
 
-# ============================================================================
-# Nested TypedDicts for table field children (dict mode)
-# These MUST be defined before the Payload class to use them as type hints
-# ============================================================================
+Auto-generated stub file for type checking and IDE support.
 
-# ============================================================================
-# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional)
-# ============================================================================
-# NOTE: We intentionally DON'T use NotRequired wrapper because:
-# 1. total=False already makes all fields optional
-# 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
+Endpoint: firewall/schedule/onetime
+Category: cmdb
+"""
+
+from __future__ import annotations
+
+from typing import (
+    Any,
+    ClassVar,
+    Literal,
+    TypedDict,
+    overload,
+)
+
+from hfortix_fortios.models import (
+    FortiObject,
+    FortiObjectList,
+)
+
+
+# ================================================================
+# TypedDict Payloads
+# ================================================================
+
 class OnetimePayload(TypedDict, total=False):
-    """
-    Type hints for firewall/schedule/onetime payload fields.
-    
-    Onetime schedule configuration.
-    
-    **Usage:**
-        payload: OnetimePayload = {
-            "field": "value",  # <- autocomplete shows all fields
-        }
-    """
-    name: str  # Onetime schedule name. | MaxLen: 31
-    uuid: str  # Universally Unique Identifier | Default: 00000000-0000-0000-0000-000000000000
-    start: str  # Schedule start date and time, format hh:mm yyyy/mm
-    start_utc: str  # Schedule start date and time, in epoch format.
-    end: str  # Schedule end date and time, format hh:mm yyyy/mm/d
-    end_utc: str  # Schedule end date and time, in epoch format.
-    color: int  # Color of icon on the GUI. | Default: 0 | Min: 0 | Max: 32
-    expiration_days: int  # Write an event log message this many days before t | Default: 3 | Min: 0 | Max: 100
-    fabric_object: Literal["enable", "disable"]  # Security Fabric global object setting. | Default: disable
-
-# ============================================================================
-# Nested classes for table field children (object mode - for API responses)
-# ============================================================================
-
-
-
-# Response TypedDict for GET returns (all fields present in API response)
-class OnetimeResponse(TypedDict):
-    """
-    Type hints for firewall/schedule/onetime API response fields.
-    
-    All fields are present in the response from the FortiGate API.
-    """
-    name: str  # Onetime schedule name. | MaxLen: 31
-    uuid: str  # Universally Unique Identifier | Default: 00000000-0000-0000-0000-000000000000
-    start: str  # Schedule start date and time, format hh:mm yyyy/mm
-    start_utc: str  # Schedule start date and time, in epoch format.
-    end: str  # Schedule end date and time, format hh:mm yyyy/mm/d
-    end_utc: str  # Schedule end date and time, in epoch format.
-    color: int  # Color of icon on the GUI. | Default: 0 | Min: 0 | Max: 32
-    expiration_days: int  # Write an event log message this many days before t | Default: 3 | Min: 0 | Max: 100
-    fabric_object: Literal["enable", "disable"]  # Security Fabric global object setting. | Default: disable
-
-
-@final
-class OnetimeObject:
-    """Typed FortiObject for firewall/schedule/onetime with IDE autocomplete support.
-    
-    This is a typed wrapper that provides IDE autocomplete for API response fields.
-    At runtime, this is actually a FortiObject instance.
-    """
-    
-    # Onetime schedule name. | MaxLen: 31
+    """Payload type for Onetime operations."""
     name: str
-    # Universally Unique Identifier | Default: 00000000-0000-0000-0000-000000000000
     uuid: str
-    # Schedule start date and time, format hh:mm yyyy/mm/dd.
     start: str
-    # Schedule start date and time, in epoch format.
     start_utc: str
-    # Schedule end date and time, format hh:mm yyyy/mm/dd.
     end: str
-    # Schedule end date and time, in epoch format.
     end_utc: str
-    # Color of icon on the GUI. | Default: 0 | Min: 0 | Max: 32
     color: int
-    # Write an event log message this many days before the schedul | Default: 3 | Min: 0 | Max: 100
     expiration_days: int
-    # Security Fabric global object setting. | Default: disable
     fabric_object: Literal["enable", "disable"]
-    
-    # Common API response fields
-    status: str
-    http_status: int | None
-    http_status_code: int | None
-    http_method: str | None
-    http_response_time: float | None
-    vdom: str | None
-    
-    # Methods from FortiObject
-    @property
-    def dict(self) -> dict[str, Any]:
-        """Convert to dictionary."""
-        ...
-    @property
-    def json(self) -> str:
-        """Get pretty-printed JSON string."""
-        ...
-    @property
-    def raw(self) -> dict[str, Any]:
-        """Get raw API response data."""
-        ...
-    def get_full(self, name: str) -> Any: ...
-    def to_dict(self) -> OnetimePayload: ...
-    def keys(self) -> Any: ...
-    def values(self) -> Generator[Any, None, None]: ...
-    def items(self) -> Generator[tuple[str, Any], None, None]: ...
-    def get(self, key: str, default: Any = None) -> Any: ...
 
+
+# ================================================================
+# Response Types (TypedDict for dict-style access)
+# ================================================================
+
+class OnetimeResponse(TypedDict, total=False):
+    """Response type for Onetime - use with .dict property for typed dict access."""
+    name: str
+    uuid: str
+    start: str
+    start_utc: str
+    end: str
+    end_utc: str
+    color: int
+    expiration_days: int
+    fabric_object: Literal["enable", "disable"]
+
+
+# ================================================================
+# Response Types (Class for attribute access)
+# ================================================================
+
+
+class OnetimeObject(FortiObject):
+    """Typed FortiObject for Onetime with field access."""
+    name: str
+    uuid: str
+    start: str
+    start_utc: str
+    end: str
+    end_utc: str
+    color: int
+    expiration_days: int
+    fabric_object: Literal["enable", "disable"]
+
+
+# ================================================================
+# Main Endpoint Class
+# ================================================================
 
 class Onetime:
     """
-    Onetime schedule configuration.
     
-    Path: firewall/schedule/onetime
+    Endpoint: firewall/schedule/onetime
     Category: cmdb
-    Primary Key: name
+    MKey: name
     """
     
+    # Class attributes for introspection
+    endpoint: ClassVar[str] = ...
+    path: ClassVar[str] = ...
+    category: ClassVar[str] = ...
+    mkey: ClassVar[str] = ...
+    capabilities: ClassVar[dict[str, Any]] = ...
+    
     def __init__(self, client: Any) -> None:
-        """Initialize endpoint with HTTP client.
-        
-        Args:
-            client: HTTP client instance for API communication
-        """
+        """Initialize endpoint with HTTP client."""
         ...
     
     # ================================================================
-    # GET OVERLOADS - Always returns FortiObject (or ContentResponse for file endpoints)
-    # Pylance matches overloads top-to-bottom, so these must come first!
+    # GET Methods
     # ================================================================
     
-    # With mkey as positional arg -> returns FortiObject
+    # CMDB with mkey - overloads for single vs list returns
     @overload
     def get(
         self,
         name: str,
+        *,
         filter: str | list[str] | None = ...,
         count: int | None = ...,
         start: int | None = ...,
@@ -150,14 +116,14 @@ class Onetime:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        error_mode: Literal["raise", "return", "print"] | None = ...,
+        error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> OnetimeObject: ...
     
-    # With mkey as keyword arg -> returns FortiObject
     @overload
     def get(
         self,
         *,
-        name: str,
         filter: str | list[str] | None = ...,
         count: int | None = ...,
         start: int | None = ...,
@@ -167,164 +133,20 @@ class Onetime:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> OnetimeObject: ...
-    
-    # Without mkey -> returns list of FortiObjects
-    @overload
-    def get(
-        self,
-        name: None = None,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
+        error_mode: Literal["raise", "return", "print"] | None = ...,
+        error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> FortiObjectList[OnetimeObject]: ...
-    
-    # ================================================================
-    # (removed - all GET now returns FortiObject)
-    # ================================================================
-    
-    # With mkey as positional arg -> returns single object
-    @overload
-    def get(
-        self,
-        name: str,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> OnetimeObject: ...
-    
-    # With mkey as keyword arg -> returns single object
-    @overload
-    def get(
-        self,
-        *,
-        name: str,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> OnetimeObject: ...
-    
-    # With no mkey -> returns list of objects
-    @overload
-    def get(
-        self,
-        *,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObjectList[OnetimeObject]: ...
-    
-    # Dict mode with mkey provided as positional arg (single dict)
-    @overload
-    def get(
-        self,
-        name: str,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> OnetimeObject: ...
-    
-    # Dict mode with mkey provided as keyword arg (single dict)
-    @overload
-    def get(
-        self,
-        *,
-        name: str,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> OnetimeObject: ...
-    
-    # Dict mode - list of dicts (no mkey/name provided) - keyword-only signature
-    @overload
-    def get(
-        self,
-        *,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObjectList[OnetimeObject]: ...
-    
-    # Fallback overload for all other cases
-    @overload
-    def get(
-        self,
-        name: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> Union[dict[str, Any], list[dict[str, Any]], FortiObject, list[FortiObject]]: ...
-    
-    def get(
-        self,
-        name: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> OnetimeObject | list[OnetimeObject] | dict[str, Any] | list[dict[str, Any]]: ...
     
     def get_schema(
         self,
         vdom: str | None = ...,
         format: str = ...,
     ) -> FortiObject: ...
+
+    # ================================================================
+    # POST Method
+    # ================================================================
     
-    # POST overloads
-    @overload
     def post(
         self,
         payload_dict: OnetimePayload | None = ...,
@@ -338,58 +160,14 @@ class Onetime:
         expiration_days: int | None = ...,
         fabric_object: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
+        error_mode: Literal["raise", "return", "print"] | None = ...,
+        error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> OnetimeObject: ...
+
+    # ================================================================
+    # PUT Method
+    # ================================================================
     
-    @overload
-    def post(
-        self,
-        payload_dict: OnetimePayload | None = ...,
-        name: str | None = ...,
-        uuid: str | None = ...,
-        start: str | None = ...,
-        start_utc: str | None = ...,
-        end: str | None = ...,
-        end_utc: str | None = ...,
-        color: int | None = ...,
-        expiration_days: int | None = ...,
-        fabric_object: Literal["enable", "disable"] | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
-    
-    # Default overload
-    @overload
-    def post(
-        self,
-        payload_dict: OnetimePayload | None = ...,
-        name: str | None = ...,
-        uuid: str | None = ...,
-        start: str | None = ...,
-        start_utc: str | None = ...,
-        end: str | None = ...,
-        end_utc: str | None = ...,
-        color: int | None = ...,
-        expiration_days: int | None = ...,
-        fabric_object: Literal["enable", "disable"] | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
-    
-    def post(
-        self,
-        payload_dict: OnetimePayload | None = ...,
-        name: str | None = ...,
-        uuid: str | None = ...,
-        start: str | None = ...,
-        start_utc: str | None = ...,
-        end: str | None = ...,
-        end_utc: str | None = ...,
-        color: int | None = ...,
-        expiration_days: int | None = ...,
-        fabric_object: Literal["enable", "disable"] | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
-    
-    # PUT overloads
-    @overload
     def put(
         self,
         payload_dict: OnetimePayload | None = ...,
@@ -403,84 +181,25 @@ class Onetime:
         expiration_days: int | None = ...,
         fabric_object: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
+        error_mode: Literal["raise", "return", "print"] | None = ...,
+        error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> OnetimeObject: ...
-    
-    @overload
-    def put(
-        self,
-        payload_dict: OnetimePayload | None = ...,
-        name: str | None = ...,
-        uuid: str | None = ...,
-        start: str | None = ...,
-        start_utc: str | None = ...,
-        end: str | None = ...,
-        end_utc: str | None = ...,
-        color: int | None = ...,
-        expiration_days: int | None = ...,
-        fabric_object: Literal["enable", "disable"] | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
-    
-    # Default overload
-    @overload
-    def put(
-        self,
-        payload_dict: OnetimePayload | None = ...,
-        name: str | None = ...,
-        uuid: str | None = ...,
-        start: str | None = ...,
-        start_utc: str | None = ...,
-        end: str | None = ...,
-        end_utc: str | None = ...,
-        color: int | None = ...,
-        expiration_days: int | None = ...,
-        fabric_object: Literal["enable", "disable"] | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
-    
-    def put(
-        self,
-        payload_dict: OnetimePayload | None = ...,
-        name: str | None = ...,
-        uuid: str | None = ...,
-        start: str | None = ...,
-        start_utc: str | None = ...,
-        end: str | None = ...,
-        end_utc: str | None = ...,
-        color: int | None = ...,
-        expiration_days: int | None = ...,
-        fabric_object: Literal["enable", "disable"] | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
-    
-    # DELETE overloads
-    @overload
-    def delete(
-        self,
-        name: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> OnetimeObject: ...
-    
-    @overload
-    def delete(
-        self,
-        name: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
-    
-    # Default overload
-    @overload
-    def delete(
-        self,
-        name: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+
+    # ================================================================
+    # DELETE Method
+    # ================================================================
     
     def delete(
         self,
         name: str | None = ...,
         vdom: str | bool | None = ...,
+        error_mode: Literal["raise", "return", "print"] | None = ...,
+        error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> FortiObject: ...
+
+    # ================================================================
+    # Utility Methods
+    # ================================================================
     
     def exists(
         self,
@@ -501,6 +220,8 @@ class Onetime:
         expiration_days: int | None = ...,
         fabric_object: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
+        error_mode: Literal["raise", "return", "print"] | None = ...,
+        error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> FortiObject: ...
     
     # Helper methods
@@ -508,7 +229,7 @@ class Onetime:
     def help(field_name: str | None = ...) -> str: ...
     
     @staticmethod
-    def fields(detailed: bool = ...) -> Union[list[str], list[dict[str, Any]]]: ...
+    def fields(detailed: bool = ...) -> list[str] | list[dict[str, Any]]: ...
     
     @staticmethod
     def field_info(field_name: str) -> FortiObject: ...
@@ -524,9 +245,6 @@ class Onetime:
     
     @staticmethod
     def schema() -> FortiObject: ...
-
-
-# ================================================================
 
 
 __all__ = [

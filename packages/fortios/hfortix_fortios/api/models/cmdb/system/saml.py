@@ -11,9 +11,28 @@ from pydantic import BaseModel, Field, field_validator
 from typing import Any, Literal, Optional
 
 # ============================================================================
-# Child Table Models
+# Enum Definitions for Child Table Fields (for fields with 4+ allowed values)
 # ============================================================================
 
+# ============================================================================
+# Child Table Models (sorted deepest-first so nested models are defined before their parents)
+# ============================================================================
+
+class SamlServiceProvidersAssertionAttributes(BaseModel):
+    """
+    Child table model for service-providers.assertion-attributes.
+    
+    Customized SAML attributes to send along with assertion.
+    """
+    
+    class Config:
+        """Pydantic model configuration."""
+        extra = "allow"  # Allow additional fields from API
+        str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
+    
+    name: str = Field(max_length=35, description="Name.")    
+    type_: Literal["username", "email", "profile-name"] = Field(default="username", serialization_alias="type", description="Type.")
 class SamlServiceProviders(BaseModel):
     """
     Child table model for service-providers.
@@ -25,19 +44,20 @@ class SamlServiceProviders(BaseModel):
         """Pydantic model configuration."""
         extra = "allow"  # Allow additional fields from API
         str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
     
-    name: str = Field(max_length=35, default="", description="Name.")    
-    prefix: str = Field(max_length=35, default="", description="Prefix.")    
+    name: str = Field(max_length=35, description="Name.")    
+    prefix: str = Field(max_length=35, description="Prefix.")    
     sp_binding_protocol: Literal["post", "redirect"] | None = Field(default="post", description="SP binding protocol.")    
-    sp_cert: str | None = Field(max_length=35, default="", description="SP certificate name.")  # datasource: ['certificate.remote.name']    
-    sp_entity_id: str = Field(max_length=255, default="", description="SP entity ID.")    
-    sp_single_sign_on_url: str = Field(max_length=255, default="", description="SP single sign-on URL.")    
-    sp_single_logout_url: str | None = Field(max_length=255, default="", description="SP single logout URL.")    
-    sp_portal_url: str | None = Field(max_length=255, default="", description="SP portal URL.")    
-    idp_entity_id: str | None = Field(max_length=255, default="", description="IDP entity ID.")    
-    idp_single_sign_on_url: str | None = Field(max_length=255, default="", description="IDP single sign-on URL.")    
-    idp_single_logout_url: str | None = Field(max_length=255, default="", description="IDP single logout URL.")    
-    assertion_attributes: list[AssertionAttributes] = Field(default=None, description="Customized SAML attributes to send along with assertion.")
+    sp_cert: str | None = Field(max_length=35, default=None, description="SP certificate name.")  # datasource: ['certificate.remote.name']    
+    sp_entity_id: str = Field(max_length=255, description="SP entity ID.")    
+    sp_single_sign_on_url: str = Field(max_length=255, description="SP single sign-on URL.")    
+    sp_single_logout_url: str | None = Field(max_length=255, default=None, description="SP single logout URL.")    
+    sp_portal_url: str | None = Field(max_length=255, default=None, description="SP portal URL.")    
+    idp_entity_id: str | None = Field(max_length=255, default=None, description="IDP entity ID.")    
+    idp_single_sign_on_url: str | None = Field(max_length=255, default=None, description="IDP single sign-on URL.")    
+    idp_single_logout_url: str | None = Field(max_length=255, default=None, description="IDP single logout URL.")    
+    assertion_attributes: list[SamlServiceProvidersAssertionAttributes] = Field(default_factory=list, description="Customized SAML attributes to send along with assertion.")
 # ============================================================================
 # Enum Definitions (for fields with 4+ allowed values)
 # ============================================================================
@@ -69,22 +89,22 @@ class SamlModel(BaseModel):
     status: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable SAML authentication (default = disable).")    
     role: Literal["identity-provider", "service-provider"] | None = Field(default="service-provider", description="SAML role.")    
     default_login_page: Literal["normal", "sso"] = Field(default="normal", description="Choose default login page.")    
-    default_profile: str = Field(max_length=35, default="", description="Default profile for new SSO admin.")  # datasource: ['system.accprofile.name']    
-    cert: str | None = Field(max_length=35, default="", description="Certificate to sign SAML messages.")  # datasource: ['certificate.local.name']    
+    default_profile: str = Field(max_length=35, description="Default profile for new SSO admin.")  # datasource: ['system.accprofile.name']    
+    cert: str | None = Field(max_length=35, default=None, description="Certificate to sign SAML messages.")  # datasource: ['certificate.local.name']    
     binding_protocol: Literal["post", "redirect"] | None = Field(default="redirect", description="IdP Binding protocol.")    
-    portal_url: str | None = Field(max_length=255, default="", description="SP portal URL.")    
-    entity_id: str = Field(max_length=255, default="", description="SP entity ID.")    
-    single_sign_on_url: str | None = Field(max_length=255, default="", description="SP single sign-on URL.")    
-    single_logout_url: str | None = Field(max_length=255, default="", description="SP single logout URL.")    
-    idp_entity_id: str | None = Field(max_length=255, default="", description="IDP entity ID.")    
-    idp_single_sign_on_url: str | None = Field(max_length=255, default="", description="IDP single sign-on URL.")    
-    idp_single_logout_url: str | None = Field(max_length=255, default="", description="IDP single logout URL.")    
-    idp_cert: str = Field(max_length=35, default="", description="IDP certificate name.")  # datasource: ['certificate.remote.name']    
-    server_address: str = Field(max_length=63, default="", description="Server address.")    
+    portal_url: str | None = Field(max_length=255, default=None, description="SP portal URL.")    
+    entity_id: str = Field(max_length=255, description="SP entity ID.")    
+    single_sign_on_url: str | None = Field(max_length=255, default=None, description="SP single sign-on URL.")    
+    single_logout_url: str | None = Field(max_length=255, default=None, description="SP single logout URL.")    
+    idp_entity_id: str | None = Field(max_length=255, default=None, description="IDP entity ID.")    
+    idp_single_sign_on_url: str | None = Field(max_length=255, default=None, description="IDP single sign-on URL.")    
+    idp_single_logout_url: str | None = Field(max_length=255, default=None, description="IDP single logout URL.")    
+    idp_cert: str = Field(max_length=35, description="IDP certificate name.")  # datasource: ['certificate.remote.name']    
+    server_address: str = Field(max_length=63, description="Server address.")    
     require_signed_resp_and_asrt: Literal["enable", "disable"] | None = Field(default="disable", description="Require both response and assertion from IDP to be signed when FGT acts as SP (default = disable).")    
     tolerance: int | None = Field(ge=0, le=4294967295, default=5, description="Tolerance to the range of time when the assertion is valid (in minutes).")    
     life: int | None = Field(ge=0, le=4294967295, default=30, description="Length of the range of time when the assertion is valid (in minutes).")    
-    service_providers: list[ServiceProviders] = Field(default=None, description="Authorized service providers.")    
+    service_providers: list[SamlServiceProviders] = Field(default_factory=list, description="Authorized service providers.")    
     # ========================================================================
     # Custom Validators
     # ========================================================================
@@ -194,7 +214,7 @@ class SamlModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.system.saml.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate scalar field
         value = getattr(self, "default_profile", None)
@@ -243,7 +263,7 @@ class SamlModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.system.saml.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate scalar field
         value = getattr(self, "cert", None)
@@ -292,7 +312,7 @@ class SamlModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.system.saml.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate scalar field
         value = getattr(self, "idp_cert", None)
@@ -341,7 +361,7 @@ class SamlModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.system.saml.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate child table items
         values = getattr(self, "service_providers", [])
@@ -410,11 +430,11 @@ Dict = dict[str, Any]  # For backward compatibility
 # ============================================================================
 
 __all__ = [
-    "SamlModel",    "SamlServiceProviders",]
+    "SamlModel",    "SamlServiceProviders",    "SamlServiceProviders.AssertionAttributes",]
 
 
 # ============================================================================
 # Generated by hfortix generator v0.6.0
 # Schema: 1.7.0
-# Generated: 2026-01-17T05:32:19.056178Z
+# Generated: 2026-01-17T17:25:22.770543Z
 # ============================================================================

@@ -736,6 +736,8 @@ class Vap(CRUDEndpoint, MetadataMixin):
                 example="[{'id': 1}]",
             )
         
+        # Apply normalization for multi-value option fields (space-separated strings)
+        
         # Build payload using helper function with auto-normalization
         # This automatically converts strings/lists to [{'name': '...'}] format for list fields
         # To disable auto-normalization, use build_cmdb_payload directly
@@ -1419,6 +1421,8 @@ class Vap(CRUDEndpoint, MetadataMixin):
                 field_name="vlan_pool",
                 example="[{'id': 1}]",
             )
+        
+        # Apply normalization for multi-value option fields (space-separated strings)
         
         # Build payload using helper function with auto-normalization
         # This automatically converts strings/lists to [{'name': '...'}] format for list fields
@@ -2141,6 +2145,58 @@ class Vap(CRUDEndpoint, MetadataMixin):
             - put(): Update existing object
             - exists(): Check existence manually
         """
+        # Apply normalization for table fields (supports flexible input formats)
+        if radius_mac_auth_usergroups is not None:
+            radius_mac_auth_usergroups = normalize_table_field(
+                radius_mac_auth_usergroups,
+                mkey="name",
+                required_fields=['name'],
+                field_name="radius_mac_auth_usergroups",
+                example="[{'name': 'value'}]",
+            )
+        if usergroup is not None:
+            usergroup = normalize_table_field(
+                usergroup,
+                mkey="name",
+                required_fields=['name'],
+                field_name="usergroup",
+                example="[{'name': 'value'}]",
+            )
+        if selected_usergroups is not None:
+            selected_usergroups = normalize_table_field(
+                selected_usergroups,
+                mkey="name",
+                required_fields=['name'],
+                field_name="selected_usergroups",
+                example="[{'name': 'value'}]",
+            )
+        if schedule is not None:
+            schedule = normalize_table_field(
+                schedule,
+                mkey="name",
+                required_fields=['name'],
+                field_name="schedule",
+                example="[{'name': 'value'}]",
+            )
+        if vlan_name is not None:
+            vlan_name = normalize_table_field(
+                vlan_name,
+                mkey="name",
+                required_fields=['name'],
+                field_name="vlan_name",
+                example="[{'name': 'value'}]",
+            )
+        if vlan_pool is not None:
+            vlan_pool = normalize_table_field(
+                vlan_pool,
+                mkey="id",
+                required_fields=['id'],
+                field_name="vlan_pool",
+                example="[{'id': 1}]",
+            )
+        
+        # Apply normalization for multi-value option fields (space-separated strings)
+        
         # Build payload using helper function with auto-normalization
         payload_data = build_api_payload(
             name=name,

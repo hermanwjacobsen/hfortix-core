@@ -12,7 +12,11 @@ from typing import Any, Literal, Optional
 from enum import Enum
 
 # ============================================================================
-# Child Table Models
+# Enum Definitions for Child Table Fields (for fields with 4+ allowed values)
+# ============================================================================
+
+# ============================================================================
+# Child Table Models (sorted deepest-first so nested models are defined before their parents)
 # ============================================================================
 
 class SchemeUserDatabase(BaseModel):
@@ -26,15 +30,27 @@ class SchemeUserDatabase(BaseModel):
         """Pydantic model configuration."""
         extra = "allow"  # Allow additional fields from API
         str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
     
-    name: str = Field(max_length=79, default="", description="Authentication server name.")  # datasource: ['system.datasource.name', 'user.radius.name', 'user.tacacs+.name', 'user.ldap.name', 'user.group.name', 'user.scim.name']
+    name: str = Field(max_length=79, description="Authentication server name.")  # datasource: ['system.datasource.name', 'user.radius.name', 'user.tacacs+.name', 'user.ldap.name', 'user.group.name', 'user.scim.name']
 # ============================================================================
 # Enum Definitions (for fields with 4+ allowed values)
 # ============================================================================
 
 class SchemeMethodEnum(str, Enum):
     """Allowed values for method field."""
-    NTLM = "ntlm"    BASIC = "basic"    DIGEST = "digest"    FORM = "form"    NEGOTIATE = "negotiate"    FSSO = "fsso"    RSSO = "rsso"    SSH_PUBLICKEY = "ssh-publickey"    CERT = "cert"    SAML = "saml"    ENTRA_SSO = "entra-sso"
+    NTLM = "ntlm"
+    BASIC = "basic"
+    DIGEST = "digest"
+    FORM = "form"
+    NEGOTIATE = "negotiate"
+    FSSO = "fsso"
+    RSSO = "rsso"
+    SSH_PUBLICKEY = "ssh-publickey"
+    CERT = "cert"
+    SAML = "saml"
+    ENTRA_SSO = "entra-sso"
+
 
 # ============================================================================
 # Main Model
@@ -59,23 +75,23 @@ class SchemeModel(BaseModel):
     # Model Fields
     # ========================================================================
     
-    name: str | None = Field(max_length=35, default="", description="Authentication scheme name.")    
-    method: list[Method] = Field(default="", description="Authentication methods (default = basic).")    
+    name: str | None = Field(max_length=35, default=None, description="Authentication scheme name.")    
+    method: list[SchemeMethodEnum] = Field(description="Authentication methods (default = basic).")    
     negotiate_ntlm: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable negotiate authentication for NTLM (default = disable).")    
-    kerberos_keytab: str | None = Field(max_length=35, default="", description="Kerberos keytab setting.")  # datasource: ['user.krb-keytab.name']    
-    domain_controller: str | None = Field(max_length=35, default="", description="Domain controller setting.")  # datasource: ['user.domain-controller.name']    
-    saml_server: str | None = Field(max_length=35, default="", description="SAML configuration.")  # datasource: ['user.saml.name']    
+    kerberos_keytab: str | None = Field(max_length=35, default=None, description="Kerberos keytab setting.")  # datasource: ['user.krb-keytab.name']    
+    domain_controller: str | None = Field(max_length=35, default=None, description="Domain controller setting.")  # datasource: ['user.domain-controller.name']    
+    saml_server: str | None = Field(max_length=35, default=None, description="SAML configuration.")  # datasource: ['user.saml.name']    
     saml_timeout: int | None = Field(ge=30, le=1200, default=120, description="SAML authentication timeout in seconds.")    
-    fsso_agent_for_ntlm: str | None = Field(max_length=35, default="", description="FSSO agent to use for NTLM authentication.")  # datasource: ['user.fsso.name']    
+    fsso_agent_for_ntlm: str | None = Field(max_length=35, default=None, description="FSSO agent to use for NTLM authentication.")  # datasource: ['user.fsso.name']    
     require_tfa: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable two-factor authentication (default = disable).")    
     fsso_guest: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable user fsso-guest authentication (default = disable).")    
     user_cert: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable authentication with user certificate (default = disable).")    
     cert_http_header: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable authentication with user certificate in Client-Cert HTTP header (default = disable).")    
-    user_database: list[UserDatabase] = Field(default=None, description="Authentication server to contain user information; \"local-user-db\" (default) or \"123\" (for LDAP).")    
-    ssh_ca: str | None = Field(max_length=35, default="", description="SSH CA name.")  # datasource: ['firewall.ssh.local-ca.name']    
-    external_idp: str | None = Field(max_length=35, default="", description="External identity provider configuration.")  # datasource: ['user.external-identity-provider.name']    
+    user_database: list[SchemeUserDatabase] = Field(default_factory=list, description="Authentication server to contain user information; \"local-user-db\" (default) or \"123\" (for LDAP).")    
+    ssh_ca: str | None = Field(max_length=35, default=None, description="SSH CA name.")  # datasource: ['firewall.ssh.local-ca.name']    
+    external_idp: str | None = Field(max_length=35, default=None, description="External identity provider configuration.")  # datasource: ['user.external-identity-provider.name']    
     group_attr_type: Literal["display-name", "external-id"] | None = Field(default="display-name", description="Group attribute type used to match SCIM groups (default = display-name).")    
-    digest_algo: list[DigestAlgo] = Field(default="md5 sha-256", description="Digest Authentication Algorithms.")    
+    digest_algo: list[Literal["md5", "sha-256"]] = Field(default_factory=list, description="Digest Authentication Algorithms.")    
     digest_rfc2069: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable support for the deprecated RFC2069 Digest Client (no cnonce field, default = disable).")    
     # ========================================================================
     # Custom Validators
@@ -231,7 +247,7 @@ class SchemeModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.authentication.scheme.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate scalar field
         value = getattr(self, "kerberos_keytab", None)
@@ -240,7 +256,7 @@ class SchemeModel(BaseModel):
         
         # Check all datasource endpoints
         found = False
-        if await client.api.cmdb.user.krb-keytab.exists(value):
+        if await client.api.cmdb.user.krb_keytab.exists(value):
             found = True
         
         if not found:
@@ -280,7 +296,7 @@ class SchemeModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.authentication.scheme.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate scalar field
         value = getattr(self, "domain_controller", None)
@@ -289,7 +305,7 @@ class SchemeModel(BaseModel):
         
         # Check all datasource endpoints
         found = False
-        if await client.api.cmdb.user.domain-controller.exists(value):
+        if await client.api.cmdb.user.domain_controller.exists(value):
             found = True
         
         if not found:
@@ -329,7 +345,7 @@ class SchemeModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.authentication.scheme.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate scalar field
         value = getattr(self, "saml_server", None)
@@ -378,7 +394,7 @@ class SchemeModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.authentication.scheme.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate scalar field
         value = getattr(self, "fsso_agent_for_ntlm", None)
@@ -427,7 +443,7 @@ class SchemeModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.authentication.scheme.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate child table items
         values = getattr(self, "user_database", [])
@@ -449,7 +465,7 @@ class SchemeModel(BaseModel):
                 found = True
             elif await client.api.cmdb.user.radius.exists(value):
                 found = True
-            elif await client.api.cmdb.user.tacacs+.exists(value):
+            elif await client.api.cmdb.user.tacacs_plus.exists(value):
                 found = True
             elif await client.api.cmdb.user.ldap.exists(value):
                 found = True
@@ -495,7 +511,7 @@ class SchemeModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.authentication.scheme.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate scalar field
         value = getattr(self, "ssh_ca", None)
@@ -504,7 +520,7 @@ class SchemeModel(BaseModel):
         
         # Check all datasource endpoints
         found = False
-        if await client.api.cmdb.firewall.ssh.local-ca.exists(value):
+        if await client.api.cmdb.firewall.ssh.local_ca.exists(value):
             found = True
         
         if not found:
@@ -544,7 +560,7 @@ class SchemeModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.authentication.scheme.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate scalar field
         value = getattr(self, "external_idp", None)
@@ -553,7 +569,7 @@ class SchemeModel(BaseModel):
         
         # Check all datasource endpoints
         found = False
-        if await client.api.cmdb.user.external-identity-provider.exists(value):
+        if await client.api.cmdb.user.external_identity_provider.exists(value):
             found = True
         
         if not found:
@@ -616,5 +632,5 @@ __all__ = [
 # ============================================================================
 # Generated by hfortix generator v0.6.0
 # Schema: 1.7.0
-# Generated: 2026-01-17T05:32:19.269541Z
+# Generated: 2026-01-17T17:25:22.968320Z
 # ============================================================================

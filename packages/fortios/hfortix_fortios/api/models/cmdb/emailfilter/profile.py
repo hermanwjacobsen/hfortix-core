@@ -12,86 +12,13 @@ from typing import Any, Literal, Optional
 from enum import Enum
 
 # ============================================================================
-# Child Table Models
+# Enum Definitions for Child Table Fields (for fields with 4+ allowed values)
 # ============================================================================
 
-class ProfileImap(BaseModel):
-    """
-    Child table model for imap.
-    
-    IMAP.
-    """
-    
-    class Config:
-        """Pydantic model configuration."""
-        extra = "allow"  # Allow additional fields from API
-        str_strip_whitespace = True
-    
-    log_all: Literal["disable", "enable"] | None = Field(default="disable", description="Enable/disable logging of all email traffic.")    
-    action: Literal["pass", "tag"] | None = Field(default="tag", description="Action for spam email.")    
-    tag_type: list[TagType] = Field(default="subject spaminfo", description="Tag subject or header for spam email.")    
-    tag_msg: str | None = Field(max_length=63, default="Spam", description="Subject text or header added to spam email.")
-class ProfilePop3(BaseModel):
-    """
-    Child table model for pop3.
-    
-    POP3.
-    """
-    
-    class Config:
-        """Pydantic model configuration."""
-        extra = "allow"  # Allow additional fields from API
-        str_strip_whitespace = True
-    
-    log_all: Literal["disable", "enable"] | None = Field(default="disable", description="Enable/disable logging of all email traffic.")    
-    action: Literal["pass", "tag"] | None = Field(default="tag", description="Action for spam email.")    
-    tag_type: list[TagType] = Field(default="subject spaminfo", description="Tag subject or header for spam email.")    
-    tag_msg: str | None = Field(max_length=63, default="Spam", description="Subject text or header added to spam email.")
-class ProfileSmtp(BaseModel):
-    """
-    Child table model for smtp.
-    
-    SMTP.
-    """
-    
-    class Config:
-        """Pydantic model configuration."""
-        extra = "allow"  # Allow additional fields from API
-        str_strip_whitespace = True
-    
-    log_all: Literal["disable", "enable"] | None = Field(default="disable", description="Enable/disable logging of all email traffic.")    
-    action: Literal["pass", "tag", "discard"] | None = Field(default="discard", description="Action for spam email.")    
-    tag_type: list[TagType] = Field(default="subject spaminfo", description="Tag subject or header for spam email.")    
-    tag_msg: str | None = Field(max_length=63, default="Spam", description="Subject text or header added to spam email.")    
-    hdrip: Literal["disable", "enable"] | None = Field(default="disable", description="Enable/disable SMTP email header IP checks for spamfsip, spamrbl, and spambal filters.")    
-    local_override: Literal["disable", "enable"] | None = Field(default="disable", description="Enable/disable local filter to override SMTP remote check result.")
-class ProfileMapi(BaseModel):
-    """
-    Child table model for mapi.
-    
-    MAPI.
-    """
-    
-    class Config:
-        """Pydantic model configuration."""
-        extra = "allow"  # Allow additional fields from API
-        str_strip_whitespace = True
-    
-    log_all: Literal["disable", "enable"] | None = Field(default="disable", description="Enable/disable logging of all email traffic.")    
-    action: Literal["pass", "discard"] | None = Field(default="pass", description="Action for spam email.")
-class ProfileMsnHotmail(BaseModel):
-    """
-    Child table model for msn-hotmail.
-    
-    MSN Hotmail.
-    """
-    
-    class Config:
-        """Pydantic model configuration."""
-        extra = "allow"  # Allow additional fields from API
-        str_strip_whitespace = True
-    
-    log_all: Literal["disable", "enable"] | None = Field(default="disable", description="Enable/disable logging of all email traffic.")
+# ============================================================================
+# Child Table Models (sorted deepest-first so nested models are defined before their parents)
+# ============================================================================
+
 class ProfileYahooMail(BaseModel):
     """
     Child table model for yahoo-mail.
@@ -103,21 +30,45 @@ class ProfileYahooMail(BaseModel):
         """Pydantic model configuration."""
         extra = "allow"  # Allow additional fields from API
         str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
     
     log_all: Literal["disable", "enable"] | None = Field(default="disable", description="Enable/disable logging of all email traffic.")
-class ProfileGmail(BaseModel):
+class ProfileSmtp(BaseModel):
     """
-    Child table model for gmail.
+    Child table model for smtp.
     
-    Gmail.
+    SMTP.
     """
     
     class Config:
         """Pydantic model configuration."""
         extra = "allow"  # Allow additional fields from API
         str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
     
-    log_all: Literal["disable", "enable"] | None = Field(default="disable", description="Enable/disable logging of all email traffic.")
+    log_all: Literal["disable", "enable"] | None = Field(default="disable", description="Enable/disable logging of all email traffic.")    
+    action: Literal["pass", "tag", "discard"] | None = Field(default="discard", description="Action for spam email.")    
+    tag_type: list[Literal["subject", "header", "spaminfo"]] = Field(default_factory=list, description="Tag subject or header for spam email.")    
+    tag_msg: str | None = Field(max_length=63, default="Spam", description="Subject text or header added to spam email.")    
+    hdrip: Literal["disable", "enable"] | None = Field(default="disable", description="Enable/disable SMTP email header IP checks for spamfsip, spamrbl, and spambal filters.")    
+    local_override: Literal["disable", "enable"] | None = Field(default="disable", description="Enable/disable local filter to override SMTP remote check result.")
+class ProfilePop3(BaseModel):
+    """
+    Child table model for pop3.
+    
+    POP3.
+    """
+    
+    class Config:
+        """Pydantic model configuration."""
+        extra = "allow"  # Allow additional fields from API
+        str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
+    
+    log_all: Literal["disable", "enable"] | None = Field(default="disable", description="Enable/disable logging of all email traffic.")    
+    action: Literal["pass", "tag"] | None = Field(default="tag", description="Action for spam email.")    
+    tag_type: list[Literal["subject", "header", "spaminfo"]] = Field(default_factory=list, description="Tag subject or header for spam email.")    
+    tag_msg: str | None = Field(max_length=63, default="Spam", description="Subject text or header added to spam email.")
 class ProfileOtherWebmails(BaseModel):
     """
     Child table model for other-webmails.
@@ -129,6 +80,67 @@ class ProfileOtherWebmails(BaseModel):
         """Pydantic model configuration."""
         extra = "allow"  # Allow additional fields from API
         str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
+    
+    log_all: Literal["disable", "enable"] | None = Field(default="disable", description="Enable/disable logging of all email traffic.")
+class ProfileMsnHotmail(BaseModel):
+    """
+    Child table model for msn-hotmail.
+    
+    MSN Hotmail.
+    """
+    
+    class Config:
+        """Pydantic model configuration."""
+        extra = "allow"  # Allow additional fields from API
+        str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
+    
+    log_all: Literal["disable", "enable"] | None = Field(default="disable", description="Enable/disable logging of all email traffic.")
+class ProfileMapi(BaseModel):
+    """
+    Child table model for mapi.
+    
+    MAPI.
+    """
+    
+    class Config:
+        """Pydantic model configuration."""
+        extra = "allow"  # Allow additional fields from API
+        str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
+    
+    log_all: Literal["disable", "enable"] | None = Field(default="disable", description="Enable/disable logging of all email traffic.")    
+    action: Literal["pass", "discard"] | None = Field(default="pass", description="Action for spam email.")
+class ProfileImap(BaseModel):
+    """
+    Child table model for imap.
+    
+    IMAP.
+    """
+    
+    class Config:
+        """Pydantic model configuration."""
+        extra = "allow"  # Allow additional fields from API
+        str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
+    
+    log_all: Literal["disable", "enable"] | None = Field(default="disable", description="Enable/disable logging of all email traffic.")    
+    action: Literal["pass", "tag"] | None = Field(default="tag", description="Action for spam email.")    
+    tag_type: list[Literal["subject", "header", "spaminfo"]] = Field(default_factory=list, description="Tag subject or header for spam email.")    
+    tag_msg: str | None = Field(max_length=63, default="Spam", description="Subject text or header added to spam email.")
+class ProfileGmail(BaseModel):
+    """
+    Child table model for gmail.
+    
+    Gmail.
+    """
+    
+    class Config:
+        """Pydantic model configuration."""
+        extra = "allow"  # Allow additional fields from API
+        str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
     
     log_all: Literal["disable", "enable"] | None = Field(default="disable", description="Enable/disable logging of all email traffic.")
 # ============================================================================
@@ -137,7 +149,18 @@ class ProfileOtherWebmails(BaseModel):
 
 class ProfileOptionsEnum(str, Enum):
     """Allowed values for options field."""
-    BANNEDWORD = "bannedword"    SPAMBAL = "spambal"    SPAMFSIP = "spamfsip"    SPAMFSSUBMIT = "spamfssubmit"    SPAMFSCHKSUM = "spamfschksum"    SPAMFSURL = "spamfsurl"    SPAMHELODNS = "spamhelodns"    SPAMRADDRDNS = "spamraddrdns"    SPAMRBL = "spamrbl"    SPAMHDRCHECK = "spamhdrcheck"    SPAMFSPHISH = "spamfsphish"
+    BANNEDWORD = "bannedword"
+    SPAMBAL = "spambal"
+    SPAMFSIP = "spamfsip"
+    SPAMFSSUBMIT = "spamfssubmit"
+    SPAMFSCHKSUM = "spamfschksum"
+    SPAMFSURL = "spamfsurl"
+    SPAMHELODNS = "spamhelodns"
+    SPAMRADDRDNS = "spamraddrdns"
+    SPAMRBL = "spamrbl"
+    SPAMHDRCHECK = "spamhdrcheck"
+    SPAMFSPHISH = "spamfsphish"
+
 
 # ============================================================================
 # Main Model
@@ -162,23 +185,23 @@ class ProfileModel(BaseModel):
     # Model Fields
     # ========================================================================
     
-    name: str = Field(max_length=47, default="", description="Profile name.")    
+    name: str = Field(max_length=47, description="Profile name.")    
     comment: str | None = Field(max_length=255, default=None, description="Comment.")    
     feature_set: Literal["flow", "proxy"] | None = Field(default="flow", description="Flow/proxy feature set.")    
-    replacemsg_group: str | None = Field(max_length=35, default="", description="Replacement message group.")  # datasource: ['system.replacemsg-group.name']    
+    replacemsg_group: str | None = Field(max_length=35, default=None, description="Replacement message group.")  # datasource: ['system.replacemsg-group.name']    
     spam_log: Literal["disable", "enable"] | None = Field(default="enable", description="Enable/disable spam logging for email filtering.")    
     spam_log_fortiguard_response: Literal["disable", "enable"] | None = Field(default="disable", description="Enable/disable logging FortiGuard spam response.")    
     spam_filtering: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable spam filtering.")    
     external: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable external Email inspection.")    
-    options: list[Options] = Field(default="", description="Options.")    
-    imap: list[Imap] = Field(default=None, description="IMAP.")    
-    pop3: list[Pop3] = Field(default=None, description="POP3.")    
-    smtp: list[Smtp] = Field(default=None, description="SMTP.")    
-    mapi: list[Mapi] = Field(default=None, description="MAPI.")    
-    msn_hotmail: list[MsnHotmail] = Field(default=None, description="MSN Hotmail.")    
-    yahoo_mail: list[YahooMail] = Field(default=None, description="Yahoo! Mail.")    
-    gmail: list[Gmail] = Field(default=None, description="Gmail.")    
-    other_webmails: list[OtherWebmails] = Field(default=None, description="Other supported webmails.")    
+    options: list[ProfileOptionsEnum] = Field(default_factory=list, description="Options.")    
+    imap: list[ProfileImap] = Field(default_factory=list, description="IMAP.")    
+    pop3: list[ProfilePop3] = Field(default_factory=list, description="POP3.")    
+    smtp: list[ProfileSmtp] = Field(default_factory=list, description="SMTP.")    
+    mapi: list[ProfileMapi] = Field(default_factory=list, description="MAPI.")    
+    msn_hotmail: list[ProfileMsnHotmail] = Field(default_factory=list, description="MSN Hotmail.")    
+    yahoo_mail: list[ProfileYahooMail] = Field(default_factory=list, description="Yahoo! Mail.")    
+    gmail: list[ProfileGmail] = Field(default_factory=list, description="Gmail.")    
+    other_webmails: list[ProfileOtherWebmails] = Field(default_factory=list, description="Other supported webmails.")    
     spam_bword_threshold: int | None = Field(ge=0, le=2147483647, default=10, description="Spam banned word threshold.")    
     spam_bword_table: int | None = Field(ge=0, le=4294967295, default=0, description="Anti-spam banned word table ID.")  # datasource: ['emailfilter.bword.id']    
     spam_bal_table: int | None = Field(ge=0, le=4294967295, default=0, description="Anti-spam block/allow list table ID.")  # datasource: ['emailfilter.block-allow-list.id']    
@@ -339,7 +362,7 @@ class ProfileModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.emailfilter.profile.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate scalar field
         value = getattr(self, "replacemsg_group", None)
@@ -348,7 +371,7 @@ class ProfileModel(BaseModel):
         
         # Check all datasource endpoints
         found = False
-        if await client.api.cmdb.system.replacemsg-group.exists(value):
+        if await client.api.cmdb.system.replacemsg_group.exists(value):
             found = True
         
         if not found:
@@ -388,7 +411,7 @@ class ProfileModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.emailfilter.profile.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate scalar field
         value = getattr(self, "spam_bword_table", None)
@@ -437,7 +460,7 @@ class ProfileModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.emailfilter.profile.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate scalar field
         value = getattr(self, "spam_bal_table", None)
@@ -446,7 +469,7 @@ class ProfileModel(BaseModel):
         
         # Check all datasource endpoints
         found = False
-        if await client.api.cmdb.emailfilter.block-allow-list.exists(value):
+        if await client.api.cmdb.emailfilter.block_allow_list.exists(value):
             found = True
         
         if not found:
@@ -486,7 +509,7 @@ class ProfileModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.emailfilter.profile.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate scalar field
         value = getattr(self, "spam_mheader_table", None)
@@ -535,7 +558,7 @@ class ProfileModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.emailfilter.profile.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate scalar field
         value = getattr(self, "spam_rbl_table", None)
@@ -584,7 +607,7 @@ class ProfileModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.emailfilter.profile.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate scalar field
         value = getattr(self, "spam_iptrust_table", None)
@@ -654,5 +677,5 @@ __all__ = [
 # ============================================================================
 # Generated by hfortix generator v0.6.0
 # Schema: 1.7.0
-# Generated: 2026-01-17T05:32:17.997095Z
+# Generated: 2026-01-17T17:25:21.822836Z
 # ============================================================================

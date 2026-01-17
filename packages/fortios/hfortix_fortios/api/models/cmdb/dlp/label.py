@@ -11,7 +11,11 @@ from pydantic import BaseModel, Field, field_validator
 from typing import Any, Literal, Optional
 
 # ============================================================================
-# Child Table Models
+# Enum Definitions for Child Table Fields (for fields with 4+ allowed values)
+# ============================================================================
+
+# ============================================================================
+# Child Table Models (sorted deepest-first so nested models are defined before their parents)
 # ============================================================================
 
 class LabelEntries(BaseModel):
@@ -25,11 +29,12 @@ class LabelEntries(BaseModel):
         """Pydantic model configuration."""
         extra = "allow"  # Allow additional fields from API
         str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
     
-    id: int | None = Field(ge=1, le=32, default=0, description="ID.")    
-    fortidata_label_name: str = Field(max_length=127, default="", description="Name of FortiData label")  # datasource: ['dlp.fdata-label.name']    
-    mpip_label_name: str = Field(max_length=127, default="", description="Name of MPIP label.")  # datasource: ['dlp.mpip-label.name']    
-    guid: str = Field(max_length=36, default="", description="MPIP label guid.")
+    id_: int | None = Field(ge=1, le=32, default=0, serialization_alias="id", description="ID.")    
+    fortidata_label_name: str = Field(max_length=127, description="Name of FortiData label")  # datasource: ['dlp.fdata-label.name']    
+    mpip_label_name: str = Field(max_length=127, description="Name of MPIP label.")  # datasource: ['dlp.mpip-label.name']    
+    guid: str = Field(max_length=36, description="MPIP label guid.")
 # ============================================================================
 # Enum Definitions (for fields with 4+ allowed values)
 # ============================================================================
@@ -45,7 +50,7 @@ class LabelModel(BaseModel):
     
     Configure labels used by DLP blocking.
     
-    Validation Rules:        - name: max_length=35 pattern=        - type: pattern=        - mpip_type: pattern=        - connector: max_length=35 pattern=        - comment: max_length=255 pattern=        - entries: pattern=    """
+    Validation Rules:        - name: max_length=35 pattern=        - type_: pattern=        - mpip_type: pattern=        - connector: max_length=35 pattern=        - comment: max_length=255 pattern=        - entries: pattern=    """
     
     class Config:
         """Pydantic model configuration."""
@@ -58,12 +63,12 @@ class LabelModel(BaseModel):
     # Model Fields
     # ========================================================================
     
-    name: str | None = Field(max_length=35, default="", description="Name of table containing the label.")    
-    type: Literal["mpip", "fortidata"] | None = Field(default="mpip", description="Label type.")    
+    name: str | None = Field(max_length=35, default=None, description="Name of table containing the label.")    
+    type_: Literal["mpip", "fortidata"] | None = Field(default="mpip", serialization_alias="type", description="Label type.")    
     mpip_type: Literal["remote", "local"] | None = Field(default="remote", description="MPIP label type.")    
-    connector: str | None = Field(max_length=35, default="", description="Name of SDN connector.")  # datasource: ['system.sdn-connector.name']    
+    connector: str | None = Field(max_length=35, default=None, description="Name of SDN connector.")  # datasource: ['system.sdn-connector.name']    
     comment: str | None = Field(max_length=255, default=None, description="Optional comments.")    
-    entries: list[Entries] = Field(description="DLP label entries.")    
+    entries: list[LabelEntries] = Field(description="DLP label entries.")    
     # ========================================================================
     # Custom Validators
     # ========================================================================
@@ -143,7 +148,7 @@ class LabelModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.dlp.label.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate scalar field
         value = getattr(self, "connector", None)
@@ -152,7 +157,7 @@ class LabelModel(BaseModel):
         
         # Check all datasource endpoints
         found = False
-        if await client.api.cmdb.system.sdn-connector.exists(value):
+        if await client.api.cmdb.system.sdn_connector.exists(value):
             found = True
         
         if not found:
@@ -192,7 +197,7 @@ class LabelModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.dlp.label.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate child table items
         values = getattr(self, "entries", [])
@@ -210,7 +215,7 @@ class LabelModel(BaseModel):
             
             # Check all datasource endpoints
             found = False
-            if await client.api.cmdb.dlp.mpip-label.exists(value):
+            if await client.api.cmdb.dlp.mpip_label.exists(value):
                 found = True
             
             if not found:
@@ -263,5 +268,5 @@ __all__ = [
 # ============================================================================
 # Generated by hfortix generator v0.6.0
 # Schema: 1.7.0
-# Generated: 2026-01-17T05:32:17.775379Z
+# Generated: 2026-01-17T17:25:21.625771Z
 # ============================================================================

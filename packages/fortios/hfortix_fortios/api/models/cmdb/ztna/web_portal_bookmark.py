@@ -7,11 +7,122 @@ Generated from FortiOS schema version unknown.
 
 from __future__ import annotations
 
-from pydantic import BaseModel, Field
-from typing import Any, Optional
+from pydantic import BaseModel, Field, field_validator
+from typing import Any, Literal, Optional
+from enum import Enum
 
 # ============================================================================
-# Child Table Models
+# Enum Definitions for Child Table Fields (for fields with 4+ allowed values)
+# ============================================================================
+
+class WebPortalBookmarkBookmarksApptypeEnum(str, Enum):
+    """Allowed values for apptype field in bookmarks."""
+    FTP = "ftp"
+    RDP = "rdp"
+    SFTP = "sftp"
+    SMB = "smb"
+    SSH = "ssh"
+    TELNET = "telnet"
+    VNC = "vnc"
+    WEB = "web"
+
+class WebPortalBookmarkBookmarksKeyboardLayoutEnum(str, Enum):
+    """Allowed values for keyboard_layout field in bookmarks."""
+    AR_101 = "ar-101"
+    AR_102 = "ar-102"
+    AR_102_AZERTY = "ar-102-azerty"
+    CAN_MUL = "can-mul"
+    CZ = "cz"
+    CZ_QWERTY = "cz-qwerty"
+    CZ_PR = "cz-pr"
+    DA = "da"
+    NL = "nl"
+    DE = "de"
+    DE_CH = "de-ch"
+    DE_IBM = "de-ibm"
+    EN_UK = "en-uk"
+    EN_UK_EXT = "en-uk-ext"
+    EN_US = "en-us"
+    EN_US_DVORAK = "en-us-dvorak"
+    ES = "es"
+    ES_VAR = "es-var"
+    FI = "fi"
+    FI_SAMI = "fi-sami"
+    FR = "fr"
+    FR_APPLE = "fr-apple"
+    FR_CA = "fr-ca"
+    FR_CH = "fr-ch"
+    FR_BE = "fr-be"
+    HR = "hr"
+    HU = "hu"
+    HU_101 = "hu-101"
+    IT = "it"
+    IT_142 = "it-142"
+    JA = "ja"
+    JA_106 = "ja-106"
+    KO = "ko"
+    LA_AM = "la-am"
+    LT = "lt"
+    LT_IBM = "lt-ibm"
+    LT_STD = "lt-std"
+    LAV_STD = "lav-std"
+    LAV_LEG = "lav-leg"
+    MK = "mk"
+    MK_STD = "mk-std"
+    NO = "no"
+    NO_SAMI = "no-sami"
+    POL_214 = "pol-214"
+    POL_PR = "pol-pr"
+    PT = "pt"
+    PT_BR = "pt-br"
+    PT_BR_ABNT2 = "pt-br-abnt2"
+    RU = "ru"
+    RU_MNE = "ru-mne"
+    RU_T = "ru-t"
+    SL = "sl"
+    SV = "sv"
+    SV_SAMI = "sv-sami"
+    TUK = "tuk"
+    TUR_F = "tur-f"
+    TUR_Q = "tur-q"
+    ZH_SYM_SG_US = "zh-sym-sg-us"
+    ZH_SYM_US = "zh-sym-us"
+    ZH_TR_HK = "zh-tr-hk"
+    ZH_TR_MO = "zh-tr-mo"
+    ZH_TR_US = "zh-tr-us"
+
+class WebPortalBookmarkBookmarksSecurityEnum(str, Enum):
+    """Allowed values for security field in bookmarks."""
+    ANY = "any"
+    RDP = "rdp"
+    NLA = "nla"
+    TLS = "tls"
+
+class WebPortalBookmarkBookmarksVncKeyboardLayoutEnum(str, Enum):
+    """Allowed values for vnc_keyboard_layout field in bookmarks."""
+    DEFAULT = "default"
+    DA = "da"
+    NL = "nl"
+    EN_UK = "en-uk"
+    EN_UK_EXT = "en-uk-ext"
+    FI = "fi"
+    FR = "fr"
+    FR_BE = "fr-be"
+    FR_CA_MUL = "fr-ca-mul"
+    DE = "de"
+    DE_CH = "de-ch"
+    IT = "it"
+    IT_142 = "it-142"
+    PT = "pt"
+    PT_BR_ABNT2 = "pt-br-abnt2"
+    NO = "no"
+    GD = "gd"
+    ES = "es"
+    SV = "sv"
+    US_INTL = "us-intl"
+
+# ============================================================================
+# Child Table Models (sorted deepest-first so nested models are defined before their parents)
 # ============================================================================
 
 class WebPortalBookmarkUsers(BaseModel):
@@ -25,8 +136,9 @@ class WebPortalBookmarkUsers(BaseModel):
         """Pydantic model configuration."""
         extra = "allow"  # Allow additional fields from API
         str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
     
-    name: str = Field(max_length=79, default="", description="User name.")  # datasource: ['user.local.name', 'user.certificate.name']
+    name: str = Field(max_length=79, description="User name.")  # datasource: ['user.local.name', 'user.certificate.name']
 class WebPortalBookmarkGroups(BaseModel):
     """
     Child table model for groups.
@@ -38,8 +150,9 @@ class WebPortalBookmarkGroups(BaseModel):
         """Pydantic model configuration."""
         extra = "allow"  # Allow additional fields from API
         str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
     
-    name: str = Field(max_length=79, default="", description="Group name.")  # datasource: ['user.group.name']
+    name: str = Field(max_length=79, description="Group name.")  # datasource: ['user.group.name']
 class WebPortalBookmarkBookmarks(BaseModel):
     """
     Child table model for bookmarks.
@@ -51,16 +164,17 @@ class WebPortalBookmarkBookmarks(BaseModel):
         """Pydantic model configuration."""
         extra = "allow"  # Allow additional fields from API
         str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
     
-    name: str | None = Field(max_length=35, default="", description="Bookmark name.")    
-    apptype: ApptypeEnum = Field(default="web", description="Application type.")    
+    name: str | None = Field(max_length=35, default=None, description="Bookmark name.")    
+    apptype: WebPortalBookmarkBookmarksApptypeEnum = Field(default=WebPortalBookmarkBookmarksApptypeEnum.WEB, description="Application type.")    
     url: str = Field(max_length=128, description="URL parameter.")    
     host: str = Field(max_length=128, description="Host name/IP parameter.")    
     folder: str = Field(max_length=128, description="Network shared file folder parameter.")    
     domain: str | None = Field(max_length=128, default=None, description="Login domain.")    
     description: str | None = Field(max_length=128, default=None, description="Description.")    
-    keyboard_layout: KeyboardLayoutEnum | None = Field(default="en-us", description="Keyboard layout.")    
-    security: SecurityEnum | None = Field(default="any", description="Security mode for RDP connection (default = any).")    
+    keyboard_layout: WebPortalBookmarkBookmarksKeyboardLayoutEnum | None = Field(default=WebPortalBookmarkBookmarksKeyboardLayoutEnum.EN_US, description="Keyboard layout.")    
+    security: WebPortalBookmarkBookmarksSecurityEnum | None = Field(default=WebPortalBookmarkBookmarksSecurityEnum.ANY, description="Security mode for RDP connection (default = any).")    
     send_preconnection_id: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable sending of preconnection ID.")    
     preconnection_id: int | None = Field(ge=0, le=4294967295, default=0, description="The numeric ID of the RDP source (0-4294967295).")    
     preconnection_blob: str | None = Field(max_length=511, default=None, description="An arbitrary string which identifies the RDP source.")    
@@ -73,7 +187,7 @@ class WebPortalBookmarkBookmarks(BaseModel):
     sso: Literal["disable", "enable"] | None = Field(default="disable", description="Single sign-on.")    
     width: int | None = Field(ge=0, le=65535, default=0, description="Screen width (range from 0 - 65535, default = 0).")    
     height: int | None = Field(ge=0, le=65535, default=0, description="Screen height (range from 0 - 65535, default = 0).")    
-    vnc_keyboard_layout: VncKeyboardLayoutEnum | None = Field(default="default", description="Keyboard layout.")
+    vnc_keyboard_layout: WebPortalBookmarkBookmarksVncKeyboardLayoutEnum | None = Field(default=WebPortalBookmarkBookmarksVncKeyboardLayoutEnum.DEFAULT, description="Keyboard layout.")
 # ============================================================================
 # Enum Definitions (for fields with 4+ allowed values)
 # ============================================================================
@@ -102,10 +216,10 @@ class WebPortalBookmarkModel(BaseModel):
     # Model Fields
     # ========================================================================
     
-    name: str | None = Field(max_length=35, default="", description="Bookmark name.")    
-    users: list[Users] = Field(default=None, description="User name.")    
-    groups: list[Groups] = Field(default=None, description="User groups.")    
-    bookmarks: list[Bookmarks] = Field(default=None, description="Bookmark table.")    
+    name: str | None = Field(max_length=35, default=None, description="Bookmark name.")    
+    users: list[WebPortalBookmarkUsers] = Field(default_factory=list, description="User name.")    
+    groups: list[WebPortalBookmarkGroups] = Field(default_factory=list, description="User groups.")    
+    bookmarks: list[WebPortalBookmarkBookmarks] = Field(default_factory=list, description="Bookmark table.")    
     # ========================================================================
     # Custom Validators
     # ========================================================================
@@ -170,7 +284,7 @@ class WebPortalBookmarkModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.ztna.web_portal_bookmark.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate child table items
         values = getattr(self, "users", [])
@@ -230,7 +344,7 @@ class WebPortalBookmarkModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.ztna.web_portal_bookmark.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate child table items
         values = getattr(self, "groups", [])
@@ -301,5 +415,5 @@ __all__ = [
 # ============================================================================
 # Generated by hfortix generator v0.6.0
 # Schema: 1.7.0
-# Generated: 2026-01-17T05:32:19.901697Z
+# Generated: 2026-01-17T17:25:23.509907Z
 # ============================================================================

@@ -1,212 +1,154 @@
-from typing import TypedDict, Literal, Any, Coroutine, Union, overload, Generator, final
-from typing_extensions import NotRequired
-from hfortix_fortios.models import FortiObject, FortiObjectList
+""" - Type Stubs
 
-# ============================================================================
-# Nested TypedDicts for table field children (dict mode)
-# These MUST be defined before the Payload class to use them as type hints
-# ============================================================================
+Auto-generated stub file for type checking and IDE support.
 
-# ============================================================================
-# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional)
-# ============================================================================
-# NOTE: We intentionally DON'T use NotRequired wrapper because:
-# 1. total=False already makes all fields optional
-# 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
+Endpoint: emailfilter/profile
+Category: cmdb
+"""
+
+from __future__ import annotations
+
+from typing import (
+    Any,
+    ClassVar,
+    Literal,
+    TypedDict,
+    overload,
+)
+
+from hfortix_fortios.models import (
+    FortiObject,
+    FortiObjectList,
+)
+
+
+# ================================================================
+# TypedDict Payloads
+# ================================================================
+
 class ProfilePayload(TypedDict, total=False):
-    """
-    Type hints for emailfilter/profile payload fields.
-    
-    Configure Email Filter profiles.
-    
-    **Related Resources:**
-
-    Dependencies (resources this endpoint references):
-        - :class:`~.emailfilter.block-allow-list.BlockAllowListEndpoint` (via: spam-bal-table)
-        - :class:`~.emailfilter.bword.BwordEndpoint` (via: spam-bword-table)
-        - :class:`~.emailfilter.dnsbl.DnsblEndpoint` (via: spam-rbl-table)
-        - :class:`~.emailfilter.iptrust.IptrustEndpoint` (via: spam-iptrust-table)
-        - :class:`~.emailfilter.mheader.MheaderEndpoint` (via: spam-mheader-table)
-        - :class:`~.system.replacemsg-group.ReplacemsgGroupEndpoint` (via: replacemsg-group)
-
-    **Usage:**
-        payload: ProfilePayload = {
-            "field": "value",  # <- autocomplete shows all fields
-        }
-    """
-    name: str  # Profile name. | MaxLen: 47
-    comment: str  # Comment. | MaxLen: 255
-    feature_set: Literal["flow", "proxy"]  # Flow/proxy feature set. | Default: flow
-    replacemsg_group: str  # Replacement message group. | MaxLen: 35
-    spam_log: Literal["disable", "enable"]  # Enable/disable spam logging for email filtering. | Default: enable
-    spam_log_fortiguard_response: Literal["disable", "enable"]  # Enable/disable logging FortiGuard spam response. | Default: disable
-    spam_filtering: Literal["enable", "disable"]  # Enable/disable spam filtering. | Default: disable
-    external: Literal["enable", "disable"]  # Enable/disable external Email inspection. | Default: disable
-    options: Literal["bannedword", "spambal", "spamfsip", "spamfssubmit", "spamfschksum", "spamfsurl", "spamhelodns", "spamraddrdns", "spamrbl", "spamhdrcheck", "spamfsphish"]  # Options.
-    imap: str  # IMAP.
-    pop3: str  # POP3.
-    smtp: str  # SMTP.
-    mapi: str  # MAPI.
-    msn_hotmail: str  # MSN Hotmail.
-    yahoo_mail: str  # Yahoo! Mail.
-    gmail: str  # Gmail.
-    other_webmails: str  # Other supported webmails.
-    spam_bword_threshold: int  # Spam banned word threshold. | Default: 10 | Min: 0 | Max: 2147483647
-    spam_bword_table: int  # Anti-spam banned word table ID. | Default: 0 | Min: 0 | Max: 4294967295
-    spam_bal_table: int  # Anti-spam block/allow list table ID. | Default: 0 | Min: 0 | Max: 4294967295
-    spam_mheader_table: int  # Anti-spam MIME header table ID. | Default: 0 | Min: 0 | Max: 4294967295
-    spam_rbl_table: int  # Anti-spam DNSBL table ID. | Default: 0 | Min: 0 | Max: 4294967295
-    spam_iptrust_table: int  # Anti-spam IP trust table ID. | Default: 0 | Min: 0 | Max: 4294967295
-
-# ============================================================================
-# Nested classes for table field children (object mode - for API responses)
-# ============================================================================
-
-
-
-# Response TypedDict for GET returns (all fields present in API response)
-class ProfileResponse(TypedDict):
-    """
-    Type hints for emailfilter/profile API response fields.
-    
-    All fields are present in the response from the FortiGate API.
-    """
-    name: str  # Profile name. | MaxLen: 47
-    comment: str  # Comment. | MaxLen: 255
-    feature_set: Literal["flow", "proxy"]  # Flow/proxy feature set. | Default: flow
-    replacemsg_group: str  # Replacement message group. | MaxLen: 35
-    spam_log: Literal["disable", "enable"]  # Enable/disable spam logging for email filtering. | Default: enable
-    spam_log_fortiguard_response: Literal["disable", "enable"]  # Enable/disable logging FortiGuard spam response. | Default: disable
-    spam_filtering: Literal["enable", "disable"]  # Enable/disable spam filtering. | Default: disable
-    external: Literal["enable", "disable"]  # Enable/disable external Email inspection. | Default: disable
-    options: Literal["bannedword", "spambal", "spamfsip", "spamfssubmit", "spamfschksum", "spamfsurl", "spamhelodns", "spamraddrdns", "spamrbl", "spamhdrcheck", "spamfsphish"]  # Options.
-    imap: str  # IMAP.
-    pop3: str  # POP3.
-    smtp: str  # SMTP.
-    mapi: str  # MAPI.
-    msn_hotmail: str  # MSN Hotmail.
-    yahoo_mail: str  # Yahoo! Mail.
-    gmail: str  # Gmail.
-    other_webmails: str  # Other supported webmails.
-    spam_bword_threshold: int  # Spam banned word threshold. | Default: 10 | Min: 0 | Max: 2147483647
-    spam_bword_table: int  # Anti-spam banned word table ID. | Default: 0 | Min: 0 | Max: 4294967295
-    spam_bal_table: int  # Anti-spam block/allow list table ID. | Default: 0 | Min: 0 | Max: 4294967295
-    spam_mheader_table: int  # Anti-spam MIME header table ID. | Default: 0 | Min: 0 | Max: 4294967295
-    spam_rbl_table: int  # Anti-spam DNSBL table ID. | Default: 0 | Min: 0 | Max: 4294967295
-    spam_iptrust_table: int  # Anti-spam IP trust table ID. | Default: 0 | Min: 0 | Max: 4294967295
-
-
-@final
-class ProfileObject:
-    """Typed FortiObject for emailfilter/profile with IDE autocomplete support.
-    
-    This is a typed wrapper that provides IDE autocomplete for API response fields.
-    At runtime, this is actually a FortiObject instance.
-    """
-    
-    # Profile name. | MaxLen: 47
+    """Payload type for Profile operations."""
     name: str
-    # Comment. | MaxLen: 255
     comment: str
-    # Flow/proxy feature set. | Default: flow
     feature_set: Literal["flow", "proxy"]
-    # Replacement message group. | MaxLen: 35
     replacemsg_group: str
-    # Enable/disable spam logging for email filtering. | Default: enable
     spam_log: Literal["disable", "enable"]
-    # Enable/disable logging FortiGuard spam response. | Default: disable
     spam_log_fortiguard_response: Literal["disable", "enable"]
-    # Enable/disable spam filtering. | Default: disable
     spam_filtering: Literal["enable", "disable"]
-    # Enable/disable external Email inspection. | Default: disable
     external: Literal["enable", "disable"]
-    # Options.
-    options: Literal["bannedword", "spambal", "spamfsip", "spamfssubmit", "spamfschksum", "spamfsurl", "spamhelodns", "spamraddrdns", "spamrbl", "spamhdrcheck", "spamfsphish"]
-    # IMAP.
+    options: str | list[str]
     imap: str
-    # POP3.
     pop3: str
-    # SMTP.
     smtp: str
-    # MAPI.
     mapi: str
-    # MSN Hotmail.
     msn_hotmail: str
-    # Yahoo! Mail.
     yahoo_mail: str
-    # Gmail.
     gmail: str
-    # Other supported webmails.
     other_webmails: str
-    # Spam banned word threshold. | Default: 10 | Min: 0 | Max: 2147483647
     spam_bword_threshold: int
-    # Anti-spam banned word table ID. | Default: 0 | Min: 0 | Max: 4294967295
     spam_bword_table: int
-    # Anti-spam block/allow list table ID. | Default: 0 | Min: 0 | Max: 4294967295
     spam_bal_table: int
-    # Anti-spam MIME header table ID. | Default: 0 | Min: 0 | Max: 4294967295
     spam_mheader_table: int
-    # Anti-spam DNSBL table ID. | Default: 0 | Min: 0 | Max: 4294967295
     spam_rbl_table: int
-    # Anti-spam IP trust table ID. | Default: 0 | Min: 0 | Max: 4294967295
     spam_iptrust_table: int
-    
-    # Common API response fields
-    status: str
-    http_status: int | None
-    http_status_code: int | None
-    http_method: str | None
-    http_response_time: float | None
-    vdom: str | None
-    
-    # Methods from FortiObject
-    @property
-    def dict(self) -> dict[str, Any]:
-        """Convert to dictionary."""
-        ...
-    @property
-    def json(self) -> str:
-        """Get pretty-printed JSON string."""
-        ...
-    @property
-    def raw(self) -> dict[str, Any]:
-        """Get raw API response data."""
-        ...
-    def get_full(self, name: str) -> Any: ...
-    def to_dict(self) -> ProfilePayload: ...
-    def keys(self) -> Any: ...
-    def values(self) -> Generator[Any, None, None]: ...
-    def items(self) -> Generator[tuple[str, Any], None, None]: ...
-    def get(self, key: str, default: Any = None) -> Any: ...
 
+
+# ================================================================
+# Response Types (TypedDict for dict-style access)
+# ================================================================
+
+class ProfileResponse(TypedDict, total=False):
+    """Response type for Profile - use with .dict property for typed dict access."""
+    name: str
+    comment: str
+    feature_set: Literal["flow", "proxy"]
+    replacemsg_group: str
+    spam_log: Literal["disable", "enable"]
+    spam_log_fortiguard_response: Literal["disable", "enable"]
+    spam_filtering: Literal["enable", "disable"]
+    external: Literal["enable", "disable"]
+    options: str
+    imap: str
+    pop3: str
+    smtp: str
+    mapi: str
+    msn_hotmail: str
+    yahoo_mail: str
+    gmail: str
+    other_webmails: str
+    spam_bword_threshold: int
+    spam_bword_table: int
+    spam_bal_table: int
+    spam_mheader_table: int
+    spam_rbl_table: int
+    spam_iptrust_table: int
+
+
+# ================================================================
+# Response Types (Class for attribute access)
+# ================================================================
+
+
+class ProfileObject(FortiObject):
+    """Typed FortiObject for Profile with field access."""
+    name: str
+    comment: str
+    feature_set: Literal["flow", "proxy"]
+    replacemsg_group: str
+    spam_log: Literal["disable", "enable"]
+    spam_log_fortiguard_response: Literal["disable", "enable"]
+    spam_filtering: Literal["enable", "disable"]
+    external: Literal["enable", "disable"]
+    options: str
+    imap: str
+    pop3: str
+    smtp: str
+    mapi: str
+    msn_hotmail: str
+    yahoo_mail: str
+    gmail: str
+    other_webmails: str
+    spam_bword_threshold: int
+    spam_bword_table: int
+    spam_bal_table: int
+    spam_mheader_table: int
+    spam_rbl_table: int
+    spam_iptrust_table: int
+
+
+# ================================================================
+# Main Endpoint Class
+# ================================================================
 
 class Profile:
     """
-    Configure Email Filter profiles.
     
-    Path: emailfilter/profile
+    Endpoint: emailfilter/profile
     Category: cmdb
-    Primary Key: name
+    MKey: name
     """
     
+    # Class attributes for introspection
+    endpoint: ClassVar[str] = ...
+    path: ClassVar[str] = ...
+    category: ClassVar[str] = ...
+    mkey: ClassVar[str] = ...
+    capabilities: ClassVar[dict[str, Any]] = ...
+    
     def __init__(self, client: Any) -> None:
-        """Initialize endpoint with HTTP client.
-        
-        Args:
-            client: HTTP client instance for API communication
-        """
+        """Initialize endpoint with HTTP client."""
         ...
     
     # ================================================================
-    # GET OVERLOADS - Always returns FortiObject (or ContentResponse for file endpoints)
-    # Pylance matches overloads top-to-bottom, so these must come first!
+    # GET Methods
     # ================================================================
     
-    # With mkey as positional arg -> returns FortiObject
+    # CMDB with mkey - overloads for single vs list returns
     @overload
     def get(
         self,
         name: str,
+        *,
         filter: str | list[str] | None = ...,
         count: int | None = ...,
         start: int | None = ...,
@@ -216,14 +158,14 @@ class Profile:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        error_mode: Literal["raise", "return", "print"] | None = ...,
+        error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> ProfileObject: ...
     
-    # With mkey as keyword arg -> returns FortiObject
     @overload
     def get(
         self,
         *,
-        name: str,
         filter: str | list[str] | None = ...,
         count: int | None = ...,
         start: int | None = ...,
@@ -233,164 +175,20 @@ class Profile:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> ProfileObject: ...
-    
-    # Without mkey -> returns list of FortiObjects
-    @overload
-    def get(
-        self,
-        name: None = None,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
+        error_mode: Literal["raise", "return", "print"] | None = ...,
+        error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> FortiObjectList[ProfileObject]: ...
-    
-    # ================================================================
-    # (removed - all GET now returns FortiObject)
-    # ================================================================
-    
-    # With mkey as positional arg -> returns single object
-    @overload
-    def get(
-        self,
-        name: str,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> ProfileObject: ...
-    
-    # With mkey as keyword arg -> returns single object
-    @overload
-    def get(
-        self,
-        *,
-        name: str,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> ProfileObject: ...
-    
-    # With no mkey -> returns list of objects
-    @overload
-    def get(
-        self,
-        *,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObjectList[ProfileObject]: ...
-    
-    # Dict mode with mkey provided as positional arg (single dict)
-    @overload
-    def get(
-        self,
-        name: str,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> ProfileObject: ...
-    
-    # Dict mode with mkey provided as keyword arg (single dict)
-    @overload
-    def get(
-        self,
-        *,
-        name: str,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> ProfileObject: ...
-    
-    # Dict mode - list of dicts (no mkey/name provided) - keyword-only signature
-    @overload
-    def get(
-        self,
-        *,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObjectList[ProfileObject]: ...
-    
-    # Fallback overload for all other cases
-    @overload
-    def get(
-        self,
-        name: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> Union[dict[str, Any], list[dict[str, Any]], FortiObject, list[FortiObject]]: ...
-    
-    def get(
-        self,
-        name: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> ProfileObject | list[ProfileObject] | dict[str, Any] | list[dict[str, Any]]: ...
     
     def get_schema(
         self,
         vdom: str | None = ...,
         format: str = ...,
     ) -> FortiObject: ...
+
+    # ================================================================
+    # POST Method
+    # ================================================================
     
-    # POST overloads
-    @overload
     def post(
         self,
         payload_dict: ProfilePayload | None = ...,
@@ -402,7 +200,7 @@ class Profile:
         spam_log_fortiguard_response: Literal["disable", "enable"] | None = ...,
         spam_filtering: Literal["enable", "disable"] | None = ...,
         external: Literal["enable", "disable"] | None = ...,
-        options: Literal["bannedword", "spambal", "spamfsip", "spamfssubmit", "spamfschksum", "spamfsurl", "spamhelodns", "spamraddrdns", "spamrbl", "spamhdrcheck", "spamfsphish"] | list[str] | None = ...,
+        options: str | list[str] | None = ...,
         imap: str | None = ...,
         pop3: str | None = ...,
         smtp: str | None = ...,
@@ -418,100 +216,14 @@ class Profile:
         spam_rbl_table: int | None = ...,
         spam_iptrust_table: int | None = ...,
         vdom: str | bool | None = ...,
+        error_mode: Literal["raise", "return", "print"] | None = ...,
+        error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> ProfileObject: ...
+
+    # ================================================================
+    # PUT Method
+    # ================================================================
     
-    @overload
-    def post(
-        self,
-        payload_dict: ProfilePayload | None = ...,
-        name: str | None = ...,
-        comment: str | None = ...,
-        feature_set: Literal["flow", "proxy"] | None = ...,
-        replacemsg_group: str | None = ...,
-        spam_log: Literal["disable", "enable"] | None = ...,
-        spam_log_fortiguard_response: Literal["disable", "enable"] | None = ...,
-        spam_filtering: Literal["enable", "disable"] | None = ...,
-        external: Literal["enable", "disable"] | None = ...,
-        options: Literal["bannedword", "spambal", "spamfsip", "spamfssubmit", "spamfschksum", "spamfsurl", "spamhelodns", "spamraddrdns", "spamrbl", "spamhdrcheck", "spamfsphish"] | list[str] | None = ...,
-        imap: str | None = ...,
-        pop3: str | None = ...,
-        smtp: str | None = ...,
-        mapi: str | None = ...,
-        msn_hotmail: str | None = ...,
-        yahoo_mail: str | None = ...,
-        gmail: str | None = ...,
-        other_webmails: str | None = ...,
-        spam_bword_threshold: int | None = ...,
-        spam_bword_table: int | None = ...,
-        spam_bal_table: int | None = ...,
-        spam_mheader_table: int | None = ...,
-        spam_rbl_table: int | None = ...,
-        spam_iptrust_table: int | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
-    
-    # Default overload
-    @overload
-    def post(
-        self,
-        payload_dict: ProfilePayload | None = ...,
-        name: str | None = ...,
-        comment: str | None = ...,
-        feature_set: Literal["flow", "proxy"] | None = ...,
-        replacemsg_group: str | None = ...,
-        spam_log: Literal["disable", "enable"] | None = ...,
-        spam_log_fortiguard_response: Literal["disable", "enable"] | None = ...,
-        spam_filtering: Literal["enable", "disable"] | None = ...,
-        external: Literal["enable", "disable"] | None = ...,
-        options: Literal["bannedword", "spambal", "spamfsip", "spamfssubmit", "spamfschksum", "spamfsurl", "spamhelodns", "spamraddrdns", "spamrbl", "spamhdrcheck", "spamfsphish"] | list[str] | None = ...,
-        imap: str | None = ...,
-        pop3: str | None = ...,
-        smtp: str | None = ...,
-        mapi: str | None = ...,
-        msn_hotmail: str | None = ...,
-        yahoo_mail: str | None = ...,
-        gmail: str | None = ...,
-        other_webmails: str | None = ...,
-        spam_bword_threshold: int | None = ...,
-        spam_bword_table: int | None = ...,
-        spam_bal_table: int | None = ...,
-        spam_mheader_table: int | None = ...,
-        spam_rbl_table: int | None = ...,
-        spam_iptrust_table: int | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
-    
-    def post(
-        self,
-        payload_dict: ProfilePayload | None = ...,
-        name: str | None = ...,
-        comment: str | None = ...,
-        feature_set: Literal["flow", "proxy"] | None = ...,
-        replacemsg_group: str | None = ...,
-        spam_log: Literal["disable", "enable"] | None = ...,
-        spam_log_fortiguard_response: Literal["disable", "enable"] | None = ...,
-        spam_filtering: Literal["enable", "disable"] | None = ...,
-        external: Literal["enable", "disable"] | None = ...,
-        options: Literal["bannedword", "spambal", "spamfsip", "spamfssubmit", "spamfschksum", "spamfsurl", "spamhelodns", "spamraddrdns", "spamrbl", "spamhdrcheck", "spamfsphish"] | list[str] | None = ...,
-        imap: str | None = ...,
-        pop3: str | None = ...,
-        smtp: str | None = ...,
-        mapi: str | None = ...,
-        msn_hotmail: str | None = ...,
-        yahoo_mail: str | None = ...,
-        gmail: str | None = ...,
-        other_webmails: str | None = ...,
-        spam_bword_threshold: int | None = ...,
-        spam_bword_table: int | None = ...,
-        spam_bal_table: int | None = ...,
-        spam_mheader_table: int | None = ...,
-        spam_rbl_table: int | None = ...,
-        spam_iptrust_table: int | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
-    
-    # PUT overloads
-    @overload
     def put(
         self,
         payload_dict: ProfilePayload | None = ...,
@@ -523,7 +235,7 @@ class Profile:
         spam_log_fortiguard_response: Literal["disable", "enable"] | None = ...,
         spam_filtering: Literal["enable", "disable"] | None = ...,
         external: Literal["enable", "disable"] | None = ...,
-        options: Literal["bannedword", "spambal", "spamfsip", "spamfssubmit", "spamfschksum", "spamfsurl", "spamhelodns", "spamraddrdns", "spamrbl", "spamhdrcheck", "spamfsphish"] | list[str] | None = ...,
+        options: str | list[str] | None = ...,
         imap: str | None = ...,
         pop3: str | None = ...,
         smtp: str | None = ...,
@@ -539,126 +251,25 @@ class Profile:
         spam_rbl_table: int | None = ...,
         spam_iptrust_table: int | None = ...,
         vdom: str | bool | None = ...,
+        error_mode: Literal["raise", "return", "print"] | None = ...,
+        error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> ProfileObject: ...
-    
-    @overload
-    def put(
-        self,
-        payload_dict: ProfilePayload | None = ...,
-        name: str | None = ...,
-        comment: str | None = ...,
-        feature_set: Literal["flow", "proxy"] | None = ...,
-        replacemsg_group: str | None = ...,
-        spam_log: Literal["disable", "enable"] | None = ...,
-        spam_log_fortiguard_response: Literal["disable", "enable"] | None = ...,
-        spam_filtering: Literal["enable", "disable"] | None = ...,
-        external: Literal["enable", "disable"] | None = ...,
-        options: Literal["bannedword", "spambal", "spamfsip", "spamfssubmit", "spamfschksum", "spamfsurl", "spamhelodns", "spamraddrdns", "spamrbl", "spamhdrcheck", "spamfsphish"] | list[str] | None = ...,
-        imap: str | None = ...,
-        pop3: str | None = ...,
-        smtp: str | None = ...,
-        mapi: str | None = ...,
-        msn_hotmail: str | None = ...,
-        yahoo_mail: str | None = ...,
-        gmail: str | None = ...,
-        other_webmails: str | None = ...,
-        spam_bword_threshold: int | None = ...,
-        spam_bword_table: int | None = ...,
-        spam_bal_table: int | None = ...,
-        spam_mheader_table: int | None = ...,
-        spam_rbl_table: int | None = ...,
-        spam_iptrust_table: int | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
-    
-    # Default overload
-    @overload
-    def put(
-        self,
-        payload_dict: ProfilePayload | None = ...,
-        name: str | None = ...,
-        comment: str | None = ...,
-        feature_set: Literal["flow", "proxy"] | None = ...,
-        replacemsg_group: str | None = ...,
-        spam_log: Literal["disable", "enable"] | None = ...,
-        spam_log_fortiguard_response: Literal["disable", "enable"] | None = ...,
-        spam_filtering: Literal["enable", "disable"] | None = ...,
-        external: Literal["enable", "disable"] | None = ...,
-        options: Literal["bannedword", "spambal", "spamfsip", "spamfssubmit", "spamfschksum", "spamfsurl", "spamhelodns", "spamraddrdns", "spamrbl", "spamhdrcheck", "spamfsphish"] | list[str] | None = ...,
-        imap: str | None = ...,
-        pop3: str | None = ...,
-        smtp: str | None = ...,
-        mapi: str | None = ...,
-        msn_hotmail: str | None = ...,
-        yahoo_mail: str | None = ...,
-        gmail: str | None = ...,
-        other_webmails: str | None = ...,
-        spam_bword_threshold: int | None = ...,
-        spam_bword_table: int | None = ...,
-        spam_bal_table: int | None = ...,
-        spam_mheader_table: int | None = ...,
-        spam_rbl_table: int | None = ...,
-        spam_iptrust_table: int | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
-    
-    def put(
-        self,
-        payload_dict: ProfilePayload | None = ...,
-        name: str | None = ...,
-        comment: str | None = ...,
-        feature_set: Literal["flow", "proxy"] | None = ...,
-        replacemsg_group: str | None = ...,
-        spam_log: Literal["disable", "enable"] | None = ...,
-        spam_log_fortiguard_response: Literal["disable", "enable"] | None = ...,
-        spam_filtering: Literal["enable", "disable"] | None = ...,
-        external: Literal["enable", "disable"] | None = ...,
-        options: Literal["bannedword", "spambal", "spamfsip", "spamfssubmit", "spamfschksum", "spamfsurl", "spamhelodns", "spamraddrdns", "spamrbl", "spamhdrcheck", "spamfsphish"] | list[str] | None = ...,
-        imap: str | None = ...,
-        pop3: str | None = ...,
-        smtp: str | None = ...,
-        mapi: str | None = ...,
-        msn_hotmail: str | None = ...,
-        yahoo_mail: str | None = ...,
-        gmail: str | None = ...,
-        other_webmails: str | None = ...,
-        spam_bword_threshold: int | None = ...,
-        spam_bword_table: int | None = ...,
-        spam_bal_table: int | None = ...,
-        spam_mheader_table: int | None = ...,
-        spam_rbl_table: int | None = ...,
-        spam_iptrust_table: int | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
-    
-    # DELETE overloads
-    @overload
-    def delete(
-        self,
-        name: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> ProfileObject: ...
-    
-    @overload
-    def delete(
-        self,
-        name: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
-    
-    # Default overload
-    @overload
-    def delete(
-        self,
-        name: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+
+    # ================================================================
+    # DELETE Method
+    # ================================================================
     
     def delete(
         self,
         name: str | None = ...,
         vdom: str | bool | None = ...,
+        error_mode: Literal["raise", "return", "print"] | None = ...,
+        error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> FortiObject: ...
+
+    # ================================================================
+    # Utility Methods
+    # ================================================================
     
     def exists(
         self,
@@ -693,6 +304,8 @@ class Profile:
         spam_rbl_table: int | None = ...,
         spam_iptrust_table: int | None = ...,
         vdom: str | bool | None = ...,
+        error_mode: Literal["raise", "return", "print"] | None = ...,
+        error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> FortiObject: ...
     
     # Helper methods
@@ -700,7 +313,7 @@ class Profile:
     def help(field_name: str | None = ...) -> str: ...
     
     @staticmethod
-    def fields(detailed: bool = ...) -> Union[list[str], list[dict[str, Any]]]: ...
+    def fields(detailed: bool = ...) -> list[str] | list[dict[str, Any]]: ...
     
     @staticmethod
     def field_info(field_name: str) -> FortiObject: ...
@@ -716,9 +329,6 @@ class Profile:
     
     @staticmethod
     def schema() -> FortiObject: ...
-
-
-# ================================================================
 
 
 __all__ = [

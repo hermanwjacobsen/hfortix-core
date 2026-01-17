@@ -1,135 +1,82 @@
-from typing import TypedDict, Literal, Any, Coroutine, Union, overload, Generator, final
-from typing_extensions import NotRequired
-from hfortix_fortios.models import FortiObject, FortiObjectList
+""" - Type Stubs
 
-# ============================================================================
-# Nested TypedDicts for table field children (dict mode)
-# These MUST be defined before the Payload class to use them as type hints
-# ============================================================================
+Auto-generated stub file for type checking and IDE support.
 
-# ============================================================================
-# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional)
-# ============================================================================
-# NOTE: We intentionally DON'T use NotRequired wrapper because:
-# 1. total=False already makes all fields optional
-# 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
+Endpoint: system/interface/dhcp_status
+Category: monitor
+"""
+
+from __future__ import annotations
+
+from typing import (
+    Any,
+    ClassVar,
+    Literal,
+    TypedDict,
+)
+
+from hfortix_fortios.models import (
+    FortiObject,
+    FortiObjectList,
+)
+
+
+# ================================================================
+# TypedDict Payloads
+# ================================================================
+
 class DhcpStatusPayload(TypedDict, total=False):
-    """
-    Type hints for system/interface/dhcp_status payload fields.
-    
-    Retrieve the DHCP client status of an interface.
-    
-    **Usage:**
-        payload: DhcpStatusPayload = {
-            "field": "value",  # <- autocomplete shows all fields
-        }
-    """
-    mkey: str  # mkey
-    ipv6: bool  # ipv6
-
-# ============================================================================
-# Nested classes for table field children (object mode - for API responses)
-# ============================================================================
+    """Payload type for DhcpStatus operations."""
+    mkey: str
+    ipv6: str
 
 
+# ================================================================
+# Response Types (TypedDict for dict-style access)
+# ================================================================
 
-# Response TypedDict for GET returns (all fields present in API response)
-class DhcpStatusResponse(TypedDict):
-    """
-    Type hints for system/interface/dhcp_status API response fields.
-    
-    All fields are present in the response from the FortiGate API.
-    """
-    status: str
-    ip: str
-    netmask: str
-    expiry_date: str
-    dynamic_dns1: str
-    dynamic_dns2: str
-    dynamic_gateway: str
-    show_gateway: bool
-    override_dns: bool
+class DhcpStatusResponse(TypedDict, total=False):
+    """Response type for DhcpStatus - use with .dict property for typed dict access."""
+    mkey: str
+    ipv6: str
 
 
-@final
-class DhcpStatusObject:
-    """Typed FortiObject for system/interface/dhcp_status with IDE autocomplete support.
-    
-    This is a typed wrapper that provides IDE autocomplete for API response fields.
-    At runtime, this is actually a FortiObject instance.
-    """
-    
-    # status
-    status: str
-    # ip
-    ip: str
-    # netmask
-    netmask: str
-    # expiry_date
-    expiry_date: str
-    # dynamic_dns1
-    dynamic_dns1: str
-    # dynamic_dns2
-    dynamic_dns2: str
-    # dynamic_gateway
-    dynamic_gateway: str
-    # show_gateway
-    show_gateway: bool
-    # override_dns
-    override_dns: bool
-    
-    # Common API response fields
-    status: str
-    http_status: int | None
-    http_status_code: int | None
-    http_method: str | None
-    http_response_time: float | None
-    vdom: str | None
-    
-    # Methods from FortiObject
-    @property
-    def dict(self) -> dict[str, Any]:
-        """Convert to dictionary."""
-        ...
-    @property
-    def json(self) -> str:
-        """Get pretty-printed JSON string."""
-        ...
-    @property
-    def raw(self) -> dict[str, Any]:
-        """Get raw API response data."""
-        ...
-    def get_full(self, name: str) -> Any: ...
-    def to_dict(self) -> DhcpStatusPayload: ...
-    def keys(self) -> Any: ...
-    def values(self) -> Generator[Any, None, None]: ...
-    def items(self) -> Generator[tuple[str, Any], None, None]: ...
-    def get(self, key: str, default: Any = None) -> Any: ...
+# ================================================================
+# Response Types (Class for attribute access)
+# ================================================================
 
+
+class DhcpStatusObject(FortiObject):
+    """Typed FortiObject for DhcpStatus with field access."""
+    ipv6: str
+
+
+# ================================================================
+# Main Endpoint Class
+# ================================================================
 
 class DhcpStatus:
     """
-    Retrieve the DHCP client status of an interface.
     
-    Path: system/interface/dhcp_status
+    Endpoint: system/interface/dhcp_status
     Category: monitor
     """
     
+    # Class attributes for introspection
+    endpoint: ClassVar[str] = ...
+    path: ClassVar[str] = ...
+    category: ClassVar[str] = ...
+    capabilities: ClassVar[dict[str, Any]] = ...
+    
     def __init__(self, client: Any) -> None:
-        """Initialize endpoint with HTTP client.
-        
-        Args:
-            client: HTTP client instance for API communication
-        """
+        """Initialize endpoint with HTTP client."""
         ...
     
     # ================================================================
-    # GET OVERLOADS - Always returns FortiObject (or ContentResponse for file endpoints)
-    # Pylance matches overloads top-to-bottom, so these must come first!
+    # GET Methods
     # ================================================================
     
-    # Service/Monitor endpoint with query parameters
-    @overload
+    # Service/Monitor endpoint
     def get(
         self,
         *,
@@ -140,177 +87,30 @@ class DhcpStatus:
         start: int | None = ...,
         payload_dict: dict[str, Any] | None = ...,
         vdom: str | bool | None = ...,
+        error_mode: Literal["raise", "return", "print"] | None = ...,
+        error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> DhcpStatusObject: ...
     
-    
+
+
     # ================================================================
-    # (removed - all GET now returns FortiObject)
+    # PUT Method
     # ================================================================
     
-    # With mkey as positional arg -> returns single object
-    @overload
-    def get(
-        self,
-        name: str,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> DhcpStatusObject: ...
-    
-    # With mkey as keyword arg -> returns single object
-    @overload
-    def get(
-        self,
-        *,
-        name: str,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> DhcpStatusObject: ...
-    
-    # With no mkey -> returns list of objects
-    @overload
-    def get(
-        self,
-        *,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> DhcpStatusObject: ...
-    
-    # Dict mode with mkey provided as positional arg (single dict)
-    @overload
-    def get(
-        self,
-        name: str,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> DhcpStatusObject: ...
-    
-    # Dict mode with mkey provided as keyword arg (single dict)
-    @overload
-    def get(
-        self,
-        *,
-        name: str,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> DhcpStatusObject: ...
-    
-    # Dict mode - list of dicts (no mkey/name provided) - keyword-only signature
-    @overload
-    def get(
-        self,
-        *,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> DhcpStatusObject: ...
-    
-    # Fallback overload for all other cases
-    @overload
-    def get(
-        self,
-        name: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> dict[str, Any] | FortiObject: ...
-    
-    def get(
-        self,
-        name: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> DhcpStatusObject | dict[str, Any]: ...
-    
-    # PUT overloads
-    @overload
     def put(
         self,
         payload_dict: DhcpStatusPayload | None = ...,
         mkey: str | None = ...,
         ipv6: str | None = ...,
         vdom: str | bool | None = ...,
+        error_mode: Literal["raise", "return", "print"] | None = ...,
+        error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> DhcpStatusObject: ...
-    
-    @overload
-    def put(
-        self,
-        payload_dict: DhcpStatusPayload | None = ...,
-        mkey: str | None = ...,
-        ipv6: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
-    
-    # Default overload
-    @overload
-    def put(
-        self,
-        payload_dict: DhcpStatusPayload | None = ...,
-        mkey: str | None = ...,
-        ipv6: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
-    
-    def put(
-        self,
-        payload_dict: DhcpStatusPayload | None = ...,
-        mkey: str | None = ...,
-        ipv6: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+
+
+    # ================================================================
+    # Utility Methods
+    # ================================================================
     
     def exists(
         self,
@@ -324,6 +124,8 @@ class DhcpStatus:
         mkey: str | None = ...,
         ipv6: str | None = ...,
         vdom: str | bool | None = ...,
+        error_mode: Literal["raise", "return", "print"] | None = ...,
+        error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> FortiObject: ...
     
     # Helper methods
@@ -331,7 +133,7 @@ class DhcpStatus:
     def help(field_name: str | None = ...) -> str: ...
     
     @staticmethod
-    def fields(detailed: bool = ...) -> Union[list[str], list[dict[str, Any]]]: ...
+    def fields(detailed: bool = ...) -> list[str] | list[dict[str, Any]]: ...
     
     @staticmethod
     def field_info(field_name: str) -> FortiObject: ...
@@ -347,9 +149,6 @@ class DhcpStatus:
     
     @staticmethod
     def schema() -> FortiObject: ...
-
-
-# ================================================================
 
 
 __all__ = [

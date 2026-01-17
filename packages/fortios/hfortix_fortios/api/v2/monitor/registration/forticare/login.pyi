@@ -1,303 +1,114 @@
-from typing import TypedDict, Literal, Any, Coroutine, Union, overload, Generator, final
-from typing_extensions import NotRequired
-from hfortix_fortios.models import FortiObject, FortiObjectList
+""" - Type Stubs
 
-# ============================================================================
-# Nested TypedDicts for table field children (dict mode)
-# These MUST be defined before the Payload class to use them as type hints
-# ============================================================================
+Auto-generated stub file for type checking and IDE support.
 
-# ============================================================================
-# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional)
-# ============================================================================
-# NOTE: We intentionally DON'T use NotRequired wrapper because:
-# 1. total=False already makes all fields optional
-# 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
+Endpoint: registration/forticare/login
+Category: monitor
+"""
+
+from __future__ import annotations
+
+from typing import (
+    Any,
+    ClassVar,
+    Literal,
+    TypedDict,
+)
+
+from hfortix_fortios.models import (
+    FortiObject,
+    FortiObjectList,
+)
+
+
+# ================================================================
+# TypedDict Payloads
+# ================================================================
+
 class LoginPayload(TypedDict, total=False):
-    """
-    Type hints for registration/forticare/login payload fields.
-    
-    Login to FortiCare.
-    
-    **Usage:**
-        payload: LoginPayload = {
-            "field": "value",  # <- autocomplete shows all fields
-        }
-    """
-    serial: str  # serial
-    email: str  # email
-    password: str  # password
-    reseller_name: str  # reseller_name
-    reseller_id: int  # reseller_id
-    agreement_accepted: bool  # agreement_accepted
-    is_government: bool  # is_government
-
-# ============================================================================
-# Nested classes for table field children (object mode - for API responses)
-# ============================================================================
+    """Payload type for Login operations."""
+    serial: str
+    email: str
+    password: str
+    reseller_name: str
+    reseller_id: int
+    agreement_accepted: str
+    is_government: str
 
 
+# ================================================================
+# Response Types (TypedDict for dict-style access)
+# ================================================================
 
-# Response TypedDict for GET returns (all fields present in API response)
-class LoginResponse(TypedDict):
-    """
-    Type hints for registration/forticare/login API response fields.
-    
-    All fields are present in the response from the FortiGate API.
-    """
-    forticare_error: str
-    forticare_success: bool
-    forticare_agreement: str
+class LoginResponse(TypedDict, total=False):
+    """Response type for Login - use with .dict property for typed dict access."""
+    serial: str
+    email: str
+    password: str
+    reseller_name: str
+    reseller_id: int
+    agreement_accepted: str
+    is_government: str
 
 
-@final
-class LoginObject:
-    """Typed FortiObject for registration/forticare/login with IDE autocomplete support.
-    
-    This is a typed wrapper that provides IDE autocomplete for API response fields.
-    At runtime, this is actually a FortiObject instance.
-    """
-    
-    # forticare_error
-    forticare_error: str
-    # forticare_success
-    forticare_success: bool
-    # forticare_agreement
-    forticare_agreement: str
-    
-    # Common API response fields
-    status: str
-    http_status: int | None
-    http_status_code: int | None
-    http_method: str | None
-    http_response_time: float | None
-    vdom: str | None
-    
-    # Methods from FortiObject
-    @property
-    def dict(self) -> dict[str, Any]:
-        """Convert to dictionary."""
-        ...
-    @property
-    def json(self) -> str:
-        """Get pretty-printed JSON string."""
-        ...
-    @property
-    def raw(self) -> dict[str, Any]:
-        """Get raw API response data."""
-        ...
-    def get_full(self, name: str) -> Any: ...
-    def to_dict(self) -> LoginPayload: ...
-    def keys(self) -> Any: ...
-    def values(self) -> Generator[Any, None, None]: ...
-    def items(self) -> Generator[tuple[str, Any], None, None]: ...
-    def get(self, key: str, default: Any = None) -> Any: ...
+# ================================================================
+# Response Types (Class for attribute access)
+# ================================================================
 
+
+class LoginObject(FortiObject):
+    """Typed FortiObject for Login with field access."""
+    email: str
+    password: str
+    reseller_name: str
+    reseller_id: int
+    agreement_accepted: str
+    is_government: str
+
+
+# ================================================================
+# Main Endpoint Class
+# ================================================================
 
 class Login:
     """
-    Login to FortiCare.
     
-    Path: registration/forticare/login
+    Endpoint: registration/forticare/login
     Category: monitor
     """
     
+    # Class attributes for introspection
+    endpoint: ClassVar[str] = ...
+    path: ClassVar[str] = ...
+    category: ClassVar[str] = ...
+    capabilities: ClassVar[dict[str, Any]] = ...
+    
     def __init__(self, client: Any) -> None:
-        """Initialize endpoint with HTTP client.
-        
-        Args:
-            client: HTTP client instance for API communication
-        """
+        """Initialize endpoint with HTTP client."""
         ...
     
     # ================================================================
-    # GET OVERLOADS - Always returns FortiObject (or ContentResponse for file endpoints)
-    # Pylance matches overloads top-to-bottom, so these must come first!
+    # GET Methods
     # ================================================================
     
-    # With mkey as positional arg -> returns FortiObject
-    @overload
-    def get(
-        self,
-        name: str,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> LoginObject: ...
-    
-    # With mkey as keyword arg -> returns FortiObject
-    @overload
+    # Service/Monitor endpoint
     def get(
         self,
         *,
-        name: str,
         filter: str | list[str] | None = ...,
         count: int | None = ...,
         start: int | None = ...,
         payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
         vdom: str | bool | None = ...,
+        error_mode: Literal["raise", "return", "print"] | None = ...,
+        error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> LoginObject: ...
     
-    # Without mkey -> returns list of FortiObjects
-    @overload
-    def get(
-        self,
-        name: None = None,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> LoginObject: ...
-    
+
     # ================================================================
-    # (removed - all GET now returns FortiObject)
+    # POST Method
     # ================================================================
     
-    # With mkey as positional arg -> returns single object
-    @overload
-    def get(
-        self,
-        name: str,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> LoginObject: ...
-    
-    # With mkey as keyword arg -> returns single object
-    @overload
-    def get(
-        self,
-        *,
-        name: str,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> LoginObject: ...
-    
-    # With no mkey -> returns list of objects
-    @overload
-    def get(
-        self,
-        *,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> LoginObject: ...
-    
-    # Dict mode with mkey provided as positional arg (single dict)
-    @overload
-    def get(
-        self,
-        name: str,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> LoginObject: ...
-    
-    # Dict mode with mkey provided as keyword arg (single dict)
-    @overload
-    def get(
-        self,
-        *,
-        name: str,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> LoginObject: ...
-    
-    # Dict mode - list of dicts (no mkey/name provided) - keyword-only signature
-    @overload
-    def get(
-        self,
-        *,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> LoginObject: ...
-    
-    # Fallback overload for all other cases
-    @overload
-    def get(
-        self,
-        name: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> dict[str, Any] | FortiObject: ...
-    
-    def get(
-        self,
-        name: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> LoginObject | dict[str, Any]: ...
-    
-    # POST overloads
-    @overload
     def post(
         self,
         payload_dict: LoginPayload | None = ...,
@@ -309,93 +120,13 @@ class Login:
         agreement_accepted: str | None = ...,
         is_government: str | None = ...,
         vdom: str | bool | None = ...,
+        error_mode: Literal["raise", "return", "print"] | None = ...,
+        error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> LoginObject: ...
-    
-    @overload
-    def post(
-        self,
-        payload_dict: LoginPayload | None = ...,
-        serial: str | None = ...,
-        email: str | None = ...,
-        password: str | None = ...,
-        reseller_name: str | None = ...,
-        reseller_id: int | None = ...,
-        agreement_accepted: str | None = ...,
-        is_government: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
-    
-    # Default overload
-    @overload
-    def post(
-        self,
-        payload_dict: LoginPayload | None = ...,
-        serial: str | None = ...,
-        email: str | None = ...,
-        password: str | None = ...,
-        reseller_name: str | None = ...,
-        reseller_id: int | None = ...,
-        agreement_accepted: str | None = ...,
-        is_government: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
-    
-    def post(
-        self,
-        payload_dict: LoginPayload | None = ...,
-        serial: str | None = ...,
-        email: str | None = ...,
-        password: str | None = ...,
-        reseller_name: str | None = ...,
-        reseller_id: int | None = ...,
-        agreement_accepted: str | None = ...,
-        is_government: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
-    
-    # PUT overloads
-    @overload
-    def put(
-        self,
-        payload_dict: LoginPayload | None = ...,
-        serial: str | None = ...,
-        email: str | None = ...,
-        password: str | None = ...,
-        reseller_name: str | None = ...,
-        reseller_id: int | None = ...,
-        agreement_accepted: str | None = ...,
-        is_government: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> LoginObject: ...
-    
-    @overload
-    def put(
-        self,
-        payload_dict: LoginPayload | None = ...,
-        serial: str | None = ...,
-        email: str | None = ...,
-        password: str | None = ...,
-        reseller_name: str | None = ...,
-        reseller_id: int | None = ...,
-        agreement_accepted: str | None = ...,
-        is_government: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
-    
-    # Default overload
-    @overload
-    def put(
-        self,
-        payload_dict: LoginPayload | None = ...,
-        serial: str | None = ...,
-        email: str | None = ...,
-        password: str | None = ...,
-        reseller_name: str | None = ...,
-        reseller_id: int | None = ...,
-        agreement_accepted: str | None = ...,
-        is_government: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+
+    # ================================================================
+    # PUT Method
+    # ================================================================
     
     def put(
         self,
@@ -408,7 +139,14 @@ class Login:
         agreement_accepted: str | None = ...,
         is_government: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+        error_mode: Literal["raise", "return", "print"] | None = ...,
+        error_format: Literal["detailed", "simple", "code_only"] | None = ...,
+    ) -> LoginObject: ...
+
+
+    # ================================================================
+    # Utility Methods
+    # ================================================================
     
     def exists(
         self,
@@ -427,6 +165,8 @@ class Login:
         agreement_accepted: str | None = ...,
         is_government: str | None = ...,
         vdom: str | bool | None = ...,
+        error_mode: Literal["raise", "return", "print"] | None = ...,
+        error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> FortiObject: ...
     
     # Helper methods
@@ -434,7 +174,7 @@ class Login:
     def help(field_name: str | None = ...) -> str: ...
     
     @staticmethod
-    def fields(detailed: bool = ...) -> Union[list[str], list[dict[str, Any]]]: ...
+    def fields(detailed: bool = ...) -> list[str] | list[dict[str, Any]]: ...
     
     @staticmethod
     def field_info(field_name: str) -> FortiObject: ...
@@ -450,9 +190,6 @@ class Login:
     
     @staticmethod
     def schema() -> FortiObject: ...
-
-
-# ================================================================
 
 
 __all__ = [

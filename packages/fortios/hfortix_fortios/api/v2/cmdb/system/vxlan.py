@@ -737,6 +737,24 @@ class Vxlan(CRUDEndpoint, MetadataMixin):
             - put(): Update existing object
             - exists(): Check existence manually
         """
+        # Apply normalization for table fields (supports flexible input formats)
+        if remote_ip is not None:
+            remote_ip = normalize_table_field(
+                remote_ip,
+                mkey="ip",
+                required_fields=['ip'],
+                field_name="remote_ip",
+                example="[{'ip': '192.168.1.10'}]",
+            )
+        if remote_ip6 is not None:
+            remote_ip6 = normalize_table_field(
+                remote_ip6,
+                mkey="ip6",
+                required_fields=['ip6'],
+                field_name="remote_ip6",
+                example="[{'ip6': 'value'}]",
+            )
+        
         # Build payload using helper function with auto-normalization
         payload_data = build_api_payload(
             name=name,

@@ -1,221 +1,98 @@
-from typing import TypedDict, Literal, Any, Coroutine, Union, overload, Generator, final
-from typing_extensions import NotRequired
-from hfortix_fortios.models import FortiObject, FortiObjectList
+""" - Type Stubs
 
-# ============================================================================
-# Nested TypedDicts for table field children (dict mode)
-# These MUST be defined before the Payload class to use them as type hints
-# ============================================================================
+Auto-generated stub file for type checking and IDE support.
 
-# ============================================================================
-# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional)
-# ============================================================================
-# NOTE: We intentionally DON'T use NotRequired wrapper because:
-# 1. total=False already makes all fields optional
-# 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
+Endpoint: system/ftm_push
+Category: cmdb
+"""
+
+from __future__ import annotations
+
+from typing import (
+    Any,
+    ClassVar,
+    Literal,
+    TypedDict,
+)
+
+from hfortix_fortios.models import (
+    FortiObject,
+    FortiObjectList,
+)
+
+
+# ================================================================
+# TypedDict Payloads
+# ================================================================
+
 class FtmPushPayload(TypedDict, total=False):
-    """
-    Type hints for system/ftm_push payload fields.
-    
-    Configure FortiToken Mobile push services.
-    
-    **Related Resources:**
-
-    Dependencies (resources this endpoint references):
-        - :class:`~.certificate.local.LocalEndpoint` (via: server-cert)
-        - :class:`~.system.interface.InterfaceEndpoint` (via: interface)
-
-    **Usage:**
-        payload: FtmPushPayload = {
-            "field": "value",  # <- autocomplete shows all fields
-        }
-    """
-    proxy: Literal["enable", "disable"]  # Enable/disable communication to the proxy server i | Default: enable
-    interface: str  # Interface of FortiToken Mobile push services serve | MaxLen: 35
-    server: str  # IPv4 address or domain name of FortiToken Mobile p | MaxLen: 127
-    server_port: int  # Port to communicate with FortiToken Mobile push se | Default: 4433 | Min: 1 | Max: 65535
-    server_cert: str  # Name of the server certificate to be used for SSL. | Default: Fortinet_GUI_Server | MaxLen: 35
-    server_ip: str  # IPv4 address of FortiToken Mobile push services se | Default: 0.0.0.0
-    status: Literal["enable", "disable"]  # Enable/disable the use of FortiToken Mobile push s | Default: disable
-
-# ============================================================================
-# Nested classes for table field children (object mode - for API responses)
-# ============================================================================
-
-
-
-# Response TypedDict for GET returns (all fields present in API response)
-class FtmPushResponse(TypedDict):
-    """
-    Type hints for system/ftm_push API response fields.
-    
-    All fields are present in the response from the FortiGate API.
-    """
-    proxy: Literal["enable", "disable"]  # Enable/disable communication to the proxy server i | Default: enable
-    interface: str  # Interface of FortiToken Mobile push services serve | MaxLen: 35
-    server: str  # IPv4 address or domain name of FortiToken Mobile p | MaxLen: 127
-    server_port: int  # Port to communicate with FortiToken Mobile push se | Default: 4433 | Min: 1 | Max: 65535
-    server_cert: str  # Name of the server certificate to be used for SSL. | Default: Fortinet_GUI_Server | MaxLen: 35
-    server_ip: str  # IPv4 address of FortiToken Mobile push services se | Default: 0.0.0.0
-    status: Literal["enable", "disable"]  # Enable/disable the use of FortiToken Mobile push s | Default: disable
-
-
-@final
-class FtmPushObject:
-    """Typed FortiObject for system/ftm_push with IDE autocomplete support.
-    
-    This is a typed wrapper that provides IDE autocomplete for API response fields.
-    At runtime, this is actually a FortiObject instance.
-    """
-    
-    # Enable/disable communication to the proxy server in FortiGua | Default: enable
+    """Payload type for FtmPush operations."""
     proxy: Literal["enable", "disable"]
-    # Interface of FortiToken Mobile push services server. | MaxLen: 35
     interface: str
-    # IPv4 address or domain name of FortiToken Mobile push servic | MaxLen: 127
     server: str
-    # Port to communicate with FortiToken Mobile push services ser | Default: 4433 | Min: 1 | Max: 65535
     server_port: int
-    # Name of the server certificate to be used for SSL. | Default: Fortinet_GUI_Server | MaxLen: 35
     server_cert: str
-    # IPv4 address of FortiToken Mobile push services server | Default: 0.0.0.0
     server_ip: str
-    # Enable/disable the use of FortiToken Mobile push services. | Default: disable
     status: Literal["enable", "disable"]
-    
-    # Common API response fields
-    status: str
-    http_status: int | None
-    http_status_code: int | None
-    http_method: str | None
-    http_response_time: float | None
-    vdom: str | None
-    
-    # Methods from FortiObject
-    @property
-    def dict(self) -> dict[str, Any]:
-        """Convert to dictionary."""
-        ...
-    @property
-    def json(self) -> str:
-        """Get pretty-printed JSON string."""
-        ...
-    @property
-    def raw(self) -> dict[str, Any]:
-        """Get raw API response data."""
-        ...
-    def get_full(self, name: str) -> Any: ...
-    def to_dict(self) -> FtmPushPayload: ...
-    def keys(self) -> Any: ...
-    def values(self) -> Generator[Any, None, None]: ...
-    def items(self) -> Generator[tuple[str, Any], None, None]: ...
-    def get(self, key: str, default: Any = None) -> Any: ...
 
+
+# ================================================================
+# Response Types (TypedDict for dict-style access)
+# ================================================================
+
+class FtmPushResponse(TypedDict, total=False):
+    """Response type for FtmPush - use with .dict property for typed dict access."""
+    proxy: Literal["enable", "disable"]
+    interface: str
+    server: str
+    server_port: int
+    server_cert: str
+    server_ip: str
+    status: Literal["enable", "disable"]
+
+
+# ================================================================
+# Response Types (Class for attribute access)
+# ================================================================
+
+
+class FtmPushObject(FortiObject):
+    """Typed FortiObject for FtmPush with field access."""
+    proxy: Literal["enable", "disable"]
+    interface: str
+    server: str
+    server_port: int
+    server_cert: str
+    server_ip: str
+    status: Literal["enable", "disable"]
+
+
+# ================================================================
+# Main Endpoint Class
+# ================================================================
 
 class FtmPush:
     """
-    Configure FortiToken Mobile push services.
     
-    Path: system/ftm_push
+    Endpoint: system/ftm_push
     Category: cmdb
     """
     
+    # Class attributes for introspection
+    endpoint: ClassVar[str] = ...
+    path: ClassVar[str] = ...
+    category: ClassVar[str] = ...
+    capabilities: ClassVar[dict[str, Any]] = ...
+    
     def __init__(self, client: Any) -> None:
-        """Initialize endpoint with HTTP client.
-        
-        Args:
-            client: HTTP client instance for API communication
-        """
+        """Initialize endpoint with HTTP client."""
         ...
     
     # ================================================================
-    # GET OVERLOADS - Always returns FortiObject (or ContentResponse for file endpoints)
-    # Pylance matches overloads top-to-bottom, so these must come first!
+    # GET Methods
     # ================================================================
     
-    # With mkey as positional arg -> returns FortiObject
-    @overload
-    def get(
-        self,
-        name: str,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-    ) -> FtmPushObject: ...
-    
-    # With mkey as keyword arg -> returns FortiObject
-    @overload
-    def get(
-        self,
-        *,
-        name: str,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-    ) -> FtmPushObject: ...
-    
-    # Without mkey -> returns list of FortiObjects
-    @overload
-    def get(
-        self,
-        name: None = None,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-    ) -> FtmPushObject: ...
-    
-    # ================================================================
-    # (removed - all GET now returns FortiObject)
-    # ================================================================
-    
-    # With mkey as positional arg -> returns single object
-    @overload
-    def get(
-        self,
-        name: str,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-    ) -> FtmPushObject: ...
-    
-    # With mkey as keyword arg -> returns single object
-    @overload
-    def get(
-        self,
-        *,
-        name: str,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-    ) -> FtmPushObject: ...
-    
-    # With no mkey -> returns list of objects
-    @overload
+    # Singleton endpoint (no mkey)
     def get(
         self,
         *,
@@ -227,89 +104,20 @@ class FtmPush:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
+        error_mode: Literal["raise", "return", "print"] | None = ...,
+        error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> FtmPushObject: ...
-    
-    # Dict mode with mkey provided as positional arg (single dict)
-    @overload
-    def get(
-        self,
-        name: str,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-    ) -> FtmPushObject: ...
-    
-    # Dict mode with mkey provided as keyword arg (single dict)
-    @overload
-    def get(
-        self,
-        *,
-        name: str,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-    ) -> FtmPushObject: ...
-    
-    # Dict mode - list of dicts (no mkey/name provided) - keyword-only signature
-    @overload
-    def get(
-        self,
-        *,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-    ) -> FtmPushObject: ...
-    
-    # Fallback overload for all other cases
-    @overload
-    def get(
-        self,
-        name: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-    ) -> dict[str, Any] | FortiObject: ...
-    
-    def get(
-        self,
-        name: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-    ) -> FtmPushObject | dict[str, Any]: ...
     
     def get_schema(
         self,
         format: str = ...,
     ) -> FortiObject: ...
+
+
+    # ================================================================
+    # PUT Method
+    # ================================================================
     
-    # PUT overloads
-    @overload
     def put(
         self,
         payload_dict: FtmPushPayload | None = ...,
@@ -320,46 +128,14 @@ class FtmPush:
         server_cert: str | None = ...,
         server_ip: str | None = ...,
         status: Literal["enable", "disable"] | None = ...,
+        error_mode: Literal["raise", "return", "print"] | None = ...,
+        error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> FtmPushObject: ...
-    
-    @overload
-    def put(
-        self,
-        payload_dict: FtmPushPayload | None = ...,
-        proxy: Literal["enable", "disable"] | None = ...,
-        interface: str | None = ...,
-        server: str | None = ...,
-        server_port: int | None = ...,
-        server_cert: str | None = ...,
-        server_ip: str | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
-    ) -> FortiObject: ...
-    
-    # Default overload
-    @overload
-    def put(
-        self,
-        payload_dict: FtmPushPayload | None = ...,
-        proxy: Literal["enable", "disable"] | None = ...,
-        interface: str | None = ...,
-        server: str | None = ...,
-        server_port: int | None = ...,
-        server_cert: str | None = ...,
-        server_ip: str | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
-    ) -> FortiObject: ...
-    
-    def put(
-        self,
-        payload_dict: FtmPushPayload | None = ...,
-        proxy: Literal["enable", "disable"] | None = ...,
-        interface: str | None = ...,
-        server: str | None = ...,
-        server_port: int | None = ...,
-        server_cert: str | None = ...,
-        server_ip: str | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
-    ) -> FortiObject: ...
+
+
+    # ================================================================
+    # Utility Methods
+    # ================================================================
     
     def exists(
         self,
@@ -376,6 +152,8 @@ class FtmPush:
         server_cert: str | None = ...,
         server_ip: str | None = ...,
         status: Literal["enable", "disable"] | None = ...,
+        error_mode: Literal["raise", "return", "print"] | None = ...,
+        error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> FortiObject: ...
     
     # Helper methods
@@ -383,7 +161,7 @@ class FtmPush:
     def help(field_name: str | None = ...) -> str: ...
     
     @staticmethod
-    def fields(detailed: bool = ...) -> Union[list[str], list[dict[str, Any]]]: ...
+    def fields(detailed: bool = ...) -> list[str] | list[dict[str, Any]]: ...
     
     @staticmethod
     def field_info(field_name: str) -> FortiObject: ...
@@ -399,9 +177,6 @@ class FtmPush:
     
     @staticmethod
     def schema() -> FortiObject: ...
-
-
-# ================================================================
 
 
 __all__ = [

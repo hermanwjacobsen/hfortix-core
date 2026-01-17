@@ -11,22 +11,13 @@ from pydantic import BaseModel, Field, field_validator
 from typing import Any, Literal, Optional
 
 # ============================================================================
-# Child Table Models
+# Enum Definitions for Child Table Fields (for fields with 4+ allowed values)
 # ============================================================================
 
-class VlanPolicyAllowedVlans(BaseModel):
-    """
-    Child table model for allowed-vlans.
-    
-    Allowed VLANs to be applied when using this VLAN policy.
-    """
-    
-    class Config:
-        """Pydantic model configuration."""
-        extra = "allow"  # Allow additional fields from API
-        str_strip_whitespace = True
-    
-    vlan_name: str = Field(max_length=79, default="", description="VLAN name.")  # datasource: ['system.interface.name']
+# ============================================================================
+# Child Table Models (sorted deepest-first so nested models are defined before their parents)
+# ============================================================================
+
 class VlanPolicyUntaggedVlans(BaseModel):
     """
     Child table model for untagged-vlans.
@@ -38,8 +29,23 @@ class VlanPolicyUntaggedVlans(BaseModel):
         """Pydantic model configuration."""
         extra = "allow"  # Allow additional fields from API
         str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
     
-    vlan_name: str = Field(max_length=79, default="", description="VLAN name.")  # datasource: ['system.interface.name']
+    vlan_name: str = Field(max_length=79, description="VLAN name.")  # datasource: ['system.interface.name']
+class VlanPolicyAllowedVlans(BaseModel):
+    """
+    Child table model for allowed-vlans.
+    
+    Allowed VLANs to be applied when using this VLAN policy.
+    """
+    
+    class Config:
+        """Pydantic model configuration."""
+        extra = "allow"  # Allow additional fields from API
+        str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
+    
+    vlan_name: str = Field(max_length=79, description="VLAN name.")  # datasource: ['system.interface.name']
 # ============================================================================
 # Enum Definitions (for fields with 4+ allowed values)
 # ============================================================================
@@ -68,12 +74,12 @@ class VlanPolicyModel(BaseModel):
     # Model Fields
     # ========================================================================
     
-    name: str | None = Field(max_length=63, default="", description="VLAN policy name.")    
-    description: str | None = Field(max_length=63, default="", description="Description for the VLAN policy.")    
-    fortilink: str = Field(max_length=15, default="", description="FortiLink interface for which this VLAN policy belongs to.")  # datasource: ['system.interface.name']    
-    vlan: str | None = Field(max_length=15, default="", description="Native VLAN to be applied when using this VLAN policy.")  # datasource: ['system.interface.name']    
-    allowed_vlans: list[AllowedVlans] = Field(default=None, description="Allowed VLANs to be applied when using this VLAN policy.")    
-    untagged_vlans: list[UntaggedVlans] = Field(default=None, description="Untagged VLANs to be applied when using this VLAN policy.")    
+    name: str | None = Field(max_length=63, default=None, description="VLAN policy name.")    
+    description: str | None = Field(max_length=63, default=None, description="Description for the VLAN policy.")    
+    fortilink: str = Field(max_length=15, description="FortiLink interface for which this VLAN policy belongs to.")  # datasource: ['system.interface.name']    
+    vlan: str | None = Field(max_length=15, default=None, description="Native VLAN to be applied when using this VLAN policy.")  # datasource: ['system.interface.name']    
+    allowed_vlans: list[VlanPolicyAllowedVlans] = Field(default_factory=list, description="Allowed VLANs to be applied when using this VLAN policy.")    
+    untagged_vlans: list[VlanPolicyUntaggedVlans] = Field(default_factory=list, description="Untagged VLANs to be applied when using this VLAN policy.")    
     allowed_vlans_all: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable all defined VLANs when using this VLAN policy.")    
     discard_mode: Literal["none", "all-untagged", "all-tagged"] | None = Field(default="none", description="Discard mode to be applied when using this VLAN policy.")    
     # ========================================================================
@@ -170,7 +176,7 @@ class VlanPolicyModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.switch_controller.vlan_policy.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate scalar field
         value = getattr(self, "fortilink", None)
@@ -219,7 +225,7 @@ class VlanPolicyModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.switch_controller.vlan_policy.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate scalar field
         value = getattr(self, "vlan", None)
@@ -268,7 +274,7 @@ class VlanPolicyModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.switch_controller.vlan_policy.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate child table items
         values = getattr(self, "allowed_vlans", [])
@@ -326,7 +332,7 @@ class VlanPolicyModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.switch_controller.vlan_policy.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate child table items
         values = getattr(self, "untagged_vlans", [])
@@ -401,5 +407,5 @@ __all__ = [
 # ============================================================================
 # Generated by hfortix generator v0.6.0
 # Schema: 1.7.0
-# Generated: 2026-01-17T05:32:18.294095Z
+# Generated: 2026-01-17T17:25:22.088623Z
 # ============================================================================

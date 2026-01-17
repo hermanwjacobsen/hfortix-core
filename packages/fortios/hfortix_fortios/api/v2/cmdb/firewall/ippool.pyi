@@ -1,223 +1,166 @@
-from typing import TypedDict, Literal, Any, Coroutine, Union, overload, Generator, final
-from typing_extensions import NotRequired
-from hfortix_fortios.models import FortiObject, FortiObjectList
+""" - Type Stubs
 
-# ============================================================================
-# Nested TypedDicts for table field children (dict mode)
-# These MUST be defined before the Payload class to use them as type hints
-# ============================================================================
+Auto-generated stub file for type checking and IDE support.
 
-# ============================================================================
-# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional)
-# ============================================================================
-# NOTE: We intentionally DON'T use NotRequired wrapper because:
-# 1. total=False already makes all fields optional
-# 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
+Endpoint: firewall/ippool
+Category: cmdb
+"""
+
+from __future__ import annotations
+
+from typing import (
+    Any,
+    ClassVar,
+    Literal,
+    TypedDict,
+    overload,
+)
+
+from hfortix_fortios.models import (
+    FortiObject,
+    FortiObjectList,
+)
+
+
+# ================================================================
+# TypedDict Payloads
+# ================================================================
+
 class IppoolPayload(TypedDict, total=False):
-    """
-    Type hints for firewall/ippool payload fields.
-    
-    Configure IPv4 IP pools.
-    
-    **Related Resources:**
-
-    Dependencies (resources this endpoint references):
-        - :class:`~.system.interface.InterfaceEndpoint` (via: arp-intf, associated-interface)
-
-    **Usage:**
-        payload: IppoolPayload = {
-            "field": "value",  # <- autocomplete shows all fields
-        }
-    """
-    name: str  # IP pool name. | MaxLen: 79
-    type: Literal["overload", "one-to-one", "fixed-port-range", "port-block-allocation"]  # IP pool type: overload, one-to-one, fixed-port-ran | Default: overload
-    startip: str  # First IPv4 address (inclusive) in the range for th | Default: 0.0.0.0
-    endip: str  # Final IPv4 address (inclusive) in the range for th | Default: 0.0.0.0
-    startport: int  # First port number (inclusive) in the range for the | Default: 5117 | Min: 1024 | Max: 65535
-    endport: int  # Final port number (inclusive) in the range for the | Default: 65533 | Min: 1024 | Max: 65535
-    source_startip: str  # First IPv4 address (inclusive) in the range of the | Default: 0.0.0.0
-    source_endip: str  # Final IPv4 address (inclusive) in the range of the | Default: 0.0.0.0
-    block_size: int  # Number of addresses in a block | Default: 128 | Min: 64 | Max: 4096
-    port_per_user: int  # Number of port for each user | Default: 0 | Min: 32 | Max: 60417
-    num_blocks_per_user: int  # Number of addresses blocks that can be used by a u | Default: 8 | Min: 1 | Max: 128
-    pba_timeout: int  # Port block allocation timeout (seconds). | Default: 30 | Min: 3 | Max: 86400
-    pba_interim_log: int  # Port block allocation interim logging interval | Default: 0 | Min: 600 | Max: 86400
-    permit_any_host: Literal["disable", "enable"]  # Enable/disable fullcone NAT. Accept UDP packets fr | Default: disable
-    arp_reply: Literal["disable", "enable"]  # Enable/disable replying to ARP requests when an IP | Default: enable
-    arp_intf: str  # Select an interface from available options that wi | MaxLen: 15
-    associated_interface: str  # Associated interface name. | MaxLen: 15
-    comments: str  # Comment. | MaxLen: 255
-    nat64: Literal["disable", "enable"]  # Enable/disable NAT64. | Default: disable
-    add_nat64_route: Literal["disable", "enable"]  # Enable/disable adding NAT64 route. | Default: enable
-    source_prefix6: str  # Source IPv6 network to be translated | Default: ::/0
-    client_prefix_length: int  # Subnet length of a single deterministic NAT64 clie | Default: 64 | Min: 1 | Max: 128
-    tcp_session_quota: int  # Maximum number of concurrent TCP sessions allowed | Default: 0 | Min: 0 | Max: 2097000
-    udp_session_quota: int  # Maximum number of concurrent UDP sessions allowed | Default: 0 | Min: 0 | Max: 2097000
-    icmp_session_quota: int  # Maximum number of concurrent ICMP sessions allowed | Default: 0 | Min: 0 | Max: 2097000
-    privileged_port_use_pba: Literal["disable", "enable"]  # Enable/disable selection of the external port from | Default: disable
-    subnet_broadcast_in_ippool: Literal["disable"]  # Enable/disable inclusion of the subnetwork address
-
-# ============================================================================
-# Nested classes for table field children (object mode - for API responses)
-# ============================================================================
-
-
-
-# Response TypedDict for GET returns (all fields present in API response)
-class IppoolResponse(TypedDict):
-    """
-    Type hints for firewall/ippool API response fields.
-    
-    All fields are present in the response from the FortiGate API.
-    """
-    name: str  # IP pool name. | MaxLen: 79
-    type: Literal["overload", "one-to-one", "fixed-port-range", "port-block-allocation"]  # IP pool type: overload, one-to-one, fixed-port-ran | Default: overload
-    startip: str  # First IPv4 address (inclusive) in the range for th | Default: 0.0.0.0
-    endip: str  # Final IPv4 address (inclusive) in the range for th | Default: 0.0.0.0
-    startport: int  # First port number (inclusive) in the range for the | Default: 5117 | Min: 1024 | Max: 65535
-    endport: int  # Final port number (inclusive) in the range for the | Default: 65533 | Min: 1024 | Max: 65535
-    source_startip: str  # First IPv4 address (inclusive) in the range of the | Default: 0.0.0.0
-    source_endip: str  # Final IPv4 address (inclusive) in the range of the | Default: 0.0.0.0
-    block_size: int  # Number of addresses in a block | Default: 128 | Min: 64 | Max: 4096
-    port_per_user: int  # Number of port for each user | Default: 0 | Min: 32 | Max: 60417
-    num_blocks_per_user: int  # Number of addresses blocks that can be used by a u | Default: 8 | Min: 1 | Max: 128
-    pba_timeout: int  # Port block allocation timeout (seconds). | Default: 30 | Min: 3 | Max: 86400
-    pba_interim_log: int  # Port block allocation interim logging interval | Default: 0 | Min: 600 | Max: 86400
-    permit_any_host: Literal["disable", "enable"]  # Enable/disable fullcone NAT. Accept UDP packets fr | Default: disable
-    arp_reply: Literal["disable", "enable"]  # Enable/disable replying to ARP requests when an IP | Default: enable
-    arp_intf: str  # Select an interface from available options that wi | MaxLen: 15
-    associated_interface: str  # Associated interface name. | MaxLen: 15
-    comments: str  # Comment. | MaxLen: 255
-    nat64: Literal["disable", "enable"]  # Enable/disable NAT64. | Default: disable
-    add_nat64_route: Literal["disable", "enable"]  # Enable/disable adding NAT64 route. | Default: enable
-    source_prefix6: str  # Source IPv6 network to be translated | Default: ::/0
-    client_prefix_length: int  # Subnet length of a single deterministic NAT64 clie | Default: 64 | Min: 1 | Max: 128
-    tcp_session_quota: int  # Maximum number of concurrent TCP sessions allowed | Default: 0 | Min: 0 | Max: 2097000
-    udp_session_quota: int  # Maximum number of concurrent UDP sessions allowed | Default: 0 | Min: 0 | Max: 2097000
-    icmp_session_quota: int  # Maximum number of concurrent ICMP sessions allowed | Default: 0 | Min: 0 | Max: 2097000
-    privileged_port_use_pba: Literal["disable", "enable"]  # Enable/disable selection of the external port from | Default: disable
-    subnet_broadcast_in_ippool: Literal["disable"]  # Enable/disable inclusion of the subnetwork address
-
-
-@final
-class IppoolObject:
-    """Typed FortiObject for firewall/ippool with IDE autocomplete support.
-    
-    This is a typed wrapper that provides IDE autocomplete for API response fields.
-    At runtime, this is actually a FortiObject instance.
-    """
-    
-    # IP pool name. | MaxLen: 79
+    """Payload type for Ippool operations."""
     name: str
-    # IP pool type: overload, one-to-one, fixed-port-range, port-b | Default: overload
     type: Literal["overload", "one-to-one", "fixed-port-range", "port-block-allocation"]
-    # First IPv4 address (inclusive) in the range for the address | Default: 0.0.0.0
     startip: str
-    # Final IPv4 address (inclusive) in the range for the address | Default: 0.0.0.0
     endip: str
-    # First port number (inclusive) in the range for the address p | Default: 5117 | Min: 1024 | Max: 65535
     startport: int
-    # Final port number (inclusive) in the range for the address p | Default: 65533 | Min: 1024 | Max: 65535
     endport: int
-    # First IPv4 address (inclusive) in the range of the source ad | Default: 0.0.0.0
     source_startip: str
-    # Final IPv4 address (inclusive) in the range of the source ad | Default: 0.0.0.0
     source_endip: str
-    # Number of addresses in a block (64 - 4096, default = 128). | Default: 128 | Min: 64 | Max: 4096
     block_size: int
-    # Number of port for each user | Default: 0 | Min: 32 | Max: 60417
     port_per_user: int
-    # Number of addresses blocks that can be used by a user | Default: 8 | Min: 1 | Max: 128
     num_blocks_per_user: int
-    # Port block allocation timeout (seconds). | Default: 30 | Min: 3 | Max: 86400
     pba_timeout: int
-    # Port block allocation interim logging interval | Default: 0 | Min: 600 | Max: 86400
     pba_interim_log: int
-    # Enable/disable fullcone NAT. Accept UDP packets from any hos | Default: disable
     permit_any_host: Literal["disable", "enable"]
-    # Enable/disable replying to ARP requests when an IP Pool is a | Default: enable
     arp_reply: Literal["disable", "enable"]
-    # Select an interface from available options that will reply t | MaxLen: 15
     arp_intf: str
-    # Associated interface name. | MaxLen: 15
     associated_interface: str
-    # Comment. | MaxLen: 255
     comments: str
-    # Enable/disable NAT64. | Default: disable
     nat64: Literal["disable", "enable"]
-    # Enable/disable adding NAT64 route. | Default: enable
     add_nat64_route: Literal["disable", "enable"]
-    # Source IPv6 network to be translated | Default: ::/0
     source_prefix6: str
-    # Subnet length of a single deterministic NAT64 client | Default: 64 | Min: 1 | Max: 128
     client_prefix_length: int
-    # Maximum number of concurrent TCP sessions allowed per client | Default: 0 | Min: 0 | Max: 2097000
     tcp_session_quota: int
-    # Maximum number of concurrent UDP sessions allowed per client | Default: 0 | Min: 0 | Max: 2097000
     udp_session_quota: int
-    # Maximum number of concurrent ICMP sessions allowed per clien | Default: 0 | Min: 0 | Max: 2097000
     icmp_session_quota: int
-    # Enable/disable selection of the external port from the port | Default: disable
     privileged_port_use_pba: Literal["disable", "enable"]
-    # Enable/disable inclusion of the subnetwork address and broad
     subnet_broadcast_in_ippool: Literal["disable"]
-    
-    # Common API response fields
-    status: str
-    http_status: int | None
-    http_status_code: int | None
-    http_method: str | None
-    http_response_time: float | None
-    vdom: str | None
-    
-    # Methods from FortiObject
-    @property
-    def dict(self) -> dict[str, Any]:
-        """Convert to dictionary."""
-        ...
-    @property
-    def json(self) -> str:
-        """Get pretty-printed JSON string."""
-        ...
-    @property
-    def raw(self) -> dict[str, Any]:
-        """Get raw API response data."""
-        ...
-    def get_full(self, name: str) -> Any: ...
-    def to_dict(self) -> IppoolPayload: ...
-    def keys(self) -> Any: ...
-    def values(self) -> Generator[Any, None, None]: ...
-    def items(self) -> Generator[tuple[str, Any], None, None]: ...
-    def get(self, key: str, default: Any = None) -> Any: ...
 
+
+# ================================================================
+# Response Types (TypedDict for dict-style access)
+# ================================================================
+
+class IppoolResponse(TypedDict, total=False):
+    """Response type for Ippool - use with .dict property for typed dict access."""
+    name: str
+    type: Literal["overload", "one-to-one", "fixed-port-range", "port-block-allocation"]
+    startip: str
+    endip: str
+    startport: int
+    endport: int
+    source_startip: str
+    source_endip: str
+    block_size: int
+    port_per_user: int
+    num_blocks_per_user: int
+    pba_timeout: int
+    pba_interim_log: int
+    permit_any_host: Literal["disable", "enable"]
+    arp_reply: Literal["disable", "enable"]
+    arp_intf: str
+    associated_interface: str
+    comments: str
+    nat64: Literal["disable", "enable"]
+    add_nat64_route: Literal["disable", "enable"]
+    source_prefix6: str
+    client_prefix_length: int
+    tcp_session_quota: int
+    udp_session_quota: int
+    icmp_session_quota: int
+    privileged_port_use_pba: Literal["disable", "enable"]
+    subnet_broadcast_in_ippool: Literal["disable"]
+
+
+# ================================================================
+# Response Types (Class for attribute access)
+# ================================================================
+
+
+class IppoolObject(FortiObject):
+    """Typed FortiObject for Ippool with field access."""
+    name: str
+    type: Literal["overload", "one-to-one", "fixed-port-range", "port-block-allocation"]
+    startip: str
+    endip: str
+    startport: int
+    endport: int
+    source_startip: str
+    source_endip: str
+    block_size: int
+    port_per_user: int
+    num_blocks_per_user: int
+    pba_timeout: int
+    pba_interim_log: int
+    permit_any_host: Literal["disable", "enable"]
+    arp_reply: Literal["disable", "enable"]
+    arp_intf: str
+    associated_interface: str
+    comments: str
+    nat64: Literal["disable", "enable"]
+    add_nat64_route: Literal["disable", "enable"]
+    source_prefix6: str
+    client_prefix_length: int
+    tcp_session_quota: int
+    udp_session_quota: int
+    icmp_session_quota: int
+    privileged_port_use_pba: Literal["disable", "enable"]
+    subnet_broadcast_in_ippool: Literal["disable"]
+
+
+# ================================================================
+# Main Endpoint Class
+# ================================================================
 
 class Ippool:
     """
-    Configure IPv4 IP pools.
     
-    Path: firewall/ippool
+    Endpoint: firewall/ippool
     Category: cmdb
-    Primary Key: name
+    MKey: name
     """
     
+    # Class attributes for introspection
+    endpoint: ClassVar[str] = ...
+    path: ClassVar[str] = ...
+    category: ClassVar[str] = ...
+    mkey: ClassVar[str] = ...
+    capabilities: ClassVar[dict[str, Any]] = ...
+    
     def __init__(self, client: Any) -> None:
-        """Initialize endpoint with HTTP client.
-        
-        Args:
-            client: HTTP client instance for API communication
-        """
+        """Initialize endpoint with HTTP client."""
         ...
     
     # ================================================================
-    # GET OVERLOADS - Always returns FortiObject (or ContentResponse for file endpoints)
-    # Pylance matches overloads top-to-bottom, so these must come first!
+    # GET Methods
     # ================================================================
     
-    # With mkey as positional arg -> returns FortiObject
+    # CMDB with mkey - overloads for single vs list returns
     @overload
     def get(
         self,
         name: str,
+        *,
         filter: str | list[str] | None = ...,
         count: int | None = ...,
         start: int | None = ...,
@@ -227,14 +170,14 @@ class Ippool:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        error_mode: Literal["raise", "return", "print"] | None = ...,
+        error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> IppoolObject: ...
     
-    # With mkey as keyword arg -> returns FortiObject
     @overload
     def get(
         self,
         *,
-        name: str,
         filter: str | list[str] | None = ...,
         count: int | None = ...,
         start: int | None = ...,
@@ -244,164 +187,20 @@ class Ippool:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> IppoolObject: ...
-    
-    # Without mkey -> returns list of FortiObjects
-    @overload
-    def get(
-        self,
-        name: None = None,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
+        error_mode: Literal["raise", "return", "print"] | None = ...,
+        error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> FortiObjectList[IppoolObject]: ...
-    
-    # ================================================================
-    # (removed - all GET now returns FortiObject)
-    # ================================================================
-    
-    # With mkey as positional arg -> returns single object
-    @overload
-    def get(
-        self,
-        name: str,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> IppoolObject: ...
-    
-    # With mkey as keyword arg -> returns single object
-    @overload
-    def get(
-        self,
-        *,
-        name: str,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> IppoolObject: ...
-    
-    # With no mkey -> returns list of objects
-    @overload
-    def get(
-        self,
-        *,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObjectList[IppoolObject]: ...
-    
-    # Dict mode with mkey provided as positional arg (single dict)
-    @overload
-    def get(
-        self,
-        name: str,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> IppoolObject: ...
-    
-    # Dict mode with mkey provided as keyword arg (single dict)
-    @overload
-    def get(
-        self,
-        *,
-        name: str,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> IppoolObject: ...
-    
-    # Dict mode - list of dicts (no mkey/name provided) - keyword-only signature
-    @overload
-    def get(
-        self,
-        *,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObjectList[IppoolObject]: ...
-    
-    # Fallback overload for all other cases
-    @overload
-    def get(
-        self,
-        name: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> Union[dict[str, Any], list[dict[str, Any]], FortiObject, list[FortiObject]]: ...
-    
-    def get(
-        self,
-        name: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> IppoolObject | list[IppoolObject] | dict[str, Any] | list[dict[str, Any]]: ...
     
     def get_schema(
         self,
         vdom: str | None = ...,
         format: str = ...,
     ) -> FortiObject: ...
+
+    # ================================================================
+    # POST Method
+    # ================================================================
     
-    # POST overloads
-    @overload
     def post(
         self,
         payload_dict: IppoolPayload | None = ...,
@@ -433,112 +232,14 @@ class Ippool:
         privileged_port_use_pba: Literal["disable", "enable"] | None = ...,
         subnet_broadcast_in_ippool: Literal["disable"] | None = ...,
         vdom: str | bool | None = ...,
+        error_mode: Literal["raise", "return", "print"] | None = ...,
+        error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> IppoolObject: ...
+
+    # ================================================================
+    # PUT Method
+    # ================================================================
     
-    @overload
-    def post(
-        self,
-        payload_dict: IppoolPayload | None = ...,
-        name: str | None = ...,
-        type: Literal["overload", "one-to-one", "fixed-port-range", "port-block-allocation"] | None = ...,
-        startip: str | None = ...,
-        endip: str | None = ...,
-        startport: int | None = ...,
-        endport: int | None = ...,
-        source_startip: str | None = ...,
-        source_endip: str | None = ...,
-        block_size: int | None = ...,
-        port_per_user: int | None = ...,
-        num_blocks_per_user: int | None = ...,
-        pba_timeout: int | None = ...,
-        pba_interim_log: int | None = ...,
-        permit_any_host: Literal["disable", "enable"] | None = ...,
-        arp_reply: Literal["disable", "enable"] | None = ...,
-        arp_intf: str | None = ...,
-        associated_interface: str | None = ...,
-        comments: str | None = ...,
-        nat64: Literal["disable", "enable"] | None = ...,
-        add_nat64_route: Literal["disable", "enable"] | None = ...,
-        source_prefix6: str | None = ...,
-        client_prefix_length: int | None = ...,
-        tcp_session_quota: int | None = ...,
-        udp_session_quota: int | None = ...,
-        icmp_session_quota: int | None = ...,
-        privileged_port_use_pba: Literal["disable", "enable"] | None = ...,
-        subnet_broadcast_in_ippool: Literal["disable"] | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
-    
-    # Default overload
-    @overload
-    def post(
-        self,
-        payload_dict: IppoolPayload | None = ...,
-        name: str | None = ...,
-        type: Literal["overload", "one-to-one", "fixed-port-range", "port-block-allocation"] | None = ...,
-        startip: str | None = ...,
-        endip: str | None = ...,
-        startport: int | None = ...,
-        endport: int | None = ...,
-        source_startip: str | None = ...,
-        source_endip: str | None = ...,
-        block_size: int | None = ...,
-        port_per_user: int | None = ...,
-        num_blocks_per_user: int | None = ...,
-        pba_timeout: int | None = ...,
-        pba_interim_log: int | None = ...,
-        permit_any_host: Literal["disable", "enable"] | None = ...,
-        arp_reply: Literal["disable", "enable"] | None = ...,
-        arp_intf: str | None = ...,
-        associated_interface: str | None = ...,
-        comments: str | None = ...,
-        nat64: Literal["disable", "enable"] | None = ...,
-        add_nat64_route: Literal["disable", "enable"] | None = ...,
-        source_prefix6: str | None = ...,
-        client_prefix_length: int | None = ...,
-        tcp_session_quota: int | None = ...,
-        udp_session_quota: int | None = ...,
-        icmp_session_quota: int | None = ...,
-        privileged_port_use_pba: Literal["disable", "enable"] | None = ...,
-        subnet_broadcast_in_ippool: Literal["disable"] | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
-    
-    def post(
-        self,
-        payload_dict: IppoolPayload | None = ...,
-        name: str | None = ...,
-        type: Literal["overload", "one-to-one", "fixed-port-range", "port-block-allocation"] | None = ...,
-        startip: str | None = ...,
-        endip: str | None = ...,
-        startport: int | None = ...,
-        endport: int | None = ...,
-        source_startip: str | None = ...,
-        source_endip: str | None = ...,
-        block_size: int | None = ...,
-        port_per_user: int | None = ...,
-        num_blocks_per_user: int | None = ...,
-        pba_timeout: int | None = ...,
-        pba_interim_log: int | None = ...,
-        permit_any_host: Literal["disable", "enable"] | None = ...,
-        arp_reply: Literal["disable", "enable"] | None = ...,
-        arp_intf: str | None = ...,
-        associated_interface: str | None = ...,
-        comments: str | None = ...,
-        nat64: Literal["disable", "enable"] | None = ...,
-        add_nat64_route: Literal["disable", "enable"] | None = ...,
-        source_prefix6: str | None = ...,
-        client_prefix_length: int | None = ...,
-        tcp_session_quota: int | None = ...,
-        udp_session_quota: int | None = ...,
-        icmp_session_quota: int | None = ...,
-        privileged_port_use_pba: Literal["disable", "enable"] | None = ...,
-        subnet_broadcast_in_ippool: Literal["disable"] | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
-    
-    # PUT overloads
-    @overload
     def put(
         self,
         payload_dict: IppoolPayload | None = ...,
@@ -570,138 +271,25 @@ class Ippool:
         privileged_port_use_pba: Literal["disable", "enable"] | None = ...,
         subnet_broadcast_in_ippool: Literal["disable"] | None = ...,
         vdom: str | bool | None = ...,
+        error_mode: Literal["raise", "return", "print"] | None = ...,
+        error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> IppoolObject: ...
-    
-    @overload
-    def put(
-        self,
-        payload_dict: IppoolPayload | None = ...,
-        name: str | None = ...,
-        type: Literal["overload", "one-to-one", "fixed-port-range", "port-block-allocation"] | None = ...,
-        startip: str | None = ...,
-        endip: str | None = ...,
-        startport: int | None = ...,
-        endport: int | None = ...,
-        source_startip: str | None = ...,
-        source_endip: str | None = ...,
-        block_size: int | None = ...,
-        port_per_user: int | None = ...,
-        num_blocks_per_user: int | None = ...,
-        pba_timeout: int | None = ...,
-        pba_interim_log: int | None = ...,
-        permit_any_host: Literal["disable", "enable"] | None = ...,
-        arp_reply: Literal["disable", "enable"] | None = ...,
-        arp_intf: str | None = ...,
-        associated_interface: str | None = ...,
-        comments: str | None = ...,
-        nat64: Literal["disable", "enable"] | None = ...,
-        add_nat64_route: Literal["disable", "enable"] | None = ...,
-        source_prefix6: str | None = ...,
-        client_prefix_length: int | None = ...,
-        tcp_session_quota: int | None = ...,
-        udp_session_quota: int | None = ...,
-        icmp_session_quota: int | None = ...,
-        privileged_port_use_pba: Literal["disable", "enable"] | None = ...,
-        subnet_broadcast_in_ippool: Literal["disable"] | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
-    
-    # Default overload
-    @overload
-    def put(
-        self,
-        payload_dict: IppoolPayload | None = ...,
-        name: str | None = ...,
-        type: Literal["overload", "one-to-one", "fixed-port-range", "port-block-allocation"] | None = ...,
-        startip: str | None = ...,
-        endip: str | None = ...,
-        startport: int | None = ...,
-        endport: int | None = ...,
-        source_startip: str | None = ...,
-        source_endip: str | None = ...,
-        block_size: int | None = ...,
-        port_per_user: int | None = ...,
-        num_blocks_per_user: int | None = ...,
-        pba_timeout: int | None = ...,
-        pba_interim_log: int | None = ...,
-        permit_any_host: Literal["disable", "enable"] | None = ...,
-        arp_reply: Literal["disable", "enable"] | None = ...,
-        arp_intf: str | None = ...,
-        associated_interface: str | None = ...,
-        comments: str | None = ...,
-        nat64: Literal["disable", "enable"] | None = ...,
-        add_nat64_route: Literal["disable", "enable"] | None = ...,
-        source_prefix6: str | None = ...,
-        client_prefix_length: int | None = ...,
-        tcp_session_quota: int | None = ...,
-        udp_session_quota: int | None = ...,
-        icmp_session_quota: int | None = ...,
-        privileged_port_use_pba: Literal["disable", "enable"] | None = ...,
-        subnet_broadcast_in_ippool: Literal["disable"] | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
-    
-    def put(
-        self,
-        payload_dict: IppoolPayload | None = ...,
-        name: str | None = ...,
-        type: Literal["overload", "one-to-one", "fixed-port-range", "port-block-allocation"] | None = ...,
-        startip: str | None = ...,
-        endip: str | None = ...,
-        startport: int | None = ...,
-        endport: int | None = ...,
-        source_startip: str | None = ...,
-        source_endip: str | None = ...,
-        block_size: int | None = ...,
-        port_per_user: int | None = ...,
-        num_blocks_per_user: int | None = ...,
-        pba_timeout: int | None = ...,
-        pba_interim_log: int | None = ...,
-        permit_any_host: Literal["disable", "enable"] | None = ...,
-        arp_reply: Literal["disable", "enable"] | None = ...,
-        arp_intf: str | None = ...,
-        associated_interface: str | None = ...,
-        comments: str | None = ...,
-        nat64: Literal["disable", "enable"] | None = ...,
-        add_nat64_route: Literal["disable", "enable"] | None = ...,
-        source_prefix6: str | None = ...,
-        client_prefix_length: int | None = ...,
-        tcp_session_quota: int | None = ...,
-        udp_session_quota: int | None = ...,
-        icmp_session_quota: int | None = ...,
-        privileged_port_use_pba: Literal["disable", "enable"] | None = ...,
-        subnet_broadcast_in_ippool: Literal["disable"] | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
-    
-    # DELETE overloads
-    @overload
-    def delete(
-        self,
-        name: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> IppoolObject: ...
-    
-    @overload
-    def delete(
-        self,
-        name: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
-    
-    # Default overload
-    @overload
-    def delete(
-        self,
-        name: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+
+    # ================================================================
+    # DELETE Method
+    # ================================================================
     
     def delete(
         self,
         name: str | None = ...,
         vdom: str | bool | None = ...,
+        error_mode: Literal["raise", "return", "print"] | None = ...,
+        error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> FortiObject: ...
+
+    # ================================================================
+    # Utility Methods
+    # ================================================================
     
     def exists(
         self,
@@ -740,6 +328,8 @@ class Ippool:
         privileged_port_use_pba: Literal["disable", "enable"] | None = ...,
         subnet_broadcast_in_ippool: Literal["disable"] | None = ...,
         vdom: str | bool | None = ...,
+        error_mode: Literal["raise", "return", "print"] | None = ...,
+        error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> FortiObject: ...
     
     # Helper methods
@@ -747,7 +337,7 @@ class Ippool:
     def help(field_name: str | None = ...) -> str: ...
     
     @staticmethod
-    def fields(detailed: bool = ...) -> Union[list[str], list[dict[str, Any]]]: ...
+    def fields(detailed: bool = ...) -> list[str] | list[dict[str, Any]]: ...
     
     @staticmethod
     def field_info(field_name: str) -> FortiObject: ...
@@ -763,9 +353,6 @@ class Ippool:
     
     @staticmethod
     def schema() -> FortiObject: ...
-
-
-# ================================================================
 
 
 __all__ = [

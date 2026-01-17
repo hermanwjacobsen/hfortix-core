@@ -729,6 +729,24 @@ class UserActivity(CRUDEndpoint, MetadataMixin):
             - put(): Update existing object
             - exists(): Check existence manually
         """
+        # Apply normalization for table fields (supports flexible input formats)
+        if match is not None:
+            match = normalize_table_field(
+                match,
+                mkey="id",
+                required_fields=['id'],
+                field_name="match",
+                example="[{'id': 1}]",
+            )
+        if control_options is not None:
+            control_options = normalize_table_field(
+                control_options,
+                mkey="name",
+                required_fields=['name'],
+                field_name="control_options",
+                example="[{'name': 'value'}]",
+            )
+        
         # Build payload using helper function with auto-normalization
         payload_data = build_api_payload(
             name=name,

@@ -12,22 +12,27 @@ from typing import Any, Literal, Optional
 from uuid import UUID
 
 # ============================================================================
-# Child Table Models
+# Enum Definitions for Child Table Fields (for fields with 4+ allowed values)
 # ============================================================================
 
-class ProxyAddrgrpMember(BaseModel):
+# ============================================================================
+# Child Table Models (sorted deepest-first so nested models are defined before their parents)
+# ============================================================================
+
+class ProxyAddrgrpTaggingTags(BaseModel):
     """
-    Child table model for member.
+    Child table model for tagging.tags.
     
-    Members of address group.
+    Tags.
     """
     
     class Config:
         """Pydantic model configuration."""
         extra = "allow"  # Allow additional fields from API
         str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
     
-    name: str | None = Field(max_length=79, default="", description="Address name.")  # datasource: ['firewall.proxy-address.name', 'firewall.proxy-addrgrp.name']
+    name: str | None = Field(max_length=79, default=None, description="Tag name.")  # datasource: ['system.object-tagging.tags.name']
 class ProxyAddrgrpTagging(BaseModel):
     """
     Child table model for tagging.
@@ -39,10 +44,25 @@ class ProxyAddrgrpTagging(BaseModel):
         """Pydantic model configuration."""
         extra = "allow"  # Allow additional fields from API
         str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
     
-    name: str | None = Field(max_length=63, default="", description="Tagging entry name.")    
-    category: str | None = Field(max_length=63, default="", description="Tag category.")  # datasource: ['system.object-tagging.category']    
-    tags: list[Tags] = Field(default=None, description="Tags.")
+    name: str | None = Field(max_length=63, default=None, description="Tagging entry name.")    
+    category: str | None = Field(max_length=63, default=None, description="Tag category.")  # datasource: ['system.object-tagging.category']    
+    tags: list[ProxyAddrgrpTaggingTags] = Field(default_factory=list, description="Tags.")
+class ProxyAddrgrpMember(BaseModel):
+    """
+    Child table model for member.
+    
+    Members of address group.
+    """
+    
+    class Config:
+        """Pydantic model configuration."""
+        extra = "allow"  # Allow additional fields from API
+        str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
+    
+    name: str | None = Field(max_length=79, default=None, description="Address name.")  # datasource: ['firewall.proxy-address.name', 'firewall.proxy-addrgrp.name']
 # ============================================================================
 # Enum Definitions (for fields with 4+ allowed values)
 # ============================================================================
@@ -58,7 +78,7 @@ class ProxyAddrgrpModel(BaseModel):
     
     Configure web proxy address group.
     
-    Validation Rules:        - name: max_length=79 pattern=        - type: pattern=        - uuid: pattern=        - member: pattern=        - color: min=0 max=32 pattern=        - tagging: pattern=        - comment: max_length=255 pattern=    """
+    Validation Rules:        - name: max_length=79 pattern=        - type_: pattern=        - uuid: pattern=        - member: pattern=        - color: min=0 max=32 pattern=        - tagging: pattern=        - comment: max_length=255 pattern=    """
     
     class Config:
         """Pydantic model configuration."""
@@ -71,12 +91,12 @@ class ProxyAddrgrpModel(BaseModel):
     # Model Fields
     # ========================================================================
     
-    name: str | None = Field(max_length=79, default="", description="Address group name.")    
-    type: Literal["src", "dst"] | None = Field(default="src", description="Source or destination address group type.")    
+    name: str | None = Field(max_length=79, default=None, description="Address group name.")    
+    type_: Literal["src", "dst"] | None = Field(default="src", serialization_alias="type", description="Source or destination address group type.")    
     uuid: str | None = Field(default="00000000-0000-0000-0000-000000000000", description="Universally Unique Identifier (UUID; automatically assigned but can be manually reset).")    
-    member: list[Member] = Field(description="Members of address group.")    
+    member: list[ProxyAddrgrpMember] = Field(description="Members of address group.")    
     color: int | None = Field(ge=0, le=32, default=0, description="Integer value to determine the color of the icon in the GUI (1 - 32, default = 0, which sets value to 1).")    
-    tagging: list[Tagging] = Field(default=None, description="Config object tagging.")    
+    tagging: list[ProxyAddrgrpTagging] = Field(default_factory=list, description="Config object tagging.")    
     comment: str | None = Field(max_length=255, default=None, description="Optional comments.")    
     # ========================================================================
     # Custom Validators
@@ -142,7 +162,7 @@ class ProxyAddrgrpModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.proxy_addrgrp.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate child table items
         values = getattr(self, "member", [])
@@ -160,9 +180,9 @@ class ProxyAddrgrpModel(BaseModel):
             
             # Check all datasource endpoints
             found = False
-            if await client.api.cmdb.firewall.proxy-address.exists(value):
+            if await client.api.cmdb.firewall.proxy_address.exists(value):
                 found = True
-            elif await client.api.cmdb.firewall.proxy-addrgrp.exists(value):
+            elif await client.api.cmdb.firewall.proxy_addrgrp.exists(value):
                 found = True
             
             if not found:
@@ -202,7 +222,7 @@ class ProxyAddrgrpModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.proxy_addrgrp.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate child table items
         values = getattr(self, "tagging", [])
@@ -220,7 +240,7 @@ class ProxyAddrgrpModel(BaseModel):
             
             # Check all datasource endpoints
             found = False
-            if await client.api.cmdb.system.object-tagging.exists(value):
+            if await client.api.cmdb.system.object_tagging.exists(value):
                 found = True
             
             if not found:
@@ -267,11 +287,11 @@ Dict = dict[str, Any]  # For backward compatibility
 # ============================================================================
 
 __all__ = [
-    "ProxyAddrgrpModel",    "ProxyAddrgrpMember",    "ProxyAddrgrpTagging",]
+    "ProxyAddrgrpModel",    "ProxyAddrgrpMember",    "ProxyAddrgrpTagging",    "ProxyAddrgrpTagging.Tags",]
 
 
 # ============================================================================
 # Generated by hfortix generator v0.6.0
 # Schema: 1.7.0
-# Generated: 2026-01-17T05:32:16.851806Z
+# Generated: 2026-01-17T17:25:20.832894Z
 # ============================================================================

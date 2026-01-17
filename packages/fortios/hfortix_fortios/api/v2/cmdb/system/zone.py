@@ -681,6 +681,24 @@ class Zone(CRUDEndpoint, MetadataMixin):
             - put(): Update existing object
             - exists(): Check existence manually
         """
+        # Apply normalization for table fields (supports flexible input formats)
+        if tagging is not None:
+            tagging = normalize_table_field(
+                tagging,
+                mkey="name",
+                required_fields=['name'],
+                field_name="tagging",
+                example="[{'name': 'value'}]",
+            )
+        if interface is not None:
+            interface = normalize_table_field(
+                interface,
+                mkey="interface-name",
+                required_fields=['interface-name'],
+                field_name="interface",
+                example="[{'interface-name': 'value'}]",
+            )
+        
         # Build payload using helper function with auto-normalization
         payload_data = build_api_payload(
             name=name,

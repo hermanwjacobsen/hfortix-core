@@ -1,209 +1,148 @@
-from typing import TypedDict, Literal, Any, Coroutine, Union, overload, Generator, final
-from typing_extensions import NotRequired
-from hfortix_fortios.models import FortiObject, FortiObjectList
+""" - Type Stubs
 
-# ============================================================================
-# Nested TypedDicts for table field children (dict mode)
-# These MUST be defined before the Payload class to use them as type hints
-# ============================================================================
+Auto-generated stub file for type checking and IDE support.
 
-# ============================================================================
-# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional)
-# ============================================================================
-# NOTE: We intentionally DON'T use NotRequired wrapper because:
-# 1. total=False already makes all fields optional
-# 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
+Endpoint: firewall/profile_group
+Category: cmdb
+"""
+
+from __future__ import annotations
+
+from typing import (
+    Any,
+    ClassVar,
+    Literal,
+    TypedDict,
+    overload,
+)
+
+from hfortix_fortios.models import (
+    FortiObject,
+    FortiObjectList,
+)
+
+
+# ================================================================
+# TypedDict Payloads
+# ================================================================
+
 class ProfileGroupPayload(TypedDict, total=False):
-    """
-    Type hints for firewall/profile_group payload fields.
-    
-    Configure profile groups.
-    
-    **Related Resources:**
-
-    Dependencies (resources this endpoint references):
-        - :class:`~.antivirus.profile.ProfileEndpoint` (via: av-profile)
-        - :class:`~.application.list.ListEndpoint` (via: application-list)
-        - :class:`~.casb.profile.ProfileEndpoint` (via: casb-profile)
-        - :class:`~.diameter-filter.profile.ProfileEndpoint` (via: diameter-filter-profile)
-        - :class:`~.dlp.profile.ProfileEndpoint` (via: dlp-profile)
-        - :class:`~.dnsfilter.profile.ProfileEndpoint` (via: dnsfilter-profile)
-        - :class:`~.emailfilter.profile.ProfileEndpoint` (via: emailfilter-profile)
-        - :class:`~.file-filter.profile.ProfileEndpoint` (via: file-filter-profile)
-        - :class:`~.firewall.profile-protocol-options.ProfileProtocolOptionsEndpoint` (via: profile-protocol-options)
-        - :class:`~.firewall.ssl-ssh-profile.SslSshProfileEndpoint` (via: ssl-ssh-profile)
-        - ... and 9 more dependencies
-
-    **Usage:**
-        payload: ProfileGroupPayload = {
-            "field": "value",  # <- autocomplete shows all fields
-        }
-    """
-    name: str  # Profile group name. | MaxLen: 47
-    profile_protocol_options: str  # Name of an existing Protocol options profile. | Default: default | MaxLen: 47
-    ssl_ssh_profile: str  # Name of an existing SSL SSH profile. | Default: certificate-inspection | MaxLen: 47
-    av_profile: str  # Name of an existing Antivirus profile. | MaxLen: 47
-    webfilter_profile: str  # Name of an existing Web filter profile. | MaxLen: 47
-    dnsfilter_profile: str  # Name of an existing DNS filter profile. | MaxLen: 47
-    emailfilter_profile: str  # Name of an existing email filter profile. | MaxLen: 47
-    dlp_profile: str  # Name of an existing DLP profile. | MaxLen: 47
-    file_filter_profile: str  # Name of an existing file-filter profile. | MaxLen: 47
-    ips_sensor: str  # Name of an existing IPS sensor. | MaxLen: 47
-    application_list: str  # Name of an existing Application list. | MaxLen: 47
-    voip_profile: str  # Name of an existing VoIP (voipd) profile. | MaxLen: 47
-    ips_voip_filter: str  # Name of an existing VoIP (ips) profile. | MaxLen: 47
-    sctp_filter_profile: str  # Name of an existing SCTP filter profile. | MaxLen: 47
-    diameter_filter_profile: str  # Name of an existing Diameter filter profile. | MaxLen: 47
-    virtual_patch_profile: str  # Name of an existing virtual-patch profile. | MaxLen: 47
-    icap_profile: str  # Name of an existing ICAP profile. | MaxLen: 47
-    videofilter_profile: str  # Name of an existing VideoFilter profile. | MaxLen: 47
-    waf_profile: str  # Name of an existing Web application firewall profi | MaxLen: 47
-    ssh_filter_profile: str  # Name of an existing SSH filter profile. | MaxLen: 47
-    casb_profile: str  # Name of an existing CASB profile. | MaxLen: 47
-
-# ============================================================================
-# Nested classes for table field children (object mode - for API responses)
-# ============================================================================
-
-
-
-# Response TypedDict for GET returns (all fields present in API response)
-class ProfileGroupResponse(TypedDict):
-    """
-    Type hints for firewall/profile_group API response fields.
-    
-    All fields are present in the response from the FortiGate API.
-    """
-    name: str  # Profile group name. | MaxLen: 47
-    profile_protocol_options: str  # Name of an existing Protocol options profile. | Default: default | MaxLen: 47
-    ssl_ssh_profile: str  # Name of an existing SSL SSH profile. | Default: certificate-inspection | MaxLen: 47
-    av_profile: str  # Name of an existing Antivirus profile. | MaxLen: 47
-    webfilter_profile: str  # Name of an existing Web filter profile. | MaxLen: 47
-    dnsfilter_profile: str  # Name of an existing DNS filter profile. | MaxLen: 47
-    emailfilter_profile: str  # Name of an existing email filter profile. | MaxLen: 47
-    dlp_profile: str  # Name of an existing DLP profile. | MaxLen: 47
-    file_filter_profile: str  # Name of an existing file-filter profile. | MaxLen: 47
-    ips_sensor: str  # Name of an existing IPS sensor. | MaxLen: 47
-    application_list: str  # Name of an existing Application list. | MaxLen: 47
-    voip_profile: str  # Name of an existing VoIP (voipd) profile. | MaxLen: 47
-    ips_voip_filter: str  # Name of an existing VoIP (ips) profile. | MaxLen: 47
-    sctp_filter_profile: str  # Name of an existing SCTP filter profile. | MaxLen: 47
-    diameter_filter_profile: str  # Name of an existing Diameter filter profile. | MaxLen: 47
-    virtual_patch_profile: str  # Name of an existing virtual-patch profile. | MaxLen: 47
-    icap_profile: str  # Name of an existing ICAP profile. | MaxLen: 47
-    videofilter_profile: str  # Name of an existing VideoFilter profile. | MaxLen: 47
-    waf_profile: str  # Name of an existing Web application firewall profi | MaxLen: 47
-    ssh_filter_profile: str  # Name of an existing SSH filter profile. | MaxLen: 47
-    casb_profile: str  # Name of an existing CASB profile. | MaxLen: 47
-
-
-@final
-class ProfileGroupObject:
-    """Typed FortiObject for firewall/profile_group with IDE autocomplete support.
-    
-    This is a typed wrapper that provides IDE autocomplete for API response fields.
-    At runtime, this is actually a FortiObject instance.
-    """
-    
-    # Profile group name. | MaxLen: 47
+    """Payload type for ProfileGroup operations."""
     name: str
-    # Name of an existing Protocol options profile. | Default: default | MaxLen: 47
     profile_protocol_options: str
-    # Name of an existing SSL SSH profile. | Default: certificate-inspection | MaxLen: 47
     ssl_ssh_profile: str
-    # Name of an existing Antivirus profile. | MaxLen: 47
     av_profile: str
-    # Name of an existing Web filter profile. | MaxLen: 47
     webfilter_profile: str
-    # Name of an existing DNS filter profile. | MaxLen: 47
     dnsfilter_profile: str
-    # Name of an existing email filter profile. | MaxLen: 47
     emailfilter_profile: str
-    # Name of an existing DLP profile. | MaxLen: 47
     dlp_profile: str
-    # Name of an existing file-filter profile. | MaxLen: 47
     file_filter_profile: str
-    # Name of an existing IPS sensor. | MaxLen: 47
     ips_sensor: str
-    # Name of an existing Application list. | MaxLen: 47
     application_list: str
-    # Name of an existing VoIP (voipd) profile. | MaxLen: 47
     voip_profile: str
-    # Name of an existing VoIP (ips) profile. | MaxLen: 47
     ips_voip_filter: str
-    # Name of an existing SCTP filter profile. | MaxLen: 47
     sctp_filter_profile: str
-    # Name of an existing Diameter filter profile. | MaxLen: 47
     diameter_filter_profile: str
-    # Name of an existing virtual-patch profile. | MaxLen: 47
     virtual_patch_profile: str
-    # Name of an existing ICAP profile. | MaxLen: 47
     icap_profile: str
-    # Name of an existing VideoFilter profile. | MaxLen: 47
     videofilter_profile: str
-    # Name of an existing Web application firewall profile. | MaxLen: 47
     waf_profile: str
-    # Name of an existing SSH filter profile. | MaxLen: 47
     ssh_filter_profile: str
-    # Name of an existing CASB profile. | MaxLen: 47
     casb_profile: str
-    
-    # Common API response fields
-    status: str
-    http_status: int | None
-    http_status_code: int | None
-    http_method: str | None
-    http_response_time: float | None
-    vdom: str | None
-    
-    # Methods from FortiObject
-    @property
-    def dict(self) -> dict[str, Any]:
-        """Convert to dictionary."""
-        ...
-    @property
-    def json(self) -> str:
-        """Get pretty-printed JSON string."""
-        ...
-    @property
-    def raw(self) -> dict[str, Any]:
-        """Get raw API response data."""
-        ...
-    def get_full(self, name: str) -> Any: ...
-    def to_dict(self) -> ProfileGroupPayload: ...
-    def keys(self) -> Any: ...
-    def values(self) -> Generator[Any, None, None]: ...
-    def items(self) -> Generator[tuple[str, Any], None, None]: ...
-    def get(self, key: str, default: Any = None) -> Any: ...
 
+
+# ================================================================
+# Response Types (TypedDict for dict-style access)
+# ================================================================
+
+class ProfileGroupResponse(TypedDict, total=False):
+    """Response type for ProfileGroup - use with .dict property for typed dict access."""
+    name: str
+    profile_protocol_options: str
+    ssl_ssh_profile: str
+    av_profile: str
+    webfilter_profile: str
+    dnsfilter_profile: str
+    emailfilter_profile: str
+    dlp_profile: str
+    file_filter_profile: str
+    ips_sensor: str
+    application_list: str
+    voip_profile: str
+    ips_voip_filter: str
+    sctp_filter_profile: str
+    diameter_filter_profile: str
+    virtual_patch_profile: str
+    icap_profile: str
+    videofilter_profile: str
+    waf_profile: str
+    ssh_filter_profile: str
+    casb_profile: str
+
+
+# ================================================================
+# Response Types (Class for attribute access)
+# ================================================================
+
+
+class ProfileGroupObject(FortiObject):
+    """Typed FortiObject for ProfileGroup with field access."""
+    name: str
+    profile_protocol_options: str
+    ssl_ssh_profile: str
+    av_profile: str
+    webfilter_profile: str
+    dnsfilter_profile: str
+    emailfilter_profile: str
+    dlp_profile: str
+    file_filter_profile: str
+    ips_sensor: str
+    application_list: str
+    voip_profile: str
+    ips_voip_filter: str
+    sctp_filter_profile: str
+    diameter_filter_profile: str
+    virtual_patch_profile: str
+    icap_profile: str
+    videofilter_profile: str
+    waf_profile: str
+    ssh_filter_profile: str
+    casb_profile: str
+
+
+# ================================================================
+# Main Endpoint Class
+# ================================================================
 
 class ProfileGroup:
     """
-    Configure profile groups.
     
-    Path: firewall/profile_group
+    Endpoint: firewall/profile_group
     Category: cmdb
-    Primary Key: name
+    MKey: name
     """
     
+    # Class attributes for introspection
+    endpoint: ClassVar[str] = ...
+    path: ClassVar[str] = ...
+    category: ClassVar[str] = ...
+    mkey: ClassVar[str] = ...
+    capabilities: ClassVar[dict[str, Any]] = ...
+    
     def __init__(self, client: Any) -> None:
-        """Initialize endpoint with HTTP client.
-        
-        Args:
-            client: HTTP client instance for API communication
-        """
+        """Initialize endpoint with HTTP client."""
         ...
     
     # ================================================================
-    # GET OVERLOADS - Always returns FortiObject (or ContentResponse for file endpoints)
-    # Pylance matches overloads top-to-bottom, so these must come first!
+    # GET Methods
     # ================================================================
     
-    # With mkey as positional arg -> returns FortiObject
+    # CMDB with mkey - overloads for single vs list returns
     @overload
     def get(
         self,
         name: str,
+        *,
         filter: str | list[str] | None = ...,
         count: int | None = ...,
         start: int | None = ...,
@@ -213,14 +152,14 @@ class ProfileGroup:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        error_mode: Literal["raise", "return", "print"] | None = ...,
+        error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> ProfileGroupObject: ...
     
-    # With mkey as keyword arg -> returns FortiObject
     @overload
     def get(
         self,
         *,
-        name: str,
         filter: str | list[str] | None = ...,
         count: int | None = ...,
         start: int | None = ...,
@@ -230,164 +169,20 @@ class ProfileGroup:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> ProfileGroupObject: ...
-    
-    # Without mkey -> returns list of FortiObjects
-    @overload
-    def get(
-        self,
-        name: None = None,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
+        error_mode: Literal["raise", "return", "print"] | None = ...,
+        error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> FortiObjectList[ProfileGroupObject]: ...
-    
-    # ================================================================
-    # (removed - all GET now returns FortiObject)
-    # ================================================================
-    
-    # With mkey as positional arg -> returns single object
-    @overload
-    def get(
-        self,
-        name: str,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> ProfileGroupObject: ...
-    
-    # With mkey as keyword arg -> returns single object
-    @overload
-    def get(
-        self,
-        *,
-        name: str,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> ProfileGroupObject: ...
-    
-    # With no mkey -> returns list of objects
-    @overload
-    def get(
-        self,
-        *,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObjectList[ProfileGroupObject]: ...
-    
-    # Dict mode with mkey provided as positional arg (single dict)
-    @overload
-    def get(
-        self,
-        name: str,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> ProfileGroupObject: ...
-    
-    # Dict mode with mkey provided as keyword arg (single dict)
-    @overload
-    def get(
-        self,
-        *,
-        name: str,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> ProfileGroupObject: ...
-    
-    # Dict mode - list of dicts (no mkey/name provided) - keyword-only signature
-    @overload
-    def get(
-        self,
-        *,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObjectList[ProfileGroupObject]: ...
-    
-    # Fallback overload for all other cases
-    @overload
-    def get(
-        self,
-        name: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> Union[dict[str, Any], list[dict[str, Any]], FortiObject, list[FortiObject]]: ...
-    
-    def get(
-        self,
-        name: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> ProfileGroupObject | list[ProfileGroupObject] | dict[str, Any] | list[dict[str, Any]]: ...
     
     def get_schema(
         self,
         vdom: str | None = ...,
         format: str = ...,
     ) -> FortiObject: ...
+
+    # ================================================================
+    # POST Method
+    # ================================================================
     
-    # POST overloads
-    @overload
     def post(
         self,
         payload_dict: ProfileGroupPayload | None = ...,
@@ -413,94 +208,14 @@ class ProfileGroup:
         ssh_filter_profile: str | None = ...,
         casb_profile: str | None = ...,
         vdom: str | bool | None = ...,
+        error_mode: Literal["raise", "return", "print"] | None = ...,
+        error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> ProfileGroupObject: ...
+
+    # ================================================================
+    # PUT Method
+    # ================================================================
     
-    @overload
-    def post(
-        self,
-        payload_dict: ProfileGroupPayload | None = ...,
-        name: str | None = ...,
-        profile_protocol_options: str | None = ...,
-        ssl_ssh_profile: str | None = ...,
-        av_profile: str | None = ...,
-        webfilter_profile: str | None = ...,
-        dnsfilter_profile: str | None = ...,
-        emailfilter_profile: str | None = ...,
-        dlp_profile: str | None = ...,
-        file_filter_profile: str | None = ...,
-        ips_sensor: str | None = ...,
-        application_list: str | None = ...,
-        voip_profile: str | None = ...,
-        ips_voip_filter: str | None = ...,
-        sctp_filter_profile: str | None = ...,
-        diameter_filter_profile: str | None = ...,
-        virtual_patch_profile: str | None = ...,
-        icap_profile: str | None = ...,
-        videofilter_profile: str | None = ...,
-        waf_profile: str | None = ...,
-        ssh_filter_profile: str | None = ...,
-        casb_profile: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
-    
-    # Default overload
-    @overload
-    def post(
-        self,
-        payload_dict: ProfileGroupPayload | None = ...,
-        name: str | None = ...,
-        profile_protocol_options: str | None = ...,
-        ssl_ssh_profile: str | None = ...,
-        av_profile: str | None = ...,
-        webfilter_profile: str | None = ...,
-        dnsfilter_profile: str | None = ...,
-        emailfilter_profile: str | None = ...,
-        dlp_profile: str | None = ...,
-        file_filter_profile: str | None = ...,
-        ips_sensor: str | None = ...,
-        application_list: str | None = ...,
-        voip_profile: str | None = ...,
-        ips_voip_filter: str | None = ...,
-        sctp_filter_profile: str | None = ...,
-        diameter_filter_profile: str | None = ...,
-        virtual_patch_profile: str | None = ...,
-        icap_profile: str | None = ...,
-        videofilter_profile: str | None = ...,
-        waf_profile: str | None = ...,
-        ssh_filter_profile: str | None = ...,
-        casb_profile: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
-    
-    def post(
-        self,
-        payload_dict: ProfileGroupPayload | None = ...,
-        name: str | None = ...,
-        profile_protocol_options: str | None = ...,
-        ssl_ssh_profile: str | None = ...,
-        av_profile: str | None = ...,
-        webfilter_profile: str | None = ...,
-        dnsfilter_profile: str | None = ...,
-        emailfilter_profile: str | None = ...,
-        dlp_profile: str | None = ...,
-        file_filter_profile: str | None = ...,
-        ips_sensor: str | None = ...,
-        application_list: str | None = ...,
-        voip_profile: str | None = ...,
-        ips_voip_filter: str | None = ...,
-        sctp_filter_profile: str | None = ...,
-        diameter_filter_profile: str | None = ...,
-        virtual_patch_profile: str | None = ...,
-        icap_profile: str | None = ...,
-        videofilter_profile: str | None = ...,
-        waf_profile: str | None = ...,
-        ssh_filter_profile: str | None = ...,
-        casb_profile: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
-    
-    # PUT overloads
-    @overload
     def put(
         self,
         payload_dict: ProfileGroupPayload | None = ...,
@@ -526,120 +241,25 @@ class ProfileGroup:
         ssh_filter_profile: str | None = ...,
         casb_profile: str | None = ...,
         vdom: str | bool | None = ...,
+        error_mode: Literal["raise", "return", "print"] | None = ...,
+        error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> ProfileGroupObject: ...
-    
-    @overload
-    def put(
-        self,
-        payload_dict: ProfileGroupPayload | None = ...,
-        name: str | None = ...,
-        profile_protocol_options: str | None = ...,
-        ssl_ssh_profile: str | None = ...,
-        av_profile: str | None = ...,
-        webfilter_profile: str | None = ...,
-        dnsfilter_profile: str | None = ...,
-        emailfilter_profile: str | None = ...,
-        dlp_profile: str | None = ...,
-        file_filter_profile: str | None = ...,
-        ips_sensor: str | None = ...,
-        application_list: str | None = ...,
-        voip_profile: str | None = ...,
-        ips_voip_filter: str | None = ...,
-        sctp_filter_profile: str | None = ...,
-        diameter_filter_profile: str | None = ...,
-        virtual_patch_profile: str | None = ...,
-        icap_profile: str | None = ...,
-        videofilter_profile: str | None = ...,
-        waf_profile: str | None = ...,
-        ssh_filter_profile: str | None = ...,
-        casb_profile: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
-    
-    # Default overload
-    @overload
-    def put(
-        self,
-        payload_dict: ProfileGroupPayload | None = ...,
-        name: str | None = ...,
-        profile_protocol_options: str | None = ...,
-        ssl_ssh_profile: str | None = ...,
-        av_profile: str | None = ...,
-        webfilter_profile: str | None = ...,
-        dnsfilter_profile: str | None = ...,
-        emailfilter_profile: str | None = ...,
-        dlp_profile: str | None = ...,
-        file_filter_profile: str | None = ...,
-        ips_sensor: str | None = ...,
-        application_list: str | None = ...,
-        voip_profile: str | None = ...,
-        ips_voip_filter: str | None = ...,
-        sctp_filter_profile: str | None = ...,
-        diameter_filter_profile: str | None = ...,
-        virtual_patch_profile: str | None = ...,
-        icap_profile: str | None = ...,
-        videofilter_profile: str | None = ...,
-        waf_profile: str | None = ...,
-        ssh_filter_profile: str | None = ...,
-        casb_profile: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
-    
-    def put(
-        self,
-        payload_dict: ProfileGroupPayload | None = ...,
-        name: str | None = ...,
-        profile_protocol_options: str | None = ...,
-        ssl_ssh_profile: str | None = ...,
-        av_profile: str | None = ...,
-        webfilter_profile: str | None = ...,
-        dnsfilter_profile: str | None = ...,
-        emailfilter_profile: str | None = ...,
-        dlp_profile: str | None = ...,
-        file_filter_profile: str | None = ...,
-        ips_sensor: str | None = ...,
-        application_list: str | None = ...,
-        voip_profile: str | None = ...,
-        ips_voip_filter: str | None = ...,
-        sctp_filter_profile: str | None = ...,
-        diameter_filter_profile: str | None = ...,
-        virtual_patch_profile: str | None = ...,
-        icap_profile: str | None = ...,
-        videofilter_profile: str | None = ...,
-        waf_profile: str | None = ...,
-        ssh_filter_profile: str | None = ...,
-        casb_profile: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
-    
-    # DELETE overloads
-    @overload
-    def delete(
-        self,
-        name: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> ProfileGroupObject: ...
-    
-    @overload
-    def delete(
-        self,
-        name: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
-    
-    # Default overload
-    @overload
-    def delete(
-        self,
-        name: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+
+    # ================================================================
+    # DELETE Method
+    # ================================================================
     
     def delete(
         self,
         name: str | None = ...,
         vdom: str | bool | None = ...,
+        error_mode: Literal["raise", "return", "print"] | None = ...,
+        error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> FortiObject: ...
+
+    # ================================================================
+    # Utility Methods
+    # ================================================================
     
     def exists(
         self,
@@ -672,6 +292,8 @@ class ProfileGroup:
         ssh_filter_profile: str | None = ...,
         casb_profile: str | None = ...,
         vdom: str | bool | None = ...,
+        error_mode: Literal["raise", "return", "print"] | None = ...,
+        error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> FortiObject: ...
     
     # Helper methods
@@ -679,7 +301,7 @@ class ProfileGroup:
     def help(field_name: str | None = ...) -> str: ...
     
     @staticmethod
-    def fields(detailed: bool = ...) -> Union[list[str], list[dict[str, Any]]]: ...
+    def fields(detailed: bool = ...) -> list[str] | list[dict[str, Any]]: ...
     
     @staticmethod
     def field_info(field_name: str) -> FortiObject: ...
@@ -695,9 +317,6 @@ class ProfileGroup:
     
     @staticmethod
     def schema() -> FortiObject: ...
-
-
-# ================================================================
 
 
 __all__ = [

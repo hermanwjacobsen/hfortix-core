@@ -1097,6 +1097,88 @@ class Policy(CRUDEndpoint, MetadataMixin):
             - put(): Update existing object
             - exists(): Check existence manually
         """
+        # Apply normalization for table fields (supports flexible input formats)
+        if input_device is not None:
+            input_device = normalize_table_field(
+                input_device,
+                mkey="name",
+                required_fields=['name'],
+                field_name="input_device",
+                example="[{'name': 'value'}]",
+            )
+        if src is not None:
+            src = normalize_table_field(
+                src,
+                mkey="subnet",
+                required_fields=['subnet'],
+                field_name="src",
+                example="[{'subnet': 'value'}]",
+            )
+        if srcaddr is not None:
+            srcaddr = normalize_table_field(
+                srcaddr,
+                mkey="name",
+                required_fields=['name'],
+                field_name="srcaddr",
+                example="[{'name': 'value'}]",
+            )
+        if dst is not None:
+            dst = normalize_table_field(
+                dst,
+                mkey="subnet",
+                required_fields=['subnet'],
+                field_name="dst",
+                example="[{'subnet': 'value'}]",
+            )
+        if dstaddr is not None:
+            dstaddr = normalize_table_field(
+                dstaddr,
+                mkey="name",
+                required_fields=['name'],
+                field_name="dstaddr",
+                example="[{'name': 'value'}]",
+            )
+        if internet_service_id is not None:
+            internet_service_id = normalize_table_field(
+                internet_service_id,
+                mkey="id",
+                required_fields=['id'],
+                field_name="internet_service_id",
+                example="[{'id': 1}]",
+            )
+        if internet_service_custom is not None:
+            internet_service_custom = normalize_table_field(
+                internet_service_custom,
+                mkey="name",
+                required_fields=['name'],
+                field_name="internet_service_custom",
+                example="[{'name': 'value'}]",
+            )
+        if internet_service_fortiguard is not None:
+            internet_service_fortiguard = normalize_table_field(
+                internet_service_fortiguard,
+                mkey="name",
+                required_fields=['name'],
+                field_name="internet_service_fortiguard",
+                example="[{'name': 'value'}]",
+            )
+        if users is not None:
+            users = normalize_table_field(
+                users,
+                mkey="name",
+                required_fields=['name'],
+                field_name="users",
+                example="[{'name': 'value'}]",
+            )
+        if groups is not None:
+            groups = normalize_table_field(
+                groups,
+                mkey="name",
+                required_fields=['name'],
+                field_name="groups",
+                example="[{'name': 'value'}]",
+            )
+        
         # Build payload using helper function with auto-normalization
         payload_data = build_api_payload(
             seq_num=seq_num,

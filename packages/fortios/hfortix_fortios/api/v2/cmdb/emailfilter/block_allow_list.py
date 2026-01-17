@@ -638,6 +638,16 @@ class BlockAllowList(CRUDEndpoint, MetadataMixin):
             - put(): Update existing object
             - exists(): Check existence manually
         """
+        # Apply normalization for table fields (supports flexible input formats)
+        if entries is not None:
+            entries = normalize_table_field(
+                entries,
+                mkey="id",
+                required_fields=['status', 'id', 'type', 'action', 'addr-type', 'ip4-subnet', 'ip6-subnet', 'pattern-type', 'pattern'],
+                field_name="entries",
+                example="[{'status': 'enable', 'id': 1, 'type': 'ip', 'action': 'reject', 'addr-type': 'ipv4', 'ip4-subnet': 'value', 'ip6-subnet': 'value', 'pattern-type': 'wildcard', 'pattern': 'value'}]",
+            )
+        
         # Build payload using helper function with auto-normalization
         payload_data = build_api_payload(
             id=id,

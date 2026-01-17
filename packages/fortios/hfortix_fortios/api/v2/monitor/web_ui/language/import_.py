@@ -14,10 +14,10 @@ Example Usage:
     >>> fgt = FortiOS(host="192.168.1.99", token="your-api-token")
     >>>
     >>> # List all items
-    >>> items = fgt.api.monitor.web_ui_language_import_.get()
+    >>> items = fgt.api.monitor.web_ui_language_import.get()
     >>>
     >>> # Create with auto-normalization (strings/lists converted automatically)
-    >>> result = fgt.api.monitor.web_ui_language_import_.post(
+    >>> result = fgt.api.monitor.web_ui_language_import.post(
     ...     name="example",
     ...     srcintf="port1",  # Auto-converted to [{'name': 'port1'}]
     ...     dstintf=["port2", "port3"],  # Auto-converted to list of dicts
@@ -108,7 +108,7 @@ class Import(CRUDEndpoint, MetadataMixin):
 
         Examples:
             >>> # Create using individual parameters
-            >>> result = fgt.api.monitor.web_ui_language_import_.post(
+            >>> result = fgt.api.monitor.web_ui_language_import.post(
             ...     name="example",
             ...     # ... other required fields
             ... )
@@ -117,7 +117,7 @@ class Import(CRUDEndpoint, MetadataMixin):
             >>> # Create using payload dict
             >>> payload = Import.defaults()  # Start with defaults
             >>> payload['name'] = 'my-object'
-            >>> result = fgt.api.monitor.web_ui_language_import_.post(payload_dict=payload)
+            >>> result = fgt.api.monitor.web_ui_language_import.post(payload_dict=payload)
 
         Note:
             Required fields: {{ ", ".join(Import.required_fields()) }}

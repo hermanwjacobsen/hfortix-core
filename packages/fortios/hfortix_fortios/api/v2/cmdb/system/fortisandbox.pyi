@@ -1,249 +1,119 @@
-from typing import TypedDict, Literal, Any, Coroutine, Union, overload, Generator, final
-from typing_extensions import NotRequired
-from hfortix_fortios.models import FortiObject, FortiObjectList
+""" - Type Stubs
 
-# ============================================================================
-# Nested TypedDicts for table field children (dict mode)
-# These MUST be defined before the Payload class to use them as type hints
-# ============================================================================
+Auto-generated stub file for type checking and IDE support.
 
-# ============================================================================
-# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional)
-# ============================================================================
-# NOTE: We intentionally DON'T use NotRequired wrapper because:
-# 1. total=False already makes all fields optional
-# 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
+Endpoint: system/fortisandbox
+Category: cmdb
+"""
+
+from __future__ import annotations
+
+from typing import (
+    Any,
+    ClassVar,
+    Literal,
+    TypedDict,
+)
+
+from hfortix_fortios.models import (
+    FortiObject,
+    FortiObjectList,
+)
+
+
+# ================================================================
+# TypedDict Payloads
+# ================================================================
+
 class FortisandboxPayload(TypedDict, total=False):
-    """
-    Type hints for system/fortisandbox payload fields.
-    
-    Configure FortiSandbox.
-    
-    **Related Resources:**
-
-    Dependencies (resources this endpoint references):
-        - :class:`~.system.interface.InterfaceEndpoint` (via: interface)
-        - :class:`~.vpn.certificate.ca.CaEndpoint` (via: ca)
-
-    **Usage:**
-        payload: FortisandboxPayload = {
-            "field": "value",  # <- autocomplete shows all fields
-        }
-    """
-    status: Literal["enable", "disable"]  # Enable/disable FortiSandbox. | Default: disable
-    forticloud: Literal["enable", "disable"]  # Enable/disable FortiSandbox Cloud. | Default: disable
-    inline_scan: Literal["enable", "disable"]  # Enable/disable FortiSandbox inline scan. | Default: disable
-    server: str  # Server IP address or FQDN of the remote FortiSandb | MaxLen: 63
-    source_ip: str  # Source IP address for communications to FortiSandb | MaxLen: 63
-    interface_select_method: Literal["auto", "sdwan", "specify"]  # Specify how to select outgoing interface to reach | Default: auto
-    interface: str  # Specify outgoing interface to reach server. | MaxLen: 15
-    vrf_select: int  # VRF ID used for connection to server. | Default: 0 | Min: 0 | Max: 511
-    enc_algorithm: Literal["default", "high", "low"]  # Configure the level of SSL protection for secure c | Default: default
-    ssl_min_proto_version: Literal["default", "SSLv3", "TLSv1", "TLSv1-1", "TLSv1-2", "TLSv1-3"]  # Minimum supported protocol version for SSL/TLS con | Default: default
-    email: str  # Notifier email address. | MaxLen: 63
-    ca: str  # The CA that signs remote FortiSandbox certificate, | MaxLen: 79
-    cn: str  # The CN of remote server certificate, case sensitiv | MaxLen: 127
-    certificate_verification: Literal["enable", "disable"]  # Enable/disable identity verification of FortiSandb | Default: disable
-
-# ============================================================================
-# Nested classes for table field children (object mode - for API responses)
-# ============================================================================
-
-
-
-# Response TypedDict for GET returns (all fields present in API response)
-class FortisandboxResponse(TypedDict):
-    """
-    Type hints for system/fortisandbox API response fields.
-    
-    All fields are present in the response from the FortiGate API.
-    """
-    status: Literal["enable", "disable"]  # Enable/disable FortiSandbox. | Default: disable
-    forticloud: Literal["enable", "disable"]  # Enable/disable FortiSandbox Cloud. | Default: disable
-    inline_scan: Literal["enable", "disable"]  # Enable/disable FortiSandbox inline scan. | Default: disable
-    server: str  # Server IP address or FQDN of the remote FortiSandb | MaxLen: 63
-    source_ip: str  # Source IP address for communications to FortiSandb | MaxLen: 63
-    interface_select_method: Literal["auto", "sdwan", "specify"]  # Specify how to select outgoing interface to reach | Default: auto
-    interface: str  # Specify outgoing interface to reach server. | MaxLen: 15
-    vrf_select: int  # VRF ID used for connection to server. | Default: 0 | Min: 0 | Max: 511
-    enc_algorithm: Literal["default", "high", "low"]  # Configure the level of SSL protection for secure c | Default: default
-    ssl_min_proto_version: Literal["default", "SSLv3", "TLSv1", "TLSv1-1", "TLSv1-2", "TLSv1-3"]  # Minimum supported protocol version for SSL/TLS con | Default: default
-    email: str  # Notifier email address. | MaxLen: 63
-    ca: str  # The CA that signs remote FortiSandbox certificate, | MaxLen: 79
-    cn: str  # The CN of remote server certificate, case sensitiv | MaxLen: 127
-    certificate_verification: Literal["enable", "disable"]  # Enable/disable identity verification of FortiSandb | Default: disable
-
-
-@final
-class FortisandboxObject:
-    """Typed FortiObject for system/fortisandbox with IDE autocomplete support.
-    
-    This is a typed wrapper that provides IDE autocomplete for API response fields.
-    At runtime, this is actually a FortiObject instance.
-    """
-    
-    # Enable/disable FortiSandbox. | Default: disable
+    """Payload type for Fortisandbox operations."""
     status: Literal["enable", "disable"]
-    # Enable/disable FortiSandbox Cloud. | Default: disable
     forticloud: Literal["enable", "disable"]
-    # Enable/disable FortiSandbox inline scan. | Default: disable
     inline_scan: Literal["enable", "disable"]
-    # Server IP address or FQDN of the remote FortiSandbox. | MaxLen: 63
     server: str
-    # Source IP address for communications to FortiSandbox. | MaxLen: 63
     source_ip: str
-    # Specify how to select outgoing interface to reach server. | Default: auto
     interface_select_method: Literal["auto", "sdwan", "specify"]
-    # Specify outgoing interface to reach server. | MaxLen: 15
     interface: str
-    # VRF ID used for connection to server. | Default: 0 | Min: 0 | Max: 511
     vrf_select: int
-    # Configure the level of SSL protection for secure communicati | Default: default
     enc_algorithm: Literal["default", "high", "low"]
-    # Minimum supported protocol version for SSL/TLS connections | Default: default
     ssl_min_proto_version: Literal["default", "SSLv3", "TLSv1", "TLSv1-1", "TLSv1-2", "TLSv1-3"]
-    # Notifier email address. | MaxLen: 63
     email: str
-    # The CA that signs remote FortiSandbox certificate, empty for | MaxLen: 79
     ca: str
-    # The CN of remote server certificate, case sensitive, empty f | MaxLen: 127
     cn: str
-    # Enable/disable identity verification of FortiSandbox by use | Default: disable
     certificate_verification: Literal["enable", "disable"]
-    
-    # Common API response fields
-    status: str
-    http_status: int | None
-    http_status_code: int | None
-    http_method: str | None
-    http_response_time: float | None
-    vdom: str | None
-    
-    # Methods from FortiObject
-    @property
-    def dict(self) -> dict[str, Any]:
-        """Convert to dictionary."""
-        ...
-    @property
-    def json(self) -> str:
-        """Get pretty-printed JSON string."""
-        ...
-    @property
-    def raw(self) -> dict[str, Any]:
-        """Get raw API response data."""
-        ...
-    def get_full(self, name: str) -> Any: ...
-    def to_dict(self) -> FortisandboxPayload: ...
-    def keys(self) -> Any: ...
-    def values(self) -> Generator[Any, None, None]: ...
-    def items(self) -> Generator[tuple[str, Any], None, None]: ...
-    def get(self, key: str, default: Any = None) -> Any: ...
 
+
+# ================================================================
+# Response Types (TypedDict for dict-style access)
+# ================================================================
+
+class FortisandboxResponse(TypedDict, total=False):
+    """Response type for Fortisandbox - use with .dict property for typed dict access."""
+    status: Literal["enable", "disable"]
+    forticloud: Literal["enable", "disable"]
+    inline_scan: Literal["enable", "disable"]
+    server: str
+    source_ip: str
+    interface_select_method: Literal["auto", "sdwan", "specify"]
+    interface: str
+    vrf_select: int
+    enc_algorithm: Literal["default", "high", "low"]
+    ssl_min_proto_version: Literal["default", "SSLv3", "TLSv1", "TLSv1-1", "TLSv1-2", "TLSv1-3"]
+    email: str
+    ca: str
+    cn: str
+    certificate_verification: Literal["enable", "disable"]
+
+
+# ================================================================
+# Response Types (Class for attribute access)
+# ================================================================
+
+
+class FortisandboxObject(FortiObject):
+    """Typed FortiObject for Fortisandbox with field access."""
+    status: Literal["enable", "disable"]
+    forticloud: Literal["enable", "disable"]
+    inline_scan: Literal["enable", "disable"]
+    server: str
+    source_ip: str
+    interface_select_method: Literal["auto", "sdwan", "specify"]
+    interface: str
+    vrf_select: int
+    enc_algorithm: Literal["default", "high", "low"]
+    ssl_min_proto_version: Literal["default", "SSLv3", "TLSv1", "TLSv1-1", "TLSv1-2", "TLSv1-3"]
+    email: str
+    ca: str
+    cn: str
+    certificate_verification: Literal["enable", "disable"]
+
+
+# ================================================================
+# Main Endpoint Class
+# ================================================================
 
 class Fortisandbox:
     """
-    Configure FortiSandbox.
     
-    Path: system/fortisandbox
+    Endpoint: system/fortisandbox
     Category: cmdb
     """
     
+    # Class attributes for introspection
+    endpoint: ClassVar[str] = ...
+    path: ClassVar[str] = ...
+    category: ClassVar[str] = ...
+    capabilities: ClassVar[dict[str, Any]] = ...
+    
     def __init__(self, client: Any) -> None:
-        """Initialize endpoint with HTTP client.
-        
-        Args:
-            client: HTTP client instance for API communication
-        """
+        """Initialize endpoint with HTTP client."""
         ...
     
     # ================================================================
-    # GET OVERLOADS - Always returns FortiObject (or ContentResponse for file endpoints)
-    # Pylance matches overloads top-to-bottom, so these must come first!
+    # GET Methods
     # ================================================================
     
-    # With mkey as positional arg -> returns FortiObject
-    @overload
-    def get(
-        self,
-        name: str,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-    ) -> FortisandboxObject: ...
-    
-    # With mkey as keyword arg -> returns FortiObject
-    @overload
-    def get(
-        self,
-        *,
-        name: str,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-    ) -> FortisandboxObject: ...
-    
-    # Without mkey -> returns list of FortiObjects
-    @overload
-    def get(
-        self,
-        name: None = None,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-    ) -> FortisandboxObject: ...
-    
-    # ================================================================
-    # (removed - all GET now returns FortiObject)
-    # ================================================================
-    
-    # With mkey as positional arg -> returns single object
-    @overload
-    def get(
-        self,
-        name: str,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-    ) -> FortisandboxObject: ...
-    
-    # With mkey as keyword arg -> returns single object
-    @overload
-    def get(
-        self,
-        *,
-        name: str,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-    ) -> FortisandboxObject: ...
-    
-    # With no mkey -> returns list of objects
-    @overload
+    # Singleton endpoint (no mkey)
     def get(
         self,
         *,
@@ -255,89 +125,20 @@ class Fortisandbox:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
+        error_mode: Literal["raise", "return", "print"] | None = ...,
+        error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> FortisandboxObject: ...
-    
-    # Dict mode with mkey provided as positional arg (single dict)
-    @overload
-    def get(
-        self,
-        name: str,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-    ) -> FortisandboxObject: ...
-    
-    # Dict mode with mkey provided as keyword arg (single dict)
-    @overload
-    def get(
-        self,
-        *,
-        name: str,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-    ) -> FortisandboxObject: ...
-    
-    # Dict mode - list of dicts (no mkey/name provided) - keyword-only signature
-    @overload
-    def get(
-        self,
-        *,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-    ) -> FortisandboxObject: ...
-    
-    # Fallback overload for all other cases
-    @overload
-    def get(
-        self,
-        name: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-    ) -> dict[str, Any] | FortiObject: ...
-    
-    def get(
-        self,
-        name: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-    ) -> FortisandboxObject | dict[str, Any]: ...
     
     def get_schema(
         self,
         format: str = ...,
     ) -> FortiObject: ...
+
+
+    # ================================================================
+    # PUT Method
+    # ================================================================
     
-    # PUT overloads
-    @overload
     def put(
         self,
         payload_dict: FortisandboxPayload | None = ...,
@@ -355,67 +156,14 @@ class Fortisandbox:
         ca: str | None = ...,
         cn: str | None = ...,
         certificate_verification: Literal["enable", "disable"] | None = ...,
+        error_mode: Literal["raise", "return", "print"] | None = ...,
+        error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> FortisandboxObject: ...
-    
-    @overload
-    def put(
-        self,
-        payload_dict: FortisandboxPayload | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
-        forticloud: Literal["enable", "disable"] | None = ...,
-        inline_scan: Literal["enable", "disable"] | None = ...,
-        server: str | None = ...,
-        source_ip: str | None = ...,
-        interface_select_method: Literal["auto", "sdwan", "specify"] | None = ...,
-        interface: str | None = ...,
-        vrf_select: int | None = ...,
-        enc_algorithm: Literal["default", "high", "low"] | None = ...,
-        ssl_min_proto_version: Literal["default", "SSLv3", "TLSv1", "TLSv1-1", "TLSv1-2", "TLSv1-3"] | None = ...,
-        email: str | None = ...,
-        ca: str | None = ...,
-        cn: str | None = ...,
-        certificate_verification: Literal["enable", "disable"] | None = ...,
-    ) -> FortiObject: ...
-    
-    # Default overload
-    @overload
-    def put(
-        self,
-        payload_dict: FortisandboxPayload | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
-        forticloud: Literal["enable", "disable"] | None = ...,
-        inline_scan: Literal["enable", "disable"] | None = ...,
-        server: str | None = ...,
-        source_ip: str | None = ...,
-        interface_select_method: Literal["auto", "sdwan", "specify"] | None = ...,
-        interface: str | None = ...,
-        vrf_select: int | None = ...,
-        enc_algorithm: Literal["default", "high", "low"] | None = ...,
-        ssl_min_proto_version: Literal["default", "SSLv3", "TLSv1", "TLSv1-1", "TLSv1-2", "TLSv1-3"] | None = ...,
-        email: str | None = ...,
-        ca: str | None = ...,
-        cn: str | None = ...,
-        certificate_verification: Literal["enable", "disable"] | None = ...,
-    ) -> FortiObject: ...
-    
-    def put(
-        self,
-        payload_dict: FortisandboxPayload | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
-        forticloud: Literal["enable", "disable"] | None = ...,
-        inline_scan: Literal["enable", "disable"] | None = ...,
-        server: str | None = ...,
-        source_ip: str | None = ...,
-        interface_select_method: Literal["auto", "sdwan", "specify"] | None = ...,
-        interface: str | None = ...,
-        vrf_select: int | None = ...,
-        enc_algorithm: Literal["default", "high", "low"] | None = ...,
-        ssl_min_proto_version: Literal["default", "SSLv3", "TLSv1", "TLSv1-1", "TLSv1-2", "TLSv1-3"] | None = ...,
-        email: str | None = ...,
-        ca: str | None = ...,
-        cn: str | None = ...,
-        certificate_verification: Literal["enable", "disable"] | None = ...,
-    ) -> FortiObject: ...
+
+
+    # ================================================================
+    # Utility Methods
+    # ================================================================
     
     def exists(
         self,
@@ -439,6 +187,8 @@ class Fortisandbox:
         ca: str | None = ...,
         cn: str | None = ...,
         certificate_verification: Literal["enable", "disable"] | None = ...,
+        error_mode: Literal["raise", "return", "print"] | None = ...,
+        error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> FortiObject: ...
     
     # Helper methods
@@ -446,7 +196,7 @@ class Fortisandbox:
     def help(field_name: str | None = ...) -> str: ...
     
     @staticmethod
-    def fields(detailed: bool = ...) -> Union[list[str], list[dict[str, Any]]]: ...
+    def fields(detailed: bool = ...) -> list[str] | list[dict[str, Any]]: ...
     
     @staticmethod
     def field_info(field_name: str) -> FortiObject: ...
@@ -462,9 +212,6 @@ class Fortisandbox:
     
     @staticmethod
     def schema() -> FortiObject: ...
-
-
-# ================================================================
 
 
 __all__ = [

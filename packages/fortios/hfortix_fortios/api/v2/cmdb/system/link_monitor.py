@@ -404,6 +404,8 @@ class LinkMonitor(CRUDEndpoint, MetadataMixin):
                 example="[{'id': 1, 'dst': 'value'}]",
             )
         
+        # Apply normalization for multi-value option fields (space-separated strings)
+        
         # Build payload using helper function with auto-normalization
         # This automatically converts strings/lists to [{'name': '...'}] format for list fields
         # To disable auto-normalization, use build_cmdb_payload directly
@@ -632,6 +634,8 @@ class LinkMonitor(CRUDEndpoint, MetadataMixin):
                 field_name="server_list",
                 example="[{'id': 1, 'dst': 'value'}]",
             )
+        
+        # Apply normalization for multi-value option fields (space-separated strings)
         
         # Build payload using helper function with auto-normalization
         # This automatically converts strings/lists to [{'name': '...'}] format for list fields
@@ -940,6 +944,34 @@ class LinkMonitor(CRUDEndpoint, MetadataMixin):
             - put(): Update existing object
             - exists(): Check existence manually
         """
+        # Apply normalization for table fields (supports flexible input formats)
+        if server is not None:
+            server = normalize_table_field(
+                server,
+                mkey="address",
+                required_fields=['address'],
+                field_name="server",
+                example="[{'address': 'value'}]",
+            )
+        if route is not None:
+            route = normalize_table_field(
+                route,
+                mkey="subnet",
+                required_fields=['subnet'],
+                field_name="route",
+                example="[{'subnet': 'value'}]",
+            )
+        if server_list is not None:
+            server_list = normalize_table_field(
+                server_list,
+                mkey="id",
+                required_fields=['id', 'dst'],
+                field_name="server_list",
+                example="[{'id': 1, 'dst': 'value'}]",
+            )
+        
+        # Apply normalization for multi-value option fields (space-separated strings)
+        
         # Build payload using helper function with auto-normalization
         payload_data = build_api_payload(
             name=name,

@@ -1,150 +1,115 @@
-from typing import TypedDict, Literal, Any, Coroutine, Union, overload, Generator, final
-from typing_extensions import NotRequired
-from hfortix_fortios.models import FortiObject, FortiObjectList
+""" - Type Stubs
 
-# ============================================================================
-# Nested TypedDicts for table field children (dict mode)
-# These MUST be defined before the Payload class to use them as type hints
-# ============================================================================
+Auto-generated stub file for type checking and IDE support.
 
-# ============================================================================
-# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional)
-# ============================================================================
-# NOTE: We intentionally DON'T use NotRequired wrapper because:
-# 1. total=False already makes all fields optional
-# 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
+Endpoint: system/lldp/network_policy
+Category: cmdb
+"""
+
+from __future__ import annotations
+
+from typing import (
+    Any,
+    ClassVar,
+    Literal,
+    TypedDict,
+    overload,
+)
+
+from hfortix_fortios.models import (
+    FortiObject,
+    FortiObjectList,
+)
+
+
+# ================================================================
+# TypedDict Payloads
+# ================================================================
+
 class NetworkPolicyPayload(TypedDict, total=False):
-    """
-    Type hints for system/lldp/network_policy payload fields.
-    
-    Configure LLDP network policy.
-    
-    **Usage:**
-        payload: NetworkPolicyPayload = {
-            "field": "value",  # <- autocomplete shows all fields
-        }
-    """
-    name: str  # LLDP network policy name. | MaxLen: 35
-    comment: str  # Comment. | MaxLen: 1023
-    voice: str  # Voice.
-    voice_signaling: str  # Voice signaling.
-    guest: str  # Guest.
-    guest_voice_signaling: str  # Guest Voice Signaling.
-    softphone: str  # Softphone.
-    video_conferencing: str  # Video Conferencing.
-    streaming_video: str  # Streaming Video.
-    video_signaling: str  # Video Signaling.
-
-# ============================================================================
-# Nested classes for table field children (object mode - for API responses)
-# ============================================================================
-
-
-
-# Response TypedDict for GET returns (all fields present in API response)
-class NetworkPolicyResponse(TypedDict):
-    """
-    Type hints for system/lldp/network_policy API response fields.
-    
-    All fields are present in the response from the FortiGate API.
-    """
-    name: str  # LLDP network policy name. | MaxLen: 35
-    comment: str  # Comment. | MaxLen: 1023
-    voice: str  # Voice.
-    voice_signaling: str  # Voice signaling.
-    guest: str  # Guest.
-    guest_voice_signaling: str  # Guest Voice Signaling.
-    softphone: str  # Softphone.
-    video_conferencing: str  # Video Conferencing.
-    streaming_video: str  # Streaming Video.
-    video_signaling: str  # Video Signaling.
-
-
-@final
-class NetworkPolicyObject:
-    """Typed FortiObject for system/lldp/network_policy with IDE autocomplete support.
-    
-    This is a typed wrapper that provides IDE autocomplete for API response fields.
-    At runtime, this is actually a FortiObject instance.
-    """
-    
-    # LLDP network policy name. | MaxLen: 35
+    """Payload type for NetworkPolicy operations."""
     name: str
-    # Comment. | MaxLen: 1023
     comment: str
-    # Voice.
     voice: str
-    # Voice signaling.
     voice_signaling: str
-    # Guest.
     guest: str
-    # Guest Voice Signaling.
     guest_voice_signaling: str
-    # Softphone.
     softphone: str
-    # Video Conferencing.
     video_conferencing: str
-    # Streaming Video.
     streaming_video: str
-    # Video Signaling.
     video_signaling: str
-    
-    # Common API response fields
-    status: str
-    http_status: int | None
-    http_status_code: int | None
-    http_method: str | None
-    http_response_time: float | None
-    vdom: str | None
-    
-    # Methods from FortiObject
-    @property
-    def dict(self) -> dict[str, Any]:
-        """Convert to dictionary."""
-        ...
-    @property
-    def json(self) -> str:
-        """Get pretty-printed JSON string."""
-        ...
-    @property
-    def raw(self) -> dict[str, Any]:
-        """Get raw API response data."""
-        ...
-    def get_full(self, name: str) -> Any: ...
-    def to_dict(self) -> NetworkPolicyPayload: ...
-    def keys(self) -> Any: ...
-    def values(self) -> Generator[Any, None, None]: ...
-    def items(self) -> Generator[tuple[str, Any], None, None]: ...
-    def get(self, key: str, default: Any = None) -> Any: ...
 
+
+# ================================================================
+# Response Types (TypedDict for dict-style access)
+# ================================================================
+
+class NetworkPolicyResponse(TypedDict, total=False):
+    """Response type for NetworkPolicy - use with .dict property for typed dict access."""
+    name: str
+    comment: str
+    voice: str
+    voice_signaling: str
+    guest: str
+    guest_voice_signaling: str
+    softphone: str
+    video_conferencing: str
+    streaming_video: str
+    video_signaling: str
+
+
+# ================================================================
+# Response Types (Class for attribute access)
+# ================================================================
+
+
+class NetworkPolicyObject(FortiObject):
+    """Typed FortiObject for NetworkPolicy with field access."""
+    name: str
+    comment: str
+    voice: str
+    voice_signaling: str
+    guest: str
+    guest_voice_signaling: str
+    softphone: str
+    video_conferencing: str
+    streaming_video: str
+    video_signaling: str
+
+
+# ================================================================
+# Main Endpoint Class
+# ================================================================
 
 class NetworkPolicy:
     """
-    Configure LLDP network policy.
     
-    Path: system/lldp/network_policy
+    Endpoint: system/lldp/network_policy
     Category: cmdb
-    Primary Key: name
+    MKey: name
     """
     
+    # Class attributes for introspection
+    endpoint: ClassVar[str] = ...
+    path: ClassVar[str] = ...
+    category: ClassVar[str] = ...
+    mkey: ClassVar[str] = ...
+    capabilities: ClassVar[dict[str, Any]] = ...
+    
     def __init__(self, client: Any) -> None:
-        """Initialize endpoint with HTTP client.
-        
-        Args:
-            client: HTTP client instance for API communication
-        """
+        """Initialize endpoint with HTTP client."""
         ...
     
     # ================================================================
-    # GET OVERLOADS - Always returns FortiObject (or ContentResponse for file endpoints)
-    # Pylance matches overloads top-to-bottom, so these must come first!
+    # GET Methods
     # ================================================================
     
-    # With mkey as positional arg -> returns FortiObject
+    # CMDB with mkey - overloads for single vs list returns
     @overload
     def get(
         self,
         name: str,
+        *,
         filter: str | list[str] | None = ...,
         count: int | None = ...,
         start: int | None = ...,
@@ -154,14 +119,14 @@ class NetworkPolicy:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        error_mode: Literal["raise", "return", "print"] | None = ...,
+        error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> NetworkPolicyObject: ...
     
-    # With mkey as keyword arg -> returns FortiObject
     @overload
     def get(
         self,
         *,
-        name: str,
         filter: str | list[str] | None = ...,
         count: int | None = ...,
         start: int | None = ...,
@@ -171,164 +136,20 @@ class NetworkPolicy:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> NetworkPolicyObject: ...
-    
-    # Without mkey -> returns list of FortiObjects
-    @overload
-    def get(
-        self,
-        name: None = None,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
+        error_mode: Literal["raise", "return", "print"] | None = ...,
+        error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> FortiObjectList[NetworkPolicyObject]: ...
-    
-    # ================================================================
-    # (removed - all GET now returns FortiObject)
-    # ================================================================
-    
-    # With mkey as positional arg -> returns single object
-    @overload
-    def get(
-        self,
-        name: str,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> NetworkPolicyObject: ...
-    
-    # With mkey as keyword arg -> returns single object
-    @overload
-    def get(
-        self,
-        *,
-        name: str,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> NetworkPolicyObject: ...
-    
-    # With no mkey -> returns list of objects
-    @overload
-    def get(
-        self,
-        *,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObjectList[NetworkPolicyObject]: ...
-    
-    # Dict mode with mkey provided as positional arg (single dict)
-    @overload
-    def get(
-        self,
-        name: str,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> NetworkPolicyObject: ...
-    
-    # Dict mode with mkey provided as keyword arg (single dict)
-    @overload
-    def get(
-        self,
-        *,
-        name: str,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> NetworkPolicyObject: ...
-    
-    # Dict mode - list of dicts (no mkey/name provided) - keyword-only signature
-    @overload
-    def get(
-        self,
-        *,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObjectList[NetworkPolicyObject]: ...
-    
-    # Fallback overload for all other cases
-    @overload
-    def get(
-        self,
-        name: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> Union[dict[str, Any], list[dict[str, Any]], FortiObject, list[FortiObject]]: ...
-    
-    def get(
-        self,
-        name: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> NetworkPolicyObject | list[NetworkPolicyObject] | dict[str, Any] | list[dict[str, Any]]: ...
     
     def get_schema(
         self,
         vdom: str | None = ...,
         format: str = ...,
     ) -> FortiObject: ...
+
+    # ================================================================
+    # POST Method
+    # ================================================================
     
-    # POST overloads
-    @overload
     def post(
         self,
         payload_dict: NetworkPolicyPayload | None = ...,
@@ -343,61 +164,14 @@ class NetworkPolicy:
         streaming_video: str | None = ...,
         video_signaling: str | None = ...,
         vdom: str | bool | None = ...,
+        error_mode: Literal["raise", "return", "print"] | None = ...,
+        error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> NetworkPolicyObject: ...
+
+    # ================================================================
+    # PUT Method
+    # ================================================================
     
-    @overload
-    def post(
-        self,
-        payload_dict: NetworkPolicyPayload | None = ...,
-        name: str | None = ...,
-        comment: str | None = ...,
-        voice: str | None = ...,
-        voice_signaling: str | None = ...,
-        guest: str | None = ...,
-        guest_voice_signaling: str | None = ...,
-        softphone: str | None = ...,
-        video_conferencing: str | None = ...,
-        streaming_video: str | None = ...,
-        video_signaling: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
-    
-    # Default overload
-    @overload
-    def post(
-        self,
-        payload_dict: NetworkPolicyPayload | None = ...,
-        name: str | None = ...,
-        comment: str | None = ...,
-        voice: str | None = ...,
-        voice_signaling: str | None = ...,
-        guest: str | None = ...,
-        guest_voice_signaling: str | None = ...,
-        softphone: str | None = ...,
-        video_conferencing: str | None = ...,
-        streaming_video: str | None = ...,
-        video_signaling: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
-    
-    def post(
-        self,
-        payload_dict: NetworkPolicyPayload | None = ...,
-        name: str | None = ...,
-        comment: str | None = ...,
-        voice: str | None = ...,
-        voice_signaling: str | None = ...,
-        guest: str | None = ...,
-        guest_voice_signaling: str | None = ...,
-        softphone: str | None = ...,
-        video_conferencing: str | None = ...,
-        streaming_video: str | None = ...,
-        video_signaling: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
-    
-    # PUT overloads
-    @overload
     def put(
         self,
         payload_dict: NetworkPolicyPayload | None = ...,
@@ -412,87 +186,25 @@ class NetworkPolicy:
         streaming_video: str | None = ...,
         video_signaling: str | None = ...,
         vdom: str | bool | None = ...,
+        error_mode: Literal["raise", "return", "print"] | None = ...,
+        error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> NetworkPolicyObject: ...
-    
-    @overload
-    def put(
-        self,
-        payload_dict: NetworkPolicyPayload | None = ...,
-        name: str | None = ...,
-        comment: str | None = ...,
-        voice: str | None = ...,
-        voice_signaling: str | None = ...,
-        guest: str | None = ...,
-        guest_voice_signaling: str | None = ...,
-        softphone: str | None = ...,
-        video_conferencing: str | None = ...,
-        streaming_video: str | None = ...,
-        video_signaling: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
-    
-    # Default overload
-    @overload
-    def put(
-        self,
-        payload_dict: NetworkPolicyPayload | None = ...,
-        name: str | None = ...,
-        comment: str | None = ...,
-        voice: str | None = ...,
-        voice_signaling: str | None = ...,
-        guest: str | None = ...,
-        guest_voice_signaling: str | None = ...,
-        softphone: str | None = ...,
-        video_conferencing: str | None = ...,
-        streaming_video: str | None = ...,
-        video_signaling: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
-    
-    def put(
-        self,
-        payload_dict: NetworkPolicyPayload | None = ...,
-        name: str | None = ...,
-        comment: str | None = ...,
-        voice: str | None = ...,
-        voice_signaling: str | None = ...,
-        guest: str | None = ...,
-        guest_voice_signaling: str | None = ...,
-        softphone: str | None = ...,
-        video_conferencing: str | None = ...,
-        streaming_video: str | None = ...,
-        video_signaling: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
-    
-    # DELETE overloads
-    @overload
-    def delete(
-        self,
-        name: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> NetworkPolicyObject: ...
-    
-    @overload
-    def delete(
-        self,
-        name: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
-    
-    # Default overload
-    @overload
-    def delete(
-        self,
-        name: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+
+    # ================================================================
+    # DELETE Method
+    # ================================================================
     
     def delete(
         self,
         name: str | None = ...,
         vdom: str | bool | None = ...,
+        error_mode: Literal["raise", "return", "print"] | None = ...,
+        error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> FortiObject: ...
+
+    # ================================================================
+    # Utility Methods
+    # ================================================================
     
     def exists(
         self,
@@ -514,6 +226,8 @@ class NetworkPolicy:
         streaming_video: str | None = ...,
         video_signaling: str | None = ...,
         vdom: str | bool | None = ...,
+        error_mode: Literal["raise", "return", "print"] | None = ...,
+        error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> FortiObject: ...
     
     # Helper methods
@@ -521,7 +235,7 @@ class NetworkPolicy:
     def help(field_name: str | None = ...) -> str: ...
     
     @staticmethod
-    def fields(detailed: bool = ...) -> Union[list[str], list[dict[str, Any]]]: ...
+    def fields(detailed: bool = ...) -> list[str] | list[dict[str, Any]]: ...
     
     @staticmethod
     def field_info(field_name: str) -> FortiObject: ...
@@ -537,9 +251,6 @@ class NetworkPolicy:
     
     @staticmethod
     def schema() -> FortiObject: ...
-
-
-# ================================================================
 
 
 __all__ = [

@@ -1,216 +1,118 @@
-from typing import TypedDict, Literal, Any, Coroutine, Union, overload, Generator, final
-from typing_extensions import NotRequired
-from hfortix_fortios.models import FortiObject, FortiObjectList
+""" - Type Stubs
 
-# ============================================================================
-# Nested TypedDicts for table field children (dict mode)
-# These MUST be defined before the Payload class to use them as type hints
-# ============================================================================
+Auto-generated stub file for type checking and IDE support.
 
-class ApcfgProfileCommandlistItem(TypedDict, total=False):
-    """Type hints for command-list table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    Use this when building payloads for POST/PUT requests.
-    
-    **Available fields:**
-        - id: int
-        - type: "non-password" | "password"
-        - name: str
-        - value: str
-        - passwd_value: str
-    
-    **Example:**
-        entry: ApcfgProfileCommandlistItem = {
-            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
-        }
-    """
-    
-    id: int  # Command ID. | Default: 0 | Min: 1 | Max: 255
-    type: Literal["non-password", "password"]  # The command type (default = non-password). | Default: non-password
-    name: str  # AP local configuration command name. | MaxLen: 63
-    value: str  # AP local configuration command value. | MaxLen: 127
-    passwd_value: str  # AP local configuration command password value. | MaxLen: 128
+Endpoint: wireless_controller/apcfg_profile
+Category: cmdb
+"""
+
+from __future__ import annotations
+
+from typing import (
+    Any,
+    ClassVar,
+    Literal,
+    TypedDict,
+    overload,
+)
+
+from hfortix_fortios.models import (
+    FortiObject,
+    FortiObjectList,
+)
 
 
-# ============================================================================
-# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional)
-# ============================================================================
-# NOTE: We intentionally DON'T use NotRequired wrapper because:
-# 1. total=False already makes all fields optional
-# 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
-class ApcfgProfilePayload(TypedDict, total=False):
-    """
-    Type hints for wireless_controller/apcfg_profile payload fields.
-    
-    Configure AP local configuration profiles.
-    
-    **Usage:**
-        payload: ApcfgProfilePayload = {
-            "field": "value",  # <- autocomplete shows all fields
-        }
-    """
-    name: str  # AP local configuration profile name. | MaxLen: 35
-    ap_family: Literal["fap", "fap-u", "fap-c"]  # FortiAP family type (default = fap). | Default: fap
-    comment: str  # Comment. | MaxLen: 255
-    ac_type: Literal["default", "specify", "apcfg"]  # Validation controller type (default = default). | Default: default
-    ac_timer: int  # Maximum waiting time for the AP to join the valida | Default: 10 | Min: 3 | Max: 30
-    ac_ip: str  # IP address of the validation controller that AP mu | Default: 0.0.0.0
-    ac_port: int  # Port of the validation controller that AP must be | Default: 5246 | Min: 1024 | Max: 49150
-    command_list: list[ApcfgProfileCommandlistItem]  # AP local configuration command list.
+# ================================================================
+# TypedDict Payloads
+# ================================================================
 
-# ============================================================================
-# Nested classes for table field children (object mode - for API responses)
-# ============================================================================
-
-@final
-class ApcfgProfileCommandlistObject:
-    """Typed object for command-list table items.
-    
-    Provides IDE autocomplete for nested table field attributes.
-    At runtime, this is a FortiObject instance.
-    """
-    
-    # Command ID. | Default: 0 | Min: 1 | Max: 255
+class ApcfgProfileCommandlistItem:
+    """Nested item for command-list field - supports attribute access."""
     id: int
-    # The command type (default = non-password). | Default: non-password
     type: Literal["non-password", "password"]
-    # AP local configuration command name. | MaxLen: 63
     name: str
-    # AP local configuration command value. | MaxLen: 127
     value: str
-    # AP local configuration command password value. | MaxLen: 128
     passwd_value: str
-    
-    # Common API response fields
-    status: str
-    http_status: int | None
-    http_status_code: int | None
-    http_method: str | None
-    http_response_time: float | None
-    vdom: str | None
-    
-    # Methods from FortiObject
-    @property
-    def dict(self) -> dict[str, Any]:
-        """Convert to dictionary."""
-        ...
-    @property
-    def json(self) -> str:
-        """Get pretty-printed JSON string."""
-        ...
-    @property
-    def raw(self) -> dict[str, Any]:
-        """Get raw API response data."""
-        ...
-    def get_full(self, name: str) -> Any: ...
-    def to_dict(self) -> FortiObject: ...
-    def keys(self) -> Any: ...
-    def values(self) -> Generator[Any, None, None]: ...
-    def items(self) -> Generator[tuple[str, Any], None, None]: ...
-    def get(self, key: str, default: Any = None) -> Any: ...
 
 
-
-
-# Response TypedDict for GET returns (all fields present in API response)
-class ApcfgProfileResponse(TypedDict):
-    """
-    Type hints for wireless_controller/apcfg_profile API response fields.
-    
-    All fields are present in the response from the FortiGate API.
-    """
-    name: str  # AP local configuration profile name. | MaxLen: 35
-    ap_family: Literal["fap", "fap-u", "fap-c"]  # FortiAP family type (default = fap). | Default: fap
-    comment: str  # Comment. | MaxLen: 255
-    ac_type: Literal["default", "specify", "apcfg"]  # Validation controller type (default = default). | Default: default
-    ac_timer: int  # Maximum waiting time for the AP to join the valida | Default: 10 | Min: 3 | Max: 30
-    ac_ip: str  # IP address of the validation controller that AP mu | Default: 0.0.0.0
-    ac_port: int  # Port of the validation controller that AP must be | Default: 5246 | Min: 1024 | Max: 49150
-    command_list: list[ApcfgProfileCommandlistItem]  # AP local configuration command list.
-
-
-@final
-class ApcfgProfileObject:
-    """Typed FortiObject for wireless_controller/apcfg_profile with IDE autocomplete support.
-    
-    This is a typed wrapper that provides IDE autocomplete for API response fields.
-    At runtime, this is actually a FortiObject instance.
-    """
-    
-    # AP local configuration profile name. | MaxLen: 35
+class ApcfgProfilePayload(TypedDict, total=False):
+    """Payload type for ApcfgProfile operations."""
     name: str
-    # FortiAP family type (default = fap). | Default: fap
     ap_family: Literal["fap", "fap-u", "fap-c"]
-    # Comment. | MaxLen: 255
     comment: str
-    # Validation controller type (default = default). | Default: default
     ac_type: Literal["default", "specify", "apcfg"]
-    # Maximum waiting time for the AP to join the validation contr | Default: 10 | Min: 3 | Max: 30
     ac_timer: int
-    # IP address of the validation controller that AP must be able | Default: 0.0.0.0
     ac_ip: str
-    # Port of the validation controller that AP must be able to jo | Default: 5246 | Min: 1024 | Max: 49150
     ac_port: int
-    # AP local configuration command list.
-    command_list: list[ApcfgProfileCommandlistObject]
-    
-    # Common API response fields
-    status: str
-    http_status: int | None
-    http_status_code: int | None
-    http_method: str | None
-    http_response_time: float | None
-    vdom: str | None
-    
-    # Methods from FortiObject
-    @property
-    def dict(self) -> dict[str, Any]:
-        """Convert to dictionary."""
-        ...
-    @property
-    def json(self) -> str:
-        """Get pretty-printed JSON string."""
-        ...
-    @property
-    def raw(self) -> dict[str, Any]:
-        """Get raw API response data."""
-        ...
-    def get_full(self, name: str) -> Any: ...
-    def to_dict(self) -> ApcfgProfilePayload: ...
-    def keys(self) -> Any: ...
-    def values(self) -> Generator[Any, None, None]: ...
-    def items(self) -> Generator[tuple[str, Any], None, None]: ...
-    def get(self, key: str, default: Any = None) -> Any: ...
+    command_list: str | list[str] | list[dict[str, Any]] | list[ApcfgProfileCommandlistItem]
 
+
+# ================================================================
+# Response Types (TypedDict for dict-style access)
+# ================================================================
+
+class ApcfgProfileResponse(TypedDict, total=False):
+    """Response type for ApcfgProfile - use with .dict property for typed dict access."""
+    name: str
+    ap_family: Literal["fap", "fap-u", "fap-c"]
+    comment: str
+    ac_type: Literal["default", "specify", "apcfg"]
+    ac_timer: int
+    ac_ip: str
+    ac_port: int
+    command_list: list[ApcfgProfileCommandlistItem]
+
+
+# ================================================================
+# Response Types (Class for attribute access)
+# ================================================================
+
+
+class ApcfgProfileObject(FortiObject):
+    """Typed FortiObject for ApcfgProfile with field access."""
+    name: str
+    ap_family: Literal["fap", "fap-u", "fap-c"]
+    comment: str
+    ac_type: Literal["default", "specify", "apcfg"]
+    ac_timer: int
+    ac_ip: str
+    ac_port: int
+    command_list: list[ApcfgProfileCommandlistItem]
+
+
+# ================================================================
+# Main Endpoint Class
+# ================================================================
 
 class ApcfgProfile:
     """
-    Configure AP local configuration profiles.
     
-    Path: wireless_controller/apcfg_profile
+    Endpoint: wireless_controller/apcfg_profile
     Category: cmdb
-    Primary Key: name
+    MKey: name
     """
     
+    # Class attributes for introspection
+    endpoint: ClassVar[str] = ...
+    path: ClassVar[str] = ...
+    category: ClassVar[str] = ...
+    mkey: ClassVar[str] = ...
+    capabilities: ClassVar[dict[str, Any]] = ...
+    
     def __init__(self, client: Any) -> None:
-        """Initialize endpoint with HTTP client.
-        
-        Args:
-            client: HTTP client instance for API communication
-        """
+        """Initialize endpoint with HTTP client."""
         ...
     
     # ================================================================
-    # GET OVERLOADS - Always returns FortiObject (or ContentResponse for file endpoints)
-    # Pylance matches overloads top-to-bottom, so these must come first!
+    # GET Methods
     # ================================================================
     
-    # With mkey as positional arg -> returns FortiObject
+    # CMDB with mkey - overloads for single vs list returns
     @overload
     def get(
         self,
         name: str,
+        *,
         filter: str | list[str] | None = ...,
         count: int | None = ...,
         start: int | None = ...,
@@ -220,14 +122,14 @@ class ApcfgProfile:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        error_mode: Literal["raise", "return", "print"] | None = ...,
+        error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> ApcfgProfileObject: ...
     
-    # With mkey as keyword arg -> returns FortiObject
     @overload
     def get(
         self,
         *,
-        name: str,
         filter: str | list[str] | None = ...,
         count: int | None = ...,
         start: int | None = ...,
@@ -237,164 +139,20 @@ class ApcfgProfile:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> ApcfgProfileObject: ...
-    
-    # Without mkey -> returns list of FortiObjects
-    @overload
-    def get(
-        self,
-        name: None = None,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
+        error_mode: Literal["raise", "return", "print"] | None = ...,
+        error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> FortiObjectList[ApcfgProfileObject]: ...
-    
-    # ================================================================
-    # (removed - all GET now returns FortiObject)
-    # ================================================================
-    
-    # With mkey as positional arg -> returns single object
-    @overload
-    def get(
-        self,
-        name: str,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> ApcfgProfileObject: ...
-    
-    # With mkey as keyword arg -> returns single object
-    @overload
-    def get(
-        self,
-        *,
-        name: str,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> ApcfgProfileObject: ...
-    
-    # With no mkey -> returns list of objects
-    @overload
-    def get(
-        self,
-        *,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObjectList[ApcfgProfileObject]: ...
-    
-    # Dict mode with mkey provided as positional arg (single dict)
-    @overload
-    def get(
-        self,
-        name: str,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> ApcfgProfileObject: ...
-    
-    # Dict mode with mkey provided as keyword arg (single dict)
-    @overload
-    def get(
-        self,
-        *,
-        name: str,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> ApcfgProfileObject: ...
-    
-    # Dict mode - list of dicts (no mkey/name provided) - keyword-only signature
-    @overload
-    def get(
-        self,
-        *,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObjectList[ApcfgProfileObject]: ...
-    
-    # Fallback overload for all other cases
-    @overload
-    def get(
-        self,
-        name: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> Union[dict[str, Any], list[dict[str, Any]], FortiObject, list[FortiObject]]: ...
-    
-    def get(
-        self,
-        name: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> ApcfgProfileObject | list[ApcfgProfileObject] | dict[str, Any] | list[dict[str, Any]]: ...
     
     def get_schema(
         self,
         vdom: str | None = ...,
         format: str = ...,
     ) -> FortiObject: ...
+
+    # ================================================================
+    # POST Method
+    # ================================================================
     
-    # POST overloads
-    @overload
     def post(
         self,
         payload_dict: ApcfgProfilePayload | None = ...,
@@ -405,57 +163,16 @@ class ApcfgProfile:
         ac_timer: int | None = ...,
         ac_ip: str | None = ...,
         ac_port: int | None = ...,
-        command_list: str | list[str] | list[ApcfgProfileCommandlistItem] | None = ...,
+        command_list: str | list[str] | list[dict[str, Any]] | list[ApcfgProfileCommandlistItem] | None = ...,
         vdom: str | bool | None = ...,
+        error_mode: Literal["raise", "return", "print"] | None = ...,
+        error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> ApcfgProfileObject: ...
+
+    # ================================================================
+    # PUT Method
+    # ================================================================
     
-    @overload
-    def post(
-        self,
-        payload_dict: ApcfgProfilePayload | None = ...,
-        name: str | None = ...,
-        ap_family: Literal["fap", "fap-u", "fap-c"] | None = ...,
-        comment: str | None = ...,
-        ac_type: Literal["default", "specify", "apcfg"] | None = ...,
-        ac_timer: int | None = ...,
-        ac_ip: str | None = ...,
-        ac_port: int | None = ...,
-        command_list: str | list[str] | list[ApcfgProfileCommandlistItem] | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
-    
-    # Default overload
-    @overload
-    def post(
-        self,
-        payload_dict: ApcfgProfilePayload | None = ...,
-        name: str | None = ...,
-        ap_family: Literal["fap", "fap-u", "fap-c"] | None = ...,
-        comment: str | None = ...,
-        ac_type: Literal["default", "specify", "apcfg"] | None = ...,
-        ac_timer: int | None = ...,
-        ac_ip: str | None = ...,
-        ac_port: int | None = ...,
-        command_list: str | list[str] | list[ApcfgProfileCommandlistItem] | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
-    
-    def post(
-        self,
-        payload_dict: ApcfgProfilePayload | None = ...,
-        name: str | None = ...,
-        ap_family: Literal["fap", "fap-u", "fap-c"] | None = ...,
-        comment: str | None = ...,
-        ac_type: Literal["default", "specify", "apcfg"] | None = ...,
-        ac_timer: int | None = ...,
-        ac_ip: str | None = ...,
-        ac_port: int | None = ...,
-        command_list: str | list[str] | list[ApcfgProfileCommandlistItem] | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
-    
-    # PUT overloads
-    @overload
     def put(
         self,
         payload_dict: ApcfgProfilePayload | None = ...,
@@ -466,83 +183,27 @@ class ApcfgProfile:
         ac_timer: int | None = ...,
         ac_ip: str | None = ...,
         ac_port: int | None = ...,
-        command_list: str | list[str] | list[ApcfgProfileCommandlistItem] | None = ...,
+        command_list: str | list[str] | list[dict[str, Any]] | list[ApcfgProfileCommandlistItem] | None = ...,
         vdom: str | bool | None = ...,
+        error_mode: Literal["raise", "return", "print"] | None = ...,
+        error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> ApcfgProfileObject: ...
-    
-    @overload
-    def put(
-        self,
-        payload_dict: ApcfgProfilePayload | None = ...,
-        name: str | None = ...,
-        ap_family: Literal["fap", "fap-u", "fap-c"] | None = ...,
-        comment: str | None = ...,
-        ac_type: Literal["default", "specify", "apcfg"] | None = ...,
-        ac_timer: int | None = ...,
-        ac_ip: str | None = ...,
-        ac_port: int | None = ...,
-        command_list: str | list[str] | list[ApcfgProfileCommandlistItem] | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
-    
-    # Default overload
-    @overload
-    def put(
-        self,
-        payload_dict: ApcfgProfilePayload | None = ...,
-        name: str | None = ...,
-        ap_family: Literal["fap", "fap-u", "fap-c"] | None = ...,
-        comment: str | None = ...,
-        ac_type: Literal["default", "specify", "apcfg"] | None = ...,
-        ac_timer: int | None = ...,
-        ac_ip: str | None = ...,
-        ac_port: int | None = ...,
-        command_list: str | list[str] | list[ApcfgProfileCommandlistItem] | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
-    
-    def put(
-        self,
-        payload_dict: ApcfgProfilePayload | None = ...,
-        name: str | None = ...,
-        ap_family: Literal["fap", "fap-u", "fap-c"] | None = ...,
-        comment: str | None = ...,
-        ac_type: Literal["default", "specify", "apcfg"] | None = ...,
-        ac_timer: int | None = ...,
-        ac_ip: str | None = ...,
-        ac_port: int | None = ...,
-        command_list: str | list[str] | list[ApcfgProfileCommandlistItem] | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
-    
-    # DELETE overloads
-    @overload
-    def delete(
-        self,
-        name: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> ApcfgProfileObject: ...
-    
-    @overload
-    def delete(
-        self,
-        name: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
-    
-    # Default overload
-    @overload
-    def delete(
-        self,
-        name: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+
+    # ================================================================
+    # DELETE Method
+    # ================================================================
     
     def delete(
         self,
         name: str | None = ...,
         vdom: str | bool | None = ...,
+        error_mode: Literal["raise", "return", "print"] | None = ...,
+        error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> FortiObject: ...
+
+    # ================================================================
+    # Utility Methods
+    # ================================================================
     
     def exists(
         self,
@@ -560,8 +221,10 @@ class ApcfgProfile:
         ac_timer: int | None = ...,
         ac_ip: str | None = ...,
         ac_port: int | None = ...,
-        command_list: str | list[str] | list[ApcfgProfileCommandlistItem] | None = ...,
+        command_list: str | list[str] | list[dict[str, Any]] | list[ApcfgProfileCommandlistItem] | None = ...,
         vdom: str | bool | None = ...,
+        error_mode: Literal["raise", "return", "print"] | None = ...,
+        error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> FortiObject: ...
     
     # Helper methods
@@ -569,7 +232,7 @@ class ApcfgProfile:
     def help(field_name: str | None = ...) -> str: ...
     
     @staticmethod
-    def fields(detailed: bool = ...) -> Union[list[str], list[dict[str, Any]]]: ...
+    def fields(detailed: bool = ...) -> list[str] | list[dict[str, Any]]: ...
     
     @staticmethod
     def field_info(field_name: str) -> FortiObject: ...
@@ -585,9 +248,6 @@ class ApcfgProfile:
     
     @staticmethod
     def schema() -> FortiObject: ...
-
-
-# ================================================================
 
 
 __all__ = [

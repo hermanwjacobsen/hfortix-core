@@ -12,67 +12,27 @@ from typing import Any, Literal, Optional
 from enum import Enum
 
 # ============================================================================
-# Child Table Models
+# Enum Definitions for Child Table Fields (for fields with 4+ allowed values)
 # ============================================================================
 
-class HaAutoVirtualMacInterface(BaseModel):
+# ============================================================================
+# Child Table Models (sorted deepest-first so nested models are defined before their parents)
+# ============================================================================
+
+class HaVclusterVdom(BaseModel):
     """
-    Child table model for auto-virtual-mac-interface.
+    Child table model for vcluster.vdom.
     
-    The physical interface that will be assigned an auto-generated virtual MAC address.
-    """
-    
-    class Config:
-        """Pydantic model configuration."""
-        extra = "allow"  # Allow additional fields from API
-        str_strip_whitespace = True
-    
-    interface_name: str = Field(max_length=15, default="", description="Interface name.")  # datasource: ['system.interface.name']
-class HaBackupHbdev(BaseModel):
-    """
-    Child table model for backup-hbdev.
-    
-    Backup heartbeat interfaces. Must be the same for all members.
+    Virtual domain(s) in the virtual cluster.
     """
     
     class Config:
         """Pydantic model configuration."""
         extra = "allow"  # Allow additional fields from API
         str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
     
-    name: str | None = Field(max_length=79, default="", description="Interface name.")  # datasource: ['system.interface.name']
-class HaHaMgmtInterfaces(BaseModel):
-    """
-    Child table model for ha-mgmt-interfaces.
-    
-    Reserve interfaces to manage individual cluster units.
-    """
-    
-    class Config:
-        """Pydantic model configuration."""
-        extra = "allow"  # Allow additional fields from API
-        str_strip_whitespace = True
-    
-    id: int | None = Field(ge=0, le=4294967295, default=0, description="Table ID.")    
-    interface: str = Field(max_length=15, default="", description="Interface to reserve for HA management.")  # datasource: ['system.interface.name']    
-    dst: str | None = Field(default="0.0.0.0 0.0.0.0", description="Default route destination for reserved HA management interface.")    
-    gateway: str | None = Field(default="0.0.0.0", description="Default route gateway for reserved HA management interface.")    
-    dst6: str | None = Field(default="::/0", description="Default IPv6 destination for reserved HA management interface.")    
-    gateway6: str | None = Field(default="::", description="Default IPv6 gateway for reserved HA management interface.")
-class HaUnicastPeers(BaseModel):
-    """
-    Child table model for unicast-peers.
-    
-    Number of unicast peers.
-    """
-    
-    class Config:
-        """Pydantic model configuration."""
-        extra = "allow"  # Allow additional fields from API
-        str_strip_whitespace = True
-    
-    id: int | None = Field(ge=0, le=4294967295, default=0, description="Table ID.")    
-    peer_ip: str | None = Field(default="0.0.0.0", description="Unicast peer IP.")
+    name: str = Field(max_length=79, description="Virtual domain name.")  # datasource: ['system.vdom.name']
 class HaVcluster(BaseModel):
     """
     Child table model for vcluster.
@@ -84,17 +44,33 @@ class HaVcluster(BaseModel):
         """Pydantic model configuration."""
         extra = "allow"  # Allow additional fields from API
         str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
     
     vcluster_id: int | None = Field(ge=1, le=30, default=1, description="ID.")    
     override: Literal["enable", "disable"] | None = Field(default="disable", description="Enable and increase the priority of the unit that should always be primary (master).")    
     priority: int | None = Field(ge=0, le=255, default=128, description="Increase the priority to select the primary unit (0 - 255).")    
     override_wait_time: int | None = Field(ge=0, le=3600, default=0, description="Delay negotiating if override is enabled (0 - 3600 sec). Reduces how often the cluster negotiates.")    
-    monitor: list[Monitor] = Field(default="", description="Interfaces to check for port monitoring (or link failure).")  # datasource: ['system.interface.name']    
-    pingserver_monitor_interface: list[PingserverMonitorInterface] = Field(default="", description="Interfaces to check for remote IP monitoring.")  # datasource: ['system.interface.name']    
+    monitor: list[str] = Field(default_factory=list, description="Interfaces to check for port monitoring (or link failure).")  # datasource: ['system.interface.name']    
+    pingserver_monitor_interface: list[str] = Field(default_factory=list, description="Interfaces to check for remote IP monitoring.")  # datasource: ['system.interface.name']    
     pingserver_failover_threshold: int | None = Field(ge=0, le=50, default=0, description="Remote IP monitoring failover threshold (0 - 50).")    
     pingserver_secondary_force_reset: Literal["enable", "disable"] | None = Field(default="enable", description="Enable to force the cluster to negotiate after a remote IP monitoring failover.")    
     pingserver_flip_timeout: int | None = Field(ge=6, le=2147483647, default=60, description="Time to wait in minutes before renegotiating after a remote IP monitoring failover.")    
-    vdom: list[Vdom] = Field(default=None, description="Virtual domain(s) in the virtual cluster.")
+    vdom: list[HaVclusterVdom] = Field(default_factory=list, description="Virtual domain(s) in the virtual cluster.")
+class HaUnicastPeers(BaseModel):
+    """
+    Child table model for unicast-peers.
+    
+    Number of unicast peers.
+    """
+    
+    class Config:
+        """Pydantic model configuration."""
+        extra = "allow"  # Allow additional fields from API
+        str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
+    
+    id_: int | None = Field(ge=0, le=4294967295, default=0, serialization_alias="id", description="Table ID.")    
+    peer_ip: str | None = Field(default="0.0.0.0", description="Unicast peer IP.")
 class HaStatus(BaseModel):
     """
     Child table model for status.
@@ -106,21 +82,95 @@ class HaStatus(BaseModel):
         """Pydantic model configuration."""
         extra = "allow"  # Allow additional fields from API
         str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
     
     vcluster_id: Any = Field(default=None, description="<enter> to show all vcluster or input vcluster-id")
+class HaHaMgmtInterfaces(BaseModel):
+    """
+    Child table model for ha-mgmt-interfaces.
+    
+    Reserve interfaces to manage individual cluster units.
+    """
+    
+    class Config:
+        """Pydantic model configuration."""
+        extra = "allow"  # Allow additional fields from API
+        str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
+    
+    id_: int | None = Field(ge=0, le=4294967295, default=0, serialization_alias="id", description="Table ID.")    
+    interface: str = Field(max_length=15, description="Interface to reserve for HA management.")  # datasource: ['system.interface.name']    
+    dst: str | None = Field(default="0.0.0.0 0.0.0.0", description="Default route destination for reserved HA management interface.")    
+    gateway: str | None = Field(default="0.0.0.0", description="Default route gateway for reserved HA management interface.")    
+    dst6: str | None = Field(default="::/0", description="Default IPv6 destination for reserved HA management interface.")    
+    gateway6: str | None = Field(default="::", description="Default IPv6 gateway for reserved HA management interface.")
+class HaBackupHbdev(BaseModel):
+    """
+    Child table model for backup-hbdev.
+    
+    Backup heartbeat interfaces. Must be the same for all members.
+    """
+    
+    class Config:
+        """Pydantic model configuration."""
+        extra = "allow"  # Allow additional fields from API
+        str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
+    
+    name: str | None = Field(max_length=79, default=None, description="Interface name.")  # datasource: ['system.interface.name']
+class HaAutoVirtualMacInterface(BaseModel):
+    """
+    Child table model for auto-virtual-mac-interface.
+    
+    The physical interface that will be assigned an auto-generated virtual MAC address.
+    """
+    
+    class Config:
+        """Pydantic model configuration."""
+        extra = "allow"  # Allow additional fields from API
+        str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
+    
+    interface_name: str = Field(max_length=15, description="Interface name.")  # datasource: ['system.interface.name']
 # ============================================================================
 # Enum Definitions (for fields with 4+ allowed values)
 # ============================================================================
 
-class HaUpgrade_modeEnum(str, Enum):
+class HaUpgradeModeEnum(str, Enum):
     """Allowed values for upgrade_mode field."""
-    SIMULTANEOUS = "simultaneous"    UNINTERRUPTIBLE = "uninterruptible"    LOCAL_ONLY = "local-only"    SECONDARY_ONLY = "secondary-only"
+    SIMULTANEOUS = "simultaneous"
+    UNINTERRUPTIBLE = "uninterruptible"
+    LOCAL_ONLY = "local-only"
+    SECONDARY_ONLY = "secondary-only"
+
 class HaScheduleEnum(str, Enum):
     """Allowed values for schedule field."""
-    NONE = "none"    LEASTCONNECTION = "leastconnection"    ROUND_ROBIN = "round-robin"    WEIGHT_ROUND_ROBIN = "weight-round-robin"    RANDOM = "random"    IP = "ip"    IPPORT = "ipport"
-class HaIpsec_phase2_proposalEnum(str, Enum):
+    NONE = "none"
+    LEASTCONNECTION = "leastconnection"
+    ROUND_ROBIN = "round-robin"
+    WEIGHT_ROUND_ROBIN = "weight-round-robin"
+    RANDOM = "random"
+    IP = "ip"
+    IPPORT = "ipport"
+
+class HaIpsecPhase2ProposalEnum(str, Enum):
     """Allowed values for ipsec_phase2_proposal field."""
-    AES128_SHA1 = "aes128-sha1"    AES128_SHA256 = "aes128-sha256"    AES128_SHA384 = "aes128-sha384"    AES128_SHA512 = "aes128-sha512"    AES192_SHA1 = "aes192-sha1"    AES192_SHA256 = "aes192-sha256"    AES192_SHA384 = "aes192-sha384"    AES192_SHA512 = "aes192-sha512"    AES256_SHA1 = "aes256-sha1"    AES256_SHA256 = "aes256-sha256"    AES256_SHA384 = "aes256-sha384"    AES256_SHA512 = "aes256-sha512"    AES128GCM = "aes128gcm"    AES256GCM = "aes256gcm"    CHACHA20POLY1305 = "chacha20poly1305"
+    AES128_SHA1 = "aes128-sha1"
+    AES128_SHA256 = "aes128-sha256"
+    AES128_SHA384 = "aes128-sha384"
+    AES128_SHA512 = "aes128-sha512"
+    AES192_SHA1 = "aes192-sha1"
+    AES192_SHA256 = "aes192-sha256"
+    AES192_SHA384 = "aes192-sha384"
+    AES192_SHA512 = "aes192-sha512"
+    AES256_SHA1 = "aes256-sha1"
+    AES256_SHA256 = "aes256-sha256"
+    AES256_SHA384 = "aes256-sha384"
+    AES256_SHA512 = "aes256-sha512"
+    AES128GCM = "aes128gcm"
+    AES256GCM = "aes256gcm"
+    CHACHA20POLY1305 = "chacha20poly1305"
+
 
 # ============================================================================
 # Main Model
@@ -146,18 +196,18 @@ class HaModel(BaseModel):
     # ========================================================================
     
     group_id: int | None = Field(ge=0, le=1023, default=0, description="HA group ID  (0 - 1023;  or 0 - 7 when there are more than 2 vclusters). Must be the same for all members.")    
-    group_name: str | None = Field(max_length=32, default="", description="Cluster group name. Must be the same for all members.")    
+    group_name: str | None = Field(max_length=32, default=None, description="Cluster group name. Must be the same for all members.")    
     mode: Literal["standalone", "a-a", "a-p"] | None = Field(default="standalone", description="HA mode. Must be the same for all members. FGSP requires standalone.")    
     sync_packet_balance: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable HA packet distribution to multiple CPUs.")    
     password: Any = Field(max_length=128, default=None, description="Cluster password. Must be the same for all members.")    
     key: Any = Field(max_length=16, default=None, description="Key.")    
-    hbdev: list[Hbdev] = Field(default="", description="Heartbeat interfaces. Must be the same for all members.")    
-    auto_virtual_mac_interface: list[AutoVirtualMacInterface] = Field(default=None, description="The physical interface that will be assigned an auto-generated virtual MAC address.")    
-    backup_hbdev: list[BackupHbdev] = Field(default=None, description="Backup heartbeat interfaces. Must be the same for all members.")    
+    hbdev: list[str] = Field(default_factory=list, description="Heartbeat interfaces. Must be the same for all members.")    
+    auto_virtual_mac_interface: list[HaAutoVirtualMacInterface] = Field(default_factory=list, description="The physical interface that will be assigned an auto-generated virtual MAC address.")    
+    backup_hbdev: list[HaBackupHbdev] = Field(default_factory=list, description="Backup heartbeat interfaces. Must be the same for all members.")    
     unicast_hb: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable unicast heartbeat.")    
     unicast_hb_peerip: str | None = Field(default="0.0.0.0", description="Unicast heartbeat peer IP.")    
     unicast_hb_netmask: str | None = Field(default="0.0.0.0", description="Unicast heartbeat netmask.")    
-    session_sync_dev: list[SessionSyncDev] = Field(default="", description="Offload session-sync process to kernel and sync sessions using connected interface(s) directly.")  # datasource: ['system.interface.name']    
+    session_sync_dev: list[str] = Field(default_factory=list, description="Offload session-sync process to kernel and sync sessions using connected interface(s) directly.")  # datasource: ['system.interface.name']    
     route_ttl: int | None = Field(ge=5, le=3600, default=10, description="TTL for primary unit routes (5 - 3600 sec). Increase to maintain active routes during failover.")    
     route_wait: int | None = Field(ge=0, le=3600, default=0, description="Time to wait before sending new routes to the cluster (0 - 3600 sec).")    
     route_hold: int | None = Field(ge=0, le=3600, default=10, description="Time to wait between routing table updates to the cluster (0 - 3600 sec).")    
@@ -180,11 +230,11 @@ class HaModel(BaseModel):
     session_pickup_nat: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable NAT session sync for FGSP.")    
     session_pickup_delay: Literal["enable", "disable"] | None = Field(default="disable", description="Enable to sync sessions longer than 30 sec. Only longer lived sessions need to be synced.")    
     link_failed_signal: Literal["enable", "disable"] | None = Field(default="disable", description="Enable to shut down all interfaces for 1 sec after a failover. Use if gratuitous ARPs do not update network.")    
-    upgrade_mode: UpgradeModeEnum | None = Field(default="uninterruptible", description="The mode to upgrade a cluster.")    
+    upgrade_mode: HaUpgradeModeEnum | None = Field(default=HaUpgradeModeEnum.UNINTERRUPTIBLE, description="The mode to upgrade a cluster.")    
     uninterruptible_primary_wait: int | None = Field(ge=15, le=300, default=30, description="Number of minutes the primary HA unit waits before the secondary HA unit is considered upgraded and the system is started before starting its own upgrade (15 - 300, default = 30).")    
     standalone_mgmt_vdom: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable standalone management VDOM.")    
     ha_mgmt_status: Literal["enable", "disable"] | None = Field(default="disable", description="Enable to reserve interfaces to manage individual cluster units.")    
-    ha_mgmt_interfaces: list[HaMgmtInterfaces] = Field(default=None, description="Reserve interfaces to manage individual cluster units.")    
+    ha_mgmt_interfaces: list[HaHaMgmtInterfaces] = Field(default_factory=list, description="Reserve interfaces to manage individual cluster units.")    
     ha_eth_type: str | None = Field(max_length=4, default="8890", description="HA heartbeat packet Ethertype (4-digit hex).")    
     hc_eth_type: str | None = Field(max_length=4, default="8891", description="Transparent mode HA heartbeat packet Ethertype (4-digit hex).")    
     l2ep_eth_type: str | None = Field(max_length=4, default="8893", description="Telnet session HA heartbeat packet Ethertype (4-digit hex).")    
@@ -192,27 +242,27 @@ class HaModel(BaseModel):
     standalone_config_sync: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable FGSP configuration synchronization.")    
     unicast_status: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable unicast connection.")    
     unicast_gateway: str | None = Field(default="0.0.0.0", description="Default route gateway for unicast interface.")    
-    unicast_peers: list[UnicastPeers] = Field(default=None, description="Number of unicast peers.")    
-    schedule: ScheduleEnum | None = Field(default="round-robin", description="Type of A-A load balancing. Use none if you have external load balancers.")    
+    unicast_peers: list[HaUnicastPeers] = Field(default_factory=list, description="Number of unicast peers.")    
+    schedule: HaScheduleEnum | None = Field(default=HaScheduleEnum.ROUND_ROBIN, description="Type of A-A load balancing. Use none if you have external load balancers.")    
     weight: str | None = Field(default="0 40", description="Weight-round-robin weight for each cluster unit. Syntax <priority> <weight>.")    
-    cpu_threshold: str | None = Field(default="", description="Dynamic weighted load balancing CPU usage weight and high and low thresholds.")    
-    memory_threshold: str | None = Field(default="", description="Dynamic weighted load balancing memory usage weight and high and low thresholds.")    
-    http_proxy_threshold: str | None = Field(default="", description="Dynamic weighted load balancing weight and high and low number of HTTP proxy sessions.")    
-    ftp_proxy_threshold: str | None = Field(default="", description="Dynamic weighted load balancing weight and high and low number of FTP proxy sessions.")    
-    imap_proxy_threshold: str | None = Field(default="", description="Dynamic weighted load balancing weight and high and low number of IMAP proxy sessions.")    
-    nntp_proxy_threshold: str | None = Field(default="", description="Dynamic weighted load balancing weight and high and low number of NNTP proxy sessions.")    
-    pop3_proxy_threshold: str | None = Field(default="", description="Dynamic weighted load balancing weight and high and low number of POP3 proxy sessions.")    
-    smtp_proxy_threshold: str | None = Field(default="", description="Dynamic weighted load balancing weight and high and low number of SMTP proxy sessions.")    
+    cpu_threshold: str | None = Field(default=None, description="Dynamic weighted load balancing CPU usage weight and high and low thresholds.")    
+    memory_threshold: str | None = Field(default=None, description="Dynamic weighted load balancing memory usage weight and high and low thresholds.")    
+    http_proxy_threshold: str | None = Field(default=None, description="Dynamic weighted load balancing weight and high and low number of HTTP proxy sessions.")    
+    ftp_proxy_threshold: str | None = Field(default=None, description="Dynamic weighted load balancing weight and high and low number of FTP proxy sessions.")    
+    imap_proxy_threshold: str | None = Field(default=None, description="Dynamic weighted load balancing weight and high and low number of IMAP proxy sessions.")    
+    nntp_proxy_threshold: str | None = Field(default=None, description="Dynamic weighted load balancing weight and high and low number of NNTP proxy sessions.")    
+    pop3_proxy_threshold: str | None = Field(default=None, description="Dynamic weighted load balancing weight and high and low number of POP3 proxy sessions.")    
+    smtp_proxy_threshold: str | None = Field(default=None, description="Dynamic weighted load balancing weight and high and low number of SMTP proxy sessions.")    
     override: Literal["enable", "disable"] | None = Field(default="disable", description="Enable and increase the priority of the unit that should always be primary (master).")    
     priority: int | None = Field(ge=0, le=255, default=128, description="Increase the priority to select the primary unit (0 - 255).")    
     override_wait_time: int | None = Field(ge=0, le=3600, default=0, description="Delay negotiating if override is enabled (0 - 3600 sec). Reduces how often the cluster negotiates.")    
-    monitor: list[Monitor] = Field(default="", description="Interfaces to check for port monitoring (or link failure).")  # datasource: ['system.interface.name']    
-    pingserver_monitor_interface: list[PingserverMonitorInterface] = Field(default="", description="Interfaces to check for remote IP monitoring.")  # datasource: ['system.interface.name']    
+    monitor: list[str] = Field(default_factory=list, description="Interfaces to check for port monitoring (or link failure).")  # datasource: ['system.interface.name']    
+    pingserver_monitor_interface: list[str] = Field(default_factory=list, description="Interfaces to check for remote IP monitoring.")  # datasource: ['system.interface.name']    
     pingserver_failover_threshold: int | None = Field(ge=0, le=50, default=0, description="Remote IP monitoring failover threshold (0 - 50).")    
     pingserver_secondary_force_reset: Literal["enable", "disable"] | None = Field(default="enable", description="Enable to force the cluster to negotiate after a remote IP monitoring failover.")    
     pingserver_flip_timeout: int | None = Field(ge=6, le=2147483647, default=60, description="Time to wait in minutes before renegotiating after a remote IP monitoring failover.")    
     vcluster_status: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable virtual cluster for virtual clustering.")    
-    vcluster: list[Vcluster] = Field(default=None, description="Virtual cluster table.")    
+    vcluster: list[HaVcluster] = Field(default_factory=list, description="Virtual cluster table.")    
     ha_direct: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable using ha-mgmt interface for syslog, remote authentication (RADIUS), FortiAnalyzer, FortiSandbox, sFlow, and Netflow.")    
     ssd_failover: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable automatic HA failover on SSD disk failure.")    
     memory_compatible_mode: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable memory compatible mode.")    
@@ -223,9 +273,9 @@ class HaModel(BaseModel):
     memory_failover_flip_timeout: int | None = Field(ge=6, le=2147483647, default=6, description="Time to wait between subsequent memory based failovers in minutes (6 - 2147483647, default = 6).")    
     failover_hold_time: int | None = Field(ge=0, le=300, default=0, description="Time to wait before failover (0 - 300 sec, default = 0), to avoid flip.")    
     check_secondary_dev_health: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable secondary dev health check for session load-balance in HA A-A mode.")    
-    ipsec_phase2_proposal: list[IpsecPhase2Proposal] = Field(default="", description="IPsec phase2 proposal.")    
+    ipsec_phase2_proposal: list[HaIpsecPhase2ProposalEnum] = Field(description="IPsec phase2 proposal.")    
     bounce_intf_upon_failover: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable notification of kernel to bring down and up all monitored interfaces. The setting is used during failovers if gratuitous ARPs do not update the network.")    
-    status: list[Status] = Field(default=None, description="list ha status information")    
+    status: list[HaStatus] = Field(default_factory=list, description="list ha status information")    
     # ========================================================================
     # Custom Validators
     # ========================================================================
@@ -335,7 +385,7 @@ class HaModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.system.ha.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate child table items
         values = getattr(self, "auto_virtual_mac_interface", [])
@@ -393,7 +443,7 @@ class HaModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.system.ha.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate child table items
         values = getattr(self, "backup_hbdev", [])
@@ -451,7 +501,7 @@ class HaModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.system.ha.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate scalar field
         value = getattr(self, "session_sync_dev", None)
@@ -500,7 +550,7 @@ class HaModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.system.ha.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate child table items
         values = getattr(self, "ha_mgmt_interfaces", [])
@@ -558,7 +608,7 @@ class HaModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.system.ha.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate scalar field
         value = getattr(self, "monitor", None)
@@ -607,7 +657,7 @@ class HaModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.system.ha.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate scalar field
         value = getattr(self, "pingserver_monitor_interface", None)
@@ -656,7 +706,7 @@ class HaModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.system.ha.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate child table items
         values = getattr(self, "vcluster", [])
@@ -731,11 +781,11 @@ Dict = dict[str, Any]  # For backward compatibility
 # ============================================================================
 
 __all__ = [
-    "HaModel",    "HaAutoVirtualMacInterface",    "HaBackupHbdev",    "HaHaMgmtInterfaces",    "HaUnicastPeers",    "HaVcluster",    "HaStatus",]
+    "HaModel",    "HaAutoVirtualMacInterface",    "HaBackupHbdev",    "HaHaMgmtInterfaces",    "HaUnicastPeers",    "HaVcluster",    "HaVcluster.Vdom",    "HaStatus",]
 
 
 # ============================================================================
 # Generated by hfortix generator v0.6.0
 # Schema: 1.7.0
-# Generated: 2026-01-17T05:32:19.393077Z
+# Generated: 2026-01-17T17:25:23.077914Z
 # ============================================================================

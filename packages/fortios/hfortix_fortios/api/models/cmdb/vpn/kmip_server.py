@@ -12,7 +12,11 @@ from typing import Any, Literal, Optional
 from enum import Enum
 
 # ============================================================================
-# Child Table Models
+# Enum Definitions for Child Table Fields (for fields with 4+ allowed values)
+# ============================================================================
+
+# ============================================================================
+# Child Table Models (sorted deepest-first so nested models are defined before their parents)
 # ============================================================================
 
 class KmipServerServerList(BaseModel):
@@ -26,19 +30,26 @@ class KmipServerServerList(BaseModel):
         """Pydantic model configuration."""
         extra = "allow"  # Allow additional fields from API
         str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
     
-    id: int | None = Field(ge=0, le=4294967295, default=0, description="ID")    
+    id_: int | None = Field(ge=0, le=4294967295, default=0, serialization_alias="id", description="ID")    
     status: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable KMIP server.")    
-    server: str = Field(max_length=63, default="", description="KMIP server FQDN or IP address.")    
+    server: str = Field(max_length=63, description="KMIP server FQDN or IP address.")    
     port: int = Field(ge=0, le=65535, default=5696, description="KMIP server port.")    
-    cert: str | None = Field(max_length=35, default="", description="Client certificate to use for connectivity to the KMIP server.")  # datasource: ['vpn.certificate.local.name']
+    cert: str | None = Field(max_length=35, default=None, description="Client certificate to use for connectivity to the KMIP server.")  # datasource: ['vpn.certificate.local.name']
 # ============================================================================
 # Enum Definitions (for fields with 4+ allowed values)
 # ============================================================================
 
-class KmipServerSsl_min_proto_versionEnum(str, Enum):
+class KmipServerSslMinProtoVersionEnum(str, Enum):
     """Allowed values for ssl_min_proto_version field."""
-    DEFAULT = "default"    SSLV3 = "SSLv3"    TLSV1 = "TLSv1"    TLSV1_1 = "TLSv1-1"    TLSV1_2 = "TLSv1-2"    TLSV1_3 = "TLSv1-3"
+    DEFAULT = "default"
+    SSLV3 = "SSLv3"
+    TLSV1 = "TLSv1"
+    TLSV1_1 = "TLSv1-1"
+    TLSV1_2 = "TLSv1-2"
+    TLSV1_3 = "TLSv1-3"
+
 
 # ============================================================================
 # Main Model
@@ -63,16 +74,16 @@ class KmipServerModel(BaseModel):
     # Model Fields
     # ========================================================================
     
-    name: str | None = Field(max_length=35, default="", description="KMIP server entry name.")    
-    server_list: list[ServerList] = Field(description="KMIP server list.")    
-    username: str = Field(max_length=63, default="", description="User name to use for connectivity to the KMIP server.")    
+    name: str | None = Field(max_length=35, default=None, description="KMIP server entry name.")    
+    server_list: list[KmipServerServerList] = Field(description="KMIP server list.")    
+    username: str = Field(max_length=63, description="User name to use for connectivity to the KMIP server.")    
     password: Any = Field(max_length=128, description="Password to use for connectivity to the KMIP server.")    
-    ssl_min_proto_version: SslMinProtoVersionEnum | None = Field(default="default", description="Minimum supported protocol version for SSL/TLS connections (default is to follow system global setting).")    
+    ssl_min_proto_version: KmipServerSslMinProtoVersionEnum | None = Field(default=KmipServerSslMinProtoVersionEnum.DEFAULT, description="Minimum supported protocol version for SSL/TLS connections (default is to follow system global setting).")    
     server_identity_check: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable KMIP server identity check (verify server FQDN/IP address against the server certificate).")    
     interface_select_method: Literal["auto", "sdwan", "specify"] | None = Field(default="auto", description="Specify how to select outgoing interface to reach server.")    
-    interface: str = Field(max_length=15, default="", description="Specify outgoing interface to reach server.")  # datasource: ['system.interface.name']    
+    interface: str = Field(max_length=15, description="Specify outgoing interface to reach server.")  # datasource: ['system.interface.name']    
     vrf_select: int | None = Field(ge=0, le=511, default=0, description="VRF ID used for connection to server.")    
-    source_ip: str | None = Field(max_length=63, default="", description="FortiGate IP address to be used for communication with the KMIP server.")    
+    source_ip: str | None = Field(max_length=63, default=None, description="FortiGate IP address to be used for communication with the KMIP server.")    
     # ========================================================================
     # Custom Validators
     # ========================================================================
@@ -152,7 +163,7 @@ class KmipServerModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.vpn.kmip_server.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate child table items
         values = getattr(self, "server_list", [])
@@ -210,7 +221,7 @@ class KmipServerModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.vpn.kmip_server.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate scalar field
         value = getattr(self, "interface", None)
@@ -272,5 +283,5 @@ __all__ = [
 # ============================================================================
 # Generated by hfortix generator v0.6.0
 # Schema: 1.7.0
-# Generated: 2026-01-17T05:32:18.799242Z
+# Generated: 2026-01-17T17:25:22.537139Z
 # ============================================================================

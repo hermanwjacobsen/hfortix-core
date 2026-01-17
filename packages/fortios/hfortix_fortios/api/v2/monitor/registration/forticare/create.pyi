@@ -1,62 +1,32 @@
-from typing import TypedDict, Literal, Any, Coroutine, Union, overload, Generator, final
-from typing_extensions import NotRequired
-from hfortix_fortios.models import FortiObject, FortiObjectList
+""" - Type Stubs
 
-# ============================================================================
-# Nested TypedDicts for table field children (dict mode)
-# These MUST be defined before the Payload class to use them as type hints
-# ============================================================================
+Auto-generated stub file for type checking and IDE support.
 
-# ============================================================================
-# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional)
-# ============================================================================
-# NOTE: We intentionally DON'T use NotRequired wrapper because:
-# 1. total=False already makes all fields optional
-# 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
+Endpoint: registration/forticare/create
+Category: monitor
+"""
+
+from __future__ import annotations
+
+from typing import (
+    Any,
+    ClassVar,
+    Literal,
+    TypedDict,
+)
+
+from hfortix_fortios.models import (
+    FortiObject,
+    FortiObjectList,
+)
+
+
+# ================================================================
+# TypedDict Payloads
+# ================================================================
+
 class CreatePayload(TypedDict, total=False):
-    """
-    Type hints for registration/forticare/create payload fields.
-    
-    Create a new FortiCare account.
-    
-    **Usage:**
-        payload: CreatePayload = {
-            "field": "value",  # <- autocomplete shows all fields
-        }
-    """
-    email: str  # email
-    password: str  # password
-    first_name: str  # first_name
-    last_name: str  # last_name
-    title: str  # title
-    company: str  # company
-    address: str  # address
-    city: str  # city
-    country_code: int  # country_code
-    state: str  # state
-    state_code: str  # state_code
-    postal_code: str  # postal_code
-    phone: str  # phone
-    industry: str  # industry
-    industry_id: int  # industry_id
-    orgsize_id: int  # orgsize_id
-    reseller_name: str  # reseller_name
-    reseller_id: int  # reseller_id
-    is_government: bool  # is_government
-
-# ============================================================================
-# Nested classes for table field children (object mode - for API responses)
-# ============================================================================
-
-
-
-# Response TypedDict for GET returns (all fields present in API response)
-class CreateResponse(TypedDict):
-    """
-    Type hints for registration/forticare/create API response fields.
-    
-    All fields are present in the response from the FortiGate API.
-    """
+    """Payload type for Create operations."""
     email: str
     password: str
     first_name: str
@@ -75,289 +45,107 @@ class CreateResponse(TypedDict):
     orgsize_id: int
     reseller_name: str
     reseller_id: int
-    is_government: bool
+    is_government: str
 
 
-@final
-class CreateObject:
-    """Typed FortiObject for registration/forticare/create with IDE autocomplete support.
-    
-    This is a typed wrapper that provides IDE autocomplete for API response fields.
-    At runtime, this is actually a FortiObject instance.
-    """
-    
-    # email
+# ================================================================
+# Response Types (TypedDict for dict-style access)
+# ================================================================
+
+class CreateResponse(TypedDict, total=False):
+    """Response type for Create - use with .dict property for typed dict access."""
     email: str
-    # password
     password: str
-    # first_name
     first_name: str
-    # last_name
     last_name: str
-    # title
     title: str
-    # company
     company: str
-    # address
     address: str
-    # city
     city: str
-    # country_code
     country_code: int
-    # state
     state: str
-    # state_code
     state_code: str
-    # postal_code
     postal_code: str
-    # phone
     phone: str
-    # industry
     industry: str
-    # industry_id
     industry_id: int
-    # orgsize_id
     orgsize_id: int
-    # reseller_name
     reseller_name: str
-    # reseller_id
     reseller_id: int
-    # is_government
-    is_government: bool
-    
-    # Common API response fields
-    status: str
-    http_status: int | None
-    http_status_code: int | None
-    http_method: str | None
-    http_response_time: float | None
-    vdom: str | None
-    
-    # Methods from FortiObject
-    @property
-    def dict(self) -> dict[str, Any]:
-        """Convert to dictionary."""
-        ...
-    @property
-    def json(self) -> str:
-        """Get pretty-printed JSON string."""
-        ...
-    @property
-    def raw(self) -> dict[str, Any]:
-        """Get raw API response data."""
-        ...
-    def get_full(self, name: str) -> Any: ...
-    def to_dict(self) -> CreatePayload: ...
-    def keys(self) -> Any: ...
-    def values(self) -> Generator[Any, None, None]: ...
-    def items(self) -> Generator[tuple[str, Any], None, None]: ...
-    def get(self, key: str, default: Any = None) -> Any: ...
+    is_government: str
 
+
+# ================================================================
+# Response Types (Class for attribute access)
+# ================================================================
+
+
+class CreateObject(FortiObject):
+    """Typed FortiObject for Create with field access."""
+    email: str
+    password: str
+    first_name: str
+    last_name: str
+    title: str
+    company: str
+    address: str
+    city: str
+    country_code: int
+    state: str
+    state_code: str
+    postal_code: str
+    phone: str
+    industry: str
+    industry_id: int
+    orgsize_id: int
+    reseller_name: str
+    reseller_id: int
+    is_government: str
+
+
+# ================================================================
+# Main Endpoint Class
+# ================================================================
 
 class Create:
     """
-    Create a new FortiCare account.
     
-    Path: registration/forticare/create
+    Endpoint: registration/forticare/create
     Category: monitor
     """
     
+    # Class attributes for introspection
+    endpoint: ClassVar[str] = ...
+    path: ClassVar[str] = ...
+    category: ClassVar[str] = ...
+    capabilities: ClassVar[dict[str, Any]] = ...
+    
     def __init__(self, client: Any) -> None:
-        """Initialize endpoint with HTTP client.
-        
-        Args:
-            client: HTTP client instance for API communication
-        """
+        """Initialize endpoint with HTTP client."""
         ...
     
     # ================================================================
-    # GET OVERLOADS - Always returns FortiObject (or ContentResponse for file endpoints)
-    # Pylance matches overloads top-to-bottom, so these must come first!
+    # GET Methods
     # ================================================================
     
-    # With mkey as positional arg -> returns FortiObject
-    @overload
-    def get(
-        self,
-        name: str,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> CreateObject: ...
-    
-    # With mkey as keyword arg -> returns FortiObject
-    @overload
+    # Service/Monitor endpoint
     def get(
         self,
         *,
-        name: str,
         filter: str | list[str] | None = ...,
         count: int | None = ...,
         start: int | None = ...,
         payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
         vdom: str | bool | None = ...,
+        error_mode: Literal["raise", "return", "print"] | None = ...,
+        error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> CreateObject: ...
     
-    # Without mkey -> returns list of FortiObjects
-    @overload
-    def get(
-        self,
-        name: None = None,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> CreateObject: ...
-    
+
     # ================================================================
-    # (removed - all GET now returns FortiObject)
+    # POST Method
     # ================================================================
     
-    # With mkey as positional arg -> returns single object
-    @overload
-    def get(
-        self,
-        name: str,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> CreateObject: ...
-    
-    # With mkey as keyword arg -> returns single object
-    @overload
-    def get(
-        self,
-        *,
-        name: str,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> CreateObject: ...
-    
-    # With no mkey -> returns list of objects
-    @overload
-    def get(
-        self,
-        *,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> CreateObject: ...
-    
-    # Dict mode with mkey provided as positional arg (single dict)
-    @overload
-    def get(
-        self,
-        name: str,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> CreateObject: ...
-    
-    # Dict mode with mkey provided as keyword arg (single dict)
-    @overload
-    def get(
-        self,
-        *,
-        name: str,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> CreateObject: ...
-    
-    # Dict mode - list of dicts (no mkey/name provided) - keyword-only signature
-    @overload
-    def get(
-        self,
-        *,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> CreateObject: ...
-    
-    # Fallback overload for all other cases
-    @overload
-    def get(
-        self,
-        name: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> dict[str, Any] | FortiObject: ...
-    
-    def get(
-        self,
-        name: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> CreateObject | dict[str, Any]: ...
-    
-    # POST overloads
-    @overload
     def post(
         self,
         payload_dict: CreatePayload | None = ...,
@@ -381,165 +169,13 @@ class Create:
         reseller_id: int | None = ...,
         is_government: str | None = ...,
         vdom: str | bool | None = ...,
+        error_mode: Literal["raise", "return", "print"] | None = ...,
+        error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> CreateObject: ...
-    
-    @overload
-    def post(
-        self,
-        payload_dict: CreatePayload | None = ...,
-        email: str | None = ...,
-        password: str | None = ...,
-        first_name: str | None = ...,
-        last_name: str | None = ...,
-        title: str | None = ...,
-        company: str | None = ...,
-        address: str | None = ...,
-        city: str | None = ...,
-        country_code: int | None = ...,
-        state: str | None = ...,
-        state_code: str | None = ...,
-        postal_code: str | None = ...,
-        phone: str | None = ...,
-        industry: str | None = ...,
-        industry_id: int | None = ...,
-        orgsize_id: int | None = ...,
-        reseller_name: str | None = ...,
-        reseller_id: int | None = ...,
-        is_government: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
-    
-    # Default overload
-    @overload
-    def post(
-        self,
-        payload_dict: CreatePayload | None = ...,
-        email: str | None = ...,
-        password: str | None = ...,
-        first_name: str | None = ...,
-        last_name: str | None = ...,
-        title: str | None = ...,
-        company: str | None = ...,
-        address: str | None = ...,
-        city: str | None = ...,
-        country_code: int | None = ...,
-        state: str | None = ...,
-        state_code: str | None = ...,
-        postal_code: str | None = ...,
-        phone: str | None = ...,
-        industry: str | None = ...,
-        industry_id: int | None = ...,
-        orgsize_id: int | None = ...,
-        reseller_name: str | None = ...,
-        reseller_id: int | None = ...,
-        is_government: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
-    
-    def post(
-        self,
-        payload_dict: CreatePayload | None = ...,
-        email: str | None = ...,
-        password: str | None = ...,
-        first_name: str | None = ...,
-        last_name: str | None = ...,
-        title: str | None = ...,
-        company: str | None = ...,
-        address: str | None = ...,
-        city: str | None = ...,
-        country_code: int | None = ...,
-        state: str | None = ...,
-        state_code: str | None = ...,
-        postal_code: str | None = ...,
-        phone: str | None = ...,
-        industry: str | None = ...,
-        industry_id: int | None = ...,
-        orgsize_id: int | None = ...,
-        reseller_name: str | None = ...,
-        reseller_id: int | None = ...,
-        is_government: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
-    
-    # PUT overloads
-    @overload
-    def put(
-        self,
-        payload_dict: CreatePayload | None = ...,
-        email: str | None = ...,
-        password: str | None = ...,
-        first_name: str | None = ...,
-        last_name: str | None = ...,
-        title: str | None = ...,
-        company: str | None = ...,
-        address: str | None = ...,
-        city: str | None = ...,
-        country_code: int | None = ...,
-        state: str | None = ...,
-        state_code: str | None = ...,
-        postal_code: str | None = ...,
-        phone: str | None = ...,
-        industry: str | None = ...,
-        industry_id: int | None = ...,
-        orgsize_id: int | None = ...,
-        reseller_name: str | None = ...,
-        reseller_id: int | None = ...,
-        is_government: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> CreateObject: ...
-    
-    @overload
-    def put(
-        self,
-        payload_dict: CreatePayload | None = ...,
-        email: str | None = ...,
-        password: str | None = ...,
-        first_name: str | None = ...,
-        last_name: str | None = ...,
-        title: str | None = ...,
-        company: str | None = ...,
-        address: str | None = ...,
-        city: str | None = ...,
-        country_code: int | None = ...,
-        state: str | None = ...,
-        state_code: str | None = ...,
-        postal_code: str | None = ...,
-        phone: str | None = ...,
-        industry: str | None = ...,
-        industry_id: int | None = ...,
-        orgsize_id: int | None = ...,
-        reseller_name: str | None = ...,
-        reseller_id: int | None = ...,
-        is_government: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
-    
-    # Default overload
-    @overload
-    def put(
-        self,
-        payload_dict: CreatePayload | None = ...,
-        email: str | None = ...,
-        password: str | None = ...,
-        first_name: str | None = ...,
-        last_name: str | None = ...,
-        title: str | None = ...,
-        company: str | None = ...,
-        address: str | None = ...,
-        city: str | None = ...,
-        country_code: int | None = ...,
-        state: str | None = ...,
-        state_code: str | None = ...,
-        postal_code: str | None = ...,
-        phone: str | None = ...,
-        industry: str | None = ...,
-        industry_id: int | None = ...,
-        orgsize_id: int | None = ...,
-        reseller_name: str | None = ...,
-        reseller_id: int | None = ...,
-        is_government: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+
+    # ================================================================
+    # PUT Method
+    # ================================================================
     
     def put(
         self,
@@ -564,7 +200,14 @@ class Create:
         reseller_id: int | None = ...,
         is_government: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+        error_mode: Literal["raise", "return", "print"] | None = ...,
+        error_format: Literal["detailed", "simple", "code_only"] | None = ...,
+    ) -> CreateObject: ...
+
+
+    # ================================================================
+    # Utility Methods
+    # ================================================================
     
     def exists(
         self,
@@ -595,6 +238,8 @@ class Create:
         reseller_id: int | None = ...,
         is_government: str | None = ...,
         vdom: str | bool | None = ...,
+        error_mode: Literal["raise", "return", "print"] | None = ...,
+        error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> FortiObject: ...
     
     # Helper methods
@@ -602,7 +247,7 @@ class Create:
     def help(field_name: str | None = ...) -> str: ...
     
     @staticmethod
-    def fields(detailed: bool = ...) -> Union[list[str], list[dict[str, Any]]]: ...
+    def fields(detailed: bool = ...) -> list[str] | list[dict[str, Any]]: ...
     
     @staticmethod
     def field_info(field_name: str) -> FortiObject: ...
@@ -618,9 +263,6 @@ class Create:
     
     @staticmethod
     def schema() -> FortiObject: ...
-
-
-# ================================================================
 
 
 __all__ = [

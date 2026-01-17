@@ -874,6 +874,16 @@ class Profile(CRUDEndpoint, MetadataMixin):
             - put(): Update existing object
             - exists(): Check existence manually
         """
+        # Apply normalization for table fields (supports flexible input formats)
+        if external_blocklist is not None:
+            external_blocklist = normalize_table_field(
+                external_blocklist,
+                mkey="name",
+                required_fields=['name'],
+                field_name="external_blocklist",
+                example="[{'name': 'value'}]",
+            )
+        
         # Build payload using helper function with auto-normalization
         payload_data = build_api_payload(
             name=name,

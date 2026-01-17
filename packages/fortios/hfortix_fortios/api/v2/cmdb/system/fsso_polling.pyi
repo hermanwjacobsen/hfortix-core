@@ -1,203 +1,89 @@
-from typing import TypedDict, Literal, Any, Coroutine, Union, overload, Generator, final
-from typing_extensions import NotRequired
-from hfortix_fortios.models import FortiObject, FortiObjectList
+""" - Type Stubs
 
-# ============================================================================
-# Nested TypedDicts for table field children (dict mode)
-# These MUST be defined before the Payload class to use them as type hints
-# ============================================================================
+Auto-generated stub file for type checking and IDE support.
 
-# ============================================================================
-# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional)
-# ============================================================================
-# NOTE: We intentionally DON'T use NotRequired wrapper because:
-# 1. total=False already makes all fields optional
-# 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
+Endpoint: system/fsso_polling
+Category: cmdb
+"""
+
+from __future__ import annotations
+
+from typing import (
+    Any,
+    ClassVar,
+    Literal,
+    TypedDict,
+)
+
+from hfortix_fortios.models import (
+    FortiObject,
+    FortiObjectList,
+)
+
+
+# ================================================================
+# TypedDict Payloads
+# ================================================================
+
 class FssoPollingPayload(TypedDict, total=False):
-    """
-    Type hints for system/fsso_polling payload fields.
-    
-    Configure Fortinet Single Sign On (FSSO) server.
-    
-    **Usage:**
-        payload: FssoPollingPayload = {
-            "field": "value",  # <- autocomplete shows all fields
-        }
-    """
-    status: Literal["enable", "disable"]  # Enable/disable FSSO Polling Mode. | Default: enable
-    listening_port: int  # Listening port to accept clients (1 - 65535). | Default: 8000 | Min: 1 | Max: 65535
-    authentication: Literal["enable", "disable"]  # Enable/disable FSSO Agent Authentication. | Default: disable
-    auth_password: str  # Password to connect to FSSO Agent. | MaxLen: 128
-
-# ============================================================================
-# Nested classes for table field children (object mode - for API responses)
-# ============================================================================
-
-
-
-# Response TypedDict for GET returns (all fields present in API response)
-class FssoPollingResponse(TypedDict):
-    """
-    Type hints for system/fsso_polling API response fields.
-    
-    All fields are present in the response from the FortiGate API.
-    """
-    status: Literal["enable", "disable"]  # Enable/disable FSSO Polling Mode. | Default: enable
-    listening_port: int  # Listening port to accept clients (1 - 65535). | Default: 8000 | Min: 1 | Max: 65535
-    authentication: Literal["enable", "disable"]  # Enable/disable FSSO Agent Authentication. | Default: disable
-    auth_password: str  # Password to connect to FSSO Agent. | MaxLen: 128
-
-
-@final
-class FssoPollingObject:
-    """Typed FortiObject for system/fsso_polling with IDE autocomplete support.
-    
-    This is a typed wrapper that provides IDE autocomplete for API response fields.
-    At runtime, this is actually a FortiObject instance.
-    """
-    
-    # Enable/disable FSSO Polling Mode. | Default: enable
+    """Payload type for FssoPolling operations."""
     status: Literal["enable", "disable"]
-    # Listening port to accept clients (1 - 65535). | Default: 8000 | Min: 1 | Max: 65535
     listening_port: int
-    # Enable/disable FSSO Agent Authentication. | Default: disable
     authentication: Literal["enable", "disable"]
-    # Password to connect to FSSO Agent. | MaxLen: 128
     auth_password: str
-    
-    # Common API response fields
-    status: str
-    http_status: int | None
-    http_status_code: int | None
-    http_method: str | None
-    http_response_time: float | None
-    vdom: str | None
-    
-    # Methods from FortiObject
-    @property
-    def dict(self) -> dict[str, Any]:
-        """Convert to dictionary."""
-        ...
-    @property
-    def json(self) -> str:
-        """Get pretty-printed JSON string."""
-        ...
-    @property
-    def raw(self) -> dict[str, Any]:
-        """Get raw API response data."""
-        ...
-    def get_full(self, name: str) -> Any: ...
-    def to_dict(self) -> FssoPollingPayload: ...
-    def keys(self) -> Any: ...
-    def values(self) -> Generator[Any, None, None]: ...
-    def items(self) -> Generator[tuple[str, Any], None, None]: ...
-    def get(self, key: str, default: Any = None) -> Any: ...
 
+
+# ================================================================
+# Response Types (TypedDict for dict-style access)
+# ================================================================
+
+class FssoPollingResponse(TypedDict, total=False):
+    """Response type for FssoPolling - use with .dict property for typed dict access."""
+    status: Literal["enable", "disable"]
+    listening_port: int
+    authentication: Literal["enable", "disable"]
+    auth_password: str
+
+
+# ================================================================
+# Response Types (Class for attribute access)
+# ================================================================
+
+
+class FssoPollingObject(FortiObject):
+    """Typed FortiObject for FssoPolling with field access."""
+    status: Literal["enable", "disable"]
+    listening_port: int
+    authentication: Literal["enable", "disable"]
+    auth_password: str
+
+
+# ================================================================
+# Main Endpoint Class
+# ================================================================
 
 class FssoPolling:
     """
-    Configure Fortinet Single Sign On (FSSO) server.
     
-    Path: system/fsso_polling
+    Endpoint: system/fsso_polling
     Category: cmdb
     """
     
+    # Class attributes for introspection
+    endpoint: ClassVar[str] = ...
+    path: ClassVar[str] = ...
+    category: ClassVar[str] = ...
+    capabilities: ClassVar[dict[str, Any]] = ...
+    
     def __init__(self, client: Any) -> None:
-        """Initialize endpoint with HTTP client.
-        
-        Args:
-            client: HTTP client instance for API communication
-        """
+        """Initialize endpoint with HTTP client."""
         ...
     
     # ================================================================
-    # GET OVERLOADS - Always returns FortiObject (or ContentResponse for file endpoints)
-    # Pylance matches overloads top-to-bottom, so these must come first!
+    # GET Methods
     # ================================================================
     
-    # With mkey as positional arg -> returns FortiObject
-    @overload
-    def get(
-        self,
-        name: str,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-    ) -> FssoPollingObject: ...
-    
-    # With mkey as keyword arg -> returns FortiObject
-    @overload
-    def get(
-        self,
-        *,
-        name: str,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-    ) -> FssoPollingObject: ...
-    
-    # Without mkey -> returns list of FortiObjects
-    @overload
-    def get(
-        self,
-        name: None = None,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-    ) -> FssoPollingObject: ...
-    
-    # ================================================================
-    # (removed - all GET now returns FortiObject)
-    # ================================================================
-    
-    # With mkey as positional arg -> returns single object
-    @overload
-    def get(
-        self,
-        name: str,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-    ) -> FssoPollingObject: ...
-    
-    # With mkey as keyword arg -> returns single object
-    @overload
-    def get(
-        self,
-        *,
-        name: str,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-    ) -> FssoPollingObject: ...
-    
-    # With no mkey -> returns list of objects
-    @overload
+    # Singleton endpoint (no mkey)
     def get(
         self,
         *,
@@ -209,89 +95,20 @@ class FssoPolling:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
+        error_mode: Literal["raise", "return", "print"] | None = ...,
+        error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> FssoPollingObject: ...
-    
-    # Dict mode with mkey provided as positional arg (single dict)
-    @overload
-    def get(
-        self,
-        name: str,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-    ) -> FssoPollingObject: ...
-    
-    # Dict mode with mkey provided as keyword arg (single dict)
-    @overload
-    def get(
-        self,
-        *,
-        name: str,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-    ) -> FssoPollingObject: ...
-    
-    # Dict mode - list of dicts (no mkey/name provided) - keyword-only signature
-    @overload
-    def get(
-        self,
-        *,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-    ) -> FssoPollingObject: ...
-    
-    # Fallback overload for all other cases
-    @overload
-    def get(
-        self,
-        name: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-    ) -> dict[str, Any] | FortiObject: ...
-    
-    def get(
-        self,
-        name: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-    ) -> FssoPollingObject | dict[str, Any]: ...
     
     def get_schema(
         self,
         format: str = ...,
     ) -> FortiObject: ...
+
+
+    # ================================================================
+    # PUT Method
+    # ================================================================
     
-    # PUT overloads
-    @overload
     def put(
         self,
         payload_dict: FssoPollingPayload | None = ...,
@@ -299,37 +116,14 @@ class FssoPolling:
         listening_port: int | None = ...,
         authentication: Literal["enable", "disable"] | None = ...,
         auth_password: str | None = ...,
+        error_mode: Literal["raise", "return", "print"] | None = ...,
+        error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> FssoPollingObject: ...
-    
-    @overload
-    def put(
-        self,
-        payload_dict: FssoPollingPayload | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
-        listening_port: int | None = ...,
-        authentication: Literal["enable", "disable"] | None = ...,
-        auth_password: str | None = ...,
-    ) -> FortiObject: ...
-    
-    # Default overload
-    @overload
-    def put(
-        self,
-        payload_dict: FssoPollingPayload | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
-        listening_port: int | None = ...,
-        authentication: Literal["enable", "disable"] | None = ...,
-        auth_password: str | None = ...,
-    ) -> FortiObject: ...
-    
-    def put(
-        self,
-        payload_dict: FssoPollingPayload | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
-        listening_port: int | None = ...,
-        authentication: Literal["enable", "disable"] | None = ...,
-        auth_password: str | None = ...,
-    ) -> FortiObject: ...
+
+
+    # ================================================================
+    # Utility Methods
+    # ================================================================
     
     def exists(
         self,
@@ -343,6 +137,8 @@ class FssoPolling:
         listening_port: int | None = ...,
         authentication: Literal["enable", "disable"] | None = ...,
         auth_password: str | None = ...,
+        error_mode: Literal["raise", "return", "print"] | None = ...,
+        error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> FortiObject: ...
     
     # Helper methods
@@ -350,7 +146,7 @@ class FssoPolling:
     def help(field_name: str | None = ...) -> str: ...
     
     @staticmethod
-    def fields(detailed: bool = ...) -> Union[list[str], list[dict[str, Any]]]: ...
+    def fields(detailed: bool = ...) -> list[str] | list[dict[str, Any]]: ...
     
     @staticmethod
     def field_info(field_name: str) -> FortiObject: ...
@@ -366,9 +162,6 @@ class FssoPolling:
     
     @staticmethod
     def schema() -> FortiObject: ...
-
-
-# ================================================================
 
 
 __all__ = [

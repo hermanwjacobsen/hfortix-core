@@ -736,6 +736,32 @@ class OnDemandSniffer(CRUDEndpoint, MetadataMixin):
             - put(): Update existing object
             - exists(): Check existence manually
         """
+        # Apply normalization for table fields (supports flexible input formats)
+        if hosts is not None:
+            hosts = normalize_table_field(
+                hosts,
+                mkey="host",
+                required_fields=['host'],
+                field_name="hosts",
+                example="[{'host': 'value'}]",
+            )
+        if ports is not None:
+            ports = normalize_table_field(
+                ports,
+                mkey="port",
+                required_fields=['port'],
+                field_name="ports",
+                example="[{'port': 1}]",
+            )
+        if protocols is not None:
+            protocols = normalize_table_field(
+                protocols,
+                mkey="protocol",
+                required_fields=['protocol'],
+                field_name="protocols",
+                example="[{'protocol': 1}]",
+            )
+        
         # Build payload using helper function with auto-normalization
         payload_data = build_api_payload(
             name=name,

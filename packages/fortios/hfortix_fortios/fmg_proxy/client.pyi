@@ -1,13 +1,13 @@
 """Type stubs for FMG proxy client."""
 
-from typing import Any, Literal
+from typing import Any, Literal, TypeAlias
 
 from hfortix_core.http import HTTPClientFMG
 from hfortix_fortios.api import API
 from .models import ProxyResponse, DeviceResult
 
 # FMGSession is now an alias to HTTPClientFMG
-FMGSession = HTTPClientFMG
+FMGSession: TypeAlias = HTTPClientFMG
 
 
 class ProxyHTTPClient:

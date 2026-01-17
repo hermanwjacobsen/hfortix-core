@@ -9,9 +9,22 @@ from __future__ import annotations
 
 from pydantic import BaseModel, Field, field_validator
 from typing import Any, Literal, Optional
+from enum import Enum
 
 # ============================================================================
-# Child Table Models
+# Enum Definitions for Child Table Fields (for fields with 4+ allowed values)
+# ============================================================================
+
+class ShapingProfileShapingEntriesPriorityEnum(str, Enum):
+    """Allowed values for priority field in shaping-entries."""
+    TOP = "top"
+    CRITICAL = "critical"
+    HIGH = "high"
+    MEDIUM = "medium"
+    LOW = "low"
+
+# ============================================================================
+# Child Table Models (sorted deepest-first so nested models are defined before their parents)
 # ============================================================================
 
 class ShapingProfileShapingEntries(BaseModel):
@@ -25,18 +38,19 @@ class ShapingProfileShapingEntries(BaseModel):
         """Pydantic model configuration."""
         extra = "allow"  # Allow additional fields from API
         str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
     
-    id: int | None = Field(ge=0, le=4294967295, default=0, description="ID number.")    
+    id_: int | None = Field(ge=0, le=4294967295, default=0, serialization_alias="id", description="ID number.")    
     class_id: int = Field(ge=0, le=4294967295, default=0, description="Class ID.")  # datasource: ['firewall.traffic-class.class-id']    
-    priority: PriorityEnum | None = Field(default="high", description="Priority.")    
+    priority: ShapingProfileShapingEntriesPriorityEnum | None = Field(default=ShapingProfileShapingEntriesPriorityEnum.HIGH, description="Priority.")    
     guaranteed_bandwidth_percentage: int | None = Field(ge=0, le=100, default=0, description="Guaranteed bandwidth in percentage.")    
     maximum_bandwidth_percentage: int | None = Field(ge=1, le=100, default=1, description="Maximum bandwidth in percentage.")    
     limit: int | None = Field(ge=5, le=10000, default=100, description="Hard limit on the real queue size in packets.")    
     burst_in_msec: int | None = Field(ge=0, le=2000, default=0, description="Number of bytes that can be burst at maximum-bandwidth speed. Formula: burst = maximum-bandwidth*burst-in-msec.")    
     cburst_in_msec: int | None = Field(ge=0, le=2000, default=0, description="Number of bytes that can be burst as fast as the interface can transmit. Formula: cburst = maximum-bandwidth*cburst-in-msec.")    
     red_probability: int | None = Field(ge=0, le=20, default=0, description="Maximum probability (in percentage) for RED marking.")    
-    min: int | None = Field(ge=3, le=3000, default=83, description="Average queue size in packets at which RED drop becomes a possibility.")    
-    max: int | None = Field(ge=3, le=3000, default=250, description="Average queue size in packets at which RED drop probability is maximal.")
+    min_: int | None = Field(ge=3, le=3000, default=83, serialization_alias="min", description="Average queue size in packets at which RED drop becomes a possibility.")    
+    max_: int | None = Field(ge=3, le=3000, default=250, serialization_alias="max", description="Average queue size in packets at which RED drop probability is maximal.")
 # ============================================================================
 # Enum Definitions (for fields with 4+ allowed values)
 # ============================================================================
@@ -52,7 +66,7 @@ class ShapingProfileModel(BaseModel):
     
     Configure shaping profiles.
     
-    Validation Rules:        - profile_name: max_length=35 pattern=        - comment: max_length=1023 pattern=        - type: pattern=        - npu_offloading: pattern=        - default_class_id: min=0 max=4294967295 pattern=        - shaping_entries: pattern=    """
+    Validation Rules:        - profile_name: max_length=35 pattern=        - comment: max_length=1023 pattern=        - type_: pattern=        - npu_offloading: pattern=        - default_class_id: min=0 max=4294967295 pattern=        - shaping_entries: pattern=    """
     
     class Config:
         """Pydantic model configuration."""
@@ -65,12 +79,12 @@ class ShapingProfileModel(BaseModel):
     # Model Fields
     # ========================================================================
     
-    profile_name: str = Field(max_length=35, default="", description="Shaping profile name.")    
+    profile_name: str = Field(max_length=35, description="Shaping profile name.")    
     comment: str | None = Field(max_length=1023, default=None, description="Comment.")    
-    type: Literal["policing", "queuing"] | None = Field(default="policing", description="Select shaping profile type: policing / queuing.")    
+    type_: Literal["policing", "queuing"] | None = Field(default="policing", serialization_alias="type", description="Select shaping profile type: policing / queuing.")    
     npu_offloading: Literal["disable", "enable"] | None = Field(default="enable", description="Enable/disable NPU offloading.")    
     default_class_id: int = Field(ge=0, le=4294967295, default=0, description="Default class ID to handle unclassified packets (including all local traffic).")  # datasource: ['firewall.traffic-class.class-id']    
-    shaping_entries: list[ShapingEntries] = Field(default=None, description="Define shaping entries of this shaping profile.")    
+    shaping_entries: list[ShapingProfileShapingEntries] = Field(default_factory=list, description="Define shaping entries of this shaping profile.")    
     # ========================================================================
     # Custom Validators
     # ========================================================================
@@ -150,7 +164,7 @@ class ShapingProfileModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.shaping_profile.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate scalar field
         value = getattr(self, "default_class_id", None)
@@ -159,7 +173,7 @@ class ShapingProfileModel(BaseModel):
         
         # Check all datasource endpoints
         found = False
-        if await client.api.cmdb.firewall.traffic-class.exists(value):
+        if await client.api.cmdb.firewall.traffic_class.exists(value):
             found = True
         
         if not found:
@@ -199,7 +213,7 @@ class ShapingProfileModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.shaping_profile.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate child table items
         values = getattr(self, "shaping_entries", [])
@@ -217,7 +231,7 @@ class ShapingProfileModel(BaseModel):
             
             # Check all datasource endpoints
             found = False
-            if await client.api.cmdb.firewall.traffic-class.exists(value):
+            if await client.api.cmdb.firewall.traffic_class.exists(value):
                 found = True
             
             if not found:
@@ -270,5 +284,5 @@ __all__ = [
 # ============================================================================
 # Generated by hfortix generator v0.6.0
 # Schema: 1.7.0
-# Generated: 2026-01-17T05:32:18.446923Z
+# Generated: 2026-01-17T17:25:22.223225Z
 # ============================================================================

@@ -9,9 +9,37 @@ from __future__ import annotations
 
 from pydantic import BaseModel, Field, field_validator
 from typing import Any, Literal, Optional
+from enum import Enum
 
 # ============================================================================
-# Child Table Models
+# Enum Definitions for Child Table Fields (for fields with 4+ allowed values)
+# ============================================================================
+
+class ProfileSipSslMinVersionEnum(str, Enum):
+    """Allowed values for ssl_min_version field in sip."""
+    SSL_3_0 = "ssl-3.0"
+    TLS_1_0 = "tls-1.0"
+    TLS_1_1 = "tls-1.1"
+    TLS_1_2 = "tls-1.2"
+    TLS_1_3 = "tls-1.3"
+
+class ProfileSipSslMaxVersionEnum(str, Enum):
+    """Allowed values for ssl_max_version field in sip."""
+    SSL_3_0 = "ssl-3.0"
+    TLS_1_0 = "tls-1.0"
+    TLS_1_1 = "tls-1.1"
+    TLS_1_2 = "tls-1.2"
+    TLS_1_3 = "tls-1.3"
+
+class ProfileMsrpMaxMsgSizeActionEnum(str, Enum):
+    """Allowed values for max_msg_size_action field in msrp."""
+    PASS = "pass"
+    BLOCK = "block"
+    RESET = "reset"
+    MONITOR = "monitor"
+
+# ============================================================================
+# Child Table Models (sorted deepest-first so nested models are defined before their parents)
 # ============================================================================
 
 class ProfileSip(BaseModel):
@@ -25,6 +53,7 @@ class ProfileSip(BaseModel):
         """Pydantic model configuration."""
         extra = "allow"  # Allow additional fields from API
         str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
     
     status: Literal["disable", "enable"] | None = Field(default="enable", description="Enable/disable SIP.")    
     rtp: Literal["disable", "enable"] | None = Field(default="enable", description="Enable/disable create pinholes for RTP traffic to traverse firewall.")    
@@ -135,12 +164,12 @@ class ProfileSip(BaseModel):
     ssl_client_renegotiation: Literal["allow", "deny", "secure"] | None = Field(default="allow", description="Allow/block client renegotiation by server.")    
     ssl_algorithm: Literal["high", "medium", "low"] | None = Field(default="high", description="Relative strength of encryption algorithms accepted in negotiation.")    
     ssl_pfs: Literal["require", "deny", "allow"] | None = Field(default="allow", description="SSL Perfect Forward Secrecy.")    
-    ssl_min_version: SslMinVersionEnum | None = Field(default="tls-1.1", description="Lowest SSL/TLS version to negotiate.")    
-    ssl_max_version: SslMaxVersionEnum | None = Field(default="tls-1.3", description="Highest SSL/TLS version to negotiate.")    
-    ssl_client_certificate: str | None = Field(max_length=35, default="", description="Name of Certificate to offer to server if requested.")  # datasource: ['vpn.certificate.local.name']    
-    ssl_server_certificate: str = Field(max_length=35, default="", description="Name of Certificate return to the client in every SSL connection.")  # datasource: ['vpn.certificate.local.name']    
-    ssl_auth_client: str | None = Field(max_length=35, default="", description="Require a client certificate and authenticate it with the peer/peergrp.")  # datasource: ['user.peer.name', 'user.peergrp.name']    
-    ssl_auth_server: str | None = Field(max_length=35, default="", description="Authenticate the server's certificate with the peer/peergrp.")  # datasource: ['user.peer.name', 'user.peergrp.name']
+    ssl_min_version: ProfileSipSslMinVersionEnum | None = Field(default=ProfileSipSslMinVersionEnum.TLS_1_1, description="Lowest SSL/TLS version to negotiate.")    
+    ssl_max_version: ProfileSipSslMaxVersionEnum | None = Field(default=ProfileSipSslMaxVersionEnum.TLS_1_3, description="Highest SSL/TLS version to negotiate.")    
+    ssl_client_certificate: str | None = Field(max_length=35, default=None, description="Name of Certificate to offer to server if requested.")  # datasource: ['vpn.certificate.local.name']    
+    ssl_server_certificate: str = Field(max_length=35, description="Name of Certificate return to the client in every SSL connection.")  # datasource: ['vpn.certificate.local.name']    
+    ssl_auth_client: str | None = Field(max_length=35, default=None, description="Require a client certificate and authenticate it with the peer/peergrp.")  # datasource: ['user.peer.name', 'user.peergrp.name']    
+    ssl_auth_server: str | None = Field(max_length=35, default=None, description="Authenticate the server's certificate with the peer/peergrp.")  # datasource: ['user.peer.name', 'user.peergrp.name']
 class ProfileSccp(BaseModel):
     """
     Child table model for sccp.
@@ -152,6 +181,7 @@ class ProfileSccp(BaseModel):
         """Pydantic model configuration."""
         extra = "allow"  # Allow additional fields from API
         str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
     
     status: Literal["disable", "enable"] | None = Field(default="enable", description="Enable/disable SCCP.")    
     block_mcast: Literal["disable", "enable"] | None = Field(default="disable", description="Enable/disable block multicast RTP connections.")    
@@ -170,11 +200,12 @@ class ProfileMsrp(BaseModel):
         """Pydantic model configuration."""
         extra = "allow"  # Allow additional fields from API
         str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
     
     status: Literal["disable", "enable"] | None = Field(default="enable", description="Enable/disable MSRP.")    
     log_violations: Literal["disable", "enable"] | None = Field(default="enable", description="Enable/disable logging of MSRP violations.")    
     max_msg_size: int | None = Field(ge=0, le=65535, default=0, description="Maximum allowable MSRP message size (1-65535).")    
-    max_msg_size_action: MaxMsgSizeActionEnum | None = Field(default="pass", description="Action for violation of max-msg-size.")
+    max_msg_size_action: ProfileMsrpMaxMsgSizeActionEnum | None = Field(default=ProfileMsrpMaxMsgSizeActionEnum.PASS, description="Action for violation of max-msg-size.")
 # ============================================================================
 # Enum Definitions (for fields with 4+ allowed values)
 # ============================================================================
@@ -203,12 +234,12 @@ class ProfileModel(BaseModel):
     # Model Fields
     # ========================================================================
     
-    name: str = Field(max_length=47, default="", description="Profile name.")    
+    name: str = Field(max_length=47, description="Profile name.")    
     feature_set: Literal["ips", "voipd"] | None = Field(default="voipd", description="IPS or voipd (SIP-ALG) inspection feature set.")    
     comment: str | None = Field(max_length=255, default=None, description="Comment.")    
-    sip: list[Sip] = Field(default=None, description="SIP.")    
-    sccp: list[Sccp] = Field(default=None, description="SCCP.")    
-    msrp: list[Msrp] = Field(default=None, description="MSRP.")    
+    sip: list[ProfileSip] = Field(default_factory=list, description="SIP.")    
+    sccp: list[ProfileSccp] = Field(default_factory=list, description="SCCP.")    
+    msrp: list[ProfileMsrp] = Field(default_factory=list, description="MSRP.")    
     # ========================================================================
     # Custom Validators
     # ========================================================================
@@ -273,7 +304,7 @@ class ProfileModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.voip.profile.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate child table items
         values = getattr(self, "sip", [])
@@ -344,5 +375,5 @@ __all__ = [
 # ============================================================================
 # Generated by hfortix generator v0.6.0
 # Schema: 1.7.0
-# Generated: 2026-01-17T05:32:16.519765Z
+# Generated: 2026-01-17T17:25:20.555456Z
 # ============================================================================

@@ -1042,6 +1042,80 @@ class LocalInPolicy(CRUDEndpoint, MetadataMixin):
             - put(): Update existing object
             - exists(): Check existence manually
         """
+        # Apply normalization for table fields (supports flexible input formats)
+        if intf is not None:
+            intf = normalize_table_field(
+                intf,
+                mkey="name",
+                required_fields=['name'],
+                field_name="intf",
+                example="[{'name': 'value'}]",
+            )
+        if srcaddr is not None:
+            srcaddr = normalize_table_field(
+                srcaddr,
+                mkey="name",
+                required_fields=['name'],
+                field_name="srcaddr",
+                example="[{'name': 'value'}]",
+            )
+        if dstaddr is not None:
+            dstaddr = normalize_table_field(
+                dstaddr,
+                mkey="name",
+                required_fields=['name'],
+                field_name="dstaddr",
+                example="[{'name': 'value'}]",
+            )
+        if internet_service_src_name is not None:
+            internet_service_src_name = normalize_table_field(
+                internet_service_src_name,
+                mkey="name",
+                required_fields=['name'],
+                field_name="internet_service_src_name",
+                example="[{'name': 'value'}]",
+            )
+        if internet_service_src_group is not None:
+            internet_service_src_group = normalize_table_field(
+                internet_service_src_group,
+                mkey="name",
+                required_fields=['name'],
+                field_name="internet_service_src_group",
+                example="[{'name': 'value'}]",
+            )
+        if internet_service_src_custom is not None:
+            internet_service_src_custom = normalize_table_field(
+                internet_service_src_custom,
+                mkey="name",
+                required_fields=['name'],
+                field_name="internet_service_src_custom",
+                example="[{'name': 'value'}]",
+            )
+        if internet_service_src_custom_group is not None:
+            internet_service_src_custom_group = normalize_table_field(
+                internet_service_src_custom_group,
+                mkey="name",
+                required_fields=['name'],
+                field_name="internet_service_src_custom_group",
+                example="[{'name': 'value'}]",
+            )
+        if internet_service_src_fortiguard is not None:
+            internet_service_src_fortiguard = normalize_table_field(
+                internet_service_src_fortiguard,
+                mkey="name",
+                required_fields=['name'],
+                field_name="internet_service_src_fortiguard",
+                example="[{'name': 'value'}]",
+            )
+        if service is not None:
+            service = normalize_table_field(
+                service,
+                mkey="name",
+                required_fields=['name'],
+                field_name="service",
+                example="[{'name': 'value'}]",
+            )
+        
         # Build payload using helper function with auto-normalization
         payload_data = build_api_payload(
             policyid=policyid,

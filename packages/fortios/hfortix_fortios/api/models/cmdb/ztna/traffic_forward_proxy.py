@@ -38,14 +38,14 @@ class TrafficForwardProxyModel(BaseModel):
     # Model Fields
     # ========================================================================
     
-    name: str | None = Field(max_length=79, default="", description="ZTNA proxy name.")    
-    vip: str | None = Field(max_length=79, default="", description="Virtual IP name.")  # datasource: ['firewall.vip.name']    
-    host: str | None = Field(max_length=79, default="", description="Virtual or real host name.")  # datasource: ['firewall.access-proxy-virtual-host.name']    
-    decrypted_traffic_mirror: str | None = Field(max_length=35, default="", description="Decrypted traffic mirror.")  # datasource: ['firewall.decrypted-traffic-mirror.name']    
+    name: str | None = Field(max_length=79, default=None, description="ZTNA proxy name.")    
+    vip: str | None = Field(max_length=79, default=None, description="Virtual IP name.")  # datasource: ['firewall.vip.name']    
+    host: str | None = Field(max_length=79, default=None, description="Virtual or real host name.")  # datasource: ['firewall.access-proxy-virtual-host.name']    
+    decrypted_traffic_mirror: str | None = Field(max_length=35, default=None, description="Decrypted traffic mirror.")  # datasource: ['firewall.decrypted-traffic-mirror.name']    
     log_blocked_traffic: Literal["disable", "enable"] | None = Field(default="enable", description="Enable/disable logging of blocked traffic.")    
     auth_portal: Literal["disable", "enable"] | None = Field(default="disable", description="Enable/disable authentication portal.")    
-    auth_virtual_host: str | None = Field(max_length=79, default="", description="Virtual host for authentication portal.")  # datasource: ['firewall.access-proxy-virtual-host.name']    
-    vip6: str | None = Field(max_length=79, default="", description="Virtual IPv6 name.")  # datasource: ['firewall.vip6.name']    
+    auth_virtual_host: str | None = Field(max_length=79, default=None, description="Virtual host for authentication portal.")  # datasource: ['firewall.access-proxy-virtual-host.name']    
+    vip6: str | None = Field(max_length=79, default=None, description="Virtual IPv6 name.")  # datasource: ['firewall.vip6.name']    
     # ========================================================================
     # Custom Validators
     # ========================================================================
@@ -185,7 +185,7 @@ class TrafficForwardProxyModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.ztna.traffic_forward_proxy.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate scalar field
         value = getattr(self, "vip", None)
@@ -234,7 +234,7 @@ class TrafficForwardProxyModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.ztna.traffic_forward_proxy.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate scalar field
         value = getattr(self, "host", None)
@@ -243,7 +243,7 @@ class TrafficForwardProxyModel(BaseModel):
         
         # Check all datasource endpoints
         found = False
-        if await client.api.cmdb.firewall.access-proxy-virtual-host.exists(value):
+        if await client.api.cmdb.firewall.access_proxy_virtual_host.exists(value):
             found = True
         
         if not found:
@@ -283,7 +283,7 @@ class TrafficForwardProxyModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.ztna.traffic_forward_proxy.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate scalar field
         value = getattr(self, "decrypted_traffic_mirror", None)
@@ -292,7 +292,7 @@ class TrafficForwardProxyModel(BaseModel):
         
         # Check all datasource endpoints
         found = False
-        if await client.api.cmdb.firewall.decrypted-traffic-mirror.exists(value):
+        if await client.api.cmdb.firewall.decrypted_traffic_mirror.exists(value):
             found = True
         
         if not found:
@@ -332,7 +332,7 @@ class TrafficForwardProxyModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.ztna.traffic_forward_proxy.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate scalar field
         value = getattr(self, "auth_virtual_host", None)
@@ -341,7 +341,7 @@ class TrafficForwardProxyModel(BaseModel):
         
         # Check all datasource endpoints
         found = False
-        if await client.api.cmdb.firewall.access-proxy-virtual-host.exists(value):
+        if await client.api.cmdb.firewall.access_proxy_virtual_host.exists(value):
             found = True
         
         if not found:
@@ -381,7 +381,7 @@ class TrafficForwardProxyModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.ztna.traffic_forward_proxy.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate scalar field
         value = getattr(self, "vip6", None)
@@ -449,5 +449,5 @@ __all__ = [
 # ============================================================================
 # Generated by hfortix generator v0.6.0
 # Schema: 1.7.0
-# Generated: 2026-01-17T05:32:16.871074Z
+# Generated: 2026-01-17T17:25:20.850609Z
 # ============================================================================

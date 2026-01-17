@@ -13,22 +13,13 @@ from enum import Enum
 from uuid import UUID
 
 # ============================================================================
-# Child Table Models
+# Enum Definitions for Child Table Fields (for fields with 4+ allowed values)
 # ============================================================================
 
-class CustomAppCategory(BaseModel):
-    """
-    Child table model for app-category.
-    
-    Application category ID.
-    """
-    
-    class Config:
-        """Pydantic model configuration."""
-        extra = "allow"  # Allow additional fields from API
-        str_strip_whitespace = True
-    
-    id: int | None = Field(ge=0, le=4294967295, default=0, description="Application category id.")
+# ============================================================================
+# Child Table Models (sorted deepest-first so nested models are defined before their parents)
+# ============================================================================
+
 class CustomApplication(BaseModel):
     """
     Child table model for application.
@@ -40,18 +31,60 @@ class CustomApplication(BaseModel):
         """Pydantic model configuration."""
         extra = "allow"  # Allow additional fields from API
         str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
     
-    id: int | None = Field(ge=0, le=4294967295, default=0, description="Application id.")
+    id_: int | None = Field(ge=0, le=4294967295, default=0, serialization_alias="id", description="Application id.")
+class CustomAppCategory(BaseModel):
+    """
+    Child table model for app-category.
+    
+    Application category ID.
+    """
+    
+    class Config:
+        """Pydantic model configuration."""
+        extra = "allow"  # Allow additional fields from API
+        str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
+    
+    id_: int | None = Field(ge=0, le=4294967295, default=0, serialization_alias="id", description="Application category id.")
 # ============================================================================
 # Enum Definitions (for fields with 4+ allowed values)
 # ============================================================================
 
 class CustomProtocolEnum(str, Enum):
     """Allowed values for protocol field."""
-    TCPUDPUDP_LITESCTP = "TCP/UDP/UDP-Lite/SCTP"    ICMP = "ICMP"    ICMP6 = "ICMP6"    IP = "IP"    HTTP = "HTTP"    FTP = "FTP"    CONNECT = "CONNECT"    SOCKS_TCP = "SOCKS-TCP"    SOCKS_UDP = "SOCKS-UDP"    ALL = "ALL"
+    TCPUDPUDP_LITESCTP = "TCP/UDP/UDP-Lite/SCTP"
+    ICMP = "ICMP"
+    ICMP6 = "ICMP6"
+    IP = "IP"
+    HTTP = "HTTP"
+    FTP = "FTP"
+    CONNECT = "CONNECT"
+    SOCKS_TCP = "SOCKS-TCP"
+    SOCKS_UDP = "SOCKS-UDP"
+    ALL = "ALL"
+
 class CustomHelperEnum(str, Enum):
     """Allowed values for helper field."""
-    AUTO = "auto"    DISABLE = "disable"    FTP = "ftp"    TFTP = "tftp"    RAS = "ras"    H323 = "h323"    TNS = "tns"    MMS = "mms"    SIP = "sip"    PPTP = "pptp"    RTSP = "rtsp"    DNS_UDP = "dns-udp"    DNS_TCP = "dns-tcp"    PMAP = "pmap"    RSH = "rsh"    DCERPC = "dcerpc"    MGCP = "mgcp"
+    AUTO = "auto"
+    DISABLE = "disable"
+    FTP = "ftp"
+    TFTP = "tftp"
+    RAS = "ras"
+    H323 = "h323"
+    TNS = "tns"
+    MMS = "mms"
+    SIP = "sip"
+    PPTP = "pptp"
+    RTSP = "rtsp"
+    DNS_UDP = "dns-udp"
+    DNS_TCP = "dns-tcp"
+    PMAP = "pmap"
+    RSH = "rsh"
+    DCERPC = "dcerpc"
+    MGCP = "mgcp"
+
 
 # ============================================================================
 # Main Model
@@ -76,33 +109,33 @@ class CustomModel(BaseModel):
     # Model Fields
     # ========================================================================
     
-    name: str | None = Field(max_length=79, default="", description="Custom service name.")    
+    name: str | None = Field(max_length=79, default=None, description="Custom service name.")    
     uuid: str | None = Field(default="00000000-0000-0000-0000-000000000000", description="Universally Unique Identifier (UUID; automatically assigned but can be manually reset).")    
     proxy: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable web proxy service.")    
-    category: str | None = Field(max_length=63, default="", description="Service category.")  # datasource: ['firewall.service.category.name']    
-    protocol: ProtocolEnum | None = Field(default="TCP/UDP/UDP-Lite/SCTP", description="Protocol type based on IANA numbers.")    
-    helper: HelperEnum | None = Field(default="auto", description="Helper name.")    
-    iprange: str | None = Field(default="", description="Start and end of the IP range associated with service.")    
-    fqdn: str | None = Field(max_length=255, default="", description="Fully qualified domain name.")    
+    category: str | None = Field(max_length=63, default=None, description="Service category.")  # datasource: ['firewall.service.category.name']    
+    protocol: CustomProtocolEnum | None = Field(default=CustomProtocolEnum.TCPUDPUDP_LITESCTP, description="Protocol type based on IANA numbers.")    
+    helper: CustomHelperEnum | None = Field(default=CustomHelperEnum.AUTO, description="Helper name.")    
+    iprange: str | None = Field(default=None, description="Start and end of the IP range associated with service.")    
+    fqdn: str | None = Field(max_length=255, default=None, description="Fully qualified domain name.")    
     protocol_number: int | None = Field(ge=0, le=254, default=0, description="IP protocol number.")    
-    icmptype: int | None = Field(ge=0, le=4294967295, default="", description="ICMP type.")    
-    icmpcode: int | None = Field(ge=0, le=255, default="", description="ICMP code.")    
-    tcp_portrange: str | None = Field(default="", description="Multiple TCP port ranges.")    
-    udp_portrange: str | None = Field(default="", description="Multiple UDP port ranges.")    
-    udplite_portrange: str | None = Field(default="", description="Multiple UDP-Lite port ranges.")    
-    sctp_portrange: str | None = Field(default="", description="Multiple SCTP port ranges.")    
+    icmptype: int | None = Field(ge=0, le=4294967295, default=None, description="ICMP type.")    
+    icmpcode: int | None = Field(ge=0, le=255, default=None, description="ICMP code.")    
+    tcp_portrange: str | None = Field(default=None, description="Multiple TCP port ranges.")    
+    udp_portrange: str | None = Field(default=None, description="Multiple UDP port ranges.")    
+    udplite_portrange: str | None = Field(default=None, description="Multiple UDP-Lite port ranges.")    
+    sctp_portrange: str | None = Field(default=None, description="Multiple SCTP port ranges.")    
     tcp_halfclose_timer: int | None = Field(ge=0, le=86400, default=0, description="Wait time to close a TCP session waiting for an unanswered FIN packet (1 - 86400 sec, 0 = default).")    
     tcp_halfopen_timer: int | None = Field(ge=0, le=86400, default=0, description="Wait time to close a TCP session waiting for an unanswered open session packet (1 - 86400 sec, 0 = default).")    
     tcp_timewait_timer: int | None = Field(ge=0, le=300, default=0, description="Set the length of the TCP TIME-WAIT state in seconds (1 - 300 sec, 0 = default).")    
     tcp_rst_timer: int | None = Field(ge=5, le=300, default=0, description="Set the length of the TCP CLOSE state in seconds (5 - 300 sec, 0 = default).")    
     udp_idle_timer: int | None = Field(ge=0, le=86400, default=0, description="Number of seconds before an idle UDP/UDP-Lite connection times out (0 - 86400 sec, 0 = default).")    
-    session_ttl: str | None = Field(default="", description="Session TTL (300 - 2764800, 0 = default).")    
+    session_ttl: str | None = Field(default=None, description="Session TTL (300 - 2764800, 0 = default).")    
     check_reset_range: Literal["disable", "strict", "default"] | None = Field(default="default", description="Configure the type of ICMP error message verification.")    
     comment: str | None = Field(max_length=255, default=None, description="Comment.")    
     color: int | None = Field(ge=0, le=32, default=0, description="Color of icon on the GUI.")    
     app_service_type: Literal["disable", "app-id", "app-category"] | None = Field(default="disable", description="Application service type.")    
-    app_category: list[AppCategory] = Field(default=None, description="Application category ID.")    
-    application: list[Application] = Field(default=None, description="Application ID.")    
+    app_category: list[CustomAppCategory] = Field(default_factory=list, description="Application category ID.")    
+    application: list[CustomApplication] = Field(default_factory=list, description="Application ID.")    
     fabric_object: Literal["enable", "disable"] | None = Field(default="disable", description="Security Fabric global object setting.")    
     # ========================================================================
     # Custom Validators
@@ -183,7 +216,7 @@ class CustomModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.service.custom.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate scalar field
         value = getattr(self, "category", None)
@@ -243,5 +276,5 @@ __all__ = [
 # ============================================================================
 # Generated by hfortix generator v0.6.0
 # Schema: 1.7.0
-# Generated: 2026-01-17T05:32:17.630407Z
+# Generated: 2026-01-17T17:25:21.503147Z
 # ============================================================================

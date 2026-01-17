@@ -11,9 +11,27 @@ from pydantic import BaseModel, Field, field_validator
 from typing import Any, Literal, Optional
 
 # ============================================================================
-# Child Table Models
+# Enum Definitions for Child Table Fields (for fields with 4+ allowed values)
 # ============================================================================
 
+# ============================================================================
+# Child Table Models (sorted deepest-first so nested models are defined before their parents)
+# ============================================================================
+
+class MulticastAddressTaggingTags(BaseModel):
+    """
+    Child table model for tagging.tags.
+    
+    Tags.
+    """
+    
+    class Config:
+        """Pydantic model configuration."""
+        extra = "allow"  # Allow additional fields from API
+        str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
+    
+    name: str | None = Field(max_length=79, default=None, description="Tag name.")  # datasource: ['system.object-tagging.tags.name']
 class MulticastAddressTagging(BaseModel):
     """
     Child table model for tagging.
@@ -25,10 +43,11 @@ class MulticastAddressTagging(BaseModel):
         """Pydantic model configuration."""
         extra = "allow"  # Allow additional fields from API
         str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
     
-    name: str | None = Field(max_length=63, default="", description="Tagging entry name.")    
-    category: str | None = Field(max_length=63, default="", description="Tag category.")  # datasource: ['system.object-tagging.category']    
-    tags: list[Tags] = Field(default=None, description="Tags.")
+    name: str | None = Field(max_length=63, default=None, description="Tagging entry name.")    
+    category: str | None = Field(max_length=63, default=None, description="Tag category.")  # datasource: ['system.object-tagging.category']    
+    tags: list[MulticastAddressTaggingTags] = Field(default_factory=list, description="Tags.")
 # ============================================================================
 # Enum Definitions (for fields with 4+ allowed values)
 # ============================================================================
@@ -44,7 +63,7 @@ class MulticastAddressModel(BaseModel):
     
     Configure multicast addresses.
     
-    Validation Rules:        - name: max_length=79 pattern=        - type: pattern=        - subnet: pattern=        - start_ip: pattern=        - end_ip: pattern=        - comment: max_length=255 pattern=        - associated_interface: max_length=35 pattern=        - color: min=0 max=32 pattern=        - tagging: pattern=    """
+    Validation Rules:        - name: max_length=79 pattern=        - type_: pattern=        - subnet: pattern=        - start_ip: pattern=        - end_ip: pattern=        - comment: max_length=255 pattern=        - associated_interface: max_length=35 pattern=        - color: min=0 max=32 pattern=        - tagging: pattern=    """
     
     class Config:
         """Pydantic model configuration."""
@@ -57,15 +76,15 @@ class MulticastAddressModel(BaseModel):
     # Model Fields
     # ========================================================================
     
-    name: str | None = Field(max_length=79, default="", description="Multicast address name.")    
-    type: Literal["multicastrange", "broadcastmask"] | None = Field(default="multicastrange", description="Type of address object: multicast IP address range or broadcast IP/mask to be treated as a multicast address.")    
+    name: str | None = Field(max_length=79, default=None, description="Multicast address name.")    
+    type_: Literal["multicastrange", "broadcastmask"] | None = Field(default="multicastrange", serialization_alias="type", description="Type of address object: multicast IP address range or broadcast IP/mask to be treated as a multicast address.")    
     subnet: Any = Field(default="0.0.0.0 0.0.0.0", description="Broadcast address and subnet.")    
     start_ip: str = Field(default="0.0.0.0", description="First IPv4 address (inclusive) in the range for the address.")    
     end_ip: str = Field(default="0.0.0.0", description="Final IPv4 address (inclusive) in the range for the address.")    
     comment: str | None = Field(max_length=255, default=None, description="Comment.")    
-    associated_interface: str | None = Field(max_length=35, default="", description="Interface associated with the address object. When setting up a policy, only addresses associated with this interface are available.")  # datasource: ['system.interface.name']    
+    associated_interface: str | None = Field(max_length=35, default=None, description="Interface associated with the address object. When setting up a policy, only addresses associated with this interface are available.")  # datasource: ['system.interface.name']    
     color: int | None = Field(ge=0, le=32, default=0, description="Integer value to determine the color of the icon in the GUI (1 - 32, default = 0, which sets value to 1).")    
-    tagging: list[Tagging] = Field(default=None, description="Config object tagging.")    
+    tagging: list[MulticastAddressTagging] = Field(default_factory=list, description="Config object tagging.")    
     # ========================================================================
     # Custom Validators
     # ========================================================================
@@ -145,7 +164,7 @@ class MulticastAddressModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.multicast_address.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate scalar field
         value = getattr(self, "associated_interface", None)
@@ -194,7 +213,7 @@ class MulticastAddressModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.multicast_address.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate child table items
         values = getattr(self, "tagging", [])
@@ -212,7 +231,7 @@ class MulticastAddressModel(BaseModel):
             
             # Check all datasource endpoints
             found = False
-            if await client.api.cmdb.system.object-tagging.exists(value):
+            if await client.api.cmdb.system.object_tagging.exists(value):
                 found = True
             
             if not found:
@@ -259,11 +278,11 @@ Dict = dict[str, Any]  # For backward compatibility
 # ============================================================================
 
 __all__ = [
-    "MulticastAddressModel",    "MulticastAddressTagging",]
+    "MulticastAddressModel",    "MulticastAddressTagging",    "MulticastAddressTagging.Tags",]
 
 
 # ============================================================================
 # Generated by hfortix generator v0.6.0
 # Schema: 1.7.0
-# Generated: 2026-01-17T05:32:19.505822Z
+# Generated: 2026-01-17T17:25:23.180528Z
 # ============================================================================

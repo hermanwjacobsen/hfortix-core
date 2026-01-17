@@ -11,7 +11,11 @@ from pydantic import BaseModel, Field, field_validator
 from typing import Any, Literal, Optional
 
 # ============================================================================
-# Child Table Models
+# Enum Definitions for Child Table Fields (for fields with 4+ allowed values)
+# ============================================================================
+
+# ============================================================================
+# Child Table Models (sorted deepest-first so nested models are defined before their parents)
 # ============================================================================
 
 class TtlPolicySrcaddr(BaseModel):
@@ -25,8 +29,9 @@ class TtlPolicySrcaddr(BaseModel):
         """Pydantic model configuration."""
         extra = "allow"  # Allow additional fields from API
         str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
     
-    name: str = Field(max_length=79, default="", description="Address name.")  # datasource: ['firewall.address.name', 'firewall.addrgrp.name']
+    name: str = Field(max_length=79, description="Address name.")  # datasource: ['firewall.address.name', 'firewall.addrgrp.name']
 class TtlPolicyService(BaseModel):
     """
     Child table model for service.
@@ -38,8 +43,9 @@ class TtlPolicyService(BaseModel):
         """Pydantic model configuration."""
         extra = "allow"  # Allow additional fields from API
         str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
     
-    name: str = Field(max_length=79, default="", description="Service name.")  # datasource: ['firewall.service.custom.name', 'firewall.service.group.name']
+    name: str = Field(max_length=79, description="Service name.")  # datasource: ['firewall.service.custom.name', 'firewall.service.group.name']
 # ============================================================================
 # Enum Definitions (for fields with 4+ allowed values)
 # ============================================================================
@@ -55,7 +61,7 @@ class TtlPolicyModel(BaseModel):
     
     Configure TTL policies.
     
-    Validation Rules:        - id: min=0 max=4294967295 pattern=        - status: pattern=        - action: pattern=        - srcintf: max_length=35 pattern=        - srcaddr: pattern=        - service: pattern=        - schedule: max_length=35 pattern=        - ttl: pattern=    """
+    Validation Rules:        - id_: min=0 max=4294967295 pattern=        - status: pattern=        - action: pattern=        - srcintf: max_length=35 pattern=        - srcaddr: pattern=        - service: pattern=        - schedule: max_length=35 pattern=        - ttl: pattern=    """
     
     class Config:
         """Pydantic model configuration."""
@@ -68,14 +74,14 @@ class TtlPolicyModel(BaseModel):
     # Model Fields
     # ========================================================================
     
-    id: int = Field(ge=0, le=4294967295, default=0, description="ID.")    
+    id_: int = Field(ge=0, le=4294967295, default=0, serialization_alias="id", description="ID.")    
     status: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable this TTL policy.")    
     action: Literal["accept", "deny"] | None = Field(default="deny", description="Action to be performed on traffic matching this policy (default = deny).")    
-    srcintf: str = Field(max_length=35, default="", description="Source interface name from available interfaces.")  # datasource: ['system.zone.name', 'system.sdwan.zone.name', 'system.interface.name']    
-    srcaddr: list[Srcaddr] = Field(description="Source address object(s) from available options. Separate multiple names with a space.")    
-    service: list[Service] = Field(description="Service object(s) from available options. Separate multiple names with a space.")    
-    schedule: str = Field(max_length=35, default="", description="Schedule object from available options.")  # datasource: ['firewall.schedule.onetime.name', 'firewall.schedule.recurring.name', 'firewall.schedule.group.name']    
-    ttl: str = Field(default="", description="Value/range to match against the packet's Time to Live value (format: ttl[ - ttl_high], 1 - 255).")    
+    srcintf: str = Field(max_length=35, description="Source interface name from available interfaces.")  # datasource: ['system.zone.name', 'system.sdwan.zone.name', 'system.interface.name']    
+    srcaddr: list[TtlPolicySrcaddr] = Field(description="Source address object(s) from available options. Separate multiple names with a space.")    
+    service: list[TtlPolicyService] = Field(description="Service object(s) from available options. Separate multiple names with a space.")    
+    schedule: str = Field(max_length=35, description="Schedule object from available options.")  # datasource: ['firewall.schedule.onetime.name', 'firewall.schedule.recurring.name', 'firewall.schedule.group.name']    
+    ttl: str = Field(description="Value/range to match against the packet's Time to Live value (format: ttl[ - ttl_high], 1 - 255).")    
     # ========================================================================
     # Custom Validators
     # ========================================================================
@@ -170,7 +176,7 @@ class TtlPolicyModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.ttl_policy.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate scalar field
         value = getattr(self, "srcintf", None)
@@ -223,7 +229,7 @@ class TtlPolicyModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.ttl_policy.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate child table items
         values = getattr(self, "srcaddr", [])
@@ -283,7 +289,7 @@ class TtlPolicyModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.ttl_policy.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate child table items
         values = getattr(self, "service", [])
@@ -343,7 +349,7 @@ class TtlPolicyModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.ttl_policy.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate scalar field
         value = getattr(self, "schedule", None)
@@ -413,5 +419,5 @@ __all__ = [
 # ============================================================================
 # Generated by hfortix generator v0.6.0
 # Schema: 1.7.0
-# Generated: 2026-01-17T05:32:18.495255Z
+# Generated: 2026-01-17T17:25:22.273003Z
 # ============================================================================

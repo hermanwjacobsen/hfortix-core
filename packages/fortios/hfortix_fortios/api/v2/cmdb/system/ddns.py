@@ -787,6 +787,24 @@ class Ddns(CRUDEndpoint, MetadataMixin):
             - put(): Update existing object
             - exists(): Check existence manually
         """
+        # Apply normalization for table fields (supports flexible input formats)
+        if ddns_server_addr is not None:
+            ddns_server_addr = normalize_table_field(
+                ddns_server_addr,
+                mkey="addr",
+                required_fields=['addr'],
+                field_name="ddns_server_addr",
+                example="[{'addr': 'value'}]",
+            )
+        if monitor_interface is not None:
+            monitor_interface = normalize_table_field(
+                monitor_interface,
+                mkey="interface-name",
+                required_fields=['interface-name'],
+                field_name="monitor_interface",
+                example="[{'interface-name': 'value'}]",
+            )
+        
         # Build payload using helper function with auto-normalization
         payload_data = build_api_payload(
             ddnsid=ddnsid,

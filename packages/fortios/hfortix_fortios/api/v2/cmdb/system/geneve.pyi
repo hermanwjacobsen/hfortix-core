@@ -1,147 +1,109 @@
-from typing import TypedDict, Literal, Any, Coroutine, Union, overload, Generator, final
-from typing_extensions import NotRequired
-from hfortix_fortios.models import FortiObject, FortiObjectList
+""" - Type Stubs
 
-# ============================================================================
-# Nested TypedDicts for table field children (dict mode)
-# These MUST be defined before the Payload class to use them as type hints
-# ============================================================================
+Auto-generated stub file for type checking and IDE support.
 
-# ============================================================================
-# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional)
-# ============================================================================
-# NOTE: We intentionally DON'T use NotRequired wrapper because:
-# 1. total=False already makes all fields optional
-# 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
+Endpoint: system/geneve
+Category: cmdb
+"""
+
+from __future__ import annotations
+
+from typing import (
+    Any,
+    ClassVar,
+    Literal,
+    TypedDict,
+    overload,
+)
+
+from hfortix_fortios.models import (
+    FortiObject,
+    FortiObjectList,
+)
+
+
+# ================================================================
+# TypedDict Payloads
+# ================================================================
+
 class GenevePayload(TypedDict, total=False):
-    """
-    Type hints for system/geneve payload fields.
-    
-    Configure GENEVE devices.
-    
-    **Related Resources:**
-
-    Dependencies (resources this endpoint references):
-        - :class:`~.system.interface.InterfaceEndpoint` (via: interface)
-
-    **Usage:**
-        payload: GenevePayload = {
-            "field": "value",  # <- autocomplete shows all fields
-        }
-    """
-    name: str  # GENEVE device or interface name. Must be an unique | MaxLen: 15
-    interface: str  # Outgoing interface for GENEVE encapsulated traffic | MaxLen: 15
-    vni: int  # GENEVE network ID. | Default: 0 | Min: 0 | Max: 16777215
-    type: Literal["ethernet", "ppp"]  # GENEVE type. | Default: ethernet
-    ip_version: Literal["ipv4-unicast", "ipv6-unicast"]  # IP version to use for the GENEVE interface and so | Default: ipv4-unicast
-    remote_ip: str  # IPv4 address of the GENEVE interface on the device | Default: 0.0.0.0
-    remote_ip6: str  # IPv6 IP address of the GENEVE interface on the dev | Default: ::
-    dstport: int  # GENEVE destination port | Default: 6081 | Min: 1 | Max: 65535
-
-# ============================================================================
-# Nested classes for table field children (object mode - for API responses)
-# ============================================================================
-
-
-
-# Response TypedDict for GET returns (all fields present in API response)
-class GeneveResponse(TypedDict):
-    """
-    Type hints for system/geneve API response fields.
-    
-    All fields are present in the response from the FortiGate API.
-    """
-    name: str  # GENEVE device or interface name. Must be an unique | MaxLen: 15
-    interface: str  # Outgoing interface for GENEVE encapsulated traffic | MaxLen: 15
-    vni: int  # GENEVE network ID. | Default: 0 | Min: 0 | Max: 16777215
-    type: Literal["ethernet", "ppp"]  # GENEVE type. | Default: ethernet
-    ip_version: Literal["ipv4-unicast", "ipv6-unicast"]  # IP version to use for the GENEVE interface and so | Default: ipv4-unicast
-    remote_ip: str  # IPv4 address of the GENEVE interface on the device | Default: 0.0.0.0
-    remote_ip6: str  # IPv6 IP address of the GENEVE interface on the dev | Default: ::
-    dstport: int  # GENEVE destination port | Default: 6081 | Min: 1 | Max: 65535
-
-
-@final
-class GeneveObject:
-    """Typed FortiObject for system/geneve with IDE autocomplete support.
-    
-    This is a typed wrapper that provides IDE autocomplete for API response fields.
-    At runtime, this is actually a FortiObject instance.
-    """
-    
-    # GENEVE device or interface name. Must be an unique interface | MaxLen: 15
+    """Payload type for Geneve operations."""
     name: str
-    # Outgoing interface for GENEVE encapsulated traffic. | MaxLen: 15
     interface: str
-    # GENEVE network ID. | Default: 0 | Min: 0 | Max: 16777215
     vni: int
-    # GENEVE type. | Default: ethernet
     type: Literal["ethernet", "ppp"]
-    # IP version to use for the GENEVE interface and so for commun | Default: ipv4-unicast
     ip_version: Literal["ipv4-unicast", "ipv6-unicast"]
-    # IPv4 address of the GENEVE interface on the device at the re | Default: 0.0.0.0
     remote_ip: str
-    # IPv6 IP address of the GENEVE interface on the device at the | Default: ::
     remote_ip6: str
-    # GENEVE destination port (1 - 65535, default = 6081). | Default: 6081 | Min: 1 | Max: 65535
     dstport: int
-    
-    # Common API response fields
-    status: str
-    http_status: int | None
-    http_status_code: int | None
-    http_method: str | None
-    http_response_time: float | None
-    vdom: str | None
-    
-    # Methods from FortiObject
-    @property
-    def dict(self) -> dict[str, Any]:
-        """Convert to dictionary."""
-        ...
-    @property
-    def json(self) -> str:
-        """Get pretty-printed JSON string."""
-        ...
-    @property
-    def raw(self) -> dict[str, Any]:
-        """Get raw API response data."""
-        ...
-    def get_full(self, name: str) -> Any: ...
-    def to_dict(self) -> GenevePayload: ...
-    def keys(self) -> Any: ...
-    def values(self) -> Generator[Any, None, None]: ...
-    def items(self) -> Generator[tuple[str, Any], None, None]: ...
-    def get(self, key: str, default: Any = None) -> Any: ...
 
+
+# ================================================================
+# Response Types (TypedDict for dict-style access)
+# ================================================================
+
+class GeneveResponse(TypedDict, total=False):
+    """Response type for Geneve - use with .dict property for typed dict access."""
+    name: str
+    interface: str
+    vni: int
+    type: Literal["ethernet", "ppp"]
+    ip_version: Literal["ipv4-unicast", "ipv6-unicast"]
+    remote_ip: str
+    remote_ip6: str
+    dstport: int
+
+
+# ================================================================
+# Response Types (Class for attribute access)
+# ================================================================
+
+
+class GeneveObject(FortiObject):
+    """Typed FortiObject for Geneve with field access."""
+    name: str
+    interface: str
+    vni: int
+    type: Literal["ethernet", "ppp"]
+    ip_version: Literal["ipv4-unicast", "ipv6-unicast"]
+    remote_ip: str
+    remote_ip6: str
+    dstport: int
+
+
+# ================================================================
+# Main Endpoint Class
+# ================================================================
 
 class Geneve:
     """
-    Configure GENEVE devices.
     
-    Path: system/geneve
+    Endpoint: system/geneve
     Category: cmdb
-    Primary Key: name
+    MKey: name
     """
     
+    # Class attributes for introspection
+    endpoint: ClassVar[str] = ...
+    path: ClassVar[str] = ...
+    category: ClassVar[str] = ...
+    mkey: ClassVar[str] = ...
+    capabilities: ClassVar[dict[str, Any]] = ...
+    
     def __init__(self, client: Any) -> None:
-        """Initialize endpoint with HTTP client.
-        
-        Args:
-            client: HTTP client instance for API communication
-        """
+        """Initialize endpoint with HTTP client."""
         ...
     
     # ================================================================
-    # GET OVERLOADS - Always returns FortiObject (or ContentResponse for file endpoints)
-    # Pylance matches overloads top-to-bottom, so these must come first!
+    # GET Methods
     # ================================================================
     
-    # With mkey as positional arg -> returns FortiObject
+    # CMDB with mkey - overloads for single vs list returns
     @overload
     def get(
         self,
         name: str,
+        *,
         filter: str | list[str] | None = ...,
         count: int | None = ...,
         start: int | None = ...,
@@ -151,14 +113,14 @@ class Geneve:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        error_mode: Literal["raise", "return", "print"] | None = ...,
+        error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> GeneveObject: ...
     
-    # With mkey as keyword arg -> returns FortiObject
     @overload
     def get(
         self,
         *,
-        name: str,
         filter: str | list[str] | None = ...,
         count: int | None = ...,
         start: int | None = ...,
@@ -168,164 +130,20 @@ class Geneve:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> GeneveObject: ...
-    
-    # Without mkey -> returns list of FortiObjects
-    @overload
-    def get(
-        self,
-        name: None = None,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
+        error_mode: Literal["raise", "return", "print"] | None = ...,
+        error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> FortiObjectList[GeneveObject]: ...
-    
-    # ================================================================
-    # (removed - all GET now returns FortiObject)
-    # ================================================================
-    
-    # With mkey as positional arg -> returns single object
-    @overload
-    def get(
-        self,
-        name: str,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> GeneveObject: ...
-    
-    # With mkey as keyword arg -> returns single object
-    @overload
-    def get(
-        self,
-        *,
-        name: str,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> GeneveObject: ...
-    
-    # With no mkey -> returns list of objects
-    @overload
-    def get(
-        self,
-        *,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObjectList[GeneveObject]: ...
-    
-    # Dict mode with mkey provided as positional arg (single dict)
-    @overload
-    def get(
-        self,
-        name: str,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> GeneveObject: ...
-    
-    # Dict mode with mkey provided as keyword arg (single dict)
-    @overload
-    def get(
-        self,
-        *,
-        name: str,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> GeneveObject: ...
-    
-    # Dict mode - list of dicts (no mkey/name provided) - keyword-only signature
-    @overload
-    def get(
-        self,
-        *,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObjectList[GeneveObject]: ...
-    
-    # Fallback overload for all other cases
-    @overload
-    def get(
-        self,
-        name: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> Union[dict[str, Any], list[dict[str, Any]], FortiObject, list[FortiObject]]: ...
-    
-    def get(
-        self,
-        name: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> GeneveObject | list[GeneveObject] | dict[str, Any] | list[dict[str, Any]]: ...
     
     def get_schema(
         self,
         vdom: str | None = ...,
         format: str = ...,
     ) -> FortiObject: ...
+
+    # ================================================================
+    # POST Method
+    # ================================================================
     
-    # POST overloads
-    @overload
     def post(
         self,
         payload_dict: GenevePayload | None = ...,
@@ -338,55 +156,14 @@ class Geneve:
         remote_ip6: str | None = ...,
         dstport: int | None = ...,
         vdom: str | bool | None = ...,
+        error_mode: Literal["raise", "return", "print"] | None = ...,
+        error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> GeneveObject: ...
+
+    # ================================================================
+    # PUT Method
+    # ================================================================
     
-    @overload
-    def post(
-        self,
-        payload_dict: GenevePayload | None = ...,
-        name: str | None = ...,
-        interface: str | None = ...,
-        vni: int | None = ...,
-        type: Literal["ethernet", "ppp"] | None = ...,
-        ip_version: Literal["ipv4-unicast", "ipv6-unicast"] | None = ...,
-        remote_ip: str | None = ...,
-        remote_ip6: str | None = ...,
-        dstport: int | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
-    
-    # Default overload
-    @overload
-    def post(
-        self,
-        payload_dict: GenevePayload | None = ...,
-        name: str | None = ...,
-        interface: str | None = ...,
-        vni: int | None = ...,
-        type: Literal["ethernet", "ppp"] | None = ...,
-        ip_version: Literal["ipv4-unicast", "ipv6-unicast"] | None = ...,
-        remote_ip: str | None = ...,
-        remote_ip6: str | None = ...,
-        dstport: int | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
-    
-    def post(
-        self,
-        payload_dict: GenevePayload | None = ...,
-        name: str | None = ...,
-        interface: str | None = ...,
-        vni: int | None = ...,
-        type: Literal["ethernet", "ppp"] | None = ...,
-        ip_version: Literal["ipv4-unicast", "ipv6-unicast"] | None = ...,
-        remote_ip: str | None = ...,
-        remote_ip6: str | None = ...,
-        dstport: int | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
-    
-    # PUT overloads
-    @overload
     def put(
         self,
         payload_dict: GenevePayload | None = ...,
@@ -399,81 +176,25 @@ class Geneve:
         remote_ip6: str | None = ...,
         dstport: int | None = ...,
         vdom: str | bool | None = ...,
+        error_mode: Literal["raise", "return", "print"] | None = ...,
+        error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> GeneveObject: ...
-    
-    @overload
-    def put(
-        self,
-        payload_dict: GenevePayload | None = ...,
-        name: str | None = ...,
-        interface: str | None = ...,
-        vni: int | None = ...,
-        type: Literal["ethernet", "ppp"] | None = ...,
-        ip_version: Literal["ipv4-unicast", "ipv6-unicast"] | None = ...,
-        remote_ip: str | None = ...,
-        remote_ip6: str | None = ...,
-        dstport: int | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
-    
-    # Default overload
-    @overload
-    def put(
-        self,
-        payload_dict: GenevePayload | None = ...,
-        name: str | None = ...,
-        interface: str | None = ...,
-        vni: int | None = ...,
-        type: Literal["ethernet", "ppp"] | None = ...,
-        ip_version: Literal["ipv4-unicast", "ipv6-unicast"] | None = ...,
-        remote_ip: str | None = ...,
-        remote_ip6: str | None = ...,
-        dstport: int | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
-    
-    def put(
-        self,
-        payload_dict: GenevePayload | None = ...,
-        name: str | None = ...,
-        interface: str | None = ...,
-        vni: int | None = ...,
-        type: Literal["ethernet", "ppp"] | None = ...,
-        ip_version: Literal["ipv4-unicast", "ipv6-unicast"] | None = ...,
-        remote_ip: str | None = ...,
-        remote_ip6: str | None = ...,
-        dstport: int | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
-    
-    # DELETE overloads
-    @overload
-    def delete(
-        self,
-        name: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> GeneveObject: ...
-    
-    @overload
-    def delete(
-        self,
-        name: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
-    
-    # Default overload
-    @overload
-    def delete(
-        self,
-        name: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+
+    # ================================================================
+    # DELETE Method
+    # ================================================================
     
     def delete(
         self,
         name: str | None = ...,
         vdom: str | bool | None = ...,
+        error_mode: Literal["raise", "return", "print"] | None = ...,
+        error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> FortiObject: ...
+
+    # ================================================================
+    # Utility Methods
+    # ================================================================
     
     def exists(
         self,
@@ -493,6 +214,8 @@ class Geneve:
         remote_ip6: str | None = ...,
         dstport: int | None = ...,
         vdom: str | bool | None = ...,
+        error_mode: Literal["raise", "return", "print"] | None = ...,
+        error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> FortiObject: ...
     
     # Helper methods
@@ -500,7 +223,7 @@ class Geneve:
     def help(field_name: str | None = ...) -> str: ...
     
     @staticmethod
-    def fields(detailed: bool = ...) -> Union[list[str], list[dict[str, Any]]]: ...
+    def fields(detailed: bool = ...) -> list[str] | list[dict[str, Any]]: ...
     
     @staticmethod
     def field_info(field_name: str) -> FortiObject: ...
@@ -516,9 +239,6 @@ class Geneve:
     
     @staticmethod
     def schema() -> FortiObject: ...
-
-
-# ================================================================
 
 
 __all__ = [

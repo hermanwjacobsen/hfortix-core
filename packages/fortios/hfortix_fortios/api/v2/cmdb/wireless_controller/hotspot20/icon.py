@@ -626,6 +626,16 @@ class Icon(CRUDEndpoint, MetadataMixin):
             - put(): Update existing object
             - exists(): Check existence manually
         """
+        # Apply normalization for table fields (supports flexible input formats)
+        if icon_list is not None:
+            icon_list = normalize_table_field(
+                icon_list,
+                mkey="name",
+                required_fields=['file'],
+                field_name="icon_list",
+                example="[{'file': 'value'}]",
+            )
+        
         # Build payload using helper function with auto-normalization
         payload_data = build_api_payload(
             name=name,

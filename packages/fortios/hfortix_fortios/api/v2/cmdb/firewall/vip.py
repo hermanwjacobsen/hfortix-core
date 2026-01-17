@@ -1700,6 +1700,96 @@ class Vip(CRUDEndpoint, MetadataMixin):
             - put(): Update existing object
             - exists(): Check existence manually
         """
+        # Apply normalization for table fields (supports flexible input formats)
+        if src_filter is not None:
+            src_filter = normalize_table_field(
+                src_filter,
+                mkey="range",
+                required_fields=['range'],
+                field_name="src_filter",
+                example="[{'range': 'value'}]",
+            )
+        if service is not None:
+            service = normalize_table_field(
+                service,
+                mkey="name",
+                required_fields=['name'],
+                field_name="service",
+                example="[{'name': 'value'}]",
+            )
+        if extaddr is not None:
+            extaddr = normalize_table_field(
+                extaddr,
+                mkey="name",
+                required_fields=['name'],
+                field_name="extaddr",
+                example="[{'name': 'value'}]",
+            )
+        if mappedip is not None:
+            mappedip = normalize_table_field(
+                mappedip,
+                mkey="range",
+                required_fields=['range'],
+                field_name="mappedip",
+                example="[{'range': 'value'}]",
+            )
+        if srcintf_filter is not None:
+            srcintf_filter = normalize_table_field(
+                srcintf_filter,
+                mkey="interface-name",
+                required_fields=['interface-name'],
+                field_name="srcintf_filter",
+                example="[{'interface-name': 'value'}]",
+            )
+        if realservers is not None:
+            realservers = normalize_table_field(
+                realservers,
+                mkey="id",
+                required_fields=['type', 'address', 'ip'],
+                field_name="realservers",
+                example="[{'type': 'ip', 'address': 'value', 'ip': '192.168.1.10'}]",
+            )
+        if ssl_certificate is not None:
+            ssl_certificate = normalize_table_field(
+                ssl_certificate,
+                mkey="name",
+                required_fields=['name'],
+                field_name="ssl_certificate",
+                example="[{'name': 'value'}]",
+            )
+        if ssl_cipher_suites is not None:
+            ssl_cipher_suites = normalize_table_field(
+                ssl_cipher_suites,
+                mkey="priority",
+                required_fields=['cipher'],
+                field_name="ssl_cipher_suites",
+                example="[{'cipher': 'TLS-AES-128-GCM-SHA256'}]",
+            )
+        if ssl_server_cipher_suites is not None:
+            ssl_server_cipher_suites = normalize_table_field(
+                ssl_server_cipher_suites,
+                mkey="priority",
+                required_fields=['cipher'],
+                field_name="ssl_server_cipher_suites",
+                example="[{'cipher': 'TLS-AES-128-GCM-SHA256'}]",
+            )
+        if monitor is not None:
+            monitor = normalize_table_field(
+                monitor,
+                mkey="name",
+                required_fields=['name'],
+                field_name="monitor",
+                example="[{'name': 'value'}]",
+            )
+        if gslb_public_ips is not None:
+            gslb_public_ips = normalize_table_field(
+                gslb_public_ips,
+                mkey="index",
+                required_fields=['index'],
+                field_name="gslb_public_ips",
+                example="[{'index': 1}]",
+            )
+        
         # Build payload using helper function with auto-normalization
         payload_data = build_api_payload(
             name=name,

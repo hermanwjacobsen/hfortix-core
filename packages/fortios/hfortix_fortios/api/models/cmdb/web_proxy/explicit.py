@@ -12,7 +12,11 @@ from typing import Any, Literal, Optional
 from enum import Enum
 
 # ============================================================================
-# Child Table Models
+# Enum Definitions for Child Table Fields (for fields with 4+ allowed values)
+# ============================================================================
+
+# ============================================================================
+# Child Table Models (sorted deepest-first so nested models are defined before their parents)
 # ============================================================================
 
 class ExplicitSecureWebProxyCert(BaseModel):
@@ -26,8 +30,51 @@ class ExplicitSecureWebProxyCert(BaseModel):
         """Pydantic model configuration."""
         extra = "allow"  # Allow additional fields from API
         str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
     
     name: str | None = Field(max_length=79, default="Fortinet_SSL", description="Certificate list.")  # datasource: ['vpn.certificate.local.name']
+class ExplicitPacPolicySrcaddr6(BaseModel):
+    """
+    Child table model for pac-policy.srcaddr6.
+    
+    Source address6 objects.
+    """
+    
+    class Config:
+        """Pydantic model configuration."""
+        extra = "allow"  # Allow additional fields from API
+        str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
+    
+    name: str = Field(max_length=79, description="Address name.")  # datasource: ['firewall.address6.name', 'firewall.addrgrp6.name']
+class ExplicitPacPolicySrcaddr(BaseModel):
+    """
+    Child table model for pac-policy.srcaddr.
+    
+    Source address objects.
+    """
+    
+    class Config:
+        """Pydantic model configuration."""
+        extra = "allow"  # Allow additional fields from API
+        str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
+    
+    name: str = Field(max_length=79, description="Address name.")  # datasource: ['firewall.address.name', 'firewall.addrgrp.name', 'firewall.proxy-address.name', 'firewall.proxy-addrgrp.name']
+class ExplicitPacPolicyDstaddr(BaseModel):
+    """
+    Child table model for pac-policy.dstaddr.
+    
+    Destination address objects.
+    """
+    
+    class Config:
+        """Pydantic model configuration."""
+        extra = "allow"  # Allow additional fields from API
+        str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
+    
+    name: str | None = Field(max_length=79, default=None, description="Address name.")  # datasource: ['firewall.address.name', 'firewall.addrgrp.name']
 class ExplicitPacPolicy(BaseModel):
     """
     Child table model for pac-policy.
@@ -39,25 +86,34 @@ class ExplicitPacPolicy(BaseModel):
         """Pydantic model configuration."""
         extra = "allow"  # Allow additional fields from API
         str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
     
     policyid: int = Field(ge=1, le=100, default=0, description="Policy ID.")    
     status: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable policy.")    
-    srcaddr: list[Srcaddr] = Field(description="Source address objects.")    
-    srcaddr6: list[Srcaddr6] = Field(default=None, description="Source address6 objects.")    
-    dstaddr: list[Dstaddr] = Field(description="Destination address objects.")    
+    srcaddr: list[ExplicitPacPolicySrcaddr] = Field(description="Source address objects.")    
+    srcaddr6: list[ExplicitPacPolicySrcaddr6] = Field(default_factory=list, description="Source address6 objects.")    
+    dstaddr: list[ExplicitPacPolicyDstaddr] = Field(description="Destination address objects.")    
     pac_file_name: str = Field(max_length=63, default="proxy.pac", description="Pac file name.")    
-    pac_file_data: str | None = Field(default="", description="PAC file contents enclosed in quotes (maximum of 256K bytes).")    
+    pac_file_data: str | None = Field(default=None, description="PAC file contents enclosed in quotes (maximum of 256K bytes).")    
     comments: str | None = Field(max_length=1023, default=None, description="Optional comments.")
 # ============================================================================
 # Enum Definitions (for fields with 4+ allowed values)
 # ============================================================================
 
-class ExplicitSsl_dh_bitsEnum(str, Enum):
+class ExplicitSslDhBitsEnum(str, Enum):
     """Allowed values for ssl_dh_bits field."""
-    768 = "768"    1024 = "1024"    1536 = "1536"    2048 = "2048"
-class ExplicitPref_dns_resultEnum(str, Enum):
+    V_768 = "768"
+    V_1024 = "1024"
+    V_1536 = "1536"
+    V_2048 = "2048"
+
+class ExplicitPrefDnsResultEnum(str, Enum):
     """Allowed values for pref_dns_result field."""
-    IPV4 = "ipv4"    IPV6 = "ipv6"    IPV4_STRICT = "ipv4-strict"    IPV6_STRICT = "ipv6-strict"
+    IPV4 = "ipv4"
+    IPV6 = "ipv6"
+    IPV4_STRICT = "ipv4-strict"
+    IPV6_STRICT = "ipv6-strict"
+
 
 # ============================================================================
 # Main Model
@@ -86,38 +142,38 @@ class ExplicitModel(BaseModel):
     secure_web_proxy: Literal["disable", "enable", "secure"] | None = Field(default="disable", description="Enable/disable/require the secure web proxy for HTTP and HTTPS session.")    
     ftp_over_http: Literal["enable", "disable"] | None = Field(default="disable", description="Enable to proxy FTP-over-HTTP sessions sent from a web browser.")    
     socks: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable the SOCKS proxy.")    
-    http_incoming_port: str | None = Field(default="", description="Accept incoming HTTP requests on one or more ports (0 - 65535, default = 8080).")    
+    http_incoming_port: str | None = Field(default=None, description="Accept incoming HTTP requests on one or more ports (0 - 65535, default = 8080).")    
     http_connection_mode: Literal["static", "multiplex", "serverpool"] | None = Field(default="static", description="HTTP connection mode (default = static).")    
-    https_incoming_port: str | None = Field(default="", description="Accept incoming HTTPS requests on one or more ports (0 - 65535, default = 0, use the same as HTTP).")    
-    secure_web_proxy_cert: list[SecureWebProxyCert] = Field(default=None, description="Name of certificates for secure web proxy.")    
+    https_incoming_port: str | None = Field(default=None, description="Accept incoming HTTPS requests on one or more ports (0 - 65535, default = 0, use the same as HTTP).")    
+    secure_web_proxy_cert: list[ExplicitSecureWebProxyCert] = Field(default_factory=list, description="Name of certificates for secure web proxy.")    
     client_cert: Literal["disable", "enable"] | None = Field(default="disable", description="Enable/disable to request client certificate.")    
     user_agent_detect: Literal["disable", "enable"] | None = Field(default="enable", description="Enable/disable to detect device type by HTTP user-agent if no client certificate provided.")    
     empty_cert_action: Literal["accept", "block", "accept-unmanageable"] | None = Field(default="block", description="Action of an empty client certificate.")    
-    ssl_dh_bits: SslDhBitsEnum | None = Field(default="2048", description="Bit-size of Diffie-Hellman (DH) prime used in DHE-RSA negotiation (default = 2048).")    
-    ftp_incoming_port: str | None = Field(default="", description="Accept incoming FTP-over-HTTP requests on one or more ports (0 - 65535, default = 0; use the same as HTTP).")    
-    socks_incoming_port: str | None = Field(default="", description="Accept incoming SOCKS proxy requests on one or more ports (0 - 65535, default = 0; use the same as HTTP).")    
+    ssl_dh_bits: ExplicitSslDhBitsEnum | None = Field(default=ExplicitSslDhBitsEnum.V_2048, description="Bit-size of Diffie-Hellman (DH) prime used in DHE-RSA negotiation (default = 2048).")    
+    ftp_incoming_port: str | None = Field(default=None, description="Accept incoming FTP-over-HTTP requests on one or more ports (0 - 65535, default = 0; use the same as HTTP).")    
+    socks_incoming_port: str | None = Field(default=None, description="Accept incoming SOCKS proxy requests on one or more ports (0 - 65535, default = 0; use the same as HTTP).")    
     incoming_ip: str | None = Field(default="0.0.0.0", description="Restrict the explicit HTTP proxy to only accept sessions from this IP address. An interface must have this IP address.")    
-    outgoing_ip: list[OutgoingIp] = Field(default="", description="Outgoing HTTP requests will have this IP address as their source address. An interface must have this IP address.")    
+    outgoing_ip: list[str] = Field(default_factory=list, description="Outgoing HTTP requests will have this IP address as their source address. An interface must have this IP address.")    
     interface_select_method: Literal["sdwan", "specify"] | None = Field(default="sdwan", description="Specify how to select outgoing interface to reach server.")    
-    interface: str = Field(max_length=15, default="", description="Specify outgoing interface to reach server.")  # datasource: ['system.interface.name']    
+    interface: str = Field(max_length=15, description="Specify outgoing interface to reach server.")  # datasource: ['system.interface.name']    
     vrf_select: int | None = Field(ge=0, le=511, default=-1, description="VRF ID used for connection to server.")    
     ipv6_status: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable allowing an IPv6 web proxy destination in policies and all IPv6 related entries in this command.")    
     incoming_ip6: str | None = Field(default="::", description="Restrict the explicit web proxy to only accept sessions from this IPv6 address. An interface must have this IPv6 address.")    
-    outgoing_ip6: list[OutgoingIp6] = Field(default="", description="Outgoing HTTP requests will leave this IPv6. Multiple interfaces can be specified. Interfaces must have these IPv6 addresses.")    
+    outgoing_ip6: list[str] = Field(default_factory=list, description="Outgoing HTTP requests will leave this IPv6. Multiple interfaces can be specified. Interfaces must have these IPv6 addresses.")    
     strict_guest: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable strict guest user checking by the explicit web proxy.")    
-    pref_dns_result: PrefDnsResultEnum | None = Field(default="ipv4", description="Prefer resolving addresses using the configured IPv4 or IPv6 DNS server (default = ipv4).")    
+    pref_dns_result: ExplicitPrefDnsResultEnum | None = Field(default=ExplicitPrefDnsResultEnum.IPV4, description="Prefer resolving addresses using the configured IPv4 or IPv6 DNS server (default = ipv4).")    
     unknown_http_version: Literal["reject", "best-effort"] | None = Field(default="reject", description="How to handle HTTP sessions that do not comply with HTTP 0.9, 1.0, or 1.1.")    
     realm: str = Field(max_length=63, default="default", description="Authentication realm used to identify the explicit web proxy (maximum of 63 characters).")    
     sec_default_action: Literal["accept", "deny"] | None = Field(default="deny", description="Accept or deny explicit web proxy sessions when no web proxy firewall policy exists.")    
     https_replacement_message: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable sending the client a replacement message for HTTPS requests.")    
     message_upon_server_error: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable displaying a replacement message when a server error is detected.")    
     pac_file_server_status: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable Proxy Auto-Configuration (PAC) for users of this explicit proxy profile.")    
-    pac_file_url: str | None = Field(default="", description="PAC file access URL.")    
-    pac_file_server_port: str | None = Field(default="", description="Port number that PAC traffic from client web browsers uses to connect to the explicit web proxy (0 - 65535, default = 0; use the same as HTTP).")    
+    pac_file_url: str | None = Field(default=None, description="PAC file access URL.")    
+    pac_file_server_port: str | None = Field(default=None, description="Port number that PAC traffic from client web browsers uses to connect to the explicit web proxy (0 - 65535, default = 0; use the same as HTTP).")    
     pac_file_through_https: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable to get Proxy Auto-Configuration (PAC) through HTTPS.")    
     pac_file_name: str = Field(max_length=63, default="proxy.pac", description="Pac file name.")    
-    pac_file_data: str | None = Field(default="", description="PAC file contents enclosed in quotes (maximum of 256K bytes).")    
-    pac_policy: list[PacPolicy] = Field(default=None, description="PAC policies.")    
+    pac_file_data: str | None = Field(default=None, description="PAC file contents enclosed in quotes (maximum of 256K bytes).")    
+    pac_policy: list[ExplicitPacPolicy] = Field(default_factory=list, description="PAC policies.")    
     ssl_algorithm: Literal["high", "medium", "low"] | None = Field(default="low", description="Relative strength of encryption algorithms accepted in HTTPS deep scan: high, medium, or low.")    
     trace_auth_no_rsp: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable logging timed-out authentication requests.")    
     # ========================================================================
@@ -199,7 +255,7 @@ class ExplicitModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.web_proxy.explicit.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate child table items
         values = getattr(self, "secure_web_proxy_cert", [])
@@ -257,7 +313,7 @@ class ExplicitModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.web_proxy.explicit.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate scalar field
         value = getattr(self, "interface", None)
@@ -313,11 +369,11 @@ Dict = dict[str, Any]  # For backward compatibility
 # ============================================================================
 
 __all__ = [
-    "ExplicitModel",    "ExplicitSecureWebProxyCert",    "ExplicitPacPolicy",]
+    "ExplicitModel",    "ExplicitSecureWebProxyCert",    "ExplicitPacPolicy",    "ExplicitPacPolicy.Srcaddr",    "ExplicitPacPolicy.Srcaddr6",    "ExplicitPacPolicy.Dstaddr",]
 
 
 # ============================================================================
 # Generated by hfortix generator v0.6.0
 # Schema: 1.7.0
-# Generated: 2026-01-17T05:32:19.631424Z
+# Generated: 2026-01-17T17:25:23.293666Z
 # ============================================================================

@@ -638,6 +638,16 @@ class Iptrust(CRUDEndpoint, MetadataMixin):
             - put(): Update existing object
             - exists(): Check existence manually
         """
+        # Apply normalization for table fields (supports flexible input formats)
+        if entries is not None:
+            entries = normalize_table_field(
+                entries,
+                mkey="id",
+                required_fields=['status', 'id', 'addr-type', 'ip4-subnet', 'ip6-subnet'],
+                field_name="entries",
+                example="[{'status': 'enable', 'id': 1, 'addr-type': 'ipv4', 'ip4-subnet': 'value', 'ip6-subnet': 'value'}]",
+            )
+        
         # Build payload using helper function with auto-normalization
         payload_data = build_api_payload(
             id=id,

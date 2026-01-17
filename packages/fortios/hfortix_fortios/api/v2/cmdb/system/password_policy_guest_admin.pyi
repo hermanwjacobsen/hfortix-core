@@ -1,231 +1,110 @@
-from typing import TypedDict, Literal, Any, Coroutine, Union, overload, Generator, final
-from typing_extensions import NotRequired
-from hfortix_fortios.models import FortiObject, FortiObjectList
+""" - Type Stubs
 
-# ============================================================================
-# Nested TypedDicts for table field children (dict mode)
-# These MUST be defined before the Payload class to use them as type hints
-# ============================================================================
+Auto-generated stub file for type checking and IDE support.
 
-# ============================================================================
-# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional)
-# ============================================================================
-# NOTE: We intentionally DON'T use NotRequired wrapper because:
-# 1. total=False already makes all fields optional
-# 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
+Endpoint: system/password_policy_guest_admin
+Category: cmdb
+"""
+
+from __future__ import annotations
+
+from typing import (
+    Any,
+    ClassVar,
+    Literal,
+    TypedDict,
+)
+
+from hfortix_fortios.models import (
+    FortiObject,
+    FortiObjectList,
+)
+
+
+# ================================================================
+# TypedDict Payloads
+# ================================================================
+
 class PasswordPolicyGuestAdminPayload(TypedDict, total=False):
-    """
-    Type hints for system/password_policy_guest_admin payload fields.
-    
-    Configure the password policy for guest administrators.
-    
-    **Usage:**
-        payload: PasswordPolicyGuestAdminPayload = {
-            "field": "value",  # <- autocomplete shows all fields
-        }
-    """
-    status: Literal["enable", "disable"]  # Enable/disable setting a password policy for local | Default: disable
-    apply_to: Literal["guest-admin-password"]  # Guest administrator to which this password policy | Default: guest-admin-password
-    minimum_length: int  # Minimum password length (12 - 128, default = 12). | Default: 12 | Min: 12 | Max: 128
-    min_lower_case_letter: int  # Minimum number of lowercase characters in password | Default: 1 | Min: 0 | Max: 128
-    min_upper_case_letter: int  # Minimum number of uppercase characters in password | Default: 1 | Min: 0 | Max: 128
-    min_non_alphanumeric: int  # Minimum number of non-alphanumeric characters in p | Default: 1 | Min: 0 | Max: 128
-    min_number: int  # Minimum number of numeric characters in password | Default: 1 | Min: 0 | Max: 128
-    expire_status: Literal["enable", "disable"]  # Enable/disable password expiration. | Default: disable
-    expire_day: int  # Number of days after which passwords expire | Default: 90 | Min: 1 | Max: 999
-    reuse_password: Literal["enable", "disable"]  # Enable/disable reuse of password. | Default: enable
-    reuse_password_limit: int  # Number of times passwords can be reused | Default: 0 | Min: 0 | Max: 20
-
-# ============================================================================
-# Nested classes for table field children (object mode - for API responses)
-# ============================================================================
-
-
-
-# Response TypedDict for GET returns (all fields present in API response)
-class PasswordPolicyGuestAdminResponse(TypedDict):
-    """
-    Type hints for system/password_policy_guest_admin API response fields.
-    
-    All fields are present in the response from the FortiGate API.
-    """
-    status: Literal["enable", "disable"]  # Enable/disable setting a password policy for local | Default: disable
-    apply_to: Literal["guest-admin-password"]  # Guest administrator to which this password policy | Default: guest-admin-password
-    minimum_length: int  # Minimum password length (12 - 128, default = 12). | Default: 12 | Min: 12 | Max: 128
-    min_lower_case_letter: int  # Minimum number of lowercase characters in password | Default: 1 | Min: 0 | Max: 128
-    min_upper_case_letter: int  # Minimum number of uppercase characters in password | Default: 1 | Min: 0 | Max: 128
-    min_non_alphanumeric: int  # Minimum number of non-alphanumeric characters in p | Default: 1 | Min: 0 | Max: 128
-    min_number: int  # Minimum number of numeric characters in password | Default: 1 | Min: 0 | Max: 128
-    expire_status: Literal["enable", "disable"]  # Enable/disable password expiration. | Default: disable
-    expire_day: int  # Number of days after which passwords expire | Default: 90 | Min: 1 | Max: 999
-    reuse_password: Literal["enable", "disable"]  # Enable/disable reuse of password. | Default: enable
-    reuse_password_limit: int  # Number of times passwords can be reused | Default: 0 | Min: 0 | Max: 20
-
-
-@final
-class PasswordPolicyGuestAdminObject:
-    """Typed FortiObject for system/password_policy_guest_admin with IDE autocomplete support.
-    
-    This is a typed wrapper that provides IDE autocomplete for API response fields.
-    At runtime, this is actually a FortiObject instance.
-    """
-    
-    # Enable/disable setting a password policy for locally defined | Default: disable
+    """Payload type for PasswordPolicyGuestAdmin operations."""
     status: Literal["enable", "disable"]
-    # Guest administrator to which this password policy applies. | Default: guest-admin-password
-    apply_to: Literal["guest-admin-password"]
-    # Minimum password length (12 - 128, default = 12). | Default: 12 | Min: 12 | Max: 128
+    apply_to: str | list[str]
     minimum_length: int
-    # Minimum number of lowercase characters in password | Default: 1 | Min: 0 | Max: 128
     min_lower_case_letter: int
-    # Minimum number of uppercase characters in password | Default: 1 | Min: 0 | Max: 128
     min_upper_case_letter: int
-    # Minimum number of non-alphanumeric characters in password | Default: 1 | Min: 0 | Max: 128
     min_non_alphanumeric: int
-    # Minimum number of numeric characters in password | Default: 1 | Min: 0 | Max: 128
     min_number: int
-    # Enable/disable password expiration. | Default: disable
     expire_status: Literal["enable", "disable"]
-    # Number of days after which passwords expire | Default: 90 | Min: 1 | Max: 999
     expire_day: int
-    # Enable/disable reuse of password. | Default: enable
     reuse_password: Literal["enable", "disable"]
-    # Number of times passwords can be reused | Default: 0 | Min: 0 | Max: 20
     reuse_password_limit: int
-    
-    # Common API response fields
-    status: str
-    http_status: int | None
-    http_status_code: int | None
-    http_method: str | None
-    http_response_time: float | None
-    vdom: str | None
-    
-    # Methods from FortiObject
-    @property
-    def dict(self) -> dict[str, Any]:
-        """Convert to dictionary."""
-        ...
-    @property
-    def json(self) -> str:
-        """Get pretty-printed JSON string."""
-        ...
-    @property
-    def raw(self) -> dict[str, Any]:
-        """Get raw API response data."""
-        ...
-    def get_full(self, name: str) -> Any: ...
-    def to_dict(self) -> PasswordPolicyGuestAdminPayload: ...
-    def keys(self) -> Any: ...
-    def values(self) -> Generator[Any, None, None]: ...
-    def items(self) -> Generator[tuple[str, Any], None, None]: ...
-    def get(self, key: str, default: Any = None) -> Any: ...
 
+
+# ================================================================
+# Response Types (TypedDict for dict-style access)
+# ================================================================
+
+class PasswordPolicyGuestAdminResponse(TypedDict, total=False):
+    """Response type for PasswordPolicyGuestAdmin - use with .dict property for typed dict access."""
+    status: Literal["enable", "disable"]
+    apply_to: str
+    minimum_length: int
+    min_lower_case_letter: int
+    min_upper_case_letter: int
+    min_non_alphanumeric: int
+    min_number: int
+    expire_status: Literal["enable", "disable"]
+    expire_day: int
+    reuse_password: Literal["enable", "disable"]
+    reuse_password_limit: int
+
+
+# ================================================================
+# Response Types (Class for attribute access)
+# ================================================================
+
+
+class PasswordPolicyGuestAdminObject(FortiObject):
+    """Typed FortiObject for PasswordPolicyGuestAdmin with field access."""
+    status: Literal["enable", "disable"]
+    apply_to: str
+    minimum_length: int
+    min_lower_case_letter: int
+    min_upper_case_letter: int
+    min_non_alphanumeric: int
+    min_number: int
+    expire_status: Literal["enable", "disable"]
+    expire_day: int
+    reuse_password: Literal["enable", "disable"]
+    reuse_password_limit: int
+
+
+# ================================================================
+# Main Endpoint Class
+# ================================================================
 
 class PasswordPolicyGuestAdmin:
     """
-    Configure the password policy for guest administrators.
     
-    Path: system/password_policy_guest_admin
+    Endpoint: system/password_policy_guest_admin
     Category: cmdb
     """
     
+    # Class attributes for introspection
+    endpoint: ClassVar[str] = ...
+    path: ClassVar[str] = ...
+    category: ClassVar[str] = ...
+    capabilities: ClassVar[dict[str, Any]] = ...
+    
     def __init__(self, client: Any) -> None:
-        """Initialize endpoint with HTTP client.
-        
-        Args:
-            client: HTTP client instance for API communication
-        """
+        """Initialize endpoint with HTTP client."""
         ...
     
     # ================================================================
-    # GET OVERLOADS - Always returns FortiObject (or ContentResponse for file endpoints)
-    # Pylance matches overloads top-to-bottom, so these must come first!
+    # GET Methods
     # ================================================================
     
-    # With mkey as positional arg -> returns FortiObject
-    @overload
-    def get(
-        self,
-        name: str,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-    ) -> PasswordPolicyGuestAdminObject: ...
-    
-    # With mkey as keyword arg -> returns FortiObject
-    @overload
-    def get(
-        self,
-        *,
-        name: str,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-    ) -> PasswordPolicyGuestAdminObject: ...
-    
-    # Without mkey -> returns list of FortiObjects
-    @overload
-    def get(
-        self,
-        name: None = None,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-    ) -> PasswordPolicyGuestAdminObject: ...
-    
-    # ================================================================
-    # (removed - all GET now returns FortiObject)
-    # ================================================================
-    
-    # With mkey as positional arg -> returns single object
-    @overload
-    def get(
-        self,
-        name: str,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-    ) -> PasswordPolicyGuestAdminObject: ...
-    
-    # With mkey as keyword arg -> returns single object
-    @overload
-    def get(
-        self,
-        *,
-        name: str,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-    ) -> PasswordPolicyGuestAdminObject: ...
-    
-    # With no mkey -> returns list of objects
-    @overload
+    # Singleton endpoint (no mkey)
     def get(
         self,
         *,
@@ -237,94 +116,25 @@ class PasswordPolicyGuestAdmin:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
+        error_mode: Literal["raise", "return", "print"] | None = ...,
+        error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> PasswordPolicyGuestAdminObject: ...
-    
-    # Dict mode with mkey provided as positional arg (single dict)
-    @overload
-    def get(
-        self,
-        name: str,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-    ) -> PasswordPolicyGuestAdminObject: ...
-    
-    # Dict mode with mkey provided as keyword arg (single dict)
-    @overload
-    def get(
-        self,
-        *,
-        name: str,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-    ) -> PasswordPolicyGuestAdminObject: ...
-    
-    # Dict mode - list of dicts (no mkey/name provided) - keyword-only signature
-    @overload
-    def get(
-        self,
-        *,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-    ) -> PasswordPolicyGuestAdminObject: ...
-    
-    # Fallback overload for all other cases
-    @overload
-    def get(
-        self,
-        name: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-    ) -> dict[str, Any] | FortiObject: ...
-    
-    def get(
-        self,
-        name: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-    ) -> PasswordPolicyGuestAdminObject | dict[str, Any]: ...
     
     def get_schema(
         self,
         format: str = ...,
     ) -> FortiObject: ...
+
+
+    # ================================================================
+    # PUT Method
+    # ================================================================
     
-    # PUT overloads
-    @overload
     def put(
         self,
         payload_dict: PasswordPolicyGuestAdminPayload | None = ...,
         status: Literal["enable", "disable"] | None = ...,
-        apply_to: Literal["guest-admin-password"] | list[str] | None = ...,
+        apply_to: str | list[str] | None = ...,
         minimum_length: int | None = ...,
         min_lower_case_letter: int | None = ...,
         min_upper_case_letter: int | None = ...,
@@ -334,58 +144,14 @@ class PasswordPolicyGuestAdmin:
         expire_day: int | None = ...,
         reuse_password: Literal["enable", "disable"] | None = ...,
         reuse_password_limit: int | None = ...,
+        error_mode: Literal["raise", "return", "print"] | None = ...,
+        error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> PasswordPolicyGuestAdminObject: ...
-    
-    @overload
-    def put(
-        self,
-        payload_dict: PasswordPolicyGuestAdminPayload | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
-        apply_to: Literal["guest-admin-password"] | list[str] | None = ...,
-        minimum_length: int | None = ...,
-        min_lower_case_letter: int | None = ...,
-        min_upper_case_letter: int | None = ...,
-        min_non_alphanumeric: int | None = ...,
-        min_number: int | None = ...,
-        expire_status: Literal["enable", "disable"] | None = ...,
-        expire_day: int | None = ...,
-        reuse_password: Literal["enable", "disable"] | None = ...,
-        reuse_password_limit: int | None = ...,
-    ) -> FortiObject: ...
-    
-    # Default overload
-    @overload
-    def put(
-        self,
-        payload_dict: PasswordPolicyGuestAdminPayload | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
-        apply_to: Literal["guest-admin-password"] | list[str] | None = ...,
-        minimum_length: int | None = ...,
-        min_lower_case_letter: int | None = ...,
-        min_upper_case_letter: int | None = ...,
-        min_non_alphanumeric: int | None = ...,
-        min_number: int | None = ...,
-        expire_status: Literal["enable", "disable"] | None = ...,
-        expire_day: int | None = ...,
-        reuse_password: Literal["enable", "disable"] | None = ...,
-        reuse_password_limit: int | None = ...,
-    ) -> FortiObject: ...
-    
-    def put(
-        self,
-        payload_dict: PasswordPolicyGuestAdminPayload | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
-        apply_to: Literal["guest-admin-password"] | list[str] | None = ...,
-        minimum_length: int | None = ...,
-        min_lower_case_letter: int | None = ...,
-        min_upper_case_letter: int | None = ...,
-        min_non_alphanumeric: int | None = ...,
-        min_number: int | None = ...,
-        expire_status: Literal["enable", "disable"] | None = ...,
-        expire_day: int | None = ...,
-        reuse_password: Literal["enable", "disable"] | None = ...,
-        reuse_password_limit: int | None = ...,
-    ) -> FortiObject: ...
+
+
+    # ================================================================
+    # Utility Methods
+    # ================================================================
     
     def exists(
         self,
@@ -406,6 +172,8 @@ class PasswordPolicyGuestAdmin:
         expire_day: int | None = ...,
         reuse_password: Literal["enable", "disable"] | None = ...,
         reuse_password_limit: int | None = ...,
+        error_mode: Literal["raise", "return", "print"] | None = ...,
+        error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> FortiObject: ...
     
     # Helper methods
@@ -413,7 +181,7 @@ class PasswordPolicyGuestAdmin:
     def help(field_name: str | None = ...) -> str: ...
     
     @staticmethod
-    def fields(detailed: bool = ...) -> Union[list[str], list[dict[str, Any]]]: ...
+    def fields(detailed: bool = ...) -> list[str] | list[dict[str, Any]]: ...
     
     @staticmethod
     def field_info(field_name: str) -> FortiObject: ...
@@ -429,9 +197,6 @@ class PasswordPolicyGuestAdmin:
     
     @staticmethod
     def schema() -> FortiObject: ...
-
-
-# ================================================================
 
 
 __all__ = [

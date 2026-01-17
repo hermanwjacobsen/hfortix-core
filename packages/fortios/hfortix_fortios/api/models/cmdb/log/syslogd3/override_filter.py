@@ -7,12 +7,38 @@ Generated from FortiOS schema version unknown.
 
 from __future__ import annotations
 
-from pydantic import BaseModel, Field, field_validator
+from pydantic import BaseModel, Field
 from typing import Any, Literal, Optional
 from enum import Enum
 
 # ============================================================================
-# Child Table Models
+# Enum Definitions for Child Table Fields (for fields with 4+ allowed values)
+# ============================================================================
+
+class OverrideFilterFreeStyleCategoryEnum(str, Enum):
+    """Allowed values for category field in free-style."""
+    TRAFFIC = "traffic"
+    EVENT = "event"
+    VIRUS = "virus"
+    WEBFILTER = "webfilter"
+    ATTACK = "attack"
+    SPAM = "spam"
+    ANOMALY = "anomaly"
+    VOIP = "voip"
+    DLP = "dlp"
+    APP_CTRL = "app-ctrl"
+    WAF = "waf"
+    GTP = "gtp"
+    DNS = "dns"
+    SSH = "ssh"
+    SSL = "ssl"
+    FILE_FILTER = "file-filter"
+    ICAP = "icap"
+    VIRTUAL_PATCH = "virtual-patch"
+    DEBUG = "debug"
+
+# ============================================================================
+# Child Table Models (sorted deepest-first so nested models are defined before their parents)
 # ============================================================================
 
 class OverrideFilterFreeStyle(BaseModel):
@@ -26,10 +52,11 @@ class OverrideFilterFreeStyle(BaseModel):
         """Pydantic model configuration."""
         extra = "allow"  # Allow additional fields from API
         str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
     
-    id: int | None = Field(ge=0, le=4294967295, default=0, description="Entry ID.")    
-    category: CategoryEnum = Field(default="traffic", description="Log category.")    
-    filter: str = Field(max_length=1023, default="", description="Free style filter string.")    
+    id_: int | None = Field(ge=0, le=4294967295, default=0, serialization_alias="id", description="Entry ID.")    
+    category: OverrideFilterFreeStyleCategoryEnum = Field(default=OverrideFilterFreeStyleCategoryEnum.TRAFFIC, description="Log category.")    
+    filter_: str = Field(max_length=1023, serialization_alias="filter", description="Free style filter string.")    
     filter_type: Literal["include", "exclude"] | None = Field(default="include", description="Include/exclude logs that match the filter.")
 # ============================================================================
 # Enum Definitions (for fields with 4+ allowed values)
@@ -37,7 +64,15 @@ class OverrideFilterFreeStyle(BaseModel):
 
 class OverrideFilterSeverityEnum(str, Enum):
     """Allowed values for severity field."""
-    EMERGENCY = "emergency"    ALERT = "alert"    CRITICAL = "critical"    ERROR = "error"    WARNING = "warning"    NOTIFICATION = "notification"    INFORMATION = "information"    DEBUG = "debug"
+    EMERGENCY = "emergency"
+    ALERT = "alert"
+    CRITICAL = "critical"
+    ERROR = "error"
+    WARNING = "warning"
+    NOTIFICATION = "notification"
+    INFORMATION = "information"
+    DEBUG = "debug"
+
 
 # ============================================================================
 # Main Model
@@ -62,7 +97,7 @@ class OverrideFilterModel(BaseModel):
     # Model Fields
     # ========================================================================
     
-    severity: SeverityEnum | None = Field(default="information", description="Lowest severity level to log.")    
+    severity: OverrideFilterSeverityEnum | None = Field(default=OverrideFilterSeverityEnum.INFORMATION, description="Lowest severity level to log.")    
     forward_traffic: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable forward traffic logging.")    
     local_traffic: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable local in or out traffic logging.")    
     multicast_traffic: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable multicast traffic logging.")    
@@ -74,7 +109,7 @@ class OverrideFilterModel(BaseModel):
     gtp: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable GTP messages logging.")    
     forti_switch: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable Forti-Switch logging.")    
     debug: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable debug logging.")    
-    free_style: list[FreeStyle] = Field(default=None, description="Free style filters.")    
+    free_style: list[OverrideFilterFreeStyle] = Field(default_factory=list, description="Free style filters.")    
     # ========================================================================
     # Custom Validators
     # ========================================================================
@@ -123,5 +158,5 @@ __all__ = [
 # ============================================================================
 # Generated by hfortix generator v0.6.0
 # Schema: 1.7.0
-# Generated: 2026-01-17T05:32:18.145903Z
+# Generated: 2026-01-17T17:25:21.959635Z
 # ============================================================================

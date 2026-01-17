@@ -13,22 +13,27 @@ from enum import Enum
 from uuid import UUID
 
 # ============================================================================
-# Child Table Models
+# Enum Definitions for Child Table Fields (for fields with 4+ allowed values)
 # ============================================================================
 
-class Address6Macaddr(BaseModel):
+# ============================================================================
+# Child Table Models (sorted deepest-first so nested models are defined before their parents)
+# ============================================================================
+
+class Address6TaggingTags(BaseModel):
     """
-    Child table model for macaddr.
+    Child table model for tagging.tags.
     
-    Multiple MAC address ranges.
+    Tags.
     """
     
     class Config:
         """Pydantic model configuration."""
         extra = "allow"  # Allow additional fields from API
         str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
     
-    macaddr: str = Field(max_length=127, default="", description="MAC address ranges <start>[-<end>] separated by space.")
+    name: str | None = Field(max_length=79, default=None, description="Tag name.")  # datasource: ['system.object-tagging.tags.name']
 class Address6Tagging(BaseModel):
     """
     Child table model for tagging.
@@ -40,10 +45,11 @@ class Address6Tagging(BaseModel):
         """Pydantic model configuration."""
         extra = "allow"  # Allow additional fields from API
         str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
     
-    name: str | None = Field(max_length=63, default="", description="Tagging entry name.")    
-    category: str | None = Field(max_length=63, default="", description="Tag category.")  # datasource: ['system.object-tagging.category']    
-    tags: list[Tags] = Field(default=None, description="Tags.")
+    name: str | None = Field(max_length=63, default=None, description="Tagging entry name.")    
+    category: str | None = Field(max_length=63, default=None, description="Tag category.")  # datasource: ['system.object-tagging.category']    
+    tags: list[Address6TaggingTags] = Field(default_factory=list, description="Tags.")
 class Address6SubnetSegment(BaseModel):
     """
     Child table model for subnet-segment.
@@ -55,10 +61,25 @@ class Address6SubnetSegment(BaseModel):
         """Pydantic model configuration."""
         extra = "allow"  # Allow additional fields from API
         str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
     
-    name: str = Field(max_length=63, default="", description="Name.")    
-    type: Literal["any", "specific"] = Field(default="any", description="Subnet segment type.")    
-    value: str = Field(max_length=35, default="", description="Subnet segment value.")
+    name: str = Field(max_length=63, description="Name.")    
+    type_: Literal["any", "specific"] = Field(default="any", serialization_alias="type", description="Subnet segment type.")    
+    value: str = Field(max_length=35, description="Subnet segment value.")
+class Address6Macaddr(BaseModel):
+    """
+    Child table model for macaddr.
+    
+    Multiple MAC address ranges.
+    """
+    
+    class Config:
+        """Pydantic model configuration."""
+        extra = "allow"  # Allow additional fields from API
+        str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
+    
+    macaddr: str = Field(max_length=127, description="MAC address ranges <start>[-<end>] separated by space.")
 class Address6List(BaseModel):
     """
     Child table model for list.
@@ -70,15 +91,25 @@ class Address6List(BaseModel):
         """Pydantic model configuration."""
         extra = "allow"  # Allow additional fields from API
         str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
     
-    ip: str = Field(max_length=89, default="", description="IP.")
+    ip: str = Field(max_length=89, description="IP.")
 # ============================================================================
 # Enum Definitions (for fields with 4+ allowed values)
 # ============================================================================
 
 class Address6TypeEnum(str, Enum):
-    """Allowed values for type field."""
-    IPPREFIX = "ipprefix"    IPRANGE = "iprange"    FQDN = "fqdn"    GEOGRAPHY = "geography"    DYNAMIC = "dynamic"    TEMPLATE = "template"    MAC = "mac"    ROUTE_TAG = "route-tag"    WILDCARD = "wildcard"
+    """Allowed values for type_ field."""
+    IPPREFIX = "ipprefix"
+    IPRANGE = "iprange"
+    FQDN = "fqdn"
+    GEOGRAPHY = "geography"
+    DYNAMIC = "dynamic"
+    TEMPLATE = "template"
+    MAC = "mac"
+    ROUTE_TAG = "route-tag"
+    WILDCARD = "wildcard"
+
 
 # ============================================================================
 # Main Model
@@ -90,7 +121,7 @@ class Address6Model(BaseModel):
     
     Configure IPv6 firewall addresses.
     
-    Validation Rules:        - name: max_length=79 pattern=        - uuid: pattern=        - type: pattern=        - route_tag: min=1 max=4294967295 pattern=        - macaddr: pattern=        - sdn: max_length=35 pattern=        - ip6: pattern=        - wildcard: pattern=        - start_ip: pattern=        - end_ip: pattern=        - fqdn: max_length=255 pattern=        - country: max_length=2 pattern=        - cache_ttl: min=0 max=86400 pattern=        - color: min=0 max=32 pattern=        - obj_id: max_length=255 pattern=        - tagging: pattern=        - comment: max_length=255 pattern=        - template: max_length=63 pattern=        - subnet_segment: pattern=        - host_type: pattern=        - host: pattern=        - tenant: max_length=35 pattern=        - epg_name: max_length=255 pattern=        - sdn_tag: max_length=15 pattern=        - filter: max_length=2047 pattern=        - list: pattern=        - sdn_addr_type: pattern=        - passive_fqdn_learning: pattern=        - fabric_object: pattern=    """
+    Validation Rules:        - name: max_length=79 pattern=        - uuid: pattern=        - type_: pattern=        - route_tag: min=1 max=4294967295 pattern=        - macaddr: pattern=        - sdn: max_length=35 pattern=        - ip6: pattern=        - wildcard: pattern=        - start_ip: pattern=        - end_ip: pattern=        - fqdn: max_length=255 pattern=        - country: max_length=2 pattern=        - cache_ttl: min=0 max=86400 pattern=        - color: min=0 max=32 pattern=        - obj_id: max_length=255 pattern=        - tagging: pattern=        - comment: max_length=255 pattern=        - template: max_length=63 pattern=        - subnet_segment: pattern=        - host_type: pattern=        - host: pattern=        - tenant: max_length=35 pattern=        - epg_name: max_length=255 pattern=        - sdn_tag: max_length=15 pattern=        - filter_: max_length=2047 pattern=        - list_: pattern=        - sdn_addr_type: pattern=        - passive_fqdn_learning: pattern=        - fabric_object: pattern=    """
     
     class Config:
         """Pydantic model configuration."""
@@ -103,32 +134,32 @@ class Address6Model(BaseModel):
     # Model Fields
     # ========================================================================
     
-    name: str | None = Field(max_length=79, default="", description="Address name.")    
+    name: str | None = Field(max_length=79, default=None, description="Address name.")    
     uuid: str | None = Field(default="00000000-0000-0000-0000-000000000000", description="Universally Unique Identifier (UUID; automatically assigned but can be manually reset).")    
-    type: TypeEnum | None = Field(default="ipprefix", description="Type of IPv6 address object (default = ipprefix).")    
+    type_: Address6TypeEnum | None = Field(default=Address6TypeEnum.IPPREFIX, serialization_alias="type", description="Type of IPv6 address object (default = ipprefix).")    
     route_tag: int | None = Field(ge=1, le=4294967295, default=0, description="route-tag address.")    
-    macaddr: list[Macaddr] = Field(default=None, description="Multiple MAC address ranges.")    
-    sdn: str | None = Field(max_length=35, default="", description="SDN.")  # datasource: ['system.sdn-connector.name']    
+    macaddr: list[Address6Macaddr] = Field(default_factory=list, description="Multiple MAC address ranges.")    
+    sdn: str | None = Field(max_length=35, default=None, description="SDN.")  # datasource: ['system.sdn-connector.name']    
     ip6: str | None = Field(default="::/0", description="IPv6 address prefix (format: xxxx:xxxx:xxxx:xxxx:xxxx:xxxx:xxxx:xxxx/xxx).")    
     wildcard: Any = Field(default=":: ::", description="IPv6 address and wildcard netmask.")    
     start_ip: str | None = Field(default="::", description="First IP address (inclusive) in the range for the address (format: xxxx:xxxx:xxxx:xxxx:xxxx:xxxx:xxxx:xxxx).")    
     end_ip: str | None = Field(default="::", description="Final IP address (inclusive) in the range for the address (format: xxxx:xxxx:xxxx:xxxx:xxxx:xxxx:xxxx:xxxx).")    
-    fqdn: str | None = Field(max_length=255, default="", description="Fully qualified domain name.")    
-    country: str | None = Field(max_length=2, default="", description="IPv6 addresses associated to a specific country.")    
+    fqdn: str | None = Field(max_length=255, default=None, description="Fully qualified domain name.")    
+    country: str | None = Field(max_length=2, default=None, description="IPv6 addresses associated to a specific country.")    
     cache_ttl: int | None = Field(ge=0, le=86400, default=0, description="Minimal TTL of individual IPv6 addresses in FQDN cache.")    
     color: int | None = Field(ge=0, le=32, default=0, description="Integer value to determine the color of the icon in the GUI (range 1 to 32, default = 0, which sets the value to 1).")    
     obj_id: str | None = Field(max_length=255, default=None, description="Object ID for NSX.")    
-    tagging: list[Tagging] = Field(default=None, description="Config object tagging.")    
+    tagging: list[Address6Tagging] = Field(default_factory=list, description="Config object tagging.")    
     comment: str | None = Field(max_length=255, default=None, description="Comment.")    
-    template: str = Field(max_length=63, default="", description="IPv6 address template.")  # datasource: ['firewall.address6-template.name']    
-    subnet_segment: list[SubnetSegment] = Field(default=None, description="IPv6 subnet segments.")    
+    template: str = Field(max_length=63, description="IPv6 address template.")  # datasource: ['firewall.address6-template.name']    
+    subnet_segment: list[Address6SubnetSegment] = Field(default_factory=list, description="IPv6 subnet segments.")    
     host_type: Literal["any", "specific"] | None = Field(default="any", description="Host type.")    
     host: str | None = Field(default="::", description="Host Address.")    
-    tenant: str | None = Field(max_length=35, default="", description="Tenant.")    
-    epg_name: str | None = Field(max_length=255, default="", description="Endpoint group name.")    
-    sdn_tag: str | None = Field(max_length=15, default="", description="SDN Tag.")    
-    filter: str = Field(max_length=2047, description="Match criteria filter.")    
-    list: list[List] = Field(default=None, description="IP address list.")    
+    tenant: str | None = Field(max_length=35, default=None, description="Tenant.")    
+    epg_name: str | None = Field(max_length=255, default=None, description="Endpoint group name.")    
+    sdn_tag: str | None = Field(max_length=15, default=None, description="SDN Tag.")    
+    filter_: str = Field(max_length=2047, serialization_alias="filter", description="Match criteria filter.")    
+    list_: list[Address6List] = Field(default_factory=list, serialization_alias="list", description="IP address list.")    
     sdn_addr_type: Literal["private", "public", "all"] | None = Field(default="private", description="Type of addresses to collect.")    
     passive_fqdn_learning: Literal["disable", "enable"] | None = Field(default="enable", description="Enable/disable passive learning of FQDNs.  When enabled, the FortiGate learns, trusts, and saves FQDNs from endpoint DNS queries (default = enable).")    
     fabric_object: Literal["enable", "disable"] | None = Field(default="disable", description="Security Fabric global object setting.")    
@@ -226,7 +257,7 @@ class Address6Model(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.address6.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate scalar field
         value = getattr(self, "sdn", None)
@@ -235,7 +266,7 @@ class Address6Model(BaseModel):
         
         # Check all datasource endpoints
         found = False
-        if await client.api.cmdb.system.sdn-connector.exists(value):
+        if await client.api.cmdb.system.sdn_connector.exists(value):
             found = True
         
         if not found:
@@ -275,7 +306,7 @@ class Address6Model(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.address6.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate child table items
         values = getattr(self, "tagging", [])
@@ -293,7 +324,7 @@ class Address6Model(BaseModel):
             
             # Check all datasource endpoints
             found = False
-            if await client.api.cmdb.system.object-tagging.exists(value):
+            if await client.api.cmdb.system.object_tagging.exists(value):
                 found = True
             
             if not found:
@@ -333,7 +364,7 @@ class Address6Model(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.address6.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate scalar field
         value = getattr(self, "template", None)
@@ -342,7 +373,7 @@ class Address6Model(BaseModel):
         
         # Check all datasource endpoints
         found = False
-        if await client.api.cmdb.firewall.address6-template.exists(value):
+        if await client.api.cmdb.firewall.address6_template.exists(value):
             found = True
         
         if not found:
@@ -391,11 +422,11 @@ Dict = dict[str, Any]  # For backward compatibility
 # ============================================================================
 
 __all__ = [
-    "Address6Model",    "Address6Macaddr",    "Address6Tagging",    "Address6SubnetSegment",    "Address6List",]
+    "Address6Model",    "Address6Macaddr",    "Address6Tagging",    "Address6Tagging.Tags",    "Address6SubnetSegment",    "Address6List",]
 
 
 # ============================================================================
 # Generated by hfortix generator v0.6.0
 # Schema: 1.7.0
-# Generated: 2026-01-17T05:32:19.641313Z
+# Generated: 2026-01-17T17:25:23.302020Z
 # ============================================================================

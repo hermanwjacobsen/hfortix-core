@@ -1,215 +1,98 @@
-from typing import TypedDict, Literal, Any, Coroutine, Union, overload, Generator, final
-from typing_extensions import NotRequired
-from hfortix_fortios.models import FortiObject, FortiObjectList
+""" - Type Stubs
 
-# ============================================================================
-# Nested TypedDicts for table field children (dict mode)
-# These MUST be defined before the Payload class to use them as type hints
-# ============================================================================
+Auto-generated stub file for type checking and IDE support.
 
-# ============================================================================
-# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional)
-# ============================================================================
-# NOTE: We intentionally DON'T use NotRequired wrapper because:
-# 1. total=False already makes all fields optional
-# 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
+Endpoint: system/probe_response
+Category: cmdb
+"""
+
+from __future__ import annotations
+
+from typing import (
+    Any,
+    ClassVar,
+    Literal,
+    TypedDict,
+)
+
+from hfortix_fortios.models import (
+    FortiObject,
+    FortiObjectList,
+)
+
+
+# ================================================================
+# TypedDict Payloads
+# ================================================================
+
 class ProbeResponsePayload(TypedDict, total=False):
-    """
-    Type hints for system/probe_response payload fields.
-    
-    Configure system probe response.
-    
-    **Usage:**
-        payload: ProbeResponsePayload = {
-            "field": "value",  # <- autocomplete shows all fields
-        }
-    """
-    port: int  # Port number to response. | Default: 8008 | Min: 1 | Max: 65535
-    http_probe_value: str  # Value to respond to the monitoring server. | Default: OK | MaxLen: 1024
-    ttl_mode: Literal["reinit", "decrease", "retain"]  # Mode for TWAMP packet TTL modification. | Default: retain
-    mode: Literal["none", "http-probe", "twamp"]  # SLA response mode. | Default: none
-    security_mode: Literal["none", "authentication"]  # TWAMP responder security mode. | Default: none
-    password: str  # TWAMP responder password in authentication mode. | MaxLen: 128
-    timeout: int  # An inactivity timer for a twamp test session. | Default: 300 | Min: 10 | Max: 3600
-
-# ============================================================================
-# Nested classes for table field children (object mode - for API responses)
-# ============================================================================
-
-
-
-# Response TypedDict for GET returns (all fields present in API response)
-class ProbeResponseResponse(TypedDict):
-    """
-    Type hints for system/probe_response API response fields.
-    
-    All fields are present in the response from the FortiGate API.
-    """
-    port: int  # Port number to response. | Default: 8008 | Min: 1 | Max: 65535
-    http_probe_value: str  # Value to respond to the monitoring server. | Default: OK | MaxLen: 1024
-    ttl_mode: Literal["reinit", "decrease", "retain"]  # Mode for TWAMP packet TTL modification. | Default: retain
-    mode: Literal["none", "http-probe", "twamp"]  # SLA response mode. | Default: none
-    security_mode: Literal["none", "authentication"]  # TWAMP responder security mode. | Default: none
-    password: str  # TWAMP responder password in authentication mode. | MaxLen: 128
-    timeout: int  # An inactivity timer for a twamp test session. | Default: 300 | Min: 10 | Max: 3600
-
-
-@final
-class ProbeResponseObject:
-    """Typed FortiObject for system/probe_response with IDE autocomplete support.
-    
-    This is a typed wrapper that provides IDE autocomplete for API response fields.
-    At runtime, this is actually a FortiObject instance.
-    """
-    
-    # Port number to response. | Default: 8008 | Min: 1 | Max: 65535
+    """Payload type for ProbeResponse operations."""
     port: int
-    # Value to respond to the monitoring server. | Default: OK | MaxLen: 1024
     http_probe_value: str
-    # Mode for TWAMP packet TTL modification. | Default: retain
     ttl_mode: Literal["reinit", "decrease", "retain"]
-    # SLA response mode. | Default: none
     mode: Literal["none", "http-probe", "twamp"]
-    # TWAMP responder security mode. | Default: none
     security_mode: Literal["none", "authentication"]
-    # TWAMP responder password in authentication mode. | MaxLen: 128
     password: str
-    # An inactivity timer for a twamp test session. | Default: 300 | Min: 10 | Max: 3600
     timeout: int
-    
-    # Common API response fields
-    status: str
-    http_status: int | None
-    http_status_code: int | None
-    http_method: str | None
-    http_response_time: float | None
-    vdom: str | None
-    
-    # Methods from FortiObject
-    @property
-    def dict(self) -> dict[str, Any]:
-        """Convert to dictionary."""
-        ...
-    @property
-    def json(self) -> str:
-        """Get pretty-printed JSON string."""
-        ...
-    @property
-    def raw(self) -> dict[str, Any]:
-        """Get raw API response data."""
-        ...
-    def get_full(self, name: str) -> Any: ...
-    def to_dict(self) -> ProbeResponsePayload: ...
-    def keys(self) -> Any: ...
-    def values(self) -> Generator[Any, None, None]: ...
-    def items(self) -> Generator[tuple[str, Any], None, None]: ...
-    def get(self, key: str, default: Any = None) -> Any: ...
 
+
+# ================================================================
+# Response Types (TypedDict for dict-style access)
+# ================================================================
+
+class ProbeResponseResponse(TypedDict, total=False):
+    """Response type for ProbeResponse - use with .dict property for typed dict access."""
+    port: int
+    http_probe_value: str
+    ttl_mode: Literal["reinit", "decrease", "retain"]
+    mode: Literal["none", "http-probe", "twamp"]
+    security_mode: Literal["none", "authentication"]
+    password: str
+    timeout: int
+
+
+# ================================================================
+# Response Types (Class for attribute access)
+# ================================================================
+
+
+class ProbeResponseObject(FortiObject):
+    """Typed FortiObject for ProbeResponse with field access."""
+    port: int
+    http_probe_value: str
+    ttl_mode: Literal["reinit", "decrease", "retain"]
+    mode: Literal["none", "http-probe", "twamp"]
+    security_mode: Literal["none", "authentication"]
+    password: str
+    timeout: int
+
+
+# ================================================================
+# Main Endpoint Class
+# ================================================================
 
 class ProbeResponse:
     """
-    Configure system probe response.
     
-    Path: system/probe_response
+    Endpoint: system/probe_response
     Category: cmdb
     """
     
+    # Class attributes for introspection
+    endpoint: ClassVar[str] = ...
+    path: ClassVar[str] = ...
+    category: ClassVar[str] = ...
+    capabilities: ClassVar[dict[str, Any]] = ...
+    
     def __init__(self, client: Any) -> None:
-        """Initialize endpoint with HTTP client.
-        
-        Args:
-            client: HTTP client instance for API communication
-        """
+        """Initialize endpoint with HTTP client."""
         ...
     
     # ================================================================
-    # GET OVERLOADS - Always returns FortiObject (or ContentResponse for file endpoints)
-    # Pylance matches overloads top-to-bottom, so these must come first!
+    # GET Methods
     # ================================================================
     
-    # With mkey as positional arg -> returns FortiObject
-    @overload
-    def get(
-        self,
-        name: str,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-    ) -> ProbeResponseObject: ...
-    
-    # With mkey as keyword arg -> returns FortiObject
-    @overload
-    def get(
-        self,
-        *,
-        name: str,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-    ) -> ProbeResponseObject: ...
-    
-    # Without mkey -> returns list of FortiObjects
-    @overload
-    def get(
-        self,
-        name: None = None,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-    ) -> ProbeResponseObject: ...
-    
-    # ================================================================
-    # (removed - all GET now returns FortiObject)
-    # ================================================================
-    
-    # With mkey as positional arg -> returns single object
-    @overload
-    def get(
-        self,
-        name: str,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-    ) -> ProbeResponseObject: ...
-    
-    # With mkey as keyword arg -> returns single object
-    @overload
-    def get(
-        self,
-        *,
-        name: str,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-    ) -> ProbeResponseObject: ...
-    
-    # With no mkey -> returns list of objects
-    @overload
+    # Singleton endpoint (no mkey)
     def get(
         self,
         *,
@@ -221,89 +104,20 @@ class ProbeResponse:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
+        error_mode: Literal["raise", "return", "print"] | None = ...,
+        error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> ProbeResponseObject: ...
-    
-    # Dict mode with mkey provided as positional arg (single dict)
-    @overload
-    def get(
-        self,
-        name: str,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-    ) -> ProbeResponseObject: ...
-    
-    # Dict mode with mkey provided as keyword arg (single dict)
-    @overload
-    def get(
-        self,
-        *,
-        name: str,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-    ) -> ProbeResponseObject: ...
-    
-    # Dict mode - list of dicts (no mkey/name provided) - keyword-only signature
-    @overload
-    def get(
-        self,
-        *,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-    ) -> ProbeResponseObject: ...
-    
-    # Fallback overload for all other cases
-    @overload
-    def get(
-        self,
-        name: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-    ) -> dict[str, Any] | FortiObject: ...
-    
-    def get(
-        self,
-        name: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-    ) -> ProbeResponseObject | dict[str, Any]: ...
     
     def get_schema(
         self,
         format: str = ...,
     ) -> FortiObject: ...
+
+
+    # ================================================================
+    # PUT Method
+    # ================================================================
     
-    # PUT overloads
-    @overload
     def put(
         self,
         payload_dict: ProbeResponsePayload | None = ...,
@@ -314,46 +128,14 @@ class ProbeResponse:
         security_mode: Literal["none", "authentication"] | None = ...,
         password: str | None = ...,
         timeout: int | None = ...,
+        error_mode: Literal["raise", "return", "print"] | None = ...,
+        error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> ProbeResponseObject: ...
-    
-    @overload
-    def put(
-        self,
-        payload_dict: ProbeResponsePayload | None = ...,
-        port: int | None = ...,
-        http_probe_value: str | None = ...,
-        ttl_mode: Literal["reinit", "decrease", "retain"] | None = ...,
-        mode: Literal["none", "http-probe", "twamp"] | None = ...,
-        security_mode: Literal["none", "authentication"] | None = ...,
-        password: str | None = ...,
-        timeout: int | None = ...,
-    ) -> FortiObject: ...
-    
-    # Default overload
-    @overload
-    def put(
-        self,
-        payload_dict: ProbeResponsePayload | None = ...,
-        port: int | None = ...,
-        http_probe_value: str | None = ...,
-        ttl_mode: Literal["reinit", "decrease", "retain"] | None = ...,
-        mode: Literal["none", "http-probe", "twamp"] | None = ...,
-        security_mode: Literal["none", "authentication"] | None = ...,
-        password: str | None = ...,
-        timeout: int | None = ...,
-    ) -> FortiObject: ...
-    
-    def put(
-        self,
-        payload_dict: ProbeResponsePayload | None = ...,
-        port: int | None = ...,
-        http_probe_value: str | None = ...,
-        ttl_mode: Literal["reinit", "decrease", "retain"] | None = ...,
-        mode: Literal["none", "http-probe", "twamp"] | None = ...,
-        security_mode: Literal["none", "authentication"] | None = ...,
-        password: str | None = ...,
-        timeout: int | None = ...,
-    ) -> FortiObject: ...
+
+
+    # ================================================================
+    # Utility Methods
+    # ================================================================
     
     def exists(
         self,
@@ -370,6 +152,8 @@ class ProbeResponse:
         security_mode: Literal["none", "authentication"] | None = ...,
         password: str | None = ...,
         timeout: int | None = ...,
+        error_mode: Literal["raise", "return", "print"] | None = ...,
+        error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> FortiObject: ...
     
     # Helper methods
@@ -377,7 +161,7 @@ class ProbeResponse:
     def help(field_name: str | None = ...) -> str: ...
     
     @staticmethod
-    def fields(detailed: bool = ...) -> Union[list[str], list[dict[str, Any]]]: ...
+    def fields(detailed: bool = ...) -> list[str] | list[dict[str, Any]]: ...
     
     @staticmethod
     def field_info(field_name: str) -> FortiObject: ...
@@ -393,9 +177,6 @@ class ProbeResponse:
     
     @staticmethod
     def schema() -> FortiObject: ...
-
-
-# ================================================================
 
 
 __all__ = [

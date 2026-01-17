@@ -722,6 +722,16 @@ class Exchange(CRUDEndpoint, MetadataMixin):
             - put(): Update existing object
             - exists(): Check existence manually
         """
+        # Apply normalization for table fields (supports flexible input formats)
+        if kdc_ip is not None:
+            kdc_ip = normalize_table_field(
+                kdc_ip,
+                mkey="ipv4",
+                required_fields=['ipv4'],
+                field_name="kdc_ip",
+                example="[{'ipv4': 'value'}]",
+            )
+        
         # Build payload using helper function with auto-normalization
         payload_data = build_api_payload(
             name=name,

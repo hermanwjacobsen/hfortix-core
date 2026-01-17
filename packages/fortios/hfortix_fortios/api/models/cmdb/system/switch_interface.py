@@ -11,7 +11,11 @@ from pydantic import BaseModel, Field, field_validator
 from typing import Any, Literal, Optional
 
 # ============================================================================
-# Child Table Models
+# Enum Definitions for Child Table Fields (for fields with 4+ allowed values)
+# ============================================================================
+
+# ============================================================================
+# Child Table Models (sorted deepest-first so nested models are defined before their parents)
 # ============================================================================
 
 class SwitchInterfaceSpanSourcePort(BaseModel):
@@ -25,8 +29,9 @@ class SwitchInterfaceSpanSourcePort(BaseModel):
         """Pydantic model configuration."""
         extra = "allow"  # Allow additional fields from API
         str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
     
-    interface_name: str = Field(max_length=79, default="", description="Physical interface name.")  # datasource: ['system.interface.name']
+    interface_name: str = Field(max_length=79, description="Physical interface name.")  # datasource: ['system.interface.name']
 class SwitchInterfaceMember(BaseModel):
     """
     Child table model for member.
@@ -38,8 +43,9 @@ class SwitchInterfaceMember(BaseModel):
         """Pydantic model configuration."""
         extra = "allow"  # Allow additional fields from API
         str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
     
-    interface_name: str = Field(max_length=79, default="", description="Interface name.")  # datasource: ['system.interface.name']
+    interface_name: str = Field(max_length=79, description="Interface name.")  # datasource: ['system.interface.name']
 # ============================================================================
 # Enum Definitions (for fields with 4+ allowed values)
 # ============================================================================
@@ -55,7 +61,7 @@ class SwitchInterfaceModel(BaseModel):
     
     Configure software switch interfaces by grouping physical and WiFi interfaces.
     
-    Validation Rules:        - name: max_length=15 pattern=        - vdom: max_length=31 pattern=        - span_dest_port: max_length=15 pattern=        - span_source_port: pattern=        - member: pattern=        - type: pattern=        - intra_switch_policy: pattern=        - mac_ttl: min=300 max=8640000 pattern=        - span: pattern=        - span_direction: pattern=    """
+    Validation Rules:        - name: max_length=15 pattern=        - vdom: max_length=31 pattern=        - span_dest_port: max_length=15 pattern=        - span_source_port: pattern=        - member: pattern=        - type_: pattern=        - intra_switch_policy: pattern=        - mac_ttl: min=300 max=8640000 pattern=        - span: pattern=        - span_direction: pattern=    """
     
     class Config:
         """Pydantic model configuration."""
@@ -68,12 +74,12 @@ class SwitchInterfaceModel(BaseModel):
     # Model Fields
     # ========================================================================
     
-    name: str = Field(max_length=15, default="", description="Interface name (name cannot be in use by any other interfaces, VLANs, or inter-VDOM links).")    
-    vdom: str = Field(max_length=31, default="", description="VDOM that the software switch belongs to.")  # datasource: ['system.vdom.name']    
-    span_dest_port: str | None = Field(max_length=15, default="", description="SPAN destination port name. All traffic on the SPAN source ports is echoed to the SPAN destination port.")  # datasource: ['system.interface.name']    
-    span_source_port: list[SpanSourcePort] = Field(default=None, description="Physical interface name. Port spanning echoes all traffic on the SPAN source ports to the SPAN destination port.")    
-    member: list[Member] = Field(default=None, description="Names of the interfaces that belong to the virtual switch.")    
-    type: Literal["switch", "hub"] | None = Field(default="switch", description="Type of switch based on functionality: switch for normal functionality, or hub to duplicate packets to all port members.")    
+    name: str = Field(max_length=15, description="Interface name (name cannot be in use by any other interfaces, VLANs, or inter-VDOM links).")    
+    vdom: str = Field(max_length=31, description="VDOM that the software switch belongs to.")  # datasource: ['system.vdom.name']    
+    span_dest_port: str | None = Field(max_length=15, default=None, description="SPAN destination port name. All traffic on the SPAN source ports is echoed to the SPAN destination port.")  # datasource: ['system.interface.name']    
+    span_source_port: list[SwitchInterfaceSpanSourcePort] = Field(default_factory=list, description="Physical interface name. Port spanning echoes all traffic on the SPAN source ports to the SPAN destination port.")    
+    member: list[SwitchInterfaceMember] = Field(default_factory=list, description="Names of the interfaces that belong to the virtual switch.")    
+    type_: Literal["switch", "hub"] | None = Field(default="switch", serialization_alias="type", description="Type of switch based on functionality: switch for normal functionality, or hub to duplicate packets to all port members.")    
     intra_switch_policy: Literal["implicit", "explicit"] | None = Field(default="implicit", description="Allow any traffic between switch interfaces or require firewall policies to allow traffic between switch interfaces.")    
     mac_ttl: int | None = Field(ge=300, le=8640000, default=300, description="Duration for which MAC addresses are held in the ARP table (300 - 8640000 sec, default = 300).")    
     span: Literal["disable", "enable"] | None = Field(default="disable", description="Enable/disable port spanning. Port spanning echoes traffic received by the software switch to the span destination port.")    
@@ -172,7 +178,7 @@ class SwitchInterfaceModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.system.switch_interface.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate scalar field
         value = getattr(self, "vdom", None)
@@ -221,7 +227,7 @@ class SwitchInterfaceModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.system.switch_interface.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate scalar field
         value = getattr(self, "span_dest_port", None)
@@ -270,7 +276,7 @@ class SwitchInterfaceModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.system.switch_interface.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate child table items
         values = getattr(self, "span_source_port", [])
@@ -328,7 +334,7 @@ class SwitchInterfaceModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.system.switch_interface.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate child table items
         values = getattr(self, "member", [])
@@ -403,5 +409,5 @@ __all__ = [
 # ============================================================================
 # Generated by hfortix generator v0.6.0
 # Schema: 1.7.0
-# Generated: 2026-01-17T05:32:18.864036Z
+# Generated: 2026-01-17T17:25:22.594898Z
 # ============================================================================

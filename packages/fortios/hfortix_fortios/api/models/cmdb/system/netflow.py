@@ -11,7 +11,11 @@ from pydantic import BaseModel, Field, field_validator
 from typing import Any, Literal, Optional
 
 # ============================================================================
-# Child Table Models
+# Enum Definitions for Child Table Fields (for fields with 4+ allowed values)
+# ============================================================================
+
+# ============================================================================
+# Child Table Models (sorted deepest-first so nested models are defined before their parents)
 # ============================================================================
 
 class NetflowExclusionFilters(BaseModel):
@@ -25,12 +29,13 @@ class NetflowExclusionFilters(BaseModel):
         """Pydantic model configuration."""
         extra = "allow"  # Allow additional fields from API
         str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
     
-    id: int = Field(ge=0, le=4294967295, default=0, description="Filter ID.")    
-    source_ip: str | None = Field(default="", description="Session source address.")    
-    destination_ip: str | None = Field(default="", description="Session destination address.")    
-    source_port: str | None = Field(default="", description="Session source port number or range.")    
-    destination_port: str | None = Field(default="", description="Session destination port number or range.")    
+    id_: int = Field(ge=0, le=4294967295, default=0, serialization_alias="id", description="Filter ID.")    
+    source_ip: str | None = Field(default=None, description="Session source address.")    
+    destination_ip: str | None = Field(default=None, description="Session destination address.")    
+    source_port: str | None = Field(default=None, description="Session source port number or range.")    
+    destination_port: str | None = Field(default=None, description="Session destination port number or range.")    
     protocol: int | None = Field(ge=0, le=255, default=255, description="Session IP protocol (0 - 255, default = 255, meaning any).")
 class NetflowCollectors(BaseModel):
     """
@@ -43,14 +48,15 @@ class NetflowCollectors(BaseModel):
         """Pydantic model configuration."""
         extra = "allow"  # Allow additional fields from API
         str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
     
-    id: int = Field(ge=1, le=6, default=0, description="ID.")    
-    collector_ip: str = Field(max_length=63, default="", description="Collector IP.")    
+    id_: int = Field(ge=1, le=6, default=0, serialization_alias="id", description="ID.")    
+    collector_ip: str = Field(max_length=63, description="Collector IP.")    
     collector_port: int | None = Field(ge=0, le=65535, default=2055, description="NetFlow collector port number.")    
-    source_ip: str | None = Field(max_length=63, default="", description="Source IP address for communication with the NetFlow agent.")    
-    source_ip_interface: str | None = Field(max_length=15, default="", description="Name of the interface used to determine the source IP for exporting packets.")  # datasource: ['system.interface.name']    
+    source_ip: str | None = Field(max_length=63, default=None, description="Source IP address for communication with the NetFlow agent.")    
+    source_ip_interface: str | None = Field(max_length=15, default=None, description="Name of the interface used to determine the source IP for exporting packets.")  # datasource: ['system.interface.name']    
     interface_select_method: Literal["auto", "sdwan", "specify"] | None = Field(default="auto", description="Specify how to select outgoing interface to reach server.")    
-    interface: str = Field(max_length=15, default="", description="Specify outgoing interface to reach server.")  # datasource: ['system.interface.name']    
+    interface: str = Field(max_length=15, description="Specify outgoing interface to reach server.")  # datasource: ['system.interface.name']    
     vrf_select: int | None = Field(ge=0, le=511, default=0, description="VRF ID used for connection to server.")
 # ============================================================================
 # Enum Definitions (for fields with 4+ allowed values)
@@ -85,8 +91,8 @@ class NetflowModel(BaseModel):
     template_tx_timeout: int | None = Field(ge=60, le=86400, default=1800, description="Timeout for periodic template flowset transmission (60 - 86400 sec, default = 1800).")    
     template_tx_counter: int | None = Field(ge=10, le=6000, default=20, description="Counter of flowset records before resending a template flowset record.")    
     session_cache_size: Literal["min", "default", "max"] | None = Field(default="default", description="Maximum RAM usage allowed for Netflow session cache.")    
-    exclusion_filters: list[ExclusionFilters] = Field(default=None, description="Exclusion filters")    
-    collectors: list[Collectors] = Field(default=None, description="Netflow collectors.")    
+    exclusion_filters: list[NetflowExclusionFilters] = Field(default_factory=list, description="Exclusion filters")    
+    collectors: list[NetflowCollectors] = Field(default_factory=list, description="Netflow collectors.")    
     # ========================================================================
     # Custom Validators
     # ========================================================================
@@ -151,7 +157,7 @@ class NetflowModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.system.netflow.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate child table items
         values = getattr(self, "collectors", [])
@@ -220,5 +226,5 @@ __all__ = [
 # ============================================================================
 # Generated by hfortix generator v0.6.0
 # Schema: 1.7.0
-# Generated: 2026-01-17T05:32:17.184040Z
+# Generated: 2026-01-17T17:25:21.105701Z
 # ============================================================================

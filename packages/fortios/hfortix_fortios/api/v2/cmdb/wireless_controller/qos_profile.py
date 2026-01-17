@@ -887,6 +887,40 @@ class QosProfile(CRUDEndpoint, MetadataMixin):
             - put(): Update existing object
             - exists(): Check existence manually
         """
+        # Apply normalization for table fields (supports flexible input formats)
+        if dscp_wmm_vo is not None:
+            dscp_wmm_vo = normalize_table_field(
+                dscp_wmm_vo,
+                mkey="id",
+                required_fields=['id'],
+                field_name="dscp_wmm_vo",
+                example="[{'id': 1}]",
+            )
+        if dscp_wmm_vi is not None:
+            dscp_wmm_vi = normalize_table_field(
+                dscp_wmm_vi,
+                mkey="id",
+                required_fields=['id'],
+                field_name="dscp_wmm_vi",
+                example="[{'id': 1}]",
+            )
+        if dscp_wmm_be is not None:
+            dscp_wmm_be = normalize_table_field(
+                dscp_wmm_be,
+                mkey="id",
+                required_fields=['id'],
+                field_name="dscp_wmm_be",
+                example="[{'id': 1}]",
+            )
+        if dscp_wmm_bk is not None:
+            dscp_wmm_bk = normalize_table_field(
+                dscp_wmm_bk,
+                mkey="id",
+                required_fields=['id'],
+                field_name="dscp_wmm_bk",
+                example="[{'id': 1}]",
+            )
+        
         # Build payload using helper function with auto-normalization
         payload_data = build_api_payload(
             name=name,

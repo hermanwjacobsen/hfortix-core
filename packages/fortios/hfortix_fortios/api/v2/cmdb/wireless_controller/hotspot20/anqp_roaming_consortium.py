@@ -626,6 +626,16 @@ class AnqpRoamingConsortium(CRUDEndpoint, MetadataMixin):
             - put(): Update existing object
             - exists(): Check existence manually
         """
+        # Apply normalization for table fields (supports flexible input formats)
+        if oi_list is not None:
+            oi_list = normalize_table_field(
+                oi_list,
+                mkey="index",
+                required_fields=['oi'],
+                field_name="oi_list",
+                example="[{'oi': 'value'}]",
+            )
+        
         # Build payload using helper function with auto-normalization
         payload_data = build_api_payload(
             name=name,

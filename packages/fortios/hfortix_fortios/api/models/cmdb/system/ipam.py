@@ -9,27 +9,66 @@ from __future__ import annotations
 
 from pydantic import BaseModel, Field, field_validator
 from typing import Any, Literal, Optional
+from enum import Enum
 
 # ============================================================================
-# Child Table Models
+# Enum Definitions for Child Table Fields (for fields with 4+ allowed values)
 # ============================================================================
 
-class IpamPools(BaseModel):
+class IpamRulesRoleEnum(str, Enum):
+    """Allowed values for role field in rules."""
+    ANY = "any"
+    LAN = "lan"
+    WAN = "wan"
+    DMZ = "dmz"
+    UNDEFINED = "undefined"
+
+# ============================================================================
+# Child Table Models (sorted deepest-first so nested models are defined before their parents)
+# ============================================================================
+
+class IpamRulesPool(BaseModel):
     """
-    Child table model for pools.
+    Child table model for rules.pool.
     
-    Configure IPAM pools.
+    Configure name of IPAM pool to use.
     """
     
     class Config:
         """Pydantic model configuration."""
         extra = "allow"  # Allow additional fields from API
         str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
     
-    name: str = Field(max_length=79, default="", description="IPAM pool name.")    
-    description: str | None = Field(max_length=127, default="", description="Description.")    
-    subnet: str = Field(default="0.0.0.0 0.0.0.0", description="Configure IPAM pool subnet, Class A - Class B subnet.")    
-    exclude: list[Exclude] = Field(default=None, description="Configure pool exclude subnets.")
+    name: str = Field(max_length=79, description="IPAM pool name.")  # datasource: ['system.ipam.pools.name']
+class IpamRulesInterface(BaseModel):
+    """
+    Child table model for rules.interface.
+    
+    Configure name or wildcard of interface to match.
+    """
+    
+    class Config:
+        """Pydantic model configuration."""
+        extra = "allow"  # Allow additional fields from API
+        str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
+    
+    name: str = Field(max_length=79, description="Interface name or wildcard.")
+class IpamRulesDevice(BaseModel):
+    """
+    Child table model for rules.device.
+    
+    Configure serial number or wildcard of FortiGate to match.
+    """
+    
+    class Config:
+        """Pydantic model configuration."""
+        extra = "allow"  # Allow additional fields from API
+        str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
+    
+    name: str = Field(max_length=79, description="FortiGate serial number or wildcard.")
 class IpamRules(BaseModel):
     """
     Child table model for rules.
@@ -41,14 +80,47 @@ class IpamRules(BaseModel):
         """Pydantic model configuration."""
         extra = "allow"  # Allow additional fields from API
         str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
     
-    name: str = Field(max_length=79, default="", description="IPAM rule name.")    
-    description: str | None = Field(max_length=127, default="", description="Description.")    
-    device: list[Device] = Field(description="Configure serial number or wildcard of FortiGate to match.")    
-    interface: list[Interface] = Field(description="Configure name or wildcard of interface to match.")    
-    role: RoleEnum | None = Field(default="any", description="Configure role of interface to match.")    
-    pool: list[Pool] = Field(description="Configure name of IPAM pool to use.")    
+    name: str = Field(max_length=79, description="IPAM rule name.")    
+    description: str | None = Field(max_length=127, default=None, description="Description.")    
+    device: list[IpamRulesDevice] = Field(description="Configure serial number or wildcard of FortiGate to match.")    
+    interface: list[IpamRulesInterface] = Field(description="Configure name or wildcard of interface to match.")    
+    role: IpamRulesRoleEnum | None = Field(default=IpamRulesRoleEnum.ANY, description="Configure role of interface to match.")    
+    pool: list[IpamRulesPool] = Field(description="Configure name of IPAM pool to use.")    
     dhcp: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable DHCP server for matching IPAM interfaces.")
+class IpamPoolsExclude(BaseModel):
+    """
+    Child table model for pools.exclude.
+    
+    Configure pool exclude subnets.
+    """
+    
+    class Config:
+        """Pydantic model configuration."""
+        extra = "allow"  # Allow additional fields from API
+        str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
+    
+    ID: int = Field(ge=0, le=4294967295, default=0, description="Exclude ID.")    
+    exclude_subnet: str = Field(default="0.0.0.0 0.0.0.0", description="Configure subnet to exclude from the IPAM pool.")
+class IpamPools(BaseModel):
+    """
+    Child table model for pools.
+    
+    Configure IPAM pools.
+    """
+    
+    class Config:
+        """Pydantic model configuration."""
+        extra = "allow"  # Allow additional fields from API
+        str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
+    
+    name: str = Field(max_length=79, description="IPAM pool name.")    
+    description: str | None = Field(max_length=127, default=None, description="Description.")    
+    subnet: str = Field(default="0.0.0.0 0.0.0.0", description="Configure IPAM pool subnet, Class A - Class B subnet.")    
+    exclude: list[IpamPoolsExclude] = Field(default_factory=list, description="Configure pool exclude subnets.")
 # ============================================================================
 # Enum Definitions (for fields with 4+ allowed values)
 # ============================================================================
@@ -84,8 +156,8 @@ class IpamModel(BaseModel):
     manage_lan_addresses: Literal["disable", "enable"] | None = Field(default="enable", description="Enable/disable default management of LAN interface addresses.")    
     manage_lan_extension_addresses: Literal["disable", "enable"] | None = Field(default="enable", description="Enable/disable default management of FortiExtender LAN extension interface addresses.")    
     manage_ssid_addresses: Literal["disable", "enable"] | None = Field(default="enable", description="Enable/disable default management of FortiAP SSID addresses.")    
-    pools: list[Pools] = Field(default=None, description="Configure IPAM pools.")    
-    rules: list[Rules] = Field(default=None, description="Configure IPAM allocation rules.")    
+    pools: list[IpamPools] = Field(default_factory=list, description="Configure IPAM pools.")    
+    rules: list[IpamRules] = Field(default_factory=list, description="Configure IPAM allocation rules.")    
     # ========================================================================
     # Custom Validators
     # ========================================================================
@@ -128,11 +200,11 @@ Dict = dict[str, Any]  # For backward compatibility
 # ============================================================================
 
 __all__ = [
-    "IpamModel",    "IpamPools",    "IpamRules",]
+    "IpamModel",    "IpamPools",    "IpamPools.Exclude",    "IpamRules",    "IpamRules.Device",    "IpamRules.Interface",    "IpamRules.Pool",]
 
 
 # ============================================================================
 # Generated by hfortix generator v0.6.0
 # Schema: 1.7.0
-# Generated: 2026-01-17T05:32:17.447933Z
+# Generated: 2026-01-17T17:25:21.337812Z
 # ============================================================================

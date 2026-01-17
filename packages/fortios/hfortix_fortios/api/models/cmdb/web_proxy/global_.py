@@ -11,22 +11,13 @@ from pydantic import BaseModel, Field, field_validator
 from typing import Any, Literal, Optional
 
 # ============================================================================
-# Child Table Models
+# Enum Definitions for Child Table Fields (for fields with 4+ allowed values)
 # ============================================================================
 
-class GlobalLearnClientIpSrcaddr(BaseModel):
-    """
-    Child table model for learn-client-ip-srcaddr.
-    
-    Source address name (srcaddr or srcaddr6 must be set).
-    """
-    
-    class Config:
-        """Pydantic model configuration."""
-        extra = "allow"  # Allow additional fields from API
-        str_strip_whitespace = True
-    
-    name: str = Field(max_length=79, default="", description="Address name.")  # datasource: ['firewall.address.name', 'firewall.addrgrp.name']
+# ============================================================================
+# Child Table Models (sorted deepest-first so nested models are defined before their parents)
+# ============================================================================
+
 class GlobalLearnClientIpSrcaddr6(BaseModel):
     """
     Child table model for learn-client-ip-srcaddr6.
@@ -38,8 +29,23 @@ class GlobalLearnClientIpSrcaddr6(BaseModel):
         """Pydantic model configuration."""
         extra = "allow"  # Allow additional fields from API
         str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
     
-    name: str = Field(max_length=79, default="", description="Address name.")  # datasource: ['firewall.address6.name', 'firewall.addrgrp6.name']
+    name: str = Field(max_length=79, description="Address name.")  # datasource: ['firewall.address6.name', 'firewall.addrgrp6.name']
+class GlobalLearnClientIpSrcaddr(BaseModel):
+    """
+    Child table model for learn-client-ip-srcaddr.
+    
+    Source address name (srcaddr or srcaddr6 must be set).
+    """
+    
+    class Config:
+        """Pydantic model configuration."""
+        extra = "allow"  # Allow additional fields from API
+        str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
+    
+    name: str = Field(max_length=79, description="Address name.")  # datasource: ['firewall.address.name', 'firewall.addrgrp.name']
 # ============================================================================
 # Enum Definitions (for fields with 4+ allowed values)
 # ============================================================================
@@ -82,14 +88,14 @@ class GlobalModel(BaseModel):
     forward_proxy_auth: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable forwarding proxy authentication headers.")    
     forward_server_affinity_timeout: int | None = Field(ge=6, le=60, default=30, description="Period of time before the source IP's traffic is no longer assigned to the forwarding server (6 - 60 min, default = 30).")    
     max_waf_body_cache_length: int | None = Field(ge=1, le=1024, default=1, description="Maximum length of HTTP messages processed by Web Application Firewall (WAF) (1 - 1024 Kbytes, default = 1).")    
-    webproxy_profile: str | None = Field(max_length=63, default="", description="Name of the web proxy profile to apply when explicit proxy traffic is allowed by default and traffic is accepted that does not match an explicit proxy policy.")  # datasource: ['web-proxy.profile.name']    
+    webproxy_profile: str | None = Field(max_length=63, default=None, description="Name of the web proxy profile to apply when explicit proxy traffic is allowed by default and traffic is accepted that does not match an explicit proxy policy.")  # datasource: ['web-proxy.profile.name']    
     learn_client_ip: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable learning the client's IP address from headers.")    
     always_learn_client_ip: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable learning the client's IP address from headers for every request.")    
-    learn_client_ip_from_header: list[LearnClientIpFromHeader] = Field(default="", description="Learn client IP address from the specified headers.")    
-    learn_client_ip_srcaddr: list[LearnClientIpSrcaddr] = Field(default=None, description="Source address name (srcaddr or srcaddr6 must be set).")    
-    learn_client_ip_srcaddr6: list[LearnClientIpSrcaddr6] = Field(default=None, description="IPv6 Source address name (srcaddr or srcaddr6 must be set).")    
-    src_affinity_exempt_addr: list[SrcAffinityExemptAddr] = Field(default="", description="IPv4 source addresses to exempt proxy affinity.")    
-    src_affinity_exempt_addr6: list[SrcAffinityExemptAddr6] = Field(default="", description="IPv6 source addresses to exempt proxy affinity.")    
+    learn_client_ip_from_header: list[Literal["true-client-ip", "x-real-ip", "x-forwarded-for"]] = Field(default_factory=list, description="Learn client IP address from the specified headers.")    
+    learn_client_ip_srcaddr: list[GlobalLearnClientIpSrcaddr] = Field(default_factory=list, description="Source address name (srcaddr or srcaddr6 must be set).")    
+    learn_client_ip_srcaddr6: list[GlobalLearnClientIpSrcaddr6] = Field(default_factory=list, description="IPv6 Source address name (srcaddr or srcaddr6 must be set).")    
+    src_affinity_exempt_addr: list[str] = Field(default_factory=list, description="IPv4 source addresses to exempt proxy affinity.")    
+    src_affinity_exempt_addr6: list[str] = Field(default_factory=list, description="IPv6 source addresses to exempt proxy affinity.")    
     policy_partial_match: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable policy partial matching.")    
     log_policy_pending: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable logging sessions that are pending on policy matching.")    
     log_forward_server: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable forward server name logging in forward traffic log.")    
@@ -205,7 +211,7 @@ class GlobalModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.web_proxy.global_.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate scalar field
         value = getattr(self, "ssl_cert", None)
@@ -254,7 +260,7 @@ class GlobalModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.web_proxy.global_.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate scalar field
         value = getattr(self, "ssl_ca_cert", None)
@@ -265,7 +271,7 @@ class GlobalModel(BaseModel):
         found = False
         if await client.api.cmdb.vpn.certificate.local.exists(value):
             found = True
-        elif await client.api.cmdb.vpn.certificate.hsm-local.exists(value):
+        elif await client.api.cmdb.vpn.certificate.hsm_local.exists(value):
             found = True
         
         if not found:
@@ -305,7 +311,7 @@ class GlobalModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.web_proxy.global_.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate scalar field
         value = getattr(self, "webproxy_profile", None)
@@ -314,7 +320,7 @@ class GlobalModel(BaseModel):
         
         # Check all datasource endpoints
         found = False
-        if await client.api.cmdb.web-proxy.profile.exists(value):
+        if await client.api.cmdb.web_proxy.profile.exists(value):
             found = True
         
         if not found:
@@ -354,7 +360,7 @@ class GlobalModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.web_proxy.global_.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate child table items
         values = getattr(self, "learn_client_ip_srcaddr", [])
@@ -414,7 +420,7 @@ class GlobalModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.web_proxy.global_.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate child table items
         values = getattr(self, "learn_client_ip_srcaddr6", [])
@@ -493,5 +499,5 @@ __all__ = [
 # ============================================================================
 # Generated by hfortix generator v0.6.0
 # Schema: 1.7.0
-# Generated: 2026-01-17T05:32:16.979654Z
+# Generated: 2026-01-17T17:25:20.938080Z
 # ============================================================================

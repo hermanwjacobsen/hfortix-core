@@ -630,6 +630,16 @@ class IdentityBasedRoute(CRUDEndpoint, MetadataMixin):
             - put(): Update existing object
             - exists(): Check existence manually
         """
+        # Apply normalization for table fields (supports flexible input formats)
+        if rule is not None:
+            rule = normalize_table_field(
+                rule,
+                mkey="id",
+                required_fields=['id', 'device', 'groups'],
+                field_name="rule",
+                example="[{'id': 1, 'device': 'value', 'groups': 'value'}]",
+            )
+        
         # Build payload using helper function with auto-normalization
         payload_data = build_api_payload(
             name=name,

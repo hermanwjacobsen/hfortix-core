@@ -1001,6 +1001,40 @@ class AutomationAction(CRUDEndpoint, MetadataMixin):
             - put(): Update existing object
             - exists(): Check existence manually
         """
+        # Apply normalization for table fields (supports flexible input formats)
+        if email_to is not None:
+            email_to = normalize_table_field(
+                email_to,
+                mkey="name",
+                required_fields=['name'],
+                field_name="email_to",
+                example="[{'name': 'value'}]",
+            )
+        if http_headers is not None:
+            http_headers = normalize_table_field(
+                http_headers,
+                mkey="id",
+                required_fields=['key', 'value'],
+                field_name="http_headers",
+                example="[{'key': 'value', 'value': 'value'}]",
+            )
+        if form_data is not None:
+            form_data = normalize_table_field(
+                form_data,
+                mkey="id",
+                required_fields=['key', 'value'],
+                field_name="form_data",
+                example="[{'key': 'value', 'value': 'value'}]",
+            )
+        if sdn_connector is not None:
+            sdn_connector = normalize_table_field(
+                sdn_connector,
+                mkey="name",
+                required_fields=['name'],
+                field_name="sdn_connector",
+                example="[{'name': 'value'}]",
+            )
+        
         # Build payload using helper function with auto-normalization
         payload_data = build_api_payload(
             name=name,

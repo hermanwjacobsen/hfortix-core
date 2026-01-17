@@ -849,6 +849,24 @@ class NacPolicy(CRUDEndpoint, MetadataMixin):
             - put(): Update existing object
             - exists(): Check existence manually
         """
+        # Apply normalization for table fields (supports flexible input formats)
+        if severity is not None:
+            severity = normalize_table_field(
+                severity,
+                mkey="severity-num",
+                required_fields=['severity-num'],
+                field_name="severity",
+                example="[{'severity-num': 1}]",
+            )
+        if switch_group is not None:
+            switch_group = normalize_table_field(
+                switch_group,
+                mkey="name",
+                required_fields=['name'],
+                field_name="switch_group",
+                example="[{'name': 'value'}]",
+            )
+        
         # Build payload using helper function with auto-normalization
         payload_data = build_api_payload(
             name=name,

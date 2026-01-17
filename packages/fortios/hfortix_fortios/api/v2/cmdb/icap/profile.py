@@ -257,8 +257,8 @@ class Profile(CRUDEndpoint, MetadataMixin):
         file_transfer: Literal["ssh", "ftp"] | list[str] | None = None,
         streaming_content_bypass: Literal["disable", "enable"] | None = None,
         ocr_only: Literal["disable", "enable"] | None = None,
-        size_limit_204: int | None = None,
-        response_204: Literal["disable", "enable"] | None = None,
+        x204_size_limit: int | None = None,
+        x204_response: Literal["disable", "enable"] | None = None,
         preview: Literal["disable", "enable"] | None = None,
         preview_data_length: int | None = None,
         request_server: str | None = None,
@@ -303,8 +303,8 @@ class Profile(CRUDEndpoint, MetadataMixin):
             file_transfer: Configure the file transfer protocols to pass transferred files to an ICAP server as REQMOD.
             streaming_content_bypass: Enable/disable bypassing of ICAP server for streaming content.
             ocr_only: Enable/disable this FortiGate unit to submit only OCR interested content to the ICAP server.
-            size_limit_204: 204 response size limit to be saved by ICAP client in megabytes (1 - 10, default = 1 MB).
-            response_204: Enable/disable allowance of 204 response from ICAP server.
+            x204_size_limit: 204 response size limit to be saved by ICAP client in megabytes (1 - 10, default = 1 MB).
+            x204_response: Enable/disable allowance of 204 response from ICAP server.
             preview: Enable/disable preview of data to ICAP server.
             preview_data_length: Preview data length to be sent to ICAP server.
             request_server: ICAP server to use for an HTTP request.
@@ -382,6 +382,8 @@ class Profile(CRUDEndpoint, MetadataMixin):
                 example="[{'host': 'value'}]",
             )
         
+        # Apply normalization for multi-value option fields (space-separated strings)
+        
         # Build payload using helper function with auto-normalization
         # This automatically converts strings/lists to [{'name': '...'}] format for list fields
         # To disable auto-normalization, use build_cmdb_payload directly
@@ -394,8 +396,8 @@ class Profile(CRUDEndpoint, MetadataMixin):
             file_transfer=file_transfer,
             streaming_content_bypass=streaming_content_bypass,
             ocr_only=ocr_only,
-            size_limit_204=size_limit_204,
-            response_204=response_204,
+            x204_size_limit=x204_size_limit,
+            x204_response=x204_response,
             preview=preview,
             preview_data_length=preview_data_length,
             request_server=request_server,
@@ -465,8 +467,8 @@ class Profile(CRUDEndpoint, MetadataMixin):
         file_transfer: Literal["ssh", "ftp"] | list[str] | None = None,
         streaming_content_bypass: Literal["disable", "enable"] | None = None,
         ocr_only: Literal["disable", "enable"] | None = None,
-        size_limit_204: int | None = None,
-        response_204: Literal["disable", "enable"] | None = None,
+        x204_size_limit: int | None = None,
+        x204_response: Literal["disable", "enable"] | None = None,
         preview: Literal["disable", "enable"] | None = None,
         preview_data_length: int | None = None,
         request_server: str | None = None,
@@ -510,8 +512,8 @@ class Profile(CRUDEndpoint, MetadataMixin):
             file_transfer: Configure the file transfer protocols to pass transferred files to an ICAP server as REQMOD.
             streaming_content_bypass: Enable/disable bypassing of ICAP server for streaming content.
             ocr_only: Enable/disable this FortiGate unit to submit only OCR interested content to the ICAP server.
-            size_limit_204: 204 response size limit to be saved by ICAP client in megabytes (1 - 10, default = 1 MB).
-            response_204: Enable/disable allowance of 204 response from ICAP server.
+            x204_size_limit: 204 response size limit to be saved by ICAP client in megabytes (1 - 10, default = 1 MB).
+            x204_response: Enable/disable allowance of 204 response from ICAP server.
             preview: Enable/disable preview of data to ICAP server.
             preview_data_length: Preview data length to be sent to ICAP server.
             request_server: ICAP server to use for an HTTP request.
@@ -591,6 +593,8 @@ class Profile(CRUDEndpoint, MetadataMixin):
                 example="[{'host': 'value'}]",
             )
         
+        # Apply normalization for multi-value option fields (space-separated strings)
+        
         # Build payload using helper function with auto-normalization
         # This automatically converts strings/lists to [{'name': '...'}] format for list fields
         # To disable auto-normalization, use build_cmdb_payload directly
@@ -603,8 +607,8 @@ class Profile(CRUDEndpoint, MetadataMixin):
             file_transfer=file_transfer,
             streaming_content_bypass=streaming_content_bypass,
             ocr_only=ocr_only,
-            size_limit_204=size_limit_204,
-            response_204=response_204,
+            x204_size_limit=x204_size_limit,
+            x204_response=x204_response,
             preview=preview,
             preview_data_length=preview_data_length,
             request_server=request_server,
@@ -783,8 +787,8 @@ class Profile(CRUDEndpoint, MetadataMixin):
         file_transfer: Literal["ssh", "ftp"] | list[str] | list[dict[str, Any]] | None = None,
         streaming_content_bypass: Literal["disable", "enable"] | None = None,
         ocr_only: Literal["disable", "enable"] | None = None,
-        size_limit_204: int | None = None,
-        response_204: Literal["disable", "enable"] | None = None,
+        x204_size_limit: int | None = None,
+        x204_response: Literal["disable", "enable"] | None = None,
         preview: Literal["disable", "enable"] | None = None,
         preview_data_length: int | None = None,
         request_server: str | None = None,
@@ -827,8 +831,8 @@ class Profile(CRUDEndpoint, MetadataMixin):
             file_transfer: Field file-transfer
             streaming_content_bypass: Field streaming-content-bypass
             ocr_only: Field ocr-only
-            size_limit_204: Field 204-size-limit
-            response_204: Field 204-response
+            x204_size_limit: Field 204-size-limit
+            x204_response: Field 204-response
             preview: Field preview
             preview_data_length: Field preview-data-length
             request_server: Field request-server
@@ -889,6 +893,26 @@ class Profile(CRUDEndpoint, MetadataMixin):
             - put(): Update existing object
             - exists(): Check existence manually
         """
+        # Apply normalization for table fields (supports flexible input formats)
+        if icap_headers is not None:
+            icap_headers = normalize_table_field(
+                icap_headers,
+                mkey="id",
+                required_fields=['id'],
+                field_name="icap_headers",
+                example="[{'id': 1}]",
+            )
+        if respmod_forward_rules is not None:
+            respmod_forward_rules = normalize_table_field(
+                respmod_forward_rules,
+                mkey="name",
+                required_fields=['host'],
+                field_name="respmod_forward_rules",
+                example="[{'host': 'value'}]",
+            )
+        
+        # Apply normalization for multi-value option fields (space-separated strings)
+        
         # Build payload using helper function with auto-normalization
         payload_data = build_api_payload(
             replacemsg_group=replacemsg_group,
@@ -899,8 +923,8 @@ class Profile(CRUDEndpoint, MetadataMixin):
             file_transfer=file_transfer,
             streaming_content_bypass=streaming_content_bypass,
             ocr_only=ocr_only,
-            size_limit_204=size_limit_204,
-            response_204=response_204,
+            x204_size_limit=x204_size_limit,
+            x204_response=x204_response,
             preview=preview,
             preview_data_length=preview_data_length,
             request_server=request_server,

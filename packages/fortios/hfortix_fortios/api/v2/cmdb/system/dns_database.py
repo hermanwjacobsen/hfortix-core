@@ -774,6 +774,16 @@ class DnsDatabase(CRUDEndpoint, MetadataMixin):
             - put(): Update existing object
             - exists(): Check existence manually
         """
+        # Apply normalization for table fields (supports flexible input formats)
+        if dns_entry is not None:
+            dns_entry = normalize_table_field(
+                dns_entry,
+                mkey="id",
+                required_fields=['id', 'type', 'hostname'],
+                field_name="dns_entry",
+                example="[{'id': 1, 'type': 'A', 'hostname': 'value'}]",
+            )
+        
         # Build payload using helper function with auto-normalization
         payload_data = build_api_payload(
             name=name,

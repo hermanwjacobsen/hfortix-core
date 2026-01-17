@@ -754,6 +754,16 @@ class Static6(CRUDEndpoint, MetadataMixin):
             - put(): Update existing object
             - exists(): Check existence manually
         """
+        # Apply normalization for table fields (supports flexible input formats)
+        if sdwan_zone is not None:
+            sdwan_zone = normalize_table_field(
+                sdwan_zone,
+                mkey="name",
+                required_fields=['name'],
+                field_name="sdwan_zone",
+                example="[{'name': 'value'}]",
+            )
+        
         # Build payload using helper function with auto-normalization
         payload_data = build_api_payload(
             seq_num=seq_num,

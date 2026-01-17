@@ -739,6 +739,16 @@ class Rule(CRUDEndpoint, MetadataMixin):
             - put(): Update existing object
             - exists(): Check existence manually
         """
+        # Apply normalization for table fields (supports flexible input formats)
+        if metadata is not None:
+            metadata = normalize_table_field(
+                metadata,
+                mkey="id",
+                required_fields=['id'],
+                field_name="metadata",
+                example="[{'id': 1}]",
+            )
+        
         # Build payload using helper function with auto-normalization
         payload_data = build_api_payload(
             name=name,

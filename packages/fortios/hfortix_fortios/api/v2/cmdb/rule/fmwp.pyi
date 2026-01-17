@@ -1,236 +1,137 @@
-from typing import TypedDict, Literal, Any, Coroutine, Union, overload, Generator, final
-from typing_extensions import NotRequired
-from hfortix_fortios.models import FortiObject, FortiObjectList
+""" - Type Stubs
 
-# ============================================================================
-# Nested TypedDicts for table field children (dict mode)
-# These MUST be defined before the Payload class to use them as type hints
-# ============================================================================
+Auto-generated stub file for type checking and IDE support.
 
-class FmwpMetadataItem(TypedDict, total=False):
-    """Type hints for metadata table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    Use this when building payloads for POST/PUT requests.
-    
-    **Available fields:**
-        - id: int
-        - metaid: int
-        - valueid: int
-    
-    **Example:**
-        entry: FmwpMetadataItem = {
-            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
-        }
-    """
-    
-    id: int  # ID. | Default: 0 | Min: 0 | Max: 4294967295
-    metaid: int  # Meta ID. | Default: 0 | Min: 0 | Max: 4294967295
-    valueid: int  # Value ID. | Default: 0 | Min: 0 | Max: 4294967295
+Endpoint: rule/fmwp
+Category: cmdb
+"""
+
+from __future__ import annotations
+
+from typing import (
+    Any,
+    ClassVar,
+    Literal,
+    TypedDict,
+    overload,
+)
+
+from hfortix_fortios.models import (
+    FortiObject,
+    FortiObjectList,
+)
 
 
-# ============================================================================
-# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional)
-# ============================================================================
-# NOTE: We intentionally DON'T use NotRequired wrapper because:
-# 1. total=False already makes all fields optional
-# 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
-class FmwpPayload(TypedDict, total=False):
-    """
-    Type hints for rule/fmwp payload fields.
-    
-    Show FMWP signatures.
-    
-    **Usage:**
-        payload: FmwpPayload = {
-            "field": "value",  # <- autocomplete shows all fields
-        }
-    """
-    name: str  # Rule name. | MaxLen: 63
-    status: Literal["disable", "enable"]  # Print all FMWP rules information. | Default: enable
-    log: Literal["disable", "enable"]  # Enable/disable logging. | Default: enable
-    log_packet: Literal["disable", "enable"]  # Enable/disable packet logging. | Default: disable
-    action: Literal["pass", "block"]  # Action. | Default: pass
-    group: str  # Group. | MaxLen: 63
-    severity: str  # Severity.
-    location: list[dict[str, Any]]  # Vulnerable location.
-    os: str  # Vulnerable operation systems.
-    application: str  # Vulnerable applications.
-    service: str  # Vulnerable service.
-    rule_id: int  # Rule ID. | Default: 0 | Min: 0 | Max: 4294967295
-    rev: int  # Revision. | Default: 0 | Min: 0 | Max: 4294967295
-    date: int  # Date. | Default: 0 | Min: 0 | Max: 4294967295
-    metadata: list[FmwpMetadataItem]  # Meta data.
+# ================================================================
+# TypedDict Payloads
+# ================================================================
 
-# ============================================================================
-# Nested classes for table field children (object mode - for API responses)
-# ============================================================================
-
-@final
-class FmwpMetadataObject:
-    """Typed object for metadata table items.
-    
-    Provides IDE autocomplete for nested table field attributes.
-    At runtime, this is a FortiObject instance.
-    """
-    
-    # ID. | Default: 0 | Min: 0 | Max: 4294967295
+class FmwpMetadataItem:
+    """Nested item for metadata field - supports attribute access."""
     id: int
-    # Meta ID. | Default: 0 | Min: 0 | Max: 4294967295
     metaid: int
-    # Value ID. | Default: 0 | Min: 0 | Max: 4294967295
     valueid: int
-    
-    # Common API response fields
-    status: str
-    http_status: int | None
-    http_status_code: int | None
-    http_method: str | None
-    http_response_time: float | None
-    vdom: str | None
-    
-    # Methods from FortiObject
-    @property
-    def dict(self) -> dict[str, Any]:
-        """Convert to dictionary."""
-        ...
-    @property
-    def json(self) -> str:
-        """Get pretty-printed JSON string."""
-        ...
-    @property
-    def raw(self) -> dict[str, Any]:
-        """Get raw API response data."""
-        ...
-    def get_full(self, name: str) -> Any: ...
-    def to_dict(self) -> FortiObject: ...
-    def keys(self) -> Any: ...
-    def values(self) -> Generator[Any, None, None]: ...
-    def items(self) -> Generator[tuple[str, Any], None, None]: ...
-    def get(self, key: str, default: Any = None) -> Any: ...
 
 
-
-
-# Response TypedDict for GET returns (all fields present in API response)
-class FmwpResponse(TypedDict):
-    """
-    Type hints for rule/fmwp API response fields.
-    
-    All fields are present in the response from the FortiGate API.
-    """
-    name: str  # Rule name. | MaxLen: 63
-    status: Literal["disable", "enable"]  # Print all FMWP rules information. | Default: enable
-    log: Literal["disable", "enable"]  # Enable/disable logging. | Default: enable
-    log_packet: Literal["disable", "enable"]  # Enable/disable packet logging. | Default: disable
-    action: Literal["pass", "block"]  # Action. | Default: pass
-    group: str  # Group. | MaxLen: 63
-    severity: str  # Severity.
-    location: list[dict[str, Any]]  # Vulnerable location.
-    os: str  # Vulnerable operation systems.
-    application: str  # Vulnerable applications.
-    service: str  # Vulnerable service.
-    rule_id: int  # Rule ID. | Default: 0 | Min: 0 | Max: 4294967295
-    rev: int  # Revision. | Default: 0 | Min: 0 | Max: 4294967295
-    date: int  # Date. | Default: 0 | Min: 0 | Max: 4294967295
-    metadata: list[FmwpMetadataItem]  # Meta data.
-
-
-@final
-class FmwpObject:
-    """Typed FortiObject for rule/fmwp with IDE autocomplete support.
-    
-    This is a typed wrapper that provides IDE autocomplete for API response fields.
-    At runtime, this is actually a FortiObject instance.
-    """
-    
-    # Rule name. | MaxLen: 63
+class FmwpPayload(TypedDict, total=False):
+    """Payload type for Fmwp operations."""
     name: str
-    # Print all FMWP rules information. | Default: enable
     status: Literal["disable", "enable"]
-    # Enable/disable logging. | Default: enable
     log: Literal["disable", "enable"]
-    # Enable/disable packet logging. | Default: disable
     log_packet: Literal["disable", "enable"]
-    # Action. | Default: pass
     action: Literal["pass", "block"]
-    # Group. | MaxLen: 63
     group: str
-    # Severity.
     severity: str
-    # Vulnerable location.
-    location: list[dict[str, Any]]
-    # Vulnerable operation systems.
+    location: str | list[str]
     os: str
-    # Vulnerable applications.
     application: str
-    # Vulnerable service.
     service: str
-    # Rule ID. | Default: 0 | Min: 0 | Max: 4294967295
     rule_id: int
-    # Revision. | Default: 0 | Min: 0 | Max: 4294967295
     rev: int
-    # Date. | Default: 0 | Min: 0 | Max: 4294967295
     date: int
-    # Meta data.
-    metadata: list[FmwpMetadataObject]
-    
-    # Common API response fields
-    status: str
-    http_status: int | None
-    http_status_code: int | None
-    http_method: str | None
-    http_response_time: float | None
-    vdom: str | None
-    
-    # Methods from FortiObject
-    @property
-    def dict(self) -> dict[str, Any]:
-        """Convert to dictionary."""
-        ...
-    @property
-    def json(self) -> str:
-        """Get pretty-printed JSON string."""
-        ...
-    @property
-    def raw(self) -> dict[str, Any]:
-        """Get raw API response data."""
-        ...
-    def get_full(self, name: str) -> Any: ...
-    def to_dict(self) -> FmwpPayload: ...
-    def keys(self) -> Any: ...
-    def values(self) -> Generator[Any, None, None]: ...
-    def items(self) -> Generator[tuple[str, Any], None, None]: ...
-    def get(self, key: str, default: Any = None) -> Any: ...
+    metadata: str | list[str] | list[dict[str, Any]] | list[FmwpMetadataItem]
 
+
+# ================================================================
+# Response Types (TypedDict for dict-style access)
+# ================================================================
+
+class FmwpResponse(TypedDict, total=False):
+    """Response type for Fmwp - use with .dict property for typed dict access."""
+    name: str
+    status: Literal["disable", "enable"]
+    log: Literal["disable", "enable"]
+    log_packet: Literal["disable", "enable"]
+    action: Literal["pass", "block"]
+    group: str
+    severity: str
+    location: str | list[str]
+    os: str
+    application: str
+    service: str
+    rule_id: int
+    rev: int
+    date: int
+    metadata: list[FmwpMetadataItem]
+
+
+# ================================================================
+# Response Types (Class for attribute access)
+# ================================================================
+
+
+class FmwpObject(FortiObject):
+    """Typed FortiObject for Fmwp with field access."""
+    name: str
+    status: Literal["disable", "enable"]
+    log: Literal["disable", "enable"]
+    log_packet: Literal["disable", "enable"]
+    action: Literal["pass", "block"]
+    group: str
+    severity: str
+    location: str | list[str]
+    os: str
+    application: str
+    service: str
+    rule_id: int
+    rev: int
+    date: int
+    metadata: list[FmwpMetadataItem]
+
+
+# ================================================================
+# Main Endpoint Class
+# ================================================================
 
 class Fmwp:
     """
-    Show FMWP signatures.
     
-    Path: rule/fmwp
+    Endpoint: rule/fmwp
     Category: cmdb
-    Primary Key: name
+    MKey: name
     """
     
+    # Class attributes for introspection
+    endpoint: ClassVar[str] = ...
+    path: ClassVar[str] = ...
+    category: ClassVar[str] = ...
+    mkey: ClassVar[str] = ...
+    capabilities: ClassVar[dict[str, Any]] = ...
+    
     def __init__(self, client: Any) -> None:
-        """Initialize endpoint with HTTP client.
-        
-        Args:
-            client: HTTP client instance for API communication
-        """
+        """Initialize endpoint with HTTP client."""
         ...
     
     # ================================================================
-    # GET OVERLOADS - Always returns FortiObject (or ContentResponse for file endpoints)
-    # Pylance matches overloads top-to-bottom, so these must come first!
+    # GET Methods
     # ================================================================
     
-    # With mkey as positional arg -> returns FortiObject
+    # CMDB with mkey - overloads for single vs list returns
     @overload
     def get(
         self,
         name: str,
+        *,
         filter: str | list[str] | None = ...,
         count: int | None = ...,
         start: int | None = ...,
@@ -239,14 +140,14 @@ class Fmwp:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
+        error_mode: Literal["raise", "return", "print"] | None = ...,
+        error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> FmwpObject: ...
     
-    # With mkey as keyword arg -> returns FortiObject
     @overload
     def get(
         self,
         *,
-        name: str,
         filter: str | list[str] | None = ...,
         count: int | None = ...,
         start: int | None = ...,
@@ -255,154 +156,19 @@ class Fmwp:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
-    ) -> FmwpObject: ...
-    
-    # Without mkey -> returns list of FortiObjects
-    @overload
-    def get(
-        self,
-        name: None = None,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
+        error_mode: Literal["raise", "return", "print"] | None = ...,
+        error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> FortiObjectList[FmwpObject]: ...
-    
-    # ================================================================
-    # (removed - all GET now returns FortiObject)
-    # ================================================================
-    
-    # With mkey as positional arg -> returns single object
-    @overload
-    def get(
-        self,
-        name: str,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-    ) -> FmwpObject: ...
-    
-    # With mkey as keyword arg -> returns single object
-    @overload
-    def get(
-        self,
-        *,
-        name: str,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-    ) -> FmwpObject: ...
-    
-    # With no mkey -> returns list of objects
-    @overload
-    def get(
-        self,
-        *,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-    ) -> FortiObjectList[FmwpObject]: ...
-    
-    # Dict mode with mkey provided as positional arg (single dict)
-    @overload
-    def get(
-        self,
-        name: str,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-    ) -> FmwpObject: ...
-    
-    # Dict mode with mkey provided as keyword arg (single dict)
-    @overload
-    def get(
-        self,
-        *,
-        name: str,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-    ) -> FmwpObject: ...
-    
-    # Dict mode - list of dicts (no mkey/name provided) - keyword-only signature
-    @overload
-    def get(
-        self,
-        *,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-    ) -> FortiObjectList[FmwpObject]: ...
-    
-    # Fallback overload for all other cases
-    @overload
-    def get(
-        self,
-        name: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-    ) -> Union[dict[str, Any], list[dict[str, Any]], FortiObject, list[FortiObject]]: ...
-    
-    def get(
-        self,
-        name: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-    ) -> FmwpObject | list[FmwpObject] | dict[str, Any] | list[dict[str, Any]]: ...
     
     def get_schema(
         self,
         format: str = ...,
     ) -> FortiObject: ...
+
+    # ================================================================
+    # POST Method
+    # ================================================================
     
-    # POST overloads
-    @overload
     def post(
         self,
         payload_dict: FmwpPayload | None = ...,
@@ -420,74 +186,15 @@ class Fmwp:
         rule_id: int | None = ...,
         rev: int | None = ...,
         date: int | None = ...,
-        metadata: str | list[str] | list[FmwpMetadataItem] | None = ...,
+        metadata: str | list[str] | list[dict[str, Any]] | list[FmwpMetadataItem] | None = ...,
+        error_mode: Literal["raise", "return", "print"] | None = ...,
+        error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> FmwpObject: ...
+
+    # ================================================================
+    # PUT Method
+    # ================================================================
     
-    @overload
-    def post(
-        self,
-        payload_dict: FmwpPayload | None = ...,
-        name: str | None = ...,
-        status: Literal["disable", "enable"] | None = ...,
-        log: Literal["disable", "enable"] | None = ...,
-        log_packet: Literal["disable", "enable"] | None = ...,
-        action: Literal["pass", "block"] | None = ...,
-        group: str | None = ...,
-        severity: str | None = ...,
-        location: str | list[str] | None = ...,
-        os: str | None = ...,
-        application: str | None = ...,
-        service: str | None = ...,
-        rule_id: int | None = ...,
-        rev: int | None = ...,
-        date: int | None = ...,
-        metadata: str | list[str] | list[FmwpMetadataItem] | None = ...,
-    ) -> FortiObject: ...
-    
-    # Default overload
-    @overload
-    def post(
-        self,
-        payload_dict: FmwpPayload | None = ...,
-        name: str | None = ...,
-        status: Literal["disable", "enable"] | None = ...,
-        log: Literal["disable", "enable"] | None = ...,
-        log_packet: Literal["disable", "enable"] | None = ...,
-        action: Literal["pass", "block"] | None = ...,
-        group: str | None = ...,
-        severity: str | None = ...,
-        location: str | list[str] | None = ...,
-        os: str | None = ...,
-        application: str | None = ...,
-        service: str | None = ...,
-        rule_id: int | None = ...,
-        rev: int | None = ...,
-        date: int | None = ...,
-        metadata: str | list[str] | list[FmwpMetadataItem] | None = ...,
-    ) -> FortiObject: ...
-    
-    def post(
-        self,
-        payload_dict: FmwpPayload | None = ...,
-        name: str | None = ...,
-        status: Literal["disable", "enable"] | None = ...,
-        log: Literal["disable", "enable"] | None = ...,
-        log_packet: Literal["disable", "enable"] | None = ...,
-        action: Literal["pass", "block"] | None = ...,
-        group: str | None = ...,
-        severity: str | None = ...,
-        location: str | list[str] | None = ...,
-        os: str | None = ...,
-        application: str | None = ...,
-        service: str | None = ...,
-        rule_id: int | None = ...,
-        rev: int | None = ...,
-        date: int | None = ...,
-        metadata: str | list[str] | list[FmwpMetadataItem] | None = ...,
-    ) -> FortiObject: ...
-    
-    # PUT overloads
-    @overload
     def put(
         self,
         payload_dict: FmwpPayload | None = ...,
@@ -505,96 +212,25 @@ class Fmwp:
         rule_id: int | None = ...,
         rev: int | None = ...,
         date: int | None = ...,
-        metadata: str | list[str] | list[FmwpMetadataItem] | None = ...,
+        metadata: str | list[str] | list[dict[str, Any]] | list[FmwpMetadataItem] | None = ...,
+        error_mode: Literal["raise", "return", "print"] | None = ...,
+        error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> FmwpObject: ...
-    
-    @overload
-    def put(
-        self,
-        payload_dict: FmwpPayload | None = ...,
-        name: str | None = ...,
-        status: Literal["disable", "enable"] | None = ...,
-        log: Literal["disable", "enable"] | None = ...,
-        log_packet: Literal["disable", "enable"] | None = ...,
-        action: Literal["pass", "block"] | None = ...,
-        group: str | None = ...,
-        severity: str | None = ...,
-        location: str | list[str] | None = ...,
-        os: str | None = ...,
-        application: str | None = ...,
-        service: str | None = ...,
-        rule_id: int | None = ...,
-        rev: int | None = ...,
-        date: int | None = ...,
-        metadata: str | list[str] | list[FmwpMetadataItem] | None = ...,
-    ) -> FortiObject: ...
-    
-    # Default overload
-    @overload
-    def put(
-        self,
-        payload_dict: FmwpPayload | None = ...,
-        name: str | None = ...,
-        status: Literal["disable", "enable"] | None = ...,
-        log: Literal["disable", "enable"] | None = ...,
-        log_packet: Literal["disable", "enable"] | None = ...,
-        action: Literal["pass", "block"] | None = ...,
-        group: str | None = ...,
-        severity: str | None = ...,
-        location: str | list[str] | None = ...,
-        os: str | None = ...,
-        application: str | None = ...,
-        service: str | None = ...,
-        rule_id: int | None = ...,
-        rev: int | None = ...,
-        date: int | None = ...,
-        metadata: str | list[str] | list[FmwpMetadataItem] | None = ...,
-    ) -> FortiObject: ...
-    
-    def put(
-        self,
-        payload_dict: FmwpPayload | None = ...,
-        name: str | None = ...,
-        status: Literal["disable", "enable"] | None = ...,
-        log: Literal["disable", "enable"] | None = ...,
-        log_packet: Literal["disable", "enable"] | None = ...,
-        action: Literal["pass", "block"] | None = ...,
-        group: str | None = ...,
-        severity: str | None = ...,
-        location: str | list[str] | None = ...,
-        os: str | None = ...,
-        application: str | None = ...,
-        service: str | None = ...,
-        rule_id: int | None = ...,
-        rev: int | None = ...,
-        date: int | None = ...,
-        metadata: str | list[str] | list[FmwpMetadataItem] | None = ...,
-    ) -> FortiObject: ...
-    
-    # DELETE overloads
-    @overload
-    def delete(
-        self,
-        name: str | None = ...,
-    ) -> FmwpObject: ...
-    
-    @overload
-    def delete(
-        self,
-        name: str | None = ...,
-    ) -> FortiObject: ...
-    
-    # Default overload
-    @overload
-    def delete(
-        self,
-        name: str | None = ...,
-    ) -> FortiObject: ...
+
+    # ================================================================
+    # DELETE Method
+    # ================================================================
     
     def delete(
         self,
         name: str | None = ...,
+        error_mode: Literal["raise", "return", "print"] | None = ...,
+        error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> FortiObject: ...
+
+    # ================================================================
+    # Utility Methods
+    # ================================================================
     
     def exists(
         self,
@@ -618,7 +254,9 @@ class Fmwp:
         rule_id: int | None = ...,
         rev: int | None = ...,
         date: int | None = ...,
-        metadata: str | list[str] | list[FmwpMetadataItem] | None = ...,
+        metadata: str | list[str] | list[dict[str, Any]] | list[FmwpMetadataItem] | None = ...,
+        error_mode: Literal["raise", "return", "print"] | None = ...,
+        error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> FortiObject: ...
     
     # Helper methods
@@ -626,7 +264,7 @@ class Fmwp:
     def help(field_name: str | None = ...) -> str: ...
     
     @staticmethod
-    def fields(detailed: bool = ...) -> Union[list[str], list[dict[str, Any]]]: ...
+    def fields(detailed: bool = ...) -> list[str] | list[dict[str, Any]]: ...
     
     @staticmethod
     def field_info(field_name: str) -> FortiObject: ...
@@ -642,9 +280,6 @@ class Fmwp:
     
     @staticmethod
     def schema() -> FortiObject: ...
-
-
-# ================================================================
 
 
 __all__ = [

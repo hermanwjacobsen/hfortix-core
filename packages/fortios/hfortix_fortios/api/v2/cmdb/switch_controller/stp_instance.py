@@ -626,6 +626,16 @@ class StpInstance(CRUDEndpoint, MetadataMixin):
             - put(): Update existing object
             - exists(): Check existence manually
         """
+        # Apply normalization for table fields (supports flexible input formats)
+        if vlan_range is not None:
+            vlan_range = normalize_table_field(
+                vlan_range,
+                mkey="vlan-name",
+                required_fields=['vlan-name'],
+                field_name="vlan_range",
+                example="[{'vlan-name': 'value'}]",
+            )
+        
         # Build payload using helper function with auto-normalization
         payload_data = build_api_payload(
             id=id,

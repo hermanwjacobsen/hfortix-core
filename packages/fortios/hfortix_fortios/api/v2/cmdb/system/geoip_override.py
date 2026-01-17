@@ -667,6 +667,24 @@ class GeoipOverride(CRUDEndpoint, MetadataMixin):
             - put(): Update existing object
             - exists(): Check existence manually
         """
+        # Apply normalization for table fields (supports flexible input formats)
+        if ip_range is not None:
+            ip_range = normalize_table_field(
+                ip_range,
+                mkey="id",
+                required_fields=['id'],
+                field_name="ip_range",
+                example="[{'id': 1}]",
+            )
+        if ip6_range is not None:
+            ip6_range = normalize_table_field(
+                ip6_range,
+                mkey="id",
+                required_fields=['id'],
+                field_name="ip6_range",
+                example="[{'id': 1}]",
+            )
+        
         # Build payload using helper function with auto-normalization
         payload_data = build_api_payload(
             name=name,

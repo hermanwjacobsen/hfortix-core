@@ -634,6 +634,16 @@ class SpeedTestServer(CRUDEndpoint, MetadataMixin):
             - put(): Update existing object
             - exists(): Check existence manually
         """
+        # Apply normalization for table fields (supports flexible input formats)
+        if host is not None:
+            host = normalize_table_field(
+                host,
+                mkey="id",
+                required_fields=['id'],
+                field_name="host",
+                example="[{'id': 1}]",
+            )
+        
         # Build payload using helper function with auto-normalization
         payload_data = build_api_payload(
             name=name,

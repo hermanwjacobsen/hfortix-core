@@ -1,406 +1,112 @@
-from typing import TypedDict, Literal, Any, Coroutine, Union, overload, Generator, final
-from typing_extensions import NotRequired
-from hfortix_fortios.models import FortiObject, FortiObjectList
+""" - Type Stubs
 
-# ============================================================================
-# Nested TypedDicts for table field children (dict mode)
-# These MUST be defined before the Payload class to use them as type hints
-# ============================================================================
+Auto-generated stub file for type checking and IDE support.
 
-class TrafficSnifferTargetmacItem(TypedDict, total=False):
-    """Type hints for target-mac table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    Use this when building payloads for POST/PUT requests.
-    
-    **Available fields:**
-        - mac: str
-        - description: str
-    
-    **Example:**
-        entry: TrafficSnifferTargetmacItem = {
-            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
-        }
-    """
-    
-    mac: str  # Sniffer MAC. | Default: 00:00:00:00:00:00
-    description: str  # Description for the sniffer MAC. | MaxLen: 63
+Endpoint: switch_controller/traffic_sniffer
+Category: cmdb
+"""
+
+from __future__ import annotations
+
+from typing import (
+    Any,
+    ClassVar,
+    Literal,
+    TypedDict,
+)
+
+from hfortix_fortios.models import (
+    FortiObject,
+    FortiObjectList,
+)
 
 
-class TrafficSnifferTargetipItem(TypedDict, total=False):
-    """Type hints for target-ip table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    Use this when building payloads for POST/PUT requests.
-    
-    **Available fields:**
-        - ip: str
-        - description: str
-    
-    **Example:**
-        entry: TrafficSnifferTargetipItem = {
-            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
-        }
-    """
-    
-    ip: str  # Sniffer IP. | Default: 0.0.0.0
-    description: str  # Description for the sniffer IP. | MaxLen: 63
+# ================================================================
+# TypedDict Payloads
+# ================================================================
 
-
-class TrafficSnifferTargetportItem(TypedDict, total=False):
-    """Type hints for target-port table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    Use this when building payloads for POST/PUT requests.
-    
-    **Available fields:**
-        - switch_id: str
-        - description: str
-        - in_ports: str
-        - out_ports: str
-    
-    **Example:**
-        entry: TrafficSnifferTargetportItem = {
-            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
-        }
-    """
-    
-    switch_id: str  # Managed-switch ID. | MaxLen: 35
-    description: str  # Description for the sniffer port entry. | MaxLen: 63
-    in_ports: str  # Configure source ingress port interfaces.
-    out_ports: str  # Configure source egress port interfaces.
-
-
-# ============================================================================
-# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional)
-# ============================================================================
-# NOTE: We intentionally DON'T use NotRequired wrapper because:
-# 1. total=False already makes all fields optional
-# 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
-class TrafficSnifferPayload(TypedDict, total=False):
-    """
-    Type hints for switch_controller/traffic_sniffer payload fields.
-    
-    Configure FortiSwitch RSPAN/ERSPAN traffic sniffing parameters.
-    
-    **Usage:**
-        payload: TrafficSnifferPayload = {
-            "field": "value",  # <- autocomplete shows all fields
-        }
-    """
-    mode: Literal["erspan-auto", "rspan", "none"]  # Configure traffic sniffer mode. | Default: erspan-auto
-    erspan_ip: str  # Configure ERSPAN collector IP address. | Default: 0.0.0.0
-    target_mac: list[TrafficSnifferTargetmacItem]  # Sniffer MACs to filter.
-    target_ip: list[TrafficSnifferTargetipItem]  # Sniffer IPs to filter.
-    target_port: list[TrafficSnifferTargetportItem]  # Sniffer ports to filter.
-
-# ============================================================================
-# Nested classes for table field children (object mode - for API responses)
-# ============================================================================
-
-@final
-class TrafficSnifferTargetmacObject:
-    """Typed object for target-mac table items.
-    
-    Provides IDE autocomplete for nested table field attributes.
-    At runtime, this is a FortiObject instance.
-    """
-    
-    # Sniffer MAC. | Default: 00:00:00:00:00:00
+class TrafficSnifferTargetmacItem:
+    """Nested item for target-mac field - supports attribute access."""
     mac: str
-    # Description for the sniffer MAC. | MaxLen: 63
     description: str
-    
-    # Common API response fields
-    status: str
-    http_status: int | None
-    http_status_code: int | None
-    http_method: str | None
-    http_response_time: float | None
-    vdom: str | None
-    
-    # Methods from FortiObject
-    @property
-    def dict(self) -> dict[str, Any]:
-        """Convert to dictionary."""
-        ...
-    @property
-    def json(self) -> str:
-        """Get pretty-printed JSON string."""
-        ...
-    @property
-    def raw(self) -> dict[str, Any]:
-        """Get raw API response data."""
-        ...
-    def get_full(self, name: str) -> Any: ...
-    def to_dict(self) -> FortiObject: ...
-    def keys(self) -> Any: ...
-    def values(self) -> Generator[Any, None, None]: ...
-    def items(self) -> Generator[tuple[str, Any], None, None]: ...
-    def get(self, key: str, default: Any = None) -> Any: ...
 
 
-@final
-class TrafficSnifferTargetipObject:
-    """Typed object for target-ip table items.
-    
-    Provides IDE autocomplete for nested table field attributes.
-    At runtime, this is a FortiObject instance.
-    """
-    
-    # Sniffer IP. | Default: 0.0.0.0
+class TrafficSnifferTargetipItem:
+    """Nested item for target-ip field - supports attribute access."""
     ip: str
-    # Description for the sniffer IP. | MaxLen: 63
     description: str
-    
-    # Common API response fields
-    status: str
-    http_status: int | None
-    http_status_code: int | None
-    http_method: str | None
-    http_response_time: float | None
-    vdom: str | None
-    
-    # Methods from FortiObject
-    @property
-    def dict(self) -> dict[str, Any]:
-        """Convert to dictionary."""
-        ...
-    @property
-    def json(self) -> str:
-        """Get pretty-printed JSON string."""
-        ...
-    @property
-    def raw(self) -> dict[str, Any]:
-        """Get raw API response data."""
-        ...
-    def get_full(self, name: str) -> Any: ...
-    def to_dict(self) -> FortiObject: ...
-    def keys(self) -> Any: ...
-    def values(self) -> Generator[Any, None, None]: ...
-    def items(self) -> Generator[tuple[str, Any], None, None]: ...
-    def get(self, key: str, default: Any = None) -> Any: ...
 
 
-@final
-class TrafficSnifferTargetportObject:
-    """Typed object for target-port table items.
-    
-    Provides IDE autocomplete for nested table field attributes.
-    At runtime, this is a FortiObject instance.
-    """
-    
-    # Managed-switch ID. | MaxLen: 35
+class TrafficSnifferTargetportItem:
+    """Nested item for target-port field - supports attribute access."""
     switch_id: str
-    # Description for the sniffer port entry. | MaxLen: 63
     description: str
-    # Configure source ingress port interfaces.
     in_ports: str
-    # Configure source egress port interfaces.
     out_ports: str
-    
-    # Common API response fields
-    status: str
-    http_status: int | None
-    http_status_code: int | None
-    http_method: str | None
-    http_response_time: float | None
-    vdom: str | None
-    
-    # Methods from FortiObject
-    @property
-    def dict(self) -> dict[str, Any]:
-        """Convert to dictionary."""
-        ...
-    @property
-    def json(self) -> str:
-        """Get pretty-printed JSON string."""
-        ...
-    @property
-    def raw(self) -> dict[str, Any]:
-        """Get raw API response data."""
-        ...
-    def get_full(self, name: str) -> Any: ...
-    def to_dict(self) -> FortiObject: ...
-    def keys(self) -> Any: ...
-    def values(self) -> Generator[Any, None, None]: ...
-    def items(self) -> Generator[tuple[str, Any], None, None]: ...
-    def get(self, key: str, default: Any = None) -> Any: ...
 
 
-
-
-# Response TypedDict for GET returns (all fields present in API response)
-class TrafficSnifferResponse(TypedDict):
-    """
-    Type hints for switch_controller/traffic_sniffer API response fields.
-    
-    All fields are present in the response from the FortiGate API.
-    """
-    mode: Literal["erspan-auto", "rspan", "none"]  # Configure traffic sniffer mode. | Default: erspan-auto
-    erspan_ip: str  # Configure ERSPAN collector IP address. | Default: 0.0.0.0
-    target_mac: list[TrafficSnifferTargetmacItem]  # Sniffer MACs to filter.
-    target_ip: list[TrafficSnifferTargetipItem]  # Sniffer IPs to filter.
-    target_port: list[TrafficSnifferTargetportItem]  # Sniffer ports to filter.
-
-
-@final
-class TrafficSnifferObject:
-    """Typed FortiObject for switch_controller/traffic_sniffer with IDE autocomplete support.
-    
-    This is a typed wrapper that provides IDE autocomplete for API response fields.
-    At runtime, this is actually a FortiObject instance.
-    """
-    
-    # Configure traffic sniffer mode. | Default: erspan-auto
+class TrafficSnifferPayload(TypedDict, total=False):
+    """Payload type for TrafficSniffer operations."""
     mode: Literal["erspan-auto", "rspan", "none"]
-    # Configure ERSPAN collector IP address. | Default: 0.0.0.0
     erspan_ip: str
-    # Sniffer MACs to filter.
-    target_mac: list[TrafficSnifferTargetmacObject]
-    # Sniffer IPs to filter.
-    target_ip: list[TrafficSnifferTargetipObject]
-    # Sniffer ports to filter.
-    target_port: list[TrafficSnifferTargetportObject]
-    
-    # Common API response fields
-    status: str
-    http_status: int | None
-    http_status_code: int | None
-    http_method: str | None
-    http_response_time: float | None
-    vdom: str | None
-    
-    # Methods from FortiObject
-    @property
-    def dict(self) -> dict[str, Any]:
-        """Convert to dictionary."""
-        ...
-    @property
-    def json(self) -> str:
-        """Get pretty-printed JSON string."""
-        ...
-    @property
-    def raw(self) -> dict[str, Any]:
-        """Get raw API response data."""
-        ...
-    def get_full(self, name: str) -> Any: ...
-    def to_dict(self) -> TrafficSnifferPayload: ...
-    def keys(self) -> Any: ...
-    def values(self) -> Generator[Any, None, None]: ...
-    def items(self) -> Generator[tuple[str, Any], None, None]: ...
-    def get(self, key: str, default: Any = None) -> Any: ...
+    target_mac: str | list[str] | list[dict[str, Any]] | list[TrafficSnifferTargetmacItem]
+    target_ip: str | list[str] | list[dict[str, Any]] | list[TrafficSnifferTargetipItem]
+    target_port: str | list[str] | list[dict[str, Any]] | list[TrafficSnifferTargetportItem]
 
+
+# ================================================================
+# Response Types (TypedDict for dict-style access)
+# ================================================================
+
+class TrafficSnifferResponse(TypedDict, total=False):
+    """Response type for TrafficSniffer - use with .dict property for typed dict access."""
+    mode: Literal["erspan-auto", "rspan", "none"]
+    erspan_ip: str
+    target_mac: list[TrafficSnifferTargetmacItem]
+    target_ip: list[TrafficSnifferTargetipItem]
+    target_port: list[TrafficSnifferTargetportItem]
+
+
+# ================================================================
+# Response Types (Class for attribute access)
+# ================================================================
+
+
+class TrafficSnifferObject(FortiObject):
+    """Typed FortiObject for TrafficSniffer with field access."""
+    mode: Literal["erspan-auto", "rspan", "none"]
+    erspan_ip: str
+    target_mac: list[TrafficSnifferTargetmacItem]
+    target_ip: list[TrafficSnifferTargetipItem]
+    target_port: list[TrafficSnifferTargetportItem]
+
+
+# ================================================================
+# Main Endpoint Class
+# ================================================================
 
 class TrafficSniffer:
     """
-    Configure FortiSwitch RSPAN/ERSPAN traffic sniffing parameters.
     
-    Path: switch_controller/traffic_sniffer
+    Endpoint: switch_controller/traffic_sniffer
     Category: cmdb
     """
     
+    # Class attributes for introspection
+    endpoint: ClassVar[str] = ...
+    path: ClassVar[str] = ...
+    category: ClassVar[str] = ...
+    capabilities: ClassVar[dict[str, Any]] = ...
+    
     def __init__(self, client: Any) -> None:
-        """Initialize endpoint with HTTP client.
-        
-        Args:
-            client: HTTP client instance for API communication
-        """
+        """Initialize endpoint with HTTP client."""
         ...
     
     # ================================================================
-    # GET OVERLOADS - Always returns FortiObject (or ContentResponse for file endpoints)
-    # Pylance matches overloads top-to-bottom, so these must come first!
+    # GET Methods
     # ================================================================
     
-    # With mkey as positional arg -> returns FortiObject
-    @overload
-    def get(
-        self,
-        name: str,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> TrafficSnifferObject: ...
-    
-    # With mkey as keyword arg -> returns FortiObject
-    @overload
-    def get(
-        self,
-        *,
-        name: str,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> TrafficSnifferObject: ...
-    
-    # Without mkey -> returns list of FortiObjects
-    @overload
-    def get(
-        self,
-        name: None = None,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> TrafficSnifferObject: ...
-    
-    # ================================================================
-    # (removed - all GET now returns FortiObject)
-    # ================================================================
-    
-    # With mkey as positional arg -> returns single object
-    @overload
-    def get(
-        self,
-        name: str,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> TrafficSnifferObject: ...
-    
-    # With mkey as keyword arg -> returns single object
-    @overload
-    def get(
-        self,
-        *,
-        name: str,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> TrafficSnifferObject: ...
-    
-    # With no mkey -> returns list of objects
-    @overload
+    # Singleton endpoint (no mkey)
     def get(
         self,
         *,
@@ -413,141 +119,38 @@ class TrafficSniffer:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        error_mode: Literal["raise", "return", "print"] | None = ...,
+        error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> TrafficSnifferObject: ...
-    
-    # Dict mode with mkey provided as positional arg (single dict)
-    @overload
-    def get(
-        self,
-        name: str,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> TrafficSnifferObject: ...
-    
-    # Dict mode with mkey provided as keyword arg (single dict)
-    @overload
-    def get(
-        self,
-        *,
-        name: str,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> TrafficSnifferObject: ...
-    
-    # Dict mode - list of dicts (no mkey/name provided) - keyword-only signature
-    @overload
-    def get(
-        self,
-        *,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> TrafficSnifferObject: ...
-    
-    # Fallback overload for all other cases
-    @overload
-    def get(
-        self,
-        name: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> dict[str, Any] | FortiObject: ...
-    
-    def get(
-        self,
-        name: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> TrafficSnifferObject | dict[str, Any]: ...
     
     def get_schema(
         self,
         vdom: str | None = ...,
         format: str = ...,
     ) -> FortiObject: ...
+
+
+    # ================================================================
+    # PUT Method
+    # ================================================================
     
-    # PUT overloads
-    @overload
     def put(
         self,
         payload_dict: TrafficSnifferPayload | None = ...,
         mode: Literal["erspan-auto", "rspan", "none"] | None = ...,
         erspan_ip: str | None = ...,
-        target_mac: str | list[str] | list[TrafficSnifferTargetmacItem] | None = ...,
-        target_ip: str | list[str] | list[TrafficSnifferTargetipItem] | None = ...,
-        target_port: str | list[str] | list[TrafficSnifferTargetportItem] | None = ...,
+        target_mac: str | list[str] | list[dict[str, Any]] | list[TrafficSnifferTargetmacItem] | None = ...,
+        target_ip: str | list[str] | list[dict[str, Any]] | list[TrafficSnifferTargetipItem] | None = ...,
+        target_port: str | list[str] | list[dict[str, Any]] | list[TrafficSnifferTargetportItem] | None = ...,
         vdom: str | bool | None = ...,
+        error_mode: Literal["raise", "return", "print"] | None = ...,
+        error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> TrafficSnifferObject: ...
-    
-    @overload
-    def put(
-        self,
-        payload_dict: TrafficSnifferPayload | None = ...,
-        mode: Literal["erspan-auto", "rspan", "none"] | None = ...,
-        erspan_ip: str | None = ...,
-        target_mac: str | list[str] | list[TrafficSnifferTargetmacItem] | None = ...,
-        target_ip: str | list[str] | list[TrafficSnifferTargetipItem] | None = ...,
-        target_port: str | list[str] | list[TrafficSnifferTargetportItem] | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
-    
-    # Default overload
-    @overload
-    def put(
-        self,
-        payload_dict: TrafficSnifferPayload | None = ...,
-        mode: Literal["erspan-auto", "rspan", "none"] | None = ...,
-        erspan_ip: str | None = ...,
-        target_mac: str | list[str] | list[TrafficSnifferTargetmacItem] | None = ...,
-        target_ip: str | list[str] | list[TrafficSnifferTargetipItem] | None = ...,
-        target_port: str | list[str] | list[TrafficSnifferTargetportItem] | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
-    
-    def put(
-        self,
-        payload_dict: TrafficSnifferPayload | None = ...,
-        mode: Literal["erspan-auto", "rspan", "none"] | None = ...,
-        erspan_ip: str | None = ...,
-        target_mac: str | list[str] | list[TrafficSnifferTargetmacItem] | None = ...,
-        target_ip: str | list[str] | list[TrafficSnifferTargetipItem] | None = ...,
-        target_port: str | list[str] | list[TrafficSnifferTargetportItem] | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+
+
+    # ================================================================
+    # Utility Methods
+    # ================================================================
     
     def exists(
         self,
@@ -560,10 +163,12 @@ class TrafficSniffer:
         payload_dict: TrafficSnifferPayload | None = ...,
         mode: Literal["erspan-auto", "rspan", "none"] | None = ...,
         erspan_ip: str | None = ...,
-        target_mac: str | list[str] | list[TrafficSnifferTargetmacItem] | None = ...,
-        target_ip: str | list[str] | list[TrafficSnifferTargetipItem] | None = ...,
-        target_port: str | list[str] | list[TrafficSnifferTargetportItem] | None = ...,
+        target_mac: str | list[str] | list[dict[str, Any]] | list[TrafficSnifferTargetmacItem] | None = ...,
+        target_ip: str | list[str] | list[dict[str, Any]] | list[TrafficSnifferTargetipItem] | None = ...,
+        target_port: str | list[str] | list[dict[str, Any]] | list[TrafficSnifferTargetportItem] | None = ...,
         vdom: str | bool | None = ...,
+        error_mode: Literal["raise", "return", "print"] | None = ...,
+        error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> FortiObject: ...
     
     # Helper methods
@@ -571,7 +176,7 @@ class TrafficSniffer:
     def help(field_name: str | None = ...) -> str: ...
     
     @staticmethod
-    def fields(detailed: bool = ...) -> Union[list[str], list[dict[str, Any]]]: ...
+    def fields(detailed: bool = ...) -> list[str] | list[dict[str, Any]]: ...
     
     @staticmethod
     def field_info(field_name: str) -> FortiObject: ...
@@ -587,9 +192,6 @@ class TrafficSniffer:
     
     @staticmethod
     def schema() -> FortiObject: ...
-
-
-# ================================================================
 
 
 __all__ = [

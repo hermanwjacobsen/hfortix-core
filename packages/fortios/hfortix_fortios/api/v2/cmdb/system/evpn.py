@@ -689,6 +689,24 @@ class Evpn(CRUDEndpoint, MetadataMixin):
             - put(): Update existing object
             - exists(): Check existence manually
         """
+        # Apply normalization for table fields (supports flexible input formats)
+        if import_rt is not None:
+            import_rt = normalize_table_field(
+                import_rt,
+                mkey="route-target",
+                required_fields=['route-target'],
+                field_name="import_rt",
+                example="[{'route-target': 'value'}]",
+            )
+        if export_rt is not None:
+            export_rt = normalize_table_field(
+                export_rt,
+                mkey="route-target",
+                required_fields=['route-target'],
+                field_name="export_rt",
+                example="[{'route-target': 'value'}]",
+            )
+        
         # Build payload using helper function with auto-normalization
         payload_data = build_api_payload(
             id=id,

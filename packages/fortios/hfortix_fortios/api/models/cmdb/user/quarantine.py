@@ -11,9 +11,30 @@ from pydantic import BaseModel, Field, field_validator
 from typing import Any, Literal, Optional
 
 # ============================================================================
-# Child Table Models
+# Enum Definitions for Child Table Fields (for fields with 4+ allowed values)
 # ============================================================================
 
+# ============================================================================
+# Child Table Models (sorted deepest-first so nested models are defined before their parents)
+# ============================================================================
+
+class QuarantineTargetsMacs(BaseModel):
+    """
+    Child table model for targets.macs.
+    
+    Quarantine MACs.
+    """
+    
+    class Config:
+        """Pydantic model configuration."""
+        extra = "allow"  # Allow additional fields from API
+        str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
+    
+    mac: str = Field(default="00:00:00:00:00:00", description="Quarantine MAC.")    
+    description: str | None = Field(max_length=63, default=None, description="Description for the quarantine MAC.")    
+    drop: Literal["disable", "enable"] | None = Field(default="disable", description="Enable/disable dropping of quarantined device traffic.")    
+    parent: str | None = Field(max_length=63, default=None, description="Parent entry name.")
 class QuarantineTargets(BaseModel):
     """
     Child table model for targets.
@@ -25,10 +46,11 @@ class QuarantineTargets(BaseModel):
         """Pydantic model configuration."""
         extra = "allow"  # Allow additional fields from API
         str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
     
-    entry: str = Field(max_length=63, default="", description="Quarantine entry name.")    
-    description: str | None = Field(max_length=63, default="", description="Description for the quarantine entry.")    
-    macs: list[Macs] = Field(default=None, description="Quarantine MACs.")
+    entry: str = Field(max_length=63, description="Quarantine entry name.")    
+    description: str | None = Field(max_length=63, default=None, description="Description for the quarantine entry.")    
+    macs: list[QuarantineTargetsMacs] = Field(default_factory=list, description="Quarantine MACs.")
 # ============================================================================
 # Enum Definitions (for fields with 4+ allowed values)
 # ============================================================================
@@ -58,9 +80,9 @@ class QuarantineModel(BaseModel):
     # ========================================================================
     
     quarantine: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable quarantine.")    
-    traffic_policy: str | None = Field(max_length=63, default="", description="Traffic policy for quarantined MACs.")  # datasource: ['switch-controller.traffic-policy.name']    
-    firewall_groups: str | None = Field(max_length=79, default="", description="Firewall address group which includes all quarantine MAC address.")  # datasource: ['firewall.addrgrp.name']    
-    targets: list[Targets] = Field(default=None, description="Quarantine entry to hold multiple MACs.")    
+    traffic_policy: str | None = Field(max_length=63, default=None, description="Traffic policy for quarantined MACs.")  # datasource: ['switch-controller.traffic-policy.name']    
+    firewall_groups: str | None = Field(max_length=79, default=None, description="Firewall address group which includes all quarantine MAC address.")  # datasource: ['firewall.addrgrp.name']    
+    targets: list[QuarantineTargets] = Field(default_factory=list, description="Quarantine entry to hold multiple MACs.")    
     # ========================================================================
     # Custom Validators
     # ========================================================================
@@ -155,7 +177,7 @@ class QuarantineModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.user.quarantine.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate scalar field
         value = getattr(self, "traffic_policy", None)
@@ -164,7 +186,7 @@ class QuarantineModel(BaseModel):
         
         # Check all datasource endpoints
         found = False
-        if await client.api.cmdb.switch-controller.traffic-policy.exists(value):
+        if await client.api.cmdb.switch_controller.traffic_policy.exists(value):
             found = True
         
         if not found:
@@ -204,7 +226,7 @@ class QuarantineModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.user.quarantine.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate scalar field
         value = getattr(self, "firewall_groups", None)
@@ -260,11 +282,11 @@ Dict = dict[str, Any]  # For backward compatibility
 # ============================================================================
 
 __all__ = [
-    "QuarantineModel",    "QuarantineTargets",]
+    "QuarantineModel",    "QuarantineTargets",    "QuarantineTargets.Macs",]
 
 
 # ============================================================================
 # Generated by hfortix generator v0.6.0
 # Schema: 1.7.0
-# Generated: 2026-01-17T05:32:16.942726Z
+# Generated: 2026-01-17T17:25:20.909085Z
 # ============================================================================

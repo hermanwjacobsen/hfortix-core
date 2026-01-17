@@ -7,7 +7,7 @@ Generated from FortiOS schema version unknown.
 
 from __future__ import annotations
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, field_validator
 from typing import Any, Optional
 
 # ============================================================================
@@ -38,27 +38,27 @@ class VdomPropertyModel(BaseModel):
     # Model Fields
     # ========================================================================
     
-    name: str | None = Field(max_length=31, default="", description="VDOM name.")  # datasource: ['system.vdom.name']    
-    description: str | None = Field(max_length=127, default="", description="Description.")    
+    name: str | None = Field(max_length=31, default=None, description="VDOM name.")  # datasource: ['system.vdom.name']    
+    description: str | None = Field(max_length=127, default=None, description="Description.")    
     snmp_index: int | None = Field(ge=1, le=2147483647, default=0, description="Permanent SNMP Index of the virtual domain (1 - 2147483647).")    
-    session: list[Session] = Field(default="", description="Maximum guaranteed number of sessions.")    
-    ipsec_phase1: list[IpsecPhase1] = Field(default="", description="Maximum guaranteed number of VPN IPsec phase 1 tunnels.")    
-    ipsec_phase2: list[IpsecPhase2] = Field(default="", description="Maximum guaranteed number of VPN IPsec phase 2 tunnels.")    
-    ipsec_phase1_interface: list[IpsecPhase1Interface] = Field(default="", description="Maximum guaranteed number of VPN IPsec phase1 interface tunnels.")    
-    ipsec_phase2_interface: list[IpsecPhase2Interface] = Field(default="", description="Maximum guaranteed number of VPN IPsec phase2 interface tunnels.")    
-    dialup_tunnel: list[DialupTunnel] = Field(default="", description="Maximum guaranteed number of dial-up tunnels.")    
-    firewall_policy: list[FirewallPolicy] = Field(default="", description="Maximum guaranteed number of firewall policies (policy, DoS-policy4, DoS-policy6, multicast).")    
-    firewall_address: list[FirewallAddress] = Field(default="", description="Maximum guaranteed number of firewall addresses (IPv4, IPv6, multicast).")    
-    firewall_addrgrp: list[FirewallAddrgrp] = Field(default="", description="Maximum guaranteed number of firewall address groups (IPv4, IPv6).")    
-    custom_service: list[CustomService] = Field(default="", description="Maximum guaranteed number of firewall custom services.")    
-    service_group: list[ServiceGroup] = Field(default="", description="Maximum guaranteed number of firewall service groups.")    
-    onetime_schedule: list[OnetimeSchedule] = Field(default="", description="Maximum guaranteed number of firewall one-time schedules..")    
-    recurring_schedule: list[RecurringSchedule] = Field(default="", description="Maximum guaranteed number of firewall recurring schedules.")    
-    user: list[User] = Field(default="", description="Maximum guaranteed number of local users.")    
-    user_group: list[UserGroup] = Field(default="", description="Maximum guaranteed number of user groups.")    
-    sslvpn: list[Sslvpn] = Field(default="", description="Maximum guaranteed number of Agentless VPNs.")    
-    proxy: list[Proxy] = Field(default="", description="Maximum guaranteed number of concurrent proxy users.")    
-    log_disk_quota: list[LogDiskQuota] = Field(default="", description="Log disk quota in megabytes (MB). Range depends on how much disk space is available.")    
+    session: list[str] = Field(default_factory=list, description="Maximum guaranteed number of sessions.")    
+    ipsec_phase1: list[str] = Field(default_factory=list, description="Maximum guaranteed number of VPN IPsec phase 1 tunnels.")    
+    ipsec_phase2: list[str] = Field(default_factory=list, description="Maximum guaranteed number of VPN IPsec phase 2 tunnels.")    
+    ipsec_phase1_interface: list[str] = Field(default_factory=list, description="Maximum guaranteed number of VPN IPsec phase1 interface tunnels.")    
+    ipsec_phase2_interface: list[str] = Field(default_factory=list, description="Maximum guaranteed number of VPN IPsec phase2 interface tunnels.")    
+    dialup_tunnel: list[str] = Field(default_factory=list, description="Maximum guaranteed number of dial-up tunnels.")    
+    firewall_policy: list[str] = Field(default_factory=list, description="Maximum guaranteed number of firewall policies (policy, DoS-policy4, DoS-policy6, multicast).")    
+    firewall_address: list[str] = Field(default_factory=list, description="Maximum guaranteed number of firewall addresses (IPv4, IPv6, multicast).")    
+    firewall_addrgrp: list[str] = Field(default_factory=list, description="Maximum guaranteed number of firewall address groups (IPv4, IPv6).")    
+    custom_service: list[str] = Field(default_factory=list, description="Maximum guaranteed number of firewall custom services.")    
+    service_group: list[str] = Field(default_factory=list, description="Maximum guaranteed number of firewall service groups.")    
+    onetime_schedule: list[str] = Field(default_factory=list, description="Maximum guaranteed number of firewall one-time schedules..")    
+    recurring_schedule: list[str] = Field(default_factory=list, description="Maximum guaranteed number of firewall recurring schedules.")    
+    user: list[str] = Field(default_factory=list, description="Maximum guaranteed number of local users.")    
+    user_group: list[str] = Field(default_factory=list, description="Maximum guaranteed number of user groups.")    
+    sslvpn: list[str] = Field(default_factory=list, description="Maximum guaranteed number of Agentless VPNs.")    
+    proxy: list[str] = Field(default_factory=list, description="Maximum guaranteed number of concurrent proxy users.")    
+    log_disk_quota: list[str] = Field(default_factory=list, description="Log disk quota in megabytes (MB). Range depends on how much disk space is available.")    
     # ========================================================================
     # Custom Validators
     # ========================================================================
@@ -138,7 +138,7 @@ class VdomPropertyModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.system.vdom_property.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate scalar field
         value = getattr(self, "name", None)
@@ -198,5 +198,5 @@ __all__ = [
 # ============================================================================
 # Generated by hfortix generator v0.6.0
 # Schema: 1.7.0
-# Generated: 2026-01-17T05:32:19.550024Z
+# Generated: 2026-01-17T17:25:23.222134Z
 # ============================================================================

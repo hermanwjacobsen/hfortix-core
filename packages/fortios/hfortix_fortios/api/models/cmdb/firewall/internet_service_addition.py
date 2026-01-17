@@ -7,13 +7,33 @@ Generated from FortiOS schema version unknown.
 
 from __future__ import annotations
 
-from pydantic import BaseModel, Field
-from typing import Any, Optional
+from pydantic import BaseModel, Field, field_validator
+from typing import Any, Literal, Optional
 
 # ============================================================================
-# Child Table Models
+# Enum Definitions for Child Table Fields (for fields with 4+ allowed values)
 # ============================================================================
 
+# ============================================================================
+# Child Table Models (sorted deepest-first so nested models are defined before their parents)
+# ============================================================================
+
+class InternetServiceAdditionEntryPortRange(BaseModel):
+    """
+    Child table model for entry.port-range.
+    
+    Port ranges in the custom entry.
+    """
+    
+    class Config:
+        """Pydantic model configuration."""
+        extra = "allow"  # Allow additional fields from API
+        str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
+    
+    id_: int | None = Field(ge=0, le=4294967295, default=0, serialization_alias="id", description="Custom entry port range ID.")    
+    start_port: int = Field(ge=0, le=65535, default=1, description="Integer value for starting TCP/UDP/SCTP destination port in range (0 to 65535).")    
+    end_port: int = Field(ge=0, le=65535, default=65535, description="Integer value for ending TCP/UDP/SCTP destination port in range (0 to 65535).")
 class InternetServiceAdditionEntry(BaseModel):
     """
     Child table model for entry.
@@ -25,11 +45,12 @@ class InternetServiceAdditionEntry(BaseModel):
         """Pydantic model configuration."""
         extra = "allow"  # Allow additional fields from API
         str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
     
-    id: int | None = Field(ge=0, le=255, default=0, description="Entry ID(1-255).")    
+    id_: int | None = Field(ge=0, le=255, default=0, serialization_alias="id", description="Entry ID(1-255).")    
     addr_mode: Literal["ipv4", "ipv6"] | None = Field(default="ipv4", description="Address mode (IPv4 or IPv6).")    
     protocol: int | None = Field(ge=0, le=255, default=0, description="Integer value for the protocol type as defined by IANA (0 - 255).")    
-    port_range: list[PortRange] = Field(default=None, description="Port ranges in the custom entry.")
+    port_range: list[InternetServiceAdditionEntryPortRange] = Field(default_factory=list, description="Port ranges in the custom entry.")
 # ============================================================================
 # Enum Definitions (for fields with 4+ allowed values)
 # ============================================================================
@@ -45,7 +66,7 @@ class InternetServiceAdditionModel(BaseModel):
     
     Configure Internet Services Addition.
     
-    Validation Rules:        - id: min=0 max=4294967295 pattern=        - comment: max_length=255 pattern=        - entry: pattern=    """
+    Validation Rules:        - id_: min=0 max=4294967295 pattern=        - comment: max_length=255 pattern=        - entry: pattern=    """
     
     class Config:
         """Pydantic model configuration."""
@@ -58,18 +79,18 @@ class InternetServiceAdditionModel(BaseModel):
     # Model Fields
     # ========================================================================
     
-    id: int | None = Field(ge=0, le=4294967295, default=0, description="Internet Service ID in the Internet Service database.")  # datasource: ['firewall.internet-service.id']    
+    id_: int | None = Field(ge=0, le=4294967295, default=0, serialization_alias="id", description="Internet Service ID in the Internet Service database.")  # datasource: ['firewall.internet-service.id']    
     comment: str | None = Field(max_length=255, default=None, description="Comment.")    
-    entry: list[Entry] = Field(default=None, description="Entries added to the Internet Service addition database.")    
+    entry: list[InternetServiceAdditionEntry] = Field(default_factory=list, description="Entries added to the Internet Service addition database.")    
     # ========================================================================
     # Custom Validators
     # ========================================================================
     
-    @field_validator('id')
+    @field_validator('id_')
     @classmethod
-    def validate_id(cls, v: Any) -> Any:
+    def validate_id_(cls, v: Any) -> Any:
         """
-        Validate id field.
+        Validate id_ field.
         
         Datasource: ['firewall.internet-service.id']
         
@@ -140,7 +161,7 @@ class InternetServiceAdditionModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.internet_service_addition.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate scalar field
         value = getattr(self, "id", None)
@@ -149,7 +170,7 @@ class InternetServiceAdditionModel(BaseModel):
         
         # Check all datasource endpoints
         found = False
-        if await client.api.cmdb.firewall.internet-service.exists(value):
+        if await client.api.cmdb.firewall.internet_service.exists(value):
             found = True
         
         if not found:
@@ -194,11 +215,11 @@ Dict = dict[str, Any]  # For backward compatibility
 # ============================================================================
 
 __all__ = [
-    "InternetServiceAdditionModel",    "InternetServiceAdditionEntry",]
+    "InternetServiceAdditionModel",    "InternetServiceAdditionEntry",    "InternetServiceAdditionEntry.PortRange",]
 
 
 # ============================================================================
 # Generated by hfortix generator v0.6.0
 # Schema: 1.7.0
-# Generated: 2026-01-17T05:32:16.411575Z
+# Generated: 2026-01-17T17:25:20.456190Z
 # ============================================================================

@@ -12,97 +12,76 @@ from typing import Any, Literal, Optional
 from enum import Enum
 
 # ============================================================================
-# Child Table Models
+# Enum Definitions for Child Table Fields (for fields with 4+ allowed values)
 # ============================================================================
 
-class ProfileOverride(BaseModel):
-    """
-    Child table model for override.
-    
-    Web Filter override settings.
-    """
-    
-    class Config:
-        """Pydantic model configuration."""
-        extra = "allow"  # Allow additional fields from API
-        str_strip_whitespace = True
-    
-    ovrd_cookie: Literal["allow", "deny"] | None = Field(default="deny", description="Allow/deny browser-based (cookie) overrides.")    
-    ovrd_scope: OvrdScopeEnum | None = Field(default="user", description="Override scope.")    
-    profile_type: Literal["list", "radius"] | None = Field(default="list", description="Override profile type.")    
-    ovrd_dur_mode: Literal["constant", "ask"] | None = Field(default="constant", description="Override duration mode.")    
-    ovrd_dur: str | None = Field(default="15m", description="Override duration.")    
-    profile_attribute: ProfileAttributeEnum | None = Field(default="Login-LAT-Service", description="Profile attribute to retrieve from the RADIUS server.")    
-    ovrd_user_group: list[OvrdUserGroup] = Field(default=None, description="User groups with permission to use the override.")    
-    profile: list[Profile] = Field(default=None, description="Web filter profile with permission to create overrides.")
-class ProfileWeb(BaseModel):
-    """
-    Child table model for web.
-    
-    Web content filtering settings.
-    """
-    
-    class Config:
-        """Pydantic model configuration."""
-        extra = "allow"  # Allow additional fields from API
-        str_strip_whitespace = True
-    
-    bword_threshold: int | None = Field(ge=0, le=2147483647, default=10, description="Banned word score threshold.")    
-    bword_table: int | None = Field(ge=0, le=4294967295, default=0, description="Banned word table ID.")  # datasource: ['webfilter.content.id']    
-    urlfilter_table: int | None = Field(ge=0, le=4294967295, default=0, description="URL filter table ID.")  # datasource: ['webfilter.urlfilter.id']    
-    content_header_list: int | None = Field(ge=0, le=4294967295, default=0, description="Content header list.")  # datasource: ['webfilter.content-header.id']    
-    blocklist: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable automatic addition of URLs detected by FortiSandbox to blocklist.")    
-    allowlist: list[Allowlist] = Field(default="", description="FortiGuard allowlist settings.")    
-    safe_search: list[SafeSearch] = Field(default="", description="Safe search type.")    
-    youtube_restrict: Literal["none", "strict", "moderate"] | None = Field(default="none", description="YouTube EDU filter level.")    
-    vimeo_restrict: str | None = Field(max_length=63, default="", description="Set Vimeo-restrict (\"7\" = don't show mature content, \"134\" = don't show unrated and mature content). A value of cookie \"content_rating\".")    
-    log_search: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable logging all search phrases.")    
-    keyword_match: list[KeywordMatch] = Field(default=None, description="Search keywords to log when match is found.")
-class ProfileFtgdWf(BaseModel):
-    """
-    Child table model for ftgd-wf.
-    
-    FortiGuard Web Filter settings.
-    """
-    
-    class Config:
-        """Pydantic model configuration."""
-        extra = "allow"  # Allow additional fields from API
-        str_strip_whitespace = True
-    
-    options: list[Options] = Field(default="ftgd-disable", description="Options for FortiGuard Web Filter.")    
-    exempt_quota: list[ExemptQuota] = Field(default="17", description="Do not stop quota for these categories.")    
-    ovrd: list[Ovrd] = Field(default="", description="Allow web filter profile overrides.")    
-    filters: list[Filters] = Field(default=None, description="FortiGuard filters.")    
-    risk: list[Risk] = Field(default=None, description="FortiGuard risk level settings.")    
-    quota: list[Quota] = Field(default=None, description="FortiGuard traffic quota settings.")    
-    max_quota_timeout: int | None = Field(ge=1, le=86400, default=300, description="Maximum FortiGuard quota used by single page view in seconds (excludes streams).")    
-    rate_javascript_urls: Literal["disable", "enable"] | None = Field(default="enable", description="Enable/disable rating JavaScript by URL.")    
-    rate_css_urls: Literal["disable", "enable"] | None = Field(default="enable", description="Enable/disable rating CSS by URL.")    
-    rate_crl_urls: Literal["disable", "enable"] | None = Field(default="enable", description="Enable/disable rating CRL by URL.")
-class ProfileAntiphish(BaseModel):
-    """
-    Child table model for antiphish.
-    
-    AntiPhishing profile.
-    """
-    
-    class Config:
-        """Pydantic model configuration."""
-        extra = "allow"  # Allow additional fields from API
-        str_strip_whitespace = True
-    
-    status: Literal["enable", "disable"] | None = Field(default="disable", description="Toggle AntiPhishing functionality.")    
-    default_action: Literal["exempt", "log", "block"] | None = Field(default="exempt", description="Action to be taken when there is no matching rule.")    
-    check_uri: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable checking of GET URI parameters for known credentials.")    
-    check_basic_auth: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable checking of HTTP Basic Auth field for known credentials.")    
-    check_username_only: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable username only matching of credentials. Action will be taken for valid usernames regardless of password validity.")    
-    max_body_len: int | None = Field(ge=0, le=4294967295, default=1024, description="Maximum size of a POST body to check for credentials.")    
-    inspection_entries: list[InspectionEntries] = Field(default=None, description="AntiPhishing entries.")    
-    custom_patterns: list[CustomPatterns] = Field(default=None, description="Custom username and password regex patterns.")    
-    authentication: Literal["domain-controller", "ldap"] = Field(default="domain-controller", description="Authentication methods.")    
-    domain_controller: str | None = Field(max_length=63, default="", description="Domain for which to verify received credentials against.")  # datasource: ['user.domain-controller.name', 'credential-store.domain-controller.server-name']    
-    ldap: str | None = Field(max_length=63, default="", description="LDAP server for which to verify received credentials against.")  # datasource: ['user.ldap.name']
+class ProfileWebAllowlistEnum(str, Enum):
+    """Allowed values for allowlist field in web."""
+    EXEMPT_AV = "exempt-av"
+    EXEMPT_WEBCONTENT = "exempt-webcontent"
+    EXEMPT_ACTIVEX_JAVA_COOKIE = "exempt-activex-java-cookie"
+    EXEMPT_DLP = "exempt-dlp"
+    EXEMPT_RANGEBLOCK = "exempt-rangeblock"
+    EXTENDED_LOG_OTHERS = "extended-log-others"
+
+class ProfileOverrideOvrdScopeEnum(str, Enum):
+    """Allowed values for ovrd_scope field in override."""
+    USER = "user"
+    USER_GROUP = "user-group"
+    IP = "ip"
+    BROWSER = "browser"
+    ASK = "ask"
+
+class ProfileOverrideProfileAttributeEnum(str, Enum):
+    """Allowed values for profile_attribute field in override."""
+    USER_NAME = "User-Name"
+    NAS_IP_ADDRESS = "NAS-IP-Address"
+    FRAMED_IP_ADDRESS = "Framed-IP-Address"
+    FRAMED_IP_NETMASK = "Framed-IP-Netmask"
+    FILTER_ID = "Filter-Id"
+    LOGIN_IP_HOST = "Login-IP-Host"
+    REPLY_MESSAGE = "Reply-Message"
+    CALLBACK_NUMBER = "Callback-Number"
+    CALLBACK_ID = "Callback-Id"
+    FRAMED_ROUTE = "Framed-Route"
+    FRAMED_IPX_NETWORK = "Framed-IPX-Network"
+    CLASS = "Class"
+    CALLED_STATION_ID = "Called-Station-Id"
+    CALLING_STATION_ID = "Calling-Station-Id"
+    NAS_IDENTIFIER = "NAS-Identifier"
+    PROXY_STATE = "Proxy-State"
+    LOGIN_LAT_SERVICE = "Login-LAT-Service"
+    LOGIN_LAT_NODE = "Login-LAT-Node"
+    LOGIN_LAT_GROUP = "Login-LAT-Group"
+    FRAMED_APPLETALK_ZONE = "Framed-AppleTalk-Zone"
+    ACCT_SESSION_ID = "Acct-Session-Id"
+    ACCT_MULTI_SESSION_ID = "Acct-Multi-Session-Id"
+
+class ProfileFtgdWfQuotaUnitEnum(str, Enum):
+    """Allowed values for unit field in ftgd-wf.quota."""
+    B = "B"
+    KB = "KB"
+    MB = "MB"
+    GB = "GB"
+
+class ProfileFtgdWfFiltersActionEnum(str, Enum):
+    """Allowed values for action field in ftgd-wf.filters."""
+    BLOCK = "block"
+    AUTHENTICATE = "authenticate"
+    MONITOR = "monitor"
+    WARNING = "warning"
+
+class ProfileFtgdWfOptionsEnum(str, Enum):
+    """Allowed values for options field in ftgd-wf."""
+    ERROR_ALLOW = "error-allow"
+    RATE_SERVER_IP = "rate-server-ip"
+    CONNECT_REQUEST_BYPASS = "connect-request-bypass"
+    FTGD_DISABLE = "ftgd-disable"
+
+# ============================================================================
+# Child Table Models (sorted deepest-first so nested models are defined before their parents)
+# ============================================================================
+
 class ProfileWispServers(BaseModel):
     """
     Child table model for wisp-servers.
@@ -114,18 +93,274 @@ class ProfileWispServers(BaseModel):
         """Pydantic model configuration."""
         extra = "allow"  # Allow additional fields from API
         str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
     
-    name: str = Field(max_length=79, default="", description="Server name.")  # datasource: ['web-proxy.wisp.name']
+    name: str = Field(max_length=79, description="Server name.")  # datasource: ['web-proxy.wisp.name']
+class ProfileWebKeywordMatch(BaseModel):
+    """
+    Child table model for web.keyword-match.
+    
+    Search keywords to log when match is found.
+    """
+    
+    class Config:
+        """Pydantic model configuration."""
+        extra = "allow"  # Allow additional fields from API
+        str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
+    
+    pattern: str | None = Field(max_length=79, default=None, description="Pattern/keyword to search for.")
+class ProfileWeb(BaseModel):
+    """
+    Child table model for web.
+    
+    Web content filtering settings.
+    """
+    
+    class Config:
+        """Pydantic model configuration."""
+        extra = "allow"  # Allow additional fields from API
+        str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
+    
+    bword_threshold: int | None = Field(ge=0, le=2147483647, default=10, description="Banned word score threshold.")    
+    bword_table: int | None = Field(ge=0, le=4294967295, default=0, description="Banned word table ID.")  # datasource: ['webfilter.content.id']    
+    urlfilter_table: int | None = Field(ge=0, le=4294967295, default=0, description="URL filter table ID.")  # datasource: ['webfilter.urlfilter.id']    
+    content_header_list: int | None = Field(ge=0, le=4294967295, default=0, description="Content header list.")  # datasource: ['webfilter.content-header.id']    
+    blocklist: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable automatic addition of URLs detected by FortiSandbox to blocklist.")    
+    allowlist: list[ProfileWebAllowlistEnum] = Field(default_factory=list, description="FortiGuard allowlist settings.")    
+    safe_search: list[Literal["url", "header"]] = Field(default_factory=list, description="Safe search type.")    
+    youtube_restrict: Literal["none", "strict", "moderate"] | None = Field(default="none", description="YouTube EDU filter level.")    
+    vimeo_restrict: str | None = Field(max_length=63, default=None, description="Set Vimeo-restrict (\"7\" = don't show mature content, \"134\" = don't show unrated and mature content). A value of cookie \"content_rating\".")    
+    log_search: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable logging all search phrases.")    
+    keyword_match: list[ProfileWebKeywordMatch] = Field(default_factory=list, description="Search keywords to log when match is found.")
+class ProfileOverrideProfile(BaseModel):
+    """
+    Child table model for override.profile.
+    
+    Web filter profile with permission to create overrides.
+    """
+    
+    class Config:
+        """Pydantic model configuration."""
+        extra = "allow"  # Allow additional fields from API
+        str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
+    
+    name: str | None = Field(max_length=79, default=None, description="Web profile.")  # datasource: ['webfilter.profile.name']
+class ProfileOverrideOvrdUserGroup(BaseModel):
+    """
+    Child table model for override.ovrd-user-group.
+    
+    User groups with permission to use the override.
+    """
+    
+    class Config:
+        """Pydantic model configuration."""
+        extra = "allow"  # Allow additional fields from API
+        str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
+    
+    name: str | None = Field(max_length=79, default=None, description="User group name.")  # datasource: ['user.group.name']
+class ProfileOverride(BaseModel):
+    """
+    Child table model for override.
+    
+    Web Filter override settings.
+    """
+    
+    class Config:
+        """Pydantic model configuration."""
+        extra = "allow"  # Allow additional fields from API
+        str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
+    
+    ovrd_cookie: Literal["allow", "deny"] | None = Field(default="deny", description="Allow/deny browser-based (cookie) overrides.")    
+    ovrd_scope: ProfileOverrideOvrdScopeEnum | None = Field(default=ProfileOverrideOvrdScopeEnum.USER, description="Override scope.")    
+    profile_type: Literal["list", "radius"] | None = Field(default="list", description="Override profile type.")    
+    ovrd_dur_mode: Literal["constant", "ask"] | None = Field(default="constant", description="Override duration mode.")    
+    ovrd_dur: str | None = Field(default="15m", description="Override duration.")    
+    profile_attribute: ProfileOverrideProfileAttributeEnum | None = Field(default=ProfileOverrideProfileAttributeEnum.LOGIN_LAT_SERVICE, description="Profile attribute to retrieve from the RADIUS server.")    
+    ovrd_user_group: list[ProfileOverrideOvrdUserGroup] = Field(default_factory=list, description="User groups with permission to use the override.")    
+    profile: list[ProfileOverrideProfile] = Field(default_factory=list, description="Web filter profile with permission to create overrides.")
+class ProfileFtgdWfRisk(BaseModel):
+    """
+    Child table model for ftgd-wf.risk.
+    
+    FortiGuard risk level settings.
+    """
+    
+    class Config:
+        """Pydantic model configuration."""
+        extra = "allow"  # Allow additional fields from API
+        str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
+    
+    id_: int | None = Field(ge=0, le=255, default=0, serialization_alias="id", description="ID number.")    
+    risk_level: str = Field(max_length=35, description="Risk level to be examined.")  # datasource: ['webfilter.ftgd-risk-level.name']    
+    action: Literal["block", "monitor"] | None = Field(default="monitor", description="Action to take for matches.")    
+    log: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable logging.")
+class ProfileFtgdWfQuota(BaseModel):
+    """
+    Child table model for ftgd-wf.quota.
+    
+    FortiGuard traffic quota settings.
+    """
+    
+    class Config:
+        """Pydantic model configuration."""
+        extra = "allow"  # Allow additional fields from API
+        str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
+    
+    id_: int | None = Field(ge=0, le=4294967295, default=0, serialization_alias="id", description="ID number.")    
+    category: list[str] = Field(default_factory=list, description="FortiGuard categories to apply quota to (category action must be set to monitor).")    
+    type_: Literal["time", "traffic"] | None = Field(default="time", serialization_alias="type", description="Quota type.")    
+    unit: ProfileFtgdWfQuotaUnitEnum | None = Field(default=ProfileFtgdWfQuotaUnitEnum.MB, description="Traffic quota unit of measurement.")    
+    value: int | None = Field(ge=1, le=4294967295, default=1024, description="Traffic quota value.")    
+    duration: str | None = Field(default="5m", description="Duration of quota.")    
+    override_replacemsg: str | None = Field(max_length=28, default=None, description="Override replacement message.")
+class ProfileFtgdWfFiltersAuthUsrGrp(BaseModel):
+    """
+    Child table model for ftgd-wf.filters.auth-usr-grp.
+    
+    Groups with permission to authenticate.
+    """
+    
+    class Config:
+        """Pydantic model configuration."""
+        extra = "allow"  # Allow additional fields from API
+        str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
+    
+    name: str | None = Field(max_length=79, default=None, description="User group name.")  # datasource: ['user.group.name']
+class ProfileFtgdWfFilters(BaseModel):
+    """
+    Child table model for ftgd-wf.filters.
+    
+    FortiGuard filters.
+    """
+    
+    class Config:
+        """Pydantic model configuration."""
+        extra = "allow"  # Allow additional fields from API
+        str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
+    
+    id_: int | None = Field(ge=0, le=255, default=0, serialization_alias="id", description="ID number.")    
+    category: int | None = Field(ge=0, le=255, default=0, description="Categories and groups the filter examines.")    
+    action: ProfileFtgdWfFiltersActionEnum | None = Field(default=ProfileFtgdWfFiltersActionEnum.MONITOR, description="Action to take for matches.")    
+    warn_duration: str | None = Field(default="5m", description="Duration of warnings.")    
+    auth_usr_grp: list[ProfileFtgdWfFiltersAuthUsrGrp] = Field(default_factory=list, description="Groups with permission to authenticate.")    
+    log: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable logging.")    
+    override_replacemsg: str | None = Field(max_length=28, default=None, description="Override replacement message.")    
+    warning_prompt: Literal["per-domain", "per-category"] | None = Field(default="per-category", description="Warning prompts in each category or each domain.")    
+    warning_duration_type: Literal["session", "timeout"] | None = Field(default="timeout", description="Re-display warning after closing browser or after a timeout.")
+class ProfileFtgdWf(BaseModel):
+    """
+    Child table model for ftgd-wf.
+    
+    FortiGuard Web Filter settings.
+    """
+    
+    class Config:
+        """Pydantic model configuration."""
+        extra = "allow"  # Allow additional fields from API
+        str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
+    
+    options: list[ProfileFtgdWfOptionsEnum] = Field(default_factory=list, description="Options for FortiGuard Web Filter.")    
+    exempt_quota: list[str] = Field(default_factory=list, description="Do not stop quota for these categories.")    
+    ovrd: list[str] = Field(default_factory=list, description="Allow web filter profile overrides.")    
+    filters: list[ProfileFtgdWfFilters] = Field(default_factory=list, description="FortiGuard filters.")    
+    risk: list[ProfileFtgdWfRisk] = Field(default_factory=list, description="FortiGuard risk level settings.")    
+    quota: list[ProfileFtgdWfQuota] = Field(default_factory=list, description="FortiGuard traffic quota settings.")    
+    max_quota_timeout: int | None = Field(ge=1, le=86400, default=300, description="Maximum FortiGuard quota used by single page view in seconds (excludes streams).")    
+    rate_javascript_urls: Literal["disable", "enable"] | None = Field(default="enable", description="Enable/disable rating JavaScript by URL.")    
+    rate_css_urls: Literal["disable", "enable"] | None = Field(default="enable", description="Enable/disable rating CSS by URL.")    
+    rate_crl_urls: Literal["disable", "enable"] | None = Field(default="enable", description="Enable/disable rating CRL by URL.")
+class ProfileAntiphishInspectionEntries(BaseModel):
+    """
+    Child table model for antiphish.inspection-entries.
+    
+    AntiPhishing entries.
+    """
+    
+    class Config:
+        """Pydantic model configuration."""
+        extra = "allow"  # Allow additional fields from API
+        str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
+    
+    name: str = Field(max_length=63, description="Inspection target name.")    
+    fortiguard_category: list[str] = Field(description="FortiGuard category to match.")    
+    action: Literal["exempt", "log", "block"] = Field(default="exempt", description="Action to be taken upon an AntiPhishing match.")
+class ProfileAntiphishCustomPatterns(BaseModel):
+    """
+    Child table model for antiphish.custom-patterns.
+    
+    Custom username and password regex patterns.
+    """
+    
+    class Config:
+        """Pydantic model configuration."""
+        extra = "allow"  # Allow additional fields from API
+        str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
+    
+    pattern: str = Field(max_length=255, description="Target pattern.")    
+    category: Literal["username", "password"] = Field(default="username", description="Category that the pattern matches.")    
+    type_: Literal["regex", "literal"] = Field(default="regex", serialization_alias="type", description="Pattern will be treated either as a regex pattern or literal string.")
+class ProfileAntiphish(BaseModel):
+    """
+    Child table model for antiphish.
+    
+    AntiPhishing profile.
+    """
+    
+    class Config:
+        """Pydantic model configuration."""
+        extra = "allow"  # Allow additional fields from API
+        str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
+    
+    status: Literal["enable", "disable"] | None = Field(default="disable", description="Toggle AntiPhishing functionality.")    
+    default_action: Literal["exempt", "log", "block"] | None = Field(default="exempt", description="Action to be taken when there is no matching rule.")    
+    check_uri: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable checking of GET URI parameters for known credentials.")    
+    check_basic_auth: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable checking of HTTP Basic Auth field for known credentials.")    
+    check_username_only: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable username only matching of credentials. Action will be taken for valid usernames regardless of password validity.")    
+    max_body_len: int | None = Field(ge=0, le=4294967295, default=1024, description="Maximum size of a POST body to check for credentials.")    
+    inspection_entries: list[ProfileAntiphishInspectionEntries] = Field(default_factory=list, description="AntiPhishing entries.")    
+    custom_patterns: list[ProfileAntiphishCustomPatterns] = Field(default_factory=list, description="Custom username and password regex patterns.")    
+    authentication: Literal["domain-controller", "ldap"] = Field(default="domain-controller", description="Authentication methods.")    
+    domain_controller: str | None = Field(max_length=63, default=None, description="Domain for which to verify received credentials against.")  # datasource: ['user.domain-controller.name', 'credential-store.domain-controller.server-name']    
+    ldap: str | None = Field(max_length=63, default=None, description="LDAP server for which to verify received credentials against.")  # datasource: ['user.ldap.name']
 # ============================================================================
 # Enum Definitions (for fields with 4+ allowed values)
 # ============================================================================
 
 class ProfileOptionsEnum(str, Enum):
     """Allowed values for options field."""
-    ACTIVEXFILTER = "activexfilter"    COOKIEFILTER = "cookiefilter"    JAVAFILTER = "javafilter"    BLOCK_INVALID_URL = "block-invalid-url"    JSCRIPT = "jscript"    JS = "js"    VBS = "vbs"    UNKNOWN = "unknown"    INTRINSIC = "intrinsic"    WF_REFERER = "wf-referer"    WF_COOKIE = "wf-cookie"    PER_USER_BAL = "per-user-bal"
-class ProfileOvrd_permEnum(str, Enum):
+    ACTIVEXFILTER = "activexfilter"
+    COOKIEFILTER = "cookiefilter"
+    JAVAFILTER = "javafilter"
+    BLOCK_INVALID_URL = "block-invalid-url"
+    JSCRIPT = "jscript"
+    JS = "js"
+    VBS = "vbs"
+    UNKNOWN = "unknown"
+    INTRINSIC = "intrinsic"
+    WF_REFERER = "wf-referer"
+    WF_COOKIE = "wf-cookie"
+    PER_USER_BAL = "per-user-bal"
+
+class ProfileOvrdPermEnum(str, Enum):
     """Allowed values for ovrd_perm field."""
-    BANNEDWORD_OVERRIDE = "bannedword-override"    URLFILTER_OVERRIDE = "urlfilter-override"    FORTIGUARD_WF_OVERRIDE = "fortiguard-wf-override"    CONTENTTYPE_CHECK_OVERRIDE = "contenttype-check-override"
+    BANNEDWORD_OVERRIDE = "bannedword-override"
+    URLFILTER_OVERRIDE = "urlfilter-override"
+    FORTIGUARD_WF_OVERRIDE = "fortiguard-wf-override"
+    CONTENTTYPE_CHECK_OVERRIDE = "contenttype-check-override"
+
 
 # ============================================================================
 # Main Model
@@ -150,21 +385,21 @@ class ProfileModel(BaseModel):
     # Model Fields
     # ========================================================================
     
-    name: str = Field(max_length=47, default="", description="Profile name.")    
+    name: str = Field(max_length=47, description="Profile name.")    
     comment: str | None = Field(max_length=255, default=None, description="Optional comments.")    
     feature_set: Literal["flow", "proxy"] | None = Field(default="flow", description="Flow/proxy feature set.")    
-    replacemsg_group: str | None = Field(max_length=35, default="", description="Replacement message group.")  # datasource: ['system.replacemsg-group.name']    
-    options: list[Options] = Field(default="", description="Options.")    
+    replacemsg_group: str | None = Field(max_length=35, default=None, description="Replacement message group.")  # datasource: ['system.replacemsg-group.name']    
+    options: list[ProfileOptionsEnum] = Field(default_factory=list, description="Options.")    
     https_replacemsg: Literal["enable", "disable"] | None = Field(default="enable", description="Enable replacement messages for HTTPS.")    
     web_flow_log_encoding: Literal["utf-8", "punycode"] | None = Field(default="utf-8", description="Log encoding in flow mode.")    
-    ovrd_perm: list[OvrdPerm] = Field(default="", description="Permitted override types.")    
+    ovrd_perm: list[ProfileOvrdPermEnum] = Field(default_factory=list, description="Permitted override types.")    
     post_action: Literal["normal", "block"] | None = Field(default="normal", description="Action taken for HTTP POST traffic.")    
-    override: list[Override] = Field(default=None, description="Web Filter override settings.")    
-    web: list[Web] = Field(default=None, description="Web content filtering settings.")    
-    ftgd_wf: list[FtgdWf] = Field(default=None, description="FortiGuard Web Filter settings.")    
-    antiphish: list[Antiphish] = Field(default=None, description="AntiPhishing profile.")    
+    override: list[ProfileOverride] = Field(default_factory=list, description="Web Filter override settings.")    
+    web: list[ProfileWeb] = Field(default_factory=list, description="Web content filtering settings.")    
+    ftgd_wf: list[ProfileFtgdWf] = Field(default_factory=list, description="FortiGuard Web Filter settings.")    
+    antiphish: list[ProfileAntiphish] = Field(default_factory=list, description="AntiPhishing profile.")    
     wisp: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable web proxy WISP.")    
-    wisp_servers: list[WispServers] = Field(default=None, description="WISP servers.")    
+    wisp_servers: list[ProfileWispServers] = Field(default_factory=list, description="WISP servers.")    
     wisp_algorithm: Literal["primary-secondary", "round-robin", "auto-learning"] | None = Field(default="auto-learning", description="WISP server selection algorithm.")    
     log_all_url: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable logging all URLs visited.")    
     web_content_log: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable logging logging blocked web content.")    
@@ -264,7 +499,7 @@ class ProfileModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.webfilter.profile.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate scalar field
         value = getattr(self, "replacemsg_group", None)
@@ -273,7 +508,7 @@ class ProfileModel(BaseModel):
         
         # Check all datasource endpoints
         found = False
-        if await client.api.cmdb.system.replacemsg-group.exists(value):
+        if await client.api.cmdb.system.replacemsg_group.exists(value):
             found = True
         
         if not found:
@@ -313,7 +548,7 @@ class ProfileModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.webfilter.profile.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate child table items
         values = getattr(self, "web", [])
@@ -331,7 +566,7 @@ class ProfileModel(BaseModel):
             
             # Check all datasource endpoints
             found = False
-            if await client.api.cmdb.webfilter.content-header.exists(value):
+            if await client.api.cmdb.webfilter.content_header.exists(value):
                 found = True
             
             if not found:
@@ -371,7 +606,7 @@ class ProfileModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.webfilter.profile.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate child table items
         values = getattr(self, "antiphish", [])
@@ -429,7 +664,7 @@ class ProfileModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.webfilter.profile.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate child table items
         values = getattr(self, "wisp_servers", [])
@@ -447,7 +682,7 @@ class ProfileModel(BaseModel):
             
             # Check all datasource endpoints
             found = False
-            if await client.api.cmdb.web-proxy.wisp.exists(value):
+            if await client.api.cmdb.web_proxy.wisp.exists(value):
                 found = True
             
             if not found:
@@ -498,11 +733,11 @@ Dict = dict[str, Any]  # For backward compatibility
 # ============================================================================
 
 __all__ = [
-    "ProfileModel",    "ProfileOverride",    "ProfileWeb",    "ProfileFtgdWf",    "ProfileAntiphish",    "ProfileWispServers",]
+    "ProfileModel",    "ProfileOverride",    "ProfileOverride.OvrdUserGroup",    "ProfileOverride.Profile",    "ProfileWeb",    "ProfileWeb.KeywordMatch",    "ProfileFtgdWf",    "ProfileFtgdWf.Filters",    "ProfileFtgdWf.Filters.AuthUsrGrp",    "ProfileFtgdWf.Risk",    "ProfileFtgdWf.Quota",    "ProfileAntiphish",    "ProfileAntiphish.InspectionEntries",    "ProfileAntiphish.CustomPatterns",    "ProfileWispServers",]
 
 
 # ============================================================================
 # Generated by hfortix generator v0.6.0
 # Schema: 1.7.0
-# Generated: 2026-01-17T05:32:16.302023Z
+# Generated: 2026-01-17T17:25:20.370376Z
 # ============================================================================

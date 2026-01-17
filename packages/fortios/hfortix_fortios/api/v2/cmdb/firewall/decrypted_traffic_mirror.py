@@ -312,6 +312,8 @@ class DecryptedTrafficMirror(CRUDEndpoint, MetadataMixin):
                 example="[{'name': 'value'}]",
             )
         
+        # Apply normalization for multi-value option fields (space-separated strings)
+        
         # Build payload using helper function with auto-normalization
         # This automatically converts strings/lists to [{'name': '...'}] format for list fields
         # To disable auto-normalization, use build_cmdb_payload directly
@@ -429,6 +431,8 @@ class DecryptedTrafficMirror(CRUDEndpoint, MetadataMixin):
                 field_name="interface",
                 example="[{'name': 'value'}]",
             )
+        
+        # Apply normalization for multi-value option fields (space-separated strings)
         
         # Build payload using helper function with auto-normalization
         # This automatically converts strings/lists to [{'name': '...'}] format for list fields
@@ -650,6 +654,18 @@ class DecryptedTrafficMirror(CRUDEndpoint, MetadataMixin):
             - put(): Update existing object
             - exists(): Check existence manually
         """
+        # Apply normalization for table fields (supports flexible input formats)
+        if interface is not None:
+            interface = normalize_table_field(
+                interface,
+                mkey="name",
+                required_fields=['name'],
+                field_name="interface",
+                example="[{'name': 'value'}]",
+            )
+        
+        # Apply normalization for multi-value option fields (space-separated strings)
+        
         # Build payload using helper function with auto-normalization
         payload_data = build_api_payload(
             name=name,

@@ -1,159 +1,118 @@
-from typing import TypedDict, Literal, Any, Coroutine, Union, overload, Generator, final
-from typing_extensions import NotRequired
-from hfortix_fortios.models import FortiObject, FortiObjectList
+""" - Type Stubs
 
-# ============================================================================
-# Nested TypedDicts for table field children (dict mode)
-# These MUST be defined before the Payload class to use them as type hints
-# ============================================================================
+Auto-generated stub file for type checking and IDE support.
 
-# ============================================================================
-# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional)
-# ============================================================================
-# NOTE: We intentionally DON'T use NotRequired wrapper because:
-# 1. total=False already makes all fields optional
-# 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
+Endpoint: icap/server
+Category: cmdb
+"""
+
+from __future__ import annotations
+
+from typing import (
+    Any,
+    ClassVar,
+    Literal,
+    TypedDict,
+    overload,
+)
+
+from hfortix_fortios.models import (
+    FortiObject,
+    FortiObjectList,
+)
+
+
+# ================================================================
+# TypedDict Payloads
+# ================================================================
+
 class ServerPayload(TypedDict, total=False):
-    """
-    Type hints for icap/server payload fields.
-    
-    Configure ICAP servers.
-    
-    **Related Resources:**
-
-    Dependencies (resources this endpoint references):
-        - :class:`~.certificate.ca.CaEndpoint` (via: ssl-cert)
-
-    **Usage:**
-        payload: ServerPayload = {
-            "field": "value",  # <- autocomplete shows all fields
-        }
-    """
-    name: str  # Server name. | MaxLen: 63
-    addr_type: Literal["ip4", "ip6", "fqdn"]  # Address type of the remote ICAP server: IPv4, IPv6 | Default: ip4
-    ip_address: str  # IPv4 address of the ICAP server. | Default: 0.0.0.0
-    ip6_address: str  # IPv6 address of the ICAP server. | Default: ::
-    fqdn: str  # ICAP remote server Fully Qualified Domain Name | MaxLen: 255
-    port: int  # ICAP server port. | Default: 1344 | Min: 1 | Max: 65535
-    max_connections: int  # Maximum number of concurrent connections to ICAP s | Default: 100 | Min: 0 | Max: 4294967295
-    secure: Literal["disable", "enable"]  # Enable/disable secure connection to ICAP server. | Default: disable
-    ssl_cert: str  # CA certificate name. | MaxLen: 79
-    healthcheck: Literal["disable", "enable"]  # Enable/disable ICAP remote server health checking. | Default: disable
-    healthcheck_service: str  # ICAP Service name to use for health checks. | MaxLen: 127
-
-# ============================================================================
-# Nested classes for table field children (object mode - for API responses)
-# ============================================================================
-
-
-
-# Response TypedDict for GET returns (all fields present in API response)
-class ServerResponse(TypedDict):
-    """
-    Type hints for icap/server API response fields.
-    
-    All fields are present in the response from the FortiGate API.
-    """
-    name: str  # Server name. | MaxLen: 63
-    addr_type: Literal["ip4", "ip6", "fqdn"]  # Address type of the remote ICAP server: IPv4, IPv6 | Default: ip4
-    ip_address: str  # IPv4 address of the ICAP server. | Default: 0.0.0.0
-    ip6_address: str  # IPv6 address of the ICAP server. | Default: ::
-    fqdn: str  # ICAP remote server Fully Qualified Domain Name | MaxLen: 255
-    port: int  # ICAP server port. | Default: 1344 | Min: 1 | Max: 65535
-    max_connections: int  # Maximum number of concurrent connections to ICAP s | Default: 100 | Min: 0 | Max: 4294967295
-    secure: Literal["disable", "enable"]  # Enable/disable secure connection to ICAP server. | Default: disable
-    ssl_cert: str  # CA certificate name. | MaxLen: 79
-    healthcheck: Literal["disable", "enable"]  # Enable/disable ICAP remote server health checking. | Default: disable
-    healthcheck_service: str  # ICAP Service name to use for health checks. | MaxLen: 127
-
-
-@final
-class ServerObject:
-    """Typed FortiObject for icap/server with IDE autocomplete support.
-    
-    This is a typed wrapper that provides IDE autocomplete for API response fields.
-    At runtime, this is actually a FortiObject instance.
-    """
-    
-    # Server name. | MaxLen: 63
+    """Payload type for Server operations."""
     name: str
-    # Address type of the remote ICAP server: IPv4, IPv6 or FQDN. | Default: ip4
     addr_type: Literal["ip4", "ip6", "fqdn"]
-    # IPv4 address of the ICAP server. | Default: 0.0.0.0
     ip_address: str
-    # IPv6 address of the ICAP server. | Default: ::
     ip6_address: str
-    # ICAP remote server Fully Qualified Domain Name (FQDN). | MaxLen: 255
     fqdn: str
-    # ICAP server port. | Default: 1344 | Min: 1 | Max: 65535
     port: int
-    # Maximum number of concurrent connections to ICAP server | Default: 100 | Min: 0 | Max: 4294967295
     max_connections: int
-    # Enable/disable secure connection to ICAP server. | Default: disable
     secure: Literal["disable", "enable"]
-    # CA certificate name. | MaxLen: 79
     ssl_cert: str
-    # Enable/disable ICAP remote server health checking. Attempts | Default: disable
     healthcheck: Literal["disable", "enable"]
-    # ICAP Service name to use for health checks. | MaxLen: 127
     healthcheck_service: str
-    
-    # Common API response fields
-    status: str
-    http_status: int | None
-    http_status_code: int | None
-    http_method: str | None
-    http_response_time: float | None
-    vdom: str | None
-    
-    # Methods from FortiObject
-    @property
-    def dict(self) -> dict[str, Any]:
-        """Convert to dictionary."""
-        ...
-    @property
-    def json(self) -> str:
-        """Get pretty-printed JSON string."""
-        ...
-    @property
-    def raw(self) -> dict[str, Any]:
-        """Get raw API response data."""
-        ...
-    def get_full(self, name: str) -> Any: ...
-    def to_dict(self) -> ServerPayload: ...
-    def keys(self) -> Any: ...
-    def values(self) -> Generator[Any, None, None]: ...
-    def items(self) -> Generator[tuple[str, Any], None, None]: ...
-    def get(self, key: str, default: Any = None) -> Any: ...
 
+
+# ================================================================
+# Response Types (TypedDict for dict-style access)
+# ================================================================
+
+class ServerResponse(TypedDict, total=False):
+    """Response type for Server - use with .dict property for typed dict access."""
+    name: str
+    addr_type: Literal["ip4", "ip6", "fqdn"]
+    ip_address: str
+    ip6_address: str
+    fqdn: str
+    port: int
+    max_connections: int
+    secure: Literal["disable", "enable"]
+    ssl_cert: str
+    healthcheck: Literal["disable", "enable"]
+    healthcheck_service: str
+
+
+# ================================================================
+# Response Types (Class for attribute access)
+# ================================================================
+
+
+class ServerObject(FortiObject):
+    """Typed FortiObject for Server with field access."""
+    name: str
+    addr_type: Literal["ip4", "ip6", "fqdn"]
+    ip_address: str
+    ip6_address: str
+    fqdn: str
+    port: int
+    max_connections: int
+    secure: Literal["disable", "enable"]
+    ssl_cert: str
+    healthcheck: Literal["disable", "enable"]
+    healthcheck_service: str
+
+
+# ================================================================
+# Main Endpoint Class
+# ================================================================
 
 class Server:
     """
-    Configure ICAP servers.
     
-    Path: icap/server
+    Endpoint: icap/server
     Category: cmdb
-    Primary Key: name
+    MKey: name
     """
     
+    # Class attributes for introspection
+    endpoint: ClassVar[str] = ...
+    path: ClassVar[str] = ...
+    category: ClassVar[str] = ...
+    mkey: ClassVar[str] = ...
+    capabilities: ClassVar[dict[str, Any]] = ...
+    
     def __init__(self, client: Any) -> None:
-        """Initialize endpoint with HTTP client.
-        
-        Args:
-            client: HTTP client instance for API communication
-        """
+        """Initialize endpoint with HTTP client."""
         ...
     
     # ================================================================
-    # GET OVERLOADS - Always returns FortiObject (or ContentResponse for file endpoints)
-    # Pylance matches overloads top-to-bottom, so these must come first!
+    # GET Methods
     # ================================================================
     
-    # With mkey as positional arg -> returns FortiObject
+    # CMDB with mkey - overloads for single vs list returns
     @overload
     def get(
         self,
         name: str,
+        *,
         filter: str | list[str] | None = ...,
         count: int | None = ...,
         start: int | None = ...,
@@ -163,14 +122,14 @@ class Server:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        error_mode: Literal["raise", "return", "print"] | None = ...,
+        error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> ServerObject: ...
     
-    # With mkey as keyword arg -> returns FortiObject
     @overload
     def get(
         self,
         *,
-        name: str,
         filter: str | list[str] | None = ...,
         count: int | None = ...,
         start: int | None = ...,
@@ -180,164 +139,20 @@ class Server:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> ServerObject: ...
-    
-    # Without mkey -> returns list of FortiObjects
-    @overload
-    def get(
-        self,
-        name: None = None,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
+        error_mode: Literal["raise", "return", "print"] | None = ...,
+        error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> FortiObjectList[ServerObject]: ...
-    
-    # ================================================================
-    # (removed - all GET now returns FortiObject)
-    # ================================================================
-    
-    # With mkey as positional arg -> returns single object
-    @overload
-    def get(
-        self,
-        name: str,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> ServerObject: ...
-    
-    # With mkey as keyword arg -> returns single object
-    @overload
-    def get(
-        self,
-        *,
-        name: str,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> ServerObject: ...
-    
-    # With no mkey -> returns list of objects
-    @overload
-    def get(
-        self,
-        *,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObjectList[ServerObject]: ...
-    
-    # Dict mode with mkey provided as positional arg (single dict)
-    @overload
-    def get(
-        self,
-        name: str,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> ServerObject: ...
-    
-    # Dict mode with mkey provided as keyword arg (single dict)
-    @overload
-    def get(
-        self,
-        *,
-        name: str,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> ServerObject: ...
-    
-    # Dict mode - list of dicts (no mkey/name provided) - keyword-only signature
-    @overload
-    def get(
-        self,
-        *,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObjectList[ServerObject]: ...
-    
-    # Fallback overload for all other cases
-    @overload
-    def get(
-        self,
-        name: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> Union[dict[str, Any], list[dict[str, Any]], FortiObject, list[FortiObject]]: ...
-    
-    def get(
-        self,
-        name: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> ServerObject | list[ServerObject] | dict[str, Any] | list[dict[str, Any]]: ...
     
     def get_schema(
         self,
         vdom: str | None = ...,
         format: str = ...,
     ) -> FortiObject: ...
+
+    # ================================================================
+    # POST Method
+    # ================================================================
     
-    # POST overloads
-    @overload
     def post(
         self,
         payload_dict: ServerPayload | None = ...,
@@ -353,64 +168,14 @@ class Server:
         healthcheck: Literal["disable", "enable"] | None = ...,
         healthcheck_service: str | None = ...,
         vdom: str | bool | None = ...,
+        error_mode: Literal["raise", "return", "print"] | None = ...,
+        error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> ServerObject: ...
+
+    # ================================================================
+    # PUT Method
+    # ================================================================
     
-    @overload
-    def post(
-        self,
-        payload_dict: ServerPayload | None = ...,
-        name: str | None = ...,
-        addr_type: Literal["ip4", "ip6", "fqdn"] | None = ...,
-        ip_address: str | None = ...,
-        ip6_address: str | None = ...,
-        fqdn: str | None = ...,
-        port: int | None = ...,
-        max_connections: int | None = ...,
-        secure: Literal["disable", "enable"] | None = ...,
-        ssl_cert: str | None = ...,
-        healthcheck: Literal["disable", "enable"] | None = ...,
-        healthcheck_service: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
-    
-    # Default overload
-    @overload
-    def post(
-        self,
-        payload_dict: ServerPayload | None = ...,
-        name: str | None = ...,
-        addr_type: Literal["ip4", "ip6", "fqdn"] | None = ...,
-        ip_address: str | None = ...,
-        ip6_address: str | None = ...,
-        fqdn: str | None = ...,
-        port: int | None = ...,
-        max_connections: int | None = ...,
-        secure: Literal["disable", "enable"] | None = ...,
-        ssl_cert: str | None = ...,
-        healthcheck: Literal["disable", "enable"] | None = ...,
-        healthcheck_service: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
-    
-    def post(
-        self,
-        payload_dict: ServerPayload | None = ...,
-        name: str | None = ...,
-        addr_type: Literal["ip4", "ip6", "fqdn"] | None = ...,
-        ip_address: str | None = ...,
-        ip6_address: str | None = ...,
-        fqdn: str | None = ...,
-        port: int | None = ...,
-        max_connections: int | None = ...,
-        secure: Literal["disable", "enable"] | None = ...,
-        ssl_cert: str | None = ...,
-        healthcheck: Literal["disable", "enable"] | None = ...,
-        healthcheck_service: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
-    
-    # PUT overloads
-    @overload
     def put(
         self,
         payload_dict: ServerPayload | None = ...,
@@ -426,90 +191,25 @@ class Server:
         healthcheck: Literal["disable", "enable"] | None = ...,
         healthcheck_service: str | None = ...,
         vdom: str | bool | None = ...,
+        error_mode: Literal["raise", "return", "print"] | None = ...,
+        error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> ServerObject: ...
-    
-    @overload
-    def put(
-        self,
-        payload_dict: ServerPayload | None = ...,
-        name: str | None = ...,
-        addr_type: Literal["ip4", "ip6", "fqdn"] | None = ...,
-        ip_address: str | None = ...,
-        ip6_address: str | None = ...,
-        fqdn: str | None = ...,
-        port: int | None = ...,
-        max_connections: int | None = ...,
-        secure: Literal["disable", "enable"] | None = ...,
-        ssl_cert: str | None = ...,
-        healthcheck: Literal["disable", "enable"] | None = ...,
-        healthcheck_service: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
-    
-    # Default overload
-    @overload
-    def put(
-        self,
-        payload_dict: ServerPayload | None = ...,
-        name: str | None = ...,
-        addr_type: Literal["ip4", "ip6", "fqdn"] | None = ...,
-        ip_address: str | None = ...,
-        ip6_address: str | None = ...,
-        fqdn: str | None = ...,
-        port: int | None = ...,
-        max_connections: int | None = ...,
-        secure: Literal["disable", "enable"] | None = ...,
-        ssl_cert: str | None = ...,
-        healthcheck: Literal["disable", "enable"] | None = ...,
-        healthcheck_service: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
-    
-    def put(
-        self,
-        payload_dict: ServerPayload | None = ...,
-        name: str | None = ...,
-        addr_type: Literal["ip4", "ip6", "fqdn"] | None = ...,
-        ip_address: str | None = ...,
-        ip6_address: str | None = ...,
-        fqdn: str | None = ...,
-        port: int | None = ...,
-        max_connections: int | None = ...,
-        secure: Literal["disable", "enable"] | None = ...,
-        ssl_cert: str | None = ...,
-        healthcheck: Literal["disable", "enable"] | None = ...,
-        healthcheck_service: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
-    
-    # DELETE overloads
-    @overload
-    def delete(
-        self,
-        name: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> ServerObject: ...
-    
-    @overload
-    def delete(
-        self,
-        name: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
-    
-    # Default overload
-    @overload
-    def delete(
-        self,
-        name: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+
+    # ================================================================
+    # DELETE Method
+    # ================================================================
     
     def delete(
         self,
         name: str | None = ...,
         vdom: str | bool | None = ...,
+        error_mode: Literal["raise", "return", "print"] | None = ...,
+        error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> FortiObject: ...
+
+    # ================================================================
+    # Utility Methods
+    # ================================================================
     
     def exists(
         self,
@@ -532,6 +232,8 @@ class Server:
         healthcheck: Literal["disable", "enable"] | None = ...,
         healthcheck_service: str | None = ...,
         vdom: str | bool | None = ...,
+        error_mode: Literal["raise", "return", "print"] | None = ...,
+        error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> FortiObject: ...
     
     # Helper methods
@@ -539,7 +241,7 @@ class Server:
     def help(field_name: str | None = ...) -> str: ...
     
     @staticmethod
-    def fields(detailed: bool = ...) -> Union[list[str], list[dict[str, Any]]]: ...
+    def fields(detailed: bool = ...) -> list[str] | list[dict[str, Any]]: ...
     
     @staticmethod
     def field_info(field_name: str) -> FortiObject: ...
@@ -555,9 +257,6 @@ class Server:
     
     @staticmethod
     def schema() -> FortiObject: ...
-
-
-# ================================================================
 
 
 __all__ = [

@@ -12,7 +12,11 @@ from typing import Any, Literal, Optional
 from uuid import UUID
 
 # ============================================================================
-# Child Table Models
+# Enum Definitions for Child Table Fields (for fields with 4+ allowed values)
+# ============================================================================
+
+# ============================================================================
+# Child Table Models (sorted deepest-first so nested models are defined before their parents)
 # ============================================================================
 
 class InterfacePolicy6Srcaddr6(BaseModel):
@@ -26,21 +30,9 @@ class InterfacePolicy6Srcaddr6(BaseModel):
         """Pydantic model configuration."""
         extra = "allow"  # Allow additional fields from API
         str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
     
-    name: str = Field(max_length=79, default="", description="Address name.")  # datasource: ['firewall.address6.name', 'firewall.addrgrp6.name']
-class InterfacePolicy6Dstaddr6(BaseModel):
-    """
-    Child table model for dstaddr6.
-    
-    IPv6 address object to limit traffic monitoring to network traffic sent to the specified address or range.
-    """
-    
-    class Config:
-        """Pydantic model configuration."""
-        extra = "allow"  # Allow additional fields from API
-        str_strip_whitespace = True
-    
-    name: str = Field(max_length=79, default="", description="Address name.")  # datasource: ['firewall.address6.name', 'firewall.addrgrp6.name']
+    name: str = Field(max_length=79, description="Address name.")  # datasource: ['firewall.address6.name', 'firewall.addrgrp6.name']
 class InterfacePolicy6Service6(BaseModel):
     """
     Child table model for service6.
@@ -52,8 +44,23 @@ class InterfacePolicy6Service6(BaseModel):
         """Pydantic model configuration."""
         extra = "allow"  # Allow additional fields from API
         str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
     
-    name: str = Field(max_length=79, default="", description="Service name.")  # datasource: ['firewall.service.custom.name', 'firewall.service.group.name']
+    name: str = Field(max_length=79, description="Service name.")  # datasource: ['firewall.service.custom.name', 'firewall.service.group.name']
+class InterfacePolicy6Dstaddr6(BaseModel):
+    """
+    Child table model for dstaddr6.
+    
+    IPv6 address object to limit traffic monitoring to network traffic sent to the specified address or range.
+    """
+    
+    class Config:
+        """Pydantic model configuration."""
+        extra = "allow"  # Allow additional fields from API
+        str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
+    
+    name: str = Field(max_length=79, description="Address name.")  # datasource: ['firewall.address6.name', 'firewall.addrgrp6.name']
 # ============================================================================
 # Enum Definitions (for fields with 4+ allowed values)
 # ============================================================================
@@ -87,25 +94,25 @@ class InterfacePolicy6Model(BaseModel):
     status: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable this policy.")    
     comments: str | None = Field(max_length=1023, default=None, description="Comments.")    
     logtraffic: Literal["all", "utm", "disable"] | None = Field(default="utm", description="Logging type to be used in this policy (Options: all | utm | disable, Default: utm).")    
-    interface: str = Field(max_length=35, default="", description="Monitored interface name from available interfaces.")  # datasource: ['system.zone.name', 'system.sdwan.zone.name', 'system.interface.name']    
-    srcaddr6: list[Srcaddr6] = Field(description="IPv6 address object to limit traffic monitoring to network traffic sent from the specified address or range.")    
-    dstaddr6: list[Dstaddr6] = Field(description="IPv6 address object to limit traffic monitoring to network traffic sent to the specified address or range.")    
-    service6: list[Service6] = Field(default=None, description="Service name.")    
+    interface: str = Field(max_length=35, description="Monitored interface name from available interfaces.")  # datasource: ['system.zone.name', 'system.sdwan.zone.name', 'system.interface.name']    
+    srcaddr6: list[InterfacePolicy6Srcaddr6] = Field(description="IPv6 address object to limit traffic monitoring to network traffic sent from the specified address or range.")    
+    dstaddr6: list[InterfacePolicy6Dstaddr6] = Field(description="IPv6 address object to limit traffic monitoring to network traffic sent to the specified address or range.")    
+    service6: list[InterfacePolicy6Service6] = Field(default_factory=list, description="Service name.")    
     application_list_status: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable application control.")    
-    application_list: str = Field(max_length=47, default="", description="Application list name.")  # datasource: ['application.list.name']    
+    application_list: str = Field(max_length=47, description="Application list name.")  # datasource: ['application.list.name']    
     ips_sensor_status: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable IPS.")    
-    ips_sensor: str = Field(max_length=47, default="", description="IPS sensor name.")  # datasource: ['ips.sensor.name']    
+    ips_sensor: str = Field(max_length=47, description="IPS sensor name.")  # datasource: ['ips.sensor.name']    
     dsri: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable DSRI.")    
     av_profile_status: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable antivirus.")    
-    av_profile: str = Field(max_length=47, default="", description="Antivirus profile.")  # datasource: ['antivirus.profile.name']    
+    av_profile: str = Field(max_length=47, description="Antivirus profile.")  # datasource: ['antivirus.profile.name']    
     webfilter_profile_status: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable web filtering.")    
-    webfilter_profile: str = Field(max_length=47, default="", description="Web filter profile.")  # datasource: ['webfilter.profile.name']    
+    webfilter_profile: str = Field(max_length=47, description="Web filter profile.")  # datasource: ['webfilter.profile.name']    
     casb_profile_status: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable CASB.")    
-    casb_profile: str = Field(max_length=47, default="", description="CASB profile.")  # datasource: ['casb.profile.name']    
+    casb_profile: str = Field(max_length=47, description="CASB profile.")  # datasource: ['casb.profile.name']    
     emailfilter_profile_status: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable email filter.")    
-    emailfilter_profile: str = Field(max_length=47, default="", description="Email filter profile.")  # datasource: ['emailfilter.profile.name']    
+    emailfilter_profile: str = Field(max_length=47, description="Email filter profile.")  # datasource: ['emailfilter.profile.name']    
     dlp_profile_status: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable DLP.")    
-    dlp_profile: str = Field(max_length=47, default="", description="DLP profile name.")  # datasource: ['dlp.profile.name']    
+    dlp_profile: str = Field(max_length=47, description="DLP profile name.")  # datasource: ['dlp.profile.name']    
     # ========================================================================
     # Custom Validators
     # ========================================================================
@@ -290,7 +297,7 @@ class InterfacePolicy6Model(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.interface_policy6.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate scalar field
         value = getattr(self, "interface", None)
@@ -343,7 +350,7 @@ class InterfacePolicy6Model(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.interface_policy6.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate child table items
         values = getattr(self, "srcaddr6", [])
@@ -403,7 +410,7 @@ class InterfacePolicy6Model(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.interface_policy6.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate child table items
         values = getattr(self, "dstaddr6", [])
@@ -463,7 +470,7 @@ class InterfacePolicy6Model(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.interface_policy6.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate child table items
         values = getattr(self, "service6", [])
@@ -523,7 +530,7 @@ class InterfacePolicy6Model(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.interface_policy6.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate scalar field
         value = getattr(self, "application_list", None)
@@ -572,7 +579,7 @@ class InterfacePolicy6Model(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.interface_policy6.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate scalar field
         value = getattr(self, "ips_sensor", None)
@@ -621,7 +628,7 @@ class InterfacePolicy6Model(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.interface_policy6.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate scalar field
         value = getattr(self, "av_profile", None)
@@ -670,7 +677,7 @@ class InterfacePolicy6Model(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.interface_policy6.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate scalar field
         value = getattr(self, "webfilter_profile", None)
@@ -719,7 +726,7 @@ class InterfacePolicy6Model(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.interface_policy6.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate scalar field
         value = getattr(self, "casb_profile", None)
@@ -768,7 +775,7 @@ class InterfacePolicy6Model(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.interface_policy6.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate scalar field
         value = getattr(self, "emailfilter_profile", None)
@@ -817,7 +824,7 @@ class InterfacePolicy6Model(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.interface_policy6.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate scalar field
         value = getattr(self, "dlp_profile", None)
@@ -897,5 +904,5 @@ __all__ = [
 # ============================================================================
 # Generated by hfortix generator v0.6.0
 # Schema: 1.7.0
-# Generated: 2026-01-17T05:32:17.254386Z
+# Generated: 2026-01-17T17:25:21.166627Z
 # ============================================================================

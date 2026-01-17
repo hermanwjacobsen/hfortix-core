@@ -732,6 +732,16 @@ class DeviceUpgrade(CRUDEndpoint, MetadataMixin):
             - put(): Update existing object
             - exists(): Check existence manually
         """
+        # Apply normalization for table fields (supports flexible input formats)
+        if known_ha_members is not None:
+            known_ha_members = normalize_table_field(
+                known_ha_members,
+                mkey="serial",
+                required_fields=['serial'],
+                field_name="known_ha_members",
+                example="[{'serial': 'value'}]",
+            )
+        
         # Build payload using helper function with auto-normalization
         payload_data = build_api_payload(
             status=status,

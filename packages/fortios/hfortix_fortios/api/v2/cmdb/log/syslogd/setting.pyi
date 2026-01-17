@@ -1,327 +1,135 @@
-from typing import TypedDict, Literal, Any, Coroutine, Union, overload, Generator, final
-from typing_extensions import NotRequired
-from hfortix_fortios.models import FortiObject, FortiObjectList
+""" - Type Stubs
 
-# ============================================================================
-# Nested TypedDicts for table field children (dict mode)
-# These MUST be defined before the Payload class to use them as type hints
-# ============================================================================
+Auto-generated stub file for type checking and IDE support.
 
-class SettingCustomfieldnameItem(TypedDict, total=False):
-    """Type hints for custom-field-name table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    Use this when building payloads for POST/PUT requests.
-    
-    **Available fields:**
-        - id: int
-        - name: str
-        - custom: str
-    
-    **Example:**
-        entry: SettingCustomfieldnameItem = {
-            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
-        }
-    """
-    
-    id: int  # Entry ID. | Default: 0 | Min: 0 | Max: 255
-    name: str  # Field name [A-Za-z0-9_]. | MaxLen: 35
-    custom: str  # Field custom name [A-Za-z0-9_]. | MaxLen: 35
+Endpoint: log/syslogd/setting
+Category: cmdb
+"""
+
+from __future__ import annotations
+
+from typing import (
+    Any,
+    ClassVar,
+    Literal,
+    TypedDict,
+)
+
+from hfortix_fortios.models import (
+    FortiObject,
+    FortiObjectList,
+)
 
 
-# ============================================================================
-# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional)
-# ============================================================================
-# NOTE: We intentionally DON'T use NotRequired wrapper because:
-# 1. total=False already makes all fields optional
-# 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
-class SettingPayload(TypedDict, total=False):
-    """
-    Type hints for log/syslogd/setting payload fields.
-    
-    Global settings for remote syslog server.
-    
-    **Related Resources:**
+# ================================================================
+# TypedDict Payloads
+# ================================================================
 
-    Dependencies (resources this endpoint references):
-        - :class:`~.certificate.local.LocalEndpoint` (via: certificate)
-        - :class:`~.system.interface.InterfaceEndpoint` (via: interface, source-ip-interface)
-
-    **Usage:**
-        payload: SettingPayload = {
-            "field": "value",  # <- autocomplete shows all fields
-        }
-    """
-    status: Literal["enable", "disable"]  # Enable/disable remote syslog logging. | Default: disable
-    server: str  # Address of remote syslog server. | MaxLen: 127
-    mode: Literal["udp", "legacy-reliable", "reliable"]  # Remote syslog logging over UDP/Reliable TCP. | Default: udp
-    port: int  # Server listen port. | Default: 514 | Min: 0 | Max: 65535
-    facility: Literal["kernel", "user", "mail", "daemon", "auth", "syslog", "lpr", "news", "uucp", "cron", "authpriv", "ftp", "ntp", "audit", "alert", "clock", "local0", "local1", "local2", "local3", "local4", "local5", "local6", "local7"]  # Remote syslog facility. | Default: local7
-    source_ip_interface: str  # Source interface of syslog. | MaxLen: 15
-    source_ip: str  # Source IP address of syslog. | MaxLen: 63
-    format: Literal["default", "csv", "cef", "rfc5424", "json"]  # Log format. | Default: default
-    priority: Literal["default", "low"]  # Set log transmission priority. | Default: default
-    max_log_rate: int  # Syslog maximum log rate in MBps (0 = unlimited). | Default: 0 | Min: 0 | Max: 100000
-    enc_algorithm: Literal["high-medium", "high", "low", "disable"]  # Enable/disable reliable syslogging with TLS encryp | Default: disable
-    ssl_min_proto_version: Literal["default", "SSLv3", "TLSv1", "TLSv1-1", "TLSv1-2", "TLSv1-3"]  # Minimum supported protocol version for SSL/TLS con | Default: default
-    certificate: str  # Certificate used to communicate with Syslog server | MaxLen: 35
-    custom_field_name: list[SettingCustomfieldnameItem]  # Custom field name for CEF format logging.
-    interface_select_method: Literal["auto", "sdwan", "specify"]  # Specify how to select outgoing interface to reach | Default: auto
-    interface: str  # Specify outgoing interface to reach server. | MaxLen: 15
-    vrf_select: int  # VRF ID used for connection to server. | Default: 0 | Min: 0 | Max: 511
-
-# ============================================================================
-# Nested classes for table field children (object mode - for API responses)
-# ============================================================================
-
-@final
-class SettingCustomfieldnameObject:
-    """Typed object for custom-field-name table items.
-    
-    Provides IDE autocomplete for nested table field attributes.
-    At runtime, this is a FortiObject instance.
-    """
-    
-    # Entry ID. | Default: 0 | Min: 0 | Max: 255
+class SettingCustomfieldnameItem:
+    """Nested item for custom-field-name field - supports attribute access."""
     id: int
-    # Field name [A-Za-z0-9_]. | MaxLen: 35
     name: str
-    # Field custom name [A-Za-z0-9_]. | MaxLen: 35
     custom: str
-    
-    # Common API response fields
-    status: str
-    http_status: int | None
-    http_status_code: int | None
-    http_method: str | None
-    http_response_time: float | None
-    vdom: str | None
-    
-    # Methods from FortiObject
-    @property
-    def dict(self) -> dict[str, Any]:
-        """Convert to dictionary."""
-        ...
-    @property
-    def json(self) -> str:
-        """Get pretty-printed JSON string."""
-        ...
-    @property
-    def raw(self) -> dict[str, Any]:
-        """Get raw API response data."""
-        ...
-    def get_full(self, name: str) -> Any: ...
-    def to_dict(self) -> FortiObject: ...
-    def keys(self) -> Any: ...
-    def values(self) -> Generator[Any, None, None]: ...
-    def items(self) -> Generator[tuple[str, Any], None, None]: ...
-    def get(self, key: str, default: Any = None) -> Any: ...
 
 
-
-
-# Response TypedDict for GET returns (all fields present in API response)
-class SettingResponse(TypedDict):
-    """
-    Type hints for log/syslogd/setting API response fields.
-    
-    All fields are present in the response from the FortiGate API.
-    """
-    status: Literal["enable", "disable"]  # Enable/disable remote syslog logging. | Default: disable
-    server: str  # Address of remote syslog server. | MaxLen: 127
-    mode: Literal["udp", "legacy-reliable", "reliable"]  # Remote syslog logging over UDP/Reliable TCP. | Default: udp
-    port: int  # Server listen port. | Default: 514 | Min: 0 | Max: 65535
-    facility: Literal["kernel", "user", "mail", "daemon", "auth", "syslog", "lpr", "news", "uucp", "cron", "authpriv", "ftp", "ntp", "audit", "alert", "clock", "local0", "local1", "local2", "local3", "local4", "local5", "local6", "local7"]  # Remote syslog facility. | Default: local7
-    source_ip_interface: str  # Source interface of syslog. | MaxLen: 15
-    source_ip: str  # Source IP address of syslog. | MaxLen: 63
-    format: Literal["default", "csv", "cef", "rfc5424", "json"]  # Log format. | Default: default
-    priority: Literal["default", "low"]  # Set log transmission priority. | Default: default
-    max_log_rate: int  # Syslog maximum log rate in MBps (0 = unlimited). | Default: 0 | Min: 0 | Max: 100000
-    enc_algorithm: Literal["high-medium", "high", "low", "disable"]  # Enable/disable reliable syslogging with TLS encryp | Default: disable
-    ssl_min_proto_version: Literal["default", "SSLv3", "TLSv1", "TLSv1-1", "TLSv1-2", "TLSv1-3"]  # Minimum supported protocol version for SSL/TLS con | Default: default
-    certificate: str  # Certificate used to communicate with Syslog server | MaxLen: 35
-    custom_field_name: list[SettingCustomfieldnameItem]  # Custom field name for CEF format logging.
-    interface_select_method: Literal["auto", "sdwan", "specify"]  # Specify how to select outgoing interface to reach | Default: auto
-    interface: str  # Specify outgoing interface to reach server. | MaxLen: 15
-    vrf_select: int  # VRF ID used for connection to server. | Default: 0 | Min: 0 | Max: 511
-
-
-@final
-class SettingObject:
-    """Typed FortiObject for log/syslogd/setting with IDE autocomplete support.
-    
-    This is a typed wrapper that provides IDE autocomplete for API response fields.
-    At runtime, this is actually a FortiObject instance.
-    """
-    
-    # Enable/disable remote syslog logging. | Default: disable
+class SettingPayload(TypedDict, total=False):
+    """Payload type for Setting operations."""
     status: Literal["enable", "disable"]
-    # Address of remote syslog server. | MaxLen: 127
     server: str
-    # Remote syslog logging over UDP/Reliable TCP. | Default: udp
     mode: Literal["udp", "legacy-reliable", "reliable"]
-    # Server listen port. | Default: 514 | Min: 0 | Max: 65535
     port: int
-    # Remote syslog facility. | Default: local7
     facility: Literal["kernel", "user", "mail", "daemon", "auth", "syslog", "lpr", "news", "uucp", "cron", "authpriv", "ftp", "ntp", "audit", "alert", "clock", "local0", "local1", "local2", "local3", "local4", "local5", "local6", "local7"]
-    # Source interface of syslog. | MaxLen: 15
     source_ip_interface: str
-    # Source IP address of syslog. | MaxLen: 63
     source_ip: str
-    # Log format. | Default: default
     format: Literal["default", "csv", "cef", "rfc5424", "json"]
-    # Set log transmission priority. | Default: default
     priority: Literal["default", "low"]
-    # Syslog maximum log rate in MBps (0 = unlimited). | Default: 0 | Min: 0 | Max: 100000
     max_log_rate: int
-    # Enable/disable reliable syslogging with TLS encryption. | Default: disable
     enc_algorithm: Literal["high-medium", "high", "low", "disable"]
-    # Minimum supported protocol version for SSL/TLS connections | Default: default
     ssl_min_proto_version: Literal["default", "SSLv3", "TLSv1", "TLSv1-1", "TLSv1-2", "TLSv1-3"]
-    # Certificate used to communicate with Syslog server. | MaxLen: 35
     certificate: str
-    # Custom field name for CEF format logging.
-    custom_field_name: list[SettingCustomfieldnameObject]
-    # Specify how to select outgoing interface to reach server. | Default: auto
+    custom_field_name: str | list[str] | list[dict[str, Any]] | list[SettingCustomfieldnameItem]
     interface_select_method: Literal["auto", "sdwan", "specify"]
-    # Specify outgoing interface to reach server. | MaxLen: 15
     interface: str
-    # VRF ID used for connection to server. | Default: 0 | Min: 0 | Max: 511
     vrf_select: int
-    
-    # Common API response fields
-    status: str
-    http_status: int | None
-    http_status_code: int | None
-    http_method: str | None
-    http_response_time: float | None
-    vdom: str | None
-    
-    # Methods from FortiObject
-    @property
-    def dict(self) -> dict[str, Any]:
-        """Convert to dictionary."""
-        ...
-    @property
-    def json(self) -> str:
-        """Get pretty-printed JSON string."""
-        ...
-    @property
-    def raw(self) -> dict[str, Any]:
-        """Get raw API response data."""
-        ...
-    def get_full(self, name: str) -> Any: ...
-    def to_dict(self) -> SettingPayload: ...
-    def keys(self) -> Any: ...
-    def values(self) -> Generator[Any, None, None]: ...
-    def items(self) -> Generator[tuple[str, Any], None, None]: ...
-    def get(self, key: str, default: Any = None) -> Any: ...
 
+
+# ================================================================
+# Response Types (TypedDict for dict-style access)
+# ================================================================
+
+class SettingResponse(TypedDict, total=False):
+    """Response type for Setting - use with .dict property for typed dict access."""
+    status: Literal["enable", "disable"]
+    server: str
+    mode: Literal["udp", "legacy-reliable", "reliable"]
+    port: int
+    facility: Literal["kernel", "user", "mail", "daemon", "auth", "syslog", "lpr", "news", "uucp", "cron", "authpriv", "ftp", "ntp", "audit", "alert", "clock", "local0", "local1", "local2", "local3", "local4", "local5", "local6", "local7"]
+    source_ip_interface: str
+    source_ip: str
+    format: Literal["default", "csv", "cef", "rfc5424", "json"]
+    priority: Literal["default", "low"]
+    max_log_rate: int
+    enc_algorithm: Literal["high-medium", "high", "low", "disable"]
+    ssl_min_proto_version: Literal["default", "SSLv3", "TLSv1", "TLSv1-1", "TLSv1-2", "TLSv1-3"]
+    certificate: str
+    custom_field_name: list[SettingCustomfieldnameItem]
+    interface_select_method: Literal["auto", "sdwan", "specify"]
+    interface: str
+    vrf_select: int
+
+
+# ================================================================
+# Response Types (Class for attribute access)
+# ================================================================
+
+
+class SettingObject(FortiObject):
+    """Typed FortiObject for Setting with field access."""
+    status: Literal["enable", "disable"]
+    server: str
+    mode: Literal["udp", "legacy-reliable", "reliable"]
+    port: int
+    facility: Literal["kernel", "user", "mail", "daemon", "auth", "syslog", "lpr", "news", "uucp", "cron", "authpriv", "ftp", "ntp", "audit", "alert", "clock", "local0", "local1", "local2", "local3", "local4", "local5", "local6", "local7"]
+    source_ip_interface: str
+    source_ip: str
+    format: Literal["default", "csv", "cef", "rfc5424", "json"]
+    priority: Literal["default", "low"]
+    max_log_rate: int
+    enc_algorithm: Literal["high-medium", "high", "low", "disable"]
+    ssl_min_proto_version: Literal["default", "SSLv3", "TLSv1", "TLSv1-1", "TLSv1-2", "TLSv1-3"]
+    certificate: str
+    custom_field_name: list[SettingCustomfieldnameItem]
+    interface_select_method: Literal["auto", "sdwan", "specify"]
+    interface: str
+    vrf_select: int
+
+
+# ================================================================
+# Main Endpoint Class
+# ================================================================
 
 class Setting:
     """
-    Global settings for remote syslog server.
     
-    Path: log/syslogd/setting
+    Endpoint: log/syslogd/setting
     Category: cmdb
     """
     
+    # Class attributes for introspection
+    endpoint: ClassVar[str] = ...
+    path: ClassVar[str] = ...
+    category: ClassVar[str] = ...
+    capabilities: ClassVar[dict[str, Any]] = ...
+    
     def __init__(self, client: Any) -> None:
-        """Initialize endpoint with HTTP client.
-        
-        Args:
-            client: HTTP client instance for API communication
-        """
+        """Initialize endpoint with HTTP client."""
         ...
     
     # ================================================================
-    # GET OVERLOADS - Always returns FortiObject (or ContentResponse for file endpoints)
-    # Pylance matches overloads top-to-bottom, so these must come first!
+    # GET Methods
     # ================================================================
     
-    # With mkey as positional arg -> returns FortiObject
-    @overload
-    def get(
-        self,
-        name: str,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-    ) -> SettingObject: ...
-    
-    # With mkey as keyword arg -> returns FortiObject
-    @overload
-    def get(
-        self,
-        *,
-        name: str,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-    ) -> SettingObject: ...
-    
-    # Without mkey -> returns list of FortiObjects
-    @overload
-    def get(
-        self,
-        name: None = None,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-    ) -> SettingObject: ...
-    
-    # ================================================================
-    # (removed - all GET now returns FortiObject)
-    # ================================================================
-    
-    # With mkey as positional arg -> returns single object
-    @overload
-    def get(
-        self,
-        name: str,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-    ) -> SettingObject: ...
-    
-    # With mkey as keyword arg -> returns single object
-    @overload
-    def get(
-        self,
-        *,
-        name: str,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-    ) -> SettingObject: ...
-    
-    # With no mkey -> returns list of objects
-    @overload
+    # Singleton endpoint (no mkey)
     def get(
         self,
         *,
@@ -333,89 +141,20 @@ class Setting:
         sort: str | None = ...,
         format: str | None = ...,
         action: str | None = ...,
+        error_mode: Literal["raise", "return", "print"] | None = ...,
+        error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> SettingObject: ...
-    
-    # Dict mode with mkey provided as positional arg (single dict)
-    @overload
-    def get(
-        self,
-        name: str,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-    ) -> SettingObject: ...
-    
-    # Dict mode with mkey provided as keyword arg (single dict)
-    @overload
-    def get(
-        self,
-        *,
-        name: str,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-    ) -> SettingObject: ...
-    
-    # Dict mode - list of dicts (no mkey/name provided) - keyword-only signature
-    @overload
-    def get(
-        self,
-        *,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-    ) -> SettingObject: ...
-    
-    # Fallback overload for all other cases
-    @overload
-    def get(
-        self,
-        name: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-    ) -> dict[str, Any] | FortiObject: ...
-    
-    def get(
-        self,
-        name: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-    ) -> SettingObject | dict[str, Any]: ...
     
     def get_schema(
         self,
         format: str = ...,
     ) -> FortiObject: ...
+
+
+    # ================================================================
+    # PUT Method
+    # ================================================================
     
-    # PUT overloads
-    @overload
     def put(
         self,
         payload_dict: SettingPayload | None = ...,
@@ -432,80 +171,18 @@ class Setting:
         enc_algorithm: Literal["high-medium", "high", "low", "disable"] | None = ...,
         ssl_min_proto_version: Literal["default", "SSLv3", "TLSv1", "TLSv1-1", "TLSv1-2", "TLSv1-3"] | None = ...,
         certificate: str | None = ...,
-        custom_field_name: str | list[str] | list[SettingCustomfieldnameItem] | None = ...,
+        custom_field_name: str | list[str] | list[dict[str, Any]] | list[SettingCustomfieldnameItem] | None = ...,
         interface_select_method: Literal["auto", "sdwan", "specify"] | None = ...,
         interface: str | None = ...,
         vrf_select: int | None = ...,
+        error_mode: Literal["raise", "return", "print"] | None = ...,
+        error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> SettingObject: ...
-    
-    @overload
-    def put(
-        self,
-        payload_dict: SettingPayload | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
-        server: str | None = ...,
-        mode: Literal["udp", "legacy-reliable", "reliable"] | None = ...,
-        port: int | None = ...,
-        facility: Literal["kernel", "user", "mail", "daemon", "auth", "syslog", "lpr", "news", "uucp", "cron", "authpriv", "ftp", "ntp", "audit", "alert", "clock", "local0", "local1", "local2", "local3", "local4", "local5", "local6", "local7"] | None = ...,
-        source_ip_interface: str | None = ...,
-        source_ip: str | None = ...,
-        format: Literal["default", "csv", "cef", "rfc5424", "json"] | None = ...,
-        priority: Literal["default", "low"] | None = ...,
-        max_log_rate: int | None = ...,
-        enc_algorithm: Literal["high-medium", "high", "low", "disable"] | None = ...,
-        ssl_min_proto_version: Literal["default", "SSLv3", "TLSv1", "TLSv1-1", "TLSv1-2", "TLSv1-3"] | None = ...,
-        certificate: str | None = ...,
-        custom_field_name: str | list[str] | list[SettingCustomfieldnameItem] | None = ...,
-        interface_select_method: Literal["auto", "sdwan", "specify"] | None = ...,
-        interface: str | None = ...,
-        vrf_select: int | None = ...,
-    ) -> FortiObject: ...
-    
-    # Default overload
-    @overload
-    def put(
-        self,
-        payload_dict: SettingPayload | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
-        server: str | None = ...,
-        mode: Literal["udp", "legacy-reliable", "reliable"] | None = ...,
-        port: int | None = ...,
-        facility: Literal["kernel", "user", "mail", "daemon", "auth", "syslog", "lpr", "news", "uucp", "cron", "authpriv", "ftp", "ntp", "audit", "alert", "clock", "local0", "local1", "local2", "local3", "local4", "local5", "local6", "local7"] | None = ...,
-        source_ip_interface: str | None = ...,
-        source_ip: str | None = ...,
-        format: Literal["default", "csv", "cef", "rfc5424", "json"] | None = ...,
-        priority: Literal["default", "low"] | None = ...,
-        max_log_rate: int | None = ...,
-        enc_algorithm: Literal["high-medium", "high", "low", "disable"] | None = ...,
-        ssl_min_proto_version: Literal["default", "SSLv3", "TLSv1", "TLSv1-1", "TLSv1-2", "TLSv1-3"] | None = ...,
-        certificate: str | None = ...,
-        custom_field_name: str | list[str] | list[SettingCustomfieldnameItem] | None = ...,
-        interface_select_method: Literal["auto", "sdwan", "specify"] | None = ...,
-        interface: str | None = ...,
-        vrf_select: int | None = ...,
-    ) -> FortiObject: ...
-    
-    def put(
-        self,
-        payload_dict: SettingPayload | None = ...,
-        status: Literal["enable", "disable"] | None = ...,
-        server: str | None = ...,
-        mode: Literal["udp", "legacy-reliable", "reliable"] | None = ...,
-        port: int | None = ...,
-        facility: Literal["kernel", "user", "mail", "daemon", "auth", "syslog", "lpr", "news", "uucp", "cron", "authpriv", "ftp", "ntp", "audit", "alert", "clock", "local0", "local1", "local2", "local3", "local4", "local5", "local6", "local7"] | None = ...,
-        source_ip_interface: str | None = ...,
-        source_ip: str | None = ...,
-        format: Literal["default", "csv", "cef", "rfc5424", "json"] | None = ...,
-        priority: Literal["default", "low"] | None = ...,
-        max_log_rate: int | None = ...,
-        enc_algorithm: Literal["high-medium", "high", "low", "disable"] | None = ...,
-        ssl_min_proto_version: Literal["default", "SSLv3", "TLSv1", "TLSv1-1", "TLSv1-2", "TLSv1-3"] | None = ...,
-        certificate: str | None = ...,
-        custom_field_name: str | list[str] | list[SettingCustomfieldnameItem] | None = ...,
-        interface_select_method: Literal["auto", "sdwan", "specify"] | None = ...,
-        interface: str | None = ...,
-        vrf_select: int | None = ...,
-    ) -> FortiObject: ...
+
+
+    # ================================================================
+    # Utility Methods
+    # ================================================================
     
     def exists(
         self,
@@ -528,10 +205,12 @@ class Setting:
         enc_algorithm: Literal["high-medium", "high", "low", "disable"] | None = ...,
         ssl_min_proto_version: Literal["default", "SSLv3", "TLSv1", "TLSv1-1", "TLSv1-2", "TLSv1-3"] | None = ...,
         certificate: str | None = ...,
-        custom_field_name: str | list[str] | list[SettingCustomfieldnameItem] | None = ...,
+        custom_field_name: str | list[str] | list[dict[str, Any]] | list[SettingCustomfieldnameItem] | None = ...,
         interface_select_method: Literal["auto", "sdwan", "specify"] | None = ...,
         interface: str | None = ...,
         vrf_select: int | None = ...,
+        error_mode: Literal["raise", "return", "print"] | None = ...,
+        error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> FortiObject: ...
     
     # Helper methods
@@ -539,7 +218,7 @@ class Setting:
     def help(field_name: str | None = ...) -> str: ...
     
     @staticmethod
-    def fields(detailed: bool = ...) -> Union[list[str], list[dict[str, Any]]]: ...
+    def fields(detailed: bool = ...) -> list[str] | list[dict[str, Any]]: ...
     
     @staticmethod
     def field_info(field_name: str) -> FortiObject: ...
@@ -555,9 +234,6 @@ class Setting:
     
     @staticmethod
     def schema() -> FortiObject: ...
-
-
-# ================================================================
 
 
 __all__ = [

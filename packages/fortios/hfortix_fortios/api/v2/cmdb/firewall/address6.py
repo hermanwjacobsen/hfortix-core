@@ -931,6 +931,40 @@ class Address6(CRUDEndpoint, MetadataMixin):
             - put(): Update existing object
             - exists(): Check existence manually
         """
+        # Apply normalization for table fields (supports flexible input formats)
+        if macaddr is not None:
+            macaddr = normalize_table_field(
+                macaddr,
+                mkey="macaddr",
+                required_fields=['macaddr'],
+                field_name="macaddr",
+                example="[{'macaddr': 'value'}]",
+            )
+        if tagging is not None:
+            tagging = normalize_table_field(
+                tagging,
+                mkey="name",
+                required_fields=['name'],
+                field_name="tagging",
+                example="[{'name': 'value'}]",
+            )
+        if subnet_segment is not None:
+            subnet_segment = normalize_table_field(
+                subnet_segment,
+                mkey="name",
+                required_fields=['name', 'type', 'value'],
+                field_name="subnet_segment",
+                example="[{'name': 'value', 'type': 'any', 'value': 'value'}]",
+            )
+        if list is not None:
+            list = normalize_table_field(
+                list,
+                mkey="ip",
+                required_fields=['ip'],
+                field_name="list",
+                example="[{'ip': '192.168.1.10'}]",
+            )
+        
         # Build payload using helper function with auto-normalization
         payload_data = build_api_payload(
             name=name,

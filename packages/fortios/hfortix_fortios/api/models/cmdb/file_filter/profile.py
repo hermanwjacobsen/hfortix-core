@@ -9,11 +9,41 @@ from __future__ import annotations
 
 from pydantic import BaseModel, Field, field_validator
 from typing import Any, Literal, Optional
+from enum import Enum
 
 # ============================================================================
-# Child Table Models
+# Enum Definitions for Child Table Fields (for fields with 4+ allowed values)
 # ============================================================================
 
+class ProfileRulesProtocolEnum(str, Enum):
+    """Allowed values for protocol field in rules."""
+    HTTP = "http"
+    FTP = "ftp"
+    SMTP = "smtp"
+    IMAP = "imap"
+    POP3 = "pop3"
+    MAPI = "mapi"
+    CIFS = "cifs"
+    SSH = "ssh"
+
+# ============================================================================
+# Child Table Models (sorted deepest-first so nested models are defined before their parents)
+# ============================================================================
+
+class ProfileRulesFileType(BaseModel):
+    """
+    Child table model for rules.file-type.
+    
+    Select file type.
+    """
+    
+    class Config:
+        """Pydantic model configuration."""
+        extra = "allow"  # Allow additional fields from API
+        str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
+    
+    name: str | None = Field(max_length=39, default=None, description="File type name.")  # datasource: ['antivirus.filetype.name']
 class ProfileRules(BaseModel):
     """
     Child table model for rules.
@@ -25,14 +55,15 @@ class ProfileRules(BaseModel):
         """Pydantic model configuration."""
         extra = "allow"  # Allow additional fields from API
         str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
     
-    name: str = Field(max_length=35, default="", description="File-filter rule name.")    
+    name: str = Field(max_length=35, description="File-filter rule name.")    
     comment: str | None = Field(max_length=255, default=None, description="Comment.")    
-    protocol: list[Protocol] = Field(default="http ftp smtp imap pop3 mapi cifs ssh", description="Protocols to apply rule to.")    
+    protocol: list[ProfileRulesProtocolEnum] = Field(default_factory=list, description="Protocols to apply rule to.")    
     action: Literal["log-only", "block"] | None = Field(default="log-only", description="Action taken for matched file.")    
     direction: Literal["incoming", "outgoing", "any"] | None = Field(default="any", description="Traffic direction (HTTP, FTP, SSH, CIFS, and MAPI only).")    
     password_protected: Literal["yes", "any"] | None = Field(default="any", description="Match password-protected files.")    
-    file_type: list[FileType] = Field(description="Select file type.")
+    file_type: list[ProfileRulesFileType] = Field(description="Select file type.")
 # ============================================================================
 # Enum Definitions (for fields with 4+ allowed values)
 # ============================================================================
@@ -61,14 +92,14 @@ class ProfileModel(BaseModel):
     # Model Fields
     # ========================================================================
     
-    name: str = Field(max_length=47, default="", description="Profile name.")    
+    name: str = Field(max_length=47, description="Profile name.")    
     comment: str | None = Field(max_length=255, default=None, description="Comment.")    
     feature_set: Literal["flow", "proxy"] | None = Field(default="flow", description="Flow/proxy feature set.")    
-    replacemsg_group: str | None = Field(max_length=35, default="", description="Replacement message group.")  # datasource: ['system.replacemsg-group.name']    
+    replacemsg_group: str | None = Field(max_length=35, default=None, description="Replacement message group.")  # datasource: ['system.replacemsg-group.name']    
     log: Literal["disable", "enable"] | None = Field(default="enable", description="Enable/disable file-filter logging.")    
     extended_log: Literal["disable", "enable"] | None = Field(default="disable", description="Enable/disable file-filter extended logging.")    
     scan_archive_contents: Literal["disable", "enable"] | None = Field(default="enable", description="Enable/disable archive contents scan.")    
-    rules: list[Rules] = Field(default=None, description="File filter rules.")    
+    rules: list[ProfileRules] = Field(default_factory=list, description="File filter rules.")    
     # ========================================================================
     # Custom Validators
     # ========================================================================
@@ -148,7 +179,7 @@ class ProfileModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.file_filter.profile.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate scalar field
         value = getattr(self, "replacemsg_group", None)
@@ -157,7 +188,7 @@ class ProfileModel(BaseModel):
         
         # Check all datasource endpoints
         found = False
-        if await client.api.cmdb.system.replacemsg-group.exists(value):
+        if await client.api.cmdb.system.replacemsg_group.exists(value):
             found = True
         
         if not found:
@@ -202,11 +233,11 @@ Dict = dict[str, Any]  # For backward compatibility
 # ============================================================================
 
 __all__ = [
-    "ProfileModel",    "ProfileRules",]
+    "ProfileModel",    "ProfileRules",    "ProfileRules.FileType",]
 
 
 # ============================================================================
 # Generated by hfortix generator v0.6.0
 # Schema: 1.7.0
-# Generated: 2026-01-17T05:32:18.233829Z
+# Generated: 2026-01-17T17:25:22.033682Z
 # ============================================================================

@@ -12,7 +12,11 @@ from typing import Any, Literal, Optional
 from enum import Enum
 
 # ============================================================================
-# Child Table Models
+# Enum Definitions for Child Table Fields (for fields with 4+ allowed values)
+# ============================================================================
+
+# ============================================================================
+# Child Table Models (sorted deepest-first so nested models are defined before their parents)
 # ============================================================================
 
 class GlobalInternetServiceDownloadList(BaseModel):
@@ -26,54 +30,153 @@ class GlobalInternetServiceDownloadList(BaseModel):
         """Pydantic model configuration."""
         extra = "allow"  # Allow additional fields from API
         str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
     
-    id: int = Field(ge=0, le=4294967295, default=0, description="Internet Service ID.")  # datasource: ['firewall.internet-service.id']
+    id_: int = Field(ge=0, le=4294967295, default=0, serialization_alias="id", description="Internet Service ID.")  # datasource: ['firewall.internet-service.id']
 # ============================================================================
 # Enum Definitions (for fields with 4+ allowed values)
 # ============================================================================
 
 class GlobalLanguageEnum(str, Enum):
     """Allowed values for language field."""
-    ENGLISH = "english"    FRENCH = "french"    SPANISH = "spanish"    PORTUGUESE = "portuguese"    JAPANESE = "japanese"    TRACH = "trach"    SIMCH = "simch"    KOREAN = "korean"
-class GlobalAdmin_https_ssl_ciphersuitesEnum(str, Enum):
+    ENGLISH = "english"
+    FRENCH = "french"
+    SPANISH = "spanish"
+    PORTUGUESE = "portuguese"
+    JAPANESE = "japanese"
+    TRACH = "trach"
+    SIMCH = "simch"
+    KOREAN = "korean"
+
+class GlobalAdminHttpsSslCiphersuitesEnum(str, Enum):
     """Allowed values for admin_https_ssl_ciphersuites field."""
-    TLS_AES_128_GCM_SHA256 = "TLS-AES-128-GCM-SHA256"    TLS_AES_256_GCM_SHA384 = "TLS-AES-256-GCM-SHA384"    TLS_CHACHA20_POLY1305_SHA256 = "TLS-CHACHA20-POLY1305-SHA256"    TLS_AES_128_CCM_SHA256 = "TLS-AES-128-CCM-SHA256"    TLS_AES_128_CCM_8_SHA256 = "TLS-AES-128-CCM-8-SHA256"
-class GlobalAdmin_https_ssl_banned_ciphersEnum(str, Enum):
+    TLS_AES_128_GCM_SHA256 = "TLS-AES-128-GCM-SHA256"
+    TLS_AES_256_GCM_SHA384 = "TLS-AES-256-GCM-SHA384"
+    TLS_CHACHA20_POLY1305_SHA256 = "TLS-CHACHA20-POLY1305-SHA256"
+    TLS_AES_128_CCM_SHA256 = "TLS-AES-128-CCM-SHA256"
+    TLS_AES_128_CCM_8_SHA256 = "TLS-AES-128-CCM-8-SHA256"
+
+class GlobalAdminHttpsSslBannedCiphersEnum(str, Enum):
     """Allowed values for admin_https_ssl_banned_ciphers field."""
-    RSA = "RSA"    DHE = "DHE"    ECDHE = "ECDHE"    DSS = "DSS"    ECDSA = "ECDSA"    AES = "AES"    AESGCM = "AESGCM"    CAMELLIA = "CAMELLIA"    3DES = "3DES"    SHA1 = "SHA1"    SHA256 = "SHA256"    SHA384 = "SHA384"    STATIC = "STATIC"    CHACHA20 = "CHACHA20"    ARIA = "ARIA"    AESCCM = "AESCCM"
-class GlobalSsd_trim_freqEnum(str, Enum):
+    RSA = "RSA"
+    DHE = "DHE"
+    ECDHE = "ECDHE"
+    DSS = "DSS"
+    ECDSA = "ECDSA"
+    AES = "AES"
+    AESGCM = "AESGCM"
+    CAMELLIA = "CAMELLIA"
+    V_3DES = "3DES"
+    SHA1 = "SHA1"
+    SHA256 = "SHA256"
+    SHA384 = "SHA384"
+    STATIC = "STATIC"
+    CHACHA20 = "CHACHA20"
+    ARIA = "ARIA"
+    AESCCM = "AESCCM"
+
+class GlobalSsdTrimFreqEnum(str, Enum):
     """Allowed values for ssd_trim_freq field."""
-    NEVER = "never"    HOURLY = "hourly"    DAILY = "daily"    WEEKLY = "weekly"    MONTHLY = "monthly"
-class GlobalSsd_trim_weekdayEnum(str, Enum):
+    NEVER = "never"
+    HOURLY = "hourly"
+    DAILY = "daily"
+    WEEKLY = "weekly"
+    MONTHLY = "monthly"
+
+class GlobalSsdTrimWeekdayEnum(str, Enum):
     """Allowed values for ssd_trim_weekday field."""
-    SUNDAY = "sunday"    MONDAY = "monday"    TUESDAY = "tuesday"    WEDNESDAY = "wednesday"    THURSDAY = "thursday"    FRIDAY = "friday"    SATURDAY = "saturday"
-class GlobalPurdue_levelEnum(str, Enum):
+    SUNDAY = "sunday"
+    MONDAY = "monday"
+    TUESDAY = "tuesday"
+    WEDNESDAY = "wednesday"
+    THURSDAY = "thursday"
+    FRIDAY = "friday"
+    SATURDAY = "saturday"
+
+class GlobalPurdueLevelEnum(str, Enum):
     """Allowed values for purdue_level field."""
-    1 = "1"    1_5 = "1.5"    2 = "2"    2_5 = "2.5"    3 = "3"    3_5 = "3.5"    4 = "4"    5 = "5"    5_5 = "5.5"
-class GlobalSsl_min_proto_versionEnum(str, Enum):
+    V_1 = "1"
+    V_1_5 = "1.5"
+    V_2 = "2"
+    V_2_5 = "2.5"
+    V_3 = "3"
+    V_3_5 = "3.5"
+    V_4 = "4"
+    V_5 = "5"
+    V_5_5 = "5.5"
+
+class GlobalSslMinProtoVersionEnum(str, Enum):
     """Allowed values for ssl_min_proto_version field."""
-    SSLV3 = "SSLv3"    TLSV1 = "TLSv1"    TLSV1_1 = "TLSv1-1"    TLSV1_2 = "TLSv1-2"    TLSV1_3 = "TLSv1-3"
-class GlobalQuic_congestion_control_algoEnum(str, Enum):
+    SSLV3 = "SSLv3"
+    TLSV1 = "TLSv1"
+    TLSV1_1 = "TLSv1-1"
+    TLSV1_2 = "TLSv1-2"
+    TLSV1_3 = "TLSv1-3"
+
+class GlobalQuicCongestionControlAlgoEnum(str, Enum):
     """Allowed values for quic_congestion_control_algo field."""
-    CUBIC = "cubic"    BBR = "bbr"    BBR2 = "bbr2"    RENO = "reno"
-class GlobalDh_paramsEnum(str, Enum):
+    CUBIC = "cubic"
+    BBR = "bbr"
+    BBR2 = "bbr2"
+    RENO = "reno"
+
+class GlobalDhParamsEnum(str, Enum):
     """Allowed values for dh_params field."""
-    1024 = "1024"    1536 = "1536"    2048 = "2048"    3072 = "3072"    4096 = "4096"    6144 = "6144"    8192 = "8192"
-class GlobalFgd_alert_subscriptionEnum(str, Enum):
+    V_1024 = "1024"
+    V_1536 = "1536"
+    V_2048 = "2048"
+    V_3072 = "3072"
+    V_4096 = "4096"
+    V_6144 = "6144"
+    V_8192 = "8192"
+
+class GlobalFgdAlertSubscriptionEnum(str, Enum):
     """Allowed values for fgd_alert_subscription field."""
-    ADVISORY = "advisory"    LATEST_THREAT = "latest-threat"    LATEST_VIRUS = "latest-virus"    LATEST_ATTACK = "latest-attack"    NEW_ANTIVIRUS_DB = "new-antivirus-db"    NEW_ATTACK_DB = "new-attack-db"
-class GlobalGui_themeEnum(str, Enum):
+    ADVISORY = "advisory"
+    LATEST_THREAT = "latest-threat"
+    LATEST_VIRUS = "latest-virus"
+    LATEST_ATTACK = "latest-attack"
+    NEW_ANTIVIRUS_DB = "new-antivirus-db"
+    NEW_ATTACK_DB = "new-attack-db"
+
+class GlobalGuiThemeEnum(str, Enum):
     """Allowed values for gui_theme field."""
-    JADE = "jade"    NEUTRINO = "neutrino"    MARINER = "mariner"    GRAPHITE = "graphite"    MELONGENE = "melongene"    JET_STREAM = "jet-stream"    SECURITY_FABRIC = "security-fabric"    RETRO = "retro"    DARK_MATTER = "dark-matter"    ONYX = "onyx"    ECLIPSE = "eclipse"
-class GlobalGui_date_formatEnum(str, Enum):
+    JADE = "jade"
+    NEUTRINO = "neutrino"
+    MARINER = "mariner"
+    GRAPHITE = "graphite"
+    MELONGENE = "melongene"
+    JET_STREAM = "jet-stream"
+    SECURITY_FABRIC = "security-fabric"
+    RETRO = "retro"
+    DARK_MATTER = "dark-matter"
+    ONYX = "onyx"
+    ECLIPSE = "eclipse"
+
+class GlobalGuiDateFormatEnum(str, Enum):
     """Allowed values for gui_date_format field."""
-    YYYYMMDD = "yyyy/MM/dd"    DDMMYYYY = "dd/MM/yyyy"    MMDDYYYY = "MM/dd/yyyy"    YYYY_MM_DD = "yyyy-MM-dd"    DD_MM_YYYY = "dd-MM-yyyy"    MM_DD_YYYY = "MM-dd-yyyy"
-class GlobalInternet_service_databaseEnum(str, Enum):
+    YYYYMMDD = "yyyy/MM/dd"
+    DDMMYYYY = "dd/MM/yyyy"
+    MMDDYYYY = "MM/dd/yyyy"
+    YYYY_MM_DD = "yyyy-MM-dd"
+    DD_MM_YYYY = "dd-MM-yyyy"
+    MM_DD_YYYY = "MM-dd-yyyy"
+
+class GlobalInternetServiceDatabaseEnum(str, Enum):
     """Allowed values for internet_service_database field."""
-    MINI = "mini"    STANDARD = "standard"    FULL = "full"    ON_DEMAND = "on-demand"
-class GlobalAuth_session_auto_backup_intervalEnum(str, Enum):
+    MINI = "mini"
+    STANDARD = "standard"
+    FULL = "full"
+    ON_DEMAND = "on-demand"
+
+class GlobalAuthSessionAutoBackupIntervalEnum(str, Enum):
     """Allowed values for auth_session_auto_backup_interval field."""
-    1MIN = "1min"    5MIN = "5min"    15MIN = "15min"    30MIN = "30min"    1HR = "1hr"
+    V_1MIN = "1min"
+    V_5MIN = "5min"
+    V_15MIN = "15min"
+    V_30MIN = "30min"
+    V_1HR = "1hr"
+
 
 # ============================================================================
 # Main Model
@@ -98,7 +201,7 @@ class GlobalModel(BaseModel):
     # Model Fields
     # ========================================================================
     
-    language: LanguageEnum | None = Field(default="english", description="GUI display language.")    
+    language: GlobalLanguageEnum | None = Field(default=GlobalLanguageEnum.ENGLISH, description="GUI display language.")    
     gui_ipv6: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable IPv6 settings on the GUI.")    
     gui_replacement_message_groups: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable replacement message groups on the GUI.")    
     gui_local_out: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable Local-out traffic on the GUI.")    
@@ -113,15 +216,15 @@ class GlobalModel(BaseModel):
     gui_auto_upgrade_setup_warning: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable the automatic patch upgrade setup prompt on the GUI.")    
     gui_workflow_management: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable Workflow management features on the GUI.")    
     gui_cdn_usage: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable Load GUI static files from a CDN.")    
-    admin_https_ssl_versions: list[AdminHttpsSslVersions] = Field(default="tlsv1-2 tlsv1-3", description="Allowed TLS versions for web administration.")    
-    admin_https_ssl_ciphersuites: list[AdminHttpsSslCiphersuites] = Field(default="TLS-AES-128-GCM-SHA256 TLS-AES-256-GCM-SHA384 TLS-CHACHA20-POLY1305-SHA256", description="Select one or more TLS 1.3 ciphersuites to enable. Does not affect ciphers in TLS 1.2 and below. At least one must be enabled. To disable all, remove TLS1.3 from admin-https-ssl-versions.")    
-    admin_https_ssl_banned_ciphers: list[AdminHttpsSslBannedCiphers] = Field(default="", description="Select one or more cipher technologies that cannot be used in GUI HTTPS negotiations. Only applies to TLS 1.2 and below.")    
+    admin_https_ssl_versions: list[Literal["tlsv1-1", "tlsv1-2", "tlsv1-3"]] = Field(default_factory=list, description="Allowed TLS versions for web administration.")    
+    admin_https_ssl_ciphersuites: list[GlobalAdminHttpsSslCiphersuitesEnum] = Field(default_factory=list, description="Select one or more TLS 1.3 ciphersuites to enable. Does not affect ciphers in TLS 1.2 and below. At least one must be enabled. To disable all, remove TLS1.3 from admin-https-ssl-versions.")    
+    admin_https_ssl_banned_ciphers: list[GlobalAdminHttpsSslBannedCiphersEnum] = Field(default_factory=list, description="Select one or more cipher technologies that cannot be used in GUI HTTPS negotiations. Only applies to TLS 1.2 and below.")    
     admintimeout: int | None = Field(ge=1, le=480, default=5, description="Number of minutes before an idle administrator session times out (1 - 480 minutes (8 hours), default = 5). A shorter idle timeout is more secure.")    
     admin_console_timeout: int | None = Field(ge=15, le=300, default=0, description="Console login timeout that overrides the admin timeout value (15 - 300 seconds, default = 0, which disables the timeout).")    
-    ssd_trim_freq: SsdTrimFreqEnum | None = Field(default="weekly", description="How often to run SSD Trim (default = weekly). SSD Trim prevents SSD drive data loss by finding and isolating errors.")    
+    ssd_trim_freq: GlobalSsdTrimFreqEnum | None = Field(default=GlobalSsdTrimFreqEnum.WEEKLY, description="How often to run SSD Trim (default = weekly). SSD Trim prevents SSD drive data loss by finding and isolating errors.")    
     ssd_trim_hour: int | None = Field(ge=0, le=23, default=1, description="Hour of the day on which to run SSD Trim (0 - 23, default = 1).")    
     ssd_trim_min: int | None = Field(ge=0, le=60, default=60, description="Minute of the hour on which to run SSD Trim (0 - 59, 60 for random).")    
-    ssd_trim_weekday: SsdTrimWeekdayEnum | None = Field(default="sunday", description="Day of week to run SSD Trim.")    
+    ssd_trim_weekday: GlobalSsdTrimWeekdayEnum | None = Field(default=GlobalSsdTrimWeekdayEnum.SUNDAY, description="Day of week to run SSD Trim.")    
     ssd_trim_date: int | None = Field(ge=1, le=31, default=1, description="Date within a month to run ssd trim.")    
     admin_concurrent: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable concurrent administrator logins. Use policy-auth-concurrent for firewall authenticated users.")    
     admin_lockout_threshold: int | None = Field(ge=1, le=10, default=3, description="Number of failed login attempts before an administrator account is locked out for the admin-lockout-duration.")    
@@ -129,12 +232,12 @@ class GlobalModel(BaseModel):
     refresh: int | None = Field(ge=0, le=4294967295, default=0, description="Statistics refresh interval second(s) in GUI.")    
     interval: int | None = Field(ge=0, le=4294967295, default=5, description="Dead gateway detection interval.")    
     failtime: int | None = Field(ge=0, le=4294967295, default=5, description="Fail-time for server lost.")    
-    purdue_level: PurdueLevelEnum | None = Field(default="3", description="Purdue Level of this FortiGate.")    
+    purdue_level: GlobalPurdueLevelEnum | None = Field(default=GlobalPurdueLevelEnum.V_3, description="Purdue Level of this FortiGate.")    
     daily_restart: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable daily restart of FortiGate unit. Use the restart-time option to set the time of day for the restart.")    
-    restart_time: str = Field(default="", description="Daily restart time (hh:mm).")    
+    restart_time: str = Field(description="Daily restart time (hh:mm).")    
     wad_restart_mode: Literal["none", "time", "memory"] | None = Field(default="none", description="WAD worker restart mode (default = none).")    
-    wad_restart_start_time: str = Field(default="", description="WAD workers daily restart time (hh:mm).")    
-    wad_restart_end_time: str = Field(default="", description="WAD workers daily restart end time (hh:mm).")    
+    wad_restart_start_time: str = Field(description="WAD workers daily restart time (hh:mm).")    
+    wad_restart_end_time: str = Field(description="WAD workers daily restart end time (hh:mm).")    
     wad_p2s_max_body_size: int | None = Field(ge=1, le=32, default=4, description="Maximum size of the body of the local out HTTP request (1 - 32 Mbytes, default = 4).")    
     radius_port: int | None = Field(ge=1, le=65535, default=1812, description="RADIUS service port number.")    
     speedtestd_server_port: int | None = Field(ge=1, le=65535, default=5201, description="Speedtest server port number.")    
@@ -144,12 +247,12 @@ class GlobalModel(BaseModel):
     ldapconntimeout: int | None = Field(ge=1, le=300000, default=500, description="Global timeout for connections with remote LDAP servers in milliseconds (1 - 300000, default 500).")    
     batch_cmdb: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable batch mode, allowing you to enter a series of CLI commands that will execute as a group once they are loaded.")    
     multi_factor_authentication: Literal["optional", "mandatory"] | None = Field(default="optional", description="Enforce all login methods to require an additional authentication factor (default = optional).")    
-    ssl_min_proto_version: SslMinProtoVersionEnum | None = Field(default="TLSv1-2", description="Minimum supported protocol version for SSL/TLS connections (default = TLSv1.2).")    
+    ssl_min_proto_version: GlobalSslMinProtoVersionEnum | None = Field(default=GlobalSslMinProtoVersionEnum.TLSV1_2, description="Minimum supported protocol version for SSL/TLS connections (default = TLSv1.2).")    
     autorun_log_fsck: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable automatic log partition check after ungraceful shutdown.")    
-    timezone: str = Field(max_length=63, default="", description="Timezone database name. Enter ? to view the list of timezone.")  # datasource: ['system.timezone.name']    
+    timezone: str = Field(max_length=63, description="Timezone database name. Enter ? to view the list of timezone.")  # datasource: ['system.timezone.name']    
     traffic_priority: Literal["tos", "dscp"] = Field(default="tos", description="Choose Type of Service (ToS) or Differentiated Services Code Point (DSCP) for traffic prioritization in traffic shaping.")    
     traffic_priority_level: Literal["low", "medium", "high"] = Field(default="medium", description="Default system-wide level of priority for traffic prioritization.")    
-    quic_congestion_control_algo: QuicCongestionControlAlgoEnum | None = Field(default="cubic", description="QUIC congestion control algorithm (default = cubic).")    
+    quic_congestion_control_algo: GlobalQuicCongestionControlAlgoEnum | None = Field(default=GlobalQuicCongestionControlAlgoEnum.CUBIC, description="QUIC congestion control algorithm (default = cubic).")    
     quic_max_datagram_size: int | None = Field(ge=1200, le=1500, default=1500, description="Maximum transmit datagram size (1200 - 1500, default = 1500).")    
     quic_udp_payload_size_shaping_per_cid: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable UDP payload size shaping per connection ID (default = enable).")    
     quic_ack_thresold: int | None = Field(ge=2, le=5, default=3, description="Maximum number of unacknowledged packets before sending ACK (2 - 5, default = 3).")    
@@ -162,15 +265,15 @@ class GlobalModel(BaseModel):
     revision_image_auto_backup: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable back-up of the latest image revision after the firmware is upgraded.")    
     revision_backup_on_logout: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable back-up of the latest configuration revision when an administrator logs out of the CLI or GUI.")    
     management_vdom: str | None = Field(max_length=31, default="root", description="Management virtual domain name.")  # datasource: ['system.vdom.name']    
-    hostname: str | None = Field(max_length=35, default="", description="FortiGate unit's hostname. Most models will truncate names longer than 24 characters. Some models support hostnames up to 35 characters.")    
-    alias: str | None = Field(max_length=35, default="", description="Alias for your FortiGate unit.")    
+    hostname: str | None = Field(max_length=35, default=None, description="FortiGate unit's hostname. Most models will truncate names longer than 24 characters. Some models support hostnames up to 35 characters.")    
+    alias: str | None = Field(max_length=35, default=None, description="Alias for your FortiGate unit.")    
     strong_crypto: Literal["enable", "disable"] | None = Field(default="enable", description="Enable to use strong encryption and only allow strong ciphers and digest for HTTPS/SSH/TLS/SSL functions.")    
     ssl_static_key_ciphers: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable static key ciphers in SSL/TLS connections (e.g. AES128-SHA, AES256-SHA, AES128-SHA256, AES256-SHA256).")    
     snat_route_change: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable the ability to change the source NAT route.")    
     ipv6_snat_route_change: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable the ability to change the IPv6 source NAT route.")    
     speedtest_server: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable speed test server.")    
     cli_audit_log: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable CLI audit log.")    
-    dh_params: DhParamsEnum | None = Field(default="2048", description="Number of bits to use in the Diffie-Hellman exchange for HTTPS/SSH protocols.")    
+    dh_params: GlobalDhParamsEnum | None = Field(default=GlobalDhParamsEnum.V_2048, description="Number of bits to use in the Diffie-Hellman exchange for HTTPS/SSH protocols.")    
     fds_statistics: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable sending IPS, Application Control, and AntiVirus data to FortiGuard. This data is used to improve FortiGuard services and is not shared with external parties and is protected by Fortinet's privacy policy.")    
     fds_statistics_period: int | None = Field(ge=1, le=1440, default=60, description="FortiGuard statistics collection period in minutes. (1 - 1440 min (1 min to 24 hours), default = 60).")    
     tcp_option: Literal["enable", "disable"] | None = Field(default="enable", description="Enable SACK, timestamp and MSS TCP options.")    
@@ -214,7 +317,7 @@ class GlobalModel(BaseModel):
     upgrade_report: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable the generation of an upgrade report when upgrading the firmware.")    
     admin_port: int | None = Field(ge=1, le=65535, default=80, description="Administrative access port for HTTP. (1 - 65535, default = 80).")    
     admin_sport: int | None = Field(ge=1, le=65535, default=443, description="Administrative access port for HTTPS. (1 - 65535, default = 443).")    
-    admin_host: str | None = Field(max_length=255, default="", description="Administrative host for HTTP and HTTPS. When set, will be used in lieu of the client's Host header for any redirection.")    
+    admin_host: str | None = Field(max_length=255, default=None, description="Administrative host for HTTP and HTTPS. When set, will be used in lieu of the client's Host header for any redirection.")    
     admin_https_redirect: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable redirection of HTTP administration access to HTTPS.")    
     admin_hsts_max_age: int | None = Field(ge=0, le=2147483647, default=63072000, description="HTTPS Strict-Transport-Security header max-age in seconds. A value of 0 will reset any HSTS records in the browser.When admin-https-redirect is disabled the header max-age will be 0.")    
     admin_ssh_password: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable password authentication for SSH admin access.")    
@@ -225,8 +328,8 @@ class GlobalModel(BaseModel):
     admin_telnet: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable TELNET service.")    
     admin_telnet_port: int | None = Field(ge=1, le=65535, default=23, description="Administrative access port for TELNET. (1 - 65535, default = 23).")    
     admin_forticloud_sso_login: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable FortiCloud admin login via SSO.")    
-    admin_forticloud_sso_default_profile: str | None = Field(max_length=35, default="", description="Override access profile.")  # datasource: ['system.accprofile.name']    
-    default_service_source_port: str | None = Field(default="", description="Default service source port range (default = 1 - 65535).")    
+    admin_forticloud_sso_default_profile: str | None = Field(max_length=35, default=None, description="Override access profile.")  # datasource: ['system.accprofile.name']    
+    default_service_source_port: str | None = Field(default=None, description="Default service source port range (default = 1 - 65535).")    
     admin_server_cert: str | None = Field(max_length=35, default="Fortinet_GUI_Server", description="Server certificate that the FortiGate uses for HTTPS administrative connections.")  # datasource: ['certificate.local.name']    
     admin_https_pki_required: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable admin login method. Enable to force administrators to provide a valid certificate to log in if PKI is enabled. Disable to allow administrators to log in with a certificate or password.")    
     wifi_certificate: str | None = Field(max_length=35, default="Fortinet_Wifi", description="Certificate to use for WiFi authentication.")  # datasource: ['certificate.local.name']    
@@ -260,7 +363,7 @@ class GlobalModel(BaseModel):
     httpd_max_worker_count: int | None = Field(ge=0, le=128, default=0, description="Maximum number of simultaneous HTTP requests that will be served. This number may affect GUI and REST API performance (0 - 128, default = 0 means let system decide).")    
     proxy_worker_count: int | None = Field(ge=1, le=2, default=0, description="Proxy worker count.")    
     scanunit_count: int | None = Field(ge=2, le=2, default=0, description="Number of scanunits. The range and the default depend on the number of CPUs. Only available on FortiGate units with multiple CPUs.")    
-    fgd_alert_subscription: list[FgdAlertSubscription] = Field(default="", description="Type of alert to retrieve from FortiGuard.")    
+    fgd_alert_subscription: list[GlobalFgdAlertSubscriptionEnum] = Field(default_factory=list, description="Type of alert to retrieve from FortiGuard.")    
     ipv6_accept_dad: int | None = Field(ge=0, le=2, default=1, description="Enable/disable acceptance of IPv6 Duplicate Address Detection (DAD).")    
     ipv6_allow_anycast_probe: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable IPv6 address probe through Anycast.")    
     ipv6_allow_multicast_probe: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable IPv6 address probe through Multicast.")    
@@ -312,29 +415,29 @@ class GlobalModel(BaseModel):
     user_device_store_max_device_mem: int | None = Field(ge=1, le=5, default=2, description="Maximum percentage of total system memory allowed to be used for devices in the user device store.")    
     user_device_store_max_users: int | None = Field(ge=31262, le=89320, default=62524, description="Maximum number of users allowed in user device store.")    
     user_device_store_max_unified_mem: int | None = Field(ge=62524334, le=625243340, default=312621670, description="Maximum unified memory allowed in user device store.")    
-    gui_device_latitude: str | None = Field(max_length=19, default="", description="Add the latitude of the location of this FortiGate to position it on the Threat Map.")    
-    gui_device_longitude: str | None = Field(max_length=19, default="", description="Add the longitude of the location of this FortiGate to position it on the Threat Map.")    
+    gui_device_latitude: str | None = Field(max_length=19, default=None, description="Add the latitude of the location of this FortiGate to position it on the Threat Map.")    
+    gui_device_longitude: str | None = Field(max_length=19, default=None, description="Add the longitude of the location of this FortiGate to position it on the Threat Map.")    
     private_data_encryption: Literal["disable", "enable"] | None = Field(default="disable", description="Enable/disable private data encryption using an AES 128-bit key or passpharse.")    
     auto_auth_extension_device: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable automatic authorization of dedicated Fortinet extension devices.")    
-    gui_theme: GuiThemeEnum | None = Field(default="jade", description="Color scheme for the administration GUI.")    
-    gui_date_format: GuiDateFormatEnum | None = Field(default="yyyy/MM/dd", description="Default date format used throughout GUI.")    
+    gui_theme: GlobalGuiThemeEnum | None = Field(default=GlobalGuiThemeEnum.JADE, description="Color scheme for the administration GUI.")    
+    gui_date_format: GlobalGuiDateFormatEnum | None = Field(default=GlobalGuiDateFormatEnum.YYYYMMDD, description="Default date format used throughout GUI.")    
     gui_date_time_source: Literal["system", "browser"] | None = Field(default="system", description="Source from which the FortiGate GUI uses to display date and time entries.")    
     igmp_state_limit: int | None = Field(ge=96, le=128000, default=3200, description="Maximum number of IGMP memberships (96 - 64000, default = 3200).")    
     cloud_communication: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable all cloud communication.")    
     ipsec_ha_seqjump_rate: int | None = Field(ge=1, le=10, default=10, description="ESP jump ahead rate (1G - 10G pps equivalent).")    
     fortitoken_cloud: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable FortiToken Cloud service.")    
     fortitoken_cloud_push_status: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable FTM push service of FortiToken Cloud.")    
-    fortitoken_cloud_region: str | None = Field(max_length=63, default="", description="Region domain of FortiToken Cloud(unset to non-region).")    
+    fortitoken_cloud_region: str | None = Field(max_length=63, default=None, description="Region domain of FortiToken Cloud(unset to non-region).")    
     fortitoken_cloud_sync_interval: int | None = Field(ge=0, le=336, default=24, description="Interval in which to clean up remote users in FortiToken Cloud (0 - 336 hours (14 days), default = 24, disable = 0).")    
     faz_disk_buffer_size: int | None = Field(default=0, description="Maximum disk buffer size to temporarily store logs destined for FortiAnalyzer. To be used in the event that FortiAnalyzer is unavailable.")    
     irq_time_accounting: Literal["auto", "force"] | None = Field(default="auto", description="Configure CPU IRQ time accounting mode.")    
-    management_ip: str | None = Field(max_length=255, default="", description="Management IP address of this FortiGate. Used to log into this FortiGate from another FortiGate in the Security Fabric.")    
+    management_ip: str | None = Field(max_length=255, default=None, description="Management IP address of this FortiGate. Used to log into this FortiGate from another FortiGate in the Security Fabric.")    
     management_port: int | None = Field(ge=1, le=65535, default=443, description="Overriding port for management connection (Overrides admin port).")    
     management_port_use_admin_sport: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable use of the admin-sport setting for the management port. If disabled, FortiGate will allow user to specify management-port.")    
     forticonverter_integration: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable FortiConverter integration service.")    
     forticonverter_config_upload: Literal["once", "disable"] | None = Field(default="disable", description="Enable/disable config upload to FortiConverter.")    
-    internet_service_database: InternetServiceDatabaseEnum | None = Field(default="full", description="Configure which Internet Service database size to download from FortiGuard and use.")    
-    internet_service_download_list: list[InternetServiceDownloadList] = Field(default=None, description="Configure which on-demand Internet Service IDs are to be downloaded.")    
+    internet_service_database: GlobalInternetServiceDatabaseEnum | None = Field(default=GlobalInternetServiceDatabaseEnum.FULL, description="Configure which Internet Service database size to download from FortiGuard and use.")    
+    internet_service_download_list: list[GlobalInternetServiceDownloadList] = Field(default_factory=list, description="Configure which on-demand Internet Service IDs are to be downloaded.")    
     geoip_full_db: Literal["enable", "disable"] | None = Field(default="enable", description="When enabled, the full geographic database will be loaded into the kernel which enables geographic information in traffic logs - required for FortiView countries. Disabling this option will conserve memory.")    
     early_tcp_npu_session: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable early TCP NPU session.")    
     npu_neighbor_update: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable sending of ARP/ICMP6 probing packets to update neighbors for offloaded sessions.")    
@@ -344,7 +447,7 @@ class GlobalModel(BaseModel):
     fortigslb_integration: Literal["disable", "enable"] | None = Field(default="disable", description="Enable/disable integration with the FortiGSLB cloud service.")    
     user_history_password_threshold: int | None = Field(ge=3, le=15, default=3, description="Maximum number of previous passwords saved per admin/user (3 - 15, default = 3).")    
     auth_session_auto_backup: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable automatic and periodic backup of authentication sessions (default = disable). Sessions are restored upon bootup.")    
-    auth_session_auto_backup_interval: AuthSessionAutoBackupIntervalEnum | None = Field(default="15min", description="Configure automatic authentication session backup interval (default = 15min).")    
+    auth_session_auto_backup_interval: GlobalAuthSessionAutoBackupIntervalEnum | None = Field(default=GlobalAuthSessionAutoBackupIntervalEnum.V_15MIN, description="Configure automatic authentication session backup interval (default = 15min).")    
     scim_https_port: int | None = Field(ge=0, le=65535, default=44559, description="SCIM port (0 - 65535, default = 44559).")    
     scim_http_port: int | None = Field(ge=0, le=65535, default=44558, description="SCIM http port (0 - 65535, default = 44558).")    
     scim_server_cert: str | None = Field(max_length=35, default="Fortinet_Factory", description="Server certificate that the FortiGate uses for SCIM connections.")  # datasource: ['certificate.local.name']    
@@ -534,7 +637,7 @@ class GlobalModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.system.global_.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate scalar field
         value = getattr(self, "timezone", None)
@@ -583,7 +686,7 @@ class GlobalModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.system.global_.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate scalar field
         value = getattr(self, "management_vdom", None)
@@ -632,7 +735,7 @@ class GlobalModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.system.global_.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate scalar field
         value = getattr(self, "admin_forticloud_sso_default_profile", None)
@@ -681,7 +784,7 @@ class GlobalModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.system.global_.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate scalar field
         value = getattr(self, "admin_server_cert", None)
@@ -730,7 +833,7 @@ class GlobalModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.system.global_.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate scalar field
         value = getattr(self, "wifi_certificate", None)
@@ -779,7 +882,7 @@ class GlobalModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.system.global_.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate scalar field
         value = getattr(self, "wifi_ca_certificate", None)
@@ -828,7 +931,7 @@ class GlobalModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.system.global_.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate scalar field
         value = getattr(self, "auth_cert", None)
@@ -877,7 +980,7 @@ class GlobalModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.system.global_.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate child table items
         values = getattr(self, "internet_service_download_list", [])
@@ -895,7 +998,7 @@ class GlobalModel(BaseModel):
             
             # Check all datasource endpoints
             found = False
-            if await client.api.cmdb.firewall.internet-service.exists(value):
+            if await client.api.cmdb.firewall.internet_service.exists(value):
                 found = True
             
             if not found:
@@ -935,7 +1038,7 @@ class GlobalModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.system.global_.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate scalar field
         value = getattr(self, "scim_server_cert", None)
@@ -1011,5 +1114,5 @@ __all__ = [
 # ============================================================================
 # Generated by hfortix generator v0.6.0
 # Schema: 1.7.0
-# Generated: 2026-01-17T05:32:20.156315Z
+# Generated: 2026-01-17T17:25:23.713277Z
 # ============================================================================

@@ -1059,6 +1059,24 @@ class Admin(CRUDEndpoint, MetadataMixin):
             - put(): Update existing object
             - exists(): Check existence manually
         """
+        # Apply normalization for table fields (supports flexible input formats)
+        if vdom is not None:
+            vdom = normalize_table_field(
+                vdom,
+                mkey="name",
+                required_fields=['name'],
+                field_name="vdom",
+                example="[{'name': 'value'}]",
+            )
+        if guest_usergroups is not None:
+            guest_usergroups = normalize_table_field(
+                guest_usergroups,
+                mkey="name",
+                required_fields=['name'],
+                field_name="guest_usergroups",
+                example="[{'name': 'value'}]",
+            )
+        
         # Build payload using helper function with auto-normalization
         payload_data = build_api_payload(
             name=name,

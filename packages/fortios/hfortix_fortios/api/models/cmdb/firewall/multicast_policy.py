@@ -12,7 +12,11 @@ from typing import Any, Literal, Optional
 from uuid import UUID
 
 # ============================================================================
-# Child Table Models
+# Enum Definitions for Child Table Fields (for fields with 4+ allowed values)
+# ============================================================================
+
+# ============================================================================
+# Child Table Models (sorted deepest-first so nested models are defined before their parents)
 # ============================================================================
 
 class MulticastPolicySrcaddr(BaseModel):
@@ -26,8 +30,9 @@ class MulticastPolicySrcaddr(BaseModel):
         """Pydantic model configuration."""
         extra = "allow"  # Allow additional fields from API
         str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
     
-    name: str = Field(max_length=79, default="", description="Source address objects.")  # datasource: ['firewall.address.name', 'firewall.addrgrp.name']
+    name: str = Field(max_length=79, description="Source address objects.")  # datasource: ['firewall.address.name', 'firewall.addrgrp.name']
 class MulticastPolicyDstaddr(BaseModel):
     """
     Child table model for dstaddr.
@@ -39,8 +44,9 @@ class MulticastPolicyDstaddr(BaseModel):
         """Pydantic model configuration."""
         extra = "allow"  # Allow additional fields from API
         str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
     
-    name: str = Field(max_length=79, default="", description="Destination address objects.")  # datasource: ['firewall.multicast-address.name']
+    name: str = Field(max_length=79, description="Destination address objects.")  # datasource: ['firewall.multicast-address.name']
 # ============================================================================
 # Enum Definitions (for fields with 4+ allowed values)
 # ============================================================================
@@ -56,7 +62,7 @@ class MulticastPolicyModel(BaseModel):
     
     Configure multicast NAT policies.
     
-    Validation Rules:        - id: min=0 max=4294967294 pattern=        - uuid: pattern=        - name: max_length=35 pattern=        - comments: max_length=1023 pattern=        - status: pattern=        - srcintf: max_length=35 pattern=        - dstintf: max_length=35 pattern=        - srcaddr: pattern=        - dstaddr: pattern=        - snat: pattern=        - snat_ip: pattern=        - dnat: pattern=        - action: pattern=        - protocol: min=0 max=255 pattern=        - start_port: min=0 max=65535 pattern=        - end_port: min=0 max=65535 pattern=        - utm_status: pattern=        - ips_sensor: max_length=47 pattern=        - logtraffic: pattern=        - auto_asic_offload: pattern=        - traffic_shaper: max_length=35 pattern=    """
+    Validation Rules:        - id_: min=0 max=4294967294 pattern=        - uuid: pattern=        - name: max_length=35 pattern=        - comments: max_length=1023 pattern=        - status: pattern=        - srcintf: max_length=35 pattern=        - dstintf: max_length=35 pattern=        - srcaddr: pattern=        - dstaddr: pattern=        - snat: pattern=        - snat_ip: pattern=        - dnat: pattern=        - action: pattern=        - protocol: min=0 max=255 pattern=        - start_port: min=0 max=65535 pattern=        - end_port: min=0 max=65535 pattern=        - utm_status: pattern=        - ips_sensor: max_length=47 pattern=        - logtraffic: pattern=        - auto_asic_offload: pattern=        - traffic_shaper: max_length=35 pattern=    """
     
     class Config:
         """Pydantic model configuration."""
@@ -69,15 +75,15 @@ class MulticastPolicyModel(BaseModel):
     # Model Fields
     # ========================================================================
     
-    id: int | None = Field(ge=0, le=4294967294, default=0, description="Policy ID ((0 - 4294967294).")    
+    id_: int | None = Field(ge=0, le=4294967294, default=0, serialization_alias="id", description="Policy ID ((0 - 4294967294).")    
     uuid: str | None = Field(default="00000000-0000-0000-0000-000000000000", description="Universally Unique Identifier (UUID; automatically assigned but can be manually reset).")    
-    name: str | None = Field(max_length=35, default="", description="Policy name.")    
+    name: str | None = Field(max_length=35, default=None, description="Policy name.")    
     comments: str | None = Field(max_length=1023, default=None, description="Comment.")    
     status: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable this policy.")    
-    srcintf: str = Field(max_length=35, default="", description="Source interface name.")  # datasource: ['system.interface.name', 'system.zone.name', 'system.sdwan.zone.name']    
-    dstintf: str = Field(max_length=35, default="", description="Destination interface name.")  # datasource: ['system.interface.name', 'system.zone.name', 'system.sdwan.zone.name']    
-    srcaddr: list[Srcaddr] = Field(description="Source address objects.")    
-    dstaddr: list[Dstaddr] = Field(description="Destination address objects.")    
+    srcintf: str = Field(max_length=35, description="Source interface name.")  # datasource: ['system.interface.name', 'system.zone.name', 'system.sdwan.zone.name']    
+    dstintf: str = Field(max_length=35, description="Destination interface name.")  # datasource: ['system.interface.name', 'system.zone.name', 'system.sdwan.zone.name']    
+    srcaddr: list[MulticastPolicySrcaddr] = Field(description="Source address objects.")    
+    dstaddr: list[MulticastPolicyDstaddr] = Field(description="Destination address objects.")    
     snat: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable substitution of the outgoing interface IP address for the original source IP address (called source NAT or SNAT).")    
     snat_ip: str | None = Field(default="0.0.0.0", description="IPv4 address to be used as the source address for NATed traffic.")    
     dnat: str | None = Field(default="0.0.0.0", description="IPv4 DNAT address used for multicast destination addresses.")    
@@ -86,10 +92,10 @@ class MulticastPolicyModel(BaseModel):
     start_port: int | None = Field(ge=0, le=65535, default=1, description="Integer value for starting TCP/UDP/SCTP destination port in range (1 - 65535, default = 1).")    
     end_port: int | None = Field(ge=0, le=65535, default=65535, description="Integer value for ending TCP/UDP/SCTP destination port in range (1 - 65535, default = 1).")    
     utm_status: Literal["enable", "disable"] | None = Field(default="disable", description="Enable to add an IPS security profile to the policy.")    
-    ips_sensor: str | None = Field(max_length=47, default="", description="Name of an existing IPS sensor.")  # datasource: ['ips.sensor.name']    
+    ips_sensor: str | None = Field(max_length=47, default=None, description="Name of an existing IPS sensor.")  # datasource: ['ips.sensor.name']    
     logtraffic: Literal["all", "utm", "disable"] | None = Field(default="utm", description="Enable or disable logging. Log all sessions or security profile sessions.")    
     auto_asic_offload: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable offloading policy traffic for hardware acceleration.")    
-    traffic_shaper: str | None = Field(max_length=35, default="", description="Traffic shaper to apply to traffic forwarded by the multicast policy.")  # datasource: ['firewall.shaper.traffic-shaper.name']    
+    traffic_shaper: str | None = Field(max_length=35, default=None, description="Traffic shaper to apply to traffic forwarded by the multicast policy.")  # datasource: ['firewall.shaper.traffic-shaper.name']    
     # ========================================================================
     # Custom Validators
     # ========================================================================
@@ -214,7 +220,7 @@ class MulticastPolicyModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.multicast_policy.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate scalar field
         value = getattr(self, "srcintf", None)
@@ -267,7 +273,7 @@ class MulticastPolicyModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.multicast_policy.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate scalar field
         value = getattr(self, "dstintf", None)
@@ -320,7 +326,7 @@ class MulticastPolicyModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.multicast_policy.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate child table items
         values = getattr(self, "srcaddr", [])
@@ -380,7 +386,7 @@ class MulticastPolicyModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.multicast_policy.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate child table items
         values = getattr(self, "dstaddr", [])
@@ -398,7 +404,7 @@ class MulticastPolicyModel(BaseModel):
             
             # Check all datasource endpoints
             found = False
-            if await client.api.cmdb.firewall.multicast-address.exists(value):
+            if await client.api.cmdb.firewall.multicast_address.exists(value):
                 found = True
             
             if not found:
@@ -438,7 +444,7 @@ class MulticastPolicyModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.multicast_policy.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate scalar field
         value = getattr(self, "ips_sensor", None)
@@ -487,7 +493,7 @@ class MulticastPolicyModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.firewall.multicast_policy.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate scalar field
         value = getattr(self, "traffic_shaper", None)
@@ -496,7 +502,7 @@ class MulticastPolicyModel(BaseModel):
         
         # Check all datasource endpoints
         found = False
-        if await client.api.cmdb.firewall.shaper.traffic-shaper.exists(value):
+        if await client.api.cmdb.firewall.shaper.traffic_shaper.exists(value):
             found = True
         
         if not found:
@@ -557,5 +563,5 @@ __all__ = [
 # ============================================================================
 # Generated by hfortix generator v0.6.0
 # Schema: 1.7.0
-# Generated: 2026-01-17T05:32:16.248042Z
+# Generated: 2026-01-17T17:25:20.324546Z
 # ============================================================================

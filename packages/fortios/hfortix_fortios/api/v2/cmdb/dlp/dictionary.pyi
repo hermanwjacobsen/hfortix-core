@@ -1,216 +1,114 @@
-from typing import TypedDict, Literal, Any, Coroutine, Union, overload, Generator, final
-from typing_extensions import NotRequired
-from hfortix_fortios.models import FortiObject, FortiObjectList
+""" - Type Stubs
 
-# ============================================================================
-# Nested TypedDicts for table field children (dict mode)
-# These MUST be defined before the Payload class to use them as type hints
-# ============================================================================
+Auto-generated stub file for type checking and IDE support.
 
-class DictionaryEntriesItem(TypedDict, total=False):
-    """Type hints for entries table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    Use this when building payloads for POST/PUT requests.
-    
-    **Available fields:**
-        - id: int
-        - type: str
-        - pattern: str
-        - ignore_case: "enable" | "disable"
-        - repeat: "enable" | "disable"
-        - status: "enable" | "disable"
-        - comment: str
-    
-    **Example:**
-        entry: DictionaryEntriesItem = {
-            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
-        }
-    """
-    
-    id: int  # ID. | Default: 0 | Min: 0 | Max: 4294967295
-    type: str  # Pattern type to match. | MaxLen: 35
-    pattern: str  # Pattern to match. | MaxLen: 255
-    ignore_case: Literal["enable", "disable"]  # Enable/disable ignore case. | Default: disable
-    repeat: Literal["enable", "disable"]  # Enable/disable repeat match. | Default: disable
-    status: Literal["enable", "disable"]  # Enable/disable this pattern. | Default: enable
-    comment: str  # Optional comments. | MaxLen: 255
+Endpoint: dlp/dictionary
+Category: cmdb
+"""
+
+from __future__ import annotations
+
+from typing import (
+    Any,
+    ClassVar,
+    Literal,
+    TypedDict,
+    overload,
+)
+
+from hfortix_fortios.models import (
+    FortiObject,
+    FortiObjectList,
+)
 
 
-# ============================================================================
-# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional)
-# ============================================================================
-# NOTE: We intentionally DON'T use NotRequired wrapper because:
-# 1. total=False already makes all fields optional
-# 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
-class DictionaryPayload(TypedDict, total=False):
-    """
-    Type hints for dlp/dictionary payload fields.
-    
-    Configure dictionaries used by DLP blocking.
-    
-    **Usage:**
-        payload: DictionaryPayload = {
-            "field": "value",  # <- autocomplete shows all fields
-        }
-    """
-    uuid: str  # Universally Unique Identifier | Default: 00000000-0000-0000-0000-000000000000
-    name: str  # Name of table containing the dictionary. | MaxLen: 35
-    match_type: Literal["match-all", "match-any"]  # Logical relation between entries | Default: match-any
-    match_around: Literal["enable", "disable"]  # Enable/disable match-around support. | Default: disable
-    comment: str  # Optional comments. | MaxLen: 255
-    entries: list[DictionaryEntriesItem]  # DLP dictionary entries.
+# ================================================================
+# TypedDict Payloads
+# ================================================================
 
-# ============================================================================
-# Nested classes for table field children (object mode - for API responses)
-# ============================================================================
-
-@final
-class DictionaryEntriesObject:
-    """Typed object for entries table items.
-    
-    Provides IDE autocomplete for nested table field attributes.
-    At runtime, this is a FortiObject instance.
-    """
-    
-    # ID. | Default: 0 | Min: 0 | Max: 4294967295
+class DictionaryEntriesItem:
+    """Nested item for entries field - supports attribute access."""
     id: int
-    # Pattern type to match. | MaxLen: 35
     type: str
-    # Pattern to match. | MaxLen: 255
     pattern: str
-    # Enable/disable ignore case. | Default: disable
     ignore_case: Literal["enable", "disable"]
-    # Enable/disable repeat match. | Default: disable
     repeat: Literal["enable", "disable"]
-    # Enable/disable this pattern. | Default: enable
     status: Literal["enable", "disable"]
-    # Optional comments. | MaxLen: 255
     comment: str
-    
-    # Common API response fields
-    status: str
-    http_status: int | None
-    http_status_code: int | None
-    http_method: str | None
-    http_response_time: float | None
-    vdom: str | None
-    
-    # Methods from FortiObject
-    @property
-    def dict(self) -> dict[str, Any]:
-        """Convert to dictionary."""
-        ...
-    @property
-    def json(self) -> str:
-        """Get pretty-printed JSON string."""
-        ...
-    @property
-    def raw(self) -> dict[str, Any]:
-        """Get raw API response data."""
-        ...
-    def get_full(self, name: str) -> Any: ...
-    def to_dict(self) -> FortiObject: ...
-    def keys(self) -> Any: ...
-    def values(self) -> Generator[Any, None, None]: ...
-    def items(self) -> Generator[tuple[str, Any], None, None]: ...
-    def get(self, key: str, default: Any = None) -> Any: ...
 
 
-
-
-# Response TypedDict for GET returns (all fields present in API response)
-class DictionaryResponse(TypedDict):
-    """
-    Type hints for dlp/dictionary API response fields.
-    
-    All fields are present in the response from the FortiGate API.
-    """
-    uuid: str  # Universally Unique Identifier | Default: 00000000-0000-0000-0000-000000000000
-    name: str  # Name of table containing the dictionary. | MaxLen: 35
-    match_type: Literal["match-all", "match-any"]  # Logical relation between entries | Default: match-any
-    match_around: Literal["enable", "disable"]  # Enable/disable match-around support. | Default: disable
-    comment: str  # Optional comments. | MaxLen: 255
-    entries: list[DictionaryEntriesItem]  # DLP dictionary entries.
-
-
-@final
-class DictionaryObject:
-    """Typed FortiObject for dlp/dictionary with IDE autocomplete support.
-    
-    This is a typed wrapper that provides IDE autocomplete for API response fields.
-    At runtime, this is actually a FortiObject instance.
-    """
-    
-    # Universally Unique Identifier | Default: 00000000-0000-0000-0000-000000000000
+class DictionaryPayload(TypedDict, total=False):
+    """Payload type for Dictionary operations."""
     uuid: str
-    # Name of table containing the dictionary. | MaxLen: 35
     name: str
-    # Logical relation between entries (default = match-any). | Default: match-any
     match_type: Literal["match-all", "match-any"]
-    # Enable/disable match-around support. | Default: disable
     match_around: Literal["enable", "disable"]
-    # Optional comments. | MaxLen: 255
     comment: str
-    # DLP dictionary entries.
-    entries: list[DictionaryEntriesObject]
-    
-    # Common API response fields
-    status: str
-    http_status: int | None
-    http_status_code: int | None
-    http_method: str | None
-    http_response_time: float | None
-    vdom: str | None
-    
-    # Methods from FortiObject
-    @property
-    def dict(self) -> dict[str, Any]:
-        """Convert to dictionary."""
-        ...
-    @property
-    def json(self) -> str:
-        """Get pretty-printed JSON string."""
-        ...
-    @property
-    def raw(self) -> dict[str, Any]:
-        """Get raw API response data."""
-        ...
-    def get_full(self, name: str) -> Any: ...
-    def to_dict(self) -> DictionaryPayload: ...
-    def keys(self) -> Any: ...
-    def values(self) -> Generator[Any, None, None]: ...
-    def items(self) -> Generator[tuple[str, Any], None, None]: ...
-    def get(self, key: str, default: Any = None) -> Any: ...
+    entries: str | list[str] | list[dict[str, Any]] | list[DictionaryEntriesItem]
 
+
+# ================================================================
+# Response Types (TypedDict for dict-style access)
+# ================================================================
+
+class DictionaryResponse(TypedDict, total=False):
+    """Response type for Dictionary - use with .dict property for typed dict access."""
+    uuid: str
+    name: str
+    match_type: Literal["match-all", "match-any"]
+    match_around: Literal["enable", "disable"]
+    comment: str
+    entries: list[DictionaryEntriesItem]
+
+
+# ================================================================
+# Response Types (Class for attribute access)
+# ================================================================
+
+
+class DictionaryObject(FortiObject):
+    """Typed FortiObject for Dictionary with field access."""
+    uuid: str
+    name: str
+    match_type: Literal["match-all", "match-any"]
+    match_around: Literal["enable", "disable"]
+    comment: str
+    entries: list[DictionaryEntriesItem]
+
+
+# ================================================================
+# Main Endpoint Class
+# ================================================================
 
 class Dictionary:
     """
-    Configure dictionaries used by DLP blocking.
     
-    Path: dlp/dictionary
+    Endpoint: dlp/dictionary
     Category: cmdb
-    Primary Key: name
+    MKey: name
     """
     
+    # Class attributes for introspection
+    endpoint: ClassVar[str] = ...
+    path: ClassVar[str] = ...
+    category: ClassVar[str] = ...
+    mkey: ClassVar[str] = ...
+    capabilities: ClassVar[dict[str, Any]] = ...
+    
     def __init__(self, client: Any) -> None:
-        """Initialize endpoint with HTTP client.
-        
-        Args:
-            client: HTTP client instance for API communication
-        """
+        """Initialize endpoint with HTTP client."""
         ...
     
     # ================================================================
-    # GET OVERLOADS - Always returns FortiObject (or ContentResponse for file endpoints)
-    # Pylance matches overloads top-to-bottom, so these must come first!
+    # GET Methods
     # ================================================================
     
-    # With mkey as positional arg -> returns FortiObject
+    # CMDB with mkey - overloads for single vs list returns
     @overload
     def get(
         self,
         name: str,
+        *,
         filter: str | list[str] | None = ...,
         count: int | None = ...,
         start: int | None = ...,
@@ -220,14 +118,14 @@ class Dictionary:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        error_mode: Literal["raise", "return", "print"] | None = ...,
+        error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> DictionaryObject: ...
     
-    # With mkey as keyword arg -> returns FortiObject
     @overload
     def get(
         self,
         *,
-        name: str,
         filter: str | list[str] | None = ...,
         count: int | None = ...,
         start: int | None = ...,
@@ -237,164 +135,20 @@ class Dictionary:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> DictionaryObject: ...
-    
-    # Without mkey -> returns list of FortiObjects
-    @overload
-    def get(
-        self,
-        name: None = None,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
+        error_mode: Literal["raise", "return", "print"] | None = ...,
+        error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> FortiObjectList[DictionaryObject]: ...
-    
-    # ================================================================
-    # (removed - all GET now returns FortiObject)
-    # ================================================================
-    
-    # With mkey as positional arg -> returns single object
-    @overload
-    def get(
-        self,
-        name: str,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> DictionaryObject: ...
-    
-    # With mkey as keyword arg -> returns single object
-    @overload
-    def get(
-        self,
-        *,
-        name: str,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> DictionaryObject: ...
-    
-    # With no mkey -> returns list of objects
-    @overload
-    def get(
-        self,
-        *,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObjectList[DictionaryObject]: ...
-    
-    # Dict mode with mkey provided as positional arg (single dict)
-    @overload
-    def get(
-        self,
-        name: str,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> DictionaryObject: ...
-    
-    # Dict mode with mkey provided as keyword arg (single dict)
-    @overload
-    def get(
-        self,
-        *,
-        name: str,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> DictionaryObject: ...
-    
-    # Dict mode - list of dicts (no mkey/name provided) - keyword-only signature
-    @overload
-    def get(
-        self,
-        *,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObjectList[DictionaryObject]: ...
-    
-    # Fallback overload for all other cases
-    @overload
-    def get(
-        self,
-        name: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> Union[dict[str, Any], list[dict[str, Any]], FortiObject, list[FortiObject]]: ...
-    
-    def get(
-        self,
-        name: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> DictionaryObject | list[DictionaryObject] | dict[str, Any] | list[dict[str, Any]]: ...
     
     def get_schema(
         self,
         vdom: str | None = ...,
         format: str = ...,
     ) -> FortiObject: ...
+
+    # ================================================================
+    # POST Method
+    # ================================================================
     
-    # POST overloads
-    @overload
     def post(
         self,
         payload_dict: DictionaryPayload | None = ...,
@@ -403,51 +157,16 @@ class Dictionary:
         match_type: Literal["match-all", "match-any"] | None = ...,
         match_around: Literal["enable", "disable"] | None = ...,
         comment: str | None = ...,
-        entries: str | list[str] | list[DictionaryEntriesItem] | None = ...,
+        entries: str | list[str] | list[dict[str, Any]] | list[DictionaryEntriesItem] | None = ...,
         vdom: str | bool | None = ...,
+        error_mode: Literal["raise", "return", "print"] | None = ...,
+        error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> DictionaryObject: ...
+
+    # ================================================================
+    # PUT Method
+    # ================================================================
     
-    @overload
-    def post(
-        self,
-        payload_dict: DictionaryPayload | None = ...,
-        uuid: str | None = ...,
-        name: str | None = ...,
-        match_type: Literal["match-all", "match-any"] | None = ...,
-        match_around: Literal["enable", "disable"] | None = ...,
-        comment: str | None = ...,
-        entries: str | list[str] | list[DictionaryEntriesItem] | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
-    
-    # Default overload
-    @overload
-    def post(
-        self,
-        payload_dict: DictionaryPayload | None = ...,
-        uuid: str | None = ...,
-        name: str | None = ...,
-        match_type: Literal["match-all", "match-any"] | None = ...,
-        match_around: Literal["enable", "disable"] | None = ...,
-        comment: str | None = ...,
-        entries: str | list[str] | list[DictionaryEntriesItem] | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
-    
-    def post(
-        self,
-        payload_dict: DictionaryPayload | None = ...,
-        uuid: str | None = ...,
-        name: str | None = ...,
-        match_type: Literal["match-all", "match-any"] | None = ...,
-        match_around: Literal["enable", "disable"] | None = ...,
-        comment: str | None = ...,
-        entries: str | list[str] | list[DictionaryEntriesItem] | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
-    
-    # PUT overloads
-    @overload
     def put(
         self,
         payload_dict: DictionaryPayload | None = ...,
@@ -456,77 +175,27 @@ class Dictionary:
         match_type: Literal["match-all", "match-any"] | None = ...,
         match_around: Literal["enable", "disable"] | None = ...,
         comment: str | None = ...,
-        entries: str | list[str] | list[DictionaryEntriesItem] | None = ...,
+        entries: str | list[str] | list[dict[str, Any]] | list[DictionaryEntriesItem] | None = ...,
         vdom: str | bool | None = ...,
+        error_mode: Literal["raise", "return", "print"] | None = ...,
+        error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> DictionaryObject: ...
-    
-    @overload
-    def put(
-        self,
-        payload_dict: DictionaryPayload | None = ...,
-        uuid: str | None = ...,
-        name: str | None = ...,
-        match_type: Literal["match-all", "match-any"] | None = ...,
-        match_around: Literal["enable", "disable"] | None = ...,
-        comment: str | None = ...,
-        entries: str | list[str] | list[DictionaryEntriesItem] | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
-    
-    # Default overload
-    @overload
-    def put(
-        self,
-        payload_dict: DictionaryPayload | None = ...,
-        uuid: str | None = ...,
-        name: str | None = ...,
-        match_type: Literal["match-all", "match-any"] | None = ...,
-        match_around: Literal["enable", "disable"] | None = ...,
-        comment: str | None = ...,
-        entries: str | list[str] | list[DictionaryEntriesItem] | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
-    
-    def put(
-        self,
-        payload_dict: DictionaryPayload | None = ...,
-        uuid: str | None = ...,
-        name: str | None = ...,
-        match_type: Literal["match-all", "match-any"] | None = ...,
-        match_around: Literal["enable", "disable"] | None = ...,
-        comment: str | None = ...,
-        entries: str | list[str] | list[DictionaryEntriesItem] | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
-    
-    # DELETE overloads
-    @overload
-    def delete(
-        self,
-        name: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> DictionaryObject: ...
-    
-    @overload
-    def delete(
-        self,
-        name: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
-    
-    # Default overload
-    @overload
-    def delete(
-        self,
-        name: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+
+    # ================================================================
+    # DELETE Method
+    # ================================================================
     
     def delete(
         self,
         name: str | None = ...,
         vdom: str | bool | None = ...,
+        error_mode: Literal["raise", "return", "print"] | None = ...,
+        error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> FortiObject: ...
+
+    # ================================================================
+    # Utility Methods
+    # ================================================================
     
     def exists(
         self,
@@ -542,8 +211,10 @@ class Dictionary:
         match_type: Literal["match-all", "match-any"] | None = ...,
         match_around: Literal["enable", "disable"] | None = ...,
         comment: str | None = ...,
-        entries: str | list[str] | list[DictionaryEntriesItem] | None = ...,
+        entries: str | list[str] | list[dict[str, Any]] | list[DictionaryEntriesItem] | None = ...,
         vdom: str | bool | None = ...,
+        error_mode: Literal["raise", "return", "print"] | None = ...,
+        error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> FortiObject: ...
     
     # Helper methods
@@ -551,7 +222,7 @@ class Dictionary:
     def help(field_name: str | None = ...) -> str: ...
     
     @staticmethod
-    def fields(detailed: bool = ...) -> Union[list[str], list[dict[str, Any]]]: ...
+    def fields(detailed: bool = ...) -> list[str] | list[dict[str, Any]]: ...
     
     @staticmethod
     def field_info(field_name: str) -> FortiObject: ...
@@ -567,9 +238,6 @@ class Dictionary:
     
     @staticmethod
     def schema() -> FortiObject: ...
-
-
-# ================================================================
 
 
 __all__ = [

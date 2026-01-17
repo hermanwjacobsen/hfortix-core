@@ -396,6 +396,8 @@ class ProxyAddress(CRUDEndpoint, MetadataMixin):
                 example="[{'name': 'value'}]",
             )
         
+        # Apply normalization for multi-value option fields (space-separated strings)
+        
         # Build payload using helper function with auto-normalization
         # This automatically converts strings/lists to [{'name': '...'}] format for list fields
         # To disable auto-normalization, use build_cmdb_payload directly
@@ -598,6 +600,8 @@ class ProxyAddress(CRUDEndpoint, MetadataMixin):
                 field_name="application",
                 example="[{'name': 'value'}]",
             )
+        
+        # Apply normalization for multi-value option fields (space-separated strings)
         
         # Build payload using helper function with auto-normalization
         # This automatically converts strings/lists to [{'name': '...'}] format for list fields
@@ -867,6 +871,42 @@ class ProxyAddress(CRUDEndpoint, MetadataMixin):
             - put(): Update existing object
             - exists(): Check existence manually
         """
+        # Apply normalization for table fields (supports flexible input formats)
+        if category is not None:
+            category = normalize_table_field(
+                category,
+                mkey="id",
+                required_fields=['id'],
+                field_name="category",
+                example="[{'id': 1}]",
+            )
+        if header_group is not None:
+            header_group = normalize_table_field(
+                header_group,
+                mkey="id",
+                required_fields=['header-name', 'header'],
+                field_name="header_group",
+                example="[{'header-name': 'value', 'header': 'value'}]",
+            )
+        if tagging is not None:
+            tagging = normalize_table_field(
+                tagging,
+                mkey="name",
+                required_fields=['name'],
+                field_name="tagging",
+                example="[{'name': 'value'}]",
+            )
+        if application is not None:
+            application = normalize_table_field(
+                application,
+                mkey="name",
+                required_fields=['name'],
+                field_name="application",
+                example="[{'name': 'value'}]",
+            )
+        
+        # Apply normalization for multi-value option fields (space-separated strings)
+        
         # Build payload using helper function with auto-normalization
         payload_data = build_api_payload(
             name=name,

@@ -11,7 +11,11 @@ from pydantic import BaseModel, Field
 from typing import Any, Optional
 
 # ============================================================================
-# Child Table Models
+# Enum Definitions for Child Table Fields (for fields with 4+ allowed values)
+# ============================================================================
+
+# ============================================================================
+# Child Table Models (sorted deepest-first so nested models are defined before their parents)
 # ============================================================================
 
 class IotdParameters(BaseModel):
@@ -25,9 +29,10 @@ class IotdParameters(BaseModel):
         """Pydantic model configuration."""
         extra = "allow"  # Allow additional fields from API
         str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
     
-    name: str | None = Field(max_length=31, default="", description="Parameter name.")    
-    default value: str | None = Field(max_length=199, default="", description="Parameter default value.")
+    name: str | None = Field(max_length=31, default=None, description="Parameter name.")    
+    default_value: str | None = Field(max_length=199, default=None, description="Parameter default value.")
 class IotdMetadata(BaseModel):
     """
     Child table model for metadata.
@@ -39,8 +44,9 @@ class IotdMetadata(BaseModel):
         """Pydantic model configuration."""
         extra = "allow"  # Allow additional fields from API
         str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
     
-    id: int | None = Field(ge=0, le=4294967295, default=0, description="ID.")    
+    id_: int | None = Field(ge=0, le=4294967295, default=0, serialization_alias="id", description="ID.")    
     metaid: int | None = Field(ge=0, le=4294967295, default=0, description="Meta ID.")    
     valueid: int | None = Field(ge=0, le=4294967295, default=0, description="Value ID.")
 # ============================================================================
@@ -58,7 +64,7 @@ class IotdModel(BaseModel):
     
     Show IOT detection signatures.
     
-    Validation Rules:        - name: max_length=63 pattern=        - id: min=0 max=4294967295 pattern=        - category: min=0 max=4294967295 pattern=        - popularity: min=0 max=255 pattern=        - risk: min=0 max=255 pattern=        - weight: min=0 max=255 pattern=        - protocol: pattern=        - technology: pattern=        - behavior: pattern=        - vendor: pattern=        - parameters: pattern=        - metadata: pattern=        - status: pattern=    """
+    Validation Rules:        - name: max_length=63 pattern=        - id_: min=0 max=4294967295 pattern=        - category: min=0 max=4294967295 pattern=        - popularity: min=0 max=255 pattern=        - risk: min=0 max=255 pattern=        - weight: min=0 max=255 pattern=        - protocol: pattern=        - technology: pattern=        - behavior: pattern=        - vendor: pattern=        - parameters: pattern=        - metadata: pattern=        - status: pattern=    """
     
     class Config:
         """Pydantic model configuration."""
@@ -71,18 +77,18 @@ class IotdModel(BaseModel):
     # Model Fields
     # ========================================================================
     
-    name: str | None = Field(max_length=63, default="", description="Application name.")    
-    id: int | None = Field(ge=0, le=4294967295, default=0, description="Application ID.")    
+    name: str | None = Field(max_length=63, default=None, description="Application name.")    
+    id_: int | None = Field(ge=0, le=4294967295, default=0, serialization_alias="id", description="Application ID.")    
     category: int = Field(ge=0, le=4294967295, default=0, description="Application category ID.")    
     popularity: int | None = Field(ge=0, le=255, default=0, description="Application popularity.")    
     risk: int | None = Field(ge=0, le=255, default=0, description="Application risk.")    
     weight: int | None = Field(ge=0, le=255, default=0, description="Application weight.")    
-    protocol: str | None = Field(default="", description="Application protocol.")    
-    technology: str | None = Field(default="", description="Application technology.")    
-    behavior: str | None = Field(default="", description="Application behavior.")    
-    vendor: str | None = Field(default="", description="Application vendor.")    
-    parameters: list[Parameters] = Field(default=None, description="Application parameters.")    
-    metadata: list[Metadata] = Field(default=None, description="Meta data.")    
+    protocol: str | None = Field(default=None, description="Application protocol.")    
+    technology: str | None = Field(default=None, description="Application technology.")    
+    behavior: str | None = Field(default=None, description="Application behavior.")    
+    vendor: str | None = Field(default=None, description="Application vendor.")    
+    parameters: list[IotdParameters] = Field(default_factory=list, description="Application parameters.")    
+    metadata: list[IotdMetadata] = Field(default_factory=list, description="Meta data.")    
     status: Any = Field(default=None, description="Print all IOT detection rules information.")    
     # ========================================================================
     # Custom Validators
@@ -132,5 +138,5 @@ __all__ = [
 # ============================================================================
 # Generated by hfortix generator v0.6.0
 # Schema: 1.7.0
-# Generated: 2026-01-17T05:32:18.481079Z
+# Generated: 2026-01-17T17:25:22.257514Z
 # ============================================================================

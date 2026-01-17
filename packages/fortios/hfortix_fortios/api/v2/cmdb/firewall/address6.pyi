@@ -1,480 +1,195 @@
-from typing import TypedDict, Literal, Any, Coroutine, Union, overload, Generator, final
-from typing_extensions import NotRequired
-from hfortix_fortios.models import FortiObject, FortiObjectList
+""" - Type Stubs
 
-# ============================================================================
-# Nested TypedDicts for table field children (dict mode)
-# These MUST be defined before the Payload class to use them as type hints
-# ============================================================================
+Auto-generated stub file for type checking and IDE support.
 
-class Address6MacaddrItem(TypedDict, total=False):
-    """Type hints for macaddr table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    Use this when building payloads for POST/PUT requests.
-    
-    **Available fields:**
-        - macaddr: str
-    
-    **Example:**
-        entry: Address6MacaddrItem = {
-            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
-        }
-    """
-    
-    macaddr: str  # MAC address ranges <start>[-<end>] separated by sp | MaxLen: 127
+Endpoint: firewall/address6
+Category: cmdb
+"""
+
+from __future__ import annotations
+
+from typing import (
+    Any,
+    ClassVar,
+    Literal,
+    TypedDict,
+    overload,
+)
+
+from hfortix_fortios.models import (
+    FortiObject,
+    FortiObjectList,
+)
 
 
-class Address6TaggingItem(TypedDict, total=False):
-    """Type hints for tagging table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    Use this when building payloads for POST/PUT requests.
-    
-    **Available fields:**
-        - name: str
-        - category: str
-        - tags: str
-    
-    **Example:**
-        entry: Address6TaggingItem = {
-            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
-        }
-    """
-    
-    name: str  # Tagging entry name. | MaxLen: 63
-    category: str  # Tag category. | MaxLen: 63
-    tags: str  # Tags.
+# ================================================================
+# TypedDict Payloads
+# ================================================================
 
-
-class Address6SubnetsegmentItem(TypedDict, total=False):
-    """Type hints for subnet-segment table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    Use this when building payloads for POST/PUT requests.
-    
-    **Available fields:**
-        - name: str
-        - type: "any" | "specific"
-        - value: str
-    
-    **Example:**
-        entry: Address6SubnetsegmentItem = {
-            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
-        }
-    """
-    
-    name: str  # Name. | MaxLen: 63
-    type: Literal["any", "specific"]  # Subnet segment type. | Default: any
-    value: str  # Subnet segment value. | MaxLen: 35
-
-
-class Address6ListItem(TypedDict, total=False):
-    """Type hints for list table item fields (dict mode).
-    
-    Provides IDE autocomplete for nested table field items.
-    Use this when building payloads for POST/PUT requests.
-    
-    **Available fields:**
-        - ip: str
-    
-    **Example:**
-        entry: Address6ListItem = {
-            "status": "enable",  # <- autocomplete shows all fields and validates Literal values
-        }
-    """
-    
-    ip: str  # IP. | MaxLen: 89
-
-
-# ============================================================================
-# Payload TypedDict for IDE autocomplete (for POST/PUT - fields are optional)
-# ============================================================================
-# NOTE: We intentionally DON'T use NotRequired wrapper because:
-# 1. total=False already makes all fields optional
-# 2. NotRequired[Literal[...]] prevents Pylance from validating Literal values in dict literals
-class Address6Payload(TypedDict, total=False):
-    """
-    Type hints for firewall/address6 payload fields.
-    
-    Configure IPv6 firewall addresses.
-    
-    **Related Resources:**
-
-    Dependencies (resources this endpoint references):
-        - :class:`~.firewall.address6-template.Address6TemplateEndpoint` (via: template)
-        - :class:`~.system.sdn-connector.SdnConnectorEndpoint` (via: sdn)
-
-    **Usage:**
-        payload: Address6Payload = {
-            "field": "value",  # <- autocomplete shows all fields
-        }
-    """
-    name: str  # Address name. | MaxLen: 79
-    uuid: str  # Universally Unique Identifier | Default: 00000000-0000-0000-0000-000000000000
-    type: Literal["ipprefix", "iprange", "fqdn", "geography", "dynamic", "template", "mac", "route-tag", "wildcard"]  # Type of IPv6 address object (default = ipprefix). | Default: ipprefix
-    route_tag: int  # route-tag address. | Default: 0 | Min: 1 | Max: 4294967295
-    macaddr: list[Address6MacaddrItem]  # Multiple MAC address ranges.
-    sdn: str  # SDN. | MaxLen: 35
-    ip6: str  # IPv6 address prefix | Default: ::/0
-    wildcard: str  # IPv6 address and wildcard netmask. | Default: :: ::
-    start_ip: str  # First IP address (inclusive) in the range for the | Default: ::
-    end_ip: str  # Final IP address (inclusive) in the range for the | Default: ::
-    fqdn: str  # Fully qualified domain name. | MaxLen: 255
-    country: str  # IPv6 addresses associated to a specific country. | MaxLen: 2
-    cache_ttl: int  # Minimal TTL of individual IPv6 addresses in FQDN c | Default: 0 | Min: 0 | Max: 86400
-    color: int  # Integer value to determine the color of the icon i | Default: 0 | Min: 0 | Max: 32
-    obj_id: str  # Object ID for NSX. | MaxLen: 255
-    tagging: list[Address6TaggingItem]  # Config object tagging.
-    comment: str  # Comment. | MaxLen: 255
-    template: str  # IPv6 address template. | MaxLen: 63
-    subnet_segment: list[Address6SubnetsegmentItem]  # IPv6 subnet segments.
-    host_type: Literal["any", "specific"]  # Host type. | Default: any
-    host: str  # Host Address. | Default: ::
-    tenant: str  # Tenant. | MaxLen: 35
-    epg_name: str  # Endpoint group name. | MaxLen: 255
-    sdn_tag: str  # SDN Tag. | MaxLen: 15
-    filter: str  # Match criteria filter. | MaxLen: 2047
-    list: list[Address6ListItem]  # IP address list.
-    sdn_addr_type: Literal["private", "public", "all"]  # Type of addresses to collect. | Default: private
-    passive_fqdn_learning: Literal["disable", "enable"]  # Enable/disable passive learning of FQDNs.  When en | Default: enable
-    fabric_object: Literal["enable", "disable"]  # Security Fabric global object setting. | Default: disable
-
-# ============================================================================
-# Nested classes for table field children (object mode - for API responses)
-# ============================================================================
-
-@final
-class Address6MacaddrObject:
-    """Typed object for macaddr table items.
-    
-    Provides IDE autocomplete for nested table field attributes.
-    At runtime, this is a FortiObject instance.
-    """
-    
-    # MAC address ranges <start>[-<end>] separated by space. | MaxLen: 127
+class Address6MacaddrItem:
+    """Nested item for macaddr field - supports attribute access."""
     macaddr: str
-    
-    # Common API response fields
-    status: str
-    http_status: int | None
-    http_status_code: int | None
-    http_method: str | None
-    http_response_time: float | None
-    vdom: str | None
-    
-    # Methods from FortiObject
-    @property
-    def dict(self) -> dict[str, Any]:
-        """Convert to dictionary."""
-        ...
-    @property
-    def json(self) -> str:
-        """Get pretty-printed JSON string."""
-        ...
-    @property
-    def raw(self) -> dict[str, Any]:
-        """Get raw API response data."""
-        ...
-    def get_full(self, name: str) -> Any: ...
-    def to_dict(self) -> FortiObject: ...
-    def keys(self) -> Any: ...
-    def values(self) -> Generator[Any, None, None]: ...
-    def items(self) -> Generator[tuple[str, Any], None, None]: ...
-    def get(self, key: str, default: Any = None) -> Any: ...
 
 
-@final
-class Address6TaggingObject:
-    """Typed object for tagging table items.
-    
-    Provides IDE autocomplete for nested table field attributes.
-    At runtime, this is a FortiObject instance.
-    """
-    
-    # Tagging entry name. | MaxLen: 63
+class Address6TaggingItem:
+    """Nested item for tagging field - supports attribute access."""
     name: str
-    # Tag category. | MaxLen: 63
     category: str
-    # Tags.
     tags: str
-    
-    # Common API response fields
-    status: str
-    http_status: int | None
-    http_status_code: int | None
-    http_method: str | None
-    http_response_time: float | None
-    vdom: str | None
-    
-    # Methods from FortiObject
-    @property
-    def dict(self) -> dict[str, Any]:
-        """Convert to dictionary."""
-        ...
-    @property
-    def json(self) -> str:
-        """Get pretty-printed JSON string."""
-        ...
-    @property
-    def raw(self) -> dict[str, Any]:
-        """Get raw API response data."""
-        ...
-    def get_full(self, name: str) -> Any: ...
-    def to_dict(self) -> FortiObject: ...
-    def keys(self) -> Any: ...
-    def values(self) -> Generator[Any, None, None]: ...
-    def items(self) -> Generator[tuple[str, Any], None, None]: ...
-    def get(self, key: str, default: Any = None) -> Any: ...
 
 
-@final
-class Address6SubnetsegmentObject:
-    """Typed object for subnet-segment table items.
-    
-    Provides IDE autocomplete for nested table field attributes.
-    At runtime, this is a FortiObject instance.
-    """
-    
-    # Name. | MaxLen: 63
+class Address6SubnetsegmentItem:
+    """Nested item for subnet-segment field - supports attribute access."""
     name: str
-    # Subnet segment type. | Default: any
     type: Literal["any", "specific"]
-    # Subnet segment value. | MaxLen: 35
     value: str
-    
-    # Common API response fields
-    status: str
-    http_status: int | None
-    http_status_code: int | None
-    http_method: str | None
-    http_response_time: float | None
-    vdom: str | None
-    
-    # Methods from FortiObject
-    @property
-    def dict(self) -> dict[str, Any]:
-        """Convert to dictionary."""
-        ...
-    @property
-    def json(self) -> str:
-        """Get pretty-printed JSON string."""
-        ...
-    @property
-    def raw(self) -> dict[str, Any]:
-        """Get raw API response data."""
-        ...
-    def get_full(self, name: str) -> Any: ...
-    def to_dict(self) -> FortiObject: ...
-    def keys(self) -> Any: ...
-    def values(self) -> Generator[Any, None, None]: ...
-    def items(self) -> Generator[tuple[str, Any], None, None]: ...
-    def get(self, key: str, default: Any = None) -> Any: ...
 
 
-@final
-class Address6ListObject:
-    """Typed object for list table items.
-    
-    Provides IDE autocomplete for nested table field attributes.
-    At runtime, this is a FortiObject instance.
-    """
-    
-    # IP. | MaxLen: 89
+class Address6ListItem:
+    """Nested item for list field - supports attribute access."""
     ip: str
-    
-    # Common API response fields
-    status: str
-    http_status: int | None
-    http_status_code: int | None
-    http_method: str | None
-    http_response_time: float | None
-    vdom: str | None
-    
-    # Methods from FortiObject
-    @property
-    def dict(self) -> dict[str, Any]:
-        """Convert to dictionary."""
-        ...
-    @property
-    def json(self) -> str:
-        """Get pretty-printed JSON string."""
-        ...
-    @property
-    def raw(self) -> dict[str, Any]:
-        """Get raw API response data."""
-        ...
-    def get_full(self, name: str) -> Any: ...
-    def to_dict(self) -> FortiObject: ...
-    def keys(self) -> Any: ...
-    def values(self) -> Generator[Any, None, None]: ...
-    def items(self) -> Generator[tuple[str, Any], None, None]: ...
-    def get(self, key: str, default: Any = None) -> Any: ...
 
 
-
-
-# Response TypedDict for GET returns (all fields present in API response)
-class Address6Response(TypedDict):
-    """
-    Type hints for firewall/address6 API response fields.
-    
-    All fields are present in the response from the FortiGate API.
-    """
-    name: str  # Address name. | MaxLen: 79
-    uuid: str  # Universally Unique Identifier | Default: 00000000-0000-0000-0000-000000000000
-    type: Literal["ipprefix", "iprange", "fqdn", "geography", "dynamic", "template", "mac", "route-tag", "wildcard"]  # Type of IPv6 address object (default = ipprefix). | Default: ipprefix
-    route_tag: int  # route-tag address. | Default: 0 | Min: 1 | Max: 4294967295
-    macaddr: list[Address6MacaddrItem]  # Multiple MAC address ranges.
-    sdn: str  # SDN. | MaxLen: 35
-    ip6: str  # IPv6 address prefix | Default: ::/0
-    wildcard: str  # IPv6 address and wildcard netmask. | Default: :: ::
-    start_ip: str  # First IP address (inclusive) in the range for the | Default: ::
-    end_ip: str  # Final IP address (inclusive) in the range for the | Default: ::
-    fqdn: str  # Fully qualified domain name. | MaxLen: 255
-    country: str  # IPv6 addresses associated to a specific country. | MaxLen: 2
-    cache_ttl: int  # Minimal TTL of individual IPv6 addresses in FQDN c | Default: 0 | Min: 0 | Max: 86400
-    color: int  # Integer value to determine the color of the icon i | Default: 0 | Min: 0 | Max: 32
-    obj_id: str  # Object ID for NSX. | MaxLen: 255
-    tagging: list[Address6TaggingItem]  # Config object tagging.
-    comment: str  # Comment. | MaxLen: 255
-    template: str  # IPv6 address template. | MaxLen: 63
-    subnet_segment: list[Address6SubnetsegmentItem]  # IPv6 subnet segments.
-    host_type: Literal["any", "specific"]  # Host type. | Default: any
-    host: str  # Host Address. | Default: ::
-    tenant: str  # Tenant. | MaxLen: 35
-    epg_name: str  # Endpoint group name. | MaxLen: 255
-    sdn_tag: str  # SDN Tag. | MaxLen: 15
-    filter: str  # Match criteria filter. | MaxLen: 2047
-    list: list[Address6ListItem]  # IP address list.
-    sdn_addr_type: Literal["private", "public", "all"]  # Type of addresses to collect. | Default: private
-    passive_fqdn_learning: Literal["disable", "enable"]  # Enable/disable passive learning of FQDNs.  When en | Default: enable
-    fabric_object: Literal["enable", "disable"]  # Security Fabric global object setting. | Default: disable
-
-
-@final
-class Address6Object:
-    """Typed FortiObject for firewall/address6 with IDE autocomplete support.
-    
-    This is a typed wrapper that provides IDE autocomplete for API response fields.
-    At runtime, this is actually a FortiObject instance.
-    """
-    
-    # Address name. | MaxLen: 79
+class Address6Payload(TypedDict, total=False):
+    """Payload type for Address6 operations."""
     name: str
-    # Universally Unique Identifier | Default: 00000000-0000-0000-0000-000000000000
     uuid: str
-    # Type of IPv6 address object (default = ipprefix). | Default: ipprefix
     type: Literal["ipprefix", "iprange", "fqdn", "geography", "dynamic", "template", "mac", "route-tag", "wildcard"]
-    # route-tag address. | Default: 0 | Min: 1 | Max: 4294967295
     route_tag: int
-    # Multiple MAC address ranges.
-    macaddr: list[Address6MacaddrObject]
-    # SDN. | MaxLen: 35
+    macaddr: str | list[str] | list[dict[str, Any]] | list[Address6MacaddrItem]
     sdn: str
-    # IPv6 address prefix | Default: ::/0
     ip6: str
-    # IPv6 address and wildcard netmask. | Default: :: ::
     wildcard: str
-    # First IP address (inclusive) in the range for the address | Default: ::
     start_ip: str
-    # Final IP address (inclusive) in the range for the address | Default: ::
     end_ip: str
-    # Fully qualified domain name. | MaxLen: 255
     fqdn: str
-    # IPv6 addresses associated to a specific country. | MaxLen: 2
     country: str
-    # Minimal TTL of individual IPv6 addresses in FQDN cache. | Default: 0 | Min: 0 | Max: 86400
     cache_ttl: int
-    # Integer value to determine the color of the icon in the GUI | Default: 0 | Min: 0 | Max: 32
     color: int
-    # Object ID for NSX. | MaxLen: 255
     obj_id: str
-    # Config object tagging.
-    tagging: list[Address6TaggingObject]
-    # Comment. | MaxLen: 255
+    tagging: str | list[str] | list[dict[str, Any]] | list[Address6TaggingItem]
     comment: str
-    # IPv6 address template. | MaxLen: 63
     template: str
-    # IPv6 subnet segments.
-    subnet_segment: list[Address6SubnetsegmentObject]
-    # Host type. | Default: any
+    subnet_segment: str | list[str] | list[dict[str, Any]] | list[Address6SubnetsegmentItem]
     host_type: Literal["any", "specific"]
-    # Host Address. | Default: ::
     host: str
-    # Tenant. | MaxLen: 35
     tenant: str
-    # Endpoint group name. | MaxLen: 255
     epg_name: str
-    # SDN Tag. | MaxLen: 15
     sdn_tag: str
-    # Match criteria filter. | MaxLen: 2047
     filter: str
-    # IP address list.
-    list: list[Address6ListObject]
-    # Type of addresses to collect. | Default: private
+    list: str | list[str] | list[dict[str, Any]] | list[Address6ListItem]
     sdn_addr_type: Literal["private", "public", "all"]
-    # Enable/disable passive learning of FQDNs.  When enabled, the | Default: enable
     passive_fqdn_learning: Literal["disable", "enable"]
-    # Security Fabric global object setting. | Default: disable
     fabric_object: Literal["enable", "disable"]
-    
-    # Common API response fields
-    status: str
-    http_status: int | None
-    http_status_code: int | None
-    http_method: str | None
-    http_response_time: float | None
-    vdom: str | None
-    
-    # Methods from FortiObject
-    @property
-    def dict(self) -> dict[str, Any]:
-        """Convert to dictionary."""
-        ...
-    @property
-    def json(self) -> str:
-        """Get pretty-printed JSON string."""
-        ...
-    @property
-    def raw(self) -> dict[str, Any]:
-        """Get raw API response data."""
-        ...
-    def get_full(self, name: str) -> Any: ...
-    def to_dict(self) -> Address6Payload: ...
-    def keys(self) -> Any: ...
-    def values(self) -> Generator[Any, None, None]: ...
-    def items(self) -> Generator[tuple[str, Any], None, None]: ...
-    def get(self, key: str, default: Any = None) -> Any: ...
 
+
+# ================================================================
+# Response Types (TypedDict for dict-style access)
+# ================================================================
+
+class Address6Response(TypedDict, total=False):
+    """Response type for Address6 - use with .dict property for typed dict access."""
+    name: str
+    uuid: str
+    type: Literal["ipprefix", "iprange", "fqdn", "geography", "dynamic", "template", "mac", "route-tag", "wildcard"]
+    route_tag: int
+    macaddr: list[Address6MacaddrItem]
+    sdn: str
+    ip6: str
+    wildcard: str
+    start_ip: str
+    end_ip: str
+    fqdn: str
+    country: str
+    cache_ttl: int
+    color: int
+    obj_id: str
+    tagging: list[Address6TaggingItem]
+    comment: str
+    template: str
+    subnet_segment: list[Address6SubnetsegmentItem]
+    host_type: Literal["any", "specific"]
+    host: str
+    tenant: str
+    epg_name: str
+    sdn_tag: str
+    filter: str
+    list: list[Address6ListItem]
+    sdn_addr_type: Literal["private", "public", "all"]
+    passive_fqdn_learning: Literal["disable", "enable"]
+    fabric_object: Literal["enable", "disable"]
+
+
+# ================================================================
+# Response Types (Class for attribute access)
+# ================================================================
+
+
+class Address6Object(FortiObject):
+    """Typed FortiObject for Address6 with field access."""
+    name: str
+    uuid: str
+    type: Literal["ipprefix", "iprange", "fqdn", "geography", "dynamic", "template", "mac", "route-tag", "wildcard"]
+    route_tag: int
+    macaddr: list[Address6MacaddrItem]
+    sdn: str
+    ip6: str
+    wildcard: str
+    start_ip: str
+    end_ip: str
+    fqdn: str
+    country: str
+    cache_ttl: int
+    color: int
+    obj_id: str
+    tagging: list[Address6TaggingItem]
+    comment: str
+    template: str
+    subnet_segment: list[Address6SubnetsegmentItem]
+    host_type: Literal["any", "specific"]
+    host: str
+    tenant: str
+    epg_name: str
+    sdn_tag: str
+    filter: str
+    sdn_addr_type: Literal["private", "public", "all"]
+    passive_fqdn_learning: Literal["disable", "enable"]
+    fabric_object: Literal["enable", "disable"]
+
+
+# ================================================================
+# Main Endpoint Class
+# ================================================================
 
 class Address6:
     """
-    Configure IPv6 firewall addresses.
     
-    Path: firewall/address6
+    Endpoint: firewall/address6
     Category: cmdb
-    Primary Key: name
+    MKey: name
     """
     
+    # Class attributes for introspection
+    endpoint: ClassVar[str] = ...
+    path: ClassVar[str] = ...
+    category: ClassVar[str] = ...
+    mkey: ClassVar[str] = ...
+    capabilities: ClassVar[dict[str, Any]] = ...
+    
     def __init__(self, client: Any) -> None:
-        """Initialize endpoint with HTTP client.
-        
-        Args:
-            client: HTTP client instance for API communication
-        """
+        """Initialize endpoint with HTTP client."""
         ...
     
     # ================================================================
-    # GET OVERLOADS - Always returns FortiObject (or ContentResponse for file endpoints)
-    # Pylance matches overloads top-to-bottom, so these must come first!
+    # GET Methods
     # ================================================================
     
-    # With mkey as positional arg -> returns FortiObject
+    # CMDB with mkey - overloads for single vs list returns
     @overload
     def get(
         self,
         name: str,
+        *,
         filter: str | list[str] | None = ...,
         count: int | None = ...,
         start: int | None = ...,
@@ -484,14 +199,14 @@ class Address6:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
+        error_mode: Literal["raise", "return", "print"] | None = ...,
+        error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> Address6Object: ...
     
-    # With mkey as keyword arg -> returns FortiObject
     @overload
     def get(
         self,
         *,
-        name: str,
         filter: str | list[str] | None = ...,
         count: int | None = ...,
         start: int | None = ...,
@@ -501,164 +216,20 @@ class Address6:
         format: str | None = ...,
         action: str | None = ...,
         vdom: str | bool | None = ...,
-    ) -> Address6Object: ...
-    
-    # Without mkey -> returns list of FortiObjects
-    @overload
-    def get(
-        self,
-        name: None = None,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
+        error_mode: Literal["raise", "return", "print"] | None = ...,
+        error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> FortiObjectList[Address6Object]: ...
-    
-    # ================================================================
-    # (removed - all GET now returns FortiObject)
-    # ================================================================
-    
-    # With mkey as positional arg -> returns single object
-    @overload
-    def get(
-        self,
-        name: str,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> Address6Object: ...
-    
-    # With mkey as keyword arg -> returns single object
-    @overload
-    def get(
-        self,
-        *,
-        name: str,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> Address6Object: ...
-    
-    # With no mkey -> returns list of objects
-    @overload
-    def get(
-        self,
-        *,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObjectList[Address6Object]: ...
-    
-    # Dict mode with mkey provided as positional arg (single dict)
-    @overload
-    def get(
-        self,
-        name: str,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> Address6Object: ...
-    
-    # Dict mode with mkey provided as keyword arg (single dict)
-    @overload
-    def get(
-        self,
-        *,
-        name: str,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> Address6Object: ...
-    
-    # Dict mode - list of dicts (no mkey/name provided) - keyword-only signature
-    @overload
-    def get(
-        self,
-        *,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObjectList[Address6Object]: ...
-    
-    # Fallback overload for all other cases
-    @overload
-    def get(
-        self,
-        name: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> Union[dict[str, Any], list[dict[str, Any]], FortiObject, list[FortiObject]]: ...
-    
-    def get(
-        self,
-        name: str | None = ...,
-        filter: str | list[str] | None = ...,
-        count: int | None = ...,
-        start: int | None = ...,
-        payload_dict: dict[str, Any] | None = ...,
-        range: list[int] | None = ...,
-        sort: str | None = ...,
-        format: str | None = ...,
-        action: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> Address6Object | list[Address6Object] | dict[str, Any] | list[dict[str, Any]]: ...
     
     def get_schema(
         self,
         vdom: str | None = ...,
         format: str = ...,
     ) -> FortiObject: ...
+
+    # ================================================================
+    # POST Method
+    # ================================================================
     
-    # POST overloads
-    @overload
     def post(
         self,
         payload_dict: Address6Payload | None = ...,
@@ -666,7 +237,7 @@ class Address6:
         uuid: str | None = ...,
         type: Literal["ipprefix", "iprange", "fqdn", "geography", "dynamic", "template", "mac", "route-tag", "wildcard"] | None = ...,
         route_tag: int | None = ...,
-        macaddr: str | list[str] | list[Address6MacaddrItem] | None = ...,
+        macaddr: str | list[str] | list[dict[str, Any]] | list[Address6MacaddrItem] | None = ...,
         sdn: str | None = ...,
         ip6: str | None = ...,
         wildcard: str | None = ...,
@@ -677,133 +248,29 @@ class Address6:
         cache_ttl: int | None = ...,
         color: int | None = ...,
         obj_id: str | None = ...,
-        tagging: str | list[str] | list[Address6TaggingItem] | None = ...,
+        tagging: str | list[str] | list[dict[str, Any]] | list[Address6TaggingItem] | None = ...,
         comment: str | None = ...,
         template: str | None = ...,
-        subnet_segment: str | list[str] | list[Address6SubnetsegmentItem] | None = ...,
+        subnet_segment: str | list[str] | list[dict[str, Any]] | list[Address6SubnetsegmentItem] | None = ...,
         host_type: Literal["any", "specific"] | None = ...,
         host: str | None = ...,
         tenant: str | None = ...,
         epg_name: str | None = ...,
         sdn_tag: str | None = ...,
         filter: str | None = ...,
-        list: str | list[str] | list[Address6ListItem] | None = ...,
+        list: str | list[str] | list[dict[str, Any]] | list[Address6ListItem] | None = ...,
         sdn_addr_type: Literal["private", "public", "all"] | None = ...,
         passive_fqdn_learning: Literal["disable", "enable"] | None = ...,
         fabric_object: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
+        error_mode: Literal["raise", "return", "print"] | None = ...,
+        error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> Address6Object: ...
+
+    # ================================================================
+    # PUT Method
+    # ================================================================
     
-    @overload
-    def post(
-        self,
-        payload_dict: Address6Payload | None = ...,
-        name: str | None = ...,
-        uuid: str | None = ...,
-        type: Literal["ipprefix", "iprange", "fqdn", "geography", "dynamic", "template", "mac", "route-tag", "wildcard"] | None = ...,
-        route_tag: int | None = ...,
-        macaddr: str | list[str] | list[Address6MacaddrItem] | None = ...,
-        sdn: str | None = ...,
-        ip6: str | None = ...,
-        wildcard: str | None = ...,
-        start_ip: str | None = ...,
-        end_ip: str | None = ...,
-        fqdn: str | None = ...,
-        country: str | None = ...,
-        cache_ttl: int | None = ...,
-        color: int | None = ...,
-        obj_id: str | None = ...,
-        tagging: str | list[str] | list[Address6TaggingItem] | None = ...,
-        comment: str | None = ...,
-        template: str | None = ...,
-        subnet_segment: str | list[str] | list[Address6SubnetsegmentItem] | None = ...,
-        host_type: Literal["any", "specific"] | None = ...,
-        host: str | None = ...,
-        tenant: str | None = ...,
-        epg_name: str | None = ...,
-        sdn_tag: str | None = ...,
-        filter: str | None = ...,
-        list: str | list[str] | list[Address6ListItem] | None = ...,
-        sdn_addr_type: Literal["private", "public", "all"] | None = ...,
-        passive_fqdn_learning: Literal["disable", "enable"] | None = ...,
-        fabric_object: Literal["enable", "disable"] | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
-    
-    # Default overload
-    @overload
-    def post(
-        self,
-        payload_dict: Address6Payload | None = ...,
-        name: str | None = ...,
-        uuid: str | None = ...,
-        type: Literal["ipprefix", "iprange", "fqdn", "geography", "dynamic", "template", "mac", "route-tag", "wildcard"] | None = ...,
-        route_tag: int | None = ...,
-        macaddr: str | list[str] | list[Address6MacaddrItem] | None = ...,
-        sdn: str | None = ...,
-        ip6: str | None = ...,
-        wildcard: str | None = ...,
-        start_ip: str | None = ...,
-        end_ip: str | None = ...,
-        fqdn: str | None = ...,
-        country: str | None = ...,
-        cache_ttl: int | None = ...,
-        color: int | None = ...,
-        obj_id: str | None = ...,
-        tagging: str | list[str] | list[Address6TaggingItem] | None = ...,
-        comment: str | None = ...,
-        template: str | None = ...,
-        subnet_segment: str | list[str] | list[Address6SubnetsegmentItem] | None = ...,
-        host_type: Literal["any", "specific"] | None = ...,
-        host: str | None = ...,
-        tenant: str | None = ...,
-        epg_name: str | None = ...,
-        sdn_tag: str | None = ...,
-        filter: str | None = ...,
-        list: str | list[str] | list[Address6ListItem] | None = ...,
-        sdn_addr_type: Literal["private", "public", "all"] | None = ...,
-        passive_fqdn_learning: Literal["disable", "enable"] | None = ...,
-        fabric_object: Literal["enable", "disable"] | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
-    
-    def post(
-        self,
-        payload_dict: Address6Payload | None = ...,
-        name: str | None = ...,
-        uuid: str | None = ...,
-        type: Literal["ipprefix", "iprange", "fqdn", "geography", "dynamic", "template", "mac", "route-tag", "wildcard"] | None = ...,
-        route_tag: int | None = ...,
-        macaddr: str | list[str] | list[Address6MacaddrItem] | None = ...,
-        sdn: str | None = ...,
-        ip6: str | None = ...,
-        wildcard: str | None = ...,
-        start_ip: str | None = ...,
-        end_ip: str | None = ...,
-        fqdn: str | None = ...,
-        country: str | None = ...,
-        cache_ttl: int | None = ...,
-        color: int | None = ...,
-        obj_id: str | None = ...,
-        tagging: str | list[str] | list[Address6TaggingItem] | None = ...,
-        comment: str | None = ...,
-        template: str | None = ...,
-        subnet_segment: str | list[str] | list[Address6SubnetsegmentItem] | None = ...,
-        host_type: Literal["any", "specific"] | None = ...,
-        host: str | None = ...,
-        tenant: str | None = ...,
-        epg_name: str | None = ...,
-        sdn_tag: str | None = ...,
-        filter: str | None = ...,
-        list: str | list[str] | list[Address6ListItem] | None = ...,
-        sdn_addr_type: Literal["private", "public", "all"] | None = ...,
-        passive_fqdn_learning: Literal["disable", "enable"] | None = ...,
-        fabric_object: Literal["enable", "disable"] | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
-    
-    # PUT overloads
-    @overload
     def put(
         self,
         payload_dict: Address6Payload | None = ...,
@@ -811,7 +278,7 @@ class Address6:
         uuid: str | None = ...,
         type: Literal["ipprefix", "iprange", "fqdn", "geography", "dynamic", "template", "mac", "route-tag", "wildcard"] | None = ...,
         route_tag: int | None = ...,
-        macaddr: str | list[str] | list[Address6MacaddrItem] | None = ...,
+        macaddr: str | list[str] | list[dict[str, Any]] | list[Address6MacaddrItem] | None = ...,
         sdn: str | None = ...,
         ip6: str | None = ...,
         wildcard: str | None = ...,
@@ -822,159 +289,40 @@ class Address6:
         cache_ttl: int | None = ...,
         color: int | None = ...,
         obj_id: str | None = ...,
-        tagging: str | list[str] | list[Address6TaggingItem] | None = ...,
+        tagging: str | list[str] | list[dict[str, Any]] | list[Address6TaggingItem] | None = ...,
         comment: str | None = ...,
         template: str | None = ...,
-        subnet_segment: str | list[str] | list[Address6SubnetsegmentItem] | None = ...,
+        subnet_segment: str | list[str] | list[dict[str, Any]] | list[Address6SubnetsegmentItem] | None = ...,
         host_type: Literal["any", "specific"] | None = ...,
         host: str | None = ...,
         tenant: str | None = ...,
         epg_name: str | None = ...,
         sdn_tag: str | None = ...,
         filter: str | None = ...,
-        list: str | list[str] | list[Address6ListItem] | None = ...,
+        list: str | list[str] | list[dict[str, Any]] | list[Address6ListItem] | None = ...,
         sdn_addr_type: Literal["private", "public", "all"] | None = ...,
         passive_fqdn_learning: Literal["disable", "enable"] | None = ...,
         fabric_object: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
+        error_mode: Literal["raise", "return", "print"] | None = ...,
+        error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> Address6Object: ...
-    
-    @overload
-    def put(
-        self,
-        payload_dict: Address6Payload | None = ...,
-        name: str | None = ...,
-        uuid: str | None = ...,
-        type: Literal["ipprefix", "iprange", "fqdn", "geography", "dynamic", "template", "mac", "route-tag", "wildcard"] | None = ...,
-        route_tag: int | None = ...,
-        macaddr: str | list[str] | list[Address6MacaddrItem] | None = ...,
-        sdn: str | None = ...,
-        ip6: str | None = ...,
-        wildcard: str | None = ...,
-        start_ip: str | None = ...,
-        end_ip: str | None = ...,
-        fqdn: str | None = ...,
-        country: str | None = ...,
-        cache_ttl: int | None = ...,
-        color: int | None = ...,
-        obj_id: str | None = ...,
-        tagging: str | list[str] | list[Address6TaggingItem] | None = ...,
-        comment: str | None = ...,
-        template: str | None = ...,
-        subnet_segment: str | list[str] | list[Address6SubnetsegmentItem] | None = ...,
-        host_type: Literal["any", "specific"] | None = ...,
-        host: str | None = ...,
-        tenant: str | None = ...,
-        epg_name: str | None = ...,
-        sdn_tag: str | None = ...,
-        filter: str | None = ...,
-        list: str | list[str] | list[Address6ListItem] | None = ...,
-        sdn_addr_type: Literal["private", "public", "all"] | None = ...,
-        passive_fqdn_learning: Literal["disable", "enable"] | None = ...,
-        fabric_object: Literal["enable", "disable"] | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
-    
-    # Default overload
-    @overload
-    def put(
-        self,
-        payload_dict: Address6Payload | None = ...,
-        name: str | None = ...,
-        uuid: str | None = ...,
-        type: Literal["ipprefix", "iprange", "fqdn", "geography", "dynamic", "template", "mac", "route-tag", "wildcard"] | None = ...,
-        route_tag: int | None = ...,
-        macaddr: str | list[str] | list[Address6MacaddrItem] | None = ...,
-        sdn: str | None = ...,
-        ip6: str | None = ...,
-        wildcard: str | None = ...,
-        start_ip: str | None = ...,
-        end_ip: str | None = ...,
-        fqdn: str | None = ...,
-        country: str | None = ...,
-        cache_ttl: int | None = ...,
-        color: int | None = ...,
-        obj_id: str | None = ...,
-        tagging: str | list[str] | list[Address6TaggingItem] | None = ...,
-        comment: str | None = ...,
-        template: str | None = ...,
-        subnet_segment: str | list[str] | list[Address6SubnetsegmentItem] | None = ...,
-        host_type: Literal["any", "specific"] | None = ...,
-        host: str | None = ...,
-        tenant: str | None = ...,
-        epg_name: str | None = ...,
-        sdn_tag: str | None = ...,
-        filter: str | None = ...,
-        list: str | list[str] | list[Address6ListItem] | None = ...,
-        sdn_addr_type: Literal["private", "public", "all"] | None = ...,
-        passive_fqdn_learning: Literal["disable", "enable"] | None = ...,
-        fabric_object: Literal["enable", "disable"] | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
-    
-    def put(
-        self,
-        payload_dict: Address6Payload | None = ...,
-        name: str | None = ...,
-        uuid: str | None = ...,
-        type: Literal["ipprefix", "iprange", "fqdn", "geography", "dynamic", "template", "mac", "route-tag", "wildcard"] | None = ...,
-        route_tag: int | None = ...,
-        macaddr: str | list[str] | list[Address6MacaddrItem] | None = ...,
-        sdn: str | None = ...,
-        ip6: str | None = ...,
-        wildcard: str | None = ...,
-        start_ip: str | None = ...,
-        end_ip: str | None = ...,
-        fqdn: str | None = ...,
-        country: str | None = ...,
-        cache_ttl: int | None = ...,
-        color: int | None = ...,
-        obj_id: str | None = ...,
-        tagging: str | list[str] | list[Address6TaggingItem] | None = ...,
-        comment: str | None = ...,
-        template: str | None = ...,
-        subnet_segment: str | list[str] | list[Address6SubnetsegmentItem] | None = ...,
-        host_type: Literal["any", "specific"] | None = ...,
-        host: str | None = ...,
-        tenant: str | None = ...,
-        epg_name: str | None = ...,
-        sdn_tag: str | None = ...,
-        filter: str | None = ...,
-        list: str | list[str] | list[Address6ListItem] | None = ...,
-        sdn_addr_type: Literal["private", "public", "all"] | None = ...,
-        passive_fqdn_learning: Literal["disable", "enable"] | None = ...,
-        fabric_object: Literal["enable", "disable"] | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
-    
-    # DELETE overloads
-    @overload
-    def delete(
-        self,
-        name: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> Address6Object: ...
-    
-    @overload
-    def delete(
-        self,
-        name: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
-    
-    # Default overload
-    @overload
-    def delete(
-        self,
-        name: str | None = ...,
-        vdom: str | bool | None = ...,
-    ) -> FortiObject: ...
+
+    # ================================================================
+    # DELETE Method
+    # ================================================================
     
     def delete(
         self,
         name: str | None = ...,
         vdom: str | bool | None = ...,
+        error_mode: Literal["raise", "return", "print"] | None = ...,
+        error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> FortiObject: ...
+
+    # ================================================================
+    # Utility Methods
+    # ================================================================
     
     def exists(
         self,
@@ -989,7 +337,7 @@ class Address6:
         uuid: str | None = ...,
         type: Literal["ipprefix", "iprange", "fqdn", "geography", "dynamic", "template", "mac", "route-tag", "wildcard"] | None = ...,
         route_tag: int | None = ...,
-        macaddr: str | list[str] | list[Address6MacaddrItem] | None = ...,
+        macaddr: str | list[str] | list[dict[str, Any]] | list[Address6MacaddrItem] | None = ...,
         sdn: str | None = ...,
         ip6: str | None = ...,
         wildcard: str | None = ...,
@@ -1000,21 +348,23 @@ class Address6:
         cache_ttl: int | None = ...,
         color: int | None = ...,
         obj_id: str | None = ...,
-        tagging: str | list[str] | list[Address6TaggingItem] | None = ...,
+        tagging: str | list[str] | list[dict[str, Any]] | list[Address6TaggingItem] | None = ...,
         comment: str | None = ...,
         template: str | None = ...,
-        subnet_segment: str | list[str] | list[Address6SubnetsegmentItem] | None = ...,
+        subnet_segment: str | list[str] | list[dict[str, Any]] | list[Address6SubnetsegmentItem] | None = ...,
         host_type: Literal["any", "specific"] | None = ...,
         host: str | None = ...,
         tenant: str | None = ...,
         epg_name: str | None = ...,
         sdn_tag: str | None = ...,
         filter: str | None = ...,
-        list: str | list[str] | list[Address6ListItem] | None = ...,
+        list: str | list[str] | list[dict[str, Any]] | list[Address6ListItem] | None = ...,
         sdn_addr_type: Literal["private", "public", "all"] | None = ...,
         passive_fqdn_learning: Literal["disable", "enable"] | None = ...,
         fabric_object: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
+        error_mode: Literal["raise", "return", "print"] | None = ...,
+        error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> FortiObject: ...
     
     # Helper methods
@@ -1022,7 +372,7 @@ class Address6:
     def help(field_name: str | None = ...) -> str: ...
     
     @staticmethod
-    def fields(detailed: bool = ...) -> Union[list[str], list[dict[str, Any]]]: ...
+    def fields(detailed: bool = ...) -> list[str] | list[dict[str, Any]]: ...
     
     @staticmethod
     def field_info(field_name: str) -> FortiObject: ...
@@ -1038,9 +388,6 @@ class Address6:
     
     @staticmethod
     def schema() -> FortiObject: ...
-
-
-# ================================================================
 
 
 __all__ = [

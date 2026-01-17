@@ -7,12 +7,12 @@ from typing import Any, Optional, TYPE_CHECKING
 if TYPE_CHECKING:
     from hfortix_core.http.client import HTTPClient
     from hfortix_core.http.interface import IHTTPClient
-    from hfortix_fortios.client import FortiOS, FortiOSDictMode, FortiOSObjectMode
+    from hfortix_fortios.client import FortiOS
 
 __all__ = ["Utils"]
 
 # Type alias for all acceptable client types
-FortiOSClient = FortiOS | FortiOSDictMode | FortiOSObjectMode | HTTPClient | IHTTPClient
+FortiOSClient = FortiOS | HTTPClient | IHTTPClient
 
 
 class PerformanceTestResults:
@@ -39,7 +39,7 @@ class Utils:
 
     def __init__(
         self,
-        client: FortiOS | FortiOSDictMode | FortiOSObjectMode | HTTPClient | IHTTPClient,
+        client: FortiOS | HTTPClient | IHTTPClient,
     ) -> None:
         """Initialize utilities with HTTP client or FortiOS client reference."""
         ...

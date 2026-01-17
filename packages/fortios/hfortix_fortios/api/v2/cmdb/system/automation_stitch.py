@@ -722,6 +722,32 @@ class AutomationStitch(CRUDEndpoint, MetadataMixin):
             - put(): Update existing object
             - exists(): Check existence manually
         """
+        # Apply normalization for table fields (supports flexible input formats)
+        if condition is not None:
+            condition = normalize_table_field(
+                condition,
+                mkey="name",
+                required_fields=['name'],
+                field_name="condition",
+                example="[{'name': 'value'}]",
+            )
+        if actions is not None:
+            actions = normalize_table_field(
+                actions,
+                mkey="id",
+                required_fields=['action'],
+                field_name="actions",
+                example="[{'action': 'value'}]",
+            )
+        if destination is not None:
+            destination = normalize_table_field(
+                destination,
+                mkey="name",
+                required_fields=['name'],
+                field_name="destination",
+                example="[{'name': 'value'}]",
+            )
+        
         # Build payload using helper function with auto-normalization
         payload_data = build_api_payload(
             name=name,

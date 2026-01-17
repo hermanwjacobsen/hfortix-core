@@ -207,3 +207,82 @@ def normalize_table_field(
 
     # Single required field - convert to dict, strip whitespace
     return [{mkey: str(value).strip()}]
+
+
+# =============================================================================
+# Multi-Value Option Field Normalizers
+# =============================================================================
+
+# Valid day names for schedule fields
+VALID_DAYS = frozenset({
+    "sunday", "monday", "tuesday", "wednesday",
+    "thursday", "friday", "saturday", "none"
+})
+
+
+def normalize_day_field(value: str | list[str] | None) -> str | None:
+    """
+    Normalize 'day' field to space-separated string format for FortiOS API.
+
+    FortiOS schedule endpoints (e.g., firewall.schedule/recurring) expect
+    day values as space-separated strings like "monday tuesday wednesday",
+    not as lists.
+
+    Args:
+        value: Can be:
+            - str: "monday tuesday" (pass-through, validated)
+            - str: "monday, tuesday, wednesday" (comma-separated, converted)
+            - list: ["monday", "tuesday", "wednesday"] (converted to space-separated)
+            - None: returns None
+
+    Returns:
+        Space-separated string like "monday tuesday wednesday", or None
+
+    Raises:
+        ValueError: If invalid day names are provided
+        TypeError: If value is not str, list, or None
+
+    Examples:
+        >>> normalize_day_field("monday tuesday")
+        'monday tuesday'
+
+        >>> normalize_day_field(["monday", "tuesday", "wednesday"])
+        'monday tuesday wednesday'
+
+        >>> normalize_day_field("monday, tuesday, wednesday")
+        'monday tuesday wednesday'
+
+        >>> normalize_day_field(None)
+        None
+
+        >>> normalize_day_field("MONDAY Tuesday")  # Case-insensitive
+        'monday tuesday'
+    """
+    if value is None:
+        return None
+
+    if isinstance(value, list):
+        # ["monday", "tuesday"] -> "monday tuesday"
+        days = [str(d).strip().lower() for d in value if d]
+    elif isinstance(value, str):
+        # Handle comma-separated: "monday, tuesday" -> ["monday", "tuesday"]
+        if "," in value:
+            days = [d.strip().lower() for d in value.split(",") if d.strip()]
+        else:
+            # Already space-separated or single day
+            days = [d.strip().lower() for d in value.split() if d.strip()]
+    else:
+        raise TypeError(f"Expected str or list, got {type(value).__name__}")
+
+    if not days:
+        return None
+
+    # Validate day names
+    invalid = [d for d in days if d not in VALID_DAYS]
+    if invalid:
+        raise ValueError(
+            f"Invalid day(s): {invalid}. "
+            f"Valid options: {sorted(VALID_DAYS)}"
+        )
+
+    return " ".join(days)

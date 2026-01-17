@@ -11,24 +11,13 @@ from pydantic import BaseModel, Field, field_validator
 from typing import Any, Literal, Optional
 
 # ============================================================================
-# Child Table Models
+# Enum Definitions for Child Table Fields (for fields with 4+ allowed values)
 # ============================================================================
 
-class H2qpOsuProviderFriendlyName(BaseModel):
-    """
-    Child table model for friendly-name.
-    
-    OSU provider friendly name.
-    """
-    
-    class Config:
-        """Pydantic model configuration."""
-        extra = "allow"  # Allow additional fields from API
-        str_strip_whitespace = True
-    
-    index: int | None = Field(ge=1, le=10, default=0, description="OSU provider friendly name index.")    
-    lang: str = Field(max_length=3, default="eng", description="Language code.")    
-    friendly_name: str = Field(max_length=252, default="", description="OSU provider friendly name.")
+# ============================================================================
+# Child Table Models (sorted deepest-first so nested models are defined before their parents)
+# ============================================================================
+
 class H2qpOsuProviderServiceDescription(BaseModel):
     """
     Child table model for service-description.
@@ -40,10 +29,27 @@ class H2qpOsuProviderServiceDescription(BaseModel):
         """Pydantic model configuration."""
         extra = "allow"  # Allow additional fields from API
         str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
     
     service_id: int | None = Field(ge=0, le=4294967295, default=0, description="OSU service ID.")    
     lang: str = Field(max_length=3, default="eng", description="Language code.")    
-    service_description: str = Field(max_length=252, default="", description="Service description.")
+    service_description: str = Field(max_length=252, description="Service description.")
+class H2qpOsuProviderFriendlyName(BaseModel):
+    """
+    Child table model for friendly-name.
+    
+    OSU provider friendly name.
+    """
+    
+    class Config:
+        """Pydantic model configuration."""
+        extra = "allow"  # Allow additional fields from API
+        str_strip_whitespace = True
+        use_enum_values = True  # Use enum values instead of names
+    
+    index: int | None = Field(ge=1, le=10, default=0, description="OSU provider friendly name index.")    
+    lang: str = Field(max_length=3, default="eng", description="Language code.")    
+    friendly_name: str = Field(max_length=252, description="OSU provider friendly name.")
 # ============================================================================
 # Enum Definitions (for fields with 4+ allowed values)
 # ============================================================================
@@ -72,13 +78,13 @@ class H2qpOsuProviderModel(BaseModel):
     # Model Fields
     # ========================================================================
     
-    name: str | None = Field(max_length=35, default="", description="OSU provider ID.")    
-    friendly_name: list[FriendlyName] = Field(default=None, description="OSU provider friendly name.")    
-    server_uri: str | None = Field(max_length=255, default="", description="Server URI.")    
-    osu_method: list[OsuMethod] = Field(default="", description="OSU method list.")    
-    osu_nai: str | None = Field(max_length=255, default="", description="OSU NAI.")    
-    service_description: list[ServiceDescription] = Field(default=None, description="OSU service name.")    
-    icon: str | None = Field(max_length=35, default="", description="OSU provider icon.")  # datasource: ['wireless-controller.hotspot20.icon.name']    
+    name: str | None = Field(max_length=35, default=None, description="OSU provider ID.")    
+    friendly_name: list[H2qpOsuProviderFriendlyName] = Field(default_factory=list, description="OSU provider friendly name.")    
+    server_uri: str | None = Field(max_length=255, default=None, description="Server URI.")    
+    osu_method: list[Literal["oma-dm", "soap-xml-spp", "reserved"]] = Field(default_factory=list, description="OSU method list.")    
+    osu_nai: str | None = Field(max_length=255, default=None, description="OSU NAI.")    
+    service_description: list[H2qpOsuProviderServiceDescription] = Field(default_factory=list, description="OSU service name.")    
+    icon: str | None = Field(max_length=35, default=None, description="OSU provider icon.")  # datasource: ['wireless-controller.hotspot20.icon.name']    
     # ========================================================================
     # Custom Validators
     # ========================================================================
@@ -158,7 +164,7 @@ class H2qpOsuProviderModel(BaseModel):
             ... else:
             ...     result = await fgt.api.cmdb.wireless_controller.hotspot20.h2qp_osu_provider.post(policy.to_fortios_dict())
         """
-        errors = []
+        errors: list[str] = []
         
         # Validate scalar field
         value = getattr(self, "icon", None)
@@ -167,7 +173,7 @@ class H2qpOsuProviderModel(BaseModel):
         
         # Check all datasource endpoints
         found = False
-        if await client.api.cmdb.wireless-controller.hotspot20.icon.exists(value):
+        if await client.api.cmdb.wireless_controller.hotspot20.icon.exists(value):
             found = True
         
         if not found:
@@ -218,5 +224,5 @@ __all__ = [
 # ============================================================================
 # Generated by hfortix generator v0.6.0
 # Schema: 1.7.0
-# Generated: 2026-01-17T05:32:18.288546Z
+# Generated: 2026-01-17T17:25:22.083600Z
 # ============================================================================

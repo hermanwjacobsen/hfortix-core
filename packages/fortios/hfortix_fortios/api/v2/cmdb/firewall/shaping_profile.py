@@ -658,6 +658,16 @@ class ShapingProfile(CRUDEndpoint, MetadataMixin):
             - put(): Update existing object
             - exists(): Check existence manually
         """
+        # Apply normalization for table fields (supports flexible input formats)
+        if shaping_entries is not None:
+            shaping_entries = normalize_table_field(
+                shaping_entries,
+                mkey="id",
+                required_fields=['class-id'],
+                field_name="shaping_entries",
+                example="[{'class-id': 1}]",
+            )
+        
         # Build payload using helper function with auto-normalization
         payload_data = build_api_payload(
             profile_name=profile_name,
