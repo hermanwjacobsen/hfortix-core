@@ -9,9 +9,9 @@ Python client library for Fortinet products including FortiOS, FortiManager, and
 
 ## 🎯 Current Status
 
-> **⚠️ BETA STATUS - Version 0.5.89**
+> **⚠️ BETA STATUS - Version 0.5.102**
 >
-> - **Current Version**: 0.5.89 (Released - January 16, 2026)
+> - **Current Version**: 0.5.102 (Released - January 18, 2026)
 > - **Schema Version**: v1.7.0 (1,348 endpoints with enhanced metadata)
 > - **Package Size**: ~30 MB (optimized with MetadataMixin refactoring)
 > - **Implementation**: Advanced Features (100% complete) - Production ready!
@@ -51,82 +51,51 @@ Python client library for Fortinet products including FortiOS, FortiManager, and
 - Documentation: ✅ 100%
 - Release: ✅ 100%
 
-**Latest Release:** v0.5.89 - Generator Fixes, New Endpoints, Enhanced Test Coverage
+**Latest Release:** v0.5.102 - Generator Improvements & Comprehensive Monitor API Testing
 
 **Test Coverage:** **All endpoints tested and passing!** ✅
 **Status:** Ready for production use - comprehensive feature set complete!
 
-**🔥 Latest Improvements (January 2026):**
+**🔥 5 Latest Changes:**
 
-**v0.5.89 - Generator Fixes & New Endpoints (52 New Tests):**
-- ✅ **Nested child object response properties**: All nested table field objects now include `http_status_code`, `http_method`, `http_response_time`
-- ✅ **Service API endpoints**: Security rating recommendations and reports (4 tests), system fabric/time checks (2 tests)
-- ✅ **Monitor API endpoints**: CASB SaaS monitoring (1 test), firewall policy hit count (3 tests)
-- ✅ **CMDB emailfilter**: Block/allow lists, banned words, DNS blocklists, FortiShield, IP trust, headers, options, profiles (36 tests)
-- ✅ **Test generator fixes**: HTTP methods extraction, POST-only endpoint handling, removed unsupported parameters
+**v0.5.102 - Generator Improvements & Monitor API Testing (85 New Tests) - January 18, 2026:**
+- ✅ **Generator: Literal type extraction from parameter descriptions**: Automatically extracts enumerated values from parameter descriptions in schema files (e.g., `[option1 | option2 | option3]`) and generates proper `Literal["option1", "option2", "option3"]` type hints for both `.py` implementations and `.pyi` stub files, providing IDE autocomplete and type checking for valid parameter values
+- ✅ **Generator: Asterisk stripping fix**: Fixed schema parser to remove asterisks (`*`) from both the beginning and end of parameter option values when extracting Literal types. Previously, options like `[*vdom|global]` would generate `Literal["*vdom", "global"]` instead of the correct `Literal["vdom", "global"]`. Examples affected: `scope` parameter in `monitor.network.lldp.ports`, `ip_version` parameter in `monitor.router.bgp.neighbors_statistics`
+- ✅ **85 new Monitor API endpoint tests** across 8 test files covering comprehensive monitoring functionality:
+  - **router.py** (50 tests): Routing tables (IPv4/IPv6), BGP (neighbors, paths, statistics, soft reset), OSPF neighbors, SD-WAN routes, route lookup (IPv4/IPv6, policy routes), policy routes
+  - **network.py** (13 tests): ARP table, LLDP (neighbors, ports with VDOM/global scope), DNS latency, DDNS (servers, lookup), reverse IP lookup, debug flow trace
+  - **registration.py** (3 tests): FortiCloud status, FortiCare account, FortiCare resellers
+  - **license.py** (4 tests): License status, FortiAnalyzer license, FortiCare organization list, FortiCare resellers
+  - **ips.py** (5 tests): Rate-based statistics, metadata, anomaly detection, hold signatures, session performance
+  - **fortiview.py** (3 tests): Realtime statistics, historical statistics, realtime proxy statistics
+  - **fortiguard.py** (4 tests): Redirect portal, service communication statistics (with filtering), answers endpoint
+  - **firmware.py** (3 tests): Extension device firmware info for FortiSwitch, FortiAP, FortiExtender
+- ✅ **Test quality improvements**: All tests include proper exception handling for 404/424/500 errors, use realistic test data (google.dk, 8.8.8.8, port3/port4), and document disabled tests with reasons
 
-**v0.5.77 - FortiManager Proxy Support & Response Enhancements:**
-- 🎯 **FortiManagerProxy**: Route FortiOS API calls through FortiManager!
-  - Proxy API requests to managed FortiGate devices
-  - Full ADOM and device targeting support
-  - Session-based authentication with FortiManager
-  - JSON-RPC protocol support for FMG API
-- 🔧 **HTTPClientFMG**: New HTTP client for FortiManager in `hfortix_core`
-  - Extends BaseHTTPClient with retry/circuit-breaker support
-  - Session-based login/logout with token caching
-  - Proxy request method for FMG's `/sys/proxy/json` endpoint
-- 📦 **ProxiedFortiOS**: FortiOS-like interface through FMG
-  - Same API patterns: `proxied_fgt.api.cmdb.firewall.address.get()`
-  - Automatic request translation to FMG JSON-RPC format
-  - Full response wrapping with timing and metadata
-- ⚡ **http_stats property**: Simplified timing access
-  - `obj.http_stats` returns `{"http_response_time": 123.5}` (in milliseconds)
-- ⏱️ **Response timing properties**: Track API performance
-  - `obj.response_time` - Response time in seconds (float)
-  - `obj.response_time_ms` - Response time in milliseconds (int)
-- 📊 **Explicit envelope properties**: Clear access to API metadata
-  - `obj.revision`, `obj.serial`, `obj.build`, `obj.version`
-- 🔕 **Silent 404 handling**: `exists()` returns `False` without printing errors
+**v0.5.101 - FortiObject Property Renaming & HTTP Status Fix - January 18, 2026:**
+- ✅ **BREAKING: FortiObject property renaming**: Renamed FortiGate-specific metadata properties with `fgt_` prefix to clearly distinguish API metadata from object fields and prevent naming conflicts:
+  - `vdom` → `fgt_vdom`, `mkey` → `fgt_mkey`, `revision` → `fgt_revision`, `serial` → `fgt_serial`, `version` → `fgt_version`, `build` → `fgt_build`
+- ✅ **New properties**: Added `fgt_revision_changed`, `fgt_old_revision`, `fgt_api_path`, `fgt_api_name`, `fgt_response_size`, `fgt_action`, `fgt_limit_reached`, `fgt_matched_count`, `fgt_next_idx`
+- ✅ **HTTP status injection**: Fixed `FortiObject.http_status_code` to correctly return HTTP status codes from responses (HTTP client now injects `http_status` from actual HTTP response if not present in JSON)
+- ✅ **Test file fixes**: Corrected validator function name checks in `system.global` and `web_proxy.global` test files
 
-**v0.5.45 - Formatting & Type Improvements:**
-- ✨ **fmt module in core**: `from hfortix_core import fmt` - 13 formatting utilities
-- 🎯 **Improved to_dict() types**: Better Pylance compatibility with `.get()` method
-- 🔄 **Automatic key normalization**: API response keys converted from hyphens to underscores
-  - `tcp-portrange` → `tcp_portrange` automatically
-- 📦 **Optimized helper files**: 50-80 lines reduced per file using functools.partial
+**v0.5.100 - Comprehensive Firewall Testing & Readonly Endpoints - January 17, 2026:**
+- ✅ **45 new CMDB endpoint test files** covering comprehensive firewall configuration testing: Address & Address Groups (24 tests), Internet Services (50 tests), IP Pools & NAT (18 tests), Policies (33 tests), Security Profiles (18 tests), Virtual IPs (24 tests), and more
+- ✅ **Generator: Readonly endpoint detection**: Updated endpoint generator to detect readonly reference data endpoints (marked with `"readonly": true` in schema) and only generate GET methods
+- ✅ **38 readonly endpoints updated**: Internet service variants, geographic data, IPS signatures, vendor MAC addresses, system replacement messages, and timezone data endpoints now only expose `get()` and `get_schema()` methods
+- ✅ **Generator: Complex field TypedDict support**: Added full support for complex nested object fields with dedicated TypedDict classes for proper type checking and IDE autocomplete
+- 📄 **READONLY_ENDPOINTS.md**: New documentation listing all 38 readonly endpoints with descriptions and usage examples
 
-**v0.5.44 - Core Formatting Module:**
-- � Moved formatting utilities to `hfortix_core.fmt` for easier access
-- 🎯 All 13 functions: `to_list()`, `to_json()`, `to_csv()`, `to_dict()`, `to_table()`, etc.
-- 📋 Auto-split for space-delimited strings: `"80 443"` → `['80', '443']`
+**v0.5.99 - Generator Auto-Normalize Fix - January 17, 2026:**
+- ✅ **Generator: Unitary field auto-normalize conflict fix**: Fixed bug where fields like `interface` in `firewall.DoS-policy` were incorrectly auto-normalized to list format `[{"name": "..."}]` when they should remain as simple strings
+- ✅ **Affected endpoints fixed**: `firewall/DoS_policy`, `firewall/DoS_policy6`, `firewall/interface_policy`, and ~20 other endpoints with unitary `interface`, `srcintf`, `dstintf`, or `member` fields
+- ✅ **Technical improvement**: Added `get_unitary_list_field_conflicts()` function to schema parser and updated template to conditionally set `auto_normalize=False` with explanatory comments
 
-**v0.5.43 - Enhanced Formatting:**
-- ✨ `to_dictlist()` / `to_listdict()` for columnar↔row format conversion
-- 📊 `to_table()`, `to_yaml()`, `to_xml()` for various output formats
-- 🔧 `to_markdown_table()` for documentation generation
-
-**🔥 Previous Highlights (v0.5.32-v0.5.42):**
-
-- � **Key Normalization**: Automatic hyphen-to-underscore conversion for API responses
-- 🎯 **Single Object Returns**: Querying by mkey returns single object, not list
-- � **Nested Table Field Wrapping**: Full attribute access on nested objects
-- 🛠️ **Enhanced Type Stubs**: Improved overloads for better Pylance type inference
-- 📊 **MutationResponse TypedDict**: Type-safe POST/PUT/DELETE responses
-- 🔍 **Validation Hints**: Field constraints shown in IDE tooltips
-- 🔗 **ENDPOINT RELATIONSHIP DOCUMENTATION**: Enhanced IDE experience with cross-references! (v0.5.11)
-- ⚡ See what resources each endpoint depends on (forward dependencies)
-- 🔍 Field-level mappings: Know which fields reference which endpoints
-- 🎯 RST cross-references: Ctrl+Click to navigate between related endpoints
-- 📚 Smart truncation: Top 10 dependencies shown, then "... and X more"
-- ✅ All 562 CMDB endpoints include relationship documentation
-- 🎨 **LITERAL TYPES FOR IDE AUTOCOMPLETE**: 15,000+ parameters with enum autocomplete! (v0.5.18)
-- ⚡ Instant IDE suggestions for all enum fields (action, status, protocol, etc.)
-- 🛡️ Type safety: Invalid values caught at type-check time
-- 📚 Self-documenting: See all valid options in IDE tooltips
-- ✅ 100% backward compatible - no breaking changes
-- 🎉 **METADATAMIXIN REFACTORING**: 53% total package size reduction (64 MB → 30 MB)! (v0.5.4)
-- ♻️ **CODE DEDUPLICATION**: Eliminated ~160K lines of duplicate metadata methods
-- 📦 **OPTIMIZED PACKAGE**: Two-phase optimization (stub separation + mixin refactoring)
+**v0.5.98 - Multi-Value Option Fields & Schedule Testing - May 23, 2025:**
+- ✅ **Stub generator improvements**: Fixed `status` field generation and multi-value option fields (e.g., `firewall.schedule/recurring.day`) - FortiOS returns space-separated strings, stubs now reflect this properly
+- ✅ **normalize_day_field() helper**: New normalizer for schedule day fields - accepts `str`, `list[str]`, or comma-separated string and normalizes to space-separated format
+- ✅ **Generator: auto-normalize multi-value option fields**: Endpoints with `day` fields now automatically normalize input via `normalize_day_field()` in POST/PUT/SET methods
+- ✅ **53 new CMDB endpoint tests** covering 11 firewall-related endpoints: IP/MAC binding (8 tests), schedules (15 tests), services (15 tests), shapers (10 tests), file filter (5 tests)
 
 **📖 Documentation:**
 
