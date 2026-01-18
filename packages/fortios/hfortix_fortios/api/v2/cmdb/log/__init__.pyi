@@ -23,9 +23,9 @@ if TYPE_CHECKING:
     from .syslogd2 import Syslogd2
     from .syslogd3 import Syslogd3
     from .syslogd4 import Syslogd4
-    from .tacacs_plusaccounting import TacacsPlusaccounting
-    from .tacacs_plusaccounting2 import TacacsPlusaccounting2
-    from .tacacs_plusaccounting3 import TacacsPlusaccounting3
+    from .tacacs_plus_accounting import TacacsPlusAccounting
+    from .tacacs_plus_accounting2 import TacacsPlusAccounting2
+    from .tacacs_plus_accounting3 import TacacsPlusAccounting3
     from .webtrends import Webtrends
 
 __all__ = [
@@ -59,9 +59,9 @@ class Log:
     syslogd2: Syslogd2
     syslogd3: Syslogd3
     syslogd4: Syslogd4
-    tacacs_plusaccounting: TacacsPlusaccounting
-    tacacs_plusaccounting2: TacacsPlusaccounting2
-    tacacs_plusaccounting3: TacacsPlusaccounting3
+    tacacs_plus_accounting: TacacsPlusAccounting
+    tacacs_plus_accounting2: TacacsPlusAccounting2
+    tacacs_plus_accounting3: TacacsPlusAccounting3
     webtrends: Webtrends
     custom_field: CustomField
     eventfilter: Eventfilter

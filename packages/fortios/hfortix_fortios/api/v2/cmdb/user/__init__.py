@@ -24,6 +24,7 @@ from .scim import Scim
 from .security_exempt_list import SecurityExemptList
 from .setting import Setting
 from .tacacs_plus import TacacsPlus
+from .tacacs_plus_ import TacacsPlus
 
 __all__ = [
     "Adgrp",
@@ -49,6 +50,7 @@ __all__ = [
     "Scim",
     "SecurityExemptList",
     "Setting",
+    "TacacsPlus",
     "TacacsPlus",
     "User",
 ]
@@ -87,3 +89,4 @@ class User:
         self.security_exempt_list = SecurityExemptList(client)
         self.setting = Setting(client)
         self.tacacs_plus = TacacsPlus(client)
+        self.tacacs_plus_ = TacacsPlus(client)
