@@ -5,6 +5,39 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.5.101] - 2026-01-18
+
+### Changed
+
+- **BREAKING: FortiObject property renaming**: Renamed FortiGate-specific metadata properties with `fgt_` prefix to clearly distinguish API metadata from object fields and prevent naming conflicts:
+  - `vdom` → `fgt_vdom` - FortiGate virtual domain name
+  - `mkey` → `fgt_mkey` - FortiGate primary key of created/modified object
+  - `revision` → `fgt_revision` - Configuration revision number
+  - `serial` → `fgt_serial` - Device serial number
+  - `version` → `fgt_version` - FortiOS version string
+  - `build` → `fgt_build` - FortiOS firmware build number
+- **New properties**:
+  - `fgt_revision_changed` - Boolean flag indicating whether config was modified
+  - `fgt_old_revision` - Previous configuration revision number (before this change)
+  - `fgt_api_path` - API path segment (e.g., 'firewall', 'system', 'user')
+  - `fgt_api_name` - API endpoint name (e.g., 'address', 'policy', 'interface')
+  - `fgt_response_size` - Number of objects returned in the response (for list operations)
+  - `fgt_action` - API action performed (appears in some response types)
+  - `fgt_limit_reached` - Boolean indicating pagination limit was reached
+  - `fgt_matched_count` - Number of objects matching the query criteria
+  - `fgt_next_idx` - Index for the next page in paginated results
+- **Rationale**: The `fgt_` prefix makes it immediately clear these are FortiGate API metadata properties, not fields from the actual FortiOS object being managed. This prevents potential conflicts when object schemas include fields like "version", "serial", "name", "path", "size", etc.
+
+### Fixed
+
+- **HTTP Client: Missing http_status in API responses**: Fixed issue where `FortiObject.http_status_code` returned `None` because FortiOS API responses don't always include the HTTP status code in the JSON body. The HTTP client now injects `http_status` from the actual HTTP response (`response.status_code`) if not present in the JSON response.
+- **Impact**: `result.http_status_code` now correctly returns HTTP status codes (200, 404, 500, etc.) for all endpoints, and `result.http_stats` includes accurate status code information.
+- **Affected code**: Both sync (`hfortix_core.http.client`) and async (`hfortix_core.http.async_client`) HTTP clients updated.
+
+### Tests
+
+- **Test file fixes**: Corrected validator function name checks in `system.global` and `web_proxy.global` test files (changed from double underscore `validate_*__post` to single underscore `validate_*_post` to match actual generated function names).
+
 ## [0.5.100] - 2026-01-17
 
 ### Tests

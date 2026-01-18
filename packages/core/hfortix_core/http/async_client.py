@@ -927,6 +927,11 @@ class AsyncHTTPClient(BaseHTTPClient):
 
                 # Parse JSON response
                 json_response = res.json()
+                
+                # Inject http_status into response if not present
+                # FortiOS API doesn't always include http_status in JSON body
+                if "http_status" not in json_response:
+                    json_response["http_status"] = res.status_code
 
                 # Normalize keys: FortiOS returns hyphenated keys (tcp-portrange)
                 # but Python/TypedDict requires underscores (tcp_portrange)

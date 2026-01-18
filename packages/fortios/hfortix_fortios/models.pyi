@@ -88,33 +88,78 @@ class FortiObject(Generic[_DataT]):
         ...
 
     @property
-    def vdom(self) -> str | None:
-        """Virtual domain name."""
+    def fgt_vdom(self) -> str | None:
+        """FortiGate virtual domain name from API response."""
         ...
 
     @property
-    def mkey(self) -> str | int | None:
-        """Primary key (mkey) of created/modified object."""
+    def fgt_mkey(self) -> str | int | None:
+        """FortiGate primary key (mkey) of created/modified object."""
         ...
 
     @property
-    def revision(self) -> str | None:
-        """Configuration revision number."""
+    def fgt_revision(self) -> str | None:
+        """FortiGate configuration revision number."""
+        ...
+    
+    @property
+    def fgt_revision_changed(self) -> bool:
+        """Whether the configuration revision changed (indicates config was modified)."""
+        ...
+    
+    @property
+    def fgt_old_revision(self) -> str | None:
+        """FortiGate previous configuration revision number (before this change)."""
         ...
 
     @property
-    def serial(self) -> str | None:
-        """Device serial number."""
+    def fgt_serial(self) -> str | None:
+        """FortiGate device serial number."""
         ...
 
     @property
-    def version(self) -> str | None:
+    def fgt_version(self) -> str | None:
         """FortiOS version string (e.g., 'v7.6.5')."""
         ...
 
     @property
-    def build(self) -> int | None:
+    def fgt_build(self) -> int | None:
         """FortiOS firmware build number."""
+        ...
+    
+    @property
+    def fgt_api_path(self) -> str | None:
+        """API path segment (e.g., 'firewall', 'system', 'user')."""
+        ...
+    
+    @property
+    def fgt_api_name(self) -> str | None:
+        """API endpoint name (e.g., 'address', 'policy', 'interface')."""
+        ...
+    
+    @property
+    def fgt_response_size(self) -> int | None:
+        """Number of objects returned in the response (for list operations)."""
+        ...
+    
+    @property
+    def fgt_action(self) -> str | None:
+        """API action performed (appears in some response types)."""
+        ...
+    
+    @property
+    def fgt_limit_reached(self) -> bool:
+        """Whether the pagination limit was reached in a list query."""
+        ...
+    
+    @property
+    def fgt_matched_count(self) -> int | None:
+        """Number of objects matching the query criteria."""
+        ...
+    
+    @property
+    def fgt_next_idx(self) -> int | None:
+        """Index for the next page in paginated results."""
         ...
 
     @property

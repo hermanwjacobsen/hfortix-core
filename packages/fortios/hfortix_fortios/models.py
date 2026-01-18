@@ -104,46 +104,109 @@ class FortiObject:
         return self._data.get("http_method")
 
     @property
-    def vdom(self) -> str | None:
-        """Virtual domain name."""
+    def fgt_vdom(self) -> str | None:
+        """FortiGate virtual domain name from API response."""
         if self._raw_envelope:
             return self._raw_envelope.get("vdom")
         return self._data.get("vdom")
 
     @property
-    def mkey(self) -> str | int | None:
-        """Primary key (mkey) of created/modified object."""
+    def fgt_mkey(self) -> str | int | None:
+        """FortiGate primary key (mkey) of created/modified object."""
         if self._raw_envelope:
             return self._raw_envelope.get("mkey")
         return self._data.get("mkey")
 
     @property
-    def revision(self) -> str | None:
-        """Configuration revision number."""
+    def fgt_revision(self) -> str | None:
+        """FortiGate configuration revision number."""
         if self._raw_envelope:
             return self._raw_envelope.get("revision")
         return self._data.get("revision")
+    
+    @property
+    def fgt_revision_changed(self) -> bool:
+        """Whether the configuration revision changed (indicates config was modified)."""
+        if self._raw_envelope:
+            return self._raw_envelope.get("revision_changed", False)
+        return self._data.get("revision_changed", False)
+    
+    @property
+    def fgt_old_revision(self) -> str | None:
+        """FortiGate previous configuration revision number (before this change)."""
+        if self._raw_envelope:
+            return self._raw_envelope.get("old_revision")
+        return self._data.get("old_revision")
 
     @property
-    def serial(self) -> str | None:
-        """Device serial number."""
+    def fgt_serial(self) -> str | None:
+        """FortiGate device serial number."""
         if self._raw_envelope:
             return self._raw_envelope.get("serial")
         return self._data.get("serial")
 
     @property
-    def version(self) -> str | None:
+    def fgt_version(self) -> str | None:
         """FortiOS version string (e.g., 'v7.6.5')."""
         if self._raw_envelope:
             return self._raw_envelope.get("version")
         return self._data.get("version")
 
     @property
-    def build(self) -> int | None:
+    def fgt_build(self) -> int | None:
         """FortiOS firmware build number."""
         if self._raw_envelope:
             return self._raw_envelope.get("build")
         return self._data.get("build")
+    
+    @property
+    def fgt_api_path(self) -> str | None:
+        """API path segment (e.g., 'firewall', 'system', 'user')."""
+        if self._raw_envelope:
+            return self._raw_envelope.get("path")
+        return self._data.get("path")
+    
+    @property
+    def fgt_api_name(self) -> str | None:
+        """API endpoint name (e.g., 'address', 'policy', 'interface')."""
+        if self._raw_envelope:
+            return self._raw_envelope.get("name")
+        return self._data.get("name")
+    
+    @property
+    def fgt_response_size(self) -> int | None:
+        """Number of objects returned in the response (for list operations)."""
+        if self._raw_envelope:
+            return self._raw_envelope.get("size")
+        return self._data.get("size")
+    
+    @property
+    def fgt_action(self) -> str | None:
+        """API action performed (appears in some response types)."""
+        if self._raw_envelope:
+            return self._raw_envelope.get("action")
+        return self._data.get("action")
+    
+    @property
+    def fgt_limit_reached(self) -> bool:
+        """Whether the pagination limit was reached in a list query."""
+        if self._raw_envelope:
+            return self._raw_envelope.get("limit_reached", False)
+        return self._data.get("limit_reached", False)
+    
+    @property
+    def fgt_matched_count(self) -> int | None:
+        """Number of objects matching the query criteria."""
+        if self._raw_envelope:
+            return self._raw_envelope.get("matched_count")
+        return self._data.get("matched_count")
+    
+    @property
+    def fgt_next_idx(self) -> int | None:
+        """Index for the next page in paginated results."""
+        if self._raw_envelope:
+            return self._raw_envelope.get("next_idx")
+        return self._data.get("next_idx")
 
     @property
     def http_response_time(self) -> float | None:
