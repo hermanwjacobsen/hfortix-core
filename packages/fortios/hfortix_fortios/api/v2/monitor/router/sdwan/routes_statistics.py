@@ -85,7 +85,7 @@ class RoutesStatistics(CRUDEndpoint, MetadataMixin):
     
     def get(
         self,
-        ip_version: Literal["*ipv4", "ipv6", "ipboth"] | None = None,
+        ip_version: Literal["ipv4", "ipv6", "ipboth"] | None = None,
         filter: list[str] | None = None,
         count: int | None = None,
         start: int | None = None,

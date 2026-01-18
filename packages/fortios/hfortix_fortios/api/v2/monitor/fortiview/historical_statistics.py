@@ -91,7 +91,7 @@ class HistoricalStatistics(CRUDEndpoint, MetadataMixin):
         sort_by: str | None = None,
         chart_only: bool | None = None,
         end: int | None = None,
-        ip_version: Literal["*ipv4", "ipv6", "ipboth"] | None = None,
+        ip_version: Literal["ipv4", "ipv6", "ipboth"] | None = None,
         filter: list[str] | None = None,
         count: int | None = None,
         start: int | None = None,

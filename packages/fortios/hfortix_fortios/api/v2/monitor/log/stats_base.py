@@ -85,7 +85,7 @@ class Stats(CRUDEndpoint, MetadataMixin):
     
     def get(
         self,
-        dev: Literal["*memory", "disk", "fortianalyzer", "forticloud"] | None = None,
+        dev: Literal["memory", "disk", "fortianalyzer", "forticloud"] | None = None,
         filter: list[str] | None = None,
         count: int | None = None,
         start: int | None = None,

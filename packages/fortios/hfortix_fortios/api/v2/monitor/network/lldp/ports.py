@@ -86,7 +86,7 @@ class Ports(CRUDEndpoint, MetadataMixin):
     def get(
         self,
         mkey: str | None = None,
-        scope: Literal["*vdom", "global"] | None = None,
+        scope: Literal["vdom", "global"] | None = None,
         filter: list[str] | None = None,
         count: int | None = None,
         start: int | None = None,

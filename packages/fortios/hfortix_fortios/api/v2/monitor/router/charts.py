@@ -85,7 +85,7 @@ class Charts(CRUDEndpoint, MetadataMixin):
     
     def get(
         self,
-        operator: Literal["*and", "or"] | None = None,
+        operator: Literal["and", "or"] | None = None,
         ip_version: int | None = None,
         ip_mask: str | None = None,
         gateway: str | None = None,

@@ -85,7 +85,7 @@ class Sessions(CRUDEndpoint, MetadataMixin):
     
     def get(
         self,
-        ip_version: Literal["*ipv4", "ipv6", "ipboth"] | None = None,
+        ip_version: Literal["ipv4", "ipv6", "ipboth"] | None = None,
         summary: bool | None = None,
         srcport: str | None = None,
         policyid: str | None = None,

@@ -7,6 +7,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.5.104] - 2026-01-18
+
+### Fixed
+
+- **Schema: Read-only flag now included for all endpoints**: Updated schema files to include the `readonly` flag for all read-only reference data endpoints (e.g., `ips/decoder`, internet services, geographic data). The schema generator now properly extracts and preserves the `readonly: true` flag from FortiOS API responses.
+- **Generator: Read-only endpoints no longer generate mutation methods**: Fixed endpoint generator to check `schema.readonly` flag and skip generating POST/PUT/DELETE/move/clone methods for read-only endpoints. Capabilities flags (SUPPORTS_CREATE, SUPPORTS_UPDATE, SUPPORTS_DELETE, SUPPORTS_MOVE, SUPPORTS_CLONE) are now correctly set to False for read-only endpoints, regardless of what the schema capabilities section contains.
+
+## [0.5.103] - 2026-01-18
+
+### Changed
+
+- **Version bump**: Released v0.5.103 to PyPI.
+
+## [0.5.102] - 2026-01-18
+
 ### Changed
 
 - **Generator: Literal type extraction from parameter descriptions**: The endpoint generator now automatically extracts enumerated values from parameter descriptions in schema files and generates proper `Literal` type hints. When a parameter description contains options in the format `[option1 | option2 | option3]`, the generator creates `Literal["option1", "option2", "option3"]` types for both `.py` implementations and `.pyi` stub files, providing IDE autocomplete and type checking for valid parameter values.
@@ -82,7 +97,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - **SSL/TLS**: `firewall_ssl_server.py` (6 tests)
   - **Virtual IPs**: `firewall_vip.py` (6 tests), `firewall_vip6.py` (6 tests), `firewall_vipgrp.py` (6 tests), `firewall_vipgrp6.py` (6 tests)
 
-## [0.6.0] - 2026-01-17
+
 
 ### Changed
 

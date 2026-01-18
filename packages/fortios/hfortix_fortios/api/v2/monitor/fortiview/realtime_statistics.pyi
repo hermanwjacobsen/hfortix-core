@@ -186,7 +186,7 @@ class RealtimeStatistics:
         sessionid: int | None = ...,
         report_by: str | None = ...,
         sort_by: str | None = ...,
-        ip_version: Literal["*ipv4", "ipv6", "ipboth"] | None = ...,
+        ip_version: Literal["ipv4", "ipv6", "ipboth"] | None = ...,
         filter: str | list[str] | None = ...,
         count: int | None = ...,
         start: int | None = ...,

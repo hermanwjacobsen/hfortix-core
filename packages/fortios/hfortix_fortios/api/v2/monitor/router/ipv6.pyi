@@ -93,7 +93,7 @@ class Ipv6:
     def get(
         self,
         *,
-        operator: Literal["*and", "or"] | None = ...,
+        operator: Literal["and", "or"] | None = ...,
         ip_mask: str | None = ...,
         gateway: str | None = ...,
         type: str | None = ...,

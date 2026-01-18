@@ -78,7 +78,7 @@ class Stats:
     def get(
         self,
         *,
-        dev: Literal["*memory", "disk", "fortianalyzer", "forticloud"] | None = ...,
+        dev: Literal["memory", "disk", "fortianalyzer", "forticloud"] | None = ...,
         filter: str | list[str] | None = ...,
         count: int | None = ...,
         start: int | None = ...,

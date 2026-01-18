@@ -59,12 +59,12 @@ class Auth(CRUDEndpoint, MetadataMixin):
     # ========================================================================
     # Capabilities (from schema metadata)
     # ========================================================================
-    SUPPORTS_CREATE = True
+    SUPPORTS_CREATE = False
     SUPPORTS_READ = True
-    SUPPORTS_UPDATE = True
-    SUPPORTS_DELETE = True
-    SUPPORTS_MOVE = True
-    SUPPORTS_CLONE = True
+    SUPPORTS_UPDATE = False
+    SUPPORTS_DELETE = False
+    SUPPORTS_MOVE = False
+    SUPPORTS_CLONE = False
     SUPPORTS_FILTERING = True
     SUPPORTS_PAGINATION = True
     SUPPORTS_SEARCH = False
@@ -243,89 +243,5 @@ class Auth(CRUDEndpoint, MetadataMixin):
 
 
 
-    # ========================================================================
-    # Action: Move
-    # ========================================================================
-    
-    def move(
-        self,
-        msg_type: str,
-        action: Literal["before", "after"],
-        reference_msg_type: str,
-        **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
-        """
-        Move system/replacemsg/auth object to a new position.
-        
-        Reorders objects by moving one before or after another.
-        
-        Args:
-            msg_type: Identifier of object to move
-            action: Move "before" or "after" reference object
-            reference_msg_type: Identifier of reference object
-            **kwargs: Additional parameters
-            
-        Returns:
-            API response dictionary
-            
-        Example:
-            >>> # Move policy 100 before policy 50
-            >>> fgt.api.cmdb.system_replacemsg_auth.move(
-            ...     msg_type=100,
-            ...     action="before",
-            ...     reference_msg_type=50
-            ... )
-        """
-        return self._client.request(
-            method="PUT",
-            path=f"/api/v2/cmdb/system.replacemsg/auth",
-            params={
-                "msg-type": msg_type,
-                "action": "move",
-                action: reference_msg_type,
-                **kwargs,
-            },
-        )
-
-    # ========================================================================
-    # Action: Clone
-    # ========================================================================
-    
-    def clone(
-        self,
-        msg_type: str,
-        new_msg_type: str,
-        **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
-        """
-        Clone system/replacemsg/auth object.
-        
-        Creates a copy of an existing object with a new identifier.
-        
-        Args:
-            msg_type: Identifier of object to clone
-            new_msg_type: Identifier for the cloned object
-            **kwargs: Additional parameters
-            
-        Returns:
-            API response dictionary
-            
-        Example:
-            >>> # Clone an existing object
-            >>> fgt.api.cmdb.system_replacemsg_auth.clone(
-            ...     msg_type=1,
-            ...     new_msg_type=100
-            ... )
-        """
-        return self._client.request(
-            method="POST",
-            path=f"/api/v2/cmdb/system.replacemsg/auth",
-            params={
-                "msg-type": msg_type,
-                "new_msg-type": new_msg_type,
-                "action": "clone",
-                **kwargs,
-            },
-        )
 
 

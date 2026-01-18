@@ -106,7 +106,7 @@ class HistoricalStatistics:
         sort_by: str | None = ...,
         chart_only: bool | None = ...,
         end: int | None = ...,
-        ip_version: Literal["*ipv4", "ipv6", "ipboth"] | None = ...,
+        ip_version: Literal["ipv4", "ipv6", "ipboth"] | None = ...,
         count: int | None = ...,
         start: int | None = ...,
         payload_dict: dict[str, Any] | None = ...,

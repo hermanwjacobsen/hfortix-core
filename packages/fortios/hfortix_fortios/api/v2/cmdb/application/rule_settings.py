@@ -59,12 +59,12 @@ class RuleSettings(CRUDEndpoint, MetadataMixin):
     # ========================================================================
     # Capabilities (from schema metadata)
     # ========================================================================
-    SUPPORTS_CREATE = True
+    SUPPORTS_CREATE = False
     SUPPORTS_READ = True
-    SUPPORTS_UPDATE = True
-    SUPPORTS_DELETE = True
-    SUPPORTS_MOVE = True
-    SUPPORTS_CLONE = True
+    SUPPORTS_UPDATE = False
+    SUPPORTS_DELETE = False
+    SUPPORTS_MOVE = False
+    SUPPORTS_CLONE = False
     SUPPORTS_FILTERING = True
     SUPPORTS_PAGINATION = True
     SUPPORTS_SEARCH = False
@@ -247,95 +247,5 @@ class RuleSettings(CRUDEndpoint, MetadataMixin):
 
 
 
-    # ========================================================================
-    # Action: Move
-    # ========================================================================
-    
-    def move(
-        self,
-        id: int,
-        action: Literal["before", "after"],
-        reference_id: int,
-        vdom: str | bool | None = None,
-        **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
-        """
-        Move application/rule_settings object to a new position.
-        
-        Reorders objects by moving one before or after another.
-        
-        Args:
-            id: Identifier of object to move
-            action: Move "before" or "after" reference object
-            reference_id: Identifier of reference object
-            vdom: Virtual domain name
-            **kwargs: Additional parameters
-            
-        Returns:
-            API response dictionary
-            
-        Example:
-            >>> # Move policy 100 before policy 50
-            >>> fgt.api.cmdb.application_rule_settings.move(
-            ...     id=100,
-            ...     action="before",
-            ...     reference_id=50
-            ... )
-        """
-        return self._client.request(
-            method="PUT",
-            path=f"/api/v2/cmdb/application/rule-settings",
-            params={
-                "id": id,
-                "action": "move",
-                action: reference_id,
-                "vdom": vdom,
-                **kwargs,
-            },
-        )
-
-    # ========================================================================
-    # Action: Clone
-    # ========================================================================
-    
-    def clone(
-        self,
-        id: int,
-        new_id: int,
-        vdom: str | bool | None = None,
-        **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
-        """
-        Clone application/rule_settings object.
-        
-        Creates a copy of an existing object with a new identifier.
-        
-        Args:
-            id: Identifier of object to clone
-            new_id: Identifier for the cloned object
-            vdom: Virtual domain name
-            **kwargs: Additional parameters
-            
-        Returns:
-            API response dictionary
-            
-        Example:
-            >>> # Clone an existing object
-            >>> fgt.api.cmdb.application_rule_settings.clone(
-            ...     id=1,
-            ...     new_id=100
-            ... )
-        """
-        return self._client.request(
-            method="POST",
-            path=f"/api/v2/cmdb/application/rule-settings",
-            params={
-                "id": id,
-                "new_id": new_id,
-                "action": "clone",
-                "vdom": vdom,
-                **kwargs,
-            },
-        )
 
 

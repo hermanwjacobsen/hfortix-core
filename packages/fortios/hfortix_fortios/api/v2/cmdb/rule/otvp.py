@@ -72,12 +72,12 @@ class Otvp(CRUDEndpoint, MetadataMixin):
     # ========================================================================
     # Capabilities (from schema metadata)
     # ========================================================================
-    SUPPORTS_CREATE = True
+    SUPPORTS_CREATE = False
     SUPPORTS_READ = True
-    SUPPORTS_UPDATE = True
-    SUPPORTS_DELETE = True
-    SUPPORTS_MOVE = True
-    SUPPORTS_CLONE = True
+    SUPPORTS_UPDATE = False
+    SUPPORTS_DELETE = False
+    SUPPORTS_MOVE = False
+    SUPPORTS_CLONE = False
     SUPPORTS_FILTERING = True
     SUPPORTS_PAGINATION = True
     SUPPORTS_SEARCH = False
@@ -256,89 +256,5 @@ class Otvp(CRUDEndpoint, MetadataMixin):
 
 
 
-    # ========================================================================
-    # Action: Move
-    # ========================================================================
-    
-    def move(
-        self,
-        name: str,
-        action: Literal["before", "after"],
-        reference_name: str,
-        **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
-        """
-        Move rule/otvp object to a new position.
-        
-        Reorders objects by moving one before or after another.
-        
-        Args:
-            name: Identifier of object to move
-            action: Move "before" or "after" reference object
-            reference_name: Identifier of reference object
-            **kwargs: Additional parameters
-            
-        Returns:
-            API response dictionary
-            
-        Example:
-            >>> # Move policy 100 before policy 50
-            >>> fgt.api.cmdb.rule_otvp.move(
-            ...     name=100,
-            ...     action="before",
-            ...     reference_name=50
-            ... )
-        """
-        return self._client.request(
-            method="PUT",
-            path=f"/api/v2/cmdb/rule/otvp",
-            params={
-                "name": name,
-                "action": "move",
-                action: reference_name,
-                **kwargs,
-            },
-        )
-
-    # ========================================================================
-    # Action: Clone
-    # ========================================================================
-    
-    def clone(
-        self,
-        name: str,
-        new_name: str,
-        **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
-        """
-        Clone rule/otvp object.
-        
-        Creates a copy of an existing object with a new identifier.
-        
-        Args:
-            name: Identifier of object to clone
-            new_name: Identifier for the cloned object
-            **kwargs: Additional parameters
-            
-        Returns:
-            API response dictionary
-            
-        Example:
-            >>> # Clone an existing object
-            >>> fgt.api.cmdb.rule_otvp.clone(
-            ...     name=1,
-            ...     new_name=100
-            ... )
-        """
-        return self._client.request(
-            method="POST",
-            path=f"/api/v2/cmdb/rule/otvp",
-            params={
-                "name": name,
-                "new_name": new_name,
-                "action": "clone",
-                **kwargs,
-            },
-        )
 
 

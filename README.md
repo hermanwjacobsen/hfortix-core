@@ -9,9 +9,9 @@ Python client library for Fortinet products including FortiOS, FortiManager, and
 
 ## 🎯 Current Status
 
-> **⚠️ BETA STATUS - Version 0.5.102**
+> **⚠️ BETA STATUS - Version 0.5.103**
 >
-> - **Current Version**: 0.5.102 (Released - January 18, 2026)
+> - **Current Version**: 0.5.103 (Released - January 18, 2026)
 > - **Schema Version**: v1.7.0 (1,348 endpoints with enhanced metadata)
 > - **Package Size**: ~30 MB (optimized with MetadataMixin refactoring)
 > - **Implementation**: Advanced Features (100% complete) - Production ready!
@@ -51,12 +51,20 @@ Python client library for Fortinet products including FortiOS, FortiManager, and
 - Documentation: ✅ 100%
 - Release: ✅ 100%
 
-**Latest Release:** v0.5.102 - Generator Improvements & Comprehensive Monitor API Testing
+**Latest Release:** v0.5.104 - Read-Only Endpoint Fix & Schema Updates
 
 **Test Coverage:** **All endpoints tested and passing!** ✅
 **Status:** Ready for production use - comprehensive feature set complete!
 
 **🔥 5 Latest Changes:**
+
+**v0.5.104 - Read-Only Endpoint Fix & Schema Updates - January 18, 2026:**
+- ✅ **Schema: Read-only flag included**: Updated all schema files to include `readonly: true` flag for read-only reference data endpoints (ips/decoder, internet services, geographic data)
+- ✅ **Generator: No mutation methods for readonly endpoints**: Fixed endpoint generator to skip POST/PUT/DELETE/move/clone methods when `schema.readonly` is true
+- ✅ **Capabilities flags corrected**: SUPPORTS_CREATE, SUPPORTS_UPDATE, SUPPORTS_DELETE, SUPPORTS_MOVE, SUPPORTS_CLONE now correctly set to False for readonly endpoints
+
+**v0.5.103 - Version Bump - January 18, 2026:**
+- ✅ **Released to PyPI**: Version 0.5.103 published
 
 **v0.5.102 - Generator Improvements & Monitor API Testing (85 New Tests) - January 18, 2026:**
 - ✅ **Generator: Literal type extraction from parameter descriptions**: Automatically extracts enumerated values from parameter descriptions in schema files (e.g., `[option1 | option2 | option3]`) and generates proper `Literal["option1", "option2", "option3"]` type hints for both `.py` implementations and `.pyi` stub files, providing IDE autocomplete and type checking for valid parameter values

@@ -112,7 +112,7 @@ class RealtimeStatistics(CRUDEndpoint, MetadataMixin):
         sessionid: int | None = None,
         report_by: str | None = None,
         sort_by: str | None = None,
-        ip_version: Literal["*ipv4", "ipv6", "ipboth"] | None = None,
+        ip_version: Literal["ipv4", "ipv6", "ipboth"] | None = None,
         filter: list[str] | None = None,
         count: int | None = None,
         start: int | None = None,

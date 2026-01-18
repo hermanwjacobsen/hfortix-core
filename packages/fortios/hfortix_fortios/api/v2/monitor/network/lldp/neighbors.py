@@ -85,7 +85,7 @@ class Neighbors(CRUDEndpoint, MetadataMixin):
     
     def get(
         self,
-        scope: Literal["*vdom", "global"] | None = None,
+        scope: Literal["vdom", "global"] | None = None,
         port: str | None = None,
         filter: list[str] | None = None,
         count: int | None = None,

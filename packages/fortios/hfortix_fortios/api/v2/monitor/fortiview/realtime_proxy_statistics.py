@@ -87,7 +87,7 @@ class RealtimeProxyStatistics(CRUDEndpoint, MetadataMixin):
         self,
         report_by: str | None = None,
         sort_by: str | None = None,
-        ip_version: Literal["*ipv4", "ipv6", "ipboth"] | None = None,
+        ip_version: Literal["ipv4", "ipv6", "ipboth"] | None = None,
         srcaddr: str | None = None,
         dstaddr: str | None = None,
         srcaddr6: str | None = None,

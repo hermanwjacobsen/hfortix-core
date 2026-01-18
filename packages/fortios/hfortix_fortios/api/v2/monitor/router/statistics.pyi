@@ -96,7 +96,7 @@ class Statistics:
     def get(
         self,
         *,
-        operator: Literal["*and", "or"] | None = ...,
+        operator: Literal["and", "or"] | None = ...,
         ip_version: int | None = ...,
         ip_mask: str | None = ...,
         gateway: str | None = ...,

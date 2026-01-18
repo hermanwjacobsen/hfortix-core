@@ -143,7 +143,7 @@ class RealtimeProxyStatistics:
         *,
         report_by: str | None = ...,
         sort_by: str | None = ...,
-        ip_version: Literal["*ipv4", "ipv6", "ipboth"] | None = ...,
+        ip_version: Literal["ipv4", "ipv6", "ipboth"] | None = ...,
         srcaddr: str | None = ...,
         dstaddr: str | None = ...,
         srcaddr6: str | None = ...,

@@ -81,7 +81,7 @@ class Ports:
         self,
         *,
         mkey: str | None = ...,
-        scope: Literal["*vdom", "global"] | None = ...,
+        scope: Literal["vdom", "global"] | None = ...,
         filter: str | list[str] | None = ...,
         count: int | None = ...,
         start: int | None = ...,

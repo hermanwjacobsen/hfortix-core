@@ -85,7 +85,7 @@ class Ipv4(CRUDEndpoint, MetadataMixin):
     
     def get(
         self,
-        operator: Literal["*and", "or"] | None = None,
+        operator: Literal["and", "or"] | None = None,
         ip_mask: str | None = None,
         gateway: str | None = None,
         type: str | None = None,

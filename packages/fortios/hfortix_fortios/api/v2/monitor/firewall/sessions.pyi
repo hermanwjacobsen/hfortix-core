@@ -159,7 +159,7 @@ class Sessions:
     def get(
         self,
         *,
-        ip_version: Literal["*ipv4", "ipv6", "ipboth"] | None = ...,
+        ip_version: Literal["ipv4", "ipv6", "ipboth"] | None = ...,
         count: int,
         summary: bool | None = ...,
         srcport: str | None = ...,

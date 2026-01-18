@@ -78,7 +78,7 @@ class NeighborsStatistics:
     def get(
         self,
         *,
-        ip_version: Literal["*ipv4", "ipv6", "ipboth"] | None = ...,
+        ip_version: Literal["ipv4", "ipv6", "ipboth"] | None = ...,
         filter: str | list[str] | None = ...,
         count: int | None = ...,
         start: int | None = ...,
