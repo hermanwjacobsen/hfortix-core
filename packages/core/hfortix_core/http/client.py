@@ -1249,6 +1249,12 @@ class HTTPClient(BaseHTTPClient):
                 if is_json_response:
                     try:
                         json_response = res.json()
+                        
+                        # Inject http_status into response if not present
+                        # FortiOS API doesn't always include http_status in JSON body
+                        if "http_status" not in json_response:
+                            json_response["http_status"] = res.status_code
+                            
                     except Exception as json_err:
                         # If JSON parsing fails, log warning and return text
                         logger.warning(

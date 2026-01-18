@@ -65,7 +65,7 @@ from .types import (
     RequestInfo,
 )
 
-__version__ = "0.5.100"
+__version__ = "0.5.101"
 
 __all__ = [
     # Cache utilities
