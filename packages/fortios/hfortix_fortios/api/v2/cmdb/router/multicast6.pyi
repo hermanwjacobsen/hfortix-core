@@ -64,12 +64,19 @@ class Multicast6Response(TypedDict, total=False):
 # ================================================================
 
 
+class Multicast6PimsmglobalObject(FortiObject):
+    """Nested object for pim-sm-global field with attribute access."""
+    register_rate_limit: int
+    pim_use_sdwan: Literal["enable", "disable"]
+    rp_address: str | list[str]
+
+
 class Multicast6Object(FortiObject):
     """Typed FortiObject for Multicast6 with field access."""
     multicast_routing: Literal["enable", "disable"]
     multicast_pmtu: Literal["enable", "disable"]
     interface: list[Multicast6InterfaceItem]
-    pim_sm_global: Multicast6PimsmglobalDict
+    pim_sm_global: Multicast6PimsmglobalObject
 
 
 # ================================================================

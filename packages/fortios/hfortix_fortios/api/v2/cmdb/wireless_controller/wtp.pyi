@@ -247,6 +247,110 @@ class WtpResponse(TypedDict, total=False):
 # ================================================================
 
 
+class WtpLanObject(FortiObject):
+    """Nested object for lan field with attribute access."""
+    port_mode: Literal["offline", "nat-to-wan", "bridge-to-wan", "bridge-to-ssid"]
+    port_ssid: str
+    port1_mode: Literal["offline", "nat-to-wan", "bridge-to-wan", "bridge-to-ssid"]
+    port1_ssid: str
+    port2_mode: Literal["offline", "nat-to-wan", "bridge-to-wan", "bridge-to-ssid"]
+    port2_ssid: str
+    port3_mode: Literal["offline", "nat-to-wan", "bridge-to-wan", "bridge-to-ssid"]
+    port3_ssid: str
+    port4_mode: Literal["offline", "nat-to-wan", "bridge-to-wan", "bridge-to-ssid"]
+    port4_ssid: str
+    port5_mode: Literal["offline", "nat-to-wan", "bridge-to-wan", "bridge-to-ssid"]
+    port5_ssid: str
+    port6_mode: Literal["offline", "nat-to-wan", "bridge-to-wan", "bridge-to-ssid"]
+    port6_ssid: str
+    port7_mode: Literal["offline", "nat-to-wan", "bridge-to-wan", "bridge-to-ssid"]
+    port7_ssid: str
+    port8_mode: Literal["offline", "nat-to-wan", "bridge-to-wan", "bridge-to-ssid"]
+    port8_ssid: str
+    port_esl_mode: Literal["offline", "nat-to-wan", "bridge-to-wan", "bridge-to-ssid"]
+    port_esl_ssid: str
+
+
+class WtpRadio1Object(FortiObject):
+    """Nested object for radio-1 field with attribute access."""
+    override_band: Literal["enable", "disable"]
+    band: Literal["802.11a", "802.11b", "802.11g", "802.11n-2G", "802.11n-5G", "802.11ac-2G", "802.11ac-5G", "802.11ax-2G", "802.11ax-5G", "802.11ax-6G", "802.11be-2G", "802.11be-5G", "802.11be-6G"]
+    override_txpower: Literal["enable", "disable"]
+    auto_power_level: Literal["enable", "disable"]
+    auto_power_high: int
+    auto_power_low: int
+    auto_power_target: str
+    power_mode: Literal["dBm", "percentage"]
+    power_level: int
+    power_value: int
+    override_vaps: Literal["enable", "disable"]
+    vap_all: Literal["tunnel", "bridge", "manual"]
+    vaps: str | list[str]
+    override_channel: Literal["enable", "disable"]
+    channel: str | list[str]
+    drma_manual_mode: Literal["ap", "monitor", "ncf", "ncf-peek"]
+
+
+class WtpRadio2Object(FortiObject):
+    """Nested object for radio-2 field with attribute access."""
+    override_band: Literal["enable", "disable"]
+    band: Literal["802.11a", "802.11b", "802.11g", "802.11n-2G", "802.11n-5G", "802.11ac-2G", "802.11ac-5G", "802.11ax-2G", "802.11ax-5G", "802.11ax-6G", "802.11be-2G", "802.11be-5G", "802.11be-6G"]
+    override_txpower: Literal["enable", "disable"]
+    auto_power_level: Literal["enable", "disable"]
+    auto_power_high: int
+    auto_power_low: int
+    auto_power_target: str
+    power_mode: Literal["dBm", "percentage"]
+    power_level: int
+    power_value: int
+    override_vaps: Literal["enable", "disable"]
+    vap_all: Literal["tunnel", "bridge", "manual"]
+    vaps: str | list[str]
+    override_channel: Literal["enable", "disable"]
+    channel: str | list[str]
+    drma_manual_mode: Literal["ap", "monitor", "ncf", "ncf-peek"]
+
+
+class WtpRadio3Object(FortiObject):
+    """Nested object for radio-3 field with attribute access."""
+    override_band: Literal["enable", "disable"]
+    band: Literal["802.11a", "802.11b", "802.11g", "802.11n-2G", "802.11n-5G", "802.11ac-2G", "802.11ac-5G", "802.11ax-2G", "802.11ax-5G", "802.11ax-6G", "802.11be-2G", "802.11be-5G", "802.11be-6G"]
+    override_txpower: Literal["enable", "disable"]
+    auto_power_level: Literal["enable", "disable"]
+    auto_power_high: int
+    auto_power_low: int
+    auto_power_target: str
+    power_mode: Literal["dBm", "percentage"]
+    power_level: int
+    power_value: int
+    override_vaps: Literal["enable", "disable"]
+    vap_all: Literal["tunnel", "bridge", "manual"]
+    vaps: str | list[str]
+    override_channel: Literal["enable", "disable"]
+    channel: str | list[str]
+    drma_manual_mode: Literal["ap", "monitor", "ncf", "ncf-peek"]
+
+
+class WtpRadio4Object(FortiObject):
+    """Nested object for radio-4 field with attribute access."""
+    override_band: Literal["enable", "disable"]
+    band: Literal["802.11a", "802.11b", "802.11g", "802.11n-2G", "802.11n-5G", "802.11ac-2G", "802.11ac-5G", "802.11ax-2G", "802.11ax-5G", "802.11ax-6G", "802.11be-2G", "802.11be-5G", "802.11be-6G"]
+    override_txpower: Literal["enable", "disable"]
+    auto_power_level: Literal["enable", "disable"]
+    auto_power_high: int
+    auto_power_low: int
+    auto_power_target: str
+    power_mode: Literal["dBm", "percentage"]
+    power_level: int
+    power_value: int
+    override_vaps: Literal["enable", "disable"]
+    vap_all: Literal["tunnel", "bridge", "manual"]
+    vaps: str | list[str]
+    override_channel: Literal["enable", "disable"]
+    channel: str | list[str]
+    drma_manual_mode: Literal["ap", "monitor", "ncf", "ncf-peek"]
+
+
 class WtpObject(FortiObject):
     """Typed FortiObject for Wtp with field access."""
     wtp_id: str
@@ -279,7 +383,7 @@ class WtpObject(FortiObject):
     split_tunneling_acl_local_ap_subnet: Literal["enable", "disable"]
     split_tunneling_acl: list[WtpSplittunnelingaclItem]
     override_lan: Literal["enable", "disable"]
-    lan: WtpLanDict
+    lan: WtpLanObject
     override_allowaccess: Literal["enable", "disable"]
     allowaccess: str
     override_login_passwd_change: Literal["enable", "disable"]
@@ -287,10 +391,10 @@ class WtpObject(FortiObject):
     login_passwd: str
     override_default_mesh_root: Literal["enable", "disable"]
     default_mesh_root: Literal["enable", "disable"]
-    radio_1: WtpRadio1Dict
-    radio_2: WtpRadio2Dict
-    radio_3: WtpRadio3Dict
-    radio_4: WtpRadio4Dict
+    radio_1: WtpRadio1Object
+    radio_2: WtpRadio2Object
+    radio_3: WtpRadio3Object
+    radio_4: WtpRadio4Object
     image_download: Literal["enable", "disable"]
     mesh_bridge_enable: Literal["default", "enable", "disable"]
     purdue_level: Literal["1", "1.5", "2", "2.5", "3", "3.5", "4", "5", "5.5"]

@@ -111,12 +111,23 @@ class ProfileResponse(TypedDict, total=False):
 # ================================================================
 
 
+class ProfileDomainfilterObject(FortiObject):
+    """Nested object for domain-filter field with attribute access."""
+    domain_filter_table: int
+
+
+class ProfileFtgddnsObject(FortiObject):
+    """Nested object for ftgd-dns field with attribute access."""
+    options: Literal["error-allow", "ftgd-disable"]
+    filters: str | list[str]
+
+
 class ProfileObject(FortiObject):
     """Typed FortiObject for Profile with field access."""
     name: str
     comment: str
-    domain_filter: ProfileDomainfilterDict
-    ftgd_dns: ProfileFtgddnsDict
+    domain_filter: ProfileDomainfilterObject
+    ftgd_dns: ProfileFtgddnsObject
     log_all_domain: Literal["enable", "disable"]
     sdns_ftgd_err_log: Literal["enable", "disable"]
     sdns_domain_log: Literal["enable", "disable"]

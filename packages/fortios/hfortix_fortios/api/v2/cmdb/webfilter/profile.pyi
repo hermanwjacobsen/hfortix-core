@@ -174,6 +174,62 @@ class ProfileResponse(TypedDict, total=False):
 # ================================================================
 
 
+class ProfileOverrideObject(FortiObject):
+    """Nested object for override field with attribute access."""
+    ovrd_cookie: Literal["allow", "deny"]
+    ovrd_scope: Literal["user", "user-group", "ip", "browser", "ask"]
+    profile_type: Literal["list", "radius"]
+    ovrd_dur_mode: Literal["constant", "ask"]
+    ovrd_dur: str
+    profile_attribute: Literal["User-Name", "NAS-IP-Address", "Framed-IP-Address", "Framed-IP-Netmask", "Filter-Id", "Login-IP-Host", "Reply-Message", "Callback-Number", "Callback-Id", "Framed-Route", "Framed-IPX-Network", "Class", "Called-Station-Id", "Calling-Station-Id", "NAS-Identifier", "Proxy-State", "Login-LAT-Service", "Login-LAT-Node", "Login-LAT-Group", "Framed-AppleTalk-Zone", "Acct-Session-Id", "Acct-Multi-Session-Id"]
+    ovrd_user_group: str | list[str]
+    profile: str | list[str]
+
+
+class ProfileWebObject(FortiObject):
+    """Nested object for web field with attribute access."""
+    bword_threshold: int
+    bword_table: int
+    urlfilter_table: int
+    content_header_list: int
+    blocklist: Literal["enable", "disable"]
+    allowlist: Literal["exempt-av", "exempt-webcontent", "exempt-activex-java-cookie", "exempt-dlp", "exempt-rangeblock", "extended-log-others"]
+    safe_search: Literal["url", "header"]
+    youtube_restrict: Literal["none", "strict", "moderate"]
+    vimeo_restrict: str
+    log_search: Literal["enable", "disable"]
+    keyword_match: str | list[str]
+
+
+class ProfileFtgdwfObject(FortiObject):
+    """Nested object for ftgd-wf field with attribute access."""
+    options: Literal["error-allow", "rate-server-ip", "connect-request-bypass", "ftgd-disable"]
+    exempt_quota: str | list[str]
+    ovrd: str | list[str]
+    filters: str | list[str]
+    risk: str | list[str]
+    quota: str | list[str]
+    max_quota_timeout: int
+    rate_javascript_urls: Literal["disable", "enable"]
+    rate_css_urls: Literal["disable", "enable"]
+    rate_crl_urls: Literal["disable", "enable"]
+
+
+class ProfileAntiphishObject(FortiObject):
+    """Nested object for antiphish field with attribute access."""
+    status: Literal["enable", "disable"]
+    default_action: Literal["exempt", "log", "block"]
+    check_uri: Literal["enable", "disable"]
+    check_basic_auth: Literal["enable", "disable"]
+    check_username_only: Literal["enable", "disable"]
+    max_body_len: int
+    inspection_entries: str | list[str]
+    custom_patterns: str | list[str]
+    authentication: Literal["domain-controller", "ldap"]
+    domain_controller: str
+    ldap: str
+
+
 class ProfileObject(FortiObject):
     """Typed FortiObject for Profile with field access."""
     name: str
@@ -185,10 +241,10 @@ class ProfileObject(FortiObject):
     web_flow_log_encoding: Literal["utf-8", "punycode"]
     ovrd_perm: str
     post_action: Literal["normal", "block"]
-    override: ProfileOverrideDict
-    web: ProfileWebDict
-    ftgd_wf: ProfileFtgdwfDict
-    antiphish: ProfileAntiphishDict
+    override: ProfileOverrideObject
+    web: ProfileWebObject
+    ftgd_wf: ProfileFtgdwfObject
+    antiphish: ProfileAntiphishObject
     wisp: Literal["enable", "disable"]
     wisp_servers: list[ProfileWispserversItem]
     wisp_algorithm: Literal["primary-secondary", "round-robin", "auto-learning"]

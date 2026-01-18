@@ -104,6 +104,16 @@ class LayoutResponse(TypedDict, total=False):
 # ================================================================
 
 
+class LayoutPageObject(FortiObject):
+    """Nested object for page field with attribute access."""
+    paper: Literal["a4", "letter"]
+    column_break_before: Literal["heading1", "heading2", "heading3"]
+    page_break_before: Literal["heading1", "heading2", "heading3"]
+    options: Literal["header-on-first-page", "footer-on-first-page"]
+    header: str
+    footer: str
+
+
 class LayoutObject(FortiObject):
     """Typed FortiObject for Layout with field access."""
     name: str
@@ -121,7 +131,7 @@ class LayoutObject(FortiObject):
     email_send: Literal["enable", "disable"]
     email_recipients: str
     max_pdf_report: int
-    page: LayoutPageDict
+    page: LayoutPageObject
     body_item: list[LayoutBodyitemItem]
 
 

@@ -616,6 +616,67 @@ class InterfaceResponse(TypedDict, total=False):
 # ================================================================
 
 
+class InterfacePhysettingObject(FortiObject):
+    """Nested object for phy-setting field with attribute access."""
+    signal_ok_threshold: int
+
+
+class InterfaceIpv6Object(FortiObject):
+    """Nested object for ipv6 field with attribute access."""
+    ip6_mode: Literal["static", "dhcp", "pppoe", "delegated"]
+    client_options: str | list[str]
+    nd_mode: Literal["basic", "SEND-compatible"]
+    nd_cert: str
+    nd_security_level: int
+    nd_timestamp_delta: int
+    nd_timestamp_fuzz: int
+    nd_cga_modifier: str
+    ip6_dns_server_override: Literal["enable", "disable"]
+    ip6_address: str
+    ip6_extra_addr: str | list[str]
+    ip6_allowaccess: Literal["ping", "https", "ssh", "snmp", "http", "telnet", "fgfm", "fabric", "scim", "probe-response"]
+    ip6_send_adv: Literal["enable", "disable"]
+    icmp6_send_redirect: Literal["enable", "disable"]
+    ip6_manage_flag: Literal["enable", "disable"]
+    ip6_other_flag: Literal["enable", "disable"]
+    ip6_max_interval: int
+    ip6_min_interval: int
+    ip6_link_mtu: int
+    ra_send_mtu: Literal["enable", "disable"]
+    ip6_reachable_time: int
+    ip6_retrans_time: int
+    ip6_default_life: int
+    ip6_hop_limit: int
+    ip6_adv_rio: Literal["enable", "disable"]
+    ip6_route_pref: Literal["medium", "high", "low"]
+    ip6_route_list: str | list[str]
+    autoconf: Literal["enable", "disable"]
+    unique_autoconf_addr: Literal["enable", "disable"]
+    interface_identifier: str
+    ip6_prefix_mode: Literal["dhcp6", "ra"]
+    ip6_delegated_prefix_iaid: int
+    ip6_upstream_interface: str
+    ip6_subnet: str
+    ip6_prefix_list: str | list[str]
+    ip6_rdnss_list: str | list[str]
+    ip6_dnssl_list: str | list[str]
+    ip6_delegated_prefix_list: str | list[str]
+    dhcp6_relay_service: Literal["disable", "enable"]
+    dhcp6_relay_type: Literal["regular"]
+    dhcp6_relay_source_interface: Literal["disable", "enable"]
+    dhcp6_relay_ip: str | list[str]
+    dhcp6_relay_source_ip: str
+    dhcp6_relay_interface_id: str
+    dhcp6_client_options: Literal["rapid", "iapd", "iana"]
+    dhcp6_prefix_delegation: Literal["enable", "disable"]
+    dhcp6_information_request: Literal["enable", "disable"]
+    dhcp6_iapd_list: str | list[str]
+    cli_conn6_status: int
+    vrrp_virtual_mac6: Literal["enable", "disable"]
+    vrip6_link_local: str
+    vrrp6: str | list[str]
+
+
 class InterfaceObject(FortiObject):
     """Typed FortiObject for Interface with field access."""
     name: str
@@ -791,7 +852,7 @@ class InterfaceObject(FortiObject):
     monitor_bandwidth: Literal["enable", "disable"]
     vrrp_virtual_mac: Literal["enable", "disable"]
     vrrp: list[InterfaceVrrpItem]
-    phy_setting: InterfacePhysettingDict
+    phy_setting: InterfacePhysettingObject
     role: Literal["lan", "wan", "dmz", "undefined"]
     snmp_index: int
     secondary_IP: Literal["enable", "disable"]
@@ -837,7 +898,7 @@ class InterfaceObject(FortiObject):
     eap_ca_cert: str
     eap_user_cert: str
     default_purdue_level: Literal["1", "1.5", "2", "2.5", "3", "3.5", "4", "5", "5.5"]
-    ipv6: InterfaceIpv6Dict
+    ipv6: InterfaceIpv6Object
     physical: str
 
 

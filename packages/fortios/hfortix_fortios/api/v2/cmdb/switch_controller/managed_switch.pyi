@@ -511,6 +511,74 @@ class ManagedSwitchResponse(TypedDict, total=False):
 # ================================================================
 
 
+class ManagedSwitchStpsettingsObject(FortiObject):
+    """Nested object for stp-settings field with attribute access."""
+    local_override: Literal["enable", "disable"]
+    name: str
+    revision: int
+    hello_time: int
+    forward_time: int
+    max_age: int
+    max_hops: int
+    pending_timer: int
+
+
+class ManagedSwitchSnmpsysinfoObject(FortiObject):
+    """Nested object for snmp-sysinfo field with attribute access."""
+    status: Literal["disable", "enable"]
+    engine_id: str
+    description: str
+    contact_info: str
+    location: str
+
+
+class ManagedSwitchSnmptrapthresholdObject(FortiObject):
+    """Nested object for snmp-trap-threshold field with attribute access."""
+    trap_high_cpu_threshold: int
+    trap_low_memory_threshold: int
+    trap_log_full_threshold: int
+
+
+class ManagedSwitchSwitchlogObject(FortiObject):
+    """Nested object for switch-log field with attribute access."""
+    local_override: Literal["enable", "disable"]
+    status: Literal["enable", "disable"]
+    severity: Literal["emergency", "alert", "critical", "error", "warning", "notification", "information", "debug"]
+
+
+class ManagedSwitchStormcontrolObject(FortiObject):
+    """Nested object for storm-control field with attribute access."""
+    local_override: Literal["enable", "disable"]
+    rate: int
+    burst_size_level: int
+    unknown_unicast: Literal["enable", "disable"]
+    unknown_multicast: Literal["enable", "disable"]
+    broadcast: Literal["enable", "disable"]
+
+
+class ManagedSwitchIgmpsnoopingObject(FortiObject):
+    """Nested object for igmp-snooping field with attribute access."""
+    local_override: Literal["enable", "disable"]
+    aging_time: int
+    flood_unknown_multicast: Literal["enable", "disable"]
+    vlans: str | list[str]
+
+
+class ManagedSwitchX8021xsettingsObject(FortiObject):
+    """Nested object for 802-1X-settings field with attribute access."""
+    local_override: Literal["enable", "disable"]
+    link_down_auth: Literal["set-unauth", "no-action"]
+    reauth_period: int
+    max_reauth_attempt: int
+    tx_period: int
+    mab_reauth: Literal["disable", "enable"]
+    mac_username_delimiter: Literal["colon", "hyphen", "none", "single-hyphen"]
+    mac_password_delimiter: Literal["colon", "hyphen", "none", "single-hyphen"]
+    mac_calling_station_delimiter: Literal["colon", "hyphen", "none", "single-hyphen"]
+    mac_called_station_delimiter: Literal["colon", "hyphen", "none", "single-hyphen"]
+    mac_case: Literal["lowercase", "uppercase"]
+
+
 class ManagedSwitchObject(FortiObject):
     """Typed FortiObject for ManagedSwitch with field access."""
     switch_id: str
@@ -555,27 +623,27 @@ class ManagedSwitchObject(FortiObject):
     firmware_provision_latest: Literal["disable", "once"]
     ports: list[ManagedSwitchPortsItem]
     ip_source_guard: list[ManagedSwitchIpsourceguardItem]
-    stp_settings: ManagedSwitchStpsettingsDict
+    stp_settings: ManagedSwitchStpsettingsObject
     stp_instance: list[ManagedSwitchStpinstanceItem]
     override_snmp_sysinfo: Literal["disable", "enable"]
-    snmp_sysinfo: ManagedSwitchSnmpsysinfoDict
+    snmp_sysinfo: ManagedSwitchSnmpsysinfoObject
     override_snmp_trap_threshold: Literal["enable", "disable"]
-    snmp_trap_threshold: ManagedSwitchSnmptrapthresholdDict
+    snmp_trap_threshold: ManagedSwitchSnmptrapthresholdObject
     override_snmp_community: Literal["enable", "disable"]
     snmp_community: list[ManagedSwitchSnmpcommunityItem]
     override_snmp_user: Literal["enable", "disable"]
     snmp_user: list[ManagedSwitchSnmpuserItem]
     qos_drop_policy: Literal["taildrop", "random-early-detection"]
     qos_red_probability: int
-    switch_log: ManagedSwitchSwitchlogDict
+    switch_log: ManagedSwitchSwitchlogObject
     remote_log: list[ManagedSwitchRemotelogItem]
-    storm_control: ManagedSwitchStormcontrolDict
+    storm_control: ManagedSwitchStormcontrolObject
     mirror: list[ManagedSwitchMirrorItem]
     static_mac: list[ManagedSwitchStaticmacItem]
     custom_command: list[ManagedSwitchCustomcommandItem]
     dhcp_snooping_static_client: list[ManagedSwitchDhcpsnoopingstaticclientItem]
-    igmp_snooping: ManagedSwitchIgmpsnoopingDict
-    x802_1X_settings: ManagedSwitchX8021xsettingsDict
+    igmp_snooping: ManagedSwitchIgmpsnoopingObject
+    x802_1X_settings: ManagedSwitchX8021xsettingsObject
     router_vrf: list[ManagedSwitchRoutervrfItem]
     system_interface: list[ManagedSwitchSysteminterfaceItem]
     router_static: list[ManagedSwitchRouterstaticItem]

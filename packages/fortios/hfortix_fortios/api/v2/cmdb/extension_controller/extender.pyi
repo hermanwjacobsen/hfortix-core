@@ -95,6 +95,20 @@ class ExtenderResponse(TypedDict, total=False):
 # ================================================================
 
 
+class ExtenderWanextensionObject(FortiObject):
+    """Nested object for wan-extension field with attribute access."""
+    modem1_extension: str
+    modem2_extension: str
+    modem1_pdn1_interface: str
+    modem1_pdn2_interface: str
+    modem1_pdn3_interface: str
+    modem1_pdn4_interface: str
+    modem2_pdn1_interface: str
+    modem2_pdn2_interface: str
+    modem2_pdn3_interface: str
+    modem2_pdn4_interface: str
+
+
 class ExtenderObject(FortiObject):
     """Typed FortiObject for Extender with field access."""
     name: str
@@ -113,7 +127,7 @@ class ExtenderObject(FortiObject):
     override_enforce_bandwidth: Literal["enable", "disable"]
     enforce_bandwidth: Literal["enable", "disable"]
     bandwidth_limit: int
-    wan_extension: ExtenderWanextensionDict
+    wan_extension: ExtenderWanextensionObject
     firmware_provision_latest: Literal["disable", "once"]
 
 

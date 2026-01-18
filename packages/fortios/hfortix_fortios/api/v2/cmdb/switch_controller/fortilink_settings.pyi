@@ -65,6 +65,16 @@ class FortilinkSettingsResponse(TypedDict, total=False):
 # ================================================================
 
 
+class FortilinkSettingsNacportsObject(FortiObject):
+    """Nested object for nac-ports field with attribute access."""
+    onboarding_vlan: str
+    lan_segment: Literal["enabled", "disabled"]
+    nac_lan_interface: str
+    nac_segment_vlans: str | list[str]
+    parent_key: str
+    member_change: int
+
+
 class FortilinkSettingsObject(FortiObject):
     """Typed FortiObject for FortilinkSettings with field access."""
     name: str
@@ -72,7 +82,7 @@ class FortilinkSettingsObject(FortiObject):
     inactive_timer: int
     link_down_flush: Literal["disable", "enable"]
     access_vlan_mode: Literal["legacy", "fail-open", "fail-close"]
-    nac_ports: FortilinkSettingsNacportsDict
+    nac_ports: FortilinkSettingsNacportsObject
 
 
 # ================================================================

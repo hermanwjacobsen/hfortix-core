@@ -209,6 +209,125 @@ class IkeResponse(TypedDict, total=False):
 # ================================================================
 
 
+class IkeDhgroup1Object(FortiObject):
+    """Nested object for dh-group-1 field with attribute access."""
+    mode: Literal["software", "hardware", "global"]
+    keypair_cache: Literal["global", "custom"]
+    keypair_count: int
+
+
+class IkeDhgroup2Object(FortiObject):
+    """Nested object for dh-group-2 field with attribute access."""
+    mode: Literal["software", "hardware", "global"]
+    keypair_cache: Literal["global", "custom"]
+    keypair_count: int
+
+
+class IkeDhgroup5Object(FortiObject):
+    """Nested object for dh-group-5 field with attribute access."""
+    mode: Literal["software", "hardware", "global"]
+    keypair_cache: Literal["global", "custom"]
+    keypair_count: int
+
+
+class IkeDhgroup14Object(FortiObject):
+    """Nested object for dh-group-14 field with attribute access."""
+    mode: Literal["software", "hardware", "global"]
+    keypair_cache: Literal["global", "custom"]
+    keypair_count: int
+
+
+class IkeDhgroup15Object(FortiObject):
+    """Nested object for dh-group-15 field with attribute access."""
+    mode: Literal["software", "hardware", "global"]
+    keypair_cache: Literal["global", "custom"]
+    keypair_count: int
+
+
+class IkeDhgroup16Object(FortiObject):
+    """Nested object for dh-group-16 field with attribute access."""
+    mode: Literal["software", "hardware", "global"]
+    keypair_cache: Literal["global", "custom"]
+    keypair_count: int
+
+
+class IkeDhgroup17Object(FortiObject):
+    """Nested object for dh-group-17 field with attribute access."""
+    mode: Literal["software", "hardware", "global"]
+    keypair_cache: Literal["global", "custom"]
+    keypair_count: int
+
+
+class IkeDhgroup18Object(FortiObject):
+    """Nested object for dh-group-18 field with attribute access."""
+    mode: Literal["software", "hardware", "global"]
+    keypair_cache: Literal["global", "custom"]
+    keypair_count: int
+
+
+class IkeDhgroup19Object(FortiObject):
+    """Nested object for dh-group-19 field with attribute access."""
+    mode: Literal["software", "hardware", "global"]
+    keypair_cache: Literal["global", "custom"]
+    keypair_count: int
+
+
+class IkeDhgroup20Object(FortiObject):
+    """Nested object for dh-group-20 field with attribute access."""
+    mode: Literal["software", "hardware", "global"]
+    keypair_cache: Literal["global", "custom"]
+    keypair_count: int
+
+
+class IkeDhgroup21Object(FortiObject):
+    """Nested object for dh-group-21 field with attribute access."""
+    mode: Literal["software", "hardware", "global"]
+    keypair_cache: Literal["global", "custom"]
+    keypair_count: int
+
+
+class IkeDhgroup27Object(FortiObject):
+    """Nested object for dh-group-27 field with attribute access."""
+    mode: Literal["software", "hardware", "global"]
+    keypair_cache: Literal["global", "custom"]
+    keypair_count: int
+
+
+class IkeDhgroup28Object(FortiObject):
+    """Nested object for dh-group-28 field with attribute access."""
+    mode: Literal["software", "hardware", "global"]
+    keypair_cache: Literal["global", "custom"]
+    keypair_count: int
+
+
+class IkeDhgroup29Object(FortiObject):
+    """Nested object for dh-group-29 field with attribute access."""
+    mode: Literal["software", "hardware", "global"]
+    keypair_cache: Literal["global", "custom"]
+    keypair_count: int
+
+
+class IkeDhgroup30Object(FortiObject):
+    """Nested object for dh-group-30 field with attribute access."""
+    mode: Literal["software", "hardware", "global"]
+    keypair_cache: Literal["global", "custom"]
+    keypair_count: int
+
+
+class IkeDhgroup31Object(FortiObject):
+    """Nested object for dh-group-31 field with attribute access."""
+    mode: Literal["software", "hardware", "global"]
+    keypair_cache: Literal["global", "custom"]
+    keypair_count: int
+
+
+class IkeDhgroup32Object(FortiObject):
+    """Nested object for dh-group-32 field with attribute access."""
+    mode: Literal["software", "hardware", "global"]
+    keypair_cache: Literal["global", "custom"]
+    keypair_count: int
+
+
 class IkeObject(FortiObject):
     """Typed FortiObject for Ike with field access."""
     embryonic_limit: int
@@ -218,23 +337,23 @@ class IkeObject(FortiObject):
     dh_keypair_cache: Literal["enable", "disable"]
     dh_keypair_count: int
     dh_keypair_throttle: Literal["enable", "disable"]
-    dh_group_1: IkeDhgroup1Dict
-    dh_group_2: IkeDhgroup2Dict
-    dh_group_5: IkeDhgroup5Dict
-    dh_group_14: IkeDhgroup14Dict
-    dh_group_15: IkeDhgroup15Dict
-    dh_group_16: IkeDhgroup16Dict
-    dh_group_17: IkeDhgroup17Dict
-    dh_group_18: IkeDhgroup18Dict
-    dh_group_19: IkeDhgroup19Dict
-    dh_group_20: IkeDhgroup20Dict
-    dh_group_21: IkeDhgroup21Dict
-    dh_group_27: IkeDhgroup27Dict
-    dh_group_28: IkeDhgroup28Dict
-    dh_group_29: IkeDhgroup29Dict
-    dh_group_30: IkeDhgroup30Dict
-    dh_group_31: IkeDhgroup31Dict
-    dh_group_32: IkeDhgroup32Dict
+    dh_group_1: IkeDhgroup1Object
+    dh_group_2: IkeDhgroup2Object
+    dh_group_5: IkeDhgroup5Object
+    dh_group_14: IkeDhgroup14Object
+    dh_group_15: IkeDhgroup15Object
+    dh_group_16: IkeDhgroup16Object
+    dh_group_17: IkeDhgroup17Object
+    dh_group_18: IkeDhgroup18Object
+    dh_group_19: IkeDhgroup19Object
+    dh_group_20: IkeDhgroup20Object
+    dh_group_21: IkeDhgroup21Object
+    dh_group_27: IkeDhgroup27Object
+    dh_group_28: IkeDhgroup28Object
+    dh_group_29: IkeDhgroup29Object
+    dh_group_30: IkeDhgroup30Object
+    dh_group_31: IkeDhgroup31Object
+    dh_group_32: IkeDhgroup32Object
 
 
 # ================================================================

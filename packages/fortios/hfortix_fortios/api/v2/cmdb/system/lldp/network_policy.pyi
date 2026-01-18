@@ -135,18 +135,90 @@ class NetworkPolicyResponse(TypedDict, total=False):
 # ================================================================
 
 
+class NetworkPolicyVoiceObject(FortiObject):
+    """Nested object for voice field with attribute access."""
+    status: Literal["disable", "enable"]
+    tag: Literal["none", "dot1q", "dot1p"]
+    vlan: int
+    priority: int
+    dscp: int
+
+
+class NetworkPolicyVoicesignalingObject(FortiObject):
+    """Nested object for voice-signaling field with attribute access."""
+    status: Literal["disable", "enable"]
+    tag: Literal["none", "dot1q", "dot1p"]
+    vlan: int
+    priority: int
+    dscp: int
+
+
+class NetworkPolicyGuestObject(FortiObject):
+    """Nested object for guest field with attribute access."""
+    status: Literal["disable", "enable"]
+    tag: Literal["none", "dot1q", "dot1p"]
+    vlan: int
+    priority: int
+    dscp: int
+
+
+class NetworkPolicyGuestvoicesignalingObject(FortiObject):
+    """Nested object for guest-voice-signaling field with attribute access."""
+    status: Literal["disable", "enable"]
+    tag: Literal["none", "dot1q", "dot1p"]
+    vlan: int
+    priority: int
+    dscp: int
+
+
+class NetworkPolicySoftphoneObject(FortiObject):
+    """Nested object for softphone field with attribute access."""
+    status: Literal["disable", "enable"]
+    tag: Literal["none", "dot1q", "dot1p"]
+    vlan: int
+    priority: int
+    dscp: int
+
+
+class NetworkPolicyVideoconferencingObject(FortiObject):
+    """Nested object for video-conferencing field with attribute access."""
+    status: Literal["disable", "enable"]
+    tag: Literal["none", "dot1q", "dot1p"]
+    vlan: int
+    priority: int
+    dscp: int
+
+
+class NetworkPolicyStreamingvideoObject(FortiObject):
+    """Nested object for streaming-video field with attribute access."""
+    status: Literal["disable", "enable"]
+    tag: Literal["none", "dot1q", "dot1p"]
+    vlan: int
+    priority: int
+    dscp: int
+
+
+class NetworkPolicyVideosignalingObject(FortiObject):
+    """Nested object for video-signaling field with attribute access."""
+    status: Literal["disable", "enable"]
+    tag: Literal["none", "dot1q", "dot1p"]
+    vlan: int
+    priority: int
+    dscp: int
+
+
 class NetworkPolicyObject(FortiObject):
     """Typed FortiObject for NetworkPolicy with field access."""
     name: str
     comment: str
-    voice: NetworkPolicyVoiceDict
-    voice_signaling: NetworkPolicyVoicesignalingDict
-    guest: NetworkPolicyGuestDict
-    guest_voice_signaling: NetworkPolicyGuestvoicesignalingDict
-    softphone: NetworkPolicySoftphoneDict
-    video_conferencing: NetworkPolicyVideoconferencingDict
-    streaming_video: NetworkPolicyStreamingvideoDict
-    video_signaling: NetworkPolicyVideosignalingDict
+    voice: NetworkPolicyVoiceObject
+    voice_signaling: NetworkPolicyVoicesignalingObject
+    guest: NetworkPolicyGuestObject
+    guest_voice_signaling: NetworkPolicyGuestvoicesignalingObject
+    softphone: NetworkPolicySoftphoneObject
+    video_conferencing: NetworkPolicyVideoconferencingObject
+    streaming_video: NetworkPolicyStreamingvideoObject
+    video_signaling: NetworkPolicyVideosignalingObject
 
 
 # ================================================================

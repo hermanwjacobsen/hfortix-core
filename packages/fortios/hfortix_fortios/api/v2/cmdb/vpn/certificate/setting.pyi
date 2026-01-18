@@ -115,6 +115,13 @@ class SettingResponse(TypedDict, total=False):
 # ================================================================
 
 
+class SettingCrlverificationObject(FortiObject):
+    """Nested object for crl-verification field with attribute access."""
+    expiry: Literal["ignore", "revoke"]
+    leaf_crl_absence: Literal["ignore", "revoke"]
+    chain_crl_absence: Literal["ignore", "revoke"]
+
+
 class SettingObject(FortiObject):
     """Typed FortiObject for Setting with field access."""
     ocsp_status: Literal["enable", "mandatory", "disable"]
@@ -134,7 +141,7 @@ class SettingObject(FortiObject):
     subject_set: Literal["subset", "superset"]
     cn_match: Literal["substring", "value"]
     cn_allow_multi: Literal["disable", "enable"]
-    crl_verification: SettingCrlverificationDict
+    crl_verification: SettingCrlverificationObject
     strict_ocsp_check: Literal["enable", "disable"]
     ssl_min_proto_version: Literal["default", "SSLv3", "TLSv1", "TLSv1-1", "TLSv1-2", "TLSv1-3"]
     cmp_save_extra_certs: Literal["enable", "disable"]

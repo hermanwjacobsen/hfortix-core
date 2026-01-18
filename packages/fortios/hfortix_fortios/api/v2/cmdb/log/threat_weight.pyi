@@ -122,16 +122,53 @@ class ThreatWeightResponse(TypedDict, total=False):
 # ================================================================
 
 
+class ThreatWeightLevelObject(FortiObject):
+    """Nested object for level field with attribute access."""
+    low: int
+    medium: int
+    high: int
+    critical: int
+
+
+class ThreatWeightMalwareObject(FortiObject):
+    """Nested object for malware field with attribute access."""
+    virus_infected: Literal["disable", "low", "medium", "high", "critical"]
+    inline_block: Literal["disable", "low", "medium", "high", "critical"]
+    file_blocked: Literal["disable", "low", "medium", "high", "critical"]
+    command_blocked: Literal["disable", "low", "medium", "high", "critical"]
+    oversized: Literal["disable", "low", "medium", "high", "critical"]
+    virus_scan_error: Literal["disable", "low", "medium", "high", "critical"]
+    switch_proto: Literal["disable", "low", "medium", "high", "critical"]
+    mimefragmented: Literal["disable", "low", "medium", "high", "critical"]
+    virus_file_type_executable: Literal["disable", "low", "medium", "high", "critical"]
+    virus_outbreak_prevention: Literal["disable", "low", "medium", "high", "critical"]
+    content_disarm: Literal["disable", "low", "medium", "high", "critical"]
+    malware_list: Literal["disable", "low", "medium", "high", "critical"]
+    ems_threat_feed: Literal["disable", "low", "medium", "high", "critical"]
+    fsa_malicious: Literal["disable", "low", "medium", "high", "critical"]
+    fsa_high_risk: Literal["disable", "low", "medium", "high", "critical"]
+    fsa_medium_risk: Literal["disable", "low", "medium", "high", "critical"]
+
+
+class ThreatWeightIpsObject(FortiObject):
+    """Nested object for ips field with attribute access."""
+    info_severity: Literal["disable", "low", "medium", "high", "critical"]
+    low_severity: Literal["disable", "low", "medium", "high", "critical"]
+    medium_severity: Literal["disable", "low", "medium", "high", "critical"]
+    high_severity: Literal["disable", "low", "medium", "high", "critical"]
+    critical_severity: Literal["disable", "low", "medium", "high", "critical"]
+
+
 class ThreatWeightObject(FortiObject):
     """Typed FortiObject for ThreatWeight with field access."""
     status: Literal["enable", "disable"]
-    level: ThreatWeightLevelDict
+    level: ThreatWeightLevelObject
     blocked_connection: Literal["disable", "low", "medium", "high", "critical"]
     failed_connection: Literal["disable", "low", "medium", "high", "critical"]
     url_block_detected: Literal["disable", "low", "medium", "high", "critical"]
     botnet_connection_detected: Literal["disable", "low", "medium", "high", "critical"]
-    malware: ThreatWeightMalwareDict
-    ips: ThreatWeightIpsDict
+    malware: ThreatWeightMalwareObject
+    ips: ThreatWeightIpsObject
     web: list[ThreatWeightWebItem]
     geolocation: list[ThreatWeightGeolocationItem]
     application: list[ThreatWeightApplicationItem]

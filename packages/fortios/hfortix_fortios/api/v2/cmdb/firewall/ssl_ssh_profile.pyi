@@ -272,18 +272,155 @@ class SslSshProfileResponse(TypedDict, total=False):
 # ================================================================
 
 
+class SslSshProfileSslObject(FortiObject):
+    """Nested object for ssl field with attribute access."""
+    inspect_all: Literal["disable", "certificate-inspection", "deep-inspection"]
+    client_certificate: Literal["bypass", "inspect", "block"]
+    unsupported_ssl_version: Literal["allow", "block"]
+    unsupported_ssl_cipher: Literal["allow", "block"]
+    unsupported_ssl_negotiation: Literal["allow", "block"]
+    expired_server_cert: Literal["allow", "block", "ignore"]
+    revoked_server_cert: Literal["allow", "block", "ignore"]
+    untrusted_server_cert: Literal["allow", "block", "ignore"]
+    cert_validation_timeout: Literal["allow", "block", "ignore"]
+    cert_validation_failure: Literal["allow", "block", "ignore"]
+    sni_server_cert_check: Literal["enable", "strict", "disable"]
+    cert_probe_failure: Literal["allow", "block"]
+    encrypted_client_hello: Literal["allow", "block"]
+    min_allowed_ssl_version: Literal["ssl-3.0", "tls-1.0", "tls-1.1", "tls-1.2", "tls-1.3"]
+
+
+class SslSshProfileHttpsObject(FortiObject):
+    """Nested object for https field with attribute access."""
+    ports: int | list[int]
+    status: Literal["disable", "certificate-inspection", "deep-inspection"]
+    quic: Literal["inspect", "bypass", "block"]
+    udp_not_quic: Literal["allow", "block"]
+    proxy_after_tcp_handshake: Literal["enable", "disable"]
+    client_certificate: Literal["bypass", "inspect", "block"]
+    unsupported_ssl_version: Literal["allow", "block"]
+    unsupported_ssl_cipher: Literal["allow", "block"]
+    unsupported_ssl_negotiation: Literal["allow", "block"]
+    expired_server_cert: Literal["allow", "block", "ignore"]
+    revoked_server_cert: Literal["allow", "block", "ignore"]
+    untrusted_server_cert: Literal["allow", "block", "ignore"]
+    cert_validation_timeout: Literal["allow", "block", "ignore"]
+    cert_validation_failure: Literal["allow", "block", "ignore"]
+    sni_server_cert_check: Literal["enable", "strict", "disable"]
+    cert_probe_failure: Literal["allow", "block"]
+    encrypted_client_hello: Literal["allow", "block"]
+    min_allowed_ssl_version: Literal["ssl-3.0", "tls-1.0", "tls-1.1", "tls-1.2", "tls-1.3"]
+
+
+class SslSshProfileFtpsObject(FortiObject):
+    """Nested object for ftps field with attribute access."""
+    ports: int | list[int]
+    status: Literal["disable", "deep-inspection"]
+    client_certificate: Literal["bypass", "inspect", "block"]
+    unsupported_ssl_version: Literal["allow", "block"]
+    unsupported_ssl_cipher: Literal["allow", "block"]
+    unsupported_ssl_negotiation: Literal["allow", "block"]
+    expired_server_cert: Literal["allow", "block", "ignore"]
+    revoked_server_cert: Literal["allow", "block", "ignore"]
+    untrusted_server_cert: Literal["allow", "block", "ignore"]
+    cert_validation_timeout: Literal["allow", "block", "ignore"]
+    cert_validation_failure: Literal["allow", "block", "ignore"]
+    sni_server_cert_check: Literal["enable", "strict", "disable"]
+    min_allowed_ssl_version: Literal["ssl-3.0", "tls-1.0", "tls-1.1", "tls-1.2", "tls-1.3"]
+
+
+class SslSshProfileImapsObject(FortiObject):
+    """Nested object for imaps field with attribute access."""
+    ports: int | list[int]
+    status: Literal["disable", "deep-inspection"]
+    proxy_after_tcp_handshake: Literal["enable", "disable"]
+    client_certificate: Literal["bypass", "inspect", "block"]
+    unsupported_ssl_version: Literal["allow", "block"]
+    unsupported_ssl_cipher: Literal["allow", "block"]
+    unsupported_ssl_negotiation: Literal["allow", "block"]
+    expired_server_cert: Literal["allow", "block", "ignore"]
+    revoked_server_cert: Literal["allow", "block", "ignore"]
+    untrusted_server_cert: Literal["allow", "block", "ignore"]
+    cert_validation_timeout: Literal["allow", "block", "ignore"]
+    cert_validation_failure: Literal["allow", "block", "ignore"]
+    sni_server_cert_check: Literal["enable", "strict", "disable"]
+
+
+class SslSshProfilePop3sObject(FortiObject):
+    """Nested object for pop3s field with attribute access."""
+    ports: int | list[int]
+    status: Literal["disable", "deep-inspection"]
+    proxy_after_tcp_handshake: Literal["enable", "disable"]
+    client_certificate: Literal["bypass", "inspect", "block"]
+    unsupported_ssl_version: Literal["allow", "block"]
+    unsupported_ssl_cipher: Literal["allow", "block"]
+    unsupported_ssl_negotiation: Literal["allow", "block"]
+    expired_server_cert: Literal["allow", "block", "ignore"]
+    revoked_server_cert: Literal["allow", "block", "ignore"]
+    untrusted_server_cert: Literal["allow", "block", "ignore"]
+    cert_validation_timeout: Literal["allow", "block", "ignore"]
+    cert_validation_failure: Literal["allow", "block", "ignore"]
+    sni_server_cert_check: Literal["enable", "strict", "disable"]
+
+
+class SslSshProfileSmtpsObject(FortiObject):
+    """Nested object for smtps field with attribute access."""
+    ports: int | list[int]
+    status: Literal["disable", "deep-inspection"]
+    proxy_after_tcp_handshake: Literal["enable", "disable"]
+    client_certificate: Literal["bypass", "inspect", "block"]
+    unsupported_ssl_version: Literal["allow", "block"]
+    unsupported_ssl_cipher: Literal["allow", "block"]
+    unsupported_ssl_negotiation: Literal["allow", "block"]
+    expired_server_cert: Literal["allow", "block", "ignore"]
+    revoked_server_cert: Literal["allow", "block", "ignore"]
+    untrusted_server_cert: Literal["allow", "block", "ignore"]
+    cert_validation_timeout: Literal["allow", "block", "ignore"]
+    cert_validation_failure: Literal["allow", "block", "ignore"]
+    sni_server_cert_check: Literal["enable", "strict", "disable"]
+
+
+class SslSshProfileSshObject(FortiObject):
+    """Nested object for ssh field with attribute access."""
+    ports: int | list[int]
+    status: Literal["disable", "deep-inspection"]
+    inspect_all: Literal["disable", "deep-inspection"]
+    proxy_after_tcp_handshake: Literal["enable", "disable"]
+    unsupported_version: Literal["bypass", "block"]
+    ssh_tun_policy_check: Literal["disable", "enable"]
+    ssh_algorithm: Literal["compatible", "high-encryption"]
+
+
+class SslSshProfileDotObject(FortiObject):
+    """Nested object for dot field with attribute access."""
+    status: Literal["disable", "deep-inspection"]
+    quic: Literal["inspect", "bypass", "block"]
+    udp_not_quic: Literal["allow", "block"]
+    proxy_after_tcp_handshake: Literal["enable", "disable"]
+    client_certificate: Literal["bypass", "inspect", "block"]
+    unsupported_ssl_version: Literal["allow", "block"]
+    unsupported_ssl_cipher: Literal["allow", "block"]
+    unsupported_ssl_negotiation: Literal["allow", "block"]
+    expired_server_cert: Literal["allow", "block", "ignore"]
+    revoked_server_cert: Literal["allow", "block", "ignore"]
+    untrusted_server_cert: Literal["allow", "block", "ignore"]
+    cert_validation_timeout: Literal["allow", "block", "ignore"]
+    cert_validation_failure: Literal["allow", "block", "ignore"]
+    sni_server_cert_check: Literal["enable", "strict", "disable"]
+
+
 class SslSshProfileObject(FortiObject):
     """Typed FortiObject for SslSshProfile with field access."""
     name: str
     comment: str
-    ssl: SslSshProfileSslDict
-    https: SslSshProfileHttpsDict
-    ftps: SslSshProfileFtpsDict
-    imaps: SslSshProfileImapsDict
-    pop3s: SslSshProfilePop3sDict
-    smtps: SslSshProfileSmtpsDict
-    ssh: SslSshProfileSshDict
-    dot: SslSshProfileDotDict
+    ssl: SslSshProfileSslObject
+    https: SslSshProfileHttpsObject
+    ftps: SslSshProfileFtpsObject
+    imaps: SslSshProfileImapsObject
+    pop3s: SslSshProfilePop3sObject
+    smtps: SslSshProfileSmtpsObject
+    ssh: SslSshProfileSshObject
+    dot: SslSshProfileDotObject
     allowlist: Literal["enable", "disable"]
     block_blocklisted_certificates: Literal["disable", "enable"]
     ssl_exempt: list[SslSshProfileSslexemptItem]

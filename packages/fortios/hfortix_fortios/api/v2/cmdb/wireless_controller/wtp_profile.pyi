@@ -639,11 +639,434 @@ class WtpProfileResponse(TypedDict, total=False):
 # ================================================================
 
 
+class WtpProfilePlatformObject(FortiObject):
+    """Nested object for platform field with attribute access."""
+    type: Literal["AP-11N", "C24JE", "421E", "423E", "221E", "222E", "223E", "224E", "231E", "321E", "431F", "431FL", "432F", "432FR", "433F", "433FL", "231F", "231FL", "234F", "23JF", "831F", "231G", "233G", "234G", "431G", "432G", "433G", "231K", "231KD", "23JK", "222KL", "241K", "243K", "244K", "441K", "432K", "443K", "U421E", "U422EV", "U423E", "U221EV", "U223EV", "U24JEV", "U321EV", "U323EV", "U431F", "U433F", "U231F", "U234F", "U432F", "U231G", "MVP"]
+    mode: Literal["single-5G", "dual-5G"]
+    ddscan: Literal["enable", "disable"]
+
+
+class WtpProfileLanObject(FortiObject):
+    """Nested object for lan field with attribute access."""
+    port_mode: Literal["offline", "nat-to-wan", "bridge-to-wan", "bridge-to-ssid"]
+    port_ssid: str
+    port1_mode: Literal["offline", "nat-to-wan", "bridge-to-wan", "bridge-to-ssid"]
+    port1_ssid: str
+    port2_mode: Literal["offline", "nat-to-wan", "bridge-to-wan", "bridge-to-ssid"]
+    port2_ssid: str
+    port3_mode: Literal["offline", "nat-to-wan", "bridge-to-wan", "bridge-to-ssid"]
+    port3_ssid: str
+    port4_mode: Literal["offline", "nat-to-wan", "bridge-to-wan", "bridge-to-ssid"]
+    port4_ssid: str
+    port5_mode: Literal["offline", "nat-to-wan", "bridge-to-wan", "bridge-to-ssid"]
+    port5_ssid: str
+    port6_mode: Literal["offline", "nat-to-wan", "bridge-to-wan", "bridge-to-ssid"]
+    port6_ssid: str
+    port7_mode: Literal["offline", "nat-to-wan", "bridge-to-wan", "bridge-to-ssid"]
+    port7_ssid: str
+    port8_mode: Literal["offline", "nat-to-wan", "bridge-to-wan", "bridge-to-ssid"]
+    port8_ssid: str
+    port_esl_mode: Literal["offline", "nat-to-wan", "bridge-to-wan", "bridge-to-ssid"]
+    port_esl_ssid: str
+
+
+class WtpProfileRadio1Object(FortiObject):
+    """Nested object for radio-1 field with attribute access."""
+    mode: Literal["disabled", "ap", "monitor", "sniffer", "sam"]
+    band: Literal["802.11a", "802.11b", "802.11g", "802.11n-2G", "802.11n-5G", "802.11ac-2G", "802.11ac-5G", "802.11ax-2G", "802.11ax-5G", "802.11ax-6G", "802.11be-2G", "802.11be-5G", "802.11be-6G"]
+    band_5g_type: Literal["5g-full", "5g-high", "5g-low"]
+    drma: Literal["disable", "enable"]
+    drma_sensitivity: Literal["low", "medium", "high"]
+    airtime_fairness: Literal["enable", "disable"]
+    protection_mode: Literal["rtscts", "ctsonly", "disable"]
+    powersave_optimize: Literal["tim", "ac-vo", "no-obss-scan", "no-11b-rate", "client-rate-follow"]
+    transmit_optimize: Literal["disable", "power-save", "aggr-limit", "retry-limit", "send-bar"]
+    amsdu: Literal["enable", "disable"]
+    coexistence: Literal["enable", "disable"]
+    zero_wait_dfs: Literal["enable", "disable"]
+    bss_color: int
+    bss_color_mode: Literal["auto", "static"]
+    short_guard_interval: Literal["enable", "disable"]
+    mimo_mode: Literal["default", "1x1", "2x2", "3x3", "4x4", "8x8"]
+    channel_bonding: Literal["320MHz", "240MHz", "160MHz", "80MHz", "40MHz", "20MHz"]
+    channel_bonding_ext: Literal["320MHz-1", "320MHz-2"]
+    optional_antenna: Literal["none", "custom", "FANT-04ABGN-0606-O-N", "FANT-04ABGN-1414-P-N", "FANT-04ABGN-8065-P-N", "FANT-04ABGN-0606-O-R", "FANT-04ABGN-0606-P-R", "FANT-10ACAX-1213-D-N", "FANT-08ABGN-1213-D-R", "FANT-04BEAX-0606-P-R"]
+    optional_antenna_gain: str
+    auto_power_level: Literal["enable", "disable"]
+    auto_power_high: int
+    auto_power_low: int
+    auto_power_target: str
+    power_mode: Literal["dBm", "percentage"]
+    power_level: int
+    power_value: int
+    dtim: int
+    beacon_interval: int
+    x80211d: Literal["enable", "disable"]
+    x80211mc: Literal["enable", "disable"]
+    rts_threshold: int
+    frag_threshold: int
+    ap_sniffer_bufsize: int
+    ap_sniffer_chan: int
+    ap_sniffer_chan_width: Literal["320MHz", "240MHz", "160MHz", "80MHz", "40MHz", "20MHz"]
+    ap_sniffer_addr: str
+    ap_sniffer_mgmt_beacon: Literal["enable", "disable"]
+    ap_sniffer_mgmt_probe: Literal["enable", "disable"]
+    ap_sniffer_mgmt_other: Literal["enable", "disable"]
+    ap_sniffer_ctl: Literal["enable", "disable"]
+    ap_sniffer_data: Literal["enable", "disable"]
+    sam_ssid: str
+    sam_bssid: str
+    sam_security_type: Literal["open", "wpa-personal", "wpa-enterprise", "wpa3-sae", "owe"]
+    sam_captive_portal: Literal["enable", "disable"]
+    sam_cwp_username: str
+    sam_cwp_password: str
+    sam_cwp_test_url: str
+    sam_cwp_match_string: str
+    sam_cwp_success_string: str
+    sam_cwp_failure_string: str
+    sam_eap_method: Literal["both", "tls", "peap"]
+    sam_client_certificate: str
+    sam_private_key: str
+    sam_private_key_password: str
+    sam_ca_certificate: str
+    sam_username: str
+    sam_password: str
+    sam_test: Literal["ping", "iperf"]
+    sam_server_type: Literal["ip", "fqdn"]
+    sam_server_ip: str
+    sam_server_fqdn: str
+    iperf_server_port: int
+    iperf_protocol: Literal["udp", "tcp"]
+    sam_report_intv: int
+    channel_utilization: Literal["enable", "disable"]
+    wids_profile: str
+    ai_darrp_support: Literal["enable", "disable"]
+    darrp: Literal["enable", "disable"]
+    arrp_profile: str
+    max_clients: int
+    max_distance: int
+    vap_all: Literal["tunnel", "bridge", "manual"]
+    vaps: str | list[str]
+    channel: str | list[str]
+    call_admission_control: Literal["enable", "disable"]
+    call_capacity: int
+    bandwidth_admission_control: Literal["enable", "disable"]
+    bandwidth_capacity: int
+
+
+class WtpProfileRadio2Object(FortiObject):
+    """Nested object for radio-2 field with attribute access."""
+    mode: Literal["disabled", "ap", "monitor", "sniffer", "sam"]
+    band: Literal["802.11a", "802.11b", "802.11g", "802.11n-2G", "802.11n-5G", "802.11ac-2G", "802.11ac-5G", "802.11ax-2G", "802.11ax-5G", "802.11ax-6G", "802.11be-2G", "802.11be-5G", "802.11be-6G"]
+    band_5g_type: Literal["5g-full", "5g-high", "5g-low"]
+    drma: Literal["disable", "enable"]
+    drma_sensitivity: Literal["low", "medium", "high"]
+    airtime_fairness: Literal["enable", "disable"]
+    protection_mode: Literal["rtscts", "ctsonly", "disable"]
+    powersave_optimize: Literal["tim", "ac-vo", "no-obss-scan", "no-11b-rate", "client-rate-follow"]
+    transmit_optimize: Literal["disable", "power-save", "aggr-limit", "retry-limit", "send-bar"]
+    amsdu: Literal["enable", "disable"]
+    coexistence: Literal["enable", "disable"]
+    zero_wait_dfs: Literal["enable", "disable"]
+    bss_color: int
+    bss_color_mode: Literal["auto", "static"]
+    short_guard_interval: Literal["enable", "disable"]
+    mimo_mode: Literal["default", "1x1", "2x2", "3x3", "4x4", "8x8"]
+    channel_bonding: Literal["320MHz", "240MHz", "160MHz", "80MHz", "40MHz", "20MHz"]
+    channel_bonding_ext: Literal["320MHz-1", "320MHz-2"]
+    optional_antenna: Literal["none", "custom", "FANT-04ABGN-0606-O-N", "FANT-04ABGN-1414-P-N", "FANT-04ABGN-8065-P-N", "FANT-04ABGN-0606-O-R", "FANT-04ABGN-0606-P-R", "FANT-10ACAX-1213-D-N", "FANT-08ABGN-1213-D-R", "FANT-04BEAX-0606-P-R"]
+    optional_antenna_gain: str
+    auto_power_level: Literal["enable", "disable"]
+    auto_power_high: int
+    auto_power_low: int
+    auto_power_target: str
+    power_mode: Literal["dBm", "percentage"]
+    power_level: int
+    power_value: int
+    dtim: int
+    beacon_interval: int
+    x80211d: Literal["enable", "disable"]
+    x80211mc: Literal["enable", "disable"]
+    rts_threshold: int
+    frag_threshold: int
+    ap_sniffer_bufsize: int
+    ap_sniffer_chan: int
+    ap_sniffer_chan_width: Literal["320MHz", "240MHz", "160MHz", "80MHz", "40MHz", "20MHz"]
+    ap_sniffer_addr: str
+    ap_sniffer_mgmt_beacon: Literal["enable", "disable"]
+    ap_sniffer_mgmt_probe: Literal["enable", "disable"]
+    ap_sniffer_mgmt_other: Literal["enable", "disable"]
+    ap_sniffer_ctl: Literal["enable", "disable"]
+    ap_sniffer_data: Literal["enable", "disable"]
+    sam_ssid: str
+    sam_bssid: str
+    sam_security_type: Literal["open", "wpa-personal", "wpa-enterprise", "wpa3-sae", "owe"]
+    sam_captive_portal: Literal["enable", "disable"]
+    sam_cwp_username: str
+    sam_cwp_password: str
+    sam_cwp_test_url: str
+    sam_cwp_match_string: str
+    sam_cwp_success_string: str
+    sam_cwp_failure_string: str
+    sam_eap_method: Literal["both", "tls", "peap"]
+    sam_client_certificate: str
+    sam_private_key: str
+    sam_private_key_password: str
+    sam_ca_certificate: str
+    sam_username: str
+    sam_password: str
+    sam_test: Literal["ping", "iperf"]
+    sam_server_type: Literal["ip", "fqdn"]
+    sam_server_ip: str
+    sam_server_fqdn: str
+    iperf_server_port: int
+    iperf_protocol: Literal["udp", "tcp"]
+    sam_report_intv: int
+    channel_utilization: Literal["enable", "disable"]
+    wids_profile: str
+    ai_darrp_support: Literal["enable", "disable"]
+    darrp: Literal["enable", "disable"]
+    arrp_profile: str
+    max_clients: int
+    max_distance: int
+    vap_all: Literal["tunnel", "bridge", "manual"]
+    vaps: str | list[str]
+    channel: str | list[str]
+    call_admission_control: Literal["enable", "disable"]
+    call_capacity: int
+    bandwidth_admission_control: Literal["enable", "disable"]
+    bandwidth_capacity: int
+
+
+class WtpProfileRadio3Object(FortiObject):
+    """Nested object for radio-3 field with attribute access."""
+    mode: Literal["disabled", "ap", "monitor", "sniffer", "sam"]
+    band: Literal["802.11a", "802.11b", "802.11g", "802.11n-2G", "802.11n-5G", "802.11ac-2G", "802.11ac-5G", "802.11ax-2G", "802.11ax-5G", "802.11ax-6G", "802.11be-2G", "802.11be-5G", "802.11be-6G"]
+    band_5g_type: Literal["5g-full", "5g-high", "5g-low"]
+    drma: Literal["disable", "enable"]
+    drma_sensitivity: Literal["low", "medium", "high"]
+    airtime_fairness: Literal["enable", "disable"]
+    protection_mode: Literal["rtscts", "ctsonly", "disable"]
+    powersave_optimize: Literal["tim", "ac-vo", "no-obss-scan", "no-11b-rate", "client-rate-follow"]
+    transmit_optimize: Literal["disable", "power-save", "aggr-limit", "retry-limit", "send-bar"]
+    amsdu: Literal["enable", "disable"]
+    coexistence: Literal["enable", "disable"]
+    zero_wait_dfs: Literal["enable", "disable"]
+    bss_color: int
+    bss_color_mode: Literal["auto", "static"]
+    short_guard_interval: Literal["enable", "disable"]
+    mimo_mode: Literal["default", "1x1", "2x2", "3x3", "4x4", "8x8"]
+    channel_bonding: Literal["320MHz", "240MHz", "160MHz", "80MHz", "40MHz", "20MHz"]
+    channel_bonding_ext: Literal["320MHz-1", "320MHz-2"]
+    optional_antenna: Literal["none", "custom", "FANT-04ABGN-0606-O-N", "FANT-04ABGN-1414-P-N", "FANT-04ABGN-8065-P-N", "FANT-04ABGN-0606-O-R", "FANT-04ABGN-0606-P-R", "FANT-10ACAX-1213-D-N", "FANT-08ABGN-1213-D-R", "FANT-04BEAX-0606-P-R"]
+    optional_antenna_gain: str
+    auto_power_level: Literal["enable", "disable"]
+    auto_power_high: int
+    auto_power_low: int
+    auto_power_target: str
+    power_mode: Literal["dBm", "percentage"]
+    power_level: int
+    power_value: int
+    dtim: int
+    beacon_interval: int
+    x80211d: Literal["enable", "disable"]
+    x80211mc: Literal["enable", "disable"]
+    rts_threshold: int
+    frag_threshold: int
+    ap_sniffer_bufsize: int
+    ap_sniffer_chan: int
+    ap_sniffer_chan_width: Literal["320MHz", "240MHz", "160MHz", "80MHz", "40MHz", "20MHz"]
+    ap_sniffer_addr: str
+    ap_sniffer_mgmt_beacon: Literal["enable", "disable"]
+    ap_sniffer_mgmt_probe: Literal["enable", "disable"]
+    ap_sniffer_mgmt_other: Literal["enable", "disable"]
+    ap_sniffer_ctl: Literal["enable", "disable"]
+    ap_sniffer_data: Literal["enable", "disable"]
+    sam_ssid: str
+    sam_bssid: str
+    sam_security_type: Literal["open", "wpa-personal", "wpa-enterprise", "wpa3-sae", "owe"]
+    sam_captive_portal: Literal["enable", "disable"]
+    sam_cwp_username: str
+    sam_cwp_password: str
+    sam_cwp_test_url: str
+    sam_cwp_match_string: str
+    sam_cwp_success_string: str
+    sam_cwp_failure_string: str
+    sam_eap_method: Literal["both", "tls", "peap"]
+    sam_client_certificate: str
+    sam_private_key: str
+    sam_private_key_password: str
+    sam_ca_certificate: str
+    sam_username: str
+    sam_password: str
+    sam_test: Literal["ping", "iperf"]
+    sam_server_type: Literal["ip", "fqdn"]
+    sam_server_ip: str
+    sam_server_fqdn: str
+    iperf_server_port: int
+    iperf_protocol: Literal["udp", "tcp"]
+    sam_report_intv: int
+    channel_utilization: Literal["enable", "disable"]
+    wids_profile: str
+    ai_darrp_support: Literal["enable", "disable"]
+    darrp: Literal["enable", "disable"]
+    arrp_profile: str
+    max_clients: int
+    max_distance: int
+    vap_all: Literal["tunnel", "bridge", "manual"]
+    vaps: str | list[str]
+    channel: str | list[str]
+    call_admission_control: Literal["enable", "disable"]
+    call_capacity: int
+    bandwidth_admission_control: Literal["enable", "disable"]
+    bandwidth_capacity: int
+
+
+class WtpProfileRadio4Object(FortiObject):
+    """Nested object for radio-4 field with attribute access."""
+    mode: Literal["disabled", "ap", "monitor", "sniffer", "sam"]
+    band: Literal["802.11a", "802.11b", "802.11g", "802.11n-2G", "802.11n-5G", "802.11ac-2G", "802.11ac-5G", "802.11ax-2G", "802.11ax-5G", "802.11ax-6G", "802.11be-2G", "802.11be-5G", "802.11be-6G"]
+    band_5g_type: Literal["5g-full", "5g-high", "5g-low"]
+    drma: Literal["disable", "enable"]
+    drma_sensitivity: Literal["low", "medium", "high"]
+    airtime_fairness: Literal["enable", "disable"]
+    protection_mode: Literal["rtscts", "ctsonly", "disable"]
+    powersave_optimize: Literal["tim", "ac-vo", "no-obss-scan", "no-11b-rate", "client-rate-follow"]
+    transmit_optimize: Literal["disable", "power-save", "aggr-limit", "retry-limit", "send-bar"]
+    amsdu: Literal["enable", "disable"]
+    coexistence: Literal["enable", "disable"]
+    zero_wait_dfs: Literal["enable", "disable"]
+    bss_color: int
+    bss_color_mode: Literal["auto", "static"]
+    short_guard_interval: Literal["enable", "disable"]
+    mimo_mode: Literal["default", "1x1", "2x2", "3x3", "4x4", "8x8"]
+    channel_bonding: Literal["320MHz", "240MHz", "160MHz", "80MHz", "40MHz", "20MHz"]
+    channel_bonding_ext: Literal["320MHz-1", "320MHz-2"]
+    optional_antenna: Literal["none", "custom", "FANT-04ABGN-0606-O-N", "FANT-04ABGN-1414-P-N", "FANT-04ABGN-8065-P-N", "FANT-04ABGN-0606-O-R", "FANT-04ABGN-0606-P-R", "FANT-10ACAX-1213-D-N", "FANT-08ABGN-1213-D-R", "FANT-04BEAX-0606-P-R"]
+    optional_antenna_gain: str
+    auto_power_level: Literal["enable", "disable"]
+    auto_power_high: int
+    auto_power_low: int
+    auto_power_target: str
+    power_mode: Literal["dBm", "percentage"]
+    power_level: int
+    power_value: int
+    dtim: int
+    beacon_interval: int
+    x80211d: Literal["enable", "disable"]
+    x80211mc: Literal["enable", "disable"]
+    rts_threshold: int
+    frag_threshold: int
+    ap_sniffer_bufsize: int
+    ap_sniffer_chan: int
+    ap_sniffer_chan_width: Literal["320MHz", "240MHz", "160MHz", "80MHz", "40MHz", "20MHz"]
+    ap_sniffer_addr: str
+    ap_sniffer_mgmt_beacon: Literal["enable", "disable"]
+    ap_sniffer_mgmt_probe: Literal["enable", "disable"]
+    ap_sniffer_mgmt_other: Literal["enable", "disable"]
+    ap_sniffer_ctl: Literal["enable", "disable"]
+    ap_sniffer_data: Literal["enable", "disable"]
+    sam_ssid: str
+    sam_bssid: str
+    sam_security_type: Literal["open", "wpa-personal", "wpa-enterprise", "wpa3-sae", "owe"]
+    sam_captive_portal: Literal["enable", "disable"]
+    sam_cwp_username: str
+    sam_cwp_password: str
+    sam_cwp_test_url: str
+    sam_cwp_match_string: str
+    sam_cwp_success_string: str
+    sam_cwp_failure_string: str
+    sam_eap_method: Literal["both", "tls", "peap"]
+    sam_client_certificate: str
+    sam_private_key: str
+    sam_private_key_password: str
+    sam_ca_certificate: str
+    sam_username: str
+    sam_password: str
+    sam_test: Literal["ping", "iperf"]
+    sam_server_type: Literal["ip", "fqdn"]
+    sam_server_ip: str
+    sam_server_fqdn: str
+    iperf_server_port: int
+    iperf_protocol: Literal["udp", "tcp"]
+    sam_report_intv: int
+    channel_utilization: Literal["enable", "disable"]
+    wids_profile: str
+    ai_darrp_support: Literal["enable", "disable"]
+    darrp: Literal["enable", "disable"]
+    arrp_profile: str
+    max_clients: int
+    max_distance: int
+    vap_all: Literal["tunnel", "bridge", "manual"]
+    vaps: str | list[str]
+    channel: str | list[str]
+    call_admission_control: Literal["enable", "disable"]
+    call_capacity: int
+    bandwidth_admission_control: Literal["enable", "disable"]
+    bandwidth_capacity: int
+
+
+class WtpProfileLbsObject(FortiObject):
+    """Nested object for lbs field with attribute access."""
+    ekahau_blink_mode: Literal["enable", "disable"]
+    ekahau_tag: str
+    erc_server_ip: str
+    erc_server_port: int
+    aeroscout: Literal["enable", "disable"]
+    aeroscout_server_ip: str
+    aeroscout_server_port: int
+    aeroscout_mu: Literal["enable", "disable"]
+    aeroscout_ap_mac: Literal["bssid", "board-mac"]
+    aeroscout_mmu_report: Literal["enable", "disable"]
+    aeroscout_mu_factor: int
+    aeroscout_mu_timeout: int
+    fortipresence: Literal["foreign", "both", "disable"]
+    fortipresence_server_addr_type: Literal["ipv4", "fqdn"]
+    fortipresence_server: str
+    fortipresence_server_fqdn: str
+    fortipresence_port: int
+    fortipresence_secret: str
+    fortipresence_project: str
+    fortipresence_frequency: int
+    fortipresence_rogue: Literal["enable", "disable"]
+    fortipresence_unassoc: Literal["enable", "disable"]
+    fortipresence_ble: Literal["enable", "disable"]
+    station_locate: Literal["enable", "disable"]
+    ble_rtls: Literal["none", "polestar", "evresys"]
+    ble_rtls_protocol: Literal["WSS"]
+    ble_rtls_server_fqdn: str
+    ble_rtls_server_path: str
+    ble_rtls_server_token: str
+    ble_rtls_server_port: int
+    ble_rtls_accumulation_interval: int
+    ble_rtls_reporting_interval: int
+    ble_rtls_asset_uuid_list1: str
+    ble_rtls_asset_uuid_list2: str
+    ble_rtls_asset_uuid_list3: str
+    ble_rtls_asset_uuid_list4: str
+    ble_rtls_asset_addrgrp_list: str
+
+
+class WtpProfileEslsesdongleObject(FortiObject):
+    """Nested object for esl-ses-dongle field with attribute access."""
+    compliance_level: Literal["compliance-level-2"]
+    scd_enable: Literal["enable", "disable"]
+    esl_channel: Literal["-1", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "127"]
+    output_power: Literal["a", "b", "c", "d", "e", "f", "g", "h"]
+    apc_addr_type: Literal["fqdn", "ip"]
+    apc_fqdn: str
+    apc_ip: str
+    apc_port: int
+    coex_level: Literal["none"]
+    tls_cert_verification: Literal["enable", "disable"]
+    tls_fqdn_verification: Literal["enable", "disable"]
+
+
 class WtpProfileObject(FortiObject):
     """Typed FortiObject for WtpProfile with field access."""
     name: str
     comment: str
-    platform: WtpProfilePlatformDict
+    platform: WtpProfilePlatformObject
     control_message_offload: str
     bonjour_profile: str
     apcfg_profile: str
@@ -655,7 +1078,7 @@ class WtpProfileObject(FortiObject):
     lw_profile: str
     syslog_profile: str
     wan_port_mode: Literal["wan-lan", "wan-only"]
-    lan: WtpProfileLanDict
+    lan: WtpProfileLanObject
     energy_efficient_ethernet: Literal["enable", "disable"]
     led_state: Literal["enable", "disable"]
     led_schedules: list[WtpProfileLedschedulesItem]
@@ -682,14 +1105,14 @@ class WtpProfileObject(FortiObject):
     frequency_handoff: Literal["enable", "disable"]
     ap_handoff: Literal["enable", "disable"]
     default_mesh_root: Literal["enable", "disable"]
-    radio_1: WtpProfileRadio1Dict
-    radio_2: WtpProfileRadio2Dict
-    radio_3: WtpProfileRadio3Dict
-    radio_4: WtpProfileRadio4Dict
-    lbs: WtpProfileLbsDict
+    radio_1: WtpProfileRadio1Object
+    radio_2: WtpProfileRadio2Object
+    radio_3: WtpProfileRadio3Object
+    radio_4: WtpProfileRadio4Object
+    lbs: WtpProfileLbsObject
     ext_info_enable: Literal["enable", "disable"]
     indoor_outdoor_deployment: Literal["platform-determined", "outdoor", "indoor"]
-    esl_ses_dongle: WtpProfileEslsesdongleDict
+    esl_ses_dongle: WtpProfileEslsesdongleObject
     console_login: Literal["enable", "disable"]
     wan_port_auth: Literal["none", "802.1x"]
     wan_port_auth_usrname: str

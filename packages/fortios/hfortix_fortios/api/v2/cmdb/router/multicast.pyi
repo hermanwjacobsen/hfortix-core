@@ -123,12 +123,43 @@ class MulticastResponse(TypedDict, total=False):
 # ================================================================
 
 
+class MulticastPimsmglobalObject(FortiObject):
+    """Nested object for pim-sm-global field with attribute access."""
+    message_interval: int
+    join_prune_holdtime: int
+    accept_register_list: str
+    accept_source_list: str
+    bsr_candidate: Literal["enable", "disable"]
+    bsr_interface: str
+    bsr_priority: int
+    bsr_hash: int
+    bsr_allow_quick_refresh: Literal["enable", "disable"]
+    cisco_crp_prefix: Literal["enable", "disable"]
+    cisco_register_checksum: Literal["enable", "disable"]
+    cisco_register_checksum_group: str
+    cisco_ignore_rp_set_priority: Literal["enable", "disable"]
+    register_rp_reachability: Literal["enable", "disable"]
+    register_source: Literal["disable", "interface", "ip-address"]
+    register_source_interface: str
+    register_source_ip: str
+    register_supression: int
+    null_register_retries: int
+    rp_register_keepalive: int
+    spt_threshold: Literal["enable", "disable"]
+    spt_threshold_group: str
+    ssm: Literal["enable", "disable"]
+    ssm_range: str
+    register_rate_limit: int
+    pim_use_sdwan: Literal["enable", "disable"]
+    rp_address: str | list[str]
+
+
 class MulticastObject(FortiObject):
     """Typed FortiObject for Multicast with field access."""
     route_threshold: int
     route_limit: int
     multicast_routing: Literal["enable", "disable"]
-    pim_sm_global: MulticastPimsmglobalDict
+    pim_sm_global: MulticastPimsmglobalObject
     pim_sm_global_vrf: list[MulticastPimsmglobalvrfItem]
     interface: list[MulticastInterfaceItem]
 

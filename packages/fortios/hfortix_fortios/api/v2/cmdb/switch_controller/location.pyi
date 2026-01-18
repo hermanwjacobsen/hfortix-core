@@ -105,12 +105,66 @@ class LocationResponse(TypedDict, total=False):
 # ================================================================
 
 
+class LocationAddresscivicObject(FortiObject):
+    """Nested object for address-civic field with attribute access."""
+    additional: str
+    additional_code: str
+    block: str
+    branch_road: str
+    building: str
+    city: str
+    city_division: str
+    country: str
+    country_subdivision: str
+    county: str
+    direction: str
+    floor: str
+    landmark: str
+    language: str
+    name: str
+    number: str
+    number_suffix: str
+    place_type: str
+    post_office_box: str
+    postal_community: str
+    primary_road: str
+    road_section: str
+    room: str
+    script: str
+    seat: str
+    street: str
+    street_name_post_mod: str
+    street_name_pre_mod: str
+    street_suffix: str
+    sub_branch_road: str
+    trailing_str_suffix: str
+    unit: str
+    zip: str
+    parent_key: str
+
+
+class LocationCoordinatesObject(FortiObject):
+    """Nested object for coordinates field with attribute access."""
+    altitude: str
+    altitude_unit: Literal["m", "f"]
+    datum: Literal["WGS84", "NAD83", "NAD83/MLLW"]
+    latitude: str
+    longitude: str
+    parent_key: str
+
+
+class LocationElinnumberObject(FortiObject):
+    """Nested object for elin-number field with attribute access."""
+    elin_num: str
+    parent_key: str
+
+
 class LocationObject(FortiObject):
     """Typed FortiObject for Location with field access."""
     name: str
-    address_civic: LocationAddresscivicDict
-    coordinates: LocationCoordinatesDict
-    elin_number: LocationElinnumberDict
+    address_civic: LocationAddresscivicObject
+    coordinates: LocationCoordinatesObject
+    elin_number: LocationElinnumberObject
 
 
 # ================================================================

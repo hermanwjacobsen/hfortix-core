@@ -58,12 +58,19 @@ class FortigateProfileResponse(TypedDict, total=False):
 # ================================================================
 
 
+class FortigateProfileLanextensionObject(FortiObject):
+    """Nested object for lan-extension field with attribute access."""
+    ipsec_tunnel: str
+    backhaul_interface: str
+    backhaul_ip: str
+
+
 class FortigateProfileObject(FortiObject):
     """Typed FortiObject for FortigateProfile with field access."""
     name: str
     id: int
     extension: Literal["lan-extension"]
-    lan_extension: FortigateProfileLanextensionDict
+    lan_extension: FortigateProfileLanextensionObject
 
 
 # ================================================================

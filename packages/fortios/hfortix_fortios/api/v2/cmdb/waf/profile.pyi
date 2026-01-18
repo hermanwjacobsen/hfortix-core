@@ -116,15 +116,60 @@ class ProfileResponse(TypedDict, total=False):
 # ================================================================
 
 
+class ProfileSignatureObject(FortiObject):
+    """Nested object for signature field with attribute access."""
+    main_class: str | list[str]
+    disabled_sub_class: str | list[str]
+    disabled_signature: str | list[str]
+    credit_card_detection_threshold: int
+    custom_signature: str | list[str]
+
+
+class ProfileConstraintObject(FortiObject):
+    """Nested object for constraint field with attribute access."""
+    header_length: str
+    content_length: str
+    param_length: str
+    line_length: str
+    url_param_length: str
+    version: str
+    method: str
+    hostname: str
+    malformed: str
+    max_cookie: str
+    max_header_line: str
+    max_url_param: str
+    max_range_segment: str
+    exception: str | list[str]
+
+
+class ProfileMethodObject(FortiObject):
+    """Nested object for method field with attribute access."""
+    status: Literal["enable", "disable"]
+    log: Literal["enable", "disable"]
+    severity: Literal["high", "medium", "low"]
+    default_allowed_methods: Literal["get", "post", "put", "head", "connect", "trace", "options", "delete", "others"]
+    method_policy: str | list[str]
+
+
+class ProfileAddresslistObject(FortiObject):
+    """Nested object for address-list field with attribute access."""
+    status: Literal["enable", "disable"]
+    blocked_log: Literal["enable", "disable"]
+    severity: Literal["high", "medium", "low"]
+    trusted_address: str | list[str]
+    blocked_address: str | list[str]
+
+
 class ProfileObject(FortiObject):
     """Typed FortiObject for Profile with field access."""
     name: str
     external: Literal["disable", "enable"]
     extended_log: Literal["enable", "disable"]
-    signature: ProfileSignatureDict
-    constraint: ProfileConstraintDict
-    method: ProfileMethodDict
-    address_list: ProfileAddresslistDict
+    signature: ProfileSignatureObject
+    constraint: ProfileConstraintObject
+    method: ProfileMethodObject
+    address_list: ProfileAddresslistObject
     url_access: list[ProfileUrlaccessItem]
     comment: str
 

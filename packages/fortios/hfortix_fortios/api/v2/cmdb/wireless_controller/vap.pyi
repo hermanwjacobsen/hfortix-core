@@ -427,6 +427,14 @@ class VapResponse(TypedDict, total=False):
 # ================================================================
 
 
+class VapPortalmessageoverridesObject(FortiObject):
+    """Nested object for portal-message-overrides field with attribute access."""
+    auth_disclaimer_page: str
+    auth_reject_page: str
+    auth_login_page: str
+    auth_login_failed_page: str
+
+
 class VapObject(FortiObject):
     """Typed FortiObject for Vap with field access."""
     name: str
@@ -507,7 +515,7 @@ class VapObject(FortiObject):
     captive_portal: Literal["enable", "disable"]
     captive_network_assistant_bypass: Literal["enable", "disable"]
     portal_message_override_group: str
-    portal_message_overrides: VapPortalmessageoverridesDict
+    portal_message_overrides: VapPortalmessageoverridesObject
     portal_type: Literal["auth", "auth+disclaimer", "disclaimer", "email-collect", "cmcc", "cmcc-macauth", "auth-mac", "external-auth", "external-macauth"]
     selected_usergroups: list[VapSelectedusergroupsItem]
     security_exempt_list: str

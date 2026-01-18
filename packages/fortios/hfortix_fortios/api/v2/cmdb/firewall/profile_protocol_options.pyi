@@ -248,6 +248,177 @@ class ProfileProtocolOptionsResponse(TypedDict, total=False):
 # ================================================================
 
 
+class ProfileProtocolOptionsHttpObject(FortiObject):
+    """Nested object for http field with attribute access."""
+    ports: int | list[int]
+    status: Literal["enable", "disable"]
+    inspect_all: Literal["enable", "disable"]
+    proxy_after_tcp_handshake: Literal["enable", "disable"]
+    options: Literal["clientcomfort", "servercomfort", "oversize", "chunkedbypass"]
+    comfort_interval: int
+    comfort_amount: int
+    range_block: Literal["disable", "enable"]
+    strip_x_forwarded_for: Literal["disable", "enable"]
+    post_lang: Literal["jisx0201", "jisx0208", "jisx0212", "gb2312", "ksc5601-ex", "euc-jp", "sjis", "iso2022-jp", "iso2022-jp-1", "iso2022-jp-2", "euc-cn", "ces-gbk", "hz", "ces-big5", "euc-kr", "iso2022-jp-3", "iso8859-1", "tis620", "cp874", "cp1252", "cp1251"]
+    streaming_content_bypass: Literal["enable", "disable"]
+    switching_protocols: Literal["bypass", "block"]
+    unknown_http_version: Literal["reject", "tunnel", "best-effort"]
+    http_0_9: Literal["allow", "block"]
+    tunnel_non_http: Literal["enable", "disable"]
+    h2c: Literal["enable", "disable"]
+    unknown_content_encoding: Literal["block", "inspect", "bypass"]
+    oversize_limit: int
+    uncompressed_oversize_limit: int
+    uncompressed_nest_limit: int
+    stream_based_uncompressed_limit: int
+    scan_bzip2: Literal["enable", "disable"]
+    verify_dns_for_policy_matching: Literal["enable", "disable"]
+    block_page_status_code: int
+    retry_count: int
+    domain_fronting: Literal["allow", "monitor", "block", "strict"]
+    tcp_window_type: Literal["auto-tuning", "system", "static", "dynamic"]
+    tcp_window_minimum: int
+    tcp_window_maximum: int
+    tcp_window_size: int
+    ssl_offloaded: Literal["no", "yes"]
+    address_ip_rating: Literal["enable", "disable"]
+
+
+class ProfileProtocolOptionsFtpObject(FortiObject):
+    """Nested object for ftp field with attribute access."""
+    ports: int | list[int]
+    status: Literal["enable", "disable"]
+    inspect_all: Literal["enable", "disable"]
+    options: Literal["clientcomfort", "oversize", "splice", "bypass-rest-command", "bypass-mode-command"]
+    comfort_interval: int
+    comfort_amount: int
+    oversize_limit: int
+    uncompressed_oversize_limit: int
+    uncompressed_nest_limit: int
+    stream_based_uncompressed_limit: int
+    scan_bzip2: Literal["enable", "disable"]
+    tcp_window_type: Literal["auto-tuning", "system", "static", "dynamic"]
+    tcp_window_minimum: int
+    tcp_window_maximum: int
+    tcp_window_size: int
+    ssl_offloaded: Literal["no", "yes"]
+    explicit_ftp_tls: Literal["enable", "disable"]
+
+
+class ProfileProtocolOptionsImapObject(FortiObject):
+    """Nested object for imap field with attribute access."""
+    ports: int | list[int]
+    status: Literal["enable", "disable"]
+    inspect_all: Literal["enable", "disable"]
+    proxy_after_tcp_handshake: Literal["enable", "disable"]
+    options: Literal["fragmail", "oversize"]
+    oversize_limit: int
+    uncompressed_oversize_limit: int
+    uncompressed_nest_limit: int
+    scan_bzip2: Literal["enable", "disable"]
+    ssl_offloaded: Literal["no", "yes"]
+
+
+class ProfileProtocolOptionsMapiObject(FortiObject):
+    """Nested object for mapi field with attribute access."""
+    ports: int | list[int]
+    status: Literal["enable", "disable"]
+    options: Literal["fragmail", "oversize"]
+    oversize_limit: int
+    uncompressed_oversize_limit: int
+    uncompressed_nest_limit: int
+    scan_bzip2: Literal["enable", "disable"]
+
+
+class ProfileProtocolOptionsPop3Object(FortiObject):
+    """Nested object for pop3 field with attribute access."""
+    ports: int | list[int]
+    status: Literal["enable", "disable"]
+    inspect_all: Literal["enable", "disable"]
+    proxy_after_tcp_handshake: Literal["enable", "disable"]
+    options: Literal["fragmail", "oversize"]
+    oversize_limit: int
+    uncompressed_oversize_limit: int
+    uncompressed_nest_limit: int
+    scan_bzip2: Literal["enable", "disable"]
+    ssl_offloaded: Literal["no", "yes"]
+
+
+class ProfileProtocolOptionsSmtpObject(FortiObject):
+    """Nested object for smtp field with attribute access."""
+    ports: int | list[int]
+    status: Literal["enable", "disable"]
+    inspect_all: Literal["enable", "disable"]
+    proxy_after_tcp_handshake: Literal["enable", "disable"]
+    options: Literal["fragmail", "oversize", "splice"]
+    oversize_limit: int
+    uncompressed_oversize_limit: int
+    uncompressed_nest_limit: int
+    scan_bzip2: Literal["enable", "disable"]
+    server_busy: Literal["enable", "disable"]
+    ssl_offloaded: Literal["no", "yes"]
+
+
+class ProfileProtocolOptionsNntpObject(FortiObject):
+    """Nested object for nntp field with attribute access."""
+    ports: int | list[int]
+    status: Literal["enable", "disable"]
+    inspect_all: Literal["enable", "disable"]
+    proxy_after_tcp_handshake: Literal["enable", "disable"]
+    options: Literal["oversize", "splice"]
+    oversize_limit: int
+    uncompressed_oversize_limit: int
+    uncompressed_nest_limit: int
+    scan_bzip2: Literal["enable", "disable"]
+
+
+class ProfileProtocolOptionsSshObject(FortiObject):
+    """Nested object for ssh field with attribute access."""
+    options: Literal["oversize", "clientcomfort", "servercomfort"]
+    comfort_interval: int
+    comfort_amount: int
+    oversize_limit: int
+    uncompressed_oversize_limit: int
+    uncompressed_nest_limit: int
+    stream_based_uncompressed_limit: int
+    scan_bzip2: Literal["enable", "disable"]
+    tcp_window_type: Literal["auto-tuning", "system", "static", "dynamic"]
+    tcp_window_minimum: int
+    tcp_window_maximum: int
+    tcp_window_size: int
+    ssl_offloaded: Literal["no", "yes"]
+
+
+class ProfileProtocolOptionsDnsObject(FortiObject):
+    """Nested object for dns field with attribute access."""
+    ports: int | list[int]
+    status: Literal["enable", "disable"]
+
+
+class ProfileProtocolOptionsCifsObject(FortiObject):
+    """Nested object for cifs field with attribute access."""
+    ports: int | list[int]
+    status: Literal["enable", "disable"]
+    options: Literal["oversize"]
+    oversize_limit: int
+    uncompressed_oversize_limit: int
+    uncompressed_nest_limit: int
+    scan_bzip2: Literal["enable", "disable"]
+    tcp_window_type: Literal["auto-tuning", "system", "static", "dynamic"]
+    tcp_window_minimum: int
+    tcp_window_maximum: int
+    tcp_window_size: int
+    server_credential_type: Literal["none", "credential-replication", "credential-keytab"]
+    domain_controller: str
+    server_keytab: str | list[str]
+
+
+class ProfileProtocolOptionsMailsignatureObject(FortiObject):
+    """Nested object for mail-signature field with attribute access."""
+    status: Literal["disable", "enable"]
+    signature: str
+
+
 class ProfileProtocolOptionsObject(FortiObject):
     """Typed FortiObject for ProfileProtocolOptions with field access."""
     name: str
@@ -255,17 +426,17 @@ class ProfileProtocolOptionsObject(FortiObject):
     replacemsg_group: str
     oversize_log: Literal["disable", "enable"]
     switching_protocols_log: Literal["disable", "enable"]
-    http: ProfileProtocolOptionsHttpDict
-    ftp: ProfileProtocolOptionsFtpDict
-    imap: ProfileProtocolOptionsImapDict
-    mapi: ProfileProtocolOptionsMapiDict
-    pop3: ProfileProtocolOptionsPop3Dict
-    smtp: ProfileProtocolOptionsSmtpDict
-    nntp: ProfileProtocolOptionsNntpDict
-    ssh: ProfileProtocolOptionsSshDict
-    dns: ProfileProtocolOptionsDnsDict
-    cifs: ProfileProtocolOptionsCifsDict
-    mail_signature: ProfileProtocolOptionsMailsignatureDict
+    http: ProfileProtocolOptionsHttpObject
+    ftp: ProfileProtocolOptionsFtpObject
+    imap: ProfileProtocolOptionsImapObject
+    mapi: ProfileProtocolOptionsMapiObject
+    pop3: ProfileProtocolOptionsPop3Object
+    smtp: ProfileProtocolOptionsSmtpObject
+    nntp: ProfileProtocolOptionsNntpObject
+    ssh: ProfileProtocolOptionsSshObject
+    dns: ProfileProtocolOptionsDnsObject
+    cifs: ProfileProtocolOptionsCifsObject
+    mail_signature: ProfileProtocolOptionsMailsignatureObject
     rpc_over_http: Literal["enable", "disable"]
 
 

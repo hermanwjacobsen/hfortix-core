@@ -279,6 +279,171 @@ class ProfileResponse(TypedDict, total=False):
 # ================================================================
 
 
+class ProfileHttpObject(FortiObject):
+    """Nested object for http field with attribute access."""
+    av_scan: Literal["disable", "block", "monitor"]
+    outbreak_prevention: Literal["disable", "block", "monitor"]
+    external_blocklist: Literal["disable", "block", "monitor"]
+    malware_stream: Literal["disable", "block", "monitor"]
+    fortindr: Literal["disable", "block", "monitor"]
+    fortisandbox: Literal["disable", "block", "monitor"]
+    quarantine: Literal["disable", "enable"]
+    archive_block: Literal["encrypted", "corrupted", "partiallycorrupted", "multipart", "nested", "mailbomb", "timeout", "unhandled"]
+    archive_log: Literal["encrypted", "corrupted", "partiallycorrupted", "multipart", "nested", "mailbomb", "timeout", "unhandled"]
+    emulator: Literal["enable", "disable"]
+    content_disarm: Literal["disable", "enable"]
+
+
+class ProfileFtpObject(FortiObject):
+    """Nested object for ftp field with attribute access."""
+    av_scan: Literal["disable", "block", "monitor"]
+    outbreak_prevention: Literal["disable", "block", "monitor"]
+    external_blocklist: Literal["disable", "block", "monitor"]
+    malware_stream: Literal["disable", "block", "monitor"]
+    fortindr: Literal["disable", "block", "monitor"]
+    fortisandbox: Literal["disable", "block", "monitor"]
+    quarantine: Literal["disable", "enable"]
+    archive_block: Literal["encrypted", "corrupted", "partiallycorrupted", "multipart", "nested", "mailbomb", "timeout", "unhandled"]
+    archive_log: Literal["encrypted", "corrupted", "partiallycorrupted", "multipart", "nested", "mailbomb", "timeout", "unhandled"]
+    emulator: Literal["enable", "disable"]
+
+
+class ProfileImapObject(FortiObject):
+    """Nested object for imap field with attribute access."""
+    av_scan: Literal["disable", "block", "monitor"]
+    outbreak_prevention: Literal["disable", "block", "monitor"]
+    external_blocklist: Literal["disable", "block", "monitor"]
+    malware_stream: Literal["disable", "block", "monitor"]
+    fortindr: Literal["disable", "block", "monitor"]
+    fortisandbox: Literal["disable", "block", "monitor"]
+    quarantine: Literal["disable", "enable"]
+    archive_block: Literal["encrypted", "corrupted", "partiallycorrupted", "multipart", "nested", "mailbomb", "timeout", "unhandled"]
+    archive_log: Literal["encrypted", "corrupted", "partiallycorrupted", "multipart", "nested", "mailbomb", "timeout", "unhandled"]
+    emulator: Literal["enable", "disable"]
+    executables: Literal["default", "virus"]
+    content_disarm: Literal["disable", "enable"]
+
+
+class ProfilePop3Object(FortiObject):
+    """Nested object for pop3 field with attribute access."""
+    av_scan: Literal["disable", "block", "monitor"]
+    outbreak_prevention: Literal["disable", "block", "monitor"]
+    external_blocklist: Literal["disable", "block", "monitor"]
+    malware_stream: Literal["disable", "block", "monitor"]
+    fortindr: Literal["disable", "block", "monitor"]
+    fortisandbox: Literal["disable", "block", "monitor"]
+    quarantine: Literal["disable", "enable"]
+    archive_block: Literal["encrypted", "corrupted", "partiallycorrupted", "multipart", "nested", "mailbomb", "timeout", "unhandled"]
+    archive_log: Literal["encrypted", "corrupted", "partiallycorrupted", "multipart", "nested", "mailbomb", "timeout", "unhandled"]
+    emulator: Literal["enable", "disable"]
+    executables: Literal["default", "virus"]
+    content_disarm: Literal["disable", "enable"]
+
+
+class ProfileSmtpObject(FortiObject):
+    """Nested object for smtp field with attribute access."""
+    av_scan: Literal["disable", "block", "monitor"]
+    outbreak_prevention: Literal["disable", "block", "monitor"]
+    external_blocklist: Literal["disable", "block", "monitor"]
+    malware_stream: Literal["disable", "block", "monitor"]
+    fortindr: Literal["disable", "block", "monitor"]
+    fortisandbox: Literal["disable", "block", "monitor"]
+    quarantine: Literal["disable", "enable"]
+    archive_block: Literal["encrypted", "corrupted", "partiallycorrupted", "multipart", "nested", "mailbomb", "timeout", "unhandled"]
+    archive_log: Literal["encrypted", "corrupted", "partiallycorrupted", "multipart", "nested", "mailbomb", "timeout", "unhandled"]
+    emulator: Literal["enable", "disable"]
+    executables: Literal["default", "virus"]
+    content_disarm: Literal["disable", "enable"]
+
+
+class ProfileMapiObject(FortiObject):
+    """Nested object for mapi field with attribute access."""
+    av_scan: Literal["disable", "block", "monitor"]
+    outbreak_prevention: Literal["disable", "block", "monitor"]
+    external_blocklist: Literal["disable", "block", "monitor"]
+    malware_stream: Literal["disable", "block", "monitor"]
+    fortindr: Literal["disable", "block", "monitor"]
+    fortisandbox: Literal["disable", "block", "monitor"]
+    quarantine: Literal["disable", "enable"]
+    archive_block: Literal["encrypted", "corrupted", "partiallycorrupted", "multipart", "nested", "mailbomb", "timeout", "unhandled"]
+    archive_log: Literal["encrypted", "corrupted", "partiallycorrupted", "multipart", "nested", "mailbomb", "timeout", "unhandled"]
+    emulator: Literal["enable", "disable"]
+    executables: Literal["default", "virus"]
+
+
+class ProfileNntpObject(FortiObject):
+    """Nested object for nntp field with attribute access."""
+    av_scan: Literal["disable", "block", "monitor"]
+    outbreak_prevention: Literal["disable", "block", "monitor"]
+    external_blocklist: Literal["disable", "block", "monitor"]
+    malware_stream: Literal["disable", "block", "monitor"]
+    fortindr: Literal["disable", "block", "monitor"]
+    fortisandbox: Literal["disable", "block", "monitor"]
+    quarantine: Literal["disable", "enable"]
+    archive_block: Literal["encrypted", "corrupted", "partiallycorrupted", "multipart", "nested", "mailbomb", "timeout", "unhandled"]
+    archive_log: Literal["encrypted", "corrupted", "partiallycorrupted", "multipart", "nested", "mailbomb", "timeout", "unhandled"]
+    emulator: Literal["enable", "disable"]
+
+
+class ProfileCifsObject(FortiObject):
+    """Nested object for cifs field with attribute access."""
+    av_scan: Literal["disable", "block", "monitor"]
+    outbreak_prevention: Literal["disable", "block", "monitor"]
+    external_blocklist: Literal["disable", "block", "monitor"]
+    malware_stream: Literal["disable", "block", "monitor"]
+    fortindr: Literal["disable", "block", "monitor"]
+    fortisandbox: Literal["disable", "block", "monitor"]
+    quarantine: Literal["disable", "enable"]
+    archive_block: Literal["encrypted", "corrupted", "partiallycorrupted", "multipart", "nested", "mailbomb", "timeout", "unhandled"]
+    archive_log: Literal["encrypted", "corrupted", "partiallycorrupted", "multipart", "nested", "mailbomb", "timeout", "unhandled"]
+    emulator: Literal["enable", "disable"]
+
+
+class ProfileSshObject(FortiObject):
+    """Nested object for ssh field with attribute access."""
+    av_scan: Literal["disable", "block", "monitor"]
+    outbreak_prevention: Literal["disable", "block", "monitor"]
+    external_blocklist: Literal["disable", "block", "monitor"]
+    malware_stream: Literal["disable", "block", "monitor"]
+    fortindr: Literal["disable", "block", "monitor"]
+    fortisandbox: Literal["disable", "block", "monitor"]
+    quarantine: Literal["disable", "enable"]
+    archive_block: Literal["encrypted", "corrupted", "partiallycorrupted", "multipart", "nested", "mailbomb", "timeout", "unhandled"]
+    archive_log: Literal["encrypted", "corrupted", "partiallycorrupted", "multipart", "nested", "mailbomb", "timeout", "unhandled"]
+    emulator: Literal["enable", "disable"]
+
+
+class ProfileNacquarObject(FortiObject):
+    """Nested object for nac-quar field with attribute access."""
+    infected: Literal["none", "quar-src-ip"]
+    expiry: str
+    log: Literal["enable", "disable"]
+
+
+class ProfileContentdisarmObject(FortiObject):
+    """Nested object for content-disarm field with attribute access."""
+    analytics_suspicious: Literal["disable", "enable"]
+    original_file_destination: Literal["fortisandbox", "quarantine", "discard"]
+    error_action: Literal["block", "log-only", "ignore"]
+    office_macro: Literal["disable", "enable"]
+    office_hylink: Literal["disable", "enable"]
+    office_linked: Literal["disable", "enable"]
+    office_embed: Literal["disable", "enable"]
+    office_dde: Literal["disable", "enable"]
+    office_action: Literal["disable", "enable"]
+    pdf_javacode: Literal["disable", "enable"]
+    pdf_embedfile: Literal["disable", "enable"]
+    pdf_hyperlink: Literal["disable", "enable"]
+    pdf_act_gotor: Literal["disable", "enable"]
+    pdf_act_launch: Literal["disable", "enable"]
+    pdf_act_sound: Literal["disable", "enable"]
+    pdf_act_movie: Literal["disable", "enable"]
+    pdf_act_java: Literal["disable", "enable"]
+    pdf_act_form: Literal["disable", "enable"]
+    cover_page: Literal["disable", "enable"]
+    detect_only: Literal["disable", "enable"]
+
+
 class ProfileObject(FortiObject):
     """Typed FortiObject for Profile with field access."""
     name: str
@@ -291,17 +456,17 @@ class ProfileObject(FortiObject):
     analytics_accept_filetype: int
     analytics_db: Literal["disable", "enable"]
     mobile_malware_db: Literal["disable", "enable"]
-    http: ProfileHttpDict
-    ftp: ProfileFtpDict
-    imap: ProfileImapDict
-    pop3: ProfilePop3Dict
-    smtp: ProfileSmtpDict
-    mapi: ProfileMapiDict
-    nntp: ProfileNntpDict
-    cifs: ProfileCifsDict
-    ssh: ProfileSshDict
-    nac_quar: ProfileNacquarDict
-    content_disarm: ProfileContentdisarmDict
+    http: ProfileHttpObject
+    ftp: ProfileFtpObject
+    imap: ProfileImapObject
+    pop3: ProfilePop3Object
+    smtp: ProfileSmtpObject
+    mapi: ProfileMapiObject
+    nntp: ProfileNntpObject
+    cifs: ProfileCifsObject
+    ssh: ProfileSshObject
+    nac_quar: ProfileNacquarObject
+    content_disarm: ProfileContentdisarmObject
     outbreak_prevention_archive_scan: Literal["disable", "enable"]
     external_blocklist_enable_all: Literal["disable", "enable"]
     external_blocklist: list[ProfileExternalblocklistItem]

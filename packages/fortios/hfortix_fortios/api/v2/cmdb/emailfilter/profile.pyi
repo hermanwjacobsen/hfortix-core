@@ -141,6 +141,58 @@ class ProfileResponse(TypedDict, total=False):
 # ================================================================
 
 
+class ProfileImapObject(FortiObject):
+    """Nested object for imap field with attribute access."""
+    log_all: Literal["disable", "enable"]
+    action: Literal["pass", "tag"]
+    tag_type: Literal["subject", "header", "spaminfo"]
+    tag_msg: str
+
+
+class ProfilePop3Object(FortiObject):
+    """Nested object for pop3 field with attribute access."""
+    log_all: Literal["disable", "enable"]
+    action: Literal["pass", "tag"]
+    tag_type: Literal["subject", "header", "spaminfo"]
+    tag_msg: str
+
+
+class ProfileSmtpObject(FortiObject):
+    """Nested object for smtp field with attribute access."""
+    log_all: Literal["disable", "enable"]
+    action: Literal["pass", "tag", "discard"]
+    tag_type: Literal["subject", "header", "spaminfo"]
+    tag_msg: str
+    hdrip: Literal["disable", "enable"]
+    local_override: Literal["disable", "enable"]
+
+
+class ProfileMapiObject(FortiObject):
+    """Nested object for mapi field with attribute access."""
+    log_all: Literal["disable", "enable"]
+    action: Literal["pass", "discard"]
+
+
+class ProfileMsnhotmailObject(FortiObject):
+    """Nested object for msn-hotmail field with attribute access."""
+    log_all: Literal["disable", "enable"]
+
+
+class ProfileYahoomailObject(FortiObject):
+    """Nested object for yahoo-mail field with attribute access."""
+    log_all: Literal["disable", "enable"]
+
+
+class ProfileGmailObject(FortiObject):
+    """Nested object for gmail field with attribute access."""
+    log_all: Literal["disable", "enable"]
+
+
+class ProfileOtherwebmailsObject(FortiObject):
+    """Nested object for other-webmails field with attribute access."""
+    log_all: Literal["disable", "enable"]
+
+
 class ProfileObject(FortiObject):
     """Typed FortiObject for Profile with field access."""
     name: str
@@ -152,14 +204,14 @@ class ProfileObject(FortiObject):
     spam_filtering: Literal["enable", "disable"]
     external: Literal["enable", "disable"]
     options: str
-    imap: ProfileImapDict
-    pop3: ProfilePop3Dict
-    smtp: ProfileSmtpDict
-    mapi: ProfileMapiDict
-    msn_hotmail: ProfileMsnhotmailDict
-    yahoo_mail: ProfileYahoomailDict
-    gmail: ProfileGmailDict
-    other_webmails: ProfileOtherwebmailsDict
+    imap: ProfileImapObject
+    pop3: ProfilePop3Object
+    smtp: ProfileSmtpObject
+    mapi: ProfileMapiObject
+    msn_hotmail: ProfileMsnhotmailObject
+    yahoo_mail: ProfileYahoomailObject
+    gmail: ProfileGmailObject
+    other_webmails: ProfileOtherwebmailsObject
     spam_bword_threshold: int
     spam_bword_table: int
     spam_bal_table: int

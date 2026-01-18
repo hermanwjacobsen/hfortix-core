@@ -267,6 +267,18 @@ class Vip6Response(TypedDict, total=False):
 # ================================================================
 
 
+class Vip6QuicObject(FortiObject):
+    """Nested object for quic field with attribute access."""
+    max_idle_timeout: int
+    max_udp_payload_size: int
+    active_connection_id_limit: int
+    ack_delay_exponent: int
+    max_ack_delay: int
+    max_datagram_frame_size: int
+    active_migration: Literal["enable", "disable"]
+    grease_quic_bit: Literal["enable", "disable"]
+
+
 class Vip6Object(FortiObject):
     """Typed FortiObject for Vip6 with field access."""
     name: str
@@ -291,7 +303,7 @@ class Vip6Object(FortiObject):
     persistence: Literal["none", "http-cookie", "ssl-session-id"]
     h2_support: Literal["enable", "disable"]
     h3_support: Literal["enable", "disable"]
-    quic: Vip6QuicDict
+    quic: Vip6QuicObject
     nat66: Literal["disable", "enable"]
     nat64: Literal["disable", "enable"]
     add_nat64_route: Literal["disable", "enable"]

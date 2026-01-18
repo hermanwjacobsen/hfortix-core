@@ -83,6 +83,15 @@ class GlobalResponse(TypedDict, total=False):
 # ================================================================
 
 
+class GlobalTlsactiveprobeObject(FortiObject):
+    """Nested object for tls-active-probe field with attribute access."""
+    interface_select_method: Literal["auto", "sdwan", "specify"]
+    interface: str
+    vdom: str
+    source_ip: str
+    source_ip6: str
+
+
 class GlobalObject(FortiObject):
     """Typed FortiObject for Global with field access."""
     fail_open: Literal["enable", "disable"]
@@ -100,7 +109,7 @@ class GlobalObject(FortiObject):
     ngfw_max_scan_range: int
     av_mem_limit: int
     machine_learning_detection: Literal["enable", "disable"]
-    tls_active_probe: GlobalTlsactiveprobeDict
+    tls_active_probe: GlobalTlsactiveprobeObject
 
 
 # ================================================================

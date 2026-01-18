@@ -325,6 +325,18 @@ class VipResponse(TypedDict, total=False):
 # ================================================================
 
 
+class VipQuicObject(FortiObject):
+    """Nested object for quic field with attribute access."""
+    max_idle_timeout: int
+    max_udp_payload_size: int
+    active_connection_id_limit: int
+    ack_delay_exponent: int
+    max_ack_delay: int
+    max_datagram_frame_size: int
+    active_migration: Literal["enable", "disable"]
+    grease_quic_bit: Literal["enable", "disable"]
+
+
 class VipObject(FortiObject):
     """Typed FortiObject for Vip with field access."""
     name: str
@@ -342,7 +354,7 @@ class VipObject(FortiObject):
     extaddr: list[VipExtaddrItem]
     h2_support: Literal["enable", "disable"]
     h3_support: Literal["enable", "disable"]
-    quic: VipQuicDict
+    quic: VipQuicObject
     nat44: Literal["disable", "enable"]
     nat46: Literal["disable", "enable"]
     add_nat46_route: Literal["disable", "enable"]

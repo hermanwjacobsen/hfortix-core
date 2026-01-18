@@ -159,6 +159,64 @@ class AccprofileResponse(TypedDict, total=False):
 # ================================================================
 
 
+class AccprofileNetgrppermissionObject(FortiObject):
+    """Nested object for netgrp-permission field with attribute access."""
+    cfg: Literal["none", "read", "read-write"]
+    packet_capture: Literal["none", "read", "read-write"]
+    route_cfg: Literal["none", "read", "read-write"]
+
+
+class AccprofileSysgrppermissionObject(FortiObject):
+    """Nested object for sysgrp-permission field with attribute access."""
+    admin: Literal["none", "read", "read-write"]
+    upd: Literal["none", "read", "read-write"]
+    cfg: Literal["none", "read", "read-write"]
+    mnt: Literal["none", "read", "read-write"]
+
+
+class AccprofileFwgrppermissionObject(FortiObject):
+    """Nested object for fwgrp-permission field with attribute access."""
+    policy: Literal["none", "read", "read-write"]
+    address: Literal["none", "read", "read-write"]
+    service: Literal["none", "read", "read-write"]
+    schedule: Literal["none", "read", "read-write"]
+    others: Literal["none", "read", "read-write"]
+
+
+class AccprofileLoggrppermissionObject(FortiObject):
+    """Nested object for loggrp-permission field with attribute access."""
+    config: Literal["none", "read", "read-write"]
+    data_access: Literal["none", "read", "read-write"]
+    report_access: Literal["none", "read", "read-write"]
+    threat_weight: Literal["none", "read", "read-write"]
+
+
+class AccprofileUtmgrppermissionObject(FortiObject):
+    """Nested object for utmgrp-permission field with attribute access."""
+    antivirus: Literal["none", "read", "read-write"]
+    ips: Literal["none", "read", "read-write"]
+    webfilter: Literal["none", "read", "read-write"]
+    emailfilter: Literal["none", "read", "read-write"]
+    dlp: Literal["none", "read", "read-write"]
+    file_filter: Literal["none", "read", "read-write"]
+    application_control: Literal["none", "read", "read-write"]
+    icap: Literal["none", "read", "read-write"]
+    voip: Literal["none", "read", "read-write"]
+    waf: Literal["none", "read", "read-write"]
+    dnsfilter: Literal["none", "read", "read-write"]
+    endpoint_control: Literal["none", "read", "read-write"]
+    videofilter: Literal["none", "read", "read-write"]
+    virtual_patch: Literal["none", "read", "read-write"]
+    casb: Literal["none", "read", "read-write"]
+    telemetry: Literal["none", "read", "read-write"]
+
+
+class AccprofileSecfabgrppermissionObject(FortiObject):
+    """Nested object for secfabgrp-permission field with attribute access."""
+    csfsys: Literal["none", "read", "read-write"]
+    csffoo: Literal["none", "read", "read-write"]
+
+
 class AccprofileObject(FortiObject):
     """Typed FortiObject for Accprofile with field access."""
     name: str
@@ -175,12 +233,12 @@ class AccprofileObject(FortiObject):
     utmgrp: Literal["none", "read", "read-write", "custom"]
     wanoptgrp: Literal["none", "read", "read-write"]
     wifi: Literal["none", "read", "read-write"]
-    netgrp_permission: AccprofileNetgrppermissionDict
-    sysgrp_permission: AccprofileSysgrppermissionDict
-    fwgrp_permission: AccprofileFwgrppermissionDict
-    loggrp_permission: AccprofileLoggrppermissionDict
-    utmgrp_permission: AccprofileUtmgrppermissionDict
-    secfabgrp_permission: AccprofileSecfabgrppermissionDict
+    netgrp_permission: AccprofileNetgrppermissionObject
+    sysgrp_permission: AccprofileSysgrppermissionObject
+    fwgrp_permission: AccprofileFwgrppermissionObject
+    loggrp_permission: AccprofileLoggrppermissionObject
+    utmgrp_permission: AccprofileUtmgrppermissionObject
+    secfabgrp_permission: AccprofileSecfabgrppermissionObject
     admintimeout_override: Literal["enable", "disable"]
     admintimeout: int
     cli_diagnose: Literal["enable", "disable"]

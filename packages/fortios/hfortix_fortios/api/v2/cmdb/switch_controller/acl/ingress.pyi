@@ -66,12 +66,27 @@ class IngressResponse(TypedDict, total=False):
 # ================================================================
 
 
+class IngressActionObject(FortiObject):
+    """Nested object for action field with attribute access."""
+    drop: Literal["enable", "disable"]
+    count: Literal["enable", "disable"]
+
+
+class IngressClassifierObject(FortiObject):
+    """Nested object for classifier field with attribute access."""
+    dst_ip_prefix: str
+    dst_mac: str
+    src_ip_prefix: str
+    src_mac: str
+    vlan: int
+
+
 class IngressObject(FortiObject):
     """Typed FortiObject for Ingress with field access."""
     id: int
     description: str
-    action: IngressActionDict
-    classifier: IngressClassifierDict
+    action: IngressActionObject
+    classifier: IngressClassifierObject
 
 
 # ================================================================

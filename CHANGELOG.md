@@ -7,6 +7,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.5.107] - 2026-01-18
+
+### Fixed
+
+- **Type Stubs: Nested object fields now support attribute access**: Changed nested complex field types (like `ipv6`, `http`, `smtp`, etc.) from `TypedDict` to `FortiObject` subclasses in .pyi stub files. This enables full attribute access with autocomplete for nested configuration objects:
+  - **Before**: `intf.ipv6["ip6_address"]` (dict access only, no autocomplete)
+  - **After**: `intf.ipv6.ip6_address` (attribute access with full IDE autocomplete!)
+  - IDE now provides autocomplete, type validation, and Literal value checking for all nested object fields
+  - Affects fields like: `ipv6` in system/interface, `http`/`ftp`/`smtp` in profile-protocol-options, and many others
+- **Example**: `intf.ipv6.ip6_mode` now shows autocomplete for Literal values: "static", "dhcp", "pppoe", "delegated"
+
 ## [0.5.106] - 2026-01-18
 
 ### Fixed
