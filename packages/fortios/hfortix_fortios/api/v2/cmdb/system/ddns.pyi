@@ -26,13 +26,13 @@ from hfortix_fortios.models import (
 # TypedDict Payloads
 # ================================================================
 
-class DdnsDdnsserveraddrItem:
-    """Nested item for ddns-server-addr field - supports attribute access."""
+class DdnsDdnsserveraddrItem(TypedDict, total=False):
+    """Nested item for ddns-server-addr field."""
     addr: str
 
 
-class DdnsMonitorinterfaceItem:
-    """Nested item for monitor-interface field - supports attribute access."""
+class DdnsMonitorinterfaceItem(TypedDict, total=False):
+    """Nested item for monitor-interface field."""
     interface_name: str
 
 
@@ -42,7 +42,7 @@ class DdnsPayload(TypedDict, total=False):
     ddns_server: Literal["dyndns.org", "dyns.net", "tzo.com", "vavic.com", "dipdns.net", "now.net.cn", "dhs.org", "easydns.com", "genericDDNS", "FortiGuardDDNS", "noip.com"]
     addr_type: Literal["ipv4", "ipv6"]
     server_type: Literal["ipv4", "ipv6"]
-    ddns_server_addr: str | list[str] | list[dict[str, Any]] | list[DdnsDdnsserveraddrItem]
+    ddns_server_addr: str | list[str] | list[DdnsDdnsserveraddrItem]
     ddns_zone: str
     ddns_ttl: int
     ddns_auth: Literal["disable", "tsig"]
@@ -57,7 +57,7 @@ class DdnsPayload(TypedDict, total=False):
     clear_text: Literal["disable", "enable"]
     ssl_certificate: str
     bound_ip: str
-    monitor_interface: str | list[str] | list[dict[str, Any]] | list[DdnsMonitorinterfaceItem]
+    monitor_interface: str | list[str] | list[DdnsMonitorinterfaceItem]
 
 
 # ================================================================
@@ -194,7 +194,7 @@ class Ddns:
         ddns_server: Literal["dyndns.org", "dyns.net", "tzo.com", "vavic.com", "dipdns.net", "now.net.cn", "dhs.org", "easydns.com", "genericDDNS", "FortiGuardDDNS", "noip.com"] | None = ...,
         addr_type: Literal["ipv4", "ipv6"] | None = ...,
         server_type: Literal["ipv4", "ipv6"] | None = ...,
-        ddns_server_addr: str | list[str] | list[dict[str, Any]] | list[DdnsDdnsserveraddrItem] | None = ...,
+        ddns_server_addr: str | list[str] | list[DdnsDdnsserveraddrItem] | None = ...,
         ddns_zone: str | None = ...,
         ddns_ttl: int | None = ...,
         ddns_auth: Literal["disable", "tsig"] | None = ...,
@@ -209,7 +209,7 @@ class Ddns:
         clear_text: Literal["disable", "enable"] | None = ...,
         ssl_certificate: str | None = ...,
         bound_ip: str | None = ...,
-        monitor_interface: str | list[str] | list[dict[str, Any]] | list[DdnsMonitorinterfaceItem] | None = ...,
+        monitor_interface: str | list[str] | list[DdnsMonitorinterfaceItem] | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> DdnsObject: ...
@@ -225,7 +225,7 @@ class Ddns:
         ddns_server: Literal["dyndns.org", "dyns.net", "tzo.com", "vavic.com", "dipdns.net", "now.net.cn", "dhs.org", "easydns.com", "genericDDNS", "FortiGuardDDNS", "noip.com"] | None = ...,
         addr_type: Literal["ipv4", "ipv6"] | None = ...,
         server_type: Literal["ipv4", "ipv6"] | None = ...,
-        ddns_server_addr: str | list[str] | list[dict[str, Any]] | list[DdnsDdnsserveraddrItem] | None = ...,
+        ddns_server_addr: str | list[str] | list[DdnsDdnsserveraddrItem] | None = ...,
         ddns_zone: str | None = ...,
         ddns_ttl: int | None = ...,
         ddns_auth: Literal["disable", "tsig"] | None = ...,
@@ -240,7 +240,7 @@ class Ddns:
         clear_text: Literal["disable", "enable"] | None = ...,
         ssl_certificate: str | None = ...,
         bound_ip: str | None = ...,
-        monitor_interface: str | list[str] | list[dict[str, Any]] | list[DdnsMonitorinterfaceItem] | None = ...,
+        monitor_interface: str | list[str] | list[DdnsMonitorinterfaceItem] | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> DdnsObject: ...
@@ -272,7 +272,7 @@ class Ddns:
         ddns_server: Literal["dyndns.org", "dyns.net", "tzo.com", "vavic.com", "dipdns.net", "now.net.cn", "dhs.org", "easydns.com", "genericDDNS", "FortiGuardDDNS", "noip.com"] | None = ...,
         addr_type: Literal["ipv4", "ipv6"] | None = ...,
         server_type: Literal["ipv4", "ipv6"] | None = ...,
-        ddns_server_addr: str | list[str] | list[dict[str, Any]] | list[DdnsDdnsserveraddrItem] | None = ...,
+        ddns_server_addr: str | list[str] | list[DdnsDdnsserveraddrItem] | None = ...,
         ddns_zone: str | None = ...,
         ddns_ttl: int | None = ...,
         ddns_auth: Literal["disable", "tsig"] | None = ...,
@@ -287,7 +287,7 @@ class Ddns:
         clear_text: Literal["disable", "enable"] | None = ...,
         ssl_certificate: str | None = ...,
         bound_ip: str | None = ...,
-        monitor_interface: str | list[str] | list[dict[str, Any]] | list[DdnsMonitorinterfaceItem] | None = ...,
+        monitor_interface: str | list[str] | list[DdnsMonitorinterfaceItem] | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> FortiObject: ...

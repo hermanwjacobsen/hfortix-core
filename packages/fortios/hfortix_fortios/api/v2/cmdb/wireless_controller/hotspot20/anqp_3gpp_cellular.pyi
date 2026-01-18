@@ -26,8 +26,8 @@ from hfortix_fortios.models import (
 # TypedDict Payloads
 # ================================================================
 
-class Anqp3gppCellularMccmnclistItem:
-    """Nested item for mcc-mnc-list field - supports attribute access."""
+class Anqp3gppCellularMccmnclistItem(TypedDict, total=False):
+    """Nested item for mcc-mnc-list field."""
     id: int
     mcc: str
     mnc: str
@@ -36,7 +36,7 @@ class Anqp3gppCellularMccmnclistItem:
 class Anqp3gppCellularPayload(TypedDict, total=False):
     """Payload type for Anqp3gppCellular operations."""
     name: str
-    mcc_mnc_list: str | list[str] | list[dict[str, Any]] | list[Anqp3gppCellularMccmnclistItem]
+    mcc_mnc_list: str | list[str] | list[Anqp3gppCellularMccmnclistItem]
 
 
 # ================================================================
@@ -137,7 +137,7 @@ class Anqp3gppCellular:
         self,
         payload_dict: Anqp3gppCellularPayload | None = ...,
         name: str | None = ...,
-        mcc_mnc_list: str | list[str] | list[dict[str, Any]] | list[Anqp3gppCellularMccmnclistItem] | None = ...,
+        mcc_mnc_list: str | list[str] | list[Anqp3gppCellularMccmnclistItem] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -151,7 +151,7 @@ class Anqp3gppCellular:
         self,
         payload_dict: Anqp3gppCellularPayload | None = ...,
         name: str | None = ...,
-        mcc_mnc_list: str | list[str] | list[dict[str, Any]] | list[Anqp3gppCellularMccmnclistItem] | None = ...,
+        mcc_mnc_list: str | list[str] | list[Anqp3gppCellularMccmnclistItem] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -183,7 +183,7 @@ class Anqp3gppCellular:
         self,
         payload_dict: Anqp3gppCellularPayload | None = ...,
         name: str | None = ...,
-        mcc_mnc_list: str | list[str] | list[dict[str, Any]] | list[Anqp3gppCellularMccmnclistItem] | None = ...,
+        mcc_mnc_list: str | list[str] | list[Anqp3gppCellularMccmnclistItem] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,

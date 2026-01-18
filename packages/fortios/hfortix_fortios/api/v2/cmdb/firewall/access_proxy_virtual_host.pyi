@@ -26,15 +26,15 @@ from hfortix_fortios.models import (
 # TypedDict Payloads
 # ================================================================
 
-class AccessProxyVirtualHostSslcertificateItem:
-    """Nested item for ssl-certificate field - supports attribute access."""
+class AccessProxyVirtualHostSslcertificateItem(TypedDict, total=False):
+    """Nested item for ssl-certificate field."""
     name: str
 
 
 class AccessProxyVirtualHostPayload(TypedDict, total=False):
     """Payload type for AccessProxyVirtualHost operations."""
     name: str
-    ssl_certificate: str | list[str] | list[dict[str, Any]] | list[AccessProxyVirtualHostSslcertificateItem]
+    ssl_certificate: str | list[str] | list[AccessProxyVirtualHostSslcertificateItem]
     host: str
     host_type: Literal["sub-string", "wildcard"]
     replacemsg_group: str
@@ -153,7 +153,7 @@ class AccessProxyVirtualHost:
         self,
         payload_dict: AccessProxyVirtualHostPayload | None = ...,
         name: str | None = ...,
-        ssl_certificate: str | list[str] | list[dict[str, Any]] | list[AccessProxyVirtualHostSslcertificateItem] | None = ...,
+        ssl_certificate: str | list[str] | list[AccessProxyVirtualHostSslcertificateItem] | None = ...,
         host: str | None = ...,
         host_type: Literal["sub-string", "wildcard"] | None = ...,
         replacemsg_group: str | None = ...,
@@ -173,7 +173,7 @@ class AccessProxyVirtualHost:
         self,
         payload_dict: AccessProxyVirtualHostPayload | None = ...,
         name: str | None = ...,
-        ssl_certificate: str | list[str] | list[dict[str, Any]] | list[AccessProxyVirtualHostSslcertificateItem] | None = ...,
+        ssl_certificate: str | list[str] | list[AccessProxyVirtualHostSslcertificateItem] | None = ...,
         host: str | None = ...,
         host_type: Literal["sub-string", "wildcard"] | None = ...,
         replacemsg_group: str | None = ...,
@@ -211,7 +211,7 @@ class AccessProxyVirtualHost:
         self,
         payload_dict: AccessProxyVirtualHostPayload | None = ...,
         name: str | None = ...,
-        ssl_certificate: str | list[str] | list[dict[str, Any]] | list[AccessProxyVirtualHostSslcertificateItem] | None = ...,
+        ssl_certificate: str | list[str] | list[AccessProxyVirtualHostSslcertificateItem] | None = ...,
         host: str | None = ...,
         host_type: Literal["sub-string", "wildcard"] | None = ...,
         replacemsg_group: str | None = ...,

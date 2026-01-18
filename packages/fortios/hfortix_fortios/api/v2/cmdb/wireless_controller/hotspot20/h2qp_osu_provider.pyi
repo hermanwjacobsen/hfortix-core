@@ -26,15 +26,15 @@ from hfortix_fortios.models import (
 # TypedDict Payloads
 # ================================================================
 
-class H2qpOsuProviderFriendlynameItem:
-    """Nested item for friendly-name field - supports attribute access."""
+class H2qpOsuProviderFriendlynameItem(TypedDict, total=False):
+    """Nested item for friendly-name field."""
     index: int
     lang: str
     friendly_name: str
 
 
-class H2qpOsuProviderServicedescriptionItem:
-    """Nested item for service-description field - supports attribute access."""
+class H2qpOsuProviderServicedescriptionItem(TypedDict, total=False):
+    """Nested item for service-description field."""
     service_id: int
     lang: str
     service_description: str
@@ -43,11 +43,11 @@ class H2qpOsuProviderServicedescriptionItem:
 class H2qpOsuProviderPayload(TypedDict, total=False):
     """Payload type for H2qpOsuProvider operations."""
     name: str
-    friendly_name: str | list[str] | list[dict[str, Any]] | list[H2qpOsuProviderFriendlynameItem]
+    friendly_name: str | list[str] | list[H2qpOsuProviderFriendlynameItem]
     server_uri: str
     osu_method: str | list[str]
     osu_nai: str
-    service_description: str | list[str] | list[dict[str, Any]] | list[H2qpOsuProviderServicedescriptionItem]
+    service_description: str | list[str] | list[H2qpOsuProviderServicedescriptionItem]
     icon: str
 
 
@@ -159,11 +159,11 @@ class H2qpOsuProvider:
         self,
         payload_dict: H2qpOsuProviderPayload | None = ...,
         name: str | None = ...,
-        friendly_name: str | list[str] | list[dict[str, Any]] | list[H2qpOsuProviderFriendlynameItem] | None = ...,
+        friendly_name: str | list[str] | list[H2qpOsuProviderFriendlynameItem] | None = ...,
         server_uri: str | None = ...,
         osu_method: str | list[str] | None = ...,
         osu_nai: str | None = ...,
-        service_description: str | list[str] | list[dict[str, Any]] | list[H2qpOsuProviderServicedescriptionItem] | None = ...,
+        service_description: str | list[str] | list[H2qpOsuProviderServicedescriptionItem] | None = ...,
         icon: str | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
@@ -178,11 +178,11 @@ class H2qpOsuProvider:
         self,
         payload_dict: H2qpOsuProviderPayload | None = ...,
         name: str | None = ...,
-        friendly_name: str | list[str] | list[dict[str, Any]] | list[H2qpOsuProviderFriendlynameItem] | None = ...,
+        friendly_name: str | list[str] | list[H2qpOsuProviderFriendlynameItem] | None = ...,
         server_uri: str | None = ...,
         osu_method: str | list[str] | None = ...,
         osu_nai: str | None = ...,
-        service_description: str | list[str] | list[dict[str, Any]] | list[H2qpOsuProviderServicedescriptionItem] | None = ...,
+        service_description: str | list[str] | list[H2qpOsuProviderServicedescriptionItem] | None = ...,
         icon: str | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
@@ -215,11 +215,11 @@ class H2qpOsuProvider:
         self,
         payload_dict: H2qpOsuProviderPayload | None = ...,
         name: str | None = ...,
-        friendly_name: str | list[str] | list[dict[str, Any]] | list[H2qpOsuProviderFriendlynameItem] | None = ...,
+        friendly_name: str | list[str] | list[H2qpOsuProviderFriendlynameItem] | None = ...,
         server_uri: str | None = ...,
         osu_method: Literal["oma-dm", "soap-xml-spp", "reserved"] | list[str] | None = ...,
         osu_nai: str | None = ...,
-        service_description: str | list[str] | list[dict[str, Any]] | list[H2qpOsuProviderServicedescriptionItem] | None = ...,
+        service_description: str | list[str] | list[H2qpOsuProviderServicedescriptionItem] | None = ...,
         icon: str | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,

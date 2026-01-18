@@ -26,8 +26,8 @@ from hfortix_fortios.models import (
 # TypedDict Payloads
 # ================================================================
 
-class StaticSdwanzoneItem:
-    """Nested item for sdwan-zone field - supports attribute access."""
+class StaticSdwanzoneItem(TypedDict, total=False):
+    """Nested item for sdwan-zone field."""
     name: str
 
 
@@ -46,7 +46,7 @@ class StaticPayload(TypedDict, total=False):
     comment: str
     blackhole: Literal["enable", "disable"]
     dynamic_gateway: Literal["enable", "disable"]
-    sdwan_zone: str | list[str] | list[dict[str, Any]] | list[StaticSdwanzoneItem]
+    sdwan_zone: str | list[str] | list[StaticSdwanzoneItem]
     dstaddr: str
     internet_service: int
     internet_service_custom: str
@@ -207,7 +207,7 @@ class Static:
         comment: str | None = ...,
         blackhole: Literal["enable", "disable"] | None = ...,
         dynamic_gateway: Literal["enable", "disable"] | None = ...,
-        sdwan_zone: str | list[str] | list[dict[str, Any]] | list[StaticSdwanzoneItem] | None = ...,
+        sdwan_zone: str | list[str] | list[StaticSdwanzoneItem] | None = ...,
         dstaddr: str | None = ...,
         internet_service: int | None = ...,
         internet_service_custom: str | None = ...,
@@ -241,7 +241,7 @@ class Static:
         comment: str | None = ...,
         blackhole: Literal["enable", "disable"] | None = ...,
         dynamic_gateway: Literal["enable", "disable"] | None = ...,
-        sdwan_zone: str | list[str] | list[dict[str, Any]] | list[StaticSdwanzoneItem] | None = ...,
+        sdwan_zone: str | list[str] | list[StaticSdwanzoneItem] | None = ...,
         dstaddr: str | None = ...,
         internet_service: int | None = ...,
         internet_service_custom: str | None = ...,
@@ -293,7 +293,7 @@ class Static:
         comment: str | None = ...,
         blackhole: Literal["enable", "disable"] | None = ...,
         dynamic_gateway: Literal["enable", "disable"] | None = ...,
-        sdwan_zone: str | list[str] | list[dict[str, Any]] | list[StaticSdwanzoneItem] | None = ...,
+        sdwan_zone: str | list[str] | list[StaticSdwanzoneItem] | None = ...,
         dstaddr: str | None = ...,
         internet_service: int | None = ...,
         internet_service_custom: str | None = ...,

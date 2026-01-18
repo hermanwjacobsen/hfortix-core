@@ -71,8 +71,8 @@ class ProfileAddresslistDict(TypedDict, total=False):
     blocked_address: str | list[str]
 
 
-class ProfileUrlaccessItem:
-    """Nested item for url-access field - supports attribute access."""
+class ProfileUrlaccessItem(TypedDict, total=False):
+    """Nested item for url-access field."""
     id: int
     address: str
     action: Literal["bypass", "permit", "block"]
@@ -90,7 +90,7 @@ class ProfilePayload(TypedDict, total=False):
     constraint: ProfileConstraintDict
     method: ProfileMethodDict
     address_list: ProfileAddresslistDict
-    url_access: str | list[str] | list[dict[str, Any]] | list[ProfileUrlaccessItem]
+    url_access: str | list[str] | list[ProfileUrlaccessItem]
     comment: str
 
 
@@ -212,7 +212,7 @@ class Profile:
         constraint: ProfileConstraintDict | None = ...,
         method: ProfileMethodDict | None = ...,
         address_list: ProfileAddresslistDict | None = ...,
-        url_access: str | list[str] | list[dict[str, Any]] | list[ProfileUrlaccessItem] | None = ...,
+        url_access: str | list[str] | list[ProfileUrlaccessItem] | None = ...,
         comment: str | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
@@ -233,7 +233,7 @@ class Profile:
         constraint: ProfileConstraintDict | None = ...,
         method: ProfileMethodDict | None = ...,
         address_list: ProfileAddresslistDict | None = ...,
-        url_access: str | list[str] | list[dict[str, Any]] | list[ProfileUrlaccessItem] | None = ...,
+        url_access: str | list[str] | list[ProfileUrlaccessItem] | None = ...,
         comment: str | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
@@ -272,7 +272,7 @@ class Profile:
         constraint: ProfileConstraintDict | None = ...,
         method: ProfileMethodDict | None = ...,
         address_list: ProfileAddresslistDict | None = ...,
-        url_access: str | list[str] | list[dict[str, Any]] | list[ProfileUrlaccessItem] | None = ...,
+        url_access: str | list[str] | list[ProfileUrlaccessItem] | None = ...,
         comment: str | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,

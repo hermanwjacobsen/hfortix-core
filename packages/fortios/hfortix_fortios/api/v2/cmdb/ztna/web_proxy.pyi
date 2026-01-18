@@ -26,8 +26,8 @@ from hfortix_fortios.models import (
 # TypedDict Payloads
 # ================================================================
 
-class WebProxyApigatewayItem:
-    """Nested item for api-gateway field - supports attribute access."""
+class WebProxyApigatewayItem(TypedDict, total=False):
+    """Nested item for api-gateway field."""
     id: int
     url_map: str
     service: Literal["http", "https"]
@@ -53,8 +53,8 @@ class WebProxyApigatewayItem:
     ssl_renegotiation: Literal["enable", "disable"]
 
 
-class WebProxyApigateway6Item:
-    """Nested item for api-gateway6 field - supports attribute access."""
+class WebProxyApigateway6Item(TypedDict, total=False):
+    """Nested item for api-gateway6 field."""
     id: int
     url_map: str
     service: Literal["http", "https"]
@@ -94,8 +94,8 @@ class WebProxyPayload(TypedDict, total=False):
     svr_pool_ttl: int
     svr_pool_server_max_request: int
     svr_pool_server_max_concurrent_request: int
-    api_gateway: str | list[str] | list[dict[str, Any]] | list[WebProxyApigatewayItem]
-    api_gateway6: str | list[str] | list[dict[str, Any]] | list[WebProxyApigateway6Item]
+    api_gateway: str | list[str] | list[WebProxyApigatewayItem]
+    api_gateway6: str | list[str] | list[WebProxyApigateway6Item]
 
 
 # ================================================================
@@ -231,8 +231,8 @@ class WebProxy:
         svr_pool_ttl: int | None = ...,
         svr_pool_server_max_request: int | None = ...,
         svr_pool_server_max_concurrent_request: int | None = ...,
-        api_gateway: str | list[str] | list[dict[str, Any]] | list[WebProxyApigatewayItem] | None = ...,
-        api_gateway6: str | list[str] | list[dict[str, Any]] | list[WebProxyApigateway6Item] | None = ...,
+        api_gateway: str | list[str] | list[WebProxyApigatewayItem] | None = ...,
+        api_gateway6: str | list[str] | list[WebProxyApigateway6Item] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -257,8 +257,8 @@ class WebProxy:
         svr_pool_ttl: int | None = ...,
         svr_pool_server_max_request: int | None = ...,
         svr_pool_server_max_concurrent_request: int | None = ...,
-        api_gateway: str | list[str] | list[dict[str, Any]] | list[WebProxyApigatewayItem] | None = ...,
-        api_gateway6: str | list[str] | list[dict[str, Any]] | list[WebProxyApigateway6Item] | None = ...,
+        api_gateway: str | list[str] | list[WebProxyApigatewayItem] | None = ...,
+        api_gateway6: str | list[str] | list[WebProxyApigateway6Item] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -301,8 +301,8 @@ class WebProxy:
         svr_pool_ttl: int | None = ...,
         svr_pool_server_max_request: int | None = ...,
         svr_pool_server_max_concurrent_request: int | None = ...,
-        api_gateway: str | list[str] | list[dict[str, Any]] | list[WebProxyApigatewayItem] | None = ...,
-        api_gateway6: str | list[str] | list[dict[str, Any]] | list[WebProxyApigateway6Item] | None = ...,
+        api_gateway: str | list[str] | list[WebProxyApigatewayItem] | None = ...,
+        api_gateway6: str | list[str] | list[WebProxyApigateway6Item] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,

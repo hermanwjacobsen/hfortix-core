@@ -25,8 +25,8 @@ from hfortix_fortios.models import (
 # TypedDict Payloads
 # ================================================================
 
-class InterControllerIntercontrollerpeerItem:
-    """Nested item for inter-controller-peer field - supports attribute access."""
+class InterControllerIntercontrollerpeerItem(TypedDict, total=False):
+    """Nested item for inter-controller-peer field."""
     id: int
     peer_ip: str
     peer_port: int
@@ -41,7 +41,7 @@ class InterControllerPayload(TypedDict, total=False):
     inter_controller_pri: Literal["primary", "secondary"]
     fast_failover_max: int
     fast_failover_wait: int
-    inter_controller_peer: str | list[str] | list[dict[str, Any]] | list[InterControllerIntercontrollerpeerItem]
+    inter_controller_peer: str | list[str] | list[InterControllerIntercontrollerpeerItem]
 
 
 # ================================================================
@@ -135,7 +135,7 @@ class InterController:
         inter_controller_pri: Literal["primary", "secondary"] | None = ...,
         fast_failover_max: int | None = ...,
         fast_failover_wait: int | None = ...,
-        inter_controller_peer: str | list[str] | list[dict[str, Any]] | list[InterControllerIntercontrollerpeerItem] | None = ...,
+        inter_controller_peer: str | list[str] | list[InterControllerIntercontrollerpeerItem] | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> InterControllerObject: ...
@@ -159,7 +159,7 @@ class InterController:
         inter_controller_pri: Literal["primary", "secondary"] | None = ...,
         fast_failover_max: int | None = ...,
         fast_failover_wait: int | None = ...,
-        inter_controller_peer: str | list[str] | list[dict[str, Any]] | list[InterControllerIntercontrollerpeerItem] | None = ...,
+        inter_controller_peer: str | list[str] | list[InterControllerIntercontrollerpeerItem] | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> FortiObject: ...

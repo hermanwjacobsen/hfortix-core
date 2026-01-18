@@ -25,16 +25,16 @@ from hfortix_fortios.models import (
 # TypedDict Payloads
 # ================================================================
 
-class RipngDistanceItem:
-    """Nested item for distance field - supports attribute access."""
+class RipngDistanceItem(TypedDict, total=False):
+    """Nested item for distance field."""
     id: int
     distance: int
     prefix6: str
     access_list6: str
 
 
-class RipngDistributelistItem:
-    """Nested item for distribute-list field - supports attribute access."""
+class RipngDistributelistItem(TypedDict, total=False):
+    """Nested item for distribute-list field."""
     id: int
     status: Literal["enable", "disable"]
     direction: Literal["in", "out"]
@@ -42,27 +42,27 @@ class RipngDistributelistItem:
     interface: str
 
 
-class RipngNeighborItem:
-    """Nested item for neighbor field - supports attribute access."""
+class RipngNeighborItem(TypedDict, total=False):
+    """Nested item for neighbor field."""
     id: int
     ip6: str
     interface: str
 
 
-class RipngNetworkItem:
-    """Nested item for network field - supports attribute access."""
+class RipngNetworkItem(TypedDict, total=False):
+    """Nested item for network field."""
     id: int
     prefix: str
 
 
-class RipngAggregateaddressItem:
-    """Nested item for aggregate-address field - supports attribute access."""
+class RipngAggregateaddressItem(TypedDict, total=False):
+    """Nested item for aggregate-address field."""
     id: int
     prefix6: str
 
 
-class RipngOffsetlistItem:
-    """Nested item for offset-list field - supports attribute access."""
+class RipngOffsetlistItem(TypedDict, total=False):
+    """Nested item for offset-list field."""
     id: int
     status: Literal["enable", "disable"]
     direction: Literal["in", "out"]
@@ -71,21 +71,21 @@ class RipngOffsetlistItem:
     interface: str
 
 
-class RipngPassiveinterfaceItem:
-    """Nested item for passive-interface field - supports attribute access."""
+class RipngPassiveinterfaceItem(TypedDict, total=False):
+    """Nested item for passive-interface field."""
     name: str
 
 
-class RipngRedistributeItem:
-    """Nested item for redistribute field - supports attribute access."""
+class RipngRedistributeItem(TypedDict, total=False):
+    """Nested item for redistribute field."""
     name: str
     status: Literal["enable", "disable"]
     metric: int
     routemap: str
 
 
-class RipngInterfaceItem:
-    """Nested item for interface field - supports attribute access."""
+class RipngInterfaceItem(TypedDict, total=False):
+    """Nested item for interface field."""
     name: str
     split_horizon_status: Literal["enable", "disable"]
     split_horizon: Literal["poisoned", "regular"]
@@ -97,18 +97,18 @@ class RipngPayload(TypedDict, total=False):
     default_information_originate: Literal["enable", "disable"]
     default_metric: int
     max_out_metric: int
-    distance: str | list[str] | list[dict[str, Any]] | list[RipngDistanceItem]
-    distribute_list: str | list[str] | list[dict[str, Any]] | list[RipngDistributelistItem]
-    neighbor: str | list[str] | list[dict[str, Any]] | list[RipngNeighborItem]
-    network: str | list[str] | list[dict[str, Any]] | list[RipngNetworkItem]
-    aggregate_address: str | list[str] | list[dict[str, Any]] | list[RipngAggregateaddressItem]
-    offset_list: str | list[str] | list[dict[str, Any]] | list[RipngOffsetlistItem]
-    passive_interface: str | list[str] | list[dict[str, Any]] | list[RipngPassiveinterfaceItem]
-    redistribute: str | list[str] | list[dict[str, Any]] | list[RipngRedistributeItem]
+    distance: str | list[str] | list[RipngDistanceItem]
+    distribute_list: str | list[str] | list[RipngDistributelistItem]
+    neighbor: str | list[str] | list[RipngNeighborItem]
+    network: str | list[str] | list[RipngNetworkItem]
+    aggregate_address: str | list[str] | list[RipngAggregateaddressItem]
+    offset_list: str | list[str] | list[RipngOffsetlistItem]
+    passive_interface: str | list[str] | list[RipngPassiveinterfaceItem]
+    redistribute: str | list[str] | list[RipngRedistributeItem]
     update_timer: int
     timeout_timer: int
     garbage_timer: int
-    interface: str | list[str] | list[dict[str, Any]] | list[RipngInterfaceItem]
+    interface: str | list[str] | list[RipngInterfaceItem]
 
 
 # ================================================================
@@ -217,18 +217,18 @@ class Ripng:
         default_information_originate: Literal["enable", "disable"] | None = ...,
         default_metric: int | None = ...,
         max_out_metric: int | None = ...,
-        distance: str | list[str] | list[dict[str, Any]] | list[RipngDistanceItem] | None = ...,
-        distribute_list: str | list[str] | list[dict[str, Any]] | list[RipngDistributelistItem] | None = ...,
-        neighbor: str | list[str] | list[dict[str, Any]] | list[RipngNeighborItem] | None = ...,
-        network: str | list[str] | list[dict[str, Any]] | list[RipngNetworkItem] | None = ...,
-        aggregate_address: str | list[str] | list[dict[str, Any]] | list[RipngAggregateaddressItem] | None = ...,
-        offset_list: str | list[str] | list[dict[str, Any]] | list[RipngOffsetlistItem] | None = ...,
-        passive_interface: str | list[str] | list[dict[str, Any]] | list[RipngPassiveinterfaceItem] | None = ...,
-        redistribute: str | list[str] | list[dict[str, Any]] | list[RipngRedistributeItem] | None = ...,
+        distance: str | list[str] | list[RipngDistanceItem] | None = ...,
+        distribute_list: str | list[str] | list[RipngDistributelistItem] | None = ...,
+        neighbor: str | list[str] | list[RipngNeighborItem] | None = ...,
+        network: str | list[str] | list[RipngNetworkItem] | None = ...,
+        aggregate_address: str | list[str] | list[RipngAggregateaddressItem] | None = ...,
+        offset_list: str | list[str] | list[RipngOffsetlistItem] | None = ...,
+        passive_interface: str | list[str] | list[RipngPassiveinterfaceItem] | None = ...,
+        redistribute: str | list[str] | list[RipngRedistributeItem] | None = ...,
         update_timer: int | None = ...,
         timeout_timer: int | None = ...,
         garbage_timer: int | None = ...,
-        interface: str | list[str] | list[dict[str, Any]] | list[RipngInterfaceItem] | None = ...,
+        interface: str | list[str] | list[RipngInterfaceItem] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -251,18 +251,18 @@ class Ripng:
         default_information_originate: Literal["enable", "disable"] | None = ...,
         default_metric: int | None = ...,
         max_out_metric: int | None = ...,
-        distance: str | list[str] | list[dict[str, Any]] | list[RipngDistanceItem] | None = ...,
-        distribute_list: str | list[str] | list[dict[str, Any]] | list[RipngDistributelistItem] | None = ...,
-        neighbor: str | list[str] | list[dict[str, Any]] | list[RipngNeighborItem] | None = ...,
-        network: str | list[str] | list[dict[str, Any]] | list[RipngNetworkItem] | None = ...,
-        aggregate_address: str | list[str] | list[dict[str, Any]] | list[RipngAggregateaddressItem] | None = ...,
-        offset_list: str | list[str] | list[dict[str, Any]] | list[RipngOffsetlistItem] | None = ...,
-        passive_interface: str | list[str] | list[dict[str, Any]] | list[RipngPassiveinterfaceItem] | None = ...,
-        redistribute: str | list[str] | list[dict[str, Any]] | list[RipngRedistributeItem] | None = ...,
+        distance: str | list[str] | list[RipngDistanceItem] | None = ...,
+        distribute_list: str | list[str] | list[RipngDistributelistItem] | None = ...,
+        neighbor: str | list[str] | list[RipngNeighborItem] | None = ...,
+        network: str | list[str] | list[RipngNetworkItem] | None = ...,
+        aggregate_address: str | list[str] | list[RipngAggregateaddressItem] | None = ...,
+        offset_list: str | list[str] | list[RipngOffsetlistItem] | None = ...,
+        passive_interface: str | list[str] | list[RipngPassiveinterfaceItem] | None = ...,
+        redistribute: str | list[str] | list[RipngRedistributeItem] | None = ...,
         update_timer: int | None = ...,
         timeout_timer: int | None = ...,
         garbage_timer: int | None = ...,
-        interface: str | list[str] | list[dict[str, Any]] | list[RipngInterfaceItem] | None = ...,
+        interface: str | list[str] | list[RipngInterfaceItem] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,

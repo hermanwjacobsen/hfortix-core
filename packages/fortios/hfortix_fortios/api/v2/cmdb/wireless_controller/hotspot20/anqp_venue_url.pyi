@@ -26,8 +26,8 @@ from hfortix_fortios.models import (
 # TypedDict Payloads
 # ================================================================
 
-class AnqpVenueUrlValuelistItem:
-    """Nested item for value-list field - supports attribute access."""
+class AnqpVenueUrlValuelistItem(TypedDict, total=False):
+    """Nested item for value-list field."""
     index: int
     number: int
     value: str
@@ -36,7 +36,7 @@ class AnqpVenueUrlValuelistItem:
 class AnqpVenueUrlPayload(TypedDict, total=False):
     """Payload type for AnqpVenueUrl operations."""
     name: str
-    value_list: str | list[str] | list[dict[str, Any]] | list[AnqpVenueUrlValuelistItem]
+    value_list: str | list[str] | list[AnqpVenueUrlValuelistItem]
 
 
 # ================================================================
@@ -137,7 +137,7 @@ class AnqpVenueUrl:
         self,
         payload_dict: AnqpVenueUrlPayload | None = ...,
         name: str | None = ...,
-        value_list: str | list[str] | list[dict[str, Any]] | list[AnqpVenueUrlValuelistItem] | None = ...,
+        value_list: str | list[str] | list[AnqpVenueUrlValuelistItem] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -151,7 +151,7 @@ class AnqpVenueUrl:
         self,
         payload_dict: AnqpVenueUrlPayload | None = ...,
         name: str | None = ...,
-        value_list: str | list[str] | list[dict[str, Any]] | list[AnqpVenueUrlValuelistItem] | None = ...,
+        value_list: str | list[str] | list[AnqpVenueUrlValuelistItem] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -183,7 +183,7 @@ class AnqpVenueUrl:
         self,
         payload_dict: AnqpVenueUrlPayload | None = ...,
         name: str | None = ...,
-        value_list: str | list[str] | list[dict[str, Any]] | list[AnqpVenueUrlValuelistItem] | None = ...,
+        value_list: str | list[str] | list[AnqpVenueUrlValuelistItem] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,

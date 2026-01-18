@@ -26,8 +26,8 @@ from hfortix_fortios.models import (
 # TypedDict Payloads
 # ================================================================
 
-class ServerOptionsItem:
-    """Nested item for options field - supports attribute access."""
+class ServerOptionsItem(TypedDict, total=False):
+    """Nested item for options field."""
     id: int
     code: int
     type: Literal["hex", "string", "ip6", "fqdn"]
@@ -37,16 +37,16 @@ class ServerOptionsItem:
     vci_string: str | list[str]
 
 
-class ServerPrefixrangeItem:
-    """Nested item for prefix-range field - supports attribute access."""
+class ServerPrefixrangeItem(TypedDict, total=False):
+    """Nested item for prefix-range field."""
     id: int
     start_prefix: str
     end_prefix: str
     prefix_length: int
 
 
-class ServerIprangeItem:
-    """Nested item for ip-range field - supports attribute access."""
+class ServerIprangeItem(TypedDict, total=False):
+    """Nested item for ip-range field."""
     id: int
     start_ip: str
     end_ip: str
@@ -70,13 +70,13 @@ class ServerPayload(TypedDict, total=False):
     subnet: str
     interface: str
     delegated_prefix_route: Literal["disable", "enable"]
-    options: str | list[str] | list[dict[str, Any]] | list[ServerOptionsItem]
+    options: str | list[str] | list[ServerOptionsItem]
     upstream_interface: str
     delegated_prefix_iaid: int
     ip_mode: Literal["range", "delegated"]
     prefix_mode: Literal["dhcp6", "ra"]
-    prefix_range: str | list[str] | list[dict[str, Any]] | list[ServerPrefixrangeItem]
-    ip_range: str | list[str] | list[dict[str, Any]] | list[ServerIprangeItem]
+    prefix_range: str | list[str] | list[ServerPrefixrangeItem]
+    ip_range: str | list[str] | list[ServerIprangeItem]
 
 
 # ================================================================
@@ -228,13 +228,13 @@ class Server:
         subnet: str | None = ...,
         interface: str | None = ...,
         delegated_prefix_route: Literal["disable", "enable"] | None = ...,
-        options: str | list[str] | list[dict[str, Any]] | list[ServerOptionsItem] | None = ...,
+        options: str | list[str] | list[ServerOptionsItem] | None = ...,
         upstream_interface: str | None = ...,
         delegated_prefix_iaid: int | None = ...,
         ip_mode: Literal["range", "delegated"] | None = ...,
         prefix_mode: Literal["dhcp6", "ra"] | None = ...,
-        prefix_range: str | list[str] | list[dict[str, Any]] | list[ServerPrefixrangeItem] | None = ...,
-        ip_range: str | list[str] | list[dict[str, Any]] | list[ServerIprangeItem] | None = ...,
+        prefix_range: str | list[str] | list[ServerPrefixrangeItem] | None = ...,
+        ip_range: str | list[str] | list[ServerIprangeItem] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -261,13 +261,13 @@ class Server:
         subnet: str | None = ...,
         interface: str | None = ...,
         delegated_prefix_route: Literal["disable", "enable"] | None = ...,
-        options: str | list[str] | list[dict[str, Any]] | list[ServerOptionsItem] | None = ...,
+        options: str | list[str] | list[ServerOptionsItem] | None = ...,
         upstream_interface: str | None = ...,
         delegated_prefix_iaid: int | None = ...,
         ip_mode: Literal["range", "delegated"] | None = ...,
         prefix_mode: Literal["dhcp6", "ra"] | None = ...,
-        prefix_range: str | list[str] | list[dict[str, Any]] | list[ServerPrefixrangeItem] | None = ...,
-        ip_range: str | list[str] | list[dict[str, Any]] | list[ServerIprangeItem] | None = ...,
+        prefix_range: str | list[str] | list[ServerPrefixrangeItem] | None = ...,
+        ip_range: str | list[str] | list[ServerIprangeItem] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -312,13 +312,13 @@ class Server:
         subnet: str | None = ...,
         interface: str | None = ...,
         delegated_prefix_route: Literal["disable", "enable"] | None = ...,
-        options: str | list[str] | list[dict[str, Any]] | list[ServerOptionsItem] | None = ...,
+        options: str | list[str] | list[ServerOptionsItem] | None = ...,
         upstream_interface: str | None = ...,
         delegated_prefix_iaid: int | None = ...,
         ip_mode: Literal["range", "delegated"] | None = ...,
         prefix_mode: Literal["dhcp6", "ra"] | None = ...,
-        prefix_range: str | list[str] | list[dict[str, Any]] | list[ServerPrefixrangeItem] | None = ...,
-        ip_range: str | list[str] | list[dict[str, Any]] | list[ServerIprangeItem] | None = ...,
+        prefix_range: str | list[str] | list[ServerPrefixrangeItem] | None = ...,
+        ip_range: str | list[str] | list[ServerIprangeItem] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,

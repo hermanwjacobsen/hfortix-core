@@ -25,13 +25,13 @@ from hfortix_fortios.models import (
 # TypedDict Payloads
 # ================================================================
 
-class AcmeInterfaceItem:
-    """Nested item for interface field - supports attribute access."""
+class AcmeInterfaceItem(TypedDict, total=False):
+    """Nested item for interface field."""
     interface_name: str
 
 
-class AcmeAccountsItem:
-    """Nested item for accounts field - supports attribute access."""
+class AcmeAccountsItem(TypedDict, total=False):
+    """Nested item for accounts field."""
     id: str
     status: str
     url: str
@@ -44,11 +44,11 @@ class AcmeAccountsItem:
 
 class AcmePayload(TypedDict, total=False):
     """Payload type for Acme operations."""
-    interface: str | list[str] | list[dict[str, Any]] | list[AcmeInterfaceItem]
+    interface: str | list[str] | list[AcmeInterfaceItem]
     use_ha_direct: Literal["enable", "disable"]
     source_ip: str
     source_ip6: str
-    accounts: str | list[str] | list[dict[str, Any]] | list[AcmeAccountsItem]
+    accounts: str | list[str] | list[AcmeAccountsItem]
     acc_details: str
     status: str
 
@@ -138,11 +138,11 @@ class Acme:
     def put(
         self,
         payload_dict: AcmePayload | None = ...,
-        interface: str | list[str] | list[dict[str, Any]] | list[AcmeInterfaceItem] | None = ...,
+        interface: str | list[str] | list[AcmeInterfaceItem] | None = ...,
         use_ha_direct: Literal["enable", "disable"] | None = ...,
         source_ip: str | None = ...,
         source_ip6: str | None = ...,
-        accounts: str | list[str] | list[dict[str, Any]] | list[AcmeAccountsItem] | None = ...,
+        accounts: str | list[str] | list[AcmeAccountsItem] | None = ...,
         acc_details: str | None = ...,
         status: str | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
@@ -162,11 +162,11 @@ class Acme:
     def set(
         self,
         payload_dict: AcmePayload | None = ...,
-        interface: str | list[str] | list[dict[str, Any]] | list[AcmeInterfaceItem] | None = ...,
+        interface: str | list[str] | list[AcmeInterfaceItem] | None = ...,
         use_ha_direct: Literal["enable", "disable"] | None = ...,
         source_ip: str | None = ...,
         source_ip6: str | None = ...,
-        accounts: str | list[str] | list[dict[str, Any]] | list[AcmeAccountsItem] | None = ...,
+        accounts: str | list[str] | list[AcmeAccountsItem] | None = ...,
         acc_details: str | None = ...,
         status: str | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,

@@ -25,13 +25,13 @@ from hfortix_fortios.models import (
 # TypedDict Payloads
 # ================================================================
 
-class ExplicitSecurewebproxycertItem:
-    """Nested item for secure-web-proxy-cert field - supports attribute access."""
+class ExplicitSecurewebproxycertItem(TypedDict, total=False):
+    """Nested item for secure-web-proxy-cert field."""
     name: str
 
 
-class ExplicitPacpolicyItem:
-    """Nested item for pac-policy field - supports attribute access."""
+class ExplicitPacpolicyItem(TypedDict, total=False):
+    """Nested item for pac-policy field."""
     policyid: int
     status: Literal["enable", "disable"]
     srcaddr: str | list[str]
@@ -51,7 +51,7 @@ class ExplicitPayload(TypedDict, total=False):
     http_incoming_port: str
     http_connection_mode: Literal["static", "multiplex", "serverpool"]
     https_incoming_port: str
-    secure_web_proxy_cert: str | list[str] | list[dict[str, Any]] | list[ExplicitSecurewebproxycertItem]
+    secure_web_proxy_cert: str | list[str] | list[ExplicitSecurewebproxycertItem]
     client_cert: Literal["disable", "enable"]
     user_agent_detect: Literal["disable", "enable"]
     empty_cert_action: Literal["accept", "block", "accept-unmanageable"]
@@ -79,7 +79,7 @@ class ExplicitPayload(TypedDict, total=False):
     pac_file_through_https: Literal["enable", "disable"]
     pac_file_name: str
     pac_file_data: str
-    pac_policy: str | list[str] | list[dict[str, Any]] | list[ExplicitPacpolicyItem]
+    pac_policy: str | list[str] | list[ExplicitPacpolicyItem]
     ssl_algorithm: Literal["high", "medium", "low"]
     trace_auth_no_rsp: Literal["enable", "disable"]
 
@@ -240,7 +240,7 @@ class Explicit:
         http_incoming_port: str | None = ...,
         http_connection_mode: Literal["static", "multiplex", "serverpool"] | None = ...,
         https_incoming_port: str | None = ...,
-        secure_web_proxy_cert: str | list[str] | list[dict[str, Any]] | list[ExplicitSecurewebproxycertItem] | None = ...,
+        secure_web_proxy_cert: str | list[str] | list[ExplicitSecurewebproxycertItem] | None = ...,
         client_cert: Literal["disable", "enable"] | None = ...,
         user_agent_detect: Literal["disable", "enable"] | None = ...,
         empty_cert_action: Literal["accept", "block", "accept-unmanageable"] | None = ...,
@@ -268,7 +268,7 @@ class Explicit:
         pac_file_through_https: Literal["enable", "disable"] | None = ...,
         pac_file_name: str | None = ...,
         pac_file_data: str | None = ...,
-        pac_policy: str | list[str] | list[dict[str, Any]] | list[ExplicitPacpolicyItem] | None = ...,
+        pac_policy: str | list[str] | list[ExplicitPacpolicyItem] | None = ...,
         ssl_algorithm: Literal["high", "medium", "low"] | None = ...,
         trace_auth_no_rsp: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
@@ -297,7 +297,7 @@ class Explicit:
         http_incoming_port: str | None = ...,
         http_connection_mode: Literal["static", "multiplex", "serverpool"] | None = ...,
         https_incoming_port: str | None = ...,
-        secure_web_proxy_cert: str | list[str] | list[dict[str, Any]] | list[ExplicitSecurewebproxycertItem] | None = ...,
+        secure_web_proxy_cert: str | list[str] | list[ExplicitSecurewebproxycertItem] | None = ...,
         client_cert: Literal["disable", "enable"] | None = ...,
         user_agent_detect: Literal["disable", "enable"] | None = ...,
         empty_cert_action: Literal["accept", "block", "accept-unmanageable"] | None = ...,
@@ -325,7 +325,7 @@ class Explicit:
         pac_file_through_https: Literal["enable", "disable"] | None = ...,
         pac_file_name: str | None = ...,
         pac_file_data: str | None = ...,
-        pac_policy: str | list[str] | list[dict[str, Any]] | list[ExplicitPacpolicyItem] | None = ...,
+        pac_policy: str | list[str] | list[ExplicitPacpolicyItem] | None = ...,
         ssl_algorithm: Literal["high", "medium", "low"] | None = ...,
         trace_auth_no_rsp: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,

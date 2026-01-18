@@ -26,8 +26,8 @@ from hfortix_fortios.models import (
 # TypedDict Payloads
 # ================================================================
 
-class InternetServiceCustomGroupMemberItem:
-    """Nested item for member field - supports attribute access."""
+class InternetServiceCustomGroupMemberItem(TypedDict, total=False):
+    """Nested item for member field."""
     name: str
 
 
@@ -35,7 +35,7 @@ class InternetServiceCustomGroupPayload(TypedDict, total=False):
     """Payload type for InternetServiceCustomGroup operations."""
     name: str
     comment: str
-    member: str | list[str] | list[dict[str, Any]] | list[InternetServiceCustomGroupMemberItem]
+    member: str | list[str] | list[InternetServiceCustomGroupMemberItem]
 
 
 # ================================================================
@@ -139,7 +139,7 @@ class InternetServiceCustomGroup:
         payload_dict: InternetServiceCustomGroupPayload | None = ...,
         name: str | None = ...,
         comment: str | None = ...,
-        member: str | list[str] | list[dict[str, Any]] | list[InternetServiceCustomGroupMemberItem] | None = ...,
+        member: str | list[str] | list[InternetServiceCustomGroupMemberItem] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -154,7 +154,7 @@ class InternetServiceCustomGroup:
         payload_dict: InternetServiceCustomGroupPayload | None = ...,
         name: str | None = ...,
         comment: str | None = ...,
-        member: str | list[str] | list[dict[str, Any]] | list[InternetServiceCustomGroupMemberItem] | None = ...,
+        member: str | list[str] | list[InternetServiceCustomGroupMemberItem] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -187,7 +187,7 @@ class InternetServiceCustomGroup:
         payload_dict: InternetServiceCustomGroupPayload | None = ...,
         name: str | None = ...,
         comment: str | None = ...,
-        member: str | list[str] | list[dict[str, Any]] | list[InternetServiceCustomGroupMemberItem] | None = ...,
+        member: str | list[str] | list[InternetServiceCustomGroupMemberItem] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,

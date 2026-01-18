@@ -26,8 +26,8 @@ from hfortix_fortios.models import (
 # TypedDict Payloads
 # ================================================================
 
-class ProfileSaasapplicationItem:
-    """Nested item for saas-application field - supports attribute access."""
+class ProfileSaasapplicationItem(TypedDict, total=False):
+    """Nested item for saas-application field."""
     name: str
     status: Literal["enable", "disable"]
     safe_search: Literal["enable", "disable"]
@@ -46,7 +46,7 @@ class ProfilePayload(TypedDict, total=False):
     """Payload type for Profile operations."""
     name: str
     comment: str
-    saas_application: str | list[str] | list[dict[str, Any]] | list[ProfileSaasapplicationItem]
+    saas_application: str | list[str] | list[ProfileSaasapplicationItem]
 
 
 # ================================================================
@@ -150,7 +150,7 @@ class Profile:
         payload_dict: ProfilePayload | None = ...,
         name: str | None = ...,
         comment: str | None = ...,
-        saas_application: str | list[str] | list[dict[str, Any]] | list[ProfileSaasapplicationItem] | None = ...,
+        saas_application: str | list[str] | list[ProfileSaasapplicationItem] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -165,7 +165,7 @@ class Profile:
         payload_dict: ProfilePayload | None = ...,
         name: str | None = ...,
         comment: str | None = ...,
-        saas_application: str | list[str] | list[dict[str, Any]] | list[ProfileSaasapplicationItem] | None = ...,
+        saas_application: str | list[str] | list[ProfileSaasapplicationItem] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -198,7 +198,7 @@ class Profile:
         payload_dict: ProfilePayload | None = ...,
         name: str | None = ...,
         comment: str | None = ...,
-        saas_application: str | list[str] | list[dict[str, Any]] | list[ProfileSaasapplicationItem] | None = ...,
+        saas_application: str | list[str] | list[ProfileSaasapplicationItem] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,

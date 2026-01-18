@@ -26,8 +26,8 @@ from hfortix_fortios.models import (
 # TypedDict Payloads
 # ================================================================
 
-class H2qpOperatorNameValuelistItem:
-    """Nested item for value-list field - supports attribute access."""
+class H2qpOperatorNameValuelistItem(TypedDict, total=False):
+    """Nested item for value-list field."""
     index: int
     lang: str
     value: str
@@ -36,7 +36,7 @@ class H2qpOperatorNameValuelistItem:
 class H2qpOperatorNamePayload(TypedDict, total=False):
     """Payload type for H2qpOperatorName operations."""
     name: str
-    value_list: str | list[str] | list[dict[str, Any]] | list[H2qpOperatorNameValuelistItem]
+    value_list: str | list[str] | list[H2qpOperatorNameValuelistItem]
 
 
 # ================================================================
@@ -137,7 +137,7 @@ class H2qpOperatorName:
         self,
         payload_dict: H2qpOperatorNamePayload | None = ...,
         name: str | None = ...,
-        value_list: str | list[str] | list[dict[str, Any]] | list[H2qpOperatorNameValuelistItem] | None = ...,
+        value_list: str | list[str] | list[H2qpOperatorNameValuelistItem] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -151,7 +151,7 @@ class H2qpOperatorName:
         self,
         payload_dict: H2qpOperatorNamePayload | None = ...,
         name: str | None = ...,
-        value_list: str | list[str] | list[dict[str, Any]] | list[H2qpOperatorNameValuelistItem] | None = ...,
+        value_list: str | list[str] | list[H2qpOperatorNameValuelistItem] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -183,7 +183,7 @@ class H2qpOperatorName:
         self,
         payload_dict: H2qpOperatorNamePayload | None = ...,
         name: str | None = ...,
-        value_list: str | list[str] | list[dict[str, Any]] | list[H2qpOperatorNameValuelistItem] | None = ...,
+        value_list: str | list[str] | list[H2qpOperatorNameValuelistItem] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,

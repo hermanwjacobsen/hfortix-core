@@ -163,8 +163,8 @@ class SslSshProfileDotDict(TypedDict, total=False):
     sni_server_cert_check: Literal["enable", "strict", "disable"]
 
 
-class SslSshProfileSslexemptItem:
-    """Nested item for ssl-exempt field - supports attribute access."""
+class SslSshProfileSslexemptItem(TypedDict, total=False):
+    """Nested item for ssl-exempt field."""
     id: int
     type: Literal["fortiguard-category", "address", "address6", "wildcard-fqdn", "regex"]
     fortiguard_category: int
@@ -174,19 +174,19 @@ class SslSshProfileSslexemptItem:
     regex: str
 
 
-class SslSshProfileEchoutersniItem:
-    """Nested item for ech-outer-sni field - supports attribute access."""
+class SslSshProfileEchoutersniItem(TypedDict, total=False):
+    """Nested item for ech-outer-sni field."""
     name: str
     sni: str
 
 
-class SslSshProfileServercertItem:
-    """Nested item for server-cert field - supports attribute access."""
+class SslSshProfileServercertItem(TypedDict, total=False):
+    """Nested item for server-cert field."""
     name: str
 
 
-class SslSshProfileSslserverItem:
-    """Nested item for ssl-server field - supports attribute access."""
+class SslSshProfileSslserverItem(TypedDict, total=False):
+    """Nested item for ssl-server field."""
     id: int
     ip: str
     https_client_certificate: Literal["bypass", "inspect", "block"]
@@ -211,14 +211,14 @@ class SslSshProfilePayload(TypedDict, total=False):
     dot: SslSshProfileDotDict
     allowlist: Literal["enable", "disable"]
     block_blocklisted_certificates: Literal["disable", "enable"]
-    ssl_exempt: str | list[str] | list[dict[str, Any]] | list[SslSshProfileSslexemptItem]
-    ech_outer_sni: str | list[str] | list[dict[str, Any]] | list[SslSshProfileEchoutersniItem]
+    ssl_exempt: str | list[str] | list[SslSshProfileSslexemptItem]
+    ech_outer_sni: str | list[str] | list[SslSshProfileEchoutersniItem]
     server_cert_mode: Literal["re-sign", "replace"]
     use_ssl_server: Literal["disable", "enable"]
     caname: str
     untrusted_caname: str
-    server_cert: str | list[str] | list[dict[str, Any]] | list[SslSshProfileServercertItem]
-    ssl_server: str | list[str] | list[dict[str, Any]] | list[SslSshProfileSslserverItem]
+    server_cert: str | list[str] | list[SslSshProfileServercertItem]
+    ssl_server: str | list[str] | list[SslSshProfileSslserverItem]
     ssl_exemption_ip_rating: Literal["enable", "disable"]
     ssl_exemption_log: Literal["disable", "enable"]
     ssl_anomaly_log: Literal["disable", "enable"]
@@ -393,14 +393,14 @@ class SslSshProfile:
         dot: SslSshProfileDotDict | None = ...,
         allowlist: Literal["enable", "disable"] | None = ...,
         block_blocklisted_certificates: Literal["disable", "enable"] | None = ...,
-        ssl_exempt: str | list[str] | list[dict[str, Any]] | list[SslSshProfileSslexemptItem] | None = ...,
-        ech_outer_sni: str | list[str] | list[dict[str, Any]] | list[SslSshProfileEchoutersniItem] | None = ...,
+        ssl_exempt: str | list[str] | list[SslSshProfileSslexemptItem] | None = ...,
+        ech_outer_sni: str | list[str] | list[SslSshProfileEchoutersniItem] | None = ...,
         server_cert_mode: Literal["re-sign", "replace"] | None = ...,
         use_ssl_server: Literal["disable", "enable"] | None = ...,
         caname: str | None = ...,
         untrusted_caname: str | None = ...,
-        server_cert: str | list[str] | list[dict[str, Any]] | list[SslSshProfileServercertItem] | None = ...,
-        ssl_server: str | list[str] | list[dict[str, Any]] | list[SslSshProfileSslserverItem] | None = ...,
+        server_cert: str | list[str] | list[SslSshProfileServercertItem] | None = ...,
+        ssl_server: str | list[str] | list[SslSshProfileSslserverItem] | None = ...,
         ssl_exemption_ip_rating: Literal["enable", "disable"] | None = ...,
         ssl_exemption_log: Literal["disable", "enable"] | None = ...,
         ssl_anomaly_log: Literal["disable", "enable"] | None = ...,
@@ -434,14 +434,14 @@ class SslSshProfile:
         dot: SslSshProfileDotDict | None = ...,
         allowlist: Literal["enable", "disable"] | None = ...,
         block_blocklisted_certificates: Literal["disable", "enable"] | None = ...,
-        ssl_exempt: str | list[str] | list[dict[str, Any]] | list[SslSshProfileSslexemptItem] | None = ...,
-        ech_outer_sni: str | list[str] | list[dict[str, Any]] | list[SslSshProfileEchoutersniItem] | None = ...,
+        ssl_exempt: str | list[str] | list[SslSshProfileSslexemptItem] | None = ...,
+        ech_outer_sni: str | list[str] | list[SslSshProfileEchoutersniItem] | None = ...,
         server_cert_mode: Literal["re-sign", "replace"] | None = ...,
         use_ssl_server: Literal["disable", "enable"] | None = ...,
         caname: str | None = ...,
         untrusted_caname: str | None = ...,
-        server_cert: str | list[str] | list[dict[str, Any]] | list[SslSshProfileServercertItem] | None = ...,
-        ssl_server: str | list[str] | list[dict[str, Any]] | list[SslSshProfileSslserverItem] | None = ...,
+        server_cert: str | list[str] | list[SslSshProfileServercertItem] | None = ...,
+        ssl_server: str | list[str] | list[SslSshProfileSslserverItem] | None = ...,
         ssl_exemption_ip_rating: Literal["enable", "disable"] | None = ...,
         ssl_exemption_log: Literal["disable", "enable"] | None = ...,
         ssl_anomaly_log: Literal["disable", "enable"] | None = ...,
@@ -493,14 +493,14 @@ class SslSshProfile:
         dot: SslSshProfileDotDict | None = ...,
         allowlist: Literal["enable", "disable"] | None = ...,
         block_blocklisted_certificates: Literal["disable", "enable"] | None = ...,
-        ssl_exempt: str | list[str] | list[dict[str, Any]] | list[SslSshProfileSslexemptItem] | None = ...,
-        ech_outer_sni: str | list[str] | list[dict[str, Any]] | list[SslSshProfileEchoutersniItem] | None = ...,
+        ssl_exempt: str | list[str] | list[SslSshProfileSslexemptItem] | None = ...,
+        ech_outer_sni: str | list[str] | list[SslSshProfileEchoutersniItem] | None = ...,
         server_cert_mode: Literal["re-sign", "replace"] | None = ...,
         use_ssl_server: Literal["disable", "enable"] | None = ...,
         caname: str | None = ...,
         untrusted_caname: str | None = ...,
-        server_cert: str | list[str] | list[dict[str, Any]] | list[SslSshProfileServercertItem] | None = ...,
-        ssl_server: str | list[str] | list[dict[str, Any]] | list[SslSshProfileSslserverItem] | None = ...,
+        server_cert: str | list[str] | list[SslSshProfileServercertItem] | None = ...,
+        ssl_server: str | list[str] | list[SslSshProfileSslserverItem] | None = ...,
         ssl_exemption_ip_rating: Literal["enable", "disable"] | None = ...,
         ssl_exemption_log: Literal["disable", "enable"] | None = ...,
         ssl_anomaly_log: Literal["disable", "enable"] | None = ...,

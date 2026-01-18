@@ -26,8 +26,8 @@ from hfortix_fortios.models import (
 # TypedDict Payloads
 # ================================================================
 
-class AspathListRuleItem:
-    """Nested item for rule field - supports attribute access."""
+class AspathListRuleItem(TypedDict, total=False):
+    """Nested item for rule field."""
     id: int
     action: Literal["deny", "permit"]
     regexp: str
@@ -36,7 +36,7 @@ class AspathListRuleItem:
 class AspathListPayload(TypedDict, total=False):
     """Payload type for AspathList operations."""
     name: str
-    rule: str | list[str] | list[dict[str, Any]] | list[AspathListRuleItem]
+    rule: str | list[str] | list[AspathListRuleItem]
 
 
 # ================================================================
@@ -137,7 +137,7 @@ class AspathList:
         self,
         payload_dict: AspathListPayload | None = ...,
         name: str | None = ...,
-        rule: str | list[str] | list[dict[str, Any]] | list[AspathListRuleItem] | None = ...,
+        rule: str | list[str] | list[AspathListRuleItem] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -151,7 +151,7 @@ class AspathList:
         self,
         payload_dict: AspathListPayload | None = ...,
         name: str | None = ...,
-        rule: str | list[str] | list[dict[str, Any]] | list[AspathListRuleItem] | None = ...,
+        rule: str | list[str] | list[AspathListRuleItem] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -183,7 +183,7 @@ class AspathList:
         self,
         payload_dict: AspathListPayload | None = ...,
         name: str | None = ...,
-        rule: str | list[str] | list[dict[str, Any]] | list[AspathListRuleItem] | None = ...,
+        rule: str | list[str] | list[AspathListRuleItem] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,

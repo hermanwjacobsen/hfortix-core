@@ -26,8 +26,8 @@ from hfortix_fortios.models import (
 # TypedDict Payloads
 # ================================================================
 
-class InternetServiceFortiguardEntryItem:
-    """Nested item for entry field - supports attribute access."""
+class InternetServiceFortiguardEntryItem(TypedDict, total=False):
+    """Nested item for entry field."""
     id: int
     addr_mode: Literal["ipv4", "ipv6"]
     protocol: int
@@ -40,7 +40,7 @@ class InternetServiceFortiguardPayload(TypedDict, total=False):
     """Payload type for InternetServiceFortiguard operations."""
     name: str
     comment: str
-    entry: str | list[str] | list[dict[str, Any]] | list[InternetServiceFortiguardEntryItem]
+    entry: str | list[str] | list[InternetServiceFortiguardEntryItem]
 
 
 # ================================================================
@@ -141,7 +141,7 @@ class InternetServiceFortiguard:
         payload_dict: InternetServiceFortiguardPayload | None = ...,
         name: str | None = ...,
         comment: str | None = ...,
-        entry: str | list[str] | list[dict[str, Any]] | list[InternetServiceFortiguardEntryItem] | None = ...,
+        entry: str | list[str] | list[InternetServiceFortiguardEntryItem] | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> InternetServiceFortiguardObject: ...
@@ -155,7 +155,7 @@ class InternetServiceFortiguard:
         payload_dict: InternetServiceFortiguardPayload | None = ...,
         name: str | None = ...,
         comment: str | None = ...,
-        entry: str | list[str] | list[dict[str, Any]] | list[InternetServiceFortiguardEntryItem] | None = ...,
+        entry: str | list[str] | list[InternetServiceFortiguardEntryItem] | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> InternetServiceFortiguardObject: ...
@@ -185,7 +185,7 @@ class InternetServiceFortiguard:
         payload_dict: InternetServiceFortiguardPayload | None = ...,
         name: str | None = ...,
         comment: str | None = ...,
-        entry: str | list[str] | list[dict[str, Any]] | list[InternetServiceFortiguardEntryItem] | None = ...,
+        entry: str | list[str] | list[InternetServiceFortiguardEntryItem] | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> FortiObject: ...

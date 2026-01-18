@@ -26,8 +26,8 @@ from hfortix_fortios.models import (
 # TypedDict Payloads
 # ================================================================
 
-class DnsDatabaseDnsentryItem:
-    """Nested item for dns-entry field - supports attribute access."""
+class DnsDatabaseDnsentryItem(TypedDict, total=False):
+    """Nested item for dns-entry field."""
     id: int
     status: Literal["enable", "disable"]
     type: Literal["A", "NS", "CNAME", "MX", "AAAA", "PTR", "PTR_V6"]
@@ -58,7 +58,7 @@ class DnsDatabasePayload(TypedDict, total=False):
     source_ip6: str
     source_ip_interface: str
     rr_max: int
-    dns_entry: str | list[str] | list[dict[str, Any]] | list[DnsDatabaseDnsentryItem]
+    dns_entry: str | list[str] | list[DnsDatabaseDnsentryItem]
     interface_select_method: Literal["auto", "sdwan", "specify"]
     interface: str
     vrf_select: int
@@ -216,7 +216,7 @@ class DnsDatabase:
         source_ip6: str | None = ...,
         source_ip_interface: str | None = ...,
         rr_max: int | None = ...,
-        dns_entry: str | list[str] | list[dict[str, Any]] | list[DnsDatabaseDnsentryItem] | None = ...,
+        dns_entry: str | list[str] | list[DnsDatabaseDnsentryItem] | None = ...,
         interface_select_method: Literal["auto", "sdwan", "specify"] | None = ...,
         interface: str | None = ...,
         vrf_select: int | None = ...,
@@ -249,7 +249,7 @@ class DnsDatabase:
         source_ip6: str | None = ...,
         source_ip_interface: str | None = ...,
         rr_max: int | None = ...,
-        dns_entry: str | list[str] | list[dict[str, Any]] | list[DnsDatabaseDnsentryItem] | None = ...,
+        dns_entry: str | list[str] | list[DnsDatabaseDnsentryItem] | None = ...,
         interface_select_method: Literal["auto", "sdwan", "specify"] | None = ...,
         interface: str | None = ...,
         vrf_select: int | None = ...,
@@ -300,7 +300,7 @@ class DnsDatabase:
         source_ip6: str | None = ...,
         source_ip_interface: str | None = ...,
         rr_max: int | None = ...,
-        dns_entry: str | list[str] | list[dict[str, Any]] | list[DnsDatabaseDnsentryItem] | None = ...,
+        dns_entry: str | list[str] | list[DnsDatabaseDnsentryItem] | None = ...,
         interface_select_method: Literal["auto", "sdwan", "specify"] | None = ...,
         interface: str | None = ...,
         vrf_select: int | None = ...,

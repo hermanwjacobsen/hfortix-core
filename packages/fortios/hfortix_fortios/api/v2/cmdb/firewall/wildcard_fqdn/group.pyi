@@ -26,8 +26,8 @@ from hfortix_fortios.models import (
 # TypedDict Payloads
 # ================================================================
 
-class GroupMemberItem:
-    """Nested item for member field - supports attribute access."""
+class GroupMemberItem(TypedDict, total=False):
+    """Nested item for member field."""
     name: str
 
 
@@ -35,7 +35,7 @@ class GroupPayload(TypedDict, total=False):
     """Payload type for Group operations."""
     name: str
     uuid: str
-    member: str | list[str] | list[dict[str, Any]] | list[GroupMemberItem]
+    member: str | list[str] | list[GroupMemberItem]
     color: int
     comment: str
 
@@ -145,7 +145,7 @@ class Group:
         payload_dict: GroupPayload | None = ...,
         name: str | None = ...,
         uuid: str | None = ...,
-        member: str | list[str] | list[dict[str, Any]] | list[GroupMemberItem] | None = ...,
+        member: str | list[str] | list[GroupMemberItem] | None = ...,
         color: int | None = ...,
         comment: str | None = ...,
         vdom: str | bool | None = ...,
@@ -162,7 +162,7 @@ class Group:
         payload_dict: GroupPayload | None = ...,
         name: str | None = ...,
         uuid: str | None = ...,
-        member: str | list[str] | list[dict[str, Any]] | list[GroupMemberItem] | None = ...,
+        member: str | list[str] | list[GroupMemberItem] | None = ...,
         color: int | None = ...,
         comment: str | None = ...,
         vdom: str | bool | None = ...,
@@ -197,7 +197,7 @@ class Group:
         payload_dict: GroupPayload | None = ...,
         name: str | None = ...,
         uuid: str | None = ...,
-        member: str | list[str] | list[dict[str, Any]] | list[GroupMemberItem] | None = ...,
+        member: str | list[str] | list[GroupMemberItem] | None = ...,
         color: int | None = ...,
         comment: str | None = ...,
         vdom: str | bool | None = ...,

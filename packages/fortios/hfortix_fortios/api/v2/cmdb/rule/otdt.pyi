@@ -26,14 +26,14 @@ from hfortix_fortios.models import (
 # TypedDict Payloads
 # ================================================================
 
-class OtdtParametersItem:
-    """Nested item for parameters field - supports attribute access."""
+class OtdtParametersItem(TypedDict, total=False):
+    """Nested item for parameters field."""
     name: str
     default_value: str
 
 
-class OtdtMetadataItem:
-    """Nested item for metadata field - supports attribute access."""
+class OtdtMetadataItem(TypedDict, total=False):
+    """Nested item for metadata field."""
     id: int
     metaid: int
     valueid: int
@@ -51,8 +51,8 @@ class OtdtPayload(TypedDict, total=False):
     technology: str
     behavior: str
     vendor: str
-    parameters: str | list[str] | list[dict[str, Any]] | list[OtdtParametersItem]
-    metadata: str | list[str] | list[dict[str, Any]] | list[OtdtMetadataItem]
+    parameters: str | list[str] | list[OtdtParametersItem]
+    metadata: str | list[str] | list[OtdtMetadataItem]
     status: str
 
 
@@ -182,8 +182,8 @@ class Otdt:
         technology: str | None = ...,
         behavior: str | None = ...,
         vendor: str | None = ...,
-        parameters: str | list[str] | list[dict[str, Any]] | list[OtdtParametersItem] | None = ...,
-        metadata: str | list[str] | list[dict[str, Any]] | list[OtdtMetadataItem] | None = ...,
+        parameters: str | list[str] | list[OtdtParametersItem] | None = ...,
+        metadata: str | list[str] | list[OtdtMetadataItem] | None = ...,
         status: str | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -206,8 +206,8 @@ class Otdt:
         technology: str | None = ...,
         behavior: str | None = ...,
         vendor: str | None = ...,
-        parameters: str | list[str] | list[dict[str, Any]] | list[OtdtParametersItem] | None = ...,
-        metadata: str | list[str] | list[dict[str, Any]] | list[OtdtMetadataItem] | None = ...,
+        parameters: str | list[str] | list[OtdtParametersItem] | None = ...,
+        metadata: str | list[str] | list[OtdtMetadataItem] | None = ...,
         status: str | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -246,8 +246,8 @@ class Otdt:
         technology: str | None = ...,
         behavior: str | None = ...,
         vendor: str | None = ...,
-        parameters: str | list[str] | list[dict[str, Any]] | list[OtdtParametersItem] | None = ...,
-        metadata: str | list[str] | list[dict[str, Any]] | list[OtdtMetadataItem] | None = ...,
+        parameters: str | list[str] | list[OtdtParametersItem] | None = ...,
+        metadata: str | list[str] | list[OtdtMetadataItem] | None = ...,
         status: str | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,

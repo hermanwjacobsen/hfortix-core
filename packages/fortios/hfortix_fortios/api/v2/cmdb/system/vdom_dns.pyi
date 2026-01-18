@@ -25,8 +25,8 @@ from hfortix_fortios.models import (
 # TypedDict Payloads
 # ================================================================
 
-class VdomDnsServerhostnameItem:
-    """Nested item for server-hostname field - supports attribute access."""
+class VdomDnsServerhostnameItem(TypedDict, total=False):
+    """Nested item for server-hostname field."""
     hostname: str
 
 
@@ -37,7 +37,7 @@ class VdomDnsPayload(TypedDict, total=False):
     secondary: str
     protocol: str | list[str]
     ssl_certificate: str
-    server_hostname: str | list[str] | list[dict[str, Any]] | list[VdomDnsServerhostnameItem]
+    server_hostname: str | list[str] | list[VdomDnsServerhostnameItem]
     ip6_primary: str
     ip6_secondary: str
     source_ip: str
@@ -160,7 +160,7 @@ class VdomDns:
         secondary: str | None = ...,
         protocol: str | list[str] | None = ...,
         ssl_certificate: str | None = ...,
-        server_hostname: str | list[str] | list[dict[str, Any]] | list[VdomDnsServerhostnameItem] | None = ...,
+        server_hostname: str | list[str] | list[VdomDnsServerhostnameItem] | None = ...,
         ip6_primary: str | None = ...,
         ip6_secondary: str | None = ...,
         source_ip: str | None = ...,
@@ -195,7 +195,7 @@ class VdomDns:
         secondary: str | None = ...,
         protocol: Literal["cleartext", "dot", "doh"] | list[str] | None = ...,
         ssl_certificate: str | None = ...,
-        server_hostname: str | list[str] | list[dict[str, Any]] | list[VdomDnsServerhostnameItem] | None = ...,
+        server_hostname: str | list[str] | list[VdomDnsServerhostnameItem] | None = ...,
         ip6_primary: str | None = ...,
         ip6_secondary: str | None = ...,
         source_ip: str | None = ...,

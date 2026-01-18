@@ -26,47 +26,47 @@ from hfortix_fortios.models import (
 # TypedDict Payloads
 # ================================================================
 
-class Phase1InterfaceCertificateItem:
-    """Nested item for certificate field - supports attribute access."""
+class Phase1InterfaceCertificateItem(TypedDict, total=False):
+    """Nested item for certificate field."""
     name: str
 
 
-class Phase1InterfaceMonitorItem:
-    """Nested item for monitor field - supports attribute access."""
+class Phase1InterfaceMonitorItem(TypedDict, total=False):
+    """Nested item for monitor field."""
     name: str
 
 
-class Phase1InterfaceInternaldomainlistItem:
-    """Nested item for internal-domain-list field - supports attribute access."""
+class Phase1InterfaceInternaldomainlistItem(TypedDict, total=False):
+    """Nested item for internal-domain-list field."""
     domain_name: str
 
 
-class Phase1InterfaceDnssuffixsearchItem:
-    """Nested item for dns-suffix-search field - supports attribute access."""
+class Phase1InterfaceDnssuffixsearchItem(TypedDict, total=False):
+    """Nested item for dns-suffix-search field."""
     dns_suffix: str
 
 
-class Phase1InterfaceIpv4excluderangeItem:
-    """Nested item for ipv4-exclude-range field - supports attribute access."""
+class Phase1InterfaceIpv4excluderangeItem(TypedDict, total=False):
+    """Nested item for ipv4-exclude-range field."""
     id: int
     start_ip: str
     end_ip: str
 
 
-class Phase1InterfaceIpv6excluderangeItem:
-    """Nested item for ipv6-exclude-range field - supports attribute access."""
+class Phase1InterfaceIpv6excluderangeItem(TypedDict, total=False):
+    """Nested item for ipv6-exclude-range field."""
     id: int
     start_ip: str
     end_ip: str
 
 
-class Phase1InterfaceBackupgatewayItem:
-    """Nested item for backup-gateway field - supports attribute access."""
+class Phase1InterfaceBackupgatewayItem(TypedDict, total=False):
+    """Nested item for backup-gateway field."""
     address: str
 
 
-class Phase1InterfaceRemotegwztnatagsItem:
-    """Nested item for remote-gw-ztna-tags field - supports attribute access."""
+class Phase1InterfaceRemotegwztnatagsItem(TypedDict, total=False):
+    """Nested item for remote-gw-ztna-tags field."""
     name: str
 
 
@@ -83,7 +83,7 @@ class Phase1InterfacePayload(TypedDict, total=False):
     remote_gw6: str
     remotegw_ddns: str
     keylife: int
-    certificate: str | list[str] | list[dict[str, Any]] | list[Phase1InterfaceCertificateItem]
+    certificate: str | list[str] | list[Phase1InterfaceCertificateItem]
     authmethod: Literal["psk", "signature"]
     authmethod_remote: Literal["psk", "signature"]
     mode: Literal["aggressive", "main"]
@@ -94,7 +94,7 @@ class Phase1InterfacePayload(TypedDict, total=False):
     usrgrp: str
     peer: str
     peergrp: str
-    monitor: str | list[str] | list[dict[str, Any]] | list[Phase1InterfaceMonitorItem]
+    monitor: str | list[str] | list[Phase1InterfaceMonitorItem]
     monitor_min: int
     monitor_hold_down_type: Literal["immediate", "delay", "time"]
     monitor_hold_down_delay: int
@@ -123,11 +123,11 @@ class Phase1InterfacePayload(TypedDict, total=False):
     ipv4_dns_server1: str
     ipv4_dns_server2: str
     ipv4_dns_server3: str
-    internal_domain_list: str | list[str] | list[dict[str, Any]] | list[Phase1InterfaceInternaldomainlistItem]
-    dns_suffix_search: str | list[str] | list[dict[str, Any]] | list[Phase1InterfaceDnssuffixsearchItem]
+    internal_domain_list: str | list[str] | list[Phase1InterfaceInternaldomainlistItem]
+    dns_suffix_search: str | list[str] | list[Phase1InterfaceDnssuffixsearchItem]
     ipv4_wins_server1: str
     ipv4_wins_server2: str
-    ipv4_exclude_range: str | list[str] | list[dict[str, Any]] | list[Phase1InterfaceIpv4excluderangeItem]
+    ipv4_exclude_range: str | list[str] | list[Phase1InterfaceIpv4excluderangeItem]
     ipv4_split_include: str
     split_include_service: str
     ipv4_name: str
@@ -137,7 +137,7 @@ class Phase1InterfacePayload(TypedDict, total=False):
     ipv6_dns_server1: str
     ipv6_dns_server2: str
     ipv6_dns_server3: str
-    ipv6_exclude_range: str | list[str] | list[dict[str, Any]] | list[Phase1InterfaceIpv6excluderangeItem]
+    ipv6_exclude_range: str | list[str] | list[Phase1InterfaceIpv6excluderangeItem]
     ipv6_split_include: str
     ipv6_name: str
     ip_delay_interval: int
@@ -150,7 +150,7 @@ class Phase1InterfacePayload(TypedDict, total=False):
     save_password: Literal["disable", "enable"]
     client_auto_negotiate: Literal["disable", "enable"]
     client_keep_alive: Literal["disable", "enable"]
-    backup_gateway: str | list[str] | list[dict[str, Any]] | list[Phase1InterfaceBackupgatewayItem]
+    backup_gateway: str | list[str] | list[Phase1InterfaceBackupgatewayItem]
     proposal: str | list[str]
     add_route: Literal["disable", "enable"]
     add_gw_route: Literal["enable", "disable"]
@@ -263,7 +263,7 @@ class Phase1InterfacePayload(TypedDict, total=False):
     remote_gw_start_ip: str
     remote_gw_end_ip: str
     remote_gw_country: str
-    remote_gw_ztna_tags: str | list[str] | list[dict[str, Any]] | list[Phase1InterfaceRemotegwztnatagsItem]
+    remote_gw_ztna_tags: str | list[str] | list[Phase1InterfaceRemotegwztnatagsItem]
     remote_gw6_match: Literal["any", "ipprefix", "iprange", "geography"]
     remote_gw6_subnet: str
     remote_gw6_start_ip: str
@@ -775,7 +775,7 @@ class Phase1Interface:
         remote_gw6: str | None = ...,
         remotegw_ddns: str | None = ...,
         keylife: int | None = ...,
-        certificate: str | list[str] | list[dict[str, Any]] | list[Phase1InterfaceCertificateItem] | None = ...,
+        certificate: str | list[str] | list[Phase1InterfaceCertificateItem] | None = ...,
         authmethod: Literal["psk", "signature"] | None = ...,
         authmethod_remote: Literal["psk", "signature"] | None = ...,
         mode: Literal["aggressive", "main"] | None = ...,
@@ -786,7 +786,7 @@ class Phase1Interface:
         usrgrp: str | None = ...,
         peer: str | None = ...,
         peergrp: str | None = ...,
-        monitor: str | list[str] | list[dict[str, Any]] | list[Phase1InterfaceMonitorItem] | None = ...,
+        monitor: str | list[str] | list[Phase1InterfaceMonitorItem] | None = ...,
         monitor_min: int | None = ...,
         monitor_hold_down_type: Literal["immediate", "delay", "time"] | None = ...,
         monitor_hold_down_delay: int | None = ...,
@@ -815,11 +815,11 @@ class Phase1Interface:
         ipv4_dns_server1: str | None = ...,
         ipv4_dns_server2: str | None = ...,
         ipv4_dns_server3: str | None = ...,
-        internal_domain_list: str | list[str] | list[dict[str, Any]] | list[Phase1InterfaceInternaldomainlistItem] | None = ...,
-        dns_suffix_search: str | list[str] | list[dict[str, Any]] | list[Phase1InterfaceDnssuffixsearchItem] | None = ...,
+        internal_domain_list: str | list[str] | list[Phase1InterfaceInternaldomainlistItem] | None = ...,
+        dns_suffix_search: str | list[str] | list[Phase1InterfaceDnssuffixsearchItem] | None = ...,
         ipv4_wins_server1: str | None = ...,
         ipv4_wins_server2: str | None = ...,
-        ipv4_exclude_range: str | list[str] | list[dict[str, Any]] | list[Phase1InterfaceIpv4excluderangeItem] | None = ...,
+        ipv4_exclude_range: str | list[str] | list[Phase1InterfaceIpv4excluderangeItem] | None = ...,
         ipv4_split_include: str | None = ...,
         split_include_service: str | None = ...,
         ipv4_name: str | None = ...,
@@ -829,7 +829,7 @@ class Phase1Interface:
         ipv6_dns_server1: str | None = ...,
         ipv6_dns_server2: str | None = ...,
         ipv6_dns_server3: str | None = ...,
-        ipv6_exclude_range: str | list[str] | list[dict[str, Any]] | list[Phase1InterfaceIpv6excluderangeItem] | None = ...,
+        ipv6_exclude_range: str | list[str] | list[Phase1InterfaceIpv6excluderangeItem] | None = ...,
         ipv6_split_include: str | None = ...,
         ipv6_name: str | None = ...,
         ip_delay_interval: int | None = ...,
@@ -842,7 +842,7 @@ class Phase1Interface:
         save_password: Literal["disable", "enable"] | None = ...,
         client_auto_negotiate: Literal["disable", "enable"] | None = ...,
         client_keep_alive: Literal["disable", "enable"] | None = ...,
-        backup_gateway: str | list[str] | list[dict[str, Any]] | list[Phase1InterfaceBackupgatewayItem] | None = ...,
+        backup_gateway: str | list[str] | list[Phase1InterfaceBackupgatewayItem] | None = ...,
         proposal: str | list[str] | None = ...,
         add_route: Literal["disable", "enable"] | None = ...,
         add_gw_route: Literal["enable", "disable"] | None = ...,
@@ -955,7 +955,7 @@ class Phase1Interface:
         remote_gw_start_ip: str | None = ...,
         remote_gw_end_ip: str | None = ...,
         remote_gw_country: str | None = ...,
-        remote_gw_ztna_tags: str | list[str] | list[dict[str, Any]] | list[Phase1InterfaceRemotegwztnatagsItem] | None = ...,
+        remote_gw_ztna_tags: str | list[str] | list[Phase1InterfaceRemotegwztnatagsItem] | None = ...,
         remote_gw6_match: Literal["any", "ipprefix", "iprange", "geography"] | None = ...,
         remote_gw6_subnet: str | None = ...,
         remote_gw6_start_ip: str | None = ...,
@@ -986,7 +986,7 @@ class Phase1Interface:
         remote_gw6: str | None = ...,
         remotegw_ddns: str | None = ...,
         keylife: int | None = ...,
-        certificate: str | list[str] | list[dict[str, Any]] | list[Phase1InterfaceCertificateItem] | None = ...,
+        certificate: str | list[str] | list[Phase1InterfaceCertificateItem] | None = ...,
         authmethod: Literal["psk", "signature"] | None = ...,
         authmethod_remote: Literal["psk", "signature"] | None = ...,
         mode: Literal["aggressive", "main"] | None = ...,
@@ -997,7 +997,7 @@ class Phase1Interface:
         usrgrp: str | None = ...,
         peer: str | None = ...,
         peergrp: str | None = ...,
-        monitor: str | list[str] | list[dict[str, Any]] | list[Phase1InterfaceMonitorItem] | None = ...,
+        monitor: str | list[str] | list[Phase1InterfaceMonitorItem] | None = ...,
         monitor_min: int | None = ...,
         monitor_hold_down_type: Literal["immediate", "delay", "time"] | None = ...,
         monitor_hold_down_delay: int | None = ...,
@@ -1026,11 +1026,11 @@ class Phase1Interface:
         ipv4_dns_server1: str | None = ...,
         ipv4_dns_server2: str | None = ...,
         ipv4_dns_server3: str | None = ...,
-        internal_domain_list: str | list[str] | list[dict[str, Any]] | list[Phase1InterfaceInternaldomainlistItem] | None = ...,
-        dns_suffix_search: str | list[str] | list[dict[str, Any]] | list[Phase1InterfaceDnssuffixsearchItem] | None = ...,
+        internal_domain_list: str | list[str] | list[Phase1InterfaceInternaldomainlistItem] | None = ...,
+        dns_suffix_search: str | list[str] | list[Phase1InterfaceDnssuffixsearchItem] | None = ...,
         ipv4_wins_server1: str | None = ...,
         ipv4_wins_server2: str | None = ...,
-        ipv4_exclude_range: str | list[str] | list[dict[str, Any]] | list[Phase1InterfaceIpv4excluderangeItem] | None = ...,
+        ipv4_exclude_range: str | list[str] | list[Phase1InterfaceIpv4excluderangeItem] | None = ...,
         ipv4_split_include: str | None = ...,
         split_include_service: str | None = ...,
         ipv4_name: str | None = ...,
@@ -1040,7 +1040,7 @@ class Phase1Interface:
         ipv6_dns_server1: str | None = ...,
         ipv6_dns_server2: str | None = ...,
         ipv6_dns_server3: str | None = ...,
-        ipv6_exclude_range: str | list[str] | list[dict[str, Any]] | list[Phase1InterfaceIpv6excluderangeItem] | None = ...,
+        ipv6_exclude_range: str | list[str] | list[Phase1InterfaceIpv6excluderangeItem] | None = ...,
         ipv6_split_include: str | None = ...,
         ipv6_name: str | None = ...,
         ip_delay_interval: int | None = ...,
@@ -1053,7 +1053,7 @@ class Phase1Interface:
         save_password: Literal["disable", "enable"] | None = ...,
         client_auto_negotiate: Literal["disable", "enable"] | None = ...,
         client_keep_alive: Literal["disable", "enable"] | None = ...,
-        backup_gateway: str | list[str] | list[dict[str, Any]] | list[Phase1InterfaceBackupgatewayItem] | None = ...,
+        backup_gateway: str | list[str] | list[Phase1InterfaceBackupgatewayItem] | None = ...,
         proposal: str | list[str] | None = ...,
         add_route: Literal["disable", "enable"] | None = ...,
         add_gw_route: Literal["enable", "disable"] | None = ...,
@@ -1166,7 +1166,7 @@ class Phase1Interface:
         remote_gw_start_ip: str | None = ...,
         remote_gw_end_ip: str | None = ...,
         remote_gw_country: str | None = ...,
-        remote_gw_ztna_tags: str | list[str] | list[dict[str, Any]] | list[Phase1InterfaceRemotegwztnatagsItem] | None = ...,
+        remote_gw_ztna_tags: str | list[str] | list[Phase1InterfaceRemotegwztnatagsItem] | None = ...,
         remote_gw6_match: Literal["any", "ipprefix", "iprange", "geography"] | None = ...,
         remote_gw6_subnet: str | None = ...,
         remote_gw6_start_ip: str | None = ...,
@@ -1215,7 +1215,7 @@ class Phase1Interface:
         remote_gw6: str | None = ...,
         remotegw_ddns: str | None = ...,
         keylife: int | None = ...,
-        certificate: str | list[str] | list[dict[str, Any]] | list[Phase1InterfaceCertificateItem] | None = ...,
+        certificate: str | list[str] | list[Phase1InterfaceCertificateItem] | None = ...,
         authmethod: Literal["psk", "signature"] | None = ...,
         authmethod_remote: Literal["psk", "signature"] | None = ...,
         mode: Literal["aggressive", "main"] | None = ...,
@@ -1226,7 +1226,7 @@ class Phase1Interface:
         usrgrp: str | None = ...,
         peer: str | None = ...,
         peergrp: str | None = ...,
-        monitor: str | list[str] | list[dict[str, Any]] | list[Phase1InterfaceMonitorItem] | None = ...,
+        monitor: str | list[str] | list[Phase1InterfaceMonitorItem] | None = ...,
         monitor_min: int | None = ...,
         monitor_hold_down_type: Literal["immediate", "delay", "time"] | None = ...,
         monitor_hold_down_delay: int | None = ...,
@@ -1255,11 +1255,11 @@ class Phase1Interface:
         ipv4_dns_server1: str | None = ...,
         ipv4_dns_server2: str | None = ...,
         ipv4_dns_server3: str | None = ...,
-        internal_domain_list: str | list[str] | list[dict[str, Any]] | list[Phase1InterfaceInternaldomainlistItem] | None = ...,
-        dns_suffix_search: str | list[str] | list[dict[str, Any]] | list[Phase1InterfaceDnssuffixsearchItem] | None = ...,
+        internal_domain_list: str | list[str] | list[Phase1InterfaceInternaldomainlistItem] | None = ...,
+        dns_suffix_search: str | list[str] | list[Phase1InterfaceDnssuffixsearchItem] | None = ...,
         ipv4_wins_server1: str | None = ...,
         ipv4_wins_server2: str | None = ...,
-        ipv4_exclude_range: str | list[str] | list[dict[str, Any]] | list[Phase1InterfaceIpv4excluderangeItem] | None = ...,
+        ipv4_exclude_range: str | list[str] | list[Phase1InterfaceIpv4excluderangeItem] | None = ...,
         ipv4_split_include: str | None = ...,
         split_include_service: str | None = ...,
         ipv4_name: str | None = ...,
@@ -1269,7 +1269,7 @@ class Phase1Interface:
         ipv6_dns_server1: str | None = ...,
         ipv6_dns_server2: str | None = ...,
         ipv6_dns_server3: str | None = ...,
-        ipv6_exclude_range: str | list[str] | list[dict[str, Any]] | list[Phase1InterfaceIpv6excluderangeItem] | None = ...,
+        ipv6_exclude_range: str | list[str] | list[Phase1InterfaceIpv6excluderangeItem] | None = ...,
         ipv6_split_include: str | None = ...,
         ipv6_name: str | None = ...,
         ip_delay_interval: int | None = ...,
@@ -1282,7 +1282,7 @@ class Phase1Interface:
         save_password: Literal["disable", "enable"] | None = ...,
         client_auto_negotiate: Literal["disable", "enable"] | None = ...,
         client_keep_alive: Literal["disable", "enable"] | None = ...,
-        backup_gateway: str | list[str] | list[dict[str, Any]] | list[Phase1InterfaceBackupgatewayItem] | None = ...,
+        backup_gateway: str | list[str] | list[Phase1InterfaceBackupgatewayItem] | None = ...,
         proposal: Literal["des-md5", "des-sha1", "des-sha256", "des-sha384", "des-sha512", "3des-md5", "3des-sha1", "3des-sha256", "3des-sha384", "3des-sha512", "aes128-md5", "aes128-sha1", "aes128-sha256", "aes128-sha384", "aes128-sha512", "aes128gcm-prfsha1", "aes128gcm-prfsha256", "aes128gcm-prfsha384", "aes128gcm-prfsha512", "aes192-md5", "aes192-sha1", "aes192-sha256", "aes192-sha384", "aes192-sha512", "aes256-md5", "aes256-sha1", "aes256-sha256", "aes256-sha384", "aes256-sha512", "aes256gcm-prfsha1", "aes256gcm-prfsha256", "aes256gcm-prfsha384", "aes256gcm-prfsha512", "chacha20poly1305-prfsha1", "chacha20poly1305-prfsha256", "chacha20poly1305-prfsha384", "chacha20poly1305-prfsha512", "aria128-md5", "aria128-sha1", "aria128-sha256", "aria128-sha384", "aria128-sha512", "aria192-md5", "aria192-sha1", "aria192-sha256", "aria192-sha384", "aria192-sha512", "aria256-md5", "aria256-sha1", "aria256-sha256", "aria256-sha384", "aria256-sha512", "seed-md5", "seed-sha1", "seed-sha256", "seed-sha384", "seed-sha512"] | list[str] | None = ...,
         add_route: Literal["disable", "enable"] | None = ...,
         add_gw_route: Literal["enable", "disable"] | None = ...,
@@ -1395,7 +1395,7 @@ class Phase1Interface:
         remote_gw_start_ip: str | None = ...,
         remote_gw_end_ip: str | None = ...,
         remote_gw_country: str | None = ...,
-        remote_gw_ztna_tags: str | list[str] | list[dict[str, Any]] | list[Phase1InterfaceRemotegwztnatagsItem] | None = ...,
+        remote_gw_ztna_tags: str | list[str] | list[Phase1InterfaceRemotegwztnatagsItem] | None = ...,
         remote_gw6_match: Literal["any", "ipprefix", "iprange", "geography"] | None = ...,
         remote_gw6_subnet: str | None = ...,
         remote_gw6_start_ip: str | None = ...,

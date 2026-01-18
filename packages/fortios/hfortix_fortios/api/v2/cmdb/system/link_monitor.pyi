@@ -26,18 +26,18 @@ from hfortix_fortios.models import (
 # TypedDict Payloads
 # ================================================================
 
-class LinkMonitorServerItem:
-    """Nested item for server field - supports attribute access."""
+class LinkMonitorServerItem(TypedDict, total=False):
+    """Nested item for server field."""
     address: str
 
 
-class LinkMonitorRouteItem:
-    """Nested item for route field - supports attribute access."""
+class LinkMonitorRouteItem(TypedDict, total=False):
+    """Nested item for route field."""
     subnet: str
 
 
-class LinkMonitorServerlistItem:
-    """Nested item for server-list field - supports attribute access."""
+class LinkMonitorServerlistItem(TypedDict, total=False):
+    """Nested item for server-list field."""
     id: int
     dst: str
     protocol: Literal["ping", "tcp-echo", "udp-echo", "http", "https", "twamp"]
@@ -52,12 +52,12 @@ class LinkMonitorPayload(TypedDict, total=False):
     srcintf: str
     server_config: Literal["default", "individual"]
     server_type: Literal["static", "dynamic"]
-    server: str | list[str] | list[dict[str, Any]] | list[LinkMonitorServerItem]
+    server: str | list[str] | list[LinkMonitorServerItem]
     protocol: str | list[str]
     port: int
     gateway_ip: str
     gateway_ip6: str
-    route: str | list[str] | list[dict[str, Any]] | list[LinkMonitorRouteItem]
+    route: str | list[str] | list[LinkMonitorRouteItem]
     source_ip: str
     source_ip6: str
     http_get: str
@@ -80,7 +80,7 @@ class LinkMonitorPayload(TypedDict, total=False):
     diffservcode: str
     class_id: int
     service_detection: Literal["enable", "disable"]
-    server_list: str | list[str] | list[dict[str, Any]] | list[LinkMonitorServerlistItem]
+    server_list: str | list[str] | list[LinkMonitorServerlistItem]
 
 
 # ================================================================
@@ -249,12 +249,12 @@ class LinkMonitor:
         srcintf: str | None = ...,
         server_config: Literal["default", "individual"] | None = ...,
         server_type: Literal["static", "dynamic"] | None = ...,
-        server: str | list[str] | list[dict[str, Any]] | list[LinkMonitorServerItem] | None = ...,
+        server: str | list[str] | list[LinkMonitorServerItem] | None = ...,
         protocol: str | list[str] | None = ...,
         port: int | None = ...,
         gateway_ip: str | None = ...,
         gateway_ip6: str | None = ...,
-        route: str | list[str] | list[dict[str, Any]] | list[LinkMonitorRouteItem] | None = ...,
+        route: str | list[str] | list[LinkMonitorRouteItem] | None = ...,
         source_ip: str | None = ...,
         source_ip6: str | None = ...,
         http_get: str | None = ...,
@@ -277,7 +277,7 @@ class LinkMonitor:
         diffservcode: str | None = ...,
         class_id: int | None = ...,
         service_detection: Literal["enable", "disable"] | None = ...,
-        server_list: str | list[str] | list[dict[str, Any]] | list[LinkMonitorServerlistItem] | None = ...,
+        server_list: str | list[str] | list[LinkMonitorServerlistItem] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -295,12 +295,12 @@ class LinkMonitor:
         srcintf: str | None = ...,
         server_config: Literal["default", "individual"] | None = ...,
         server_type: Literal["static", "dynamic"] | None = ...,
-        server: str | list[str] | list[dict[str, Any]] | list[LinkMonitorServerItem] | None = ...,
+        server: str | list[str] | list[LinkMonitorServerItem] | None = ...,
         protocol: str | list[str] | None = ...,
         port: int | None = ...,
         gateway_ip: str | None = ...,
         gateway_ip6: str | None = ...,
-        route: str | list[str] | list[dict[str, Any]] | list[LinkMonitorRouteItem] | None = ...,
+        route: str | list[str] | list[LinkMonitorRouteItem] | None = ...,
         source_ip: str | None = ...,
         source_ip6: str | None = ...,
         http_get: str | None = ...,
@@ -323,7 +323,7 @@ class LinkMonitor:
         diffservcode: str | None = ...,
         class_id: int | None = ...,
         service_detection: Literal["enable", "disable"] | None = ...,
-        server_list: str | list[str] | list[dict[str, Any]] | list[LinkMonitorServerlistItem] | None = ...,
+        server_list: str | list[str] | list[LinkMonitorServerlistItem] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -359,12 +359,12 @@ class LinkMonitor:
         srcintf: str | None = ...,
         server_config: Literal["default", "individual"] | None = ...,
         server_type: Literal["static", "dynamic"] | None = ...,
-        server: str | list[str] | list[dict[str, Any]] | list[LinkMonitorServerItem] | None = ...,
+        server: str | list[str] | list[LinkMonitorServerItem] | None = ...,
         protocol: Literal["ping", "tcp-echo", "udp-echo", "http", "https", "twamp"] | list[str] | None = ...,
         port: int | None = ...,
         gateway_ip: str | None = ...,
         gateway_ip6: str | None = ...,
-        route: str | list[str] | list[dict[str, Any]] | list[LinkMonitorRouteItem] | None = ...,
+        route: str | list[str] | list[LinkMonitorRouteItem] | None = ...,
         source_ip: str | None = ...,
         source_ip6: str | None = ...,
         http_get: str | None = ...,
@@ -387,7 +387,7 @@ class LinkMonitor:
         diffservcode: str | None = ...,
         class_id: int | None = ...,
         service_detection: Literal["enable", "disable"] | None = ...,
-        server_list: str | list[str] | list[dict[str, Any]] | list[LinkMonitorServerlistItem] | None = ...,
+        server_list: str | list[str] | list[LinkMonitorServerlistItem] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,

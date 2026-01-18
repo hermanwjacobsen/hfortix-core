@@ -25,13 +25,13 @@ from hfortix_fortios.models import (
 # TypedDict Payloads
 # ================================================================
 
-class FederatedUpgradeKnownhamembersItem:
-    """Nested item for known-ha-members field - supports attribute access."""
+class FederatedUpgradeKnownhamembersItem(TypedDict, total=False):
+    """Nested item for known-ha-members field."""
     serial: str
 
 
-class FederatedUpgradeNodelistItem:
-    """Nested item for node-list field - supports attribute access."""
+class FederatedUpgradeNodelistItem(TypedDict, total=False):
+    """Nested item for node-list field."""
     serial: str
     timing: Literal["immediate", "scheduled"]
     maximum_minutes: int
@@ -54,10 +54,10 @@ class FederatedUpgradePayload(TypedDict, total=False):
     next_path_index: int
     ignore_signing_errors: Literal["enable", "disable"]
     ha_reboot_controller: str
-    known_ha_members: str | list[str] | list[dict[str, Any]] | list[FederatedUpgradeKnownhamembersItem]
+    known_ha_members: str | list[str] | list[FederatedUpgradeKnownhamembersItem]
     initial_version: str
     starter_admin: str
-    node_list: str | list[str] | list[dict[str, Any]] | list[FederatedUpgradeNodelistItem]
+    node_list: str | list[str] | list[FederatedUpgradeNodelistItem]
 
 
 # ================================================================
@@ -163,10 +163,10 @@ class FederatedUpgrade:
         next_path_index: int | None = ...,
         ignore_signing_errors: Literal["enable", "disable"] | None = ...,
         ha_reboot_controller: str | None = ...,
-        known_ha_members: str | list[str] | list[dict[str, Any]] | list[FederatedUpgradeKnownhamembersItem] | None = ...,
+        known_ha_members: str | list[str] | list[FederatedUpgradeKnownhamembersItem] | None = ...,
         initial_version: str | None = ...,
         starter_admin: str | None = ...,
-        node_list: str | list[str] | list[dict[str, Any]] | list[FederatedUpgradeNodelistItem] | None = ...,
+        node_list: str | list[str] | list[FederatedUpgradeNodelistItem] | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> FederatedUpgradeObject: ...
@@ -192,10 +192,10 @@ class FederatedUpgrade:
         next_path_index: int | None = ...,
         ignore_signing_errors: Literal["enable", "disable"] | None = ...,
         ha_reboot_controller: str | None = ...,
-        known_ha_members: str | list[str] | list[dict[str, Any]] | list[FederatedUpgradeKnownhamembersItem] | None = ...,
+        known_ha_members: str | list[str] | list[FederatedUpgradeKnownhamembersItem] | None = ...,
         initial_version: str | None = ...,
         starter_admin: str | None = ...,
-        node_list: str | list[str] | list[dict[str, Any]] | list[FederatedUpgradeNodelistItem] | None = ...,
+        node_list: str | list[str] | list[FederatedUpgradeNodelistItem] | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> FortiObject: ...

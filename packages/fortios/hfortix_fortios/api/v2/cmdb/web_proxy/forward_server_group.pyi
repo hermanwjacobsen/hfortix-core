@@ -26,8 +26,8 @@ from hfortix_fortios.models import (
 # TypedDict Payloads
 # ================================================================
 
-class ForwardServerGroupServerlistItem:
-    """Nested item for server-list field - supports attribute access."""
+class ForwardServerGroupServerlistItem(TypedDict, total=False):
+    """Nested item for server-list field."""
     name: str
     weight: int
 
@@ -38,7 +38,7 @@ class ForwardServerGroupPayload(TypedDict, total=False):
     affinity: Literal["enable", "disable"]
     ldb_method: Literal["weighted", "least-session", "active-passive"]
     group_down_option: Literal["block", "pass"]
-    server_list: str | list[str] | list[dict[str, Any]] | list[ForwardServerGroupServerlistItem]
+    server_list: str | list[str] | list[ForwardServerGroupServerlistItem]
 
 
 # ================================================================
@@ -148,7 +148,7 @@ class ForwardServerGroup:
         affinity: Literal["enable", "disable"] | None = ...,
         ldb_method: Literal["weighted", "least-session", "active-passive"] | None = ...,
         group_down_option: Literal["block", "pass"] | None = ...,
-        server_list: str | list[str] | list[dict[str, Any]] | list[ForwardServerGroupServerlistItem] | None = ...,
+        server_list: str | list[str] | list[ForwardServerGroupServerlistItem] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -165,7 +165,7 @@ class ForwardServerGroup:
         affinity: Literal["enable", "disable"] | None = ...,
         ldb_method: Literal["weighted", "least-session", "active-passive"] | None = ...,
         group_down_option: Literal["block", "pass"] | None = ...,
-        server_list: str | list[str] | list[dict[str, Any]] | list[ForwardServerGroupServerlistItem] | None = ...,
+        server_list: str | list[str] | list[ForwardServerGroupServerlistItem] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -200,7 +200,7 @@ class ForwardServerGroup:
         affinity: Literal["enable", "disable"] | None = ...,
         ldb_method: Literal["weighted", "least-session", "active-passive"] | None = ...,
         group_down_option: Literal["block", "pass"] | None = ...,
-        server_list: str | list[str] | list[dict[str, Any]] | list[ForwardServerGroupServerlistItem] | None = ...,
+        server_list: str | list[str] | list[ForwardServerGroupServerlistItem] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,

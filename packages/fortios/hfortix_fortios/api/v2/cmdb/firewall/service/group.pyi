@@ -26,8 +26,8 @@ from hfortix_fortios.models import (
 # TypedDict Payloads
 # ================================================================
 
-class GroupMemberItem:
-    """Nested item for member field - supports attribute access."""
+class GroupMemberItem(TypedDict, total=False):
+    """Nested item for member field."""
     name: str
 
 
@@ -36,7 +36,7 @@ class GroupPayload(TypedDict, total=False):
     name: str
     uuid: str
     proxy: Literal["enable", "disable"]
-    member: str | list[str] | list[dict[str, Any]] | list[GroupMemberItem]
+    member: str | list[str] | list[GroupMemberItem]
     comment: str
     color: int
     fabric_object: Literal["enable", "disable"]
@@ -152,7 +152,7 @@ class Group:
         name: str | None = ...,
         uuid: str | None = ...,
         proxy: Literal["enable", "disable"] | None = ...,
-        member: str | list[str] | list[dict[str, Any]] | list[GroupMemberItem] | None = ...,
+        member: str | list[str] | list[GroupMemberItem] | None = ...,
         comment: str | None = ...,
         color: int | None = ...,
         fabric_object: Literal["enable", "disable"] | None = ...,
@@ -171,7 +171,7 @@ class Group:
         name: str | None = ...,
         uuid: str | None = ...,
         proxy: Literal["enable", "disable"] | None = ...,
-        member: str | list[str] | list[dict[str, Any]] | list[GroupMemberItem] | None = ...,
+        member: str | list[str] | list[GroupMemberItem] | None = ...,
         comment: str | None = ...,
         color: int | None = ...,
         fabric_object: Literal["enable", "disable"] | None = ...,
@@ -208,7 +208,7 @@ class Group:
         name: str | None = ...,
         uuid: str | None = ...,
         proxy: Literal["enable", "disable"] | None = ...,
-        member: str | list[str] | list[dict[str, Any]] | list[GroupMemberItem] | None = ...,
+        member: str | list[str] | list[GroupMemberItem] | None = ...,
         comment: str | None = ...,
         color: int | None = ...,
         fabric_object: Literal["enable", "disable"] | None = ...,

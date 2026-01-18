@@ -25,8 +25,8 @@ from hfortix_fortios.models import (
 # TypedDict Payloads
 # ================================================================
 
-class NtpNtpserverItem:
-    """Nested item for ntpserver field - supports attribute access."""
+class NtpNtpserverItem(TypedDict, total=False):
+    """Nested item for ntpserver field."""
     id: int
     server: str
     ntpv3: Literal["enable", "disable"]
@@ -40,8 +40,8 @@ class NtpNtpserverItem:
     vrf_select: int
 
 
-class NtpInterfaceItem:
-    """Nested item for interface field - supports attribute access."""
+class NtpInterfaceItem(TypedDict, total=False):
+    """Nested item for interface field."""
     interface_name: str
 
 
@@ -50,7 +50,7 @@ class NtpPayload(TypedDict, total=False):
     ntpsync: Literal["enable", "disable"]
     type: Literal["fortiguard", "custom"]
     syncinterval: int
-    ntpserver: str | list[str] | list[dict[str, Any]] | list[NtpNtpserverItem]
+    ntpserver: str | list[str] | list[NtpNtpserverItem]
     source_ip: str
     source_ip6: str
     server_mode: Literal["enable", "disable"]
@@ -58,7 +58,7 @@ class NtpPayload(TypedDict, total=False):
     key_type: Literal["MD5", "SHA1", "SHA256"]
     key: str
     key_id: int
-    interface: str | list[str] | list[dict[str, Any]] | list[NtpInterfaceItem]
+    interface: str | list[str] | list[NtpInterfaceItem]
 
 
 # ================================================================
@@ -159,7 +159,7 @@ class Ntp:
         ntpsync: Literal["enable", "disable"] | None = ...,
         type: Literal["fortiguard", "custom"] | None = ...,
         syncinterval: int | None = ...,
-        ntpserver: str | list[str] | list[dict[str, Any]] | list[NtpNtpserverItem] | None = ...,
+        ntpserver: str | list[str] | list[NtpNtpserverItem] | None = ...,
         source_ip: str | None = ...,
         source_ip6: str | None = ...,
         server_mode: Literal["enable", "disable"] | None = ...,
@@ -167,7 +167,7 @@ class Ntp:
         key_type: Literal["MD5", "SHA1", "SHA256"] | None = ...,
         key: str | None = ...,
         key_id: int | None = ...,
-        interface: str | list[str] | list[dict[str, Any]] | list[NtpInterfaceItem] | None = ...,
+        interface: str | list[str] | list[NtpInterfaceItem] | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> NtpObject: ...
@@ -188,7 +188,7 @@ class Ntp:
         ntpsync: Literal["enable", "disable"] | None = ...,
         type: Literal["fortiguard", "custom"] | None = ...,
         syncinterval: int | None = ...,
-        ntpserver: str | list[str] | list[dict[str, Any]] | list[NtpNtpserverItem] | None = ...,
+        ntpserver: str | list[str] | list[NtpNtpserverItem] | None = ...,
         source_ip: str | None = ...,
         source_ip6: str | None = ...,
         server_mode: Literal["enable", "disable"] | None = ...,
@@ -196,7 +196,7 @@ class Ntp:
         key_type: Literal["MD5", "SHA1", "SHA256"] | None = ...,
         key: str | None = ...,
         key_id: int | None = ...,
-        interface: str | list[str] | list[dict[str, Any]] | list[NtpInterfaceItem] | None = ...,
+        interface: str | list[str] | list[NtpInterfaceItem] | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> FortiObject: ...

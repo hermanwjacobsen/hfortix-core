@@ -26,8 +26,8 @@ from hfortix_fortios.models import (
 # TypedDict Payloads
 # ================================================================
 
-class IpDscpMapMapItem:
-    """Nested item for map field - supports attribute access."""
+class IpDscpMapMapItem(TypedDict, total=False):
+    """Nested item for map field."""
     name: str
     cos_queue: int
     diffserv: Literal["CS0", "CS1", "AF11", "AF12", "AF13", "CS2", "AF21", "AF22", "AF23", "CS3", "AF31", "AF32", "AF33", "CS4", "AF41", "AF42", "AF43", "CS5", "EF", "CS6", "CS7"]
@@ -39,7 +39,7 @@ class IpDscpMapPayload(TypedDict, total=False):
     """Payload type for IpDscpMap operations."""
     name: str
     description: str
-    map: str | list[str] | list[dict[str, Any]] | list[IpDscpMapMapItem]
+    map: str | list[str] | list[IpDscpMapMapItem]
 
 
 # ================================================================
@@ -143,7 +143,7 @@ class IpDscpMap:
         payload_dict: IpDscpMapPayload | None = ...,
         name: str | None = ...,
         description: str | None = ...,
-        map: str | list[str] | list[dict[str, Any]] | list[IpDscpMapMapItem] | None = ...,
+        map: str | list[str] | list[IpDscpMapMapItem] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -158,7 +158,7 @@ class IpDscpMap:
         payload_dict: IpDscpMapPayload | None = ...,
         name: str | None = ...,
         description: str | None = ...,
-        map: str | list[str] | list[dict[str, Any]] | list[IpDscpMapMapItem] | None = ...,
+        map: str | list[str] | list[IpDscpMapMapItem] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -191,7 +191,7 @@ class IpDscpMap:
         payload_dict: IpDscpMapPayload | None = ...,
         name: str | None = ...,
         description: str | None = ...,
-        map: str | list[str] | list[dict[str, Any]] | list[IpDscpMapMapItem] | None = ...,
+        map: str | list[str] | list[IpDscpMapMapItem] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,

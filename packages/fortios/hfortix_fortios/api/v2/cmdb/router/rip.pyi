@@ -25,16 +25,16 @@ from hfortix_fortios.models import (
 # TypedDict Payloads
 # ================================================================
 
-class RipDistanceItem:
-    """Nested item for distance field - supports attribute access."""
+class RipDistanceItem(TypedDict, total=False):
+    """Nested item for distance field."""
     id: int
     prefix: str
     distance: int
     access_list: str
 
 
-class RipDistributelistItem:
-    """Nested item for distribute-list field - supports attribute access."""
+class RipDistributelistItem(TypedDict, total=False):
+    """Nested item for distribute-list field."""
     id: int
     status: Literal["enable", "disable"]
     direction: Literal["in", "out"]
@@ -42,20 +42,20 @@ class RipDistributelistItem:
     interface: str
 
 
-class RipNeighborItem:
-    """Nested item for neighbor field - supports attribute access."""
+class RipNeighborItem(TypedDict, total=False):
+    """Nested item for neighbor field."""
     id: int
     ip: str
 
 
-class RipNetworkItem:
-    """Nested item for network field - supports attribute access."""
+class RipNetworkItem(TypedDict, total=False):
+    """Nested item for network field."""
     id: int
     prefix: str
 
 
-class RipOffsetlistItem:
-    """Nested item for offset-list field - supports attribute access."""
+class RipOffsetlistItem(TypedDict, total=False):
+    """Nested item for offset-list field."""
     id: int
     status: Literal["enable", "disable"]
     direction: Literal["in", "out"]
@@ -64,21 +64,21 @@ class RipOffsetlistItem:
     interface: str
 
 
-class RipPassiveinterfaceItem:
-    """Nested item for passive-interface field - supports attribute access."""
+class RipPassiveinterfaceItem(TypedDict, total=False):
+    """Nested item for passive-interface field."""
     name: str
 
 
-class RipRedistributeItem:
-    """Nested item for redistribute field - supports attribute access."""
+class RipRedistributeItem(TypedDict, total=False):
+    """Nested item for redistribute field."""
     name: str
     status: Literal["enable", "disable"]
     metric: int
     routemap: str
 
 
-class RipInterfaceItem:
-    """Nested item for interface field - supports attribute access."""
+class RipInterfaceItem(TypedDict, total=False):
+    """Nested item for interface field."""
     name: str
     auth_keychain: str
     auth_mode: Literal["none", "text", "md5"]
@@ -96,18 +96,18 @@ class RipPayload(TypedDict, total=False):
     default_information_originate: Literal["enable", "disable"]
     default_metric: int
     max_out_metric: int
-    distance: str | list[str] | list[dict[str, Any]] | list[RipDistanceItem]
-    distribute_list: str | list[str] | list[dict[str, Any]] | list[RipDistributelistItem]
-    neighbor: str | list[str] | list[dict[str, Any]] | list[RipNeighborItem]
-    network: str | list[str] | list[dict[str, Any]] | list[RipNetworkItem]
-    offset_list: str | list[str] | list[dict[str, Any]] | list[RipOffsetlistItem]
-    passive_interface: str | list[str] | list[dict[str, Any]] | list[RipPassiveinterfaceItem]
-    redistribute: str | list[str] | list[dict[str, Any]] | list[RipRedistributeItem]
+    distance: str | list[str] | list[RipDistanceItem]
+    distribute_list: str | list[str] | list[RipDistributelistItem]
+    neighbor: str | list[str] | list[RipNeighborItem]
+    network: str | list[str] | list[RipNetworkItem]
+    offset_list: str | list[str] | list[RipOffsetlistItem]
+    passive_interface: str | list[str] | list[RipPassiveinterfaceItem]
+    redistribute: str | list[str] | list[RipRedistributeItem]
     update_timer: int
     timeout_timer: int
     garbage_timer: int
     version: Literal["1", "2"]
-    interface: str | list[str] | list[dict[str, Any]] | list[RipInterfaceItem]
+    interface: str | list[str] | list[RipInterfaceItem]
 
 
 # ================================================================
@@ -215,18 +215,18 @@ class Rip:
         default_information_originate: Literal["enable", "disable"] | None = ...,
         default_metric: int | None = ...,
         max_out_metric: int | None = ...,
-        distance: str | list[str] | list[dict[str, Any]] | list[RipDistanceItem] | None = ...,
-        distribute_list: str | list[str] | list[dict[str, Any]] | list[RipDistributelistItem] | None = ...,
-        neighbor: str | list[str] | list[dict[str, Any]] | list[RipNeighborItem] | None = ...,
-        network: str | list[str] | list[dict[str, Any]] | list[RipNetworkItem] | None = ...,
-        offset_list: str | list[str] | list[dict[str, Any]] | list[RipOffsetlistItem] | None = ...,
-        passive_interface: str | list[str] | list[dict[str, Any]] | list[RipPassiveinterfaceItem] | None = ...,
-        redistribute: str | list[str] | list[dict[str, Any]] | list[RipRedistributeItem] | None = ...,
+        distance: str | list[str] | list[RipDistanceItem] | None = ...,
+        distribute_list: str | list[str] | list[RipDistributelistItem] | None = ...,
+        neighbor: str | list[str] | list[RipNeighborItem] | None = ...,
+        network: str | list[str] | list[RipNetworkItem] | None = ...,
+        offset_list: str | list[str] | list[RipOffsetlistItem] | None = ...,
+        passive_interface: str | list[str] | list[RipPassiveinterfaceItem] | None = ...,
+        redistribute: str | list[str] | list[RipRedistributeItem] | None = ...,
         update_timer: int | None = ...,
         timeout_timer: int | None = ...,
         garbage_timer: int | None = ...,
         version: Literal["1", "2"] | None = ...,
-        interface: str | list[str] | list[dict[str, Any]] | list[RipInterfaceItem] | None = ...,
+        interface: str | list[str] | list[RipInterfaceItem] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -249,18 +249,18 @@ class Rip:
         default_information_originate: Literal["enable", "disable"] | None = ...,
         default_metric: int | None = ...,
         max_out_metric: int | None = ...,
-        distance: str | list[str] | list[dict[str, Any]] | list[RipDistanceItem] | None = ...,
-        distribute_list: str | list[str] | list[dict[str, Any]] | list[RipDistributelistItem] | None = ...,
-        neighbor: str | list[str] | list[dict[str, Any]] | list[RipNeighborItem] | None = ...,
-        network: str | list[str] | list[dict[str, Any]] | list[RipNetworkItem] | None = ...,
-        offset_list: str | list[str] | list[dict[str, Any]] | list[RipOffsetlistItem] | None = ...,
-        passive_interface: str | list[str] | list[dict[str, Any]] | list[RipPassiveinterfaceItem] | None = ...,
-        redistribute: str | list[str] | list[dict[str, Any]] | list[RipRedistributeItem] | None = ...,
+        distance: str | list[str] | list[RipDistanceItem] | None = ...,
+        distribute_list: str | list[str] | list[RipDistributelistItem] | None = ...,
+        neighbor: str | list[str] | list[RipNeighborItem] | None = ...,
+        network: str | list[str] | list[RipNetworkItem] | None = ...,
+        offset_list: str | list[str] | list[RipOffsetlistItem] | None = ...,
+        passive_interface: str | list[str] | list[RipPassiveinterfaceItem] | None = ...,
+        redistribute: str | list[str] | list[RipRedistributeItem] | None = ...,
         update_timer: int | None = ...,
         timeout_timer: int | None = ...,
         garbage_timer: int | None = ...,
         version: Literal["1", "2"] | None = ...,
-        interface: str | list[str] | list[dict[str, Any]] | list[RipInterfaceItem] | None = ...,
+        interface: str | list[str] | list[RipInterfaceItem] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,

@@ -26,8 +26,8 @@ from hfortix_fortios.models import (
 # TypedDict Payloads
 # ================================================================
 
-class IconIconlistItem:
-    """Nested item for icon-list field - supports attribute access."""
+class IconIconlistItem(TypedDict, total=False):
+    """Nested item for icon-list field."""
     name: str
     lang: str
     file: str
@@ -39,7 +39,7 @@ class IconIconlistItem:
 class IconPayload(TypedDict, total=False):
     """Payload type for Icon operations."""
     name: str
-    icon_list: str | list[str] | list[dict[str, Any]] | list[IconIconlistItem]
+    icon_list: str | list[str] | list[IconIconlistItem]
 
 
 # ================================================================
@@ -140,7 +140,7 @@ class Icon:
         self,
         payload_dict: IconPayload | None = ...,
         name: str | None = ...,
-        icon_list: str | list[str] | list[dict[str, Any]] | list[IconIconlistItem] | None = ...,
+        icon_list: str | list[str] | list[IconIconlistItem] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -154,7 +154,7 @@ class Icon:
         self,
         payload_dict: IconPayload | None = ...,
         name: str | None = ...,
-        icon_list: str | list[str] | list[dict[str, Any]] | list[IconIconlistItem] | None = ...,
+        icon_list: str | list[str] | list[IconIconlistItem] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -186,7 +186,7 @@ class Icon:
         self,
         payload_dict: IconPayload | None = ...,
         name: str | None = ...,
-        icon_list: str | list[str] | list[dict[str, Any]] | list[IconIconlistItem] | None = ...,
+        icon_list: str | list[str] | list[IconIconlistItem] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,

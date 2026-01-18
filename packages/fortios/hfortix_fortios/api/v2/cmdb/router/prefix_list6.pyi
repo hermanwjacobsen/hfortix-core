@@ -26,8 +26,8 @@ from hfortix_fortios.models import (
 # TypedDict Payloads
 # ================================================================
 
-class PrefixList6RuleItem:
-    """Nested item for rule field - supports attribute access."""
+class PrefixList6RuleItem(TypedDict, total=False):
+    """Nested item for rule field."""
     id: int
     action: Literal["permit", "deny"]
     prefix6: str
@@ -40,7 +40,7 @@ class PrefixList6Payload(TypedDict, total=False):
     """Payload type for PrefixList6 operations."""
     name: str
     comments: str
-    rule: str | list[str] | list[dict[str, Any]] | list[PrefixList6RuleItem]
+    rule: str | list[str] | list[PrefixList6RuleItem]
 
 
 # ================================================================
@@ -144,7 +144,7 @@ class PrefixList6:
         payload_dict: PrefixList6Payload | None = ...,
         name: str | None = ...,
         comments: str | None = ...,
-        rule: str | list[str] | list[dict[str, Any]] | list[PrefixList6RuleItem] | None = ...,
+        rule: str | list[str] | list[PrefixList6RuleItem] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -159,7 +159,7 @@ class PrefixList6:
         payload_dict: PrefixList6Payload | None = ...,
         name: str | None = ...,
         comments: str | None = ...,
-        rule: str | list[str] | list[dict[str, Any]] | list[PrefixList6RuleItem] | None = ...,
+        rule: str | list[str] | list[PrefixList6RuleItem] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -192,7 +192,7 @@ class PrefixList6:
         payload_dict: PrefixList6Payload | None = ...,
         name: str | None = ...,
         comments: str | None = ...,
-        rule: str | list[str] | list[dict[str, Any]] | list[PrefixList6RuleItem] | None = ...,
+        rule: str | list[str] | list[PrefixList6RuleItem] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,

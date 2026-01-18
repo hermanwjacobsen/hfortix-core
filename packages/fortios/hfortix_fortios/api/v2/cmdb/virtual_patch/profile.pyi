@@ -26,8 +26,8 @@ from hfortix_fortios.models import (
 # TypedDict Payloads
 # ================================================================
 
-class ProfileExemptionItem:
-    """Nested item for exemption field - supports attribute access."""
+class ProfileExemptionItem(TypedDict, total=False):
+    """Nested item for exemption field."""
     id: int
     status: Literal["enable", "disable"]
     rule: str | list[str]
@@ -41,7 +41,7 @@ class ProfilePayload(TypedDict, total=False):
     severity: str | list[str]
     action: Literal["pass", "block"]
     log: Literal["enable", "disable"]
-    exemption: str | list[str] | list[dict[str, Any]] | list[ProfileExemptionItem]
+    exemption: str | list[str] | list[ProfileExemptionItem]
 
 
 # ================================================================
@@ -154,7 +154,7 @@ class Profile:
         severity: str | list[str] | None = ...,
         action: Literal["pass", "block"] | None = ...,
         log: Literal["enable", "disable"] | None = ...,
-        exemption: str | list[str] | list[dict[str, Any]] | list[ProfileExemptionItem] | None = ...,
+        exemption: str | list[str] | list[ProfileExemptionItem] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -172,7 +172,7 @@ class Profile:
         severity: str | list[str] | None = ...,
         action: Literal["pass", "block"] | None = ...,
         log: Literal["enable", "disable"] | None = ...,
-        exemption: str | list[str] | list[dict[str, Any]] | list[ProfileExemptionItem] | None = ...,
+        exemption: str | list[str] | list[ProfileExemptionItem] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -208,7 +208,7 @@ class Profile:
         severity: Literal["info", "low", "medium", "high", "critical"] | list[str] | None = ...,
         action: Literal["pass", "block"] | None = ...,
         log: Literal["enable", "disable"] | None = ...,
-        exemption: str | list[str] | list[dict[str, Any]] | list[ProfileExemptionItem] | None = ...,
+        exemption: str | list[str] | list[ProfileExemptionItem] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,

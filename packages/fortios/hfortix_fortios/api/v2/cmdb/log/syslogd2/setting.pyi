@@ -25,8 +25,8 @@ from hfortix_fortios.models import (
 # TypedDict Payloads
 # ================================================================
 
-class SettingCustomfieldnameItem:
-    """Nested item for custom-field-name field - supports attribute access."""
+class SettingCustomfieldnameItem(TypedDict, total=False):
+    """Nested item for custom-field-name field."""
     id: int
     name: str
     custom: str
@@ -47,7 +47,7 @@ class SettingPayload(TypedDict, total=False):
     enc_algorithm: Literal["high-medium", "high", "low", "disable"]
     ssl_min_proto_version: Literal["default", "SSLv3", "TLSv1", "TLSv1-1", "TLSv1-2", "TLSv1-3"]
     certificate: str
-    custom_field_name: str | list[str] | list[dict[str, Any]] | list[SettingCustomfieldnameItem]
+    custom_field_name: str | list[str] | list[SettingCustomfieldnameItem]
     interface_select_method: Literal["auto", "sdwan", "specify"]
     interface: str
     vrf_select: int
@@ -171,7 +171,7 @@ class Setting:
         enc_algorithm: Literal["high-medium", "high", "low", "disable"] | None = ...,
         ssl_min_proto_version: Literal["default", "SSLv3", "TLSv1", "TLSv1-1", "TLSv1-2", "TLSv1-3"] | None = ...,
         certificate: str | None = ...,
-        custom_field_name: str | list[str] | list[dict[str, Any]] | list[SettingCustomfieldnameItem] | None = ...,
+        custom_field_name: str | list[str] | list[SettingCustomfieldnameItem] | None = ...,
         interface_select_method: Literal["auto", "sdwan", "specify"] | None = ...,
         interface: str | None = ...,
         vrf_select: int | None = ...,
@@ -205,7 +205,7 @@ class Setting:
         enc_algorithm: Literal["high-medium", "high", "low", "disable"] | None = ...,
         ssl_min_proto_version: Literal["default", "SSLv3", "TLSv1", "TLSv1-1", "TLSv1-2", "TLSv1-3"] | None = ...,
         certificate: str | None = ...,
-        custom_field_name: str | list[str] | list[dict[str, Any]] | list[SettingCustomfieldnameItem] | None = ...,
+        custom_field_name: str | list[str] | list[SettingCustomfieldnameItem] | None = ...,
         interface_select_method: Literal["auto", "sdwan", "specify"] | None = ...,
         interface: str | None = ...,
         vrf_select: int | None = ...,

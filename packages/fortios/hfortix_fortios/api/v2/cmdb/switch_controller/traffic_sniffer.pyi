@@ -25,20 +25,20 @@ from hfortix_fortios.models import (
 # TypedDict Payloads
 # ================================================================
 
-class TrafficSnifferTargetmacItem:
-    """Nested item for target-mac field - supports attribute access."""
+class TrafficSnifferTargetmacItem(TypedDict, total=False):
+    """Nested item for target-mac field."""
     mac: str
     description: str
 
 
-class TrafficSnifferTargetipItem:
-    """Nested item for target-ip field - supports attribute access."""
+class TrafficSnifferTargetipItem(TypedDict, total=False):
+    """Nested item for target-ip field."""
     ip: str
     description: str
 
 
-class TrafficSnifferTargetportItem:
-    """Nested item for target-port field - supports attribute access."""
+class TrafficSnifferTargetportItem(TypedDict, total=False):
+    """Nested item for target-port field."""
     switch_id: str
     description: str
     in_ports: str | list[str]
@@ -49,9 +49,9 @@ class TrafficSnifferPayload(TypedDict, total=False):
     """Payload type for TrafficSniffer operations."""
     mode: Literal["erspan-auto", "rspan", "none"]
     erspan_ip: str
-    target_mac: str | list[str] | list[dict[str, Any]] | list[TrafficSnifferTargetmacItem]
-    target_ip: str | list[str] | list[dict[str, Any]] | list[TrafficSnifferTargetipItem]
-    target_port: str | list[str] | list[dict[str, Any]] | list[TrafficSnifferTargetportItem]
+    target_mac: str | list[str] | list[TrafficSnifferTargetmacItem]
+    target_ip: str | list[str] | list[TrafficSnifferTargetipItem]
+    target_port: str | list[str] | list[TrafficSnifferTargetportItem]
 
 
 # ================================================================
@@ -139,9 +139,9 @@ class TrafficSniffer:
         payload_dict: TrafficSnifferPayload | None = ...,
         mode: Literal["erspan-auto", "rspan", "none"] | None = ...,
         erspan_ip: str | None = ...,
-        target_mac: str | list[str] | list[dict[str, Any]] | list[TrafficSnifferTargetmacItem] | None = ...,
-        target_ip: str | list[str] | list[dict[str, Any]] | list[TrafficSnifferTargetipItem] | None = ...,
-        target_port: str | list[str] | list[dict[str, Any]] | list[TrafficSnifferTargetportItem] | None = ...,
+        target_mac: str | list[str] | list[TrafficSnifferTargetmacItem] | None = ...,
+        target_ip: str | list[str] | list[TrafficSnifferTargetipItem] | None = ...,
+        target_port: str | list[str] | list[TrafficSnifferTargetportItem] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -163,9 +163,9 @@ class TrafficSniffer:
         payload_dict: TrafficSnifferPayload | None = ...,
         mode: Literal["erspan-auto", "rspan", "none"] | None = ...,
         erspan_ip: str | None = ...,
-        target_mac: str | list[str] | list[dict[str, Any]] | list[TrafficSnifferTargetmacItem] | None = ...,
-        target_ip: str | list[str] | list[dict[str, Any]] | list[TrafficSnifferTargetipItem] | None = ...,
-        target_port: str | list[str] | list[dict[str, Any]] | list[TrafficSnifferTargetportItem] | None = ...,
+        target_mac: str | list[str] | list[TrafficSnifferTargetmacItem] | None = ...,
+        target_ip: str | list[str] | list[TrafficSnifferTargetipItem] | None = ...,
+        target_port: str | list[str] | list[TrafficSnifferTargetportItem] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,

@@ -25,8 +25,8 @@ from hfortix_fortios.models import (
 # TypedDict Payloads
 # ================================================================
 
-class OverrideFilterFreestyleItem:
-    """Nested item for free-style field - supports attribute access."""
+class OverrideFilterFreestyleItem(TypedDict, total=False):
+    """Nested item for free-style field."""
     id: int
     category: Literal["traffic", "event", "virus", "webfilter", "attack", "spam", "anomaly", "voip", "dlp", "app-ctrl", "waf", "gtp", "dns", "ssh", "ssl", "file-filter", "icap", "virtual-patch", "debug"]
     filter: str
@@ -47,7 +47,7 @@ class OverrideFilterPayload(TypedDict, total=False):
     gtp: Literal["enable", "disable"]
     forti_switch: Literal["enable", "disable"]
     debug: Literal["enable", "disable"]
-    free_style: str | list[str] | list[dict[str, Any]] | list[OverrideFilterFreestyleItem]
+    free_style: str | list[str] | list[OverrideFilterFreestyleItem]
 
 
 # ================================================================
@@ -161,7 +161,7 @@ class OverrideFilter:
         gtp: Literal["enable", "disable"] | None = ...,
         forti_switch: Literal["enable", "disable"] | None = ...,
         debug: Literal["enable", "disable"] | None = ...,
-        free_style: str | list[str] | list[dict[str, Any]] | list[OverrideFilterFreestyleItem] | None = ...,
+        free_style: str | list[str] | list[OverrideFilterFreestyleItem] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -193,7 +193,7 @@ class OverrideFilter:
         gtp: Literal["enable", "disable"] | None = ...,
         forti_switch: Literal["enable", "disable"] | None = ...,
         debug: Literal["enable", "disable"] | None = ...,
-        free_style: str | list[str] | list[dict[str, Any]] | list[OverrideFilterFreestyleItem] | None = ...,
+        free_style: str | list[str] | list[OverrideFilterFreestyleItem] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,

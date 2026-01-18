@@ -26,8 +26,8 @@ from hfortix_fortios.models import (
 # TypedDict Payloads
 # ================================================================
 
-class RegionCityItem:
-    """Nested item for city field - supports attribute access."""
+class RegionCityItem(TypedDict, total=False):
+    """Nested item for city field."""
     id: int
 
 
@@ -35,7 +35,7 @@ class RegionPayload(TypedDict, total=False):
     """Payload type for Region operations."""
     id: int
     name: str
-    city: str | list[str] | list[dict[str, Any]] | list[RegionCityItem]
+    city: str | list[str] | list[RegionCityItem]
 
 
 # ================================================================
@@ -136,7 +136,7 @@ class Region:
         payload_dict: RegionPayload | None = ...,
         id: int | None = ...,
         name: str | None = ...,
-        city: str | list[str] | list[dict[str, Any]] | list[RegionCityItem] | None = ...,
+        city: str | list[str] | list[RegionCityItem] | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> RegionObject: ...
@@ -150,7 +150,7 @@ class Region:
         payload_dict: RegionPayload | None = ...,
         id: int | None = ...,
         name: str | None = ...,
-        city: str | list[str] | list[dict[str, Any]] | list[RegionCityItem] | None = ...,
+        city: str | list[str] | list[RegionCityItem] | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> RegionObject: ...
@@ -180,7 +180,7 @@ class Region:
         payload_dict: RegionPayload | None = ...,
         id: int | None = ...,
         name: str | None = ...,
-        city: str | list[str] | list[dict[str, Any]] | list[RegionCityItem] | None = ...,
+        city: str | list[str] | list[RegionCityItem] | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> FortiObject: ...

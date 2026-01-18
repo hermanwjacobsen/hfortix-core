@@ -25,15 +25,15 @@ from hfortix_fortios.models import (
 # TypedDict Payloads
 # ================================================================
 
-class SettingOffendingssidItem:
-    """Nested item for offending-ssid field - supports attribute access."""
+class SettingOffendingssidItem(TypedDict, total=False):
+    """Nested item for offending-ssid field."""
     id: int
     ssid_pattern: str
     action: Literal["log", "suppress"]
 
 
-class SettingDarrpoptimizeschedulesItem:
-    """Nested item for darrp-optimize-schedules field - supports attribute access."""
+class SettingDarrpoptimizeschedulesItem(TypedDict, total=False):
+    """Nested item for darrp-optimize-schedules field."""
     name: str
 
 
@@ -46,14 +46,14 @@ class SettingPayload(TypedDict, total=False):
     wfa_compatibility: Literal["enable", "disable"]
     phishing_ssid_detect: Literal["enable", "disable"]
     fake_ssid_action: str | list[str]
-    offending_ssid: str | list[str] | list[dict[str, Any]] | list[SettingOffendingssidItem]
+    offending_ssid: str | list[str] | list[SettingOffendingssidItem]
     device_weight: int
     device_holdoff: int
     device_idle: int
     firmware_provision_on_authorization: Literal["enable", "disable"]
     rolling_wtp_upgrade: Literal["enable", "disable"]
     darrp_optimize: int
-    darrp_optimize_schedules: str | list[str] | list[dict[str, Any]] | list[SettingDarrpoptimizeschedulesItem]
+    darrp_optimize_schedules: str | list[str] | list[SettingDarrpoptimizeschedulesItem]
 
 
 # ================================================================
@@ -166,14 +166,14 @@ class Setting:
         wfa_compatibility: Literal["enable", "disable"] | None = ...,
         phishing_ssid_detect: Literal["enable", "disable"] | None = ...,
         fake_ssid_action: str | list[str] | None = ...,
-        offending_ssid: str | list[str] | list[dict[str, Any]] | list[SettingOffendingssidItem] | None = ...,
+        offending_ssid: str | list[str] | list[SettingOffendingssidItem] | None = ...,
         device_weight: int | None = ...,
         device_holdoff: int | None = ...,
         device_idle: int | None = ...,
         firmware_provision_on_authorization: Literal["enable", "disable"] | None = ...,
         rolling_wtp_upgrade: Literal["enable", "disable"] | None = ...,
         darrp_optimize: int | None = ...,
-        darrp_optimize_schedules: str | list[str] | list[dict[str, Any]] | list[SettingDarrpoptimizeschedulesItem] | None = ...,
+        darrp_optimize_schedules: str | list[str] | list[SettingDarrpoptimizeschedulesItem] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -200,14 +200,14 @@ class Setting:
         wfa_compatibility: Literal["enable", "disable"] | None = ...,
         phishing_ssid_detect: Literal["enable", "disable"] | None = ...,
         fake_ssid_action: Literal["log", "suppress"] | list[str] | None = ...,
-        offending_ssid: str | list[str] | list[dict[str, Any]] | list[SettingOffendingssidItem] | None = ...,
+        offending_ssid: str | list[str] | list[SettingOffendingssidItem] | None = ...,
         device_weight: int | None = ...,
         device_holdoff: int | None = ...,
         device_idle: int | None = ...,
         firmware_provision_on_authorization: Literal["enable", "disable"] | None = ...,
         rolling_wtp_upgrade: Literal["enable", "disable"] | None = ...,
         darrp_optimize: int | None = ...,
-        darrp_optimize_schedules: str | list[str] | list[dict[str, Any]] | list[SettingDarrpoptimizeschedulesItem] | None = ...,
+        darrp_optimize_schedules: str | list[str] | list[SettingDarrpoptimizeschedulesItem] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,

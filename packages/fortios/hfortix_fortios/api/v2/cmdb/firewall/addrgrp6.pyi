@@ -26,18 +26,18 @@ from hfortix_fortios.models import (
 # TypedDict Payloads
 # ================================================================
 
-class Addrgrp6MemberItem:
-    """Nested item for member field - supports attribute access."""
+class Addrgrp6MemberItem(TypedDict, total=False):
+    """Nested item for member field."""
     name: str
 
 
-class Addrgrp6ExcludememberItem:
-    """Nested item for exclude-member field - supports attribute access."""
+class Addrgrp6ExcludememberItem(TypedDict, total=False):
+    """Nested item for exclude-member field."""
     name: str
 
 
-class Addrgrp6TaggingItem:
-    """Nested item for tagging field - supports attribute access."""
+class Addrgrp6TaggingItem(TypedDict, total=False):
+    """Nested item for tagging field."""
     name: str
     category: str
     tags: str | list[str]
@@ -49,10 +49,10 @@ class Addrgrp6Payload(TypedDict, total=False):
     uuid: str
     color: int
     comment: str
-    member: str | list[str] | list[dict[str, Any]] | list[Addrgrp6MemberItem]
+    member: str | list[str] | list[Addrgrp6MemberItem]
     exclude: Literal["enable", "disable"]
-    exclude_member: str | list[str] | list[dict[str, Any]] | list[Addrgrp6ExcludememberItem]
-    tagging: str | list[str] | list[dict[str, Any]] | list[Addrgrp6TaggingItem]
+    exclude_member: str | list[str] | list[Addrgrp6ExcludememberItem]
+    tagging: str | list[str] | list[Addrgrp6TaggingItem]
     fabric_object: Literal["enable", "disable"]
 
 
@@ -171,10 +171,10 @@ class Addrgrp6:
         uuid: str | None = ...,
         color: int | None = ...,
         comment: str | None = ...,
-        member: str | list[str] | list[dict[str, Any]] | list[Addrgrp6MemberItem] | None = ...,
+        member: str | list[str] | list[Addrgrp6MemberItem] | None = ...,
         exclude: Literal["enable", "disable"] | None = ...,
-        exclude_member: str | list[str] | list[dict[str, Any]] | list[Addrgrp6ExcludememberItem] | None = ...,
-        tagging: str | list[str] | list[dict[str, Any]] | list[Addrgrp6TaggingItem] | None = ...,
+        exclude_member: str | list[str] | list[Addrgrp6ExcludememberItem] | None = ...,
+        tagging: str | list[str] | list[Addrgrp6TaggingItem] | None = ...,
         fabric_object: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
@@ -192,10 +192,10 @@ class Addrgrp6:
         uuid: str | None = ...,
         color: int | None = ...,
         comment: str | None = ...,
-        member: str | list[str] | list[dict[str, Any]] | list[Addrgrp6MemberItem] | None = ...,
+        member: str | list[str] | list[Addrgrp6MemberItem] | None = ...,
         exclude: Literal["enable", "disable"] | None = ...,
-        exclude_member: str | list[str] | list[dict[str, Any]] | list[Addrgrp6ExcludememberItem] | None = ...,
-        tagging: str | list[str] | list[dict[str, Any]] | list[Addrgrp6TaggingItem] | None = ...,
+        exclude_member: str | list[str] | list[Addrgrp6ExcludememberItem] | None = ...,
+        tagging: str | list[str] | list[Addrgrp6TaggingItem] | None = ...,
         fabric_object: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
@@ -231,10 +231,10 @@ class Addrgrp6:
         uuid: str | None = ...,
         color: int | None = ...,
         comment: str | None = ...,
-        member: str | list[str] | list[dict[str, Any]] | list[Addrgrp6MemberItem] | None = ...,
+        member: str | list[str] | list[Addrgrp6MemberItem] | None = ...,
         exclude: Literal["enable", "disable"] | None = ...,
-        exclude_member: str | list[str] | list[dict[str, Any]] | list[Addrgrp6ExcludememberItem] | None = ...,
-        tagging: str | list[str] | list[dict[str, Any]] | list[Addrgrp6TaggingItem] | None = ...,
+        exclude_member: str | list[str] | list[Addrgrp6ExcludememberItem] | None = ...,
+        tagging: str | list[str] | list[Addrgrp6TaggingItem] | None = ...,
         fabric_object: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,

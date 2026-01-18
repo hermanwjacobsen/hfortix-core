@@ -57,19 +57,19 @@ class WtpProfileLanDict(TypedDict, total=False):
     port_esl_ssid: str
 
 
-class WtpProfileLedschedulesItem:
-    """Nested item for led-schedules field - supports attribute access."""
+class WtpProfileLedschedulesItem(TypedDict, total=False):
+    """Nested item for led-schedules field."""
     name: str
 
 
-class WtpProfileDenymaclistItem:
-    """Nested item for deny-mac-list field - supports attribute access."""
+class WtpProfileDenymaclistItem(TypedDict, total=False):
+    """Nested item for deny-mac-list field."""
     id: int
     mac: str
 
 
-class WtpProfileSplittunnelingaclItem:
-    """Nested item for split-tunneling-acl field - supports attribute access."""
+class WtpProfileSplittunnelingaclItem(TypedDict, total=False):
+    """Nested item for split-tunneling-acl field."""
     id: int
     dest_ip: str
 
@@ -485,21 +485,21 @@ class WtpProfilePayload(TypedDict, total=False):
     lan: WtpProfileLanDict
     energy_efficient_ethernet: Literal["enable", "disable"]
     led_state: Literal["enable", "disable"]
-    led_schedules: str | list[str] | list[dict[str, Any]] | list[WtpProfileLedschedulesItem]
+    led_schedules: str | list[str] | list[WtpProfileLedschedulesItem]
     dtls_policy: str | list[str]
     dtls_in_kernel: Literal["enable", "disable"]
     max_clients: int
     handoff_rssi: int
     handoff_sta_thresh: int
     handoff_roaming: Literal["enable", "disable"]
-    deny_mac_list: str | list[str] | list[dict[str, Any]] | list[WtpProfileDenymaclistItem]
+    deny_mac_list: str | list[str] | list[WtpProfileDenymaclistItem]
     ap_country: Literal["--", "AF", "AL", "DZ", "AS", "AO", "AR", "AM", "AU", "AT", "AZ", "BS", "BH", "BD", "BB", "BY", "BE", "BZ", "BJ", "BM", "BT", "BO", "BA", "BW", "BR", "BN", "BG", "BF", "KH", "CM", "KY", "CF", "TD", "CL", "CN", "CX", "CO", "CG", "CD", "CR", "HR", "CY", "CZ", "DK", "DJ", "DM", "DO", "EC", "EG", "SV", "ET", "EE", "GF", "PF", "FO", "FJ", "FI", "FR", "GA", "GE", "GM", "DE", "GH", "GI", "GR", "GL", "GD", "GP", "GU", "GT", "GY", "HT", "HN", "HK", "HU", "IS", "IN", "ID", "IQ", "IE", "IM", "IL", "IT", "CI", "JM", "JO", "KZ", "KE", "KR", "KW", "LA", "LV", "LB", "LS", "LR", "LY", "LI", "LT", "LU", "MO", "MK", "MG", "MW", "MY", "MV", "ML", "MT", "MH", "MQ", "MR", "MU", "YT", "MX", "FM", "MD", "MC", "MN", "MA", "MZ", "MM", "NA", "NP", "NL", "AN", "AW", "NZ", "NI", "NE", "NG", "NO", "MP", "OM", "PK", "PW", "PA", "PG", "PY", "PE", "PH", "PL", "PT", "PR", "QA", "RE", "RO", "RU", "RW", "BL", "KN", "LC", "MF", "PM", "VC", "SA", "SN", "RS", "ME", "SL", "SG", "SK", "SI", "SO", "ZA", "ES", "LK", "SR", "SZ", "SE", "CH", "TW", "TZ", "TH", "TL", "TG", "TT", "TN", "TR", "TM", "AE", "TC", "UG", "UA", "GB", "US", "PS", "UY", "UZ", "VU", "VE", "VN", "VI", "WF", "YE", "ZM", "ZW", "JP", "CA"]
     ip_fragment_preventing: str | list[str]
     tun_mtu_uplink: int
     tun_mtu_downlink: int
     split_tunneling_acl_path: Literal["tunnel", "local"]
     split_tunneling_acl_local_ap_subnet: Literal["enable", "disable"]
-    split_tunneling_acl: str | list[str] | list[dict[str, Any]] | list[WtpProfileSplittunnelingaclItem]
+    split_tunneling_acl: str | list[str] | list[WtpProfileSplittunnelingaclItem]
     allowaccess: str | list[str]
     login_passwd_change: Literal["yes", "default", "no"]
     login_passwd: str
@@ -814,21 +814,21 @@ class WtpProfile:
         lan: WtpProfileLanDict | None = ...,
         energy_efficient_ethernet: Literal["enable", "disable"] | None = ...,
         led_state: Literal["enable", "disable"] | None = ...,
-        led_schedules: str | list[str] | list[dict[str, Any]] | list[WtpProfileLedschedulesItem] | None = ...,
+        led_schedules: str | list[str] | list[WtpProfileLedschedulesItem] | None = ...,
         dtls_policy: str | list[str] | None = ...,
         dtls_in_kernel: Literal["enable", "disable"] | None = ...,
         max_clients: int | None = ...,
         handoff_rssi: int | None = ...,
         handoff_sta_thresh: int | None = ...,
         handoff_roaming: Literal["enable", "disable"] | None = ...,
-        deny_mac_list: str | list[str] | list[dict[str, Any]] | list[WtpProfileDenymaclistItem] | None = ...,
+        deny_mac_list: str | list[str] | list[WtpProfileDenymaclistItem] | None = ...,
         ap_country: Literal["--", "AF", "AL", "DZ", "AS", "AO", "AR", "AM", "AU", "AT", "AZ", "BS", "BH", "BD", "BB", "BY", "BE", "BZ", "BJ", "BM", "BT", "BO", "BA", "BW", "BR", "BN", "BG", "BF", "KH", "CM", "KY", "CF", "TD", "CL", "CN", "CX", "CO", "CG", "CD", "CR", "HR", "CY", "CZ", "DK", "DJ", "DM", "DO", "EC", "EG", "SV", "ET", "EE", "GF", "PF", "FO", "FJ", "FI", "FR", "GA", "GE", "GM", "DE", "GH", "GI", "GR", "GL", "GD", "GP", "GU", "GT", "GY", "HT", "HN", "HK", "HU", "IS", "IN", "ID", "IQ", "IE", "IM", "IL", "IT", "CI", "JM", "JO", "KZ", "KE", "KR", "KW", "LA", "LV", "LB", "LS", "LR", "LY", "LI", "LT", "LU", "MO", "MK", "MG", "MW", "MY", "MV", "ML", "MT", "MH", "MQ", "MR", "MU", "YT", "MX", "FM", "MD", "MC", "MN", "MA", "MZ", "MM", "NA", "NP", "NL", "AN", "AW", "NZ", "NI", "NE", "NG", "NO", "MP", "OM", "PK", "PW", "PA", "PG", "PY", "PE", "PH", "PL", "PT", "PR", "QA", "RE", "RO", "RU", "RW", "BL", "KN", "LC", "MF", "PM", "VC", "SA", "SN", "RS", "ME", "SL", "SG", "SK", "SI", "SO", "ZA", "ES", "LK", "SR", "SZ", "SE", "CH", "TW", "TZ", "TH", "TL", "TG", "TT", "TN", "TR", "TM", "AE", "TC", "UG", "UA", "GB", "US", "PS", "UY", "UZ", "VU", "VE", "VN", "VI", "WF", "YE", "ZM", "ZW", "JP", "CA"] | None = ...,
         ip_fragment_preventing: str | list[str] | None = ...,
         tun_mtu_uplink: int | None = ...,
         tun_mtu_downlink: int | None = ...,
         split_tunneling_acl_path: Literal["tunnel", "local"] | None = ...,
         split_tunneling_acl_local_ap_subnet: Literal["enable", "disable"] | None = ...,
-        split_tunneling_acl: str | list[str] | list[dict[str, Any]] | list[WtpProfileSplittunnelingaclItem] | None = ...,
+        split_tunneling_acl: str | list[str] | list[WtpProfileSplittunnelingaclItem] | None = ...,
         allowaccess: str | list[str] | None = ...,
         login_passwd_change: Literal["yes", "default", "no"] | None = ...,
         login_passwd: str | None = ...,
@@ -904,21 +904,21 @@ class WtpProfile:
         lan: WtpProfileLanDict | None = ...,
         energy_efficient_ethernet: Literal["enable", "disable"] | None = ...,
         led_state: Literal["enable", "disable"] | None = ...,
-        led_schedules: str | list[str] | list[dict[str, Any]] | list[WtpProfileLedschedulesItem] | None = ...,
+        led_schedules: str | list[str] | list[WtpProfileLedschedulesItem] | None = ...,
         dtls_policy: str | list[str] | None = ...,
         dtls_in_kernel: Literal["enable", "disable"] | None = ...,
         max_clients: int | None = ...,
         handoff_rssi: int | None = ...,
         handoff_sta_thresh: int | None = ...,
         handoff_roaming: Literal["enable", "disable"] | None = ...,
-        deny_mac_list: str | list[str] | list[dict[str, Any]] | list[WtpProfileDenymaclistItem] | None = ...,
+        deny_mac_list: str | list[str] | list[WtpProfileDenymaclistItem] | None = ...,
         ap_country: Literal["--", "AF", "AL", "DZ", "AS", "AO", "AR", "AM", "AU", "AT", "AZ", "BS", "BH", "BD", "BB", "BY", "BE", "BZ", "BJ", "BM", "BT", "BO", "BA", "BW", "BR", "BN", "BG", "BF", "KH", "CM", "KY", "CF", "TD", "CL", "CN", "CX", "CO", "CG", "CD", "CR", "HR", "CY", "CZ", "DK", "DJ", "DM", "DO", "EC", "EG", "SV", "ET", "EE", "GF", "PF", "FO", "FJ", "FI", "FR", "GA", "GE", "GM", "DE", "GH", "GI", "GR", "GL", "GD", "GP", "GU", "GT", "GY", "HT", "HN", "HK", "HU", "IS", "IN", "ID", "IQ", "IE", "IM", "IL", "IT", "CI", "JM", "JO", "KZ", "KE", "KR", "KW", "LA", "LV", "LB", "LS", "LR", "LY", "LI", "LT", "LU", "MO", "MK", "MG", "MW", "MY", "MV", "ML", "MT", "MH", "MQ", "MR", "MU", "YT", "MX", "FM", "MD", "MC", "MN", "MA", "MZ", "MM", "NA", "NP", "NL", "AN", "AW", "NZ", "NI", "NE", "NG", "NO", "MP", "OM", "PK", "PW", "PA", "PG", "PY", "PE", "PH", "PL", "PT", "PR", "QA", "RE", "RO", "RU", "RW", "BL", "KN", "LC", "MF", "PM", "VC", "SA", "SN", "RS", "ME", "SL", "SG", "SK", "SI", "SO", "ZA", "ES", "LK", "SR", "SZ", "SE", "CH", "TW", "TZ", "TH", "TL", "TG", "TT", "TN", "TR", "TM", "AE", "TC", "UG", "UA", "GB", "US", "PS", "UY", "UZ", "VU", "VE", "VN", "VI", "WF", "YE", "ZM", "ZW", "JP", "CA"] | None = ...,
         ip_fragment_preventing: str | list[str] | None = ...,
         tun_mtu_uplink: int | None = ...,
         tun_mtu_downlink: int | None = ...,
         split_tunneling_acl_path: Literal["tunnel", "local"] | None = ...,
         split_tunneling_acl_local_ap_subnet: Literal["enable", "disable"] | None = ...,
-        split_tunneling_acl: str | list[str] | list[dict[str, Any]] | list[WtpProfileSplittunnelingaclItem] | None = ...,
+        split_tunneling_acl: str | list[str] | list[WtpProfileSplittunnelingaclItem] | None = ...,
         allowaccess: str | list[str] | None = ...,
         login_passwd_change: Literal["yes", "default", "no"] | None = ...,
         login_passwd: str | None = ...,
@@ -1012,21 +1012,21 @@ class WtpProfile:
         lan: WtpProfileLanDict | None = ...,
         energy_efficient_ethernet: Literal["enable", "disable"] | None = ...,
         led_state: Literal["enable", "disable"] | None = ...,
-        led_schedules: str | list[str] | list[dict[str, Any]] | list[WtpProfileLedschedulesItem] | None = ...,
+        led_schedules: str | list[str] | list[WtpProfileLedschedulesItem] | None = ...,
         dtls_policy: Literal["clear-text", "dtls-enabled", "ipsec-vpn", "ipsec-sn-vpn"] | list[str] | None = ...,
         dtls_in_kernel: Literal["enable", "disable"] | None = ...,
         max_clients: int | None = ...,
         handoff_rssi: int | None = ...,
         handoff_sta_thresh: int | None = ...,
         handoff_roaming: Literal["enable", "disable"] | None = ...,
-        deny_mac_list: str | list[str] | list[dict[str, Any]] | list[WtpProfileDenymaclistItem] | None = ...,
+        deny_mac_list: str | list[str] | list[WtpProfileDenymaclistItem] | None = ...,
         ap_country: Literal["--", "AF", "AL", "DZ", "AS", "AO", "AR", "AM", "AU", "AT", "AZ", "BS", "BH", "BD", "BB", "BY", "BE", "BZ", "BJ", "BM", "BT", "BO", "BA", "BW", "BR", "BN", "BG", "BF", "KH", "CM", "KY", "CF", "TD", "CL", "CN", "CX", "CO", "CG", "CD", "CR", "HR", "CY", "CZ", "DK", "DJ", "DM", "DO", "EC", "EG", "SV", "ET", "EE", "GF", "PF", "FO", "FJ", "FI", "FR", "GA", "GE", "GM", "DE", "GH", "GI", "GR", "GL", "GD", "GP", "GU", "GT", "GY", "HT", "HN", "HK", "HU", "IS", "IN", "ID", "IQ", "IE", "IM", "IL", "IT", "CI", "JM", "JO", "KZ", "KE", "KR", "KW", "LA", "LV", "LB", "LS", "LR", "LY", "LI", "LT", "LU", "MO", "MK", "MG", "MW", "MY", "MV", "ML", "MT", "MH", "MQ", "MR", "MU", "YT", "MX", "FM", "MD", "MC", "MN", "MA", "MZ", "MM", "NA", "NP", "NL", "AN", "AW", "NZ", "NI", "NE", "NG", "NO", "MP", "OM", "PK", "PW", "PA", "PG", "PY", "PE", "PH", "PL", "PT", "PR", "QA", "RE", "RO", "RU", "RW", "BL", "KN", "LC", "MF", "PM", "VC", "SA", "SN", "RS", "ME", "SL", "SG", "SK", "SI", "SO", "ZA", "ES", "LK", "SR", "SZ", "SE", "CH", "TW", "TZ", "TH", "TL", "TG", "TT", "TN", "TR", "TM", "AE", "TC", "UG", "UA", "GB", "US", "PS", "UY", "UZ", "VU", "VE", "VN", "VI", "WF", "YE", "ZM", "ZW", "JP", "CA"] | None = ...,
         ip_fragment_preventing: Literal["tcp-mss-adjust", "icmp-unreachable"] | list[str] | None = ...,
         tun_mtu_uplink: int | None = ...,
         tun_mtu_downlink: int | None = ...,
         split_tunneling_acl_path: Literal["tunnel", "local"] | None = ...,
         split_tunneling_acl_local_ap_subnet: Literal["enable", "disable"] | None = ...,
-        split_tunneling_acl: str | list[str] | list[dict[str, Any]] | list[WtpProfileSplittunnelingaclItem] | None = ...,
+        split_tunneling_acl: str | list[str] | list[WtpProfileSplittunnelingaclItem] | None = ...,
         allowaccess: Literal["https", "ssh", "snmp"] | list[str] | None = ...,
         login_passwd_change: Literal["yes", "default", "no"] | None = ...,
         login_passwd: str | None = ...,

@@ -26,8 +26,8 @@ from hfortix_fortios.models import (
 # TypedDict Payloads
 # ================================================================
 
-class SsoForticloudAdminVdomItem:
-    """Nested item for vdom field - supports attribute access."""
+class SsoForticloudAdminVdomItem(TypedDict, total=False):
+    """Nested item for vdom field."""
     name: str
 
 
@@ -35,7 +35,7 @@ class SsoForticloudAdminPayload(TypedDict, total=False):
     """Payload type for SsoForticloudAdmin operations."""
     name: str
     accprofile: str
-    vdom: str | list[str] | list[dict[str, Any]] | list[SsoForticloudAdminVdomItem]
+    vdom: str | list[str] | list[SsoForticloudAdminVdomItem]
 
 
 # ================================================================

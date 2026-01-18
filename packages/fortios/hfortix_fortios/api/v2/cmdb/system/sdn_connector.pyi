@@ -26,61 +26,61 @@ from hfortix_fortios.models import (
 # TypedDict Payloads
 # ================================================================
 
-class SdnConnectorServerlistItem:
-    """Nested item for server-list field - supports attribute access."""
+class SdnConnectorServerlistItem(TypedDict, total=False):
+    """Nested item for server-list field."""
     ip: str
 
 
-class SdnConnectorExternalaccountlistItem:
-    """Nested item for external-account-list field - supports attribute access."""
+class SdnConnectorExternalaccountlistItem(TypedDict, total=False):
+    """Nested item for external-account-list field."""
     role_arn: str
     external_id: str
     region_list: str | list[str]
 
 
-class SdnConnectorNicItem:
-    """Nested item for nic field - supports attribute access."""
+class SdnConnectorNicItem(TypedDict, total=False):
+    """Nested item for nic field."""
     name: str
     peer_nic: str
     ip: str | list[str]
 
 
-class SdnConnectorRoutetableItem:
-    """Nested item for route-table field - supports attribute access."""
+class SdnConnectorRoutetableItem(TypedDict, total=False):
+    """Nested item for route-table field."""
     name: str
     subscription_id: str
     resource_group: str
     route: str | list[str]
 
 
-class SdnConnectorCompartmentlistItem:
-    """Nested item for compartment-list field - supports attribute access."""
+class SdnConnectorCompartmentlistItem(TypedDict, total=False):
+    """Nested item for compartment-list field."""
     compartment_id: str
 
 
-class SdnConnectorOciregionlistItem:
-    """Nested item for oci-region-list field - supports attribute access."""
+class SdnConnectorOciregionlistItem(TypedDict, total=False):
+    """Nested item for oci-region-list field."""
     region: str
 
 
-class SdnConnectorExternalipItem:
-    """Nested item for external-ip field - supports attribute access."""
+class SdnConnectorExternalipItem(TypedDict, total=False):
+    """Nested item for external-ip field."""
     name: str
 
 
-class SdnConnectorRouteItem:
-    """Nested item for route field - supports attribute access."""
+class SdnConnectorRouteItem(TypedDict, total=False):
+    """Nested item for route field."""
     name: str
 
 
-class SdnConnectorGcpprojectlistItem:
-    """Nested item for gcp-project-list field - supports attribute access."""
+class SdnConnectorGcpprojectlistItem(TypedDict, total=False):
+    """Nested item for gcp-project-list field."""
     id: str
     gcp_zone_list: str | list[str]
 
 
-class SdnConnectorForwardingruleItem:
-    """Nested item for forwarding-rule field - supports attribute access."""
+class SdnConnectorForwardingruleItem(TypedDict, total=False):
+    """Nested item for forwarding-rule field."""
     rule_name: str
     target: str
 
@@ -97,7 +97,7 @@ class SdnConnectorPayload(TypedDict, total=False):
     verify_certificate: Literal["disable", "enable"]
     vdom: str
     server: str
-    server_list: str | list[str] | list[dict[str, Any]] | list[SdnConnectorServerlistItem]
+    server_list: str | list[str] | list[SdnConnectorServerlistItem]
     server_port: int
     message_server_port: int
     username: str
@@ -110,7 +110,7 @@ class SdnConnectorPayload(TypedDict, total=False):
     region: str
     vpc_id: str
     alt_resource_ip: Literal["disable", "enable"]
-    external_account_list: str | list[str] | list[dict[str, Any]] | list[SdnConnectorExternalaccountlistItem]
+    external_account_list: str | list[str] | list[SdnConnectorExternalaccountlistItem]
     tenant_id: str
     client_id: str
     client_secret: str
@@ -119,18 +119,18 @@ class SdnConnectorPayload(TypedDict, total=False):
     login_endpoint: str
     resource_url: str
     azure_region: Literal["global", "china", "germany", "usgov", "local"]
-    nic: str | list[str] | list[dict[str, Any]] | list[SdnConnectorNicItem]
-    route_table: str | list[str] | list[dict[str, Any]] | list[SdnConnectorRoutetableItem]
+    nic: str | list[str] | list[SdnConnectorNicItem]
+    route_table: str | list[str] | list[SdnConnectorRoutetableItem]
     user_id: str
-    compartment_list: str | list[str] | list[dict[str, Any]] | list[SdnConnectorCompartmentlistItem]
-    oci_region_list: str | list[str] | list[dict[str, Any]] | list[SdnConnectorOciregionlistItem]
+    compartment_list: str | list[str] | list[SdnConnectorCompartmentlistItem]
+    oci_region_list: str | list[str] | list[SdnConnectorOciregionlistItem]
     oci_region_type: Literal["commercial", "government"]
     oci_cert: str
     oci_fingerprint: str
-    external_ip: str | list[str] | list[dict[str, Any]] | list[SdnConnectorExternalipItem]
-    route: str | list[str] | list[dict[str, Any]] | list[SdnConnectorRouteItem]
-    gcp_project_list: str | list[str] | list[dict[str, Any]] | list[SdnConnectorGcpprojectlistItem]
-    forwarding_rule: str | list[str] | list[dict[str, Any]] | list[SdnConnectorForwardingruleItem]
+    external_ip: str | list[str] | list[SdnConnectorExternalipItem]
+    route: str | list[str] | list[SdnConnectorRouteItem]
+    gcp_project_list: str | list[str] | list[SdnConnectorGcpprojectlistItem]
+    forwarding_rule: str | list[str] | list[SdnConnectorForwardingruleItem]
     service_account: str
     private_key: str
     secret_token: str
@@ -352,7 +352,7 @@ class SdnConnector:
         ha_status: Literal["disable", "enable"] | None = ...,
         verify_certificate: Literal["disable", "enable"] | None = ...,
         server: str | None = ...,
-        server_list: str | list[str] | list[dict[str, Any]] | list[SdnConnectorServerlistItem] | None = ...,
+        server_list: str | list[str] | list[SdnConnectorServerlistItem] | None = ...,
         server_port: int | None = ...,
         message_server_port: int | None = ...,
         username: str | None = ...,
@@ -365,7 +365,7 @@ class SdnConnector:
         region: str | None = ...,
         vpc_id: str | None = ...,
         alt_resource_ip: Literal["disable", "enable"] | None = ...,
-        external_account_list: str | list[str] | list[dict[str, Any]] | list[SdnConnectorExternalaccountlistItem] | None = ...,
+        external_account_list: str | list[str] | list[SdnConnectorExternalaccountlistItem] | None = ...,
         tenant_id: str | None = ...,
         client_id: str | None = ...,
         client_secret: str | None = ...,
@@ -374,18 +374,18 @@ class SdnConnector:
         login_endpoint: str | None = ...,
         resource_url: str | None = ...,
         azure_region: Literal["global", "china", "germany", "usgov", "local"] | None = ...,
-        nic: str | list[str] | list[dict[str, Any]] | list[SdnConnectorNicItem] | None = ...,
-        route_table: str | list[str] | list[dict[str, Any]] | list[SdnConnectorRoutetableItem] | None = ...,
+        nic: str | list[str] | list[SdnConnectorNicItem] | None = ...,
+        route_table: str | list[str] | list[SdnConnectorRoutetableItem] | None = ...,
         user_id: str | None = ...,
-        compartment_list: str | list[str] | list[dict[str, Any]] | list[SdnConnectorCompartmentlistItem] | None = ...,
-        oci_region_list: str | list[str] | list[dict[str, Any]] | list[SdnConnectorOciregionlistItem] | None = ...,
+        compartment_list: str | list[str] | list[SdnConnectorCompartmentlistItem] | None = ...,
+        oci_region_list: str | list[str] | list[SdnConnectorOciregionlistItem] | None = ...,
         oci_region_type: Literal["commercial", "government"] | None = ...,
         oci_cert: str | None = ...,
         oci_fingerprint: str | None = ...,
-        external_ip: str | list[str] | list[dict[str, Any]] | list[SdnConnectorExternalipItem] | None = ...,
-        route: str | list[str] | list[dict[str, Any]] | list[SdnConnectorRouteItem] | None = ...,
-        gcp_project_list: str | list[str] | list[dict[str, Any]] | list[SdnConnectorGcpprojectlistItem] | None = ...,
-        forwarding_rule: str | list[str] | list[dict[str, Any]] | list[SdnConnectorForwardingruleItem] | None = ...,
+        external_ip: str | list[str] | list[SdnConnectorExternalipItem] | None = ...,
+        route: str | list[str] | list[SdnConnectorRouteItem] | None = ...,
+        gcp_project_list: str | list[str] | list[SdnConnectorGcpprojectlistItem] | None = ...,
+        forwarding_rule: str | list[str] | list[SdnConnectorForwardingruleItem] | None = ...,
         service_account: str | None = ...,
         private_key: str | None = ...,
         secret_token: str | None = ...,
@@ -417,7 +417,7 @@ class SdnConnector:
         ha_status: Literal["disable", "enable"] | None = ...,
         verify_certificate: Literal["disable", "enable"] | None = ...,
         server: str | None = ...,
-        server_list: str | list[str] | list[dict[str, Any]] | list[SdnConnectorServerlistItem] | None = ...,
+        server_list: str | list[str] | list[SdnConnectorServerlistItem] | None = ...,
         server_port: int | None = ...,
         message_server_port: int | None = ...,
         username: str | None = ...,
@@ -430,7 +430,7 @@ class SdnConnector:
         region: str | None = ...,
         vpc_id: str | None = ...,
         alt_resource_ip: Literal["disable", "enable"] | None = ...,
-        external_account_list: str | list[str] | list[dict[str, Any]] | list[SdnConnectorExternalaccountlistItem] | None = ...,
+        external_account_list: str | list[str] | list[SdnConnectorExternalaccountlistItem] | None = ...,
         tenant_id: str | None = ...,
         client_id: str | None = ...,
         client_secret: str | None = ...,
@@ -439,18 +439,18 @@ class SdnConnector:
         login_endpoint: str | None = ...,
         resource_url: str | None = ...,
         azure_region: Literal["global", "china", "germany", "usgov", "local"] | None = ...,
-        nic: str | list[str] | list[dict[str, Any]] | list[SdnConnectorNicItem] | None = ...,
-        route_table: str | list[str] | list[dict[str, Any]] | list[SdnConnectorRoutetableItem] | None = ...,
+        nic: str | list[str] | list[SdnConnectorNicItem] | None = ...,
+        route_table: str | list[str] | list[SdnConnectorRoutetableItem] | None = ...,
         user_id: str | None = ...,
-        compartment_list: str | list[str] | list[dict[str, Any]] | list[SdnConnectorCompartmentlistItem] | None = ...,
-        oci_region_list: str | list[str] | list[dict[str, Any]] | list[SdnConnectorOciregionlistItem] | None = ...,
+        compartment_list: str | list[str] | list[SdnConnectorCompartmentlistItem] | None = ...,
+        oci_region_list: str | list[str] | list[SdnConnectorOciregionlistItem] | None = ...,
         oci_region_type: Literal["commercial", "government"] | None = ...,
         oci_cert: str | None = ...,
         oci_fingerprint: str | None = ...,
-        external_ip: str | list[str] | list[dict[str, Any]] | list[SdnConnectorExternalipItem] | None = ...,
-        route: str | list[str] | list[dict[str, Any]] | list[SdnConnectorRouteItem] | None = ...,
-        gcp_project_list: str | list[str] | list[dict[str, Any]] | list[SdnConnectorGcpprojectlistItem] | None = ...,
-        forwarding_rule: str | list[str] | list[dict[str, Any]] | list[SdnConnectorForwardingruleItem] | None = ...,
+        external_ip: str | list[str] | list[SdnConnectorExternalipItem] | None = ...,
+        route: str | list[str] | list[SdnConnectorRouteItem] | None = ...,
+        gcp_project_list: str | list[str] | list[SdnConnectorGcpprojectlistItem] | None = ...,
+        forwarding_rule: str | list[str] | list[SdnConnectorForwardingruleItem] | None = ...,
         service_account: str | None = ...,
         private_key: str | None = ...,
         secret_token: str | None = ...,
@@ -498,7 +498,7 @@ class SdnConnector:
         ha_status: Literal["disable", "enable"] | None = ...,
         verify_certificate: Literal["disable", "enable"] | None = ...,
         server: str | None = ...,
-        server_list: str | list[str] | list[dict[str, Any]] | list[SdnConnectorServerlistItem] | None = ...,
+        server_list: str | list[str] | list[SdnConnectorServerlistItem] | None = ...,
         server_port: int | None = ...,
         message_server_port: int | None = ...,
         username: str | None = ...,
@@ -511,7 +511,7 @@ class SdnConnector:
         region: str | None = ...,
         vpc_id: str | None = ...,
         alt_resource_ip: Literal["disable", "enable"] | None = ...,
-        external_account_list: str | list[str] | list[dict[str, Any]] | list[SdnConnectorExternalaccountlistItem] | None = ...,
+        external_account_list: str | list[str] | list[SdnConnectorExternalaccountlistItem] | None = ...,
         tenant_id: str | None = ...,
         client_id: str | None = ...,
         client_secret: str | None = ...,
@@ -520,18 +520,18 @@ class SdnConnector:
         login_endpoint: str | None = ...,
         resource_url: str | None = ...,
         azure_region: Literal["global", "china", "germany", "usgov", "local"] | None = ...,
-        nic: str | list[str] | list[dict[str, Any]] | list[SdnConnectorNicItem] | None = ...,
-        route_table: str | list[str] | list[dict[str, Any]] | list[SdnConnectorRoutetableItem] | None = ...,
+        nic: str | list[str] | list[SdnConnectorNicItem] | None = ...,
+        route_table: str | list[str] | list[SdnConnectorRoutetableItem] | None = ...,
         user_id: str | None = ...,
-        compartment_list: str | list[str] | list[dict[str, Any]] | list[SdnConnectorCompartmentlistItem] | None = ...,
-        oci_region_list: str | list[str] | list[dict[str, Any]] | list[SdnConnectorOciregionlistItem] | None = ...,
+        compartment_list: str | list[str] | list[SdnConnectorCompartmentlistItem] | None = ...,
+        oci_region_list: str | list[str] | list[SdnConnectorOciregionlistItem] | None = ...,
         oci_region_type: Literal["commercial", "government"] | None = ...,
         oci_cert: str | None = ...,
         oci_fingerprint: str | None = ...,
-        external_ip: str | list[str] | list[dict[str, Any]] | list[SdnConnectorExternalipItem] | None = ...,
-        route: str | list[str] | list[dict[str, Any]] | list[SdnConnectorRouteItem] | None = ...,
-        gcp_project_list: str | list[str] | list[dict[str, Any]] | list[SdnConnectorGcpprojectlistItem] | None = ...,
-        forwarding_rule: str | list[str] | list[dict[str, Any]] | list[SdnConnectorForwardingruleItem] | None = ...,
+        external_ip: str | list[str] | list[SdnConnectorExternalipItem] | None = ...,
+        route: str | list[str] | list[SdnConnectorRouteItem] | None = ...,
+        gcp_project_list: str | list[str] | list[SdnConnectorGcpprojectlistItem] | None = ...,
+        forwarding_rule: str | list[str] | list[SdnConnectorForwardingruleItem] | None = ...,
         service_account: str | None = ...,
         private_key: str | None = ...,
         secret_token: str | None = ...,

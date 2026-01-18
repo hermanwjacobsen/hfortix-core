@@ -26,8 +26,8 @@ from hfortix_fortios.models import (
 # TypedDict Payloads
 # ================================================================
 
-class QkdCertificateItem:
-    """Nested item for certificate field - supports attribute access."""
+class QkdCertificateItem(TypedDict, total=False):
+    """Nested item for certificate field."""
     name: str
 
 
@@ -38,7 +38,7 @@ class QkdPayload(TypedDict, total=False):
     port: int
     id: str
     peer: str
-    certificate: str | list[str] | list[dict[str, Any]] | list[QkdCertificateItem]
+    certificate: str | list[str] | list[QkdCertificateItem]
     comment: str
 
 
@@ -154,7 +154,7 @@ class Qkd:
         port: int | None = ...,
         id: str | None = ...,
         peer: str | None = ...,
-        certificate: str | list[str] | list[dict[str, Any]] | list[QkdCertificateItem] | None = ...,
+        certificate: str | list[str] | list[QkdCertificateItem] | None = ...,
         comment: str | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
@@ -173,7 +173,7 @@ class Qkd:
         port: int | None = ...,
         id: str | None = ...,
         peer: str | None = ...,
-        certificate: str | list[str] | list[dict[str, Any]] | list[QkdCertificateItem] | None = ...,
+        certificate: str | list[str] | list[QkdCertificateItem] | None = ...,
         comment: str | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
@@ -210,7 +210,7 @@ class Qkd:
         port: int | None = ...,
         id: str | None = ...,
         peer: str | None = ...,
-        certificate: str | list[str] | list[dict[str, Any]] | list[QkdCertificateItem] | None = ...,
+        certificate: str | list[str] | list[QkdCertificateItem] | None = ...,
         comment: str | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,

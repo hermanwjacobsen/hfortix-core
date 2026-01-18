@@ -26,8 +26,8 @@ from hfortix_fortios.models import (
 # TypedDict Payloads
 # ================================================================
 
-class ConcentratorMemberItem:
-    """Nested item for member field - supports attribute access."""
+class ConcentratorMemberItem(TypedDict, total=False):
+    """Nested item for member field."""
     name: str
 
 
@@ -36,7 +36,7 @@ class ConcentratorPayload(TypedDict, total=False):
     id: int
     name: str
     src_check: Literal["disable", "enable"]
-    member: str | list[str] | list[dict[str, Any]] | list[ConcentratorMemberItem]
+    member: str | list[str] | list[ConcentratorMemberItem]
 
 
 # ================================================================
@@ -143,7 +143,7 @@ class Concentrator:
         id: int | None = ...,
         name: str | None = ...,
         src_check: Literal["disable", "enable"] | None = ...,
-        member: str | list[str] | list[dict[str, Any]] | list[ConcentratorMemberItem] | None = ...,
+        member: str | list[str] | list[ConcentratorMemberItem] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -159,7 +159,7 @@ class Concentrator:
         id: int | None = ...,
         name: str | None = ...,
         src_check: Literal["disable", "enable"] | None = ...,
-        member: str | list[str] | list[dict[str, Any]] | list[ConcentratorMemberItem] | None = ...,
+        member: str | list[str] | list[ConcentratorMemberItem] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -193,7 +193,7 @@ class Concentrator:
         id: int | None = ...,
         name: str | None = ...,
         src_check: Literal["disable", "enable"] | None = ...,
-        member: str | list[str] | list[dict[str, Any]] | list[ConcentratorMemberItem] | None = ...,
+        member: str | list[str] | list[ConcentratorMemberItem] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,

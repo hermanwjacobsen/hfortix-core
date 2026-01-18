@@ -25,8 +25,8 @@ from hfortix_fortios.models import (
 # TypedDict Payloads
 # ================================================================
 
-class VdomNetflowCollectorsItem:
-    """Nested item for collectors field - supports attribute access."""
+class VdomNetflowCollectorsItem(TypedDict, total=False):
+    """Nested item for collectors field."""
     id: int
     collector_ip: str
     collector_port: int
@@ -40,7 +40,7 @@ class VdomNetflowCollectorsItem:
 class VdomNetflowPayload(TypedDict, total=False):
     """Payload type for VdomNetflow operations."""
     vdom_netflow: Literal["enable", "disable"]
-    collectors: str | list[str] | list[dict[str, Any]] | list[VdomNetflowCollectorsItem]
+    collectors: str | list[str] | list[VdomNetflowCollectorsItem]
 
 
 # ================================================================
@@ -121,7 +121,7 @@ class VdomNetflow:
         self,
         payload_dict: VdomNetflowPayload | None = ...,
         vdom_netflow: Literal["enable", "disable"] | None = ...,
-        collectors: str | list[str] | list[dict[str, Any]] | list[VdomNetflowCollectorsItem] | None = ...,
+        collectors: str | list[str] | list[VdomNetflowCollectorsItem] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -142,7 +142,7 @@ class VdomNetflow:
         self,
         payload_dict: VdomNetflowPayload | None = ...,
         vdom_netflow: Literal["enable", "disable"] | None = ...,
-        collectors: str | list[str] | list[dict[str, Any]] | list[VdomNetflowCollectorsItem] | None = ...,
+        collectors: str | list[str] | list[VdomNetflowCollectorsItem] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,

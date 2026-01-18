@@ -26,13 +26,13 @@ from hfortix_fortios.models import (
 # TypedDict Payloads
 # ================================================================
 
-class VlanPolicyAllowedvlansItem:
-    """Nested item for allowed-vlans field - supports attribute access."""
+class VlanPolicyAllowedvlansItem(TypedDict, total=False):
+    """Nested item for allowed-vlans field."""
     vlan_name: str
 
 
-class VlanPolicyUntaggedvlansItem:
-    """Nested item for untagged-vlans field - supports attribute access."""
+class VlanPolicyUntaggedvlansItem(TypedDict, total=False):
+    """Nested item for untagged-vlans field."""
     vlan_name: str
 
 
@@ -42,8 +42,8 @@ class VlanPolicyPayload(TypedDict, total=False):
     description: str
     fortilink: str
     vlan: str
-    allowed_vlans: str | list[str] | list[dict[str, Any]] | list[VlanPolicyAllowedvlansItem]
-    untagged_vlans: str | list[str] | list[dict[str, Any]] | list[VlanPolicyUntaggedvlansItem]
+    allowed_vlans: str | list[str] | list[VlanPolicyAllowedvlansItem]
+    untagged_vlans: str | list[str] | list[VlanPolicyUntaggedvlansItem]
     allowed_vlans_all: Literal["enable", "disable"]
     discard_mode: Literal["none", "all-untagged", "all-tagged"]
 
@@ -161,8 +161,8 @@ class VlanPolicy:
         description: str | None = ...,
         fortilink: str | None = ...,
         vlan: str | None = ...,
-        allowed_vlans: str | list[str] | list[dict[str, Any]] | list[VlanPolicyAllowedvlansItem] | None = ...,
-        untagged_vlans: str | list[str] | list[dict[str, Any]] | list[VlanPolicyUntaggedvlansItem] | None = ...,
+        allowed_vlans: str | list[str] | list[VlanPolicyAllowedvlansItem] | None = ...,
+        untagged_vlans: str | list[str] | list[VlanPolicyUntaggedvlansItem] | None = ...,
         allowed_vlans_all: Literal["enable", "disable"] | None = ...,
         discard_mode: Literal["none", "all-untagged", "all-tagged"] | None = ...,
         vdom: str | bool | None = ...,
@@ -181,8 +181,8 @@ class VlanPolicy:
         description: str | None = ...,
         fortilink: str | None = ...,
         vlan: str | None = ...,
-        allowed_vlans: str | list[str] | list[dict[str, Any]] | list[VlanPolicyAllowedvlansItem] | None = ...,
-        untagged_vlans: str | list[str] | list[dict[str, Any]] | list[VlanPolicyUntaggedvlansItem] | None = ...,
+        allowed_vlans: str | list[str] | list[VlanPolicyAllowedvlansItem] | None = ...,
+        untagged_vlans: str | list[str] | list[VlanPolicyUntaggedvlansItem] | None = ...,
         allowed_vlans_all: Literal["enable", "disable"] | None = ...,
         discard_mode: Literal["none", "all-untagged", "all-tagged"] | None = ...,
         vdom: str | bool | None = ...,
@@ -219,8 +219,8 @@ class VlanPolicy:
         description: str | None = ...,
         fortilink: str | None = ...,
         vlan: str | None = ...,
-        allowed_vlans: str | list[str] | list[dict[str, Any]] | list[VlanPolicyAllowedvlansItem] | None = ...,
-        untagged_vlans: str | list[str] | list[dict[str, Any]] | list[VlanPolicyUntaggedvlansItem] | None = ...,
+        allowed_vlans: str | list[str] | list[VlanPolicyAllowedvlansItem] | None = ...,
+        untagged_vlans: str | list[str] | list[VlanPolicyUntaggedvlansItem] | None = ...,
         allowed_vlans_all: Literal["enable", "disable"] | None = ...,
         discard_mode: Literal["none", "all-untagged", "all-tagged"] | None = ...,
         vdom: str | bool | None = ...,

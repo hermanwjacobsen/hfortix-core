@@ -26,15 +26,15 @@ from hfortix_fortios.models import (
 # TypedDict Payloads
 # ================================================================
 
-class InternetServiceSubappSubappItem:
-    """Nested item for sub-app field - supports attribute access."""
+class InternetServiceSubappSubappItem(TypedDict, total=False):
+    """Nested item for sub-app field."""
     id: int
 
 
 class InternetServiceSubappPayload(TypedDict, total=False):
     """Payload type for InternetServiceSubapp operations."""
     id: int
-    sub_app: str | list[str] | list[dict[str, Any]] | list[InternetServiceSubappSubappItem]
+    sub_app: str | list[str] | list[InternetServiceSubappSubappItem]
 
 
 # ================================================================
@@ -132,7 +132,7 @@ class InternetServiceSubapp:
         self,
         payload_dict: InternetServiceSubappPayload | None = ...,
         id: int | None = ...,
-        sub_app: str | list[str] | list[dict[str, Any]] | list[InternetServiceSubappSubappItem] | None = ...,
+        sub_app: str | list[str] | list[InternetServiceSubappSubappItem] | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> InternetServiceSubappObject: ...
@@ -145,7 +145,7 @@ class InternetServiceSubapp:
         self,
         payload_dict: InternetServiceSubappPayload | None = ...,
         id: int | None = ...,
-        sub_app: str | list[str] | list[dict[str, Any]] | list[InternetServiceSubappSubappItem] | None = ...,
+        sub_app: str | list[str] | list[InternetServiceSubappSubappItem] | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> InternetServiceSubappObject: ...
@@ -174,7 +174,7 @@ class InternetServiceSubapp:
         self,
         payload_dict: InternetServiceSubappPayload | None = ...,
         id: int | None = ...,
-        sub_app: str | list[str] | list[dict[str, Any]] | list[InternetServiceSubappSubappItem] | None = ...,
+        sub_app: str | list[str] | list[InternetServiceSubappSubappItem] | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> FortiObject: ...

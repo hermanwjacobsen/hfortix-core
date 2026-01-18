@@ -26,8 +26,8 @@ from hfortix_fortios.models import (
 # TypedDict Payloads
 # ================================================================
 
-class InternetServiceExtensionEntryItem:
-    """Nested item for entry field - supports attribute access."""
+class InternetServiceExtensionEntryItem(TypedDict, total=False):
+    """Nested item for entry field."""
     id: int
     addr_mode: Literal["ipv4", "ipv6"]
     protocol: int
@@ -36,8 +36,8 @@ class InternetServiceExtensionEntryItem:
     dst6: str | list[str]
 
 
-class InternetServiceExtensionDisableentryItem:
-    """Nested item for disable-entry field - supports attribute access."""
+class InternetServiceExtensionDisableentryItem(TypedDict, total=False):
+    """Nested item for disable-entry field."""
     id: int
     addr_mode: Literal["ipv4", "ipv6"]
     protocol: int
@@ -50,8 +50,8 @@ class InternetServiceExtensionPayload(TypedDict, total=False):
     """Payload type for InternetServiceExtension operations."""
     id: int
     comment: str
-    entry: str | list[str] | list[dict[str, Any]] | list[InternetServiceExtensionEntryItem]
-    disable_entry: str | list[str] | list[dict[str, Any]] | list[InternetServiceExtensionDisableentryItem]
+    entry: str | list[str] | list[InternetServiceExtensionEntryItem]
+    disable_entry: str | list[str] | list[InternetServiceExtensionDisableentryItem]
 
 
 # ================================================================
@@ -157,8 +157,8 @@ class InternetServiceExtension:
         payload_dict: InternetServiceExtensionPayload | None = ...,
         id: int | None = ...,
         comment: str | None = ...,
-        entry: str | list[str] | list[dict[str, Any]] | list[InternetServiceExtensionEntryItem] | None = ...,
-        disable_entry: str | list[str] | list[dict[str, Any]] | list[InternetServiceExtensionDisableentryItem] | None = ...,
+        entry: str | list[str] | list[InternetServiceExtensionEntryItem] | None = ...,
+        disable_entry: str | list[str] | list[InternetServiceExtensionDisableentryItem] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -173,8 +173,8 @@ class InternetServiceExtension:
         payload_dict: InternetServiceExtensionPayload | None = ...,
         id: int | None = ...,
         comment: str | None = ...,
-        entry: str | list[str] | list[dict[str, Any]] | list[InternetServiceExtensionEntryItem] | None = ...,
-        disable_entry: str | list[str] | list[dict[str, Any]] | list[InternetServiceExtensionDisableentryItem] | None = ...,
+        entry: str | list[str] | list[InternetServiceExtensionEntryItem] | None = ...,
+        disable_entry: str | list[str] | list[InternetServiceExtensionDisableentryItem] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -207,8 +207,8 @@ class InternetServiceExtension:
         payload_dict: InternetServiceExtensionPayload | None = ...,
         id: int | None = ...,
         comment: str | None = ...,
-        entry: str | list[str] | list[dict[str, Any]] | list[InternetServiceExtensionEntryItem] | None = ...,
-        disable_entry: str | list[str] | list[dict[str, Any]] | list[InternetServiceExtensionDisableentryItem] | None = ...,
+        entry: str | list[str] | list[InternetServiceExtensionEntryItem] | None = ...,
+        disable_entry: str | list[str] | list[InternetServiceExtensionDisableentryItem] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,

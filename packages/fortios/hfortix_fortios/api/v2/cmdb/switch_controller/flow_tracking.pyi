@@ -25,16 +25,16 @@ from hfortix_fortios.models import (
 # TypedDict Payloads
 # ================================================================
 
-class FlowTrackingCollectorsItem:
-    """Nested item for collectors field - supports attribute access."""
+class FlowTrackingCollectorsItem(TypedDict, total=False):
+    """Nested item for collectors field."""
     name: str
     ip: str
     port: int
     transport: Literal["udp", "tcp", "sctp"]
 
 
-class FlowTrackingAggregatesItem:
-    """Nested item for aggregates field - supports attribute access."""
+class FlowTrackingAggregatesItem(TypedDict, total=False):
+    """Nested item for aggregates field."""
     id: int
     ip: str
 
@@ -44,7 +44,7 @@ class FlowTrackingPayload(TypedDict, total=False):
     sample_mode: Literal["local", "perimeter", "device-ingress"]
     sample_rate: int
     format: Literal["netflow1", "netflow5", "netflow9", "ipfix"]
-    collectors: str | list[str] | list[dict[str, Any]] | list[FlowTrackingCollectorsItem]
+    collectors: str | list[str] | list[FlowTrackingCollectorsItem]
     level: Literal["vlan", "ip", "port", "proto", "mac"]
     max_export_pkt_size: int
     template_export_period: int
@@ -55,7 +55,7 @@ class FlowTrackingPayload(TypedDict, total=False):
     timeout_tcp_fin: int
     timeout_tcp_rst: int
     timeout_udp: int
-    aggregates: str | list[str] | list[dict[str, Any]] | list[FlowTrackingAggregatesItem]
+    aggregates: str | list[str] | list[FlowTrackingAggregatesItem]
 
 
 # ================================================================
@@ -164,7 +164,7 @@ class FlowTracking:
         sample_mode: Literal["local", "perimeter", "device-ingress"] | None = ...,
         sample_rate: int | None = ...,
         format: Literal["netflow1", "netflow5", "netflow9", "ipfix"] | None = ...,
-        collectors: str | list[str] | list[dict[str, Any]] | list[FlowTrackingCollectorsItem] | None = ...,
+        collectors: str | list[str] | list[FlowTrackingCollectorsItem] | None = ...,
         level: Literal["vlan", "ip", "port", "proto", "mac"] | None = ...,
         max_export_pkt_size: int | None = ...,
         template_export_period: int | None = ...,
@@ -175,7 +175,7 @@ class FlowTracking:
         timeout_tcp_fin: int | None = ...,
         timeout_tcp_rst: int | None = ...,
         timeout_udp: int | None = ...,
-        aggregates: str | list[str] | list[dict[str, Any]] | list[FlowTrackingAggregatesItem] | None = ...,
+        aggregates: str | list[str] | list[FlowTrackingAggregatesItem] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -198,7 +198,7 @@ class FlowTracking:
         sample_mode: Literal["local", "perimeter", "device-ingress"] | None = ...,
         sample_rate: int | None = ...,
         format: Literal["netflow1", "netflow5", "netflow9", "ipfix"] | None = ...,
-        collectors: str | list[str] | list[dict[str, Any]] | list[FlowTrackingCollectorsItem] | None = ...,
+        collectors: str | list[str] | list[FlowTrackingCollectorsItem] | None = ...,
         level: Literal["vlan", "ip", "port", "proto", "mac"] | None = ...,
         max_export_pkt_size: int | None = ...,
         template_export_period: int | None = ...,
@@ -209,7 +209,7 @@ class FlowTracking:
         timeout_tcp_fin: int | None = ...,
         timeout_tcp_rst: int | None = ...,
         timeout_udp: int | None = ...,
-        aggregates: str | list[str] | list[dict[str, Any]] | list[FlowTrackingAggregatesItem] | None = ...,
+        aggregates: str | list[str] | list[FlowTrackingAggregatesItem] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,

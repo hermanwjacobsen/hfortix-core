@@ -26,8 +26,8 @@ from hfortix_fortios.models import (
 # TypedDict Payloads
 # ================================================================
 
-class AccessList6RuleItem:
-    """Nested item for rule field - supports attribute access."""
+class AccessList6RuleItem(TypedDict, total=False):
+    """Nested item for rule field."""
     id: int
     action: Literal["permit", "deny"]
     prefix6: str
@@ -39,7 +39,7 @@ class AccessList6Payload(TypedDict, total=False):
     """Payload type for AccessList6 operations."""
     name: str
     comments: str
-    rule: str | list[str] | list[dict[str, Any]] | list[AccessList6RuleItem]
+    rule: str | list[str] | list[AccessList6RuleItem]
 
 
 # ================================================================
@@ -143,7 +143,7 @@ class AccessList6:
         payload_dict: AccessList6Payload | None = ...,
         name: str | None = ...,
         comments: str | None = ...,
-        rule: str | list[str] | list[dict[str, Any]] | list[AccessList6RuleItem] | None = ...,
+        rule: str | list[str] | list[AccessList6RuleItem] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -158,7 +158,7 @@ class AccessList6:
         payload_dict: AccessList6Payload | None = ...,
         name: str | None = ...,
         comments: str | None = ...,
-        rule: str | list[str] | list[dict[str, Any]] | list[AccessList6RuleItem] | None = ...,
+        rule: str | list[str] | list[AccessList6RuleItem] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -191,7 +191,7 @@ class AccessList6:
         payload_dict: AccessList6Payload | None = ...,
         name: str | None = ...,
         comments: str | None = ...,
-        rule: str | list[str] | list[dict[str, Any]] | list[AccessList6RuleItem] | None = ...,
+        rule: str | list[str] | list[AccessList6RuleItem] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,

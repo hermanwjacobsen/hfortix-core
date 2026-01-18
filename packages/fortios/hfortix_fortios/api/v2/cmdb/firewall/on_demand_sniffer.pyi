@@ -26,18 +26,18 @@ from hfortix_fortios.models import (
 # TypedDict Payloads
 # ================================================================
 
-class OnDemandSnifferHostsItem:
-    """Nested item for hosts field - supports attribute access."""
+class OnDemandSnifferHostsItem(TypedDict, total=False):
+    """Nested item for hosts field."""
     host: str
 
 
-class OnDemandSnifferPortsItem:
-    """Nested item for ports field - supports attribute access."""
+class OnDemandSnifferPortsItem(TypedDict, total=False):
+    """Nested item for ports field."""
     port: int
 
 
-class OnDemandSnifferProtocolsItem:
-    """Nested item for protocols field - supports attribute access."""
+class OnDemandSnifferProtocolsItem(TypedDict, total=False):
+    """Nested item for protocols field."""
     protocol: int
 
 
@@ -46,9 +46,9 @@ class OnDemandSnifferPayload(TypedDict, total=False):
     name: str
     interface: str
     max_packet_count: int
-    hosts: str | list[str] | list[dict[str, Any]] | list[OnDemandSnifferHostsItem]
-    ports: str | list[str] | list[dict[str, Any]] | list[OnDemandSnifferPortsItem]
-    protocols: str | list[str] | list[dict[str, Any]] | list[OnDemandSnifferProtocolsItem]
+    hosts: str | list[str] | list[OnDemandSnifferHostsItem]
+    ports: str | list[str] | list[OnDemandSnifferPortsItem]
+    protocols: str | list[str] | list[OnDemandSnifferProtocolsItem]
     non_ip_packet: Literal["enable", "disable"]
     advanced_filter: str
 
@@ -165,9 +165,9 @@ class OnDemandSniffer:
         name: str | None = ...,
         interface: str | None = ...,
         max_packet_count: int | None = ...,
-        hosts: str | list[str] | list[dict[str, Any]] | list[OnDemandSnifferHostsItem] | None = ...,
-        ports: str | list[str] | list[dict[str, Any]] | list[OnDemandSnifferPortsItem] | None = ...,
-        protocols: str | list[str] | list[dict[str, Any]] | list[OnDemandSnifferProtocolsItem] | None = ...,
+        hosts: str | list[str] | list[OnDemandSnifferHostsItem] | None = ...,
+        ports: str | list[str] | list[OnDemandSnifferPortsItem] | None = ...,
+        protocols: str | list[str] | list[OnDemandSnifferProtocolsItem] | None = ...,
         non_ip_packet: Literal["enable", "disable"] | None = ...,
         advanced_filter: str | None = ...,
         vdom: str | bool | None = ...,
@@ -185,9 +185,9 @@ class OnDemandSniffer:
         name: str | None = ...,
         interface: str | None = ...,
         max_packet_count: int | None = ...,
-        hosts: str | list[str] | list[dict[str, Any]] | list[OnDemandSnifferHostsItem] | None = ...,
-        ports: str | list[str] | list[dict[str, Any]] | list[OnDemandSnifferPortsItem] | None = ...,
-        protocols: str | list[str] | list[dict[str, Any]] | list[OnDemandSnifferProtocolsItem] | None = ...,
+        hosts: str | list[str] | list[OnDemandSnifferHostsItem] | None = ...,
+        ports: str | list[str] | list[OnDemandSnifferPortsItem] | None = ...,
+        protocols: str | list[str] | list[OnDemandSnifferProtocolsItem] | None = ...,
         non_ip_packet: Literal["enable", "disable"] | None = ...,
         advanced_filter: str | None = ...,
         vdom: str | bool | None = ...,
@@ -223,9 +223,9 @@ class OnDemandSniffer:
         name: str | None = ...,
         interface: str | None = ...,
         max_packet_count: int | None = ...,
-        hosts: str | list[str] | list[dict[str, Any]] | list[OnDemandSnifferHostsItem] | None = ...,
-        ports: str | list[str] | list[dict[str, Any]] | list[OnDemandSnifferPortsItem] | None = ...,
-        protocols: str | list[str] | list[dict[str, Any]] | list[OnDemandSnifferProtocolsItem] | None = ...,
+        hosts: str | list[str] | list[OnDemandSnifferHostsItem] | None = ...,
+        ports: str | list[str] | list[OnDemandSnifferPortsItem] | None = ...,
+        protocols: str | list[str] | list[OnDemandSnifferProtocolsItem] | None = ...,
         non_ip_packet: Literal["enable", "disable"] | None = ...,
         advanced_filter: str | None = ...,
         vdom: str | bool | None = ...,

@@ -26,8 +26,8 @@ from hfortix_fortios.models import (
 # TypedDict Payloads
 # ================================================================
 
-class Static6SdwanzoneItem:
-    """Nested item for sdwan-zone field - supports attribute access."""
+class Static6SdwanzoneItem(TypedDict, total=False):
+    """Nested item for sdwan-zone field."""
     name: str
 
 
@@ -45,7 +45,7 @@ class Static6Payload(TypedDict, total=False):
     comment: str
     blackhole: Literal["enable", "disable"]
     dynamic_gateway: Literal["enable", "disable"]
-    sdwan_zone: str | list[str] | list[dict[str, Any]] | list[Static6SdwanzoneItem]
+    sdwan_zone: str | list[str] | list[Static6SdwanzoneItem]
     dstaddr: str
     link_monitor_exempt: Literal["enable", "disable"]
     vrf: int
@@ -194,7 +194,7 @@ class Static6:
         comment: str | None = ...,
         blackhole: Literal["enable", "disable"] | None = ...,
         dynamic_gateway: Literal["enable", "disable"] | None = ...,
-        sdwan_zone: str | list[str] | list[dict[str, Any]] | list[Static6SdwanzoneItem] | None = ...,
+        sdwan_zone: str | list[str] | list[Static6SdwanzoneItem] | None = ...,
         dstaddr: str | None = ...,
         link_monitor_exempt: Literal["enable", "disable"] | None = ...,
         vrf: int | None = ...,
@@ -224,7 +224,7 @@ class Static6:
         comment: str | None = ...,
         blackhole: Literal["enable", "disable"] | None = ...,
         dynamic_gateway: Literal["enable", "disable"] | None = ...,
-        sdwan_zone: str | list[str] | list[dict[str, Any]] | list[Static6SdwanzoneItem] | None = ...,
+        sdwan_zone: str | list[str] | list[Static6SdwanzoneItem] | None = ...,
         dstaddr: str | None = ...,
         link_monitor_exempt: Literal["enable", "disable"] | None = ...,
         vrf: int | None = ...,
@@ -272,7 +272,7 @@ class Static6:
         comment: str | None = ...,
         blackhole: Literal["enable", "disable"] | None = ...,
         dynamic_gateway: Literal["enable", "disable"] | None = ...,
-        sdwan_zone: str | list[str] | list[dict[str, Any]] | list[Static6SdwanzoneItem] | None = ...,
+        sdwan_zone: str | list[str] | list[Static6SdwanzoneItem] | None = ...,
         dstaddr: str | None = ...,
         link_monitor_exempt: Literal["enable", "disable"] | None = ...,
         vrf: int | None = ...,

@@ -26,8 +26,8 @@ from hfortix_fortios.models import (
 # TypedDict Payloads
 # ================================================================
 
-class KmipServerServerlistItem:
-    """Nested item for server-list field - supports attribute access."""
+class KmipServerServerlistItem(TypedDict, total=False):
+    """Nested item for server-list field."""
     id: int
     status: Literal["enable", "disable"]
     server: str
@@ -38,7 +38,7 @@ class KmipServerServerlistItem:
 class KmipServerPayload(TypedDict, total=False):
     """Payload type for KmipServer operations."""
     name: str
-    server_list: str | list[str] | list[dict[str, Any]] | list[KmipServerServerlistItem]
+    server_list: str | list[str] | list[KmipServerServerlistItem]
     username: str
     password: str
     ssl_min_proto_version: Literal["default", "SSLv3", "TLSv1", "TLSv1-1", "TLSv1-2", "TLSv1-3"]
@@ -163,7 +163,7 @@ class KmipServer:
         self,
         payload_dict: KmipServerPayload | None = ...,
         name: str | None = ...,
-        server_list: str | list[str] | list[dict[str, Any]] | list[KmipServerServerlistItem] | None = ...,
+        server_list: str | list[str] | list[KmipServerServerlistItem] | None = ...,
         username: str | None = ...,
         password: str | None = ...,
         ssl_min_proto_version: Literal["default", "SSLv3", "TLSv1", "TLSv1-1", "TLSv1-2", "TLSv1-3"] | None = ...,
@@ -185,7 +185,7 @@ class KmipServer:
         self,
         payload_dict: KmipServerPayload | None = ...,
         name: str | None = ...,
-        server_list: str | list[str] | list[dict[str, Any]] | list[KmipServerServerlistItem] | None = ...,
+        server_list: str | list[str] | list[KmipServerServerlistItem] | None = ...,
         username: str | None = ...,
         password: str | None = ...,
         ssl_min_proto_version: Literal["default", "SSLv3", "TLSv1", "TLSv1-1", "TLSv1-2", "TLSv1-3"] | None = ...,
@@ -225,7 +225,7 @@ class KmipServer:
         self,
         payload_dict: KmipServerPayload | None = ...,
         name: str | None = ...,
-        server_list: str | list[str] | list[dict[str, Any]] | list[KmipServerServerlistItem] | None = ...,
+        server_list: str | list[str] | list[KmipServerServerlistItem] | None = ...,
         username: str | None = ...,
         password: str | None = ...,
         ssl_min_proto_version: Literal["default", "SSLv3", "TLSv1", "TLSv1-1", "TLSv1-2", "TLSv1-3"] | None = ...,

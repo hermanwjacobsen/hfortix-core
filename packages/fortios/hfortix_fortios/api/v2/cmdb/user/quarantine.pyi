@@ -25,8 +25,8 @@ from hfortix_fortios.models import (
 # TypedDict Payloads
 # ================================================================
 
-class QuarantineTargetsItem:
-    """Nested item for targets field - supports attribute access."""
+class QuarantineTargetsItem(TypedDict, total=False):
+    """Nested item for targets field."""
     entry: str
     description: str
     macs: str | list[str]
@@ -37,7 +37,7 @@ class QuarantinePayload(TypedDict, total=False):
     quarantine: Literal["enable", "disable"]
     traffic_policy: str
     firewall_groups: str
-    targets: str | list[str] | list[dict[str, Any]] | list[QuarantineTargetsItem]
+    targets: str | list[str] | list[QuarantineTargetsItem]
 
 
 # ================================================================
@@ -124,7 +124,7 @@ class Quarantine:
         quarantine: Literal["enable", "disable"] | None = ...,
         traffic_policy: str | None = ...,
         firewall_groups: str | None = ...,
-        targets: str | list[str] | list[dict[str, Any]] | list[QuarantineTargetsItem] | None = ...,
+        targets: str | list[str] | list[QuarantineTargetsItem] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -147,7 +147,7 @@ class Quarantine:
         quarantine: Literal["enable", "disable"] | None = ...,
         traffic_policy: str | None = ...,
         firewall_groups: str | None = ...,
-        targets: str | list[str] | list[dict[str, Any]] | list[QuarantineTargetsItem] | None = ...,
+        targets: str | list[str] | list[QuarantineTargetsItem] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,

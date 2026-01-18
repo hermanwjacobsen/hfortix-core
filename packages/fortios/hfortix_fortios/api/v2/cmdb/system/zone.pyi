@@ -26,25 +26,25 @@ from hfortix_fortios.models import (
 # TypedDict Payloads
 # ================================================================
 
-class ZoneTaggingItem:
-    """Nested item for tagging field - supports attribute access."""
+class ZoneTaggingItem(TypedDict, total=False):
+    """Nested item for tagging field."""
     name: str
     category: str
     tags: str | list[str]
 
 
-class ZoneInterfaceItem:
-    """Nested item for interface field - supports attribute access."""
+class ZoneInterfaceItem(TypedDict, total=False):
+    """Nested item for interface field."""
     interface_name: str
 
 
 class ZonePayload(TypedDict, total=False):
     """Payload type for Zone operations."""
     name: str
-    tagging: str | list[str] | list[dict[str, Any]] | list[ZoneTaggingItem]
+    tagging: str | list[str] | list[ZoneTaggingItem]
     description: str
     intrazone: Literal["allow", "deny"]
-    interface: str | list[str] | list[dict[str, Any]] | list[ZoneInterfaceItem]
+    interface: str | list[str] | list[ZoneInterfaceItem]
 
 
 # ================================================================
@@ -151,10 +151,10 @@ class Zone:
         self,
         payload_dict: ZonePayload | None = ...,
         name: str | None = ...,
-        tagging: str | list[str] | list[dict[str, Any]] | list[ZoneTaggingItem] | None = ...,
+        tagging: str | list[str] | list[ZoneTaggingItem] | None = ...,
         description: str | None = ...,
         intrazone: Literal["allow", "deny"] | None = ...,
-        interface: str | list[str] | list[dict[str, Any]] | list[ZoneInterfaceItem] | None = ...,
+        interface: str | list[str] | list[ZoneInterfaceItem] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -168,10 +168,10 @@ class Zone:
         self,
         payload_dict: ZonePayload | None = ...,
         name: str | None = ...,
-        tagging: str | list[str] | list[dict[str, Any]] | list[ZoneTaggingItem] | None = ...,
+        tagging: str | list[str] | list[ZoneTaggingItem] | None = ...,
         description: str | None = ...,
         intrazone: Literal["allow", "deny"] | None = ...,
-        interface: str | list[str] | list[dict[str, Any]] | list[ZoneInterfaceItem] | None = ...,
+        interface: str | list[str] | list[ZoneInterfaceItem] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -203,10 +203,10 @@ class Zone:
         self,
         payload_dict: ZonePayload | None = ...,
         name: str | None = ...,
-        tagging: str | list[str] | list[dict[str, Any]] | list[ZoneTaggingItem] | None = ...,
+        tagging: str | list[str] | list[ZoneTaggingItem] | None = ...,
         description: str | None = ...,
         intrazone: Literal["allow", "deny"] | None = ...,
-        interface: str | list[str] | list[dict[str, Any]] | list[ZoneInterfaceItem] | None = ...,
+        interface: str | list[str] | list[ZoneInterfaceItem] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,

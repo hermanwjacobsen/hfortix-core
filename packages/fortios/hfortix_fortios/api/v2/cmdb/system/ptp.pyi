@@ -25,8 +25,8 @@ from hfortix_fortios.models import (
 # TypedDict Payloads
 # ================================================================
 
-class PtpServerinterfaceItem:
-    """Nested item for server-interface field - supports attribute access."""
+class PtpServerinterfaceItem(TypedDict, total=False):
+    """Nested item for server-interface field."""
     id: int
     server_interface_name: str
     delay_mechanism: Literal["E2E", "P2P"]
@@ -40,7 +40,7 @@ class PtpPayload(TypedDict, total=False):
     request_interval: int
     interface: str
     server_mode: Literal["enable", "disable"]
-    server_interface: str | list[str] | list[dict[str, Any]] | list[PtpServerinterfaceItem]
+    server_interface: str | list[str] | list[PtpServerinterfaceItem]
 
 
 # ================================================================
@@ -134,7 +134,7 @@ class Ptp:
         request_interval: int | None = ...,
         interface: str | None = ...,
         server_mode: Literal["enable", "disable"] | None = ...,
-        server_interface: str | list[str] | list[dict[str, Any]] | list[PtpServerinterfaceItem] | None = ...,
+        server_interface: str | list[str] | list[PtpServerinterfaceItem] | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> PtpObject: ...
@@ -158,7 +158,7 @@ class Ptp:
         request_interval: int | None = ...,
         interface: str | None = ...,
         server_mode: Literal["enable", "disable"] | None = ...,
-        server_interface: str | list[str] | list[dict[str, Any]] | list[PtpServerinterfaceItem] | None = ...,
+        server_interface: str | list[str] | list[PtpServerinterfaceItem] | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> FortiObject: ...

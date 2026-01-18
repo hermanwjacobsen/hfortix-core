@@ -37,13 +37,13 @@ class ProfileFtgddnsDict(TypedDict, total=False):
     filters: str | list[str]
 
 
-class ProfileExternalipblocklistItem:
-    """Nested item for external-ip-blocklist field - supports attribute access."""
+class ProfileExternalipblocklistItem(TypedDict, total=False):
+    """Nested item for external-ip-blocklist field."""
     name: str
 
 
-class ProfileDnstranslationItem:
-    """Nested item for dns-translation field - supports attribute access."""
+class ProfileDnstranslationItem(TypedDict, total=False):
+    """Nested item for dns-translation field."""
     id: int
     addr_type: Literal["ipv4", "ipv6"]
     src: str
@@ -55,8 +55,8 @@ class ProfileDnstranslationItem:
     prefix: int
 
 
-class ProfileTransparentdnsdatabaseItem:
-    """Nested item for transparent-dns-database field - supports attribute access."""
+class ProfileTransparentdnsdatabaseItem(TypedDict, total=False):
+    """Nested item for transparent-dns-database field."""
     name: str
 
 
@@ -75,9 +75,9 @@ class ProfilePayload(TypedDict, total=False):
     block_botnet: Literal["disable", "enable"]
     safe_search: Literal["disable", "enable"]
     youtube_restrict: Literal["strict", "moderate", "none"]
-    external_ip_blocklist: str | list[str] | list[dict[str, Any]] | list[ProfileExternalipblocklistItem]
-    dns_translation: str | list[str] | list[dict[str, Any]] | list[ProfileDnstranslationItem]
-    transparent_dns_database: str | list[str] | list[dict[str, Any]] | list[ProfileTransparentdnsdatabaseItem]
+    external_ip_blocklist: str | list[str] | list[ProfileExternalipblocklistItem]
+    dns_translation: str | list[str] | list[ProfileDnstranslationItem]
+    transparent_dns_database: str | list[str] | list[ProfileTransparentdnsdatabaseItem]
     strip_ech: Literal["disable", "enable"]
 
 
@@ -221,9 +221,9 @@ class Profile:
         block_botnet: Literal["disable", "enable"] | None = ...,
         safe_search: Literal["disable", "enable"] | None = ...,
         youtube_restrict: Literal["strict", "moderate", "none"] | None = ...,
-        external_ip_blocklist: str | list[str] | list[dict[str, Any]] | list[ProfileExternalipblocklistItem] | None = ...,
-        dns_translation: str | list[str] | list[dict[str, Any]] | list[ProfileDnstranslationItem] | None = ...,
-        transparent_dns_database: str | list[str] | list[dict[str, Any]] | list[ProfileTransparentdnsdatabaseItem] | None = ...,
+        external_ip_blocklist: str | list[str] | list[ProfileExternalipblocklistItem] | None = ...,
+        dns_translation: str | list[str] | list[ProfileDnstranslationItem] | None = ...,
+        transparent_dns_database: str | list[str] | list[ProfileTransparentdnsdatabaseItem] | None = ...,
         strip_ech: Literal["disable", "enable"] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
@@ -250,9 +250,9 @@ class Profile:
         block_botnet: Literal["disable", "enable"] | None = ...,
         safe_search: Literal["disable", "enable"] | None = ...,
         youtube_restrict: Literal["strict", "moderate", "none"] | None = ...,
-        external_ip_blocklist: str | list[str] | list[dict[str, Any]] | list[ProfileExternalipblocklistItem] | None = ...,
-        dns_translation: str | list[str] | list[dict[str, Any]] | list[ProfileDnstranslationItem] | None = ...,
-        transparent_dns_database: str | list[str] | list[dict[str, Any]] | list[ProfileTransparentdnsdatabaseItem] | None = ...,
+        external_ip_blocklist: str | list[str] | list[ProfileExternalipblocklistItem] | None = ...,
+        dns_translation: str | list[str] | list[ProfileDnstranslationItem] | None = ...,
+        transparent_dns_database: str | list[str] | list[ProfileTransparentdnsdatabaseItem] | None = ...,
         strip_ech: Literal["disable", "enable"] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
@@ -297,9 +297,9 @@ class Profile:
         block_botnet: Literal["disable", "enable"] | None = ...,
         safe_search: Literal["disable", "enable"] | None = ...,
         youtube_restrict: Literal["strict", "moderate", "none"] | None = ...,
-        external_ip_blocklist: str | list[str] | list[dict[str, Any]] | list[ProfileExternalipblocklistItem] | None = ...,
-        dns_translation: str | list[str] | list[dict[str, Any]] | list[ProfileDnstranslationItem] | None = ...,
-        transparent_dns_database: str | list[str] | list[dict[str, Any]] | list[ProfileTransparentdnsdatabaseItem] | None = ...,
+        external_ip_blocklist: str | list[str] | list[ProfileExternalipblocklistItem] | None = ...,
+        dns_translation: str | list[str] | list[ProfileDnstranslationItem] | None = ...,
+        transparent_dns_database: str | list[str] | list[ProfileTransparentdnsdatabaseItem] | None = ...,
         strip_ech: Literal["disable", "enable"] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,

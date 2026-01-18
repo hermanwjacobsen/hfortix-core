@@ -25,8 +25,8 @@ from hfortix_fortios.models import (
 # TypedDict Payloads
 # ================================================================
 
-class OverrideSettingSerialItem:
-    """Nested item for serial field - supports attribute access."""
+class OverrideSettingSerialItem(TypedDict, total=False):
+    """Nested item for serial field."""
     name: str
 
 
@@ -39,7 +39,7 @@ class OverrideSettingPayload(TypedDict, total=False):
     alt_server: str
     fallback_to_primary: Literal["enable", "disable"]
     certificate_verification: Literal["enable", "disable"]
-    serial: str | list[str] | list[dict[str, Any]] | list[OverrideSettingSerialItem]
+    serial: str | list[str] | list[OverrideSettingSerialItem]
     server_cert_ca: str
     preshared_key: str
     access_config: Literal["enable", "disable"]
@@ -200,7 +200,7 @@ class OverrideSetting:
         alt_server: str | None = ...,
         fallback_to_primary: Literal["enable", "disable"] | None = ...,
         certificate_verification: Literal["enable", "disable"] | None = ...,
-        serial: str | list[str] | list[dict[str, Any]] | list[OverrideSettingSerialItem] | None = ...,
+        serial: str | list[str] | list[OverrideSettingSerialItem] | None = ...,
         server_cert_ca: str | None = ...,
         preshared_key: str | None = ...,
         access_config: Literal["enable", "disable"] | None = ...,
@@ -248,7 +248,7 @@ class OverrideSetting:
         alt_server: str | None = ...,
         fallback_to_primary: Literal["enable", "disable"] | None = ...,
         certificate_verification: Literal["enable", "disable"] | None = ...,
-        serial: str | list[str] | list[dict[str, Any]] | list[OverrideSettingSerialItem] | None = ...,
+        serial: str | list[str] | list[OverrideSettingSerialItem] | None = ...,
         server_cert_ca: str | None = ...,
         preshared_key: str | None = ...,
         access_config: Literal["enable", "disable"] | None = ...,

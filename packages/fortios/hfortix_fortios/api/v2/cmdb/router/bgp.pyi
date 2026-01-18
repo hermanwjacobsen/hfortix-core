@@ -25,29 +25,29 @@ from hfortix_fortios.models import (
 # TypedDict Payloads
 # ================================================================
 
-class BgpConfederationpeersItem:
-    """Nested item for confederation-peers field - supports attribute access."""
+class BgpConfederationpeersItem(TypedDict, total=False):
+    """Nested item for confederation-peers field."""
     peer: str
 
 
-class BgpAggregateaddressItem:
-    """Nested item for aggregate-address field - supports attribute access."""
+class BgpAggregateaddressItem(TypedDict, total=False):
+    """Nested item for aggregate-address field."""
     id: int
     prefix: str
     as_set: Literal["enable", "disable"]
     summary_only: Literal["enable", "disable"]
 
 
-class BgpAggregateaddress6Item:
-    """Nested item for aggregate-address6 field - supports attribute access."""
+class BgpAggregateaddress6Item(TypedDict, total=False):
+    """Nested item for aggregate-address6 field."""
     id: int
     prefix6: str
     as_set: Literal["enable", "disable"]
     summary_only: Literal["enable", "disable"]
 
 
-class BgpNeighborItem:
-    """Nested item for neighbor field - supports attribute access."""
+class BgpNeighborItem(TypedDict, total=False):
+    """Nested item for neighbor field."""
     ip: str
     advertisement_interval: int
     allowas_in_enable: Literal["enable", "disable"]
@@ -212,8 +212,8 @@ class BgpNeighborItem:
     conditional_advertise6: str | list[str]
 
 
-class BgpNeighborgroupItem:
-    """Nested item for neighbor-group field - supports attribute access."""
+class BgpNeighborgroupItem(TypedDict, total=False):
+    """Nested item for neighbor-group field."""
     name: str
     advertisement_interval: int
     allowas_in_enable: Literal["enable", "disable"]
@@ -377,24 +377,24 @@ class BgpNeighborgroupItem:
     auth_options: str
 
 
-class BgpNeighborrangeItem:
-    """Nested item for neighbor-range field - supports attribute access."""
+class BgpNeighborrangeItem(TypedDict, total=False):
+    """Nested item for neighbor-range field."""
     id: int
     prefix: str
     max_neighbor_num: int
     neighbor_group: str
 
 
-class BgpNeighborrange6Item:
-    """Nested item for neighbor-range6 field - supports attribute access."""
+class BgpNeighborrange6Item(TypedDict, total=False):
+    """Nested item for neighbor-range6 field."""
     id: int
     prefix6: str
     max_neighbor_num: int
     neighbor_group: str
 
 
-class BgpNetworkItem:
-    """Nested item for network field - supports attribute access."""
+class BgpNetworkItem(TypedDict, total=False):
+    """Nested item for network field."""
     id: int
     prefix: str
     network_import_check: Literal["global", "enable", "disable"]
@@ -403,8 +403,8 @@ class BgpNetworkItem:
     prefix_name: str
 
 
-class BgpNetwork6Item:
-    """Nested item for network6 field - supports attribute access."""
+class BgpNetwork6Item(TypedDict, total=False):
+    """Nested item for network6 field."""
     id: int
     prefix6: str
     network_import_check: Literal["global", "enable", "disable"]
@@ -412,30 +412,30 @@ class BgpNetwork6Item:
     route_map: str
 
 
-class BgpRedistributeItem:
-    """Nested item for redistribute field - supports attribute access."""
+class BgpRedistributeItem(TypedDict, total=False):
+    """Nested item for redistribute field."""
     name: str
     status: Literal["enable", "disable"]
     route_map: str
 
 
-class BgpRedistribute6Item:
-    """Nested item for redistribute6 field - supports attribute access."""
+class BgpRedistribute6Item(TypedDict, total=False):
+    """Nested item for redistribute6 field."""
     name: str
     status: Literal["enable", "disable"]
     route_map: str
 
 
-class BgpAdmindistanceItem:
-    """Nested item for admin-distance field - supports attribute access."""
+class BgpAdmindistanceItem(TypedDict, total=False):
+    """Nested item for admin-distance field."""
     id: int
     neighbour_prefix: str
     route_list: str
     distance: int
 
 
-class BgpVrfItem:
-    """Nested item for vrf field - supports attribute access."""
+class BgpVrfItem(TypedDict, total=False):
+    """Nested item for vrf field."""
     vrf: str
     role: Literal["standalone", "ce", "pe"]
     rd: str
@@ -445,8 +445,8 @@ class BgpVrfItem:
     leak_target: str | list[str]
 
 
-class BgpVrf6Item:
-    """Nested item for vrf6 field - supports attribute access."""
+class BgpVrf6Item(TypedDict, total=False):
+    """Nested item for vrf6 field."""
     vrf: str
     role: Literal["standalone", "ce", "pe"]
     rd: str
@@ -488,7 +488,7 @@ class BgpPayload(TypedDict, total=False):
     tag_resolve_mode: Literal["disable", "preferred", "merge", "merge-all"]
     cluster_id: str
     confederation_identifier: int
-    confederation_peers: str | list[str] | list[dict[str, Any]] | list[BgpConfederationpeersItem]
+    confederation_peers: str | list[str] | list[BgpConfederationpeersItem]
     dampening_route_map: str
     dampening_reachability_half_life: int
     dampening_reuse: int
@@ -511,19 +511,19 @@ class BgpPayload(TypedDict, total=False):
     additional_path_select_vpnv4: int
     additional_path_select_vpnv6: int
     cross_family_conditional_adv: Literal["enable", "disable"]
-    aggregate_address: str | list[str] | list[dict[str, Any]] | list[BgpAggregateaddressItem]
-    aggregate_address6: str | list[str] | list[dict[str, Any]] | list[BgpAggregateaddress6Item]
-    neighbor: str | list[str] | list[dict[str, Any]] | list[BgpNeighborItem]
-    neighbor_group: str | list[str] | list[dict[str, Any]] | list[BgpNeighborgroupItem]
-    neighbor_range: str | list[str] | list[dict[str, Any]] | list[BgpNeighborrangeItem]
-    neighbor_range6: str | list[str] | list[dict[str, Any]] | list[BgpNeighborrange6Item]
-    network: str | list[str] | list[dict[str, Any]] | list[BgpNetworkItem]
-    network6: str | list[str] | list[dict[str, Any]] | list[BgpNetwork6Item]
-    redistribute: str | list[str] | list[dict[str, Any]] | list[BgpRedistributeItem]
-    redistribute6: str | list[str] | list[dict[str, Any]] | list[BgpRedistribute6Item]
-    admin_distance: str | list[str] | list[dict[str, Any]] | list[BgpAdmindistanceItem]
-    vrf: str | list[str] | list[dict[str, Any]] | list[BgpVrfItem]
-    vrf6: str | list[str] | list[dict[str, Any]] | list[BgpVrf6Item]
+    aggregate_address: str | list[str] | list[BgpAggregateaddressItem]
+    aggregate_address6: str | list[str] | list[BgpAggregateaddress6Item]
+    neighbor: str | list[str] | list[BgpNeighborItem]
+    neighbor_group: str | list[str] | list[BgpNeighborgroupItem]
+    neighbor_range: str | list[str] | list[BgpNeighborrangeItem]
+    neighbor_range6: str | list[str] | list[BgpNeighborrange6Item]
+    network: str | list[str] | list[BgpNetworkItem]
+    network6: str | list[str] | list[BgpNetwork6Item]
+    redistribute: str | list[str] | list[BgpRedistributeItem]
+    redistribute6: str | list[str] | list[BgpRedistribute6Item]
+    admin_distance: str | list[str] | list[BgpAdmindistanceItem]
+    vrf: str | list[str] | list[BgpVrfItem]
+    vrf6: str | list[str] | list[BgpVrf6Item]
 
 
 # ================================================================
@@ -761,7 +761,7 @@ class Bgp:
         tag_resolve_mode: Literal["disable", "preferred", "merge", "merge-all"] | None = ...,
         cluster_id: str | None = ...,
         confederation_identifier: int | None = ...,
-        confederation_peers: str | list[str] | list[dict[str, Any]] | list[BgpConfederationpeersItem] | None = ...,
+        confederation_peers: str | list[str] | list[BgpConfederationpeersItem] | None = ...,
         dampening_route_map: str | None = ...,
         dampening_reachability_half_life: int | None = ...,
         dampening_reuse: int | None = ...,
@@ -784,19 +784,19 @@ class Bgp:
         additional_path_select_vpnv4: int | None = ...,
         additional_path_select_vpnv6: int | None = ...,
         cross_family_conditional_adv: Literal["enable", "disable"] | None = ...,
-        aggregate_address: str | list[str] | list[dict[str, Any]] | list[BgpAggregateaddressItem] | None = ...,
-        aggregate_address6: str | list[str] | list[dict[str, Any]] | list[BgpAggregateaddress6Item] | None = ...,
-        neighbor: str | list[str] | list[dict[str, Any]] | list[BgpNeighborItem] | None = ...,
-        neighbor_group: str | list[str] | list[dict[str, Any]] | list[BgpNeighborgroupItem] | None = ...,
-        neighbor_range: str | list[str] | list[dict[str, Any]] | list[BgpNeighborrangeItem] | None = ...,
-        neighbor_range6: str | list[str] | list[dict[str, Any]] | list[BgpNeighborrange6Item] | None = ...,
-        network: str | list[str] | list[dict[str, Any]] | list[BgpNetworkItem] | None = ...,
-        network6: str | list[str] | list[dict[str, Any]] | list[BgpNetwork6Item] | None = ...,
-        redistribute: str | list[str] | list[dict[str, Any]] | list[BgpRedistributeItem] | None = ...,
-        redistribute6: str | list[str] | list[dict[str, Any]] | list[BgpRedistribute6Item] | None = ...,
-        admin_distance: str | list[str] | list[dict[str, Any]] | list[BgpAdmindistanceItem] | None = ...,
-        vrf: str | list[str] | list[dict[str, Any]] | list[BgpVrfItem] | None = ...,
-        vrf6: str | list[str] | list[dict[str, Any]] | list[BgpVrf6Item] | None = ...,
+        aggregate_address: str | list[str] | list[BgpAggregateaddressItem] | None = ...,
+        aggregate_address6: str | list[str] | list[BgpAggregateaddress6Item] | None = ...,
+        neighbor: str | list[str] | list[BgpNeighborItem] | None = ...,
+        neighbor_group: str | list[str] | list[BgpNeighborgroupItem] | None = ...,
+        neighbor_range: str | list[str] | list[BgpNeighborrangeItem] | None = ...,
+        neighbor_range6: str | list[str] | list[BgpNeighborrange6Item] | None = ...,
+        network: str | list[str] | list[BgpNetworkItem] | None = ...,
+        network6: str | list[str] | list[BgpNetwork6Item] | None = ...,
+        redistribute: str | list[str] | list[BgpRedistributeItem] | None = ...,
+        redistribute6: str | list[str] | list[BgpRedistribute6Item] | None = ...,
+        admin_distance: str | list[str] | list[BgpAdmindistanceItem] | None = ...,
+        vrf: str | list[str] | list[BgpVrfItem] | None = ...,
+        vrf6: str | list[str] | list[BgpVrf6Item] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -846,7 +846,7 @@ class Bgp:
         tag_resolve_mode: Literal["disable", "preferred", "merge", "merge-all"] | None = ...,
         cluster_id: str | None = ...,
         confederation_identifier: int | None = ...,
-        confederation_peers: str | list[str] | list[dict[str, Any]] | list[BgpConfederationpeersItem] | None = ...,
+        confederation_peers: str | list[str] | list[BgpConfederationpeersItem] | None = ...,
         dampening_route_map: str | None = ...,
         dampening_reachability_half_life: int | None = ...,
         dampening_reuse: int | None = ...,
@@ -869,19 +869,19 @@ class Bgp:
         additional_path_select_vpnv4: int | None = ...,
         additional_path_select_vpnv6: int | None = ...,
         cross_family_conditional_adv: Literal["enable", "disable"] | None = ...,
-        aggregate_address: str | list[str] | list[dict[str, Any]] | list[BgpAggregateaddressItem] | None = ...,
-        aggregate_address6: str | list[str] | list[dict[str, Any]] | list[BgpAggregateaddress6Item] | None = ...,
-        neighbor: str | list[str] | list[dict[str, Any]] | list[BgpNeighborItem] | None = ...,
-        neighbor_group: str | list[str] | list[dict[str, Any]] | list[BgpNeighborgroupItem] | None = ...,
-        neighbor_range: str | list[str] | list[dict[str, Any]] | list[BgpNeighborrangeItem] | None = ...,
-        neighbor_range6: str | list[str] | list[dict[str, Any]] | list[BgpNeighborrange6Item] | None = ...,
-        network: str | list[str] | list[dict[str, Any]] | list[BgpNetworkItem] | None = ...,
-        network6: str | list[str] | list[dict[str, Any]] | list[BgpNetwork6Item] | None = ...,
-        redistribute: str | list[str] | list[dict[str, Any]] | list[BgpRedistributeItem] | None = ...,
-        redistribute6: str | list[str] | list[dict[str, Any]] | list[BgpRedistribute6Item] | None = ...,
-        admin_distance: str | list[str] | list[dict[str, Any]] | list[BgpAdmindistanceItem] | None = ...,
-        vrf: str | list[str] | list[dict[str, Any]] | list[BgpVrfItem] | None = ...,
-        vrf6: str | list[str] | list[dict[str, Any]] | list[BgpVrf6Item] | None = ...,
+        aggregate_address: str | list[str] | list[BgpAggregateaddressItem] | None = ...,
+        aggregate_address6: str | list[str] | list[BgpAggregateaddress6Item] | None = ...,
+        neighbor: str | list[str] | list[BgpNeighborItem] | None = ...,
+        neighbor_group: str | list[str] | list[BgpNeighborgroupItem] | None = ...,
+        neighbor_range: str | list[str] | list[BgpNeighborrangeItem] | None = ...,
+        neighbor_range6: str | list[str] | list[BgpNeighborrange6Item] | None = ...,
+        network: str | list[str] | list[BgpNetworkItem] | None = ...,
+        network6: str | list[str] | list[BgpNetwork6Item] | None = ...,
+        redistribute: str | list[str] | list[BgpRedistributeItem] | None = ...,
+        redistribute6: str | list[str] | list[BgpRedistribute6Item] | None = ...,
+        admin_distance: str | list[str] | list[BgpAdmindistanceItem] | None = ...,
+        vrf: str | list[str] | list[BgpVrfItem] | None = ...,
+        vrf6: str | list[str] | list[BgpVrf6Item] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,

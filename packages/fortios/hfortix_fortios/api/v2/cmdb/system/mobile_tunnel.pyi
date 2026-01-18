@@ -26,8 +26,8 @@ from hfortix_fortios.models import (
 # TypedDict Payloads
 # ================================================================
 
-class MobileTunnelNetworkItem:
-    """Nested item for network field - supports attribute access."""
+class MobileTunnelNetworkItem(TypedDict, total=False):
+    """Nested item for network field."""
     id: int
     interface: str
     prefix: str
@@ -49,7 +49,7 @@ class MobileTunnelPayload(TypedDict, total=False):
     n_mhae_key: str
     hash_algorithm: Literal["hmac-md5"]
     tunnel_mode: Literal["gre"]
-    network: str | list[str] | list[dict[str, Any]] | list[MobileTunnelNetworkItem]
+    network: str | list[str] | list[MobileTunnelNetworkItem]
 
 
 # ================================================================
@@ -189,7 +189,7 @@ class MobileTunnel:
         n_mhae_key: str | None = ...,
         hash_algorithm: Literal["hmac-md5"] | None = ...,
         tunnel_mode: Literal["gre"] | None = ...,
-        network: str | list[str] | list[dict[str, Any]] | list[MobileTunnelNetworkItem] | None = ...,
+        network: str | list[str] | list[MobileTunnelNetworkItem] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -216,7 +216,7 @@ class MobileTunnel:
         n_mhae_key: str | None = ...,
         hash_algorithm: Literal["hmac-md5"] | None = ...,
         tunnel_mode: Literal["gre"] | None = ...,
-        network: str | list[str] | list[dict[str, Any]] | list[MobileTunnelNetworkItem] | None = ...,
+        network: str | list[str] | list[MobileTunnelNetworkItem] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -261,7 +261,7 @@ class MobileTunnel:
         n_mhae_key: str | None = ...,
         hash_algorithm: Literal["hmac-md5"] | None = ...,
         tunnel_mode: Literal["gre"] | None = ...,
-        network: str | list[str] | list[dict[str, Any]] | list[MobileTunnelNetworkItem] | None = ...,
+        network: str | list[str] | list[MobileTunnelNetworkItem] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,

@@ -26,8 +26,8 @@ from hfortix_fortios.models import (
 # TypedDict Payloads
 # ================================================================
 
-class SpeedTestScheduleSchedulesItem:
-    """Nested item for schedules field - supports attribute access."""
+class SpeedTestScheduleSchedulesItem(TypedDict, total=False):
+    """Nested item for schedules field."""
     name: str
 
 
@@ -38,7 +38,7 @@ class SpeedTestSchedulePayload(TypedDict, total=False):
     diffserv: str
     server_name: str
     mode: Literal["UDP", "TCP", "Auto"]
-    schedules: str | list[str] | list[dict[str, Any]] | list[SpeedTestScheduleSchedulesItem]
+    schedules: str | list[str] | list[SpeedTestScheduleSchedulesItem]
     dynamic_server: Literal["disable", "enable"]
     ctrl_port: int
     server_port: int
@@ -202,7 +202,7 @@ class SpeedTestSchedule:
         diffserv: str | None = ...,
         server_name: str | None = ...,
         mode: Literal["UDP", "TCP", "Auto"] | None = ...,
-        schedules: str | list[str] | list[dict[str, Any]] | list[SpeedTestScheduleSchedulesItem] | None = ...,
+        schedules: str | list[str] | list[SpeedTestScheduleSchedulesItem] | None = ...,
         dynamic_server: Literal["disable", "enable"] | None = ...,
         ctrl_port: int | None = ...,
         server_port: int | None = ...,
@@ -237,7 +237,7 @@ class SpeedTestSchedule:
         diffserv: str | None = ...,
         server_name: str | None = ...,
         mode: Literal["UDP", "TCP", "Auto"] | None = ...,
-        schedules: str | list[str] | list[dict[str, Any]] | list[SpeedTestScheduleSchedulesItem] | None = ...,
+        schedules: str | list[str] | list[SpeedTestScheduleSchedulesItem] | None = ...,
         dynamic_server: Literal["disable", "enable"] | None = ...,
         ctrl_port: int | None = ...,
         server_port: int | None = ...,
@@ -290,7 +290,7 @@ class SpeedTestSchedule:
         diffserv: str | None = ...,
         server_name: str | None = ...,
         mode: Literal["UDP", "TCP", "Auto"] | None = ...,
-        schedules: str | list[str] | list[dict[str, Any]] | list[SpeedTestScheduleSchedulesItem] | None = ...,
+        schedules: str | list[str] | list[SpeedTestScheduleSchedulesItem] | None = ...,
         dynamic_server: Literal["disable", "enable"] | None = ...,
         ctrl_port: int | None = ...,
         server_port: int | None = ...,

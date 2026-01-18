@@ -26,20 +26,20 @@ from hfortix_fortios.models import (
 # TypedDict Payloads
 # ================================================================
 
-class GroupMemberItem:
-    """Nested item for member field - supports attribute access."""
+class GroupMemberItem(TypedDict, total=False):
+    """Nested item for member field."""
     name: str
 
 
-class GroupMatchItem:
-    """Nested item for match field - supports attribute access."""
+class GroupMatchItem(TypedDict, total=False):
+    """Nested item for match field."""
     id: int
     server_name: str
     group_name: str
 
 
-class GroupGuestItem:
-    """Nested item for guest field - supports attribute access."""
+class GroupGuestItem(TypedDict, total=False):
+    """Nested item for guest field."""
     id: int
     user_id: str
     name: str
@@ -62,8 +62,8 @@ class GroupPayload(TypedDict, total=False):
     auth_concurrent_value: int
     http_digest_realm: str
     sso_attribute_value: str
-    member: str | list[str] | list[dict[str, Any]] | list[GroupMemberItem]
-    match: str | list[str] | list[dict[str, Any]] | list[GroupMatchItem]
+    member: str | list[str] | list[GroupMemberItem]
+    match: str | list[str] | list[GroupMatchItem]
     user_id: Literal["email", "auto-generate", "specify"]
     password: Literal["auto-generate", "specify", "disable"]
     user_name: Literal["disable", "enable"]
@@ -77,7 +77,7 @@ class GroupPayload(TypedDict, total=False):
     expire: int
     max_accounts: int
     multiple_guest_add: Literal["disable", "enable"]
-    guest: str | list[str] | list[dict[str, Any]] | list[GroupGuestItem]
+    guest: str | list[str] | list[GroupGuestItem]
 
 
 # ================================================================
@@ -229,8 +229,8 @@ class Group:
         auth_concurrent_value: int | None = ...,
         http_digest_realm: str | None = ...,
         sso_attribute_value: str | None = ...,
-        member: str | list[str] | list[dict[str, Any]] | list[GroupMemberItem] | None = ...,
-        match: str | list[str] | list[dict[str, Any]] | list[GroupMatchItem] | None = ...,
+        member: str | list[str] | list[GroupMemberItem] | None = ...,
+        match: str | list[str] | list[GroupMatchItem] | None = ...,
         user_id: Literal["email", "auto-generate", "specify"] | None = ...,
         password: Literal["auto-generate", "specify", "disable"] | None = ...,
         user_name: Literal["disable", "enable"] | None = ...,
@@ -244,7 +244,7 @@ class Group:
         expire: int | None = ...,
         max_accounts: int | None = ...,
         multiple_guest_add: Literal["disable", "enable"] | None = ...,
-        guest: str | list[str] | list[dict[str, Any]] | list[GroupGuestItem] | None = ...,
+        guest: str | list[str] | list[GroupGuestItem] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -265,8 +265,8 @@ class Group:
         auth_concurrent_value: int | None = ...,
         http_digest_realm: str | None = ...,
         sso_attribute_value: str | None = ...,
-        member: str | list[str] | list[dict[str, Any]] | list[GroupMemberItem] | None = ...,
-        match: str | list[str] | list[dict[str, Any]] | list[GroupMatchItem] | None = ...,
+        member: str | list[str] | list[GroupMemberItem] | None = ...,
+        match: str | list[str] | list[GroupMatchItem] | None = ...,
         user_id: Literal["email", "auto-generate", "specify"] | None = ...,
         password: Literal["auto-generate", "specify", "disable"] | None = ...,
         user_name: Literal["disable", "enable"] | None = ...,
@@ -280,7 +280,7 @@ class Group:
         expire: int | None = ...,
         max_accounts: int | None = ...,
         multiple_guest_add: Literal["disable", "enable"] | None = ...,
-        guest: str | list[str] | list[dict[str, Any]] | list[GroupGuestItem] | None = ...,
+        guest: str | list[str] | list[GroupGuestItem] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -319,8 +319,8 @@ class Group:
         auth_concurrent_value: int | None = ...,
         http_digest_realm: str | None = ...,
         sso_attribute_value: str | None = ...,
-        member: str | list[str] | list[dict[str, Any]] | list[GroupMemberItem] | None = ...,
-        match: str | list[str] | list[dict[str, Any]] | list[GroupMatchItem] | None = ...,
+        member: str | list[str] | list[GroupMemberItem] | None = ...,
+        match: str | list[str] | list[GroupMatchItem] | None = ...,
         user_id: Literal["email", "auto-generate", "specify"] | None = ...,
         password: Literal["auto-generate", "specify", "disable"] | None = ...,
         user_name: Literal["disable", "enable"] | None = ...,
@@ -334,7 +334,7 @@ class Group:
         expire: int | None = ...,
         max_accounts: int | None = ...,
         multiple_guest_add: Literal["disable", "enable"] | None = ...,
-        guest: str | list[str] | list[dict[str, Any]] | list[GroupGuestItem] | None = ...,
+        guest: str | list[str] | list[GroupGuestItem] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,

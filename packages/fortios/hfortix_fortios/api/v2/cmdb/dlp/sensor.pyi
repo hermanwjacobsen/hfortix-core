@@ -26,8 +26,8 @@ from hfortix_fortios.models import (
 # TypedDict Payloads
 # ================================================================
 
-class SensorEntriesItem:
-    """Nested item for entries field - supports attribute access."""
+class SensorEntriesItem(TypedDict, total=False):
+    """Nested item for entries field."""
     id: int
     dictionary: str
     count: int
@@ -40,7 +40,7 @@ class SensorPayload(TypedDict, total=False):
     match_type: Literal["match-all", "match-any", "match-eval"]
     eval: str
     comment: str
-    entries: str | list[str] | list[dict[str, Any]] | list[SensorEntriesItem]
+    entries: str | list[str] | list[SensorEntriesItem]
 
 
 # ================================================================
@@ -150,7 +150,7 @@ class Sensor:
         match_type: Literal["match-all", "match-any", "match-eval"] | None = ...,
         eval: str | None = ...,
         comment: str | None = ...,
-        entries: str | list[str] | list[dict[str, Any]] | list[SensorEntriesItem] | None = ...,
+        entries: str | list[str] | list[SensorEntriesItem] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -167,7 +167,7 @@ class Sensor:
         match_type: Literal["match-all", "match-any", "match-eval"] | None = ...,
         eval: str | None = ...,
         comment: str | None = ...,
-        entries: str | list[str] | list[dict[str, Any]] | list[SensorEntriesItem] | None = ...,
+        entries: str | list[str] | list[SensorEntriesItem] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -202,7 +202,7 @@ class Sensor:
         match_type: Literal["match-all", "match-any", "match-eval"] | None = ...,
         eval: str | None = ...,
         comment: str | None = ...,
-        entries: str | list[str] | list[dict[str, Any]] | list[SensorEntriesItem] | None = ...,
+        entries: str | list[str] | list[SensorEntriesItem] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,

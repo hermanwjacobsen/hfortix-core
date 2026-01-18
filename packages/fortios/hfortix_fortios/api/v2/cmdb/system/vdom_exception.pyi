@@ -26,8 +26,8 @@ from hfortix_fortios.models import (
 # TypedDict Payloads
 # ================================================================
 
-class VdomExceptionVdomItem:
-    """Nested item for vdom field - supports attribute access."""
+class VdomExceptionVdomItem(TypedDict, total=False):
+    """Nested item for vdom field."""
     name: str
 
 
@@ -36,7 +36,7 @@ class VdomExceptionPayload(TypedDict, total=False):
     id: int
     object: Literal["log.fortianalyzer.setting", "log.fortianalyzer.override-setting", "log.fortianalyzer2.setting", "log.fortianalyzer2.override-setting", "log.fortianalyzer3.setting", "log.fortianalyzer3.override-setting", "log.fortianalyzer-cloud.setting", "log.fortianalyzer-cloud.override-setting", "log.syslogd.setting", "log.syslogd.override-setting", "log.syslogd2.setting", "log.syslogd2.override-setting", "log.syslogd3.setting", "log.syslogd3.override-setting", "log.syslogd4.setting", "log.syslogd4.override-setting", "system.gre-tunnel", "system.central-management", "system.csf", "user.radius", "system.interface", "vpn.ipsec.phase1-interface", "vpn.ipsec.phase2-interface", "router.bgp", "router.route-map", "router.prefix-list", "firewall.ippool", "firewall.ippool6", "router.static", "router.static6", "firewall.vip", "firewall.vip6", "system.sdwan", "system.saml", "router.policy", "router.policy6", "log.syslogd.setting", "log.syslogd.override-setting", "firewall.address"]
     scope: Literal["all", "inclusive", "exclusive"]
-    vdom: str | list[str] | list[dict[str, Any]] | list[VdomExceptionVdomItem]
+    vdom: str | list[str] | list[VdomExceptionVdomItem]
 
 
 # ================================================================

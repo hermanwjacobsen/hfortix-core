@@ -26,8 +26,8 @@ from hfortix_fortios.models import (
 # TypedDict Payloads
 # ================================================================
 
-class ProfilePpidfiltersItem:
-    """Nested item for ppid-filters field - supports attribute access."""
+class ProfilePpidfiltersItem(TypedDict, total=False):
+    """Nested item for ppid-filters field."""
     id: int
     ppid: int
     action: Literal["pass", "reset", "replace"]
@@ -38,7 +38,7 @@ class ProfilePayload(TypedDict, total=False):
     """Payload type for Profile operations."""
     name: str
     comment: str
-    ppid_filters: str | list[str] | list[dict[str, Any]] | list[ProfilePpidfiltersItem]
+    ppid_filters: str | list[str] | list[ProfilePpidfiltersItem]
 
 
 # ================================================================
@@ -142,7 +142,7 @@ class Profile:
         payload_dict: ProfilePayload | None = ...,
         name: str | None = ...,
         comment: str | None = ...,
-        ppid_filters: str | list[str] | list[dict[str, Any]] | list[ProfilePpidfiltersItem] | None = ...,
+        ppid_filters: str | list[str] | list[ProfilePpidfiltersItem] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -157,7 +157,7 @@ class Profile:
         payload_dict: ProfilePayload | None = ...,
         name: str | None = ...,
         comment: str | None = ...,
-        ppid_filters: str | list[str] | list[dict[str, Any]] | list[ProfilePpidfiltersItem] | None = ...,
+        ppid_filters: str | list[str] | list[ProfilePpidfiltersItem] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -190,7 +190,7 @@ class Profile:
         payload_dict: ProfilePayload | None = ...,
         name: str | None = ...,
         comment: str | None = ...,
-        ppid_filters: str | list[str] | list[dict[str, Any]] | list[ProfilePpidfiltersItem] | None = ...,
+        ppid_filters: str | list[str] | list[ProfilePpidfiltersItem] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,

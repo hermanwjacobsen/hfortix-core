@@ -26,8 +26,8 @@ from hfortix_fortios.models import (
 # TypedDict Payloads
 # ================================================================
 
-class X8021xUsergroupItem:
-    """Nested item for user-group field - supports attribute access."""
+class X8021xUsergroupItem(TypedDict, total=False):
+    """Nested item for user-group field."""
     name: str
 
 
@@ -35,7 +35,7 @@ class X8021xPayload(TypedDict, total=False):
     """Payload type for X8021x operations."""
     name: str
     security_mode: Literal["802.1X", "802.1X-mac-based"]
-    user_group: str | list[str] | list[dict[str, Any]] | list[X8021xUsergroupItem]
+    user_group: str | list[str] | list[X8021xUsergroupItem]
     mac_auth_bypass: Literal["disable", "enable"]
     auth_order: Literal["dot1x-mab", "mab-dot1x", "mab"]
     auth_priority: Literal["legacy", "dot1x-mab", "mab-dot1x"]
@@ -199,7 +199,7 @@ class X8021x:
         payload_dict: X8021xPayload | None = ...,
         name: str | None = ...,
         security_mode: Literal["802.1X", "802.1X-mac-based"] | None = ...,
-        user_group: str | list[str] | list[dict[str, Any]] | list[X8021xUsergroupItem] | None = ...,
+        user_group: str | list[str] | list[X8021xUsergroupItem] | None = ...,
         mac_auth_bypass: Literal["disable", "enable"] | None = ...,
         auth_order: Literal["dot1x-mab", "mab-dot1x", "mab"] | None = ...,
         auth_priority: Literal["legacy", "dot1x-mab", "mab-dot1x"] | None = ...,
@@ -234,7 +234,7 @@ class X8021x:
         payload_dict: X8021xPayload | None = ...,
         name: str | None = ...,
         security_mode: Literal["802.1X", "802.1X-mac-based"] | None = ...,
-        user_group: str | list[str] | list[dict[str, Any]] | list[X8021xUsergroupItem] | None = ...,
+        user_group: str | list[str] | list[X8021xUsergroupItem] | None = ...,
         mac_auth_bypass: Literal["disable", "enable"] | None = ...,
         auth_order: Literal["dot1x-mab", "mab-dot1x", "mab"] | None = ...,
         auth_priority: Literal["legacy", "dot1x-mab", "mab-dot1x"] | None = ...,
@@ -287,7 +287,7 @@ class X8021x:
         payload_dict: X8021xPayload | None = ...,
         name: str | None = ...,
         security_mode: Literal["802.1X", "802.1X-mac-based"] | None = ...,
-        user_group: str | list[str] | list[dict[str, Any]] | list[X8021xUsergroupItem] | None = ...,
+        user_group: str | list[str] | list[X8021xUsergroupItem] | None = ...,
         mac_auth_bypass: Literal["disable", "enable"] | None = ...,
         auth_order: Literal["dot1x-mab", "mab-dot1x", "mab"] | None = ...,
         auth_priority: Literal["legacy", "dot1x-mab", "mab-dot1x"] | None = ...,

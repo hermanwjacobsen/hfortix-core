@@ -26,8 +26,8 @@ from hfortix_fortios.models import (
 # TypedDict Payloads
 # ================================================================
 
-class BwordEntriesItem:
-    """Nested item for entries field - supports attribute access."""
+class BwordEntriesItem(TypedDict, total=False):
+    """Nested item for entries field."""
     status: Literal["enable", "disable"]
     id: int
     pattern: str
@@ -43,7 +43,7 @@ class BwordPayload(TypedDict, total=False):
     id: int
     name: str
     comment: str
-    entries: str | list[str] | list[dict[str, Any]] | list[BwordEntriesItem]
+    entries: str | list[str] | list[BwordEntriesItem]
 
 
 # ================================================================
@@ -150,7 +150,7 @@ class Bword:
         id: int | None = ...,
         name: str | None = ...,
         comment: str | None = ...,
-        entries: str | list[str] | list[dict[str, Any]] | list[BwordEntriesItem] | None = ...,
+        entries: str | list[str] | list[BwordEntriesItem] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -166,7 +166,7 @@ class Bword:
         id: int | None = ...,
         name: str | None = ...,
         comment: str | None = ...,
-        entries: str | list[str] | list[dict[str, Any]] | list[BwordEntriesItem] | None = ...,
+        entries: str | list[str] | list[BwordEntriesItem] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -200,7 +200,7 @@ class Bword:
         id: int | None = ...,
         name: str | None = ...,
         comment: str | None = ...,
-        entries: str | list[str] | list[dict[str, Any]] | list[BwordEntriesItem] | None = ...,
+        entries: str | list[str] | list[BwordEntriesItem] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,

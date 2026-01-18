@@ -26,8 +26,8 @@ from hfortix_fortios.models import (
 # TypedDict Payloads
 # ================================================================
 
-class ProfileFiltersItem:
-    """Nested item for filters field - supports attribute access."""
+class ProfileFiltersItem(TypedDict, total=False):
+    """Nested item for filters field."""
     id: int
     comment: str
     type: Literal["category", "channel", "title", "description"]
@@ -42,7 +42,7 @@ class ProfilePayload(TypedDict, total=False):
     """Payload type for Profile operations."""
     name: str
     comment: str
-    filters: str | list[str] | list[dict[str, Any]] | list[ProfileFiltersItem]
+    filters: str | list[str] | list[ProfileFiltersItem]
     youtube: Literal["enable", "disable"]
     vimeo: Literal["enable", "disable"]
     dailymotion: Literal["enable", "disable"]
@@ -158,7 +158,7 @@ class Profile:
         payload_dict: ProfilePayload | None = ...,
         name: str | None = ...,
         comment: str | None = ...,
-        filters: str | list[str] | list[dict[str, Any]] | list[ProfileFiltersItem] | None = ...,
+        filters: str | list[str] | list[ProfileFiltersItem] | None = ...,
         youtube: Literal["enable", "disable"] | None = ...,
         vimeo: Literal["enable", "disable"] | None = ...,
         dailymotion: Literal["enable", "disable"] | None = ...,
@@ -177,7 +177,7 @@ class Profile:
         payload_dict: ProfilePayload | None = ...,
         name: str | None = ...,
         comment: str | None = ...,
-        filters: str | list[str] | list[dict[str, Any]] | list[ProfileFiltersItem] | None = ...,
+        filters: str | list[str] | list[ProfileFiltersItem] | None = ...,
         youtube: Literal["enable", "disable"] | None = ...,
         vimeo: Literal["enable", "disable"] | None = ...,
         dailymotion: Literal["enable", "disable"] | None = ...,
@@ -214,7 +214,7 @@ class Profile:
         payload_dict: ProfilePayload | None = ...,
         name: str | None = ...,
         comment: str | None = ...,
-        filters: str | list[str] | list[dict[str, Any]] | list[ProfileFiltersItem] | None = ...,
+        filters: str | list[str] | list[ProfileFiltersItem] | None = ...,
         youtube: Literal["enable", "disable"] | None = ...,
         vimeo: Literal["enable", "disable"] | None = ...,
         dailymotion: Literal["enable", "disable"] | None = ...,

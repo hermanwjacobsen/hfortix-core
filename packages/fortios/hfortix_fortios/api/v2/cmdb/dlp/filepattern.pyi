@@ -26,8 +26,8 @@ from hfortix_fortios.models import (
 # TypedDict Payloads
 # ================================================================
 
-class FilepatternEntriesItem:
-    """Nested item for entries field - supports attribute access."""
+class FilepatternEntriesItem(TypedDict, total=False):
+    """Nested item for entries field."""
     filter_type: Literal["pattern", "type"]
     pattern: str
     file_type: Literal["7z", "arj", "cab", "lzh", "rar", "tar", "zip", "bzip", "gzip", "bzip2", "xz", "bat", "uue", "mime", "base64", "binhex", "elf", "exe", "dll", "jnlp", "hta", "html", "jad", "class", "cod", "javascript", "msoffice", "msofficex", "fsg", "upx", "petite", "aspack", "sis", "hlp", "activemime", "jpeg", "gif", "tiff", "png", "bmp", "unknown", "mpeg", "mov", "mp3", "wma", "wav", "pdf", "avi", "rm", "torrent", "hibun", "msi", "mach-o", "dmg", ".net", "xar", "chm", "iso", "crx", "flac", "registry", "hwp", "rpm", "genscript", "python", "c/cpp", "pfile", "lzip", "wasm", "sylk", "shellscript"]
@@ -38,7 +38,7 @@ class FilepatternPayload(TypedDict, total=False):
     id: int
     name: str
     comment: str
-    entries: str | list[str] | list[dict[str, Any]] | list[FilepatternEntriesItem]
+    entries: str | list[str] | list[FilepatternEntriesItem]
 
 
 # ================================================================
@@ -145,7 +145,7 @@ class Filepattern:
         id: int | None = ...,
         name: str | None = ...,
         comment: str | None = ...,
-        entries: str | list[str] | list[dict[str, Any]] | list[FilepatternEntriesItem] | None = ...,
+        entries: str | list[str] | list[FilepatternEntriesItem] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -161,7 +161,7 @@ class Filepattern:
         id: int | None = ...,
         name: str | None = ...,
         comment: str | None = ...,
-        entries: str | list[str] | list[dict[str, Any]] | list[FilepatternEntriesItem] | None = ...,
+        entries: str | list[str] | list[FilepatternEntriesItem] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -195,7 +195,7 @@ class Filepattern:
         id: int | None = ...,
         name: str | None = ...,
         comment: str | None = ...,
-        entries: str | list[str] | list[dict[str, Any]] | list[FilepatternEntriesItem] | None = ...,
+        entries: str | list[str] | list[FilepatternEntriesItem] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,

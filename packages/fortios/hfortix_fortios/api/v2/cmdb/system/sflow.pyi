@@ -25,8 +25,8 @@ from hfortix_fortios.models import (
 # TypedDict Payloads
 # ================================================================
 
-class SflowCollectorsItem:
-    """Nested item for collectors field - supports attribute access."""
+class SflowCollectorsItem(TypedDict, total=False):
+    """Nested item for collectors field."""
     id: int
     collector_ip: str
     collector_port: int
@@ -37,7 +37,7 @@ class SflowCollectorsItem:
 
 class SflowPayload(TypedDict, total=False):
     """Payload type for Sflow operations."""
-    collectors: str | list[str] | list[dict[str, Any]] | list[SflowCollectorsItem]
+    collectors: str | list[str] | list[SflowCollectorsItem]
 
 
 # ================================================================
@@ -113,7 +113,7 @@ class Sflow:
     def put(
         self,
         payload_dict: SflowPayload | None = ...,
-        collectors: str | list[str] | list[dict[str, Any]] | list[SflowCollectorsItem] | None = ...,
+        collectors: str | list[str] | list[SflowCollectorsItem] | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> SflowObject: ...
@@ -131,7 +131,7 @@ class Sflow:
     def set(
         self,
         payload_dict: SflowPayload | None = ...,
-        collectors: str | list[str] | list[dict[str, Any]] | list[SflowCollectorsItem] | None = ...,
+        collectors: str | list[str] | list[SflowCollectorsItem] | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> FortiObject: ...

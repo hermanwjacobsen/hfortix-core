@@ -62,22 +62,22 @@ class ThreatWeightIpsDict(TypedDict, total=False):
     critical_severity: Literal["disable", "low", "medium", "high", "critical"]
 
 
-class ThreatWeightWebItem:
-    """Nested item for web field - supports attribute access."""
+class ThreatWeightWebItem(TypedDict, total=False):
+    """Nested item for web field."""
     id: int
     category: int
     level: Literal["disable", "low", "medium", "high", "critical"]
 
 
-class ThreatWeightGeolocationItem:
-    """Nested item for geolocation field - supports attribute access."""
+class ThreatWeightGeolocationItem(TypedDict, total=False):
+    """Nested item for geolocation field."""
     id: int
     country: str
     level: Literal["disable", "low", "medium", "high", "critical"]
 
 
-class ThreatWeightApplicationItem:
-    """Nested item for application field - supports attribute access."""
+class ThreatWeightApplicationItem(TypedDict, total=False):
+    """Nested item for application field."""
     id: int
     category: int
     level: Literal["disable", "low", "medium", "high", "critical"]
@@ -93,9 +93,9 @@ class ThreatWeightPayload(TypedDict, total=False):
     botnet_connection_detected: Literal["disable", "low", "medium", "high", "critical"]
     malware: ThreatWeightMalwareDict
     ips: ThreatWeightIpsDict
-    web: str | list[str] | list[dict[str, Any]] | list[ThreatWeightWebItem]
-    geolocation: str | list[str] | list[dict[str, Any]] | list[ThreatWeightGeolocationItem]
-    application: str | list[str] | list[dict[str, Any]] | list[ThreatWeightApplicationItem]
+    web: str | list[str] | list[ThreatWeightWebItem]
+    geolocation: str | list[str] | list[ThreatWeightGeolocationItem]
+    application: str | list[str] | list[ThreatWeightApplicationItem]
 
 
 # ================================================================
@@ -201,9 +201,9 @@ class ThreatWeight:
         botnet_connection_detected: Literal["disable", "low", "medium", "high", "critical"] | None = ...,
         malware: ThreatWeightMalwareDict | None = ...,
         ips: ThreatWeightIpsDict | None = ...,
-        web: str | list[str] | list[dict[str, Any]] | list[ThreatWeightWebItem] | None = ...,
-        geolocation: str | list[str] | list[dict[str, Any]] | list[ThreatWeightGeolocationItem] | None = ...,
-        application: str | list[str] | list[dict[str, Any]] | list[ThreatWeightApplicationItem] | None = ...,
+        web: str | list[str] | list[ThreatWeightWebItem] | None = ...,
+        geolocation: str | list[str] | list[ThreatWeightGeolocationItem] | None = ...,
+        application: str | list[str] | list[ThreatWeightApplicationItem] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -231,9 +231,9 @@ class ThreatWeight:
         botnet_connection_detected: Literal["disable", "low", "medium", "high", "critical"] | None = ...,
         malware: ThreatWeightMalwareDict | None = ...,
         ips: ThreatWeightIpsDict | None = ...,
-        web: str | list[str] | list[dict[str, Any]] | list[ThreatWeightWebItem] | None = ...,
-        geolocation: str | list[str] | list[dict[str, Any]] | list[ThreatWeightGeolocationItem] | None = ...,
-        application: str | list[str] | list[dict[str, Any]] | list[ThreatWeightApplicationItem] | None = ...,
+        web: str | list[str] | list[ThreatWeightWebItem] | None = ...,
+        geolocation: str | list[str] | list[ThreatWeightGeolocationItem] | None = ...,
+        application: str | list[str] | list[ThreatWeightApplicationItem] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,

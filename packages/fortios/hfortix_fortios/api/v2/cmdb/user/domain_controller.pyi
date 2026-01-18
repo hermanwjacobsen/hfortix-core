@@ -26,8 +26,8 @@ from hfortix_fortios.models import (
 # TypedDict Payloads
 # ================================================================
 
-class DomainControllerExtraserverItem:
-    """Nested item for extra-server field - supports attribute access."""
+class DomainControllerExtraserverItem(TypedDict, total=False):
+    """Nested item for extra-server field."""
     id: int
     ip_address: str
     port: int
@@ -35,8 +35,8 @@ class DomainControllerExtraserverItem:
     source_port: int
 
 
-class DomainControllerLdapserverItem:
-    """Nested item for ldap-server field - supports attribute access."""
+class DomainControllerLdapserverItem(TypedDict, total=False):
+    """Nested item for ldap-server field."""
     name: str
 
 
@@ -55,10 +55,10 @@ class DomainControllerPayload(TypedDict, total=False):
     source_port: int
     interface_select_method: Literal["auto", "sdwan", "specify"]
     interface: str
-    extra_server: str | list[str] | list[dict[str, Any]] | list[DomainControllerExtraserverItem]
+    extra_server: str | list[str] | list[DomainControllerExtraserverItem]
     domain_name: str
     replication_port: int
-    ldap_server: str | list[str] | list[dict[str, Any]] | list[DomainControllerLdapserverItem]
+    ldap_server: str | list[str] | list[DomainControllerLdapserverItem]
     change_detection: Literal["enable", "disable"]
     change_detection_period: int
     dns_srv_lookup: Literal["enable", "disable"]
@@ -222,10 +222,10 @@ class DomainController:
         source_port: int | None = ...,
         interface_select_method: Literal["auto", "sdwan", "specify"] | None = ...,
         interface: str | None = ...,
-        extra_server: str | list[str] | list[dict[str, Any]] | list[DomainControllerExtraserverItem] | None = ...,
+        extra_server: str | list[str] | list[DomainControllerExtraserverItem] | None = ...,
         domain_name: str | None = ...,
         replication_port: int | None = ...,
-        ldap_server: str | list[str] | list[dict[str, Any]] | list[DomainControllerLdapserverItem] | None = ...,
+        ldap_server: str | list[str] | list[DomainControllerLdapserverItem] | None = ...,
         change_detection: Literal["enable", "disable"] | None = ...,
         change_detection_period: int | None = ...,
         dns_srv_lookup: Literal["enable", "disable"] | None = ...,
@@ -258,10 +258,10 @@ class DomainController:
         source_port: int | None = ...,
         interface_select_method: Literal["auto", "sdwan", "specify"] | None = ...,
         interface: str | None = ...,
-        extra_server: str | list[str] | list[dict[str, Any]] | list[DomainControllerExtraserverItem] | None = ...,
+        extra_server: str | list[str] | list[DomainControllerExtraserverItem] | None = ...,
         domain_name: str | None = ...,
         replication_port: int | None = ...,
-        ldap_server: str | list[str] | list[dict[str, Any]] | list[DomainControllerLdapserverItem] | None = ...,
+        ldap_server: str | list[str] | list[DomainControllerLdapserverItem] | None = ...,
         change_detection: Literal["enable", "disable"] | None = ...,
         change_detection_period: int | None = ...,
         dns_srv_lookup: Literal["enable", "disable"] | None = ...,
@@ -312,10 +312,10 @@ class DomainController:
         source_port: int | None = ...,
         interface_select_method: Literal["auto", "sdwan", "specify"] | None = ...,
         interface: str | None = ...,
-        extra_server: str | list[str] | list[dict[str, Any]] | list[DomainControllerExtraserverItem] | None = ...,
+        extra_server: str | list[str] | list[DomainControllerExtraserverItem] | None = ...,
         domain_name: str | None = ...,
         replication_port: int | None = ...,
-        ldap_server: str | list[str] | list[dict[str, Any]] | list[DomainControllerLdapserverItem] | None = ...,
+        ldap_server: str | list[str] | list[DomainControllerLdapserverItem] | None = ...,
         change_detection: Literal["enable", "disable"] | None = ...,
         change_detection_period: int | None = ...,
         dns_srv_lookup: Literal["enable", "disable"] | None = ...,

@@ -26,8 +26,8 @@ from hfortix_fortios.models import (
 # TypedDict Payloads
 # ================================================================
 
-class AnqpNaiRealmNailistItem:
-    """Nested item for nai-list field - supports attribute access."""
+class AnqpNaiRealmNailistItem(TypedDict, total=False):
+    """Nested item for nai-list field."""
     name: str
     encoding: Literal["disable", "enable"]
     nai_realm: str
@@ -37,7 +37,7 @@ class AnqpNaiRealmNailistItem:
 class AnqpNaiRealmPayload(TypedDict, total=False):
     """Payload type for AnqpNaiRealm operations."""
     name: str
-    nai_list: str | list[str] | list[dict[str, Any]] | list[AnqpNaiRealmNailistItem]
+    nai_list: str | list[str] | list[AnqpNaiRealmNailistItem]
 
 
 # ================================================================
@@ -138,7 +138,7 @@ class AnqpNaiRealm:
         self,
         payload_dict: AnqpNaiRealmPayload | None = ...,
         name: str | None = ...,
-        nai_list: str | list[str] | list[dict[str, Any]] | list[AnqpNaiRealmNailistItem] | None = ...,
+        nai_list: str | list[str] | list[AnqpNaiRealmNailistItem] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -152,7 +152,7 @@ class AnqpNaiRealm:
         self,
         payload_dict: AnqpNaiRealmPayload | None = ...,
         name: str | None = ...,
-        nai_list: str | list[str] | list[dict[str, Any]] | list[AnqpNaiRealmNailistItem] | None = ...,
+        nai_list: str | list[str] | list[AnqpNaiRealmNailistItem] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -184,7 +184,7 @@ class AnqpNaiRealm:
         self,
         payload_dict: AnqpNaiRealmPayload | None = ...,
         name: str | None = ...,
-        nai_list: str | list[str] | list[dict[str, Any]] | list[AnqpNaiRealmNailistItem] | None = ...,
+        nai_list: str | list[str] | list[AnqpNaiRealmNailistItem] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,

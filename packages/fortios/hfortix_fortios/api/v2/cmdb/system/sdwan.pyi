@@ -25,13 +25,13 @@ from hfortix_fortios.models import (
 # TypedDict Payloads
 # ================================================================
 
-class SdwanFailalertinterfacesItem:
-    """Nested item for fail-alert-interfaces field - supports attribute access."""
+class SdwanFailalertinterfacesItem(TypedDict, total=False):
+    """Nested item for fail-alert-interfaces field."""
     name: str
 
 
-class SdwanZoneItem:
-    """Nested item for zone field - supports attribute access."""
+class SdwanZoneItem(TypedDict, total=False):
+    """Nested item for zone field."""
     name: str
     advpn_select: Literal["enable", "disable"]
     advpn_health_check: str
@@ -39,8 +39,8 @@ class SdwanZoneItem:
     minimum_sla_meet_members: int
 
 
-class SdwanMembersItem:
-    """Nested item for members field - supports attribute access."""
+class SdwanMembersItem(TypedDict, total=False):
+    """Nested item for members field."""
     seq_num: int
     interface: str
     zone: str
@@ -63,8 +63,8 @@ class SdwanMembersItem:
     comment: str
 
 
-class SdwanHealthcheckItem:
-    """Nested item for health-check field - supports attribute access."""
+class SdwanHealthcheckItem(TypedDict, total=False):
+    """Nested item for health-check field."""
     name: str
     fortiguard: Literal["disable", "enable"]
     fortiguard_name: str
@@ -122,8 +122,8 @@ class SdwanHealthcheckItem:
     sla: str | list[str]
 
 
-class SdwanServiceItem:
-    """Nested item for service field - supports attribute access."""
+class SdwanServiceItem(TypedDict, total=False):
+    """Nested item for service field."""
     id: int
     name: str
     addr_mode: Literal["ipv4", "ipv6"]
@@ -192,8 +192,8 @@ class SdwanServiceItem:
     comment: str
 
 
-class SdwanNeighborItem:
-    """Nested item for neighbor field - supports attribute access."""
+class SdwanNeighborItem(TypedDict, total=False):
+    """Nested item for neighbor field."""
     ip: str
     member: str | list[str]
     service_id: int
@@ -205,8 +205,8 @@ class SdwanNeighborItem:
     sla_id: int
 
 
-class SdwanDuplicationItem:
-    """Nested item for duplication field - supports attribute access."""
+class SdwanDuplicationItem(TypedDict, total=False):
+    """Nested item for duplication field."""
     id: int
     service_id: str | list[str]
     srcaddr: str | list[str]
@@ -233,13 +233,13 @@ class SdwanPayload(TypedDict, total=False):
     app_perf_log_period: int
     neighbor_hold_boot_time: int
     fail_detect: Literal["enable", "disable"]
-    fail_alert_interfaces: str | list[str] | list[dict[str, Any]] | list[SdwanFailalertinterfacesItem]
-    zone: str | list[str] | list[dict[str, Any]] | list[SdwanZoneItem]
-    members: str | list[str] | list[dict[str, Any]] | list[SdwanMembersItem]
-    health_check: str | list[str] | list[dict[str, Any]] | list[SdwanHealthcheckItem]
-    service: str | list[str] | list[dict[str, Any]] | list[SdwanServiceItem]
-    neighbor: str | list[str] | list[dict[str, Any]] | list[SdwanNeighborItem]
-    duplication: str | list[str] | list[dict[str, Any]] | list[SdwanDuplicationItem]
+    fail_alert_interfaces: str | list[str] | list[SdwanFailalertinterfacesItem]
+    zone: str | list[str] | list[SdwanZoneItem]
+    members: str | list[str] | list[SdwanMembersItem]
+    health_check: str | list[str] | list[SdwanHealthcheckItem]
+    service: str | list[str] | list[SdwanServiceItem]
+    neighbor: str | list[str] | list[SdwanNeighborItem]
+    duplication: str | list[str] | list[SdwanDuplicationItem]
 
 
 # ================================================================
@@ -359,13 +359,13 @@ class Sdwan:
         app_perf_log_period: int | None = ...,
         neighbor_hold_boot_time: int | None = ...,
         fail_detect: Literal["enable", "disable"] | None = ...,
-        fail_alert_interfaces: str | list[str] | list[dict[str, Any]] | list[SdwanFailalertinterfacesItem] | None = ...,
-        zone: str | list[str] | list[dict[str, Any]] | list[SdwanZoneItem] | None = ...,
-        members: str | list[str] | list[dict[str, Any]] | list[SdwanMembersItem] | None = ...,
-        health_check: str | list[str] | list[dict[str, Any]] | list[SdwanHealthcheckItem] | None = ...,
-        service: str | list[str] | list[dict[str, Any]] | list[SdwanServiceItem] | None = ...,
-        neighbor: str | list[str] | list[dict[str, Any]] | list[SdwanNeighborItem] | None = ...,
-        duplication: str | list[str] | list[dict[str, Any]] | list[SdwanDuplicationItem] | None = ...,
+        fail_alert_interfaces: str | list[str] | list[SdwanFailalertinterfacesItem] | None = ...,
+        zone: str | list[str] | list[SdwanZoneItem] | None = ...,
+        members: str | list[str] | list[SdwanMembersItem] | None = ...,
+        health_check: str | list[str] | list[SdwanHealthcheckItem] | None = ...,
+        service: str | list[str] | list[SdwanServiceItem] | None = ...,
+        neighbor: str | list[str] | list[SdwanNeighborItem] | None = ...,
+        duplication: str | list[str] | list[SdwanDuplicationItem] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -395,13 +395,13 @@ class Sdwan:
         app_perf_log_period: int | None = ...,
         neighbor_hold_boot_time: int | None = ...,
         fail_detect: Literal["enable", "disable"] | None = ...,
-        fail_alert_interfaces: str | list[str] | list[dict[str, Any]] | list[SdwanFailalertinterfacesItem] | None = ...,
-        zone: str | list[str] | list[dict[str, Any]] | list[SdwanZoneItem] | None = ...,
-        members: str | list[str] | list[dict[str, Any]] | list[SdwanMembersItem] | None = ...,
-        health_check: str | list[str] | list[dict[str, Any]] | list[SdwanHealthcheckItem] | None = ...,
-        service: str | list[str] | list[dict[str, Any]] | list[SdwanServiceItem] | None = ...,
-        neighbor: str | list[str] | list[dict[str, Any]] | list[SdwanNeighborItem] | None = ...,
-        duplication: str | list[str] | list[dict[str, Any]] | list[SdwanDuplicationItem] | None = ...,
+        fail_alert_interfaces: str | list[str] | list[SdwanFailalertinterfacesItem] | None = ...,
+        zone: str | list[str] | list[SdwanZoneItem] | None = ...,
+        members: str | list[str] | list[SdwanMembersItem] | None = ...,
+        health_check: str | list[str] | list[SdwanHealthcheckItem] | None = ...,
+        service: str | list[str] | list[SdwanServiceItem] | None = ...,
+        neighbor: str | list[str] | list[SdwanNeighborItem] | None = ...,
+        duplication: str | list[str] | list[SdwanDuplicationItem] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,

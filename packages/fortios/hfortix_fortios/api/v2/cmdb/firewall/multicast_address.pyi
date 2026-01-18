@@ -26,8 +26,8 @@ from hfortix_fortios.models import (
 # TypedDict Payloads
 # ================================================================
 
-class MulticastAddressTaggingItem:
-    """Nested item for tagging field - supports attribute access."""
+class MulticastAddressTaggingItem(TypedDict, total=False):
+    """Nested item for tagging field."""
     name: str
     category: str
     tags: str | list[str]
@@ -43,7 +43,7 @@ class MulticastAddressPayload(TypedDict, total=False):
     comment: str
     associated_interface: str
     color: int
-    tagging: str | list[str] | list[dict[str, Any]] | list[MulticastAddressTaggingItem]
+    tagging: str | list[str] | list[MulticastAddressTaggingItem]
 
 
 # ================================================================
@@ -165,7 +165,7 @@ class MulticastAddress:
         comment: str | None = ...,
         associated_interface: str | None = ...,
         color: int | None = ...,
-        tagging: str | list[str] | list[dict[str, Any]] | list[MulticastAddressTaggingItem] | None = ...,
+        tagging: str | list[str] | list[MulticastAddressTaggingItem] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -186,7 +186,7 @@ class MulticastAddress:
         comment: str | None = ...,
         associated_interface: str | None = ...,
         color: int | None = ...,
-        tagging: str | list[str] | list[dict[str, Any]] | list[MulticastAddressTaggingItem] | None = ...,
+        tagging: str | list[str] | list[MulticastAddressTaggingItem] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -225,7 +225,7 @@ class MulticastAddress:
         comment: str | None = ...,
         associated_interface: str | None = ...,
         color: int | None = ...,
-        tagging: str | list[str] | list[dict[str, Any]] | list[MulticastAddressTaggingItem] | None = ...,
+        tagging: str | list[str] | list[MulticastAddressTaggingItem] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,

@@ -26,133 +26,133 @@ from hfortix_fortios.models import (
 # TypedDict Payloads
 # ================================================================
 
-class ProxyPolicyAccessproxyItem:
-    """Nested item for access-proxy field - supports attribute access."""
+class ProxyPolicyAccessproxyItem(TypedDict, total=False):
+    """Nested item for access-proxy field."""
     name: str
 
 
-class ProxyPolicyAccessproxy6Item:
-    """Nested item for access-proxy6 field - supports attribute access."""
+class ProxyPolicyAccessproxy6Item(TypedDict, total=False):
+    """Nested item for access-proxy6 field."""
     name: str
 
 
-class ProxyPolicyZtnaproxyItem:
-    """Nested item for ztna-proxy field - supports attribute access."""
+class ProxyPolicyZtnaproxyItem(TypedDict, total=False):
+    """Nested item for ztna-proxy field."""
     name: str
 
 
-class ProxyPolicySrcintfItem:
-    """Nested item for srcintf field - supports attribute access."""
+class ProxyPolicySrcintfItem(TypedDict, total=False):
+    """Nested item for srcintf field."""
     name: str
 
 
-class ProxyPolicyDstintfItem:
-    """Nested item for dstintf field - supports attribute access."""
+class ProxyPolicyDstintfItem(TypedDict, total=False):
+    """Nested item for dstintf field."""
     name: str
 
 
-class ProxyPolicySrcaddrItem:
-    """Nested item for srcaddr field - supports attribute access."""
+class ProxyPolicySrcaddrItem(TypedDict, total=False):
+    """Nested item for srcaddr field."""
     name: str
 
 
-class ProxyPolicyPoolnameItem:
-    """Nested item for poolname field - supports attribute access."""
+class ProxyPolicyPoolnameItem(TypedDict, total=False):
+    """Nested item for poolname field."""
     name: str
 
 
-class ProxyPolicyPoolname6Item:
-    """Nested item for poolname6 field - supports attribute access."""
+class ProxyPolicyPoolname6Item(TypedDict, total=False):
+    """Nested item for poolname6 field."""
     name: str
 
 
-class ProxyPolicyDstaddrItem:
-    """Nested item for dstaddr field - supports attribute access."""
+class ProxyPolicyDstaddrItem(TypedDict, total=False):
+    """Nested item for dstaddr field."""
     name: str
 
 
-class ProxyPolicyZtnaemstagItem:
-    """Nested item for ztna-ems-tag field - supports attribute access."""
+class ProxyPolicyZtnaemstagItem(TypedDict, total=False):
+    """Nested item for ztna-ems-tag field."""
     name: str
 
 
-class ProxyPolicyUrlriskItem:
-    """Nested item for url-risk field - supports attribute access."""
+class ProxyPolicyUrlriskItem(TypedDict, total=False):
+    """Nested item for url-risk field."""
     name: str
 
 
-class ProxyPolicyInternetservicenameItem:
-    """Nested item for internet-service-name field - supports attribute access."""
+class ProxyPolicyInternetservicenameItem(TypedDict, total=False):
+    """Nested item for internet-service-name field."""
     name: str
 
 
-class ProxyPolicyInternetservicegroupItem:
-    """Nested item for internet-service-group field - supports attribute access."""
+class ProxyPolicyInternetservicegroupItem(TypedDict, total=False):
+    """Nested item for internet-service-group field."""
     name: str
 
 
-class ProxyPolicyInternetservicecustomItem:
-    """Nested item for internet-service-custom field - supports attribute access."""
+class ProxyPolicyInternetservicecustomItem(TypedDict, total=False):
+    """Nested item for internet-service-custom field."""
     name: str
 
 
-class ProxyPolicyInternetservicecustomgroupItem:
-    """Nested item for internet-service-custom-group field - supports attribute access."""
+class ProxyPolicyInternetservicecustomgroupItem(TypedDict, total=False):
+    """Nested item for internet-service-custom-group field."""
     name: str
 
 
-class ProxyPolicyInternetservicefortiguardItem:
-    """Nested item for internet-service-fortiguard field - supports attribute access."""
+class ProxyPolicyInternetservicefortiguardItem(TypedDict, total=False):
+    """Nested item for internet-service-fortiguard field."""
     name: str
 
 
-class ProxyPolicyInternetservice6nameItem:
-    """Nested item for internet-service6-name field - supports attribute access."""
+class ProxyPolicyInternetservice6nameItem(TypedDict, total=False):
+    """Nested item for internet-service6-name field."""
     name: str
 
 
-class ProxyPolicyInternetservice6groupItem:
-    """Nested item for internet-service6-group field - supports attribute access."""
+class ProxyPolicyInternetservice6groupItem(TypedDict, total=False):
+    """Nested item for internet-service6-group field."""
     name: str
 
 
-class ProxyPolicyInternetservice6customItem:
-    """Nested item for internet-service6-custom field - supports attribute access."""
+class ProxyPolicyInternetservice6customItem(TypedDict, total=False):
+    """Nested item for internet-service6-custom field."""
     name: str
 
 
-class ProxyPolicyInternetservice6customgroupItem:
-    """Nested item for internet-service6-custom-group field - supports attribute access."""
+class ProxyPolicyInternetservice6customgroupItem(TypedDict, total=False):
+    """Nested item for internet-service6-custom-group field."""
     name: str
 
 
-class ProxyPolicyInternetservice6fortiguardItem:
-    """Nested item for internet-service6-fortiguard field - supports attribute access."""
+class ProxyPolicyInternetservice6fortiguardItem(TypedDict, total=False):
+    """Nested item for internet-service6-fortiguard field."""
     name: str
 
 
-class ProxyPolicyServiceItem:
-    """Nested item for service field - supports attribute access."""
+class ProxyPolicyServiceItem(TypedDict, total=False):
+    """Nested item for service field."""
     name: str
 
 
-class ProxyPolicySrcaddr6Item:
-    """Nested item for srcaddr6 field - supports attribute access."""
+class ProxyPolicySrcaddr6Item(TypedDict, total=False):
+    """Nested item for srcaddr6 field."""
     name: str
 
 
-class ProxyPolicyDstaddr6Item:
-    """Nested item for dstaddr6 field - supports attribute access."""
+class ProxyPolicyDstaddr6Item(TypedDict, total=False):
+    """Nested item for dstaddr6 field."""
     name: str
 
 
-class ProxyPolicyGroupsItem:
-    """Nested item for groups field - supports attribute access."""
+class ProxyPolicyGroupsItem(TypedDict, total=False):
+    """Nested item for groups field."""
     name: str
 
 
-class ProxyPolicyUsersItem:
-    """Nested item for users field - supports attribute access."""
+class ProxyPolicyUsersItem(TypedDict, total=False):
+    """Nested item for users field."""
     name: str
 
 
@@ -162,34 +162,34 @@ class ProxyPolicyPayload(TypedDict, total=False):
     policyid: int
     name: str
     proxy: Literal["explicit-web", "transparent-web", "ftp", "ssh", "ssh-tunnel", "access-proxy", "ztna-proxy", "wanopt"]
-    access_proxy: str | list[str] | list[dict[str, Any]] | list[ProxyPolicyAccessproxyItem]
-    access_proxy6: str | list[str] | list[dict[str, Any]] | list[ProxyPolicyAccessproxy6Item]
-    ztna_proxy: str | list[str] | list[dict[str, Any]] | list[ProxyPolicyZtnaproxyItem]
-    srcintf: str | list[str] | list[dict[str, Any]] | list[ProxyPolicySrcintfItem]
-    dstintf: str | list[str] | list[dict[str, Any]] | list[ProxyPolicyDstintfItem]
-    srcaddr: str | list[str] | list[dict[str, Any]] | list[ProxyPolicySrcaddrItem]
-    poolname: str | list[str] | list[dict[str, Any]] | list[ProxyPolicyPoolnameItem]
-    poolname6: str | list[str] | list[dict[str, Any]] | list[ProxyPolicyPoolname6Item]
-    dstaddr: str | list[str] | list[dict[str, Any]] | list[ProxyPolicyDstaddrItem]
-    ztna_ems_tag: str | list[str] | list[dict[str, Any]] | list[ProxyPolicyZtnaemstagItem]
+    access_proxy: str | list[str] | list[ProxyPolicyAccessproxyItem]
+    access_proxy6: str | list[str] | list[ProxyPolicyAccessproxy6Item]
+    ztna_proxy: str | list[str] | list[ProxyPolicyZtnaproxyItem]
+    srcintf: str | list[str] | list[ProxyPolicySrcintfItem]
+    dstintf: str | list[str] | list[ProxyPolicyDstintfItem]
+    srcaddr: str | list[str] | list[ProxyPolicySrcaddrItem]
+    poolname: str | list[str] | list[ProxyPolicyPoolnameItem]
+    poolname6: str | list[str] | list[ProxyPolicyPoolname6Item]
+    dstaddr: str | list[str] | list[ProxyPolicyDstaddrItem]
+    ztna_ems_tag: str | list[str] | list[ProxyPolicyZtnaemstagItem]
     ztna_tags_match_logic: Literal["or", "and"]
     device_ownership: Literal["enable", "disable"]
-    url_risk: str | list[str] | list[dict[str, Any]] | list[ProxyPolicyUrlriskItem]
+    url_risk: str | list[str] | list[ProxyPolicyUrlriskItem]
     internet_service: Literal["enable", "disable"]
     internet_service_negate: Literal["enable", "disable"]
-    internet_service_name: str | list[str] | list[dict[str, Any]] | list[ProxyPolicyInternetservicenameItem]
-    internet_service_group: str | list[str] | list[dict[str, Any]] | list[ProxyPolicyInternetservicegroupItem]
-    internet_service_custom: str | list[str] | list[dict[str, Any]] | list[ProxyPolicyInternetservicecustomItem]
-    internet_service_custom_group: str | list[str] | list[dict[str, Any]] | list[ProxyPolicyInternetservicecustomgroupItem]
-    internet_service_fortiguard: str | list[str] | list[dict[str, Any]] | list[ProxyPolicyInternetservicefortiguardItem]
+    internet_service_name: str | list[str] | list[ProxyPolicyInternetservicenameItem]
+    internet_service_group: str | list[str] | list[ProxyPolicyInternetservicegroupItem]
+    internet_service_custom: str | list[str] | list[ProxyPolicyInternetservicecustomItem]
+    internet_service_custom_group: str | list[str] | list[ProxyPolicyInternetservicecustomgroupItem]
+    internet_service_fortiguard: str | list[str] | list[ProxyPolicyInternetservicefortiguardItem]
     internet_service6: Literal["enable", "disable"]
     internet_service6_negate: Literal["enable", "disable"]
-    internet_service6_name: str | list[str] | list[dict[str, Any]] | list[ProxyPolicyInternetservice6nameItem]
-    internet_service6_group: str | list[str] | list[dict[str, Any]] | list[ProxyPolicyInternetservice6groupItem]
-    internet_service6_custom: str | list[str] | list[dict[str, Any]] | list[ProxyPolicyInternetservice6customItem]
-    internet_service6_custom_group: str | list[str] | list[dict[str, Any]] | list[ProxyPolicyInternetservice6customgroupItem]
-    internet_service6_fortiguard: str | list[str] | list[dict[str, Any]] | list[ProxyPolicyInternetservice6fortiguardItem]
-    service: str | list[str] | list[dict[str, Any]] | list[ProxyPolicyServiceItem]
+    internet_service6_name: str | list[str] | list[ProxyPolicyInternetservice6nameItem]
+    internet_service6_group: str | list[str] | list[ProxyPolicyInternetservice6groupItem]
+    internet_service6_custom: str | list[str] | list[ProxyPolicyInternetservice6customItem]
+    internet_service6_custom_group: str | list[str] | list[ProxyPolicyInternetservice6customgroupItem]
+    internet_service6_fortiguard: str | list[str] | list[ProxyPolicyInternetservice6fortiguardItem]
+    service: str | list[str] | list[ProxyPolicyServiceItem]
     srcaddr_negate: Literal["enable", "disable"]
     dstaddr_negate: Literal["enable", "disable"]
     ztna_ems_tag_negate: Literal["enable", "disable"]
@@ -199,10 +199,10 @@ class ProxyPolicyPayload(TypedDict, total=False):
     schedule: str
     logtraffic: Literal["all", "utm", "disable"]
     session_ttl: int
-    srcaddr6: str | list[str] | list[dict[str, Any]] | list[ProxyPolicySrcaddr6Item]
-    dstaddr6: str | list[str] | list[dict[str, Any]] | list[ProxyPolicyDstaddr6Item]
-    groups: str | list[str] | list[dict[str, Any]] | list[ProxyPolicyGroupsItem]
-    users: str | list[str] | list[dict[str, Any]] | list[ProxyPolicyUsersItem]
+    srcaddr6: str | list[str] | list[ProxyPolicySrcaddr6Item]
+    dstaddr6: str | list[str] | list[ProxyPolicyDstaddr6Item]
+    groups: str | list[str] | list[ProxyPolicyGroupsItem]
+    users: str | list[str] | list[ProxyPolicyUsersItem]
     http_tunnel_auth: Literal["enable", "disable"]
     ssh_policy_redirect: Literal["enable", "disable"]
     webproxy_forward_server: str
@@ -506,34 +506,34 @@ class ProxyPolicy:
         policyid: int | None = ...,
         name: str | None = ...,
         proxy: Literal["explicit-web", "transparent-web", "ftp", "ssh", "ssh-tunnel", "access-proxy", "ztna-proxy", "wanopt"] | None = ...,
-        access_proxy: str | list[str] | list[dict[str, Any]] | list[ProxyPolicyAccessproxyItem] | None = ...,
-        access_proxy6: str | list[str] | list[dict[str, Any]] | list[ProxyPolicyAccessproxy6Item] | None = ...,
-        ztna_proxy: str | list[str] | list[dict[str, Any]] | list[ProxyPolicyZtnaproxyItem] | None = ...,
-        srcintf: str | list[str] | list[dict[str, Any]] | list[ProxyPolicySrcintfItem] | None = ...,
-        dstintf: str | list[str] | list[dict[str, Any]] | list[ProxyPolicyDstintfItem] | None = ...,
-        srcaddr: str | list[str] | list[dict[str, Any]] | list[ProxyPolicySrcaddrItem] | None = ...,
-        poolname: str | list[str] | list[dict[str, Any]] | list[ProxyPolicyPoolnameItem] | None = ...,
-        poolname6: str | list[str] | list[dict[str, Any]] | list[ProxyPolicyPoolname6Item] | None = ...,
-        dstaddr: str | list[str] | list[dict[str, Any]] | list[ProxyPolicyDstaddrItem] | None = ...,
-        ztna_ems_tag: str | list[str] | list[dict[str, Any]] | list[ProxyPolicyZtnaemstagItem] | None = ...,
+        access_proxy: str | list[str] | list[ProxyPolicyAccessproxyItem] | None = ...,
+        access_proxy6: str | list[str] | list[ProxyPolicyAccessproxy6Item] | None = ...,
+        ztna_proxy: str | list[str] | list[ProxyPolicyZtnaproxyItem] | None = ...,
+        srcintf: str | list[str] | list[ProxyPolicySrcintfItem] | None = ...,
+        dstintf: str | list[str] | list[ProxyPolicyDstintfItem] | None = ...,
+        srcaddr: str | list[str] | list[ProxyPolicySrcaddrItem] | None = ...,
+        poolname: str | list[str] | list[ProxyPolicyPoolnameItem] | None = ...,
+        poolname6: str | list[str] | list[ProxyPolicyPoolname6Item] | None = ...,
+        dstaddr: str | list[str] | list[ProxyPolicyDstaddrItem] | None = ...,
+        ztna_ems_tag: str | list[str] | list[ProxyPolicyZtnaemstagItem] | None = ...,
         ztna_tags_match_logic: Literal["or", "and"] | None = ...,
         device_ownership: Literal["enable", "disable"] | None = ...,
-        url_risk: str | list[str] | list[dict[str, Any]] | list[ProxyPolicyUrlriskItem] | None = ...,
+        url_risk: str | list[str] | list[ProxyPolicyUrlriskItem] | None = ...,
         internet_service: Literal["enable", "disable"] | None = ...,
         internet_service_negate: Literal["enable", "disable"] | None = ...,
-        internet_service_name: str | list[str] | list[dict[str, Any]] | list[ProxyPolicyInternetservicenameItem] | None = ...,
-        internet_service_group: str | list[str] | list[dict[str, Any]] | list[ProxyPolicyInternetservicegroupItem] | None = ...,
-        internet_service_custom: str | list[str] | list[dict[str, Any]] | list[ProxyPolicyInternetservicecustomItem] | None = ...,
-        internet_service_custom_group: str | list[str] | list[dict[str, Any]] | list[ProxyPolicyInternetservicecustomgroupItem] | None = ...,
-        internet_service_fortiguard: str | list[str] | list[dict[str, Any]] | list[ProxyPolicyInternetservicefortiguardItem] | None = ...,
+        internet_service_name: str | list[str] | list[ProxyPolicyInternetservicenameItem] | None = ...,
+        internet_service_group: str | list[str] | list[ProxyPolicyInternetservicegroupItem] | None = ...,
+        internet_service_custom: str | list[str] | list[ProxyPolicyInternetservicecustomItem] | None = ...,
+        internet_service_custom_group: str | list[str] | list[ProxyPolicyInternetservicecustomgroupItem] | None = ...,
+        internet_service_fortiguard: str | list[str] | list[ProxyPolicyInternetservicefortiguardItem] | None = ...,
         internet_service6: Literal["enable", "disable"] | None = ...,
         internet_service6_negate: Literal["enable", "disable"] | None = ...,
-        internet_service6_name: str | list[str] | list[dict[str, Any]] | list[ProxyPolicyInternetservice6nameItem] | None = ...,
-        internet_service6_group: str | list[str] | list[dict[str, Any]] | list[ProxyPolicyInternetservice6groupItem] | None = ...,
-        internet_service6_custom: str | list[str] | list[dict[str, Any]] | list[ProxyPolicyInternetservice6customItem] | None = ...,
-        internet_service6_custom_group: str | list[str] | list[dict[str, Any]] | list[ProxyPolicyInternetservice6customgroupItem] | None = ...,
-        internet_service6_fortiguard: str | list[str] | list[dict[str, Any]] | list[ProxyPolicyInternetservice6fortiguardItem] | None = ...,
-        service: str | list[str] | list[dict[str, Any]] | list[ProxyPolicyServiceItem] | None = ...,
+        internet_service6_name: str | list[str] | list[ProxyPolicyInternetservice6nameItem] | None = ...,
+        internet_service6_group: str | list[str] | list[ProxyPolicyInternetservice6groupItem] | None = ...,
+        internet_service6_custom: str | list[str] | list[ProxyPolicyInternetservice6customItem] | None = ...,
+        internet_service6_custom_group: str | list[str] | list[ProxyPolicyInternetservice6customgroupItem] | None = ...,
+        internet_service6_fortiguard: str | list[str] | list[ProxyPolicyInternetservice6fortiguardItem] | None = ...,
+        service: str | list[str] | list[ProxyPolicyServiceItem] | None = ...,
         srcaddr_negate: Literal["enable", "disable"] | None = ...,
         dstaddr_negate: Literal["enable", "disable"] | None = ...,
         ztna_ems_tag_negate: Literal["enable", "disable"] | None = ...,
@@ -543,10 +543,10 @@ class ProxyPolicy:
         schedule: str | None = ...,
         logtraffic: Literal["all", "utm", "disable"] | None = ...,
         session_ttl: int | None = ...,
-        srcaddr6: str | list[str] | list[dict[str, Any]] | list[ProxyPolicySrcaddr6Item] | None = ...,
-        dstaddr6: str | list[str] | list[dict[str, Any]] | list[ProxyPolicyDstaddr6Item] | None = ...,
-        groups: str | list[str] | list[dict[str, Any]] | list[ProxyPolicyGroupsItem] | None = ...,
-        users: str | list[str] | list[dict[str, Any]] | list[ProxyPolicyUsersItem] | None = ...,
+        srcaddr6: str | list[str] | list[ProxyPolicySrcaddr6Item] | None = ...,
+        dstaddr6: str | list[str] | list[ProxyPolicyDstaddr6Item] | None = ...,
+        groups: str | list[str] | list[ProxyPolicyGroupsItem] | None = ...,
+        users: str | list[str] | list[ProxyPolicyUsersItem] | None = ...,
         http_tunnel_auth: Literal["enable", "disable"] | None = ...,
         ssh_policy_redirect: Literal["enable", "disable"] | None = ...,
         webproxy_forward_server: str | None = ...,
@@ -601,34 +601,34 @@ class ProxyPolicy:
         policyid: int | None = ...,
         name: str | None = ...,
         proxy: Literal["explicit-web", "transparent-web", "ftp", "ssh", "ssh-tunnel", "access-proxy", "ztna-proxy", "wanopt"] | None = ...,
-        access_proxy: str | list[str] | list[dict[str, Any]] | list[ProxyPolicyAccessproxyItem] | None = ...,
-        access_proxy6: str | list[str] | list[dict[str, Any]] | list[ProxyPolicyAccessproxy6Item] | None = ...,
-        ztna_proxy: str | list[str] | list[dict[str, Any]] | list[ProxyPolicyZtnaproxyItem] | None = ...,
-        srcintf: str | list[str] | list[dict[str, Any]] | list[ProxyPolicySrcintfItem] | None = ...,
-        dstintf: str | list[str] | list[dict[str, Any]] | list[ProxyPolicyDstintfItem] | None = ...,
-        srcaddr: str | list[str] | list[dict[str, Any]] | list[ProxyPolicySrcaddrItem] | None = ...,
-        poolname: str | list[str] | list[dict[str, Any]] | list[ProxyPolicyPoolnameItem] | None = ...,
-        poolname6: str | list[str] | list[dict[str, Any]] | list[ProxyPolicyPoolname6Item] | None = ...,
-        dstaddr: str | list[str] | list[dict[str, Any]] | list[ProxyPolicyDstaddrItem] | None = ...,
-        ztna_ems_tag: str | list[str] | list[dict[str, Any]] | list[ProxyPolicyZtnaemstagItem] | None = ...,
+        access_proxy: str | list[str] | list[ProxyPolicyAccessproxyItem] | None = ...,
+        access_proxy6: str | list[str] | list[ProxyPolicyAccessproxy6Item] | None = ...,
+        ztna_proxy: str | list[str] | list[ProxyPolicyZtnaproxyItem] | None = ...,
+        srcintf: str | list[str] | list[ProxyPolicySrcintfItem] | None = ...,
+        dstintf: str | list[str] | list[ProxyPolicyDstintfItem] | None = ...,
+        srcaddr: str | list[str] | list[ProxyPolicySrcaddrItem] | None = ...,
+        poolname: str | list[str] | list[ProxyPolicyPoolnameItem] | None = ...,
+        poolname6: str | list[str] | list[ProxyPolicyPoolname6Item] | None = ...,
+        dstaddr: str | list[str] | list[ProxyPolicyDstaddrItem] | None = ...,
+        ztna_ems_tag: str | list[str] | list[ProxyPolicyZtnaemstagItem] | None = ...,
         ztna_tags_match_logic: Literal["or", "and"] | None = ...,
         device_ownership: Literal["enable", "disable"] | None = ...,
-        url_risk: str | list[str] | list[dict[str, Any]] | list[ProxyPolicyUrlriskItem] | None = ...,
+        url_risk: str | list[str] | list[ProxyPolicyUrlriskItem] | None = ...,
         internet_service: Literal["enable", "disable"] | None = ...,
         internet_service_negate: Literal["enable", "disable"] | None = ...,
-        internet_service_name: str | list[str] | list[dict[str, Any]] | list[ProxyPolicyInternetservicenameItem] | None = ...,
-        internet_service_group: str | list[str] | list[dict[str, Any]] | list[ProxyPolicyInternetservicegroupItem] | None = ...,
-        internet_service_custom: str | list[str] | list[dict[str, Any]] | list[ProxyPolicyInternetservicecustomItem] | None = ...,
-        internet_service_custom_group: str | list[str] | list[dict[str, Any]] | list[ProxyPolicyInternetservicecustomgroupItem] | None = ...,
-        internet_service_fortiguard: str | list[str] | list[dict[str, Any]] | list[ProxyPolicyInternetservicefortiguardItem] | None = ...,
+        internet_service_name: str | list[str] | list[ProxyPolicyInternetservicenameItem] | None = ...,
+        internet_service_group: str | list[str] | list[ProxyPolicyInternetservicegroupItem] | None = ...,
+        internet_service_custom: str | list[str] | list[ProxyPolicyInternetservicecustomItem] | None = ...,
+        internet_service_custom_group: str | list[str] | list[ProxyPolicyInternetservicecustomgroupItem] | None = ...,
+        internet_service_fortiguard: str | list[str] | list[ProxyPolicyInternetservicefortiguardItem] | None = ...,
         internet_service6: Literal["enable", "disable"] | None = ...,
         internet_service6_negate: Literal["enable", "disable"] | None = ...,
-        internet_service6_name: str | list[str] | list[dict[str, Any]] | list[ProxyPolicyInternetservice6nameItem] | None = ...,
-        internet_service6_group: str | list[str] | list[dict[str, Any]] | list[ProxyPolicyInternetservice6groupItem] | None = ...,
-        internet_service6_custom: str | list[str] | list[dict[str, Any]] | list[ProxyPolicyInternetservice6customItem] | None = ...,
-        internet_service6_custom_group: str | list[str] | list[dict[str, Any]] | list[ProxyPolicyInternetservice6customgroupItem] | None = ...,
-        internet_service6_fortiguard: str | list[str] | list[dict[str, Any]] | list[ProxyPolicyInternetservice6fortiguardItem] | None = ...,
-        service: str | list[str] | list[dict[str, Any]] | list[ProxyPolicyServiceItem] | None = ...,
+        internet_service6_name: str | list[str] | list[ProxyPolicyInternetservice6nameItem] | None = ...,
+        internet_service6_group: str | list[str] | list[ProxyPolicyInternetservice6groupItem] | None = ...,
+        internet_service6_custom: str | list[str] | list[ProxyPolicyInternetservice6customItem] | None = ...,
+        internet_service6_custom_group: str | list[str] | list[ProxyPolicyInternetservice6customgroupItem] | None = ...,
+        internet_service6_fortiguard: str | list[str] | list[ProxyPolicyInternetservice6fortiguardItem] | None = ...,
+        service: str | list[str] | list[ProxyPolicyServiceItem] | None = ...,
         srcaddr_negate: Literal["enable", "disable"] | None = ...,
         dstaddr_negate: Literal["enable", "disable"] | None = ...,
         ztna_ems_tag_negate: Literal["enable", "disable"] | None = ...,
@@ -638,10 +638,10 @@ class ProxyPolicy:
         schedule: str | None = ...,
         logtraffic: Literal["all", "utm", "disable"] | None = ...,
         session_ttl: int | None = ...,
-        srcaddr6: str | list[str] | list[dict[str, Any]] | list[ProxyPolicySrcaddr6Item] | None = ...,
-        dstaddr6: str | list[str] | list[dict[str, Any]] | list[ProxyPolicyDstaddr6Item] | None = ...,
-        groups: str | list[str] | list[dict[str, Any]] | list[ProxyPolicyGroupsItem] | None = ...,
-        users: str | list[str] | list[dict[str, Any]] | list[ProxyPolicyUsersItem] | None = ...,
+        srcaddr6: str | list[str] | list[ProxyPolicySrcaddr6Item] | None = ...,
+        dstaddr6: str | list[str] | list[ProxyPolicyDstaddr6Item] | None = ...,
+        groups: str | list[str] | list[ProxyPolicyGroupsItem] | None = ...,
+        users: str | list[str] | list[ProxyPolicyUsersItem] | None = ...,
         http_tunnel_auth: Literal["enable", "disable"] | None = ...,
         ssh_policy_redirect: Literal["enable", "disable"] | None = ...,
         webproxy_forward_server: str | None = ...,
@@ -714,34 +714,34 @@ class ProxyPolicy:
         policyid: int | None = ...,
         name: str | None = ...,
         proxy: Literal["explicit-web", "transparent-web", "ftp", "ssh", "ssh-tunnel", "access-proxy", "ztna-proxy", "wanopt"] | None = ...,
-        access_proxy: str | list[str] | list[dict[str, Any]] | list[ProxyPolicyAccessproxyItem] | None = ...,
-        access_proxy6: str | list[str] | list[dict[str, Any]] | list[ProxyPolicyAccessproxy6Item] | None = ...,
-        ztna_proxy: str | list[str] | list[dict[str, Any]] | list[ProxyPolicyZtnaproxyItem] | None = ...,
-        srcintf: str | list[str] | list[dict[str, Any]] | list[ProxyPolicySrcintfItem] | None = ...,
-        dstintf: str | list[str] | list[dict[str, Any]] | list[ProxyPolicyDstintfItem] | None = ...,
-        srcaddr: str | list[str] | list[dict[str, Any]] | list[ProxyPolicySrcaddrItem] | None = ...,
-        poolname: str | list[str] | list[dict[str, Any]] | list[ProxyPolicyPoolnameItem] | None = ...,
-        poolname6: str | list[str] | list[dict[str, Any]] | list[ProxyPolicyPoolname6Item] | None = ...,
-        dstaddr: str | list[str] | list[dict[str, Any]] | list[ProxyPolicyDstaddrItem] | None = ...,
-        ztna_ems_tag: str | list[str] | list[dict[str, Any]] | list[ProxyPolicyZtnaemstagItem] | None = ...,
+        access_proxy: str | list[str] | list[ProxyPolicyAccessproxyItem] | None = ...,
+        access_proxy6: str | list[str] | list[ProxyPolicyAccessproxy6Item] | None = ...,
+        ztna_proxy: str | list[str] | list[ProxyPolicyZtnaproxyItem] | None = ...,
+        srcintf: str | list[str] | list[ProxyPolicySrcintfItem] | None = ...,
+        dstintf: str | list[str] | list[ProxyPolicyDstintfItem] | None = ...,
+        srcaddr: str | list[str] | list[ProxyPolicySrcaddrItem] | None = ...,
+        poolname: str | list[str] | list[ProxyPolicyPoolnameItem] | None = ...,
+        poolname6: str | list[str] | list[ProxyPolicyPoolname6Item] | None = ...,
+        dstaddr: str | list[str] | list[ProxyPolicyDstaddrItem] | None = ...,
+        ztna_ems_tag: str | list[str] | list[ProxyPolicyZtnaemstagItem] | None = ...,
         ztna_tags_match_logic: Literal["or", "and"] | None = ...,
         device_ownership: Literal["enable", "disable"] | None = ...,
-        url_risk: str | list[str] | list[dict[str, Any]] | list[ProxyPolicyUrlriskItem] | None = ...,
+        url_risk: str | list[str] | list[ProxyPolicyUrlriskItem] | None = ...,
         internet_service: Literal["enable", "disable"] | None = ...,
         internet_service_negate: Literal["enable", "disable"] | None = ...,
-        internet_service_name: str | list[str] | list[dict[str, Any]] | list[ProxyPolicyInternetservicenameItem] | None = ...,
-        internet_service_group: str | list[str] | list[dict[str, Any]] | list[ProxyPolicyInternetservicegroupItem] | None = ...,
-        internet_service_custom: str | list[str] | list[dict[str, Any]] | list[ProxyPolicyInternetservicecustomItem] | None = ...,
-        internet_service_custom_group: str | list[str] | list[dict[str, Any]] | list[ProxyPolicyInternetservicecustomgroupItem] | None = ...,
-        internet_service_fortiguard: str | list[str] | list[dict[str, Any]] | list[ProxyPolicyInternetservicefortiguardItem] | None = ...,
+        internet_service_name: str | list[str] | list[ProxyPolicyInternetservicenameItem] | None = ...,
+        internet_service_group: str | list[str] | list[ProxyPolicyInternetservicegroupItem] | None = ...,
+        internet_service_custom: str | list[str] | list[ProxyPolicyInternetservicecustomItem] | None = ...,
+        internet_service_custom_group: str | list[str] | list[ProxyPolicyInternetservicecustomgroupItem] | None = ...,
+        internet_service_fortiguard: str | list[str] | list[ProxyPolicyInternetservicefortiguardItem] | None = ...,
         internet_service6: Literal["enable", "disable"] | None = ...,
         internet_service6_negate: Literal["enable", "disable"] | None = ...,
-        internet_service6_name: str | list[str] | list[dict[str, Any]] | list[ProxyPolicyInternetservice6nameItem] | None = ...,
-        internet_service6_group: str | list[str] | list[dict[str, Any]] | list[ProxyPolicyInternetservice6groupItem] | None = ...,
-        internet_service6_custom: str | list[str] | list[dict[str, Any]] | list[ProxyPolicyInternetservice6customItem] | None = ...,
-        internet_service6_custom_group: str | list[str] | list[dict[str, Any]] | list[ProxyPolicyInternetservice6customgroupItem] | None = ...,
-        internet_service6_fortiguard: str | list[str] | list[dict[str, Any]] | list[ProxyPolicyInternetservice6fortiguardItem] | None = ...,
-        service: str | list[str] | list[dict[str, Any]] | list[ProxyPolicyServiceItem] | None = ...,
+        internet_service6_name: str | list[str] | list[ProxyPolicyInternetservice6nameItem] | None = ...,
+        internet_service6_group: str | list[str] | list[ProxyPolicyInternetservice6groupItem] | None = ...,
+        internet_service6_custom: str | list[str] | list[ProxyPolicyInternetservice6customItem] | None = ...,
+        internet_service6_custom_group: str | list[str] | list[ProxyPolicyInternetservice6customgroupItem] | None = ...,
+        internet_service6_fortiguard: str | list[str] | list[ProxyPolicyInternetservice6fortiguardItem] | None = ...,
+        service: str | list[str] | list[ProxyPolicyServiceItem] | None = ...,
         srcaddr_negate: Literal["enable", "disable"] | None = ...,
         dstaddr_negate: Literal["enable", "disable"] | None = ...,
         ztna_ems_tag_negate: Literal["enable", "disable"] | None = ...,
@@ -751,10 +751,10 @@ class ProxyPolicy:
         schedule: str | None = ...,
         logtraffic: Literal["all", "utm", "disable"] | None = ...,
         session_ttl: int | None = ...,
-        srcaddr6: str | list[str] | list[dict[str, Any]] | list[ProxyPolicySrcaddr6Item] | None = ...,
-        dstaddr6: str | list[str] | list[dict[str, Any]] | list[ProxyPolicyDstaddr6Item] | None = ...,
-        groups: str | list[str] | list[dict[str, Any]] | list[ProxyPolicyGroupsItem] | None = ...,
-        users: str | list[str] | list[dict[str, Any]] | list[ProxyPolicyUsersItem] | None = ...,
+        srcaddr6: str | list[str] | list[ProxyPolicySrcaddr6Item] | None = ...,
+        dstaddr6: str | list[str] | list[ProxyPolicyDstaddr6Item] | None = ...,
+        groups: str | list[str] | list[ProxyPolicyGroupsItem] | None = ...,
+        users: str | list[str] | list[ProxyPolicyUsersItem] | None = ...,
         http_tunnel_auth: Literal["enable", "disable"] | None = ...,
         ssh_policy_redirect: Literal["enable", "disable"] | None = ...,
         webproxy_forward_server: str | None = ...,

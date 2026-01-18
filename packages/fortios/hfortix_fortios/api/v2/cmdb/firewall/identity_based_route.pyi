@@ -26,8 +26,8 @@ from hfortix_fortios.models import (
 # TypedDict Payloads
 # ================================================================
 
-class IdentityBasedRouteRuleItem:
-    """Nested item for rule field - supports attribute access."""
+class IdentityBasedRouteRuleItem(TypedDict, total=False):
+    """Nested item for rule field."""
     id: int
     gateway: str
     device: str
@@ -38,7 +38,7 @@ class IdentityBasedRoutePayload(TypedDict, total=False):
     """Payload type for IdentityBasedRoute operations."""
     name: str
     comments: str
-    rule: str | list[str] | list[dict[str, Any]] | list[IdentityBasedRouteRuleItem]
+    rule: str | list[str] | list[IdentityBasedRouteRuleItem]
 
 
 # ================================================================
@@ -142,7 +142,7 @@ class IdentityBasedRoute:
         payload_dict: IdentityBasedRoutePayload | None = ...,
         name: str | None = ...,
         comments: str | None = ...,
-        rule: str | list[str] | list[dict[str, Any]] | list[IdentityBasedRouteRuleItem] | None = ...,
+        rule: str | list[str] | list[IdentityBasedRouteRuleItem] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -157,7 +157,7 @@ class IdentityBasedRoute:
         payload_dict: IdentityBasedRoutePayload | None = ...,
         name: str | None = ...,
         comments: str | None = ...,
-        rule: str | list[str] | list[dict[str, Any]] | list[IdentityBasedRouteRuleItem] | None = ...,
+        rule: str | list[str] | list[IdentityBasedRouteRuleItem] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -190,7 +190,7 @@ class IdentityBasedRoute:
         payload_dict: IdentityBasedRoutePayload | None = ...,
         name: str | None = ...,
         comments: str | None = ...,
-        rule: str | list[str] | list[dict[str, Any]] | list[IdentityBasedRouteRuleItem] | None = ...,
+        rule: str | list[str] | list[IdentityBasedRouteRuleItem] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,

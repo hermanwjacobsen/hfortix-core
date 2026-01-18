@@ -36,8 +36,8 @@ class LayoutPageDict(TypedDict, total=False):
     footer: str
 
 
-class LayoutBodyitemItem:
-    """Nested item for body-item field - supports attribute access."""
+class LayoutBodyitemItem(TypedDict, total=False):
+    """Nested item for body-item field."""
     id: int
     description: str
     type: Literal["text", "image", "chart", "misc"]
@@ -71,7 +71,7 @@ class LayoutPayload(TypedDict, total=False):
     email_recipients: str
     max_pdf_report: int
     page: LayoutPageDict
-    body_item: str | list[str] | list[dict[str, Any]] | list[LayoutBodyitemItem]
+    body_item: str | list[str] | list[LayoutBodyitemItem]
 
 
 # ================================================================
@@ -217,7 +217,7 @@ class Layout:
         email_recipients: str | None = ...,
         max_pdf_report: int | None = ...,
         page: LayoutPageDict | None = ...,
-        body_item: str | list[str] | list[dict[str, Any]] | list[LayoutBodyitemItem] | None = ...,
+        body_item: str | list[str] | list[LayoutBodyitemItem] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -246,7 +246,7 @@ class Layout:
         email_recipients: str | None = ...,
         max_pdf_report: int | None = ...,
         page: LayoutPageDict | None = ...,
-        body_item: str | list[str] | list[dict[str, Any]] | list[LayoutBodyitemItem] | None = ...,
+        body_item: str | list[str] | list[LayoutBodyitemItem] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -293,7 +293,7 @@ class Layout:
         email_recipients: str | None = ...,
         max_pdf_report: int | None = ...,
         page: LayoutPageDict | None = ...,
-        body_item: str | list[str] | list[dict[str, Any]] | list[LayoutBodyitemItem] | None = ...,
+        body_item: str | list[str] | list[LayoutBodyitemItem] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,

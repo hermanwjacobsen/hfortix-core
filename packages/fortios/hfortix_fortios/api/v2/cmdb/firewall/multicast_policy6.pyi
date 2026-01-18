@@ -26,13 +26,13 @@ from hfortix_fortios.models import (
 # TypedDict Payloads
 # ================================================================
 
-class MulticastPolicy6SrcaddrItem:
-    """Nested item for srcaddr field - supports attribute access."""
+class MulticastPolicy6SrcaddrItem(TypedDict, total=False):
+    """Nested item for srcaddr field."""
     name: str
 
 
-class MulticastPolicy6DstaddrItem:
-    """Nested item for dstaddr field - supports attribute access."""
+class MulticastPolicy6DstaddrItem(TypedDict, total=False):
+    """Nested item for dstaddr field."""
     name: str
 
 
@@ -44,8 +44,8 @@ class MulticastPolicy6Payload(TypedDict, total=False):
     name: str
     srcintf: str
     dstintf: str
-    srcaddr: str | list[str] | list[dict[str, Any]] | list[MulticastPolicy6SrcaddrItem]
-    dstaddr: str | list[str] | list[dict[str, Any]] | list[MulticastPolicy6DstaddrItem]
+    srcaddr: str | list[str] | list[MulticastPolicy6SrcaddrItem]
+    dstaddr: str | list[str] | list[MulticastPolicy6DstaddrItem]
     action: Literal["accept", "deny"]
     protocol: int
     start_port: int
@@ -190,8 +190,8 @@ class MulticastPolicy6:
         name: str | None = ...,
         srcintf: str | None = ...,
         dstintf: str | None = ...,
-        srcaddr: str | list[str] | list[dict[str, Any]] | list[MulticastPolicy6SrcaddrItem] | None = ...,
-        dstaddr: str | list[str] | list[dict[str, Any]] | list[MulticastPolicy6DstaddrItem] | None = ...,
+        srcaddr: str | list[str] | list[MulticastPolicy6SrcaddrItem] | None = ...,
+        dstaddr: str | list[str] | list[MulticastPolicy6DstaddrItem] | None = ...,
         action: Literal["accept", "deny"] | None = ...,
         protocol: int | None = ...,
         start_port: int | None = ...,
@@ -219,8 +219,8 @@ class MulticastPolicy6:
         name: str | None = ...,
         srcintf: str | None = ...,
         dstintf: str | None = ...,
-        srcaddr: str | list[str] | list[dict[str, Any]] | list[MulticastPolicy6SrcaddrItem] | None = ...,
-        dstaddr: str | list[str] | list[dict[str, Any]] | list[MulticastPolicy6DstaddrItem] | None = ...,
+        srcaddr: str | list[str] | list[MulticastPolicy6SrcaddrItem] | None = ...,
+        dstaddr: str | list[str] | list[MulticastPolicy6DstaddrItem] | None = ...,
         action: Literal["accept", "deny"] | None = ...,
         protocol: int | None = ...,
         start_port: int | None = ...,
@@ -266,8 +266,8 @@ class MulticastPolicy6:
         name: str | None = ...,
         srcintf: str | None = ...,
         dstintf: str | None = ...,
-        srcaddr: str | list[str] | list[dict[str, Any]] | list[MulticastPolicy6SrcaddrItem] | None = ...,
-        dstaddr: str | list[str] | list[dict[str, Any]] | list[MulticastPolicy6DstaddrItem] | None = ...,
+        srcaddr: str | list[str] | list[MulticastPolicy6SrcaddrItem] | None = ...,
+        dstaddr: str | list[str] | list[MulticastPolicy6DstaddrItem] | None = ...,
         action: Literal["accept", "deny"] | None = ...,
         protocol: int | None = ...,
         start_port: int | None = ...,

@@ -26,8 +26,8 @@ from hfortix_fortios.models import (
 # TypedDict Payloads
 # ================================================================
 
-class ApcfgProfileCommandlistItem:
-    """Nested item for command-list field - supports attribute access."""
+class ApcfgProfileCommandlistItem(TypedDict, total=False):
+    """Nested item for command-list field."""
     id: int
     type: Literal["non-password", "password"]
     name: str
@@ -44,7 +44,7 @@ class ApcfgProfilePayload(TypedDict, total=False):
     ac_timer: int
     ac_ip: str
     ac_port: int
-    command_list: str | list[str] | list[dict[str, Any]] | list[ApcfgProfileCommandlistItem]
+    command_list: str | list[str] | list[ApcfgProfileCommandlistItem]
 
 
 # ================================================================
@@ -163,7 +163,7 @@ class ApcfgProfile:
         ac_timer: int | None = ...,
         ac_ip: str | None = ...,
         ac_port: int | None = ...,
-        command_list: str | list[str] | list[dict[str, Any]] | list[ApcfgProfileCommandlistItem] | None = ...,
+        command_list: str | list[str] | list[ApcfgProfileCommandlistItem] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -183,7 +183,7 @@ class ApcfgProfile:
         ac_timer: int | None = ...,
         ac_ip: str | None = ...,
         ac_port: int | None = ...,
-        command_list: str | list[str] | list[dict[str, Any]] | list[ApcfgProfileCommandlistItem] | None = ...,
+        command_list: str | list[str] | list[ApcfgProfileCommandlistItem] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -221,7 +221,7 @@ class ApcfgProfile:
         ac_timer: int | None = ...,
         ac_ip: str | None = ...,
         ac_port: int | None = ...,
-        command_list: str | list[str] | list[dict[str, Any]] | list[ApcfgProfileCommandlistItem] | None = ...,
+        command_list: str | list[str] | list[ApcfgProfileCommandlistItem] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,

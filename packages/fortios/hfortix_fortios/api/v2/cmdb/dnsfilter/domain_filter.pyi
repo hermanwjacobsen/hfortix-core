@@ -26,8 +26,8 @@ from hfortix_fortios.models import (
 # TypedDict Payloads
 # ================================================================
 
-class DomainFilterEntriesItem:
-    """Nested item for entries field - supports attribute access."""
+class DomainFilterEntriesItem(TypedDict, total=False):
+    """Nested item for entries field."""
     id: int
     domain: str
     type: Literal["simple", "regex", "wildcard"]
@@ -41,7 +41,7 @@ class DomainFilterPayload(TypedDict, total=False):
     id: int
     name: str
     comment: str
-    entries: str | list[str] | list[dict[str, Any]] | list[DomainFilterEntriesItem]
+    entries: str | list[str] | list[DomainFilterEntriesItem]
 
 
 # ================================================================
@@ -148,7 +148,7 @@ class DomainFilter:
         id: int | None = ...,
         name: str | None = ...,
         comment: str | None = ...,
-        entries: str | list[str] | list[dict[str, Any]] | list[DomainFilterEntriesItem] | None = ...,
+        entries: str | list[str] | list[DomainFilterEntriesItem] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -164,7 +164,7 @@ class DomainFilter:
         id: int | None = ...,
         name: str | None = ...,
         comment: str | None = ...,
-        entries: str | list[str] | list[dict[str, Any]] | list[DomainFilterEntriesItem] | None = ...,
+        entries: str | list[str] | list[DomainFilterEntriesItem] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -198,7 +198,7 @@ class DomainFilter:
         id: int | None = ...,
         name: str | None = ...,
         comment: str | None = ...,
-        entries: str | list[str] | list[dict[str, Any]] | list[DomainFilterEntriesItem] | None = ...,
+        entries: str | list[str] | list[DomainFilterEntriesItem] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,

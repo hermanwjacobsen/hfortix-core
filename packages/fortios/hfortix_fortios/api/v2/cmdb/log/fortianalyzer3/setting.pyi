@@ -25,8 +25,8 @@ from hfortix_fortios.models import (
 # TypedDict Payloads
 # ================================================================
 
-class SettingSerialItem:
-    """Nested item for serial field - supports attribute access."""
+class SettingSerialItem(TypedDict, total=False):
+    """Nested item for serial field."""
     name: str
 
 
@@ -38,7 +38,7 @@ class SettingPayload(TypedDict, total=False):
     alt_server: str
     fallback_to_primary: Literal["enable", "disable"]
     certificate_verification: Literal["enable", "disable"]
-    serial: str | list[str] | list[dict[str, Any]] | list[SettingSerialItem]
+    serial: str | list[str] | list[SettingSerialItem]
     server_cert_ca: str
     preshared_key: str
     access_config: Literal["enable", "disable"]
@@ -194,7 +194,7 @@ class Setting:
         alt_server: str | None = ...,
         fallback_to_primary: Literal["enable", "disable"] | None = ...,
         certificate_verification: Literal["enable", "disable"] | None = ...,
-        serial: str | list[str] | list[dict[str, Any]] | list[SettingSerialItem] | None = ...,
+        serial: str | list[str] | list[SettingSerialItem] | None = ...,
         server_cert_ca: str | None = ...,
         preshared_key: str | None = ...,
         access_config: Literal["enable", "disable"] | None = ...,
@@ -239,7 +239,7 @@ class Setting:
         alt_server: str | None = ...,
         fallback_to_primary: Literal["enable", "disable"] | None = ...,
         certificate_verification: Literal["enable", "disable"] | None = ...,
-        serial: str | list[str] | list[dict[str, Any]] | list[SettingSerialItem] | None = ...,
+        serial: str | list[str] | list[SettingSerialItem] | None = ...,
         server_cert_ca: str | None = ...,
         preshared_key: str | None = ...,
         access_config: Literal["enable", "disable"] | None = ...,

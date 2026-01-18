@@ -25,8 +25,8 @@ from hfortix_fortios.models import (
 # TypedDict Payloads
 # ================================================================
 
-class OspfAreaItem:
-    """Nested item for area field - supports attribute access."""
+class OspfAreaItem(TypedDict, total=False):
+    """Nested item for area field."""
     id: str
     shortcut: Literal["disable", "enable", "default"]
     authentication: Literal["none", "text", "message-digest"]
@@ -44,8 +44,8 @@ class OspfAreaItem:
     filter_list: str | list[str]
 
 
-class OspfOspfinterfaceItem:
-    """Nested item for ospf-interface field - supports attribute access."""
+class OspfOspfinterfaceItem(TypedDict, total=False):
+    """Nested item for ospf-interface field."""
     name: str
     comments: str
     interface: str
@@ -72,16 +72,16 @@ class OspfOspfinterfaceItem:
     md5_keys: str | list[str]
 
 
-class OspfNetworkItem:
-    """Nested item for network field - supports attribute access."""
+class OspfNetworkItem(TypedDict, total=False):
+    """Nested item for network field."""
     id: int
     prefix: str
     area: str
     comments: str
 
 
-class OspfNeighborItem:
-    """Nested item for neighbor field - supports attribute access."""
+class OspfNeighborItem(TypedDict, total=False):
+    """Nested item for neighbor field."""
     id: int
     ip: str
     poll_interval: int
@@ -89,28 +89,28 @@ class OspfNeighborItem:
     priority: int
 
 
-class OspfPassiveinterfaceItem:
-    """Nested item for passive-interface field - supports attribute access."""
+class OspfPassiveinterfaceItem(TypedDict, total=False):
+    """Nested item for passive-interface field."""
     name: str
 
 
-class OspfSummaryaddressItem:
-    """Nested item for summary-address field - supports attribute access."""
+class OspfSummaryaddressItem(TypedDict, total=False):
+    """Nested item for summary-address field."""
     id: int
     prefix: str
     tag: int
     advertise: Literal["disable", "enable"]
 
 
-class OspfDistributelistItem:
-    """Nested item for distribute-list field - supports attribute access."""
+class OspfDistributelistItem(TypedDict, total=False):
+    """Nested item for distribute-list field."""
     id: int
     access_list: str
     protocol: Literal["connected", "static", "rip"]
 
 
-class OspfRedistributeItem:
-    """Nested item for redistribute field - supports attribute access."""
+class OspfRedistributeItem(TypedDict, total=False):
+    """Nested item for redistribute field."""
     name: str
     status: Literal["enable", "disable"]
     metric: int
@@ -146,14 +146,14 @@ class OspfPayload(TypedDict, total=False):
     restart_mode: Literal["none", "lls", "graceful-restart"]
     restart_period: int
     restart_on_topology_change: Literal["enable", "disable"]
-    area: str | list[str] | list[dict[str, Any]] | list[OspfAreaItem]
-    ospf_interface: str | list[str] | list[dict[str, Any]] | list[OspfOspfinterfaceItem]
-    network: str | list[str] | list[dict[str, Any]] | list[OspfNetworkItem]
-    neighbor: str | list[str] | list[dict[str, Any]] | list[OspfNeighborItem]
-    passive_interface: str | list[str] | list[dict[str, Any]] | list[OspfPassiveinterfaceItem]
-    summary_address: str | list[str] | list[dict[str, Any]] | list[OspfSummaryaddressItem]
-    distribute_list: str | list[str] | list[dict[str, Any]] | list[OspfDistributelistItem]
-    redistribute: str | list[str] | list[dict[str, Any]] | list[OspfRedistributeItem]
+    area: str | list[str] | list[OspfAreaItem]
+    ospf_interface: str | list[str] | list[OspfOspfinterfaceItem]
+    network: str | list[str] | list[OspfNetworkItem]
+    neighbor: str | list[str] | list[OspfNeighborItem]
+    passive_interface: str | list[str] | list[OspfPassiveinterfaceItem]
+    summary_address: str | list[str] | list[OspfSummaryaddressItem]
+    distribute_list: str | list[str] | list[OspfDistributelistItem]
+    redistribute: str | list[str] | list[OspfRedistributeItem]
 
 
 # ================================================================
@@ -320,14 +320,14 @@ class Ospf:
         restart_mode: Literal["none", "lls", "graceful-restart"] | None = ...,
         restart_period: int | None = ...,
         restart_on_topology_change: Literal["enable", "disable"] | None = ...,
-        area: str | list[str] | list[dict[str, Any]] | list[OspfAreaItem] | None = ...,
-        ospf_interface: str | list[str] | list[dict[str, Any]] | list[OspfOspfinterfaceItem] | None = ...,
-        network: str | list[str] | list[dict[str, Any]] | list[OspfNetworkItem] | None = ...,
-        neighbor: str | list[str] | list[dict[str, Any]] | list[OspfNeighborItem] | None = ...,
-        passive_interface: str | list[str] | list[dict[str, Any]] | list[OspfPassiveinterfaceItem] | None = ...,
-        summary_address: str | list[str] | list[dict[str, Any]] | list[OspfSummaryaddressItem] | None = ...,
-        distribute_list: str | list[str] | list[dict[str, Any]] | list[OspfDistributelistItem] | None = ...,
-        redistribute: str | list[str] | list[dict[str, Any]] | list[OspfRedistributeItem] | None = ...,
+        area: str | list[str] | list[OspfAreaItem] | None = ...,
+        ospf_interface: str | list[str] | list[OspfOspfinterfaceItem] | None = ...,
+        network: str | list[str] | list[OspfNetworkItem] | None = ...,
+        neighbor: str | list[str] | list[OspfNeighborItem] | None = ...,
+        passive_interface: str | list[str] | list[OspfPassiveinterfaceItem] | None = ...,
+        summary_address: str | list[str] | list[OspfSummaryaddressItem] | None = ...,
+        distribute_list: str | list[str] | list[OspfDistributelistItem] | None = ...,
+        redistribute: str | list[str] | list[OspfRedistributeItem] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -372,14 +372,14 @@ class Ospf:
         restart_mode: Literal["none", "lls", "graceful-restart"] | None = ...,
         restart_period: int | None = ...,
         restart_on_topology_change: Literal["enable", "disable"] | None = ...,
-        area: str | list[str] | list[dict[str, Any]] | list[OspfAreaItem] | None = ...,
-        ospf_interface: str | list[str] | list[dict[str, Any]] | list[OspfOspfinterfaceItem] | None = ...,
-        network: str | list[str] | list[dict[str, Any]] | list[OspfNetworkItem] | None = ...,
-        neighbor: str | list[str] | list[dict[str, Any]] | list[OspfNeighborItem] | None = ...,
-        passive_interface: str | list[str] | list[dict[str, Any]] | list[OspfPassiveinterfaceItem] | None = ...,
-        summary_address: str | list[str] | list[dict[str, Any]] | list[OspfSummaryaddressItem] | None = ...,
-        distribute_list: str | list[str] | list[dict[str, Any]] | list[OspfDistributelistItem] | None = ...,
-        redistribute: str | list[str] | list[dict[str, Any]] | list[OspfRedistributeItem] | None = ...,
+        area: str | list[str] | list[OspfAreaItem] | None = ...,
+        ospf_interface: str | list[str] | list[OspfOspfinterfaceItem] | None = ...,
+        network: str | list[str] | list[OspfNetworkItem] | None = ...,
+        neighbor: str | list[str] | list[OspfNeighborItem] | None = ...,
+        passive_interface: str | list[str] | list[OspfPassiveinterfaceItem] | None = ...,
+        summary_address: str | list[str] | list[OspfSummaryaddressItem] | None = ...,
+        distribute_list: str | list[str] | list[OspfDistributelistItem] | None = ...,
+        redistribute: str | list[str] | list[OspfRedistributeItem] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,

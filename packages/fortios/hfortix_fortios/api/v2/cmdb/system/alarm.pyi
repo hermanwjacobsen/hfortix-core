@@ -25,8 +25,8 @@ from hfortix_fortios.models import (
 # TypedDict Payloads
 # ================================================================
 
-class AlarmGroupsItem:
-    """Nested item for groups field - supports attribute access."""
+class AlarmGroupsItem(TypedDict, total=False):
+    """Nested item for groups field."""
     id: int
     period: int
     admin_auth_failure_threshold: int
@@ -47,7 +47,7 @@ class AlarmPayload(TypedDict, total=False):
     """Payload type for Alarm operations."""
     status: Literal["enable", "disable"]
     audible: Literal["enable", "disable"]
-    groups: str | list[str] | list[dict[str, Any]] | list[AlarmGroupsItem]
+    groups: str | list[str] | list[AlarmGroupsItem]
 
 
 # ================================================================
@@ -131,7 +131,7 @@ class Alarm:
         payload_dict: AlarmPayload | None = ...,
         status: Literal["enable", "disable"] | None = ...,
         audible: Literal["enable", "disable"] | None = ...,
-        groups: str | list[str] | list[dict[str, Any]] | list[AlarmGroupsItem] | None = ...,
+        groups: str | list[str] | list[AlarmGroupsItem] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -153,7 +153,7 @@ class Alarm:
         payload_dict: AlarmPayload | None = ...,
         status: Literal["enable", "disable"] | None = ...,
         audible: Literal["enable", "disable"] | None = ...,
-        groups: str | list[str] | list[dict[str, Any]] | list[AlarmGroupsItem] | None = ...,
+        groups: str | list[str] | list[AlarmGroupsItem] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,

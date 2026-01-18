@@ -26,8 +26,8 @@ from hfortix_fortios.models import (
 # TypedDict Payloads
 # ================================================================
 
-class DictionaryEntriesItem:
-    """Nested item for entries field - supports attribute access."""
+class DictionaryEntriesItem(TypedDict, total=False):
+    """Nested item for entries field."""
     id: int
     type: str
     pattern: str
@@ -44,7 +44,7 @@ class DictionaryPayload(TypedDict, total=False):
     match_type: Literal["match-all", "match-any"]
     match_around: Literal["enable", "disable"]
     comment: str
-    entries: str | list[str] | list[dict[str, Any]] | list[DictionaryEntriesItem]
+    entries: str | list[str] | list[DictionaryEntriesItem]
 
 
 # ================================================================
@@ -157,7 +157,7 @@ class Dictionary:
         match_type: Literal["match-all", "match-any"] | None = ...,
         match_around: Literal["enable", "disable"] | None = ...,
         comment: str | None = ...,
-        entries: str | list[str] | list[dict[str, Any]] | list[DictionaryEntriesItem] | None = ...,
+        entries: str | list[str] | list[DictionaryEntriesItem] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -175,7 +175,7 @@ class Dictionary:
         match_type: Literal["match-all", "match-any"] | None = ...,
         match_around: Literal["enable", "disable"] | None = ...,
         comment: str | None = ...,
-        entries: str | list[str] | list[dict[str, Any]] | list[DictionaryEntriesItem] | None = ...,
+        entries: str | list[str] | list[DictionaryEntriesItem] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -211,7 +211,7 @@ class Dictionary:
         match_type: Literal["match-all", "match-any"] | None = ...,
         match_around: Literal["enable", "disable"] | None = ...,
         comment: str | None = ...,
-        entries: str | list[str] | list[dict[str, Any]] | list[DictionaryEntriesItem] | None = ...,
+        entries: str | list[str] | list[DictionaryEntriesItem] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,

@@ -26,8 +26,8 @@ from hfortix_fortios.models import (
 # TypedDict Payloads
 # ================================================================
 
-class HsProfileOsuproviderItem:
-    """Nested item for osu-provider field - supports attribute access."""
+class HsProfileOsuproviderItem(TypedDict, total=False):
+    """Nested item for osu-provider field."""
     name: str
 
 
@@ -64,7 +64,7 @@ class HsProfilePayload(TypedDict, total=False):
     advice_of_charge: str
     osu_provider_nai: str
     terms_and_conditions: str
-    osu_provider: str | list[str] | list[dict[str, Any]] | list[HsProfileOsuproviderItem]
+    osu_provider: str | list[str] | list[HsProfileOsuproviderItem]
     wan_metrics: str
     network_auth: str
     x3gpp_plmn: str
@@ -288,7 +288,7 @@ class HsProfile:
         advice_of_charge: str | None = ...,
         osu_provider_nai: str | None = ...,
         terms_and_conditions: str | None = ...,
-        osu_provider: str | list[str] | list[dict[str, Any]] | list[HsProfileOsuproviderItem] | None = ...,
+        osu_provider: str | list[str] | list[HsProfileOsuproviderItem] | None = ...,
         wan_metrics: str | None = ...,
         network_auth: str | None = ...,
         x3gpp_plmn: str | None = ...,
@@ -343,7 +343,7 @@ class HsProfile:
         advice_of_charge: str | None = ...,
         osu_provider_nai: str | None = ...,
         terms_and_conditions: str | None = ...,
-        osu_provider: str | list[str] | list[dict[str, Any]] | list[HsProfileOsuproviderItem] | None = ...,
+        osu_provider: str | list[str] | list[HsProfileOsuproviderItem] | None = ...,
         wan_metrics: str | None = ...,
         network_auth: str | None = ...,
         x3gpp_plmn: str | None = ...,
@@ -416,7 +416,7 @@ class HsProfile:
         advice_of_charge: str | None = ...,
         osu_provider_nai: str | None = ...,
         terms_and_conditions: str | None = ...,
-        osu_provider: str | list[str] | list[dict[str, Any]] | list[HsProfileOsuproviderItem] | None = ...,
+        osu_provider: str | list[str] | list[HsProfileOsuproviderItem] | None = ...,
         wan_metrics: str | None = ...,
         network_auth: str | None = ...,
         x3gpp_plmn: str | None = ...,

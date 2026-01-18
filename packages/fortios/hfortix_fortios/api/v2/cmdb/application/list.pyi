@@ -26,8 +26,8 @@ from hfortix_fortios.models import (
 # TypedDict Payloads
 # ================================================================
 
-class ListEntriesItem:
-    """Nested item for entries field - supports attribute access."""
+class ListEntriesItem(TypedDict, total=False):
+    """Nested item for entries field."""
     id: int
     risk: str | list[str]
     category: str | list[str]
@@ -55,8 +55,8 @@ class ListEntriesItem:
     quarantine_log: Literal["disable", "enable"]
 
 
-class ListDefaultnetworkservicesItem:
-    """Nested item for default-network-services field - supports attribute access."""
+class ListDefaultnetworkservicesItem(TypedDict, total=False):
+    """Nested item for default-network-services field."""
     id: int
     port: int
     services: Literal["http", "ssh", "telnet", "ftp", "dns", "smtp", "pop3", "imap", "snmp", "nntp", "https"]
@@ -79,9 +79,9 @@ class ListPayload(TypedDict, total=False):
     p2p_block_list: str | list[str]
     deep_app_inspection: Literal["disable", "enable"]
     options: str | list[str]
-    entries: str | list[str] | list[dict[str, Any]] | list[ListEntriesItem]
+    entries: str | list[str] | list[ListEntriesItem]
     control_default_network_services: Literal["disable", "enable"]
-    default_network_services: str | list[str] | list[dict[str, Any]] | list[ListDefaultnetworkservicesItem]
+    default_network_services: str | list[str] | list[ListDefaultnetworkservicesItem]
 
 
 # ================================================================
@@ -225,9 +225,9 @@ class List:
         p2p_block_list: str | list[str] | None = ...,
         deep_app_inspection: Literal["disable", "enable"] | None = ...,
         options: str | list[str] | None = ...,
-        entries: str | list[str] | list[dict[str, Any]] | list[ListEntriesItem] | None = ...,
+        entries: str | list[str] | list[ListEntriesItem] | None = ...,
         control_default_network_services: Literal["disable", "enable"] | None = ...,
-        default_network_services: str | list[str] | list[dict[str, Any]] | list[ListDefaultnetworkservicesItem] | None = ...,
+        default_network_services: str | list[str] | list[ListDefaultnetworkservicesItem] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -254,9 +254,9 @@ class List:
         p2p_block_list: str | list[str] | None = ...,
         deep_app_inspection: Literal["disable", "enable"] | None = ...,
         options: str | list[str] | None = ...,
-        entries: str | list[str] | list[dict[str, Any]] | list[ListEntriesItem] | None = ...,
+        entries: str | list[str] | list[ListEntriesItem] | None = ...,
         control_default_network_services: Literal["disable", "enable"] | None = ...,
-        default_network_services: str | list[str] | list[dict[str, Any]] | list[ListDefaultnetworkservicesItem] | None = ...,
+        default_network_services: str | list[str] | list[ListDefaultnetworkservicesItem] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -301,9 +301,9 @@ class List:
         p2p_block_list: Literal["skype", "edonkey", "bittorrent"] | list[str] | None = ...,
         deep_app_inspection: Literal["disable", "enable"] | None = ...,
         options: Literal["allow-dns", "allow-icmp", "allow-http", "allow-ssl"] | list[str] | None = ...,
-        entries: str | list[str] | list[dict[str, Any]] | list[ListEntriesItem] | None = ...,
+        entries: str | list[str] | list[ListEntriesItem] | None = ...,
         control_default_network_services: Literal["disable", "enable"] | None = ...,
-        default_network_services: str | list[str] | list[dict[str, Any]] | list[ListDefaultnetworkservicesItem] | None = ...,
+        default_network_services: str | list[str] | list[ListDefaultnetworkservicesItem] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,

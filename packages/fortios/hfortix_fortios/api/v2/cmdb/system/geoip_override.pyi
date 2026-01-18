@@ -26,15 +26,15 @@ from hfortix_fortios.models import (
 # TypedDict Payloads
 # ================================================================
 
-class GeoipOverrideIprangeItem:
-    """Nested item for ip-range field - supports attribute access."""
+class GeoipOverrideIprangeItem(TypedDict, total=False):
+    """Nested item for ip-range field."""
     id: int
     start_ip: str
     end_ip: str
 
 
-class GeoipOverrideIp6rangeItem:
-    """Nested item for ip6-range field - supports attribute access."""
+class GeoipOverrideIp6rangeItem(TypedDict, total=False):
+    """Nested item for ip6-range field."""
     id: int
     start_ip: str
     end_ip: str
@@ -45,8 +45,8 @@ class GeoipOverridePayload(TypedDict, total=False):
     name: str
     description: str
     country_id: str
-    ip_range: str | list[str] | list[dict[str, Any]] | list[GeoipOverrideIprangeItem]
-    ip6_range: str | list[str] | list[dict[str, Any]] | list[GeoipOverrideIp6rangeItem]
+    ip_range: str | list[str] | list[GeoipOverrideIprangeItem]
+    ip6_range: str | list[str] | list[GeoipOverrideIp6rangeItem]
 
 
 # ================================================================
@@ -152,8 +152,8 @@ class GeoipOverride:
         name: str | None = ...,
         description: str | None = ...,
         country_id: str | None = ...,
-        ip_range: str | list[str] | list[dict[str, Any]] | list[GeoipOverrideIprangeItem] | None = ...,
-        ip6_range: str | list[str] | list[dict[str, Any]] | list[GeoipOverrideIp6rangeItem] | None = ...,
+        ip_range: str | list[str] | list[GeoipOverrideIprangeItem] | None = ...,
+        ip6_range: str | list[str] | list[GeoipOverrideIp6rangeItem] | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> GeoipOverrideObject: ...
@@ -168,8 +168,8 @@ class GeoipOverride:
         name: str | None = ...,
         description: str | None = ...,
         country_id: str | None = ...,
-        ip_range: str | list[str] | list[dict[str, Any]] | list[GeoipOverrideIprangeItem] | None = ...,
-        ip6_range: str | list[str] | list[dict[str, Any]] | list[GeoipOverrideIp6rangeItem] | None = ...,
+        ip_range: str | list[str] | list[GeoipOverrideIprangeItem] | None = ...,
+        ip6_range: str | list[str] | list[GeoipOverrideIp6rangeItem] | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> GeoipOverrideObject: ...
@@ -200,8 +200,8 @@ class GeoipOverride:
         name: str | None = ...,
         description: str | None = ...,
         country_id: str | None = ...,
-        ip_range: str | list[str] | list[dict[str, Any]] | list[GeoipOverrideIprangeItem] | None = ...,
-        ip6_range: str | list[str] | list[dict[str, Any]] | list[GeoipOverrideIp6rangeItem] | None = ...,
+        ip_range: str | list[str] | list[GeoipOverrideIprangeItem] | None = ...,
+        ip6_range: str | list[str] | list[GeoipOverrideIp6rangeItem] | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> FortiObject: ...

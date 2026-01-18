@@ -25,8 +25,8 @@ from hfortix_fortios.models import (
 # TypedDict Payloads
 # ================================================================
 
-class SamlServiceprovidersItem:
-    """Nested item for service-providers field - supports attribute access."""
+class SamlServiceprovidersItem(TypedDict, total=False):
+    """Nested item for service-providers field."""
     name: str
     prefix: str
     sp_binding_protocol: Literal["post", "redirect"]
@@ -61,7 +61,7 @@ class SamlPayload(TypedDict, total=False):
     require_signed_resp_and_asrt: Literal["enable", "disable"]
     tolerance: int
     life: int
-    service_providers: str | list[str] | list[dict[str, Any]] | list[SamlServiceprovidersItem]
+    service_providers: str | list[str] | list[SamlServiceprovidersItem]
 
 
 # ================================================================
@@ -191,7 +191,7 @@ class Saml:
         require_signed_resp_and_asrt: Literal["enable", "disable"] | None = ...,
         tolerance: int | None = ...,
         life: int | None = ...,
-        service_providers: str | list[str] | list[dict[str, Any]] | list[SamlServiceprovidersItem] | None = ...,
+        service_providers: str | list[str] | list[SamlServiceprovidersItem] | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> SamlObject: ...
@@ -227,7 +227,7 @@ class Saml:
         require_signed_resp_and_asrt: Literal["enable", "disable"] | None = ...,
         tolerance: int | None = ...,
         life: int | None = ...,
-        service_providers: str | list[str] | list[dict[str, Any]] | list[SamlServiceprovidersItem] | None = ...,
+        service_providers: str | list[str] | list[SamlServiceprovidersItem] | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> FortiObject: ...

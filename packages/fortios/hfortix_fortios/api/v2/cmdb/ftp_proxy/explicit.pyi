@@ -25,8 +25,8 @@ from hfortix_fortios.models import (
 # TypedDict Payloads
 # ================================================================
 
-class ExplicitSslcertItem:
-    """Nested item for ssl-cert field - supports attribute access."""
+class ExplicitSslcertItem(TypedDict, total=False):
+    """Nested item for ssl-cert field."""
     name: str
 
 
@@ -39,7 +39,7 @@ class ExplicitPayload(TypedDict, total=False):
     sec_default_action: Literal["accept", "deny"]
     server_data_mode: Literal["client", "passive"]
     ssl: Literal["enable", "disable"]
-    ssl_cert: str | list[str] | list[dict[str, Any]] | list[ExplicitSslcertItem]
+    ssl_cert: str | list[str] | list[ExplicitSslcertItem]
     ssl_dh_bits: Literal["768", "1024", "1536", "2048"]
     ssl_algorithm: Literal["high", "medium", "low"]
 
@@ -144,7 +144,7 @@ class Explicit:
         sec_default_action: Literal["accept", "deny"] | None = ...,
         server_data_mode: Literal["client", "passive"] | None = ...,
         ssl: Literal["enable", "disable"] | None = ...,
-        ssl_cert: str | list[str] | list[dict[str, Any]] | list[ExplicitSslcertItem] | None = ...,
+        ssl_cert: str | list[str] | list[ExplicitSslcertItem] | None = ...,
         ssl_dh_bits: Literal["768", "1024", "1536", "2048"] | None = ...,
         ssl_algorithm: Literal["high", "medium", "low"] | None = ...,
         vdom: str | bool | None = ...,
@@ -173,7 +173,7 @@ class Explicit:
         sec_default_action: Literal["accept", "deny"] | None = ...,
         server_data_mode: Literal["client", "passive"] | None = ...,
         ssl: Literal["enable", "disable"] | None = ...,
-        ssl_cert: str | list[str] | list[dict[str, Any]] | list[ExplicitSslcertItem] | None = ...,
+        ssl_cert: str | list[str] | list[ExplicitSslcertItem] | None = ...,
         ssl_dh_bits: Literal["768", "1024", "1536", "2048"] | None = ...,
         ssl_algorithm: Literal["high", "medium", "low"] | None = ...,
         vdom: str | bool | None = ...,

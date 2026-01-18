@@ -26,8 +26,8 @@ from hfortix_fortios.models import (
 # TypedDict Payloads
 # ================================================================
 
-class KeywordWordItem:
-    """Nested item for word field - supports attribute access."""
+class KeywordWordItem(TypedDict, total=False):
+    """Nested item for word field."""
     name: str
     comment: str
     pattern_type: Literal["wildcard", "regex"]
@@ -40,7 +40,7 @@ class KeywordPayload(TypedDict, total=False):
     name: str
     comment: str
     match: Literal["or", "and"]
-    word: str | list[str] | list[dict[str, Any]] | list[KeywordWordItem]
+    word: str | list[str] | list[KeywordWordItem]
 
 
 # ================================================================
@@ -150,7 +150,7 @@ class Keyword:
         name: str | None = ...,
         comment: str | None = ...,
         match: Literal["or", "and"] | None = ...,
-        word: str | list[str] | list[dict[str, Any]] | list[KeywordWordItem] | None = ...,
+        word: str | list[str] | list[KeywordWordItem] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -167,7 +167,7 @@ class Keyword:
         name: str | None = ...,
         comment: str | None = ...,
         match: Literal["or", "and"] | None = ...,
-        word: str | list[str] | list[dict[str, Any]] | list[KeywordWordItem] | None = ...,
+        word: str | list[str] | list[KeywordWordItem] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -202,7 +202,7 @@ class Keyword:
         name: str | None = ...,
         comment: str | None = ...,
         match: Literal["or", "and"] | None = ...,
-        word: str | list[str] | list[dict[str, Any]] | list[KeywordWordItem] | None = ...,
+        word: str | list[str] | list[KeywordWordItem] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,

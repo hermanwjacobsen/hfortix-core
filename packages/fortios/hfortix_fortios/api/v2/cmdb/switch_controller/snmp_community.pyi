@@ -26,8 +26,8 @@ from hfortix_fortios.models import (
 # TypedDict Payloads
 # ================================================================
 
-class SnmpCommunityHostsItem:
-    """Nested item for hosts field - supports attribute access."""
+class SnmpCommunityHostsItem(TypedDict, total=False):
+    """Nested item for hosts field."""
     id: int
     ip: str
 
@@ -37,7 +37,7 @@ class SnmpCommunityPayload(TypedDict, total=False):
     id: int
     name: str
     status: Literal["disable", "enable"]
-    hosts: str | list[str] | list[dict[str, Any]] | list[SnmpCommunityHostsItem]
+    hosts: str | list[str] | list[SnmpCommunityHostsItem]
     query_v1_status: Literal["disable", "enable"]
     query_v1_port: int
     query_v2c_status: Literal["disable", "enable"]
@@ -177,7 +177,7 @@ class SnmpCommunity:
         id: int | None = ...,
         name: str | None = ...,
         status: Literal["disable", "enable"] | None = ...,
-        hosts: str | list[str] | list[dict[str, Any]] | list[SnmpCommunityHostsItem] | None = ...,
+        hosts: str | list[str] | list[SnmpCommunityHostsItem] | None = ...,
         query_v1_status: Literal["disable", "enable"] | None = ...,
         query_v1_port: int | None = ...,
         query_v2c_status: Literal["disable", "enable"] | None = ...,
@@ -204,7 +204,7 @@ class SnmpCommunity:
         id: int | None = ...,
         name: str | None = ...,
         status: Literal["disable", "enable"] | None = ...,
-        hosts: str | list[str] | list[dict[str, Any]] | list[SnmpCommunityHostsItem] | None = ...,
+        hosts: str | list[str] | list[SnmpCommunityHostsItem] | None = ...,
         query_v1_status: Literal["disable", "enable"] | None = ...,
         query_v1_port: int | None = ...,
         query_v2c_status: Literal["disable", "enable"] | None = ...,
@@ -249,7 +249,7 @@ class SnmpCommunity:
         id: int | None = ...,
         name: str | None = ...,
         status: Literal["disable", "enable"] | None = ...,
-        hosts: str | list[str] | list[dict[str, Any]] | list[SnmpCommunityHostsItem] | None = ...,
+        hosts: str | list[str] | list[SnmpCommunityHostsItem] | None = ...,
         query_v1_status: Literal["disable", "enable"] | None = ...,
         query_v1_port: int | None = ...,
         query_v2c_status: Literal["disable", "enable"] | None = ...,

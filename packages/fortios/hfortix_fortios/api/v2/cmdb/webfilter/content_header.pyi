@@ -26,8 +26,8 @@ from hfortix_fortios.models import (
 # TypedDict Payloads
 # ================================================================
 
-class ContentHeaderEntriesItem:
-    """Nested item for entries field - supports attribute access."""
+class ContentHeaderEntriesItem(TypedDict, total=False):
+    """Nested item for entries field."""
     pattern: str
     action: Literal["block", "allow", "exempt"]
     category: str | list[str]
@@ -38,7 +38,7 @@ class ContentHeaderPayload(TypedDict, total=False):
     id: int
     name: str
     comment: str
-    entries: str | list[str] | list[dict[str, Any]] | list[ContentHeaderEntriesItem]
+    entries: str | list[str] | list[ContentHeaderEntriesItem]
 
 
 # ================================================================
@@ -145,7 +145,7 @@ class ContentHeader:
         id: int | None = ...,
         name: str | None = ...,
         comment: str | None = ...,
-        entries: str | list[str] | list[dict[str, Any]] | list[ContentHeaderEntriesItem] | None = ...,
+        entries: str | list[str] | list[ContentHeaderEntriesItem] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -161,7 +161,7 @@ class ContentHeader:
         id: int | None = ...,
         name: str | None = ...,
         comment: str | None = ...,
-        entries: str | list[str] | list[dict[str, Any]] | list[ContentHeaderEntriesItem] | None = ...,
+        entries: str | list[str] | list[ContentHeaderEntriesItem] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -195,7 +195,7 @@ class ContentHeader:
         id: int | None = ...,
         name: str | None = ...,
         comment: str | None = ...,
-        entries: str | list[str] | list[dict[str, Any]] | list[ContentHeaderEntriesItem] | None = ...,
+        entries: str | list[str] | list[ContentHeaderEntriesItem] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,

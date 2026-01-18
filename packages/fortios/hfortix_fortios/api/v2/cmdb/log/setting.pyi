@@ -25,8 +25,8 @@ from hfortix_fortios.models import (
 # TypedDict Payloads
 # ================================================================
 
-class SettingCustomlogfieldsItem:
-    """Nested item for custom-log-fields field - supports attribute access."""
+class SettingCustomlogfieldsItem(TypedDict, total=False):
+    """Nested item for custom-log-fields field."""
     field_id: str
 
 
@@ -59,7 +59,7 @@ class SettingPayload(TypedDict, total=False):
     extended_utm_log: Literal["enable", "disable"]
     zone_name: Literal["enable", "disable"]
     web_svc_perf: Literal["enable", "disable"]
-    custom_log_fields: str | list[str] | list[dict[str, Any]] | list[SettingCustomlogfieldsItem]
+    custom_log_fields: str | list[str] | list[SettingCustomlogfieldsItem]
     anonymization_hash: str
 
 
@@ -221,7 +221,7 @@ class Setting:
         extended_utm_log: Literal["enable", "disable"] | None = ...,
         zone_name: Literal["enable", "disable"] | None = ...,
         web_svc_perf: Literal["enable", "disable"] | None = ...,
-        custom_log_fields: str | list[str] | list[dict[str, Any]] | list[SettingCustomlogfieldsItem] | None = ...,
+        custom_log_fields: str | list[str] | list[SettingCustomlogfieldsItem] | None = ...,
         anonymization_hash: str | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
@@ -269,7 +269,7 @@ class Setting:
         extended_utm_log: Literal["enable", "disable"] | None = ...,
         zone_name: Literal["enable", "disable"] | None = ...,
         web_svc_perf: Literal["enable", "disable"] | None = ...,
-        custom_log_fields: str | list[str] | list[dict[str, Any]] | list[SettingCustomlogfieldsItem] | None = ...,
+        custom_log_fields: str | list[str] | list[SettingCustomlogfieldsItem] | None = ...,
         anonymization_hash: str | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,

@@ -26,8 +26,8 @@ from hfortix_fortios.models import (
 # TypedDict Payloads
 # ================================================================
 
-class SecurityExemptListRuleItem:
-    """Nested item for rule field - supports attribute access."""
+class SecurityExemptListRuleItem(TypedDict, total=False):
+    """Nested item for rule field."""
     id: int
     srcaddr: str | list[str]
     dstaddr: str | list[str]
@@ -38,7 +38,7 @@ class SecurityExemptListPayload(TypedDict, total=False):
     """Payload type for SecurityExemptList operations."""
     name: str
     description: str
-    rule: str | list[str] | list[dict[str, Any]] | list[SecurityExemptListRuleItem]
+    rule: str | list[str] | list[SecurityExemptListRuleItem]
 
 
 # ================================================================
@@ -142,7 +142,7 @@ class SecurityExemptList:
         payload_dict: SecurityExemptListPayload | None = ...,
         name: str | None = ...,
         description: str | None = ...,
-        rule: str | list[str] | list[dict[str, Any]] | list[SecurityExemptListRuleItem] | None = ...,
+        rule: str | list[str] | list[SecurityExemptListRuleItem] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -157,7 +157,7 @@ class SecurityExemptList:
         payload_dict: SecurityExemptListPayload | None = ...,
         name: str | None = ...,
         description: str | None = ...,
-        rule: str | list[str] | list[dict[str, Any]] | list[SecurityExemptListRuleItem] | None = ...,
+        rule: str | list[str] | list[SecurityExemptListRuleItem] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -190,7 +190,7 @@ class SecurityExemptList:
         payload_dict: SecurityExemptListPayload | None = ...,
         name: str | None = ...,
         description: str | None = ...,
-        rule: str | list[str] | list[dict[str, Any]] | list[SecurityExemptListRuleItem] | None = ...,
+        rule: str | list[str] | list[SecurityExemptListRuleItem] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,

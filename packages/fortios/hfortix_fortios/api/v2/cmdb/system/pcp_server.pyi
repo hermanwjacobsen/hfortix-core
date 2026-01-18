@@ -25,8 +25,8 @@ from hfortix_fortios.models import (
 # TypedDict Payloads
 # ================================================================
 
-class PcpServerPoolsItem:
-    """Nested item for pools field - supports attribute access."""
+class PcpServerPoolsItem(TypedDict, total=False):
+    """Nested item for pools field."""
     name: str
     description: str
     id: int
@@ -51,7 +51,7 @@ class PcpServerPoolsItem:
 class PcpServerPayload(TypedDict, total=False):
     """Payload type for PcpServer operations."""
     status: Literal["enable", "disable"]
-    pools: str | list[str] | list[dict[str, Any]] | list[PcpServerPoolsItem]
+    pools: str | list[str] | list[PcpServerPoolsItem]
 
 
 # ================================================================
@@ -132,7 +132,7 @@ class PcpServer:
         self,
         payload_dict: PcpServerPayload | None = ...,
         status: Literal["enable", "disable"] | None = ...,
-        pools: str | list[str] | list[dict[str, Any]] | list[PcpServerPoolsItem] | None = ...,
+        pools: str | list[str] | list[PcpServerPoolsItem] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -153,7 +153,7 @@ class PcpServer:
         self,
         payload_dict: PcpServerPayload | None = ...,
         status: Literal["enable", "disable"] | None = ...,
-        pools: str | list[str] | list[dict[str, Any]] | list[PcpServerPoolsItem] | None = ...,
+        pools: str | list[str] | list[PcpServerPoolsItem] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,

@@ -25,8 +25,8 @@ from hfortix_fortios.models import (
 # TypedDict Payloads
 # ================================================================
 
-class Ospf6AreaItem:
-    """Nested item for area field - supports attribute access."""
+class Ospf6AreaItem(TypedDict, total=False):
+    """Nested item for area field."""
     id: str
     default_cost: int
     nssa_translator_role: Literal["candidate", "never", "always"]
@@ -45,8 +45,8 @@ class Ospf6AreaItem:
     virtual_link: str | list[str]
 
 
-class Ospf6Ospf6interfaceItem:
-    """Nested item for ospf6-interface field - supports attribute access."""
+class Ospf6Ospf6interfaceItem(TypedDict, total=False):
+    """Nested item for ospf6-interface field."""
     name: str
     area_id: str
     interface: str
@@ -69,8 +69,8 @@ class Ospf6Ospf6interfaceItem:
     neighbor: str | list[str]
 
 
-class Ospf6RedistributeItem:
-    """Nested item for redistribute field - supports attribute access."""
+class Ospf6RedistributeItem(TypedDict, total=False):
+    """Nested item for redistribute field."""
     name: str
     status: Literal["enable", "disable"]
     metric: int
@@ -78,13 +78,13 @@ class Ospf6RedistributeItem:
     metric_type: Literal["1", "2"]
 
 
-class Ospf6PassiveinterfaceItem:
-    """Nested item for passive-interface field - supports attribute access."""
+class Ospf6PassiveinterfaceItem(TypedDict, total=False):
+    """Nested item for passive-interface field."""
     name: str
 
 
-class Ospf6SummaryaddressItem:
-    """Nested item for summary-address field - supports attribute access."""
+class Ospf6SummaryaddressItem(TypedDict, total=False):
+    """Nested item for summary-address field."""
     id: int
     prefix6: str
     advertise: Literal["disable", "enable"]
@@ -107,11 +107,11 @@ class Ospf6Payload(TypedDict, total=False):
     restart_mode: Literal["none", "graceful-restart"]
     restart_period: int
     restart_on_topology_change: Literal["enable", "disable"]
-    area: str | list[str] | list[dict[str, Any]] | list[Ospf6AreaItem]
-    ospf6_interface: str | list[str] | list[dict[str, Any]] | list[Ospf6Ospf6interfaceItem]
-    redistribute: str | list[str] | list[dict[str, Any]] | list[Ospf6RedistributeItem]
-    passive_interface: str | list[str] | list[dict[str, Any]] | list[Ospf6PassiveinterfaceItem]
-    summary_address: str | list[str] | list[dict[str, Any]] | list[Ospf6SummaryaddressItem]
+    area: str | list[str] | list[Ospf6AreaItem]
+    ospf6_interface: str | list[str] | list[Ospf6Ospf6interfaceItem]
+    redistribute: str | list[str] | list[Ospf6RedistributeItem]
+    passive_interface: str | list[str] | list[Ospf6PassiveinterfaceItem]
+    summary_address: str | list[str] | list[Ospf6SummaryaddressItem]
 
 
 # ================================================================
@@ -239,11 +239,11 @@ class Ospf6:
         restart_mode: Literal["none", "graceful-restart"] | None = ...,
         restart_period: int | None = ...,
         restart_on_topology_change: Literal["enable", "disable"] | None = ...,
-        area: str | list[str] | list[dict[str, Any]] | list[Ospf6AreaItem] | None = ...,
-        ospf6_interface: str | list[str] | list[dict[str, Any]] | list[Ospf6Ospf6interfaceItem] | None = ...,
-        redistribute: str | list[str] | list[dict[str, Any]] | list[Ospf6RedistributeItem] | None = ...,
-        passive_interface: str | list[str] | list[dict[str, Any]] | list[Ospf6PassiveinterfaceItem] | None = ...,
-        summary_address: str | list[str] | list[dict[str, Any]] | list[Ospf6SummaryaddressItem] | None = ...,
+        area: str | list[str] | list[Ospf6AreaItem] | None = ...,
+        ospf6_interface: str | list[str] | list[Ospf6Ospf6interfaceItem] | None = ...,
+        redistribute: str | list[str] | list[Ospf6RedistributeItem] | None = ...,
+        passive_interface: str | list[str] | list[Ospf6PassiveinterfaceItem] | None = ...,
+        summary_address: str | list[str] | list[Ospf6SummaryaddressItem] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -277,11 +277,11 @@ class Ospf6:
         restart_mode: Literal["none", "graceful-restart"] | None = ...,
         restart_period: int | None = ...,
         restart_on_topology_change: Literal["enable", "disable"] | None = ...,
-        area: str | list[str] | list[dict[str, Any]] | list[Ospf6AreaItem] | None = ...,
-        ospf6_interface: str | list[str] | list[dict[str, Any]] | list[Ospf6Ospf6interfaceItem] | None = ...,
-        redistribute: str | list[str] | list[dict[str, Any]] | list[Ospf6RedistributeItem] | None = ...,
-        passive_interface: str | list[str] | list[dict[str, Any]] | list[Ospf6PassiveinterfaceItem] | None = ...,
-        summary_address: str | list[str] | list[dict[str, Any]] | list[Ospf6SummaryaddressItem] | None = ...,
+        area: str | list[str] | list[Ospf6AreaItem] | None = ...,
+        ospf6_interface: str | list[str] | list[Ospf6Ospf6interfaceItem] | None = ...,
+        redistribute: str | list[str] | list[Ospf6RedistributeItem] | None = ...,
+        passive_interface: str | list[str] | list[Ospf6PassiveinterfaceItem] | None = ...,
+        summary_address: str | list[str] | list[Ospf6SummaryaddressItem] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,

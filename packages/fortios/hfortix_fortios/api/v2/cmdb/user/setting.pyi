@@ -25,15 +25,15 @@ from hfortix_fortios.models import (
 # TypedDict Payloads
 # ================================================================
 
-class SettingAuthportsItem:
-    """Nested item for auth-ports field - supports attribute access."""
+class SettingAuthportsItem(TypedDict, total=False):
+    """Nested item for auth-ports field."""
     id: int
     type: Literal["http", "https", "ftp", "telnet"]
     port: int
 
 
-class SettingCorsallowedoriginsItem:
-    """Nested item for cors-allowed-origins field - supports attribute access."""
+class SettingCorsallowedoriginsItem(TypedDict, total=False):
+    """Nested item for cors-allowed-origins field."""
     name: str
 
 
@@ -56,13 +56,13 @@ class SettingPayload(TypedDict, total=False):
     auth_lockout_threshold: int
     auth_lockout_duration: int
     per_policy_disclaimer: Literal["enable", "disable"]
-    auth_ports: str | list[str] | list[dict[str, Any]] | list[SettingAuthportsItem]
+    auth_ports: str | list[str] | list[SettingAuthportsItem]
     auth_ssl_min_proto_version: Literal["default", "SSLv3", "TLSv1", "TLSv1-1", "TLSv1-2", "TLSv1-3"]
     auth_ssl_max_proto_version: Literal["sslv3", "tlsv1", "tlsv1-1", "tlsv1-2", "tlsv1-3"]
     auth_ssl_sigalgs: Literal["no-rsa-pss", "all"]
     default_user_password_policy: str
     cors: Literal["disable", "enable"]
-    cors_allowed_origins: str | list[str] | list[dict[str, Any]] | list[SettingCorsallowedoriginsItem]
+    cors_allowed_origins: str | list[str] | list[SettingCorsallowedoriginsItem]
 
 
 # ================================================================
@@ -203,13 +203,13 @@ class Setting:
         auth_lockout_threshold: int | None = ...,
         auth_lockout_duration: int | None = ...,
         per_policy_disclaimer: Literal["enable", "disable"] | None = ...,
-        auth_ports: str | list[str] | list[dict[str, Any]] | list[SettingAuthportsItem] | None = ...,
+        auth_ports: str | list[str] | list[SettingAuthportsItem] | None = ...,
         auth_ssl_min_proto_version: Literal["default", "SSLv3", "TLSv1", "TLSv1-1", "TLSv1-2", "TLSv1-3"] | None = ...,
         auth_ssl_max_proto_version: Literal["sslv3", "tlsv1", "tlsv1-1", "tlsv1-2", "tlsv1-3"] | None = ...,
         auth_ssl_sigalgs: Literal["no-rsa-pss", "all"] | None = ...,
         default_user_password_policy: str | None = ...,
         cors: Literal["disable", "enable"] | None = ...,
-        cors_allowed_origins: str | list[str] | list[dict[str, Any]] | list[SettingCorsallowedoriginsItem] | None = ...,
+        cors_allowed_origins: str | list[str] | list[SettingCorsallowedoriginsItem] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -246,13 +246,13 @@ class Setting:
         auth_lockout_threshold: int | None = ...,
         auth_lockout_duration: int | None = ...,
         per_policy_disclaimer: Literal["enable", "disable"] | None = ...,
-        auth_ports: str | list[str] | list[dict[str, Any]] | list[SettingAuthportsItem] | None = ...,
+        auth_ports: str | list[str] | list[SettingAuthportsItem] | None = ...,
         auth_ssl_min_proto_version: Literal["default", "SSLv3", "TLSv1", "TLSv1-1", "TLSv1-2", "TLSv1-3"] | None = ...,
         auth_ssl_max_proto_version: Literal["sslv3", "tlsv1", "tlsv1-1", "tlsv1-2", "tlsv1-3"] | None = ...,
         auth_ssl_sigalgs: Literal["no-rsa-pss", "all"] | None = ...,
         default_user_password_policy: str | None = ...,
         cors: Literal["disable", "enable"] | None = ...,
-        cors_allowed_origins: str | list[str] | list[dict[str, Any]] | list[SettingCorsallowedoriginsItem] | None = ...,
+        cors_allowed_origins: str | list[str] | list[SettingCorsallowedoriginsItem] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,

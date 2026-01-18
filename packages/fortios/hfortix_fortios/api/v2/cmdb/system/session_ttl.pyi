@@ -25,8 +25,8 @@ from hfortix_fortios.models import (
 # TypedDict Payloads
 # ================================================================
 
-class SessionTtlPortItem:
-    """Nested item for port field - supports attribute access."""
+class SessionTtlPortItem(TypedDict, total=False):
+    """Nested item for port field."""
     id: int
     protocol: int
     start_port: int
@@ -38,7 +38,7 @@ class SessionTtlPortItem:
 class SessionTtlPayload(TypedDict, total=False):
     """Payload type for SessionTtl operations."""
     default: str
-    port: str | list[str] | list[dict[str, Any]] | list[SessionTtlPortItem]
+    port: str | list[str] | list[SessionTtlPortItem]
 
 
 # ================================================================
@@ -119,7 +119,7 @@ class SessionTtl:
         self,
         payload_dict: SessionTtlPayload | None = ...,
         default: str | None = ...,
-        port: str | list[str] | list[dict[str, Any]] | list[SessionTtlPortItem] | None = ...,
+        port: str | list[str] | list[SessionTtlPortItem] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -140,7 +140,7 @@ class SessionTtl:
         self,
         payload_dict: SessionTtlPayload | None = ...,
         default: str | None = ...,
-        port: str | list[str] | list[dict[str, Any]] | list[SessionTtlPortItem] | None = ...,
+        port: str | list[str] | list[SessionTtlPortItem] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,

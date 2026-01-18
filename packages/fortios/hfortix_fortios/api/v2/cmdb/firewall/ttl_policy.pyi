@@ -26,13 +26,13 @@ from hfortix_fortios.models import (
 # TypedDict Payloads
 # ================================================================
 
-class TtlPolicySrcaddrItem:
-    """Nested item for srcaddr field - supports attribute access."""
+class TtlPolicySrcaddrItem(TypedDict, total=False):
+    """Nested item for srcaddr field."""
     name: str
 
 
-class TtlPolicyServiceItem:
-    """Nested item for service field - supports attribute access."""
+class TtlPolicyServiceItem(TypedDict, total=False):
+    """Nested item for service field."""
     name: str
 
 
@@ -42,8 +42,8 @@ class TtlPolicyPayload(TypedDict, total=False):
     status: Literal["enable", "disable"]
     action: Literal["accept", "deny"]
     srcintf: str
-    srcaddr: str | list[str] | list[dict[str, Any]] | list[TtlPolicySrcaddrItem]
-    service: str | list[str] | list[dict[str, Any]] | list[TtlPolicyServiceItem]
+    srcaddr: str | list[str] | list[TtlPolicySrcaddrItem]
+    service: str | list[str] | list[TtlPolicyServiceItem]
     schedule: str
     ttl: str
 
@@ -161,8 +161,8 @@ class TtlPolicy:
         status: Literal["enable", "disable"] | None = ...,
         action: Literal["accept", "deny"] | None = ...,
         srcintf: str | None = ...,
-        srcaddr: str | list[str] | list[dict[str, Any]] | list[TtlPolicySrcaddrItem] | None = ...,
-        service: str | list[str] | list[dict[str, Any]] | list[TtlPolicyServiceItem] | None = ...,
+        srcaddr: str | list[str] | list[TtlPolicySrcaddrItem] | None = ...,
+        service: str | list[str] | list[TtlPolicyServiceItem] | None = ...,
         schedule: str | None = ...,
         ttl: str | None = ...,
         vdom: str | bool | None = ...,
@@ -181,8 +181,8 @@ class TtlPolicy:
         status: Literal["enable", "disable"] | None = ...,
         action: Literal["accept", "deny"] | None = ...,
         srcintf: str | None = ...,
-        srcaddr: str | list[str] | list[dict[str, Any]] | list[TtlPolicySrcaddrItem] | None = ...,
-        service: str | list[str] | list[dict[str, Any]] | list[TtlPolicyServiceItem] | None = ...,
+        srcaddr: str | list[str] | list[TtlPolicySrcaddrItem] | None = ...,
+        service: str | list[str] | list[TtlPolicyServiceItem] | None = ...,
         schedule: str | None = ...,
         ttl: str | None = ...,
         vdom: str | bool | None = ...,
@@ -219,8 +219,8 @@ class TtlPolicy:
         status: Literal["enable", "disable"] | None = ...,
         action: Literal["accept", "deny"] | None = ...,
         srcintf: str | None = ...,
-        srcaddr: str | list[str] | list[dict[str, Any]] | list[TtlPolicySrcaddrItem] | None = ...,
-        service: str | list[str] | list[dict[str, Any]] | list[TtlPolicyServiceItem] | None = ...,
+        srcaddr: str | list[str] | list[TtlPolicySrcaddrItem] | None = ...,
+        service: str | list[str] | list[TtlPolicyServiceItem] | None = ...,
         schedule: str | None = ...,
         ttl: str | None = ...,
         vdom: str | bool | None = ...,
