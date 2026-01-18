@@ -9,9 +9,9 @@ Python client library for Fortinet products including FortiOS, FortiManager, and
 
 ## 🎯 Current Status
 
-> **⚠️ BETA STATUS - Version 0.5.103**
+> **⚠️ BETA STATUS - Version 0.5.105**
 >
-> - **Current Version**: 0.5.103 (Released - January 18, 2026)
+> - **Current Version**: 0.5.105 (Released - January 18, 2026)
 > - **Schema Version**: v1.7.0 (1,348 endpoints with enhanced metadata)
 > - **Package Size**: ~30 MB (optimized with MetadataMixin refactoring)
 > - **Implementation**: Advanced Features (100% complete) - Production ready!
@@ -51,12 +51,20 @@ Python client library for Fortinet products including FortiOS, FortiManager, and
 - Documentation: ✅ 100%
 - Release: ✅ 100%
 
-**Latest Release:** v0.5.104 - Read-Only Endpoint Fix & Schema Updates
+**Latest Release:** v0.5.105 - Plus Symbol Naming Convention Fix
 
 **Test Coverage:** **All endpoints tested and passing!** ✅
 **Status:** Ready for production use - comprehensive feature set complete!
 
 **🔥 5 Latest Changes:**
+
+**v0.5.105 - Plus Symbol Naming Convention Fix - January 18, 2026:**
+- ✅ **Generator: Plus symbol (+) naming convention fixed**: Generator now correctly converts plus symbols in API paths to `_plus_` with underscore separators on both sides. `tacacs+accounting` → `tacacs_plus_accounting` (not `tacacs_plusaccounting`)
+- ✅ **Path-to-module conversion**: `log.tacacs+accounting` → `log/tacacs_plus_accounting/` directory structure
+- ✅ **Class names**: `TacacsPlusAccounting` (PascalCase with underscore preserved)
+- ✅ **Attribute names**: `fgt.api.cmdb.log.tacacs_plus_accounting` (snake_case with underscore separator)
+- ✅ **Affected endpoints**: `log.tacacs+accounting`, `log.tacacs+accounting2`, `log.tacacs+accounting3`, `user.tacacs+`
+- ✅ **Generator components updated**: `utils/naming.py`, `schema_parser.py`, `model_generator.py`
 
 **v0.5.104 - Read-Only Endpoint Fix & Schema Updates - January 18, 2026:**
 - ✅ **Schema: Read-only flag included**: Updated all schema files to include `readonly: true` flag for read-only reference data endpoints (ips/decoder, internet services, geographic data)

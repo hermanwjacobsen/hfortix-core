@@ -30,6 +30,7 @@ if TYPE_CHECKING:
     from .security_exempt_list import SecurityExemptList
     from .setting import Setting
     from .tacacs_plus import TacacsPlus
+    from .tacacs_plus_ import TacacsPlus
 
 __all__ = [
     "Adgrp",
@@ -55,6 +56,7 @@ __all__ = [
     "Scim",
     "SecurityExemptList",
     "Setting",
+    "TacacsPlus",
     "TacacsPlus",
     "User",
 ]
@@ -93,6 +95,7 @@ class User:
     security_exempt_list: SecurityExemptList
     setting: Setting
     tacacs_plus: TacacsPlus
+    tacacs_plus_: TacacsPlus
 
     def __init__(self, client: IHTTPClient, vdom: str | None = None) -> None:
         """Initialize user category with HTTP client."""

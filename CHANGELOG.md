@@ -7,6 +7,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.5.105] - 2026-01-18
+
+### Fixed
+
+- **Generator: Plus symbol (+) naming convention**: Fixed generator to correctly convert plus symbols in API paths to `_plus_` with underscore separators on both sides. Now `tacacs+accounting` → `tacacs_plus_accounting` (not `tacacs_plusaccounting`). This affects:
+  - **Path-to-module conversion**: `log.tacacs+accounting` → `log/tacacs_plus_accounting/` directory structure
+  - **Class names**: `TacacsPlusAccounting` (PascalCase with underscore preserved)
+  - **Attribute names**: `fgt.api.cmdb.log.tacacs_plus_accounting` (snake_case with underscore separator)
+  - **All generated code**: Endpoint files, stubs (.pyi), helpers, models, and __init__.py files
+- **Affected endpoints**: `log.tacacs+accounting`, `log.tacacs+accounting2`, `log.tacacs+accounting3`, `user.tacacs+` now all use correct naming convention
+- **Generator components updated**: 
+  - `utils/naming.py`: `kebab_to_snake()` function
+  - `schema_management/schema_parser.py`: `file_name`, `class_name`, `normalize_path()` methods
+  - `generators/model_generator.py`: Endpoint path and field name conversions
+
 ## [0.5.104] - 2026-01-18
 
 ### Fixed
