@@ -7,6 +7,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.5.108] - 2026-01-18
+
+### Fixed
+
+- **Runtime: Nested object fields now return FortiObject instances**: Updated `FortiObject.__getattr__()` to automatically wrap nested dict fields in `FortiObject` instances. This completes the nested object attribute access feature started in v0.5.107:
+  - **Before**: `intf.ipv6` returned plain dict (AttributeError on `intf.ipv6.ip6_address`)
+  - **After**: `intf.ipv6` returns `FortiObject` (enables `intf.ipv6.ip6_address` at runtime)
+  - Works for all nested configuration objects: `ipv6`, `http`, `smtp`, `ftp`, etc.
+  - Both IDE autocomplete (v0.5.107 type stubs) and runtime behavior now fully support attribute access
+
 ## [0.5.107] - 2026-01-18
 
 ### Fixed

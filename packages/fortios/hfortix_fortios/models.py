@@ -252,17 +252,17 @@ class FortiObject:
 
     def __getattr__(self, name: str) -> Any:
         """
-        Dynamic attribute access with automatic member_table flattening.
+        Dynamic attribute access with automatic wrapping of nested objects.
 
         For most FortiOS fields (strings, ints, etc.), returns the value as-is.
-        For member_table fields (lists of dicts with 'name' key), automatically
-        wraps each dict in a FortiObject for clean attribute access.
+        For nested objects (dicts) and member_table fields (lists of dicts),
+        automatically wraps them in FortiObject for clean attribute access.
 
         Args:
             name: Attribute name to access
 
         Returns:
-            Field value, with member_table dicts wrapped in FortiObject
+            Field value, with dicts and lists of dicts wrapped in FortiObject
 
         Raises:
             AttributeError: If accessing private attributes (starting with '_')
@@ -272,6 +272,8 @@ class FortiObject:
             [FortiObject({'name': 'addr1'}), FortiObject({'name': 'addr2'})]
             >>> obj.srcaddr[0].name  # Access name attribute
             'addr1'
+            >>> obj.ipv6.ip6_address  # Nested object attribute access
+            'fd12:3456:789a:bcde::1/128'
             >>> obj.action  # Regular field
             'accept'
         """
@@ -288,6 +290,10 @@ class FortiObject:
             return None
 
         value = self._data.get(key)
+
+        # Auto-wrap nested objects (single dict) in FortiObject for attribute access
+        if isinstance(value, dict):
+            return FortiObject(value)
 
         # Auto-wrap member_table fields (lists of dicts) in FortiObject
         if isinstance(value, list) and value:
