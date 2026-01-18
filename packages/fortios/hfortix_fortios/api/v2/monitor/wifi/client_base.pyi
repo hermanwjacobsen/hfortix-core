@@ -87,9 +87,9 @@ class Client:
     def get(
         self,
         *,
-        type: str | None = ...,
-        with_triangulation: str | None = ...,
-        with_stats: str | None = ...,
+        type: Literal["all", "fail-login"] | None = ...,
+        with_triangulation: bool | None = ...,
+        with_stats: bool | None = ...,
         mac: str | None = ...,
         filter: str | list[str] | None = ...,
         count: int | None = ...,

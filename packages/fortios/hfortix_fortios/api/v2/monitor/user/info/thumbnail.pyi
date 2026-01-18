@@ -78,7 +78,7 @@ class Thumbnail:
     def get(
         self,
         *,
-        filters: str,
+        filters: list[str],
         filter: str | list[str] | None = ...,
         count: int | None = ...,
         start: int | None = ...,

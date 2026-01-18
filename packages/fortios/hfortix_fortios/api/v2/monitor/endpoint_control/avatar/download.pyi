@@ -90,7 +90,7 @@ class Download:
         uid: str | None = ...,
         user: str | None = ...,
         fingerprint: str | None = ...,
-        default: str | None = ...,
+        default: Literal["\u0027authuser\u0027", "\u0027unauthuser\u0027", "\u0027authuser_72\u0027", "\u0027unauthuser_72\u0027"] | None = ...,
         filter: str | list[str] | None = ...,
         count: int | None = ...,
         start: int | None = ...,

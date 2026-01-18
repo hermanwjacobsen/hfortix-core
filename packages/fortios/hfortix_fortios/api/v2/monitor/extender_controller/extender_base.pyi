@@ -81,8 +81,8 @@ class Extender:
     def get(
         self,
         *,
-        fortiextender_name: str | None = ...,
-        type: str | None = ...,
+        fortiextender_name: list[str] | None = ...,
+        type: Literal["system", "modem", "usage", "last"] | None = ...,
         filter: str | list[str] | None = ...,
         count: int | None = ...,
         start: int | None = ...,

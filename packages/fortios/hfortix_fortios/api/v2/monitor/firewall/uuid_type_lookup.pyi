@@ -78,7 +78,7 @@ class UuidTypeLookup:
     def get(
         self,
         *,
-        uuids: str | None = ...,
+        uuids: list[str] | None = ...,
         filter: str | list[str] | None = ...,
         count: int | None = ...,
         start: int | None = ...,

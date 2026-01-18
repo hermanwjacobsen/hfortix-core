@@ -78,7 +78,7 @@ class Status:
     def get(
         self,
         *,
-        modem: str | None = ...,
+        modem: Literal["all", "1", "2"] | None = ...,
         filter: str | list[str] | None = ...,
         count: int | None = ...,
         start: int | None = ...,

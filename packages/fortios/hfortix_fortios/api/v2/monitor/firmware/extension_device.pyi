@@ -83,7 +83,7 @@ class ExtensionDevice:
     def get(
         self,
         *,
-        type: str,
+        type: Literal["fortiswitch", "fortiap", "fortiextender"],
         timeout: int | None = ...,
         version: str | None = ...,
         filter: str | list[str] | None = ...,

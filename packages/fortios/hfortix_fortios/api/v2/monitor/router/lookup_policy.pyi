@@ -96,7 +96,7 @@ class LookupPolicy:
     def get(
         self,
         *,
-        ipv6: str | None = ...,
+        ipv6: bool | None = ...,
         destination: str,
         source: str | None = ...,
         destination_port: int | None = ...,

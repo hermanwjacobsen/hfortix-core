@@ -82,7 +82,7 @@ class InternetServiceReputation:
         self,
         *,
         ip: str,
-        is_ipv6: str | None = ...,
+        is_ipv6: bool | None = ...,
         filter: str | list[str] | None = ...,
         count: int | None = ...,
         start: int | None = ...,

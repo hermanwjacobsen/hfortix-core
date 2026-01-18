@@ -82,7 +82,7 @@ class CentralSnatMap:
         self,
         *,
         policyid: int | None = ...,
-        ip_version: str | None = ...,
+        ip_version: Literal["ipv4", "ipv6"] | None = ...,
         filter: str | list[str] | None = ...,
         count: int | None = ...,
         start: int | None = ...,

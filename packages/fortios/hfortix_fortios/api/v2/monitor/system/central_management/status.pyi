@@ -78,7 +78,7 @@ class Status:
     def get(
         self,
         *,
-        skip_detect: str | None = ...,
+        skip_detect: bool | None = ...,
         filter: str | list[str] | None = ...,
         count: int | None = ...,
         start: int | None = ...,

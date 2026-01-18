@@ -88,7 +88,7 @@ class InternetServiceMatch:
         self,
         *,
         ip: str,
-        is_ipv6: str | None = ...,
+        is_ipv6: bool | None = ...,
         ipv4_mask: str | None = ...,
         ipv6_prefix: int | None = ...,
         filter: str | list[str] | None = ...,

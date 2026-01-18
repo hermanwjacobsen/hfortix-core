@@ -78,7 +78,7 @@ class Stats:
     def get(
         self,
         *,
-        period: str | None = ...,
+        period: Literal["10min", "hour", "day", "month"] | None = ...,
         filter: str | list[str] | None = ...,
         count: int | None = ...,
         start: int | None = ...,

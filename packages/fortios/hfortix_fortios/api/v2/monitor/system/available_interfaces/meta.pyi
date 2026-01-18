@@ -81,8 +81,8 @@ class Meta:
     def get(
         self,
         *,
-        scope: str | None = ...,
-        include_ha: str | None = ...,
+        scope: Literal["*vdom", "global"] | None = ...,
+        include_ha: bool | None = ...,
         filter: str | list[str] | None = ...,
         count: int | None = ...,
         start: int | None = ...,

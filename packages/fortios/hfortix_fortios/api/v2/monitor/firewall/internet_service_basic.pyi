@@ -78,7 +78,7 @@ class InternetServiceBasic:
     def get(
         self,
         *,
-        ipv6_only: str | None = ...,
+        ipv6_only: bool | None = ...,
         filter: str | list[str] | None = ...,
         count: int | None = ...,
         start: int | None = ...,

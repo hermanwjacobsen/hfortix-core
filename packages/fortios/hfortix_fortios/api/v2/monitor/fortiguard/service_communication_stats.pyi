@@ -81,8 +81,8 @@ class ServiceCommunicationStats:
     def get(
         self,
         *,
-        service_type: str | None = ...,
-        timeslot: str | None = ...,
+        service_type: Literal["forticare", "fortiguard_download", "fortiguard_query", "forticloud_log", "fortisandbox_cloud", "fortiguard.com", "sdns", "fortitoken_registration", "sms_service"] | None = ...,
+        timeslot: Literal["1_hour", "24_hour", "1_week"] | None = ...,
         filter: str | list[str] | None = ...,
         count: int | None = ...,
         start: int | None = ...,

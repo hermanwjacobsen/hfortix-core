@@ -81,8 +81,8 @@ class DeviceStatus:
     def get(
         self,
         *,
-        serials: str,
-        update_cache: str | None = ...,
+        serials: list[str],
+        update_cache: bool | None = ...,
         filter: str | list[str] | None = ...,
         count: int | None = ...,
         start: int | None = ...,

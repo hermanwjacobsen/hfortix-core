@@ -141,9 +141,9 @@ class Sessions:
     def get(
         self,
         *,
-        ip_version: str | None = ...,
+        ip_version: Literal["*ipv4", "ipv6", "ipboth"] | None = ...,
         count: int,
-        summary: str | None = ...,
+        summary: bool | None = ...,
         srcaddr: str | None = ...,
         dstaddr: str | None = ...,
         srcaddr6: str | None = ...,

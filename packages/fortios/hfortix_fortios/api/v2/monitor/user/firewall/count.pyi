@@ -84,9 +84,9 @@ class Count:
     def get(
         self,
         *,
-        ipv4: str | None = ...,
-        ipv6: str | None = ...,
-        include_fsso: str | None = ...,
+        ipv4: bool | None = ...,
+        ipv6: bool | None = ...,
+        include_fsso: bool | None = ...,
         filter: str | list[str] | None = ...,
         count: int | None = ...,
         start: int | None = ...,

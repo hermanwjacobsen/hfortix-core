@@ -84,7 +84,7 @@ class MatchedDevices:
         self,
         *,
         mkey: str | None = ...,
-        include_dynamic: str | None = ...,
+        include_dynamic: bool | None = ...,
         mac: str | None = ...,
         filter: str | list[str] | None = ...,
         count: int | None = ...,
