@@ -82,7 +82,7 @@ class Recommendations:
         self,
         *,
         checks: str,
-        scope: str | None = ...,
+        scope: Literal["global", "vdom"] | None = ...,
         filter: str | list[str] | None = ...,
         count: int | None = ...,
         start: int | None = ...,

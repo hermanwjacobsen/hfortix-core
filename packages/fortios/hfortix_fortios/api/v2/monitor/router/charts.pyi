@@ -96,7 +96,7 @@ class Charts:
     def get(
         self,
         *,
-        operator: str | None = ...,
+        operator: Literal["*and", "or"] | None = ...,
         ip_version: int | None = ...,
         ip_mask: str | None = ...,
         gateway: str | None = ...,

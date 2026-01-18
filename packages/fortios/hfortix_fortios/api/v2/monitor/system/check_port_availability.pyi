@@ -81,8 +81,8 @@ class CheckPortAvailability:
     def get(
         self,
         *,
-        port_ranges: str,
-        service: str | None = ...,
+        port_ranges: list[str],
+        service: Literal["reserved", "sysglobal", "webproxy", "ftpproxy", "sslvpn", "slaprobe", "fsso", "ftm_push"] | None = ...,
         filter: str | list[str] | None = ...,
         count: int | None = ...,
         start: int | None = ...,

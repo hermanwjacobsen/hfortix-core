@@ -78,7 +78,7 @@ class UnassociatedDevices:
     def get(
         self,
         *,
-        with_triangulation: str | None = ...,
+        with_triangulation: bool | None = ...,
         filter: str | list[str] | None = ...,
         count: int | None = ...,
         start: int | None = ...,

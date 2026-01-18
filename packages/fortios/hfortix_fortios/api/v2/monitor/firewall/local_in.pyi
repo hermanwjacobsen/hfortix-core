@@ -78,7 +78,7 @@ class LocalIn:
     def get(
         self,
         *,
-        include_ttl: str | None = ...,
+        include_ttl: bool | None = ...,
         filter: str | list[str] | None = ...,
         count: int | None = ...,
         start: int | None = ...,

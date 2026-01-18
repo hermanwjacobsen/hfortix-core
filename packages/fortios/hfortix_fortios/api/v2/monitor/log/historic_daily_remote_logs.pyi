@@ -78,7 +78,7 @@ class HistoricDailyRemoteLogs:
     def get(
         self,
         *,
-        server: str,
+        server: Literal["forticloud", "fortianalyzer", "fortianalyzercloud", "nulldevice"],
         filter: str | list[str] | None = ...,
         count: int | None = ...,
         start: int | None = ...,

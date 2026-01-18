@@ -81,8 +81,8 @@ class ResolveFqdn:
     def get(
         self,
         *,
-        ipv6: str | None = ...,
-        fqdn: str | None = ...,
+        ipv6: bool | None = ...,
+        fqdn: list[str] | None = ...,
         filter: str | list[str] | None = ...,
         count: int | None = ...,
         start: int | None = ...,

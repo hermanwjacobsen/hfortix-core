@@ -81,8 +81,8 @@ class Policy:
     def get(
         self,
         *,
-        policyid: str | None = ...,
-        ip_version: str | None = ...,
+        policyid: list[str] | None = ...,
+        ip_version: Literal["ipv4", "ipv6"] | None = ...,
         filter: str | list[str] | None = ...,
         count: int | None = ...,
         start: int | None = ...,

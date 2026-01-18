@@ -84,7 +84,7 @@ class HaPeer:
         self,
         *,
         serial: str,
-        ipv6: str | None = ...,
+        ipv6: bool | None = ...,
         destination: str,
         filter: str | list[str] | None = ...,
         count: int | None = ...,

@@ -90,7 +90,7 @@ class TierPlusCandidates:
         fortilink: str,
         parent_peer1: str,
         parent_peer2: str,
-        is_tier2: str,
+        is_tier2: bool,
         filter: str | list[str] | None = ...,
         count: int | None = ...,
         start: int | None = ...,

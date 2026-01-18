@@ -51,7 +51,7 @@ class Botnet:
     def get(
         self,
         *,
-        include_hit_only: str | None = ...,
+        include_hit_only: bool | None = ...,
         filter: str | list[str] | None = ...,
         count: int | None = ...,
         start: int | None = ...,

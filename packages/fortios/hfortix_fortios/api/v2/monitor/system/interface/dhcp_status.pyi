@@ -81,7 +81,7 @@ class DhcpStatus:
         self,
         *,
         mkey: str,
-        ipv6: str | None = ...,
+        ipv6: bool | None = ...,
         filter: str | list[str] | None = ...,
         count: int | None = ...,
         start: int | None = ...,

@@ -82,7 +82,7 @@ class Interface:
         self,
         *,
         interface: str,
-        time_period: str,
+        time_period: Literal["hour", "day", "week"],
         filter: str | list[str] | None = ...,
         count: int | None = ...,
         start: int | None = ...,

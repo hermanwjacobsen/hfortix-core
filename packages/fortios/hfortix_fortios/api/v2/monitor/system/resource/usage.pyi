@@ -84,9 +84,9 @@ class Usage:
     def get(
         self,
         *,
-        scope: str | None = ...,
-        resource: str | None = ...,
-        interval: str | None = ...,
+        scope: Literal["vdom", "global"] | None = ...,
+        resource: Literal["cpu", "mem", "disk", "session", "session6", "setuprate", "setuprate6", "disk_lograte", "faz_lograte", "forticloud_lograte", "gtp_tunnel", "gtp_tunnel_setup_rate"] | None = ...,
+        interval: Literal["1-min", "10-min", "30-min", "1-hour", "12-hour", "24-hour"] | None = ...,
         filter: str | list[str] | None = ...,
         count: int | None = ...,
         start: int | None = ...,

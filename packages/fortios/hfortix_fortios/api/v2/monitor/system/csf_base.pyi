@@ -81,8 +81,8 @@ class Csf:
     def get(
         self,
         *,
-        scope: str | None = ...,
-        all_vdoms: str | None = ...,
+        scope: Literal["vdom", "global"] | None = ...,
+        all_vdoms: bool | None = ...,
         filter: str | list[str] | None = ...,
         count: int | None = ...,
         start: int | None = ...,

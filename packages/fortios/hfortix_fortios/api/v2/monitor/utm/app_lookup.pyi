@@ -78,7 +78,7 @@ class AppLookup:
     def get(
         self,
         *,
-        hosts: str | None = ...,
+        hosts: list[str] | None = ...,
         filter: str | list[str] | None = ...,
         count: int | None = ...,
         start: int | None = ...,

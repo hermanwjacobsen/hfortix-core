@@ -81,7 +81,7 @@ class Neighbors:
     def get(
         self,
         *,
-        scope: str | None = ...,
+        scope: Literal["*vdom", "global"] | None = ...,
         port: str | None = ...,
         filter: str | list[str] | None = ...,
         count: int | None = ...,

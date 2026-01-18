@@ -84,8 +84,8 @@ class Dhcp:
     def get(
         self,
         *,
-        scope: str | None = ...,
-        ipv6: str | None = ...,
+        scope: Literal["vdom", "global"] | None = ...,
+        ipv6: bool | None = ...,
         interface: str | None = ...,
         filter: str | list[str] | None = ...,
         count: int | None = ...,

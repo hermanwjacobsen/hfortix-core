@@ -84,9 +84,9 @@ class Fortianalyzer:
     def get(
         self,
         *,
-        scope: str | None = ...,
+        scope: Literal["vdom", "global"] | None = ...,
         server: str | None = ...,
-        srcip: str | None = ...,
+        srcip: Literal["\u003cip\u003e", "auto"] | None = ...,
         filter: str | list[str] | None = ...,
         count: int | None = ...,
         start: int | None = ...,

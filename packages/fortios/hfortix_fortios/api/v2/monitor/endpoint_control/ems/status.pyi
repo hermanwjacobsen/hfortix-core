@@ -82,7 +82,7 @@ class Status:
         self,
         *,
         ems_id: int | None = ...,
-        scope: str | None = ...,
+        scope: Literal["vdom", "global"] | None = ...,
         filter: str | list[str] | None = ...,
         count: int | None = ...,
         start: int | None = ...,

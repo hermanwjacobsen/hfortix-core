@@ -87,10 +87,10 @@ class Members:
     def get(
         self,
         *,
-        interface: str | None = ...,
+        interface: list[str] | None = ...,
         zone: str | None = ...,
         sla: str | None = ...,
-        skip_vpn_child: str | None = ...,
+        skip_vpn_child: bool | None = ...,
         filter: str | list[str] | None = ...,
         count: int | None = ...,
         start: int | None = ...,

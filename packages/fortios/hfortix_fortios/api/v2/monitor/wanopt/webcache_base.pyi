@@ -78,7 +78,7 @@ class Webcache:
     def get(
         self,
         *,
-        period: str | None = ...,
+        period: Literal["10-min", "hour", "day", "week", "30-day"] | None = ...,
         filter: str | list[str] | None = ...,
         count: int | None = ...,
         start: int | None = ...,

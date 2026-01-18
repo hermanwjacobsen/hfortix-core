@@ -78,7 +78,7 @@ class Policy6:
     def get(
         self,
         *,
-        count_only: str | None = ...,
+        count_only: bool | None = ...,
         filter: str | list[str] | None = ...,
         count: int | None = ...,
         start: int | None = ...,

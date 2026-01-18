@@ -78,7 +78,7 @@ class StatusSummary:
     def get(
         self,
         *,
-        scope: str | None = ...,
+        scope: Literal["vdom", "global"] | None = ...,
         filter: str | list[str] | None = ...,
         count: int | None = ...,
         start: int | None = ...,

@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+### Changed
+
+- **Generator: Literal type extraction from parameter descriptions**: The endpoint generator now automatically extracts enumerated values from parameter descriptions in schema files and generates proper `Literal` type hints. When a parameter description contains options in the format `[option1 | option2 | option3]`, the generator creates `Literal["option1", "option2", "option3"]` types for both `.py` implementations and `.pyi` stub files, providing IDE autocomplete and type checking for valid parameter values.
+
 ## [0.5.101] - 2026-01-18
 
 ### Changed

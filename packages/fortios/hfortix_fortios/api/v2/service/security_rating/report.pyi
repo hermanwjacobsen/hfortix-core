@@ -90,9 +90,9 @@ class Report:
     def get(
         self,
         *,
-        scope: str | None = ...,
+        scope: Literal["global", "vdom"] | None = ...,
         standalone: str | None = ...,
-        type: str,
+        type: Literal["psirt", "insight"],
         checks: str | None = ...,
         show_hidden: str | None = ...,
         filter: str | list[str] | None = ...,

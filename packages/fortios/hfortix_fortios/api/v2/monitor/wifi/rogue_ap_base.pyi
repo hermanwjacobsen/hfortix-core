@@ -78,7 +78,7 @@ class RogueAp:
     def get(
         self,
         *,
-        managed_ssid_only: str | None = ...,
+        managed_ssid_only: bool | None = ...,
         filter: str | list[str] | None = ...,
         count: int | None = ...,
         start: int | None = ...,

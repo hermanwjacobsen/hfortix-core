@@ -81,7 +81,7 @@ class Ipconf:
     def get(
         self,
         *,
-        devs: str,
+        devs: list[str],
         ipaddr: str,
         filter: str | list[str] | None = ...,
         count: int | None = ...,

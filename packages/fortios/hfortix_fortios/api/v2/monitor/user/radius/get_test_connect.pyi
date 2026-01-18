@@ -99,7 +99,7 @@ class GetTestConnect:
         ordinal: str | None = ...,
         server: str | None = ...,
         secret: str | None = ...,
-        auth_type: str | None = ...,
+        auth_type: Literal["auto", "ms_chap_v2", "ms_chap", "chap", "pap"] | None = ...,
         user: str | None = ...,
         password: str | None = ...,
         filter: str | list[str] | None = ...,
