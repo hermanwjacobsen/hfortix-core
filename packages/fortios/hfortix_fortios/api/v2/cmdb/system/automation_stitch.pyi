@@ -26,21 +26,21 @@ from hfortix_fortios.models import (
 # TypedDict Payloads
 # ================================================================
 
-class AutomationStitchConditionItem:
-    """Nested item for condition field - supports attribute access."""
+class AutomationStitchConditionItem(TypedDict, total=False):
+    """Nested item for condition field."""
     name: str
 
 
-class AutomationStitchActionsItem:
-    """Nested item for actions field - supports attribute access."""
+class AutomationStitchActionsItem(TypedDict, total=False):
+    """Nested item for actions field."""
     id: int
     action: str
     delay: int
     required: Literal["enable", "disable"]
 
 
-class AutomationStitchDestinationItem:
-    """Nested item for destination field - supports attribute access."""
+class AutomationStitchDestinationItem(TypedDict, total=False):
+    """Nested item for destination field."""
     name: str
 
 
@@ -50,10 +50,10 @@ class AutomationStitchPayload(TypedDict, total=False):
     description: str
     status: Literal["enable", "disable"]
     trigger: str
-    condition: str | list[str] | list[dict[str, Any]] | list[AutomationStitchConditionItem]
+    condition: str | list[str] | list[AutomationStitchConditionItem]
     condition_logic: Literal["and", "or"]
-    actions: str | list[str] | list[dict[str, Any]] | list[AutomationStitchActionsItem]
-    destination: str | list[str] | list[dict[str, Any]] | list[AutomationStitchDestinationItem]
+    actions: str | list[str] | list[AutomationStitchActionsItem]
+    destination: str | list[str] | list[AutomationStitchDestinationItem]
 
 
 # ================================================================
@@ -166,10 +166,10 @@ class AutomationStitch:
         description: str | None = ...,
         status: Literal["enable", "disable"] | None = ...,
         trigger: str | None = ...,
-        condition: str | list[str] | list[dict[str, Any]] | list[AutomationStitchConditionItem] | None = ...,
+        condition: str | list[str] | list[AutomationStitchConditionItem] | None = ...,
         condition_logic: Literal["and", "or"] | None = ...,
-        actions: str | list[str] | list[dict[str, Any]] | list[AutomationStitchActionsItem] | None = ...,
-        destination: str | list[str] | list[dict[str, Any]] | list[AutomationStitchDestinationItem] | None = ...,
+        actions: str | list[str] | list[AutomationStitchActionsItem] | None = ...,
+        destination: str | list[str] | list[AutomationStitchDestinationItem] | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> AutomationStitchObject: ...
@@ -185,10 +185,10 @@ class AutomationStitch:
         description: str | None = ...,
         status: Literal["enable", "disable"] | None = ...,
         trigger: str | None = ...,
-        condition: str | list[str] | list[dict[str, Any]] | list[AutomationStitchConditionItem] | None = ...,
+        condition: str | list[str] | list[AutomationStitchConditionItem] | None = ...,
         condition_logic: Literal["and", "or"] | None = ...,
-        actions: str | list[str] | list[dict[str, Any]] | list[AutomationStitchActionsItem] | None = ...,
-        destination: str | list[str] | list[dict[str, Any]] | list[AutomationStitchDestinationItem] | None = ...,
+        actions: str | list[str] | list[AutomationStitchActionsItem] | None = ...,
+        destination: str | list[str] | list[AutomationStitchDestinationItem] | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> AutomationStitchObject: ...
@@ -220,10 +220,10 @@ class AutomationStitch:
         description: str | None = ...,
         status: Literal["enable", "disable"] | None = ...,
         trigger: str | None = ...,
-        condition: str | list[str] | list[dict[str, Any]] | list[AutomationStitchConditionItem] | None = ...,
+        condition: str | list[str] | list[AutomationStitchConditionItem] | None = ...,
         condition_logic: Literal["and", "or"] | None = ...,
-        actions: str | list[str] | list[dict[str, Any]] | list[AutomationStitchActionsItem] | None = ...,
-        destination: str | list[str] | list[dict[str, Any]] | list[AutomationStitchDestinationItem] | None = ...,
+        actions: str | list[str] | list[AutomationStitchActionsItem] | None = ...,
+        destination: str | list[str] | list[AutomationStitchDestinationItem] | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> FortiObject: ...

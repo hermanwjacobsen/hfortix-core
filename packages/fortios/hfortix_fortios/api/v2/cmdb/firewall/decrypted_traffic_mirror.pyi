@@ -26,8 +26,8 @@ from hfortix_fortios.models import (
 # TypedDict Payloads
 # ================================================================
 
-class DecryptedTrafficMirrorInterfaceItem:
-    """Nested item for interface field - supports attribute access."""
+class DecryptedTrafficMirrorInterfaceItem(TypedDict, total=False):
+    """Nested item for interface field."""
     name: str
 
 
@@ -37,7 +37,7 @@ class DecryptedTrafficMirrorPayload(TypedDict, total=False):
     dstmac: str
     traffic_type: str | list[str]
     traffic_source: Literal["client", "server", "both"]
-    interface: str | list[str] | list[dict[str, Any]] | list[DecryptedTrafficMirrorInterfaceItem]
+    interface: str | list[str] | list[DecryptedTrafficMirrorInterfaceItem]
 
 
 # ================================================================
@@ -147,7 +147,7 @@ class DecryptedTrafficMirror:
         dstmac: str | None = ...,
         traffic_type: str | list[str] | None = ...,
         traffic_source: Literal["client", "server", "both"] | None = ...,
-        interface: str | list[str] | list[dict[str, Any]] | list[DecryptedTrafficMirrorInterfaceItem] | None = ...,
+        interface: str | list[str] | list[DecryptedTrafficMirrorInterfaceItem] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -164,7 +164,7 @@ class DecryptedTrafficMirror:
         dstmac: str | None = ...,
         traffic_type: str | list[str] | None = ...,
         traffic_source: Literal["client", "server", "both"] | None = ...,
-        interface: str | list[str] | list[dict[str, Any]] | list[DecryptedTrafficMirrorInterfaceItem] | None = ...,
+        interface: str | list[str] | list[DecryptedTrafficMirrorInterfaceItem] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -199,7 +199,7 @@ class DecryptedTrafficMirror:
         dstmac: str | None = ...,
         traffic_type: Literal["ssl", "ssh"] | list[str] | None = ...,
         traffic_source: Literal["client", "server", "both"] | None = ...,
-        interface: str | list[str] | list[dict[str, Any]] | list[DecryptedTrafficMirrorInterfaceItem] | None = ...,
+        interface: str | list[str] | list[DecryptedTrafficMirrorInterfaceItem] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,

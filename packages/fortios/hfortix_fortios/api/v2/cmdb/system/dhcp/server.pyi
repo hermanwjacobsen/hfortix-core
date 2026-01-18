@@ -26,8 +26,8 @@ from hfortix_fortios.models import (
 # TypedDict Payloads
 # ================================================================
 
-class ServerIprangeItem:
-    """Nested item for ip-range field - supports attribute access."""
+class ServerIprangeItem(TypedDict, total=False):
+    """Nested item for ip-range field."""
     id: int
     start_ip: str
     end_ip: str
@@ -38,13 +38,13 @@ class ServerIprangeItem:
     lease_time: int
 
 
-class ServerTftpserverItem:
-    """Nested item for tftp-server field - supports attribute access."""
+class ServerTftpserverItem(TypedDict, total=False):
+    """Nested item for tftp-server field."""
     tftp_server: str
 
 
-class ServerOptionsItem:
-    """Nested item for options field - supports attribute access."""
+class ServerOptionsItem(TypedDict, total=False):
+    """Nested item for options field."""
     id: int
     code: int
     type: Literal["hex", "string", "ip", "fqdn"]
@@ -56,13 +56,13 @@ class ServerOptionsItem:
     uci_string: str | list[str]
 
 
-class ServerVcistringItem:
-    """Nested item for vci-string field - supports attribute access."""
+class ServerVcistringItem(TypedDict, total=False):
+    """Nested item for vci-string field."""
     vci_string: str
 
 
-class ServerExcluderangeItem:
-    """Nested item for exclude-range field - supports attribute access."""
+class ServerExcluderangeItem(TypedDict, total=False):
+    """Nested item for exclude-range field."""
     id: int
     start_ip: str
     end_ip: str
@@ -73,8 +73,8 @@ class ServerExcluderangeItem:
     lease_time: int
 
 
-class ServerReservedaddressItem:
-    """Nested item for reserved-address field - supports attribute access."""
+class ServerReservedaddressItem(TypedDict, total=False):
+    """Nested item for reserved-address field."""
     id: int
     type: Literal["mac", "option82"]
     ip: str
@@ -114,12 +114,12 @@ class ServerPayload(TypedDict, total=False):
     next_server: str
     netmask: str
     interface: str
-    ip_range: str | list[str] | list[dict[str, Any]] | list[ServerIprangeItem]
+    ip_range: str | list[str] | list[ServerIprangeItem]
     timezone_option: Literal["disable", "default", "specify"]
     timezone: str
-    tftp_server: str | list[str] | list[dict[str, Any]] | list[ServerTftpserverItem]
+    tftp_server: str | list[str] | list[ServerTftpserverItem]
     filename: str
-    options: str | list[str] | list[dict[str, Any]] | list[ServerOptionsItem]
+    options: str | list[str] | list[ServerOptionsItem]
     server_type: Literal["regular", "ipsec"]
     ip_mode: Literal["range", "usrgrp"]
     conflicted_ip_timeout: int
@@ -136,11 +136,11 @@ class ServerPayload(TypedDict, total=False):
     ddns_key: str
     ddns_ttl: int
     vci_match: Literal["disable", "enable"]
-    vci_string: str | list[str] | list[dict[str, Any]] | list[ServerVcistringItem]
-    exclude_range: str | list[str] | list[dict[str, Any]] | list[ServerExcluderangeItem]
+    vci_string: str | list[str] | list[ServerVcistringItem]
+    exclude_range: str | list[str] | list[ServerExcluderangeItem]
     shared_subnet: Literal["disable", "enable"]
     relay_agent: str
-    reserved_address: str | list[str] | list[dict[str, Any]] | list[ServerReservedaddressItem]
+    reserved_address: str | list[str] | list[ServerReservedaddressItem]
 
 
 # ================================================================
@@ -365,12 +365,12 @@ class Server:
         next_server: str | None = ...,
         netmask: str | None = ...,
         interface: str | None = ...,
-        ip_range: str | list[str] | list[dict[str, Any]] | list[ServerIprangeItem] | None = ...,
+        ip_range: str | list[str] | list[ServerIprangeItem] | None = ...,
         timezone_option: Literal["disable", "default", "specify"] | None = ...,
         timezone: str | None = ...,
-        tftp_server: str | list[str] | list[dict[str, Any]] | list[ServerTftpserverItem] | None = ...,
+        tftp_server: str | list[str] | list[ServerTftpserverItem] | None = ...,
         filename: str | None = ...,
-        options: str | list[str] | list[dict[str, Any]] | list[ServerOptionsItem] | None = ...,
+        options: str | list[str] | list[ServerOptionsItem] | None = ...,
         server_type: Literal["regular", "ipsec"] | None = ...,
         ip_mode: Literal["range", "usrgrp"] | None = ...,
         conflicted_ip_timeout: int | None = ...,
@@ -387,11 +387,11 @@ class Server:
         ddns_key: str | None = ...,
         ddns_ttl: int | None = ...,
         vci_match: Literal["disable", "enable"] | None = ...,
-        vci_string: str | list[str] | list[dict[str, Any]] | list[ServerVcistringItem] | None = ...,
-        exclude_range: str | list[str] | list[dict[str, Any]] | list[ServerExcluderangeItem] | None = ...,
+        vci_string: str | list[str] | list[ServerVcistringItem] | None = ...,
+        exclude_range: str | list[str] | list[ServerExcluderangeItem] | None = ...,
         shared_subnet: Literal["disable", "enable"] | None = ...,
         relay_agent: str | None = ...,
-        reserved_address: str | list[str] | list[dict[str, Any]] | list[ServerReservedaddressItem] | None = ...,
+        reserved_address: str | list[str] | list[ServerReservedaddressItem] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -429,12 +429,12 @@ class Server:
         next_server: str | None = ...,
         netmask: str | None = ...,
         interface: str | None = ...,
-        ip_range: str | list[str] | list[dict[str, Any]] | list[ServerIprangeItem] | None = ...,
+        ip_range: str | list[str] | list[ServerIprangeItem] | None = ...,
         timezone_option: Literal["disable", "default", "specify"] | None = ...,
         timezone: str | None = ...,
-        tftp_server: str | list[str] | list[dict[str, Any]] | list[ServerTftpserverItem] | None = ...,
+        tftp_server: str | list[str] | list[ServerTftpserverItem] | None = ...,
         filename: str | None = ...,
-        options: str | list[str] | list[dict[str, Any]] | list[ServerOptionsItem] | None = ...,
+        options: str | list[str] | list[ServerOptionsItem] | None = ...,
         server_type: Literal["regular", "ipsec"] | None = ...,
         ip_mode: Literal["range", "usrgrp"] | None = ...,
         conflicted_ip_timeout: int | None = ...,
@@ -451,11 +451,11 @@ class Server:
         ddns_key: str | None = ...,
         ddns_ttl: int | None = ...,
         vci_match: Literal["disable", "enable"] | None = ...,
-        vci_string: str | list[str] | list[dict[str, Any]] | list[ServerVcistringItem] | None = ...,
-        exclude_range: str | list[str] | list[dict[str, Any]] | list[ServerExcluderangeItem] | None = ...,
+        vci_string: str | list[str] | list[ServerVcistringItem] | None = ...,
+        exclude_range: str | list[str] | list[ServerExcluderangeItem] | None = ...,
         shared_subnet: Literal["disable", "enable"] | None = ...,
         relay_agent: str | None = ...,
-        reserved_address: str | list[str] | list[dict[str, Any]] | list[ServerReservedaddressItem] | None = ...,
+        reserved_address: str | list[str] | list[ServerReservedaddressItem] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -511,12 +511,12 @@ class Server:
         next_server: str | None = ...,
         netmask: str | None = ...,
         interface: str | None = ...,
-        ip_range: str | list[str] | list[dict[str, Any]] | list[ServerIprangeItem] | None = ...,
+        ip_range: str | list[str] | list[ServerIprangeItem] | None = ...,
         timezone_option: Literal["disable", "default", "specify"] | None = ...,
         timezone: str | None = ...,
-        tftp_server: str | list[str] | list[dict[str, Any]] | list[ServerTftpserverItem] | None = ...,
+        tftp_server: str | list[str] | list[ServerTftpserverItem] | None = ...,
         filename: str | None = ...,
-        options: str | list[str] | list[dict[str, Any]] | list[ServerOptionsItem] | None = ...,
+        options: str | list[str] | list[ServerOptionsItem] | None = ...,
         server_type: Literal["regular", "ipsec"] | None = ...,
         ip_mode: Literal["range", "usrgrp"] | None = ...,
         conflicted_ip_timeout: int | None = ...,
@@ -533,11 +533,11 @@ class Server:
         ddns_key: str | None = ...,
         ddns_ttl: int | None = ...,
         vci_match: Literal["disable", "enable"] | None = ...,
-        vci_string: str | list[str] | list[dict[str, Any]] | list[ServerVcistringItem] | None = ...,
-        exclude_range: str | list[str] | list[dict[str, Any]] | list[ServerExcluderangeItem] | None = ...,
+        vci_string: str | list[str] | list[ServerVcistringItem] | None = ...,
+        exclude_range: str | list[str] | list[ServerExcluderangeItem] | None = ...,
         shared_subnet: Literal["disable", "enable"] | None = ...,
         relay_agent: str | None = ...,
-        reserved_address: str | list[str] | list[dict[str, Any]] | list[ServerReservedaddressItem] | None = ...,
+        reserved_address: str | list[str] | list[ServerReservedaddressItem] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,

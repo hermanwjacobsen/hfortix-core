@@ -25,14 +25,14 @@ from hfortix_fortios.models import (
 # TypedDict Payloads
 # ================================================================
 
-class IsisIsisnetItem:
-    """Nested item for isis-net field - supports attribute access."""
+class IsisIsisnetItem(TypedDict, total=False):
+    """Nested item for isis-net field."""
     id: int
     net: str
 
 
-class IsisIsisinterfaceItem:
-    """Nested item for isis-interface field - supports attribute access."""
+class IsisIsisinterfaceItem(TypedDict, total=False):
+    """Nested item for isis-interface field."""
     name: str
     status: Literal["enable", "disable"]
     status6: Literal["enable", "disable"]
@@ -65,22 +65,22 @@ class IsisIsisinterfaceItem:
     mesh_group_id: int
 
 
-class IsisSummaryaddressItem:
-    """Nested item for summary-address field - supports attribute access."""
+class IsisSummaryaddressItem(TypedDict, total=False):
+    """Nested item for summary-address field."""
     id: int
     prefix: str
     level: Literal["level-1-2", "level-1", "level-2"]
 
 
-class IsisSummaryaddress6Item:
-    """Nested item for summary-address6 field - supports attribute access."""
+class IsisSummaryaddress6Item(TypedDict, total=False):
+    """Nested item for summary-address6 field."""
     id: int
     prefix6: str
     level: Literal["level-1-2", "level-1", "level-2"]
 
 
-class IsisRedistributeItem:
-    """Nested item for redistribute field - supports attribute access."""
+class IsisRedistributeItem(TypedDict, total=False):
+    """Nested item for redistribute field."""
     protocol: str
     status: Literal["enable", "disable"]
     metric: int
@@ -89,8 +89,8 @@ class IsisRedistributeItem:
     routemap: str
 
 
-class IsisRedistribute6Item:
-    """Nested item for redistribute6 field - supports attribute access."""
+class IsisRedistribute6Item(TypedDict, total=False):
+    """Nested item for redistribute6 field."""
     protocol: str
     status: Literal["enable", "disable"]
     metric: int
@@ -136,12 +136,12 @@ class IsisPayload(TypedDict, total=False):
     redistribute6_l1_list: str
     redistribute6_l2: Literal["enable", "disable"]
     redistribute6_l2_list: str
-    isis_net: str | list[str] | list[dict[str, Any]] | list[IsisIsisnetItem]
-    isis_interface: str | list[str] | list[dict[str, Any]] | list[IsisIsisinterfaceItem]
-    summary_address: str | list[str] | list[dict[str, Any]] | list[IsisSummaryaddressItem]
-    summary_address6: str | list[str] | list[dict[str, Any]] | list[IsisSummaryaddress6Item]
-    redistribute: str | list[str] | list[dict[str, Any]] | list[IsisRedistributeItem]
-    redistribute6: str | list[str] | list[dict[str, Any]] | list[IsisRedistribute6Item]
+    isis_net: str | list[str] | list[IsisIsisnetItem]
+    isis_interface: str | list[str] | list[IsisIsisinterfaceItem]
+    summary_address: str | list[str] | list[IsisSummaryaddressItem]
+    summary_address6: str | list[str] | list[IsisSummaryaddress6Item]
+    redistribute: str | list[str] | list[IsisRedistributeItem]
+    redistribute6: str | list[str] | list[IsisRedistribute6Item]
 
 
 # ================================================================
@@ -334,12 +334,12 @@ class Isis:
         redistribute6_l1_list: str | None = ...,
         redistribute6_l2: Literal["enable", "disable"] | None = ...,
         redistribute6_l2_list: str | None = ...,
-        isis_net: str | list[str] | list[dict[str, Any]] | list[IsisIsisnetItem] | None = ...,
-        isis_interface: str | list[str] | list[dict[str, Any]] | list[IsisIsisinterfaceItem] | None = ...,
-        summary_address: str | list[str] | list[dict[str, Any]] | list[IsisSummaryaddressItem] | None = ...,
-        summary_address6: str | list[str] | list[dict[str, Any]] | list[IsisSummaryaddress6Item] | None = ...,
-        redistribute: str | list[str] | list[dict[str, Any]] | list[IsisRedistributeItem] | None = ...,
-        redistribute6: str | list[str] | list[dict[str, Any]] | list[IsisRedistribute6Item] | None = ...,
+        isis_net: str | list[str] | list[IsisIsisnetItem] | None = ...,
+        isis_interface: str | list[str] | list[IsisIsisinterfaceItem] | None = ...,
+        summary_address: str | list[str] | list[IsisSummaryaddressItem] | None = ...,
+        summary_address6: str | list[str] | list[IsisSummaryaddress6Item] | None = ...,
+        redistribute: str | list[str] | list[IsisRedistributeItem] | None = ...,
+        redistribute6: str | list[str] | list[IsisRedistribute6Item] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -394,12 +394,12 @@ class Isis:
         redistribute6_l1_list: str | None = ...,
         redistribute6_l2: Literal["enable", "disable"] | None = ...,
         redistribute6_l2_list: str | None = ...,
-        isis_net: str | list[str] | list[dict[str, Any]] | list[IsisIsisnetItem] | None = ...,
-        isis_interface: str | list[str] | list[dict[str, Any]] | list[IsisIsisinterfaceItem] | None = ...,
-        summary_address: str | list[str] | list[dict[str, Any]] | list[IsisSummaryaddressItem] | None = ...,
-        summary_address6: str | list[str] | list[dict[str, Any]] | list[IsisSummaryaddress6Item] | None = ...,
-        redistribute: str | list[str] | list[dict[str, Any]] | list[IsisRedistributeItem] | None = ...,
-        redistribute6: str | list[str] | list[dict[str, Any]] | list[IsisRedistribute6Item] | None = ...,
+        isis_net: str | list[str] | list[IsisIsisnetItem] | None = ...,
+        isis_interface: str | list[str] | list[IsisIsisinterfaceItem] | None = ...,
+        summary_address: str | list[str] | list[IsisSummaryaddressItem] | None = ...,
+        summary_address6: str | list[str] | list[IsisSummaryaddress6Item] | None = ...,
+        redistribute: str | list[str] | list[IsisRedistributeItem] | None = ...,
+        redistribute6: str | list[str] | list[IsisRedistribute6Item] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,

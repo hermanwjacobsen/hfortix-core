@@ -25,8 +25,8 @@ from hfortix_fortios.models import (
 # TypedDict Payloads
 # ================================================================
 
-class SettingsGuidefaultpolicycolumnsItem:
-    """Nested item for gui-default-policy-columns field - supports attribute access."""
+class SettingsGuidefaultpolicycolumnsItem(TypedDict, total=False):
+    """Nested item for gui-default-policy-columns field."""
     name: str
 
 
@@ -68,7 +68,7 @@ class SettingsPayload(TypedDict, total=False):
     dhcp_server_ip: str | list[str]
     dhcp6_server_ip: str | list[str]
     central_nat: Literal["enable", "disable"]
-    gui_default_policy_columns: str | list[str] | list[dict[str, Any]] | list[SettingsGuidefaultpolicycolumnsItem]
+    gui_default_policy_columns: str | list[str] | list[SettingsGuidefaultpolicycolumnsItem]
     lldp_reception: Literal["enable", "disable", "global"]
     lldp_transmission: Literal["enable", "disable", "global"]
     link_down_access: Literal["enable", "disable"]
@@ -569,7 +569,7 @@ class Settings:
         dhcp_server_ip: str | list[str] | None = ...,
         dhcp6_server_ip: str | list[str] | None = ...,
         central_nat: Literal["enable", "disable"] | None = ...,
-        gui_default_policy_columns: str | list[str] | list[dict[str, Any]] | list[SettingsGuidefaultpolicycolumnsItem] | None = ...,
+        gui_default_policy_columns: str | list[str] | list[SettingsGuidefaultpolicycolumnsItem] | None = ...,
         lldp_reception: Literal["enable", "disable", "global"] | None = ...,
         lldp_transmission: Literal["enable", "disable", "global"] | None = ...,
         link_down_access: Literal["enable", "disable"] | None = ...,
@@ -730,7 +730,7 @@ class Settings:
         dhcp_server_ip: str | list[str] | None = ...,
         dhcp6_server_ip: str | list[str] | None = ...,
         central_nat: Literal["enable", "disable"] | None = ...,
-        gui_default_policy_columns: str | list[str] | list[dict[str, Any]] | list[SettingsGuidefaultpolicycolumnsItem] | None = ...,
+        gui_default_policy_columns: str | list[str] | list[SettingsGuidefaultpolicycolumnsItem] | None = ...,
         lldp_reception: Literal["enable", "disable", "global"] | None = ...,
         lldp_transmission: Literal["enable", "disable", "global"] | None = ...,
         link_down_access: Literal["enable", "disable"] | None = ...,

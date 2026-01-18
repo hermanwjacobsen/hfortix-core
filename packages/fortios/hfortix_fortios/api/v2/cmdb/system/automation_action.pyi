@@ -26,27 +26,27 @@ from hfortix_fortios.models import (
 # TypedDict Payloads
 # ================================================================
 
-class AutomationActionEmailtoItem:
-    """Nested item for email-to field - supports attribute access."""
+class AutomationActionEmailtoItem(TypedDict, total=False):
+    """Nested item for email-to field."""
     name: str
 
 
-class AutomationActionHttpheadersItem:
-    """Nested item for http-headers field - supports attribute access."""
+class AutomationActionHttpheadersItem(TypedDict, total=False):
+    """Nested item for http-headers field."""
     id: int
     key: str
     value: str
 
 
-class AutomationActionFormdataItem:
-    """Nested item for form-data field - supports attribute access."""
+class AutomationActionFormdataItem(TypedDict, total=False):
+    """Nested item for form-data field."""
     id: int
     key: str
     value: str
 
 
-class AutomationActionSdnconnectorItem:
-    """Nested item for sdn-connector field - supports attribute access."""
+class AutomationActionSdnconnectorItem(TypedDict, total=False):
+    """Nested item for sdn-connector field."""
     name: str
 
 
@@ -58,7 +58,7 @@ class AutomationActionPayload(TypedDict, total=False):
     system_action: Literal["reboot", "shutdown", "backup-config"]
     tls_certificate: str
     forticare_email: Literal["enable", "disable"]
-    email_to: str | list[str] | list[dict[str, Any]] | list[AutomationActionEmailtoItem]
+    email_to: str | list[str] | list[AutomationActionEmailtoItem]
     email_from: str
     email_subject: str
     minimum_interval: int
@@ -77,8 +77,8 @@ class AutomationActionPayload(TypedDict, total=False):
     uri: str
     http_body: str
     port: int
-    http_headers: str | list[str] | list[dict[str, Any]] | list[AutomationActionHttpheadersItem]
-    form_data: str | list[str] | list[dict[str, Any]] | list[AutomationActionFormdataItem]
+    http_headers: str | list[str] | list[AutomationActionHttpheadersItem]
+    form_data: str | list[str] | list[AutomationActionFormdataItem]
     verify_host_cert: Literal["enable", "disable"]
     script: str
     output_size: int
@@ -91,7 +91,7 @@ class AutomationActionPayload(TypedDict, total=False):
     regular_expression: str
     log_debug_print: Literal["enable", "disable"]
     security_tag: str
-    sdn_connector: str | list[str] | list[dict[str, Any]] | list[AutomationActionSdnconnectorItem]
+    sdn_connector: str | list[str] | list[AutomationActionSdnconnectorItem]
 
 
 # ================================================================
@@ -270,7 +270,7 @@ class AutomationAction:
         system_action: Literal["reboot", "shutdown", "backup-config"] | None = ...,
         tls_certificate: str | None = ...,
         forticare_email: Literal["enable", "disable"] | None = ...,
-        email_to: str | list[str] | list[dict[str, Any]] | list[AutomationActionEmailtoItem] | None = ...,
+        email_to: str | list[str] | list[AutomationActionEmailtoItem] | None = ...,
         email_from: str | None = ...,
         email_subject: str | None = ...,
         minimum_interval: int | None = ...,
@@ -289,8 +289,8 @@ class AutomationAction:
         uri: str | None = ...,
         http_body: str | None = ...,
         port: int | None = ...,
-        http_headers: str | list[str] | list[dict[str, Any]] | list[AutomationActionHttpheadersItem] | None = ...,
-        form_data: str | list[str] | list[dict[str, Any]] | list[AutomationActionFormdataItem] | None = ...,
+        http_headers: str | list[str] | list[AutomationActionHttpheadersItem] | None = ...,
+        form_data: str | list[str] | list[AutomationActionFormdataItem] | None = ...,
         verify_host_cert: Literal["enable", "disable"] | None = ...,
         script: str | None = ...,
         output_size: int | None = ...,
@@ -303,7 +303,7 @@ class AutomationAction:
         regular_expression: str | None = ...,
         log_debug_print: Literal["enable", "disable"] | None = ...,
         security_tag: str | None = ...,
-        sdn_connector: str | list[str] | list[dict[str, Any]] | list[AutomationActionSdnconnectorItem] | None = ...,
+        sdn_connector: str | list[str] | list[AutomationActionSdnconnectorItem] | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> AutomationActionObject: ...
@@ -321,7 +321,7 @@ class AutomationAction:
         system_action: Literal["reboot", "shutdown", "backup-config"] | None = ...,
         tls_certificate: str | None = ...,
         forticare_email: Literal["enable", "disable"] | None = ...,
-        email_to: str | list[str] | list[dict[str, Any]] | list[AutomationActionEmailtoItem] | None = ...,
+        email_to: str | list[str] | list[AutomationActionEmailtoItem] | None = ...,
         email_from: str | None = ...,
         email_subject: str | None = ...,
         minimum_interval: int | None = ...,
@@ -340,8 +340,8 @@ class AutomationAction:
         uri: str | None = ...,
         http_body: str | None = ...,
         port: int | None = ...,
-        http_headers: str | list[str] | list[dict[str, Any]] | list[AutomationActionHttpheadersItem] | None = ...,
-        form_data: str | list[str] | list[dict[str, Any]] | list[AutomationActionFormdataItem] | None = ...,
+        http_headers: str | list[str] | list[AutomationActionHttpheadersItem] | None = ...,
+        form_data: str | list[str] | list[AutomationActionFormdataItem] | None = ...,
         verify_host_cert: Literal["enable", "disable"] | None = ...,
         script: str | None = ...,
         output_size: int | None = ...,
@@ -354,7 +354,7 @@ class AutomationAction:
         regular_expression: str | None = ...,
         log_debug_print: Literal["enable", "disable"] | None = ...,
         security_tag: str | None = ...,
-        sdn_connector: str | list[str] | list[dict[str, Any]] | list[AutomationActionSdnconnectorItem] | None = ...,
+        sdn_connector: str | list[str] | list[AutomationActionSdnconnectorItem] | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> AutomationActionObject: ...
@@ -388,7 +388,7 @@ class AutomationAction:
         system_action: Literal["reboot", "shutdown", "backup-config"] | None = ...,
         tls_certificate: str | None = ...,
         forticare_email: Literal["enable", "disable"] | None = ...,
-        email_to: str | list[str] | list[dict[str, Any]] | list[AutomationActionEmailtoItem] | None = ...,
+        email_to: str | list[str] | list[AutomationActionEmailtoItem] | None = ...,
         email_from: str | None = ...,
         email_subject: str | None = ...,
         minimum_interval: int | None = ...,
@@ -407,8 +407,8 @@ class AutomationAction:
         uri: str | None = ...,
         http_body: str | None = ...,
         port: int | None = ...,
-        http_headers: str | list[str] | list[dict[str, Any]] | list[AutomationActionHttpheadersItem] | None = ...,
-        form_data: str | list[str] | list[dict[str, Any]] | list[AutomationActionFormdataItem] | None = ...,
+        http_headers: str | list[str] | list[AutomationActionHttpheadersItem] | None = ...,
+        form_data: str | list[str] | list[AutomationActionFormdataItem] | None = ...,
         verify_host_cert: Literal["enable", "disable"] | None = ...,
         script: str | None = ...,
         output_size: int | None = ...,
@@ -421,7 +421,7 @@ class AutomationAction:
         regular_expression: str | None = ...,
         log_debug_print: Literal["enable", "disable"] | None = ...,
         security_tag: str | None = ...,
-        sdn_connector: str | list[str] | list[dict[str, Any]] | list[AutomationActionSdnconnectorItem] | None = ...,
+        sdn_connector: str | list[str] | list[AutomationActionSdnconnectorItem] | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> FortiObject: ...

@@ -26,8 +26,8 @@ from hfortix_fortios.models import (
 # TypedDict Payloads
 # ================================================================
 
-class LldpProfileMednetworkpolicyItem:
-    """Nested item for med-network-policy field - supports attribute access."""
+class LldpProfileMednetworkpolicyItem(TypedDict, total=False):
+    """Nested item for med-network-policy field."""
     name: str
     status: Literal["disable", "enable"]
     vlan_intf: str
@@ -36,15 +36,15 @@ class LldpProfileMednetworkpolicyItem:
     dscp: int
 
 
-class LldpProfileMedlocationserviceItem:
-    """Nested item for med-location-service field - supports attribute access."""
+class LldpProfileMedlocationserviceItem(TypedDict, total=False):
+    """Nested item for med-location-service field."""
     name: str
     status: Literal["disable", "enable"]
     sys_location_id: str
 
 
-class LldpProfileCustomtlvsItem:
-    """Nested item for custom-tlvs field - supports attribute access."""
+class LldpProfileCustomtlvsItem(TypedDict, total=False):
+    """Nested item for custom-tlvs field."""
     name: str
     oui: str
     subtype: int
@@ -68,9 +68,9 @@ class LldpProfilePayload(TypedDict, total=False):
     auto_isl_auth_reauth: int
     auto_isl_auth_encrypt: Literal["none", "mixed", "must"]
     auto_isl_auth_macsec_profile: str
-    med_network_policy: str | list[str] | list[dict[str, Any]] | list[LldpProfileMednetworkpolicyItem]
-    med_location_service: str | list[str] | list[dict[str, Any]] | list[LldpProfileMedlocationserviceItem]
-    custom_tlvs: str | list[str] | list[dict[str, Any]] | list[LldpProfileCustomtlvsItem]
+    med_network_policy: str | list[str] | list[LldpProfileMednetworkpolicyItem]
+    med_location_service: str | list[str] | list[LldpProfileMedlocationserviceItem]
+    custom_tlvs: str | list[str] | list[LldpProfileCustomtlvsItem]
 
 
 # ================================================================
@@ -217,9 +217,9 @@ class LldpProfile:
         auto_isl_auth_reauth: int | None = ...,
         auto_isl_auth_encrypt: Literal["none", "mixed", "must"] | None = ...,
         auto_isl_auth_macsec_profile: str | None = ...,
-        med_network_policy: str | list[str] | list[dict[str, Any]] | list[LldpProfileMednetworkpolicyItem] | None = ...,
-        med_location_service: str | list[str] | list[dict[str, Any]] | list[LldpProfileMedlocationserviceItem] | None = ...,
-        custom_tlvs: str | list[str] | list[dict[str, Any]] | list[LldpProfileCustomtlvsItem] | None = ...,
+        med_network_policy: str | list[str] | list[LldpProfileMednetworkpolicyItem] | None = ...,
+        med_location_service: str | list[str] | list[LldpProfileMedlocationserviceItem] | None = ...,
+        custom_tlvs: str | list[str] | list[LldpProfileCustomtlvsItem] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -247,9 +247,9 @@ class LldpProfile:
         auto_isl_auth_reauth: int | None = ...,
         auto_isl_auth_encrypt: Literal["none", "mixed", "must"] | None = ...,
         auto_isl_auth_macsec_profile: str | None = ...,
-        med_network_policy: str | list[str] | list[dict[str, Any]] | list[LldpProfileMednetworkpolicyItem] | None = ...,
-        med_location_service: str | list[str] | list[dict[str, Any]] | list[LldpProfileMedlocationserviceItem] | None = ...,
-        custom_tlvs: str | list[str] | list[dict[str, Any]] | list[LldpProfileCustomtlvsItem] | None = ...,
+        med_network_policy: str | list[str] | list[LldpProfileMednetworkpolicyItem] | None = ...,
+        med_location_service: str | list[str] | list[LldpProfileMedlocationserviceItem] | None = ...,
+        custom_tlvs: str | list[str] | list[LldpProfileCustomtlvsItem] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -295,9 +295,9 @@ class LldpProfile:
         auto_isl_auth_reauth: int | None = ...,
         auto_isl_auth_encrypt: Literal["none", "mixed", "must"] | None = ...,
         auto_isl_auth_macsec_profile: str | None = ...,
-        med_network_policy: str | list[str] | list[dict[str, Any]] | list[LldpProfileMednetworkpolicyItem] | None = ...,
-        med_location_service: str | list[str] | list[dict[str, Any]] | list[LldpProfileMedlocationserviceItem] | None = ...,
-        custom_tlvs: str | list[str] | list[dict[str, Any]] | list[LldpProfileCustomtlvsItem] | None = ...,
+        med_network_policy: str | list[str] | list[LldpProfileMednetworkpolicyItem] | None = ...,
+        med_location_service: str | list[str] | list[LldpProfileMedlocationserviceItem] | None = ...,
+        custom_tlvs: str | list[str] | list[LldpProfileCustomtlvsItem] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,

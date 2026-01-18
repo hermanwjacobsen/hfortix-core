@@ -25,8 +25,8 @@ from hfortix_fortios.models import (
 # TypedDict Payloads
 # ================================================================
 
-class CentralManagementServerlistItem:
-    """Nested item for server-list field - supports attribute access."""
+class CentralManagementServerlistItem(TypedDict, total=False):
+    """Nested item for server-list field."""
     id: int
     server_type: Literal["update", "rating", "vpatch-query", "iot-collect"]
     addr_type: Literal["ipv4", "ipv6", "fqdn"]
@@ -53,7 +53,7 @@ class CentralManagementPayload(TypedDict, total=False):
     local_cert: str
     ca_cert: str
     vdom: str
-    server_list: str | list[str] | list[dict[str, Any]] | list[CentralManagementServerlistItem]
+    server_list: str | list[str] | list[CentralManagementServerlistItem]
     fmg_update_port: Literal["8890", "443"]
     fmg_update_http_header: Literal["enable", "disable"]
     include_default_servers: Literal["enable", "disable"]
@@ -196,7 +196,7 @@ class CentralManagement:
         fmg_source_ip6: str | None = ...,
         local_cert: str | None = ...,
         ca_cert: str | None = ...,
-        server_list: str | list[str] | list[dict[str, Any]] | list[CentralManagementServerlistItem] | None = ...,
+        server_list: str | list[str] | list[CentralManagementServerlistItem] | None = ...,
         fmg_update_port: Literal["8890", "443"] | None = ...,
         fmg_update_http_header: Literal["enable", "disable"] | None = ...,
         include_default_servers: Literal["enable", "disable"] | None = ...,
@@ -236,7 +236,7 @@ class CentralManagement:
         fmg_source_ip6: str | None = ...,
         local_cert: str | None = ...,
         ca_cert: str | None = ...,
-        server_list: str | list[str] | list[dict[str, Any]] | list[CentralManagementServerlistItem] | None = ...,
+        server_list: str | list[str] | list[CentralManagementServerlistItem] | None = ...,
         fmg_update_port: Literal["8890", "443"] | None = ...,
         fmg_update_http_header: Literal["enable", "disable"] | None = ...,
         include_default_servers: Literal["enable", "disable"] | None = ...,

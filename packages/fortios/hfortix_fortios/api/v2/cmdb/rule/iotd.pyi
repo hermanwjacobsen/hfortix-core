@@ -26,14 +26,14 @@ from hfortix_fortios.models import (
 # TypedDict Payloads
 # ================================================================
 
-class IotdParametersItem:
-    """Nested item for parameters field - supports attribute access."""
+class IotdParametersItem(TypedDict, total=False):
+    """Nested item for parameters field."""
     name: str
     default_value: str
 
 
-class IotdMetadataItem:
-    """Nested item for metadata field - supports attribute access."""
+class IotdMetadataItem(TypedDict, total=False):
+    """Nested item for metadata field."""
     id: int
     metaid: int
     valueid: int
@@ -51,8 +51,8 @@ class IotdPayload(TypedDict, total=False):
     technology: str
     behavior: str
     vendor: str
-    parameters: str | list[str] | list[dict[str, Any]] | list[IotdParametersItem]
-    metadata: str | list[str] | list[dict[str, Any]] | list[IotdMetadataItem]
+    parameters: str | list[str] | list[IotdParametersItem]
+    metadata: str | list[str] | list[IotdMetadataItem]
     status: str
 
 
@@ -182,8 +182,8 @@ class Iotd:
         technology: str | None = ...,
         behavior: str | None = ...,
         vendor: str | None = ...,
-        parameters: str | list[str] | list[dict[str, Any]] | list[IotdParametersItem] | None = ...,
-        metadata: str | list[str] | list[dict[str, Any]] | list[IotdMetadataItem] | None = ...,
+        parameters: str | list[str] | list[IotdParametersItem] | None = ...,
+        metadata: str | list[str] | list[IotdMetadataItem] | None = ...,
         status: str | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -206,8 +206,8 @@ class Iotd:
         technology: str | None = ...,
         behavior: str | None = ...,
         vendor: str | None = ...,
-        parameters: str | list[str] | list[dict[str, Any]] | list[IotdParametersItem] | None = ...,
-        metadata: str | list[str] | list[dict[str, Any]] | list[IotdMetadataItem] | None = ...,
+        parameters: str | list[str] | list[IotdParametersItem] | None = ...,
+        metadata: str | list[str] | list[IotdMetadataItem] | None = ...,
         status: str | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -246,8 +246,8 @@ class Iotd:
         technology: str | None = ...,
         behavior: str | None = ...,
         vendor: str | None = ...,
-        parameters: str | list[str] | list[dict[str, Any]] | list[IotdParametersItem] | None = ...,
-        metadata: str | list[str] | list[dict[str, Any]] | list[IotdMetadataItem] | None = ...,
+        parameters: str | list[str] | list[IotdParametersItem] | None = ...,
+        metadata: str | list[str] | list[IotdMetadataItem] | None = ...,
         status: str | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,

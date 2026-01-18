@@ -26,28 +26,28 @@ from hfortix_fortios.models import (
 # TypedDict Payloads
 # ================================================================
 
-class AddressMacaddrItem:
-    """Nested item for macaddr field - supports attribute access."""
+class AddressMacaddrItem(TypedDict, total=False):
+    """Nested item for macaddr field."""
     macaddr: str
 
 
-class AddressFssogroupItem:
-    """Nested item for fsso-group field - supports attribute access."""
+class AddressFssogroupItem(TypedDict, total=False):
+    """Nested item for fsso-group field."""
     name: str
 
 
-class AddressSsoattributevalueItem:
-    """Nested item for sso-attribute-value field - supports attribute access."""
+class AddressSsoattributevalueItem(TypedDict, total=False):
+    """Nested item for sso-attribute-value field."""
     name: str
 
 
-class AddressListItem:
-    """Nested item for list field - supports attribute access."""
+class AddressListItem(TypedDict, total=False):
+    """Nested item for list field."""
     ip: str
 
 
-class AddressTaggingItem:
-    """Nested item for tagging field - supports attribute access."""
+class AddressTaggingItem(TypedDict, total=False):
+    """Nested item for tagging field."""
     name: str
     category: str
     tags: str | list[str]
@@ -62,7 +62,7 @@ class AddressPayload(TypedDict, total=False):
     route_tag: int
     sub_type: Literal["sdn", "clearpass-spt", "fsso", "rsso", "ems-tag", "fortivoice-tag", "fortinac-tag", "swc-tag", "device-identification", "external-resource", "obsolete"]
     clearpass_spt: Literal["unknown", "healthy", "quarantine", "checkup", "transient", "infected"]
-    macaddr: str | list[str] | list[dict[str, Any]] | list[AddressMacaddrItem]
+    macaddr: str | list[str] | list[AddressMacaddrItem]
     start_ip: str
     end_ip: str
     fqdn: str
@@ -71,8 +71,8 @@ class AddressPayload(TypedDict, total=False):
     cache_ttl: int
     wildcard: str
     sdn: str
-    fsso_group: str | list[str] | list[dict[str, Any]] | list[AddressFssogroupItem]
-    sso_attribute_value: str | list[str] | list[dict[str, Any]] | list[AddressSsoattributevalueItem]
+    fsso_group: str | list[str] | list[AddressFssogroupItem]
+    sso_attribute_value: str | list[str] | list[AddressSsoattributevalueItem]
     interface: str
     tenant: str
     organization: str
@@ -95,8 +95,8 @@ class AddressPayload(TypedDict, total=False):
     sdn_addr_type: Literal["private", "public", "all"]
     node_ip_only: Literal["enable", "disable"]
     obj_id: str
-    list: str | list[str] | list[dict[str, Any]] | list[AddressListItem]
-    tagging: str | list[str] | list[dict[str, Any]] | list[AddressTaggingItem]
+    list: str | list[str] | list[AddressListItem]
+    tagging: str | list[str] | list[AddressTaggingItem]
     allow_routing: Literal["enable", "disable"]
     passive_fqdn_learning: Literal["disable", "enable"]
     fabric_object: Literal["enable", "disable"]
@@ -291,7 +291,7 @@ class Address:
         route_tag: int | None = ...,
         sub_type: Literal["sdn", "clearpass-spt", "fsso", "rsso", "ems-tag", "fortivoice-tag", "fortinac-tag", "swc-tag", "device-identification", "external-resource", "obsolete"] | None = ...,
         clearpass_spt: Literal["unknown", "healthy", "quarantine", "checkup", "transient", "infected"] | None = ...,
-        macaddr: str | list[str] | list[dict[str, Any]] | list[AddressMacaddrItem] | None = ...,
+        macaddr: str | list[str] | list[AddressMacaddrItem] | None = ...,
         start_ip: str | None = ...,
         end_ip: str | None = ...,
         fqdn: str | None = ...,
@@ -300,8 +300,8 @@ class Address:
         cache_ttl: int | None = ...,
         wildcard: str | None = ...,
         sdn: str | None = ...,
-        fsso_group: str | list[str] | list[dict[str, Any]] | list[AddressFssogroupItem] | None = ...,
-        sso_attribute_value: str | list[str] | list[dict[str, Any]] | list[AddressSsoattributevalueItem] | None = ...,
+        fsso_group: str | list[str] | list[AddressFssogroupItem] | None = ...,
+        sso_attribute_value: str | list[str] | list[AddressSsoattributevalueItem] | None = ...,
         interface: str | None = ...,
         tenant: str | None = ...,
         organization: str | None = ...,
@@ -324,8 +324,8 @@ class Address:
         sdn_addr_type: Literal["private", "public", "all"] | None = ...,
         node_ip_only: Literal["enable", "disable"] | None = ...,
         obj_id: str | None = ...,
-        list: str | list[str] | list[dict[str, Any]] | list[AddressListItem] | None = ...,
-        tagging: str | list[str] | list[dict[str, Any]] | list[AddressTaggingItem] | None = ...,
+        list: str | list[str] | list[AddressListItem] | None = ...,
+        tagging: str | list[str] | list[AddressTaggingItem] | None = ...,
         allow_routing: Literal["enable", "disable"] | None = ...,
         passive_fqdn_learning: Literal["disable", "enable"] | None = ...,
         fabric_object: Literal["enable", "disable"] | None = ...,
@@ -348,7 +348,7 @@ class Address:
         route_tag: int | None = ...,
         sub_type: Literal["sdn", "clearpass-spt", "fsso", "rsso", "ems-tag", "fortivoice-tag", "fortinac-tag", "swc-tag", "device-identification", "external-resource", "obsolete"] | None = ...,
         clearpass_spt: Literal["unknown", "healthy", "quarantine", "checkup", "transient", "infected"] | None = ...,
-        macaddr: str | list[str] | list[dict[str, Any]] | list[AddressMacaddrItem] | None = ...,
+        macaddr: str | list[str] | list[AddressMacaddrItem] | None = ...,
         start_ip: str | None = ...,
         end_ip: str | None = ...,
         fqdn: str | None = ...,
@@ -357,8 +357,8 @@ class Address:
         cache_ttl: int | None = ...,
         wildcard: str | None = ...,
         sdn: str | None = ...,
-        fsso_group: str | list[str] | list[dict[str, Any]] | list[AddressFssogroupItem] | None = ...,
-        sso_attribute_value: str | list[str] | list[dict[str, Any]] | list[AddressSsoattributevalueItem] | None = ...,
+        fsso_group: str | list[str] | list[AddressFssogroupItem] | None = ...,
+        sso_attribute_value: str | list[str] | list[AddressSsoattributevalueItem] | None = ...,
         interface: str | None = ...,
         tenant: str | None = ...,
         organization: str | None = ...,
@@ -381,8 +381,8 @@ class Address:
         sdn_addr_type: Literal["private", "public", "all"] | None = ...,
         node_ip_only: Literal["enable", "disable"] | None = ...,
         obj_id: str | None = ...,
-        list: str | list[str] | list[dict[str, Any]] | list[AddressListItem] | None = ...,
-        tagging: str | list[str] | list[dict[str, Any]] | list[AddressTaggingItem] | None = ...,
+        list: str | list[str] | list[AddressListItem] | None = ...,
+        tagging: str | list[str] | list[AddressTaggingItem] | None = ...,
         allow_routing: Literal["enable", "disable"] | None = ...,
         passive_fqdn_learning: Literal["disable", "enable"] | None = ...,
         fabric_object: Literal["enable", "disable"] | None = ...,
@@ -423,7 +423,7 @@ class Address:
         route_tag: int | None = ...,
         sub_type: Literal["sdn", "clearpass-spt", "fsso", "rsso", "ems-tag", "fortivoice-tag", "fortinac-tag", "swc-tag", "device-identification", "external-resource", "obsolete"] | None = ...,
         clearpass_spt: Literal["unknown", "healthy", "quarantine", "checkup", "transient", "infected"] | None = ...,
-        macaddr: str | list[str] | list[dict[str, Any]] | list[AddressMacaddrItem] | None = ...,
+        macaddr: str | list[str] | list[AddressMacaddrItem] | None = ...,
         start_ip: str | None = ...,
         end_ip: str | None = ...,
         fqdn: str | None = ...,
@@ -432,8 +432,8 @@ class Address:
         cache_ttl: int | None = ...,
         wildcard: str | None = ...,
         sdn: str | None = ...,
-        fsso_group: str | list[str] | list[dict[str, Any]] | list[AddressFssogroupItem] | None = ...,
-        sso_attribute_value: str | list[str] | list[dict[str, Any]] | list[AddressSsoattributevalueItem] | None = ...,
+        fsso_group: str | list[str] | list[AddressFssogroupItem] | None = ...,
+        sso_attribute_value: str | list[str] | list[AddressSsoattributevalueItem] | None = ...,
         interface: str | None = ...,
         tenant: str | None = ...,
         organization: str | None = ...,
@@ -456,8 +456,8 @@ class Address:
         sdn_addr_type: Literal["private", "public", "all"] | None = ...,
         node_ip_only: Literal["enable", "disable"] | None = ...,
         obj_id: str | None = ...,
-        list: str | list[str] | list[dict[str, Any]] | list[AddressListItem] | None = ...,
-        tagging: str | list[str] | list[dict[str, Any]] | list[AddressTaggingItem] | None = ...,
+        list: str | list[str] | list[AddressListItem] | None = ...,
+        tagging: str | list[str] | list[AddressTaggingItem] | None = ...,
         allow_routing: Literal["enable", "disable"] | None = ...,
         passive_fqdn_learning: Literal["disable", "enable"] | None = ...,
         fabric_object: Literal["enable", "disable"] | None = ...,

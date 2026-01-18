@@ -26,15 +26,15 @@ from hfortix_fortios.models import (
 # TypedDict Payloads
 # ================================================================
 
-class StpInstanceVlanrangeItem:
-    """Nested item for vlan-range field - supports attribute access."""
+class StpInstanceVlanrangeItem(TypedDict, total=False):
+    """Nested item for vlan-range field."""
     vlan_name: str
 
 
 class StpInstancePayload(TypedDict, total=False):
     """Payload type for StpInstance operations."""
     id: str
-    vlan_range: str | list[str] | list[dict[str, Any]] | list[StpInstanceVlanrangeItem]
+    vlan_range: str | list[str] | list[StpInstanceVlanrangeItem]
 
 
 # ================================================================
@@ -135,7 +135,7 @@ class StpInstance:
         self,
         payload_dict: StpInstancePayload | None = ...,
         id: str | None = ...,
-        vlan_range: str | list[str] | list[dict[str, Any]] | list[StpInstanceVlanrangeItem] | None = ...,
+        vlan_range: str | list[str] | list[StpInstanceVlanrangeItem] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -149,7 +149,7 @@ class StpInstance:
         self,
         payload_dict: StpInstancePayload | None = ...,
         id: str | None = ...,
-        vlan_range: str | list[str] | list[dict[str, Any]] | list[StpInstanceVlanrangeItem] | None = ...,
+        vlan_range: str | list[str] | list[StpInstanceVlanrangeItem] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -181,7 +181,7 @@ class StpInstance:
         self,
         payload_dict: StpInstancePayload | None = ...,
         id: str | None = ...,
-        vlan_range: str | list[str] | list[dict[str, Any]] | list[StpInstanceVlanrangeItem] | None = ...,
+        vlan_range: str | list[str] | list[StpInstanceVlanrangeItem] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,

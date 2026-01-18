@@ -26,15 +26,15 @@ from hfortix_fortios.models import (
 # TypedDict Payloads
 # ================================================================
 
-class PeergrpMemberItem:
-    """Nested item for member field - supports attribute access."""
+class PeergrpMemberItem(TypedDict, total=False):
+    """Nested item for member field."""
     name: str
 
 
 class PeergrpPayload(TypedDict, total=False):
     """Payload type for Peergrp operations."""
     name: str
-    member: str | list[str] | list[dict[str, Any]] | list[PeergrpMemberItem]
+    member: str | list[str] | list[PeergrpMemberItem]
 
 
 # ================================================================
@@ -135,7 +135,7 @@ class Peergrp:
         self,
         payload_dict: PeergrpPayload | None = ...,
         name: str | None = ...,
-        member: str | list[str] | list[dict[str, Any]] | list[PeergrpMemberItem] | None = ...,
+        member: str | list[str] | list[PeergrpMemberItem] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -149,7 +149,7 @@ class Peergrp:
         self,
         payload_dict: PeergrpPayload | None = ...,
         name: str | None = ...,
-        member: str | list[str] | list[dict[str, Any]] | list[PeergrpMemberItem] | None = ...,
+        member: str | list[str] | list[PeergrpMemberItem] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -181,7 +181,7 @@ class Peergrp:
         self,
         payload_dict: PeergrpPayload | None = ...,
         name: str | None = ...,
-        member: str | list[str] | list[dict[str, Any]] | list[PeergrpMemberItem] | None = ...,
+        member: str | list[str] | list[PeergrpMemberItem] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,

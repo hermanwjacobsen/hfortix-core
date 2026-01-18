@@ -26,8 +26,8 @@ from hfortix_fortios.models import (
 # TypedDict Payloads
 # ================================================================
 
-class FssoPollingAdgrpItem:
-    """Nested item for adgrp field - supports attribute access."""
+class FssoPollingAdgrpItem(TypedDict, total=False):
+    """Nested item for adgrp field."""
     name: str
 
 
@@ -43,7 +43,7 @@ class FssoPollingPayload(TypedDict, total=False):
     ldap_server: str
     logon_history: int
     polling_frequency: int
-    adgrp: str | list[str] | list[dict[str, Any]] | list[FssoPollingAdgrpItem]
+    adgrp: str | list[str] | list[FssoPollingAdgrpItem]
     smbv1: Literal["enable", "disable"]
     smb_ntlmv1_auth: Literal["enable", "disable"]
 
@@ -177,7 +177,7 @@ class FssoPolling:
         ldap_server: str | None = ...,
         logon_history: int | None = ...,
         polling_frequency: int | None = ...,
-        adgrp: str | list[str] | list[dict[str, Any]] | list[FssoPollingAdgrpItem] | None = ...,
+        adgrp: str | list[str] | list[FssoPollingAdgrpItem] | None = ...,
         smbv1: Literal["enable", "disable"] | None = ...,
         smb_ntlmv1_auth: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
@@ -202,7 +202,7 @@ class FssoPolling:
         ldap_server: str | None = ...,
         logon_history: int | None = ...,
         polling_frequency: int | None = ...,
-        adgrp: str | list[str] | list[dict[str, Any]] | list[FssoPollingAdgrpItem] | None = ...,
+        adgrp: str | list[str] | list[FssoPollingAdgrpItem] | None = ...,
         smbv1: Literal["enable", "disable"] | None = ...,
         smb_ntlmv1_auth: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
@@ -245,7 +245,7 @@ class FssoPolling:
         ldap_server: str | None = ...,
         logon_history: int | None = ...,
         polling_frequency: int | None = ...,
-        adgrp: str | list[str] | list[dict[str, Any]] | list[FssoPollingAdgrpItem] | None = ...,
+        adgrp: str | list[str] | list[FssoPollingAdgrpItem] | None = ...,
         smbv1: Literal["enable", "disable"] | None = ...,
         smb_ntlmv1_auth: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,

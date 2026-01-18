@@ -26,8 +26,8 @@ from hfortix_fortios.models import (
 # TypedDict Payloads
 # ================================================================
 
-class MpskProfileMpskgroupItem:
-    """Nested item for mpsk-group field - supports attribute access."""
+class MpskProfileMpskgroupItem(TypedDict, total=False):
+    """Nested item for mpsk-group field."""
     name: str
     vlan_type: Literal["no-vlan", "fixed-vlan"]
     vlan_id: int
@@ -41,7 +41,7 @@ class MpskProfilePayload(TypedDict, total=False):
     mpsk_external_server_auth: Literal["enable", "disable"]
     mpsk_external_server: str
     mpsk_type: Literal["wpa2-personal", "wpa3-sae", "wpa3-sae-transition"]
-    mpsk_group: str | list[str] | list[dict[str, Any]] | list[MpskProfileMpskgroupItem]
+    mpsk_group: str | list[str] | list[MpskProfileMpskgroupItem]
 
 
 # ================================================================
@@ -154,7 +154,7 @@ class MpskProfile:
         mpsk_external_server_auth: Literal["enable", "disable"] | None = ...,
         mpsk_external_server: str | None = ...,
         mpsk_type: Literal["wpa2-personal", "wpa3-sae", "wpa3-sae-transition"] | None = ...,
-        mpsk_group: str | list[str] | list[dict[str, Any]] | list[MpskProfileMpskgroupItem] | None = ...,
+        mpsk_group: str | list[str] | list[MpskProfileMpskgroupItem] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -172,7 +172,7 @@ class MpskProfile:
         mpsk_external_server_auth: Literal["enable", "disable"] | None = ...,
         mpsk_external_server: str | None = ...,
         mpsk_type: Literal["wpa2-personal", "wpa3-sae", "wpa3-sae-transition"] | None = ...,
-        mpsk_group: str | list[str] | list[dict[str, Any]] | list[MpskProfileMpskgroupItem] | None = ...,
+        mpsk_group: str | list[str] | list[MpskProfileMpskgroupItem] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -208,7 +208,7 @@ class MpskProfile:
         mpsk_external_server_auth: Literal["enable", "disable"] | None = ...,
         mpsk_external_server: str | None = ...,
         mpsk_type: Literal["wpa2-personal", "wpa3-sae", "wpa3-sae-transition"] | None = ...,
-        mpsk_group: str | list[str] | list[dict[str, Any]] | list[MpskProfileMpskgroupItem] | None = ...,
+        mpsk_group: str | list[str] | list[MpskProfileMpskgroupItem] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,

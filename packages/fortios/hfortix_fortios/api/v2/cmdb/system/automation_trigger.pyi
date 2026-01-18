@@ -26,18 +26,18 @@ from hfortix_fortios.models import (
 # TypedDict Payloads
 # ================================================================
 
-class AutomationTriggerVdomItem:
-    """Nested item for vdom field - supports attribute access."""
+class AutomationTriggerVdomItem(TypedDict, total=False):
+    """Nested item for vdom field."""
     name: str
 
 
-class AutomationTriggerLogidItem:
-    """Nested item for logid field - supports attribute access."""
+class AutomationTriggerLogidItem(TypedDict, total=False):
+    """Nested item for logid field."""
     id: int
 
 
-class AutomationTriggerFieldsItem:
-    """Nested item for fields field - supports attribute access."""
+class AutomationTriggerFieldsItem(TypedDict, total=False):
+    """Nested item for fields field."""
     id: int
     name: str
     value: str
@@ -49,18 +49,18 @@ class AutomationTriggerPayload(TypedDict, total=False):
     description: str
     trigger_type: Literal["event-based", "scheduled"]
     event_type: Literal["ioc", "event-log", "reboot", "low-memory", "high-cpu", "license-near-expiry", "local-cert-near-expiry", "ha-failover", "config-change", "security-rating-summary", "virus-ips-db-updated", "faz-event", "incoming-webhook", "fabric-event", "ips-logs", "anomaly-logs", "virus-logs", "ssh-logs", "webfilter-violation", "traffic-violation", "stitch"]
-    vdom: str | list[str] | list[dict[str, Any]] | list[AutomationTriggerVdomItem]
+    vdom: str | list[str] | list[AutomationTriggerVdomItem]
     license_type: Literal["forticare-support", "fortiguard-webfilter", "fortiguard-antispam", "fortiguard-antivirus", "fortiguard-ips", "fortiguard-management", "forticloud", "any"]
     report_type: Literal["posture", "coverage", "optimization", "any"]
     stitch_name: str
-    logid: str | list[str] | list[dict[str, Any]] | list[AutomationTriggerLogidItem]
+    logid: str | list[str] | list[AutomationTriggerLogidItem]
     trigger_frequency: Literal["hourly", "daily", "weekly", "monthly", "once"]
     trigger_weekday: Literal["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"]
     trigger_day: int
     trigger_hour: int
     trigger_minute: int
     trigger_datetime: str
-    fields: str | list[str] | list[dict[str, Any]] | list[AutomationTriggerFieldsItem]
+    fields: str | list[str] | list[AutomationTriggerFieldsItem]
     faz_event_name: str
     faz_event_severity: str
     faz_event_tags: str
@@ -208,14 +208,14 @@ class AutomationTrigger:
         license_type: Literal["forticare-support", "fortiguard-webfilter", "fortiguard-antispam", "fortiguard-antivirus", "fortiguard-ips", "fortiguard-management", "forticloud", "any"] | None = ...,
         report_type: Literal["posture", "coverage", "optimization", "any"] | None = ...,
         stitch_name: str | None = ...,
-        logid: str | list[str] | list[dict[str, Any]] | list[AutomationTriggerLogidItem] | None = ...,
+        logid: str | list[str] | list[AutomationTriggerLogidItem] | None = ...,
         trigger_frequency: Literal["hourly", "daily", "weekly", "monthly", "once"] | None = ...,
         trigger_weekday: Literal["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"] | None = ...,
         trigger_day: int | None = ...,
         trigger_hour: int | None = ...,
         trigger_minute: int | None = ...,
         trigger_datetime: str | None = ...,
-        fields: str | list[str] | list[dict[str, Any]] | list[AutomationTriggerFieldsItem] | None = ...,
+        fields: str | list[str] | list[AutomationTriggerFieldsItem] | None = ...,
         faz_event_name: str | None = ...,
         faz_event_severity: str | None = ...,
         faz_event_tags: str | None = ...,
@@ -240,14 +240,14 @@ class AutomationTrigger:
         license_type: Literal["forticare-support", "fortiguard-webfilter", "fortiguard-antispam", "fortiguard-antivirus", "fortiguard-ips", "fortiguard-management", "forticloud", "any"] | None = ...,
         report_type: Literal["posture", "coverage", "optimization", "any"] | None = ...,
         stitch_name: str | None = ...,
-        logid: str | list[str] | list[dict[str, Any]] | list[AutomationTriggerLogidItem] | None = ...,
+        logid: str | list[str] | list[AutomationTriggerLogidItem] | None = ...,
         trigger_frequency: Literal["hourly", "daily", "weekly", "monthly", "once"] | None = ...,
         trigger_weekday: Literal["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"] | None = ...,
         trigger_day: int | None = ...,
         trigger_hour: int | None = ...,
         trigger_minute: int | None = ...,
         trigger_datetime: str | None = ...,
-        fields: str | list[str] | list[dict[str, Any]] | list[AutomationTriggerFieldsItem] | None = ...,
+        fields: str | list[str] | list[AutomationTriggerFieldsItem] | None = ...,
         faz_event_name: str | None = ...,
         faz_event_severity: str | None = ...,
         faz_event_tags: str | None = ...,
@@ -288,14 +288,14 @@ class AutomationTrigger:
         license_type: Literal["forticare-support", "fortiguard-webfilter", "fortiguard-antispam", "fortiguard-antivirus", "fortiguard-ips", "fortiguard-management", "forticloud", "any"] | None = ...,
         report_type: Literal["posture", "coverage", "optimization", "any"] | None = ...,
         stitch_name: str | None = ...,
-        logid: str | list[str] | list[dict[str, Any]] | list[AutomationTriggerLogidItem] | None = ...,
+        logid: str | list[str] | list[AutomationTriggerLogidItem] | None = ...,
         trigger_frequency: Literal["hourly", "daily", "weekly", "monthly", "once"] | None = ...,
         trigger_weekday: Literal["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"] | None = ...,
         trigger_day: int | None = ...,
         trigger_hour: int | None = ...,
         trigger_minute: int | None = ...,
         trigger_datetime: str | None = ...,
-        fields: str | list[str] | list[dict[str, Any]] | list[AutomationTriggerFieldsItem] | None = ...,
+        fields: str | list[str] | list[AutomationTriggerFieldsItem] | None = ...,
         faz_event_name: str | None = ...,
         faz_event_severity: str | None = ...,
         faz_event_tags: str | None = ...,

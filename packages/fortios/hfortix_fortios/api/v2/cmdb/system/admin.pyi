@@ -26,20 +26,20 @@ from hfortix_fortios.models import (
 # TypedDict Payloads
 # ================================================================
 
-class AdminVdomItem:
-    """Nested item for vdom field - supports attribute access."""
+class AdminVdomItem(TypedDict, total=False):
+    """Nested item for vdom field."""
     name: str
 
 
-class AdminGuestusergroupsItem:
-    """Nested item for guest-usergroups field - supports attribute access."""
+class AdminGuestusergroupsItem(TypedDict, total=False):
+    """Nested item for guest-usergroups field."""
     name: str
 
 
 class AdminPayload(TypedDict, total=False):
     """Payload type for Admin operations."""
     name: str
-    vdom: str | list[str] | list[dict[str, Any]] | list[AdminVdomItem]
+    vdom: str | list[str] | list[AdminVdomItem]
     remote_auth: Literal["enable", "disable"]
     remote_group: str
     wildcard: Literal["enable", "disable"]
@@ -87,7 +87,7 @@ class AdminPayload(TypedDict, total=False):
     sms_custom_server: str
     sms_phone: str
     guest_auth: Literal["disable", "enable"]
-    guest_usergroups: str | list[str] | list[dict[str, Any]] | list[AdminGuestusergroupsItem]
+    guest_usergroups: str | list[str] | list[AdminGuestusergroupsItem]
     guest_lang: str
     status: str
     list: str
@@ -338,7 +338,7 @@ class Admin:
         sms_custom_server: str | None = ...,
         sms_phone: str | None = ...,
         guest_auth: Literal["disable", "enable"] | None = ...,
-        guest_usergroups: str | list[str] | list[dict[str, Any]] | list[AdminGuestusergroupsItem] | None = ...,
+        guest_usergroups: str | list[str] | list[AdminGuestusergroupsItem] | None = ...,
         guest_lang: str | None = ...,
         status: str | None = ...,
         list: str | None = ...,
@@ -402,7 +402,7 @@ class Admin:
         sms_custom_server: str | None = ...,
         sms_phone: str | None = ...,
         guest_auth: Literal["disable", "enable"] | None = ...,
-        guest_usergroups: str | list[str] | list[dict[str, Any]] | list[AdminGuestusergroupsItem] | None = ...,
+        guest_usergroups: str | list[str] | list[AdminGuestusergroupsItem] | None = ...,
         guest_lang: str | None = ...,
         status: str | None = ...,
         list: str | None = ...,
@@ -484,7 +484,7 @@ class Admin:
         sms_custom_server: str | None = ...,
         sms_phone: str | None = ...,
         guest_auth: Literal["disable", "enable"] | None = ...,
-        guest_usergroups: str | list[str] | list[dict[str, Any]] | list[AdminGuestusergroupsItem] | None = ...,
+        guest_usergroups: str | list[str] | list[AdminGuestusergroupsItem] | None = ...,
         guest_lang: str | None = ...,
         status: str | None = ...,
         list: str | None = ...,

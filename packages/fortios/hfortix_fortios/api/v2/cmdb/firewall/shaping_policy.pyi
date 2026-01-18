@@ -26,118 +26,118 @@ from hfortix_fortios.models import (
 # TypedDict Payloads
 # ================================================================
 
-class ShapingPolicySrcaddrItem:
-    """Nested item for srcaddr field - supports attribute access."""
+class ShapingPolicySrcaddrItem(TypedDict, total=False):
+    """Nested item for srcaddr field."""
     name: str
 
 
-class ShapingPolicyDstaddrItem:
-    """Nested item for dstaddr field - supports attribute access."""
+class ShapingPolicyDstaddrItem(TypedDict, total=False):
+    """Nested item for dstaddr field."""
     name: str
 
 
-class ShapingPolicySrcaddr6Item:
-    """Nested item for srcaddr6 field - supports attribute access."""
+class ShapingPolicySrcaddr6Item(TypedDict, total=False):
+    """Nested item for srcaddr6 field."""
     name: str
 
 
-class ShapingPolicyDstaddr6Item:
-    """Nested item for dstaddr6 field - supports attribute access."""
+class ShapingPolicyDstaddr6Item(TypedDict, total=False):
+    """Nested item for dstaddr6 field."""
     name: str
 
 
-class ShapingPolicyInternetservicenameItem:
-    """Nested item for internet-service-name field - supports attribute access."""
+class ShapingPolicyInternetservicenameItem(TypedDict, total=False):
+    """Nested item for internet-service-name field."""
     name: str
 
 
-class ShapingPolicyInternetservicegroupItem:
-    """Nested item for internet-service-group field - supports attribute access."""
+class ShapingPolicyInternetservicegroupItem(TypedDict, total=False):
+    """Nested item for internet-service-group field."""
     name: str
 
 
-class ShapingPolicyInternetservicecustomItem:
-    """Nested item for internet-service-custom field - supports attribute access."""
+class ShapingPolicyInternetservicecustomItem(TypedDict, total=False):
+    """Nested item for internet-service-custom field."""
     name: str
 
 
-class ShapingPolicyInternetservicecustomgroupItem:
-    """Nested item for internet-service-custom-group field - supports attribute access."""
+class ShapingPolicyInternetservicecustomgroupItem(TypedDict, total=False):
+    """Nested item for internet-service-custom-group field."""
     name: str
 
 
-class ShapingPolicyInternetservicefortiguardItem:
-    """Nested item for internet-service-fortiguard field - supports attribute access."""
+class ShapingPolicyInternetservicefortiguardItem(TypedDict, total=False):
+    """Nested item for internet-service-fortiguard field."""
     name: str
 
 
-class ShapingPolicyInternetservicesrcnameItem:
-    """Nested item for internet-service-src-name field - supports attribute access."""
+class ShapingPolicyInternetservicesrcnameItem(TypedDict, total=False):
+    """Nested item for internet-service-src-name field."""
     name: str
 
 
-class ShapingPolicyInternetservicesrcgroupItem:
-    """Nested item for internet-service-src-group field - supports attribute access."""
+class ShapingPolicyInternetservicesrcgroupItem(TypedDict, total=False):
+    """Nested item for internet-service-src-group field."""
     name: str
 
 
-class ShapingPolicyInternetservicesrccustomItem:
-    """Nested item for internet-service-src-custom field - supports attribute access."""
+class ShapingPolicyInternetservicesrccustomItem(TypedDict, total=False):
+    """Nested item for internet-service-src-custom field."""
     name: str
 
 
-class ShapingPolicyInternetservicesrccustomgroupItem:
-    """Nested item for internet-service-src-custom-group field - supports attribute access."""
+class ShapingPolicyInternetservicesrccustomgroupItem(TypedDict, total=False):
+    """Nested item for internet-service-src-custom-group field."""
     name: str
 
 
-class ShapingPolicyInternetservicesrcfortiguardItem:
-    """Nested item for internet-service-src-fortiguard field - supports attribute access."""
+class ShapingPolicyInternetservicesrcfortiguardItem(TypedDict, total=False):
+    """Nested item for internet-service-src-fortiguard field."""
     name: str
 
 
-class ShapingPolicyServiceItem:
-    """Nested item for service field - supports attribute access."""
+class ShapingPolicyServiceItem(TypedDict, total=False):
+    """Nested item for service field."""
     name: str
 
 
-class ShapingPolicyUsersItem:
-    """Nested item for users field - supports attribute access."""
+class ShapingPolicyUsersItem(TypedDict, total=False):
+    """Nested item for users field."""
     name: str
 
 
-class ShapingPolicyGroupsItem:
-    """Nested item for groups field - supports attribute access."""
+class ShapingPolicyGroupsItem(TypedDict, total=False):
+    """Nested item for groups field."""
     name: str
 
 
-class ShapingPolicyApplicationItem:
-    """Nested item for application field - supports attribute access."""
+class ShapingPolicyApplicationItem(TypedDict, total=False):
+    """Nested item for application field."""
     id: int
 
 
-class ShapingPolicyAppcategoryItem:
-    """Nested item for app-category field - supports attribute access."""
+class ShapingPolicyAppcategoryItem(TypedDict, total=False):
+    """Nested item for app-category field."""
     id: int
 
 
-class ShapingPolicyAppgroupItem:
-    """Nested item for app-group field - supports attribute access."""
+class ShapingPolicyAppgroupItem(TypedDict, total=False):
+    """Nested item for app-group field."""
     name: str
 
 
-class ShapingPolicyUrlcategoryItem:
-    """Nested item for url-category field - supports attribute access."""
+class ShapingPolicyUrlcategoryItem(TypedDict, total=False):
+    """Nested item for url-category field."""
     id: int
 
 
-class ShapingPolicySrcintfItem:
-    """Nested item for srcintf field - supports attribute access."""
+class ShapingPolicySrcintfItem(TypedDict, total=False):
+    """Nested item for srcintf field."""
     name: str
 
 
-class ShapingPolicyDstintfItem:
-    """Nested item for dstintf field - supports attribute access."""
+class ShapingPolicyDstintfItem(TypedDict, total=False):
+    """Nested item for dstintf field."""
     name: str
 
 
@@ -150,32 +150,32 @@ class ShapingPolicyPayload(TypedDict, total=False):
     status: Literal["enable", "disable"]
     ip_version: Literal["4", "6"]
     traffic_type: Literal["forwarding", "local-in", "local-out"]
-    srcaddr: str | list[str] | list[dict[str, Any]] | list[ShapingPolicySrcaddrItem]
-    dstaddr: str | list[str] | list[dict[str, Any]] | list[ShapingPolicyDstaddrItem]
-    srcaddr6: str | list[str] | list[dict[str, Any]] | list[ShapingPolicySrcaddr6Item]
-    dstaddr6: str | list[str] | list[dict[str, Any]] | list[ShapingPolicyDstaddr6Item]
+    srcaddr: str | list[str] | list[ShapingPolicySrcaddrItem]
+    dstaddr: str | list[str] | list[ShapingPolicyDstaddrItem]
+    srcaddr6: str | list[str] | list[ShapingPolicySrcaddr6Item]
+    dstaddr6: str | list[str] | list[ShapingPolicyDstaddr6Item]
     internet_service: Literal["enable", "disable"]
-    internet_service_name: str | list[str] | list[dict[str, Any]] | list[ShapingPolicyInternetservicenameItem]
-    internet_service_group: str | list[str] | list[dict[str, Any]] | list[ShapingPolicyInternetservicegroupItem]
-    internet_service_custom: str | list[str] | list[dict[str, Any]] | list[ShapingPolicyInternetservicecustomItem]
-    internet_service_custom_group: str | list[str] | list[dict[str, Any]] | list[ShapingPolicyInternetservicecustomgroupItem]
-    internet_service_fortiguard: str | list[str] | list[dict[str, Any]] | list[ShapingPolicyInternetservicefortiguardItem]
+    internet_service_name: str | list[str] | list[ShapingPolicyInternetservicenameItem]
+    internet_service_group: str | list[str] | list[ShapingPolicyInternetservicegroupItem]
+    internet_service_custom: str | list[str] | list[ShapingPolicyInternetservicecustomItem]
+    internet_service_custom_group: str | list[str] | list[ShapingPolicyInternetservicecustomgroupItem]
+    internet_service_fortiguard: str | list[str] | list[ShapingPolicyInternetservicefortiguardItem]
     internet_service_src: Literal["enable", "disable"]
-    internet_service_src_name: str | list[str] | list[dict[str, Any]] | list[ShapingPolicyInternetservicesrcnameItem]
-    internet_service_src_group: str | list[str] | list[dict[str, Any]] | list[ShapingPolicyInternetservicesrcgroupItem]
-    internet_service_src_custom: str | list[str] | list[dict[str, Any]] | list[ShapingPolicyInternetservicesrccustomItem]
-    internet_service_src_custom_group: str | list[str] | list[dict[str, Any]] | list[ShapingPolicyInternetservicesrccustomgroupItem]
-    internet_service_src_fortiguard: str | list[str] | list[dict[str, Any]] | list[ShapingPolicyInternetservicesrcfortiguardItem]
-    service: str | list[str] | list[dict[str, Any]] | list[ShapingPolicyServiceItem]
+    internet_service_src_name: str | list[str] | list[ShapingPolicyInternetservicesrcnameItem]
+    internet_service_src_group: str | list[str] | list[ShapingPolicyInternetservicesrcgroupItem]
+    internet_service_src_custom: str | list[str] | list[ShapingPolicyInternetservicesrccustomItem]
+    internet_service_src_custom_group: str | list[str] | list[ShapingPolicyInternetservicesrccustomgroupItem]
+    internet_service_src_fortiguard: str | list[str] | list[ShapingPolicyInternetservicesrcfortiguardItem]
+    service: str | list[str] | list[ShapingPolicyServiceItem]
     schedule: str
-    users: str | list[str] | list[dict[str, Any]] | list[ShapingPolicyUsersItem]
-    groups: str | list[str] | list[dict[str, Any]] | list[ShapingPolicyGroupsItem]
-    application: str | list[str] | list[dict[str, Any]] | list[ShapingPolicyApplicationItem]
-    app_category: str | list[str] | list[dict[str, Any]] | list[ShapingPolicyAppcategoryItem]
-    app_group: str | list[str] | list[dict[str, Any]] | list[ShapingPolicyAppgroupItem]
-    url_category: str | list[str] | list[dict[str, Any]] | list[ShapingPolicyUrlcategoryItem]
-    srcintf: str | list[str] | list[dict[str, Any]] | list[ShapingPolicySrcintfItem]
-    dstintf: str | list[str] | list[dict[str, Any]] | list[ShapingPolicyDstintfItem]
+    users: str | list[str] | list[ShapingPolicyUsersItem]
+    groups: str | list[str] | list[ShapingPolicyGroupsItem]
+    application: str | list[str] | list[ShapingPolicyApplicationItem]
+    app_category: str | list[str] | list[ShapingPolicyAppcategoryItem]
+    app_group: str | list[str] | list[ShapingPolicyAppgroupItem]
+    url_category: str | list[str] | list[ShapingPolicyUrlcategoryItem]
+    srcintf: str | list[str] | list[ShapingPolicySrcintfItem]
+    dstintf: str | list[str] | list[ShapingPolicyDstintfItem]
     tos_mask: str
     tos: str
     tos_negate: Literal["enable", "disable"]
@@ -383,32 +383,32 @@ class ShapingPolicy:
         status: Literal["enable", "disable"] | None = ...,
         ip_version: Literal["4", "6"] | None = ...,
         traffic_type: Literal["forwarding", "local-in", "local-out"] | None = ...,
-        srcaddr: str | list[str] | list[dict[str, Any]] | list[ShapingPolicySrcaddrItem] | None = ...,
-        dstaddr: str | list[str] | list[dict[str, Any]] | list[ShapingPolicyDstaddrItem] | None = ...,
-        srcaddr6: str | list[str] | list[dict[str, Any]] | list[ShapingPolicySrcaddr6Item] | None = ...,
-        dstaddr6: str | list[str] | list[dict[str, Any]] | list[ShapingPolicyDstaddr6Item] | None = ...,
+        srcaddr: str | list[str] | list[ShapingPolicySrcaddrItem] | None = ...,
+        dstaddr: str | list[str] | list[ShapingPolicyDstaddrItem] | None = ...,
+        srcaddr6: str | list[str] | list[ShapingPolicySrcaddr6Item] | None = ...,
+        dstaddr6: str | list[str] | list[ShapingPolicyDstaddr6Item] | None = ...,
         internet_service: Literal["enable", "disable"] | None = ...,
-        internet_service_name: str | list[str] | list[dict[str, Any]] | list[ShapingPolicyInternetservicenameItem] | None = ...,
-        internet_service_group: str | list[str] | list[dict[str, Any]] | list[ShapingPolicyInternetservicegroupItem] | None = ...,
-        internet_service_custom: str | list[str] | list[dict[str, Any]] | list[ShapingPolicyInternetservicecustomItem] | None = ...,
-        internet_service_custom_group: str | list[str] | list[dict[str, Any]] | list[ShapingPolicyInternetservicecustomgroupItem] | None = ...,
-        internet_service_fortiguard: str | list[str] | list[dict[str, Any]] | list[ShapingPolicyInternetservicefortiguardItem] | None = ...,
+        internet_service_name: str | list[str] | list[ShapingPolicyInternetservicenameItem] | None = ...,
+        internet_service_group: str | list[str] | list[ShapingPolicyInternetservicegroupItem] | None = ...,
+        internet_service_custom: str | list[str] | list[ShapingPolicyInternetservicecustomItem] | None = ...,
+        internet_service_custom_group: str | list[str] | list[ShapingPolicyInternetservicecustomgroupItem] | None = ...,
+        internet_service_fortiguard: str | list[str] | list[ShapingPolicyInternetservicefortiguardItem] | None = ...,
         internet_service_src: Literal["enable", "disable"] | None = ...,
-        internet_service_src_name: str | list[str] | list[dict[str, Any]] | list[ShapingPolicyInternetservicesrcnameItem] | None = ...,
-        internet_service_src_group: str | list[str] | list[dict[str, Any]] | list[ShapingPolicyInternetservicesrcgroupItem] | None = ...,
-        internet_service_src_custom: str | list[str] | list[dict[str, Any]] | list[ShapingPolicyInternetservicesrccustomItem] | None = ...,
-        internet_service_src_custom_group: str | list[str] | list[dict[str, Any]] | list[ShapingPolicyInternetservicesrccustomgroupItem] | None = ...,
-        internet_service_src_fortiguard: str | list[str] | list[dict[str, Any]] | list[ShapingPolicyInternetservicesrcfortiguardItem] | None = ...,
-        service: str | list[str] | list[dict[str, Any]] | list[ShapingPolicyServiceItem] | None = ...,
+        internet_service_src_name: str | list[str] | list[ShapingPolicyInternetservicesrcnameItem] | None = ...,
+        internet_service_src_group: str | list[str] | list[ShapingPolicyInternetservicesrcgroupItem] | None = ...,
+        internet_service_src_custom: str | list[str] | list[ShapingPolicyInternetservicesrccustomItem] | None = ...,
+        internet_service_src_custom_group: str | list[str] | list[ShapingPolicyInternetservicesrccustomgroupItem] | None = ...,
+        internet_service_src_fortiguard: str | list[str] | list[ShapingPolicyInternetservicesrcfortiguardItem] | None = ...,
+        service: str | list[str] | list[ShapingPolicyServiceItem] | None = ...,
         schedule: str | None = ...,
-        users: str | list[str] | list[dict[str, Any]] | list[ShapingPolicyUsersItem] | None = ...,
-        groups: str | list[str] | list[dict[str, Any]] | list[ShapingPolicyGroupsItem] | None = ...,
-        application: str | list[str] | list[dict[str, Any]] | list[ShapingPolicyApplicationItem] | None = ...,
-        app_category: str | list[str] | list[dict[str, Any]] | list[ShapingPolicyAppcategoryItem] | None = ...,
-        app_group: str | list[str] | list[dict[str, Any]] | list[ShapingPolicyAppgroupItem] | None = ...,
-        url_category: str | list[str] | list[dict[str, Any]] | list[ShapingPolicyUrlcategoryItem] | None = ...,
-        srcintf: str | list[str] | list[dict[str, Any]] | list[ShapingPolicySrcintfItem] | None = ...,
-        dstintf: str | list[str] | list[dict[str, Any]] | list[ShapingPolicyDstintfItem] | None = ...,
+        users: str | list[str] | list[ShapingPolicyUsersItem] | None = ...,
+        groups: str | list[str] | list[ShapingPolicyGroupsItem] | None = ...,
+        application: str | list[str] | list[ShapingPolicyApplicationItem] | None = ...,
+        app_category: str | list[str] | list[ShapingPolicyAppcategoryItem] | None = ...,
+        app_group: str | list[str] | list[ShapingPolicyAppgroupItem] | None = ...,
+        url_category: str | list[str] | list[ShapingPolicyUrlcategoryItem] | None = ...,
+        srcintf: str | list[str] | list[ShapingPolicySrcintfItem] | None = ...,
+        dstintf: str | list[str] | list[ShapingPolicyDstintfItem] | None = ...,
         tos_mask: str | None = ...,
         tos: str | None = ...,
         tos_negate: Literal["enable", "disable"] | None = ...,
@@ -441,32 +441,32 @@ class ShapingPolicy:
         status: Literal["enable", "disable"] | None = ...,
         ip_version: Literal["4", "6"] | None = ...,
         traffic_type: Literal["forwarding", "local-in", "local-out"] | None = ...,
-        srcaddr: str | list[str] | list[dict[str, Any]] | list[ShapingPolicySrcaddrItem] | None = ...,
-        dstaddr: str | list[str] | list[dict[str, Any]] | list[ShapingPolicyDstaddrItem] | None = ...,
-        srcaddr6: str | list[str] | list[dict[str, Any]] | list[ShapingPolicySrcaddr6Item] | None = ...,
-        dstaddr6: str | list[str] | list[dict[str, Any]] | list[ShapingPolicyDstaddr6Item] | None = ...,
+        srcaddr: str | list[str] | list[ShapingPolicySrcaddrItem] | None = ...,
+        dstaddr: str | list[str] | list[ShapingPolicyDstaddrItem] | None = ...,
+        srcaddr6: str | list[str] | list[ShapingPolicySrcaddr6Item] | None = ...,
+        dstaddr6: str | list[str] | list[ShapingPolicyDstaddr6Item] | None = ...,
         internet_service: Literal["enable", "disable"] | None = ...,
-        internet_service_name: str | list[str] | list[dict[str, Any]] | list[ShapingPolicyInternetservicenameItem] | None = ...,
-        internet_service_group: str | list[str] | list[dict[str, Any]] | list[ShapingPolicyInternetservicegroupItem] | None = ...,
-        internet_service_custom: str | list[str] | list[dict[str, Any]] | list[ShapingPolicyInternetservicecustomItem] | None = ...,
-        internet_service_custom_group: str | list[str] | list[dict[str, Any]] | list[ShapingPolicyInternetservicecustomgroupItem] | None = ...,
-        internet_service_fortiguard: str | list[str] | list[dict[str, Any]] | list[ShapingPolicyInternetservicefortiguardItem] | None = ...,
+        internet_service_name: str | list[str] | list[ShapingPolicyInternetservicenameItem] | None = ...,
+        internet_service_group: str | list[str] | list[ShapingPolicyInternetservicegroupItem] | None = ...,
+        internet_service_custom: str | list[str] | list[ShapingPolicyInternetservicecustomItem] | None = ...,
+        internet_service_custom_group: str | list[str] | list[ShapingPolicyInternetservicecustomgroupItem] | None = ...,
+        internet_service_fortiguard: str | list[str] | list[ShapingPolicyInternetservicefortiguardItem] | None = ...,
         internet_service_src: Literal["enable", "disable"] | None = ...,
-        internet_service_src_name: str | list[str] | list[dict[str, Any]] | list[ShapingPolicyInternetservicesrcnameItem] | None = ...,
-        internet_service_src_group: str | list[str] | list[dict[str, Any]] | list[ShapingPolicyInternetservicesrcgroupItem] | None = ...,
-        internet_service_src_custom: str | list[str] | list[dict[str, Any]] | list[ShapingPolicyInternetservicesrccustomItem] | None = ...,
-        internet_service_src_custom_group: str | list[str] | list[dict[str, Any]] | list[ShapingPolicyInternetservicesrccustomgroupItem] | None = ...,
-        internet_service_src_fortiguard: str | list[str] | list[dict[str, Any]] | list[ShapingPolicyInternetservicesrcfortiguardItem] | None = ...,
-        service: str | list[str] | list[dict[str, Any]] | list[ShapingPolicyServiceItem] | None = ...,
+        internet_service_src_name: str | list[str] | list[ShapingPolicyInternetservicesrcnameItem] | None = ...,
+        internet_service_src_group: str | list[str] | list[ShapingPolicyInternetservicesrcgroupItem] | None = ...,
+        internet_service_src_custom: str | list[str] | list[ShapingPolicyInternetservicesrccustomItem] | None = ...,
+        internet_service_src_custom_group: str | list[str] | list[ShapingPolicyInternetservicesrccustomgroupItem] | None = ...,
+        internet_service_src_fortiguard: str | list[str] | list[ShapingPolicyInternetservicesrcfortiguardItem] | None = ...,
+        service: str | list[str] | list[ShapingPolicyServiceItem] | None = ...,
         schedule: str | None = ...,
-        users: str | list[str] | list[dict[str, Any]] | list[ShapingPolicyUsersItem] | None = ...,
-        groups: str | list[str] | list[dict[str, Any]] | list[ShapingPolicyGroupsItem] | None = ...,
-        application: str | list[str] | list[dict[str, Any]] | list[ShapingPolicyApplicationItem] | None = ...,
-        app_category: str | list[str] | list[dict[str, Any]] | list[ShapingPolicyAppcategoryItem] | None = ...,
-        app_group: str | list[str] | list[dict[str, Any]] | list[ShapingPolicyAppgroupItem] | None = ...,
-        url_category: str | list[str] | list[dict[str, Any]] | list[ShapingPolicyUrlcategoryItem] | None = ...,
-        srcintf: str | list[str] | list[dict[str, Any]] | list[ShapingPolicySrcintfItem] | None = ...,
-        dstintf: str | list[str] | list[dict[str, Any]] | list[ShapingPolicyDstintfItem] | None = ...,
+        users: str | list[str] | list[ShapingPolicyUsersItem] | None = ...,
+        groups: str | list[str] | list[ShapingPolicyGroupsItem] | None = ...,
+        application: str | list[str] | list[ShapingPolicyApplicationItem] | None = ...,
+        app_category: str | list[str] | list[ShapingPolicyAppcategoryItem] | None = ...,
+        app_group: str | list[str] | list[ShapingPolicyAppgroupItem] | None = ...,
+        url_category: str | list[str] | list[ShapingPolicyUrlcategoryItem] | None = ...,
+        srcintf: str | list[str] | list[ShapingPolicySrcintfItem] | None = ...,
+        dstintf: str | list[str] | list[ShapingPolicyDstintfItem] | None = ...,
         tos_mask: str | None = ...,
         tos: str | None = ...,
         tos_negate: Literal["enable", "disable"] | None = ...,
@@ -517,32 +517,32 @@ class ShapingPolicy:
         status: Literal["enable", "disable"] | None = ...,
         ip_version: Literal["4", "6"] | None = ...,
         traffic_type: Literal["forwarding", "local-in", "local-out"] | None = ...,
-        srcaddr: str | list[str] | list[dict[str, Any]] | list[ShapingPolicySrcaddrItem] | None = ...,
-        dstaddr: str | list[str] | list[dict[str, Any]] | list[ShapingPolicyDstaddrItem] | None = ...,
-        srcaddr6: str | list[str] | list[dict[str, Any]] | list[ShapingPolicySrcaddr6Item] | None = ...,
-        dstaddr6: str | list[str] | list[dict[str, Any]] | list[ShapingPolicyDstaddr6Item] | None = ...,
+        srcaddr: str | list[str] | list[ShapingPolicySrcaddrItem] | None = ...,
+        dstaddr: str | list[str] | list[ShapingPolicyDstaddrItem] | None = ...,
+        srcaddr6: str | list[str] | list[ShapingPolicySrcaddr6Item] | None = ...,
+        dstaddr6: str | list[str] | list[ShapingPolicyDstaddr6Item] | None = ...,
         internet_service: Literal["enable", "disable"] | None = ...,
-        internet_service_name: str | list[str] | list[dict[str, Any]] | list[ShapingPolicyInternetservicenameItem] | None = ...,
-        internet_service_group: str | list[str] | list[dict[str, Any]] | list[ShapingPolicyInternetservicegroupItem] | None = ...,
-        internet_service_custom: str | list[str] | list[dict[str, Any]] | list[ShapingPolicyInternetservicecustomItem] | None = ...,
-        internet_service_custom_group: str | list[str] | list[dict[str, Any]] | list[ShapingPolicyInternetservicecustomgroupItem] | None = ...,
-        internet_service_fortiguard: str | list[str] | list[dict[str, Any]] | list[ShapingPolicyInternetservicefortiguardItem] | None = ...,
+        internet_service_name: str | list[str] | list[ShapingPolicyInternetservicenameItem] | None = ...,
+        internet_service_group: str | list[str] | list[ShapingPolicyInternetservicegroupItem] | None = ...,
+        internet_service_custom: str | list[str] | list[ShapingPolicyInternetservicecustomItem] | None = ...,
+        internet_service_custom_group: str | list[str] | list[ShapingPolicyInternetservicecustomgroupItem] | None = ...,
+        internet_service_fortiguard: str | list[str] | list[ShapingPolicyInternetservicefortiguardItem] | None = ...,
         internet_service_src: Literal["enable", "disable"] | None = ...,
-        internet_service_src_name: str | list[str] | list[dict[str, Any]] | list[ShapingPolicyInternetservicesrcnameItem] | None = ...,
-        internet_service_src_group: str | list[str] | list[dict[str, Any]] | list[ShapingPolicyInternetservicesrcgroupItem] | None = ...,
-        internet_service_src_custom: str | list[str] | list[dict[str, Any]] | list[ShapingPolicyInternetservicesrccustomItem] | None = ...,
-        internet_service_src_custom_group: str | list[str] | list[dict[str, Any]] | list[ShapingPolicyInternetservicesrccustomgroupItem] | None = ...,
-        internet_service_src_fortiguard: str | list[str] | list[dict[str, Any]] | list[ShapingPolicyInternetservicesrcfortiguardItem] | None = ...,
-        service: str | list[str] | list[dict[str, Any]] | list[ShapingPolicyServiceItem] | None = ...,
+        internet_service_src_name: str | list[str] | list[ShapingPolicyInternetservicesrcnameItem] | None = ...,
+        internet_service_src_group: str | list[str] | list[ShapingPolicyInternetservicesrcgroupItem] | None = ...,
+        internet_service_src_custom: str | list[str] | list[ShapingPolicyInternetservicesrccustomItem] | None = ...,
+        internet_service_src_custom_group: str | list[str] | list[ShapingPolicyInternetservicesrccustomgroupItem] | None = ...,
+        internet_service_src_fortiguard: str | list[str] | list[ShapingPolicyInternetservicesrcfortiguardItem] | None = ...,
+        service: str | list[str] | list[ShapingPolicyServiceItem] | None = ...,
         schedule: str | None = ...,
-        users: str | list[str] | list[dict[str, Any]] | list[ShapingPolicyUsersItem] | None = ...,
-        groups: str | list[str] | list[dict[str, Any]] | list[ShapingPolicyGroupsItem] | None = ...,
-        application: str | list[str] | list[dict[str, Any]] | list[ShapingPolicyApplicationItem] | None = ...,
-        app_category: str | list[str] | list[dict[str, Any]] | list[ShapingPolicyAppcategoryItem] | None = ...,
-        app_group: str | list[str] | list[dict[str, Any]] | list[ShapingPolicyAppgroupItem] | None = ...,
-        url_category: str | list[str] | list[dict[str, Any]] | list[ShapingPolicyUrlcategoryItem] | None = ...,
-        srcintf: str | list[str] | list[dict[str, Any]] | list[ShapingPolicySrcintfItem] | None = ...,
-        dstintf: str | list[str] | list[dict[str, Any]] | list[ShapingPolicyDstintfItem] | None = ...,
+        users: str | list[str] | list[ShapingPolicyUsersItem] | None = ...,
+        groups: str | list[str] | list[ShapingPolicyGroupsItem] | None = ...,
+        application: str | list[str] | list[ShapingPolicyApplicationItem] | None = ...,
+        app_category: str | list[str] | list[ShapingPolicyAppcategoryItem] | None = ...,
+        app_group: str | list[str] | list[ShapingPolicyAppgroupItem] | None = ...,
+        url_category: str | list[str] | list[ShapingPolicyUrlcategoryItem] | None = ...,
+        srcintf: str | list[str] | list[ShapingPolicySrcintfItem] | None = ...,
+        dstintf: str | list[str] | list[ShapingPolicyDstintfItem] | None = ...,
         tos_mask: str | None = ...,
         tos: str | None = ...,
         tos_negate: Literal["enable", "disable"] | None = ...,

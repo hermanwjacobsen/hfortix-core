@@ -26,8 +26,8 @@ from hfortix_fortios.models import (
 # TypedDict Payloads
 # ================================================================
 
-class SensorEntriesItem:
-    """Nested item for entries field - supports attribute access."""
+class SensorEntriesItem(TypedDict, total=False):
+    """Nested item for entries field."""
     id: int
     rule: str | list[str]
     location: str | list[str]
@@ -63,7 +63,7 @@ class SensorPayload(TypedDict, total=False):
     block_malicious_url: Literal["disable", "enable"]
     scan_botnet_connections: Literal["disable", "block", "monitor"]
     extended_log: Literal["enable", "disable"]
-    entries: str | list[str] | list[dict[str, Any]] | list[SensorEntriesItem]
+    entries: str | list[str] | list[SensorEntriesItem]
 
 
 # ================================================================
@@ -179,7 +179,7 @@ class Sensor:
         block_malicious_url: Literal["disable", "enable"] | None = ...,
         scan_botnet_connections: Literal["disable", "block", "monitor"] | None = ...,
         extended_log: Literal["enable", "disable"] | None = ...,
-        entries: str | list[str] | list[dict[str, Any]] | list[SensorEntriesItem] | None = ...,
+        entries: str | list[str] | list[SensorEntriesItem] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -198,7 +198,7 @@ class Sensor:
         block_malicious_url: Literal["disable", "enable"] | None = ...,
         scan_botnet_connections: Literal["disable", "block", "monitor"] | None = ...,
         extended_log: Literal["enable", "disable"] | None = ...,
-        entries: str | list[str] | list[dict[str, Any]] | list[SensorEntriesItem] | None = ...,
+        entries: str | list[str] | list[SensorEntriesItem] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -235,7 +235,7 @@ class Sensor:
         block_malicious_url: Literal["disable", "enable"] | None = ...,
         scan_botnet_connections: Literal["disable", "block", "monitor"] | None = ...,
         extended_log: Literal["enable", "disable"] | None = ...,
-        entries: str | list[str] | list[dict[str, Any]] | list[SensorEntriesItem] | None = ...,
+        entries: str | list[str] | list[SensorEntriesItem] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,

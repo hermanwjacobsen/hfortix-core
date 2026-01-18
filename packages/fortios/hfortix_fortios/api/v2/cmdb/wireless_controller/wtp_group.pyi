@@ -26,8 +26,8 @@ from hfortix_fortios.models import (
 # TypedDict Payloads
 # ================================================================
 
-class WtpGroupWtpsItem:
-    """Nested item for wtps field - supports attribute access."""
+class WtpGroupWtpsItem(TypedDict, total=False):
+    """Nested item for wtps field."""
     wtp_id: str
 
 
@@ -36,7 +36,7 @@ class WtpGroupPayload(TypedDict, total=False):
     name: str
     platform_type: Literal["AP-11N", "C24JE", "421E", "423E", "221E", "222E", "223E", "224E", "231E", "321E", "431F", "431FL", "432F", "432FR", "433F", "433FL", "231F", "231FL", "234F", "23JF", "831F", "231G", "233G", "234G", "431G", "432G", "433G", "231K", "231KD", "23JK", "222KL", "241K", "243K", "244K", "441K", "432K", "443K", "U421E", "U422EV", "U423E", "U221EV", "U223EV", "U24JEV", "U321EV", "U323EV", "U431F", "U433F", "U231F", "U234F", "U432F", "U231G", "MVP"]
     ble_major_id: int
-    wtps: str | list[str] | list[dict[str, Any]] | list[WtpGroupWtpsItem]
+    wtps: str | list[str] | list[WtpGroupWtpsItem]
 
 
 # ================================================================
@@ -143,7 +143,7 @@ class WtpGroup:
         name: str | None = ...,
         platform_type: Literal["AP-11N", "C24JE", "421E", "423E", "221E", "222E", "223E", "224E", "231E", "321E", "431F", "431FL", "432F", "432FR", "433F", "433FL", "231F", "231FL", "234F", "23JF", "831F", "231G", "233G", "234G", "431G", "432G", "433G", "231K", "231KD", "23JK", "222KL", "241K", "243K", "244K", "441K", "432K", "443K", "U421E", "U422EV", "U423E", "U221EV", "U223EV", "U24JEV", "U321EV", "U323EV", "U431F", "U433F", "U231F", "U234F", "U432F", "U231G", "MVP"] | None = ...,
         ble_major_id: int | None = ...,
-        wtps: str | list[str] | list[dict[str, Any]] | list[WtpGroupWtpsItem] | None = ...,
+        wtps: str | list[str] | list[WtpGroupWtpsItem] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -159,7 +159,7 @@ class WtpGroup:
         name: str | None = ...,
         platform_type: Literal["AP-11N", "C24JE", "421E", "423E", "221E", "222E", "223E", "224E", "231E", "321E", "431F", "431FL", "432F", "432FR", "433F", "433FL", "231F", "231FL", "234F", "23JF", "831F", "231G", "233G", "234G", "431G", "432G", "433G", "231K", "231KD", "23JK", "222KL", "241K", "243K", "244K", "441K", "432K", "443K", "U421E", "U422EV", "U423E", "U221EV", "U223EV", "U24JEV", "U321EV", "U323EV", "U431F", "U433F", "U231F", "U234F", "U432F", "U231G", "MVP"] | None = ...,
         ble_major_id: int | None = ...,
-        wtps: str | list[str] | list[dict[str, Any]] | list[WtpGroupWtpsItem] | None = ...,
+        wtps: str | list[str] | list[WtpGroupWtpsItem] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -193,7 +193,7 @@ class WtpGroup:
         name: str | None = ...,
         platform_type: Literal["AP-11N", "C24JE", "421E", "423E", "221E", "222E", "223E", "224E", "231E", "321E", "431F", "431FL", "432F", "432FR", "433F", "433FL", "231F", "231FL", "234F", "23JF", "831F", "231G", "233G", "234G", "431G", "432G", "433G", "231K", "231KD", "23JK", "222KL", "241K", "243K", "244K", "441K", "432K", "443K", "U421E", "U422EV", "U423E", "U221EV", "U223EV", "U24JEV", "U321EV", "U323EV", "U431F", "U433F", "U231F", "U234F", "U432F", "U231G", "MVP"] | None = ...,
         ble_major_id: int | None = ...,
-        wtps: str | list[str] | list[dict[str, Any]] | list[WtpGroupWtpsItem] | None = ...,
+        wtps: str | list[str] | list[WtpGroupWtpsItem] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,

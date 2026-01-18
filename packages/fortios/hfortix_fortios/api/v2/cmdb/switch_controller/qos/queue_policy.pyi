@@ -26,8 +26,8 @@ from hfortix_fortios.models import (
 # TypedDict Payloads
 # ================================================================
 
-class QueuePolicyCosqueueItem:
-    """Nested item for cos-queue field - supports attribute access."""
+class QueuePolicyCosqueueItem(TypedDict, total=False):
+    """Nested item for cos-queue field."""
     name: str
     description: str
     min_rate: int
@@ -44,7 +44,7 @@ class QueuePolicyPayload(TypedDict, total=False):
     name: str
     schedule: Literal["strict", "round-robin", "weighted"]
     rate_by: Literal["kbps", "percent"]
-    cos_queue: str | list[str] | list[dict[str, Any]] | list[QueuePolicyCosqueueItem]
+    cos_queue: str | list[str] | list[QueuePolicyCosqueueItem]
 
 
 # ================================================================
@@ -151,7 +151,7 @@ class QueuePolicy:
         name: str | None = ...,
         schedule: Literal["strict", "round-robin", "weighted"] | None = ...,
         rate_by: Literal["kbps", "percent"] | None = ...,
-        cos_queue: str | list[str] | list[dict[str, Any]] | list[QueuePolicyCosqueueItem] | None = ...,
+        cos_queue: str | list[str] | list[QueuePolicyCosqueueItem] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -167,7 +167,7 @@ class QueuePolicy:
         name: str | None = ...,
         schedule: Literal["strict", "round-robin", "weighted"] | None = ...,
         rate_by: Literal["kbps", "percent"] | None = ...,
-        cos_queue: str | list[str] | list[dict[str, Any]] | list[QueuePolicyCosqueueItem] | None = ...,
+        cos_queue: str | list[str] | list[QueuePolicyCosqueueItem] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -201,7 +201,7 @@ class QueuePolicy:
         name: str | None = ...,
         schedule: Literal["strict", "round-robin", "weighted"] | None = ...,
         rate_by: Literal["kbps", "percent"] | None = ...,
-        cos_queue: str | list[str] | list[dict[str, Any]] | list[QueuePolicyCosqueueItem] | None = ...,
+        cos_queue: str | list[str] | list[QueuePolicyCosqueueItem] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,

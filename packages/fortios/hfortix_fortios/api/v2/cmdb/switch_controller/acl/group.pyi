@@ -26,15 +26,15 @@ from hfortix_fortios.models import (
 # TypedDict Payloads
 # ================================================================
 
-class GroupIngressItem:
-    """Nested item for ingress field - supports attribute access."""
+class GroupIngressItem(TypedDict, total=False):
+    """Nested item for ingress field."""
     id: int
 
 
 class GroupPayload(TypedDict, total=False):
     """Payload type for Group operations."""
     name: str
-    ingress: str | list[str] | list[dict[str, Any]] | list[GroupIngressItem]
+    ingress: str | list[str] | list[GroupIngressItem]
 
 
 # ================================================================
@@ -135,7 +135,7 @@ class Group:
         self,
         payload_dict: GroupPayload | None = ...,
         name: str | None = ...,
-        ingress: str | list[str] | list[dict[str, Any]] | list[GroupIngressItem] | None = ...,
+        ingress: str | list[str] | list[GroupIngressItem] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -149,7 +149,7 @@ class Group:
         self,
         payload_dict: GroupPayload | None = ...,
         name: str | None = ...,
-        ingress: str | list[str] | list[dict[str, Any]] | list[GroupIngressItem] | None = ...,
+        ingress: str | list[str] | list[GroupIngressItem] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -181,7 +181,7 @@ class Group:
         self,
         payload_dict: GroupPayload | None = ...,
         name: str | None = ...,
-        ingress: str | list[str] | list[dict[str, Any]] | list[GroupIngressItem] | None = ...,
+        ingress: str | list[str] | list[GroupIngressItem] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,

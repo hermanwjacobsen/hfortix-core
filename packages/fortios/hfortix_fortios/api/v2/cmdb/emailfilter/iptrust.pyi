@@ -26,8 +26,8 @@ from hfortix_fortios.models import (
 # TypedDict Payloads
 # ================================================================
 
-class IptrustEntriesItem:
-    """Nested item for entries field - supports attribute access."""
+class IptrustEntriesItem(TypedDict, total=False):
+    """Nested item for entries field."""
     status: Literal["enable", "disable"]
     id: int
     addr_type: Literal["ipv4", "ipv6"]
@@ -40,7 +40,7 @@ class IptrustPayload(TypedDict, total=False):
     id: int
     name: str
     comment: str
-    entries: str | list[str] | list[dict[str, Any]] | list[IptrustEntriesItem]
+    entries: str | list[str] | list[IptrustEntriesItem]
 
 
 # ================================================================
@@ -147,7 +147,7 @@ class Iptrust:
         id: int | None = ...,
         name: str | None = ...,
         comment: str | None = ...,
-        entries: str | list[str] | list[dict[str, Any]] | list[IptrustEntriesItem] | None = ...,
+        entries: str | list[str] | list[IptrustEntriesItem] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -163,7 +163,7 @@ class Iptrust:
         id: int | None = ...,
         name: str | None = ...,
         comment: str | None = ...,
-        entries: str | list[str] | list[dict[str, Any]] | list[IptrustEntriesItem] | None = ...,
+        entries: str | list[str] | list[IptrustEntriesItem] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -197,7 +197,7 @@ class Iptrust:
         id: int | None = ...,
         name: str | None = ...,
         comment: str | None = ...,
-        entries: str | list[str] | list[dict[str, Any]] | list[IptrustEntriesItem] | None = ...,
+        entries: str | list[str] | list[IptrustEntriesItem] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,

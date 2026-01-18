@@ -26,8 +26,8 @@ from hfortix_fortios.models import (
 # TypedDict Payloads
 # ================================================================
 
-class ArrpProfileDarrpoptimizeschedulesItem:
-    """Nested item for darrp-optimize-schedules field - supports attribute access."""
+class ArrpProfileDarrpoptimizeschedulesItem(TypedDict, total=False):
+    """Nested item for darrp-optimize-schedules field."""
     name: str
 
 
@@ -54,7 +54,7 @@ class ArrpProfilePayload(TypedDict, total=False):
     include_dfs_channel: Literal["enable", "disable"]
     override_darrp_optimize: Literal["enable", "disable"]
     darrp_optimize: int
-    darrp_optimize_schedules: str | list[str] | list[dict[str, Any]] | list[ArrpProfileDarrpoptimizeschedulesItem]
+    darrp_optimize_schedules: str | list[str] | list[ArrpProfileDarrpoptimizeschedulesItem]
 
 
 # ================================================================
@@ -215,7 +215,7 @@ class ArrpProfile:
         include_dfs_channel: Literal["enable", "disable"] | None = ...,
         override_darrp_optimize: Literal["enable", "disable"] | None = ...,
         darrp_optimize: int | None = ...,
-        darrp_optimize_schedules: str | list[str] | list[dict[str, Any]] | list[ArrpProfileDarrpoptimizeschedulesItem] | None = ...,
+        darrp_optimize_schedules: str | list[str] | list[ArrpProfileDarrpoptimizeschedulesItem] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -249,7 +249,7 @@ class ArrpProfile:
         include_dfs_channel: Literal["enable", "disable"] | None = ...,
         override_darrp_optimize: Literal["enable", "disable"] | None = ...,
         darrp_optimize: int | None = ...,
-        darrp_optimize_schedules: str | list[str] | list[dict[str, Any]] | list[ArrpProfileDarrpoptimizeschedulesItem] | None = ...,
+        darrp_optimize_schedules: str | list[str] | list[ArrpProfileDarrpoptimizeschedulesItem] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -301,7 +301,7 @@ class ArrpProfile:
         include_dfs_channel: Literal["enable", "disable"] | None = ...,
         override_darrp_optimize: Literal["enable", "disable"] | None = ...,
         darrp_optimize: int | None = ...,
-        darrp_optimize_schedules: str | list[str] | list[dict[str, Any]] | list[ArrpProfileDarrpoptimizeschedulesItem] | None = ...,
+        darrp_optimize_schedules: str | list[str] | list[ArrpProfileDarrpoptimizeschedulesItem] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,

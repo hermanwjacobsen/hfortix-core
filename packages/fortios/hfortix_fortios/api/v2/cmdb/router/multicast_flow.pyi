@@ -26,8 +26,8 @@ from hfortix_fortios.models import (
 # TypedDict Payloads
 # ================================================================
 
-class MulticastFlowFlowsItem:
-    """Nested item for flows field - supports attribute access."""
+class MulticastFlowFlowsItem(TypedDict, total=False):
+    """Nested item for flows field."""
     id: int
     group_addr: str
     source_addr: str
@@ -37,7 +37,7 @@ class MulticastFlowPayload(TypedDict, total=False):
     """Payload type for MulticastFlow operations."""
     name: str
     comments: str
-    flows: str | list[str] | list[dict[str, Any]] | list[MulticastFlowFlowsItem]
+    flows: str | list[str] | list[MulticastFlowFlowsItem]
 
 
 # ================================================================
@@ -141,7 +141,7 @@ class MulticastFlow:
         payload_dict: MulticastFlowPayload | None = ...,
         name: str | None = ...,
         comments: str | None = ...,
-        flows: str | list[str] | list[dict[str, Any]] | list[MulticastFlowFlowsItem] | None = ...,
+        flows: str | list[str] | list[MulticastFlowFlowsItem] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -156,7 +156,7 @@ class MulticastFlow:
         payload_dict: MulticastFlowPayload | None = ...,
         name: str | None = ...,
         comments: str | None = ...,
-        flows: str | list[str] | list[dict[str, Any]] | list[MulticastFlowFlowsItem] | None = ...,
+        flows: str | list[str] | list[MulticastFlowFlowsItem] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -189,7 +189,7 @@ class MulticastFlow:
         payload_dict: MulticastFlowPayload | None = ...,
         name: str | None = ...,
         comments: str | None = ...,
-        flows: str | list[str] | list[dict[str, Any]] | list[MulticastFlowFlowsItem] | None = ...,
+        flows: str | list[str] | list[MulticastFlowFlowsItem] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,

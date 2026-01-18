@@ -26,8 +26,8 @@ from hfortix_fortios.models import (
 # TypedDict Payloads
 # ================================================================
 
-class ProfileRuleItem:
-    """Nested item for rule field - supports attribute access."""
+class ProfileRuleItem(TypedDict, total=False):
+    """Nested item for rule field."""
     id: int
     name: str
     severity: Literal["info", "low", "medium", "high", "critical"]
@@ -51,7 +51,7 @@ class ProfilePayload(TypedDict, total=False):
     comment: str
     feature_set: Literal["flow", "proxy"]
     replacemsg_group: str
-    rule: str | list[str] | list[dict[str, Any]] | list[ProfileRuleItem]
+    rule: str | list[str] | list[ProfileRuleItem]
     dlp_log: Literal["enable", "disable"]
     extended_log: Literal["enable", "disable"]
     nac_quar_log: Literal["enable", "disable"]
@@ -179,7 +179,7 @@ class Profile:
         comment: str | None = ...,
         feature_set: Literal["flow", "proxy"] | None = ...,
         replacemsg_group: str | None = ...,
-        rule: str | list[str] | list[dict[str, Any]] | list[ProfileRuleItem] | None = ...,
+        rule: str | list[str] | list[ProfileRuleItem] | None = ...,
         dlp_log: Literal["enable", "disable"] | None = ...,
         extended_log: Literal["enable", "disable"] | None = ...,
         nac_quar_log: Literal["enable", "disable"] | None = ...,
@@ -202,7 +202,7 @@ class Profile:
         comment: str | None = ...,
         feature_set: Literal["flow", "proxy"] | None = ...,
         replacemsg_group: str | None = ...,
-        rule: str | list[str] | list[dict[str, Any]] | list[ProfileRuleItem] | None = ...,
+        rule: str | list[str] | list[ProfileRuleItem] | None = ...,
         dlp_log: Literal["enable", "disable"] | None = ...,
         extended_log: Literal["enable", "disable"] | None = ...,
         nac_quar_log: Literal["enable", "disable"] | None = ...,
@@ -243,7 +243,7 @@ class Profile:
         comment: str | None = ...,
         feature_set: Literal["flow", "proxy"] | None = ...,
         replacemsg_group: str | None = ...,
-        rule: str | list[str] | list[dict[str, Any]] | list[ProfileRuleItem] | None = ...,
+        rule: str | list[str] | list[ProfileRuleItem] | None = ...,
         dlp_log: Literal["enable", "disable"] | None = ...,
         extended_log: Literal["enable", "disable"] | None = ...,
         nac_quar_log: Literal["enable", "disable"] | None = ...,

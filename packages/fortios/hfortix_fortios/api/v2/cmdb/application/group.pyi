@@ -26,18 +26,18 @@ from hfortix_fortios.models import (
 # TypedDict Payloads
 # ================================================================
 
-class GroupApplicationItem:
-    """Nested item for application field - supports attribute access."""
+class GroupApplicationItem(TypedDict, total=False):
+    """Nested item for application field."""
     id: int
 
 
-class GroupCategoryItem:
-    """Nested item for category field - supports attribute access."""
+class GroupCategoryItem(TypedDict, total=False):
+    """Nested item for category field."""
     id: int
 
 
-class GroupRiskItem:
-    """Nested item for risk field - supports attribute access."""
+class GroupRiskItem(TypedDict, total=False):
+    """Nested item for risk field."""
     level: int
 
 
@@ -46,9 +46,9 @@ class GroupPayload(TypedDict, total=False):
     name: str
     comment: str
     type: Literal["application", "filter"]
-    application: str | list[str] | list[dict[str, Any]] | list[GroupApplicationItem]
-    category: str | list[str] | list[dict[str, Any]] | list[GroupCategoryItem]
-    risk: str | list[str] | list[dict[str, Any]] | list[GroupRiskItem]
+    application: str | list[str] | list[GroupApplicationItem]
+    category: str | list[str] | list[GroupCategoryItem]
+    risk: str | list[str] | list[GroupRiskItem]
     protocols: str | list[str]
     vendor: str | list[str]
     technology: str | list[str]
@@ -174,9 +174,9 @@ class Group:
         name: str | None = ...,
         comment: str | None = ...,
         type: Literal["application", "filter"] | None = ...,
-        application: str | list[str] | list[dict[str, Any]] | list[GroupApplicationItem] | None = ...,
-        category: str | list[str] | list[dict[str, Any]] | list[GroupCategoryItem] | None = ...,
-        risk: str | list[str] | list[dict[str, Any]] | list[GroupRiskItem] | None = ...,
+        application: str | list[str] | list[GroupApplicationItem] | None = ...,
+        category: str | list[str] | list[GroupCategoryItem] | None = ...,
+        risk: str | list[str] | list[GroupRiskItem] | None = ...,
         protocols: str | list[str] | None = ...,
         vendor: str | list[str] | None = ...,
         technology: str | list[str] | None = ...,
@@ -197,9 +197,9 @@ class Group:
         name: str | None = ...,
         comment: str | None = ...,
         type: Literal["application", "filter"] | None = ...,
-        application: str | list[str] | list[dict[str, Any]] | list[GroupApplicationItem] | None = ...,
-        category: str | list[str] | list[dict[str, Any]] | list[GroupCategoryItem] | None = ...,
-        risk: str | list[str] | list[dict[str, Any]] | list[GroupRiskItem] | None = ...,
+        application: str | list[str] | list[GroupApplicationItem] | None = ...,
+        category: str | list[str] | list[GroupCategoryItem] | None = ...,
+        risk: str | list[str] | list[GroupRiskItem] | None = ...,
         protocols: str | list[str] | None = ...,
         vendor: str | list[str] | None = ...,
         technology: str | list[str] | None = ...,
@@ -238,9 +238,9 @@ class Group:
         name: str | None = ...,
         comment: str | None = ...,
         type: Literal["application", "filter"] | None = ...,
-        application: str | list[str] | list[dict[str, Any]] | list[GroupApplicationItem] | None = ...,
-        category: str | list[str] | list[dict[str, Any]] | list[GroupCategoryItem] | None = ...,
-        risk: str | list[str] | list[dict[str, Any]] | list[GroupRiskItem] | None = ...,
+        application: str | list[str] | list[GroupApplicationItem] | None = ...,
+        category: str | list[str] | list[GroupCategoryItem] | None = ...,
+        risk: str | list[str] | list[GroupRiskItem] | None = ...,
         protocols: str | list[str] | None = ...,
         vendor: str | list[str] | None = ...,
         technology: str | list[str] | None = ...,

@@ -25,13 +25,13 @@ from hfortix_fortios.models import (
 # TypedDict Payloads
 # ================================================================
 
-class GlobalDisablediscoveryItem:
-    """Nested item for disable-discovery field - supports attribute access."""
+class GlobalDisablediscoveryItem(TypedDict, total=False):
+    """Nested item for disable-discovery field."""
     name: str
 
 
-class GlobalCustomcommandItem:
-    """Nested item for custom-command field - supports attribute access."""
+class GlobalCustomcommandItem(TypedDict, total=False):
+    """Nested item for custom-command field."""
     command_entry: str
     command_name: str
 
@@ -43,7 +43,7 @@ class GlobalPayload(TypedDict, total=False):
     vlan_all_mode: Literal["all", "defined"]
     vlan_optimization: Literal["prune", "configured", "none"]
     vlan_identity: Literal["description", "name"]
-    disable_discovery: str | list[str] | list[dict[str, Any]] | list[GlobalDisablediscoveryItem]
+    disable_discovery: str | list[str] | list[GlobalDisablediscoveryItem]
     mac_retention_period: int
     default_virtual_switch_vlan: str
     dhcp_server_access_list: Literal["enable", "disable"]
@@ -60,7 +60,7 @@ class GlobalPayload(TypedDict, total=False):
     bounce_quarantined_link: Literal["disable", "enable"]
     quarantine_mode: Literal["by-vlan", "by-redirect"]
     update_user_device: str | list[str]
-    custom_command: str | list[str] | list[dict[str, Any]] | list[GlobalCustomcommandItem]
+    custom_command: str | list[str] | list[GlobalCustomcommandItem]
     fips_enforce: Literal["disable", "enable"]
     firmware_provision_on_authorization: Literal["enable", "disable"]
     switch_on_deauth: Literal["no-op", "factory-reset"]
@@ -199,7 +199,7 @@ class Global:
         vlan_all_mode: Literal["all", "defined"] | None = ...,
         vlan_optimization: Literal["prune", "configured", "none"] | None = ...,
         vlan_identity: Literal["description", "name"] | None = ...,
-        disable_discovery: str | list[str] | list[dict[str, Any]] | list[GlobalDisablediscoveryItem] | None = ...,
+        disable_discovery: str | list[str] | list[GlobalDisablediscoveryItem] | None = ...,
         mac_retention_period: int | None = ...,
         default_virtual_switch_vlan: str | None = ...,
         dhcp_server_access_list: Literal["enable", "disable"] | None = ...,
@@ -216,7 +216,7 @@ class Global:
         bounce_quarantined_link: Literal["disable", "enable"] | None = ...,
         quarantine_mode: Literal["by-vlan", "by-redirect"] | None = ...,
         update_user_device: str | list[str] | None = ...,
-        custom_command: str | list[str] | list[dict[str, Any]] | list[GlobalCustomcommandItem] | None = ...,
+        custom_command: str | list[str] | list[GlobalCustomcommandItem] | None = ...,
         fips_enforce: Literal["disable", "enable"] | None = ...,
         firmware_provision_on_authorization: Literal["enable", "disable"] | None = ...,
         switch_on_deauth: Literal["no-op", "factory-reset"] | None = ...,
@@ -245,7 +245,7 @@ class Global:
         vlan_all_mode: Literal["all", "defined"] | None = ...,
         vlan_optimization: Literal["prune", "configured", "none"] | None = ...,
         vlan_identity: Literal["description", "name"] | None = ...,
-        disable_discovery: str | list[str] | list[dict[str, Any]] | list[GlobalDisablediscoveryItem] | None = ...,
+        disable_discovery: str | list[str] | list[GlobalDisablediscoveryItem] | None = ...,
         mac_retention_period: int | None = ...,
         default_virtual_switch_vlan: str | None = ...,
         dhcp_server_access_list: Literal["enable", "disable"] | None = ...,
@@ -262,7 +262,7 @@ class Global:
         bounce_quarantined_link: Literal["disable", "enable"] | None = ...,
         quarantine_mode: Literal["by-vlan", "by-redirect"] | None = ...,
         update_user_device: Literal["mac-cache", "lldp", "dhcp-snooping", "l2-db", "l3-db"] | list[str] | None = ...,
-        custom_command: str | list[str] | list[dict[str, Any]] | list[GlobalCustomcommandItem] | None = ...,
+        custom_command: str | list[str] | list[GlobalCustomcommandItem] | None = ...,
         fips_enforce: Literal["disable", "enable"] | None = ...,
         firmware_provision_on_authorization: Literal["enable", "disable"] | None = ...,
         switch_on_deauth: Literal["no-op", "factory-reset"] | None = ...,

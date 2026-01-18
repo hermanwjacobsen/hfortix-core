@@ -26,8 +26,8 @@ from hfortix_fortios.models import (
 # TypedDict Payloads
 # ================================================================
 
-class ProfileHeadersItem:
-    """Nested item for headers field - supports attribute access."""
+class ProfileHeadersItem(TypedDict, total=False):
+    """Nested item for headers field."""
     id: int
     name: str
     dstaddr: str | list[str]
@@ -53,7 +53,7 @@ class ProfilePayload(TypedDict, total=False):
     header_x_authenticated_groups: Literal["pass", "add", "remove"]
     strip_encoding: Literal["enable", "disable"]
     log_header_change: Literal["enable", "disable"]
-    headers: str | list[str] | list[dict[str, Any]] | list[ProfileHeadersItem]
+    headers: str | list[str] | list[ProfileHeadersItem]
 
 
 # ================================================================
@@ -187,7 +187,7 @@ class Profile:
         header_x_authenticated_groups: Literal["pass", "add", "remove"] | None = ...,
         strip_encoding: Literal["enable", "disable"] | None = ...,
         log_header_change: Literal["enable", "disable"] | None = ...,
-        headers: str | list[str] | list[dict[str, Any]] | list[ProfileHeadersItem] | None = ...,
+        headers: str | list[str] | list[ProfileHeadersItem] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -212,7 +212,7 @@ class Profile:
         header_x_authenticated_groups: Literal["pass", "add", "remove"] | None = ...,
         strip_encoding: Literal["enable", "disable"] | None = ...,
         log_header_change: Literal["enable", "disable"] | None = ...,
-        headers: str | list[str] | list[dict[str, Any]] | list[ProfileHeadersItem] | None = ...,
+        headers: str | list[str] | list[ProfileHeadersItem] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -255,7 +255,7 @@ class Profile:
         header_x_authenticated_groups: Literal["pass", "add", "remove"] | None = ...,
         strip_encoding: Literal["enable", "disable"] | None = ...,
         log_header_change: Literal["enable", "disable"] | None = ...,
-        headers: str | list[str] | list[dict[str, Any]] | list[ProfileHeadersItem] | None = ...,
+        headers: str | list[str] | list[ProfileHeadersItem] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,

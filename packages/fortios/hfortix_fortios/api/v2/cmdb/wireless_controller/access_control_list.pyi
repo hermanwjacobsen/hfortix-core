@@ -26,8 +26,8 @@ from hfortix_fortios.models import (
 # TypedDict Payloads
 # ================================================================
 
-class AccessControlListLayer3ipv4rulesItem:
-    """Nested item for layer3-ipv4-rules field - supports attribute access."""
+class AccessControlListLayer3ipv4rulesItem(TypedDict, total=False):
+    """Nested item for layer3-ipv4-rules field."""
     rule_id: int
     comment: str
     srcaddr: str
@@ -38,8 +38,8 @@ class AccessControlListLayer3ipv4rulesItem:
     action: Literal["allow", "deny"]
 
 
-class AccessControlListLayer3ipv6rulesItem:
-    """Nested item for layer3-ipv6-rules field - supports attribute access."""
+class AccessControlListLayer3ipv6rulesItem(TypedDict, total=False):
+    """Nested item for layer3-ipv6-rules field."""
     rule_id: int
     comment: str
     srcaddr: str
@@ -54,8 +54,8 @@ class AccessControlListPayload(TypedDict, total=False):
     """Payload type for AccessControlList operations."""
     name: str
     comment: str
-    layer3_ipv4_rules: str | list[str] | list[dict[str, Any]] | list[AccessControlListLayer3ipv4rulesItem]
-    layer3_ipv6_rules: str | list[str] | list[dict[str, Any]] | list[AccessControlListLayer3ipv6rulesItem]
+    layer3_ipv4_rules: str | list[str] | list[AccessControlListLayer3ipv4rulesItem]
+    layer3_ipv6_rules: str | list[str] | list[AccessControlListLayer3ipv6rulesItem]
 
 
 # ================================================================
@@ -161,8 +161,8 @@ class AccessControlList:
         payload_dict: AccessControlListPayload | None = ...,
         name: str | None = ...,
         comment: str | None = ...,
-        layer3_ipv4_rules: str | list[str] | list[dict[str, Any]] | list[AccessControlListLayer3ipv4rulesItem] | None = ...,
-        layer3_ipv6_rules: str | list[str] | list[dict[str, Any]] | list[AccessControlListLayer3ipv6rulesItem] | None = ...,
+        layer3_ipv4_rules: str | list[str] | list[AccessControlListLayer3ipv4rulesItem] | None = ...,
+        layer3_ipv6_rules: str | list[str] | list[AccessControlListLayer3ipv6rulesItem] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -177,8 +177,8 @@ class AccessControlList:
         payload_dict: AccessControlListPayload | None = ...,
         name: str | None = ...,
         comment: str | None = ...,
-        layer3_ipv4_rules: str | list[str] | list[dict[str, Any]] | list[AccessControlListLayer3ipv4rulesItem] | None = ...,
-        layer3_ipv6_rules: str | list[str] | list[dict[str, Any]] | list[AccessControlListLayer3ipv6rulesItem] | None = ...,
+        layer3_ipv4_rules: str | list[str] | list[AccessControlListLayer3ipv4rulesItem] | None = ...,
+        layer3_ipv6_rules: str | list[str] | list[AccessControlListLayer3ipv6rulesItem] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -211,8 +211,8 @@ class AccessControlList:
         payload_dict: AccessControlListPayload | None = ...,
         name: str | None = ...,
         comment: str | None = ...,
-        layer3_ipv4_rules: str | list[str] | list[dict[str, Any]] | list[AccessControlListLayer3ipv4rulesItem] | None = ...,
-        layer3_ipv6_rules: str | list[str] | list[dict[str, Any]] | list[AccessControlListLayer3ipv6rulesItem] | None = ...,
+        layer3_ipv4_rules: str | list[str] | list[AccessControlListLayer3ipv4rulesItem] | None = ...,
+        layer3_ipv6_rules: str | list[str] | list[AccessControlListLayer3ipv6rulesItem] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,

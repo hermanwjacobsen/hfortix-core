@@ -26,13 +26,13 @@ from hfortix_fortios.models import (
 # TypedDict Payloads
 # ================================================================
 
-class SwitchInterfaceSpansourceportItem:
-    """Nested item for span-source-port field - supports attribute access."""
+class SwitchInterfaceSpansourceportItem(TypedDict, total=False):
+    """Nested item for span-source-port field."""
     interface_name: str
 
 
-class SwitchInterfaceMemberItem:
-    """Nested item for member field - supports attribute access."""
+class SwitchInterfaceMemberItem(TypedDict, total=False):
+    """Nested item for member field."""
     interface_name: str
 
 
@@ -41,8 +41,8 @@ class SwitchInterfacePayload(TypedDict, total=False):
     name: str
     vdom: str
     span_dest_port: str
-    span_source_port: str | list[str] | list[dict[str, Any]] | list[SwitchInterfaceSpansourceportItem]
-    member: str | list[str] | list[dict[str, Any]] | list[SwitchInterfaceMemberItem]
+    span_source_port: str | list[str] | list[SwitchInterfaceSpansourceportItem]
+    member: str | list[str] | list[SwitchInterfaceMemberItem]
     type: Literal["switch", "hub"]
     intra_switch_policy: Literal["implicit", "explicit"]
     mac_ttl: int
@@ -164,8 +164,8 @@ class SwitchInterface:
         payload_dict: SwitchInterfacePayload | None = ...,
         name: str | None = ...,
         span_dest_port: str | None = ...,
-        span_source_port: str | list[str] | list[dict[str, Any]] | list[SwitchInterfaceSpansourceportItem] | None = ...,
-        member: str | list[str] | list[dict[str, Any]] | list[SwitchInterfaceMemberItem] | None = ...,
+        span_source_port: str | list[str] | list[SwitchInterfaceSpansourceportItem] | None = ...,
+        member: str | list[str] | list[SwitchInterfaceMemberItem] | None = ...,
         type: Literal["switch", "hub"] | None = ...,
         intra_switch_policy: Literal["implicit", "explicit"] | None = ...,
         mac_ttl: int | None = ...,
@@ -185,8 +185,8 @@ class SwitchInterface:
         payload_dict: SwitchInterfacePayload | None = ...,
         name: str | None = ...,
         span_dest_port: str | None = ...,
-        span_source_port: str | list[str] | list[dict[str, Any]] | list[SwitchInterfaceSpansourceportItem] | None = ...,
-        member: str | list[str] | list[dict[str, Any]] | list[SwitchInterfaceMemberItem] | None = ...,
+        span_source_port: str | list[str] | list[SwitchInterfaceSpansourceportItem] | None = ...,
+        member: str | list[str] | list[SwitchInterfaceMemberItem] | None = ...,
         type: Literal["switch", "hub"] | None = ...,
         intra_switch_policy: Literal["implicit", "explicit"] | None = ...,
         mac_ttl: int | None = ...,
@@ -224,8 +224,8 @@ class SwitchInterface:
         payload_dict: SwitchInterfacePayload | None = ...,
         name: str | None = ...,
         span_dest_port: str | None = ...,
-        span_source_port: str | list[str] | list[dict[str, Any]] | list[SwitchInterfaceSpansourceportItem] | None = ...,
-        member: str | list[str] | list[dict[str, Any]] | list[SwitchInterfaceMemberItem] | None = ...,
+        span_source_port: str | list[str] | list[SwitchInterfaceSpansourceportItem] | None = ...,
+        member: str | list[str] | list[SwitchInterfaceMemberItem] | None = ...,
         type: Literal["switch", "hub"] | None = ...,
         intra_switch_policy: Literal["implicit", "explicit"] | None = ...,
         mac_ttl: int | None = ...,

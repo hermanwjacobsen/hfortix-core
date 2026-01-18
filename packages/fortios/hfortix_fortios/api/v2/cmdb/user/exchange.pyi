@@ -26,8 +26,8 @@ from hfortix_fortios.models import (
 # TypedDict Payloads
 # ================================================================
 
-class ExchangeKdcipItem:
-    """Nested item for kdc-ip field - supports attribute access."""
+class ExchangeKdcipItem(TypedDict, total=False):
+    """Nested item for kdc-ip field."""
     ipv4: str
 
 
@@ -46,7 +46,7 @@ class ExchangePayload(TypedDict, total=False):
     http_auth_type: Literal["basic", "ntlm"]
     ssl_min_proto_version: Literal["default", "SSLv3", "TLSv1", "TLSv1-1", "TLSv1-2", "TLSv1-3"]
     auto_discover_kdc: Literal["enable", "disable"]
-    kdc_ip: str | list[str] | list[dict[str, Any]] | list[ExchangeKdcipItem]
+    kdc_ip: str | list[str] | list[ExchangeKdcipItem]
 
 
 # ================================================================
@@ -183,7 +183,7 @@ class Exchange:
         http_auth_type: Literal["basic", "ntlm"] | None = ...,
         ssl_min_proto_version: Literal["default", "SSLv3", "TLSv1", "TLSv1-1", "TLSv1-2", "TLSv1-3"] | None = ...,
         auto_discover_kdc: Literal["enable", "disable"] | None = ...,
-        kdc_ip: str | list[str] | list[dict[str, Any]] | list[ExchangeKdcipItem] | None = ...,
+        kdc_ip: str | list[str] | list[ExchangeKdcipItem] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -209,7 +209,7 @@ class Exchange:
         http_auth_type: Literal["basic", "ntlm"] | None = ...,
         ssl_min_proto_version: Literal["default", "SSLv3", "TLSv1", "TLSv1-1", "TLSv1-2", "TLSv1-3"] | None = ...,
         auto_discover_kdc: Literal["enable", "disable"] | None = ...,
-        kdc_ip: str | list[str] | list[dict[str, Any]] | list[ExchangeKdcipItem] | None = ...,
+        kdc_ip: str | list[str] | list[ExchangeKdcipItem] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -253,7 +253,7 @@ class Exchange:
         http_auth_type: Literal["basic", "ntlm"] | None = ...,
         ssl_min_proto_version: Literal["default", "SSLv3", "TLSv1", "TLSv1-1", "TLSv1-2", "TLSv1-3"] | None = ...,
         auto_discover_kdc: Literal["enable", "disable"] | None = ...,
-        kdc_ip: str | list[str] | list[dict[str, Any]] | list[ExchangeKdcipItem] | None = ...,
+        kdc_ip: str | list[str] | list[ExchangeKdcipItem] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,

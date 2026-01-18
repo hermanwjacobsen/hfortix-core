@@ -26,8 +26,8 @@ from hfortix_fortios.models import (
 # TypedDict Payloads
 # ================================================================
 
-class UrlfilterEntriesItem:
-    """Nested item for entries field - supports attribute access."""
+class UrlfilterEntriesItem(TypedDict, total=False):
+    """Nested item for entries field."""
     id: int
     url: str
     type: Literal["simple", "regex", "wildcard"]
@@ -50,7 +50,7 @@ class UrlfilterPayload(TypedDict, total=False):
     ip_addr_block: Literal["enable", "disable"]
     ip4_mapped_ip6: Literal["enable", "disable"]
     include_subdomains: Literal["enable", "disable"]
-    entries: str | list[str] | list[dict[str, Any]] | list[UrlfilterEntriesItem]
+    entries: str | list[str] | list[UrlfilterEntriesItem]
 
 
 # ================================================================
@@ -169,7 +169,7 @@ class Urlfilter:
         ip_addr_block: Literal["enable", "disable"] | None = ...,
         ip4_mapped_ip6: Literal["enable", "disable"] | None = ...,
         include_subdomains: Literal["enable", "disable"] | None = ...,
-        entries: str | list[str] | list[dict[str, Any]] | list[UrlfilterEntriesItem] | None = ...,
+        entries: str | list[str] | list[UrlfilterEntriesItem] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -189,7 +189,7 @@ class Urlfilter:
         ip_addr_block: Literal["enable", "disable"] | None = ...,
         ip4_mapped_ip6: Literal["enable", "disable"] | None = ...,
         include_subdomains: Literal["enable", "disable"] | None = ...,
-        entries: str | list[str] | list[dict[str, Any]] | list[UrlfilterEntriesItem] | None = ...,
+        entries: str | list[str] | list[UrlfilterEntriesItem] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -227,7 +227,7 @@ class Urlfilter:
         ip_addr_block: Literal["enable", "disable"] | None = ...,
         ip4_mapped_ip6: Literal["enable", "disable"] | None = ...,
         include_subdomains: Literal["enable", "disable"] | None = ...,
-        entries: str | list[str] | list[dict[str, Any]] | list[UrlfilterEntriesItem] | None = ...,
+        entries: str | list[str] | list[UrlfilterEntriesItem] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,

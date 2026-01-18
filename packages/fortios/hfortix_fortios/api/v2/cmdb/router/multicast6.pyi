@@ -25,8 +25,8 @@ from hfortix_fortios.models import (
 # TypedDict Payloads
 # ================================================================
 
-class Multicast6InterfaceItem:
-    """Nested item for interface field - supports attribute access."""
+class Multicast6InterfaceItem(TypedDict, total=False):
+    """Nested item for interface field."""
     name: str
     hello_interval: int
     hello_holdtime: int
@@ -43,7 +43,7 @@ class Multicast6Payload(TypedDict, total=False):
     """Payload type for Multicast6 operations."""
     multicast_routing: Literal["enable", "disable"]
     multicast_pmtu: Literal["enable", "disable"]
-    interface: str | list[str] | list[dict[str, Any]] | list[Multicast6InterfaceItem]
+    interface: str | list[str] | list[Multicast6InterfaceItem]
     pim_sm_global: Multicast6PimsmglobalDict
 
 
@@ -130,7 +130,7 @@ class Multicast6:
         payload_dict: Multicast6Payload | None = ...,
         multicast_routing: Literal["enable", "disable"] | None = ...,
         multicast_pmtu: Literal["enable", "disable"] | None = ...,
-        interface: str | list[str] | list[dict[str, Any]] | list[Multicast6InterfaceItem] | None = ...,
+        interface: str | list[str] | list[Multicast6InterfaceItem] | None = ...,
         pim_sm_global: Multicast6PimsmglobalDict | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
@@ -153,7 +153,7 @@ class Multicast6:
         payload_dict: Multicast6Payload | None = ...,
         multicast_routing: Literal["enable", "disable"] | None = ...,
         multicast_pmtu: Literal["enable", "disable"] | None = ...,
-        interface: str | list[str] | list[dict[str, Any]] | list[Multicast6InterfaceItem] | None = ...,
+        interface: str | list[str] | list[Multicast6InterfaceItem] | None = ...,
         pim_sm_global: Multicast6PimsmglobalDict | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,

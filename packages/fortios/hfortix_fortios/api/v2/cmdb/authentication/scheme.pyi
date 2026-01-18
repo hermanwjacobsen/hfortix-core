@@ -26,8 +26,8 @@ from hfortix_fortios.models import (
 # TypedDict Payloads
 # ================================================================
 
-class SchemeUserdatabaseItem:
-    """Nested item for user-database field - supports attribute access."""
+class SchemeUserdatabaseItem(TypedDict, total=False):
+    """Nested item for user-database field."""
     name: str
 
 
@@ -45,7 +45,7 @@ class SchemePayload(TypedDict, total=False):
     fsso_guest: Literal["enable", "disable"]
     user_cert: Literal["enable", "disable"]
     cert_http_header: Literal["enable", "disable"]
-    user_database: str | list[str] | list[dict[str, Any]] | list[SchemeUserdatabaseItem]
+    user_database: str | list[str] | list[SchemeUserdatabaseItem]
     ssh_ca: str
     external_idp: str
     group_attr_type: Literal["display-name", "external-id"]
@@ -194,7 +194,7 @@ class Scheme:
         fsso_guest: Literal["enable", "disable"] | None = ...,
         user_cert: Literal["enable", "disable"] | None = ...,
         cert_http_header: Literal["enable", "disable"] | None = ...,
-        user_database: str | list[str] | list[dict[str, Any]] | list[SchemeUserdatabaseItem] | None = ...,
+        user_database: str | list[str] | list[SchemeUserdatabaseItem] | None = ...,
         ssh_ca: str | None = ...,
         external_idp: str | None = ...,
         group_attr_type: Literal["display-name", "external-id"] | None = ...,
@@ -224,7 +224,7 @@ class Scheme:
         fsso_guest: Literal["enable", "disable"] | None = ...,
         user_cert: Literal["enable", "disable"] | None = ...,
         cert_http_header: Literal["enable", "disable"] | None = ...,
-        user_database: str | list[str] | list[dict[str, Any]] | list[SchemeUserdatabaseItem] | None = ...,
+        user_database: str | list[str] | list[SchemeUserdatabaseItem] | None = ...,
         ssh_ca: str | None = ...,
         external_idp: str | None = ...,
         group_attr_type: Literal["display-name", "external-id"] | None = ...,
@@ -272,7 +272,7 @@ class Scheme:
         fsso_guest: Literal["enable", "disable"] | None = ...,
         user_cert: Literal["enable", "disable"] | None = ...,
         cert_http_header: Literal["enable", "disable"] | None = ...,
-        user_database: str | list[str] | list[dict[str, Any]] | list[SchemeUserdatabaseItem] | None = ...,
+        user_database: str | list[str] | list[SchemeUserdatabaseItem] | None = ...,
         ssh_ca: str | None = ...,
         external_idp: str | None = ...,
         group_attr_type: Literal["display-name", "external-id"] | None = ...,

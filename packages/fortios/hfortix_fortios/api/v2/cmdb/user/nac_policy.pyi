@@ -26,13 +26,13 @@ from hfortix_fortios.models import (
 # TypedDict Payloads
 # ================================================================
 
-class NacPolicySeverityItem:
-    """Nested item for severity field - supports attribute access."""
+class NacPolicySeverityItem(TypedDict, total=False):
+    """Nested item for severity field."""
     severity_num: int
 
 
-class NacPolicySwitchgroupItem:
-    """Nested item for switch-group field - supports attribute access."""
+class NacPolicySwitchgroupItem(TypedDict, total=False):
+    """Nested item for switch-group field."""
     name: str
 
 
@@ -58,9 +58,9 @@ class NacPolicyPayload(TypedDict, total=False):
     user_group: str
     ems_tag: str
     fortivoice_tag: str
-    severity: str | list[str] | list[dict[str, Any]] | list[NacPolicySeverityItem]
+    severity: str | list[str] | list[NacPolicySeverityItem]
     switch_fortilink: str
-    switch_group: str | list[str] | list[dict[str, Any]] | list[NacPolicySwitchgroupItem]
+    switch_group: str | list[str] | list[NacPolicySwitchgroupItem]
     switch_mac_policy: str
     firewall_address: str
     ssid_policy: str
@@ -231,9 +231,9 @@ class NacPolicy:
         user_group: str | None = ...,
         ems_tag: str | None = ...,
         fortivoice_tag: str | None = ...,
-        severity: str | list[str] | list[dict[str, Any]] | list[NacPolicySeverityItem] | None = ...,
+        severity: str | list[str] | list[NacPolicySeverityItem] | None = ...,
         switch_fortilink: str | None = ...,
-        switch_group: str | list[str] | list[dict[str, Any]] | list[NacPolicySwitchgroupItem] | None = ...,
+        switch_group: str | list[str] | list[NacPolicySwitchgroupItem] | None = ...,
         switch_mac_policy: str | None = ...,
         firewall_address: str | None = ...,
         ssid_policy: str | None = ...,
@@ -269,9 +269,9 @@ class NacPolicy:
         user_group: str | None = ...,
         ems_tag: str | None = ...,
         fortivoice_tag: str | None = ...,
-        severity: str | list[str] | list[dict[str, Any]] | list[NacPolicySeverityItem] | None = ...,
+        severity: str | list[str] | list[NacPolicySeverityItem] | None = ...,
         switch_fortilink: str | None = ...,
-        switch_group: str | list[str] | list[dict[str, Any]] | list[NacPolicySwitchgroupItem] | None = ...,
+        switch_group: str | list[str] | list[NacPolicySwitchgroupItem] | None = ...,
         switch_mac_policy: str | None = ...,
         firewall_address: str | None = ...,
         ssid_policy: str | None = ...,
@@ -325,9 +325,9 @@ class NacPolicy:
         user_group: str | None = ...,
         ems_tag: str | None = ...,
         fortivoice_tag: str | None = ...,
-        severity: str | list[str] | list[dict[str, Any]] | list[NacPolicySeverityItem] | None = ...,
+        severity: str | list[str] | list[NacPolicySeverityItem] | None = ...,
         switch_fortilink: str | None = ...,
-        switch_group: str | list[str] | list[dict[str, Any]] | list[NacPolicySwitchgroupItem] | None = ...,
+        switch_group: str | list[str] | list[NacPolicySwitchgroupItem] | None = ...,
         switch_mac_policy: str | None = ...,
         firewall_address: str | None = ...,
         ssid_policy: str | None = ...,

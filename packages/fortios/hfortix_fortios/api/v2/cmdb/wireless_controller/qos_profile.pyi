@@ -26,23 +26,23 @@ from hfortix_fortios.models import (
 # TypedDict Payloads
 # ================================================================
 
-class QosProfileDscpwmmvoItem:
-    """Nested item for dscp-wmm-vo field - supports attribute access."""
+class QosProfileDscpwmmvoItem(TypedDict, total=False):
+    """Nested item for dscp-wmm-vo field."""
     id: int
 
 
-class QosProfileDscpwmmviItem:
-    """Nested item for dscp-wmm-vi field - supports attribute access."""
+class QosProfileDscpwmmviItem(TypedDict, total=False):
+    """Nested item for dscp-wmm-vi field."""
     id: int
 
 
-class QosProfileDscpwmmbeItem:
-    """Nested item for dscp-wmm-be field - supports attribute access."""
+class QosProfileDscpwmmbeItem(TypedDict, total=False):
+    """Nested item for dscp-wmm-be field."""
     id: int
 
 
-class QosProfileDscpwmmbkItem:
-    """Nested item for dscp-wmm-bk field - supports attribute access."""
+class QosProfileDscpwmmbkItem(TypedDict, total=False):
+    """Nested item for dscp-wmm-bk field."""
     id: int
 
 
@@ -62,10 +62,10 @@ class QosProfilePayload(TypedDict, total=False):
     bandwidth_admission_control: Literal["enable", "disable"]
     bandwidth_capacity: int
     dscp_wmm_mapping: Literal["enable", "disable"]
-    dscp_wmm_vo: str | list[str] | list[dict[str, Any]] | list[QosProfileDscpwmmvoItem]
-    dscp_wmm_vi: str | list[str] | list[dict[str, Any]] | list[QosProfileDscpwmmviItem]
-    dscp_wmm_be: str | list[str] | list[dict[str, Any]] | list[QosProfileDscpwmmbeItem]
-    dscp_wmm_bk: str | list[str] | list[dict[str, Any]] | list[QosProfileDscpwmmbkItem]
+    dscp_wmm_vo: str | list[str] | list[QosProfileDscpwmmvoItem]
+    dscp_wmm_vi: str | list[str] | list[QosProfileDscpwmmviItem]
+    dscp_wmm_be: str | list[str] | list[QosProfileDscpwmmbeItem]
+    dscp_wmm_bk: str | list[str] | list[QosProfileDscpwmmbkItem]
     wmm_dscp_marking: Literal["enable", "disable"]
     wmm_vo_dscp: int
     wmm_vi_dscp: int
@@ -226,10 +226,10 @@ class QosProfile:
         bandwidth_admission_control: Literal["enable", "disable"] | None = ...,
         bandwidth_capacity: int | None = ...,
         dscp_wmm_mapping: Literal["enable", "disable"] | None = ...,
-        dscp_wmm_vo: str | list[str] | list[dict[str, Any]] | list[QosProfileDscpwmmvoItem] | None = ...,
-        dscp_wmm_vi: str | list[str] | list[dict[str, Any]] | list[QosProfileDscpwmmviItem] | None = ...,
-        dscp_wmm_be: str | list[str] | list[dict[str, Any]] | list[QosProfileDscpwmmbeItem] | None = ...,
-        dscp_wmm_bk: str | list[str] | list[dict[str, Any]] | list[QosProfileDscpwmmbkItem] | None = ...,
+        dscp_wmm_vo: str | list[str] | list[QosProfileDscpwmmvoItem] | None = ...,
+        dscp_wmm_vi: str | list[str] | list[QosProfileDscpwmmviItem] | None = ...,
+        dscp_wmm_be: str | list[str] | list[QosProfileDscpwmmbeItem] | None = ...,
+        dscp_wmm_bk: str | list[str] | list[QosProfileDscpwmmbkItem] | None = ...,
         wmm_dscp_marking: Literal["enable", "disable"] | None = ...,
         wmm_vo_dscp: int | None = ...,
         wmm_vi_dscp: int | None = ...,
@@ -261,10 +261,10 @@ class QosProfile:
         bandwidth_admission_control: Literal["enable", "disable"] | None = ...,
         bandwidth_capacity: int | None = ...,
         dscp_wmm_mapping: Literal["enable", "disable"] | None = ...,
-        dscp_wmm_vo: str | list[str] | list[dict[str, Any]] | list[QosProfileDscpwmmvoItem] | None = ...,
-        dscp_wmm_vi: str | list[str] | list[dict[str, Any]] | list[QosProfileDscpwmmviItem] | None = ...,
-        dscp_wmm_be: str | list[str] | list[dict[str, Any]] | list[QosProfileDscpwmmbeItem] | None = ...,
-        dscp_wmm_bk: str | list[str] | list[dict[str, Any]] | list[QosProfileDscpwmmbkItem] | None = ...,
+        dscp_wmm_vo: str | list[str] | list[QosProfileDscpwmmvoItem] | None = ...,
+        dscp_wmm_vi: str | list[str] | list[QosProfileDscpwmmviItem] | None = ...,
+        dscp_wmm_be: str | list[str] | list[QosProfileDscpwmmbeItem] | None = ...,
+        dscp_wmm_bk: str | list[str] | list[QosProfileDscpwmmbkItem] | None = ...,
         wmm_dscp_marking: Literal["enable", "disable"] | None = ...,
         wmm_vo_dscp: int | None = ...,
         wmm_vi_dscp: int | None = ...,
@@ -314,10 +314,10 @@ class QosProfile:
         bandwidth_admission_control: Literal["enable", "disable"] | None = ...,
         bandwidth_capacity: int | None = ...,
         dscp_wmm_mapping: Literal["enable", "disable"] | None = ...,
-        dscp_wmm_vo: str | list[str] | list[dict[str, Any]] | list[QosProfileDscpwmmvoItem] | None = ...,
-        dscp_wmm_vi: str | list[str] | list[dict[str, Any]] | list[QosProfileDscpwmmviItem] | None = ...,
-        dscp_wmm_be: str | list[str] | list[dict[str, Any]] | list[QosProfileDscpwmmbeItem] | None = ...,
-        dscp_wmm_bk: str | list[str] | list[dict[str, Any]] | list[QosProfileDscpwmmbkItem] | None = ...,
+        dscp_wmm_vo: str | list[str] | list[QosProfileDscpwmmvoItem] | None = ...,
+        dscp_wmm_vi: str | list[str] | list[QosProfileDscpwmmviItem] | None = ...,
+        dscp_wmm_be: str | list[str] | list[QosProfileDscpwmmbeItem] | None = ...,
+        dscp_wmm_bk: str | list[str] | list[QosProfileDscpwmmbkItem] | None = ...,
         wmm_dscp_marking: Literal["enable", "disable"] | None = ...,
         wmm_vo_dscp: int | None = ...,
         wmm_vi_dscp: int | None = ...,

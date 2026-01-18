@@ -26,66 +26,66 @@ from hfortix_fortios.models import (
 # TypedDict Payloads
 # ================================================================
 
-class Policy6InputdeviceItem:
-    """Nested item for input-device field - supports attribute access."""
+class Policy6InputdeviceItem(TypedDict, total=False):
+    """Nested item for input-device field."""
     name: str
 
 
-class Policy6SrcItem:
-    """Nested item for src field - supports attribute access."""
+class Policy6SrcItem(TypedDict, total=False):
+    """Nested item for src field."""
     addr6: str
 
 
-class Policy6SrcaddrItem:
-    """Nested item for srcaddr field - supports attribute access."""
+class Policy6SrcaddrItem(TypedDict, total=False):
+    """Nested item for srcaddr field."""
     name: str
 
 
-class Policy6DstItem:
-    """Nested item for dst field - supports attribute access."""
+class Policy6DstItem(TypedDict, total=False):
+    """Nested item for dst field."""
     addr6: str
 
 
-class Policy6DstaddrItem:
-    """Nested item for dstaddr field - supports attribute access."""
+class Policy6DstaddrItem(TypedDict, total=False):
+    """Nested item for dstaddr field."""
     name: str
 
 
-class Policy6InternetserviceidItem:
-    """Nested item for internet-service-id field - supports attribute access."""
+class Policy6InternetserviceidItem(TypedDict, total=False):
+    """Nested item for internet-service-id field."""
     id: int
 
 
-class Policy6InternetservicecustomItem:
-    """Nested item for internet-service-custom field - supports attribute access."""
+class Policy6InternetservicecustomItem(TypedDict, total=False):
+    """Nested item for internet-service-custom field."""
     name: str
 
 
-class Policy6InternetservicefortiguardItem:
-    """Nested item for internet-service-fortiguard field - supports attribute access."""
+class Policy6InternetservicefortiguardItem(TypedDict, total=False):
+    """Nested item for internet-service-fortiguard field."""
     name: str
 
 
-class Policy6UsersItem:
-    """Nested item for users field - supports attribute access."""
+class Policy6UsersItem(TypedDict, total=False):
+    """Nested item for users field."""
     name: str
 
 
-class Policy6GroupsItem:
-    """Nested item for groups field - supports attribute access."""
+class Policy6GroupsItem(TypedDict, total=False):
+    """Nested item for groups field."""
     name: str
 
 
 class Policy6Payload(TypedDict, total=False):
     """Payload type for Policy6 operations."""
     seq_num: int
-    input_device: str | list[str] | list[dict[str, Any]] | list[Policy6InputdeviceItem]
+    input_device: str | list[str] | list[Policy6InputdeviceItem]
     input_device_negate: Literal["enable", "disable"]
-    src: str | list[str] | list[dict[str, Any]] | list[Policy6SrcItem]
-    srcaddr: str | list[str] | list[dict[str, Any]] | list[Policy6SrcaddrItem]
+    src: str | list[str] | list[Policy6SrcItem]
+    srcaddr: str | list[str] | list[Policy6SrcaddrItem]
     src_negate: Literal["enable", "disable"]
-    dst: str | list[str] | list[dict[str, Any]] | list[Policy6DstItem]
-    dstaddr: str | list[str] | list[dict[str, Any]] | list[Policy6DstaddrItem]
+    dst: str | list[str] | list[Policy6DstItem]
+    dstaddr: str | list[str] | list[Policy6DstaddrItem]
     dst_negate: Literal["enable", "disable"]
     action: Literal["deny", "permit"]
     protocol: int
@@ -99,11 +99,11 @@ class Policy6Payload(TypedDict, total=False):
     tos_mask: str
     status: Literal["enable", "disable"]
     comments: str
-    internet_service_id: str | list[str] | list[dict[str, Any]] | list[Policy6InternetserviceidItem]
-    internet_service_custom: str | list[str] | list[dict[str, Any]] | list[Policy6InternetservicecustomItem]
-    internet_service_fortiguard: str | list[str] | list[dict[str, Any]] | list[Policy6InternetservicefortiguardItem]
-    users: str | list[str] | list[dict[str, Any]] | list[Policy6UsersItem]
-    groups: str | list[str] | list[dict[str, Any]] | list[Policy6GroupsItem]
+    internet_service_id: str | list[str] | list[Policy6InternetserviceidItem]
+    internet_service_custom: str | list[str] | list[Policy6InternetservicecustomItem]
+    internet_service_fortiguard: str | list[str] | list[Policy6InternetservicefortiguardItem]
+    users: str | list[str] | list[Policy6UsersItem]
+    groups: str | list[str] | list[Policy6GroupsItem]
 
 
 # ================================================================
@@ -252,13 +252,13 @@ class Policy6:
         self,
         payload_dict: Policy6Payload | None = ...,
         seq_num: int | None = ...,
-        input_device: str | list[str] | list[dict[str, Any]] | list[Policy6InputdeviceItem] | None = ...,
+        input_device: str | list[str] | list[Policy6InputdeviceItem] | None = ...,
         input_device_negate: Literal["enable", "disable"] | None = ...,
-        src: str | list[str] | list[dict[str, Any]] | list[Policy6SrcItem] | None = ...,
-        srcaddr: str | list[str] | list[dict[str, Any]] | list[Policy6SrcaddrItem] | None = ...,
+        src: str | list[str] | list[Policy6SrcItem] | None = ...,
+        srcaddr: str | list[str] | list[Policy6SrcaddrItem] | None = ...,
         src_negate: Literal["enable", "disable"] | None = ...,
-        dst: str | list[str] | list[dict[str, Any]] | list[Policy6DstItem] | None = ...,
-        dstaddr: str | list[str] | list[dict[str, Any]] | list[Policy6DstaddrItem] | None = ...,
+        dst: str | list[str] | list[Policy6DstItem] | None = ...,
+        dstaddr: str | list[str] | list[Policy6DstaddrItem] | None = ...,
         dst_negate: Literal["enable", "disable"] | None = ...,
         action: Literal["deny", "permit"] | None = ...,
         protocol: int | None = ...,
@@ -272,11 +272,11 @@ class Policy6:
         tos_mask: str | None = ...,
         status: Literal["enable", "disable"] | None = ...,
         comments: str | None = ...,
-        internet_service_id: str | list[str] | list[dict[str, Any]] | list[Policy6InternetserviceidItem] | None = ...,
-        internet_service_custom: str | list[str] | list[dict[str, Any]] | list[Policy6InternetservicecustomItem] | None = ...,
-        internet_service_fortiguard: str | list[str] | list[dict[str, Any]] | list[Policy6InternetservicefortiguardItem] | None = ...,
-        users: str | list[str] | list[dict[str, Any]] | list[Policy6UsersItem] | None = ...,
-        groups: str | list[str] | list[dict[str, Any]] | list[Policy6GroupsItem] | None = ...,
+        internet_service_id: str | list[str] | list[Policy6InternetserviceidItem] | None = ...,
+        internet_service_custom: str | list[str] | list[Policy6InternetservicecustomItem] | None = ...,
+        internet_service_fortiguard: str | list[str] | list[Policy6InternetservicefortiguardItem] | None = ...,
+        users: str | list[str] | list[Policy6UsersItem] | None = ...,
+        groups: str | list[str] | list[Policy6GroupsItem] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -290,13 +290,13 @@ class Policy6:
         self,
         payload_dict: Policy6Payload | None = ...,
         seq_num: int | None = ...,
-        input_device: str | list[str] | list[dict[str, Any]] | list[Policy6InputdeviceItem] | None = ...,
+        input_device: str | list[str] | list[Policy6InputdeviceItem] | None = ...,
         input_device_negate: Literal["enable", "disable"] | None = ...,
-        src: str | list[str] | list[dict[str, Any]] | list[Policy6SrcItem] | None = ...,
-        srcaddr: str | list[str] | list[dict[str, Any]] | list[Policy6SrcaddrItem] | None = ...,
+        src: str | list[str] | list[Policy6SrcItem] | None = ...,
+        srcaddr: str | list[str] | list[Policy6SrcaddrItem] | None = ...,
         src_negate: Literal["enable", "disable"] | None = ...,
-        dst: str | list[str] | list[dict[str, Any]] | list[Policy6DstItem] | None = ...,
-        dstaddr: str | list[str] | list[dict[str, Any]] | list[Policy6DstaddrItem] | None = ...,
+        dst: str | list[str] | list[Policy6DstItem] | None = ...,
+        dstaddr: str | list[str] | list[Policy6DstaddrItem] | None = ...,
         dst_negate: Literal["enable", "disable"] | None = ...,
         action: Literal["deny", "permit"] | None = ...,
         protocol: int | None = ...,
@@ -310,11 +310,11 @@ class Policy6:
         tos_mask: str | None = ...,
         status: Literal["enable", "disable"] | None = ...,
         comments: str | None = ...,
-        internet_service_id: str | list[str] | list[dict[str, Any]] | list[Policy6InternetserviceidItem] | None = ...,
-        internet_service_custom: str | list[str] | list[dict[str, Any]] | list[Policy6InternetservicecustomItem] | None = ...,
-        internet_service_fortiguard: str | list[str] | list[dict[str, Any]] | list[Policy6InternetservicefortiguardItem] | None = ...,
-        users: str | list[str] | list[dict[str, Any]] | list[Policy6UsersItem] | None = ...,
-        groups: str | list[str] | list[dict[str, Any]] | list[Policy6GroupsItem] | None = ...,
+        internet_service_id: str | list[str] | list[Policy6InternetserviceidItem] | None = ...,
+        internet_service_custom: str | list[str] | list[Policy6InternetservicecustomItem] | None = ...,
+        internet_service_fortiguard: str | list[str] | list[Policy6InternetservicefortiguardItem] | None = ...,
+        users: str | list[str] | list[Policy6UsersItem] | None = ...,
+        groups: str | list[str] | list[Policy6GroupsItem] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -346,13 +346,13 @@ class Policy6:
         self,
         payload_dict: Policy6Payload | None = ...,
         seq_num: int | None = ...,
-        input_device: str | list[str] | list[dict[str, Any]] | list[Policy6InputdeviceItem] | None = ...,
+        input_device: str | list[str] | list[Policy6InputdeviceItem] | None = ...,
         input_device_negate: Literal["enable", "disable"] | None = ...,
-        src: str | list[str] | list[dict[str, Any]] | list[Policy6SrcItem] | None = ...,
-        srcaddr: str | list[str] | list[dict[str, Any]] | list[Policy6SrcaddrItem] | None = ...,
+        src: str | list[str] | list[Policy6SrcItem] | None = ...,
+        srcaddr: str | list[str] | list[Policy6SrcaddrItem] | None = ...,
         src_negate: Literal["enable", "disable"] | None = ...,
-        dst: str | list[str] | list[dict[str, Any]] | list[Policy6DstItem] | None = ...,
-        dstaddr: str | list[str] | list[dict[str, Any]] | list[Policy6DstaddrItem] | None = ...,
+        dst: str | list[str] | list[Policy6DstItem] | None = ...,
+        dstaddr: str | list[str] | list[Policy6DstaddrItem] | None = ...,
         dst_negate: Literal["enable", "disable"] | None = ...,
         action: Literal["deny", "permit"] | None = ...,
         protocol: int | None = ...,
@@ -366,11 +366,11 @@ class Policy6:
         tos_mask: str | None = ...,
         status: Literal["enable", "disable"] | None = ...,
         comments: str | None = ...,
-        internet_service_id: str | list[str] | list[dict[str, Any]] | list[Policy6InternetserviceidItem] | None = ...,
-        internet_service_custom: str | list[str] | list[dict[str, Any]] | list[Policy6InternetservicecustomItem] | None = ...,
-        internet_service_fortiguard: str | list[str] | list[dict[str, Any]] | list[Policy6InternetservicefortiguardItem] | None = ...,
-        users: str | list[str] | list[dict[str, Any]] | list[Policy6UsersItem] | None = ...,
-        groups: str | list[str] | list[dict[str, Any]] | list[Policy6GroupsItem] | None = ...,
+        internet_service_id: str | list[str] | list[Policy6InternetserviceidItem] | None = ...,
+        internet_service_custom: str | list[str] | list[Policy6InternetservicecustomItem] | None = ...,
+        internet_service_fortiguard: str | list[str] | list[Policy6InternetservicefortiguardItem] | None = ...,
+        users: str | list[str] | list[Policy6UsersItem] | None = ...,
+        groups: str | list[str] | list[Policy6GroupsItem] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,

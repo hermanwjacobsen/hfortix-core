@@ -25,8 +25,8 @@ from hfortix_fortios.models import (
 # TypedDict Payloads
 # ================================================================
 
-class CsfTrustedlistItem:
-    """Nested item for trusted-list field - supports attribute access."""
+class CsfTrustedlistItem(TypedDict, total=False):
+    """Nested item for trusted-list field."""
     name: str
     authorization_type: Literal["serial", "certificate"]
     serial: str
@@ -37,8 +37,8 @@ class CsfTrustedlistItem:
     index: int
 
 
-class CsfFabricconnectorItem:
-    """Nested item for fabric-connector field - supports attribute access."""
+class CsfFabricconnectorItem(TypedDict, total=False):
+    """Nested item for fabric-connector field."""
     serial: str
     accprofile: str
     configuration_write_access: Literal["enable", "disable"]
@@ -67,8 +67,8 @@ class CsfPayload(TypedDict, total=False):
     configuration_sync: Literal["default", "local"]
     fabric_object_unification: Literal["default", "local"]
     saml_configuration_sync: Literal["default", "local"]
-    trusted_list: str | list[str] | list[dict[str, Any]] | list[CsfTrustedlistItem]
-    fabric_connector: str | list[str] | list[dict[str, Any]] | list[CsfFabricconnectorItem]
+    trusted_list: str | list[str] | list[CsfTrustedlistItem]
+    fabric_connector: str | list[str] | list[CsfFabricconnectorItem]
     forticloud_account_enforcement: Literal["enable", "disable"]
     file_mgmt: Literal["enable", "disable"]
     file_quota: int
@@ -218,8 +218,8 @@ class Csf:
         configuration_sync: Literal["default", "local"] | None = ...,
         fabric_object_unification: Literal["default", "local"] | None = ...,
         saml_configuration_sync: Literal["default", "local"] | None = ...,
-        trusted_list: str | list[str] | list[dict[str, Any]] | list[CsfTrustedlistItem] | None = ...,
-        fabric_connector: str | list[str] | list[dict[str, Any]] | list[CsfFabricconnectorItem] | None = ...,
+        trusted_list: str | list[str] | list[CsfTrustedlistItem] | None = ...,
+        fabric_connector: str | list[str] | list[CsfFabricconnectorItem] | None = ...,
         forticloud_account_enforcement: Literal["enable", "disable"] | None = ...,
         file_mgmt: Literal["enable", "disable"] | None = ...,
         file_quota: int | None = ...,
@@ -261,8 +261,8 @@ class Csf:
         configuration_sync: Literal["default", "local"] | None = ...,
         fabric_object_unification: Literal["default", "local"] | None = ...,
         saml_configuration_sync: Literal["default", "local"] | None = ...,
-        trusted_list: str | list[str] | list[dict[str, Any]] | list[CsfTrustedlistItem] | None = ...,
-        fabric_connector: str | list[str] | list[dict[str, Any]] | list[CsfFabricconnectorItem] | None = ...,
+        trusted_list: str | list[str] | list[CsfTrustedlistItem] | None = ...,
+        fabric_connector: str | list[str] | list[CsfFabricconnectorItem] | None = ...,
         forticloud_account_enforcement: Literal["enable", "disable"] | None = ...,
         file_mgmt: Literal["enable", "disable"] | None = ...,
         file_quota: int | None = ...,

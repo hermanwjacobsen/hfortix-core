@@ -26,13 +26,13 @@ from hfortix_fortios.models import (
 # TypedDict Payloads
 # ================================================================
 
-class ApiUserVdomItem:
-    """Nested item for vdom field - supports attribute access."""
+class ApiUserVdomItem(TypedDict, total=False):
+    """Nested item for vdom field."""
     name: str
 
 
-class ApiUserTrusthostItem:
-    """Nested item for trusthost field - supports attribute access."""
+class ApiUserTrusthostItem(TypedDict, total=False):
+    """Nested item for trusthost field."""
     id: int
     type: Literal["ipv4-trusthost", "ipv6-trusthost"]
     ipv4_trusthost: str
@@ -45,12 +45,12 @@ class ApiUserPayload(TypedDict, total=False):
     comments: str
     api_key: str
     accprofile: str
-    vdom: str | list[str] | list[dict[str, Any]] | list[ApiUserVdomItem]
+    vdom: str | list[str] | list[ApiUserVdomItem]
     schedule: str
     cors_allow_origin: str
     peer_auth: Literal["enable", "disable"]
     peer_group: str
-    trusthost: str | list[str] | list[dict[str, Any]] | list[ApiUserTrusthostItem]
+    trusthost: str | list[str] | list[ApiUserTrusthostItem]
 
 
 # ================================================================
@@ -173,7 +173,7 @@ class ApiUser:
         cors_allow_origin: str | None = ...,
         peer_auth: Literal["enable", "disable"] | None = ...,
         peer_group: str | None = ...,
-        trusthost: str | list[str] | list[dict[str, Any]] | list[ApiUserTrusthostItem] | None = ...,
+        trusthost: str | list[str] | list[ApiUserTrusthostItem] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -194,7 +194,7 @@ class ApiUser:
         cors_allow_origin: str | None = ...,
         peer_auth: Literal["enable", "disable"] | None = ...,
         peer_group: str | None = ...,
-        trusthost: str | list[str] | list[dict[str, Any]] | list[ApiUserTrusthostItem] | None = ...,
+        trusthost: str | list[str] | list[ApiUserTrusthostItem] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -233,7 +233,7 @@ class ApiUser:
         cors_allow_origin: str | None = ...,
         peer_auth: Literal["enable", "disable"] | None = ...,
         peer_group: str | None = ...,
-        trusthost: str | list[str] | list[dict[str, Any]] | list[ApiUserTrusthostItem] | None = ...,
+        trusthost: str | list[str] | list[ApiUserTrusthostItem] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,

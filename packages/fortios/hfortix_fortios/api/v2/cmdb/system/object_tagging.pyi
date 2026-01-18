@@ -26,8 +26,8 @@ from hfortix_fortios.models import (
 # TypedDict Payloads
 # ================================================================
 
-class ObjectTaggingTagsItem:
-    """Nested item for tags field - supports attribute access."""
+class ObjectTaggingTagsItem(TypedDict, total=False):
+    """Nested item for tags field."""
     name: str
 
 
@@ -39,7 +39,7 @@ class ObjectTaggingPayload(TypedDict, total=False):
     interface: Literal["disable", "mandatory", "optional"]
     multiple: Literal["enable", "disable"]
     color: int
-    tags: str | list[str] | list[dict[str, Any]] | list[ObjectTaggingTagsItem]
+    tags: str | list[str] | list[ObjectTaggingTagsItem]
 
 
 # ================================================================
@@ -155,7 +155,7 @@ class ObjectTagging:
         interface: Literal["disable", "mandatory", "optional"] | None = ...,
         multiple: Literal["enable", "disable"] | None = ...,
         color: int | None = ...,
-        tags: str | list[str] | list[dict[str, Any]] | list[ObjectTaggingTagsItem] | None = ...,
+        tags: str | list[str] | list[ObjectTaggingTagsItem] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -174,7 +174,7 @@ class ObjectTagging:
         interface: Literal["disable", "mandatory", "optional"] | None = ...,
         multiple: Literal["enable", "disable"] | None = ...,
         color: int | None = ...,
-        tags: str | list[str] | list[dict[str, Any]] | list[ObjectTaggingTagsItem] | None = ...,
+        tags: str | list[str] | list[ObjectTaggingTagsItem] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -211,7 +211,7 @@ class ObjectTagging:
         interface: Literal["disable", "mandatory", "optional"] | None = ...,
         multiple: Literal["enable", "disable"] | None = ...,
         color: int | None = ...,
-        tags: str | list[str] | list[dict[str, Any]] | list[ObjectTaggingTagsItem] | None = ...,
+        tags: str | list[str] | list[ObjectTaggingTagsItem] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,

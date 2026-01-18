@@ -26,8 +26,8 @@ from hfortix_fortios.models import (
 # TypedDict Payloads
 # ================================================================
 
-class SpeedTestServerHostItem:
-    """Nested item for host field - supports attribute access."""
+class SpeedTestServerHostItem(TypedDict, total=False):
+    """Nested item for host field."""
     id: int
     ip: str
     port: int
@@ -42,7 +42,7 @@ class SpeedTestServerPayload(TypedDict, total=False):
     """Payload type for SpeedTestServer operations."""
     name: str
     timestamp: int
-    host: str | list[str] | list[dict[str, Any]] | list[SpeedTestServerHostItem]
+    host: str | list[str] | list[SpeedTestServerHostItem]
 
 
 # ================================================================
@@ -146,7 +146,7 @@ class SpeedTestServer:
         payload_dict: SpeedTestServerPayload | None = ...,
         name: str | None = ...,
         timestamp: int | None = ...,
-        host: str | list[str] | list[dict[str, Any]] | list[SpeedTestServerHostItem] | None = ...,
+        host: str | list[str] | list[SpeedTestServerHostItem] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -161,7 +161,7 @@ class SpeedTestServer:
         payload_dict: SpeedTestServerPayload | None = ...,
         name: str | None = ...,
         timestamp: int | None = ...,
-        host: str | list[str] | list[dict[str, Any]] | list[SpeedTestServerHostItem] | None = ...,
+        host: str | list[str] | list[SpeedTestServerHostItem] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -194,7 +194,7 @@ class SpeedTestServer:
         payload_dict: SpeedTestServerPayload | None = ...,
         name: str | None = ...,
         timestamp: int | None = ...,
-        host: str | list[str] | list[dict[str, Any]] | list[SpeedTestServerHostItem] | None = ...,
+        host: str | list[str] | list[SpeedTestServerHostItem] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,

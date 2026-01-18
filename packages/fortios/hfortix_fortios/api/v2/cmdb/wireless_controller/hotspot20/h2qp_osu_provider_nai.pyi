@@ -26,8 +26,8 @@ from hfortix_fortios.models import (
 # TypedDict Payloads
 # ================================================================
 
-class H2qpOsuProviderNaiNailistItem:
-    """Nested item for nai-list field - supports attribute access."""
+class H2qpOsuProviderNaiNailistItem(TypedDict, total=False):
+    """Nested item for nai-list field."""
     name: str
     osu_nai: str
 
@@ -35,7 +35,7 @@ class H2qpOsuProviderNaiNailistItem:
 class H2qpOsuProviderNaiPayload(TypedDict, total=False):
     """Payload type for H2qpOsuProviderNai operations."""
     name: str
-    nai_list: str | list[str] | list[dict[str, Any]] | list[H2qpOsuProviderNaiNailistItem]
+    nai_list: str | list[str] | list[H2qpOsuProviderNaiNailistItem]
 
 
 # ================================================================
@@ -136,7 +136,7 @@ class H2qpOsuProviderNai:
         self,
         payload_dict: H2qpOsuProviderNaiPayload | None = ...,
         name: str | None = ...,
-        nai_list: str | list[str] | list[dict[str, Any]] | list[H2qpOsuProviderNaiNailistItem] | None = ...,
+        nai_list: str | list[str] | list[H2qpOsuProviderNaiNailistItem] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -150,7 +150,7 @@ class H2qpOsuProviderNai:
         self,
         payload_dict: H2qpOsuProviderNaiPayload | None = ...,
         name: str | None = ...,
-        nai_list: str | list[str] | list[dict[str, Any]] | list[H2qpOsuProviderNaiNailistItem] | None = ...,
+        nai_list: str | list[str] | list[H2qpOsuProviderNaiNailistItem] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -182,7 +182,7 @@ class H2qpOsuProviderNai:
         self,
         payload_dict: H2qpOsuProviderNaiPayload | None = ...,
         name: str | None = ...,
-        nai_list: str | list[str] | list[dict[str, Any]] | list[H2qpOsuProviderNaiNailistItem] | None = ...,
+        nai_list: str | list[str] | list[H2qpOsuProviderNaiNailistItem] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,

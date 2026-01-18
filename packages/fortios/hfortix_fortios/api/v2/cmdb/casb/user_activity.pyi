@@ -26,16 +26,16 @@ from hfortix_fortios.models import (
 # TypedDict Payloads
 # ================================================================
 
-class UserActivityMatchItem:
-    """Nested item for match field - supports attribute access."""
+class UserActivityMatchItem(TypedDict, total=False):
+    """Nested item for match field."""
     id: int
     strategy: Literal["and", "or"]
     rules: str | list[str]
     tenant_extraction: str
 
 
-class UserActivityControloptionsItem:
-    """Nested item for control-options field - supports attribute access."""
+class UserActivityControloptionsItem(TypedDict, total=False):
+    """Nested item for control-options field."""
     name: str
     status: Literal["enable", "disable"]
     operations: str | list[str]
@@ -52,8 +52,8 @@ class UserActivityPayload(TypedDict, total=False):
     application: str
     category: Literal["activity-control", "tenant-control", "domain-control", "safe-search-control", "advanced-tenant-control", "other"]
     match_strategy: Literal["and", "or"]
-    match: str | list[str] | list[dict[str, Any]] | list[UserActivityMatchItem]
-    control_options: str | list[str] | list[dict[str, Any]] | list[UserActivityControloptionsItem]
+    match: str | list[str] | list[UserActivityMatchItem]
+    control_options: str | list[str] | list[UserActivityControloptionsItem]
 
 
 # ================================================================
@@ -180,8 +180,8 @@ class UserActivity:
         application: str | None = ...,
         category: Literal["activity-control", "tenant-control", "domain-control", "safe-search-control", "advanced-tenant-control", "other"] | None = ...,
         match_strategy: Literal["and", "or"] | None = ...,
-        match: str | list[str] | list[dict[str, Any]] | list[UserActivityMatchItem] | None = ...,
-        control_options: str | list[str] | list[dict[str, Any]] | list[UserActivityControloptionsItem] | None = ...,
+        match: str | list[str] | list[UserActivityMatchItem] | None = ...,
+        control_options: str | list[str] | list[UserActivityControloptionsItem] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -203,8 +203,8 @@ class UserActivity:
         application: str | None = ...,
         category: Literal["activity-control", "tenant-control", "domain-control", "safe-search-control", "advanced-tenant-control", "other"] | None = ...,
         match_strategy: Literal["and", "or"] | None = ...,
-        match: str | list[str] | list[dict[str, Any]] | list[UserActivityMatchItem] | None = ...,
-        control_options: str | list[str] | list[dict[str, Any]] | list[UserActivityControloptionsItem] | None = ...,
+        match: str | list[str] | list[UserActivityMatchItem] | None = ...,
+        control_options: str | list[str] | list[UserActivityControloptionsItem] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -244,8 +244,8 @@ class UserActivity:
         application: str | None = ...,
         category: Literal["activity-control", "tenant-control", "domain-control", "safe-search-control", "advanced-tenant-control", "other"] | None = ...,
         match_strategy: Literal["and", "or"] | None = ...,
-        match: str | list[str] | list[dict[str, Any]] | list[UserActivityMatchItem] | None = ...,
-        control_options: str | list[str] | list[dict[str, Any]] | list[UserActivityControloptionsItem] | None = ...,
+        match: str | list[str] | list[UserActivityMatchItem] | None = ...,
+        control_options: str | list[str] | list[UserActivityControloptionsItem] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,

@@ -26,8 +26,8 @@ from hfortix_fortios.models import (
 # TypedDict Payloads
 # ================================================================
 
-class CommunityHostsItem:
-    """Nested item for hosts field - supports attribute access."""
+class CommunityHostsItem(TypedDict, total=False):
+    """Nested item for hosts field."""
     id: int
     source_ip: str
     ip: str
@@ -38,8 +38,8 @@ class CommunityHostsItem:
     vrf_select: int
 
 
-class CommunityHosts6Item:
-    """Nested item for hosts6 field - supports attribute access."""
+class CommunityHosts6Item(TypedDict, total=False):
+    """Nested item for hosts6 field."""
     id: int
     source_ipv6: str
     ipv6: str
@@ -50,8 +50,8 @@ class CommunityHosts6Item:
     vrf_select: int
 
 
-class CommunityVdomsItem:
-    """Nested item for vdoms field - supports attribute access."""
+class CommunityVdomsItem(TypedDict, total=False):
+    """Nested item for vdoms field."""
     name: str
 
 
@@ -60,8 +60,8 @@ class CommunityPayload(TypedDict, total=False):
     id: int
     name: str
     status: Literal["enable", "disable"]
-    hosts: str | list[str] | list[dict[str, Any]] | list[CommunityHostsItem]
-    hosts6: str | list[str] | list[dict[str, Any]] | list[CommunityHosts6Item]
+    hosts: str | list[str] | list[CommunityHostsItem]
+    hosts6: str | list[str] | list[CommunityHosts6Item]
     query_v1_status: Literal["enable", "disable"]
     query_v1_port: int
     query_v2c_status: Literal["enable", "disable"]
@@ -74,7 +74,7 @@ class CommunityPayload(TypedDict, total=False):
     trap_v2c_rport: int
     events: str | list[str]
     mib_view: str
-    vdoms: str | list[str] | list[dict[str, Any]] | list[CommunityVdomsItem]
+    vdoms: str | list[str] | list[CommunityVdomsItem]
 
 
 # ================================================================
@@ -206,8 +206,8 @@ class Community:
         id: int | None = ...,
         name: str | None = ...,
         status: Literal["enable", "disable"] | None = ...,
-        hosts: str | list[str] | list[dict[str, Any]] | list[CommunityHostsItem] | None = ...,
-        hosts6: str | list[str] | list[dict[str, Any]] | list[CommunityHosts6Item] | None = ...,
+        hosts: str | list[str] | list[CommunityHostsItem] | None = ...,
+        hosts6: str | list[str] | list[CommunityHosts6Item] | None = ...,
         query_v1_status: Literal["enable", "disable"] | None = ...,
         query_v1_port: int | None = ...,
         query_v2c_status: Literal["enable", "disable"] | None = ...,
@@ -220,7 +220,7 @@ class Community:
         trap_v2c_rport: int | None = ...,
         events: str | list[str] | None = ...,
         mib_view: str | None = ...,
-        vdoms: str | list[str] | list[dict[str, Any]] | list[CommunityVdomsItem] | None = ...,
+        vdoms: str | list[str] | list[CommunityVdomsItem] | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> CommunityObject: ...
@@ -235,8 +235,8 @@ class Community:
         id: int | None = ...,
         name: str | None = ...,
         status: Literal["enable", "disable"] | None = ...,
-        hosts: str | list[str] | list[dict[str, Any]] | list[CommunityHostsItem] | None = ...,
-        hosts6: str | list[str] | list[dict[str, Any]] | list[CommunityHosts6Item] | None = ...,
+        hosts: str | list[str] | list[CommunityHostsItem] | None = ...,
+        hosts6: str | list[str] | list[CommunityHosts6Item] | None = ...,
         query_v1_status: Literal["enable", "disable"] | None = ...,
         query_v1_port: int | None = ...,
         query_v2c_status: Literal["enable", "disable"] | None = ...,
@@ -249,7 +249,7 @@ class Community:
         trap_v2c_rport: int | None = ...,
         events: str | list[str] | None = ...,
         mib_view: str | None = ...,
-        vdoms: str | list[str] | list[dict[str, Any]] | list[CommunityVdomsItem] | None = ...,
+        vdoms: str | list[str] | list[CommunityVdomsItem] | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> CommunityObject: ...
@@ -280,8 +280,8 @@ class Community:
         id: int | None = ...,
         name: str | None = ...,
         status: Literal["enable", "disable"] | None = ...,
-        hosts: str | list[str] | list[dict[str, Any]] | list[CommunityHostsItem] | None = ...,
-        hosts6: str | list[str] | list[dict[str, Any]] | list[CommunityHosts6Item] | None = ...,
+        hosts: str | list[str] | list[CommunityHostsItem] | None = ...,
+        hosts6: str | list[str] | list[CommunityHosts6Item] | None = ...,
         query_v1_status: Literal["enable", "disable"] | None = ...,
         query_v1_port: int | None = ...,
         query_v2c_status: Literal["enable", "disable"] | None = ...,
@@ -294,7 +294,7 @@ class Community:
         trap_v2c_rport: int | None = ...,
         events: Literal["cpu-high", "mem-low", "log-full", "intf-ip", "vpn-tun-up", "vpn-tun-down", "ha-switch", "ha-hb-failure", "ips-signature", "ips-anomaly", "av-virus", "av-oversize", "av-pattern", "av-fragmented", "fm-if-change", "fm-conf-change", "bgp-established", "bgp-backward-transition", "ha-member-up", "ha-member-down", "ent-conf-change", "av-conserve", "av-bypass", "av-oversize-passed", "av-oversize-blocked", "ips-pkg-update", "ips-fail-open", "faz-disconnect", "faz", "wc-ap-up", "wc-ap-down", "fswctl-session-up", "fswctl-session-down", "load-balance-real-server-down", "device-new", "per-cpu-high", "dhcp", "pool-usage", "ippool", "interface", "ospf-nbr-state-change", "ospf-virtnbr-state-change", "bfd"] | list[str] | None = ...,
         mib_view: str | None = ...,
-        vdoms: str | list[str] | list[dict[str, Any]] | list[CommunityVdomsItem] | None = ...,
+        vdoms: str | list[str] | list[CommunityVdomsItem] | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> FortiObject: ...

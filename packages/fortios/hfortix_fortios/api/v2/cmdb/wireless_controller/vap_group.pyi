@@ -26,8 +26,8 @@ from hfortix_fortios.models import (
 # TypedDict Payloads
 # ================================================================
 
-class VapGroupVapsItem:
-    """Nested item for vaps field - supports attribute access."""
+class VapGroupVapsItem(TypedDict, total=False):
+    """Nested item for vaps field."""
     name: str
 
 
@@ -35,7 +35,7 @@ class VapGroupPayload(TypedDict, total=False):
     """Payload type for VapGroup operations."""
     name: str
     comment: str
-    vaps: str | list[str] | list[dict[str, Any]] | list[VapGroupVapsItem]
+    vaps: str | list[str] | list[VapGroupVapsItem]
 
 
 # ================================================================
@@ -139,7 +139,7 @@ class VapGroup:
         payload_dict: VapGroupPayload | None = ...,
         name: str | None = ...,
         comment: str | None = ...,
-        vaps: str | list[str] | list[dict[str, Any]] | list[VapGroupVapsItem] | None = ...,
+        vaps: str | list[str] | list[VapGroupVapsItem] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -154,7 +154,7 @@ class VapGroup:
         payload_dict: VapGroupPayload | None = ...,
         name: str | None = ...,
         comment: str | None = ...,
-        vaps: str | list[str] | list[dict[str, Any]] | list[VapGroupVapsItem] | None = ...,
+        vaps: str | list[str] | list[VapGroupVapsItem] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -187,7 +187,7 @@ class VapGroup:
         payload_dict: VapGroupPayload | None = ...,
         name: str | None = ...,
         comment: str | None = ...,
-        vaps: str | list[str] | list[dict[str, Any]] | list[VapGroupVapsItem] | None = ...,
+        vaps: str | list[str] | list[VapGroupVapsItem] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,

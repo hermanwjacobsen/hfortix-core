@@ -26,8 +26,8 @@ from hfortix_fortios.models import (
 # TypedDict Payloads
 # ================================================================
 
-class SslServerSslcertItem:
-    """Nested item for ssl-cert field - supports attribute access."""
+class SslServerSslcertItem(TypedDict, total=False):
+    """Nested item for ssl-cert field."""
     name: str
 
 
@@ -39,7 +39,7 @@ class SslServerPayload(TypedDict, total=False):
     ssl_mode: Literal["half", "full"]
     add_header_x_forwarded_proto: Literal["enable", "disable"]
     mapped_port: int
-    ssl_cert: str | list[str] | list[dict[str, Any]] | list[SslServerSslcertItem]
+    ssl_cert: str | list[str] | list[SslServerSslcertItem]
     ssl_dh_bits: Literal["768", "1024", "1536", "2048"]
     ssl_algorithm: Literal["high", "medium", "low"]
     ssl_client_renegotiation: Literal["allow", "deny", "secure"]
@@ -176,7 +176,7 @@ class SslServer:
         ssl_mode: Literal["half", "full"] | None = ...,
         add_header_x_forwarded_proto: Literal["enable", "disable"] | None = ...,
         mapped_port: int | None = ...,
-        ssl_cert: str | list[str] | list[dict[str, Any]] | list[SslServerSslcertItem] | None = ...,
+        ssl_cert: str | list[str] | list[SslServerSslcertItem] | None = ...,
         ssl_dh_bits: Literal["768", "1024", "1536", "2048"] | None = ...,
         ssl_algorithm: Literal["high", "medium", "low"] | None = ...,
         ssl_client_renegotiation: Literal["allow", "deny", "secure"] | None = ...,
@@ -202,7 +202,7 @@ class SslServer:
         ssl_mode: Literal["half", "full"] | None = ...,
         add_header_x_forwarded_proto: Literal["enable", "disable"] | None = ...,
         mapped_port: int | None = ...,
-        ssl_cert: str | list[str] | list[dict[str, Any]] | list[SslServerSslcertItem] | None = ...,
+        ssl_cert: str | list[str] | list[SslServerSslcertItem] | None = ...,
         ssl_dh_bits: Literal["768", "1024", "1536", "2048"] | None = ...,
         ssl_algorithm: Literal["high", "medium", "low"] | None = ...,
         ssl_client_renegotiation: Literal["allow", "deny", "secure"] | None = ...,
@@ -246,7 +246,7 @@ class SslServer:
         ssl_mode: Literal["half", "full"] | None = ...,
         add_header_x_forwarded_proto: Literal["enable", "disable"] | None = ...,
         mapped_port: int | None = ...,
-        ssl_cert: str | list[str] | list[dict[str, Any]] | list[SslServerSslcertItem] | None = ...,
+        ssl_cert: str | list[str] | list[SslServerSslcertItem] | None = ...,
         ssl_dh_bits: Literal["768", "1024", "1536", "2048"] | None = ...,
         ssl_algorithm: Literal["high", "medium", "low"] | None = ...,
         ssl_client_renegotiation: Literal["allow", "deny", "secure"] | None = ...,

@@ -26,8 +26,8 @@ from hfortix_fortios.models import (
 # TypedDict Payloads
 # ================================================================
 
-class CustomSwitchbindingItem:
-    """Nested item for switch-binding field - supports attribute access."""
+class CustomSwitchbindingItem(TypedDict, total=False):
+    """Nested item for switch-binding field."""
     switch_id: str
     policy: str
 
@@ -35,7 +35,7 @@ class CustomSwitchbindingItem:
 class CustomPayload(TypedDict, total=False):
     """Payload type for Custom operations."""
     name: str
-    switch_binding: str | list[str] | list[dict[str, Any]] | list[CustomSwitchbindingItem]
+    switch_binding: str | list[str] | list[CustomSwitchbindingItem]
 
 
 # ================================================================
@@ -136,7 +136,7 @@ class Custom:
         self,
         payload_dict: CustomPayload | None = ...,
         name: str | None = ...,
-        switch_binding: str | list[str] | list[dict[str, Any]] | list[CustomSwitchbindingItem] | None = ...,
+        switch_binding: str | list[str] | list[CustomSwitchbindingItem] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -150,7 +150,7 @@ class Custom:
         self,
         payload_dict: CustomPayload | None = ...,
         name: str | None = ...,
-        switch_binding: str | list[str] | list[dict[str, Any]] | list[CustomSwitchbindingItem] | None = ...,
+        switch_binding: str | list[str] | list[CustomSwitchbindingItem] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -182,7 +182,7 @@ class Custom:
         self,
         payload_dict: CustomPayload | None = ...,
         name: str | None = ...,
-        switch_binding: str | list[str] | list[dict[str, Any]] | list[CustomSwitchbindingItem] | None = ...,
+        switch_binding: str | list[str] | list[CustomSwitchbindingItem] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,

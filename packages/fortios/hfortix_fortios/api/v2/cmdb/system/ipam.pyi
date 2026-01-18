@@ -25,16 +25,16 @@ from hfortix_fortios.models import (
 # TypedDict Payloads
 # ================================================================
 
-class IpamPoolsItem:
-    """Nested item for pools field - supports attribute access."""
+class IpamPoolsItem(TypedDict, total=False):
+    """Nested item for pools field."""
     name: str
     description: str
     subnet: str
     exclude: str | list[str]
 
 
-class IpamRulesItem:
-    """Nested item for rules field - supports attribute access."""
+class IpamRulesItem(TypedDict, total=False):
+    """Nested item for rules field."""
     name: str
     description: str
     device: str | list[str]
@@ -53,8 +53,8 @@ class IpamPayload(TypedDict, total=False):
     manage_lan_addresses: Literal["disable", "enable"]
     manage_lan_extension_addresses: Literal["disable", "enable"]
     manage_ssid_addresses: Literal["disable", "enable"]
-    pools: str | list[str] | list[dict[str, Any]] | list[IpamPoolsItem]
-    rules: str | list[str] | list[dict[str, Any]] | list[IpamRulesItem]
+    pools: str | list[str] | list[IpamPoolsItem]
+    rules: str | list[str] | list[IpamRulesItem]
 
 
 # ================================================================
@@ -153,8 +153,8 @@ class Ipam:
         manage_lan_addresses: Literal["disable", "enable"] | None = ...,
         manage_lan_extension_addresses: Literal["disable", "enable"] | None = ...,
         manage_ssid_addresses: Literal["disable", "enable"] | None = ...,
-        pools: str | list[str] | list[dict[str, Any]] | list[IpamPoolsItem] | None = ...,
-        rules: str | list[str] | list[dict[str, Any]] | list[IpamRulesItem] | None = ...,
+        pools: str | list[str] | list[IpamPoolsItem] | None = ...,
+        rules: str | list[str] | list[IpamRulesItem] | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> IpamObject: ...
@@ -179,8 +179,8 @@ class Ipam:
         manage_lan_addresses: Literal["disable", "enable"] | None = ...,
         manage_lan_extension_addresses: Literal["disable", "enable"] | None = ...,
         manage_ssid_addresses: Literal["disable", "enable"] | None = ...,
-        pools: str | list[str] | list[dict[str, Any]] | list[IpamPoolsItem] | None = ...,
-        rules: str | list[str] | list[dict[str, Any]] | list[IpamRulesItem] | None = ...,
+        pools: str | list[str] | list[IpamPoolsItem] | None = ...,
+        rules: str | list[str] | list[IpamRulesItem] | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> FortiObject: ...

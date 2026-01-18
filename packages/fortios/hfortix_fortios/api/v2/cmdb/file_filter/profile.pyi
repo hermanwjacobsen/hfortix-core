@@ -26,8 +26,8 @@ from hfortix_fortios.models import (
 # TypedDict Payloads
 # ================================================================
 
-class ProfileRulesItem:
-    """Nested item for rules field - supports attribute access."""
+class ProfileRulesItem(TypedDict, total=False):
+    """Nested item for rules field."""
     name: str
     comment: str
     protocol: Literal["http", "ftp", "smtp", "imap", "pop3", "mapi", "cifs", "ssh"]
@@ -46,7 +46,7 @@ class ProfilePayload(TypedDict, total=False):
     log: Literal["disable", "enable"]
     extended_log: Literal["disable", "enable"]
     scan_archive_contents: Literal["disable", "enable"]
-    rules: str | list[str] | list[dict[str, Any]] | list[ProfileRulesItem]
+    rules: str | list[str] | list[ProfileRulesItem]
 
 
 # ================================================================
@@ -165,7 +165,7 @@ class Profile:
         log: Literal["disable", "enable"] | None = ...,
         extended_log: Literal["disable", "enable"] | None = ...,
         scan_archive_contents: Literal["disable", "enable"] | None = ...,
-        rules: str | list[str] | list[dict[str, Any]] | list[ProfileRulesItem] | None = ...,
+        rules: str | list[str] | list[ProfileRulesItem] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -185,7 +185,7 @@ class Profile:
         log: Literal["disable", "enable"] | None = ...,
         extended_log: Literal["disable", "enable"] | None = ...,
         scan_archive_contents: Literal["disable", "enable"] | None = ...,
-        rules: str | list[str] | list[dict[str, Any]] | list[ProfileRulesItem] | None = ...,
+        rules: str | list[str] | list[ProfileRulesItem] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -223,7 +223,7 @@ class Profile:
         log: Literal["disable", "enable"] | None = ...,
         extended_log: Literal["disable", "enable"] | None = ...,
         scan_archive_contents: Literal["disable", "enable"] | None = ...,
-        rules: str | list[str] | list[dict[str, Any]] | list[ProfileRulesItem] | None = ...,
+        rules: str | list[str] | list[ProfileRulesItem] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,

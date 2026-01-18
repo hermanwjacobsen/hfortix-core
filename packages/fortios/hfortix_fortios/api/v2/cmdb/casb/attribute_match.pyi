@@ -26,8 +26,8 @@ from hfortix_fortios.models import (
 # TypedDict Payloads
 # ================================================================
 
-class AttributeMatchMatchItem:
-    """Nested item for match field - supports attribute access."""
+class AttributeMatchMatchItem(TypedDict, total=False):
+    """Nested item for match field."""
     id: int
     rule_strategy: Literal["and", "or"]
     rule: str | list[str]
@@ -38,7 +38,7 @@ class AttributeMatchPayload(TypedDict, total=False):
     name: str
     application: str
     match_strategy: Literal["or", "and", "subset"]
-    match: str | list[str] | list[dict[str, Any]] | list[AttributeMatchMatchItem]
+    match: str | list[str] | list[AttributeMatchMatchItem]
 
 
 # ================================================================
@@ -145,7 +145,7 @@ class AttributeMatch:
         name: str | None = ...,
         application: str | None = ...,
         match_strategy: Literal["or", "and", "subset"] | None = ...,
-        match: str | list[str] | list[dict[str, Any]] | list[AttributeMatchMatchItem] | None = ...,
+        match: str | list[str] | list[AttributeMatchMatchItem] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -161,7 +161,7 @@ class AttributeMatch:
         name: str | None = ...,
         application: str | None = ...,
         match_strategy: Literal["or", "and", "subset"] | None = ...,
-        match: str | list[str] | list[dict[str, Any]] | list[AttributeMatchMatchItem] | None = ...,
+        match: str | list[str] | list[AttributeMatchMatchItem] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -195,7 +195,7 @@ class AttributeMatch:
         name: str | None = ...,
         application: str | None = ...,
         match_strategy: Literal["or", "and", "subset"] | None = ...,
-        match: str | list[str] | list[dict[str, Any]] | list[AttributeMatchMatchItem] | None = ...,
+        match: str | list[str] | list[AttributeMatchMatchItem] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,

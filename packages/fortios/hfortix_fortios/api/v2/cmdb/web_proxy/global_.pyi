@@ -25,13 +25,13 @@ from hfortix_fortios.models import (
 # TypedDict Payloads
 # ================================================================
 
-class GlobalLearnclientipsrcaddrItem:
-    """Nested item for learn-client-ip-srcaddr field - supports attribute access."""
+class GlobalLearnclientipsrcaddrItem(TypedDict, total=False):
+    """Nested item for learn-client-ip-srcaddr field."""
     name: str
 
 
-class GlobalLearnclientipsrcaddr6Item:
-    """Nested item for learn-client-ip-srcaddr6 field - supports attribute access."""
+class GlobalLearnclientipsrcaddr6Item(TypedDict, total=False):
+    """Nested item for learn-client-ip-srcaddr6 field."""
     name: str
 
 
@@ -55,8 +55,8 @@ class GlobalPayload(TypedDict, total=False):
     learn_client_ip: Literal["enable", "disable"]
     always_learn_client_ip: Literal["enable", "disable"]
     learn_client_ip_from_header: str | list[str]
-    learn_client_ip_srcaddr: str | list[str] | list[dict[str, Any]] | list[GlobalLearnclientipsrcaddrItem]
-    learn_client_ip_srcaddr6: str | list[str] | list[dict[str, Any]] | list[GlobalLearnclientipsrcaddr6Item]
+    learn_client_ip_srcaddr: str | list[str] | list[GlobalLearnclientipsrcaddrItem]
+    learn_client_ip_srcaddr6: str | list[str] | list[GlobalLearnclientipsrcaddr6Item]
     src_affinity_exempt_addr: str | list[str]
     src_affinity_exempt_addr6: str | list[str]
     policy_partial_match: Literal["enable", "disable"]
@@ -214,8 +214,8 @@ class Global:
         learn_client_ip: Literal["enable", "disable"] | None = ...,
         always_learn_client_ip: Literal["enable", "disable"] | None = ...,
         learn_client_ip_from_header: str | list[str] | None = ...,
-        learn_client_ip_srcaddr: str | list[str] | list[dict[str, Any]] | list[GlobalLearnclientipsrcaddrItem] | None = ...,
-        learn_client_ip_srcaddr6: str | list[str] | list[dict[str, Any]] | list[GlobalLearnclientipsrcaddr6Item] | None = ...,
+        learn_client_ip_srcaddr: str | list[str] | list[GlobalLearnclientipsrcaddrItem] | None = ...,
+        learn_client_ip_srcaddr6: str | list[str] | list[GlobalLearnclientipsrcaddr6Item] | None = ...,
         src_affinity_exempt_addr: str | list[str] | None = ...,
         src_affinity_exempt_addr6: str | list[str] | None = ...,
         policy_partial_match: Literal["enable", "disable"] | None = ...,
@@ -261,8 +261,8 @@ class Global:
         learn_client_ip: Literal["enable", "disable"] | None = ...,
         always_learn_client_ip: Literal["enable", "disable"] | None = ...,
         learn_client_ip_from_header: Literal["true-client-ip", "x-real-ip", "x-forwarded-for"] | list[str] | None = ...,
-        learn_client_ip_srcaddr: str | list[str] | list[dict[str, Any]] | list[GlobalLearnclientipsrcaddrItem] | None = ...,
-        learn_client_ip_srcaddr6: str | list[str] | list[dict[str, Any]] | list[GlobalLearnclientipsrcaddr6Item] | None = ...,
+        learn_client_ip_srcaddr: str | list[str] | list[GlobalLearnclientipsrcaddrItem] | None = ...,
+        learn_client_ip_srcaddr6: str | list[str] | list[GlobalLearnclientipsrcaddr6Item] | None = ...,
         src_affinity_exempt_addr: str | list[str] | None = ...,
         src_affinity_exempt_addr6: str | list[str] | None = ...,
         policy_partial_match: Literal["enable", "disable"] | None = ...,

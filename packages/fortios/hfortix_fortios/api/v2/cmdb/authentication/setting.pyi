@@ -25,13 +25,13 @@ from hfortix_fortios.models import (
 # TypedDict Payloads
 # ================================================================
 
-class SettingUsercertcaItem:
-    """Nested item for user-cert-ca field - supports attribute access."""
+class SettingUsercertcaItem(TypedDict, total=False):
+    """Nested item for user-cert-ca field."""
     name: str
 
 
-class SettingDevrangeItem:
-    """Nested item for dev-range field - supports attribute access."""
+class SettingDevrangeItem(TypedDict, total=False):
+    """Nested item for dev-range field."""
     name: str
 
 
@@ -56,8 +56,8 @@ class SettingPayload(TypedDict, total=False):
     captive_portal_port: int
     auth_https: Literal["enable", "disable"]
     captive_portal_ssl_port: int
-    user_cert_ca: str | list[str] | list[dict[str, Any]] | list[SettingUsercertcaItem]
-    dev_range: str | list[str] | list[dict[str, Any]] | list[SettingDevrangeItem]
+    user_cert_ca: str | list[str] | list[SettingUsercertcaItem]
+    dev_range: str | list[str] | list[SettingDevrangeItem]
 
 
 # ================================================================
@@ -194,8 +194,8 @@ class Setting:
         captive_portal_port: int | None = ...,
         auth_https: Literal["enable", "disable"] | None = ...,
         captive_portal_ssl_port: int | None = ...,
-        user_cert_ca: str | list[str] | list[dict[str, Any]] | list[SettingUsercertcaItem] | None = ...,
-        dev_range: str | list[str] | list[dict[str, Any]] | list[SettingDevrangeItem] | None = ...,
+        user_cert_ca: str | list[str] | list[SettingUsercertcaItem] | None = ...,
+        dev_range: str | list[str] | list[SettingDevrangeItem] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -234,8 +234,8 @@ class Setting:
         captive_portal_port: int | None = ...,
         auth_https: Literal["enable", "disable"] | None = ...,
         captive_portal_ssl_port: int | None = ...,
-        user_cert_ca: str | list[str] | list[dict[str, Any]] | list[SettingUsercertcaItem] | None = ...,
-        dev_range: str | list[str] | list[dict[str, Any]] | list[SettingDevrangeItem] | None = ...,
+        user_cert_ca: str | list[str] | list[SettingUsercertcaItem] | None = ...,
+        dev_range: str | list[str] | list[SettingDevrangeItem] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,

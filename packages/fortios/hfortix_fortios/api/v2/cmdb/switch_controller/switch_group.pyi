@@ -26,8 +26,8 @@ from hfortix_fortios.models import (
 # TypedDict Payloads
 # ================================================================
 
-class SwitchGroupMembersItem:
-    """Nested item for members field - supports attribute access."""
+class SwitchGroupMembersItem(TypedDict, total=False):
+    """Nested item for members field."""
     switch_id: str
 
 
@@ -36,7 +36,7 @@ class SwitchGroupPayload(TypedDict, total=False):
     name: str
     description: str
     fortilink: str
-    members: str | list[str] | list[dict[str, Any]] | list[SwitchGroupMembersItem]
+    members: str | list[str] | list[SwitchGroupMembersItem]
 
 
 # ================================================================
@@ -143,7 +143,7 @@ class SwitchGroup:
         name: str | None = ...,
         description: str | None = ...,
         fortilink: str | None = ...,
-        members: str | list[str] | list[dict[str, Any]] | list[SwitchGroupMembersItem] | None = ...,
+        members: str | list[str] | list[SwitchGroupMembersItem] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -159,7 +159,7 @@ class SwitchGroup:
         name: str | None = ...,
         description: str | None = ...,
         fortilink: str | None = ...,
-        members: str | list[str] | list[dict[str, Any]] | list[SwitchGroupMembersItem] | None = ...,
+        members: str | list[str] | list[SwitchGroupMembersItem] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -193,7 +193,7 @@ class SwitchGroup:
         name: str | None = ...,
         description: str | None = ...,
         fortilink: str | None = ...,
-        members: str | list[str] | list[dict[str, Any]] | list[SwitchGroupMembersItem] | None = ...,
+        members: str | list[str] | list[SwitchGroupMembersItem] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,

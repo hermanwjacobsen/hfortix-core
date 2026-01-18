@@ -25,8 +25,8 @@ from hfortix_fortios.models import (
 # TypedDict Payloads
 # ================================================================
 
-class StandaloneClusterClusterpeerItem:
-    """Nested item for cluster-peer field - supports attribute access."""
+class StandaloneClusterClusterpeerItem(TypedDict, total=False):
+    """Nested item for cluster-peer field."""
     sync_id: int
     peervd: str
     peerip: str
@@ -39,18 +39,18 @@ class StandaloneClusterClusterpeerItem:
     session_sync_filter: str
 
 
-class StandaloneClusterMonitorinterfaceItem:
-    """Nested item for monitor-interface field - supports attribute access."""
+class StandaloneClusterMonitorinterfaceItem(TypedDict, total=False):
+    """Nested item for monitor-interface field."""
     name: str
 
 
-class StandaloneClusterPingsvrmonitorinterfaceItem:
-    """Nested item for pingsvr-monitor-interface field - supports attribute access."""
+class StandaloneClusterPingsvrmonitorinterfaceItem(TypedDict, total=False):
+    """Nested item for pingsvr-monitor-interface field."""
     name: str
 
 
-class StandaloneClusterMonitorprefixItem:
-    """Nested item for monitor-prefix field - supports attribute access."""
+class StandaloneClusterMonitorprefixItem(TypedDict, total=False):
+    """Nested item for monitor-prefix field."""
     id: int
     vdom: str
     vrf: int
@@ -66,10 +66,10 @@ class StandaloneClusterPayload(TypedDict, total=False):
     encryption: Literal["enable", "disable"]
     psksecret: str
     asymmetric_traffic_control: Literal["cps-preferred", "strict-anti-replay"]
-    cluster_peer: str | list[str] | list[dict[str, Any]] | list[StandaloneClusterClusterpeerItem]
-    monitor_interface: str | list[str] | list[dict[str, Any]] | list[StandaloneClusterMonitorinterfaceItem]
-    pingsvr_monitor_interface: str | list[str] | list[dict[str, Any]] | list[StandaloneClusterPingsvrmonitorinterfaceItem]
-    monitor_prefix: str | list[str] | list[dict[str, Any]] | list[StandaloneClusterMonitorprefixItem]
+    cluster_peer: str | list[str] | list[StandaloneClusterClusterpeerItem]
+    monitor_interface: str | list[str] | list[StandaloneClusterMonitorinterfaceItem]
+    pingsvr_monitor_interface: str | list[str] | list[StandaloneClusterPingsvrmonitorinterfaceItem]
+    monitor_prefix: str | list[str] | list[StandaloneClusterMonitorprefixItem]
     helper_traffic_bounce: Literal["enable", "disable"]
     utm_traffic_bounce: Literal["enable", "disable"]
 
@@ -178,10 +178,10 @@ class StandaloneCluster:
         encryption: Literal["enable", "disable"] | None = ...,
         psksecret: str | None = ...,
         asymmetric_traffic_control: Literal["cps-preferred", "strict-anti-replay"] | None = ...,
-        cluster_peer: str | list[str] | list[dict[str, Any]] | list[StandaloneClusterClusterpeerItem] | None = ...,
-        monitor_interface: str | list[str] | list[dict[str, Any]] | list[StandaloneClusterMonitorinterfaceItem] | None = ...,
-        pingsvr_monitor_interface: str | list[str] | list[dict[str, Any]] | list[StandaloneClusterPingsvrmonitorinterfaceItem] | None = ...,
-        monitor_prefix: str | list[str] | list[dict[str, Any]] | list[StandaloneClusterMonitorprefixItem] | None = ...,
+        cluster_peer: str | list[str] | list[StandaloneClusterClusterpeerItem] | None = ...,
+        monitor_interface: str | list[str] | list[StandaloneClusterMonitorinterfaceItem] | None = ...,
+        pingsvr_monitor_interface: str | list[str] | list[StandaloneClusterPingsvrmonitorinterfaceItem] | None = ...,
+        monitor_prefix: str | list[str] | list[StandaloneClusterMonitorprefixItem] | None = ...,
         helper_traffic_bounce: Literal["enable", "disable"] | None = ...,
         utm_traffic_bounce: Literal["enable", "disable"] | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
@@ -208,10 +208,10 @@ class StandaloneCluster:
         encryption: Literal["enable", "disable"] | None = ...,
         psksecret: str | None = ...,
         asymmetric_traffic_control: Literal["cps-preferred", "strict-anti-replay"] | None = ...,
-        cluster_peer: str | list[str] | list[dict[str, Any]] | list[StandaloneClusterClusterpeerItem] | None = ...,
-        monitor_interface: str | list[str] | list[dict[str, Any]] | list[StandaloneClusterMonitorinterfaceItem] | None = ...,
-        pingsvr_monitor_interface: str | list[str] | list[dict[str, Any]] | list[StandaloneClusterPingsvrmonitorinterfaceItem] | None = ...,
-        monitor_prefix: str | list[str] | list[dict[str, Any]] | list[StandaloneClusterMonitorprefixItem] | None = ...,
+        cluster_peer: str | list[str] | list[StandaloneClusterClusterpeerItem] | None = ...,
+        monitor_interface: str | list[str] | list[StandaloneClusterMonitorinterfaceItem] | None = ...,
+        pingsvr_monitor_interface: str | list[str] | list[StandaloneClusterPingsvrmonitorinterfaceItem] | None = ...,
+        monitor_prefix: str | list[str] | list[StandaloneClusterMonitorprefixItem] | None = ...,
         helper_traffic_bounce: Literal["enable", "disable"] | None = ...,
         utm_traffic_bounce: Literal["enable", "disable"] | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,

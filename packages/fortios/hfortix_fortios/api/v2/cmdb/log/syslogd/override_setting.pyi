@@ -25,8 +25,8 @@ from hfortix_fortios.models import (
 # TypedDict Payloads
 # ================================================================
 
-class OverrideSettingCustomfieldnameItem:
-    """Nested item for custom-field-name field - supports attribute access."""
+class OverrideSettingCustomfieldnameItem(TypedDict, total=False):
+    """Nested item for custom-field-name field."""
     id: int
     name: str
     custom: str
@@ -48,7 +48,7 @@ class OverrideSettingPayload(TypedDict, total=False):
     enc_algorithm: Literal["high-medium", "high", "low", "disable"]
     ssl_min_proto_version: Literal["default", "SSLv3", "TLSv1", "TLSv1-1", "TLSv1-2", "TLSv1-3"]
     certificate: str
-    custom_field_name: str | list[str] | list[dict[str, Any]] | list[OverrideSettingCustomfieldnameItem]
+    custom_field_name: str | list[str] | list[OverrideSettingCustomfieldnameItem]
     interface_select_method: Literal["auto", "sdwan", "specify"]
     interface: str
     vrf_select: int
@@ -177,7 +177,7 @@ class OverrideSetting:
         enc_algorithm: Literal["high-medium", "high", "low", "disable"] | None = ...,
         ssl_min_proto_version: Literal["default", "SSLv3", "TLSv1", "TLSv1-1", "TLSv1-2", "TLSv1-3"] | None = ...,
         certificate: str | None = ...,
-        custom_field_name: str | list[str] | list[dict[str, Any]] | list[OverrideSettingCustomfieldnameItem] | None = ...,
+        custom_field_name: str | list[str] | list[OverrideSettingCustomfieldnameItem] | None = ...,
         interface_select_method: Literal["auto", "sdwan", "specify"] | None = ...,
         interface: str | None = ...,
         vrf_select: int | None = ...,
@@ -214,7 +214,7 @@ class OverrideSetting:
         enc_algorithm: Literal["high-medium", "high", "low", "disable"] | None = ...,
         ssl_min_proto_version: Literal["default", "SSLv3", "TLSv1", "TLSv1-1", "TLSv1-2", "TLSv1-3"] | None = ...,
         certificate: str | None = ...,
-        custom_field_name: str | list[str] | list[dict[str, Any]] | list[OverrideSettingCustomfieldnameItem] | None = ...,
+        custom_field_name: str | list[str] | list[OverrideSettingCustomfieldnameItem] | None = ...,
         interface_select_method: Literal["auto", "sdwan", "specify"] | None = ...,
         interface: str | None = ...,
         vrf_select: int | None = ...,

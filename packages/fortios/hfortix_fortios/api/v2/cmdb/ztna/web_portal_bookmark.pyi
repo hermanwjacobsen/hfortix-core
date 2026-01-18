@@ -26,18 +26,18 @@ from hfortix_fortios.models import (
 # TypedDict Payloads
 # ================================================================
 
-class WebPortalBookmarkUsersItem:
-    """Nested item for users field - supports attribute access."""
+class WebPortalBookmarkUsersItem(TypedDict, total=False):
+    """Nested item for users field."""
     name: str
 
 
-class WebPortalBookmarkGroupsItem:
-    """Nested item for groups field - supports attribute access."""
+class WebPortalBookmarkGroupsItem(TypedDict, total=False):
+    """Nested item for groups field."""
     name: str
 
 
-class WebPortalBookmarkBookmarksItem:
-    """Nested item for bookmarks field - supports attribute access."""
+class WebPortalBookmarkBookmarksItem(TypedDict, total=False):
+    """Nested item for bookmarks field."""
     name: str
     apptype: Literal["ftp", "rdp", "sftp", "smb", "ssh", "telnet", "vnc", "web"]
     url: str
@@ -65,9 +65,9 @@ class WebPortalBookmarkBookmarksItem:
 class WebPortalBookmarkPayload(TypedDict, total=False):
     """Payload type for WebPortalBookmark operations."""
     name: str
-    users: str | list[str] | list[dict[str, Any]] | list[WebPortalBookmarkUsersItem]
-    groups: str | list[str] | list[dict[str, Any]] | list[WebPortalBookmarkGroupsItem]
-    bookmarks: str | list[str] | list[dict[str, Any]] | list[WebPortalBookmarkBookmarksItem]
+    users: str | list[str] | list[WebPortalBookmarkUsersItem]
+    groups: str | list[str] | list[WebPortalBookmarkGroupsItem]
+    bookmarks: str | list[str] | list[WebPortalBookmarkBookmarksItem]
 
 
 # ================================================================
@@ -172,9 +172,9 @@ class WebPortalBookmark:
         self,
         payload_dict: WebPortalBookmarkPayload | None = ...,
         name: str | None = ...,
-        users: str | list[str] | list[dict[str, Any]] | list[WebPortalBookmarkUsersItem] | None = ...,
-        groups: str | list[str] | list[dict[str, Any]] | list[WebPortalBookmarkGroupsItem] | None = ...,
-        bookmarks: str | list[str] | list[dict[str, Any]] | list[WebPortalBookmarkBookmarksItem] | None = ...,
+        users: str | list[str] | list[WebPortalBookmarkUsersItem] | None = ...,
+        groups: str | list[str] | list[WebPortalBookmarkGroupsItem] | None = ...,
+        bookmarks: str | list[str] | list[WebPortalBookmarkBookmarksItem] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -188,9 +188,9 @@ class WebPortalBookmark:
         self,
         payload_dict: WebPortalBookmarkPayload | None = ...,
         name: str | None = ...,
-        users: str | list[str] | list[dict[str, Any]] | list[WebPortalBookmarkUsersItem] | None = ...,
-        groups: str | list[str] | list[dict[str, Any]] | list[WebPortalBookmarkGroupsItem] | None = ...,
-        bookmarks: str | list[str] | list[dict[str, Any]] | list[WebPortalBookmarkBookmarksItem] | None = ...,
+        users: str | list[str] | list[WebPortalBookmarkUsersItem] | None = ...,
+        groups: str | list[str] | list[WebPortalBookmarkGroupsItem] | None = ...,
+        bookmarks: str | list[str] | list[WebPortalBookmarkBookmarksItem] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -222,9 +222,9 @@ class WebPortalBookmark:
         self,
         payload_dict: WebPortalBookmarkPayload | None = ...,
         name: str | None = ...,
-        users: str | list[str] | list[dict[str, Any]] | list[WebPortalBookmarkUsersItem] | None = ...,
-        groups: str | list[str] | list[dict[str, Any]] | list[WebPortalBookmarkGroupsItem] | None = ...,
-        bookmarks: str | list[str] | list[dict[str, Any]] | list[WebPortalBookmarkBookmarksItem] | None = ...,
+        users: str | list[str] | list[WebPortalBookmarkUsersItem] | None = ...,
+        groups: str | list[str] | list[WebPortalBookmarkGroupsItem] | None = ...,
+        bookmarks: str | list[str] | list[WebPortalBookmarkBookmarksItem] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,

@@ -26,8 +26,8 @@ from hfortix_fortios.models import (
 # TypedDict Payloads
 # ================================================================
 
-class MheaderEntriesItem:
-    """Nested item for entries field - supports attribute access."""
+class MheaderEntriesItem(TypedDict, total=False):
+    """Nested item for entries field."""
     status: Literal["enable", "disable"]
     id: int
     fieldname: str
@@ -41,7 +41,7 @@ class MheaderPayload(TypedDict, total=False):
     id: int
     name: str
     comment: str
-    entries: str | list[str] | list[dict[str, Any]] | list[MheaderEntriesItem]
+    entries: str | list[str] | list[MheaderEntriesItem]
 
 
 # ================================================================
@@ -148,7 +148,7 @@ class Mheader:
         id: int | None = ...,
         name: str | None = ...,
         comment: str | None = ...,
-        entries: str | list[str] | list[dict[str, Any]] | list[MheaderEntriesItem] | None = ...,
+        entries: str | list[str] | list[MheaderEntriesItem] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -164,7 +164,7 @@ class Mheader:
         id: int | None = ...,
         name: str | None = ...,
         comment: str | None = ...,
-        entries: str | list[str] | list[dict[str, Any]] | list[MheaderEntriesItem] | None = ...,
+        entries: str | list[str] | list[MheaderEntriesItem] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -198,7 +198,7 @@ class Mheader:
         id: int | None = ...,
         name: str | None = ...,
         comment: str | None = ...,
-        entries: str | list[str] | list[dict[str, Any]] | list[MheaderEntriesItem] | None = ...,
+        entries: str | list[str] | list[MheaderEntriesItem] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,

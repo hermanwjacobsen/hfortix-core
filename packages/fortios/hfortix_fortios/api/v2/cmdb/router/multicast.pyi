@@ -56,8 +56,8 @@ class MulticastPimsmglobalDict(TypedDict, total=False):
     rp_address: str | list[str]
 
 
-class MulticastPimsmglobalvrfItem:
-    """Nested item for pim-sm-global-vrf field - supports attribute access."""
+class MulticastPimsmglobalvrfItem(TypedDict, total=False):
+    """Nested item for pim-sm-global-vrf field."""
     vrf: int
     bsr_candidate: Literal["enable", "disable"]
     bsr_interface: str
@@ -68,8 +68,8 @@ class MulticastPimsmglobalvrfItem:
     rp_address: str | list[str]
 
 
-class MulticastInterfaceItem:
-    """Nested item for interface field - supports attribute access."""
+class MulticastInterfaceItem(TypedDict, total=False):
+    """Nested item for interface field."""
     name: str
     ttl_threshold: int
     pim_mode: Literal["sparse-mode", "dense-mode"]
@@ -100,8 +100,8 @@ class MulticastPayload(TypedDict, total=False):
     route_limit: int
     multicast_routing: Literal["enable", "disable"]
     pim_sm_global: MulticastPimsmglobalDict
-    pim_sm_global_vrf: str | list[str] | list[dict[str, Any]] | list[MulticastPimsmglobalvrfItem]
-    interface: str | list[str] | list[dict[str, Any]] | list[MulticastInterfaceItem]
+    pim_sm_global_vrf: str | list[str] | list[MulticastPimsmglobalvrfItem]
+    interface: str | list[str] | list[MulticastInterfaceItem]
 
 
 # ================================================================
@@ -193,8 +193,8 @@ class Multicast:
         route_limit: int | None = ...,
         multicast_routing: Literal["enable", "disable"] | None = ...,
         pim_sm_global: MulticastPimsmglobalDict | None = ...,
-        pim_sm_global_vrf: str | list[str] | list[dict[str, Any]] | list[MulticastPimsmglobalvrfItem] | None = ...,
-        interface: str | list[str] | list[dict[str, Any]] | list[MulticastInterfaceItem] | None = ...,
+        pim_sm_global_vrf: str | list[str] | list[MulticastPimsmglobalvrfItem] | None = ...,
+        interface: str | list[str] | list[MulticastInterfaceItem] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -218,8 +218,8 @@ class Multicast:
         route_limit: int | None = ...,
         multicast_routing: Literal["enable", "disable"] | None = ...,
         pim_sm_global: MulticastPimsmglobalDict | None = ...,
-        pim_sm_global_vrf: str | list[str] | list[dict[str, Any]] | list[MulticastPimsmglobalvrfItem] | None = ...,
-        interface: str | list[str] | list[dict[str, Any]] | list[MulticastInterfaceItem] | None = ...,
+        pim_sm_global_vrf: str | list[str] | list[MulticastPimsmglobalvrfItem] | None = ...,
+        interface: str | list[str] | list[MulticastInterfaceItem] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,

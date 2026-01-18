@@ -26,8 +26,8 @@ from hfortix_fortios.models import (
 # TypedDict Payloads
 # ================================================================
 
-class Vipgrp6MemberItem:
-    """Nested item for member field - supports attribute access."""
+class Vipgrp6MemberItem(TypedDict, total=False):
+    """Nested item for member field."""
     name: str
 
 
@@ -37,7 +37,7 @@ class Vipgrp6Payload(TypedDict, total=False):
     uuid: str
     color: int
     comments: str
-    member: str | list[str] | list[dict[str, Any]] | list[Vipgrp6MemberItem]
+    member: str | list[str] | list[Vipgrp6MemberItem]
 
 
 # ================================================================
@@ -147,7 +147,7 @@ class Vipgrp6:
         uuid: str | None = ...,
         color: int | None = ...,
         comments: str | None = ...,
-        member: str | list[str] | list[dict[str, Any]] | list[Vipgrp6MemberItem] | None = ...,
+        member: str | list[str] | list[Vipgrp6MemberItem] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -164,7 +164,7 @@ class Vipgrp6:
         uuid: str | None = ...,
         color: int | None = ...,
         comments: str | None = ...,
-        member: str | list[str] | list[dict[str, Any]] | list[Vipgrp6MemberItem] | None = ...,
+        member: str | list[str] | list[Vipgrp6MemberItem] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -199,7 +199,7 @@ class Vipgrp6:
         uuid: str | None = ...,
         color: int | None = ...,
         comments: str | None = ...,
-        member: str | list[str] | list[dict[str, Any]] | list[Vipgrp6MemberItem] | None = ...,
+        member: str | list[str] | list[Vipgrp6MemberItem] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,

@@ -26,8 +26,8 @@ from hfortix_fortios.models import (
 # TypedDict Payloads
 # ================================================================
 
-class AccessProxyApigatewayItem:
-    """Nested item for api-gateway field - supports attribute access."""
+class AccessProxyApigatewayItem(TypedDict, total=False):
+    """Nested item for api-gateway field."""
     id: int
     url_map: str
     service: Literal["http", "https", "tcp-forwarding", "samlsp", "web-portal", "saas"]
@@ -58,8 +58,8 @@ class AccessProxyApigatewayItem:
     ssl_vpn_web_portal: str
 
 
-class AccessProxyApigateway6Item:
-    """Nested item for api-gateway6 field - supports attribute access."""
+class AccessProxyApigateway6Item(TypedDict, total=False):
+    """Nested item for api-gateway6 field."""
     id: int
     url_map: str
     service: Literal["http", "https", "tcp-forwarding", "samlsp", "web-portal", "saas"]
@@ -103,8 +103,8 @@ class AccessProxyPayload(TypedDict, total=False):
     svr_pool_server_max_request: int
     svr_pool_server_max_concurrent_request: int
     decrypted_traffic_mirror: str
-    api_gateway: str | list[str] | list[dict[str, Any]] | list[AccessProxyApigatewayItem]
-    api_gateway6: str | list[str] | list[dict[str, Any]] | list[AccessProxyApigateway6Item]
+    api_gateway: str | list[str] | list[AccessProxyApigatewayItem]
+    api_gateway6: str | list[str] | list[AccessProxyApigateway6Item]
 
 
 # ================================================================
@@ -237,8 +237,8 @@ class AccessProxy:
         svr_pool_server_max_request: int | None = ...,
         svr_pool_server_max_concurrent_request: int | None = ...,
         decrypted_traffic_mirror: str | None = ...,
-        api_gateway: str | list[str] | list[dict[str, Any]] | list[AccessProxyApigatewayItem] | None = ...,
-        api_gateway6: str | list[str] | list[dict[str, Any]] | list[AccessProxyApigateway6Item] | None = ...,
+        api_gateway: str | list[str] | list[AccessProxyApigatewayItem] | None = ...,
+        api_gateway6: str | list[str] | list[AccessProxyApigateway6Item] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -262,8 +262,8 @@ class AccessProxy:
         svr_pool_server_max_request: int | None = ...,
         svr_pool_server_max_concurrent_request: int | None = ...,
         decrypted_traffic_mirror: str | None = ...,
-        api_gateway: str | list[str] | list[dict[str, Any]] | list[AccessProxyApigatewayItem] | None = ...,
-        api_gateway6: str | list[str] | list[dict[str, Any]] | list[AccessProxyApigateway6Item] | None = ...,
+        api_gateway: str | list[str] | list[AccessProxyApigatewayItem] | None = ...,
+        api_gateway6: str | list[str] | list[AccessProxyApigateway6Item] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -305,8 +305,8 @@ class AccessProxy:
         svr_pool_server_max_request: int | None = ...,
         svr_pool_server_max_concurrent_request: int | None = ...,
         decrypted_traffic_mirror: str | None = ...,
-        api_gateway: str | list[str] | list[dict[str, Any]] | list[AccessProxyApigatewayItem] | None = ...,
-        api_gateway6: str | list[str] | list[dict[str, Any]] | list[AccessProxyApigateway6Item] | None = ...,
+        api_gateway: str | list[str] | list[AccessProxyApigatewayItem] | None = ...,
+        api_gateway6: str | list[str] | list[AccessProxyApigateway6Item] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,

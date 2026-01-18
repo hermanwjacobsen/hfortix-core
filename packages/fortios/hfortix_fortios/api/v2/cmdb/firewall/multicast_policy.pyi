@@ -26,13 +26,13 @@ from hfortix_fortios.models import (
 # TypedDict Payloads
 # ================================================================
 
-class MulticastPolicySrcaddrItem:
-    """Nested item for srcaddr field - supports attribute access."""
+class MulticastPolicySrcaddrItem(TypedDict, total=False):
+    """Nested item for srcaddr field."""
     name: str
 
 
-class MulticastPolicyDstaddrItem:
-    """Nested item for dstaddr field - supports attribute access."""
+class MulticastPolicyDstaddrItem(TypedDict, total=False):
+    """Nested item for dstaddr field."""
     name: str
 
 
@@ -45,8 +45,8 @@ class MulticastPolicyPayload(TypedDict, total=False):
     status: Literal["enable", "disable"]
     srcintf: str
     dstintf: str
-    srcaddr: str | list[str] | list[dict[str, Any]] | list[MulticastPolicySrcaddrItem]
-    dstaddr: str | list[str] | list[dict[str, Any]] | list[MulticastPolicyDstaddrItem]
+    srcaddr: str | list[str] | list[MulticastPolicySrcaddrItem]
+    dstaddr: str | list[str] | list[MulticastPolicyDstaddrItem]
     snat: Literal["enable", "disable"]
     snat_ip: str
     dnat: str
@@ -203,8 +203,8 @@ class MulticastPolicy:
         status: Literal["enable", "disable"] | None = ...,
         srcintf: str | None = ...,
         dstintf: str | None = ...,
-        srcaddr: str | list[str] | list[dict[str, Any]] | list[MulticastPolicySrcaddrItem] | None = ...,
-        dstaddr: str | list[str] | list[dict[str, Any]] | list[MulticastPolicyDstaddrItem] | None = ...,
+        srcaddr: str | list[str] | list[MulticastPolicySrcaddrItem] | None = ...,
+        dstaddr: str | list[str] | list[MulticastPolicyDstaddrItem] | None = ...,
         snat: Literal["enable", "disable"] | None = ...,
         snat_ip: str | None = ...,
         dnat: str | None = ...,
@@ -236,8 +236,8 @@ class MulticastPolicy:
         status: Literal["enable", "disable"] | None = ...,
         srcintf: str | None = ...,
         dstintf: str | None = ...,
-        srcaddr: str | list[str] | list[dict[str, Any]] | list[MulticastPolicySrcaddrItem] | None = ...,
-        dstaddr: str | list[str] | list[dict[str, Any]] | list[MulticastPolicyDstaddrItem] | None = ...,
+        srcaddr: str | list[str] | list[MulticastPolicySrcaddrItem] | None = ...,
+        dstaddr: str | list[str] | list[MulticastPolicyDstaddrItem] | None = ...,
         snat: Literal["enable", "disable"] | None = ...,
         snat_ip: str | None = ...,
         dnat: str | None = ...,
@@ -287,8 +287,8 @@ class MulticastPolicy:
         status: Literal["enable", "disable"] | None = ...,
         srcintf: str | None = ...,
         dstintf: str | None = ...,
-        srcaddr: str | list[str] | list[dict[str, Any]] | list[MulticastPolicySrcaddrItem] | None = ...,
-        dstaddr: str | list[str] | list[dict[str, Any]] | list[MulticastPolicyDstaddrItem] | None = ...,
+        srcaddr: str | list[str] | list[MulticastPolicySrcaddrItem] | None = ...,
+        dstaddr: str | list[str] | list[MulticastPolicyDstaddrItem] | None = ...,
         snat: Literal["enable", "disable"] | None = ...,
         snat_ip: str | None = ...,
         dnat: str | None = ...,

@@ -26,8 +26,8 @@ from hfortix_fortios.models import (
 # TypedDict Payloads
 # ================================================================
 
-class ShapingProfileShapingentriesItem:
-    """Nested item for shaping-entries field - supports attribute access."""
+class ShapingProfileShapingentriesItem(TypedDict, total=False):
+    """Nested item for shaping-entries field."""
     id: int
     class_id: int
     priority: Literal["top", "critical", "high", "medium", "low"]
@@ -48,7 +48,7 @@ class ShapingProfilePayload(TypedDict, total=False):
     type: Literal["policing", "queuing"]
     npu_offloading: Literal["disable", "enable"]
     default_class_id: int
-    shaping_entries: str | list[str] | list[dict[str, Any]] | list[ShapingProfileShapingentriesItem]
+    shaping_entries: str | list[str] | list[ShapingProfileShapingentriesItem]
 
 
 # ================================================================
@@ -161,7 +161,7 @@ class ShapingProfile:
         type: Literal["policing", "queuing"] | None = ...,
         npu_offloading: Literal["disable", "enable"] | None = ...,
         default_class_id: int | None = ...,
-        shaping_entries: str | list[str] | list[dict[str, Any]] | list[ShapingProfileShapingentriesItem] | None = ...,
+        shaping_entries: str | list[str] | list[ShapingProfileShapingentriesItem] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -179,7 +179,7 @@ class ShapingProfile:
         type: Literal["policing", "queuing"] | None = ...,
         npu_offloading: Literal["disable", "enable"] | None = ...,
         default_class_id: int | None = ...,
-        shaping_entries: str | list[str] | list[dict[str, Any]] | list[ShapingProfileShapingentriesItem] | None = ...,
+        shaping_entries: str | list[str] | list[ShapingProfileShapingentriesItem] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -215,7 +215,7 @@ class ShapingProfile:
         type: Literal["policing", "queuing"] | None = ...,
         npu_offloading: Literal["disable", "enable"] | None = ...,
         default_class_id: int | None = ...,
-        shaping_entries: str | list[str] | list[dict[str, Any]] | list[ShapingProfileShapingentriesItem] | None = ...,
+        shaping_entries: str | list[str] | list[ShapingProfileShapingentriesItem] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,

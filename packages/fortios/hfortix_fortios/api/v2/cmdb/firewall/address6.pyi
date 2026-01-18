@@ -26,27 +26,27 @@ from hfortix_fortios.models import (
 # TypedDict Payloads
 # ================================================================
 
-class Address6MacaddrItem:
-    """Nested item for macaddr field - supports attribute access."""
+class Address6MacaddrItem(TypedDict, total=False):
+    """Nested item for macaddr field."""
     macaddr: str
 
 
-class Address6TaggingItem:
-    """Nested item for tagging field - supports attribute access."""
+class Address6TaggingItem(TypedDict, total=False):
+    """Nested item for tagging field."""
     name: str
     category: str
     tags: str | list[str]
 
 
-class Address6SubnetsegmentItem:
-    """Nested item for subnet-segment field - supports attribute access."""
+class Address6SubnetsegmentItem(TypedDict, total=False):
+    """Nested item for subnet-segment field."""
     name: str
     type: Literal["any", "specific"]
     value: str
 
 
-class Address6ListItem:
-    """Nested item for list field - supports attribute access."""
+class Address6ListItem(TypedDict, total=False):
+    """Nested item for list field."""
     ip: str
 
 
@@ -56,7 +56,7 @@ class Address6Payload(TypedDict, total=False):
     uuid: str
     type: Literal["ipprefix", "iprange", "fqdn", "geography", "dynamic", "template", "mac", "route-tag", "wildcard"]
     route_tag: int
-    macaddr: str | list[str] | list[dict[str, Any]] | list[Address6MacaddrItem]
+    macaddr: str | list[str] | list[Address6MacaddrItem]
     sdn: str
     ip6: str
     wildcard: str
@@ -67,17 +67,17 @@ class Address6Payload(TypedDict, total=False):
     cache_ttl: int
     color: int
     obj_id: str
-    tagging: str | list[str] | list[dict[str, Any]] | list[Address6TaggingItem]
+    tagging: str | list[str] | list[Address6TaggingItem]
     comment: str
     template: str
-    subnet_segment: str | list[str] | list[dict[str, Any]] | list[Address6SubnetsegmentItem]
+    subnet_segment: str | list[str] | list[Address6SubnetsegmentItem]
     host_type: Literal["any", "specific"]
     host: str
     tenant: str
     epg_name: str
     sdn_tag: str
     filter: str
-    list: str | list[str] | list[dict[str, Any]] | list[Address6ListItem]
+    list: str | list[str] | list[Address6ListItem]
     sdn_addr_type: Literal["private", "public", "all"]
     passive_fqdn_learning: Literal["disable", "enable"]
     fabric_object: Literal["enable", "disable"]
@@ -237,7 +237,7 @@ class Address6:
         uuid: str | None = ...,
         type: Literal["ipprefix", "iprange", "fqdn", "geography", "dynamic", "template", "mac", "route-tag", "wildcard"] | None = ...,
         route_tag: int | None = ...,
-        macaddr: str | list[str] | list[dict[str, Any]] | list[Address6MacaddrItem] | None = ...,
+        macaddr: str | list[str] | list[Address6MacaddrItem] | None = ...,
         sdn: str | None = ...,
         ip6: str | None = ...,
         wildcard: str | None = ...,
@@ -248,17 +248,17 @@ class Address6:
         cache_ttl: int | None = ...,
         color: int | None = ...,
         obj_id: str | None = ...,
-        tagging: str | list[str] | list[dict[str, Any]] | list[Address6TaggingItem] | None = ...,
+        tagging: str | list[str] | list[Address6TaggingItem] | None = ...,
         comment: str | None = ...,
         template: str | None = ...,
-        subnet_segment: str | list[str] | list[dict[str, Any]] | list[Address6SubnetsegmentItem] | None = ...,
+        subnet_segment: str | list[str] | list[Address6SubnetsegmentItem] | None = ...,
         host_type: Literal["any", "specific"] | None = ...,
         host: str | None = ...,
         tenant: str | None = ...,
         epg_name: str | None = ...,
         sdn_tag: str | None = ...,
         filter: str | None = ...,
-        list: str | list[str] | list[dict[str, Any]] | list[Address6ListItem] | None = ...,
+        list: str | list[str] | list[Address6ListItem] | None = ...,
         sdn_addr_type: Literal["private", "public", "all"] | None = ...,
         passive_fqdn_learning: Literal["disable", "enable"] | None = ...,
         fabric_object: Literal["enable", "disable"] | None = ...,
@@ -278,7 +278,7 @@ class Address6:
         uuid: str | None = ...,
         type: Literal["ipprefix", "iprange", "fqdn", "geography", "dynamic", "template", "mac", "route-tag", "wildcard"] | None = ...,
         route_tag: int | None = ...,
-        macaddr: str | list[str] | list[dict[str, Any]] | list[Address6MacaddrItem] | None = ...,
+        macaddr: str | list[str] | list[Address6MacaddrItem] | None = ...,
         sdn: str | None = ...,
         ip6: str | None = ...,
         wildcard: str | None = ...,
@@ -289,17 +289,17 @@ class Address6:
         cache_ttl: int | None = ...,
         color: int | None = ...,
         obj_id: str | None = ...,
-        tagging: str | list[str] | list[dict[str, Any]] | list[Address6TaggingItem] | None = ...,
+        tagging: str | list[str] | list[Address6TaggingItem] | None = ...,
         comment: str | None = ...,
         template: str | None = ...,
-        subnet_segment: str | list[str] | list[dict[str, Any]] | list[Address6SubnetsegmentItem] | None = ...,
+        subnet_segment: str | list[str] | list[Address6SubnetsegmentItem] | None = ...,
         host_type: Literal["any", "specific"] | None = ...,
         host: str | None = ...,
         tenant: str | None = ...,
         epg_name: str | None = ...,
         sdn_tag: str | None = ...,
         filter: str | None = ...,
-        list: str | list[str] | list[dict[str, Any]] | list[Address6ListItem] | None = ...,
+        list: str | list[str] | list[Address6ListItem] | None = ...,
         sdn_addr_type: Literal["private", "public", "all"] | None = ...,
         passive_fqdn_learning: Literal["disable", "enable"] | None = ...,
         fabric_object: Literal["enable", "disable"] | None = ...,
@@ -337,7 +337,7 @@ class Address6:
         uuid: str | None = ...,
         type: Literal["ipprefix", "iprange", "fqdn", "geography", "dynamic", "template", "mac", "route-tag", "wildcard"] | None = ...,
         route_tag: int | None = ...,
-        macaddr: str | list[str] | list[dict[str, Any]] | list[Address6MacaddrItem] | None = ...,
+        macaddr: str | list[str] | list[Address6MacaddrItem] | None = ...,
         sdn: str | None = ...,
         ip6: str | None = ...,
         wildcard: str | None = ...,
@@ -348,17 +348,17 @@ class Address6:
         cache_ttl: int | None = ...,
         color: int | None = ...,
         obj_id: str | None = ...,
-        tagging: str | list[str] | list[dict[str, Any]] | list[Address6TaggingItem] | None = ...,
+        tagging: str | list[str] | list[Address6TaggingItem] | None = ...,
         comment: str | None = ...,
         template: str | None = ...,
-        subnet_segment: str | list[str] | list[dict[str, Any]] | list[Address6SubnetsegmentItem] | None = ...,
+        subnet_segment: str | list[str] | list[Address6SubnetsegmentItem] | None = ...,
         host_type: Literal["any", "specific"] | None = ...,
         host: str | None = ...,
         tenant: str | None = ...,
         epg_name: str | None = ...,
         sdn_tag: str | None = ...,
         filter: str | None = ...,
-        list: str | list[str] | list[dict[str, Any]] | list[Address6ListItem] | None = ...,
+        list: str | list[str] | list[Address6ListItem] | None = ...,
         sdn_addr_type: Literal["private", "public", "all"] | None = ...,
         passive_fqdn_learning: Literal["disable", "enable"] | None = ...,
         fabric_object: Literal["enable", "disable"] | None = ...,

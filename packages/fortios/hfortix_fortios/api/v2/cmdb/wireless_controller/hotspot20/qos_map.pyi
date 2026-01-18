@@ -26,15 +26,15 @@ from hfortix_fortios.models import (
 # TypedDict Payloads
 # ================================================================
 
-class QosMapDscpexceptItem:
-    """Nested item for dscp-except field - supports attribute access."""
+class QosMapDscpexceptItem(TypedDict, total=False):
+    """Nested item for dscp-except field."""
     index: int
     dscp: int
     up: int
 
 
-class QosMapDscprangeItem:
-    """Nested item for dscp-range field - supports attribute access."""
+class QosMapDscprangeItem(TypedDict, total=False):
+    """Nested item for dscp-range field."""
     index: int
     up: int
     low: int
@@ -44,8 +44,8 @@ class QosMapDscprangeItem:
 class QosMapPayload(TypedDict, total=False):
     """Payload type for QosMap operations."""
     name: str
-    dscp_except: str | list[str] | list[dict[str, Any]] | list[QosMapDscpexceptItem]
-    dscp_range: str | list[str] | list[dict[str, Any]] | list[QosMapDscprangeItem]
+    dscp_except: str | list[str] | list[QosMapDscpexceptItem]
+    dscp_range: str | list[str] | list[QosMapDscprangeItem]
 
 
 # ================================================================
@@ -148,8 +148,8 @@ class QosMap:
         self,
         payload_dict: QosMapPayload | None = ...,
         name: str | None = ...,
-        dscp_except: str | list[str] | list[dict[str, Any]] | list[QosMapDscpexceptItem] | None = ...,
-        dscp_range: str | list[str] | list[dict[str, Any]] | list[QosMapDscprangeItem] | None = ...,
+        dscp_except: str | list[str] | list[QosMapDscpexceptItem] | None = ...,
+        dscp_range: str | list[str] | list[QosMapDscprangeItem] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -163,8 +163,8 @@ class QosMap:
         self,
         payload_dict: QosMapPayload | None = ...,
         name: str | None = ...,
-        dscp_except: str | list[str] | list[dict[str, Any]] | list[QosMapDscpexceptItem] | None = ...,
-        dscp_range: str | list[str] | list[dict[str, Any]] | list[QosMapDscprangeItem] | None = ...,
+        dscp_except: str | list[str] | list[QosMapDscpexceptItem] | None = ...,
+        dscp_range: str | list[str] | list[QosMapDscprangeItem] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -196,8 +196,8 @@ class QosMap:
         self,
         payload_dict: QosMapPayload | None = ...,
         name: str | None = ...,
-        dscp_except: str | list[str] | list[dict[str, Any]] | list[QosMapDscpexceptItem] | None = ...,
-        dscp_range: str | list[str] | list[dict[str, Any]] | list[QosMapDscprangeItem] | None = ...,
+        dscp_except: str | list[str] | list[QosMapDscpexceptItem] | None = ...,
+        dscp_range: str | list[str] | list[QosMapDscprangeItem] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,

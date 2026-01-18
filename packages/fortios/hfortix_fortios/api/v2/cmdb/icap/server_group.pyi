@@ -26,8 +26,8 @@ from hfortix_fortios.models import (
 # TypedDict Payloads
 # ================================================================
 
-class ServerGroupServerlistItem:
-    """Nested item for server-list field - supports attribute access."""
+class ServerGroupServerlistItem(TypedDict, total=False):
+    """Nested item for server-list field."""
     name: str
     weight: int
 
@@ -36,7 +36,7 @@ class ServerGroupPayload(TypedDict, total=False):
     """Payload type for ServerGroup operations."""
     name: str
     ldb_method: Literal["weighted", "least-session", "active-passive"]
-    server_list: str | list[str] | list[dict[str, Any]] | list[ServerGroupServerlistItem]
+    server_list: str | list[str] | list[ServerGroupServerlistItem]
 
 
 # ================================================================
@@ -140,7 +140,7 @@ class ServerGroup:
         payload_dict: ServerGroupPayload | None = ...,
         name: str | None = ...,
         ldb_method: Literal["weighted", "least-session", "active-passive"] | None = ...,
-        server_list: str | list[str] | list[dict[str, Any]] | list[ServerGroupServerlistItem] | None = ...,
+        server_list: str | list[str] | list[ServerGroupServerlistItem] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -155,7 +155,7 @@ class ServerGroup:
         payload_dict: ServerGroupPayload | None = ...,
         name: str | None = ...,
         ldb_method: Literal["weighted", "least-session", "active-passive"] | None = ...,
-        server_list: str | list[str] | list[dict[str, Any]] | list[ServerGroupServerlistItem] | None = ...,
+        server_list: str | list[str] | list[ServerGroupServerlistItem] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -188,7 +188,7 @@ class ServerGroup:
         payload_dict: ServerGroupPayload | None = ...,
         name: str | None = ...,
         ldb_method: Literal["weighted", "least-session", "active-passive"] | None = ...,
-        server_list: str | list[str] | list[dict[str, Any]] | list[ServerGroupServerlistItem] | None = ...,
+        server_list: str | list[str] | list[ServerGroupServerlistItem] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,

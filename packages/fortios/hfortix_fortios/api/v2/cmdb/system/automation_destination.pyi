@@ -26,8 +26,8 @@ from hfortix_fortios.models import (
 # TypedDict Payloads
 # ================================================================
 
-class AutomationDestinationDestinationItem:
-    """Nested item for destination field - supports attribute access."""
+class AutomationDestinationDestinationItem(TypedDict, total=False):
+    """Nested item for destination field."""
     name: str
 
 
@@ -35,7 +35,7 @@ class AutomationDestinationPayload(TypedDict, total=False):
     """Payload type for AutomationDestination operations."""
     name: str
     type: Literal["fortigate", "ha-cluster"]
-    destination: str | list[str] | list[dict[str, Any]] | list[AutomationDestinationDestinationItem]
+    destination: str | list[str] | list[AutomationDestinationDestinationItem]
     ha_group_id: int
 
 
@@ -139,7 +139,7 @@ class AutomationDestination:
         payload_dict: AutomationDestinationPayload | None = ...,
         name: str | None = ...,
         type: Literal["fortigate", "ha-cluster"] | None = ...,
-        destination: str | list[str] | list[dict[str, Any]] | list[AutomationDestinationDestinationItem] | None = ...,
+        destination: str | list[str] | list[AutomationDestinationDestinationItem] | None = ...,
         ha_group_id: int | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -154,7 +154,7 @@ class AutomationDestination:
         payload_dict: AutomationDestinationPayload | None = ...,
         name: str | None = ...,
         type: Literal["fortigate", "ha-cluster"] | None = ...,
-        destination: str | list[str] | list[dict[str, Any]] | list[AutomationDestinationDestinationItem] | None = ...,
+        destination: str | list[str] | list[AutomationDestinationDestinationItem] | None = ...,
         ha_group_id: int | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -185,7 +185,7 @@ class AutomationDestination:
         payload_dict: AutomationDestinationPayload | None = ...,
         name: str | None = ...,
         type: Literal["fortigate", "ha-cluster"] | None = ...,
-        destination: str | list[str] | list[dict[str, Any]] | list[AutomationDestinationDestinationItem] | None = ...,
+        destination: str | list[str] | list[AutomationDestinationDestinationItem] | None = ...,
         ha_group_id: int | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,

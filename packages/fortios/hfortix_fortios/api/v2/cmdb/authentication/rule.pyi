@@ -26,28 +26,28 @@ from hfortix_fortios.models import (
 # TypedDict Payloads
 # ================================================================
 
-class RuleSrcintfItem:
-    """Nested item for srcintf field - supports attribute access."""
+class RuleSrcintfItem(TypedDict, total=False):
+    """Nested item for srcintf field."""
     name: str
 
 
-class RuleSrcaddrItem:
-    """Nested item for srcaddr field - supports attribute access."""
+class RuleSrcaddrItem(TypedDict, total=False):
+    """Nested item for srcaddr field."""
     name: str
 
 
-class RuleDstaddrItem:
-    """Nested item for dstaddr field - supports attribute access."""
+class RuleDstaddrItem(TypedDict, total=False):
+    """Nested item for dstaddr field."""
     name: str
 
 
-class RuleSrcaddr6Item:
-    """Nested item for srcaddr6 field - supports attribute access."""
+class RuleSrcaddr6Item(TypedDict, total=False):
+    """Nested item for srcaddr6 field."""
     name: str
 
 
-class RuleDstaddr6Item:
-    """Nested item for dstaddr6 field - supports attribute access."""
+class RuleDstaddr6Item(TypedDict, total=False):
+    """Nested item for dstaddr6 field."""
     name: str
 
 
@@ -56,11 +56,11 @@ class RulePayload(TypedDict, total=False):
     name: str
     status: Literal["enable", "disable"]
     protocol: Literal["http", "ftp", "socks", "ssh", "ztna-portal"]
-    srcintf: str | list[str] | list[dict[str, Any]] | list[RuleSrcintfItem]
-    srcaddr: str | list[str] | list[dict[str, Any]] | list[RuleSrcaddrItem]
-    dstaddr: str | list[str] | list[dict[str, Any]] | list[RuleDstaddrItem]
-    srcaddr6: str | list[str] | list[dict[str, Any]] | list[RuleSrcaddr6Item]
-    dstaddr6: str | list[str] | list[dict[str, Any]] | list[RuleDstaddr6Item]
+    srcintf: str | list[str] | list[RuleSrcintfItem]
+    srcaddr: str | list[str] | list[RuleSrcaddrItem]
+    dstaddr: str | list[str] | list[RuleDstaddrItem]
+    srcaddr6: str | list[str] | list[RuleSrcaddr6Item]
+    dstaddr6: str | list[str] | list[RuleDstaddr6Item]
     ip_based: Literal["enable", "disable"]
     active_auth_method: str
     sso_auth_method: str
@@ -208,11 +208,11 @@ class Rule:
         name: str | None = ...,
         status: Literal["enable", "disable"] | None = ...,
         protocol: Literal["http", "ftp", "socks", "ssh", "ztna-portal"] | None = ...,
-        srcintf: str | list[str] | list[dict[str, Any]] | list[RuleSrcintfItem] | None = ...,
-        srcaddr: str | list[str] | list[dict[str, Any]] | list[RuleSrcaddrItem] | None = ...,
-        dstaddr: str | list[str] | list[dict[str, Any]] | list[RuleDstaddrItem] | None = ...,
-        srcaddr6: str | list[str] | list[dict[str, Any]] | list[RuleSrcaddr6Item] | None = ...,
-        dstaddr6: str | list[str] | list[dict[str, Any]] | list[RuleDstaddr6Item] | None = ...,
+        srcintf: str | list[str] | list[RuleSrcintfItem] | None = ...,
+        srcaddr: str | list[str] | list[RuleSrcaddrItem] | None = ...,
+        dstaddr: str | list[str] | list[RuleDstaddrItem] | None = ...,
+        srcaddr6: str | list[str] | list[RuleSrcaddr6Item] | None = ...,
+        dstaddr6: str | list[str] | list[RuleDstaddr6Item] | None = ...,
         ip_based: Literal["enable", "disable"] | None = ...,
         active_auth_method: str | None = ...,
         sso_auth_method: str | None = ...,
@@ -239,11 +239,11 @@ class Rule:
         name: str | None = ...,
         status: Literal["enable", "disable"] | None = ...,
         protocol: Literal["http", "ftp", "socks", "ssh", "ztna-portal"] | None = ...,
-        srcintf: str | list[str] | list[dict[str, Any]] | list[RuleSrcintfItem] | None = ...,
-        srcaddr: str | list[str] | list[dict[str, Any]] | list[RuleSrcaddrItem] | None = ...,
-        dstaddr: str | list[str] | list[dict[str, Any]] | list[RuleDstaddrItem] | None = ...,
-        srcaddr6: str | list[str] | list[dict[str, Any]] | list[RuleSrcaddr6Item] | None = ...,
-        dstaddr6: str | list[str] | list[dict[str, Any]] | list[RuleDstaddr6Item] | None = ...,
+        srcintf: str | list[str] | list[RuleSrcintfItem] | None = ...,
+        srcaddr: str | list[str] | list[RuleSrcaddrItem] | None = ...,
+        dstaddr: str | list[str] | list[RuleDstaddrItem] | None = ...,
+        srcaddr6: str | list[str] | list[RuleSrcaddr6Item] | None = ...,
+        dstaddr6: str | list[str] | list[RuleDstaddr6Item] | None = ...,
         ip_based: Literal["enable", "disable"] | None = ...,
         active_auth_method: str | None = ...,
         sso_auth_method: str | None = ...,
@@ -288,11 +288,11 @@ class Rule:
         name: str | None = ...,
         status: Literal["enable", "disable"] | None = ...,
         protocol: Literal["http", "ftp", "socks", "ssh", "ztna-portal"] | None = ...,
-        srcintf: str | list[str] | list[dict[str, Any]] | list[RuleSrcintfItem] | None = ...,
-        srcaddr: str | list[str] | list[dict[str, Any]] | list[RuleSrcaddrItem] | None = ...,
-        dstaddr: str | list[str] | list[dict[str, Any]] | list[RuleDstaddrItem] | None = ...,
-        srcaddr6: str | list[str] | list[dict[str, Any]] | list[RuleSrcaddr6Item] | None = ...,
-        dstaddr6: str | list[str] | list[dict[str, Any]] | list[RuleDstaddr6Item] | None = ...,
+        srcintf: str | list[str] | list[RuleSrcintfItem] | None = ...,
+        srcaddr: str | list[str] | list[RuleSrcaddrItem] | None = ...,
+        dstaddr: str | list[str] | list[RuleDstaddrItem] | None = ...,
+        srcaddr6: str | list[str] | list[RuleSrcaddr6Item] | None = ...,
+        dstaddr6: str | list[str] | list[RuleDstaddr6Item] | None = ...,
         ip_based: Literal["enable", "disable"] | None = ...,
         active_auth_method: str | None = ...,
         sso_auth_method: str | None = ...,

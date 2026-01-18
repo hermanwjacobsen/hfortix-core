@@ -26,18 +26,18 @@ from hfortix_fortios.models import (
 # TypedDict Payloads
 # ================================================================
 
-class VipSrcfilterItem:
-    """Nested item for src-filter field - supports attribute access."""
+class VipSrcfilterItem(TypedDict, total=False):
+    """Nested item for src-filter field."""
     range: str
 
 
-class VipServiceItem:
-    """Nested item for service field - supports attribute access."""
+class VipServiceItem(TypedDict, total=False):
+    """Nested item for service field."""
     name: str
 
 
-class VipExtaddrItem:
-    """Nested item for extaddr field - supports attribute access."""
+class VipExtaddrItem(TypedDict, total=False):
+    """Nested item for extaddr field."""
     name: str
 
 
@@ -53,18 +53,18 @@ class VipQuicDict(TypedDict, total=False):
     grease_quic_bit: Literal["enable", "disable"]
 
 
-class VipMappedipItem:
-    """Nested item for mappedip field - supports attribute access."""
+class VipMappedipItem(TypedDict, total=False):
+    """Nested item for mappedip field."""
     range: str
 
 
-class VipSrcintffilterItem:
-    """Nested item for srcintf-filter field - supports attribute access."""
+class VipSrcintffilterItem(TypedDict, total=False):
+    """Nested item for srcintf-filter field."""
     interface_name: str
 
 
-class VipRealserversItem:
-    """Nested item for realservers field - supports attribute access."""
+class VipRealserversItem(TypedDict, total=False):
+    """Nested item for realservers field."""
     id: int
     type: Literal["ip", "address"]
     address: str
@@ -82,32 +82,32 @@ class VipRealserversItem:
     verify_cert: Literal["enable", "disable"]
 
 
-class VipSslcertificateItem:
-    """Nested item for ssl-certificate field - supports attribute access."""
+class VipSslcertificateItem(TypedDict, total=False):
+    """Nested item for ssl-certificate field."""
     name: str
 
 
-class VipSslciphersuitesItem:
-    """Nested item for ssl-cipher-suites field - supports attribute access."""
+class VipSslciphersuitesItem(TypedDict, total=False):
+    """Nested item for ssl-cipher-suites field."""
     priority: int
     cipher: Literal["TLS-AES-128-GCM-SHA256", "TLS-AES-256-GCM-SHA384", "TLS-CHACHA20-POLY1305-SHA256", "TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256", "TLS-ECDHE-ECDSA-WITH-CHACHA20-POLY1305-SHA256", "TLS-DHE-RSA-WITH-CHACHA20-POLY1305-SHA256", "TLS-DHE-RSA-WITH-AES-128-CBC-SHA", "TLS-DHE-RSA-WITH-AES-256-CBC-SHA", "TLS-DHE-RSA-WITH-AES-128-CBC-SHA256", "TLS-DHE-RSA-WITH-AES-128-GCM-SHA256", "TLS-DHE-RSA-WITH-AES-256-CBC-SHA256", "TLS-DHE-RSA-WITH-AES-256-GCM-SHA384", "TLS-DHE-DSS-WITH-AES-128-CBC-SHA", "TLS-DHE-DSS-WITH-AES-256-CBC-SHA", "TLS-DHE-DSS-WITH-AES-128-CBC-SHA256", "TLS-DHE-DSS-WITH-AES-128-GCM-SHA256", "TLS-DHE-DSS-WITH-AES-256-CBC-SHA256", "TLS-DHE-DSS-WITH-AES-256-GCM-SHA384", "TLS-ECDHE-RSA-WITH-AES-128-CBC-SHA", "TLS-ECDHE-RSA-WITH-AES-128-CBC-SHA256", "TLS-ECDHE-RSA-WITH-AES-128-GCM-SHA256", "TLS-ECDHE-RSA-WITH-AES-256-CBC-SHA", "TLS-ECDHE-RSA-WITH-AES-256-CBC-SHA384", "TLS-ECDHE-RSA-WITH-AES-256-GCM-SHA384", "TLS-ECDHE-ECDSA-WITH-AES-128-CBC-SHA", "TLS-ECDHE-ECDSA-WITH-AES-128-CBC-SHA256", "TLS-ECDHE-ECDSA-WITH-AES-128-GCM-SHA256", "TLS-ECDHE-ECDSA-WITH-AES-256-CBC-SHA", "TLS-ECDHE-ECDSA-WITH-AES-256-CBC-SHA384", "TLS-ECDHE-ECDSA-WITH-AES-256-GCM-SHA384", "TLS-RSA-WITH-AES-128-CBC-SHA", "TLS-RSA-WITH-AES-256-CBC-SHA", "TLS-RSA-WITH-AES-128-CBC-SHA256", "TLS-RSA-WITH-AES-128-GCM-SHA256", "TLS-RSA-WITH-AES-256-CBC-SHA256", "TLS-RSA-WITH-AES-256-GCM-SHA384", "TLS-RSA-WITH-CAMELLIA-128-CBC-SHA", "TLS-RSA-WITH-CAMELLIA-256-CBC-SHA", "TLS-RSA-WITH-CAMELLIA-128-CBC-SHA256", "TLS-RSA-WITH-CAMELLIA-256-CBC-SHA256", "TLS-DHE-RSA-WITH-3DES-EDE-CBC-SHA", "TLS-DHE-RSA-WITH-CAMELLIA-128-CBC-SHA", "TLS-DHE-DSS-WITH-CAMELLIA-128-CBC-SHA", "TLS-DHE-RSA-WITH-CAMELLIA-256-CBC-SHA", "TLS-DHE-DSS-WITH-CAMELLIA-256-CBC-SHA", "TLS-DHE-RSA-WITH-CAMELLIA-128-CBC-SHA256", "TLS-DHE-DSS-WITH-CAMELLIA-128-CBC-SHA256", "TLS-DHE-RSA-WITH-CAMELLIA-256-CBC-SHA256", "TLS-DHE-DSS-WITH-CAMELLIA-256-CBC-SHA256", "TLS-DHE-RSA-WITH-SEED-CBC-SHA", "TLS-DHE-DSS-WITH-SEED-CBC-SHA", "TLS-DHE-RSA-WITH-ARIA-128-CBC-SHA256", "TLS-DHE-RSA-WITH-ARIA-256-CBC-SHA384", "TLS-DHE-DSS-WITH-ARIA-128-CBC-SHA256", "TLS-DHE-DSS-WITH-ARIA-256-CBC-SHA384", "TLS-RSA-WITH-SEED-CBC-SHA", "TLS-RSA-WITH-ARIA-128-CBC-SHA256", "TLS-RSA-WITH-ARIA-256-CBC-SHA384", "TLS-ECDHE-RSA-WITH-ARIA-128-CBC-SHA256", "TLS-ECDHE-RSA-WITH-ARIA-256-CBC-SHA384", "TLS-ECDHE-ECDSA-WITH-ARIA-128-CBC-SHA256", "TLS-ECDHE-ECDSA-WITH-ARIA-256-CBC-SHA384", "TLS-ECDHE-RSA-WITH-RC4-128-SHA", "TLS-ECDHE-RSA-WITH-3DES-EDE-CBC-SHA", "TLS-DHE-DSS-WITH-3DES-EDE-CBC-SHA", "TLS-RSA-WITH-3DES-EDE-CBC-SHA", "TLS-RSA-WITH-RC4-128-MD5", "TLS-RSA-WITH-RC4-128-SHA", "TLS-DHE-RSA-WITH-DES-CBC-SHA", "TLS-DHE-DSS-WITH-DES-CBC-SHA", "TLS-RSA-WITH-DES-CBC-SHA"]
     versions: Literal["ssl-3.0", "tls-1.0", "tls-1.1", "tls-1.2", "tls-1.3"]
 
 
-class VipSslserverciphersuitesItem:
-    """Nested item for ssl-server-cipher-suites field - supports attribute access."""
+class VipSslserverciphersuitesItem(TypedDict, total=False):
+    """Nested item for ssl-server-cipher-suites field."""
     priority: int
     cipher: Literal["TLS-AES-128-GCM-SHA256", "TLS-AES-256-GCM-SHA384", "TLS-CHACHA20-POLY1305-SHA256", "TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256", "TLS-ECDHE-ECDSA-WITH-CHACHA20-POLY1305-SHA256", "TLS-DHE-RSA-WITH-CHACHA20-POLY1305-SHA256", "TLS-DHE-RSA-WITH-AES-128-CBC-SHA", "TLS-DHE-RSA-WITH-AES-256-CBC-SHA", "TLS-DHE-RSA-WITH-AES-128-CBC-SHA256", "TLS-DHE-RSA-WITH-AES-128-GCM-SHA256", "TLS-DHE-RSA-WITH-AES-256-CBC-SHA256", "TLS-DHE-RSA-WITH-AES-256-GCM-SHA384", "TLS-DHE-DSS-WITH-AES-128-CBC-SHA", "TLS-DHE-DSS-WITH-AES-256-CBC-SHA", "TLS-DHE-DSS-WITH-AES-128-CBC-SHA256", "TLS-DHE-DSS-WITH-AES-128-GCM-SHA256", "TLS-DHE-DSS-WITH-AES-256-CBC-SHA256", "TLS-DHE-DSS-WITH-AES-256-GCM-SHA384", "TLS-ECDHE-RSA-WITH-AES-128-CBC-SHA", "TLS-ECDHE-RSA-WITH-AES-128-CBC-SHA256", "TLS-ECDHE-RSA-WITH-AES-128-GCM-SHA256", "TLS-ECDHE-RSA-WITH-AES-256-CBC-SHA", "TLS-ECDHE-RSA-WITH-AES-256-CBC-SHA384", "TLS-ECDHE-RSA-WITH-AES-256-GCM-SHA384", "TLS-ECDHE-ECDSA-WITH-AES-128-CBC-SHA", "TLS-ECDHE-ECDSA-WITH-AES-128-CBC-SHA256", "TLS-ECDHE-ECDSA-WITH-AES-128-GCM-SHA256", "TLS-ECDHE-ECDSA-WITH-AES-256-CBC-SHA", "TLS-ECDHE-ECDSA-WITH-AES-256-CBC-SHA384", "TLS-ECDHE-ECDSA-WITH-AES-256-GCM-SHA384", "TLS-RSA-WITH-AES-128-CBC-SHA", "TLS-RSA-WITH-AES-256-CBC-SHA", "TLS-RSA-WITH-AES-128-CBC-SHA256", "TLS-RSA-WITH-AES-128-GCM-SHA256", "TLS-RSA-WITH-AES-256-CBC-SHA256", "TLS-RSA-WITH-AES-256-GCM-SHA384", "TLS-RSA-WITH-CAMELLIA-128-CBC-SHA", "TLS-RSA-WITH-CAMELLIA-256-CBC-SHA", "TLS-RSA-WITH-CAMELLIA-128-CBC-SHA256", "TLS-RSA-WITH-CAMELLIA-256-CBC-SHA256", "TLS-DHE-RSA-WITH-3DES-EDE-CBC-SHA", "TLS-DHE-RSA-WITH-CAMELLIA-128-CBC-SHA", "TLS-DHE-DSS-WITH-CAMELLIA-128-CBC-SHA", "TLS-DHE-RSA-WITH-CAMELLIA-256-CBC-SHA", "TLS-DHE-DSS-WITH-CAMELLIA-256-CBC-SHA", "TLS-DHE-RSA-WITH-CAMELLIA-128-CBC-SHA256", "TLS-DHE-DSS-WITH-CAMELLIA-128-CBC-SHA256", "TLS-DHE-RSA-WITH-CAMELLIA-256-CBC-SHA256", "TLS-DHE-DSS-WITH-CAMELLIA-256-CBC-SHA256", "TLS-DHE-RSA-WITH-SEED-CBC-SHA", "TLS-DHE-DSS-WITH-SEED-CBC-SHA", "TLS-DHE-RSA-WITH-ARIA-128-CBC-SHA256", "TLS-DHE-RSA-WITH-ARIA-256-CBC-SHA384", "TLS-DHE-DSS-WITH-ARIA-128-CBC-SHA256", "TLS-DHE-DSS-WITH-ARIA-256-CBC-SHA384", "TLS-RSA-WITH-SEED-CBC-SHA", "TLS-RSA-WITH-ARIA-128-CBC-SHA256", "TLS-RSA-WITH-ARIA-256-CBC-SHA384", "TLS-ECDHE-RSA-WITH-ARIA-128-CBC-SHA256", "TLS-ECDHE-RSA-WITH-ARIA-256-CBC-SHA384", "TLS-ECDHE-ECDSA-WITH-ARIA-128-CBC-SHA256", "TLS-ECDHE-ECDSA-WITH-ARIA-256-CBC-SHA384", "TLS-ECDHE-RSA-WITH-RC4-128-SHA", "TLS-ECDHE-RSA-WITH-3DES-EDE-CBC-SHA", "TLS-DHE-DSS-WITH-3DES-EDE-CBC-SHA", "TLS-RSA-WITH-3DES-EDE-CBC-SHA", "TLS-RSA-WITH-RC4-128-MD5", "TLS-RSA-WITH-RC4-128-SHA", "TLS-DHE-RSA-WITH-DES-CBC-SHA", "TLS-DHE-DSS-WITH-DES-CBC-SHA", "TLS-RSA-WITH-DES-CBC-SHA"]
     versions: Literal["ssl-3.0", "tls-1.0", "tls-1.1", "tls-1.2", "tls-1.3"]
 
 
-class VipMonitorItem:
-    """Nested item for monitor field - supports attribute access."""
+class VipMonitorItem(TypedDict, total=False):
+    """Nested item for monitor field."""
     name: str
 
 
-class VipGslbpublicipsItem:
-    """Nested item for gslb-public-ips field - supports attribute access."""
+class VipGslbpublicipsItem(TypedDict, total=False):
+    """Nested item for gslb-public-ips field."""
     index: int
     ip: str
 
@@ -122,18 +122,18 @@ class VipPayload(TypedDict, total=False):
     server_type: Literal["http", "https", "imaps", "pop3s", "smtps", "ssl", "tcp", "udp", "ip"]
     dns_mapping_ttl: int
     ldb_method: Literal["static", "round-robin", "weighted", "least-session", "least-rtt", "first-alive", "http-host"]
-    src_filter: str | list[str] | list[dict[str, Any]] | list[VipSrcfilterItem]
+    src_filter: str | list[str] | list[VipSrcfilterItem]
     src_vip_filter: Literal["disable", "enable"]
-    service: str | list[str] | list[dict[str, Any]] | list[VipServiceItem]
+    service: str | list[str] | list[VipServiceItem]
     extip: str
-    extaddr: str | list[str] | list[dict[str, Any]] | list[VipExtaddrItem]
+    extaddr: str | list[str] | list[VipExtaddrItem]
     h2_support: Literal["enable", "disable"]
     h3_support: Literal["enable", "disable"]
     quic: VipQuicDict
     nat44: Literal["disable", "enable"]
     nat46: Literal["disable", "enable"]
     add_nat46_route: Literal["disable", "enable"]
-    mappedip: str | list[str] | list[dict[str, Any]] | list[VipMappedipItem]
+    mappedip: str | list[str] | list[VipMappedipItem]
     mapped_addr: str
     extintf: str
     arp_reply: Literal["disable", "enable"]
@@ -146,12 +146,12 @@ class VipPayload(TypedDict, total=False):
     extport: str
     mappedport: str
     gratuitous_arp_interval: int
-    srcintf_filter: str | list[str] | list[dict[str, Any]] | list[VipSrcintffilterItem]
+    srcintf_filter: str | list[str] | list[VipSrcintffilterItem]
     portmapping_type: Literal["1-to-1", "m-to-n"]
     empty_cert_action: Literal["accept", "block", "accept-unmanageable"]
     user_agent_detect: Literal["disable", "enable"]
     client_cert: Literal["disable", "enable"]
-    realservers: str | list[str] | list[dict[str, Any]] | list[VipRealserversItem]
+    realservers: str | list[str] | list[VipRealserversItem]
     http_cookie_domain_from_host: Literal["disable", "enable"]
     http_cookie_domain: str
     http_cookie_path: str
@@ -169,12 +169,12 @@ class VipPayload(TypedDict, total=False):
     weblogic_server: Literal["disable", "enable"]
     websphere_server: Literal["disable", "enable"]
     ssl_mode: Literal["half", "full"]
-    ssl_certificate: str | list[str] | list[dict[str, Any]] | list[VipSslcertificateItem]
+    ssl_certificate: str | list[str] | list[VipSslcertificateItem]
     ssl_dh_bits: Literal["768", "1024", "1536", "2048", "3072", "4096"]
     ssl_algorithm: Literal["high", "medium", "low", "custom"]
-    ssl_cipher_suites: str | list[str] | list[dict[str, Any]] | list[VipSslciphersuitesItem]
+    ssl_cipher_suites: str | list[str] | list[VipSslciphersuitesItem]
     ssl_server_algorithm: Literal["high", "medium", "low", "custom", "client"]
-    ssl_server_cipher_suites: str | list[str] | list[dict[str, Any]] | list[VipSslserverciphersuitesItem]
+    ssl_server_cipher_suites: str | list[str] | list[VipSslserverciphersuitesItem]
     ssl_pfs: Literal["require", "deny", "allow"]
     ssl_min_version: Literal["ssl-3.0", "tls-1.0", "tls-1.1", "tls-1.2", "tls-1.3"]
     ssl_max_version: Literal["ssl-3.0", "tls-1.0", "tls-1.1", "tls-1.2", "tls-1.3"]
@@ -203,7 +203,7 @@ class VipPayload(TypedDict, total=False):
     ssl_hsts: Literal["disable", "enable"]
     ssl_hsts_age: int
     ssl_hsts_include_subdomains: Literal["disable", "enable"]
-    monitor: str | list[str] | list[dict[str, Any]] | list[VipMonitorItem]
+    monitor: str | list[str] | list[VipMonitorItem]
     max_embryonic_connections: int
     color: int
     ipv6_mappedip: str
@@ -211,7 +211,7 @@ class VipPayload(TypedDict, total=False):
     one_click_gslb_server: Literal["disable", "enable"]
     gslb_hostname: str
     gslb_domain_name: str
-    gslb_public_ips: str | list[str] | list[dict[str, Any]] | list[VipGslbpublicipsItem]
+    gslb_public_ips: str | list[str] | list[VipGslbpublicipsItem]
 
 
 # ================================================================
@@ -511,18 +511,18 @@ class Vip:
         server_type: Literal["http", "https", "imaps", "pop3s", "smtps", "ssl", "tcp", "udp", "ip"] | None = ...,
         dns_mapping_ttl: int | None = ...,
         ldb_method: Literal["static", "round-robin", "weighted", "least-session", "least-rtt", "first-alive", "http-host"] | None = ...,
-        src_filter: str | list[str] | list[dict[str, Any]] | list[VipSrcfilterItem] | None = ...,
+        src_filter: str | list[str] | list[VipSrcfilterItem] | None = ...,
         src_vip_filter: Literal["disable", "enable"] | None = ...,
-        service: str | list[str] | list[dict[str, Any]] | list[VipServiceItem] | None = ...,
+        service: str | list[str] | list[VipServiceItem] | None = ...,
         extip: str | None = ...,
-        extaddr: str | list[str] | list[dict[str, Any]] | list[VipExtaddrItem] | None = ...,
+        extaddr: str | list[str] | list[VipExtaddrItem] | None = ...,
         h2_support: Literal["enable", "disable"] | None = ...,
         h3_support: Literal["enable", "disable"] | None = ...,
         quic: VipQuicDict | None = ...,
         nat44: Literal["disable", "enable"] | None = ...,
         nat46: Literal["disable", "enable"] | None = ...,
         add_nat46_route: Literal["disable", "enable"] | None = ...,
-        mappedip: str | list[str] | list[dict[str, Any]] | list[VipMappedipItem] | None = ...,
+        mappedip: str | list[str] | list[VipMappedipItem] | None = ...,
         mapped_addr: str | None = ...,
         extintf: str | None = ...,
         arp_reply: Literal["disable", "enable"] | None = ...,
@@ -535,12 +535,12 @@ class Vip:
         extport: str | None = ...,
         mappedport: str | None = ...,
         gratuitous_arp_interval: int | None = ...,
-        srcintf_filter: str | list[str] | list[dict[str, Any]] | list[VipSrcintffilterItem] | None = ...,
+        srcintf_filter: str | list[str] | list[VipSrcintffilterItem] | None = ...,
         portmapping_type: Literal["1-to-1", "m-to-n"] | None = ...,
         empty_cert_action: Literal["accept", "block", "accept-unmanageable"] | None = ...,
         user_agent_detect: Literal["disable", "enable"] | None = ...,
         client_cert: Literal["disable", "enable"] | None = ...,
-        realservers: str | list[str] | list[dict[str, Any]] | list[VipRealserversItem] | None = ...,
+        realservers: str | list[str] | list[VipRealserversItem] | None = ...,
         http_cookie_domain_from_host: Literal["disable", "enable"] | None = ...,
         http_cookie_domain: str | None = ...,
         http_cookie_path: str | None = ...,
@@ -558,12 +558,12 @@ class Vip:
         weblogic_server: Literal["disable", "enable"] | None = ...,
         websphere_server: Literal["disable", "enable"] | None = ...,
         ssl_mode: Literal["half", "full"] | None = ...,
-        ssl_certificate: str | list[str] | list[dict[str, Any]] | list[VipSslcertificateItem] | None = ...,
+        ssl_certificate: str | list[str] | list[VipSslcertificateItem] | None = ...,
         ssl_dh_bits: Literal["768", "1024", "1536", "2048", "3072", "4096"] | None = ...,
         ssl_algorithm: Literal["high", "medium", "low", "custom"] | None = ...,
-        ssl_cipher_suites: str | list[str] | list[dict[str, Any]] | list[VipSslciphersuitesItem] | None = ...,
+        ssl_cipher_suites: str | list[str] | list[VipSslciphersuitesItem] | None = ...,
         ssl_server_algorithm: Literal["high", "medium", "low", "custom", "client"] | None = ...,
-        ssl_server_cipher_suites: str | list[str] | list[dict[str, Any]] | list[VipSslserverciphersuitesItem] | None = ...,
+        ssl_server_cipher_suites: str | list[str] | list[VipSslserverciphersuitesItem] | None = ...,
         ssl_pfs: Literal["require", "deny", "allow"] | None = ...,
         ssl_min_version: Literal["ssl-3.0", "tls-1.0", "tls-1.1", "tls-1.2", "tls-1.3"] | None = ...,
         ssl_max_version: Literal["ssl-3.0", "tls-1.0", "tls-1.1", "tls-1.2", "tls-1.3"] | None = ...,
@@ -592,7 +592,7 @@ class Vip:
         ssl_hsts: Literal["disable", "enable"] | None = ...,
         ssl_hsts_age: int | None = ...,
         ssl_hsts_include_subdomains: Literal["disable", "enable"] | None = ...,
-        monitor: str | list[str] | list[dict[str, Any]] | list[VipMonitorItem] | None = ...,
+        monitor: str | list[str] | list[VipMonitorItem] | None = ...,
         max_embryonic_connections: int | None = ...,
         color: int | None = ...,
         ipv6_mappedip: str | None = ...,
@@ -600,7 +600,7 @@ class Vip:
         one_click_gslb_server: Literal["disable", "enable"] | None = ...,
         gslb_hostname: str | None = ...,
         gslb_domain_name: str | None = ...,
-        gslb_public_ips: str | list[str] | list[dict[str, Any]] | list[VipGslbpublicipsItem] | None = ...,
+        gslb_public_ips: str | list[str] | list[VipGslbpublicipsItem] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -621,18 +621,18 @@ class Vip:
         server_type: Literal["http", "https", "imaps", "pop3s", "smtps", "ssl", "tcp", "udp", "ip"] | None = ...,
         dns_mapping_ttl: int | None = ...,
         ldb_method: Literal["static", "round-robin", "weighted", "least-session", "least-rtt", "first-alive", "http-host"] | None = ...,
-        src_filter: str | list[str] | list[dict[str, Any]] | list[VipSrcfilterItem] | None = ...,
+        src_filter: str | list[str] | list[VipSrcfilterItem] | None = ...,
         src_vip_filter: Literal["disable", "enable"] | None = ...,
-        service: str | list[str] | list[dict[str, Any]] | list[VipServiceItem] | None = ...,
+        service: str | list[str] | list[VipServiceItem] | None = ...,
         extip: str | None = ...,
-        extaddr: str | list[str] | list[dict[str, Any]] | list[VipExtaddrItem] | None = ...,
+        extaddr: str | list[str] | list[VipExtaddrItem] | None = ...,
         h2_support: Literal["enable", "disable"] | None = ...,
         h3_support: Literal["enable", "disable"] | None = ...,
         quic: VipQuicDict | None = ...,
         nat44: Literal["disable", "enable"] | None = ...,
         nat46: Literal["disable", "enable"] | None = ...,
         add_nat46_route: Literal["disable", "enable"] | None = ...,
-        mappedip: str | list[str] | list[dict[str, Any]] | list[VipMappedipItem] | None = ...,
+        mappedip: str | list[str] | list[VipMappedipItem] | None = ...,
         mapped_addr: str | None = ...,
         extintf: str | None = ...,
         arp_reply: Literal["disable", "enable"] | None = ...,
@@ -645,12 +645,12 @@ class Vip:
         extport: str | None = ...,
         mappedport: str | None = ...,
         gratuitous_arp_interval: int | None = ...,
-        srcintf_filter: str | list[str] | list[dict[str, Any]] | list[VipSrcintffilterItem] | None = ...,
+        srcintf_filter: str | list[str] | list[VipSrcintffilterItem] | None = ...,
         portmapping_type: Literal["1-to-1", "m-to-n"] | None = ...,
         empty_cert_action: Literal["accept", "block", "accept-unmanageable"] | None = ...,
         user_agent_detect: Literal["disable", "enable"] | None = ...,
         client_cert: Literal["disable", "enable"] | None = ...,
-        realservers: str | list[str] | list[dict[str, Any]] | list[VipRealserversItem] | None = ...,
+        realservers: str | list[str] | list[VipRealserversItem] | None = ...,
         http_cookie_domain_from_host: Literal["disable", "enable"] | None = ...,
         http_cookie_domain: str | None = ...,
         http_cookie_path: str | None = ...,
@@ -668,12 +668,12 @@ class Vip:
         weblogic_server: Literal["disable", "enable"] | None = ...,
         websphere_server: Literal["disable", "enable"] | None = ...,
         ssl_mode: Literal["half", "full"] | None = ...,
-        ssl_certificate: str | list[str] | list[dict[str, Any]] | list[VipSslcertificateItem] | None = ...,
+        ssl_certificate: str | list[str] | list[VipSslcertificateItem] | None = ...,
         ssl_dh_bits: Literal["768", "1024", "1536", "2048", "3072", "4096"] | None = ...,
         ssl_algorithm: Literal["high", "medium", "low", "custom"] | None = ...,
-        ssl_cipher_suites: str | list[str] | list[dict[str, Any]] | list[VipSslciphersuitesItem] | None = ...,
+        ssl_cipher_suites: str | list[str] | list[VipSslciphersuitesItem] | None = ...,
         ssl_server_algorithm: Literal["high", "medium", "low", "custom", "client"] | None = ...,
-        ssl_server_cipher_suites: str | list[str] | list[dict[str, Any]] | list[VipSslserverciphersuitesItem] | None = ...,
+        ssl_server_cipher_suites: str | list[str] | list[VipSslserverciphersuitesItem] | None = ...,
         ssl_pfs: Literal["require", "deny", "allow"] | None = ...,
         ssl_min_version: Literal["ssl-3.0", "tls-1.0", "tls-1.1", "tls-1.2", "tls-1.3"] | None = ...,
         ssl_max_version: Literal["ssl-3.0", "tls-1.0", "tls-1.1", "tls-1.2", "tls-1.3"] | None = ...,
@@ -702,7 +702,7 @@ class Vip:
         ssl_hsts: Literal["disable", "enable"] | None = ...,
         ssl_hsts_age: int | None = ...,
         ssl_hsts_include_subdomains: Literal["disable", "enable"] | None = ...,
-        monitor: str | list[str] | list[dict[str, Any]] | list[VipMonitorItem] | None = ...,
+        monitor: str | list[str] | list[VipMonitorItem] | None = ...,
         max_embryonic_connections: int | None = ...,
         color: int | None = ...,
         ipv6_mappedip: str | None = ...,
@@ -710,7 +710,7 @@ class Vip:
         one_click_gslb_server: Literal["disable", "enable"] | None = ...,
         gslb_hostname: str | None = ...,
         gslb_domain_name: str | None = ...,
-        gslb_public_ips: str | list[str] | list[dict[str, Any]] | list[VipGslbpublicipsItem] | None = ...,
+        gslb_public_ips: str | list[str] | list[VipGslbpublicipsItem] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -749,18 +749,18 @@ class Vip:
         server_type: Literal["http", "https", "imaps", "pop3s", "smtps", "ssl", "tcp", "udp", "ip"] | None = ...,
         dns_mapping_ttl: int | None = ...,
         ldb_method: Literal["static", "round-robin", "weighted", "least-session", "least-rtt", "first-alive", "http-host"] | None = ...,
-        src_filter: str | list[str] | list[dict[str, Any]] | list[VipSrcfilterItem] | None = ...,
+        src_filter: str | list[str] | list[VipSrcfilterItem] | None = ...,
         src_vip_filter: Literal["disable", "enable"] | None = ...,
-        service: str | list[str] | list[dict[str, Any]] | list[VipServiceItem] | None = ...,
+        service: str | list[str] | list[VipServiceItem] | None = ...,
         extip: str | None = ...,
-        extaddr: str | list[str] | list[dict[str, Any]] | list[VipExtaddrItem] | None = ...,
+        extaddr: str | list[str] | list[VipExtaddrItem] | None = ...,
         h2_support: Literal["enable", "disable"] | None = ...,
         h3_support: Literal["enable", "disable"] | None = ...,
         quic: VipQuicDict | None = ...,
         nat44: Literal["disable", "enable"] | None = ...,
         nat46: Literal["disable", "enable"] | None = ...,
         add_nat46_route: Literal["disable", "enable"] | None = ...,
-        mappedip: str | list[str] | list[dict[str, Any]] | list[VipMappedipItem] | None = ...,
+        mappedip: str | list[str] | list[VipMappedipItem] | None = ...,
         mapped_addr: str | None = ...,
         extintf: str | None = ...,
         arp_reply: Literal["disable", "enable"] | None = ...,
@@ -773,12 +773,12 @@ class Vip:
         extport: str | None = ...,
         mappedport: str | None = ...,
         gratuitous_arp_interval: int | None = ...,
-        srcintf_filter: str | list[str] | list[dict[str, Any]] | list[VipSrcintffilterItem] | None = ...,
+        srcintf_filter: str | list[str] | list[VipSrcintffilterItem] | None = ...,
         portmapping_type: Literal["1-to-1", "m-to-n"] | None = ...,
         empty_cert_action: Literal["accept", "block", "accept-unmanageable"] | None = ...,
         user_agent_detect: Literal["disable", "enable"] | None = ...,
         client_cert: Literal["disable", "enable"] | None = ...,
-        realservers: str | list[str] | list[dict[str, Any]] | list[VipRealserversItem] | None = ...,
+        realservers: str | list[str] | list[VipRealserversItem] | None = ...,
         http_cookie_domain_from_host: Literal["disable", "enable"] | None = ...,
         http_cookie_domain: str | None = ...,
         http_cookie_path: str | None = ...,
@@ -796,12 +796,12 @@ class Vip:
         weblogic_server: Literal["disable", "enable"] | None = ...,
         websphere_server: Literal["disable", "enable"] | None = ...,
         ssl_mode: Literal["half", "full"] | None = ...,
-        ssl_certificate: str | list[str] | list[dict[str, Any]] | list[VipSslcertificateItem] | None = ...,
+        ssl_certificate: str | list[str] | list[VipSslcertificateItem] | None = ...,
         ssl_dh_bits: Literal["768", "1024", "1536", "2048", "3072", "4096"] | None = ...,
         ssl_algorithm: Literal["high", "medium", "low", "custom"] | None = ...,
-        ssl_cipher_suites: str | list[str] | list[dict[str, Any]] | list[VipSslciphersuitesItem] | None = ...,
+        ssl_cipher_suites: str | list[str] | list[VipSslciphersuitesItem] | None = ...,
         ssl_server_algorithm: Literal["high", "medium", "low", "custom", "client"] | None = ...,
-        ssl_server_cipher_suites: str | list[str] | list[dict[str, Any]] | list[VipSslserverciphersuitesItem] | None = ...,
+        ssl_server_cipher_suites: str | list[str] | list[VipSslserverciphersuitesItem] | None = ...,
         ssl_pfs: Literal["require", "deny", "allow"] | None = ...,
         ssl_min_version: Literal["ssl-3.0", "tls-1.0", "tls-1.1", "tls-1.2", "tls-1.3"] | None = ...,
         ssl_max_version: Literal["ssl-3.0", "tls-1.0", "tls-1.1", "tls-1.2", "tls-1.3"] | None = ...,
@@ -830,7 +830,7 @@ class Vip:
         ssl_hsts: Literal["disable", "enable"] | None = ...,
         ssl_hsts_age: int | None = ...,
         ssl_hsts_include_subdomains: Literal["disable", "enable"] | None = ...,
-        monitor: str | list[str] | list[dict[str, Any]] | list[VipMonitorItem] | None = ...,
+        monitor: str | list[str] | list[VipMonitorItem] | None = ...,
         max_embryonic_connections: int | None = ...,
         color: int | None = ...,
         ipv6_mappedip: str | None = ...,
@@ -838,7 +838,7 @@ class Vip:
         one_click_gslb_server: Literal["disable", "enable"] | None = ...,
         gslb_hostname: str | None = ...,
         gslb_domain_name: str | None = ...,
-        gslb_public_ips: str | list[str] | list[dict[str, Any]] | list[VipGslbpublicipsItem] | None = ...,
+        gslb_public_ips: str | list[str] | list[VipGslbpublicipsItem] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,

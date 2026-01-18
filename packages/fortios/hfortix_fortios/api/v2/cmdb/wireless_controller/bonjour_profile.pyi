@@ -26,8 +26,8 @@ from hfortix_fortios.models import (
 # TypedDict Payloads
 # ================================================================
 
-class BonjourProfilePolicylistItem:
-    """Nested item for policy-list field - supports attribute access."""
+class BonjourProfilePolicylistItem(TypedDict, total=False):
+    """Nested item for policy-list field."""
     policy_id: int
     description: str
     from_vlan: str
@@ -40,7 +40,7 @@ class BonjourProfilePayload(TypedDict, total=False):
     name: str
     comment: str
     micro_location: Literal["enable", "disable"]
-    policy_list: str | list[str] | list[dict[str, Any]] | list[BonjourProfilePolicylistItem]
+    policy_list: str | list[str] | list[BonjourProfilePolicylistItem]
 
 
 # ================================================================
@@ -147,7 +147,7 @@ class BonjourProfile:
         name: str | None = ...,
         comment: str | None = ...,
         micro_location: Literal["enable", "disable"] | None = ...,
-        policy_list: str | list[str] | list[dict[str, Any]] | list[BonjourProfilePolicylistItem] | None = ...,
+        policy_list: str | list[str] | list[BonjourProfilePolicylistItem] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -163,7 +163,7 @@ class BonjourProfile:
         name: str | None = ...,
         comment: str | None = ...,
         micro_location: Literal["enable", "disable"] | None = ...,
-        policy_list: str | list[str] | list[dict[str, Any]] | list[BonjourProfilePolicylistItem] | None = ...,
+        policy_list: str | list[str] | list[BonjourProfilePolicylistItem] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -197,7 +197,7 @@ class BonjourProfile:
         name: str | None = ...,
         comment: str | None = ...,
         micro_location: Literal["enable", "disable"] | None = ...,
-        policy_list: str | list[str] | list[dict[str, Any]] | list[BonjourProfilePolicylistItem] | None = ...,
+        policy_list: str | list[str] | list[BonjourProfilePolicylistItem] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,

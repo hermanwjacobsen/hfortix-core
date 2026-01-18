@@ -25,8 +25,8 @@ from hfortix_fortios.models import (
 # TypedDict Payloads
 # ================================================================
 
-class SnmpCommunityItem:
-    """Nested item for community field - supports attribute access."""
+class SnmpCommunityItem(TypedDict, total=False):
+    """Nested item for community field."""
     id: int
     name: str
     status: Literal["enable", "disable"]
@@ -38,8 +38,8 @@ class SnmpCommunityItem:
     hosts6: str | list[str]
 
 
-class SnmpUserItem:
-    """Nested item for user field - supports attribute access."""
+class SnmpUserItem(TypedDict, total=False):
+    """Nested item for user field."""
     name: str
     status: Literal["enable", "disable"]
     queries: Literal["enable", "disable"]
@@ -59,8 +59,8 @@ class SnmpPayload(TypedDict, total=False):
     contact_info: str
     trap_high_cpu_threshold: int
     trap_high_mem_threshold: int
-    community: str | list[str] | list[dict[str, Any]] | list[SnmpCommunityItem]
-    user: str | list[str] | list[dict[str, Any]] | list[SnmpUserItem]
+    community: str | list[str] | list[SnmpCommunityItem]
+    user: str | list[str] | list[SnmpUserItem]
 
 
 # ================================================================
@@ -152,8 +152,8 @@ class Snmp:
         contact_info: str | None = ...,
         trap_high_cpu_threshold: int | None = ...,
         trap_high_mem_threshold: int | None = ...,
-        community: str | list[str] | list[dict[str, Any]] | list[SnmpCommunityItem] | None = ...,
-        user: str | list[str] | list[dict[str, Any]] | list[SnmpUserItem] | None = ...,
+        community: str | list[str] | list[SnmpCommunityItem] | None = ...,
+        user: str | list[str] | list[SnmpUserItem] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -177,8 +177,8 @@ class Snmp:
         contact_info: str | None = ...,
         trap_high_cpu_threshold: int | None = ...,
         trap_high_mem_threshold: int | None = ...,
-        community: str | list[str] | list[dict[str, Any]] | list[SnmpCommunityItem] | None = ...,
-        user: str | list[str] | list[dict[str, Any]] | list[SnmpUserItem] | None = ...,
+        community: str | list[str] | list[SnmpCommunityItem] | None = ...,
+        user: str | list[str] | list[SnmpUserItem] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,

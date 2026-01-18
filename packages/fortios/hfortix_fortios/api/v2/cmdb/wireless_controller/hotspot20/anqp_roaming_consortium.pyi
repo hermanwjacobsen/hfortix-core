@@ -26,8 +26,8 @@ from hfortix_fortios.models import (
 # TypedDict Payloads
 # ================================================================
 
-class AnqpRoamingConsortiumOilistItem:
-    """Nested item for oi-list field - supports attribute access."""
+class AnqpRoamingConsortiumOilistItem(TypedDict, total=False):
+    """Nested item for oi-list field."""
     index: int
     oi: str
     comment: str
@@ -36,7 +36,7 @@ class AnqpRoamingConsortiumOilistItem:
 class AnqpRoamingConsortiumPayload(TypedDict, total=False):
     """Payload type for AnqpRoamingConsortium operations."""
     name: str
-    oi_list: str | list[str] | list[dict[str, Any]] | list[AnqpRoamingConsortiumOilistItem]
+    oi_list: str | list[str] | list[AnqpRoamingConsortiumOilistItem]
 
 
 # ================================================================
@@ -137,7 +137,7 @@ class AnqpRoamingConsortium:
         self,
         payload_dict: AnqpRoamingConsortiumPayload | None = ...,
         name: str | None = ...,
-        oi_list: str | list[str] | list[dict[str, Any]] | list[AnqpRoamingConsortiumOilistItem] | None = ...,
+        oi_list: str | list[str] | list[AnqpRoamingConsortiumOilistItem] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -151,7 +151,7 @@ class AnqpRoamingConsortium:
         self,
         payload_dict: AnqpRoamingConsortiumPayload | None = ...,
         name: str | None = ...,
-        oi_list: str | list[str] | list[dict[str, Any]] | list[AnqpRoamingConsortiumOilistItem] | None = ...,
+        oi_list: str | list[str] | list[AnqpRoamingConsortiumOilistItem] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -183,7 +183,7 @@ class AnqpRoamingConsortium:
         self,
         payload_dict: AnqpRoamingConsortiumPayload | None = ...,
         name: str | None = ...,
-        oi_list: str | list[str] | list[dict[str, Any]] | list[AnqpRoamingConsortiumOilistItem] | None = ...,
+        oi_list: str | list[str] | list[AnqpRoamingConsortiumOilistItem] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,

@@ -26,8 +26,8 @@ from hfortix_fortios.models import (
 # TypedDict Payloads
 # ================================================================
 
-class CommunityListRuleItem:
-    """Nested item for rule field - supports attribute access."""
+class CommunityListRuleItem(TypedDict, total=False):
+    """Nested item for rule field."""
     id: int
     action: Literal["deny", "permit"]
     regexp: str
@@ -38,7 +38,7 @@ class CommunityListPayload(TypedDict, total=False):
     """Payload type for CommunityList operations."""
     name: str
     type: Literal["standard", "expanded"]
-    rule: str | list[str] | list[dict[str, Any]] | list[CommunityListRuleItem]
+    rule: str | list[str] | list[CommunityListRuleItem]
 
 
 # ================================================================
@@ -142,7 +142,7 @@ class CommunityList:
         payload_dict: CommunityListPayload | None = ...,
         name: str | None = ...,
         type: Literal["standard", "expanded"] | None = ...,
-        rule: str | list[str] | list[dict[str, Any]] | list[CommunityListRuleItem] | None = ...,
+        rule: str | list[str] | list[CommunityListRuleItem] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -157,7 +157,7 @@ class CommunityList:
         payload_dict: CommunityListPayload | None = ...,
         name: str | None = ...,
         type: Literal["standard", "expanded"] | None = ...,
-        rule: str | list[str] | list[dict[str, Any]] | list[CommunityListRuleItem] | None = ...,
+        rule: str | list[str] | list[CommunityListRuleItem] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -190,7 +190,7 @@ class CommunityList:
         payload_dict: CommunityListPayload | None = ...,
         name: str | None = ...,
         type: Literal["standard", "expanded"] | None = ...,
-        rule: str | list[str] | list[dict[str, Any]] | list[CommunityListRuleItem] | None = ...,
+        rule: str | list[str] | list[CommunityListRuleItem] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,

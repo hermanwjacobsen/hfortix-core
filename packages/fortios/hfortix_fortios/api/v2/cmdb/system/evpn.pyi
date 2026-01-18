@@ -26,13 +26,13 @@ from hfortix_fortios.models import (
 # TypedDict Payloads
 # ================================================================
 
-class EvpnImportrtItem:
-    """Nested item for import-rt field - supports attribute access."""
+class EvpnImportrtItem(TypedDict, total=False):
+    """Nested item for import-rt field."""
     route_target: str
 
 
-class EvpnExportrtItem:
-    """Nested item for export-rt field - supports attribute access."""
+class EvpnExportrtItem(TypedDict, total=False):
+    """Nested item for export-rt field."""
     route_target: str
 
 
@@ -40,8 +40,8 @@ class EvpnPayload(TypedDict, total=False):
     """Payload type for Evpn operations."""
     id: int
     rd: str
-    import_rt: str | list[str] | list[dict[str, Any]] | list[EvpnImportrtItem]
-    export_rt: str | list[str] | list[dict[str, Any]] | list[EvpnExportrtItem]
+    import_rt: str | list[str] | list[EvpnImportrtItem]
+    export_rt: str | list[str] | list[EvpnExportrtItem]
     ip_local_learning: Literal["enable", "disable"]
     arp_suppression: Literal["enable", "disable"]
 
@@ -153,8 +153,8 @@ class Evpn:
         payload_dict: EvpnPayload | None = ...,
         id: int | None = ...,
         rd: str | None = ...,
-        import_rt: str | list[str] | list[dict[str, Any]] | list[EvpnImportrtItem] | None = ...,
-        export_rt: str | list[str] | list[dict[str, Any]] | list[EvpnExportrtItem] | None = ...,
+        import_rt: str | list[str] | list[EvpnImportrtItem] | None = ...,
+        export_rt: str | list[str] | list[EvpnExportrtItem] | None = ...,
         ip_local_learning: Literal["enable", "disable"] | None = ...,
         arp_suppression: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
@@ -171,8 +171,8 @@ class Evpn:
         payload_dict: EvpnPayload | None = ...,
         id: int | None = ...,
         rd: str | None = ...,
-        import_rt: str | list[str] | list[dict[str, Any]] | list[EvpnImportrtItem] | None = ...,
-        export_rt: str | list[str] | list[dict[str, Any]] | list[EvpnExportrtItem] | None = ...,
+        import_rt: str | list[str] | list[EvpnImportrtItem] | None = ...,
+        export_rt: str | list[str] | list[EvpnExportrtItem] | None = ...,
         ip_local_learning: Literal["enable", "disable"] | None = ...,
         arp_suppression: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
@@ -207,8 +207,8 @@ class Evpn:
         payload_dict: EvpnPayload | None = ...,
         id: int | None = ...,
         rd: str | None = ...,
-        import_rt: str | list[str] | list[dict[str, Any]] | list[EvpnImportrtItem] | None = ...,
-        export_rt: str | list[str] | list[dict[str, Any]] | list[EvpnExportrtItem] | None = ...,
+        import_rt: str | list[str] | list[EvpnImportrtItem] | None = ...,
+        export_rt: str | list[str] | list[EvpnExportrtItem] | None = ...,
         ip_local_learning: Literal["enable", "disable"] | None = ...,
         arp_suppression: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,

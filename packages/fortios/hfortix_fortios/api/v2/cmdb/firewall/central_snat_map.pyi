@@ -26,43 +26,43 @@ from hfortix_fortios.models import (
 # TypedDict Payloads
 # ================================================================
 
-class CentralSnatMapSrcintfItem:
-    """Nested item for srcintf field - supports attribute access."""
+class CentralSnatMapSrcintfItem(TypedDict, total=False):
+    """Nested item for srcintf field."""
     name: str
 
 
-class CentralSnatMapDstintfItem:
-    """Nested item for dstintf field - supports attribute access."""
+class CentralSnatMapDstintfItem(TypedDict, total=False):
+    """Nested item for dstintf field."""
     name: str
 
 
-class CentralSnatMapOrigaddrItem:
-    """Nested item for orig-addr field - supports attribute access."""
+class CentralSnatMapOrigaddrItem(TypedDict, total=False):
+    """Nested item for orig-addr field."""
     name: str
 
 
-class CentralSnatMapOrigaddr6Item:
-    """Nested item for orig-addr6 field - supports attribute access."""
+class CentralSnatMapOrigaddr6Item(TypedDict, total=False):
+    """Nested item for orig-addr6 field."""
     name: str
 
 
-class CentralSnatMapDstaddrItem:
-    """Nested item for dst-addr field - supports attribute access."""
+class CentralSnatMapDstaddrItem(TypedDict, total=False):
+    """Nested item for dst-addr field."""
     name: str
 
 
-class CentralSnatMapDstaddr6Item:
-    """Nested item for dst-addr6 field - supports attribute access."""
+class CentralSnatMapDstaddr6Item(TypedDict, total=False):
+    """Nested item for dst-addr6 field."""
     name: str
 
 
-class CentralSnatMapNatippoolItem:
-    """Nested item for nat-ippool field - supports attribute access."""
+class CentralSnatMapNatippoolItem(TypedDict, total=False):
+    """Nested item for nat-ippool field."""
     name: str
 
 
-class CentralSnatMapNatippool6Item:
-    """Nested item for nat-ippool6 field - supports attribute access."""
+class CentralSnatMapNatippool6Item(TypedDict, total=False):
+    """Nested item for nat-ippool6 field."""
     name: str
 
 
@@ -72,19 +72,19 @@ class CentralSnatMapPayload(TypedDict, total=False):
     uuid: str
     status: Literal["enable", "disable"]
     type: Literal["ipv4", "ipv6"]
-    srcintf: str | list[str] | list[dict[str, Any]] | list[CentralSnatMapSrcintfItem]
-    dstintf: str | list[str] | list[dict[str, Any]] | list[CentralSnatMapDstintfItem]
-    orig_addr: str | list[str] | list[dict[str, Any]] | list[CentralSnatMapOrigaddrItem]
-    orig_addr6: str | list[str] | list[dict[str, Any]] | list[CentralSnatMapOrigaddr6Item]
-    dst_addr: str | list[str] | list[dict[str, Any]] | list[CentralSnatMapDstaddrItem]
-    dst_addr6: str | list[str] | list[dict[str, Any]] | list[CentralSnatMapDstaddr6Item]
+    srcintf: str | list[str] | list[CentralSnatMapSrcintfItem]
+    dstintf: str | list[str] | list[CentralSnatMapDstintfItem]
+    orig_addr: str | list[str] | list[CentralSnatMapOrigaddrItem]
+    orig_addr6: str | list[str] | list[CentralSnatMapOrigaddr6Item]
+    dst_addr: str | list[str] | list[CentralSnatMapDstaddrItem]
+    dst_addr6: str | list[str] | list[CentralSnatMapDstaddr6Item]
     protocol: int
     orig_port: str
     nat: Literal["disable", "enable"]
     nat46: Literal["enable", "disable"]
     nat64: Literal["enable", "disable"]
-    nat_ippool: str | list[str] | list[dict[str, Any]] | list[CentralSnatMapNatippoolItem]
-    nat_ippool6: str | list[str] | list[dict[str, Any]] | list[CentralSnatMapNatippool6Item]
+    nat_ippool: str | list[str] | list[CentralSnatMapNatippoolItem]
+    nat_ippool6: str | list[str] | list[CentralSnatMapNatippool6Item]
     port_preserve: Literal["enable", "disable"]
     port_random: Literal["enable", "disable"]
     nat_port: str
@@ -233,19 +233,19 @@ class CentralSnatMap:
         uuid: str | None = ...,
         status: Literal["enable", "disable"] | None = ...,
         type: Literal["ipv4", "ipv6"] | None = ...,
-        srcintf: str | list[str] | list[dict[str, Any]] | list[CentralSnatMapSrcintfItem] | None = ...,
-        dstintf: str | list[str] | list[dict[str, Any]] | list[CentralSnatMapDstintfItem] | None = ...,
-        orig_addr: str | list[str] | list[dict[str, Any]] | list[CentralSnatMapOrigaddrItem] | None = ...,
-        orig_addr6: str | list[str] | list[dict[str, Any]] | list[CentralSnatMapOrigaddr6Item] | None = ...,
-        dst_addr: str | list[str] | list[dict[str, Any]] | list[CentralSnatMapDstaddrItem] | None = ...,
-        dst_addr6: str | list[str] | list[dict[str, Any]] | list[CentralSnatMapDstaddr6Item] | None = ...,
+        srcintf: str | list[str] | list[CentralSnatMapSrcintfItem] | None = ...,
+        dstintf: str | list[str] | list[CentralSnatMapDstintfItem] | None = ...,
+        orig_addr: str | list[str] | list[CentralSnatMapOrigaddrItem] | None = ...,
+        orig_addr6: str | list[str] | list[CentralSnatMapOrigaddr6Item] | None = ...,
+        dst_addr: str | list[str] | list[CentralSnatMapDstaddrItem] | None = ...,
+        dst_addr6: str | list[str] | list[CentralSnatMapDstaddr6Item] | None = ...,
         protocol: int | None = ...,
         orig_port: str | None = ...,
         nat: Literal["disable", "enable"] | None = ...,
         nat46: Literal["enable", "disable"] | None = ...,
         nat64: Literal["enable", "disable"] | None = ...,
-        nat_ippool: str | list[str] | list[dict[str, Any]] | list[CentralSnatMapNatippoolItem] | None = ...,
-        nat_ippool6: str | list[str] | list[dict[str, Any]] | list[CentralSnatMapNatippool6Item] | None = ...,
+        nat_ippool: str | list[str] | list[CentralSnatMapNatippoolItem] | None = ...,
+        nat_ippool6: str | list[str] | list[CentralSnatMapNatippool6Item] | None = ...,
         port_preserve: Literal["enable", "disable"] | None = ...,
         port_random: Literal["enable", "disable"] | None = ...,
         nat_port: str | None = ...,
@@ -267,19 +267,19 @@ class CentralSnatMap:
         uuid: str | None = ...,
         status: Literal["enable", "disable"] | None = ...,
         type: Literal["ipv4", "ipv6"] | None = ...,
-        srcintf: str | list[str] | list[dict[str, Any]] | list[CentralSnatMapSrcintfItem] | None = ...,
-        dstintf: str | list[str] | list[dict[str, Any]] | list[CentralSnatMapDstintfItem] | None = ...,
-        orig_addr: str | list[str] | list[dict[str, Any]] | list[CentralSnatMapOrigaddrItem] | None = ...,
-        orig_addr6: str | list[str] | list[dict[str, Any]] | list[CentralSnatMapOrigaddr6Item] | None = ...,
-        dst_addr: str | list[str] | list[dict[str, Any]] | list[CentralSnatMapDstaddrItem] | None = ...,
-        dst_addr6: str | list[str] | list[dict[str, Any]] | list[CentralSnatMapDstaddr6Item] | None = ...,
+        srcintf: str | list[str] | list[CentralSnatMapSrcintfItem] | None = ...,
+        dstintf: str | list[str] | list[CentralSnatMapDstintfItem] | None = ...,
+        orig_addr: str | list[str] | list[CentralSnatMapOrigaddrItem] | None = ...,
+        orig_addr6: str | list[str] | list[CentralSnatMapOrigaddr6Item] | None = ...,
+        dst_addr: str | list[str] | list[CentralSnatMapDstaddrItem] | None = ...,
+        dst_addr6: str | list[str] | list[CentralSnatMapDstaddr6Item] | None = ...,
         protocol: int | None = ...,
         orig_port: str | None = ...,
         nat: Literal["disable", "enable"] | None = ...,
         nat46: Literal["enable", "disable"] | None = ...,
         nat64: Literal["enable", "disable"] | None = ...,
-        nat_ippool: str | list[str] | list[dict[str, Any]] | list[CentralSnatMapNatippoolItem] | None = ...,
-        nat_ippool6: str | list[str] | list[dict[str, Any]] | list[CentralSnatMapNatippool6Item] | None = ...,
+        nat_ippool: str | list[str] | list[CentralSnatMapNatippoolItem] | None = ...,
+        nat_ippool6: str | list[str] | list[CentralSnatMapNatippool6Item] | None = ...,
         port_preserve: Literal["enable", "disable"] | None = ...,
         port_random: Literal["enable", "disable"] | None = ...,
         nat_port: str | None = ...,
@@ -319,19 +319,19 @@ class CentralSnatMap:
         uuid: str | None = ...,
         status: Literal["enable", "disable"] | None = ...,
         type: Literal["ipv4", "ipv6"] | None = ...,
-        srcintf: str | list[str] | list[dict[str, Any]] | list[CentralSnatMapSrcintfItem] | None = ...,
-        dstintf: str | list[str] | list[dict[str, Any]] | list[CentralSnatMapDstintfItem] | None = ...,
-        orig_addr: str | list[str] | list[dict[str, Any]] | list[CentralSnatMapOrigaddrItem] | None = ...,
-        orig_addr6: str | list[str] | list[dict[str, Any]] | list[CentralSnatMapOrigaddr6Item] | None = ...,
-        dst_addr: str | list[str] | list[dict[str, Any]] | list[CentralSnatMapDstaddrItem] | None = ...,
-        dst_addr6: str | list[str] | list[dict[str, Any]] | list[CentralSnatMapDstaddr6Item] | None = ...,
+        srcintf: str | list[str] | list[CentralSnatMapSrcintfItem] | None = ...,
+        dstintf: str | list[str] | list[CentralSnatMapDstintfItem] | None = ...,
+        orig_addr: str | list[str] | list[CentralSnatMapOrigaddrItem] | None = ...,
+        orig_addr6: str | list[str] | list[CentralSnatMapOrigaddr6Item] | None = ...,
+        dst_addr: str | list[str] | list[CentralSnatMapDstaddrItem] | None = ...,
+        dst_addr6: str | list[str] | list[CentralSnatMapDstaddr6Item] | None = ...,
         protocol: int | None = ...,
         orig_port: str | None = ...,
         nat: Literal["disable", "enable"] | None = ...,
         nat46: Literal["enable", "disable"] | None = ...,
         nat64: Literal["enable", "disable"] | None = ...,
-        nat_ippool: str | list[str] | list[dict[str, Any]] | list[CentralSnatMapNatippoolItem] | None = ...,
-        nat_ippool6: str | list[str] | list[dict[str, Any]] | list[CentralSnatMapNatippool6Item] | None = ...,
+        nat_ippool: str | list[str] | list[CentralSnatMapNatippoolItem] | None = ...,
+        nat_ippool6: str | list[str] | list[CentralSnatMapNatippool6Item] | None = ...,
         port_preserve: Literal["enable", "disable"] | None = ...,
         port_random: Literal["enable", "disable"] | None = ...,
         nat_port: str | None = ...,

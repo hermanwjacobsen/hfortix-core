@@ -26,8 +26,8 @@ from hfortix_fortios.models import (
 # TypedDict Payloads
 # ================================================================
 
-class KrbKeytabLdapserverItem:
-    """Nested item for ldap-server field - supports attribute access."""
+class KrbKeytabLdapserverItem(TypedDict, total=False):
+    """Nested item for ldap-server field."""
     name: str
 
 
@@ -36,7 +36,7 @@ class KrbKeytabPayload(TypedDict, total=False):
     name: str
     pac_data: Literal["enable", "disable"]
     principal: str
-    ldap_server: str | list[str] | list[dict[str, Any]] | list[KrbKeytabLdapserverItem]
+    ldap_server: str | list[str] | list[KrbKeytabLdapserverItem]
     keytab: str
 
 
@@ -146,7 +146,7 @@ class KrbKeytab:
         name: str | None = ...,
         pac_data: Literal["enable", "disable"] | None = ...,
         principal: str | None = ...,
-        ldap_server: str | list[str] | list[dict[str, Any]] | list[KrbKeytabLdapserverItem] | None = ...,
+        ldap_server: str | list[str] | list[KrbKeytabLdapserverItem] | None = ...,
         keytab: str | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
@@ -163,7 +163,7 @@ class KrbKeytab:
         name: str | None = ...,
         pac_data: Literal["enable", "disable"] | None = ...,
         principal: str | None = ...,
-        ldap_server: str | list[str] | list[dict[str, Any]] | list[KrbKeytabLdapserverItem] | None = ...,
+        ldap_server: str | list[str] | list[KrbKeytabLdapserverItem] | None = ...,
         keytab: str | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
@@ -198,7 +198,7 @@ class KrbKeytab:
         name: str | None = ...,
         pac_data: Literal["enable", "disable"] | None = ...,
         principal: str | None = ...,
-        ldap_server: str | list[str] | list[dict[str, Any]] | list[KrbKeytabLdapserverItem] | None = ...,
+        ldap_server: str | list[str] | list[KrbKeytabLdapserverItem] | None = ...,
         keytab: str | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,

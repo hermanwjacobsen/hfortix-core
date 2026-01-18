@@ -26,21 +26,21 @@ from hfortix_fortios.models import (
 # TypedDict Payloads
 # ================================================================
 
-class SaasApplicationDomainsItem:
-    """Nested item for domains field - supports attribute access."""
+class SaasApplicationDomainsItem(TypedDict, total=False):
+    """Nested item for domains field."""
     domain: str
 
 
-class SaasApplicationOutputattributesItem:
-    """Nested item for output-attributes field - supports attribute access."""
+class SaasApplicationOutputattributesItem(TypedDict, total=False):
+    """Nested item for output-attributes field."""
     name: str
     description: str
     type: Literal["string", "string-list", "integer", "integer-list", "boolean"]
     optional: Literal["enable", "disable"]
 
 
-class SaasApplicationInputattributesItem:
-    """Nested item for input-attributes field - supports attribute access."""
+class SaasApplicationInputattributesItem(TypedDict, total=False):
+    """Nested item for input-attributes field."""
     name: str
     description: str
     type: Literal["string"]
@@ -57,9 +57,9 @@ class SaasApplicationPayload(TypedDict, total=False):
     type: Literal["built-in", "customized"]
     casb_name: str
     description: str
-    domains: str | list[str] | list[dict[str, Any]] | list[SaasApplicationDomainsItem]
-    output_attributes: str | list[str] | list[dict[str, Any]] | list[SaasApplicationOutputattributesItem]
-    input_attributes: str | list[str] | list[dict[str, Any]] | list[SaasApplicationInputattributesItem]
+    domains: str | list[str] | list[SaasApplicationDomainsItem]
+    output_attributes: str | list[str] | list[SaasApplicationOutputattributesItem]
+    input_attributes: str | list[str] | list[SaasApplicationInputattributesItem]
 
 
 # ================================================================
@@ -179,9 +179,9 @@ class SaasApplication:
         type: Literal["built-in", "customized"] | None = ...,
         casb_name: str | None = ...,
         description: str | None = ...,
-        domains: str | list[str] | list[dict[str, Any]] | list[SaasApplicationDomainsItem] | None = ...,
-        output_attributes: str | list[str] | list[dict[str, Any]] | list[SaasApplicationOutputattributesItem] | None = ...,
-        input_attributes: str | list[str] | list[dict[str, Any]] | list[SaasApplicationInputattributesItem] | None = ...,
+        domains: str | list[str] | list[SaasApplicationDomainsItem] | None = ...,
+        output_attributes: str | list[str] | list[SaasApplicationOutputattributesItem] | None = ...,
+        input_attributes: str | list[str] | list[SaasApplicationInputattributesItem] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -200,9 +200,9 @@ class SaasApplication:
         type: Literal["built-in", "customized"] | None = ...,
         casb_name: str | None = ...,
         description: str | None = ...,
-        domains: str | list[str] | list[dict[str, Any]] | list[SaasApplicationDomainsItem] | None = ...,
-        output_attributes: str | list[str] | list[dict[str, Any]] | list[SaasApplicationOutputattributesItem] | None = ...,
-        input_attributes: str | list[str] | list[dict[str, Any]] | list[SaasApplicationInputattributesItem] | None = ...,
+        domains: str | list[str] | list[SaasApplicationDomainsItem] | None = ...,
+        output_attributes: str | list[str] | list[SaasApplicationOutputattributesItem] | None = ...,
+        input_attributes: str | list[str] | list[SaasApplicationInputattributesItem] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -239,9 +239,9 @@ class SaasApplication:
         type: Literal["built-in", "customized"] | None = ...,
         casb_name: str | None = ...,
         description: str | None = ...,
-        domains: str | list[str] | list[dict[str, Any]] | list[SaasApplicationDomainsItem] | None = ...,
-        output_attributes: str | list[str] | list[dict[str, Any]] | list[SaasApplicationOutputattributesItem] | None = ...,
-        input_attributes: str | list[str] | list[dict[str, Any]] | list[SaasApplicationInputattributesItem] | None = ...,
+        domains: str | list[str] | list[SaasApplicationDomainsItem] | None = ...,
+        output_attributes: str | list[str] | list[SaasApplicationOutputattributesItem] | None = ...,
+        input_attributes: str | list[str] | list[SaasApplicationInputattributesItem] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,

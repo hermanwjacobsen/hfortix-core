@@ -26,16 +26,16 @@ from hfortix_fortios.models import (
 # TypedDict Payloads
 # ================================================================
 
-class ProfileIcapheadersItem:
-    """Nested item for icap-headers field - supports attribute access."""
+class ProfileIcapheadersItem(TypedDict, total=False):
+    """Nested item for icap-headers field."""
     id: int
     name: str
     content: str
     base64_encoding: Literal["disable", "enable"]
 
 
-class ProfileRespmodforwardrulesItem:
-    """Nested item for respmod-forward-rules field - supports attribute access."""
+class ProfileRespmodforwardrulesItem(TypedDict, total=False):
+    """Nested item for respmod-forward-rules field."""
     name: str
     host: str
     header_group: str | list[str]
@@ -74,8 +74,8 @@ class ProfilePayload(TypedDict, total=False):
     extension_feature: str | list[str]
     scan_progress_interval: int
     timeout: int
-    icap_headers: str | list[str] | list[dict[str, Any]] | list[ProfileIcapheadersItem]
-    respmod_forward_rules: str | list[str] | list[dict[str, Any]] | list[ProfileRespmodforwardrulesItem]
+    icap_headers: str | list[str] | list[ProfileIcapheadersItem]
+    respmod_forward_rules: str | list[str] | list[ProfileRespmodforwardrulesItem]
 
 
 # ================================================================
@@ -262,8 +262,8 @@ class Profile:
         extension_feature: str | list[str] | None = ...,
         scan_progress_interval: int | None = ...,
         timeout: int | None = ...,
-        icap_headers: str | list[str] | list[dict[str, Any]] | list[ProfileIcapheadersItem] | None = ...,
-        respmod_forward_rules: str | list[str] | list[dict[str, Any]] | list[ProfileRespmodforwardrulesItem] | None = ...,
+        icap_headers: str | list[str] | list[ProfileIcapheadersItem] | None = ...,
+        respmod_forward_rules: str | list[str] | list[ProfileRespmodforwardrulesItem] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -305,8 +305,8 @@ class Profile:
         extension_feature: str | list[str] | None = ...,
         scan_progress_interval: int | None = ...,
         timeout: int | None = ...,
-        icap_headers: str | list[str] | list[dict[str, Any]] | list[ProfileIcapheadersItem] | None = ...,
-        respmod_forward_rules: str | list[str] | list[dict[str, Any]] | list[ProfileRespmodforwardrulesItem] | None = ...,
+        icap_headers: str | list[str] | list[ProfileIcapheadersItem] | None = ...,
+        respmod_forward_rules: str | list[str] | list[ProfileRespmodforwardrulesItem] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -366,8 +366,8 @@ class Profile:
         extension_feature: Literal["scan-progress"] | list[str] | None = ...,
         scan_progress_interval: int | None = ...,
         timeout: int | None = ...,
-        icap_headers: str | list[str] | list[dict[str, Any]] | list[ProfileIcapheadersItem] | None = ...,
-        respmod_forward_rules: str | list[str] | list[dict[str, Any]] | list[ProfileRespmodforwardrulesItem] | None = ...,
+        icap_headers: str | list[str] | list[ProfileIcapheadersItem] | None = ...,
+        respmod_forward_rules: str | list[str] | list[ProfileRespmodforwardrulesItem] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,

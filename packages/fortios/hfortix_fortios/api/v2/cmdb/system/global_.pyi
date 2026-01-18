@@ -25,8 +25,8 @@ from hfortix_fortios.models import (
 # TypedDict Payloads
 # ================================================================
 
-class GlobalInternetservicedownloadlistItem:
-    """Nested item for internet-service-download-list field - supports attribute access."""
+class GlobalInternetservicedownloadlistItem(TypedDict, total=False):
+    """Nested item for internet-service-download-list field."""
     id: int
 
 
@@ -268,7 +268,7 @@ class GlobalPayload(TypedDict, total=False):
     forticonverter_integration: Literal["enable", "disable"]
     forticonverter_config_upload: Literal["once", "disable"]
     internet_service_database: Literal["mini", "standard", "full", "on-demand"]
-    internet_service_download_list: str | list[str] | list[dict[str, Any]] | list[GlobalInternetservicedownloadlistItem]
+    internet_service_download_list: str | list[str] | list[GlobalInternetservicedownloadlistItem]
     geoip_full_db: Literal["enable", "disable"]
     early_tcp_npu_session: Literal["enable", "disable"]
     npu_neighbor_update: Literal["enable", "disable"]
@@ -1097,7 +1097,7 @@ class Global:
         forticonverter_integration: Literal["enable", "disable"] | None = ...,
         forticonverter_config_upload: Literal["once", "disable"] | None = ...,
         internet_service_database: Literal["mini", "standard", "full", "on-demand"] | None = ...,
-        internet_service_download_list: str | list[str] | list[dict[str, Any]] | list[GlobalInternetservicedownloadlistItem] | None = ...,
+        internet_service_download_list: str | list[str] | list[GlobalInternetservicedownloadlistItem] | None = ...,
         geoip_full_db: Literal["enable", "disable"] | None = ...,
         early_tcp_npu_session: Literal["enable", "disable"] | None = ...,
         npu_neighbor_update: Literal["enable", "disable"] | None = ...,
@@ -1366,7 +1366,7 @@ class Global:
         forticonverter_integration: Literal["enable", "disable"] | None = ...,
         forticonverter_config_upload: Literal["once", "disable"] | None = ...,
         internet_service_database: Literal["mini", "standard", "full", "on-demand"] | None = ...,
-        internet_service_download_list: str | list[str] | list[dict[str, Any]] | list[GlobalInternetservicedownloadlistItem] | None = ...,
+        internet_service_download_list: str | list[str] | list[GlobalInternetservicedownloadlistItem] | None = ...,
         geoip_full_db: Literal["enable", "disable"] | None = ...,
         early_tcp_npu_session: Literal["enable", "disable"] | None = ...,
         npu_neighbor_update: Literal["enable", "disable"] | None = ...,

@@ -26,13 +26,13 @@ from hfortix_fortios.models import (
 # TypedDict Payloads
 # ================================================================
 
-class ProxyAddrgrpMemberItem:
-    """Nested item for member field - supports attribute access."""
+class ProxyAddrgrpMemberItem(TypedDict, total=False):
+    """Nested item for member field."""
     name: str
 
 
-class ProxyAddrgrpTaggingItem:
-    """Nested item for tagging field - supports attribute access."""
+class ProxyAddrgrpTaggingItem(TypedDict, total=False):
+    """Nested item for tagging field."""
     name: str
     category: str
     tags: str | list[str]
@@ -43,9 +43,9 @@ class ProxyAddrgrpPayload(TypedDict, total=False):
     name: str
     type: Literal["src", "dst"]
     uuid: str
-    member: str | list[str] | list[dict[str, Any]] | list[ProxyAddrgrpMemberItem]
+    member: str | list[str] | list[ProxyAddrgrpMemberItem]
     color: int
-    tagging: str | list[str] | list[dict[str, Any]] | list[ProxyAddrgrpTaggingItem]
+    tagging: str | list[str] | list[ProxyAddrgrpTaggingItem]
     comment: str
 
 
@@ -159,9 +159,9 @@ class ProxyAddrgrp:
         name: str | None = ...,
         type: Literal["src", "dst"] | None = ...,
         uuid: str | None = ...,
-        member: str | list[str] | list[dict[str, Any]] | list[ProxyAddrgrpMemberItem] | None = ...,
+        member: str | list[str] | list[ProxyAddrgrpMemberItem] | None = ...,
         color: int | None = ...,
-        tagging: str | list[str] | list[dict[str, Any]] | list[ProxyAddrgrpTaggingItem] | None = ...,
+        tagging: str | list[str] | list[ProxyAddrgrpTaggingItem] | None = ...,
         comment: str | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
@@ -178,9 +178,9 @@ class ProxyAddrgrp:
         name: str | None = ...,
         type: Literal["src", "dst"] | None = ...,
         uuid: str | None = ...,
-        member: str | list[str] | list[dict[str, Any]] | list[ProxyAddrgrpMemberItem] | None = ...,
+        member: str | list[str] | list[ProxyAddrgrpMemberItem] | None = ...,
         color: int | None = ...,
-        tagging: str | list[str] | list[dict[str, Any]] | list[ProxyAddrgrpTaggingItem] | None = ...,
+        tagging: str | list[str] | list[ProxyAddrgrpTaggingItem] | None = ...,
         comment: str | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
@@ -215,9 +215,9 @@ class ProxyAddrgrp:
         name: str | None = ...,
         type: Literal["src", "dst"] | None = ...,
         uuid: str | None = ...,
-        member: str | list[str] | list[dict[str, Any]] | list[ProxyAddrgrpMemberItem] | None = ...,
+        member: str | list[str] | list[ProxyAddrgrpMemberItem] | None = ...,
         color: int | None = ...,
-        tagging: str | list[str] | list[dict[str, Any]] | list[ProxyAddrgrpTaggingItem] | None = ...,
+        tagging: str | list[str] | list[ProxyAddrgrpTaggingItem] | None = ...,
         comment: str | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,

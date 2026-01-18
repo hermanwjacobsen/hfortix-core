@@ -26,8 +26,8 @@ from hfortix_fortios.models import (
 # TypedDict Payloads
 # ================================================================
 
-class RouteMapRuleItem:
-    """Nested item for rule field - supports attribute access."""
+class RouteMapRuleItem(TypedDict, total=False):
+    """Nested item for rule field."""
     id: int
     action: Literal["permit", "deny"]
     match_as_path: str
@@ -83,7 +83,7 @@ class RouteMapPayload(TypedDict, total=False):
     """Payload type for RouteMap operations."""
     name: str
     comments: str
-    rule: str | list[str] | list[dict[str, Any]] | list[RouteMapRuleItem]
+    rule: str | list[str] | list[RouteMapRuleItem]
 
 
 # ================================================================
@@ -187,7 +187,7 @@ class RouteMap:
         payload_dict: RouteMapPayload | None = ...,
         name: str | None = ...,
         comments: str | None = ...,
-        rule: str | list[str] | list[dict[str, Any]] | list[RouteMapRuleItem] | None = ...,
+        rule: str | list[str] | list[RouteMapRuleItem] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -202,7 +202,7 @@ class RouteMap:
         payload_dict: RouteMapPayload | None = ...,
         name: str | None = ...,
         comments: str | None = ...,
-        rule: str | list[str] | list[dict[str, Any]] | list[RouteMapRuleItem] | None = ...,
+        rule: str | list[str] | list[RouteMapRuleItem] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -235,7 +235,7 @@ class RouteMap:
         payload_dict: RouteMapPayload | None = ...,
         name: str | None = ...,
         comments: str | None = ...,
-        rule: str | list[str] | list[dict[str, Any]] | list[RouteMapRuleItem] | None = ...,
+        rule: str | list[str] | list[RouteMapRuleItem] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,

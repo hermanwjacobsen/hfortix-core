@@ -26,28 +26,28 @@ from hfortix_fortios.models import (
 # TypedDict Payloads
 # ================================================================
 
-class ProxyAddressCategoryItem:
-    """Nested item for category field - supports attribute access."""
+class ProxyAddressCategoryItem(TypedDict, total=False):
+    """Nested item for category field."""
     id: int
 
 
-class ProxyAddressHeadergroupItem:
-    """Nested item for header-group field - supports attribute access."""
+class ProxyAddressHeadergroupItem(TypedDict, total=False):
+    """Nested item for header-group field."""
     id: int
     header_name: str
     header: str
     case_sensitivity: Literal["disable", "enable"]
 
 
-class ProxyAddressTaggingItem:
-    """Nested item for tagging field - supports attribute access."""
+class ProxyAddressTaggingItem(TypedDict, total=False):
+    """Nested item for tagging field."""
     name: str
     category: str
     tags: str | list[str]
 
 
-class ProxyAddressApplicationItem:
-    """Nested item for application field - supports attribute access."""
+class ProxyAddressApplicationItem(TypedDict, total=False):
+    """Nested item for application field."""
     name: str
 
 
@@ -61,7 +61,7 @@ class ProxyAddressPayload(TypedDict, total=False):
     path: str
     query: str
     referrer: Literal["enable", "disable"]
-    category: str | list[str] | list[dict[str, Any]] | list[ProxyAddressCategoryItem]
+    category: str | list[str] | list[ProxyAddressCategoryItem]
     method: str | list[str]
     ua: str | list[str]
     ua_min_ver: str
@@ -69,11 +69,11 @@ class ProxyAddressPayload(TypedDict, total=False):
     header_name: str
     header: str
     case_sensitivity: Literal["disable", "enable"]
-    header_group: str | list[str] | list[dict[str, Any]] | list[ProxyAddressHeadergroupItem]
+    header_group: str | list[str] | list[ProxyAddressHeadergroupItem]
     color: int
-    tagging: str | list[str] | list[dict[str, Any]] | list[ProxyAddressTaggingItem]
+    tagging: str | list[str] | list[ProxyAddressTaggingItem]
     comment: str
-    application: str | list[str] | list[dict[str, Any]] | list[ProxyAddressApplicationItem]
+    application: str | list[str] | list[ProxyAddressApplicationItem]
 
 
 # ================================================================
@@ -219,7 +219,7 @@ class ProxyAddress:
         path: str | None = ...,
         query: str | None = ...,
         referrer: Literal["enable", "disable"] | None = ...,
-        category: str | list[str] | list[dict[str, Any]] | list[ProxyAddressCategoryItem] | None = ...,
+        category: str | list[str] | list[ProxyAddressCategoryItem] | None = ...,
         method: str | list[str] | None = ...,
         ua: str | list[str] | None = ...,
         ua_min_ver: str | None = ...,
@@ -227,11 +227,11 @@ class ProxyAddress:
         header_name: str | None = ...,
         header: str | None = ...,
         case_sensitivity: Literal["disable", "enable"] | None = ...,
-        header_group: str | list[str] | list[dict[str, Any]] | list[ProxyAddressHeadergroupItem] | None = ...,
+        header_group: str | list[str] | list[ProxyAddressHeadergroupItem] | None = ...,
         color: int | None = ...,
-        tagging: str | list[str] | list[dict[str, Any]] | list[ProxyAddressTaggingItem] | None = ...,
+        tagging: str | list[str] | list[ProxyAddressTaggingItem] | None = ...,
         comment: str | None = ...,
-        application: str | list[str] | list[dict[str, Any]] | list[ProxyAddressApplicationItem] | None = ...,
+        application: str | list[str] | list[ProxyAddressApplicationItem] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -252,7 +252,7 @@ class ProxyAddress:
         path: str | None = ...,
         query: str | None = ...,
         referrer: Literal["enable", "disable"] | None = ...,
-        category: str | list[str] | list[dict[str, Any]] | list[ProxyAddressCategoryItem] | None = ...,
+        category: str | list[str] | list[ProxyAddressCategoryItem] | None = ...,
         method: str | list[str] | None = ...,
         ua: str | list[str] | None = ...,
         ua_min_ver: str | None = ...,
@@ -260,11 +260,11 @@ class ProxyAddress:
         header_name: str | None = ...,
         header: str | None = ...,
         case_sensitivity: Literal["disable", "enable"] | None = ...,
-        header_group: str | list[str] | list[dict[str, Any]] | list[ProxyAddressHeadergroupItem] | None = ...,
+        header_group: str | list[str] | list[ProxyAddressHeadergroupItem] | None = ...,
         color: int | None = ...,
-        tagging: str | list[str] | list[dict[str, Any]] | list[ProxyAddressTaggingItem] | None = ...,
+        tagging: str | list[str] | list[ProxyAddressTaggingItem] | None = ...,
         comment: str | None = ...,
-        application: str | list[str] | list[dict[str, Any]] | list[ProxyAddressApplicationItem] | None = ...,
+        application: str | list[str] | list[ProxyAddressApplicationItem] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -303,7 +303,7 @@ class ProxyAddress:
         path: str | None = ...,
         query: str | None = ...,
         referrer: Literal["enable", "disable"] | None = ...,
-        category: str | list[str] | list[dict[str, Any]] | list[ProxyAddressCategoryItem] | None = ...,
+        category: str | list[str] | list[ProxyAddressCategoryItem] | None = ...,
         method: Literal["get", "post", "put", "head", "connect", "trace", "options", "delete", "update", "patch", "other"] | list[str] | None = ...,
         ua: Literal["chrome", "ms", "firefox", "safari", "ie", "edge", "other"] | list[str] | None = ...,
         ua_min_ver: str | None = ...,
@@ -311,11 +311,11 @@ class ProxyAddress:
         header_name: str | None = ...,
         header: str | None = ...,
         case_sensitivity: Literal["disable", "enable"] | None = ...,
-        header_group: str | list[str] | list[dict[str, Any]] | list[ProxyAddressHeadergroupItem] | None = ...,
+        header_group: str | list[str] | list[ProxyAddressHeadergroupItem] | None = ...,
         color: int | None = ...,
-        tagging: str | list[str] | list[dict[str, Any]] | list[ProxyAddressTaggingItem] | None = ...,
+        tagging: str | list[str] | list[ProxyAddressTaggingItem] | None = ...,
         comment: str | None = ...,
-        application: str | list[str] | list[dict[str, Any]] | list[ProxyAddressApplicationItem] | None = ...,
+        application: str | list[str] | list[ProxyAddressApplicationItem] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,

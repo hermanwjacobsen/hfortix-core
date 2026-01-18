@@ -25,8 +25,8 @@ from hfortix_fortios.models import (
 # TypedDict Payloads
 # ================================================================
 
-class FabricVpnOverlaysItem:
-    """Nested item for overlays field - supports attribute access."""
+class FabricVpnOverlaysItem(TypedDict, total=False):
+    """Nested item for overlays field."""
     name: str
     ipsec_network_id: int
     overlay_tunnel_block: str
@@ -42,8 +42,8 @@ class FabricVpnOverlaysItem:
     sdwan_member: int
 
 
-class FabricVpnAdvertisedsubnetsItem:
-    """Nested item for advertised-subnets field - supports attribute access."""
+class FabricVpnAdvertisedsubnetsItem(TypedDict, total=False):
+    """Nested item for advertised-subnets field."""
     id: int
     prefix: str
     access: Literal["inbound", "bidirectional"]
@@ -59,8 +59,8 @@ class FabricVpnPayload(TypedDict, total=False):
     branch_name: str
     policy_rule: Literal["health-check", "manual", "auto"]
     vpn_role: Literal["hub", "spoke"]
-    overlays: str | list[str] | list[dict[str, Any]] | list[FabricVpnOverlaysItem]
-    advertised_subnets: str | list[str] | list[dict[str, Any]] | list[FabricVpnAdvertisedsubnetsItem]
+    overlays: str | list[str] | list[FabricVpnOverlaysItem]
+    advertised_subnets: str | list[str] | list[FabricVpnAdvertisedsubnetsItem]
     loopback_address_block: str
     loopback_interface: str
     loopback_advertised_subnet: int
@@ -174,8 +174,8 @@ class FabricVpn:
         branch_name: str | None = ...,
         policy_rule: Literal["health-check", "manual", "auto"] | None = ...,
         vpn_role: Literal["hub", "spoke"] | None = ...,
-        overlays: str | list[str] | list[dict[str, Any]] | list[FabricVpnOverlaysItem] | None = ...,
-        advertised_subnets: str | list[str] | list[dict[str, Any]] | list[FabricVpnAdvertisedsubnetsItem] | None = ...,
+        overlays: str | list[str] | list[FabricVpnOverlaysItem] | None = ...,
+        advertised_subnets: str | list[str] | list[FabricVpnAdvertisedsubnetsItem] | None = ...,
         loopback_address_block: str | None = ...,
         loopback_interface: str | None = ...,
         loopback_advertised_subnet: int | None = ...,
@@ -205,8 +205,8 @@ class FabricVpn:
         branch_name: str | None = ...,
         policy_rule: Literal["health-check", "manual", "auto"] | None = ...,
         vpn_role: Literal["hub", "spoke"] | None = ...,
-        overlays: str | list[str] | list[dict[str, Any]] | list[FabricVpnOverlaysItem] | None = ...,
-        advertised_subnets: str | list[str] | list[dict[str, Any]] | list[FabricVpnAdvertisedsubnetsItem] | None = ...,
+        overlays: str | list[str] | list[FabricVpnOverlaysItem] | None = ...,
+        advertised_subnets: str | list[str] | list[FabricVpnAdvertisedsubnetsItem] | None = ...,
         loopback_address_block: str | None = ...,
         loopback_interface: str | None = ...,
         loopback_advertised_subnet: int | None = ...,

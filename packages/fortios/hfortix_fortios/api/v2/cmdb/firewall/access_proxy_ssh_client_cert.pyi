@@ -26,8 +26,8 @@ from hfortix_fortios.models import (
 # TypedDict Payloads
 # ================================================================
 
-class AccessProxySshClientCertCertextensionItem:
-    """Nested item for cert-extension field - supports attribute access."""
+class AccessProxySshClientCertCertextensionItem(TypedDict, total=False):
+    """Nested item for cert-extension field."""
     name: str
     critical: Literal["no", "yes"]
     type: Literal["fixed", "user"]
@@ -43,7 +43,7 @@ class AccessProxySshClientCertPayload(TypedDict, total=False):
     permit_port_forwarding: Literal["enable", "disable"]
     permit_pty: Literal["enable", "disable"]
     permit_user_rc: Literal["enable", "disable"]
-    cert_extension: str | list[str] | list[dict[str, Any]] | list[AccessProxySshClientCertCertextensionItem]
+    cert_extension: str | list[str] | list[AccessProxySshClientCertCertextensionItem]
     auth_ca: str
 
 
@@ -165,7 +165,7 @@ class AccessProxySshClientCert:
         permit_port_forwarding: Literal["enable", "disable"] | None = ...,
         permit_pty: Literal["enable", "disable"] | None = ...,
         permit_user_rc: Literal["enable", "disable"] | None = ...,
-        cert_extension: str | list[str] | list[dict[str, Any]] | list[AccessProxySshClientCertCertextensionItem] | None = ...,
+        cert_extension: str | list[str] | list[AccessProxySshClientCertCertextensionItem] | None = ...,
         auth_ca: str | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
@@ -186,7 +186,7 @@ class AccessProxySshClientCert:
         permit_port_forwarding: Literal["enable", "disable"] | None = ...,
         permit_pty: Literal["enable", "disable"] | None = ...,
         permit_user_rc: Literal["enable", "disable"] | None = ...,
-        cert_extension: str | list[str] | list[dict[str, Any]] | list[AccessProxySshClientCertCertextensionItem] | None = ...,
+        cert_extension: str | list[str] | list[AccessProxySshClientCertCertextensionItem] | None = ...,
         auth_ca: str | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
@@ -225,7 +225,7 @@ class AccessProxySshClientCert:
         permit_port_forwarding: Literal["enable", "disable"] | None = ...,
         permit_pty: Literal["enable", "disable"] | None = ...,
         permit_user_rc: Literal["enable", "disable"] | None = ...,
-        cert_extension: str | list[str] | list[dict[str, Any]] | list[AccessProxySshClientCertCertextensionItem] | None = ...,
+        cert_extension: str | list[str] | list[AccessProxySshClientCertCertextensionItem] | None = ...,
         auth_ca: str | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,

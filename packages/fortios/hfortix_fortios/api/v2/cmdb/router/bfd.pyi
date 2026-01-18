@@ -25,14 +25,14 @@ from hfortix_fortios.models import (
 # TypedDict Payloads
 # ================================================================
 
-class BfdNeighborItem:
-    """Nested item for neighbor field - supports attribute access."""
+class BfdNeighborItem(TypedDict, total=False):
+    """Nested item for neighbor field."""
     ip: str
     interface: str
 
 
-class BfdMultihoptemplateItem:
-    """Nested item for multihop-template field - supports attribute access."""
+class BfdMultihoptemplateItem(TypedDict, total=False):
+    """Nested item for multihop-template field."""
     id: int
     src: str
     dst: str
@@ -45,8 +45,8 @@ class BfdMultihoptemplateItem:
 
 class BfdPayload(TypedDict, total=False):
     """Payload type for Bfd operations."""
-    neighbor: str | list[str] | list[dict[str, Any]] | list[BfdNeighborItem]
-    multihop_template: str | list[str] | list[dict[str, Any]] | list[BfdMultihoptemplateItem]
+    neighbor: str | list[str] | list[BfdNeighborItem]
+    multihop_template: str | list[str] | list[BfdMultihoptemplateItem]
 
 
 # ================================================================
@@ -126,8 +126,8 @@ class Bfd:
     def put(
         self,
         payload_dict: BfdPayload | None = ...,
-        neighbor: str | list[str] | list[dict[str, Any]] | list[BfdNeighborItem] | None = ...,
-        multihop_template: str | list[str] | list[dict[str, Any]] | list[BfdMultihoptemplateItem] | None = ...,
+        neighbor: str | list[str] | list[BfdNeighborItem] | None = ...,
+        multihop_template: str | list[str] | list[BfdMultihoptemplateItem] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -147,8 +147,8 @@ class Bfd:
     def set(
         self,
         payload_dict: BfdPayload | None = ...,
-        neighbor: str | list[str] | list[dict[str, Any]] | list[BfdNeighborItem] | None = ...,
-        multihop_template: str | list[str] | list[dict[str, Any]] | list[BfdMultihoptemplateItem] | None = ...,
+        neighbor: str | list[str] | list[BfdNeighborItem] | None = ...,
+        multihop_template: str | list[str] | list[BfdMultihoptemplateItem] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,

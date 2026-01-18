@@ -26,8 +26,8 @@ from hfortix_fortios.models import (
 # TypedDict Payloads
 # ================================================================
 
-class DeviceUpgradeKnownhamembersItem:
-    """Nested item for known-ha-members field - supports attribute access."""
+class DeviceUpgradeKnownhamembersItem(TypedDict, total=False):
+    """Nested item for known-ha-members field."""
     serial: str
 
 
@@ -37,7 +37,7 @@ class DeviceUpgradePayload(TypedDict, total=False):
     status: Literal["disabled", "initialized", "downloading", "device-disconnected", "ready", "coordinating", "staging", "final-check", "upgrade-devices", "cancelled", "confirmed", "done", "failed"]
     ha_reboot_controller: str
     next_path_index: int
-    known_ha_members: str | list[str] | list[dict[str, Any]] | list[DeviceUpgradeKnownhamembersItem]
+    known_ha_members: str | list[str] | list[DeviceUpgradeKnownhamembersItem]
     initial_version: str
     starter_admin: str
     serial: str
@@ -177,7 +177,7 @@ class DeviceUpgrade:
         status: Literal["disabled", "initialized", "downloading", "device-disconnected", "ready", "coordinating", "staging", "final-check", "upgrade-devices", "cancelled", "confirmed", "done", "failed"] | None = ...,
         ha_reboot_controller: str | None = ...,
         next_path_index: int | None = ...,
-        known_ha_members: str | list[str] | list[dict[str, Any]] | list[DeviceUpgradeKnownhamembersItem] | None = ...,
+        known_ha_members: str | list[str] | list[DeviceUpgradeKnownhamembersItem] | None = ...,
         initial_version: str | None = ...,
         starter_admin: str | None = ...,
         serial: str | None = ...,
@@ -204,7 +204,7 @@ class DeviceUpgrade:
         status: Literal["disabled", "initialized", "downloading", "device-disconnected", "ready", "coordinating", "staging", "final-check", "upgrade-devices", "cancelled", "confirmed", "done", "failed"] | None = ...,
         ha_reboot_controller: str | None = ...,
         next_path_index: int | None = ...,
-        known_ha_members: str | list[str] | list[dict[str, Any]] | list[DeviceUpgradeKnownhamembersItem] | None = ...,
+        known_ha_members: str | list[str] | list[DeviceUpgradeKnownhamembersItem] | None = ...,
         initial_version: str | None = ...,
         starter_admin: str | None = ...,
         serial: str | None = ...,
@@ -249,7 +249,7 @@ class DeviceUpgrade:
         status: Literal["disabled", "initialized", "downloading", "device-disconnected", "ready", "coordinating", "staging", "final-check", "upgrade-devices", "cancelled", "confirmed", "done", "failed"] | None = ...,
         ha_reboot_controller: str | None = ...,
         next_path_index: int | None = ...,
-        known_ha_members: str | list[str] | list[dict[str, Any]] | list[DeviceUpgradeKnownhamembersItem] | None = ...,
+        known_ha_members: str | list[str] | list[DeviceUpgradeKnownhamembersItem] | None = ...,
         initial_version: str | None = ...,
         starter_admin: str | None = ...,
         serial: str | None = ...,

@@ -25,8 +25,8 @@ from hfortix_fortios.models import (
 # TypedDict Payloads
 # ================================================================
 
-class NetflowExclusionfiltersItem:
-    """Nested item for exclusion-filters field - supports attribute access."""
+class NetflowExclusionfiltersItem(TypedDict, total=False):
+    """Nested item for exclusion-filters field."""
     id: int
     source_ip: str
     destination_ip: str
@@ -35,8 +35,8 @@ class NetflowExclusionfiltersItem:
     protocol: int
 
 
-class NetflowCollectorsItem:
-    """Nested item for collectors field - supports attribute access."""
+class NetflowCollectorsItem(TypedDict, total=False):
+    """Nested item for collectors field."""
     id: int
     collector_ip: str
     collector_port: int
@@ -54,8 +54,8 @@ class NetflowPayload(TypedDict, total=False):
     template_tx_timeout: int
     template_tx_counter: int
     session_cache_size: Literal["min", "default", "max"]
-    exclusion_filters: str | list[str] | list[dict[str, Any]] | list[NetflowExclusionfiltersItem]
-    collectors: str | list[str] | list[dict[str, Any]] | list[NetflowCollectorsItem]
+    exclusion_filters: str | list[str] | list[NetflowExclusionfiltersItem]
+    collectors: str | list[str] | list[NetflowCollectorsItem]
 
 
 # ================================================================
@@ -148,8 +148,8 @@ class Netflow:
         template_tx_timeout: int | None = ...,
         template_tx_counter: int | None = ...,
         session_cache_size: Literal["min", "default", "max"] | None = ...,
-        exclusion_filters: str | list[str] | list[dict[str, Any]] | list[NetflowExclusionfiltersItem] | None = ...,
-        collectors: str | list[str] | list[dict[str, Any]] | list[NetflowCollectorsItem] | None = ...,
+        exclusion_filters: str | list[str] | list[NetflowExclusionfiltersItem] | None = ...,
+        collectors: str | list[str] | list[NetflowCollectorsItem] | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> NetflowObject: ...
@@ -172,8 +172,8 @@ class Netflow:
         template_tx_timeout: int | None = ...,
         template_tx_counter: int | None = ...,
         session_cache_size: Literal["min", "default", "max"] | None = ...,
-        exclusion_filters: str | list[str] | list[dict[str, Any]] | list[NetflowExclusionfiltersItem] | None = ...,
-        collectors: str | list[str] | list[dict[str, Any]] | list[NetflowCollectorsItem] | None = ...,
+        exclusion_filters: str | list[str] | list[NetflowExclusionfiltersItem] | None = ...,
+        collectors: str | list[str] | list[NetflowCollectorsItem] | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> FortiObject: ...

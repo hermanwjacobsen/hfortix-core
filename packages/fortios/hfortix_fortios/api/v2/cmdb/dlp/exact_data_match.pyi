@@ -26,8 +26,8 @@ from hfortix_fortios.models import (
 # TypedDict Payloads
 # ================================================================
 
-class ExactDataMatchColumnsItem:
-    """Nested item for columns field - supports attribute access."""
+class ExactDataMatchColumnsItem(TypedDict, total=False):
+    """Nested item for columns field."""
     index: int
     type: str
     optional: Literal["enable", "disable"]
@@ -38,7 +38,7 @@ class ExactDataMatchPayload(TypedDict, total=False):
     name: str
     optional: int
     data: str
-    columns: str | list[str] | list[dict[str, Any]] | list[ExactDataMatchColumnsItem]
+    columns: str | list[str] | list[ExactDataMatchColumnsItem]
 
 
 # ================================================================
@@ -145,7 +145,7 @@ class ExactDataMatch:
         name: str | None = ...,
         optional: int | None = ...,
         data: str | None = ...,
-        columns: str | list[str] | list[dict[str, Any]] | list[ExactDataMatchColumnsItem] | None = ...,
+        columns: str | list[str] | list[ExactDataMatchColumnsItem] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -161,7 +161,7 @@ class ExactDataMatch:
         name: str | None = ...,
         optional: int | None = ...,
         data: str | None = ...,
-        columns: str | list[str] | list[dict[str, Any]] | list[ExactDataMatchColumnsItem] | None = ...,
+        columns: str | list[str] | list[ExactDataMatchColumnsItem] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -195,7 +195,7 @@ class ExactDataMatch:
         name: str | None = ...,
         optional: int | None = ...,
         data: str | None = ...,
-        columns: str | list[str] | list[dict[str, Any]] | list[ExactDataMatchColumnsItem] | None = ...,
+        columns: str | list[str] | list[ExactDataMatchColumnsItem] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,

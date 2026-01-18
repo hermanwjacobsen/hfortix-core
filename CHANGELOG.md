@@ -7,6 +7,20 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.5.106] - 2026-01-18
+
+### Fixed
+
+- **Type Stubs: Table field items now use TypedDict for IDE validation**: Changed table field nested item types from plain classes to TypedDict in .pyi stub files. This enables full IDE type checking and autocomplete for nested table fields (like `rule` in access-list, `srcintf` in policies, etc.). IDE now validates:
+  - Dictionary keys (catches typos and unknown fields)
+  - Literal values (shows errors for invalid enum values)
+  - Required fields (highlights missing required fields)
+- **Type Stubs: Removed untyped dict from table field signatures**: Removed `list[dict[str, Any]]` from table field type signatures in .pyi files to force strict type checking. Table fields now only accept:
+  - `str` (for single-value auto-normalization)
+  - `list[str]` (for multi-value auto-normalization)
+  - `list[TypedDictItem]` (for full IDE validation)
+- **Example**: Before this fix, `rule=[{"action": "accept", "typo": "value"}]` would pass type checking. After this fix, IDE shows errors for invalid Literal values and unknown fields.
+
 ## [0.5.105] - 2026-01-18
 
 ### Fixed

@@ -26,18 +26,18 @@ from hfortix_fortios.models import (
 # TypedDict Payloads
 # ================================================================
 
-class AddrgrpMemberItem:
-    """Nested item for member field - supports attribute access."""
+class AddrgrpMemberItem(TypedDict, total=False):
+    """Nested item for member field."""
     name: str
 
 
-class AddrgrpExcludememberItem:
-    """Nested item for exclude-member field - supports attribute access."""
+class AddrgrpExcludememberItem(TypedDict, total=False):
+    """Nested item for exclude-member field."""
     name: str
 
 
-class AddrgrpTaggingItem:
-    """Nested item for tagging field - supports attribute access."""
+class AddrgrpTaggingItem(TypedDict, total=False):
+    """Nested item for tagging field."""
     name: str
     category: str
     tags: str | list[str]
@@ -49,13 +49,13 @@ class AddrgrpPayload(TypedDict, total=False):
     type: Literal["default", "folder"]
     category: Literal["default", "ztna-ems-tag", "ztna-geo-tag"]
     allow_routing: Literal["enable", "disable"]
-    member: str | list[str] | list[dict[str, Any]] | list[AddrgrpMemberItem]
+    member: str | list[str] | list[AddrgrpMemberItem]
     comment: str
     uuid: str
     exclude: Literal["enable", "disable"]
-    exclude_member: str | list[str] | list[dict[str, Any]] | list[AddrgrpExcludememberItem]
+    exclude_member: str | list[str] | list[AddrgrpExcludememberItem]
     color: int
-    tagging: str | list[str] | list[dict[str, Any]] | list[AddrgrpTaggingItem]
+    tagging: str | list[str] | list[AddrgrpTaggingItem]
     fabric_object: Literal["enable", "disable"]
 
 
@@ -180,13 +180,13 @@ class Addrgrp:
         type: Literal["default", "folder"] | None = ...,
         category: Literal["default", "ztna-ems-tag", "ztna-geo-tag"] | None = ...,
         allow_routing: Literal["enable", "disable"] | None = ...,
-        member: str | list[str] | list[dict[str, Any]] | list[AddrgrpMemberItem] | None = ...,
+        member: str | list[str] | list[AddrgrpMemberItem] | None = ...,
         comment: str | None = ...,
         uuid: str | None = ...,
         exclude: Literal["enable", "disable"] | None = ...,
-        exclude_member: str | list[str] | list[dict[str, Any]] | list[AddrgrpExcludememberItem] | None = ...,
+        exclude_member: str | list[str] | list[AddrgrpExcludememberItem] | None = ...,
         color: int | None = ...,
-        tagging: str | list[str] | list[dict[str, Any]] | list[AddrgrpTaggingItem] | None = ...,
+        tagging: str | list[str] | list[AddrgrpTaggingItem] | None = ...,
         fabric_object: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
@@ -204,13 +204,13 @@ class Addrgrp:
         type: Literal["default", "folder"] | None = ...,
         category: Literal["default", "ztna-ems-tag", "ztna-geo-tag"] | None = ...,
         allow_routing: Literal["enable", "disable"] | None = ...,
-        member: str | list[str] | list[dict[str, Any]] | list[AddrgrpMemberItem] | None = ...,
+        member: str | list[str] | list[AddrgrpMemberItem] | None = ...,
         comment: str | None = ...,
         uuid: str | None = ...,
         exclude: Literal["enable", "disable"] | None = ...,
-        exclude_member: str | list[str] | list[dict[str, Any]] | list[AddrgrpExcludememberItem] | None = ...,
+        exclude_member: str | list[str] | list[AddrgrpExcludememberItem] | None = ...,
         color: int | None = ...,
-        tagging: str | list[str] | list[dict[str, Any]] | list[AddrgrpTaggingItem] | None = ...,
+        tagging: str | list[str] | list[AddrgrpTaggingItem] | None = ...,
         fabric_object: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
@@ -246,13 +246,13 @@ class Addrgrp:
         type: Literal["default", "folder"] | None = ...,
         category: Literal["default", "ztna-ems-tag", "ztna-geo-tag"] | None = ...,
         allow_routing: Literal["enable", "disable"] | None = ...,
-        member: str | list[str] | list[dict[str, Any]] | list[AddrgrpMemberItem] | None = ...,
+        member: str | list[str] | list[AddrgrpMemberItem] | None = ...,
         comment: str | None = ...,
         uuid: str | None = ...,
         exclude: Literal["enable", "disable"] | None = ...,
-        exclude_member: str | list[str] | list[dict[str, Any]] | list[AddrgrpExcludememberItem] | None = ...,
+        exclude_member: str | list[str] | list[AddrgrpExcludememberItem] | None = ...,
         color: int | None = ...,
-        tagging: str | list[str] | list[dict[str, Any]] | list[AddrgrpTaggingItem] | None = ...,
+        tagging: str | list[str] | list[AddrgrpTaggingItem] | None = ...,
         fabric_object: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,

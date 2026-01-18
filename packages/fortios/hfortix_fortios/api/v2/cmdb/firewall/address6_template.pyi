@@ -26,8 +26,8 @@ from hfortix_fortios.models import (
 # TypedDict Payloads
 # ================================================================
 
-class Address6TemplateSubnetsegmentItem:
-    """Nested item for subnet-segment field - supports attribute access."""
+class Address6TemplateSubnetsegmentItem(TypedDict, total=False):
+    """Nested item for subnet-segment field."""
     id: int
     name: str
     bits: int
@@ -41,7 +41,7 @@ class Address6TemplatePayload(TypedDict, total=False):
     uuid: str
     ip6: str
     subnet_segment_count: int
-    subnet_segment: str | list[str] | list[dict[str, Any]] | list[Address6TemplateSubnetsegmentItem]
+    subnet_segment: str | list[str] | list[Address6TemplateSubnetsegmentItem]
     fabric_object: Literal["enable", "disable"]
 
 
@@ -154,7 +154,7 @@ class Address6Template:
         uuid: str | None = ...,
         ip6: str | None = ...,
         subnet_segment_count: int | None = ...,
-        subnet_segment: str | list[str] | list[dict[str, Any]] | list[Address6TemplateSubnetsegmentItem] | None = ...,
+        subnet_segment: str | list[str] | list[Address6TemplateSubnetsegmentItem] | None = ...,
         fabric_object: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
@@ -172,7 +172,7 @@ class Address6Template:
         uuid: str | None = ...,
         ip6: str | None = ...,
         subnet_segment_count: int | None = ...,
-        subnet_segment: str | list[str] | list[dict[str, Any]] | list[Address6TemplateSubnetsegmentItem] | None = ...,
+        subnet_segment: str | list[str] | list[Address6TemplateSubnetsegmentItem] | None = ...,
         fabric_object: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
@@ -208,7 +208,7 @@ class Address6Template:
         uuid: str | None = ...,
         ip6: str | None = ...,
         subnet_segment_count: int | None = ...,
-        subnet_segment: str | list[str] | list[dict[str, Any]] | list[Address6TemplateSubnetsegmentItem] | None = ...,
+        subnet_segment: str | list[str] | list[Address6TemplateSubnetsegmentItem] | None = ...,
         fabric_object: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,

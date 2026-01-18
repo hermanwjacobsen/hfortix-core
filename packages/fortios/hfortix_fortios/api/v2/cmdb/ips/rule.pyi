@@ -26,8 +26,8 @@ from hfortix_fortios.models import (
 # TypedDict Payloads
 # ================================================================
 
-class RuleMetadataItem:
-    """Nested item for metadata field - supports attribute access."""
+class RuleMetadataItem(TypedDict, total=False):
+    """Nested item for metadata field."""
     id: int
     metaid: int
     valueid: int
@@ -49,7 +49,7 @@ class RulePayload(TypedDict, total=False):
     rule_id: int
     rev: int
     date: int
-    metadata: str | list[str] | list[dict[str, Any]] | list[RuleMetadataItem]
+    metadata: str | list[str] | list[RuleMetadataItem]
 
 
 # ================================================================
@@ -186,7 +186,7 @@ class Rule:
         rule_id: int | None = ...,
         rev: int | None = ...,
         date: int | None = ...,
-        metadata: str | list[str] | list[dict[str, Any]] | list[RuleMetadataItem] | None = ...,
+        metadata: str | list[str] | list[RuleMetadataItem] | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> RuleObject: ...
@@ -212,7 +212,7 @@ class Rule:
         rule_id: int | None = ...,
         rev: int | None = ...,
         date: int | None = ...,
-        metadata: str | list[str] | list[dict[str, Any]] | list[RuleMetadataItem] | None = ...,
+        metadata: str | list[str] | list[RuleMetadataItem] | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> RuleObject: ...
@@ -254,7 +254,7 @@ class Rule:
         rule_id: int | None = ...,
         rev: int | None = ...,
         date: int | None = ...,
-        metadata: str | list[str] | list[dict[str, Any]] | list[RuleMetadataItem] | None = ...,
+        metadata: str | list[str] | list[RuleMetadataItem] | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> FortiObject: ...

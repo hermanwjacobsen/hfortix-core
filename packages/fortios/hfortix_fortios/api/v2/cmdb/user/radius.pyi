@@ -26,13 +26,13 @@ from hfortix_fortios.models import (
 # TypedDict Payloads
 # ================================================================
 
-class RadiusClassItem:
-    """Nested item for class field - supports attribute access."""
+class RadiusClassItem(TypedDict, total=False):
+    """Nested item for class field."""
     name: str
 
 
-class RadiusAccountingserverItem:
-    """Nested item for accounting-server field - supports attribute access."""
+class RadiusAccountingserverItem(TypedDict, total=False):
+    """Nested item for accounting-server field."""
     id: int
     status: Literal["enable", "disable"]
     server: str
@@ -71,7 +71,7 @@ class RadiusPayload(TypedDict, total=False):
     source_ip_interface: str
     username_case_sensitive: Literal["enable", "disable"]
     group_override_attr_type: Literal["filter-Id", "class"]
-    class_: str | list[str] | list[dict[str, Any]] | list[RadiusClassItem]
+    class_: str | list[str] | list[RadiusClassItem]
     password_renewal: Literal["enable", "disable"]
     require_message_authenticator: Literal["enable", "disable"]
     password_encoding: Literal["auto", "ISO-8859-1"]
@@ -107,7 +107,7 @@ class RadiusPayload(TypedDict, total=False):
     rsso_flush_ip_session: Literal["enable", "disable"]
     rsso_ep_one_ip_only: Literal["enable", "disable"]
     delimiter: Literal["plus", "comma"]
-    accounting_server: str | list[str] | list[dict[str, Any]] | list[RadiusAccountingserverItem]
+    accounting_server: str | list[str] | list[RadiusAccountingserverItem]
 
 
 # ================================================================
@@ -352,7 +352,7 @@ class Radius:
         source_ip_interface: str | None = ...,
         username_case_sensitive: Literal["enable", "disable"] | None = ...,
         group_override_attr_type: Literal["filter-Id", "class"] | None = ...,
-        class_: str | list[str] | list[dict[str, Any]] | list[RadiusClassItem] | None = ...,
+        class_: str | list[str] | list[RadiusClassItem] | None = ...,
         password_renewal: Literal["enable", "disable"] | None = ...,
         require_message_authenticator: Literal["enable", "disable"] | None = ...,
         password_encoding: Literal["auto", "ISO-8859-1"] | None = ...,
@@ -388,7 +388,7 @@ class Radius:
         rsso_flush_ip_session: Literal["enable", "disable"] | None = ...,
         rsso_ep_one_ip_only: Literal["enable", "disable"] | None = ...,
         delimiter: Literal["plus", "comma"] | None = ...,
-        accounting_server: str | list[str] | list[dict[str, Any]] | list[RadiusAccountingserverItem] | None = ...,
+        accounting_server: str | list[str] | list[RadiusAccountingserverItem] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -426,7 +426,7 @@ class Radius:
         source_ip_interface: str | None = ...,
         username_case_sensitive: Literal["enable", "disable"] | None = ...,
         group_override_attr_type: Literal["filter-Id", "class"] | None = ...,
-        class_: str | list[str] | list[dict[str, Any]] | list[RadiusClassItem] | None = ...,
+        class_: str | list[str] | list[RadiusClassItem] | None = ...,
         password_renewal: Literal["enable", "disable"] | None = ...,
         require_message_authenticator: Literal["enable", "disable"] | None = ...,
         password_encoding: Literal["auto", "ISO-8859-1"] | None = ...,
@@ -462,7 +462,7 @@ class Radius:
         rsso_flush_ip_session: Literal["enable", "disable"] | None = ...,
         rsso_ep_one_ip_only: Literal["enable", "disable"] | None = ...,
         delimiter: Literal["plus", "comma"] | None = ...,
-        accounting_server: str | list[str] | list[dict[str, Any]] | list[RadiusAccountingserverItem] | None = ...,
+        accounting_server: str | list[str] | list[RadiusAccountingserverItem] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -518,7 +518,7 @@ class Radius:
         source_ip_interface: str | None = ...,
         username_case_sensitive: Literal["enable", "disable"] | None = ...,
         group_override_attr_type: Literal["filter-Id", "class"] | None = ...,
-        class_: str | list[str] | list[dict[str, Any]] | list[RadiusClassItem] | None = ...,
+        class_: str | list[str] | list[RadiusClassItem] | None = ...,
         password_renewal: Literal["enable", "disable"] | None = ...,
         require_message_authenticator: Literal["enable", "disable"] | None = ...,
         password_encoding: Literal["auto", "ISO-8859-1"] | None = ...,
@@ -554,7 +554,7 @@ class Radius:
         rsso_flush_ip_session: Literal["enable", "disable"] | None = ...,
         rsso_ep_one_ip_only: Literal["enable", "disable"] | None = ...,
         delimiter: Literal["plus", "comma"] | None = ...,
-        accounting_server: str | list[str] | list[dict[str, Any]] | list[RadiusAccountingserverItem] | None = ...,
+        accounting_server: str | list[str] | list[RadiusAccountingserverItem] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,

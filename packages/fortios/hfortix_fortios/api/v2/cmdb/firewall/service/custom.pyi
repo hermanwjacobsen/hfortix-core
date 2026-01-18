@@ -26,13 +26,13 @@ from hfortix_fortios.models import (
 # TypedDict Payloads
 # ================================================================
 
-class CustomAppcategoryItem:
-    """Nested item for app-category field - supports attribute access."""
+class CustomAppcategoryItem(TypedDict, total=False):
+    """Nested item for app-category field."""
     id: int
 
 
-class CustomApplicationItem:
-    """Nested item for application field - supports attribute access."""
+class CustomApplicationItem(TypedDict, total=False):
+    """Nested item for application field."""
     id: int
 
 
@@ -63,8 +63,8 @@ class CustomPayload(TypedDict, total=False):
     comment: str
     color: int
     app_service_type: Literal["disable", "app-id", "app-category"]
-    app_category: str | list[str] | list[dict[str, Any]] | list[CustomAppcategoryItem]
-    application: str | list[str] | list[dict[str, Any]] | list[CustomApplicationItem]
+    app_category: str | list[str] | list[CustomAppcategoryItem]
+    application: str | list[str] | list[CustomApplicationItem]
     fabric_object: Literal["enable", "disable"]
 
 
@@ -242,8 +242,8 @@ class Custom:
         comment: str | None = ...,
         color: int | None = ...,
         app_service_type: Literal["disable", "app-id", "app-category"] | None = ...,
-        app_category: str | list[str] | list[dict[str, Any]] | list[CustomAppcategoryItem] | None = ...,
-        application: str | list[str] | list[dict[str, Any]] | list[CustomApplicationItem] | None = ...,
+        app_category: str | list[str] | list[CustomAppcategoryItem] | None = ...,
+        application: str | list[str] | list[CustomApplicationItem] | None = ...,
         fabric_object: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
@@ -282,8 +282,8 @@ class Custom:
         comment: str | None = ...,
         color: int | None = ...,
         app_service_type: Literal["disable", "app-id", "app-category"] | None = ...,
-        app_category: str | list[str] | list[dict[str, Any]] | list[CustomAppcategoryItem] | None = ...,
-        application: str | list[str] | list[dict[str, Any]] | list[CustomApplicationItem] | None = ...,
+        app_category: str | list[str] | list[CustomAppcategoryItem] | None = ...,
+        application: str | list[str] | list[CustomApplicationItem] | None = ...,
         fabric_object: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
@@ -340,8 +340,8 @@ class Custom:
         comment: str | None = ...,
         color: int | None = ...,
         app_service_type: Literal["disable", "app-id", "app-category"] | None = ...,
-        app_category: str | list[str] | list[dict[str, Any]] | list[CustomAppcategoryItem] | None = ...,
-        application: str | list[str] | list[dict[str, Any]] | list[CustomApplicationItem] | None = ...,
+        app_category: str | list[str] | list[CustomAppcategoryItem] | None = ...,
+        application: str | list[str] | list[CustomApplicationItem] | None = ...,
         fabric_object: Literal["enable", "disable"] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,

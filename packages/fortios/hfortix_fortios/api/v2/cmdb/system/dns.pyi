@@ -25,13 +25,13 @@ from hfortix_fortios.models import (
 # TypedDict Payloads
 # ================================================================
 
-class DnsServerhostnameItem:
-    """Nested item for server-hostname field - supports attribute access."""
+class DnsServerhostnameItem(TypedDict, total=False):
+    """Nested item for server-hostname field."""
     hostname: str
 
 
-class DnsDomainItem:
-    """Nested item for domain field - supports attribute access."""
+class DnsDomainItem(TypedDict, total=False):
+    """Nested item for domain field."""
     domain: str
 
 
@@ -41,8 +41,8 @@ class DnsPayload(TypedDict, total=False):
     secondary: str
     protocol: str | list[str]
     ssl_certificate: str
-    server_hostname: str | list[str] | list[dict[str, Any]] | list[DnsServerhostnameItem]
-    domain: str | list[str] | list[dict[str, Any]] | list[DnsDomainItem]
+    server_hostname: str | list[str] | list[DnsServerhostnameItem]
+    domain: str | list[str] | list[DnsDomainItem]
     ip6_primary: str
     ip6_secondary: str
     timeout: int
@@ -198,8 +198,8 @@ class Dns:
         secondary: str | None = ...,
         protocol: str | list[str] | None = ...,
         ssl_certificate: str | None = ...,
-        server_hostname: str | list[str] | list[dict[str, Any]] | list[DnsServerhostnameItem] | None = ...,
-        domain: str | list[str] | list[dict[str, Any]] | list[DnsDomainItem] | None = ...,
+        server_hostname: str | list[str] | list[DnsServerhostnameItem] | None = ...,
+        domain: str | list[str] | list[DnsDomainItem] | None = ...,
         ip6_primary: str | None = ...,
         ip6_secondary: str | None = ...,
         timeout: int | None = ...,
@@ -243,8 +243,8 @@ class Dns:
         secondary: str | None = ...,
         protocol: Literal["cleartext", "dot", "doh"] | list[str] | None = ...,
         ssl_certificate: str | None = ...,
-        server_hostname: str | list[str] | list[dict[str, Any]] | list[DnsServerhostnameItem] | None = ...,
-        domain: str | list[str] | list[dict[str, Any]] | list[DnsDomainItem] | None = ...,
+        server_hostname: str | list[str] | list[DnsServerhostnameItem] | None = ...,
+        domain: str | list[str] | list[DnsDomainItem] | None = ...,
         ip6_primary: str | None = ...,
         ip6_secondary: str | None = ...,
         timeout: int | None = ...,

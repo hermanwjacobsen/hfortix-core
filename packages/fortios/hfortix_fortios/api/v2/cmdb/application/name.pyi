@@ -26,14 +26,14 @@ from hfortix_fortios.models import (
 # TypedDict Payloads
 # ================================================================
 
-class NameParametersItem:
-    """Nested item for parameters field - supports attribute access."""
+class NameParametersItem(TypedDict, total=False):
+    """Nested item for parameters field."""
     name: str
     default_value: str
 
 
-class NameMetadataItem:
-    """Nested item for metadata field - supports attribute access."""
+class NameMetadataItem(TypedDict, total=False):
+    """Nested item for metadata field."""
     id: int
     metaid: int
     valueid: int
@@ -51,8 +51,8 @@ class NamePayload(TypedDict, total=False):
     technology: str
     behavior: str
     vendor: str
-    parameters: str | list[str] | list[dict[str, Any]] | list[NameParametersItem]
-    metadata: str | list[str] | list[dict[str, Any]] | list[NameMetadataItem]
+    parameters: str | list[str] | list[NameParametersItem]
+    metadata: str | list[str] | list[NameMetadataItem]
     status: str
 
 
@@ -182,8 +182,8 @@ class Name:
         technology: str | None = ...,
         behavior: str | None = ...,
         vendor: str | None = ...,
-        parameters: str | list[str] | list[dict[str, Any]] | list[NameParametersItem] | None = ...,
-        metadata: str | list[str] | list[dict[str, Any]] | list[NameMetadataItem] | None = ...,
+        parameters: str | list[str] | list[NameParametersItem] | None = ...,
+        metadata: str | list[str] | list[NameMetadataItem] | None = ...,
         status: str | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -206,8 +206,8 @@ class Name:
         technology: str | None = ...,
         behavior: str | None = ...,
         vendor: str | None = ...,
-        parameters: str | list[str] | list[dict[str, Any]] | list[NameParametersItem] | None = ...,
-        metadata: str | list[str] | list[dict[str, Any]] | list[NameMetadataItem] | None = ...,
+        parameters: str | list[str] | list[NameParametersItem] | None = ...,
+        metadata: str | list[str] | list[NameMetadataItem] | None = ...,
         status: str | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -246,8 +246,8 @@ class Name:
         technology: str | None = ...,
         behavior: str | None = ...,
         vendor: str | None = ...,
-        parameters: str | list[str] | list[dict[str, Any]] | list[NameParametersItem] | None = ...,
-        metadata: str | list[str] | list[dict[str, Any]] | list[NameMetadataItem] | None = ...,
+        parameters: str | list[str] | list[NameParametersItem] | None = ...,
+        metadata: str | list[str] | list[NameMetadataItem] | None = ...,
         status: str | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,

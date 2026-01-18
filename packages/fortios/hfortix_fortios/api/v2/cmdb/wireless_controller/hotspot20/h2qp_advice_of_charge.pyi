@@ -26,8 +26,8 @@ from hfortix_fortios.models import (
 # TypedDict Payloads
 # ================================================================
 
-class H2qpAdviceOfChargeAoclistItem:
-    """Nested item for aoc-list field - supports attribute access."""
+class H2qpAdviceOfChargeAoclistItem(TypedDict, total=False):
+    """Nested item for aoc-list field."""
     name: str
     type: Literal["time-based", "volume-based", "time-and-volume-based", "unlimited"]
     nai_realm_encoding: str
@@ -38,7 +38,7 @@ class H2qpAdviceOfChargeAoclistItem:
 class H2qpAdviceOfChargePayload(TypedDict, total=False):
     """Payload type for H2qpAdviceOfCharge operations."""
     name: str
-    aoc_list: str | list[str] | list[dict[str, Any]] | list[H2qpAdviceOfChargeAoclistItem]
+    aoc_list: str | list[str] | list[H2qpAdviceOfChargeAoclistItem]
 
 
 # ================================================================
@@ -139,7 +139,7 @@ class H2qpAdviceOfCharge:
         self,
         payload_dict: H2qpAdviceOfChargePayload | None = ...,
         name: str | None = ...,
-        aoc_list: str | list[str] | list[dict[str, Any]] | list[H2qpAdviceOfChargeAoclistItem] | None = ...,
+        aoc_list: str | list[str] | list[H2qpAdviceOfChargeAoclistItem] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -153,7 +153,7 @@ class H2qpAdviceOfCharge:
         self,
         payload_dict: H2qpAdviceOfChargePayload | None = ...,
         name: str | None = ...,
-        aoc_list: str | list[str] | list[dict[str, Any]] | list[H2qpAdviceOfChargeAoclistItem] | None = ...,
+        aoc_list: str | list[str] | list[H2qpAdviceOfChargeAoclistItem] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -185,7 +185,7 @@ class H2qpAdviceOfCharge:
         self,
         payload_dict: H2qpAdviceOfChargePayload | None = ...,
         name: str | None = ...,
-        aoc_list: str | list[str] | list[dict[str, Any]] | list[H2qpAdviceOfChargeAoclistItem] | None = ...,
+        aoc_list: str | list[str] | list[H2qpAdviceOfChargeAoclistItem] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,

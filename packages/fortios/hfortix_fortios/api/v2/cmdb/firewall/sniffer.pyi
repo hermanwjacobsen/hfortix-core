@@ -26,13 +26,13 @@ from hfortix_fortios.models import (
 # TypedDict Payloads
 # ================================================================
 
-class SnifferIpthreatfeedItem:
-    """Nested item for ip-threatfeed field - supports attribute access."""
+class SnifferIpthreatfeedItem(TypedDict, total=False):
+    """Nested item for ip-threatfeed field."""
     name: str
 
 
-class SnifferAnomalyItem:
-    """Nested item for anomaly field - supports attribute access."""
+class SnifferAnomalyItem(TypedDict, total=False):
+    """Nested item for anomaly field."""
     name: str
     status: Literal["disable", "enable"]
     log: Literal["enable", "disable"]
@@ -71,11 +71,11 @@ class SnifferPayload(TypedDict, total=False):
     dlp_profile_status: Literal["enable", "disable"]
     dlp_profile: str
     ip_threatfeed_status: Literal["enable", "disable"]
-    ip_threatfeed: str | list[str] | list[dict[str, Any]] | list[SnifferIpthreatfeedItem]
+    ip_threatfeed: str | list[str] | list[SnifferIpthreatfeedItem]
     file_filter_profile_status: Literal["enable", "disable"]
     file_filter_profile: str
     ips_dos_status: Literal["enable", "disable"]
-    anomaly: str | list[str] | list[dict[str, Any]] | list[SnifferAnomalyItem]
+    anomaly: str | list[str] | list[SnifferAnomalyItem]
 
 
 # ================================================================
@@ -256,11 +256,11 @@ class Sniffer:
         dlp_profile_status: Literal["enable", "disable"] | None = ...,
         dlp_profile: str | None = ...,
         ip_threatfeed_status: Literal["enable", "disable"] | None = ...,
-        ip_threatfeed: str | list[str] | list[dict[str, Any]] | list[SnifferIpthreatfeedItem] | None = ...,
+        ip_threatfeed: str | list[str] | list[SnifferIpthreatfeedItem] | None = ...,
         file_filter_profile_status: Literal["enable", "disable"] | None = ...,
         file_filter_profile: str | None = ...,
         ips_dos_status: Literal["enable", "disable"] | None = ...,
-        anomaly: str | list[str] | list[dict[str, Any]] | list[SnifferAnomalyItem] | None = ...,
+        anomaly: str | list[str] | list[SnifferAnomalyItem] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -298,11 +298,11 @@ class Sniffer:
         dlp_profile_status: Literal["enable", "disable"] | None = ...,
         dlp_profile: str | None = ...,
         ip_threatfeed_status: Literal["enable", "disable"] | None = ...,
-        ip_threatfeed: str | list[str] | list[dict[str, Any]] | list[SnifferIpthreatfeedItem] | None = ...,
+        ip_threatfeed: str | list[str] | list[SnifferIpthreatfeedItem] | None = ...,
         file_filter_profile_status: Literal["enable", "disable"] | None = ...,
         file_filter_profile: str | None = ...,
         ips_dos_status: Literal["enable", "disable"] | None = ...,
-        anomaly: str | list[str] | list[dict[str, Any]] | list[SnifferAnomalyItem] | None = ...,
+        anomaly: str | list[str] | list[SnifferAnomalyItem] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -358,11 +358,11 @@ class Sniffer:
         dlp_profile_status: Literal["enable", "disable"] | None = ...,
         dlp_profile: str | None = ...,
         ip_threatfeed_status: Literal["enable", "disable"] | None = ...,
-        ip_threatfeed: str | list[str] | list[dict[str, Any]] | list[SnifferIpthreatfeedItem] | None = ...,
+        ip_threatfeed: str | list[str] | list[SnifferIpthreatfeedItem] | None = ...,
         file_filter_profile_status: Literal["enable", "disable"] | None = ...,
         file_filter_profile: str | None = ...,
         ips_dos_status: Literal["enable", "disable"] | None = ...,
-        anomaly: str | list[str] | list[dict[str, Any]] | list[SnifferAnomalyItem] | None = ...,
+        anomaly: str | list[str] | list[SnifferAnomalyItem] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,

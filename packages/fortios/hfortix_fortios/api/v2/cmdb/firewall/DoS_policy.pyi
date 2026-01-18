@@ -26,23 +26,23 @@ from hfortix_fortios.models import (
 # TypedDict Payloads
 # ================================================================
 
-class DosPolicySrcaddrItem:
-    """Nested item for srcaddr field - supports attribute access."""
+class DosPolicySrcaddrItem(TypedDict, total=False):
+    """Nested item for srcaddr field."""
     name: str
 
 
-class DosPolicyDstaddrItem:
-    """Nested item for dstaddr field - supports attribute access."""
+class DosPolicyDstaddrItem(TypedDict, total=False):
+    """Nested item for dstaddr field."""
     name: str
 
 
-class DosPolicyServiceItem:
-    """Nested item for service field - supports attribute access."""
+class DosPolicyServiceItem(TypedDict, total=False):
+    """Nested item for service field."""
     name: str
 
 
-class DosPolicyAnomalyItem:
-    """Nested item for anomaly field - supports attribute access."""
+class DosPolicyAnomalyItem(TypedDict, total=False):
+    """Nested item for anomaly field."""
     name: str
     status: Literal["disable", "enable"]
     log: Literal["enable", "disable"]
@@ -61,10 +61,10 @@ class DosPolicyPayload(TypedDict, total=False):
     name: str
     comments: str
     interface: str
-    srcaddr: str | list[str] | list[dict[str, Any]] | list[DosPolicySrcaddrItem]
-    dstaddr: str | list[str] | list[dict[str, Any]] | list[DosPolicyDstaddrItem]
-    service: str | list[str] | list[dict[str, Any]] | list[DosPolicyServiceItem]
-    anomaly: str | list[str] | list[dict[str, Any]] | list[DosPolicyAnomalyItem]
+    srcaddr: str | list[str] | list[DosPolicySrcaddrItem]
+    dstaddr: str | list[str] | list[DosPolicyDstaddrItem]
+    service: str | list[str] | list[DosPolicyServiceItem]
+    anomaly: str | list[str] | list[DosPolicyAnomalyItem]
 
 
 # ================================================================
@@ -183,10 +183,10 @@ class DosPolicy:
         name: str | None = ...,
         comments: str | None = ...,
         interface: str | None = ...,
-        srcaddr: str | list[str] | list[dict[str, Any]] | list[DosPolicySrcaddrItem] | None = ...,
-        dstaddr: str | list[str] | list[dict[str, Any]] | list[DosPolicyDstaddrItem] | None = ...,
-        service: str | list[str] | list[dict[str, Any]] | list[DosPolicyServiceItem] | None = ...,
-        anomaly: str | list[str] | list[dict[str, Any]] | list[DosPolicyAnomalyItem] | None = ...,
+        srcaddr: str | list[str] | list[DosPolicySrcaddrItem] | None = ...,
+        dstaddr: str | list[str] | list[DosPolicyDstaddrItem] | None = ...,
+        service: str | list[str] | list[DosPolicyServiceItem] | None = ...,
+        anomaly: str | list[str] | list[DosPolicyAnomalyItem] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -204,10 +204,10 @@ class DosPolicy:
         name: str | None = ...,
         comments: str | None = ...,
         interface: str | None = ...,
-        srcaddr: str | list[str] | list[dict[str, Any]] | list[DosPolicySrcaddrItem] | None = ...,
-        dstaddr: str | list[str] | list[dict[str, Any]] | list[DosPolicyDstaddrItem] | None = ...,
-        service: str | list[str] | list[dict[str, Any]] | list[DosPolicyServiceItem] | None = ...,
-        anomaly: str | list[str] | list[dict[str, Any]] | list[DosPolicyAnomalyItem] | None = ...,
+        srcaddr: str | list[str] | list[DosPolicySrcaddrItem] | None = ...,
+        dstaddr: str | list[str] | list[DosPolicyDstaddrItem] | None = ...,
+        service: str | list[str] | list[DosPolicyServiceItem] | None = ...,
+        anomaly: str | list[str] | list[DosPolicyAnomalyItem] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -243,10 +243,10 @@ class DosPolicy:
         name: str | None = ...,
         comments: str | None = ...,
         interface: str | None = ...,
-        srcaddr: str | list[str] | list[dict[str, Any]] | list[DosPolicySrcaddrItem] | None = ...,
-        dstaddr: str | list[str] | list[dict[str, Any]] | list[DosPolicyDstaddrItem] | None = ...,
-        service: str | list[str] | list[dict[str, Any]] | list[DosPolicyServiceItem] | None = ...,
-        anomaly: str | list[str] | list[dict[str, Any]] | list[DosPolicyAnomalyItem] | None = ...,
+        srcaddr: str | list[str] | list[DosPolicySrcaddrItem] | None = ...,
+        dstaddr: str | list[str] | list[DosPolicyDstaddrItem] | None = ...,
+        service: str | list[str] | list[DosPolicyServiceItem] | None = ...,
+        anomaly: str | list[str] | list[DosPolicyAnomalyItem] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,

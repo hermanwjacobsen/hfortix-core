@@ -26,15 +26,15 @@ from hfortix_fortios.models import (
 # TypedDict Payloads
 # ================================================================
 
-class VirtualWirePairMemberItem:
-    """Nested item for member field - supports attribute access."""
+class VirtualWirePairMemberItem(TypedDict, total=False):
+    """Nested item for member field."""
     interface_name: str
 
 
 class VirtualWirePairPayload(TypedDict, total=False):
     """Payload type for VirtualWirePair operations."""
     name: str
-    member: str | list[str] | list[dict[str, Any]] | list[VirtualWirePairMemberItem]
+    member: str | list[str] | list[VirtualWirePairMemberItem]
     wildcard_vlan: Literal["enable", "disable"]
     vlan_filter: str
 
@@ -141,7 +141,7 @@ class VirtualWirePair:
         self,
         payload_dict: VirtualWirePairPayload | None = ...,
         name: str | None = ...,
-        member: str | list[str] | list[dict[str, Any]] | list[VirtualWirePairMemberItem] | None = ...,
+        member: str | list[str] | list[VirtualWirePairMemberItem] | None = ...,
         wildcard_vlan: Literal["enable", "disable"] | None = ...,
         vlan_filter: str | None = ...,
         vdom: str | bool | None = ...,
@@ -157,7 +157,7 @@ class VirtualWirePair:
         self,
         payload_dict: VirtualWirePairPayload | None = ...,
         name: str | None = ...,
-        member: str | list[str] | list[dict[str, Any]] | list[VirtualWirePairMemberItem] | None = ...,
+        member: str | list[str] | list[VirtualWirePairMemberItem] | None = ...,
         wildcard_vlan: Literal["enable", "disable"] | None = ...,
         vlan_filter: str | None = ...,
         vdom: str | bool | None = ...,
@@ -191,7 +191,7 @@ class VirtualWirePair:
         self,
         payload_dict: VirtualWirePairPayload | None = ...,
         name: str | None = ...,
-        member: str | list[str] | list[dict[str, Any]] | list[VirtualWirePairMemberItem] | None = ...,
+        member: str | list[str] | list[VirtualWirePairMemberItem] | None = ...,
         wildcard_vlan: Literal["enable", "disable"] | None = ...,
         vlan_filter: str | None = ...,
         vdom: str | bool | None = ...,

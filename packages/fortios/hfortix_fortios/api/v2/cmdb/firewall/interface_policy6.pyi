@@ -26,18 +26,18 @@ from hfortix_fortios.models import (
 # TypedDict Payloads
 # ================================================================
 
-class InterfacePolicy6Srcaddr6Item:
-    """Nested item for srcaddr6 field - supports attribute access."""
+class InterfacePolicy6Srcaddr6Item(TypedDict, total=False):
+    """Nested item for srcaddr6 field."""
     name: str
 
 
-class InterfacePolicy6Dstaddr6Item:
-    """Nested item for dstaddr6 field - supports attribute access."""
+class InterfacePolicy6Dstaddr6Item(TypedDict, total=False):
+    """Nested item for dstaddr6 field."""
     name: str
 
 
-class InterfacePolicy6Service6Item:
-    """Nested item for service6 field - supports attribute access."""
+class InterfacePolicy6Service6Item(TypedDict, total=False):
+    """Nested item for service6 field."""
     name: str
 
 
@@ -49,9 +49,9 @@ class InterfacePolicy6Payload(TypedDict, total=False):
     comments: str
     logtraffic: Literal["all", "utm", "disable"]
     interface: str
-    srcaddr6: str | list[str] | list[dict[str, Any]] | list[InterfacePolicy6Srcaddr6Item]
-    dstaddr6: str | list[str] | list[dict[str, Any]] | list[InterfacePolicy6Dstaddr6Item]
-    service6: str | list[str] | list[dict[str, Any]] | list[InterfacePolicy6Service6Item]
+    srcaddr6: str | list[str] | list[InterfacePolicy6Srcaddr6Item]
+    dstaddr6: str | list[str] | list[InterfacePolicy6Dstaddr6Item]
+    service6: str | list[str] | list[InterfacePolicy6Service6Item]
     application_list_status: Literal["enable", "disable"]
     application_list: str
     ips_sensor_status: Literal["enable", "disable"]
@@ -216,9 +216,9 @@ class InterfacePolicy6:
         comments: str | None = ...,
         logtraffic: Literal["all", "utm", "disable"] | None = ...,
         interface: str | None = ...,
-        srcaddr6: str | list[str] | list[dict[str, Any]] | list[InterfacePolicy6Srcaddr6Item] | None = ...,
-        dstaddr6: str | list[str] | list[dict[str, Any]] | list[InterfacePolicy6Dstaddr6Item] | None = ...,
-        service6: str | list[str] | list[dict[str, Any]] | list[InterfacePolicy6Service6Item] | None = ...,
+        srcaddr6: str | list[str] | list[InterfacePolicy6Srcaddr6Item] | None = ...,
+        dstaddr6: str | list[str] | list[InterfacePolicy6Dstaddr6Item] | None = ...,
+        service6: str | list[str] | list[InterfacePolicy6Service6Item] | None = ...,
         application_list_status: Literal["enable", "disable"] | None = ...,
         application_list: str | None = ...,
         ips_sensor_status: Literal["enable", "disable"] | None = ...,
@@ -252,9 +252,9 @@ class InterfacePolicy6:
         comments: str | None = ...,
         logtraffic: Literal["all", "utm", "disable"] | None = ...,
         interface: str | None = ...,
-        srcaddr6: str | list[str] | list[dict[str, Any]] | list[InterfacePolicy6Srcaddr6Item] | None = ...,
-        dstaddr6: str | list[str] | list[dict[str, Any]] | list[InterfacePolicy6Dstaddr6Item] | None = ...,
-        service6: str | list[str] | list[dict[str, Any]] | list[InterfacePolicy6Service6Item] | None = ...,
+        srcaddr6: str | list[str] | list[InterfacePolicy6Srcaddr6Item] | None = ...,
+        dstaddr6: str | list[str] | list[InterfacePolicy6Dstaddr6Item] | None = ...,
+        service6: str | list[str] | list[InterfacePolicy6Service6Item] | None = ...,
         application_list_status: Literal["enable", "disable"] | None = ...,
         application_list: str | None = ...,
         ips_sensor_status: Literal["enable", "disable"] | None = ...,
@@ -306,9 +306,9 @@ class InterfacePolicy6:
         comments: str | None = ...,
         logtraffic: Literal["all", "utm", "disable"] | None = ...,
         interface: str | None = ...,
-        srcaddr6: str | list[str] | list[dict[str, Any]] | list[InterfacePolicy6Srcaddr6Item] | None = ...,
-        dstaddr6: str | list[str] | list[dict[str, Any]] | list[InterfacePolicy6Dstaddr6Item] | None = ...,
-        service6: str | list[str] | list[dict[str, Any]] | list[InterfacePolicy6Service6Item] | None = ...,
+        srcaddr6: str | list[str] | list[InterfacePolicy6Srcaddr6Item] | None = ...,
+        dstaddr6: str | list[str] | list[InterfacePolicy6Dstaddr6Item] | None = ...,
+        service6: str | list[str] | list[InterfacePolicy6Service6Item] | None = ...,
         application_list_status: Literal["enable", "disable"] | None = ...,
         application_list: str | None = ...,
         ips_sensor_status: Literal["enable", "disable"] | None = ...,

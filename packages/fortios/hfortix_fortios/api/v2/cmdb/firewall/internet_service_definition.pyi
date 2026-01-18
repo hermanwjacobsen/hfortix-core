@@ -26,8 +26,8 @@ from hfortix_fortios.models import (
 # TypedDict Payloads
 # ================================================================
 
-class InternetServiceDefinitionEntryItem:
-    """Nested item for entry field - supports attribute access."""
+class InternetServiceDefinitionEntryItem(TypedDict, total=False):
+    """Nested item for entry field."""
     seq_num: int
     category_id: int
     name: str
@@ -38,7 +38,7 @@ class InternetServiceDefinitionEntryItem:
 class InternetServiceDefinitionPayload(TypedDict, total=False):
     """Payload type for InternetServiceDefinition operations."""
     id: int
-    entry: str | list[str] | list[dict[str, Any]] | list[InternetServiceDefinitionEntryItem]
+    entry: str | list[str] | list[InternetServiceDefinitionEntryItem]
 
 
 # ================================================================
@@ -136,7 +136,7 @@ class InternetServiceDefinition:
         self,
         payload_dict: InternetServiceDefinitionPayload | None = ...,
         id: int | None = ...,
-        entry: str | list[str] | list[dict[str, Any]] | list[InternetServiceDefinitionEntryItem] | None = ...,
+        entry: str | list[str] | list[InternetServiceDefinitionEntryItem] | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> InternetServiceDefinitionObject: ...
@@ -149,7 +149,7 @@ class InternetServiceDefinition:
         self,
         payload_dict: InternetServiceDefinitionPayload | None = ...,
         id: int | None = ...,
-        entry: str | list[str] | list[dict[str, Any]] | list[InternetServiceDefinitionEntryItem] | None = ...,
+        entry: str | list[str] | list[InternetServiceDefinitionEntryItem] | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> InternetServiceDefinitionObject: ...
@@ -178,7 +178,7 @@ class InternetServiceDefinition:
         self,
         payload_dict: InternetServiceDefinitionPayload | None = ...,
         id: int | None = ...,
-        entry: str | list[str] | list[dict[str, Any]] | list[InternetServiceDefinitionEntryItem] | None = ...,
+        entry: str | list[str] | list[InternetServiceDefinitionEntryItem] | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> FortiObject: ...

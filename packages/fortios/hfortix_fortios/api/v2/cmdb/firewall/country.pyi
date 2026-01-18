@@ -26,8 +26,8 @@ from hfortix_fortios.models import (
 # TypedDict Payloads
 # ================================================================
 
-class CountryRegionItem:
-    """Nested item for region field - supports attribute access."""
+class CountryRegionItem(TypedDict, total=False):
+    """Nested item for region field."""
     id: int
 
 
@@ -35,7 +35,7 @@ class CountryPayload(TypedDict, total=False):
     """Payload type for Country operations."""
     id: int
     name: str
-    region: str | list[str] | list[dict[str, Any]] | list[CountryRegionItem]
+    region: str | list[str] | list[CountryRegionItem]
 
 
 # ================================================================
@@ -136,7 +136,7 @@ class Country:
         payload_dict: CountryPayload | None = ...,
         id: int | None = ...,
         name: str | None = ...,
-        region: str | list[str] | list[dict[str, Any]] | list[CountryRegionItem] | None = ...,
+        region: str | list[str] | list[CountryRegionItem] | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> CountryObject: ...
@@ -150,7 +150,7 @@ class Country:
         payload_dict: CountryPayload | None = ...,
         id: int | None = ...,
         name: str | None = ...,
-        region: str | list[str] | list[dict[str, Any]] | list[CountryRegionItem] | None = ...,
+        region: str | list[str] | list[CountryRegionItem] | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> CountryObject: ...
@@ -180,7 +180,7 @@ class Country:
         payload_dict: CountryPayload | None = ...,
         id: int | None = ...,
         name: str | None = ...,
-        region: str | list[str] | list[dict[str, Any]] | list[CountryRegionItem] | None = ...,
+        region: str | list[str] | list[CountryRegionItem] | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> FortiObject: ...

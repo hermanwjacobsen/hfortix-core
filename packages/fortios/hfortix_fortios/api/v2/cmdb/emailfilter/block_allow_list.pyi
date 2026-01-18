@@ -26,8 +26,8 @@ from hfortix_fortios.models import (
 # TypedDict Payloads
 # ================================================================
 
-class BlockAllowListEntriesItem:
-    """Nested item for entries field - supports attribute access."""
+class BlockAllowListEntriesItem(TypedDict, total=False):
+    """Nested item for entries field."""
     status: Literal["enable", "disable"]
     id: int
     type: Literal["ip", "email-to", "email-from", "subject"]
@@ -44,7 +44,7 @@ class BlockAllowListPayload(TypedDict, total=False):
     id: int
     name: str
     comment: str
-    entries: str | list[str] | list[dict[str, Any]] | list[BlockAllowListEntriesItem]
+    entries: str | list[str] | list[BlockAllowListEntriesItem]
 
 
 # ================================================================
@@ -151,7 +151,7 @@ class BlockAllowList:
         id: int | None = ...,
         name: str | None = ...,
         comment: str | None = ...,
-        entries: str | list[str] | list[dict[str, Any]] | list[BlockAllowListEntriesItem] | None = ...,
+        entries: str | list[str] | list[BlockAllowListEntriesItem] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -167,7 +167,7 @@ class BlockAllowList:
         id: int | None = ...,
         name: str | None = ...,
         comment: str | None = ...,
-        entries: str | list[str] | list[dict[str, Any]] | list[BlockAllowListEntriesItem] | None = ...,
+        entries: str | list[str] | list[BlockAllowListEntriesItem] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -201,7 +201,7 @@ class BlockAllowList:
         id: int | None = ...,
         name: str | None = ...,
         comment: str | None = ...,
-        entries: str | list[str] | list[dict[str, Any]] | list[BlockAllowListEntriesItem] | None = ...,
+        entries: str | list[str] | list[BlockAllowListEntriesItem] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,

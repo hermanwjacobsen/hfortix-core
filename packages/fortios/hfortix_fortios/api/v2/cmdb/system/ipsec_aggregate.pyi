@@ -26,15 +26,15 @@ from hfortix_fortios.models import (
 # TypedDict Payloads
 # ================================================================
 
-class IpsecAggregateMemberItem:
-    """Nested item for member field - supports attribute access."""
+class IpsecAggregateMemberItem(TypedDict, total=False):
+    """Nested item for member field."""
     tunnel_name: str
 
 
 class IpsecAggregatePayload(TypedDict, total=False):
     """Payload type for IpsecAggregate operations."""
     name: str
-    member: str | list[str] | list[dict[str, Any]] | list[IpsecAggregateMemberItem]
+    member: str | list[str] | list[IpsecAggregateMemberItem]
     algorithm: Literal["L3", "L4", "round-robin", "redundant", "weighted-round-robin"]
 
 
@@ -138,7 +138,7 @@ class IpsecAggregate:
         self,
         payload_dict: IpsecAggregatePayload | None = ...,
         name: str | None = ...,
-        member: str | list[str] | list[dict[str, Any]] | list[IpsecAggregateMemberItem] | None = ...,
+        member: str | list[str] | list[IpsecAggregateMemberItem] | None = ...,
         algorithm: Literal["L3", "L4", "round-robin", "redundant", "weighted-round-robin"] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
@@ -153,7 +153,7 @@ class IpsecAggregate:
         self,
         payload_dict: IpsecAggregatePayload | None = ...,
         name: str | None = ...,
-        member: str | list[str] | list[dict[str, Any]] | list[IpsecAggregateMemberItem] | None = ...,
+        member: str | list[str] | list[IpsecAggregateMemberItem] | None = ...,
         algorithm: Literal["L3", "L4", "round-robin", "redundant", "weighted-round-robin"] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
@@ -186,7 +186,7 @@ class IpsecAggregate:
         self,
         payload_dict: IpsecAggregatePayload | None = ...,
         name: str | None = ...,
-        member: str | list[str] | list[dict[str, Any]] | list[IpsecAggregateMemberItem] | None = ...,
+        member: str | list[str] | list[IpsecAggregateMemberItem] | None = ...,
         algorithm: Literal["L3", "L4", "round-robin", "redundant", "weighted-round-robin"] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,

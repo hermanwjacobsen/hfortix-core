@@ -26,128 +26,128 @@ from hfortix_fortios.models import (
 # TypedDict Payloads
 # ================================================================
 
-class ReplacemsgGroupMailItem:
-    """Nested item for mail field - supports attribute access."""
+class ReplacemsgGroupMailItem(TypedDict, total=False):
+    """Nested item for mail field."""
     msg_type: str
     buffer: str
     header: Literal["none", "http", "8bit"]
     format: Literal["none", "text", "html"]
 
 
-class ReplacemsgGroupHttpItem:
-    """Nested item for http field - supports attribute access."""
+class ReplacemsgGroupHttpItem(TypedDict, total=False):
+    """Nested item for http field."""
     msg_type: str
     buffer: str
     header: Literal["none", "http", "8bit"]
     format: Literal["none", "text", "html"]
 
 
-class ReplacemsgGroupWebproxyItem:
-    """Nested item for webproxy field - supports attribute access."""
+class ReplacemsgGroupWebproxyItem(TypedDict, total=False):
+    """Nested item for webproxy field."""
     msg_type: str
     buffer: str
     header: Literal["none", "http", "8bit"]
     format: Literal["none", "text", "html"]
 
 
-class ReplacemsgGroupFtpItem:
-    """Nested item for ftp field - supports attribute access."""
+class ReplacemsgGroupFtpItem(TypedDict, total=False):
+    """Nested item for ftp field."""
     msg_type: str
     buffer: str
     header: Literal["none", "http", "8bit"]
     format: Literal["none", "text", "html"]
 
 
-class ReplacemsgGroupFortiguardwfItem:
-    """Nested item for fortiguard-wf field - supports attribute access."""
+class ReplacemsgGroupFortiguardwfItem(TypedDict, total=False):
+    """Nested item for fortiguard-wf field."""
     msg_type: str
     buffer: str
     header: Literal["none", "http", "8bit"]
     format: Literal["none", "text", "html"]
 
 
-class ReplacemsgGroupSpamItem:
-    """Nested item for spam field - supports attribute access."""
+class ReplacemsgGroupSpamItem(TypedDict, total=False):
+    """Nested item for spam field."""
     msg_type: str
     buffer: str
     header: Literal["none", "http", "8bit"]
     format: Literal["none", "text", "html"]
 
 
-class ReplacemsgGroupAlertmailItem:
-    """Nested item for alertmail field - supports attribute access."""
+class ReplacemsgGroupAlertmailItem(TypedDict, total=False):
+    """Nested item for alertmail field."""
     msg_type: str
     buffer: str
     header: Literal["none", "http", "8bit"]
     format: Literal["none", "text", "html"]
 
 
-class ReplacemsgGroupAdminItem:
-    """Nested item for admin field - supports attribute access."""
+class ReplacemsgGroupAdminItem(TypedDict, total=False):
+    """Nested item for admin field."""
     msg_type: str
     buffer: str
     header: Literal["none", "http", "8bit"]
     format: Literal["none", "text", "html"]
 
 
-class ReplacemsgGroupAuthItem:
-    """Nested item for auth field - supports attribute access."""
+class ReplacemsgGroupAuthItem(TypedDict, total=False):
+    """Nested item for auth field."""
     msg_type: str
     buffer: str
     header: Literal["none", "http", "8bit"]
     format: Literal["none", "text", "html"]
 
 
-class ReplacemsgGroupSslvpnItem:
-    """Nested item for sslvpn field - supports attribute access."""
+class ReplacemsgGroupSslvpnItem(TypedDict, total=False):
+    """Nested item for sslvpn field."""
     msg_type: str
     buffer: str
     header: Literal["none", "http", "8bit"]
     format: Literal["none", "text", "html"]
 
 
-class ReplacemsgGroupNacquarItem:
-    """Nested item for nac-quar field - supports attribute access."""
+class ReplacemsgGroupNacquarItem(TypedDict, total=False):
+    """Nested item for nac-quar field."""
     msg_type: str
     buffer: str
     header: Literal["none", "http", "8bit"]
     format: Literal["none", "text", "html"]
 
 
-class ReplacemsgGroupTrafficquotaItem:
-    """Nested item for traffic-quota field - supports attribute access."""
+class ReplacemsgGroupTrafficquotaItem(TypedDict, total=False):
+    """Nested item for traffic-quota field."""
     msg_type: str
     buffer: str
     header: Literal["none", "http", "8bit"]
     format: Literal["none", "text", "html"]
 
 
-class ReplacemsgGroupUtmItem:
-    """Nested item for utm field - supports attribute access."""
+class ReplacemsgGroupUtmItem(TypedDict, total=False):
+    """Nested item for utm field."""
     msg_type: str
     buffer: str
     header: Literal["none", "http", "8bit"]
     format: Literal["none", "text", "html"]
 
 
-class ReplacemsgGroupCustommessageItem:
-    """Nested item for custom-message field - supports attribute access."""
+class ReplacemsgGroupCustommessageItem(TypedDict, total=False):
+    """Nested item for custom-message field."""
     msg_type: str
     buffer: str
     header: Literal["none", "http", "8bit"]
     format: Literal["none", "text", "html"]
 
 
-class ReplacemsgGroupIcapItem:
-    """Nested item for icap field - supports attribute access."""
+class ReplacemsgGroupIcapItem(TypedDict, total=False):
+    """Nested item for icap field."""
     msg_type: str
     buffer: str
     header: Literal["none", "http", "8bit"]
     format: Literal["none", "text", "html"]
 
 
-class ReplacemsgGroupAutomationItem:
-    """Nested item for automation field - supports attribute access."""
+class ReplacemsgGroupAutomationItem(TypedDict, total=False):
+    """Nested item for automation field."""
     msg_type: str
     buffer: str
     header: Literal["none", "http", "8bit"]
@@ -159,22 +159,22 @@ class ReplacemsgGroupPayload(TypedDict, total=False):
     name: str
     comment: str
     group_type: Literal["default", "utm", "auth"]
-    mail: str | list[str] | list[dict[str, Any]] | list[ReplacemsgGroupMailItem]
-    http: str | list[str] | list[dict[str, Any]] | list[ReplacemsgGroupHttpItem]
-    webproxy: str | list[str] | list[dict[str, Any]] | list[ReplacemsgGroupWebproxyItem]
-    ftp: str | list[str] | list[dict[str, Any]] | list[ReplacemsgGroupFtpItem]
-    fortiguard_wf: str | list[str] | list[dict[str, Any]] | list[ReplacemsgGroupFortiguardwfItem]
-    spam: str | list[str] | list[dict[str, Any]] | list[ReplacemsgGroupSpamItem]
-    alertmail: str | list[str] | list[dict[str, Any]] | list[ReplacemsgGroupAlertmailItem]
-    admin: str | list[str] | list[dict[str, Any]] | list[ReplacemsgGroupAdminItem]
-    auth: str | list[str] | list[dict[str, Any]] | list[ReplacemsgGroupAuthItem]
-    sslvpn: str | list[str] | list[dict[str, Any]] | list[ReplacemsgGroupSslvpnItem]
-    nac_quar: str | list[str] | list[dict[str, Any]] | list[ReplacemsgGroupNacquarItem]
-    traffic_quota: str | list[str] | list[dict[str, Any]] | list[ReplacemsgGroupTrafficquotaItem]
-    utm: str | list[str] | list[dict[str, Any]] | list[ReplacemsgGroupUtmItem]
-    custom_message: str | list[str] | list[dict[str, Any]] | list[ReplacemsgGroupCustommessageItem]
-    icap: str | list[str] | list[dict[str, Any]] | list[ReplacemsgGroupIcapItem]
-    automation: str | list[str] | list[dict[str, Any]] | list[ReplacemsgGroupAutomationItem]
+    mail: str | list[str] | list[ReplacemsgGroupMailItem]
+    http: str | list[str] | list[ReplacemsgGroupHttpItem]
+    webproxy: str | list[str] | list[ReplacemsgGroupWebproxyItem]
+    ftp: str | list[str] | list[ReplacemsgGroupFtpItem]
+    fortiguard_wf: str | list[str] | list[ReplacemsgGroupFortiguardwfItem]
+    spam: str | list[str] | list[ReplacemsgGroupSpamItem]
+    alertmail: str | list[str] | list[ReplacemsgGroupAlertmailItem]
+    admin: str | list[str] | list[ReplacemsgGroupAdminItem]
+    auth: str | list[str] | list[ReplacemsgGroupAuthItem]
+    sslvpn: str | list[str] | list[ReplacemsgGroupSslvpnItem]
+    nac_quar: str | list[str] | list[ReplacemsgGroupNacquarItem]
+    traffic_quota: str | list[str] | list[ReplacemsgGroupTrafficquotaItem]
+    utm: str | list[str] | list[ReplacemsgGroupUtmItem]
+    custom_message: str | list[str] | list[ReplacemsgGroupCustommessageItem]
+    icap: str | list[str] | list[ReplacemsgGroupIcapItem]
+    automation: str | list[str] | list[ReplacemsgGroupAutomationItem]
 
 
 # ================================================================
@@ -311,22 +311,22 @@ class ReplacemsgGroup:
         name: str | None = ...,
         comment: str | None = ...,
         group_type: Literal["default", "utm", "auth"] | None = ...,
-        mail: str | list[str] | list[dict[str, Any]] | list[ReplacemsgGroupMailItem] | None = ...,
-        http: str | list[str] | list[dict[str, Any]] | list[ReplacemsgGroupHttpItem] | None = ...,
-        webproxy: str | list[str] | list[dict[str, Any]] | list[ReplacemsgGroupWebproxyItem] | None = ...,
-        ftp: str | list[str] | list[dict[str, Any]] | list[ReplacemsgGroupFtpItem] | None = ...,
-        fortiguard_wf: str | list[str] | list[dict[str, Any]] | list[ReplacemsgGroupFortiguardwfItem] | None = ...,
-        spam: str | list[str] | list[dict[str, Any]] | list[ReplacemsgGroupSpamItem] | None = ...,
-        alertmail: str | list[str] | list[dict[str, Any]] | list[ReplacemsgGroupAlertmailItem] | None = ...,
-        admin: str | list[str] | list[dict[str, Any]] | list[ReplacemsgGroupAdminItem] | None = ...,
-        auth: str | list[str] | list[dict[str, Any]] | list[ReplacemsgGroupAuthItem] | None = ...,
-        sslvpn: str | list[str] | list[dict[str, Any]] | list[ReplacemsgGroupSslvpnItem] | None = ...,
-        nac_quar: str | list[str] | list[dict[str, Any]] | list[ReplacemsgGroupNacquarItem] | None = ...,
-        traffic_quota: str | list[str] | list[dict[str, Any]] | list[ReplacemsgGroupTrafficquotaItem] | None = ...,
-        utm: str | list[str] | list[dict[str, Any]] | list[ReplacemsgGroupUtmItem] | None = ...,
-        custom_message: str | list[str] | list[dict[str, Any]] | list[ReplacemsgGroupCustommessageItem] | None = ...,
-        icap: str | list[str] | list[dict[str, Any]] | list[ReplacemsgGroupIcapItem] | None = ...,
-        automation: str | list[str] | list[dict[str, Any]] | list[ReplacemsgGroupAutomationItem] | None = ...,
+        mail: str | list[str] | list[ReplacemsgGroupMailItem] | None = ...,
+        http: str | list[str] | list[ReplacemsgGroupHttpItem] | None = ...,
+        webproxy: str | list[str] | list[ReplacemsgGroupWebproxyItem] | None = ...,
+        ftp: str | list[str] | list[ReplacemsgGroupFtpItem] | None = ...,
+        fortiguard_wf: str | list[str] | list[ReplacemsgGroupFortiguardwfItem] | None = ...,
+        spam: str | list[str] | list[ReplacemsgGroupSpamItem] | None = ...,
+        alertmail: str | list[str] | list[ReplacemsgGroupAlertmailItem] | None = ...,
+        admin: str | list[str] | list[ReplacemsgGroupAdminItem] | None = ...,
+        auth: str | list[str] | list[ReplacemsgGroupAuthItem] | None = ...,
+        sslvpn: str | list[str] | list[ReplacemsgGroupSslvpnItem] | None = ...,
+        nac_quar: str | list[str] | list[ReplacemsgGroupNacquarItem] | None = ...,
+        traffic_quota: str | list[str] | list[ReplacemsgGroupTrafficquotaItem] | None = ...,
+        utm: str | list[str] | list[ReplacemsgGroupUtmItem] | None = ...,
+        custom_message: str | list[str] | list[ReplacemsgGroupCustommessageItem] | None = ...,
+        icap: str | list[str] | list[ReplacemsgGroupIcapItem] | None = ...,
+        automation: str | list[str] | list[ReplacemsgGroupAutomationItem] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -342,22 +342,22 @@ class ReplacemsgGroup:
         name: str | None = ...,
         comment: str | None = ...,
         group_type: Literal["default", "utm", "auth"] | None = ...,
-        mail: str | list[str] | list[dict[str, Any]] | list[ReplacemsgGroupMailItem] | None = ...,
-        http: str | list[str] | list[dict[str, Any]] | list[ReplacemsgGroupHttpItem] | None = ...,
-        webproxy: str | list[str] | list[dict[str, Any]] | list[ReplacemsgGroupWebproxyItem] | None = ...,
-        ftp: str | list[str] | list[dict[str, Any]] | list[ReplacemsgGroupFtpItem] | None = ...,
-        fortiguard_wf: str | list[str] | list[dict[str, Any]] | list[ReplacemsgGroupFortiguardwfItem] | None = ...,
-        spam: str | list[str] | list[dict[str, Any]] | list[ReplacemsgGroupSpamItem] | None = ...,
-        alertmail: str | list[str] | list[dict[str, Any]] | list[ReplacemsgGroupAlertmailItem] | None = ...,
-        admin: str | list[str] | list[dict[str, Any]] | list[ReplacemsgGroupAdminItem] | None = ...,
-        auth: str | list[str] | list[dict[str, Any]] | list[ReplacemsgGroupAuthItem] | None = ...,
-        sslvpn: str | list[str] | list[dict[str, Any]] | list[ReplacemsgGroupSslvpnItem] | None = ...,
-        nac_quar: str | list[str] | list[dict[str, Any]] | list[ReplacemsgGroupNacquarItem] | None = ...,
-        traffic_quota: str | list[str] | list[dict[str, Any]] | list[ReplacemsgGroupTrafficquotaItem] | None = ...,
-        utm: str | list[str] | list[dict[str, Any]] | list[ReplacemsgGroupUtmItem] | None = ...,
-        custom_message: str | list[str] | list[dict[str, Any]] | list[ReplacemsgGroupCustommessageItem] | None = ...,
-        icap: str | list[str] | list[dict[str, Any]] | list[ReplacemsgGroupIcapItem] | None = ...,
-        automation: str | list[str] | list[dict[str, Any]] | list[ReplacemsgGroupAutomationItem] | None = ...,
+        mail: str | list[str] | list[ReplacemsgGroupMailItem] | None = ...,
+        http: str | list[str] | list[ReplacemsgGroupHttpItem] | None = ...,
+        webproxy: str | list[str] | list[ReplacemsgGroupWebproxyItem] | None = ...,
+        ftp: str | list[str] | list[ReplacemsgGroupFtpItem] | None = ...,
+        fortiguard_wf: str | list[str] | list[ReplacemsgGroupFortiguardwfItem] | None = ...,
+        spam: str | list[str] | list[ReplacemsgGroupSpamItem] | None = ...,
+        alertmail: str | list[str] | list[ReplacemsgGroupAlertmailItem] | None = ...,
+        admin: str | list[str] | list[ReplacemsgGroupAdminItem] | None = ...,
+        auth: str | list[str] | list[ReplacemsgGroupAuthItem] | None = ...,
+        sslvpn: str | list[str] | list[ReplacemsgGroupSslvpnItem] | None = ...,
+        nac_quar: str | list[str] | list[ReplacemsgGroupNacquarItem] | None = ...,
+        traffic_quota: str | list[str] | list[ReplacemsgGroupTrafficquotaItem] | None = ...,
+        utm: str | list[str] | list[ReplacemsgGroupUtmItem] | None = ...,
+        custom_message: str | list[str] | list[ReplacemsgGroupCustommessageItem] | None = ...,
+        icap: str | list[str] | list[ReplacemsgGroupIcapItem] | None = ...,
+        automation: str | list[str] | list[ReplacemsgGroupAutomationItem] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -391,22 +391,22 @@ class ReplacemsgGroup:
         name: str | None = ...,
         comment: str | None = ...,
         group_type: Literal["default", "utm", "auth"] | None = ...,
-        mail: str | list[str] | list[dict[str, Any]] | list[ReplacemsgGroupMailItem] | None = ...,
-        http: str | list[str] | list[dict[str, Any]] | list[ReplacemsgGroupHttpItem] | None = ...,
-        webproxy: str | list[str] | list[dict[str, Any]] | list[ReplacemsgGroupWebproxyItem] | None = ...,
-        ftp: str | list[str] | list[dict[str, Any]] | list[ReplacemsgGroupFtpItem] | None = ...,
-        fortiguard_wf: str | list[str] | list[dict[str, Any]] | list[ReplacemsgGroupFortiguardwfItem] | None = ...,
-        spam: str | list[str] | list[dict[str, Any]] | list[ReplacemsgGroupSpamItem] | None = ...,
-        alertmail: str | list[str] | list[dict[str, Any]] | list[ReplacemsgGroupAlertmailItem] | None = ...,
-        admin: str | list[str] | list[dict[str, Any]] | list[ReplacemsgGroupAdminItem] | None = ...,
-        auth: str | list[str] | list[dict[str, Any]] | list[ReplacemsgGroupAuthItem] | None = ...,
-        sslvpn: str | list[str] | list[dict[str, Any]] | list[ReplacemsgGroupSslvpnItem] | None = ...,
-        nac_quar: str | list[str] | list[dict[str, Any]] | list[ReplacemsgGroupNacquarItem] | None = ...,
-        traffic_quota: str | list[str] | list[dict[str, Any]] | list[ReplacemsgGroupTrafficquotaItem] | None = ...,
-        utm: str | list[str] | list[dict[str, Any]] | list[ReplacemsgGroupUtmItem] | None = ...,
-        custom_message: str | list[str] | list[dict[str, Any]] | list[ReplacemsgGroupCustommessageItem] | None = ...,
-        icap: str | list[str] | list[dict[str, Any]] | list[ReplacemsgGroupIcapItem] | None = ...,
-        automation: str | list[str] | list[dict[str, Any]] | list[ReplacemsgGroupAutomationItem] | None = ...,
+        mail: str | list[str] | list[ReplacemsgGroupMailItem] | None = ...,
+        http: str | list[str] | list[ReplacemsgGroupHttpItem] | None = ...,
+        webproxy: str | list[str] | list[ReplacemsgGroupWebproxyItem] | None = ...,
+        ftp: str | list[str] | list[ReplacemsgGroupFtpItem] | None = ...,
+        fortiguard_wf: str | list[str] | list[ReplacemsgGroupFortiguardwfItem] | None = ...,
+        spam: str | list[str] | list[ReplacemsgGroupSpamItem] | None = ...,
+        alertmail: str | list[str] | list[ReplacemsgGroupAlertmailItem] | None = ...,
+        admin: str | list[str] | list[ReplacemsgGroupAdminItem] | None = ...,
+        auth: str | list[str] | list[ReplacemsgGroupAuthItem] | None = ...,
+        sslvpn: str | list[str] | list[ReplacemsgGroupSslvpnItem] | None = ...,
+        nac_quar: str | list[str] | list[ReplacemsgGroupNacquarItem] | None = ...,
+        traffic_quota: str | list[str] | list[ReplacemsgGroupTrafficquotaItem] | None = ...,
+        utm: str | list[str] | list[ReplacemsgGroupUtmItem] | None = ...,
+        custom_message: str | list[str] | list[ReplacemsgGroupCustommessageItem] | None = ...,
+        icap: str | list[str] | list[ReplacemsgGroupIcapItem] | None = ...,
+        automation: str | list[str] | list[ReplacemsgGroupAutomationItem] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,

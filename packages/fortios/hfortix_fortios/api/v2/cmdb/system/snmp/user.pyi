@@ -26,8 +26,8 @@ from hfortix_fortios.models import (
 # TypedDict Payloads
 # ================================================================
 
-class UserVdomsItem:
-    """Nested item for vdoms field - supports attribute access."""
+class UserVdomsItem(TypedDict, total=False):
+    """Nested item for vdoms field."""
     name: str
 
 
@@ -47,7 +47,7 @@ class UserPayload(TypedDict, total=False):
     ha_direct: Literal["enable", "disable"]
     events: str | list[str]
     mib_view: str
-    vdoms: str | list[str] | list[dict[str, Any]] | list[UserVdomsItem]
+    vdoms: str | list[str] | list[UserVdomsItem]
     security_level: Literal["no-auth-no-priv", "auth-no-priv", "auth-priv"]
     auth_proto: Literal["md5", "sha", "sha224", "sha256", "sha384", "sha512"]
     auth_pwd: str
@@ -208,7 +208,7 @@ class User:
         ha_direct: Literal["enable", "disable"] | None = ...,
         events: str | list[str] | None = ...,
         mib_view: str | None = ...,
-        vdoms: str | list[str] | list[dict[str, Any]] | list[UserVdomsItem] | None = ...,
+        vdoms: str | list[str] | list[UserVdomsItem] | None = ...,
         security_level: Literal["no-auth-no-priv", "auth-no-priv", "auth-priv"] | None = ...,
         auth_proto: Literal["md5", "sha", "sha224", "sha256", "sha384", "sha512"] | None = ...,
         auth_pwd: str | None = ...,
@@ -242,7 +242,7 @@ class User:
         ha_direct: Literal["enable", "disable"] | None = ...,
         events: str | list[str] | None = ...,
         mib_view: str | None = ...,
-        vdoms: str | list[str] | list[dict[str, Any]] | list[UserVdomsItem] | None = ...,
+        vdoms: str | list[str] | list[UserVdomsItem] | None = ...,
         security_level: Literal["no-auth-no-priv", "auth-no-priv", "auth-priv"] | None = ...,
         auth_proto: Literal["md5", "sha", "sha224", "sha256", "sha384", "sha512"] | None = ...,
         auth_pwd: str | None = ...,
@@ -292,7 +292,7 @@ class User:
         ha_direct: Literal["enable", "disable"] | None = ...,
         events: Literal["cpu-high", "mem-low", "log-full", "intf-ip", "vpn-tun-up", "vpn-tun-down", "ha-switch", "ha-hb-failure", "ips-signature", "ips-anomaly", "av-virus", "av-oversize", "av-pattern", "av-fragmented", "fm-if-change", "fm-conf-change", "bgp-established", "bgp-backward-transition", "ha-member-up", "ha-member-down", "ent-conf-change", "av-conserve", "av-bypass", "av-oversize-passed", "av-oversize-blocked", "ips-pkg-update", "ips-fail-open", "faz-disconnect", "faz", "wc-ap-up", "wc-ap-down", "fswctl-session-up", "fswctl-session-down", "load-balance-real-server-down", "device-new", "per-cpu-high", "dhcp", "pool-usage", "ippool", "interface", "ospf-nbr-state-change", "ospf-virtnbr-state-change", "bfd"] | list[str] | None = ...,
         mib_view: str | None = ...,
-        vdoms: str | list[str] | list[dict[str, Any]] | list[UserVdomsItem] | None = ...,
+        vdoms: str | list[str] | list[UserVdomsItem] | None = ...,
         security_level: Literal["no-auth-no-priv", "auth-no-priv", "auth-priv"] | None = ...,
         auth_proto: Literal["md5", "sha", "sha224", "sha256", "sha384", "sha512"] | None = ...,
         auth_pwd: str | None = ...,

@@ -26,13 +26,13 @@ from hfortix_fortios.models import (
 # TypedDict Payloads
 # ================================================================
 
-class VxlanRemoteipItem:
-    """Nested item for remote-ip field - supports attribute access."""
+class VxlanRemoteipItem(TypedDict, total=False):
+    """Nested item for remote-ip field."""
     ip: str
 
 
-class VxlanRemoteip6Item:
-    """Nested item for remote-ip6 field - supports attribute access."""
+class VxlanRemoteip6Item(TypedDict, total=False):
+    """Nested item for remote-ip6 field."""
     ip6: str
 
 
@@ -42,9 +42,9 @@ class VxlanPayload(TypedDict, total=False):
     interface: str
     vni: int
     ip_version: Literal["ipv4-unicast", "ipv6-unicast", "ipv4-multicast", "ipv6-multicast"]
-    remote_ip: str | list[str] | list[dict[str, Any]] | list[VxlanRemoteipItem]
+    remote_ip: str | list[str] | list[VxlanRemoteipItem]
     local_ip: str
-    remote_ip6: str | list[str] | list[dict[str, Any]] | list[VxlanRemoteip6Item]
+    remote_ip6: str | list[str] | list[VxlanRemoteip6Item]
     local_ip6: str
     dstport: int
     multicast_ttl: int
@@ -173,9 +173,9 @@ class Vxlan:
         interface: str | None = ...,
         vni: int | None = ...,
         ip_version: Literal["ipv4-unicast", "ipv6-unicast", "ipv4-multicast", "ipv6-multicast"] | None = ...,
-        remote_ip: str | list[str] | list[dict[str, Any]] | list[VxlanRemoteipItem] | None = ...,
+        remote_ip: str | list[str] | list[VxlanRemoteipItem] | None = ...,
         local_ip: str | None = ...,
-        remote_ip6: str | list[str] | list[dict[str, Any]] | list[VxlanRemoteip6Item] | None = ...,
+        remote_ip6: str | list[str] | list[VxlanRemoteip6Item] | None = ...,
         local_ip6: str | None = ...,
         dstport: int | None = ...,
         multicast_ttl: int | None = ...,
@@ -197,9 +197,9 @@ class Vxlan:
         interface: str | None = ...,
         vni: int | None = ...,
         ip_version: Literal["ipv4-unicast", "ipv6-unicast", "ipv4-multicast", "ipv6-multicast"] | None = ...,
-        remote_ip: str | list[str] | list[dict[str, Any]] | list[VxlanRemoteipItem] | None = ...,
+        remote_ip: str | list[str] | list[VxlanRemoteipItem] | None = ...,
         local_ip: str | None = ...,
-        remote_ip6: str | list[str] | list[dict[str, Any]] | list[VxlanRemoteip6Item] | None = ...,
+        remote_ip6: str | list[str] | list[VxlanRemoteip6Item] | None = ...,
         local_ip6: str | None = ...,
         dstport: int | None = ...,
         multicast_ttl: int | None = ...,
@@ -239,9 +239,9 @@ class Vxlan:
         interface: str | None = ...,
         vni: int | None = ...,
         ip_version: Literal["ipv4-unicast", "ipv6-unicast", "ipv4-multicast", "ipv6-multicast"] | None = ...,
-        remote_ip: str | list[str] | list[dict[str, Any]] | list[VxlanRemoteipItem] | None = ...,
+        remote_ip: str | list[str] | list[VxlanRemoteipItem] | None = ...,
         local_ip: str | None = ...,
-        remote_ip6: str | list[str] | list[dict[str, Any]] | list[VxlanRemoteip6Item] | None = ...,
+        remote_ip6: str | list[str] | list[VxlanRemoteip6Item] | None = ...,
         local_ip6: str | None = ...,
         dstport: int | None = ...,
         multicast_ttl: int | None = ...,

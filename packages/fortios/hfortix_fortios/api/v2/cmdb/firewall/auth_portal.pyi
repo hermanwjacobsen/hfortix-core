@@ -25,14 +25,14 @@ from hfortix_fortios.models import (
 # TypedDict Payloads
 # ================================================================
 
-class AuthPortalGroupsItem:
-    """Nested item for groups field - supports attribute access."""
+class AuthPortalGroupsItem(TypedDict, total=False):
+    """Nested item for groups field."""
     name: str
 
 
 class AuthPortalPayload(TypedDict, total=False):
     """Payload type for AuthPortal operations."""
-    groups: str | list[str] | list[dict[str, Any]] | list[AuthPortalGroupsItem]
+    groups: str | list[str] | list[AuthPortalGroupsItem]
     portal_addr: str
     portal_addr6: str
     identity_based_route: str
@@ -122,7 +122,7 @@ class AuthPortal:
     def put(
         self,
         payload_dict: AuthPortalPayload | None = ...,
-        groups: str | list[str] | list[dict[str, Any]] | list[AuthPortalGroupsItem] | None = ...,
+        groups: str | list[str] | list[AuthPortalGroupsItem] | None = ...,
         portal_addr: str | None = ...,
         portal_addr6: str | None = ...,
         identity_based_route: str | None = ...,
@@ -146,7 +146,7 @@ class AuthPortal:
     def set(
         self,
         payload_dict: AuthPortalPayload | None = ...,
-        groups: str | list[str] | list[dict[str, Any]] | list[AuthPortalGroupsItem] | None = ...,
+        groups: str | list[str] | list[AuthPortalGroupsItem] | None = ...,
         portal_addr: str | None = ...,
         portal_addr6: str | None = ...,
         identity_based_route: str | None = ...,
