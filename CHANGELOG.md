@@ -15,6 +15,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - **Generator: Strip leading asterisks from parameter option values**: Fixed schema parser to remove asterisks (`*`) from both the beginning and end of parameter option values when extracting Literal types from descriptions. Previously, options like `[*vdom|global]` would generate `Literal["*vdom", "global"]` instead of the correct `Literal["vdom", "global"]`. Examples affected: `scope` parameter in `monitor.network.lldp.ports`, `ip_version` parameter in `monitor.router.bgp.neighbors_statistics`.
 
+### Tests
+
+- **85 new Monitor API endpoint tests** across 8 test files covering comprehensive monitoring functionality:
+  - **router.py** (50 tests): Routing tables (IPv4/IPv6), BGP (neighbors, paths, statistics, soft reset), OSPF neighbors, SD-WAN routes, route lookup (IPv4/IPv6, policy routes), policy routes
+  - **network.py** (13 tests): ARP table, LLDP (neighbors, ports with VDOM/global scope), DNS latency, DDNS (servers, lookup), reverse IP lookup, debug flow trace
+  - **registration.py** (3 tests): FortiCloud status, FortiCare account, FortiCare resellers
+  - **license.py** (4 tests): License status, FortiAnalyzer license, FortiCare organization list, FortiCare resellers
+  - **ips.py** (5 tests): Rate-based statistics, metadata, anomaly detection, hold signatures, session performance
+  - **fortiview.py** (3 tests): Realtime statistics, historical statistics, realtime proxy statistics
+  - **fortiguard.py** (4 tests): Redirect portal, service communication statistics (with filtering), answers endpoint
+  - **firmware.py** (3 tests): Extension device firmware info for FortiSwitch, FortiAP, FortiExtender
+- **Test quality improvements**: All tests include proper exception handling for 404/424/500 errors, use realistic test data (google.dk, 8.8.8.8, port3/port4), and document disabled tests with reasons
+
 ## [0.5.101] - 2026-01-18
 
 ### Changed
