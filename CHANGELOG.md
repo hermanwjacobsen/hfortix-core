@@ -7,6 +7,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.5.109] - 2026-01-18
+
+### Fixed
+
+- **API Field Names: Automatic conversion from snake_case to hyphenated format**: Added automatic field name conversion in `POST` and `PUT` requests to convert Python's snake_case field names (e.g., `ip6_address`) to FortiOS API's hyphenated format (e.g., `ip6-address`). This allows using Pythonic field names while maintaining API compatibility:
+  - **Before**: Required using hyphenated names: `{"ip6-address": "2001:db8::1"}` (causes Pylance errors)
+  - **After**: Use Python conventions: `{"ip6_address": "2001:db8::1"}` (auto-converted to `ip6-address`)
+  - Recursive conversion handles nested objects and lists
+  - IDE autocomplete now works perfectly with no typing errors
+  - Example: `fgt.api.cmdb.router.bfd6.put(neighbor=[{"ip6_address": "::1", "interface": "port1"}])`
+
 ## [0.5.108] - 2026-01-18
 
 ### Fixed

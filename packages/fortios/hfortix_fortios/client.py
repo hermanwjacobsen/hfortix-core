@@ -654,6 +654,33 @@ class FortiOS:
         from hfortix_fortios.models import process_response
         import time as _time
 
+        def convert_field_names(data: Any) -> Any:
+            """
+            Convert Python snake_case field names to FortiOS hyphenated names.
+            
+            Recursively processes dictionaries and lists to convert all field names
+            from snake_case (Python convention) to hyphenated format (FortiOS API).
+            
+            Examples:
+                ip6_address -> ip6-address
+                src_addr -> src-addr
+                
+            Args:
+                data: Dictionary, list, or primitive value to convert
+                
+            Returns:
+                Converted data with hyphenated field names
+            """
+            if isinstance(data, dict):
+                return {
+                    key.replace("_", "-"): convert_field_names(value)
+                    for key, value in data.items()
+                }
+            elif isinstance(data, list):
+                return [convert_field_names(item) for item in data]
+            else:
+                return data
+
         class ResponseProcessingClient:
             """Wrapper that automatically processes responses with FortiObject."""
 
@@ -691,7 +718,9 @@ class FortiOS:
             ):
                 """POST request with automatic response processing."""
                 start_time = _time.perf_counter()
-                result = self._wrapped_client.post(api_type, path, data, params, vdom, raw_json=True)  # type: ignore
+                # Convert Python snake_case field names to FortiOS hyphenated format
+                converted_data = convert_field_names(data) if data else None
+                result = self._wrapped_client.post(api_type, path, converted_data, params, vdom, raw_json=True)  # type: ignore
                 response_time = _time.perf_counter() - start_time
                 return process_response(result, raw_envelope=result, response_time=response_time)  # type: ignore
 
@@ -705,7 +734,9 @@ class FortiOS:
             ):
                 """PUT request with automatic response processing."""
                 start_time = _time.perf_counter()
-                result = self._wrapped_client.put(api_type, path, data, params, vdom, raw_json=True)  # type: ignore
+                # Convert Python snake_case field names to FortiOS hyphenated format
+                converted_data = convert_field_names(data) if data else None
+                result = self._wrapped_client.put(api_type, path, converted_data, params, vdom, raw_json=True)  # type: ignore
                 response_time = _time.perf_counter() - start_time
                 return process_response(result, raw_envelope=result, response_time=response_time)  # type: ignore
 
