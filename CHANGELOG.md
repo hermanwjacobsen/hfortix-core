@@ -7,6 +7,77 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.5.118] - 2026-01-19
+
+### Added
+
+- **Tests: Switch Controller Managed Switch Monitor Endpoints**: Added 7 test files for FortiSwitch monitoring:
+  - **switch_controller_managed_switch_faceplate_xml.py**: GET - Retrieve XML for rendering FortiSwitch faceplate widget (Access Group: wifi)
+  - **switch_controller_managed_switch_factory_reset.py**: POST - Send 'Factory Reset' command to a given FortiSwitch (Access Group: wifi)
+  - **switch_controller_managed_switch_dhcp_snooping.py**: GET - Retrieve DHCP servers monitored by FortiSwitches (Access Group: wifi)
+  - **switch_controller_managed_switch_transceivers.py**: GET - Get a list of transceivers being used by managed FortiSwitches (Access Group: any)
+  - **switch_controller_managed_switch_bios.py**: GET - Get a list of BIOS info by managed FortiSwitches (Access Group: any)
+  - **switch_controller_managed_switch_health_status.py**: GET - Retrieve health-check statistics for managed FortiSwitches (Access Group: wifi)
+  - **switch_controller_managed_switch_port_health.py**: GET - Retrieve port health statistics for managed FortiSwitches (Access Group: wifi)
+
+### Documentation
+
+- **Schema Improvement Suggestions for Fortinet**: Created `docs/fortios/SCHEMA_IMPROVEMENT_SUGGESTIONS.md` documenting missing response field definitions in monitor endpoints
+  - **Issue**: 100+ monitor endpoints lack response field schemas, causing `FortiObject[Any]` instead of typed responses
+  - **Impact**: No IDE autocomplete, no type checking, poor developer experience for monitor endpoints
+  - **Request**: Add `response_fields` to schema files with proper field types, categories, and options
+  - **Priority endpoints**: Switch controller (17 endpoints), system status (15 endpoints), VPN (12 endpoints), firewall sessions (8 endpoints)
+  - **Example**: Shows before/after comparison for dhcp-snooping endpoint with full field definitions
+
+- **README: Known Limitations**: Added section documenting monitor endpoint schema limitations in `packages/fortios/README.md`
+  - **Explanation**: Why monitor endpoints return `FortiObject[Any]` (missing field schemas)
+  - **Affected categories**: Switch controller, system status, VPN, firewall sessions, network diagnostics, routing, WiFi
+  - **Workarounds**: Dynamic attribute access, iteration support (v0.5.118+), `.dict`/`.json` properties
+  - **Reference**: Links to schema improvement suggestions document
+
+### Fixed
+
+- **Type Safety: FortiObject iteration support**: Added `__iter__` method to `FortiObject` class to enable iteration over list-based responses:
+  - **Issue**: Monitor endpoints returning lists caused Pylance error: `"FortiObject[Unknown]" is not iterable - "__iter__" method not defined`
+  - **Root Cause**: Type stubs (`.pyi`) didn't declare `__iter__`, so type checkers couldn't recognize FortiObject as iterable
+  - **Fix**: Added `__iter__` method to both `models.pyi` stub and `models.py` runtime implementation
+  - **Implementation**: Checks if `_data` contains a `results` list (monitor endpoints) or is itself a list, then yields FortiObject instances
+  - **Impact**: Can now iterate over monitor endpoint responses without type checker warnings
+  - **Example**: 
+    ```python
+    result = fgt.api.monitor.switch_controller.managed_switch.dhcp_snooping.get()
+    for entry in result:  # ✅ No more type error
+        print(entry.switch_id)
+    ```
+
+- **Type Safety: Explicit Any type for untyped endpoints**: Changed generator template to use `FortiObject[Any]` instead of bare `FortiObject`:
+  - **Issue**: Endpoints without field definitions showed `FortiObject[Unknown]` type, implying incomplete type information
+  - **Root Cause**: Generic `FortiObject` defaults to `Unknown` type parameter when not specified
+  - **Fix**: Updated `.dev/generator/templates/endpoint_class.pyi.j2` to explicitly use `FortiObject[Any]` for endpoints lacking field definitions
+  - **Affected endpoints**: Monitor endpoints, service endpoints, and other endpoints without response field schemas
+  - **Impact**: Better semantics - `Any` means "can be any dict structure" vs `Unknown` which implies missing type information
+  - **Locations updated** (11 total):
+    - Monitor/service endpoint GET returns (singleton and list)
+    - CMDB endpoint GET returns (with/without mkey)
+    - POST method returns
+    - PUT method returns
+    - DELETE method returns
+    - Helper method returns (`field_info`, `defaults`, `schema`)
+  - **Example**: Type now shows `FortiObject[Any]` instead of `FortiObject[Unknown]`
+
+### Documentation
+
+- **Schema Improvement Suggestions**: Created comprehensive document for Fortinet detailing missing response field definitions in monitor endpoints
+  - **File**: `docs/fortios/SCHEMA_IMPROVEMENT_SUGGESTIONS.md`
+  - **Content**: Documents 100+ monitor endpoints lacking response field schemas, impact on developer experience, recommended schema structure
+  - **Examples**: Detailed before/after comparisons showing how field definitions enable type safety and IDE autocomplete
+  - **Priority list**: Switch controller, system status, VPN, firewall session, and network diagnostics endpoints
+
+- **README: Known Limitations section**: Added documentation about monitor endpoint schema limitations
+  - **Location**: `packages/fortios/README.md`
+  - **Content**: Explains why monitor endpoints return `FortiObject[Any]`, lists affected endpoint categories, provides workarounds
+  - **Workarounds**: Dynamic attribute access, iteration support (v0.5.118+), references schema improvement suggestions document
+
 ## [0.5.117] - 2026-01-19
 
 ### Added

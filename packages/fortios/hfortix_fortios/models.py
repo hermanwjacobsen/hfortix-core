@@ -598,6 +598,49 @@ class FortiObject:
         """
         return len(self._data)
 
+    def __iter__(self) -> Iterator[FortiObject]:
+        """
+        Iterate over items when FortiObject wraps a list response.
+
+        This method allows iteration over FortiObject instances when the
+        underlying data is a list (common in monitor endpoints).
+
+        Returns:
+            Iterator yielding FortiObject instances for each list item
+
+        Examples:
+            >>> result = fgt.api.monitor.switch_controller.managed_switch.dhcp_snooping.get()
+            >>> for entry in result:
+            ...     print(entry.switch_id)
+
+        Raises:
+            TypeError: If the wrapped data is not a list
+        """
+        # Check if _data contains a list in 'results' key (monitor endpoints)
+        if isinstance(self._data, dict):
+            results = self._data.get("results", [])
+            if isinstance(results, list):
+                for item in results:
+                    if isinstance(item, dict):
+                        yield FortiObject(item, self._raw_envelope, self._response_time)
+                    else:
+                        yield item
+                return
+
+        # If _data itself is a list, iterate over it
+        if isinstance(self._data, list):
+            for item in self._data:
+                if isinstance(item, dict):
+                    yield FortiObject(item, self._raw_envelope, self._response_time)
+                else:
+                    yield item
+            return
+
+        # Not iterable - raise error
+        raise TypeError(
+            f"'{type(self).__name__}' object is not iterable (underlying data is not a list)"
+        )
+
     def keys(self):
         """
         Get all field names.
