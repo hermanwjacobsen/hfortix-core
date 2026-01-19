@@ -25,6 +25,31 @@ from hfortix_fortios.models import (
 # TypedDict Payloads
 # ================================================================
 
+class MulticastPimsmglobalvrfRpaddressItem(TypedDict, total=False):
+    """Nested item for pim-sm-global-vrf.rp-address field."""
+    id: int
+    ip_address: str
+    group: str
+
+
+class MulticastInterfaceJoingroupItem(TypedDict, total=False):
+    """Nested item for interface.join-group field."""
+    address: str
+
+
+class MulticastInterfaceIgmpDict(TypedDict, total=False):
+    """Nested object type for interface.igmp field."""
+    access_group: str
+    version: Literal["3", "2", "1"]
+    immediate_leave_group: str
+    last_member_query_interval: int
+    last_member_query_count: int
+    query_max_response_time: int
+    query_interval: int
+    query_timeout: int
+    router_alert_check: Literal["enable", "disable"]
+
+
 class MulticastPimsmglobalDict(TypedDict, total=False):
     """Nested object type for pim-sm-global field."""
     message_interval: int
@@ -53,7 +78,7 @@ class MulticastPimsmglobalDict(TypedDict, total=False):
     ssm_range: str
     register_rate_limit: int
     pim_use_sdwan: Literal["enable", "disable"]
-    rp_address: str | list[str]
+    rp_address: str | list[str] | list[MulticastPimsmglobalRpaddressItem]
 
 
 class MulticastPimsmglobalvrfItem(TypedDict, total=False):
@@ -65,7 +90,7 @@ class MulticastPimsmglobalvrfItem(TypedDict, total=False):
     bsr_hash: int
     bsr_allow_quick_refresh: Literal["enable", "disable"]
     cisco_crp_prefix: Literal["enable", "disable"]
-    rp_address: str | list[str]
+    rp_address: str | list[str] | list[MulticastPimsmglobalvrfRpaddressItem]
 
 
 class MulticastInterfaceItem(TypedDict, total=False):
@@ -90,8 +115,8 @@ class MulticastInterfaceItem(TypedDict, total=False):
     static_group: str
     rpf_nbr_fail_back: Literal["enable", "disable"]
     rpf_nbr_fail_back_filter: str
-    join_group: str | list[str]
-    igmp: str
+    join_group: str | list[str] | list[MulticastInterfaceJoingroupItem]
+    igmp: MulticastInterfaceIgmpDict
 
 
 class MulticastPayload(TypedDict, total=False):
@@ -121,6 +146,57 @@ class MulticastResponse(TypedDict, total=False):
 # ================================================================
 # Response Types (Class for attribute access)
 # ================================================================
+
+
+class MulticastPimsmglobalvrfItemObject(FortiObject[MulticastPimsmglobalvrfItem]):
+    """Typed object for pim-sm-global-vrf table items with attribute access."""
+    vrf: int
+    bsr_candidate: Literal["enable", "disable"]
+    bsr_interface: str
+    bsr_priority: int
+    bsr_hash: int
+    bsr_allow_quick_refresh: Literal["enable", "disable"]
+    cisco_crp_prefix: Literal["enable", "disable"]
+    rp_address: FortiObjectList[MulticastPimsmglobalvrfRpaddressItemObject]
+
+
+class MulticastInterfaceItemObject(FortiObject[MulticastInterfaceItem]):
+    """Typed object for interface table items with attribute access."""
+    name: str
+    ttl_threshold: int
+    pim_mode: Literal["sparse-mode", "dense-mode"]
+    passive: Literal["enable", "disable"]
+    bfd: Literal["enable", "disable"]
+    neighbour_filter: str
+    hello_interval: int
+    hello_holdtime: int
+    cisco_exclude_genid: Literal["enable", "disable"]
+    dr_priority: int
+    propagation_delay: int
+    state_refresh_interval: int
+    rp_candidate: Literal["enable", "disable"]
+    rp_candidate_group: str
+    rp_candidate_priority: int
+    rp_candidate_interval: int
+    multicast_flow: str
+    static_group: str
+    rpf_nbr_fail_back: Literal["enable", "disable"]
+    rpf_nbr_fail_back_filter: str
+    join_group: FortiObjectList[MulticastInterfaceJoingroupItemObject]
+    igmp: MulticastInterfaceIgmpObject
+
+
+class MulticastInterfaceIgmpObject(FortiObject):
+    """Nested object for interface.igmp field with attribute access."""
+    access_group: str
+    version: Literal["3", "2", "1"]
+    immediate_leave_group: str
+    last_member_query_interval: int
+    last_member_query_count: int
+    query_max_response_time: int
+    query_interval: int
+    query_timeout: int
+    router_alert_check: Literal["enable", "disable"]
 
 
 class MulticastPimsmglobalObject(FortiObject):
@@ -160,8 +236,8 @@ class MulticastObject(FortiObject):
     route_limit: int
     multicast_routing: Literal["enable", "disable"]
     pim_sm_global: MulticastPimsmglobalObject
-    pim_sm_global_vrf: list[MulticastPimsmglobalvrfItem]
-    interface: list[MulticastInterfaceItem]
+    pim_sm_global_vrf: FortiObjectList[MulticastPimsmglobalvrfItemObject]
+    interface: FortiObjectList[MulticastInterfaceItemObject]
 
 
 # ================================================================

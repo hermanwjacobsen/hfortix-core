@@ -7,6 +7,114 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.5.115] - 2026-01-19
+
+### Fixed
+
+- **Generator: Complex fields nested in table items**: Fixed code generator to properly handle complex fields nested within table items (e.g., `router.multicast.interface.igmp`):
+  - **Type Stubs (.pyi)**: Now generates proper TypedDict for nested complex fields instead of typing them as `str`
+    - Before: `igmp: str` ❌
+    - After: `igmp: MulticastInterfaceIgmpDict` ✅ (with all nested fields properly typed)
+  - **Pydantic Models**: Fixed to generate single object type for complex fields instead of list
+    - Before: `igmp: list[MulticastInterfaceIgmp] = Field(default_factory=list, ...)` ❌
+    - After: `igmp: MulticastInterfaceIgmp | None = Field(default=None, ...)` ✅
+  - **Template Changes**:
+    - Updated `endpoint_class.pyi.j2`: Added two-pass generation to create nested TypedDicts before parent types
+    - Updated `model_generator.py`: Added category check (`'complex'` vs `'table'`) to determine if field is single object or list
+  - **Impact**: Fixes type errors for all endpoints with nested complex fields (e.g., `firewall.profile-protocol-options`, `ssl-ssh-profile`, etc.)
+
+## [0.5.114] - 2026-01-18
+
+### Added
+
+- **Tests: Comprehensive Router Protocol Tests**: Added 11 new tests across 3 files for CMDB router endpoints:
+  - **BGP Tests** (`bgp.py` - 7 tests): Complete BGP configuration workflow including AS number, router ID, neighbors (with preservation of existing neighbors), neighbor groups, and neighbor ranges
+  - **BFD IPv4 Tests** (`router_bfd.py` - 2 tests): Bidirectional Forwarding Detection for IPv4 with dynamic interface discovery
+  - **BFD IPv6 Tests** (`router_bfd6.py` - 2 tests): Bidirectional Forwarding Detection for IPv6 with /128 subnet handling and automatic IP calculation
+  - All tests include comprehensive cleanup functions and dynamic configuration discovery
+  - Tests validate nested object access patterns and FortiObjectList functionality
+
+### Added
+
+- **Tests: Comprehensive CMDB Endpoint Test Suite**: Added 592 tests across 141 test files covering firewall, router, IPS, logging, and other CMDB endpoints:
+  - **Firewall (77 files, 289 tests)**: Complete coverage of addresses, policies, VIPs, schedules, shapers, services, SSL settings, and internet service objects
+  - **Log (42 files, 193 tests)**: FortiAnalyzer, syslog, disk, memory, TACACS+, threat weight, and custom field configurations
+  - **IPS (8 files, 33 tests)**: Custom signatures, decoders, sensors, rules, and global settings
+  - **Router (6 files, 24 tests)**: Access lists (IPv4/IPv6), AS-path lists, auth paths, BFD (IPv4/IPv6), and BGP (7 comprehensive tests)
+  - **Other (8 files, 53 tests)**: Endpoint control, file filter, FTP proxy, ICAP profiles/servers, report settings
+  - All tests include GET/POST/PUT/DELETE operations with comprehensive cleanup functions
+  - Tests validate nested object access, FortiObjectList functionality, and dynamic configuration discovery
+
+### Fixed
+
+- **Runtime: Empty list handling for table fields**: Updated `FortiObject.__getattr__()` to always wrap list-type fields in `FortiObjectList`, even when empty. This ensures the `.dict` property is always available:
+  - **Before**: Empty lists returned as plain Python `list`, causing `AttributeError` when accessing `.dict`
+  - **After**: Empty lists wrapped in `FortiObjectList([])`, providing consistent `.dict` access
+  - **Example**: `config.neighbor_group.dict` now works even when `neighbor_group` is empty
+  - Fixes cleanup operations: `fgt.api.cmdb.router.bgp.put(neighbor_group=[])` followed by `.get().neighbor_group.dict`
+  
+- **Type Stubs: Simplified table field annotations**: Removed `| list` union type since runtime now always returns `FortiObjectList`
+
+- **Documentation: BGP Field Access Issue Identified**: Documented workaround for BGP "as" field - API returns `"as": "65001"` but library attribute access via `.asn` returns `None`. Workaround: use `result.raw.get('results', {}).get('as', '')` until keyword mapping is fixed
+
+- **Documentation: BFD6 Field Name Mismatch**: Identified type stub inconsistency - stubs use `ip6_address` (underscore) but API expects `"ip6-address"` (hyphen) at runtime
+
+## [0.5.113] - 2026-01-18
+
+### Added
+
+- **Type Stubs: Empty list type annotation**: Initial attempt to handle empty lists by adding `| list` union type (superseded by runtime fix in v0.5.114)
+
+## [0.5.112] - 2026-01-18
+
+### Added
+
+- **Type Checking: Full type inference for table/list field items**: Generated typed object classes for all table field items to enable complete type checking support in IDEs. Each table item now has explicit property definitions for all fields:
+  - **Example**: `BgpNeighborItemObject` class with typed properties (`ip: str`, `remote_as: str`, etc.)
+  - **Before**: `neighbor.ip` showed as `Unknown` in Pylance (worked at runtime but no type checking)
+  - **After**: `neighbor.ip` shows as `str` with full autocomplete and type validation
+  - Applies to all 1000+ endpoints with table/list fields (firewall policies, BGP neighbors, addresses, etc.)
+  - Type inference now works for: `for item in config.field: print(item.property)`
+  - Compatible with all access patterns: attribute access, dict access, and list .dict property
+
+- **Type Checking: Enhanced FortiObject generic typing**: Updated `FortiObject.dict` property to return the generic type parameter instead of `dict[str, Any]`:
+  - Enables typed dict access: `neighbor.dict` returns `BgpNeighborItem` (TypedDict)
+  - Supports both runtime convenience and static type checking
+
+### Changed
+
+- **Generator: Template updated to generate ItemObject classes**: Modified `endpoint_class.pyi.j2` template to generate both TypedDict definitions (for dict-style access) and Object classes (for attribute access) for all table fields
+  - Field type changed from `FortiObjectList[FortiObject[TypedDict]]` to `FortiObjectList[ItemObject]`
+  - ItemObject classes inherit from `FortiObject[TypedDict]` and define all properties explicitly
+
+### Fixed
+
+- **Type Stubs: Added `__getitem__` method to FortiObject stub**: Previously intentionally omitted, now added to support both attribute and dict-style access patterns in type checking
+
+## [0.5.111] - 2026-01-18
+
+### Fixed
+
+- **API Responses: Reverse keyword mapping for Python keyword fields**: Added bidirectional keyword mapping to support API responses containing Python keyword fields. The `FortiObject` class now correctly maps API keyword fields to safe Python attribute names when receiving responses:
+  - **Inbound (NEW)**: API `{"as": "65001"}` → Python `result.asn` returns `"65001"`
+  - **Outbound (v0.5.110)**: Python `asn="65000"` → API `{"as": "65000"}`
+  - Fixes: `result.asn` now works correctly for BGP configurations, `class_` for RADIUS, `type_` for firewall pools
+  - Updated `FortiObject.__getattr__()` and `FortiObject.get_full()` methods
+  - Completes the keyword handling feature from v0.5.110 with full bidirectional support
+
+## [0.5.110] - 2026-01-18
+
+### Fixed
+
+- **API Field Names: Python keyword conflict resolution**: Added automatic mapping for Python keywords that were renamed to avoid conflicts. The payload builders now correctly convert these renamed parameters back to their original API field names:
+  - **BGP AS number**: `asn="65000"` → `{"as": "65000"}` (was incorrectly sent as `"asn"`)
+  - **RADIUS class field**: `class_=[{"name": "test"}]` → `{"class": [{"name": "test"}]}` (was sent as `"class-"`)
+  - **Firewall type field**: `type_="overload"` → `{"type": "overload"}` (was sent as `"type-"`)
+  - **Other keywords**: `from_` → `"from"`, `import_` → `"import"`, `global_` → `"global"`
+  - Generator uses trailing underscores (`class_`, `type_`) or alternate names (`asn`) to avoid Python syntax errors
+  - Updated `build_cmdb_payload()`, `build_cmdb_payload_normalized()`, and `build_api_payload()` functions
+  - Fixes: BGP configuration, RADIUS class attributes, firewall IP pools, and all other keyword-conflicted fields
+
 ## [0.5.109] - 2026-01-18
 
 ### Fixed
