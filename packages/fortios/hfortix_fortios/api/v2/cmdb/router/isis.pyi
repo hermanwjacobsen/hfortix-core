@@ -198,6 +198,80 @@ class IsisResponse(TypedDict, total=False):
 # ================================================================
 
 
+class IsisIsisnetItemObject(FortiObject[IsisIsisnetItem]):
+    """Typed object for isis-net table items with attribute access."""
+    id: int
+    net: str
+
+
+class IsisIsisinterfaceItemObject(FortiObject[IsisIsisinterfaceItem]):
+    """Typed object for isis-interface table items with attribute access."""
+    name: str
+    status: Literal["enable", "disable"]
+    status6: Literal["enable", "disable"]
+    network_type: Literal["broadcast", "point-to-point", "loopback"]
+    circuit_type: Literal["level-1-2", "level-1", "level-2"]
+    csnp_interval_l1: int
+    csnp_interval_l2: int
+    hello_interval_l1: int
+    hello_interval_l2: int
+    hello_multiplier_l1: int
+    hello_multiplier_l2: int
+    hello_padding: Literal["enable", "disable"]
+    lsp_interval: int
+    lsp_retransmit_interval: int
+    metric_l1: int
+    metric_l2: int
+    wide_metric_l1: int
+    wide_metric_l2: int
+    auth_password_l1: str
+    auth_password_l2: str
+    auth_keychain_l1: str
+    auth_keychain_l2: str
+    auth_send_only_l1: Literal["enable", "disable"]
+    auth_send_only_l2: Literal["enable", "disable"]
+    auth_mode_l1: Literal["md5", "password"]
+    auth_mode_l2: Literal["md5", "password"]
+    priority_l1: int
+    priority_l2: int
+    mesh_group: Literal["enable", "disable"]
+    mesh_group_id: int
+
+
+class IsisSummaryaddressItemObject(FortiObject[IsisSummaryaddressItem]):
+    """Typed object for summary-address table items with attribute access."""
+    id: int
+    prefix: str
+    level: Literal["level-1-2", "level-1", "level-2"]
+
+
+class IsisSummaryaddress6ItemObject(FortiObject[IsisSummaryaddress6Item]):
+    """Typed object for summary-address6 table items with attribute access."""
+    id: int
+    prefix6: str
+    level: Literal["level-1-2", "level-1", "level-2"]
+
+
+class IsisRedistributeItemObject(FortiObject[IsisRedistributeItem]):
+    """Typed object for redistribute table items with attribute access."""
+    protocol: str
+    status: Literal["enable", "disable"]
+    metric: int
+    metric_type: Literal["external", "internal"]
+    level: Literal["level-1-2", "level-1", "level-2"]
+    routemap: str
+
+
+class IsisRedistribute6ItemObject(FortiObject[IsisRedistribute6Item]):
+    """Typed object for redistribute6 table items with attribute access."""
+    protocol: str
+    status: Literal["enable", "disable"]
+    metric: int
+    metric_type: Literal["external", "internal"]
+    level: Literal["level-1-2", "level-1", "level-2"]
+    routemap: str
+
+
 class IsisObject(FortiObject):
     """Typed FortiObject for Isis with field access."""
     is_type: Literal["level-1-2", "level-1", "level-2-only"]
@@ -235,12 +309,12 @@ class IsisObject(FortiObject):
     redistribute6_l1_list: str
     redistribute6_l2: Literal["enable", "disable"]
     redistribute6_l2_list: str
-    isis_net: list[IsisIsisnetItem]
-    isis_interface: list[IsisIsisinterfaceItem]
-    summary_address: list[IsisSummaryaddressItem]
-    summary_address6: list[IsisSummaryaddress6Item]
-    redistribute: list[IsisRedistributeItem]
-    redistribute6: list[IsisRedistribute6Item]
+    isis_net: FortiObjectList[IsisIsisnetItemObject]
+    isis_interface: FortiObjectList[IsisIsisinterfaceItemObject]
+    summary_address: FortiObjectList[IsisSummaryaddressItemObject]
+    summary_address6: FortiObjectList[IsisSummaryaddress6ItemObject]
+    redistribute: FortiObjectList[IsisRedistributeItemObject]
+    redistribute6: FortiObjectList[IsisRedistribute6ItemObject]
 
 
 # ================================================================

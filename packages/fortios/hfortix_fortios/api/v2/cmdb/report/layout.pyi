@@ -26,14 +26,21 @@ from hfortix_fortios.models import (
 # TypedDict Payloads
 # ================================================================
 
+class LayoutBodyitemParametersItem(TypedDict, total=False):
+    """Nested item for body-item.parameters field."""
+    id: int
+    name: str
+    value: str
+
+
 class LayoutPageDict(TypedDict, total=False):
     """Nested object type for page field."""
     paper: Literal["a4", "letter"]
     column_break_before: Literal["heading1", "heading2", "heading3"]
     page_break_before: Literal["heading1", "heading2", "heading3"]
     options: Literal["header-on-first-page", "footer-on-first-page"]
-    header: str
-    footer: str
+    header: LayoutPageHeaderDict
+    footer: LayoutPageFooterDict
 
 
 class LayoutBodyitemItem(TypedDict, total=False):
@@ -43,7 +50,7 @@ class LayoutBodyitemItem(TypedDict, total=False):
     type: Literal["text", "image", "chart", "misc"]
     style: str
     top_n: int
-    parameters: str | list[str]
+    parameters: str | list[str] | list[LayoutBodyitemParametersItem]
     text_component: Literal["text", "heading1", "heading2", "heading3"]
     content: str
     img_src: str
@@ -104,6 +111,23 @@ class LayoutResponse(TypedDict, total=False):
 # ================================================================
 
 
+class LayoutBodyitemItemObject(FortiObject[LayoutBodyitemItem]):
+    """Typed object for body-item table items with attribute access."""
+    id: int
+    description: str
+    type: Literal["text", "image", "chart", "misc"]
+    style: str
+    top_n: int
+    parameters: FortiObjectList[LayoutBodyitemParametersItemObject]
+    text_component: Literal["text", "heading1", "heading2", "heading3"]
+    content: str
+    img_src: str
+    chart: str
+    chart_options: Literal["include-no-data", "hide-title", "show-caption"]
+    misc_component: Literal["hline", "page-break", "column-break", "section-start"]
+    title: str
+
+
 class LayoutPageObject(FortiObject):
     """Nested object for page field with attribute access."""
     paper: Literal["a4", "letter"]
@@ -132,7 +156,7 @@ class LayoutObject(FortiObject):
     email_recipients: str
     max_pdf_report: int
     page: LayoutPageObject
-    body_item: list[LayoutBodyitemItem]
+    body_item: FortiObjectList[LayoutBodyitemItemObject]
 
 
 # ================================================================

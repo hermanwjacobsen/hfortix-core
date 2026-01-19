@@ -26,6 +26,78 @@ from hfortix_fortios.models import (
 # TypedDict Payloads
 # ================================================================
 
+class WebProxyApigatewayQuicDict(TypedDict, total=False):
+    """Nested object type for api-gateway.quic field."""
+    max_idle_timeout: int
+    max_udp_payload_size: int
+    active_connection_id_limit: int
+    ack_delay_exponent: int
+    max_ack_delay: int
+    max_datagram_frame_size: int
+    active_migration: Literal["enable", "disable"]
+    grease_quic_bit: Literal["enable", "disable"]
+
+
+class WebProxyApigatewayRealserversItem(TypedDict, total=False):
+    """Nested item for api-gateway.realservers field."""
+    id: int
+    addr_type: Literal["ip", "fqdn"]
+    address: str
+    ip: str
+    port: int
+    status: Literal["active", "standby", "disable"]
+    weight: int
+    http_host: str
+    health_check: Literal["disable", "enable"]
+    health_check_proto: Literal["ping", "http", "tcp-connect"]
+    holddown_interval: Literal["enable", "disable"]
+    translate_host: Literal["enable", "disable"]
+    verify_cert: Literal["enable", "disable"]
+
+
+class WebProxyApigatewaySslciphersuitesItem(TypedDict, total=False):
+    """Nested item for api-gateway.ssl-cipher-suites field."""
+    priority: int
+    cipher: Literal["TLS-AES-128-GCM-SHA256", "TLS-AES-256-GCM-SHA384", "TLS-CHACHA20-POLY1305-SHA256", "TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256", "TLS-ECDHE-ECDSA-WITH-CHACHA20-POLY1305-SHA256", "TLS-DHE-RSA-WITH-CHACHA20-POLY1305-SHA256", "TLS-DHE-RSA-WITH-AES-128-CBC-SHA", "TLS-DHE-RSA-WITH-AES-256-CBC-SHA", "TLS-DHE-RSA-WITH-AES-128-CBC-SHA256", "TLS-DHE-RSA-WITH-AES-128-GCM-SHA256", "TLS-DHE-RSA-WITH-AES-256-CBC-SHA256", "TLS-DHE-RSA-WITH-AES-256-GCM-SHA384", "TLS-DHE-DSS-WITH-AES-128-CBC-SHA", "TLS-DHE-DSS-WITH-AES-256-CBC-SHA", "TLS-DHE-DSS-WITH-AES-128-CBC-SHA256", "TLS-DHE-DSS-WITH-AES-128-GCM-SHA256", "TLS-DHE-DSS-WITH-AES-256-CBC-SHA256", "TLS-DHE-DSS-WITH-AES-256-GCM-SHA384", "TLS-ECDHE-RSA-WITH-AES-128-CBC-SHA", "TLS-ECDHE-RSA-WITH-AES-128-CBC-SHA256", "TLS-ECDHE-RSA-WITH-AES-128-GCM-SHA256", "TLS-ECDHE-RSA-WITH-AES-256-CBC-SHA", "TLS-ECDHE-RSA-WITH-AES-256-CBC-SHA384", "TLS-ECDHE-RSA-WITH-AES-256-GCM-SHA384", "TLS-ECDHE-ECDSA-WITH-AES-128-CBC-SHA", "TLS-ECDHE-ECDSA-WITH-AES-128-CBC-SHA256", "TLS-ECDHE-ECDSA-WITH-AES-128-GCM-SHA256", "TLS-ECDHE-ECDSA-WITH-AES-256-CBC-SHA", "TLS-ECDHE-ECDSA-WITH-AES-256-CBC-SHA384", "TLS-ECDHE-ECDSA-WITH-AES-256-GCM-SHA384", "TLS-RSA-WITH-AES-128-CBC-SHA", "TLS-RSA-WITH-AES-256-CBC-SHA", "TLS-RSA-WITH-AES-128-CBC-SHA256", "TLS-RSA-WITH-AES-128-GCM-SHA256", "TLS-RSA-WITH-AES-256-CBC-SHA256", "TLS-RSA-WITH-AES-256-GCM-SHA384", "TLS-RSA-WITH-CAMELLIA-128-CBC-SHA", "TLS-RSA-WITH-CAMELLIA-256-CBC-SHA", "TLS-RSA-WITH-CAMELLIA-128-CBC-SHA256", "TLS-RSA-WITH-CAMELLIA-256-CBC-SHA256", "TLS-DHE-RSA-WITH-3DES-EDE-CBC-SHA", "TLS-DHE-RSA-WITH-CAMELLIA-128-CBC-SHA", "TLS-DHE-DSS-WITH-CAMELLIA-128-CBC-SHA", "TLS-DHE-RSA-WITH-CAMELLIA-256-CBC-SHA", "TLS-DHE-DSS-WITH-CAMELLIA-256-CBC-SHA", "TLS-DHE-RSA-WITH-CAMELLIA-128-CBC-SHA256", "TLS-DHE-DSS-WITH-CAMELLIA-128-CBC-SHA256", "TLS-DHE-RSA-WITH-CAMELLIA-256-CBC-SHA256", "TLS-DHE-DSS-WITH-CAMELLIA-256-CBC-SHA256", "TLS-DHE-RSA-WITH-SEED-CBC-SHA", "TLS-DHE-DSS-WITH-SEED-CBC-SHA", "TLS-DHE-RSA-WITH-ARIA-128-CBC-SHA256", "TLS-DHE-RSA-WITH-ARIA-256-CBC-SHA384", "TLS-DHE-DSS-WITH-ARIA-128-CBC-SHA256", "TLS-DHE-DSS-WITH-ARIA-256-CBC-SHA384", "TLS-RSA-WITH-SEED-CBC-SHA", "TLS-RSA-WITH-ARIA-128-CBC-SHA256", "TLS-RSA-WITH-ARIA-256-CBC-SHA384", "TLS-ECDHE-RSA-WITH-ARIA-128-CBC-SHA256", "TLS-ECDHE-RSA-WITH-ARIA-256-CBC-SHA384", "TLS-ECDHE-ECDSA-WITH-ARIA-128-CBC-SHA256", "TLS-ECDHE-ECDSA-WITH-ARIA-256-CBC-SHA384", "TLS-ECDHE-RSA-WITH-RC4-128-SHA", "TLS-ECDHE-RSA-WITH-3DES-EDE-CBC-SHA", "TLS-DHE-DSS-WITH-3DES-EDE-CBC-SHA", "TLS-RSA-WITH-3DES-EDE-CBC-SHA", "TLS-RSA-WITH-RC4-128-MD5", "TLS-RSA-WITH-RC4-128-SHA", "TLS-DHE-RSA-WITH-DES-CBC-SHA", "TLS-DHE-DSS-WITH-DES-CBC-SHA", "TLS-RSA-WITH-DES-CBC-SHA"]
+    versions: Literal["tls-1.0", "tls-1.1", "tls-1.2", "tls-1.3"]
+
+
+class WebProxyApigateway6QuicDict(TypedDict, total=False):
+    """Nested object type for api-gateway6.quic field."""
+    max_idle_timeout: int
+    max_udp_payload_size: int
+    active_connection_id_limit: int
+    ack_delay_exponent: int
+    max_ack_delay: int
+    max_datagram_frame_size: int
+    active_migration: Literal["enable", "disable"]
+    grease_quic_bit: Literal["enable", "disable"]
+
+
+class WebProxyApigateway6RealserversItem(TypedDict, total=False):
+    """Nested item for api-gateway6.realservers field."""
+    id: int
+    addr_type: Literal["ip", "fqdn"]
+    address: str
+    ip: str
+    port: int
+    status: Literal["active", "standby", "disable"]
+    weight: int
+    http_host: str
+    health_check: Literal["disable", "enable"]
+    health_check_proto: Literal["ping", "http", "tcp-connect"]
+    holddown_interval: Literal["enable", "disable"]
+    translate_host: Literal["enable", "disable"]
+    verify_cert: Literal["enable", "disable"]
+
+
+class WebProxyApigateway6SslciphersuitesItem(TypedDict, total=False):
+    """Nested item for api-gateway6.ssl-cipher-suites field."""
+    priority: int
+    cipher: Literal["TLS-AES-128-GCM-SHA256", "TLS-AES-256-GCM-SHA384", "TLS-CHACHA20-POLY1305-SHA256", "TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256", "TLS-ECDHE-ECDSA-WITH-CHACHA20-POLY1305-SHA256", "TLS-DHE-RSA-WITH-CHACHA20-POLY1305-SHA256", "TLS-DHE-RSA-WITH-AES-128-CBC-SHA", "TLS-DHE-RSA-WITH-AES-256-CBC-SHA", "TLS-DHE-RSA-WITH-AES-128-CBC-SHA256", "TLS-DHE-RSA-WITH-AES-128-GCM-SHA256", "TLS-DHE-RSA-WITH-AES-256-CBC-SHA256", "TLS-DHE-RSA-WITH-AES-256-GCM-SHA384", "TLS-DHE-DSS-WITH-AES-128-CBC-SHA", "TLS-DHE-DSS-WITH-AES-256-CBC-SHA", "TLS-DHE-DSS-WITH-AES-128-CBC-SHA256", "TLS-DHE-DSS-WITH-AES-128-GCM-SHA256", "TLS-DHE-DSS-WITH-AES-256-CBC-SHA256", "TLS-DHE-DSS-WITH-AES-256-GCM-SHA384", "TLS-ECDHE-RSA-WITH-AES-128-CBC-SHA", "TLS-ECDHE-RSA-WITH-AES-128-CBC-SHA256", "TLS-ECDHE-RSA-WITH-AES-128-GCM-SHA256", "TLS-ECDHE-RSA-WITH-AES-256-CBC-SHA", "TLS-ECDHE-RSA-WITH-AES-256-CBC-SHA384", "TLS-ECDHE-RSA-WITH-AES-256-GCM-SHA384", "TLS-ECDHE-ECDSA-WITH-AES-128-CBC-SHA", "TLS-ECDHE-ECDSA-WITH-AES-128-CBC-SHA256", "TLS-ECDHE-ECDSA-WITH-AES-128-GCM-SHA256", "TLS-ECDHE-ECDSA-WITH-AES-256-CBC-SHA", "TLS-ECDHE-ECDSA-WITH-AES-256-CBC-SHA384", "TLS-ECDHE-ECDSA-WITH-AES-256-GCM-SHA384", "TLS-RSA-WITH-AES-128-CBC-SHA", "TLS-RSA-WITH-AES-256-CBC-SHA", "TLS-RSA-WITH-AES-128-CBC-SHA256", "TLS-RSA-WITH-AES-128-GCM-SHA256", "TLS-RSA-WITH-AES-256-CBC-SHA256", "TLS-RSA-WITH-AES-256-GCM-SHA384", "TLS-RSA-WITH-CAMELLIA-128-CBC-SHA", "TLS-RSA-WITH-CAMELLIA-256-CBC-SHA", "TLS-RSA-WITH-CAMELLIA-128-CBC-SHA256", "TLS-RSA-WITH-CAMELLIA-256-CBC-SHA256", "TLS-DHE-RSA-WITH-3DES-EDE-CBC-SHA", "TLS-DHE-RSA-WITH-CAMELLIA-128-CBC-SHA", "TLS-DHE-DSS-WITH-CAMELLIA-128-CBC-SHA", "TLS-DHE-RSA-WITH-CAMELLIA-256-CBC-SHA", "TLS-DHE-DSS-WITH-CAMELLIA-256-CBC-SHA", "TLS-DHE-RSA-WITH-CAMELLIA-128-CBC-SHA256", "TLS-DHE-DSS-WITH-CAMELLIA-128-CBC-SHA256", "TLS-DHE-RSA-WITH-CAMELLIA-256-CBC-SHA256", "TLS-DHE-DSS-WITH-CAMELLIA-256-CBC-SHA256", "TLS-DHE-RSA-WITH-SEED-CBC-SHA", "TLS-DHE-DSS-WITH-SEED-CBC-SHA", "TLS-DHE-RSA-WITH-ARIA-128-CBC-SHA256", "TLS-DHE-RSA-WITH-ARIA-256-CBC-SHA384", "TLS-DHE-DSS-WITH-ARIA-128-CBC-SHA256", "TLS-DHE-DSS-WITH-ARIA-256-CBC-SHA384", "TLS-RSA-WITH-SEED-CBC-SHA", "TLS-RSA-WITH-ARIA-128-CBC-SHA256", "TLS-RSA-WITH-ARIA-256-CBC-SHA384", "TLS-ECDHE-RSA-WITH-ARIA-128-CBC-SHA256", "TLS-ECDHE-RSA-WITH-ARIA-256-CBC-SHA384", "TLS-ECDHE-ECDSA-WITH-ARIA-128-CBC-SHA256", "TLS-ECDHE-ECDSA-WITH-ARIA-256-CBC-SHA384", "TLS-ECDHE-RSA-WITH-RC4-128-SHA", "TLS-ECDHE-RSA-WITH-3DES-EDE-CBC-SHA", "TLS-DHE-DSS-WITH-3DES-EDE-CBC-SHA", "TLS-RSA-WITH-3DES-EDE-CBC-SHA", "TLS-RSA-WITH-RC4-128-MD5", "TLS-RSA-WITH-RC4-128-SHA", "TLS-DHE-RSA-WITH-DES-CBC-SHA", "TLS-DHE-DSS-WITH-DES-CBC-SHA", "TLS-RSA-WITH-DES-CBC-SHA"]
+    versions: Literal["tls-1.0", "tls-1.1", "tls-1.2", "tls-1.3"]
+
+
 class WebProxyApigatewayItem(TypedDict, total=False):
     """Nested item for api-gateway field."""
     id: int
@@ -35,8 +107,8 @@ class WebProxyApigatewayItem(TypedDict, total=False):
     url_map_type: Literal["sub-string", "wildcard", "regex"]
     h2_support: Literal["enable", "disable"]
     h3_support: Literal["enable", "disable"]
-    quic: str
-    realservers: str | list[str]
+    quic: WebProxyApigatewayQuicDict
+    realservers: str | list[str] | list[WebProxyApigatewayRealserversItem]
     persistence: Literal["none", "http-cookie"]
     http_cookie_domain_from_host: Literal["disable", "enable"]
     http_cookie_domain: str
@@ -47,7 +119,7 @@ class WebProxyApigatewayItem(TypedDict, total=False):
     https_cookie_secure: Literal["disable", "enable"]
     ssl_dh_bits: Literal["768", "1024", "1536", "2048", "3072", "4096"]
     ssl_algorithm: Literal["high", "medium", "low"]
-    ssl_cipher_suites: str | list[str]
+    ssl_cipher_suites: str | list[str] | list[WebProxyApigatewaySslciphersuitesItem]
     ssl_min_version: Literal["tls-1.0", "tls-1.1", "tls-1.2", "tls-1.3"]
     ssl_max_version: Literal["tls-1.0", "tls-1.1", "tls-1.2", "tls-1.3"]
     ssl_renegotiation: Literal["enable", "disable"]
@@ -62,8 +134,8 @@ class WebProxyApigateway6Item(TypedDict, total=False):
     url_map_type: Literal["sub-string", "wildcard", "regex"]
     h2_support: Literal["enable", "disable"]
     h3_support: Literal["enable", "disable"]
-    quic: str
-    realservers: str | list[str]
+    quic: WebProxyApigateway6QuicDict
+    realservers: str | list[str] | list[WebProxyApigateway6RealserversItem]
     persistence: Literal["none", "http-cookie"]
     http_cookie_domain_from_host: Literal["disable", "enable"]
     http_cookie_domain: str
@@ -74,7 +146,7 @@ class WebProxyApigateway6Item(TypedDict, total=False):
     https_cookie_secure: Literal["disable", "enable"]
     ssl_dh_bits: Literal["768", "1024", "1536", "2048", "3072", "4096"]
     ssl_algorithm: Literal["high", "medium", "low"]
-    ssl_cipher_suites: str | list[str]
+    ssl_cipher_suites: str | list[str] | list[WebProxyApigateway6SslciphersuitesItem]
     ssl_min_version: Literal["tls-1.0", "tls-1.1", "tls-1.2", "tls-1.3"]
     ssl_max_version: Literal["tls-1.0", "tls-1.1", "tls-1.2", "tls-1.3"]
     ssl_renegotiation: Literal["enable", "disable"]
@@ -125,6 +197,84 @@ class WebProxyResponse(TypedDict, total=False):
 # ================================================================
 
 
+class WebProxyApigatewayItemObject(FortiObject[WebProxyApigatewayItem]):
+    """Typed object for api-gateway table items with attribute access."""
+    id: int
+    url_map: str
+    service: Literal["http", "https"]
+    ldb_method: Literal["static", "round-robin", "weighted", "first-alive", "http-host"]
+    url_map_type: Literal["sub-string", "wildcard", "regex"]
+    h2_support: Literal["enable", "disable"]
+    h3_support: Literal["enable", "disable"]
+    quic: WebProxyApigatewayQuicObject
+    realservers: FortiObjectList[WebProxyApigatewayRealserversItemObject]
+    persistence: Literal["none", "http-cookie"]
+    http_cookie_domain_from_host: Literal["disable", "enable"]
+    http_cookie_domain: str
+    http_cookie_path: str
+    http_cookie_generation: int
+    http_cookie_age: int
+    http_cookie_share: Literal["disable", "same-ip"]
+    https_cookie_secure: Literal["disable", "enable"]
+    ssl_dh_bits: Literal["768", "1024", "1536", "2048", "3072", "4096"]
+    ssl_algorithm: Literal["high", "medium", "low"]
+    ssl_cipher_suites: FortiObjectList[WebProxyApigatewaySslciphersuitesItemObject]
+    ssl_min_version: Literal["tls-1.0", "tls-1.1", "tls-1.2", "tls-1.3"]
+    ssl_max_version: Literal["tls-1.0", "tls-1.1", "tls-1.2", "tls-1.3"]
+    ssl_renegotiation: Literal["enable", "disable"]
+
+
+class WebProxyApigateway6ItemObject(FortiObject[WebProxyApigateway6Item]):
+    """Typed object for api-gateway6 table items with attribute access."""
+    id: int
+    url_map: str
+    service: Literal["http", "https"]
+    ldb_method: Literal["static", "round-robin", "weighted", "first-alive", "http-host"]
+    url_map_type: Literal["sub-string", "wildcard", "regex"]
+    h2_support: Literal["enable", "disable"]
+    h3_support: Literal["enable", "disable"]
+    quic: WebProxyApigateway6QuicObject
+    realservers: FortiObjectList[WebProxyApigateway6RealserversItemObject]
+    persistence: Literal["none", "http-cookie"]
+    http_cookie_domain_from_host: Literal["disable", "enable"]
+    http_cookie_domain: str
+    http_cookie_path: str
+    http_cookie_generation: int
+    http_cookie_age: int
+    http_cookie_share: Literal["disable", "same-ip"]
+    https_cookie_secure: Literal["disable", "enable"]
+    ssl_dh_bits: Literal["768", "1024", "1536", "2048", "3072", "4096"]
+    ssl_algorithm: Literal["high", "medium", "low"]
+    ssl_cipher_suites: FortiObjectList[WebProxyApigateway6SslciphersuitesItemObject]
+    ssl_min_version: Literal["tls-1.0", "tls-1.1", "tls-1.2", "tls-1.3"]
+    ssl_max_version: Literal["tls-1.0", "tls-1.1", "tls-1.2", "tls-1.3"]
+    ssl_renegotiation: Literal["enable", "disable"]
+
+
+class WebProxyApigatewayQuicObject(FortiObject):
+    """Nested object for api-gateway.quic field with attribute access."""
+    max_idle_timeout: int
+    max_udp_payload_size: int
+    active_connection_id_limit: int
+    ack_delay_exponent: int
+    max_ack_delay: int
+    max_datagram_frame_size: int
+    active_migration: Literal["enable", "disable"]
+    grease_quic_bit: Literal["enable", "disable"]
+
+
+class WebProxyApigateway6QuicObject(FortiObject):
+    """Nested object for api-gateway6.quic field with attribute access."""
+    max_idle_timeout: int
+    max_udp_payload_size: int
+    active_connection_id_limit: int
+    ack_delay_exponent: int
+    max_ack_delay: int
+    max_datagram_frame_size: int
+    active_migration: Literal["enable", "disable"]
+    grease_quic_bit: Literal["enable", "disable"]
+
+
 class WebProxyObject(FortiObject):
     """Typed FortiObject for WebProxy with field access."""
     name: str
@@ -139,8 +289,8 @@ class WebProxyObject(FortiObject):
     svr_pool_ttl: int
     svr_pool_server_max_request: int
     svr_pool_server_max_concurrent_request: int
-    api_gateway: list[WebProxyApigatewayItem]
-    api_gateway6: list[WebProxyApigateway6Item]
+    api_gateway: FortiObjectList[WebProxyApigatewayItemObject]
+    api_gateway6: FortiObjectList[WebProxyApigateway6ItemObject]
 
 
 # ================================================================

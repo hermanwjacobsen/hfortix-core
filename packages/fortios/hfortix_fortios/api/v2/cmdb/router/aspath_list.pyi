@@ -54,10 +54,17 @@ class AspathListResponse(TypedDict, total=False):
 # ================================================================
 
 
+class AspathListRuleItemObject(FortiObject[AspathListRuleItem]):
+    """Typed object for rule table items with attribute access."""
+    id: int
+    action: Literal["deny", "permit"]
+    regexp: str
+
+
 class AspathListObject(FortiObject):
     """Typed FortiObject for AspathList with field access."""
     name: str
-    rule: list[AspathListRuleItem]
+    rule: FortiObjectList[AspathListRuleItemObject]
 
 
 # ================================================================

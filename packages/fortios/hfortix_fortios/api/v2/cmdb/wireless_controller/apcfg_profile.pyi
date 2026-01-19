@@ -68,6 +68,15 @@ class ApcfgProfileResponse(TypedDict, total=False):
 # ================================================================
 
 
+class ApcfgProfileCommandlistItemObject(FortiObject[ApcfgProfileCommandlistItem]):
+    """Typed object for command-list table items with attribute access."""
+    id: int
+    type: Literal["non-password", "password"]
+    name: str
+    value: str
+    passwd_value: str
+
+
 class ApcfgProfileObject(FortiObject):
     """Typed FortiObject for ApcfgProfile with field access."""
     name: str
@@ -77,7 +86,7 @@ class ApcfgProfileObject(FortiObject):
     ac_timer: int
     ac_ip: str
     ac_port: int
-    command_list: list[ApcfgProfileCommandlistItem]
+    command_list: FortiObjectList[ApcfgProfileCommandlistItemObject]
 
 
 # ================================================================

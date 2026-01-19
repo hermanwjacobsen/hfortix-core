@@ -57,9 +57,14 @@ class AuthPortalResponse(TypedDict, total=False):
 # ================================================================
 
 
+class AuthPortalGroupsItemObject(FortiObject[AuthPortalGroupsItem]):
+    """Typed object for groups table items with attribute access."""
+    name: str
+
+
 class AuthPortalObject(FortiObject):
     """Typed FortiObject for AuthPortal with field access."""
-    groups: list[AuthPortalGroupsItem]
+    groups: FortiObjectList[AuthPortalGroupsItemObject]
     portal_addr: str
     portal_addr6: str
     identity_based_route: str

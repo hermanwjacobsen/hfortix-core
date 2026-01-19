@@ -25,6 +25,50 @@ from hfortix_fortios.models import (
 # TypedDict Payloads
 # ================================================================
 
+class Ospf6AreaIpseckeysItem(TypedDict, total=False):
+    """Nested item for area.ipsec-keys field."""
+    spi: int
+    auth_key: str
+    enc_key: str
+
+
+class Ospf6AreaRangeItem(TypedDict, total=False):
+    """Nested item for area.range field."""
+    id: int
+    prefix6: str
+    advertise: Literal["disable", "enable"]
+
+
+class Ospf6AreaVirtuallinkItem(TypedDict, total=False):
+    """Nested item for area.virtual-link field."""
+    name: str
+    dead_interval: int
+    hello_interval: int
+    retransmit_interval: int
+    transmit_delay: int
+    peer: str
+    authentication: Literal["none", "ah", "esp", "area"]
+    key_rollover_interval: int
+    ipsec_auth_alg: Literal["md5", "sha1", "sha256", "sha384", "sha512"]
+    ipsec_enc_alg: Literal["null", "des", "3des", "aes128", "aes192", "aes256"]
+    ipsec_keys: str | list[str]
+
+
+class Ospf6Ospf6interfaceIpseckeysItem(TypedDict, total=False):
+    """Nested item for ospf6-interface.ipsec-keys field."""
+    spi: int
+    auth_key: str
+    enc_key: str
+
+
+class Ospf6Ospf6interfaceNeighborItem(TypedDict, total=False):
+    """Nested item for ospf6-interface.neighbor field."""
+    ip6: str
+    poll_interval: int
+    cost: int
+    priority: int
+
+
 class Ospf6AreaItem(TypedDict, total=False):
     """Nested item for area field."""
     id: str
@@ -40,9 +84,9 @@ class Ospf6AreaItem(TypedDict, total=False):
     key_rollover_interval: int
     ipsec_auth_alg: Literal["md5", "sha1", "sha256", "sha384", "sha512"]
     ipsec_enc_alg: Literal["null", "des", "3des", "aes128", "aes192", "aes256"]
-    ipsec_keys: str | list[str]
-    range: str | list[str]
-    virtual_link: str | list[str]
+    ipsec_keys: str | list[str] | list[Ospf6AreaIpseckeysItem]
+    range: str | list[str] | list[Ospf6AreaRangeItem]
+    virtual_link: str | list[str] | list[Ospf6AreaVirtuallinkItem]
 
 
 class Ospf6Ospf6interfaceItem(TypedDict, total=False):
@@ -65,8 +109,8 @@ class Ospf6Ospf6interfaceItem(TypedDict, total=False):
     key_rollover_interval: int
     ipsec_auth_alg: Literal["md5", "sha1", "sha256", "sha384", "sha512"]
     ipsec_enc_alg: Literal["null", "des", "3des", "aes128", "aes192", "aes256"]
-    ipsec_keys: str | list[str]
-    neighbor: str | list[str]
+    ipsec_keys: str | list[str] | list[Ospf6Ospf6interfaceIpseckeysItem]
+    neighbor: str | list[str] | list[Ospf6Ospf6interfaceNeighborItem]
 
 
 class Ospf6RedistributeItem(TypedDict, total=False):
@@ -146,6 +190,72 @@ class Ospf6Response(TypedDict, total=False):
 # ================================================================
 
 
+class Ospf6AreaItemObject(FortiObject[Ospf6AreaItem]):
+    """Typed object for area table items with attribute access."""
+    id: str
+    default_cost: int
+    nssa_translator_role: Literal["candidate", "never", "always"]
+    stub_type: Literal["no-summary", "summary"]
+    type: Literal["regular", "nssa", "stub"]
+    nssa_default_information_originate: Literal["enable", "disable"]
+    nssa_default_information_originate_metric: int
+    nssa_default_information_originate_metric_type: Literal["1", "2"]
+    nssa_redistribution: Literal["enable", "disable"]
+    authentication: Literal["none", "ah", "esp"]
+    key_rollover_interval: int
+    ipsec_auth_alg: Literal["md5", "sha1", "sha256", "sha384", "sha512"]
+    ipsec_enc_alg: Literal["null", "des", "3des", "aes128", "aes192", "aes256"]
+    ipsec_keys: FortiObjectList[Ospf6AreaIpseckeysItemObject]
+    range: FortiObjectList[Ospf6AreaRangeItemObject]
+    virtual_link: FortiObjectList[Ospf6AreaVirtuallinkItemObject]
+
+
+class Ospf6Ospf6interfaceItemObject(FortiObject[Ospf6Ospf6interfaceItem]):
+    """Typed object for ospf6-interface table items with attribute access."""
+    name: str
+    area_id: str
+    interface: str
+    retransmit_interval: int
+    transmit_delay: int
+    cost: int
+    priority: int
+    dead_interval: int
+    hello_interval: int
+    status: Literal["disable", "enable"]
+    network_type: Literal["broadcast", "point-to-point", "non-broadcast", "point-to-multipoint", "point-to-multipoint-non-broadcast"]
+    bfd: Literal["global", "enable", "disable"]
+    mtu: int
+    mtu_ignore: Literal["enable", "disable"]
+    authentication: Literal["none", "ah", "esp", "area"]
+    key_rollover_interval: int
+    ipsec_auth_alg: Literal["md5", "sha1", "sha256", "sha384", "sha512"]
+    ipsec_enc_alg: Literal["null", "des", "3des", "aes128", "aes192", "aes256"]
+    ipsec_keys: FortiObjectList[Ospf6Ospf6interfaceIpseckeysItemObject]
+    neighbor: FortiObjectList[Ospf6Ospf6interfaceNeighborItemObject]
+
+
+class Ospf6RedistributeItemObject(FortiObject[Ospf6RedistributeItem]):
+    """Typed object for redistribute table items with attribute access."""
+    name: str
+    status: Literal["enable", "disable"]
+    metric: int
+    routemap: str
+    metric_type: Literal["1", "2"]
+
+
+class Ospf6PassiveinterfaceItemObject(FortiObject[Ospf6PassiveinterfaceItem]):
+    """Typed object for passive-interface table items with attribute access."""
+    name: str
+
+
+class Ospf6SummaryaddressItemObject(FortiObject[Ospf6SummaryaddressItem]):
+    """Typed object for summary-address table items with attribute access."""
+    id: int
+    prefix6: str
+    advertise: Literal["disable", "enable"]
+    tag: int
+
+
 class Ospf6Object(FortiObject):
     """Typed FortiObject for Ospf6 with field access."""
     abr_type: Literal["cisco", "ibm", "standard"]
@@ -162,11 +272,11 @@ class Ospf6Object(FortiObject):
     restart_mode: Literal["none", "graceful-restart"]
     restart_period: int
     restart_on_topology_change: Literal["enable", "disable"]
-    area: list[Ospf6AreaItem]
-    ospf6_interface: list[Ospf6Ospf6interfaceItem]
-    redistribute: list[Ospf6RedistributeItem]
-    passive_interface: list[Ospf6PassiveinterfaceItem]
-    summary_address: list[Ospf6SummaryaddressItem]
+    area: FortiObjectList[Ospf6AreaItemObject]
+    ospf6_interface: FortiObjectList[Ospf6Ospf6interfaceItemObject]
+    redistribute: FortiObjectList[Ospf6RedistributeItemObject]
+    passive_interface: FortiObjectList[Ospf6PassiveinterfaceItemObject]
+    summary_address: FortiObjectList[Ospf6SummaryaddressItemObject]
 
 
 # ================================================================

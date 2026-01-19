@@ -53,10 +53,16 @@ class H2qpOsuProviderNaiResponse(TypedDict, total=False):
 # ================================================================
 
 
+class H2qpOsuProviderNaiNailistItemObject(FortiObject[H2qpOsuProviderNaiNailistItem]):
+    """Typed object for nai-list table items with attribute access."""
+    name: str
+    osu_nai: str
+
+
 class H2qpOsuProviderNaiObject(FortiObject):
     """Typed FortiObject for H2qpOsuProviderNai with field access."""
     name: str
-    nai_list: list[H2qpOsuProviderNaiNailistItem]
+    nai_list: FortiObjectList[H2qpOsuProviderNaiNailistItemObject]
 
 
 # ================================================================

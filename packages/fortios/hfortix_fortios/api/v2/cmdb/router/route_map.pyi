@@ -26,6 +26,26 @@ from hfortix_fortios.models import (
 # TypedDict Payloads
 # ================================================================
 
+class RouteMapRuleSetaspathItem(TypedDict, total=False):
+    """Nested item for rule.set-aspath field."""
+    asn: str
+
+
+class RouteMapRuleSetcommunityItem(TypedDict, total=False):
+    """Nested item for rule.set-community field."""
+    community: str
+
+
+class RouteMapRuleSetextcommunityrtItem(TypedDict, total=False):
+    """Nested item for rule.set-extcommunity-rt field."""
+    community: str
+
+
+class RouteMapRuleSetextcommunitysooItem(TypedDict, total=False):
+    """Nested item for rule.set-extcommunity-soo field."""
+    community: str
+
+
 class RouteMapRuleItem(TypedDict, total=False):
     """Nested item for rule field."""
     id: int
@@ -49,18 +69,18 @@ class RouteMapRuleItem(TypedDict, total=False):
     set_aggregator_as: int
     set_aggregator_ip: str
     set_aspath_action: Literal["prepend", "replace"]
-    set_aspath: str | list[str]
+    set_aspath: str | list[str] | list[RouteMapRuleSetaspathItem]
     set_atomic_aggregate: Literal["enable", "disable"]
     set_community_delete: str
-    set_community: str | list[str]
+    set_community: str | list[str] | list[RouteMapRuleSetcommunityItem]
     set_community_additive: Literal["enable", "disable"]
     set_dampening_reachability_half_life: int
     set_dampening_reuse: int
     set_dampening_suppress: int
     set_dampening_max_suppress: int
     set_dampening_unreachability_half_life: int
-    set_extcommunity_rt: str | list[str]
-    set_extcommunity_soo: str | list[str]
+    set_extcommunity_rt: str | list[str] | list[RouteMapRuleSetextcommunityrtItem]
+    set_extcommunity_soo: str | list[str] | list[RouteMapRuleSetextcommunitysooItem]
     set_ip_nexthop: str
     set_ip_prefsrc: str
     set_vpnv4_nexthop: str
@@ -102,11 +122,64 @@ class RouteMapResponse(TypedDict, total=False):
 # ================================================================
 
 
+class RouteMapRuleItemObject(FortiObject[RouteMapRuleItem]):
+    """Typed object for rule table items with attribute access."""
+    id: int
+    action: Literal["permit", "deny"]
+    match_as_path: str
+    match_community: str
+    match_extcommunity: str
+    match_community_exact: Literal["enable", "disable"]
+    match_extcommunity_exact: Literal["enable", "disable"]
+    match_origin: Literal["none", "egp", "igp", "incomplete"]
+    match_interface: str
+    match_ip_address: str
+    match_ip6_address: str
+    match_ip_nexthop: str
+    match_ip6_nexthop: str
+    match_metric: int
+    match_route_type: Literal["external-type1", "external-type2", "none"]
+    match_tag: int
+    match_vrf: int
+    match_suppress: Literal["enable", "disable"]
+    set_aggregator_as: int
+    set_aggregator_ip: str
+    set_aspath_action: Literal["prepend", "replace"]
+    set_aspath: FortiObjectList[RouteMapRuleSetaspathItemObject]
+    set_atomic_aggregate: Literal["enable", "disable"]
+    set_community_delete: str
+    set_community: FortiObjectList[RouteMapRuleSetcommunityItemObject]
+    set_community_additive: Literal["enable", "disable"]
+    set_dampening_reachability_half_life: int
+    set_dampening_reuse: int
+    set_dampening_suppress: int
+    set_dampening_max_suppress: int
+    set_dampening_unreachability_half_life: int
+    set_extcommunity_rt: FortiObjectList[RouteMapRuleSetextcommunityrtItemObject]
+    set_extcommunity_soo: FortiObjectList[RouteMapRuleSetextcommunitysooItemObject]
+    set_ip_nexthop: str
+    set_ip_prefsrc: str
+    set_vpnv4_nexthop: str
+    set_ip6_nexthop: str
+    set_ip6_nexthop_local: str
+    set_vpnv6_nexthop: str
+    set_vpnv6_nexthop_local: str
+    set_local_preference: int
+    set_metric: int
+    set_metric_type: Literal["external-type1", "external-type2", "none"]
+    set_originator_id: str
+    set_origin: Literal["none", "egp", "igp", "incomplete"]
+    set_tag: int
+    set_weight: int
+    set_route_tag: int
+    set_priority: int
+
+
 class RouteMapObject(FortiObject):
     """Typed FortiObject for RouteMap with field access."""
     name: str
     comments: str
-    rule: list[RouteMapRuleItem]
+    rule: FortiObjectList[RouteMapRuleItemObject]
 
 
 # ================================================================

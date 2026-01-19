@@ -80,6 +80,13 @@ class MobileTunnelResponse(TypedDict, total=False):
 # ================================================================
 
 
+class MobileTunnelNetworkItemObject(FortiObject[MobileTunnelNetworkItem]):
+    """Typed object for network table items with attribute access."""
+    id: int
+    interface: str
+    prefix: str
+
+
 class MobileTunnelObject(FortiObject):
     """Typed FortiObject for MobileTunnel with field access."""
     name: str
@@ -96,7 +103,7 @@ class MobileTunnelObject(FortiObject):
     n_mhae_key: str
     hash_algorithm: Literal["hmac-md5"]
     tunnel_mode: Literal["gre"]
-    network: list[MobileTunnelNetworkItem]
+    network: FortiObjectList[MobileTunnelNetworkItemObject]
 
 
 # ================================================================

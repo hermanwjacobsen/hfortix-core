@@ -79,6 +79,11 @@ class VdomDnsResponse(TypedDict, total=False):
 # ================================================================
 
 
+class VdomDnsServerhostnameItemObject(FortiObject[VdomDnsServerhostnameItem]):
+    """Typed object for server-hostname table items with attribute access."""
+    hostname: str
+
+
 class VdomDnsObject(FortiObject):
     """Typed FortiObject for VdomDns with field access."""
     vdom_dns: Literal["enable", "disable"]
@@ -86,7 +91,7 @@ class VdomDnsObject(FortiObject):
     secondary: str
     protocol: str
     ssl_certificate: str
-    server_hostname: list[VdomDnsServerhostnameItem]
+    server_hostname: FortiObjectList[VdomDnsServerhostnameItemObject]
     ip6_primary: str
     ip6_secondary: str
     source_ip: str

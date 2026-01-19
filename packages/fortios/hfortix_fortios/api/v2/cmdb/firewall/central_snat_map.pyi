@@ -127,25 +127,65 @@ class CentralSnatMapResponse(TypedDict, total=False):
 # ================================================================
 
 
+class CentralSnatMapSrcintfItemObject(FortiObject[CentralSnatMapSrcintfItem]):
+    """Typed object for srcintf table items with attribute access."""
+    name: str
+
+
+class CentralSnatMapDstintfItemObject(FortiObject[CentralSnatMapDstintfItem]):
+    """Typed object for dstintf table items with attribute access."""
+    name: str
+
+
+class CentralSnatMapOrigaddrItemObject(FortiObject[CentralSnatMapOrigaddrItem]):
+    """Typed object for orig-addr table items with attribute access."""
+    name: str
+
+
+class CentralSnatMapOrigaddr6ItemObject(FortiObject[CentralSnatMapOrigaddr6Item]):
+    """Typed object for orig-addr6 table items with attribute access."""
+    name: str
+
+
+class CentralSnatMapDstaddrItemObject(FortiObject[CentralSnatMapDstaddrItem]):
+    """Typed object for dst-addr table items with attribute access."""
+    name: str
+
+
+class CentralSnatMapDstaddr6ItemObject(FortiObject[CentralSnatMapDstaddr6Item]):
+    """Typed object for dst-addr6 table items with attribute access."""
+    name: str
+
+
+class CentralSnatMapNatippoolItemObject(FortiObject[CentralSnatMapNatippoolItem]):
+    """Typed object for nat-ippool table items with attribute access."""
+    name: str
+
+
+class CentralSnatMapNatippool6ItemObject(FortiObject[CentralSnatMapNatippool6Item]):
+    """Typed object for nat-ippool6 table items with attribute access."""
+    name: str
+
+
 class CentralSnatMapObject(FortiObject):
     """Typed FortiObject for CentralSnatMap with field access."""
     policyid: int
     uuid: str
     status: Literal["enable", "disable"]
     type: Literal["ipv4", "ipv6"]
-    srcintf: list[CentralSnatMapSrcintfItem]
-    dstintf: list[CentralSnatMapDstintfItem]
-    orig_addr: list[CentralSnatMapOrigaddrItem]
-    orig_addr6: list[CentralSnatMapOrigaddr6Item]
-    dst_addr: list[CentralSnatMapDstaddrItem]
-    dst_addr6: list[CentralSnatMapDstaddr6Item]
+    srcintf: FortiObjectList[CentralSnatMapSrcintfItemObject]
+    dstintf: FortiObjectList[CentralSnatMapDstintfItemObject]
+    orig_addr: FortiObjectList[CentralSnatMapOrigaddrItemObject]
+    orig_addr6: FortiObjectList[CentralSnatMapOrigaddr6ItemObject]
+    dst_addr: FortiObjectList[CentralSnatMapDstaddrItemObject]
+    dst_addr6: FortiObjectList[CentralSnatMapDstaddr6ItemObject]
     protocol: int
     orig_port: str
     nat: Literal["disable", "enable"]
     nat46: Literal["enable", "disable"]
     nat64: Literal["enable", "disable"]
-    nat_ippool: list[CentralSnatMapNatippoolItem]
-    nat_ippool6: list[CentralSnatMapNatippool6Item]
+    nat_ippool: FortiObjectList[CentralSnatMapNatippoolItemObject]
+    nat_ippool6: FortiObjectList[CentralSnatMapNatippool6ItemObject]
     port_preserve: Literal["enable", "disable"]
     port_random: Literal["enable", "disable"]
     nat_port: str

@@ -122,6 +122,27 @@ class ThreatWeightResponse(TypedDict, total=False):
 # ================================================================
 
 
+class ThreatWeightWebItemObject(FortiObject[ThreatWeightWebItem]):
+    """Typed object for web table items with attribute access."""
+    id: int
+    category: int
+    level: Literal["disable", "low", "medium", "high", "critical"]
+
+
+class ThreatWeightGeolocationItemObject(FortiObject[ThreatWeightGeolocationItem]):
+    """Typed object for geolocation table items with attribute access."""
+    id: int
+    country: str
+    level: Literal["disable", "low", "medium", "high", "critical"]
+
+
+class ThreatWeightApplicationItemObject(FortiObject[ThreatWeightApplicationItem]):
+    """Typed object for application table items with attribute access."""
+    id: int
+    category: int
+    level: Literal["disable", "low", "medium", "high", "critical"]
+
+
 class ThreatWeightLevelObject(FortiObject):
     """Nested object for level field with attribute access."""
     low: int
@@ -169,9 +190,9 @@ class ThreatWeightObject(FortiObject):
     botnet_connection_detected: Literal["disable", "low", "medium", "high", "critical"]
     malware: ThreatWeightMalwareObject
     ips: ThreatWeightIpsObject
-    web: list[ThreatWeightWebItem]
-    geolocation: list[ThreatWeightGeolocationItem]
-    application: list[ThreatWeightApplicationItem]
+    web: FortiObjectList[ThreatWeightWebItemObject]
+    geolocation: FortiObjectList[ThreatWeightGeolocationItemObject]
+    application: FortiObjectList[ThreatWeightApplicationItemObject]
 
 
 # ================================================================

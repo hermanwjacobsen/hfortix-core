@@ -74,6 +74,11 @@ class FssoPollingResponse(TypedDict, total=False):
 # ================================================================
 
 
+class FssoPollingAdgrpItemObject(FortiObject[FssoPollingAdgrpItem]):
+    """Typed object for adgrp table items with attribute access."""
+    name: str
+
+
 class FssoPollingObject(FortiObject):
     """Typed FortiObject for FssoPolling with field access."""
     id: int
@@ -86,7 +91,7 @@ class FssoPollingObject(FortiObject):
     ldap_server: str
     logon_history: int
     polling_frequency: int
-    adgrp: list[FssoPollingAdgrpItem]
+    adgrp: FortiObjectList[FssoPollingAdgrpItemObject]
     smbv1: Literal["enable", "disable"]
     smb_ntlmv1_auth: Literal["enable", "disable"]
 

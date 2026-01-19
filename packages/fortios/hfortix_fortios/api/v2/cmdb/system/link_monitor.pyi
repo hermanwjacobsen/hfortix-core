@@ -130,6 +130,25 @@ class LinkMonitorResponse(TypedDict, total=False):
 # ================================================================
 
 
+class LinkMonitorServerItemObject(FortiObject[LinkMonitorServerItem]):
+    """Typed object for server table items with attribute access."""
+    address: str
+
+
+class LinkMonitorRouteItemObject(FortiObject[LinkMonitorRouteItem]):
+    """Typed object for route table items with attribute access."""
+    subnet: str
+
+
+class LinkMonitorServerlistItemObject(FortiObject[LinkMonitorServerlistItem]):
+    """Typed object for server-list table items with attribute access."""
+    id: int
+    dst: str
+    protocol: Literal["ping", "tcp-echo", "udp-echo", "http", "https", "twamp"]
+    port: int
+    weight: int
+
+
 class LinkMonitorObject(FortiObject):
     """Typed FortiObject for LinkMonitor with field access."""
     name: str
@@ -137,12 +156,12 @@ class LinkMonitorObject(FortiObject):
     srcintf: str
     server_config: Literal["default", "individual"]
     server_type: Literal["static", "dynamic"]
-    server: list[LinkMonitorServerItem]
+    server: FortiObjectList[LinkMonitorServerItemObject]
     protocol: str
     port: int
     gateway_ip: str
     gateway_ip6: str
-    route: list[LinkMonitorRouteItem]
+    route: FortiObjectList[LinkMonitorRouteItemObject]
     source_ip: str
     source_ip6: str
     http_get: str
@@ -165,7 +184,7 @@ class LinkMonitorObject(FortiObject):
     diffservcode: str
     class_id: int
     service_detection: Literal["enable", "disable"]
-    server_list: list[LinkMonitorServerlistItem]
+    server_list: FortiObjectList[LinkMonitorServerlistItemObject]
 
 
 # ================================================================

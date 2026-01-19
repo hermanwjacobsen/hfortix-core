@@ -56,11 +56,16 @@ class AutomationDestinationResponse(TypedDict, total=False):
 # ================================================================
 
 
+class AutomationDestinationDestinationItemObject(FortiObject[AutomationDestinationDestinationItem]):
+    """Typed object for destination table items with attribute access."""
+    name: str
+
+
 class AutomationDestinationObject(FortiObject):
     """Typed FortiObject for AutomationDestination with field access."""
     name: str
     type: Literal["fortigate", "ha-cluster"]
-    destination: list[AutomationDestinationDestinationItem]
+    destination: FortiObjectList[AutomationDestinationDestinationItemObject]
     ha_group_id: int
 
 

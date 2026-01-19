@@ -108,6 +108,16 @@ class GlobalResponse(TypedDict, total=False):
 # ================================================================
 
 
+class GlobalLearnclientipsrcaddrItemObject(FortiObject[GlobalLearnclientipsrcaddrItem]):
+    """Typed object for learn-client-ip-srcaddr table items with attribute access."""
+    name: str
+
+
+class GlobalLearnclientipsrcaddr6ItemObject(FortiObject[GlobalLearnclientipsrcaddr6Item]):
+    """Typed object for learn-client-ip-srcaddr6 table items with attribute access."""
+    name: str
+
+
 class GlobalObject(FortiObject):
     """Typed FortiObject for Global with field access."""
     ssl_cert: str
@@ -128,8 +138,8 @@ class GlobalObject(FortiObject):
     learn_client_ip: Literal["enable", "disable"]
     always_learn_client_ip: Literal["enable", "disable"]
     learn_client_ip_from_header: str
-    learn_client_ip_srcaddr: list[GlobalLearnclientipsrcaddrItem]
-    learn_client_ip_srcaddr6: list[GlobalLearnclientipsrcaddr6Item]
+    learn_client_ip_srcaddr: FortiObjectList[GlobalLearnclientipsrcaddrItemObject]
+    learn_client_ip_srcaddr6: FortiObjectList[GlobalLearnclientipsrcaddr6ItemObject]
     src_affinity_exempt_addr: str | list[str]
     src_affinity_exempt_addr6: str | list[str]
     policy_partial_match: Literal["enable", "disable"]

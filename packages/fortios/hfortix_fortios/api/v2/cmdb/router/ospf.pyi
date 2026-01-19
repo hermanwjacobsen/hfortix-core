@@ -25,6 +25,42 @@ from hfortix_fortios.models import (
 # TypedDict Payloads
 # ================================================================
 
+class OspfAreaRangeItem(TypedDict, total=False):
+    """Nested item for area.range field."""
+    id: int
+    prefix: str
+    advertise: Literal["disable", "enable"]
+    substitute: str
+    substitute_status: Literal["enable", "disable"]
+
+
+class OspfAreaVirtuallinkItem(TypedDict, total=False):
+    """Nested item for area.virtual-link field."""
+    name: str
+    authentication: Literal["none", "text", "message-digest"]
+    authentication_key: str
+    keychain: str
+    dead_interval: int
+    hello_interval: int
+    retransmit_interval: int
+    transmit_delay: int
+    peer: str
+    md5_keys: str | list[str]
+
+
+class OspfAreaFilterlistItem(TypedDict, total=False):
+    """Nested item for area.filter-list field."""
+    id: int
+    list: str
+    direction: Literal["in", "out"]
+
+
+class OspfOspfinterfaceMd5keysItem(TypedDict, total=False):
+    """Nested item for ospf-interface.md5-keys field."""
+    id: int
+    key_string: str
+
+
 class OspfAreaItem(TypedDict, total=False):
     """Nested item for area field."""
     id: str
@@ -39,9 +75,9 @@ class OspfAreaItem(TypedDict, total=False):
     nssa_default_information_originate_metric_type: Literal["1", "2"]
     nssa_redistribution: Literal["enable", "disable"]
     comments: str
-    range: str | list[str]
-    virtual_link: str | list[str]
-    filter_list: str | list[str]
+    range: str | list[str] | list[OspfAreaRangeItem]
+    virtual_link: str | list[str] | list[OspfAreaVirtuallinkItem]
+    filter_list: str | list[str] | list[OspfAreaFilterlistItem]
 
 
 class OspfOspfinterfaceItem(TypedDict, total=False):
@@ -69,7 +105,7 @@ class OspfOspfinterfaceItem(TypedDict, total=False):
     bfd: Literal["global", "enable", "disable"]
     status: Literal["disable", "enable"]
     resync_timeout: int
-    md5_keys: str | list[str]
+    md5_keys: str | list[str] | list[OspfOspfinterfaceMd5keysItem]
 
 
 class OspfNetworkItem(TypedDict, total=False):
@@ -202,6 +238,100 @@ class OspfResponse(TypedDict, total=False):
 # ================================================================
 
 
+class OspfAreaItemObject(FortiObject[OspfAreaItem]):
+    """Typed object for area table items with attribute access."""
+    id: str
+    shortcut: Literal["disable", "enable", "default"]
+    authentication: Literal["none", "text", "message-digest"]
+    default_cost: int
+    nssa_translator_role: Literal["candidate", "never", "always"]
+    stub_type: Literal["no-summary", "summary"]
+    type: Literal["regular", "nssa", "stub"]
+    nssa_default_information_originate: Literal["enable", "always", "disable"]
+    nssa_default_information_originate_metric: int
+    nssa_default_information_originate_metric_type: Literal["1", "2"]
+    nssa_redistribution: Literal["enable", "disable"]
+    comments: str
+    range: FortiObjectList[OspfAreaRangeItemObject]
+    virtual_link: FortiObjectList[OspfAreaVirtuallinkItemObject]
+    filter_list: FortiObjectList[OspfAreaFilterlistItemObject]
+
+
+class OspfOspfinterfaceItemObject(FortiObject[OspfOspfinterfaceItem]):
+    """Typed object for ospf-interface table items with attribute access."""
+    name: str
+    comments: str
+    interface: str
+    ip: str
+    linkdown_fast_failover: Literal["enable", "disable"]
+    authentication: Literal["none", "text", "message-digest"]
+    authentication_key: str
+    keychain: str
+    prefix_length: int
+    retransmit_interval: int
+    transmit_delay: int
+    cost: int
+    priority: int
+    dead_interval: int
+    hello_interval: int
+    hello_multiplier: int
+    database_filter_out: Literal["enable", "disable"]
+    mtu: int
+    mtu_ignore: Literal["enable", "disable"]
+    network_type: Literal["broadcast", "non-broadcast", "point-to-point", "point-to-multipoint", "point-to-multipoint-non-broadcast"]
+    bfd: Literal["global", "enable", "disable"]
+    status: Literal["disable", "enable"]
+    resync_timeout: int
+    md5_keys: FortiObjectList[OspfOspfinterfaceMd5keysItemObject]
+
+
+class OspfNetworkItemObject(FortiObject[OspfNetworkItem]):
+    """Typed object for network table items with attribute access."""
+    id: int
+    prefix: str
+    area: str
+    comments: str
+
+
+class OspfNeighborItemObject(FortiObject[OspfNeighborItem]):
+    """Typed object for neighbor table items with attribute access."""
+    id: int
+    ip: str
+    poll_interval: int
+    cost: int
+    priority: int
+
+
+class OspfPassiveinterfaceItemObject(FortiObject[OspfPassiveinterfaceItem]):
+    """Typed object for passive-interface table items with attribute access."""
+    name: str
+
+
+class OspfSummaryaddressItemObject(FortiObject[OspfSummaryaddressItem]):
+    """Typed object for summary-address table items with attribute access."""
+    id: int
+    prefix: str
+    tag: int
+    advertise: Literal["disable", "enable"]
+
+
+class OspfDistributelistItemObject(FortiObject[OspfDistributelistItem]):
+    """Typed object for distribute-list table items with attribute access."""
+    id: int
+    access_list: str
+    protocol: Literal["connected", "static", "rip"]
+
+
+class OspfRedistributeItemObject(FortiObject[OspfRedistributeItem]):
+    """Typed object for redistribute table items with attribute access."""
+    name: str
+    status: Literal["enable", "disable"]
+    metric: int
+    routemap: str
+    metric_type: Literal["1", "2"]
+    tag: int
+
+
 class OspfObject(FortiObject):
     """Typed FortiObject for Ospf with field access."""
     abr_type: Literal["cisco", "ibm", "shortcut", "standard"]
@@ -229,14 +359,14 @@ class OspfObject(FortiObject):
     restart_mode: Literal["none", "lls", "graceful-restart"]
     restart_period: int
     restart_on_topology_change: Literal["enable", "disable"]
-    area: list[OspfAreaItem]
-    ospf_interface: list[OspfOspfinterfaceItem]
-    network: list[OspfNetworkItem]
-    neighbor: list[OspfNeighborItem]
-    passive_interface: list[OspfPassiveinterfaceItem]
-    summary_address: list[OspfSummaryaddressItem]
-    distribute_list: list[OspfDistributelistItem]
-    redistribute: list[OspfRedistributeItem]
+    area: FortiObjectList[OspfAreaItemObject]
+    ospf_interface: FortiObjectList[OspfOspfinterfaceItemObject]
+    network: FortiObjectList[OspfNetworkItemObject]
+    neighbor: FortiObjectList[OspfNeighborItemObject]
+    passive_interface: FortiObjectList[OspfPassiveinterfaceItemObject]
+    summary_address: FortiObjectList[OspfSummaryaddressItemObject]
+    distribute_list: FortiObjectList[OspfDistributelistItemObject]
+    redistribute: FortiObjectList[OspfRedistributeItemObject]
 
 
 # ================================================================

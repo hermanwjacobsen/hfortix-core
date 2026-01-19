@@ -54,10 +54,17 @@ class AnqpVenueUrlResponse(TypedDict, total=False):
 # ================================================================
 
 
+class AnqpVenueUrlValuelistItemObject(FortiObject[AnqpVenueUrlValuelistItem]):
+    """Typed object for value-list table items with attribute access."""
+    index: int
+    number: int
+    value: str
+
+
 class AnqpVenueUrlObject(FortiObject):
     """Typed FortiObject for AnqpVenueUrl with field access."""
     name: str
-    value_list: list[AnqpVenueUrlValuelistItem]
+    value_list: FortiObjectList[AnqpVenueUrlValuelistItemObject]
 
 
 # ================================================================

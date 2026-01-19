@@ -26,19 +26,45 @@ from hfortix_fortios.models import (
 # TypedDict Payloads
 # ================================================================
 
+class ListEntriesRiskItem(TypedDict, total=False):
+    """Nested item for entries.risk field."""
+    level: int
+
+
+class ListEntriesCategoryItem(TypedDict, total=False):
+    """Nested item for entries.category field."""
+    id: int
+
+
+class ListEntriesApplicationItem(TypedDict, total=False):
+    """Nested item for entries.application field."""
+    id: int
+
+
+class ListEntriesExclusionItem(TypedDict, total=False):
+    """Nested item for entries.exclusion field."""
+    id: int
+
+
+class ListEntriesParametersItem(TypedDict, total=False):
+    """Nested item for entries.parameters field."""
+    id: int
+    members: str | list[str]
+
+
 class ListEntriesItem(TypedDict, total=False):
     """Nested item for entries field."""
     id: int
-    risk: str | list[str]
-    category: str | list[str]
-    application: str | list[str]
+    risk: str | list[str] | list[ListEntriesRiskItem]
+    category: str | list[str] | list[ListEntriesCategoryItem]
+    application: str | list[str] | list[ListEntriesApplicationItem]
     protocols: str | list[str]
     vendor: str | list[str]
     technology: str | list[str]
     behavior: str | list[str]
     popularity: Literal["1", "2", "3", "4", "5"]
-    exclusion: str | list[str]
-    parameters: str | list[str]
+    exclusion: str | list[str] | list[ListEntriesExclusionItem]
+    parameters: str | list[str] | list[ListEntriesParametersItem]
     action: Literal["pass", "block", "reset"]
     log: Literal["disable", "enable"]
     log_packet: Literal["disable", "enable"]
@@ -114,6 +140,43 @@ class ListResponse(TypedDict, total=False):
 # ================================================================
 
 
+class ListEntriesItemObject(FortiObject[ListEntriesItem]):
+    """Typed object for entries table items with attribute access."""
+    id: int
+    risk: FortiObjectList[ListEntriesRiskItemObject]
+    category: FortiObjectList[ListEntriesCategoryItemObject]
+    application: FortiObjectList[ListEntriesApplicationItemObject]
+    protocols: str | list[str]
+    vendor: str | list[str]
+    technology: str | list[str]
+    behavior: str | list[str]
+    popularity: Literal["1", "2", "3", "4", "5"]
+    exclusion: FortiObjectList[ListEntriesExclusionItemObject]
+    parameters: FortiObjectList[ListEntriesParametersItemObject]
+    action: Literal["pass", "block", "reset"]
+    log: Literal["disable", "enable"]
+    log_packet: Literal["disable", "enable"]
+    rate_count: int
+    rate_duration: int
+    rate_mode: Literal["periodical", "continuous"]
+    rate_track: Literal["none", "src-ip", "dest-ip", "dhcp-client-mac", "dns-domain"]
+    session_ttl: int
+    shaper: str
+    shaper_reverse: str
+    per_ip_shaper: str
+    quarantine: Literal["none", "attacker"]
+    quarantine_expiry: str
+    quarantine_log: Literal["disable", "enable"]
+
+
+class ListDefaultnetworkservicesItemObject(FortiObject[ListDefaultnetworkservicesItem]):
+    """Typed object for default-network-services table items with attribute access."""
+    id: int
+    port: int
+    services: Literal["http", "ssh", "telnet", "ftp", "dns", "smtp", "pop3", "imap", "snmp", "nntp", "https"]
+    violation_action: Literal["pass", "monitor", "block"]
+
+
 class ListObject(FortiObject):
     """Typed FortiObject for List with field access."""
     name: str
@@ -130,9 +193,9 @@ class ListObject(FortiObject):
     p2p_block_list: str
     deep_app_inspection: Literal["disable", "enable"]
     options: str
-    entries: list[ListEntriesItem]
+    entries: FortiObjectList[ListEntriesItemObject]
     control_default_network_services: Literal["disable", "enable"]
-    default_network_services: list[ListDefaultnetworkservicesItem]
+    default_network_services: FortiObjectList[ListDefaultnetworkservicesItemObject]
 
 
 # ================================================================

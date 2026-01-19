@@ -55,11 +55,17 @@ class ServerGroupResponse(TypedDict, total=False):
 # ================================================================
 
 
+class ServerGroupServerlistItemObject(FortiObject[ServerGroupServerlistItem]):
+    """Typed object for server-list table items with attribute access."""
+    name: str
+    weight: int
+
+
 class ServerGroupObject(FortiObject):
     """Typed FortiObject for ServerGroup with field access."""
     name: str
     ldb_method: Literal["weighted", "least-session", "active-passive"]
-    server_list: list[ServerGroupServerlistItem]
+    server_list: FortiObjectList[ServerGroupServerlistItemObject]
 
 
 # ================================================================

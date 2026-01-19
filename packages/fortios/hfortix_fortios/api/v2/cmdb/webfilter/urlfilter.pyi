@@ -74,6 +74,21 @@ class UrlfilterResponse(TypedDict, total=False):
 # ================================================================
 
 
+class UrlfilterEntriesItemObject(FortiObject[UrlfilterEntriesItem]):
+    """Typed object for entries table items with attribute access."""
+    id: int
+    url: str
+    type: Literal["simple", "regex", "wildcard"]
+    action: Literal["exempt", "block", "allow", "monitor"]
+    antiphish_action: Literal["block", "log"]
+    status: Literal["enable", "disable"]
+    exempt: Literal["av", "web-content", "activex-java-cookie", "dlp", "fortiguard", "range-block", "pass", "antiphish", "all"]
+    web_proxy_profile: str
+    referrer_host: str
+    dns_address_family: Literal["ipv4", "ipv6", "both"]
+    comment: str
+
+
 class UrlfilterObject(FortiObject):
     """Typed FortiObject for Urlfilter with field access."""
     id: int
@@ -83,7 +98,7 @@ class UrlfilterObject(FortiObject):
     ip_addr_block: Literal["enable", "disable"]
     ip4_mapped_ip6: Literal["enable", "disable"]
     include_subdomains: Literal["enable", "disable"]
-    entries: list[UrlfilterEntriesItem]
+    entries: FortiObjectList[UrlfilterEntriesItemObject]
 
 
 # ================================================================

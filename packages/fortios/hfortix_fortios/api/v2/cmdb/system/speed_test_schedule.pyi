@@ -94,6 +94,11 @@ class SpeedTestScheduleResponse(TypedDict, total=False):
 # ================================================================
 
 
+class SpeedTestScheduleSchedulesItemObject(FortiObject[SpeedTestScheduleSchedulesItem]):
+    """Typed object for schedules table items with attribute access."""
+    name: str
+
+
 class SpeedTestScheduleObject(FortiObject):
     """Typed FortiObject for SpeedTestSchedule with field access."""
     interface: str
@@ -101,7 +106,7 @@ class SpeedTestScheduleObject(FortiObject):
     diffserv: str
     server_name: str
     mode: Literal["UDP", "TCP", "Auto"]
-    schedules: list[SpeedTestScheduleSchedulesItem]
+    schedules: FortiObjectList[SpeedTestScheduleSchedulesItemObject]
     dynamic_server: Literal["disable", "enable"]
     ctrl_port: int
     server_port: int

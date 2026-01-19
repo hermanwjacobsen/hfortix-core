@@ -26,6 +26,17 @@ from hfortix_fortios.models import (
 # TypedDict Payloads
 # ================================================================
 
+class InterfaceVrrpProxyarpItem(TypedDict, total=False):
+    """Nested item for vrrp.proxy-arp field."""
+    id: int
+    ip: str
+
+
+class InterfaceTaggingTagsItem(TypedDict, total=False):
+    """Nested item for tagging.tags field."""
+    name: str
+
+
 class InterfaceClientoptionsItem(TypedDict, total=False):
     """Nested item for client-options field."""
     id: int
@@ -65,7 +76,7 @@ class InterfaceVrrpItem(TypedDict, total=False):
     vrdst_priority: int
     ignore_default_route: Literal["enable", "disable"]
     status: Literal["enable", "disable"]
-    proxy_arp: str | list[str]
+    proxy_arp: str | list[str] | list[InterfaceVrrpProxyarpItem]
 
 
 class InterfacePhysettingDict(TypedDict, total=False):
@@ -96,13 +107,13 @@ class InterfaceTaggingItem(TypedDict, total=False):
     """Nested item for tagging field."""
     name: str
     category: str
-    tags: str | list[str]
+    tags: str | list[str] | list[InterfaceTaggingTagsItem]
 
 
 class InterfaceIpv6Dict(TypedDict, total=False):
     """Nested object type for ipv6 field."""
     ip6_mode: Literal["static", "dhcp", "pppoe", "delegated"]
-    client_options: str | list[str]
+    client_options: str | list[str] | list[InterfaceIpv6ClientoptionsItem]
     nd_mode: Literal["basic", "SEND-compatible"]
     nd_cert: str
     nd_security_level: int
@@ -111,7 +122,7 @@ class InterfaceIpv6Dict(TypedDict, total=False):
     nd_cga_modifier: str
     ip6_dns_server_override: Literal["enable", "disable"]
     ip6_address: str
-    ip6_extra_addr: str | list[str]
+    ip6_extra_addr: str | list[str] | list[InterfaceIpv6Ip6extraaddrItem]
     ip6_allowaccess: Literal["ping", "https", "ssh", "snmp", "http", "telnet", "fgfm", "fabric", "scim", "probe-response"]
     ip6_send_adv: Literal["enable", "disable"]
     icmp6_send_redirect: Literal["enable", "disable"]
@@ -127,7 +138,7 @@ class InterfaceIpv6Dict(TypedDict, total=False):
     ip6_hop_limit: int
     ip6_adv_rio: Literal["enable", "disable"]
     ip6_route_pref: Literal["medium", "high", "low"]
-    ip6_route_list: str | list[str]
+    ip6_route_list: str | list[str] | list[InterfaceIpv6Ip6routelistItem]
     autoconf: Literal["enable", "disable"]
     unique_autoconf_addr: Literal["enable", "disable"]
     interface_identifier: str
@@ -135,10 +146,10 @@ class InterfaceIpv6Dict(TypedDict, total=False):
     ip6_delegated_prefix_iaid: int
     ip6_upstream_interface: str
     ip6_subnet: str
-    ip6_prefix_list: str | list[str]
-    ip6_rdnss_list: str | list[str]
-    ip6_dnssl_list: str | list[str]
-    ip6_delegated_prefix_list: str | list[str]
+    ip6_prefix_list: str | list[str] | list[InterfaceIpv6Ip6prefixlistItem]
+    ip6_rdnss_list: str | list[str] | list[InterfaceIpv6Ip6rdnsslistItem]
+    ip6_dnssl_list: str | list[str] | list[InterfaceIpv6Ip6dnssllistItem]
+    ip6_delegated_prefix_list: str | list[str] | list[InterfaceIpv6Ip6delegatedprefixlistItem]
     dhcp6_relay_service: Literal["disable", "enable"]
     dhcp6_relay_type: Literal["regular"]
     dhcp6_relay_source_interface: Literal["disable", "enable"]
@@ -148,11 +159,11 @@ class InterfaceIpv6Dict(TypedDict, total=False):
     dhcp6_client_options: Literal["rapid", "iapd", "iana"]
     dhcp6_prefix_delegation: Literal["enable", "disable"]
     dhcp6_information_request: Literal["enable", "disable"]
-    dhcp6_iapd_list: str | list[str]
+    dhcp6_iapd_list: str | list[str] | list[InterfaceIpv6Dhcp6iapdlistItem]
     cli_conn6_status: int
     vrrp_virtual_mac6: Literal["enable", "disable"]
     vrip6_link_local: str
-    vrrp6: str | list[str]
+    vrrp6: str | list[str] | list[InterfaceIpv6Vrrp6Item]
 
 
 class InterfacePayload(TypedDict, total=False):
@@ -616,6 +627,74 @@ class InterfaceResponse(TypedDict, total=False):
 # ================================================================
 
 
+class InterfaceClientoptionsItemObject(FortiObject[InterfaceClientoptionsItem]):
+    """Typed object for client-options table items with attribute access."""
+    id: int
+    code: int
+    type: Literal["hex", "string", "ip", "fqdn"]
+    value: str
+    ip: str | list[str]
+
+
+class InterfaceFailalertinterfacesItemObject(FortiObject[InterfaceFailalertinterfacesItem]):
+    """Typed object for fail-alert-interfaces table items with attribute access."""
+    name: str
+
+
+class InterfaceMemberItemObject(FortiObject[InterfaceMemberItem]):
+    """Typed object for member table items with attribute access."""
+    interface_name: str
+
+
+class InterfaceSecuritygroupsItemObject(FortiObject[InterfaceSecuritygroupsItem]):
+    """Typed object for security-groups table items with attribute access."""
+    name: str
+
+
+class InterfaceVrrpItemObject(FortiObject[InterfaceVrrpItem]):
+    """Typed object for vrrp table items with attribute access."""
+    vrid: int
+    version: Literal["2", "3"]
+    vrgrp: int
+    vrip: str
+    priority: int
+    adv_interval: int
+    start_time: int
+    preempt: Literal["enable", "disable"]
+    accept_mode: Literal["enable", "disable"]
+    vrdst: str | list[str]
+    vrdst_priority: int
+    ignore_default_route: Literal["enable", "disable"]
+    status: Literal["enable", "disable"]
+    proxy_arp: FortiObjectList[InterfaceVrrpProxyarpItemObject]
+
+
+class InterfaceSecondaryipItemObject(FortiObject[InterfaceSecondaryipItem]):
+    """Typed object for secondaryip table items with attribute access."""
+    id: int
+    ip: str
+    secip_relay_ip: str | list[str]
+    allowaccess: Literal["ping", "https", "ssh", "snmp", "http", "telnet", "fgfm", "radius-acct", "probe-response", "fabric", "ftm", "speed-test", "scim"]
+    gwdetect: Literal["enable", "disable"]
+    ping_serv_status: int
+    detectserver: str
+    detectprotocol: Literal["ping", "tcp-echo", "udp-echo"]
+    ha_priority: int
+
+
+class InterfaceDhcpsnoopingserverlistItemObject(FortiObject[InterfaceDhcpsnoopingserverlistItem]):
+    """Typed object for dhcp-snooping-server-list table items with attribute access."""
+    name: str
+    server_ip: str
+
+
+class InterfaceTaggingItemObject(FortiObject[InterfaceTaggingItem]):
+    """Typed object for tagging table items with attribute access."""
+    name: str
+    category: str
+    tags: FortiObjectList[InterfaceTaggingTagsItemObject]
+
+
 class InterfacePhysettingObject(FortiObject):
     """Nested object for phy-setting field with attribute access."""
     signal_ok_threshold: int
@@ -685,7 +764,7 @@ class InterfaceObject(FortiObject):
     fortilink: Literal["enable", "disable"]
     switch_controller_source_ip: Literal["outbound", "fixed"]
     mode: Literal["static", "dhcp", "pppoe"]
-    client_options: list[InterfaceClientoptionsItem]
+    client_options: FortiObjectList[InterfaceClientoptionsItemObject]
     distance: int
     priority: int
     dhcp_relay_interface_select_method: Literal["auto", "sdwan", "specify"]
@@ -715,7 +794,7 @@ class InterfaceObject(FortiObject):
     fail_detect_option: str
     fail_alert_method: Literal["link-failed-signal", "link-down"]
     fail_action_on_extender: Literal["soft-restart", "hard-restart", "reboot"]
-    fail_alert_interfaces: list[InterfaceFailalertinterfacesItem]
+    fail_alert_interfaces: FortiObjectList[InterfaceFailalertinterfacesItemObject]
     dhcp_client_identifier: str
     dhcp_renew_time: int
     ipunnumbered: str
@@ -807,7 +886,7 @@ class InterfaceObject(FortiObject):
     vlanid: int
     forward_domain: int
     remote_ip: str
-    member: list[InterfaceMemberItem]
+    member: FortiObjectList[InterfaceMemberItemObject]
     lacp_mode: Literal["static", "passive", "active"]
     lacp_ha_secondary: Literal["enable", "disable"]
     system_id_type: Literal["auto", "user"]
@@ -836,7 +915,7 @@ class InterfaceObject(FortiObject):
     auth_cert: str
     auth_portal_addr: str
     security_exempt_list: str
-    security_groups: list[InterfaceSecuritygroupsItem]
+    security_groups: FortiObjectList[InterfaceSecuritygroupsItemObject]
     ike_saml_server: str
     device_identification: Literal["enable", "disable"]
     exclude_signatures: str
@@ -851,12 +930,12 @@ class InterfaceObject(FortiObject):
     bandwidth_measure_time: int
     monitor_bandwidth: Literal["enable", "disable"]
     vrrp_virtual_mac: Literal["enable", "disable"]
-    vrrp: list[InterfaceVrrpItem]
+    vrrp: FortiObjectList[InterfaceVrrpItemObject]
     phy_setting: InterfacePhysettingObject
     role: Literal["lan", "wan", "dmz", "undefined"]
     snmp_index: int
     secondary_IP: Literal["enable", "disable"]
-    secondaryip: list[InterfaceSecondaryipItem]
+    secondaryip: FortiObjectList[InterfaceSecondaryipItemObject]
     preserve_session_route: Literal["enable", "disable"]
     auto_auth_extension_device: Literal["enable", "disable"]
     ap_discover: Literal["enable", "disable"]
@@ -877,7 +956,7 @@ class InterfaceObject(FortiObject):
     switch_controller_dhcp_snooping: Literal["enable", "disable"]
     switch_controller_dhcp_snooping_verify_mac: Literal["enable", "disable"]
     switch_controller_dhcp_snooping_option82: Literal["enable", "disable"]
-    dhcp_snooping_server_list: list[InterfaceDhcpsnoopingserverlistItem]
+    dhcp_snooping_server_list: FortiObjectList[InterfaceDhcpsnoopingserverlistItemObject]
     switch_controller_arp_inspection: Literal["enable", "disable", "monitor"]
     switch_controller_learning_limit: int
     switch_controller_nac: str
@@ -890,7 +969,7 @@ class InterfaceObject(FortiObject):
     swc_vlan: int
     swc_first_create: int
     color: int
-    tagging: list[InterfaceTaggingItem]
+    tagging: FortiObjectList[InterfaceTaggingItemObject]
     eap_supplicant: Literal["enable", "disable"]
     eap_method: Literal["tls", "peap"]
     eap_identity: str

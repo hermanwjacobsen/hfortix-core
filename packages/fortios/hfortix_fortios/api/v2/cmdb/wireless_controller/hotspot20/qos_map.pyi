@@ -64,11 +64,26 @@ class QosMapResponse(TypedDict, total=False):
 # ================================================================
 
 
+class QosMapDscpexceptItemObject(FortiObject[QosMapDscpexceptItem]):
+    """Typed object for dscp-except table items with attribute access."""
+    index: int
+    dscp: int
+    up: int
+
+
+class QosMapDscprangeItemObject(FortiObject[QosMapDscprangeItem]):
+    """Typed object for dscp-range table items with attribute access."""
+    index: int
+    up: int
+    low: int
+    high: int
+
+
 class QosMapObject(FortiObject):
     """Typed FortiObject for QosMap with field access."""
     name: str
-    dscp_except: list[QosMapDscpexceptItem]
-    dscp_range: list[QosMapDscprangeItem]
+    dscp_except: FortiObjectList[QosMapDscpexceptItemObject]
+    dscp_range: FortiObjectList[QosMapDscprangeItemObject]
 
 
 # ================================================================

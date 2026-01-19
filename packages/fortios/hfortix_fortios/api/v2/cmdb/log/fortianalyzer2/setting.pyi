@@ -103,6 +103,11 @@ class SettingResponse(TypedDict, total=False):
 # ================================================================
 
 
+class SettingSerialItemObject(FortiObject[SettingSerialItem]):
+    """Typed object for serial table items with attribute access."""
+    name: str
+
+
 class SettingObject(FortiObject):
     """Typed FortiObject for Setting with field access."""
     status: Literal["enable", "disable"]

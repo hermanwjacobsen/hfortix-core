@@ -26,6 +26,82 @@ from hfortix_fortios.models import (
 # TypedDict Payloads
 # ================================================================
 
+class ManagedSwitchPortsAllowedvlansItem(TypedDict, total=False):
+    """Nested item for ports.allowed-vlans field."""
+    vlan_name: str
+
+
+class ManagedSwitchPortsUntaggedvlansItem(TypedDict, total=False):
+    """Nested item for ports.untagged-vlans field."""
+    vlan_name: str
+
+
+class ManagedSwitchPortsAclgroupItem(TypedDict, total=False):
+    """Nested item for ports.acl-group field."""
+    name: str
+
+
+class ManagedSwitchPortsFortiswitchaclsItem(TypedDict, total=False):
+    """Nested item for ports.fortiswitch-acls field."""
+    id: int
+
+
+class ManagedSwitchPortsDhcpsnoopoption82overrideItem(TypedDict, total=False):
+    """Nested item for ports.dhcp-snoop-option82-override field."""
+    vlan_name: str
+    circuit_id: str
+    remote_id: str
+
+
+class ManagedSwitchPortsInterfacetagsItem(TypedDict, total=False):
+    """Nested item for ports.interface-tags field."""
+    tag_name: str
+
+
+class ManagedSwitchPortsMembersItem(TypedDict, total=False):
+    """Nested item for ports.members field."""
+    member_name: str
+
+
+class ManagedSwitchIpsourceguardBindingentryItem(TypedDict, total=False):
+    """Nested item for ip-source-guard.binding-entry field."""
+    entry_name: str
+    ip: str
+    mac: str
+
+
+class ManagedSwitchSnmpcommunityHostsItem(TypedDict, total=False):
+    """Nested item for snmp-community.hosts field."""
+    id: int
+    ip: str
+
+
+class ManagedSwitchMirrorSrcingressItem(TypedDict, total=False):
+    """Nested item for mirror.src-ingress field."""
+    name: str
+
+
+class ManagedSwitchMirrorSrcegressItem(TypedDict, total=False):
+    """Nested item for mirror.src-egress field."""
+    name: str
+
+
+class ManagedSwitchSystemdhcpserverIprangeItem(TypedDict, total=False):
+    """Nested item for system-dhcp-server.ip-range field."""
+    id: int
+    start_ip: str
+    end_ip: str
+
+
+class ManagedSwitchSystemdhcpserverOptionsItem(TypedDict, total=False):
+    """Nested item for system-dhcp-server.options field."""
+    id: int
+    code: int
+    type: Literal["hex", "string", "ip", "fqdn"]
+    value: str
+    ip: str | list[str]
+
+
 class ManagedSwitchRouteoffloadrouterItem(TypedDict, total=False):
     """Nested item for route-offload-router field."""
     vlan_name: str
@@ -84,17 +160,17 @@ class ManagedSwitchPortsItem(TypedDict, total=False):
     fgt_peer_device_name: str
     vlan: str
     allowed_vlans_all: Literal["enable", "disable"]
-    allowed_vlans: str | list[str]
-    untagged_vlans: str | list[str]
+    allowed_vlans: str | list[str] | list[ManagedSwitchPortsAllowedvlansItem]
+    untagged_vlans: str | list[str] | list[ManagedSwitchPortsUntaggedvlansItem]
     type: Literal["physical", "trunk"]
     access_mode: Literal["dynamic", "nac", "static"]
     matched_dpp_policy: str
     matched_dpp_intf_tags: str
-    acl_group: str | list[str]
-    fortiswitch_acls: str | list[str]
+    acl_group: str | list[str] | list[ManagedSwitchPortsAclgroupItem]
+    fortiswitch_acls: str | list[str] | list[ManagedSwitchPortsFortiswitchaclsItem]
     dhcp_snooping: Literal["untrusted", "trusted"]
     dhcp_snoop_option82_trust: Literal["enable", "disable"]
-    dhcp_snoop_option82_override: str | list[str]
+    dhcp_snoop_option82_override: str | list[str] | list[ManagedSwitchPortsDhcpsnoopoption82overrideItem]
     arp_inspection_trust: Literal["untrusted", "trusted"]
     igmp_snooping_flood_reports: Literal["enable", "disable"]
     mcast_snooping_flood_traffic: Literal["enable", "disable"]
@@ -120,7 +196,7 @@ class ManagedSwitchPortsItem(TypedDict, total=False):
     storm_control_policy: str
     port_security_policy: str
     export_to_pool: str
-    interface_tags: str | list[str]
+    interface_tags: str | list[str] | list[ManagedSwitchPortsInterfacetagsItem]
     learning_limit: int
     sticky_mac: Literal["enable", "disable"]
     lldp_status: Literal["disable", "rx-only", "tx-only", "tx-rx"]
@@ -139,7 +215,7 @@ class ManagedSwitchPortsItem(TypedDict, total=False):
     mclag: Literal["enable", "disable"]
     min_bundle: int
     max_bundle: int
-    members: str | list[str]
+    members: str | list[str] | list[ManagedSwitchPortsMembersItem]
     fallback_port: str
 
 
@@ -147,7 +223,7 @@ class ManagedSwitchIpsourceguardItem(TypedDict, total=False):
     """Nested item for ip-source-guard field."""
     port: str
     description: str
-    binding_entry: str | list[str]
+    binding_entry: str | list[str] | list[ManagedSwitchIpsourceguardBindingentryItem]
 
 
 class ManagedSwitchStpsettingsDict(TypedDict, total=False):
@@ -189,7 +265,7 @@ class ManagedSwitchSnmpcommunityItem(TypedDict, total=False):
     id: int
     name: str
     status: Literal["disable", "enable"]
-    hosts: str | list[str]
+    hosts: str | list[str] | list[ManagedSwitchSnmpcommunityHostsItem]
     query_v1_status: Literal["disable", "enable"]
     query_v1_port: int
     query_v2c_status: Literal["disable", "enable"]
@@ -249,8 +325,8 @@ class ManagedSwitchMirrorItem(TypedDict, total=False):
     status: Literal["active", "inactive"]
     switching_packet: Literal["enable", "disable"]
     dst: str
-    src_ingress: str | list[str]
-    src_egress: str | list[str]
+    src_ingress: str | list[str] | list[ManagedSwitchMirrorSrcingressItem]
+    src_egress: str | list[str] | list[ManagedSwitchMirrorSrcegressItem]
 
 
 class ManagedSwitchStaticmacItem(TypedDict, total=False):
@@ -283,7 +359,7 @@ class ManagedSwitchIgmpsnoopingDict(TypedDict, total=False):
     local_override: Literal["enable", "disable"]
     aging_time: int
     flood_unknown_multicast: Literal["enable", "disable"]
-    vlans: str | list[str]
+    vlans: str | list[str] | list[ManagedSwitchIgmpsnoopingVlansItem]
 
 
 class ManagedSwitchX8021xsettingsDict(TypedDict, total=False):
@@ -354,8 +430,8 @@ class ManagedSwitchSystemdhcpserverItem(TypedDict, total=False):
     default_gateway: str
     netmask: str
     interface: str
-    ip_range: str | list[str]
-    options: str | list[str]
+    ip_range: str | list[str] | list[ManagedSwitchSystemdhcpserverIprangeItem]
+    options: str | list[str] | list[ManagedSwitchSystemdhcpserverOptionsItem]
 
 
 class ManagedSwitchPayload(TypedDict, total=False):
@@ -511,6 +587,270 @@ class ManagedSwitchResponse(TypedDict, total=False):
 # ================================================================
 
 
+class ManagedSwitchRouteoffloadrouterItemObject(FortiObject[ManagedSwitchRouteoffloadrouterItem]):
+    """Typed object for route-offload-router table items with attribute access."""
+    vlan_name: str
+    router_ip: str
+
+
+class ManagedSwitchVlanItemObject(FortiObject[ManagedSwitchVlanItem]):
+    """Typed object for vlan table items with attribute access."""
+    vlan_name: str
+    assignment_priority: int
+
+
+class ManagedSwitchPortsItemObject(FortiObject[ManagedSwitchPortsItem]):
+    """Typed object for ports table items with attribute access."""
+    port_name: str
+    port_owner: str
+    switch_id: str
+    speed: Literal["10half", "10full", "100half", "100full", "1000full", "10000full", "auto", "1000auto", "1000full-fiber", "40000full", "auto-module", "100FX-half", "100FX-full", "100000full", "2500auto", "2500full", "25000full", "50000full", "10000cr", "10000sr", "100000sr4", "100000cr4", "40000sr4", "40000cr4", "40000auto", "25000cr", "25000sr", "50000cr", "50000sr", "5000auto", "sgmii-auto"]
+    status: Literal["up", "down"]
+    poe_status: Literal["enable", "disable"]
+    ip_source_guard: Literal["disable", "enable"]
+    ptp_status: Literal["disable", "enable"]
+    ptp_policy: str
+    aggregator_mode: Literal["bandwidth", "count"]
+    flapguard: Literal["enable", "disable"]
+    flap_rate: int
+    flap_duration: int
+    flap_timeout: int
+    rpvst_port: Literal["disabled", "enabled"]
+    poe_pre_standard_detection: Literal["enable", "disable"]
+    port_number: int
+    port_prefix_type: int
+    fortilink_port: int
+    poe_capable: int
+    pd_capable: int
+    stacking_port: int
+    p2p_port: int
+    mclag_icl_port: int
+    authenticated_port: int
+    restricted_auth_port: int
+    encrypted_port: int
+    fiber_port: int
+    media_type: str
+    poe_standard: str
+    poe_max_power: str
+    poe_mode_bt_cabable: int
+    poe_port_mode: Literal["ieee802-3af", "ieee802-3at", "ieee802-3bt"]
+    poe_port_priority: Literal["critical-priority", "high-priority", "low-priority", "medium-priority"]
+    poe_port_power: Literal["normal", "perpetual", "perpetual-fast"]
+    flags: int
+    isl_local_trunk_name: str
+    isl_peer_port_name: str
+    isl_peer_device_name: str
+    isl_peer_device_sn: str
+    fgt_peer_port_name: str
+    fgt_peer_device_name: str
+    vlan: str
+    allowed_vlans_all: Literal["enable", "disable"]
+    allowed_vlans: FortiObjectList[ManagedSwitchPortsAllowedvlansItemObject]
+    untagged_vlans: FortiObjectList[ManagedSwitchPortsUntaggedvlansItemObject]
+    type: Literal["physical", "trunk"]
+    access_mode: Literal["dynamic", "nac", "static"]
+    matched_dpp_policy: str
+    matched_dpp_intf_tags: str
+    acl_group: FortiObjectList[ManagedSwitchPortsAclgroupItemObject]
+    fortiswitch_acls: FortiObjectList[ManagedSwitchPortsFortiswitchaclsItemObject]
+    dhcp_snooping: Literal["untrusted", "trusted"]
+    dhcp_snoop_option82_trust: Literal["enable", "disable"]
+    dhcp_snoop_option82_override: FortiObjectList[ManagedSwitchPortsDhcpsnoopoption82overrideItemObject]
+    arp_inspection_trust: Literal["untrusted", "trusted"]
+    igmp_snooping_flood_reports: Literal["enable", "disable"]
+    mcast_snooping_flood_traffic: Literal["enable", "disable"]
+    stp_state: Literal["enabled", "disabled"]
+    stp_root_guard: Literal["enabled", "disabled"]
+    stp_bpdu_guard: Literal["enabled", "disabled"]
+    stp_bpdu_guard_timeout: int
+    edge_port: Literal["enable", "disable"]
+    discard_mode: Literal["none", "all-untagged", "all-tagged"]
+    packet_sampler: Literal["enabled", "disabled"]
+    packet_sample_rate: int
+    sflow_counter_interval: int
+    sample_direction: Literal["tx", "rx", "both"]
+    fec_capable: int
+    fec_state: Literal["disabled", "cl74", "cl91", "detect-by-module"]
+    flow_control: Literal["disable", "tx", "rx", "both"]
+    pause_meter: int
+    pause_meter_resume: Literal["75%", "50%", "25%"]
+    loop_guard: Literal["enabled", "disabled"]
+    loop_guard_timeout: int
+    port_policy: str
+    qos_policy: str
+    storm_control_policy: str
+    port_security_policy: str
+    export_to_pool: str
+    interface_tags: FortiObjectList[ManagedSwitchPortsInterfacetagsItemObject]
+    learning_limit: int
+    sticky_mac: Literal["enable", "disable"]
+    lldp_status: Literal["disable", "rx-only", "tx-only", "tx-rx"]
+    lldp_profile: str
+    export_to: str
+    mac_addr: str
+    allow_arp_monitor: Literal["disable", "enable"]
+    qnq: str
+    log_mac_event: Literal["disable", "enable"]
+    port_selection_criteria: Literal["src-mac", "dst-mac", "src-dst-mac", "src-ip", "dst-ip", "src-dst-ip"]
+    description: str
+    lacp_speed: Literal["slow", "fast"]
+    mode: Literal["static", "lacp-passive", "lacp-active"]
+    bundle: Literal["enable", "disable"]
+    member_withdrawal_behavior: Literal["forward", "block"]
+    mclag: Literal["enable", "disable"]
+    min_bundle: int
+    max_bundle: int
+    members: FortiObjectList[ManagedSwitchPortsMembersItemObject]
+    fallback_port: str
+
+
+class ManagedSwitchIpsourceguardItemObject(FortiObject[ManagedSwitchIpsourceguardItem]):
+    """Typed object for ip-source-guard table items with attribute access."""
+    port: str
+    description: str
+    binding_entry: FortiObjectList[ManagedSwitchIpsourceguardBindingentryItemObject]
+
+
+class ManagedSwitchStpinstanceItemObject(FortiObject[ManagedSwitchStpinstanceItem]):
+    """Typed object for stp-instance table items with attribute access."""
+    id: str
+    priority: Literal["0", "4096", "8192", "12288", "16384", "20480", "24576", "28672", "32768", "36864", "40960", "45056", "49152", "53248", "57344", "61440"]
+
+
+class ManagedSwitchSnmpcommunityItemObject(FortiObject[ManagedSwitchSnmpcommunityItem]):
+    """Typed object for snmp-community table items with attribute access."""
+    id: int
+    name: str
+    status: Literal["disable", "enable"]
+    hosts: FortiObjectList[ManagedSwitchSnmpcommunityHostsItemObject]
+    query_v1_status: Literal["disable", "enable"]
+    query_v1_port: int
+    query_v2c_status: Literal["disable", "enable"]
+    query_v2c_port: int
+    trap_v1_status: Literal["disable", "enable"]
+    trap_v1_lport: int
+    trap_v1_rport: int
+    trap_v2c_status: Literal["disable", "enable"]
+    trap_v2c_lport: int
+    trap_v2c_rport: int
+    events: Literal["cpu-high", "mem-low", "log-full", "intf-ip", "ent-conf-change", "l2mac"]
+
+
+class ManagedSwitchSnmpuserItemObject(FortiObject[ManagedSwitchSnmpuserItem]):
+    """Typed object for snmp-user table items with attribute access."""
+    name: str
+    queries: Literal["disable", "enable"]
+    query_port: int
+    security_level: Literal["no-auth-no-priv", "auth-no-priv", "auth-priv"]
+    auth_proto: Literal["md5", "sha1", "sha224", "sha256", "sha384", "sha512"]
+    auth_pwd: str
+    priv_proto: Literal["aes128", "aes192", "aes192c", "aes256", "aes256c", "des"]
+    priv_pwd: str
+
+
+class ManagedSwitchRemotelogItemObject(FortiObject[ManagedSwitchRemotelogItem]):
+    """Typed object for remote-log table items with attribute access."""
+    name: str
+    status: Literal["enable", "disable"]
+    server: str
+    port: int
+    severity: Literal["emergency", "alert", "critical", "error", "warning", "notification", "information", "debug"]
+    csv: Literal["enable", "disable"]
+    facility: Literal["kernel", "user", "mail", "daemon", "auth", "syslog", "lpr", "news", "uucp", "cron", "authpriv", "ftp", "ntp", "audit", "alert", "clock", "local0", "local1", "local2", "local3", "local4", "local5", "local6", "local7"]
+
+
+class ManagedSwitchMirrorItemObject(FortiObject[ManagedSwitchMirrorItem]):
+    """Typed object for mirror table items with attribute access."""
+    name: str
+    status: Literal["active", "inactive"]
+    switching_packet: Literal["enable", "disable"]
+    dst: str
+    src_ingress: FortiObjectList[ManagedSwitchMirrorSrcingressItemObject]
+    src_egress: FortiObjectList[ManagedSwitchMirrorSrcegressItemObject]
+
+
+class ManagedSwitchStaticmacItemObject(FortiObject[ManagedSwitchStaticmacItem]):
+    """Typed object for static-mac table items with attribute access."""
+    id: int
+    type: Literal["static", "sticky"]
+    vlan: str
+    mac: str
+    interface: str
+    description: str
+
+
+class ManagedSwitchCustomcommandItemObject(FortiObject[ManagedSwitchCustomcommandItem]):
+    """Typed object for custom-command table items with attribute access."""
+    command_entry: str
+    command_name: str
+
+
+class ManagedSwitchDhcpsnoopingstaticclientItemObject(FortiObject[ManagedSwitchDhcpsnoopingstaticclientItem]):
+    """Typed object for dhcp-snooping-static-client table items with attribute access."""
+    name: str
+    vlan: str
+    ip: str
+    mac: str
+    port: str
+
+
+class ManagedSwitchRoutervrfItemObject(FortiObject[ManagedSwitchRoutervrfItem]):
+    """Typed object for router-vrf table items with attribute access."""
+    name: str
+    switch_id: str
+    vrfid: int
+
+
+class ManagedSwitchSysteminterfaceItemObject(FortiObject[ManagedSwitchSysteminterfaceItem]):
+    """Typed object for system-interface table items with attribute access."""
+    name: str
+    switch_id: str
+    mode: Literal["static", "dhcp"]
+    ip: str
+    status: Literal["disable", "enable"]
+    allowaccess: Literal["ping", "https", "http", "ssh", "snmp", "telnet", "radius-acct"]
+    vlan: str
+    type: Literal["vlan", "physical"]
+    interface: str
+    vrf: str
+
+
+class ManagedSwitchRouterstaticItemObject(FortiObject[ManagedSwitchRouterstaticItem]):
+    """Typed object for router-static table items with attribute access."""
+    id: int
+    switch_id: str
+    blackhole: Literal["disable", "enable"]
+    comment: str
+    device: str
+    distance: int
+    dst: str
+    dynamic_gateway: Literal["disable", "enable"]
+    gateway: str
+    status: Literal["disable", "enable"]
+    vrf: str
+
+
+class ManagedSwitchSystemdhcpserverItemObject(FortiObject[ManagedSwitchSystemdhcpserverItem]):
+    """Typed object for system-dhcp-server table items with attribute access."""
+    id: int
+    switch_id: str
+    status: Literal["disable", "enable"]
+    lease_time: int
+    dns_service: Literal["local", "default", "specify"]
+    dns_server1: str
+    dns_server2: str
+    dns_server3: str
+    ntp_service: Literal["local", "default", "specify"]
+    ntp_server1: str
+    ntp_server2: str
+    ntp_server3: str
+    default_gateway: str
+    netmask: str
+    interface: str
+    ip_range: FortiObjectList[ManagedSwitchSystemdhcpserverIprangeItemObject]
+    options: FortiObjectList[ManagedSwitchSystemdhcpserverOptionsItemObject]
+
+
 class ManagedSwitchStpsettingsObject(FortiObject):
     """Nested object for stp-settings field with attribute access."""
     local_override: Literal["enable", "disable"]
@@ -611,8 +951,8 @@ class ManagedSwitchObject(FortiObject):
     radius_nas_ip: str
     route_offload: Literal["disable", "enable"]
     route_offload_mclag: Literal["disable", "enable"]
-    route_offload_router: list[ManagedSwitchRouteoffloadrouterItem]
-    vlan: list[ManagedSwitchVlanItem]
+    route_offload_router: FortiObjectList[ManagedSwitchRouteoffloadrouterItemObject]
+    vlan: FortiObjectList[ManagedSwitchVlanItemObject]
     type: Literal["virtual", "physical"]
     owner_vdom: str
     flow_identity: str
@@ -621,33 +961,33 @@ class ManagedSwitchObject(FortiObject):
     firmware_provision: Literal["enable", "disable"]
     firmware_provision_version: str
     firmware_provision_latest: Literal["disable", "once"]
-    ports: list[ManagedSwitchPortsItem]
-    ip_source_guard: list[ManagedSwitchIpsourceguardItem]
+    ports: FortiObjectList[ManagedSwitchPortsItemObject]
+    ip_source_guard: FortiObjectList[ManagedSwitchIpsourceguardItemObject]
     stp_settings: ManagedSwitchStpsettingsObject
-    stp_instance: list[ManagedSwitchStpinstanceItem]
+    stp_instance: FortiObjectList[ManagedSwitchStpinstanceItemObject]
     override_snmp_sysinfo: Literal["disable", "enable"]
     snmp_sysinfo: ManagedSwitchSnmpsysinfoObject
     override_snmp_trap_threshold: Literal["enable", "disable"]
     snmp_trap_threshold: ManagedSwitchSnmptrapthresholdObject
     override_snmp_community: Literal["enable", "disable"]
-    snmp_community: list[ManagedSwitchSnmpcommunityItem]
+    snmp_community: FortiObjectList[ManagedSwitchSnmpcommunityItemObject]
     override_snmp_user: Literal["enable", "disable"]
-    snmp_user: list[ManagedSwitchSnmpuserItem]
+    snmp_user: FortiObjectList[ManagedSwitchSnmpuserItemObject]
     qos_drop_policy: Literal["taildrop", "random-early-detection"]
     qos_red_probability: int
     switch_log: ManagedSwitchSwitchlogObject
-    remote_log: list[ManagedSwitchRemotelogItem]
+    remote_log: FortiObjectList[ManagedSwitchRemotelogItemObject]
     storm_control: ManagedSwitchStormcontrolObject
-    mirror: list[ManagedSwitchMirrorItem]
-    static_mac: list[ManagedSwitchStaticmacItem]
-    custom_command: list[ManagedSwitchCustomcommandItem]
-    dhcp_snooping_static_client: list[ManagedSwitchDhcpsnoopingstaticclientItem]
+    mirror: FortiObjectList[ManagedSwitchMirrorItemObject]
+    static_mac: FortiObjectList[ManagedSwitchStaticmacItemObject]
+    custom_command: FortiObjectList[ManagedSwitchCustomcommandItemObject]
+    dhcp_snooping_static_client: FortiObjectList[ManagedSwitchDhcpsnoopingstaticclientItemObject]
     igmp_snooping: ManagedSwitchIgmpsnoopingObject
     x802_1X_settings: ManagedSwitchX8021xsettingsObject
-    router_vrf: list[ManagedSwitchRoutervrfItem]
-    system_interface: list[ManagedSwitchSysteminterfaceItem]
-    router_static: list[ManagedSwitchRouterstaticItem]
-    system_dhcp_server: list[ManagedSwitchSystemdhcpserverItem]
+    router_vrf: FortiObjectList[ManagedSwitchRoutervrfItemObject]
+    system_interface: FortiObjectList[ManagedSwitchSysteminterfaceItemObject]
+    router_static: FortiObjectList[ManagedSwitchRouterstaticItemObject]
+    system_dhcp_server: FortiObjectList[ManagedSwitchSystemdhcpserverItemObject]
 
 
 # ================================================================

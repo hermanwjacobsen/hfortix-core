@@ -54,11 +54,16 @@ class VapGroupResponse(TypedDict, total=False):
 # ================================================================
 
 
+class VapGroupVapsItemObject(FortiObject[VapGroupVapsItem]):
+    """Typed object for vaps table items with attribute access."""
+    name: str
+
+
 class VapGroupObject(FortiObject):
     """Typed FortiObject for VapGroup with field access."""
     name: str
     comment: str
-    vaps: list[VapGroupVapsItem]
+    vaps: FortiObjectList[VapGroupVapsItemObject]
 
 
 # ================================================================

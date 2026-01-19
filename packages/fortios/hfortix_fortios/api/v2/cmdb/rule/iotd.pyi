@@ -82,6 +82,19 @@ class IotdResponse(TypedDict, total=False):
 # ================================================================
 
 
+class IotdParametersItemObject(FortiObject[IotdParametersItem]):
+    """Typed object for parameters table items with attribute access."""
+    name: str
+    default_value: str
+
+
+class IotdMetadataItemObject(FortiObject[IotdMetadataItem]):
+    """Typed object for metadata table items with attribute access."""
+    id: int
+    metaid: int
+    valueid: int
+
+
 class IotdObject(FortiObject):
     """Typed FortiObject for Iotd with field access."""
     name: str
@@ -94,8 +107,8 @@ class IotdObject(FortiObject):
     technology: str
     behavior: str
     vendor: str
-    parameters: list[IotdParametersItem]
-    metadata: list[IotdMetadataItem]
+    parameters: FortiObjectList[IotdParametersItemObject]
+    metadata: FortiObjectList[IotdMetadataItemObject]
     status: str
 
 
@@ -165,64 +178,8 @@ class Iotd:
         format: str = ...,
     ) -> FortiObject: ...
 
-    # ================================================================
-    # POST Method
-    # ================================================================
-    
-    def post(
-        self,
-        payload_dict: IotdPayload | None = ...,
-        name: str | None = ...,
-        id: int | None = ...,
-        category: int | None = ...,
-        popularity: int | None = ...,
-        risk: int | None = ...,
-        weight: int | None = ...,
-        protocol: str | None = ...,
-        technology: str | None = ...,
-        behavior: str | None = ...,
-        vendor: str | None = ...,
-        parameters: str | list[str] | list[IotdParametersItem] | None = ...,
-        metadata: str | list[str] | list[IotdMetadataItem] | None = ...,
-        status: str | None = ...,
-        error_mode: Literal["raise", "return", "print"] | None = ...,
-        error_format: Literal["detailed", "simple", "code_only"] | None = ...,
-    ) -> IotdObject: ...
 
-    # ================================================================
-    # PUT Method
-    # ================================================================
-    
-    def put(
-        self,
-        payload_dict: IotdPayload | None = ...,
-        name: str | None = ...,
-        id: int | None = ...,
-        category: int | None = ...,
-        popularity: int | None = ...,
-        risk: int | None = ...,
-        weight: int | None = ...,
-        protocol: str | None = ...,
-        technology: str | None = ...,
-        behavior: str | None = ...,
-        vendor: str | None = ...,
-        parameters: str | list[str] | list[IotdParametersItem] | None = ...,
-        metadata: str | list[str] | list[IotdMetadataItem] | None = ...,
-        status: str | None = ...,
-        error_mode: Literal["raise", "return", "print"] | None = ...,
-        error_format: Literal["detailed", "simple", "code_only"] | None = ...,
-    ) -> IotdObject: ...
 
-    # ================================================================
-    # DELETE Method
-    # ================================================================
-    
-    def delete(
-        self,
-        name: str | None = ...,
-        error_mode: Literal["raise", "return", "print"] | None = ...,
-        error_format: Literal["detailed", "simple", "code_only"] | None = ...,
-    ) -> FortiObject: ...
 
     # ================================================================
     # Utility Methods

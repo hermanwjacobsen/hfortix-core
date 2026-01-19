@@ -57,11 +57,19 @@ class CommunityListResponse(TypedDict, total=False):
 # ================================================================
 
 
+class CommunityListRuleItemObject(FortiObject[CommunityListRuleItem]):
+    """Typed object for rule table items with attribute access."""
+    id: int
+    action: Literal["deny", "permit"]
+    regexp: str
+    match: str
+
+
 class CommunityListObject(FortiObject):
     """Typed FortiObject for CommunityList with field access."""
     name: str
     type: Literal["standard", "expanded"]
-    rule: list[CommunityListRuleItem]
+    rule: FortiObjectList[CommunityListRuleItemObject]
 
 
 # ================================================================

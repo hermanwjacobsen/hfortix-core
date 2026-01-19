@@ -28,18 +28,18 @@ from hfortix_fortios.models import (
 
 class ExtenderProfileCellularDict(TypedDict, total=False):
     """Nested object type for cellular field."""
-    dataplan: str | list[str]
-    controller_report: str
-    sms_notification: str
-    modem1: str
-    modem2: str
+    dataplan: str | list[str] | list[ExtenderProfileCellularDataplanItem]
+    controller_report: ExtenderProfileCellularControllerreportDict
+    sms_notification: ExtenderProfileCellularSmsnotificationDict
+    modem1: ExtenderProfileCellularModem1Dict
+    modem2: ExtenderProfileCellularModem2Dict
 
 
 class ExtenderProfileWifiDict(TypedDict, total=False):
     """Nested object type for wifi field."""
     country: Literal["--", "AF", "AL", "DZ", "AS", "AO", "AR", "AM", "AU", "AT", "AZ", "BS", "BH", "BD", "BB", "BY", "BE", "BZ", "BJ", "BM", "BT", "BO", "BA", "BW", "BR", "BN", "BG", "BF", "KH", "CM", "KY", "CF", "TD", "CL", "CN", "CX", "CO", "CG", "CD", "CR", "HR", "CY", "CZ", "DK", "DJ", "DM", "DO", "EC", "EG", "SV", "ET", "EE", "GF", "PF", "FO", "FJ", "FI", "FR", "GA", "GE", "GM", "DE", "GH", "GI", "GR", "GL", "GD", "GP", "GU", "GT", "GY", "HT", "HN", "HK", "HU", "IS", "IN", "ID", "IQ", "IE", "IM", "IL", "IT", "CI", "JM", "JO", "KZ", "KE", "KR", "KW", "LA", "LV", "LB", "LS", "LR", "LY", "LI", "LT", "LU", "MO", "MK", "MG", "MW", "MY", "MV", "ML", "MT", "MH", "MQ", "MR", "MU", "YT", "MX", "FM", "MD", "MC", "MN", "MA", "MZ", "MM", "NA", "NP", "NL", "AN", "AW", "NZ", "NI", "NE", "NG", "NO", "MP", "OM", "PK", "PW", "PA", "PG", "PY", "PE", "PH", "PL", "PT", "PR", "QA", "RE", "RO", "RU", "RW", "BL", "KN", "LC", "MF", "PM", "VC", "SA", "SN", "RS", "ME", "SL", "SG", "SK", "SI", "SO", "ZA", "ES", "LK", "SR", "SZ", "SE", "CH", "TW", "TZ", "TH", "TL", "TG", "TT", "TN", "TR", "TM", "AE", "TC", "UG", "UA", "GB", "US", "PS", "UY", "UZ", "VU", "VE", "VN", "VI", "WF", "YE", "ZM", "ZW", "JP", "CA"]
-    radio_1: str
-    radio_2: str
+    radio_1: ExtenderProfileWifiRadio1Dict
+    radio_2: ExtenderProfileWifiRadio2Dict
 
 
 class ExtenderProfileLanextensionDict(TypedDict, total=False):
@@ -48,9 +48,9 @@ class ExtenderProfileLanextensionDict(TypedDict, total=False):
     ipsec_tunnel: str
     backhaul_interface: str
     backhaul_ip: str
-    backhaul: str | list[str]
-    downlinks: str | list[str]
-    traffic_split_services: str | list[str]
+    backhaul: str | list[str] | list[ExtenderProfileLanextensionBackhaulItem]
+    downlinks: str | list[str] | list[ExtenderProfileLanextensionDownlinksItem]
+    traffic_split_services: str | list[str] | list[ExtenderProfileLanextensionTrafficsplitservicesItem]
 
 
 class ExtenderProfilePayload(TypedDict, total=False):

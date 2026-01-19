@@ -26,14 +26,52 @@ from hfortix_fortios.models import (
 # TypedDict Payloads
 # ================================================================
 
+class InternetServiceExtensionEntryPortrangeItem(TypedDict, total=False):
+    """Nested item for entry.port-range field."""
+    id: int
+    start_port: int
+    end_port: int
+
+
+class InternetServiceExtensionEntryDstItem(TypedDict, total=False):
+    """Nested item for entry.dst field."""
+    name: str
+
+
+class InternetServiceExtensionEntryDst6Item(TypedDict, total=False):
+    """Nested item for entry.dst6 field."""
+    name: str
+
+
+class InternetServiceExtensionDisableentryPortrangeItem(TypedDict, total=False):
+    """Nested item for disable-entry.port-range field."""
+    id: int
+    start_port: int
+    end_port: int
+
+
+class InternetServiceExtensionDisableentryIprangeItem(TypedDict, total=False):
+    """Nested item for disable-entry.ip-range field."""
+    id: int
+    start_ip: str
+    end_ip: str
+
+
+class InternetServiceExtensionDisableentryIp6rangeItem(TypedDict, total=False):
+    """Nested item for disable-entry.ip6-range field."""
+    id: int
+    start_ip6: str
+    end_ip6: str
+
+
 class InternetServiceExtensionEntryItem(TypedDict, total=False):
     """Nested item for entry field."""
     id: int
     addr_mode: Literal["ipv4", "ipv6"]
     protocol: int
-    port_range: str | list[str]
-    dst: str | list[str]
-    dst6: str | list[str]
+    port_range: str | list[str] | list[InternetServiceExtensionEntryPortrangeItem]
+    dst: str | list[str] | list[InternetServiceExtensionEntryDstItem]
+    dst6: str | list[str] | list[InternetServiceExtensionEntryDst6Item]
 
 
 class InternetServiceExtensionDisableentryItem(TypedDict, total=False):
@@ -41,9 +79,9 @@ class InternetServiceExtensionDisableentryItem(TypedDict, total=False):
     id: int
     addr_mode: Literal["ipv4", "ipv6"]
     protocol: int
-    port_range: str | list[str]
-    ip_range: str | list[str]
-    ip6_range: str | list[str]
+    port_range: str | list[str] | list[InternetServiceExtensionDisableentryPortrangeItem]
+    ip_range: str | list[str] | list[InternetServiceExtensionDisableentryIprangeItem]
+    ip6_range: str | list[str] | list[InternetServiceExtensionDisableentryIp6rangeItem]
 
 
 class InternetServiceExtensionPayload(TypedDict, total=False):
@@ -71,12 +109,32 @@ class InternetServiceExtensionResponse(TypedDict, total=False):
 # ================================================================
 
 
+class InternetServiceExtensionEntryItemObject(FortiObject[InternetServiceExtensionEntryItem]):
+    """Typed object for entry table items with attribute access."""
+    id: int
+    addr_mode: Literal["ipv4", "ipv6"]
+    protocol: int
+    port_range: FortiObjectList[InternetServiceExtensionEntryPortrangeItemObject]
+    dst: FortiObjectList[InternetServiceExtensionEntryDstItemObject]
+    dst6: FortiObjectList[InternetServiceExtensionEntryDst6ItemObject]
+
+
+class InternetServiceExtensionDisableentryItemObject(FortiObject[InternetServiceExtensionDisableentryItem]):
+    """Typed object for disable-entry table items with attribute access."""
+    id: int
+    addr_mode: Literal["ipv4", "ipv6"]
+    protocol: int
+    port_range: FortiObjectList[InternetServiceExtensionDisableentryPortrangeItemObject]
+    ip_range: FortiObjectList[InternetServiceExtensionDisableentryIprangeItemObject]
+    ip6_range: FortiObjectList[InternetServiceExtensionDisableentryIp6rangeItemObject]
+
+
 class InternetServiceExtensionObject(FortiObject):
     """Typed FortiObject for InternetServiceExtension with field access."""
     id: int
     comment: str
-    entry: list[InternetServiceExtensionEntryItem]
-    disable_entry: list[InternetServiceExtensionDisableentryItem]
+    entry: FortiObjectList[InternetServiceExtensionEntryItemObject]
+    disable_entry: FortiObjectList[InternetServiceExtensionDisableentryItemObject]
 
 
 # ================================================================

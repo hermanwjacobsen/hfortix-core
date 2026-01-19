@@ -70,6 +70,21 @@ class ShapingProfileResponse(TypedDict, total=False):
 # ================================================================
 
 
+class ShapingProfileShapingentriesItemObject(FortiObject[ShapingProfileShapingentriesItem]):
+    """Typed object for shaping-entries table items with attribute access."""
+    id: int
+    class_id: int
+    priority: Literal["top", "critical", "high", "medium", "low"]
+    guaranteed_bandwidth_percentage: int
+    maximum_bandwidth_percentage: int
+    limit: int
+    burst_in_msec: int
+    cburst_in_msec: int
+    red_probability: int
+    min: int
+    max: int
+
+
 class ShapingProfileObject(FortiObject):
     """Typed FortiObject for ShapingProfile with field access."""
     profile_name: str
@@ -77,7 +92,7 @@ class ShapingProfileObject(FortiObject):
     type: Literal["policing", "queuing"]
     npu_offloading: Literal["disable", "enable"]
     default_class_id: int
-    shaping_entries: list[ShapingProfileShapingentriesItem]
+    shaping_entries: FortiObjectList[ShapingProfileShapingentriesItemObject]
 
 
 # ================================================================

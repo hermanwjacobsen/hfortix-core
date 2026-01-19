@@ -64,6 +64,14 @@ class InterControllerResponse(TypedDict, total=False):
 # ================================================================
 
 
+class InterControllerIntercontrollerpeerItemObject(FortiObject[InterControllerIntercontrollerpeerItem]):
+    """Typed object for inter-controller-peer table items with attribute access."""
+    id: int
+    peer_ip: str
+    peer_port: int
+    peer_priority: Literal["primary", "secondary"]
+
+
 class InterControllerObject(FortiObject):
     """Typed FortiObject for InterController with field access."""
     inter_controller_mode: Literal["disable", "l2-roaming", "1+1"]
@@ -72,7 +80,7 @@ class InterControllerObject(FortiObject):
     inter_controller_pri: Literal["primary", "secondary"]
     fast_failover_max: int
     fast_failover_wait: int
-    inter_controller_peer: list[InterControllerIntercontrollerpeerItem]
+    inter_controller_peer: FortiObjectList[InterControllerIntercontrollerpeerItemObject]
 
 
 # ================================================================

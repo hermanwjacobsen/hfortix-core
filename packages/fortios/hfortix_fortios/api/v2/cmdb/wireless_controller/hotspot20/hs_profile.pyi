@@ -134,6 +134,11 @@ class HsProfileResponse(TypedDict, total=False):
 # ================================================================
 
 
+class HsProfileOsuproviderItemObject(FortiObject[HsProfileOsuproviderItem]):
+    """Typed object for osu-provider table items with attribute access."""
+    name: str
+
+
 class HsProfileObject(FortiObject):
     """Typed FortiObject for HsProfile with field access."""
     name: str
@@ -167,7 +172,7 @@ class HsProfileObject(FortiObject):
     advice_of_charge: str
     osu_provider_nai: str
     terms_and_conditions: str
-    osu_provider: list[HsProfileOsuproviderItem]
+    osu_provider: FortiObjectList[HsProfileOsuproviderItemObject]
     wan_metrics: str
     network_auth: str
     x3gpp_plmn: str

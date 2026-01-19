@@ -100,6 +100,16 @@ class CentralManagementResponse(TypedDict, total=False):
 # ================================================================
 
 
+class CentralManagementServerlistItemObject(FortiObject[CentralManagementServerlistItem]):
+    """Typed object for server-list table items with attribute access."""
+    id: int
+    server_type: Literal["update", "rating", "vpatch-query", "iot-collect"]
+    addr_type: Literal["ipv4", "ipv6", "fqdn"]
+    server_address: str
+    server_address6: str
+    fqdn: str
+
+
 class CentralManagementObject(FortiObject):
     """Typed FortiObject for CentralManagement with field access."""
     mode: Literal["normal", "backup"]
@@ -117,7 +127,7 @@ class CentralManagementObject(FortiObject):
     fmg_source_ip6: str
     local_cert: str
     ca_cert: str
-    server_list: list[CentralManagementServerlistItem]
+    server_list: FortiObjectList[CentralManagementServerlistItemObject]
     fmg_update_port: Literal["8890", "443"]
     fmg_update_http_header: Literal["enable", "disable"]
     include_default_servers: Literal["enable", "disable"]

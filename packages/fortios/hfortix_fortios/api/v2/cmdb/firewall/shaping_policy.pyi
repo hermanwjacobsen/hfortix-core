@@ -250,6 +250,121 @@ class ShapingPolicyResponse(TypedDict, total=False):
 # ================================================================
 
 
+class ShapingPolicySrcaddrItemObject(FortiObject[ShapingPolicySrcaddrItem]):
+    """Typed object for srcaddr table items with attribute access."""
+    name: str
+
+
+class ShapingPolicyDstaddrItemObject(FortiObject[ShapingPolicyDstaddrItem]):
+    """Typed object for dstaddr table items with attribute access."""
+    name: str
+
+
+class ShapingPolicySrcaddr6ItemObject(FortiObject[ShapingPolicySrcaddr6Item]):
+    """Typed object for srcaddr6 table items with attribute access."""
+    name: str
+
+
+class ShapingPolicyDstaddr6ItemObject(FortiObject[ShapingPolicyDstaddr6Item]):
+    """Typed object for dstaddr6 table items with attribute access."""
+    name: str
+
+
+class ShapingPolicyInternetservicenameItemObject(FortiObject[ShapingPolicyInternetservicenameItem]):
+    """Typed object for internet-service-name table items with attribute access."""
+    name: str
+
+
+class ShapingPolicyInternetservicegroupItemObject(FortiObject[ShapingPolicyInternetservicegroupItem]):
+    """Typed object for internet-service-group table items with attribute access."""
+    name: str
+
+
+class ShapingPolicyInternetservicecustomItemObject(FortiObject[ShapingPolicyInternetservicecustomItem]):
+    """Typed object for internet-service-custom table items with attribute access."""
+    name: str
+
+
+class ShapingPolicyInternetservicecustomgroupItemObject(FortiObject[ShapingPolicyInternetservicecustomgroupItem]):
+    """Typed object for internet-service-custom-group table items with attribute access."""
+    name: str
+
+
+class ShapingPolicyInternetservicefortiguardItemObject(FortiObject[ShapingPolicyInternetservicefortiguardItem]):
+    """Typed object for internet-service-fortiguard table items with attribute access."""
+    name: str
+
+
+class ShapingPolicyInternetservicesrcnameItemObject(FortiObject[ShapingPolicyInternetservicesrcnameItem]):
+    """Typed object for internet-service-src-name table items with attribute access."""
+    name: str
+
+
+class ShapingPolicyInternetservicesrcgroupItemObject(FortiObject[ShapingPolicyInternetservicesrcgroupItem]):
+    """Typed object for internet-service-src-group table items with attribute access."""
+    name: str
+
+
+class ShapingPolicyInternetservicesrccustomItemObject(FortiObject[ShapingPolicyInternetservicesrccustomItem]):
+    """Typed object for internet-service-src-custom table items with attribute access."""
+    name: str
+
+
+class ShapingPolicyInternetservicesrccustomgroupItemObject(FortiObject[ShapingPolicyInternetservicesrccustomgroupItem]):
+    """Typed object for internet-service-src-custom-group table items with attribute access."""
+    name: str
+
+
+class ShapingPolicyInternetservicesrcfortiguardItemObject(FortiObject[ShapingPolicyInternetservicesrcfortiguardItem]):
+    """Typed object for internet-service-src-fortiguard table items with attribute access."""
+    name: str
+
+
+class ShapingPolicyServiceItemObject(FortiObject[ShapingPolicyServiceItem]):
+    """Typed object for service table items with attribute access."""
+    name: str
+
+
+class ShapingPolicyUsersItemObject(FortiObject[ShapingPolicyUsersItem]):
+    """Typed object for users table items with attribute access."""
+    name: str
+
+
+class ShapingPolicyGroupsItemObject(FortiObject[ShapingPolicyGroupsItem]):
+    """Typed object for groups table items with attribute access."""
+    name: str
+
+
+class ShapingPolicyApplicationItemObject(FortiObject[ShapingPolicyApplicationItem]):
+    """Typed object for application table items with attribute access."""
+    id: int
+
+
+class ShapingPolicyAppcategoryItemObject(FortiObject[ShapingPolicyAppcategoryItem]):
+    """Typed object for app-category table items with attribute access."""
+    id: int
+
+
+class ShapingPolicyAppgroupItemObject(FortiObject[ShapingPolicyAppgroupItem]):
+    """Typed object for app-group table items with attribute access."""
+    name: str
+
+
+class ShapingPolicyUrlcategoryItemObject(FortiObject[ShapingPolicyUrlcategoryItem]):
+    """Typed object for url-category table items with attribute access."""
+    id: int
+
+
+class ShapingPolicySrcintfItemObject(FortiObject[ShapingPolicySrcintfItem]):
+    """Typed object for srcintf table items with attribute access."""
+    name: str
+
+
+class ShapingPolicyDstintfItemObject(FortiObject[ShapingPolicyDstintfItem]):
+    """Typed object for dstintf table items with attribute access."""
+    name: str
+
+
 class ShapingPolicyObject(FortiObject):
     """Typed FortiObject for ShapingPolicy with field access."""
     id: int
@@ -259,32 +374,32 @@ class ShapingPolicyObject(FortiObject):
     status: Literal["enable", "disable"]
     ip_version: Literal["4", "6"]
     traffic_type: Literal["forwarding", "local-in", "local-out"]
-    srcaddr: list[ShapingPolicySrcaddrItem]
-    dstaddr: list[ShapingPolicyDstaddrItem]
-    srcaddr6: list[ShapingPolicySrcaddr6Item]
-    dstaddr6: list[ShapingPolicyDstaddr6Item]
+    srcaddr: FortiObjectList[ShapingPolicySrcaddrItemObject]
+    dstaddr: FortiObjectList[ShapingPolicyDstaddrItemObject]
+    srcaddr6: FortiObjectList[ShapingPolicySrcaddr6ItemObject]
+    dstaddr6: FortiObjectList[ShapingPolicyDstaddr6ItemObject]
     internet_service: Literal["enable", "disable"]
-    internet_service_name: list[ShapingPolicyInternetservicenameItem]
-    internet_service_group: list[ShapingPolicyInternetservicegroupItem]
-    internet_service_custom: list[ShapingPolicyInternetservicecustomItem]
-    internet_service_custom_group: list[ShapingPolicyInternetservicecustomgroupItem]
-    internet_service_fortiguard: list[ShapingPolicyInternetservicefortiguardItem]
+    internet_service_name: FortiObjectList[ShapingPolicyInternetservicenameItemObject]
+    internet_service_group: FortiObjectList[ShapingPolicyInternetservicegroupItemObject]
+    internet_service_custom: FortiObjectList[ShapingPolicyInternetservicecustomItemObject]
+    internet_service_custom_group: FortiObjectList[ShapingPolicyInternetservicecustomgroupItemObject]
+    internet_service_fortiguard: FortiObjectList[ShapingPolicyInternetservicefortiguardItemObject]
     internet_service_src: Literal["enable", "disable"]
-    internet_service_src_name: list[ShapingPolicyInternetservicesrcnameItem]
-    internet_service_src_group: list[ShapingPolicyInternetservicesrcgroupItem]
-    internet_service_src_custom: list[ShapingPolicyInternetservicesrccustomItem]
-    internet_service_src_custom_group: list[ShapingPolicyInternetservicesrccustomgroupItem]
-    internet_service_src_fortiguard: list[ShapingPolicyInternetservicesrcfortiguardItem]
-    service: list[ShapingPolicyServiceItem]
+    internet_service_src_name: FortiObjectList[ShapingPolicyInternetservicesrcnameItemObject]
+    internet_service_src_group: FortiObjectList[ShapingPolicyInternetservicesrcgroupItemObject]
+    internet_service_src_custom: FortiObjectList[ShapingPolicyInternetservicesrccustomItemObject]
+    internet_service_src_custom_group: FortiObjectList[ShapingPolicyInternetservicesrccustomgroupItemObject]
+    internet_service_src_fortiguard: FortiObjectList[ShapingPolicyInternetservicesrcfortiguardItemObject]
+    service: FortiObjectList[ShapingPolicyServiceItemObject]
     schedule: str
-    users: list[ShapingPolicyUsersItem]
-    groups: list[ShapingPolicyGroupsItem]
-    application: list[ShapingPolicyApplicationItem]
-    app_category: list[ShapingPolicyAppcategoryItem]
-    app_group: list[ShapingPolicyAppgroupItem]
-    url_category: list[ShapingPolicyUrlcategoryItem]
-    srcintf: list[ShapingPolicySrcintfItem]
-    dstintf: list[ShapingPolicyDstintfItem]
+    users: FortiObjectList[ShapingPolicyUsersItemObject]
+    groups: FortiObjectList[ShapingPolicyGroupsItemObject]
+    application: FortiObjectList[ShapingPolicyApplicationItemObject]
+    app_category: FortiObjectList[ShapingPolicyAppcategoryItemObject]
+    app_group: FortiObjectList[ShapingPolicyAppgroupItemObject]
+    url_category: FortiObjectList[ShapingPolicyUrlcategoryItemObject]
+    srcintf: FortiObjectList[ShapingPolicySrcintfItemObject]
+    dstintf: FortiObjectList[ShapingPolicyDstintfItemObject]
     tos_mask: str
     tos: str
     tos_negate: Literal["enable", "disable"]

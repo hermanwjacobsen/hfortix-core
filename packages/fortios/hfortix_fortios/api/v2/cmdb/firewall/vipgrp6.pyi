@@ -58,13 +58,18 @@ class Vipgrp6Response(TypedDict, total=False):
 # ================================================================
 
 
+class Vipgrp6MemberItemObject(FortiObject[Vipgrp6MemberItem]):
+    """Typed object for member table items with attribute access."""
+    name: str
+
+
 class Vipgrp6Object(FortiObject):
     """Typed FortiObject for Vipgrp6 with field access."""
     name: str
     uuid: str
     color: int
     comments: str
-    member: list[Vipgrp6MemberItem]
+    member: FortiObjectList[Vipgrp6MemberItemObject]
 
 
 # ================================================================

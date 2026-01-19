@@ -117,6 +117,32 @@ class GroupResponse(TypedDict, total=False):
 # ================================================================
 
 
+class GroupMemberItemObject(FortiObject[GroupMemberItem]):
+    """Typed object for member table items with attribute access."""
+    name: str
+
+
+class GroupMatchItemObject(FortiObject[GroupMatchItem]):
+    """Typed object for match table items with attribute access."""
+    id: int
+    server_name: str
+    group_name: str
+
+
+class GroupGuestItemObject(FortiObject[GroupGuestItem]):
+    """Typed object for guest table items with attribute access."""
+    id: int
+    user_id: str
+    name: str
+    password: str
+    mobile_phone: str
+    sponsor: str
+    company: str
+    email: str
+    expiration: str
+    comment: str
+
+
 class GroupObject(FortiObject):
     """Typed FortiObject for Group with field access."""
     name: str
@@ -127,8 +153,8 @@ class GroupObject(FortiObject):
     auth_concurrent_value: int
     http_digest_realm: str
     sso_attribute_value: str
-    member: list[GroupMemberItem]
-    match: list[GroupMatchItem]
+    member: FortiObjectList[GroupMemberItemObject]
+    match: FortiObjectList[GroupMatchItemObject]
     user_id: Literal["email", "auto-generate", "specify"]
     password: Literal["auto-generate", "specify", "disable"]
     user_name: Literal["disable", "enable"]
@@ -142,7 +168,7 @@ class GroupObject(FortiObject):
     expire: int
     max_accounts: int
     multiple_guest_add: Literal["disable", "enable"]
-    guest: list[GroupGuestItem]
+    guest: FortiObjectList[GroupGuestItemObject]
 
 
 # ================================================================

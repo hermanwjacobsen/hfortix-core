@@ -26,15 +26,45 @@ from hfortix_fortios.models import (
 # TypedDict Payloads
 # ================================================================
 
+class ServerIprangeVcistringItem(TypedDict, total=False):
+    """Nested item for ip-range.vci-string field."""
+    vci_string: str
+
+
+class ServerIprangeUcistringItem(TypedDict, total=False):
+    """Nested item for ip-range.uci-string field."""
+    uci_string: str
+
+
+class ServerOptionsVcistringItem(TypedDict, total=False):
+    """Nested item for options.vci-string field."""
+    vci_string: str
+
+
+class ServerOptionsUcistringItem(TypedDict, total=False):
+    """Nested item for options.uci-string field."""
+    uci_string: str
+
+
+class ServerExcluderangeVcistringItem(TypedDict, total=False):
+    """Nested item for exclude-range.vci-string field."""
+    vci_string: str
+
+
+class ServerExcluderangeUcistringItem(TypedDict, total=False):
+    """Nested item for exclude-range.uci-string field."""
+    uci_string: str
+
+
 class ServerIprangeItem(TypedDict, total=False):
     """Nested item for ip-range field."""
     id: int
     start_ip: str
     end_ip: str
     vci_match: Literal["disable", "enable"]
-    vci_string: str | list[str]
+    vci_string: str | list[str] | list[ServerIprangeVcistringItem]
     uci_match: Literal["disable", "enable"]
-    uci_string: str | list[str]
+    uci_string: str | list[str] | list[ServerIprangeUcistringItem]
     lease_time: int
 
 
@@ -51,9 +81,9 @@ class ServerOptionsItem(TypedDict, total=False):
     value: str
     ip: str | list[str]
     vci_match: Literal["disable", "enable"]
-    vci_string: str | list[str]
+    vci_string: str | list[str] | list[ServerOptionsVcistringItem]
     uci_match: Literal["disable", "enable"]
-    uci_string: str | list[str]
+    uci_string: str | list[str] | list[ServerOptionsUcistringItem]
 
 
 class ServerVcistringItem(TypedDict, total=False):
@@ -67,9 +97,9 @@ class ServerExcluderangeItem(TypedDict, total=False):
     start_ip: str
     end_ip: str
     vci_match: Literal["disable", "enable"]
-    vci_string: str | list[str]
+    vci_string: str | list[str] | list[ServerExcluderangeVcistringItem]
     uci_match: Literal["disable", "enable"]
-    uci_string: str | list[str]
+    uci_string: str | list[str] | list[ServerExcluderangeUcistringItem]
     lease_time: int
 
 
@@ -208,6 +238,67 @@ class ServerResponse(TypedDict, total=False):
 # ================================================================
 
 
+class ServerIprangeItemObject(FortiObject[ServerIprangeItem]):
+    """Typed object for ip-range table items with attribute access."""
+    id: int
+    start_ip: str
+    end_ip: str
+    vci_match: Literal["disable", "enable"]
+    vci_string: FortiObjectList[ServerIprangeVcistringItemObject]
+    uci_match: Literal["disable", "enable"]
+    uci_string: FortiObjectList[ServerIprangeUcistringItemObject]
+    lease_time: int
+
+
+class ServerTftpserverItemObject(FortiObject[ServerTftpserverItem]):
+    """Typed object for tftp-server table items with attribute access."""
+    tftp_server: str
+
+
+class ServerOptionsItemObject(FortiObject[ServerOptionsItem]):
+    """Typed object for options table items with attribute access."""
+    id: int
+    code: int
+    type: Literal["hex", "string", "ip", "fqdn"]
+    value: str
+    ip: str | list[str]
+    vci_match: Literal["disable", "enable"]
+    vci_string: FortiObjectList[ServerOptionsVcistringItemObject]
+    uci_match: Literal["disable", "enable"]
+    uci_string: FortiObjectList[ServerOptionsUcistringItemObject]
+
+
+class ServerVcistringItemObject(FortiObject[ServerVcistringItem]):
+    """Typed object for vci-string table items with attribute access."""
+    vci_string: str
+
+
+class ServerExcluderangeItemObject(FortiObject[ServerExcluderangeItem]):
+    """Typed object for exclude-range table items with attribute access."""
+    id: int
+    start_ip: str
+    end_ip: str
+    vci_match: Literal["disable", "enable"]
+    vci_string: FortiObjectList[ServerExcluderangeVcistringItemObject]
+    uci_match: Literal["disable", "enable"]
+    uci_string: FortiObjectList[ServerExcluderangeUcistringItemObject]
+    lease_time: int
+
+
+class ServerReservedaddressItemObject(FortiObject[ServerReservedaddressItem]):
+    """Typed object for reserved-address table items with attribute access."""
+    id: int
+    type: Literal["mac", "option82"]
+    ip: str
+    mac: str
+    action: Literal["assign", "block", "reserved"]
+    circuit_id_type: Literal["hex", "string"]
+    circuit_id: str
+    remote_id_type: Literal["hex", "string"]
+    remote_id: str
+    description: str
+
+
 class ServerObject(FortiObject):
     """Typed FortiObject for Server with field access."""
     id: int
@@ -235,12 +326,12 @@ class ServerObject(FortiObject):
     next_server: str
     netmask: str
     interface: str
-    ip_range: list[ServerIprangeItem]
+    ip_range: FortiObjectList[ServerIprangeItemObject]
     timezone_option: Literal["disable", "default", "specify"]
     timezone: str
-    tftp_server: list[ServerTftpserverItem]
+    tftp_server: FortiObjectList[ServerTftpserverItemObject]
     filename: str
-    options: list[ServerOptionsItem]
+    options: FortiObjectList[ServerOptionsItemObject]
     server_type: Literal["regular", "ipsec"]
     ip_mode: Literal["range", "usrgrp"]
     conflicted_ip_timeout: int
@@ -257,11 +348,11 @@ class ServerObject(FortiObject):
     ddns_key: str
     ddns_ttl: int
     vci_match: Literal["disable", "enable"]
-    vci_string: list[ServerVcistringItem]
-    exclude_range: list[ServerExcluderangeItem]
+    vci_string: FortiObjectList[ServerVcistringItemObject]
+    exclude_range: FortiObjectList[ServerExcluderangeItemObject]
     shared_subnet: Literal["disable", "enable"]
     relay_agent: str
-    reserved_address: list[ServerReservedaddressItem]
+    reserved_address: FortiObjectList[ServerReservedaddressItemObject]
 
 
 # ================================================================

@@ -109,6 +109,26 @@ class QosProfileResponse(TypedDict, total=False):
 # ================================================================
 
 
+class QosProfileDscpwmmvoItemObject(FortiObject[QosProfileDscpwmmvoItem]):
+    """Typed object for dscp-wmm-vo table items with attribute access."""
+    id: int
+
+
+class QosProfileDscpwmmviItemObject(FortiObject[QosProfileDscpwmmviItem]):
+    """Typed object for dscp-wmm-vi table items with attribute access."""
+    id: int
+
+
+class QosProfileDscpwmmbeItemObject(FortiObject[QosProfileDscpwmmbeItem]):
+    """Typed object for dscp-wmm-be table items with attribute access."""
+    id: int
+
+
+class QosProfileDscpwmmbkItemObject(FortiObject[QosProfileDscpwmmbkItem]):
+    """Typed object for dscp-wmm-bk table items with attribute access."""
+    id: int
+
+
 class QosProfileObject(FortiObject):
     """Typed FortiObject for QosProfile with field access."""
     name: str
@@ -125,10 +145,10 @@ class QosProfileObject(FortiObject):
     bandwidth_admission_control: Literal["enable", "disable"]
     bandwidth_capacity: int
     dscp_wmm_mapping: Literal["enable", "disable"]
-    dscp_wmm_vo: list[QosProfileDscpwmmvoItem]
-    dscp_wmm_vi: list[QosProfileDscpwmmviItem]
-    dscp_wmm_be: list[QosProfileDscpwmmbeItem]
-    dscp_wmm_bk: list[QosProfileDscpwmmbkItem]
+    dscp_wmm_vo: FortiObjectList[QosProfileDscpwmmvoItemObject]
+    dscp_wmm_vi: FortiObjectList[QosProfileDscpwmmviItemObject]
+    dscp_wmm_be: FortiObjectList[QosProfileDscpwmmbeItemObject]
+    dscp_wmm_bk: FortiObjectList[QosProfileDscpwmmbkItemObject]
     wmm_dscp_marking: Literal["enable", "disable"]
     wmm_vo_dscp: int
     wmm_vi_dscp: int

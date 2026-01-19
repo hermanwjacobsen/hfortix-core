@@ -3,6 +3,7 @@ Payload building helpers for FortiOS API.
 
 Converts Python-style parameters to FortiOS API payloads with:
 - snake_case to kebab-case conversion
+- Python keyword conflict resolution (asn -> as, etc.)
 - Optional list normalization
 - None value filtering
 """
@@ -10,6 +11,20 @@ Converts Python-style parameters to FortiOS API payloads with:
 from typing import Any
 
 from hfortix_fortios._helpers.normalizers import normalize_to_name_list
+
+
+# Python keyword to API field name mapping
+# The generator renames Python keywords to avoid conflicts (e.g., 'as' -> 'asn')
+# This mapping reverses that transformation when sending to the API
+PYTHON_KEYWORD_TO_API_FIELD = {
+    "asn": "as",  # BGP AS number (Python keyword 'as' -> 'asn')
+    "class_": "class",  # Class fields (Python keyword 'class' -> 'class_')
+    "type_": "type",  # Type fields (Python keyword 'type' -> 'type_')
+    "from_": "from",  # From fields
+    "import_": "import",  # Import fields
+    "global_": "global",  # Global fields
+    # Add more as discovered in schemas
+}
 
 
 def build_cmdb_payload(**params: Any) -> dict[str, Any]:
@@ -38,8 +53,12 @@ def build_cmdb_payload(**params: Any) -> dict[str, Any]:
         if value is None:
             continue
 
-        # Convert snake_case to kebab-case for FortiOS API
-        api_key = param_name.replace("_", "-")
+        # First, check if this is a Python keyword that needs reverse mapping
+        if param_name in PYTHON_KEYWORD_TO_API_FIELD:
+            api_key = PYTHON_KEYWORD_TO_API_FIELD[param_name]
+        else:
+            # Convert snake_case to kebab-case for FortiOS API
+            api_key = param_name.replace("_", "-")
         payload[api_key] = value
 
     # Merge 'data' dictionary into payload (override existing keys)
@@ -101,8 +120,12 @@ def build_cmdb_payload_normalized(
         if value is None:
             continue
 
-        # Convert snake_case to kebab-case for FortiOS API
-        api_key = param_name.replace("_", "-")
+        # First, check if this is a Python keyword that needs reverse mapping
+        if param_name in PYTHON_KEYWORD_TO_API_FIELD:
+            api_key = PYTHON_KEYWORD_TO_API_FIELD[param_name]
+        else:
+            # Convert snake_case to kebab-case for FortiOS API
+            api_key = param_name.replace("_", "-")
 
         # Normalize list parameters to FortiOS format if specified
         if param_name in fields_to_normalize:
@@ -232,8 +255,12 @@ def build_api_payload(
         if value is None:
             continue
 
-        # Convert snake_case to kebab-case for FortiOS API
-        api_key = param_name.replace("_", "-")
+        # First, check if this is a Python keyword that needs reverse mapping
+        if param_name in PYTHON_KEYWORD_TO_API_FIELD:
+            api_key = PYTHON_KEYWORD_TO_API_FIELD[param_name]
+        else:
+            # Convert snake_case to kebab-case for FortiOS API
+            api_key = param_name.replace("_", "-")
 
         # Normalize list parameters if specified
         if param_name in fields_to_normalize:

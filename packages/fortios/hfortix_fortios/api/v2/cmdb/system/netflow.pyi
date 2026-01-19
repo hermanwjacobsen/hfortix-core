@@ -78,6 +78,28 @@ class NetflowResponse(TypedDict, total=False):
 # ================================================================
 
 
+class NetflowExclusionfiltersItemObject(FortiObject[NetflowExclusionfiltersItem]):
+    """Typed object for exclusion-filters table items with attribute access."""
+    id: int
+    source_ip: str
+    destination_ip: str
+    source_port: str
+    destination_port: str
+    protocol: int
+
+
+class NetflowCollectorsItemObject(FortiObject[NetflowCollectorsItem]):
+    """Typed object for collectors table items with attribute access."""
+    id: int
+    collector_ip: str
+    collector_port: int
+    source_ip: str
+    source_ip_interface: str
+    interface_select_method: Literal["auto", "sdwan", "specify"]
+    interface: str
+    vrf_select: int
+
+
 class NetflowObject(FortiObject):
     """Typed FortiObject for Netflow with field access."""
     active_flow_timeout: int
@@ -85,8 +107,8 @@ class NetflowObject(FortiObject):
     template_tx_timeout: int
     template_tx_counter: int
     session_cache_size: Literal["min", "default", "max"]
-    exclusion_filters: list[NetflowExclusionfiltersItem]
-    collectors: list[NetflowCollectorsItem]
+    exclusion_filters: FortiObjectList[NetflowExclusionfiltersItemObject]
+    collectors: FortiObjectList[NetflowCollectorsItemObject]
 
 
 # ================================================================

@@ -58,12 +58,19 @@ class FilepatternResponse(TypedDict, total=False):
 # ================================================================
 
 
+class FilepatternEntriesItemObject(FortiObject[FilepatternEntriesItem]):
+    """Typed object for entries table items with attribute access."""
+    filter_type: Literal["pattern", "type"]
+    pattern: str
+    file_type: Literal["7z", "arj", "cab", "lzh", "rar", "tar", "zip", "bzip", "gzip", "bzip2", "xz", "bat", "uue", "mime", "base64", "binhex", "elf", "exe", "dll", "jnlp", "hta", "html", "jad", "class", "cod", "javascript", "msoffice", "msofficex", "fsg", "upx", "petite", "aspack", "sis", "hlp", "activemime", "jpeg", "gif", "tiff", "png", "bmp", "unknown", "mpeg", "mov", "mp3", "wma", "wav", "pdf", "avi", "rm", "torrent", "hibun", "msi", "mach-o", "dmg", ".net", "xar", "chm", "iso", "crx", "flac", "registry", "hwp", "rpm", "genscript", "python", "c/cpp", "pfile", "lzip", "wasm", "sylk", "shellscript"]
+
+
 class FilepatternObject(FortiObject):
     """Typed FortiObject for Filepattern with field access."""
     id: int
     name: str
     comment: str
-    entries: list[FilepatternEntriesItem]
+    entries: FortiObjectList[FilepatternEntriesItemObject]
 
 
 # ================================================================

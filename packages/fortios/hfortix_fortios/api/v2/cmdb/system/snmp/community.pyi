@@ -108,13 +108,42 @@ class CommunityResponse(TypedDict, total=False):
 # ================================================================
 
 
+class CommunityHostsItemObject(FortiObject[CommunityHostsItem]):
+    """Typed object for hosts table items with attribute access."""
+    id: int
+    source_ip: str
+    ip: str
+    ha_direct: Literal["enable", "disable"]
+    host_type: Literal["any", "query", "trap"]
+    interface_select_method: Literal["auto", "sdwan", "specify"]
+    interface: str
+    vrf_select: int
+
+
+class CommunityHosts6ItemObject(FortiObject[CommunityHosts6Item]):
+    """Typed object for hosts6 table items with attribute access."""
+    id: int
+    source_ipv6: str
+    ipv6: str
+    ha_direct: Literal["enable", "disable"]
+    host_type: Literal["any", "query", "trap"]
+    interface_select_method: Literal["auto", "sdwan", "specify"]
+    interface: str
+    vrf_select: int
+
+
+class CommunityVdomsItemObject(FortiObject[CommunityVdomsItem]):
+    """Typed object for vdoms table items with attribute access."""
+    name: str
+
+
 class CommunityObject(FortiObject):
     """Typed FortiObject for Community with field access."""
     id: int
     name: str
     status: Literal["enable", "disable"]
-    hosts: list[CommunityHostsItem]
-    hosts6: list[CommunityHosts6Item]
+    hosts: FortiObjectList[CommunityHostsItemObject]
+    hosts6: FortiObjectList[CommunityHosts6ItemObject]
     query_v1_status: Literal["enable", "disable"]
     query_v1_port: int
     query_v2c_status: Literal["enable", "disable"]
@@ -127,7 +156,7 @@ class CommunityObject(FortiObject):
     trap_v2c_rport: int
     events: str
     mib_view: str
-    vdoms: list[CommunityVdomsItem]
+    vdoms: FortiObjectList[CommunityVdomsItemObject]
 
 
 # ================================================================

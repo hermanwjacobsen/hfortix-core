@@ -272,6 +272,40 @@ class SslSshProfileResponse(TypedDict, total=False):
 # ================================================================
 
 
+class SslSshProfileSslexemptItemObject(FortiObject[SslSshProfileSslexemptItem]):
+    """Typed object for ssl-exempt table items with attribute access."""
+    id: int
+    type: Literal["fortiguard-category", "address", "address6", "wildcard-fqdn", "regex"]
+    fortiguard_category: int
+    address: str
+    address6: str
+    wildcard_fqdn: str
+    regex: str
+
+
+class SslSshProfileEchoutersniItemObject(FortiObject[SslSshProfileEchoutersniItem]):
+    """Typed object for ech-outer-sni table items with attribute access."""
+    name: str
+    sni: str
+
+
+class SslSshProfileServercertItemObject(FortiObject[SslSshProfileServercertItem]):
+    """Typed object for server-cert table items with attribute access."""
+    name: str
+
+
+class SslSshProfileSslserverItemObject(FortiObject[SslSshProfileSslserverItem]):
+    """Typed object for ssl-server table items with attribute access."""
+    id: int
+    ip: str
+    https_client_certificate: Literal["bypass", "inspect", "block"]
+    smtps_client_certificate: Literal["bypass", "inspect", "block"]
+    pop3s_client_certificate: Literal["bypass", "inspect", "block"]
+    imaps_client_certificate: Literal["bypass", "inspect", "block"]
+    ftps_client_certificate: Literal["bypass", "inspect", "block"]
+    ssl_other_client_certificate: Literal["bypass", "inspect", "block"]
+
+
 class SslSshProfileSslObject(FortiObject):
     """Nested object for ssl field with attribute access."""
     inspect_all: Literal["disable", "certificate-inspection", "deep-inspection"]
@@ -423,14 +457,14 @@ class SslSshProfileObject(FortiObject):
     dot: SslSshProfileDotObject
     allowlist: Literal["enable", "disable"]
     block_blocklisted_certificates: Literal["disable", "enable"]
-    ssl_exempt: list[SslSshProfileSslexemptItem]
-    ech_outer_sni: list[SslSshProfileEchoutersniItem]
+    ssl_exempt: FortiObjectList[SslSshProfileSslexemptItemObject]
+    ech_outer_sni: FortiObjectList[SslSshProfileEchoutersniItemObject]
     server_cert_mode: Literal["re-sign", "replace"]
     use_ssl_server: Literal["disable", "enable"]
     caname: str
     untrusted_caname: str
-    server_cert: list[SslSshProfileServercertItem]
-    ssl_server: list[SslSshProfileSslserverItem]
+    server_cert: FortiObjectList[SslSshProfileServercertItemObject]
+    ssl_server: FortiObjectList[SslSshProfileSslserverItemObject]
     ssl_exemption_ip_rating: Literal["enable", "disable"]
     ssl_exemption_log: Literal["disable", "enable"]
     ssl_anomaly_log: Literal["disable", "enable"]

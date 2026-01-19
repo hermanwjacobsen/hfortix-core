@@ -80,6 +80,13 @@ class OtvpResponse(TypedDict, total=False):
 # ================================================================
 
 
+class OtvpMetadataItemObject(FortiObject[OtvpMetadataItem]):
+    """Typed object for metadata table items with attribute access."""
+    id: int
+    metaid: int
+    valueid: int
+
+
 class OtvpObject(FortiObject):
     """Typed FortiObject for Otvp with field access."""
     name: str
@@ -96,7 +103,7 @@ class OtvpObject(FortiObject):
     rule_id: int
     rev: int
     date: int
-    metadata: list[OtvpMetadataItem]
+    metadata: FortiObjectList[OtvpMetadataItemObject]
 
 
 # ================================================================
@@ -165,68 +172,8 @@ class Otvp:
         format: str = ...,
     ) -> FortiObject: ...
 
-    # ================================================================
-    # POST Method
-    # ================================================================
-    
-    def post(
-        self,
-        payload_dict: OtvpPayload | None = ...,
-        name: str | None = ...,
-        status: Literal["disable", "enable"] | None = ...,
-        log: Literal["disable", "enable"] | None = ...,
-        log_packet: Literal["disable", "enable"] | None = ...,
-        action: Literal["pass", "block"] | None = ...,
-        group: str | None = ...,
-        severity: str | None = ...,
-        location: str | list[str] | None = ...,
-        os: str | None = ...,
-        application: str | None = ...,
-        service: str | None = ...,
-        rule_id: int | None = ...,
-        rev: int | None = ...,
-        date: int | None = ...,
-        metadata: str | list[str] | list[OtvpMetadataItem] | None = ...,
-        error_mode: Literal["raise", "return", "print"] | None = ...,
-        error_format: Literal["detailed", "simple", "code_only"] | None = ...,
-    ) -> OtvpObject: ...
 
-    # ================================================================
-    # PUT Method
-    # ================================================================
-    
-    def put(
-        self,
-        payload_dict: OtvpPayload | None = ...,
-        name: str | None = ...,
-        status: Literal["disable", "enable"] | None = ...,
-        log: Literal["disable", "enable"] | None = ...,
-        log_packet: Literal["disable", "enable"] | None = ...,
-        action: Literal["pass", "block"] | None = ...,
-        group: str | None = ...,
-        severity: str | None = ...,
-        location: str | list[str] | None = ...,
-        os: str | None = ...,
-        application: str | None = ...,
-        service: str | None = ...,
-        rule_id: int | None = ...,
-        rev: int | None = ...,
-        date: int | None = ...,
-        metadata: str | list[str] | list[OtvpMetadataItem] | None = ...,
-        error_mode: Literal["raise", "return", "print"] | None = ...,
-        error_format: Literal["detailed", "simple", "code_only"] | None = ...,
-    ) -> OtvpObject: ...
 
-    # ================================================================
-    # DELETE Method
-    # ================================================================
-    
-    def delete(
-        self,
-        name: str | None = ...,
-        error_mode: Literal["raise", "return", "print"] | None = ...,
-        error_format: Literal["detailed", "simple", "code_only"] | None = ...,
-    ) -> FortiObject: ...
 
     # ================================================================
     # Utility Methods

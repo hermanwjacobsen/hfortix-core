@@ -108,14 +108,24 @@ class DnsResponse(TypedDict, total=False):
 # ================================================================
 
 
+class DnsServerhostnameItemObject(FortiObject[DnsServerhostnameItem]):
+    """Typed object for server-hostname table items with attribute access."""
+    hostname: str
+
+
+class DnsDomainItemObject(FortiObject[DnsDomainItem]):
+    """Typed object for domain table items with attribute access."""
+    domain: str
+
+
 class DnsObject(FortiObject):
     """Typed FortiObject for Dns with field access."""
     primary: str
     secondary: str
     protocol: str
     ssl_certificate: str
-    server_hostname: list[DnsServerhostnameItem]
-    domain: list[DnsDomainItem]
+    server_hostname: FortiObjectList[DnsServerhostnameItemObject]
+    domain: FortiObjectList[DnsDomainItemObject]
     ip6_primary: str
     ip6_secondary: str
     timeout: int

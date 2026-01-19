@@ -26,6 +26,11 @@ from hfortix_fortios.models import (
 # TypedDict Payloads
 # ================================================================
 
+class DynamicPortPolicyPolicyInterfacetagsItem(TypedDict, total=False):
+    """Nested item for policy.interface-tags field."""
+    tag_name: str
+
+
 class DynamicPortPolicyPolicyItem(TypedDict, total=False):
     """Nested item for policy field."""
     name: str
@@ -35,7 +40,7 @@ class DynamicPortPolicyPolicyItem(TypedDict, total=False):
     match_type: Literal["dynamic", "override"]
     match_period: int
     match_remove: Literal["default", "link-down"]
-    interface_tags: str | list[str]
+    interface_tags: str | list[str] | list[DynamicPortPolicyPolicyInterfacetagsItem]
     mac: str
     hw_vendor: str
     type: str
@@ -75,12 +80,36 @@ class DynamicPortPolicyResponse(TypedDict, total=False):
 # ================================================================
 
 
+class DynamicPortPolicyPolicyItemObject(FortiObject[DynamicPortPolicyPolicyItem]):
+    """Typed object for policy table items with attribute access."""
+    name: str
+    description: str
+    status: Literal["enable", "disable"]
+    category: Literal["device", "interface-tag"]
+    match_type: Literal["dynamic", "override"]
+    match_period: int
+    match_remove: Literal["default", "link-down"]
+    interface_tags: FortiObjectList[DynamicPortPolicyPolicyInterfacetagsItemObject]
+    mac: str
+    hw_vendor: str
+    type: str
+    family: str
+    host: str
+    lldp_profile: str
+    qos_policy: str
+    x802_1x: str
+    vlan_policy: str
+    bounce_port_link: Literal["disable", "enable"]
+    bounce_port_duration: int
+    poe_reset: Literal["disable", "enable"]
+
+
 class DynamicPortPolicyObject(FortiObject):
     """Typed FortiObject for DynamicPortPolicy with field access."""
     name: str
     description: str
     fortilink: str
-    policy: list[DynamicPortPolicyPolicyItem]
+    policy: FortiObjectList[DynamicPortPolicyPolicyItemObject]
 
 
 # ================================================================

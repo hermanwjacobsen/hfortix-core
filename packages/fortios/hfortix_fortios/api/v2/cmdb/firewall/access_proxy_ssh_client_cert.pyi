@@ -69,6 +69,14 @@ class AccessProxySshClientCertResponse(TypedDict, total=False):
 # ================================================================
 
 
+class AccessProxySshClientCertCertextensionItemObject(FortiObject[AccessProxySshClientCertCertextensionItem]):
+    """Typed object for cert-extension table items with attribute access."""
+    name: str
+    critical: Literal["no", "yes"]
+    type: Literal["fixed", "user"]
+    data: str
+
+
 class AccessProxySshClientCertObject(FortiObject):
     """Typed FortiObject for AccessProxySshClientCert with field access."""
     name: str
@@ -78,7 +86,7 @@ class AccessProxySshClientCertObject(FortiObject):
     permit_port_forwarding: Literal["enable", "disable"]
     permit_pty: Literal["enable", "disable"]
     permit_user_rc: Literal["enable", "disable"]
-    cert_extension: list[AccessProxySshClientCertCertextensionItem]
+    cert_extension: FortiObjectList[AccessProxySshClientCertCertextensionItemObject]
     auth_ca: str
 
 

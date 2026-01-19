@@ -54,6 +54,11 @@ class SsoAdminResponse(TypedDict, total=False):
 # ================================================================
 
 
+class SsoAdminVdomItemObject(FortiObject[SsoAdminVdomItem]):
+    """Typed object for vdom table items with attribute access."""
+    name: str
+
+
 class SsoAdminObject(FortiObject):
     """Typed FortiObject for SsoAdmin with field access."""
     name: str

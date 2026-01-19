@@ -92,6 +92,11 @@ class ArrpProfileResponse(TypedDict, total=False):
 # ================================================================
 
 
+class ArrpProfileDarrpoptimizeschedulesItemObject(FortiObject[ArrpProfileDarrpoptimizeschedulesItem]):
+    """Typed object for darrp-optimize-schedules table items with attribute access."""
+    name: str
+
+
 class ArrpProfileObject(FortiObject):
     """Typed FortiObject for ArrpProfile with field access."""
     name: str
@@ -115,7 +120,7 @@ class ArrpProfileObject(FortiObject):
     include_dfs_channel: Literal["enable", "disable"]
     override_darrp_optimize: Literal["enable", "disable"]
     darrp_optimize: int
-    darrp_optimize_schedules: list[ArrpProfileDarrpoptimizeschedulesItem]
+    darrp_optimize_schedules: FortiObjectList[ArrpProfileDarrpoptimizeschedulesItemObject]
 
 
 # ================================================================

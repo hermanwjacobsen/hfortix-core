@@ -71,14 +71,28 @@ class H2qpOsuProviderResponse(TypedDict, total=False):
 # ================================================================
 
 
+class H2qpOsuProviderFriendlynameItemObject(FortiObject[H2qpOsuProviderFriendlynameItem]):
+    """Typed object for friendly-name table items with attribute access."""
+    index: int
+    lang: str
+    friendly_name: str
+
+
+class H2qpOsuProviderServicedescriptionItemObject(FortiObject[H2qpOsuProviderServicedescriptionItem]):
+    """Typed object for service-description table items with attribute access."""
+    service_id: int
+    lang: str
+    service_description: str
+
+
 class H2qpOsuProviderObject(FortiObject):
     """Typed FortiObject for H2qpOsuProvider with field access."""
     name: str
-    friendly_name: list[H2qpOsuProviderFriendlynameItem]
+    friendly_name: FortiObjectList[H2qpOsuProviderFriendlynameItemObject]
     server_uri: str
     osu_method: str
     osu_nai: str
-    service_description: list[H2qpOsuProviderServicedescriptionItem]
+    service_description: FortiObjectList[H2qpOsuProviderServicedescriptionItemObject]
     icon: str
 
 

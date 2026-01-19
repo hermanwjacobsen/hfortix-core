@@ -105,6 +105,16 @@ class NacPolicyResponse(TypedDict, total=False):
 # ================================================================
 
 
+class NacPolicySeverityItemObject(FortiObject[NacPolicySeverityItem]):
+    """Typed object for severity table items with attribute access."""
+    severity_num: int
+
+
+class NacPolicySwitchgroupItemObject(FortiObject[NacPolicySwitchgroupItem]):
+    """Typed object for switch-group table items with attribute access."""
+    name: str
+
+
 class NacPolicyObject(FortiObject):
     """Typed FortiObject for NacPolicy with field access."""
     name: str
@@ -127,9 +137,9 @@ class NacPolicyObject(FortiObject):
     user_group: str
     ems_tag: str
     fortivoice_tag: str
-    severity: list[NacPolicySeverityItem]
+    severity: FortiObjectList[NacPolicySeverityItemObject]
     switch_fortilink: str
-    switch_group: list[NacPolicySwitchgroupItem]
+    switch_group: FortiObjectList[NacPolicySwitchgroupItemObject]
     switch_mac_policy: str
     firewall_address: str
     ssid_policy: str

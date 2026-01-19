@@ -73,13 +73,30 @@ class AcmeResponse(TypedDict, total=False):
 # ================================================================
 
 
+class AcmeInterfaceItemObject(FortiObject[AcmeInterfaceItem]):
+    """Typed object for interface table items with attribute access."""
+    interface_name: str
+
+
+class AcmeAccountsItemObject(FortiObject[AcmeAccountsItem]):
+    """Typed object for accounts table items with attribute access."""
+    id: str
+    status: str
+    url: str
+    ca_url: str
+    email: str
+    eab_key_id: str
+    eab_key_hmac: str
+    privatekey: str
+
+
 class AcmeObject(FortiObject):
     """Typed FortiObject for Acme with field access."""
-    interface: list[AcmeInterfaceItem]
+    interface: FortiObjectList[AcmeInterfaceItemObject]
     use_ha_direct: Literal["enable", "disable"]
     source_ip: str
     source_ip6: str
-    accounts: list[AcmeAccountsItem]
+    accounts: FortiObjectList[AcmeAccountsItemObject]
     acc_details: str
     status: str
 

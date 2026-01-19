@@ -54,9 +54,19 @@ class SflowResponse(TypedDict, total=False):
 # ================================================================
 
 
+class SflowCollectorsItemObject(FortiObject[SflowCollectorsItem]):
+    """Typed object for collectors table items with attribute access."""
+    id: int
+    collector_ip: str
+    collector_port: int
+    source_ip: str
+    interface_select_method: Literal["auto", "sdwan", "specify"]
+    interface: str
+
+
 class SflowObject(FortiObject):
     """Typed FortiObject for Sflow with field access."""
-    collectors: list[SflowCollectorsItem]
+    collectors: FortiObjectList[SflowCollectorsItemObject]
 
 
 # ================================================================

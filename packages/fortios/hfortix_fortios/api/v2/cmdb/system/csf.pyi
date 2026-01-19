@@ -25,6 +25,11 @@ from hfortix_fortios.models import (
 # TypedDict Payloads
 # ================================================================
 
+class CsfFabricconnectorVdomItem(TypedDict, total=False):
+    """Nested item for fabric-connector.vdom field."""
+    name: str
+
+
 class CsfTrustedlistItem(TypedDict, total=False):
     """Nested item for trusted-list field."""
     name: str
@@ -42,7 +47,7 @@ class CsfFabricconnectorItem(TypedDict, total=False):
     serial: str
     accprofile: str
     configuration_write_access: Literal["enable", "disable"]
-    vdom: str | list[str]
+    vdom: str | list[str] | list[CsfFabricconnectorVdomItem]
 
 
 class CsfPayload(TypedDict, total=False):
@@ -114,6 +119,26 @@ class CsfResponse(TypedDict, total=False):
 # ================================================================
 
 
+class CsfTrustedlistItemObject(FortiObject[CsfTrustedlistItem]):
+    """Typed object for trusted-list table items with attribute access."""
+    name: str
+    authorization_type: Literal["serial", "certificate"]
+    serial: str
+    certificate: str
+    action: Literal["accept", "deny"]
+    ha_members: str | list[str]
+    downstream_authorization: Literal["enable", "disable"]
+    index: int
+
+
+class CsfFabricconnectorItemObject(FortiObject[CsfFabricconnectorItem]):
+    """Typed object for fabric-connector table items with attribute access."""
+    serial: str
+    accprofile: str
+    configuration_write_access: Literal["enable", "disable"]
+    vdom: FortiObjectList[CsfFabricconnectorVdomItemObject]
+
+
 class CsfObject(FortiObject):
     """Typed FortiObject for Csf with field access."""
     status: Literal["enable", "disable"]
@@ -136,8 +161,8 @@ class CsfObject(FortiObject):
     configuration_sync: Literal["default", "local"]
     fabric_object_unification: Literal["default", "local"]
     saml_configuration_sync: Literal["default", "local"]
-    trusted_list: list[CsfTrustedlistItem]
-    fabric_connector: list[CsfFabricconnectorItem]
+    trusted_list: FortiObjectList[CsfTrustedlistItemObject]
+    fabric_connector: FortiObjectList[CsfFabricconnectorItemObject]
     forticloud_account_enforcement: Literal["enable", "disable"]
     file_mgmt: Literal["enable", "disable"]
     file_quota: int

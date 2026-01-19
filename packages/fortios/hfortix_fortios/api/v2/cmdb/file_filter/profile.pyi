@@ -26,6 +26,11 @@ from hfortix_fortios.models import (
 # TypedDict Payloads
 # ================================================================
 
+class ProfileRulesFiletypeItem(TypedDict, total=False):
+    """Nested item for rules.file-type field."""
+    name: str
+
+
 class ProfileRulesItem(TypedDict, total=False):
     """Nested item for rules field."""
     name: str
@@ -34,7 +39,7 @@ class ProfileRulesItem(TypedDict, total=False):
     action: Literal["log-only", "block"]
     direction: Literal["incoming", "outgoing", "any"]
     password_protected: Literal["yes", "any"]
-    file_type: str | list[str]
+    file_type: str | list[str] | list[ProfileRulesFiletypeItem]
 
 
 class ProfilePayload(TypedDict, total=False):
@@ -70,6 +75,17 @@ class ProfileResponse(TypedDict, total=False):
 # ================================================================
 
 
+class ProfileRulesItemObject(FortiObject[ProfileRulesItem]):
+    """Typed object for rules table items with attribute access."""
+    name: str
+    comment: str
+    protocol: Literal["http", "ftp", "smtp", "imap", "pop3", "mapi", "cifs", "ssh"]
+    action: Literal["log-only", "block"]
+    direction: Literal["incoming", "outgoing", "any"]
+    password_protected: Literal["yes", "any"]
+    file_type: FortiObjectList[ProfileRulesFiletypeItemObject]
+
+
 class ProfileObject(FortiObject):
     """Typed FortiObject for Profile with field access."""
     name: str
@@ -79,7 +95,7 @@ class ProfileObject(FortiObject):
     log: Literal["disable", "enable"]
     extended_log: Literal["disable", "enable"]
     scan_archive_contents: Literal["disable", "enable"]
-    rules: list[ProfileRulesItem]
+    rules: FortiObjectList[ProfileRulesItemObject]
 
 
 # ================================================================

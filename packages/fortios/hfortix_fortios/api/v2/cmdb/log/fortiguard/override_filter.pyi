@@ -74,6 +74,14 @@ class OverrideFilterResponse(TypedDict, total=False):
 # ================================================================
 
 
+class OverrideFilterFreestyleItemObject(FortiObject[OverrideFilterFreestyleItem]):
+    """Typed object for free-style table items with attribute access."""
+    id: int
+    category: Literal["traffic", "event", "virus", "webfilter", "attack", "spam", "anomaly", "voip", "dlp", "app-ctrl", "waf", "gtp", "dns", "ssh", "ssl", "file-filter", "icap", "virtual-patch", "debug"]
+    filter: str
+    filter_type: Literal["include", "exclude"]
+
+
 class OverrideFilterObject(FortiObject):
     """Typed FortiObject for OverrideFilter with field access."""
     severity: Literal["emergency", "alert", "critical", "error", "warning", "notification", "information", "debug"]
@@ -87,7 +95,7 @@ class OverrideFilterObject(FortiObject):
     voip: Literal["enable", "disable"]
     gtp: Literal["enable", "disable"]
     forti_switch: Literal["enable", "disable"]
-    free_style: list[OverrideFilterFreestyleItem]
+    free_style: FortiObjectList[OverrideFilterFreestyleItemObject]
 
 
 # ================================================================

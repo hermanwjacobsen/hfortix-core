@@ -61,13 +61,21 @@ class KeywordResponse(TypedDict, total=False):
 # ================================================================
 
 
+class KeywordWordItemObject(FortiObject[KeywordWordItem]):
+    """Typed object for word table items with attribute access."""
+    name: str
+    comment: str
+    pattern_type: Literal["wildcard", "regex"]
+    status: Literal["enable", "disable"]
+
+
 class KeywordObject(FortiObject):
     """Typed FortiObject for Keyword with field access."""
     id: int
     name: str
     comment: str
     match: Literal["or", "and"]
-    word: list[KeywordWordItem]
+    word: FortiObjectList[KeywordWordItemObject]
 
 
 # ================================================================

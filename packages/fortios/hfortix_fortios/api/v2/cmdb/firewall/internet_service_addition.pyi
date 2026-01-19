@@ -26,12 +26,19 @@ from hfortix_fortios.models import (
 # TypedDict Payloads
 # ================================================================
 
+class InternetServiceAdditionEntryPortrangeItem(TypedDict, total=False):
+    """Nested item for entry.port-range field."""
+    id: int
+    start_port: int
+    end_port: int
+
+
 class InternetServiceAdditionEntryItem(TypedDict, total=False):
     """Nested item for entry field."""
     id: int
     addr_mode: Literal["ipv4", "ipv6"]
     protocol: int
-    port_range: str | list[str]
+    port_range: str | list[str] | list[InternetServiceAdditionEntryPortrangeItem]
 
 
 class InternetServiceAdditionPayload(TypedDict, total=False):
@@ -57,11 +64,19 @@ class InternetServiceAdditionResponse(TypedDict, total=False):
 # ================================================================
 
 
+class InternetServiceAdditionEntryItemObject(FortiObject[InternetServiceAdditionEntryItem]):
+    """Typed object for entry table items with attribute access."""
+    id: int
+    addr_mode: Literal["ipv4", "ipv6"]
+    protocol: int
+    port_range: FortiObjectList[InternetServiceAdditionEntryPortrangeItemObject]
+
+
 class InternetServiceAdditionObject(FortiObject):
     """Typed FortiObject for InternetServiceAddition with field access."""
     id: int
     comment: str
-    entry: list[InternetServiceAdditionEntryItem]
+    entry: FortiObjectList[InternetServiceAdditionEntryItemObject]
 
 
 # ================================================================

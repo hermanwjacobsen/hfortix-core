@@ -58,12 +58,17 @@ class KrbKeytabResponse(TypedDict, total=False):
 # ================================================================
 
 
+class KrbKeytabLdapserverItemObject(FortiObject[KrbKeytabLdapserverItem]):
+    """Typed object for ldap-server table items with attribute access."""
+    name: str
+
+
 class KrbKeytabObject(FortiObject):
     """Typed FortiObject for KrbKeytab with field access."""
     name: str
     pac_data: Literal["enable", "disable"]
     principal: str
-    ldap_server: list[KrbKeytabLdapserverItem]
+    ldap_server: FortiObjectList[KrbKeytabLdapserverItemObject]
     keytab: str
 
 

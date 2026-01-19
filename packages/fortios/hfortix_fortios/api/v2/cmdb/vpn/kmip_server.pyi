@@ -72,10 +72,19 @@ class KmipServerResponse(TypedDict, total=False):
 # ================================================================
 
 
+class KmipServerServerlistItemObject(FortiObject[KmipServerServerlistItem]):
+    """Typed object for server-list table items with attribute access."""
+    id: int
+    status: Literal["enable", "disable"]
+    server: str
+    port: int
+    cert: str
+
+
 class KmipServerObject(FortiObject):
     """Typed FortiObject for KmipServer with field access."""
     name: str
-    server_list: list[KmipServerServerlistItem]
+    server_list: FortiObjectList[KmipServerServerlistItemObject]
     username: str
     password: str
     ssl_min_proto_version: Literal["default", "SSLv3", "TLSv1", "TLSv1-1", "TLSv1-2", "TLSv1-3"]

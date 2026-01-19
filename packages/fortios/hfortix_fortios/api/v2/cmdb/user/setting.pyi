@@ -102,6 +102,18 @@ class SettingResponse(TypedDict, total=False):
 # ================================================================
 
 
+class SettingAuthportsItemObject(FortiObject[SettingAuthportsItem]):
+    """Typed object for auth-ports table items with attribute access."""
+    id: int
+    type: Literal["http", "https", "ftp", "telnet"]
+    port: int
+
+
+class SettingCorsallowedoriginsItemObject(FortiObject[SettingCorsallowedoriginsItem]):
+    """Typed object for cors-allowed-origins table items with attribute access."""
+    name: str
+
+
 class SettingObject(FortiObject):
     """Typed FortiObject for Setting with field access."""
     auth_type: str
@@ -121,13 +133,13 @@ class SettingObject(FortiObject):
     auth_lockout_threshold: int
     auth_lockout_duration: int
     per_policy_disclaimer: Literal["enable", "disable"]
-    auth_ports: list[SettingAuthportsItem]
+    auth_ports: FortiObjectList[SettingAuthportsItemObject]
     auth_ssl_min_proto_version: Literal["default", "SSLv3", "TLSv1", "TLSv1-1", "TLSv1-2", "TLSv1-3"]
     auth_ssl_max_proto_version: Literal["sslv3", "tlsv1", "tlsv1-1", "tlsv1-2", "tlsv1-3"]
     auth_ssl_sigalgs: Literal["no-rsa-pss", "all"]
     default_user_password_policy: str
     cors: Literal["disable", "enable"]
-    cors_allowed_origins: list[SettingCorsallowedoriginsItem]
+    cors_allowed_origins: FortiObjectList[SettingCorsallowedoriginsItemObject]
 
 
 # ================================================================

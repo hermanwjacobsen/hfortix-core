@@ -80,6 +80,13 @@ class FmwpResponse(TypedDict, total=False):
 # ================================================================
 
 
+class FmwpMetadataItemObject(FortiObject[FmwpMetadataItem]):
+    """Typed object for metadata table items with attribute access."""
+    id: int
+    metaid: int
+    valueid: int
+
+
 class FmwpObject(FortiObject):
     """Typed FortiObject for Fmwp with field access."""
     name: str
@@ -96,7 +103,7 @@ class FmwpObject(FortiObject):
     rule_id: int
     rev: int
     date: int
-    metadata: list[FmwpMetadataItem]
+    metadata: FortiObjectList[FmwpMetadataItemObject]
 
 
 # ================================================================
@@ -165,68 +172,8 @@ class Fmwp:
         format: str = ...,
     ) -> FortiObject: ...
 
-    # ================================================================
-    # POST Method
-    # ================================================================
-    
-    def post(
-        self,
-        payload_dict: FmwpPayload | None = ...,
-        name: str | None = ...,
-        status: Literal["disable", "enable"] | None = ...,
-        log: Literal["disable", "enable"] | None = ...,
-        log_packet: Literal["disable", "enable"] | None = ...,
-        action: Literal["pass", "block"] | None = ...,
-        group: str | None = ...,
-        severity: str | None = ...,
-        location: str | list[str] | None = ...,
-        os: str | None = ...,
-        application: str | None = ...,
-        service: str | None = ...,
-        rule_id: int | None = ...,
-        rev: int | None = ...,
-        date: int | None = ...,
-        metadata: str | list[str] | list[FmwpMetadataItem] | None = ...,
-        error_mode: Literal["raise", "return", "print"] | None = ...,
-        error_format: Literal["detailed", "simple", "code_only"] | None = ...,
-    ) -> FmwpObject: ...
 
-    # ================================================================
-    # PUT Method
-    # ================================================================
-    
-    def put(
-        self,
-        payload_dict: FmwpPayload | None = ...,
-        name: str | None = ...,
-        status: Literal["disable", "enable"] | None = ...,
-        log: Literal["disable", "enable"] | None = ...,
-        log_packet: Literal["disable", "enable"] | None = ...,
-        action: Literal["pass", "block"] | None = ...,
-        group: str | None = ...,
-        severity: str | None = ...,
-        location: str | list[str] | None = ...,
-        os: str | None = ...,
-        application: str | None = ...,
-        service: str | None = ...,
-        rule_id: int | None = ...,
-        rev: int | None = ...,
-        date: int | None = ...,
-        metadata: str | list[str] | list[FmwpMetadataItem] | None = ...,
-        error_mode: Literal["raise", "return", "print"] | None = ...,
-        error_format: Literal["detailed", "simple", "code_only"] | None = ...,
-    ) -> FmwpObject: ...
 
-    # ================================================================
-    # DELETE Method
-    # ================================================================
-    
-    def delete(
-        self,
-        name: str | None = ...,
-        error_mode: Literal["raise", "return", "print"] | None = ...,
-        error_format: Literal["detailed", "simple", "code_only"] | None = ...,
-    ) -> FortiObject: ...
 
     # ================================================================
     # Utility Methods

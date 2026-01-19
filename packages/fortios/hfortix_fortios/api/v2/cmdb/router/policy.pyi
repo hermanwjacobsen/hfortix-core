@@ -145,16 +145,66 @@ class PolicyResponse(TypedDict, total=False):
 # ================================================================
 
 
+class PolicyInputdeviceItemObject(FortiObject[PolicyInputdeviceItem]):
+    """Typed object for input-device table items with attribute access."""
+    name: str
+
+
+class PolicySrcItemObject(FortiObject[PolicySrcItem]):
+    """Typed object for src table items with attribute access."""
+    subnet: str
+
+
+class PolicySrcaddrItemObject(FortiObject[PolicySrcaddrItem]):
+    """Typed object for srcaddr table items with attribute access."""
+    name: str
+
+
+class PolicyDstItemObject(FortiObject[PolicyDstItem]):
+    """Typed object for dst table items with attribute access."""
+    subnet: str
+
+
+class PolicyDstaddrItemObject(FortiObject[PolicyDstaddrItem]):
+    """Typed object for dstaddr table items with attribute access."""
+    name: str
+
+
+class PolicyInternetserviceidItemObject(FortiObject[PolicyInternetserviceidItem]):
+    """Typed object for internet-service-id table items with attribute access."""
+    id: int
+
+
+class PolicyInternetservicecustomItemObject(FortiObject[PolicyInternetservicecustomItem]):
+    """Typed object for internet-service-custom table items with attribute access."""
+    name: str
+
+
+class PolicyInternetservicefortiguardItemObject(FortiObject[PolicyInternetservicefortiguardItem]):
+    """Typed object for internet-service-fortiguard table items with attribute access."""
+    name: str
+
+
+class PolicyUsersItemObject(FortiObject[PolicyUsersItem]):
+    """Typed object for users table items with attribute access."""
+    name: str
+
+
+class PolicyGroupsItemObject(FortiObject[PolicyGroupsItem]):
+    """Typed object for groups table items with attribute access."""
+    name: str
+
+
 class PolicyObject(FortiObject):
     """Typed FortiObject for Policy with field access."""
     seq_num: int
-    input_device: list[PolicyInputdeviceItem]
+    input_device: FortiObjectList[PolicyInputdeviceItemObject]
     input_device_negate: Literal["enable", "disable"]
-    src: list[PolicySrcItem]
-    srcaddr: list[PolicySrcaddrItem]
+    src: FortiObjectList[PolicySrcItemObject]
+    srcaddr: FortiObjectList[PolicySrcaddrItemObject]
     src_negate: Literal["enable", "disable"]
-    dst: list[PolicyDstItem]
-    dstaddr: list[PolicyDstaddrItem]
+    dst: FortiObjectList[PolicyDstItemObject]
+    dstaddr: FortiObjectList[PolicyDstaddrItemObject]
     dst_negate: Literal["enable", "disable"]
     action: Literal["deny", "permit"]
     protocol: int
@@ -168,11 +218,11 @@ class PolicyObject(FortiObject):
     tos_mask: str
     status: Literal["enable", "disable"]
     comments: str
-    internet_service_id: list[PolicyInternetserviceidItem]
-    internet_service_custom: list[PolicyInternetservicecustomItem]
-    internet_service_fortiguard: list[PolicyInternetservicefortiguardItem]
-    users: list[PolicyUsersItem]
-    groups: list[PolicyGroupsItem]
+    internet_service_id: FortiObjectList[PolicyInternetserviceidItemObject]
+    internet_service_custom: FortiObjectList[PolicyInternetservicecustomItemObject]
+    internet_service_fortiguard: FortiObjectList[PolicyInternetservicefortiguardItemObject]
+    users: FortiObjectList[PolicyUsersItemObject]
+    groups: FortiObjectList[PolicyGroupsItemObject]
 
 
 # ================================================================

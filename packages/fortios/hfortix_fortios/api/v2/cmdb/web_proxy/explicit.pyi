@@ -25,6 +25,21 @@ from hfortix_fortios.models import (
 # TypedDict Payloads
 # ================================================================
 
+class ExplicitPacpolicySrcaddrItem(TypedDict, total=False):
+    """Nested item for pac-policy.srcaddr field."""
+    name: str
+
+
+class ExplicitPacpolicySrcaddr6Item(TypedDict, total=False):
+    """Nested item for pac-policy.srcaddr6 field."""
+    name: str
+
+
+class ExplicitPacpolicyDstaddrItem(TypedDict, total=False):
+    """Nested item for pac-policy.dstaddr field."""
+    name: str
+
+
 class ExplicitSecurewebproxycertItem(TypedDict, total=False):
     """Nested item for secure-web-proxy-cert field."""
     name: str
@@ -34,9 +49,9 @@ class ExplicitPacpolicyItem(TypedDict, total=False):
     """Nested item for pac-policy field."""
     policyid: int
     status: Literal["enable", "disable"]
-    srcaddr: str | list[str]
-    srcaddr6: str | list[str]
-    dstaddr: str | list[str]
+    srcaddr: str | list[str] | list[ExplicitPacpolicySrcaddrItem]
+    srcaddr6: str | list[str] | list[ExplicitPacpolicySrcaddr6Item]
+    dstaddr: str | list[str] | list[ExplicitPacpolicyDstaddrItem]
     pac_file_name: str
     pac_file_data: str
     comments: str
@@ -135,6 +150,23 @@ class ExplicitResponse(TypedDict, total=False):
 # ================================================================
 
 
+class ExplicitSecurewebproxycertItemObject(FortiObject[ExplicitSecurewebproxycertItem]):
+    """Typed object for secure-web-proxy-cert table items with attribute access."""
+    name: str
+
+
+class ExplicitPacpolicyItemObject(FortiObject[ExplicitPacpolicyItem]):
+    """Typed object for pac-policy table items with attribute access."""
+    policyid: int
+    status: Literal["enable", "disable"]
+    srcaddr: FortiObjectList[ExplicitPacpolicySrcaddrItemObject]
+    srcaddr6: FortiObjectList[ExplicitPacpolicySrcaddr6ItemObject]
+    dstaddr: FortiObjectList[ExplicitPacpolicyDstaddrItemObject]
+    pac_file_name: str
+    pac_file_data: str
+    comments: str
+
+
 class ExplicitObject(FortiObject):
     """Typed FortiObject for Explicit with field access."""
     status: Literal["enable", "disable"]
@@ -144,7 +176,7 @@ class ExplicitObject(FortiObject):
     http_incoming_port: str
     http_connection_mode: Literal["static", "multiplex", "serverpool"]
     https_incoming_port: str
-    secure_web_proxy_cert: list[ExplicitSecurewebproxycertItem]
+    secure_web_proxy_cert: FortiObjectList[ExplicitSecurewebproxycertItemObject]
     client_cert: Literal["disable", "enable"]
     user_agent_detect: Literal["disable", "enable"]
     empty_cert_action: Literal["accept", "block", "accept-unmanageable"]
@@ -172,7 +204,7 @@ class ExplicitObject(FortiObject):
     pac_file_through_https: Literal["enable", "disable"]
     pac_file_name: str
     pac_file_data: str
-    pac_policy: list[ExplicitPacpolicyItem]
+    pac_policy: FortiObjectList[ExplicitPacpolicyItemObject]
     ssl_algorithm: Literal["high", "medium", "low"]
     trace_auth_no_rsp: Literal["enable", "disable"]
 

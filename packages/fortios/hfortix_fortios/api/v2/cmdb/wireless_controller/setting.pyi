@@ -84,6 +84,18 @@ class SettingResponse(TypedDict, total=False):
 # ================================================================
 
 
+class SettingOffendingssidItemObject(FortiObject[SettingOffendingssidItem]):
+    """Typed object for offending-ssid table items with attribute access."""
+    id: int
+    ssid_pattern: str
+    action: Literal["log", "suppress"]
+
+
+class SettingDarrpoptimizeschedulesItemObject(FortiObject[SettingDarrpoptimizeschedulesItem]):
+    """Typed object for darrp-optimize-schedules table items with attribute access."""
+    name: str
+
+
 class SettingObject(FortiObject):
     """Typed FortiObject for Setting with field access."""
     account_id: str
@@ -93,14 +105,14 @@ class SettingObject(FortiObject):
     wfa_compatibility: Literal["enable", "disable"]
     phishing_ssid_detect: Literal["enable", "disable"]
     fake_ssid_action: str
-    offending_ssid: list[SettingOffendingssidItem]
+    offending_ssid: FortiObjectList[SettingOffendingssidItemObject]
     device_weight: int
     device_holdoff: int
     device_idle: int
     firmware_provision_on_authorization: Literal["enable", "disable"]
     rolling_wtp_upgrade: Literal["enable", "disable"]
     darrp_optimize: int
-    darrp_optimize_schedules: list[SettingDarrpoptimizeschedulesItem]
+    darrp_optimize_schedules: FortiObjectList[SettingDarrpoptimizeschedulesItemObject]
 
 
 # ================================================================

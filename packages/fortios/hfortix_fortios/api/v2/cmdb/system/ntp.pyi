@@ -86,12 +86,32 @@ class NtpResponse(TypedDict, total=False):
 # ================================================================
 
 
+class NtpNtpserverItemObject(FortiObject[NtpNtpserverItem]):
+    """Typed object for ntpserver table items with attribute access."""
+    id: int
+    server: str
+    ntpv3: Literal["enable", "disable"]
+    authentication: Literal["enable", "disable"]
+    key_type: Literal["MD5", "SHA1", "SHA256"]
+    key: str
+    key_id: int
+    ip_type: Literal["IPv6", "IPv4", "Both"]
+    interface_select_method: Literal["auto", "sdwan", "specify"]
+    interface: str
+    vrf_select: int
+
+
+class NtpInterfaceItemObject(FortiObject[NtpInterfaceItem]):
+    """Typed object for interface table items with attribute access."""
+    interface_name: str
+
+
 class NtpObject(FortiObject):
     """Typed FortiObject for Ntp with field access."""
     ntpsync: Literal["enable", "disable"]
     type: Literal["fortiguard", "custom"]
     syncinterval: int
-    ntpserver: list[NtpNtpserverItem]
+    ntpserver: FortiObjectList[NtpNtpserverItemObject]
     source_ip: str
     source_ip6: str
     server_mode: Literal["enable", "disable"]
@@ -99,7 +119,7 @@ class NtpObject(FortiObject):
     key_type: Literal["MD5", "SHA1", "SHA256"]
     key: str
     key_id: int
-    interface: list[NtpInterfaceItem]
+    interface: FortiObjectList[NtpInterfaceItemObject]
 
 
 # ================================================================

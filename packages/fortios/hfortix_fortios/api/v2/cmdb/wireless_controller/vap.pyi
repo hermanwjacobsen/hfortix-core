@@ -427,6 +427,38 @@ class VapResponse(TypedDict, total=False):
 # ================================================================
 
 
+class VapRadiusmacauthusergroupsItemObject(FortiObject[VapRadiusmacauthusergroupsItem]):
+    """Typed object for radius-mac-auth-usergroups table items with attribute access."""
+    name: str
+
+
+class VapUsergroupItemObject(FortiObject[VapUsergroupItem]):
+    """Typed object for usergroup table items with attribute access."""
+    name: str
+
+
+class VapSelectedusergroupsItemObject(FortiObject[VapSelectedusergroupsItem]):
+    """Typed object for selected-usergroups table items with attribute access."""
+    name: str
+
+
+class VapScheduleItemObject(FortiObject[VapScheduleItem]):
+    """Typed object for schedule table items with attribute access."""
+    name: str
+
+
+class VapVlannameItemObject(FortiObject[VapVlannameItem]):
+    """Typed object for vlan-name table items with attribute access."""
+    name: str
+    vlan_id: int | list[int]
+
+
+class VapVlanpoolItemObject(FortiObject[VapVlanpoolItem]):
+    """Typed object for vlan-pool table items with attribute access."""
+    id: int
+    wtp_group: str
+
+
 class VapPortalmessageoverridesObject(FortiObject):
     """Nested object for portal-message-overrides field with attribute access."""
     auth_disclaimer_page: str
@@ -485,7 +517,7 @@ class VapObject(FortiObject):
     radius_mac_auth_block_interval: int
     radius_mac_mpsk_auth: Literal["enable", "disable"]
     radius_mac_mpsk_timeout: int
-    radius_mac_auth_usergroups: list[VapRadiusmacauthusergroupsItem]
+    radius_mac_auth_usergroups: FortiObjectList[VapRadiusmacauthusergroupsItemObject]
     auth: Literal["radius", "usergroup"]
     encrypt: Literal["TKIP", "AES", "TKIP-AES"]
     keyindex: int
@@ -511,19 +543,19 @@ class VapObject(FortiObject):
     local_bridging: Literal["enable", "disable"]
     local_lan: Literal["allow", "deny"]
     local_authentication: Literal["enable", "disable"]
-    usergroup: list[VapUsergroupItem]
+    usergroup: FortiObjectList[VapUsergroupItemObject]
     captive_portal: Literal["enable", "disable"]
     captive_network_assistant_bypass: Literal["enable", "disable"]
     portal_message_override_group: str
     portal_message_overrides: VapPortalmessageoverridesObject
     portal_type: Literal["auth", "auth+disclaimer", "disclaimer", "email-collect", "cmcc", "cmcc-macauth", "auth-mac", "external-auth", "external-macauth"]
-    selected_usergroups: list[VapSelectedusergroupsItem]
+    selected_usergroups: FortiObjectList[VapSelectedusergroupsItemObject]
     security_exempt_list: str
     security_redirect_url: str
     auth_cert: str
     auth_portal_addr: str
     intra_vap_privacy: Literal["enable", "disable"]
-    schedule: list[VapScheduleItem]
+    schedule: FortiObjectList[VapScheduleItemObject]
     ldpc: Literal["disable", "rx", "tx", "rxtx"]
     high_efficiency: Literal["enable", "disable"]
     target_wake_time: Literal["enable", "disable"]
@@ -555,9 +587,9 @@ class VapObject(FortiObject):
     quarantine: Literal["enable", "disable"]
     radio_5g_threshold: str
     radio_2g_threshold: str
-    vlan_name: list[VapVlannameItem]
+    vlan_name: FortiObjectList[VapVlannameItemObject]
     vlan_pooling: Literal["wtp-group", "round-robin", "hash", "disable"]
-    vlan_pool: list[VapVlanpoolItem]
+    vlan_pool: FortiObjectList[VapVlanpoolItemObject]
     dhcp_option43_insertion: Literal["enable", "disable"]
     dhcp_option82_insertion: Literal["enable", "disable"]
     dhcp_option82_circuit_id_insertion: Literal["style-1", "style-2", "style-3", "disable"]

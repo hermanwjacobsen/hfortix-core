@@ -1457,7 +1457,7 @@ class WtpProfileModel(BaseModel):
     
     name: str | None = Field(max_length=35, default=None, description="WTP (or FortiAP or AP) profile name.")    
     comment: str | None = Field(max_length=255, default=None, description="Comment.")    
-    platform: list[WtpProfilePlatform] = Field(default_factory=list, description="WTP, FortiAP, or AP platform.")    
+    platform: WtpProfilePlatform | None = Field(default=None, description="WTP, FortiAP, or AP platform.")    
     control_message_offload: list[WtpProfileControlMessageOffloadEnum] = Field(default_factory=list, description="Enable/disable CAPWAP control message data channel offload.")    
     bonjour_profile: str | None = Field(max_length=35, default=None, description="Bonjour profile name.")  # datasource: ['wireless-controller.bonjour-profile.name']    
     apcfg_profile: str | None = Field(max_length=35, default=None, description="AP local configuration profile name.")  # datasource: ['wireless-controller.apcfg-profile.name']    
@@ -1469,7 +1469,7 @@ class WtpProfileModel(BaseModel):
     lw_profile: str | None = Field(max_length=35, default=None, description="LoRaWAN profile name.")  # datasource: ['wireless-controller.lw-profile.name']    
     syslog_profile: str | None = Field(max_length=35, default=None, description="System log server configuration profile name.")  # datasource: ['wireless-controller.syslog-profile.name']    
     wan_port_mode: Literal["wan-lan", "wan-only"] | None = Field(default="wan-only", description="Enable/disable using a WAN port as a LAN port.")    
-    lan: list[WtpProfileLan] = Field(default_factory=list, description="WTP LAN port mapping.")    
+    lan: WtpProfileLan | None = Field(default=None, description="WTP LAN port mapping.")    
     energy_efficient_ethernet: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable use of energy efficient Ethernet on WTP.")    
     led_state: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable use of LEDs on WTP (default = enable).")    
     led_schedules: list[WtpProfileLedSchedules] = Field(default_factory=list, description="Recurring firewall schedules for illuminating LEDs on the FortiAP. If led-state is enabled, LEDs will be visible when at least one of the schedules is valid. Separate multiple schedule names with a space.")    
@@ -1496,14 +1496,14 @@ class WtpProfileModel(BaseModel):
     frequency_handoff: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable frequency handoff of clients to other channels (default = disable).")    
     ap_handoff: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable AP handoff of clients to other APs (default = disable).")    
     default_mesh_root: Literal["enable", "disable"] | None = Field(default="disable", description="Configure default mesh root SSID when it is not included by radio's SSID configuration.")    
-    radio_1: list[WtpProfileRadio1] = Field(default_factory=list, description="Configuration options for radio 1.")    
-    radio_2: list[WtpProfileRadio2] = Field(default_factory=list, description="Configuration options for radio 2.")    
-    radio_3: list[WtpProfileRadio3] = Field(default_factory=list, description="Configuration options for radio 3.")    
-    radio_4: list[WtpProfileRadio4] = Field(default_factory=list, description="Configuration options for radio 4.")    
-    lbs: list[WtpProfileLbs] = Field(default_factory=list, description="Set various location based service (LBS) options.")    
+    radio_1: WtpProfileRadio1 | None = Field(default=None, description="Configuration options for radio 1.")    
+    radio_2: WtpProfileRadio2 | None = Field(default=None, description="Configuration options for radio 2.")    
+    radio_3: WtpProfileRadio3 | None = Field(default=None, description="Configuration options for radio 3.")    
+    radio_4: WtpProfileRadio4 | None = Field(default=None, description="Configuration options for radio 4.")    
+    lbs: WtpProfileLbs | None = Field(default=None, description="Set various location based service (LBS) options.")    
     ext_info_enable: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable station/VAP/radio extension information.")    
     indoor_outdoor_deployment: Literal["platform-determined", "outdoor", "indoor"] | None = Field(default="platform-determined", description="Set to allow indoor/outdoor-only channels under regulatory rules (default = platform-determined).")    
-    esl_ses_dongle: list[WtpProfileEslSesDongle] = Field(default_factory=list, description="ESL SES-imagotag dongle configuration.")    
+    esl_ses_dongle: WtpProfileEslSesDongle | None = Field(default=None, description="ESL SES-imagotag dongle configuration.")    
     console_login: Literal["enable", "disable"] | None = Field(default="enable", description="Enable/disable FortiAP console login access (default = enable).")    
     wan_port_auth: Literal["none", "802.1x"] | None = Field(default="none", description="Set WAN port authentication mode (default = none).")    
     wan_port_auth_usrname: str | None = Field(max_length=63, default=None, description="Set WAN port 802.1x supplicant user name.")    
@@ -2623,6 +2623,6 @@ __all__ = [
 
 # ============================================================================
 # Generated by hfortix generator v0.6.0
-# Schema: 1.7.1
-# Generated: 2026-01-18T20:31:27.361295Z
+# Schema: 1.7.2
+# Generated: 2026-01-19T11:36:56.971604Z
 # ============================================================================

@@ -31,7 +31,7 @@ class FortilinkSettingsNacportsDict(TypedDict, total=False):
     onboarding_vlan: str
     lan_segment: Literal["enabled", "disabled"]
     nac_lan_interface: str
-    nac_segment_vlans: str | list[str]
+    nac_segment_vlans: str | list[str] | list[FortilinkSettingsNacportsNacsegmentvlansItem]
     parent_key: str
     member_change: int
 

@@ -106,6 +106,21 @@ class InterfacePolicyResponse(TypedDict, total=False):
 # ================================================================
 
 
+class InterfacePolicySrcaddrItemObject(FortiObject[InterfacePolicySrcaddrItem]):
+    """Typed object for srcaddr table items with attribute access."""
+    name: str
+
+
+class InterfacePolicyDstaddrItemObject(FortiObject[InterfacePolicyDstaddrItem]):
+    """Typed object for dstaddr table items with attribute access."""
+    name: str
+
+
+class InterfacePolicyServiceItemObject(FortiObject[InterfacePolicyServiceItem]):
+    """Typed object for service table items with attribute access."""
+    name: str
+
+
 class InterfacePolicyObject(FortiObject):
     """Typed FortiObject for InterfacePolicy with field access."""
     policyid: int
@@ -114,9 +129,9 @@ class InterfacePolicyObject(FortiObject):
     comments: str
     logtraffic: Literal["all", "utm", "disable"]
     interface: str
-    srcaddr: list[InterfacePolicySrcaddrItem]
-    dstaddr: list[InterfacePolicyDstaddrItem]
-    service: list[InterfacePolicyServiceItem]
+    srcaddr: FortiObjectList[InterfacePolicySrcaddrItemObject]
+    dstaddr: FortiObjectList[InterfacePolicyDstaddrItemObject]
+    service: FortiObjectList[InterfacePolicyServiceItemObject]
     application_list_status: Literal["enable", "disable"]
     application_list: str
     ips_sensor_status: Literal["enable", "disable"]

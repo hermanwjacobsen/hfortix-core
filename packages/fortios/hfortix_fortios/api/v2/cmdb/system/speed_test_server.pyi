@@ -61,11 +61,23 @@ class SpeedTestServerResponse(TypedDict, total=False):
 # ================================================================
 
 
+class SpeedTestServerHostItemObject(FortiObject[SpeedTestServerHostItem]):
+    """Typed object for host table items with attribute access."""
+    id: int
+    ip: str
+    port: int
+    user: str
+    password: str
+    longitude: str
+    latitude: str
+    distance: int
+
+
 class SpeedTestServerObject(FortiObject):
     """Typed FortiObject for SpeedTestServer with field access."""
     name: str
     timestamp: int
-    host: list[SpeedTestServerHostItem]
+    host: FortiObjectList[SpeedTestServerHostItemObject]
 
 
 # ================================================================

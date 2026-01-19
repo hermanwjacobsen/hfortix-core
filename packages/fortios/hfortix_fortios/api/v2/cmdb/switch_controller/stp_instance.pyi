@@ -52,10 +52,15 @@ class StpInstanceResponse(TypedDict, total=False):
 # ================================================================
 
 
+class StpInstanceVlanrangeItemObject(FortiObject[StpInstanceVlanrangeItem]):
+    """Typed object for vlan-range table items with attribute access."""
+    vlan_name: str
+
+
 class StpInstanceObject(FortiObject):
     """Typed FortiObject for StpInstance with field access."""
     id: str
-    vlan_range: list[StpInstanceVlanrangeItem]
+    vlan_range: FortiObjectList[StpInstanceVlanrangeItemObject]
 
 
 # ================================================================

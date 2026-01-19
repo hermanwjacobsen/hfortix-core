@@ -67,6 +67,11 @@ class ExplicitResponse(TypedDict, total=False):
 # ================================================================
 
 
+class ExplicitSslcertItemObject(FortiObject[ExplicitSslcertItem]):
+    """Typed object for ssl-cert table items with attribute access."""
+    name: str
+
+
 class ExplicitObject(FortiObject):
     """Typed FortiObject for Explicit with field access."""
     status: Literal["enable", "disable"]
@@ -76,7 +81,7 @@ class ExplicitObject(FortiObject):
     sec_default_action: Literal["accept", "deny"]
     server_data_mode: Literal["client", "passive"]
     ssl: Literal["enable", "disable"]
-    ssl_cert: list[ExplicitSslcertItem]
+    ssl_cert: FortiObjectList[ExplicitSslcertItemObject]
     ssl_dh_bits: Literal["768", "1024", "1536", "2048"]
     ssl_algorithm: Literal["high", "medium", "low"]
 

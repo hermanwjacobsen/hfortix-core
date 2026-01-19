@@ -1063,27 +1063,27 @@ class ManagedSwitchModel(BaseModel):
     firmware_provision_latest: Literal["disable", "once"] | None = Field(default="disable", description="Enable/disable one-time automatic provisioning of the latest firmware version.")    
     ports: list[ManagedSwitchPorts] = Field(default_factory=list, description="Managed-switch port list.")    
     ip_source_guard: list[ManagedSwitchIpSourceGuard] = Field(default_factory=list, description="IP source guard.")    
-    stp_settings: list[ManagedSwitchStpSettings] = Field(default_factory=list, description="Configuration method to edit Spanning Tree Protocol (STP) settings used to prevent bridge loops.")    
+    stp_settings: ManagedSwitchStpSettings | None = Field(default=None, description="Configuration method to edit Spanning Tree Protocol (STP) settings used to prevent bridge loops.")    
     stp_instance: list[ManagedSwitchStpInstance] = Field(default_factory=list, description="Configuration method to edit Spanning Tree Protocol (STP) instances.")    
     override_snmp_sysinfo: Literal["disable", "enable"] | None = Field(default="disable", description="Enable/disable overriding the global SNMP system information.")    
-    snmp_sysinfo: list[ManagedSwitchSnmpSysinfo] = Field(default_factory=list, description="Configuration method to edit Simple Network Management Protocol (SNMP) system info.")    
+    snmp_sysinfo: ManagedSwitchSnmpSysinfo | None = Field(default=None, description="Configuration method to edit Simple Network Management Protocol (SNMP) system info.")    
     override_snmp_trap_threshold: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable overriding the global SNMP trap threshold values.")    
-    snmp_trap_threshold: list[ManagedSwitchSnmpTrapThreshold] = Field(default_factory=list, description="Configuration method to edit Simple Network Management Protocol (SNMP) trap threshold values.")    
+    snmp_trap_threshold: ManagedSwitchSnmpTrapThreshold | None = Field(default=None, description="Configuration method to edit Simple Network Management Protocol (SNMP) trap threshold values.")    
     override_snmp_community: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable overriding the global SNMP communities.")    
     snmp_community: list[ManagedSwitchSnmpCommunity] = Field(default_factory=list, description="Configuration method to edit Simple Network Management Protocol (SNMP) communities.")    
     override_snmp_user: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable overriding the global SNMP users.")    
     snmp_user: list[ManagedSwitchSnmpUser] = Field(default_factory=list, description="Configuration method to edit Simple Network Management Protocol (SNMP) users.")    
     qos_drop_policy: Literal["taildrop", "random-early-detection"] | None = Field(default="taildrop", description="Set QoS drop-policy.")    
     qos_red_probability: int | None = Field(ge=0, le=100, default=12, description="Set QoS RED/WRED drop probability.")    
-    switch_log: list[ManagedSwitchSwitchLog] = Field(default_factory=list, description="Configuration method to edit FortiSwitch logging settings (logs are transferred to and inserted into the FortiGate event log).")    
+    switch_log: ManagedSwitchSwitchLog | None = Field(default=None, description="Configuration method to edit FortiSwitch logging settings (logs are transferred to and inserted into the FortiGate event log).")    
     remote_log: list[ManagedSwitchRemoteLog] = Field(default_factory=list, description="Configure logging by FortiSwitch device to a remote syslog server.")    
-    storm_control: list[ManagedSwitchStormControl] = Field(default_factory=list, description="Configuration method to edit FortiSwitch storm control for measuring traffic activity using data rates to prevent traffic disruption.")    
+    storm_control: ManagedSwitchStormControl | None = Field(default=None, description="Configuration method to edit FortiSwitch storm control for measuring traffic activity using data rates to prevent traffic disruption.")    
     mirror: list[ManagedSwitchMirror] = Field(default_factory=list, description="Configuration method to edit FortiSwitch packet mirror.")    
     static_mac: list[ManagedSwitchStaticMac] = Field(default_factory=list, description="Configuration method to edit FortiSwitch Static and Sticky MAC.")    
     custom_command: list[ManagedSwitchCustomCommand] = Field(default_factory=list, description="Configuration method to edit FortiSwitch commands to be pushed to this FortiSwitch device upon rebooting the FortiGate switch controller or the FortiSwitch.")    
     dhcp_snooping_static_client: list[ManagedSwitchDhcpSnoopingStaticClient] = Field(default_factory=list, description="Configure FortiSwitch DHCP snooping static clients.")    
-    igmp_snooping: list[ManagedSwitchIgmpSnooping] = Field(default_factory=list, description="Configure FortiSwitch IGMP snooping global settings.")    
-    _802_1X_settings: list[ManagedSwitch8021XSettings] = Field(default_factory=list, serialization_alias="802-1X-settings", description="Configuration method to edit FortiSwitch 802.1X global settings.")    
+    igmp_snooping: ManagedSwitchIgmpSnooping | None = Field(default=None, description="Configure FortiSwitch IGMP snooping global settings.")    
+    _802_1X_settings: ManagedSwitch8021XSettings | None = Field(default=None, serialization_alias="802-1X-settings", description="Configuration method to edit FortiSwitch 802.1X global settings.")    
     router_vrf: list[ManagedSwitchRouterVrf] = Field(default_factory=list, description="Configure VRF.")    
     system_interface: list[ManagedSwitchSystemInterface] = Field(default_factory=list, description="Configure system interface on FortiSwitch.")    
     router_static: list[ManagedSwitchRouterStatic] = Field(default_factory=list, description="Configure static routes.")    
@@ -2024,6 +2024,6 @@ __all__ = [
 
 # ============================================================================
 # Generated by hfortix generator v0.6.0
-# Schema: 1.7.1
-# Generated: 2026-01-18T20:31:28.862276Z
+# Schema: 1.7.2
+# Generated: 2026-01-19T11:36:58.554247Z
 # ============================================================================

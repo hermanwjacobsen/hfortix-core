@@ -26,31 +26,40 @@ from hfortix_fortios.models import (
 # TypedDict Payloads
 # ================================================================
 
+class ProfileUrlaccessAccesspatternItem(TypedDict, total=False):
+    """Nested item for url-access.access-pattern field."""
+    id: int
+    srcaddr: str
+    pattern: str
+    regex: Literal["enable", "disable"]
+    negate: Literal["enable", "disable"]
+
+
 class ProfileSignatureDict(TypedDict, total=False):
     """Nested object type for signature field."""
-    main_class: str | list[str]
-    disabled_sub_class: str | list[str]
-    disabled_signature: str | list[str]
+    main_class: str | list[str] | list[ProfileSignatureMainclassItem]
+    disabled_sub_class: str | list[str] | list[ProfileSignatureDisabledsubclassItem]
+    disabled_signature: str | list[str] | list[ProfileSignatureDisabledsignatureItem]
     credit_card_detection_threshold: int
-    custom_signature: str | list[str]
+    custom_signature: str | list[str] | list[ProfileSignatureCustomsignatureItem]
 
 
 class ProfileConstraintDict(TypedDict, total=False):
     """Nested object type for constraint field."""
-    header_length: str
-    content_length: str
-    param_length: str
-    line_length: str
-    url_param_length: str
-    version: str
-    method: str
-    hostname: str
-    malformed: str
-    max_cookie: str
-    max_header_line: str
-    max_url_param: str
-    max_range_segment: str
-    exception: str | list[str]
+    header_length: ProfileConstraintHeaderlengthDict
+    content_length: ProfileConstraintContentlengthDict
+    param_length: ProfileConstraintParamlengthDict
+    line_length: ProfileConstraintLinelengthDict
+    url_param_length: ProfileConstraintUrlparamlengthDict
+    version: ProfileConstraintVersionDict
+    method: ProfileConstraintMethodDict
+    hostname: ProfileConstraintHostnameDict
+    malformed: ProfileConstraintMalformedDict
+    max_cookie: ProfileConstraintMaxcookieDict
+    max_header_line: ProfileConstraintMaxheaderlineDict
+    max_url_param: ProfileConstraintMaxurlparamDict
+    max_range_segment: ProfileConstraintMaxrangesegmentDict
+    exception: str | list[str] | list[ProfileConstraintExceptionItem]
 
 
 class ProfileMethodDict(TypedDict, total=False):
@@ -59,7 +68,7 @@ class ProfileMethodDict(TypedDict, total=False):
     log: Literal["enable", "disable"]
     severity: Literal["high", "medium", "low"]
     default_allowed_methods: Literal["get", "post", "put", "head", "connect", "trace", "options", "delete", "others"]
-    method_policy: str | list[str]
+    method_policy: str | list[str] | list[ProfileMethodMethodpolicyItem]
 
 
 class ProfileAddresslistDict(TypedDict, total=False):
@@ -67,8 +76,8 @@ class ProfileAddresslistDict(TypedDict, total=False):
     status: Literal["enable", "disable"]
     blocked_log: Literal["enable", "disable"]
     severity: Literal["high", "medium", "low"]
-    trusted_address: str | list[str]
-    blocked_address: str | list[str]
+    trusted_address: str | list[str] | list[ProfileAddresslistTrustedaddressItem]
+    blocked_address: str | list[str] | list[ProfileAddresslistBlockedaddressItem]
 
 
 class ProfileUrlaccessItem(TypedDict, total=False):
@@ -78,7 +87,7 @@ class ProfileUrlaccessItem(TypedDict, total=False):
     action: Literal["bypass", "permit", "block"]
     log: Literal["enable", "disable"]
     severity: Literal["high", "medium", "low"]
-    access_pattern: str | list[str]
+    access_pattern: str | list[str] | list[ProfileUrlaccessAccesspatternItem]
 
 
 class ProfilePayload(TypedDict, total=False):
@@ -114,6 +123,16 @@ class ProfileResponse(TypedDict, total=False):
 # ================================================================
 # Response Types (Class for attribute access)
 # ================================================================
+
+
+class ProfileUrlaccessItemObject(FortiObject[ProfileUrlaccessItem]):
+    """Typed object for url-access table items with attribute access."""
+    id: int
+    address: str
+    action: Literal["bypass", "permit", "block"]
+    log: Literal["enable", "disable"]
+    severity: Literal["high", "medium", "low"]
+    access_pattern: FortiObjectList[ProfileUrlaccessAccesspatternItemObject]
 
 
 class ProfileSignatureObject(FortiObject):
@@ -170,7 +189,7 @@ class ProfileObject(FortiObject):
     constraint: ProfileConstraintObject
     method: ProfileMethodObject
     address_list: ProfileAddresslistObject
-    url_access: list[ProfileUrlaccessItem]
+    url_access: FortiObjectList[ProfileUrlaccessItemObject]
     comment: str
 
 

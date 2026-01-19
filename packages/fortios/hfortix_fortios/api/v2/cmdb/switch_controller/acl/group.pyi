@@ -52,10 +52,15 @@ class GroupResponse(TypedDict, total=False):
 # ================================================================
 
 
+class GroupIngressItemObject(FortiObject[GroupIngressItem]):
+    """Typed object for ingress table items with attribute access."""
+    id: int
+
+
 class GroupObject(FortiObject):
     """Typed FortiObject for Group with field access."""
     name: str
-    ingress: list[GroupIngressItem]
+    ingress: FortiObjectList[GroupIngressItemObject]
 
 
 # ================================================================

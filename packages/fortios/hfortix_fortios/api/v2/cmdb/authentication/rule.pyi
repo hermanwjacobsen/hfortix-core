@@ -106,16 +106,41 @@ class RuleResponse(TypedDict, total=False):
 # ================================================================
 
 
+class RuleSrcintfItemObject(FortiObject[RuleSrcintfItem]):
+    """Typed object for srcintf table items with attribute access."""
+    name: str
+
+
+class RuleSrcaddrItemObject(FortiObject[RuleSrcaddrItem]):
+    """Typed object for srcaddr table items with attribute access."""
+    name: str
+
+
+class RuleDstaddrItemObject(FortiObject[RuleDstaddrItem]):
+    """Typed object for dstaddr table items with attribute access."""
+    name: str
+
+
+class RuleSrcaddr6ItemObject(FortiObject[RuleSrcaddr6Item]):
+    """Typed object for srcaddr6 table items with attribute access."""
+    name: str
+
+
+class RuleDstaddr6ItemObject(FortiObject[RuleDstaddr6Item]):
+    """Typed object for dstaddr6 table items with attribute access."""
+    name: str
+
+
 class RuleObject(FortiObject):
     """Typed FortiObject for Rule with field access."""
     name: str
     status: Literal["enable", "disable"]
     protocol: Literal["http", "ftp", "socks", "ssh", "ztna-portal"]
-    srcintf: list[RuleSrcintfItem]
-    srcaddr: list[RuleSrcaddrItem]
-    dstaddr: list[RuleDstaddrItem]
-    srcaddr6: list[RuleSrcaddr6Item]
-    dstaddr6: list[RuleDstaddr6Item]
+    srcintf: FortiObjectList[RuleSrcintfItemObject]
+    srcaddr: FortiObjectList[RuleSrcaddrItemObject]
+    dstaddr: FortiObjectList[RuleDstaddrItemObject]
+    srcaddr6: FortiObjectList[RuleSrcaddr6ItemObject]
+    dstaddr6: FortiObjectList[RuleDstaddr6ItemObject]
     ip_based: Literal["enable", "disable"]
     active_auth_method: str
     sso_auth_method: str

@@ -25,6 +25,11 @@ from hfortix_fortios.models import (
 # TypedDict Payloads
 # ================================================================
 
+class HaVclusterVdomItem(TypedDict, total=False):
+    """Nested item for vcluster.vdom field."""
+    name: str
+
+
 class HaAutovirtualmacinterfaceItem(TypedDict, total=False):
     """Nested item for auto-virtual-mac-interface field."""
     interface_name: str
@@ -62,7 +67,7 @@ class HaVclusterItem(TypedDict, total=False):
     pingserver_failover_threshold: int
     pingserver_secondary_force_reset: Literal["enable", "disable"]
     pingserver_flip_timeout: int
-    vdom: str | list[str]
+    vdom: str | list[str] | list[HaVclusterVdomItem]
 
 
 class HaPayload(TypedDict, total=False):
@@ -244,6 +249,46 @@ class HaResponse(TypedDict, total=False):
 # ================================================================
 
 
+class HaAutovirtualmacinterfaceItemObject(FortiObject[HaAutovirtualmacinterfaceItem]):
+    """Typed object for auto-virtual-mac-interface table items with attribute access."""
+    interface_name: str
+
+
+class HaBackuphbdevItemObject(FortiObject[HaBackuphbdevItem]):
+    """Typed object for backup-hbdev table items with attribute access."""
+    name: str
+
+
+class HaHamgmtinterfacesItemObject(FortiObject[HaHamgmtinterfacesItem]):
+    """Typed object for ha-mgmt-interfaces table items with attribute access."""
+    id: int
+    interface: str
+    dst: str
+    gateway: str
+    dst6: str
+    gateway6: str
+
+
+class HaUnicastpeersItemObject(FortiObject[HaUnicastpeersItem]):
+    """Typed object for unicast-peers table items with attribute access."""
+    id: int
+    peer_ip: str
+
+
+class HaVclusterItemObject(FortiObject[HaVclusterItem]):
+    """Typed object for vcluster table items with attribute access."""
+    vcluster_id: int
+    override: Literal["enable", "disable"]
+    priority: int
+    override_wait_time: int
+    monitor: str | list[str]
+    pingserver_monitor_interface: str | list[str]
+    pingserver_failover_threshold: int
+    pingserver_secondary_force_reset: Literal["enable", "disable"]
+    pingserver_flip_timeout: int
+    vdom: FortiObjectList[HaVclusterVdomItemObject]
+
+
 class HaObject(FortiObject):
     """Typed FortiObject for Ha with field access."""
     group_id: int
@@ -253,8 +298,8 @@ class HaObject(FortiObject):
     password: str
     key: str
     hbdev: str | list[str]
-    auto_virtual_mac_interface: list[HaAutovirtualmacinterfaceItem]
-    backup_hbdev: list[HaBackuphbdevItem]
+    auto_virtual_mac_interface: FortiObjectList[HaAutovirtualmacinterfaceItemObject]
+    backup_hbdev: FortiObjectList[HaBackuphbdevItemObject]
     unicast_hb: Literal["enable", "disable"]
     unicast_hb_peerip: str
     unicast_hb_netmask: str
@@ -285,7 +330,7 @@ class HaObject(FortiObject):
     uninterruptible_primary_wait: int
     standalone_mgmt_vdom: Literal["enable", "disable"]
     ha_mgmt_status: Literal["enable", "disable"]
-    ha_mgmt_interfaces: list[HaHamgmtinterfacesItem]
+    ha_mgmt_interfaces: FortiObjectList[HaHamgmtinterfacesItemObject]
     ha_eth_type: str
     hc_eth_type: str
     l2ep_eth_type: str
@@ -293,7 +338,7 @@ class HaObject(FortiObject):
     standalone_config_sync: Literal["enable", "disable"]
     unicast_status: Literal["enable", "disable"]
     unicast_gateway: str
-    unicast_peers: list[HaUnicastpeersItem]
+    unicast_peers: FortiObjectList[HaUnicastpeersItemObject]
     schedule: Literal["none", "leastconnection", "round-robin", "weight-round-robin", "random", "ip", "ipport"]
     weight: str
     cpu_threshold: str
@@ -313,7 +358,7 @@ class HaObject(FortiObject):
     pingserver_secondary_force_reset: Literal["enable", "disable"]
     pingserver_flip_timeout: int
     vcluster_status: Literal["enable", "disable"]
-    vcluster: list[HaVclusterItem]
+    vcluster: FortiObjectList[HaVclusterItemObject]
     ha_direct: Literal["enable", "disable"]
     ssd_failover: Literal["enable", "disable"]
     memory_compatible_mode: Literal["enable", "disable"]

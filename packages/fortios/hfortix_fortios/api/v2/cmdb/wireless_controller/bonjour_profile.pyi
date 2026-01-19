@@ -60,12 +60,21 @@ class BonjourProfileResponse(TypedDict, total=False):
 # ================================================================
 
 
+class BonjourProfilePolicylistItemObject(FortiObject[BonjourProfilePolicylistItem]):
+    """Typed object for policy-list table items with attribute access."""
+    policy_id: int
+    description: str
+    from_vlan: str
+    to_vlan: str
+    services: Literal["all", "airplay", "afp", "bit-torrent", "ftp", "ichat", "itunes", "printers", "samba", "scanners", "ssh", "chromecast", "miracast"]
+
+
 class BonjourProfileObject(FortiObject):
     """Typed FortiObject for BonjourProfile with field access."""
     name: str
     comment: str
     micro_location: Literal["enable", "disable"]
-    policy_list: list[BonjourProfilePolicylistItem]
+    policy_list: FortiObjectList[BonjourProfilePolicylistItemObject]
 
 
 # ================================================================

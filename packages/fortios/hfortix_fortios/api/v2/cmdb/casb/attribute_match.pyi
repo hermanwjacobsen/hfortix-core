@@ -26,11 +26,21 @@ from hfortix_fortios.models import (
 # TypedDict Payloads
 # ================================================================
 
+class AttributeMatchMatchRuleItem(TypedDict, total=False):
+    """Nested item for match.rule field."""
+    id: int
+    attribute: str
+    match_pattern: Literal["simple", "substr", "regexp"]
+    match_value: str
+    case_sensitive: Literal["enable", "disable"]
+    negate: Literal["enable", "disable"]
+
+
 class AttributeMatchMatchItem(TypedDict, total=False):
     """Nested item for match field."""
     id: int
     rule_strategy: Literal["and", "or"]
-    rule: str | list[str]
+    rule: str | list[str] | list[AttributeMatchMatchRuleItem]
 
 
 class AttributeMatchPayload(TypedDict, total=False):
@@ -58,12 +68,19 @@ class AttributeMatchResponse(TypedDict, total=False):
 # ================================================================
 
 
+class AttributeMatchMatchItemObject(FortiObject[AttributeMatchMatchItem]):
+    """Typed object for match table items with attribute access."""
+    id: int
+    rule_strategy: Literal["and", "or"]
+    rule: FortiObjectList[AttributeMatchMatchRuleItemObject]
+
+
 class AttributeMatchObject(FortiObject):
     """Typed FortiObject for AttributeMatch with field access."""
     name: str
     application: str
     match_strategy: Literal["or", "and", "subset"]
-    match: list[AttributeMatchMatchItem]
+    match: FortiObjectList[AttributeMatchMatchItemObject]
 
 
 # ================================================================

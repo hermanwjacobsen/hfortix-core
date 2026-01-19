@@ -76,6 +76,11 @@ class ExchangeResponse(TypedDict, total=False):
 # ================================================================
 
 
+class ExchangeKdcipItemObject(FortiObject[ExchangeKdcipItem]):
+    """Typed object for kdc-ip table items with attribute access."""
+    ipv4: str
+
+
 class ExchangeObject(FortiObject):
     """Typed FortiObject for Exchange with field access."""
     name: str
@@ -91,7 +96,7 @@ class ExchangeObject(FortiObject):
     http_auth_type: Literal["basic", "ntlm"]
     ssl_min_proto_version: Literal["default", "SSLv3", "TLSv1", "TLSv1-1", "TLSv1-2", "TLSv1-3"]
     auto_discover_kdc: Literal["enable", "disable"]
-    kdc_ip: list[ExchangeKdcipItem]
+    kdc_ip: FortiObjectList[ExchangeKdcipItemObject]
 
 
 # ================================================================

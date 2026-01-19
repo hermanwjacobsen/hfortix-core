@@ -64,10 +64,28 @@ class Bfd6Response(TypedDict, total=False):
 # ================================================================
 
 
+class Bfd6NeighborItemObject(FortiObject[Bfd6NeighborItem]):
+    """Typed object for neighbor table items with attribute access."""
+    ip6_address: str
+    interface: str
+
+
+class Bfd6MultihoptemplateItemObject(FortiObject[Bfd6MultihoptemplateItem]):
+    """Typed object for multihop-template table items with attribute access."""
+    id: int
+    src: str
+    dst: str
+    bfd_desired_min_tx: int
+    bfd_required_min_rx: int
+    bfd_detect_mult: int
+    auth_mode: Literal["none", "md5"]
+    md5_key: str
+
+
 class Bfd6Object(FortiObject):
     """Typed FortiObject for Bfd6 with field access."""
-    neighbor: list[Bfd6NeighborItem]
-    multihop_template: list[Bfd6MultihoptemplateItem]
+    neighbor: FortiObjectList[Bfd6NeighborItemObject]
+    multihop_template: FortiObjectList[Bfd6MultihoptemplateItemObject]
 
 
 # ================================================================

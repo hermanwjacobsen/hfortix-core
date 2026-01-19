@@ -56,10 +56,15 @@ class VirtualWirePairResponse(TypedDict, total=False):
 # ================================================================
 
 
+class VirtualWirePairMemberItemObject(FortiObject[VirtualWirePairMemberItem]):
+    """Typed object for member table items with attribute access."""
+    interface_name: str
+
+
 class VirtualWirePairObject(FortiObject):
     """Typed FortiObject for VirtualWirePair with field access."""
     name: str
-    member: list[VirtualWirePairMemberItem]
+    member: FortiObjectList[VirtualWirePairMemberItemObject]
     wildcard_vlan: Literal["enable", "disable"]
     vlan_filter: str
 

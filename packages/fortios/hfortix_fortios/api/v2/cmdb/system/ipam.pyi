@@ -25,22 +25,43 @@ from hfortix_fortios.models import (
 # TypedDict Payloads
 # ================================================================
 
+class IpamPoolsExcludeItem(TypedDict, total=False):
+    """Nested item for pools.exclude field."""
+    ID: int
+    exclude_subnet: str
+
+
+class IpamRulesDeviceItem(TypedDict, total=False):
+    """Nested item for rules.device field."""
+    name: str
+
+
+class IpamRulesInterfaceItem(TypedDict, total=False):
+    """Nested item for rules.interface field."""
+    name: str
+
+
+class IpamRulesPoolItem(TypedDict, total=False):
+    """Nested item for rules.pool field."""
+    name: str
+
+
 class IpamPoolsItem(TypedDict, total=False):
     """Nested item for pools field."""
     name: str
     description: str
     subnet: str
-    exclude: str | list[str]
+    exclude: str | list[str] | list[IpamPoolsExcludeItem]
 
 
 class IpamRulesItem(TypedDict, total=False):
     """Nested item for rules field."""
     name: str
     description: str
-    device: str | list[str]
-    interface: str | list[str]
+    device: str | list[str] | list[IpamRulesDeviceItem]
+    interface: str | list[str] | list[IpamRulesInterfaceItem]
     role: Literal["any", "lan", "wan", "dmz", "undefined"]
-    pool: str | list[str]
+    pool: str | list[str] | list[IpamRulesPoolItem]
     dhcp: Literal["enable", "disable"]
 
 
@@ -79,6 +100,25 @@ class IpamResponse(TypedDict, total=False):
 # ================================================================
 
 
+class IpamPoolsItemObject(FortiObject[IpamPoolsItem]):
+    """Typed object for pools table items with attribute access."""
+    name: str
+    description: str
+    subnet: str
+    exclude: FortiObjectList[IpamPoolsExcludeItemObject]
+
+
+class IpamRulesItemObject(FortiObject[IpamRulesItem]):
+    """Typed object for rules table items with attribute access."""
+    name: str
+    description: str
+    device: FortiObjectList[IpamRulesDeviceItemObject]
+    interface: FortiObjectList[IpamRulesInterfaceItemObject]
+    role: Literal["any", "lan", "wan", "dmz", "undefined"]
+    pool: FortiObjectList[IpamRulesPoolItemObject]
+    dhcp: Literal["enable", "disable"]
+
+
 class IpamObject(FortiObject):
     """Typed FortiObject for Ipam with field access."""
     status: Literal["enable", "disable"]
@@ -88,8 +128,8 @@ class IpamObject(FortiObject):
     manage_lan_addresses: Literal["disable", "enable"]
     manage_lan_extension_addresses: Literal["disable", "enable"]
     manage_ssid_addresses: Literal["disable", "enable"]
-    pools: list[IpamPoolsItem]
-    rules: list[IpamRulesItem]
+    pools: FortiObjectList[IpamPoolsItemObject]
+    rules: FortiObjectList[IpamRulesItemObject]
 
 
 # ================================================================

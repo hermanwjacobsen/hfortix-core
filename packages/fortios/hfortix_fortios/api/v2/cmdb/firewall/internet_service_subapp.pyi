@@ -52,10 +52,15 @@ class InternetServiceSubappResponse(TypedDict, total=False):
 # ================================================================
 
 
+class InternetServiceSubappSubappItemObject(FortiObject[InternetServiceSubappSubappItem]):
+    """Typed object for sub-app table items with attribute access."""
+    id: int
+
+
 class InternetServiceSubappObject(FortiObject):
     """Typed FortiObject for InternetServiceSubapp with field access."""
     id: int
-    sub_app: list[InternetServiceSubappSubappItem]
+    sub_app: FortiObjectList[InternetServiceSubappSubappItemObject]
 
 
 # ================================================================
@@ -124,42 +129,8 @@ class InternetServiceSubapp:
         format: str = ...,
     ) -> FortiObject: ...
 
-    # ================================================================
-    # POST Method
-    # ================================================================
-    
-    def post(
-        self,
-        payload_dict: InternetServiceSubappPayload | None = ...,
-        id: int | None = ...,
-        sub_app: str | list[str] | list[InternetServiceSubappSubappItem] | None = ...,
-        error_mode: Literal["raise", "return", "print"] | None = ...,
-        error_format: Literal["detailed", "simple", "code_only"] | None = ...,
-    ) -> InternetServiceSubappObject: ...
 
-    # ================================================================
-    # PUT Method
-    # ================================================================
-    
-    def put(
-        self,
-        payload_dict: InternetServiceSubappPayload | None = ...,
-        id: int | None = ...,
-        sub_app: str | list[str] | list[InternetServiceSubappSubappItem] | None = ...,
-        error_mode: Literal["raise", "return", "print"] | None = ...,
-        error_format: Literal["detailed", "simple", "code_only"] | None = ...,
-    ) -> InternetServiceSubappObject: ...
 
-    # ================================================================
-    # DELETE Method
-    # ================================================================
-    
-    def delete(
-        self,
-        id: int | None = ...,
-        error_mode: Literal["raise", "return", "print"] | None = ...,
-        error_format: Literal["detailed", "simple", "code_only"] | None = ...,
-    ) -> FortiObject: ...
 
     # ================================================================
     # Utility Methods

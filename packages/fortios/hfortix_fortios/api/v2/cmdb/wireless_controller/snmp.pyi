@@ -25,6 +25,18 @@ from hfortix_fortios.models import (
 # TypedDict Payloads
 # ================================================================
 
+class SnmpCommunityHostsItem(TypedDict, total=False):
+    """Nested item for community.hosts field."""
+    id: int
+    ip: str
+
+
+class SnmpCommunityHosts6Item(TypedDict, total=False):
+    """Nested item for community.hosts6 field."""
+    id: int
+    ipv6: str
+
+
 class SnmpCommunityItem(TypedDict, total=False):
     """Nested item for community field."""
     id: int
@@ -34,8 +46,8 @@ class SnmpCommunityItem(TypedDict, total=False):
     query_v2c_status: Literal["enable", "disable"]
     trap_v1_status: Literal["enable", "disable"]
     trap_v2c_status: Literal["enable", "disable"]
-    hosts: str | list[str]
-    hosts6: str | list[str]
+    hosts: str | list[str] | list[SnmpCommunityHostsItem]
+    hosts6: str | list[str] | list[SnmpCommunityHosts6Item]
 
 
 class SnmpUserItem(TypedDict, total=False):
@@ -82,14 +94,42 @@ class SnmpResponse(TypedDict, total=False):
 # ================================================================
 
 
+class SnmpCommunityItemObject(FortiObject[SnmpCommunityItem]):
+    """Typed object for community table items with attribute access."""
+    id: int
+    name: str
+    status: Literal["enable", "disable"]
+    query_v1_status: Literal["enable", "disable"]
+    query_v2c_status: Literal["enable", "disable"]
+    trap_v1_status: Literal["enable", "disable"]
+    trap_v2c_status: Literal["enable", "disable"]
+    hosts: FortiObjectList[SnmpCommunityHostsItemObject]
+    hosts6: FortiObjectList[SnmpCommunityHosts6ItemObject]
+
+
+class SnmpUserItemObject(FortiObject[SnmpUserItem]):
+    """Typed object for user table items with attribute access."""
+    name: str
+    status: Literal["enable", "disable"]
+    queries: Literal["enable", "disable"]
+    trap_status: Literal["enable", "disable"]
+    security_level: Literal["no-auth-no-priv", "auth-no-priv", "auth-priv"]
+    auth_proto: Literal["md5", "sha", "sha224", "sha256", "sha384", "sha512"]
+    auth_pwd: str
+    priv_proto: Literal["aes", "des", "aes256", "aes256cisco"]
+    priv_pwd: str
+    notify_hosts: str | list[str]
+    notify_hosts6: str | list[str]
+
+
 class SnmpObject(FortiObject):
     """Typed FortiObject for Snmp with field access."""
     engine_id: str
     contact_info: str
     trap_high_cpu_threshold: int
     trap_high_mem_threshold: int
-    community: list[SnmpCommunityItem]
-    user: list[SnmpUserItem]
+    community: FortiObjectList[SnmpCommunityItemObject]
+    user: FortiObjectList[SnmpUserItemObject]
 
 
 # ================================================================

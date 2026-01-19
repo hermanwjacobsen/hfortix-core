@@ -64,10 +64,15 @@ class AccessProxyVirtualHostResponse(TypedDict, total=False):
 # ================================================================
 
 
+class AccessProxyVirtualHostSslcertificateItemObject(FortiObject[AccessProxyVirtualHostSslcertificateItem]):
+    """Typed object for ssl-certificate table items with attribute access."""
+    name: str
+
+
 class AccessProxyVirtualHostObject(FortiObject):
     """Typed FortiObject for AccessProxyVirtualHost with field access."""
     name: str
-    ssl_certificate: list[AccessProxyVirtualHostSslcertificateItem]
+    ssl_certificate: FortiObjectList[AccessProxyVirtualHostSslcertificateItemObject]
     host: str
     host_type: Literal["sub-string", "wildcard"]
     replacemsg_group: str

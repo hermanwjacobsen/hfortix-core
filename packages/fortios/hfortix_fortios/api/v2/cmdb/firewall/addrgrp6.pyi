@@ -26,6 +26,11 @@ from hfortix_fortios.models import (
 # TypedDict Payloads
 # ================================================================
 
+class Addrgrp6TaggingTagsItem(TypedDict, total=False):
+    """Nested item for tagging.tags field."""
+    name: str
+
+
 class Addrgrp6MemberItem(TypedDict, total=False):
     """Nested item for member field."""
     name: str
@@ -40,7 +45,7 @@ class Addrgrp6TaggingItem(TypedDict, total=False):
     """Nested item for tagging field."""
     name: str
     category: str
-    tags: str | list[str]
+    tags: str | list[str] | list[Addrgrp6TaggingTagsItem]
 
 
 class Addrgrp6Payload(TypedDict, total=False):
@@ -78,16 +83,33 @@ class Addrgrp6Response(TypedDict, total=False):
 # ================================================================
 
 
+class Addrgrp6MemberItemObject(FortiObject[Addrgrp6MemberItem]):
+    """Typed object for member table items with attribute access."""
+    name: str
+
+
+class Addrgrp6ExcludememberItemObject(FortiObject[Addrgrp6ExcludememberItem]):
+    """Typed object for exclude-member table items with attribute access."""
+    name: str
+
+
+class Addrgrp6TaggingItemObject(FortiObject[Addrgrp6TaggingItem]):
+    """Typed object for tagging table items with attribute access."""
+    name: str
+    category: str
+    tags: FortiObjectList[Addrgrp6TaggingTagsItemObject]
+
+
 class Addrgrp6Object(FortiObject):
     """Typed FortiObject for Addrgrp6 with field access."""
     name: str
     uuid: str
     color: int
     comment: str
-    member: list[Addrgrp6MemberItem]
+    member: FortiObjectList[Addrgrp6MemberItemObject]
     exclude: Literal["enable", "disable"]
-    exclude_member: list[Addrgrp6ExcludememberItem]
-    tagging: list[Addrgrp6TaggingItem]
+    exclude_member: FortiObjectList[Addrgrp6ExcludememberItemObject]
+    tagging: FortiObjectList[Addrgrp6TaggingItemObject]
     fabric_object: Literal["enable", "disable"]
 
 

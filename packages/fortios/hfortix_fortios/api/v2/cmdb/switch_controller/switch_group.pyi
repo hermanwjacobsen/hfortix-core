@@ -56,12 +56,17 @@ class SwitchGroupResponse(TypedDict, total=False):
 # ================================================================
 
 
+class SwitchGroupMembersItemObject(FortiObject[SwitchGroupMembersItem]):
+    """Typed object for members table items with attribute access."""
+    switch_id: str
+
+
 class SwitchGroupObject(FortiObject):
     """Typed FortiObject for SwitchGroup with field access."""
     name: str
     description: str
     fortilink: str
-    members: list[SwitchGroupMembersItem]
+    members: FortiObjectList[SwitchGroupMembersItemObject]
 
 
 # ================================================================

@@ -25,6 +25,16 @@ from hfortix_fortios.models import (
 # TypedDict Payloads
 # ================================================================
 
+class TrafficSnifferTargetportInportsItem(TypedDict, total=False):
+    """Nested item for target-port.in-ports field."""
+    name: str
+
+
+class TrafficSnifferTargetportOutportsItem(TypedDict, total=False):
+    """Nested item for target-port.out-ports field."""
+    name: str
+
+
 class TrafficSnifferTargetmacItem(TypedDict, total=False):
     """Nested item for target-mac field."""
     mac: str
@@ -41,8 +51,8 @@ class TrafficSnifferTargetportItem(TypedDict, total=False):
     """Nested item for target-port field."""
     switch_id: str
     description: str
-    in_ports: str | list[str]
-    out_ports: str | list[str]
+    in_ports: str | list[str] | list[TrafficSnifferTargetportInportsItem]
+    out_ports: str | list[str] | list[TrafficSnifferTargetportOutportsItem]
 
 
 class TrafficSnifferPayload(TypedDict, total=False):
@@ -72,13 +82,33 @@ class TrafficSnifferResponse(TypedDict, total=False):
 # ================================================================
 
 
+class TrafficSnifferTargetmacItemObject(FortiObject[TrafficSnifferTargetmacItem]):
+    """Typed object for target-mac table items with attribute access."""
+    mac: str
+    description: str
+
+
+class TrafficSnifferTargetipItemObject(FortiObject[TrafficSnifferTargetipItem]):
+    """Typed object for target-ip table items with attribute access."""
+    ip: str
+    description: str
+
+
+class TrafficSnifferTargetportItemObject(FortiObject[TrafficSnifferTargetportItem]):
+    """Typed object for target-port table items with attribute access."""
+    switch_id: str
+    description: str
+    in_ports: FortiObjectList[TrafficSnifferTargetportInportsItemObject]
+    out_ports: FortiObjectList[TrafficSnifferTargetportOutportsItemObject]
+
+
 class TrafficSnifferObject(FortiObject):
     """Typed FortiObject for TrafficSniffer with field access."""
     mode: Literal["erspan-auto", "rspan", "none"]
     erspan_ip: str
-    target_mac: list[TrafficSnifferTargetmacItem]
-    target_ip: list[TrafficSnifferTargetipItem]
-    target_port: list[TrafficSnifferTargetportItem]
+    target_mac: FortiObjectList[TrafficSnifferTargetmacItemObject]
+    target_ip: FortiObjectList[TrafficSnifferTargetipItemObject]
+    target_port: FortiObjectList[TrafficSnifferTargetportItemObject]
 
 
 # ================================================================

@@ -64,12 +64,25 @@ class QueuePolicyResponse(TypedDict, total=False):
 # ================================================================
 
 
+class QueuePolicyCosqueueItemObject(FortiObject[QueuePolicyCosqueueItem]):
+    """Typed object for cos-queue table items with attribute access."""
+    name: str
+    description: str
+    min_rate: int
+    max_rate: int
+    min_rate_percent: int
+    max_rate_percent: int
+    drop_policy: Literal["taildrop", "weighted-random-early-detection"]
+    ecn: Literal["disable", "enable"]
+    weight: int
+
+
 class QueuePolicyObject(FortiObject):
     """Typed FortiObject for QueuePolicy with field access."""
     name: str
     schedule: Literal["strict", "round-robin", "weighted"]
     rate_by: Literal["kbps", "percent"]
-    cos_queue: list[QueuePolicyCosqueueItem]
+    cos_queue: FortiObjectList[QueuePolicyCosqueueItemObject]
 
 
 # ================================================================

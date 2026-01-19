@@ -149,62 +149,8 @@ class InternetService:
         format: str = ...,
     ) -> FortiObject: ...
 
-    # ================================================================
-    # POST Method
-    # ================================================================
-    
-    def post(
-        self,
-        payload_dict: InternetServicePayload | None = ...,
-        id: int | None = ...,
-        name: str | None = ...,
-        icon_id: int | None = ...,
-        direction: Literal["src", "dst", "both"] | None = ...,
-        database: Literal["isdb", "irdb"] | None = ...,
-        ip_range_number: int | None = ...,
-        extra_ip_range_number: int | None = ...,
-        ip_number: int | None = ...,
-        ip6_range_number: int | None = ...,
-        extra_ip6_range_number: int | None = ...,
-        singularity: int | None = ...,
-        obsolete: int | None = ...,
-        error_mode: Literal["raise", "return", "print"] | None = ...,
-        error_format: Literal["detailed", "simple", "code_only"] | None = ...,
-    ) -> InternetServiceObject: ...
 
-    # ================================================================
-    # PUT Method
-    # ================================================================
-    
-    def put(
-        self,
-        payload_dict: InternetServicePayload | None = ...,
-        id: int | None = ...,
-        name: str | None = ...,
-        icon_id: int | None = ...,
-        direction: Literal["src", "dst", "both"] | None = ...,
-        database: Literal["isdb", "irdb"] | None = ...,
-        ip_range_number: int | None = ...,
-        extra_ip_range_number: int | None = ...,
-        ip_number: int | None = ...,
-        ip6_range_number: int | None = ...,
-        extra_ip6_range_number: int | None = ...,
-        singularity: int | None = ...,
-        obsolete: int | None = ...,
-        error_mode: Literal["raise", "return", "print"] | None = ...,
-        error_format: Literal["detailed", "simple", "code_only"] | None = ...,
-    ) -> InternetServiceObject: ...
 
-    # ================================================================
-    # DELETE Method
-    # ================================================================
-    
-    def delete(
-        self,
-        id: int | None = ...,
-        error_mode: Literal["raise", "return", "print"] | None = ...,
-        error_format: Literal["detailed", "simple", "code_only"] | None = ...,
-    ) -> FortiObject: ...
 
     # ================================================================
     # Utility Methods

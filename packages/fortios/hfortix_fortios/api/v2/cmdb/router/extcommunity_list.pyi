@@ -58,11 +58,20 @@ class ExtcommunityListResponse(TypedDict, total=False):
 # ================================================================
 
 
+class ExtcommunityListRuleItemObject(FortiObject[ExtcommunityListRuleItem]):
+    """Typed object for rule table items with attribute access."""
+    id: int
+    action: Literal["deny", "permit"]
+    regexp: str
+    type: Literal["rt", "soo"]
+    match: str
+
+
 class ExtcommunityListObject(FortiObject):
     """Typed FortiObject for ExtcommunityList with field access."""
     name: str
     type: Literal["standard", "expanded"]
-    rule: list[ExtcommunityListRuleItem]
+    rule: FortiObjectList[ExtcommunityListRuleItemObject]
 
 
 # ================================================================

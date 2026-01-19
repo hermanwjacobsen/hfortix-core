@@ -80,6 +80,13 @@ class RuleResponse(TypedDict, total=False):
 # ================================================================
 
 
+class RuleMetadataItemObject(FortiObject[RuleMetadataItem]):
+    """Typed object for metadata table items with attribute access."""
+    id: int
+    metaid: int
+    valueid: int
+
+
 class RuleObject(FortiObject):
     """Typed FortiObject for Rule with field access."""
     name: str
@@ -96,7 +103,7 @@ class RuleObject(FortiObject):
     rule_id: int
     rev: int
     date: int
-    metadata: list[RuleMetadataItem]
+    metadata: FortiObjectList[RuleMetadataItemObject]
 
 
 # ================================================================
@@ -165,68 +172,8 @@ class Rule:
         format: str = ...,
     ) -> FortiObject: ...
 
-    # ================================================================
-    # POST Method
-    # ================================================================
-    
-    def post(
-        self,
-        payload_dict: RulePayload | None = ...,
-        name: str | None = ...,
-        status: Literal["disable", "enable"] | None = ...,
-        log: Literal["disable", "enable"] | None = ...,
-        log_packet: Literal["disable", "enable"] | None = ...,
-        action: Literal["pass", "block"] | None = ...,
-        group: str | None = ...,
-        severity: str | None = ...,
-        location: str | list[str] | None = ...,
-        os: str | None = ...,
-        application: str | None = ...,
-        service: str | None = ...,
-        rule_id: int | None = ...,
-        rev: int | None = ...,
-        date: int | None = ...,
-        metadata: str | list[str] | list[RuleMetadataItem] | None = ...,
-        error_mode: Literal["raise", "return", "print"] | None = ...,
-        error_format: Literal["detailed", "simple", "code_only"] | None = ...,
-    ) -> RuleObject: ...
 
-    # ================================================================
-    # PUT Method
-    # ================================================================
-    
-    def put(
-        self,
-        payload_dict: RulePayload | None = ...,
-        name: str | None = ...,
-        status: Literal["disable", "enable"] | None = ...,
-        log: Literal["disable", "enable"] | None = ...,
-        log_packet: Literal["disable", "enable"] | None = ...,
-        action: Literal["pass", "block"] | None = ...,
-        group: str | None = ...,
-        severity: str | None = ...,
-        location: str | list[str] | None = ...,
-        os: str | None = ...,
-        application: str | None = ...,
-        service: str | None = ...,
-        rule_id: int | None = ...,
-        rev: int | None = ...,
-        date: int | None = ...,
-        metadata: str | list[str] | list[RuleMetadataItem] | None = ...,
-        error_mode: Literal["raise", "return", "print"] | None = ...,
-        error_format: Literal["detailed", "simple", "code_only"] | None = ...,
-    ) -> RuleObject: ...
 
-    # ================================================================
-    # DELETE Method
-    # ================================================================
-    
-    def delete(
-        self,
-        name: str | None = ...,
-        error_mode: Literal["raise", "return", "print"] | None = ...,
-        error_format: Literal["detailed", "simple", "code_only"] | None = ...,
-    ) -> FortiObject: ...
 
     # ================================================================
     # Utility Methods

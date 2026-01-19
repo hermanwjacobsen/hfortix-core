@@ -69,14 +69,24 @@ class TtlPolicyResponse(TypedDict, total=False):
 # ================================================================
 
 
+class TtlPolicySrcaddrItemObject(FortiObject[TtlPolicySrcaddrItem]):
+    """Typed object for srcaddr table items with attribute access."""
+    name: str
+
+
+class TtlPolicyServiceItemObject(FortiObject[TtlPolicyServiceItem]):
+    """Typed object for service table items with attribute access."""
+    name: str
+
+
 class TtlPolicyObject(FortiObject):
     """Typed FortiObject for TtlPolicy with field access."""
     id: int
     status: Literal["enable", "disable"]
     action: Literal["accept", "deny"]
     srcintf: str
-    srcaddr: list[TtlPolicySrcaddrItem]
-    service: list[TtlPolicyServiceItem]
+    srcaddr: FortiObjectList[TtlPolicySrcaddrItemObject]
+    service: FortiObjectList[TtlPolicyServiceItemObject]
     schedule: str
     ttl: str
 

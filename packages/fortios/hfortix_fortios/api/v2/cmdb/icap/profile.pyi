@@ -26,6 +26,19 @@ from hfortix_fortios.models import (
 # TypedDict Payloads
 # ================================================================
 
+class ProfileRespmodforwardrulesHeadergroupItem(TypedDict, total=False):
+    """Nested item for respmod-forward-rules.header-group field."""
+    id: int
+    header_name: str
+    header: str
+    case_sensitivity: Literal["disable", "enable"]
+
+
+class ProfileRespmodforwardrulesHttprespstatuscodeItem(TypedDict, total=False):
+    """Nested item for respmod-forward-rules.http-resp-status-code field."""
+    code: int
+
+
 class ProfileIcapheadersItem(TypedDict, total=False):
     """Nested item for icap-headers field."""
     id: int
@@ -38,9 +51,9 @@ class ProfileRespmodforwardrulesItem(TypedDict, total=False):
     """Nested item for respmod-forward-rules field."""
     name: str
     host: str
-    header_group: str | list[str]
+    header_group: str | list[str] | list[ProfileRespmodforwardrulesHeadergroupItem]
     action: Literal["forward", "bypass"]
-    http_resp_status_code: str | list[str]
+    http_resp_status_code: str | list[str] | list[ProfileRespmodforwardrulesHttprespstatuscodeItem]
 
 
 class ProfilePayload(TypedDict, total=False):
@@ -122,6 +135,23 @@ class ProfileResponse(TypedDict, total=False):
 # ================================================================
 
 
+class ProfileIcapheadersItemObject(FortiObject[ProfileIcapheadersItem]):
+    """Typed object for icap-headers table items with attribute access."""
+    id: int
+    name: str
+    content: str
+    base64_encoding: Literal["disable", "enable"]
+
+
+class ProfileRespmodforwardrulesItemObject(FortiObject[ProfileRespmodforwardrulesItem]):
+    """Typed object for respmod-forward-rules table items with attribute access."""
+    name: str
+    host: str
+    header_group: FortiObjectList[ProfileRespmodforwardrulesHeadergroupItemObject]
+    action: Literal["forward", "bypass"]
+    http_resp_status_code: FortiObjectList[ProfileRespmodforwardrulesHttprespstatuscodeItemObject]
+
+
 class ProfileObject(FortiObject):
     """Typed FortiObject for Profile with field access."""
     replacemsg_group: str
@@ -153,8 +183,8 @@ class ProfileObject(FortiObject):
     extension_feature: str
     scan_progress_interval: int
     timeout: int
-    icap_headers: list[ProfileIcapheadersItem]
-    respmod_forward_rules: list[ProfileRespmodforwardrulesItem]
+    icap_headers: FortiObjectList[ProfileIcapheadersItemObject]
+    respmod_forward_rules: FortiObjectList[ProfileRespmodforwardrulesItemObject]
 
 
 # ================================================================

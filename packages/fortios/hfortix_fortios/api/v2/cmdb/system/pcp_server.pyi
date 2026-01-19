@@ -25,12 +25,27 @@ from hfortix_fortios.models import (
 # TypedDict Payloads
 # ================================================================
 
+class PcpServerPoolsClientsubnetItem(TypedDict, total=False):
+    """Nested item for pools.client-subnet field."""
+    subnet: str
+
+
+class PcpServerPoolsThirdpartysubnetItem(TypedDict, total=False):
+    """Nested item for pools.third-party-subnet field."""
+    subnet: str
+
+
+class PcpServerPoolsIntlintfItem(TypedDict, total=False):
+    """Nested item for pools.intl-intf field."""
+    interface_name: str
+
+
 class PcpServerPoolsItem(TypedDict, total=False):
     """Nested item for pools field."""
     name: str
     description: str
     id: int
-    client_subnet: str | list[str]
+    client_subnet: str | list[str] | list[PcpServerPoolsClientsubnetItem]
     ext_intf: str
     arp_reply: Literal["disable", "enable"]
     extip: str
@@ -41,10 +56,10 @@ class PcpServerPoolsItem(TypedDict, total=False):
     mapping_filter_limit: int
     allow_opcode: Literal["map", "peer", "announce"]
     third_party: Literal["allow", "disallow"]
-    third_party_subnet: str | list[str]
+    third_party_subnet: str | list[str] | list[PcpServerPoolsThirdpartysubnetItem]
     multicast_announcement: Literal["enable", "disable"]
     announcement_count: int
-    intl_intf: str | list[str]
+    intl_intf: str | list[str] | list[PcpServerPoolsIntlintfItem]
     recycle_delay: int
 
 
@@ -69,10 +84,33 @@ class PcpServerResponse(TypedDict, total=False):
 # ================================================================
 
 
+class PcpServerPoolsItemObject(FortiObject[PcpServerPoolsItem]):
+    """Typed object for pools table items with attribute access."""
+    name: str
+    description: str
+    id: int
+    client_subnet: FortiObjectList[PcpServerPoolsClientsubnetItemObject]
+    ext_intf: str
+    arp_reply: Literal["disable", "enable"]
+    extip: str
+    extport: str
+    minimal_lifetime: int
+    maximal_lifetime: int
+    client_mapping_limit: int
+    mapping_filter_limit: int
+    allow_opcode: Literal["map", "peer", "announce"]
+    third_party: Literal["allow", "disallow"]
+    third_party_subnet: FortiObjectList[PcpServerPoolsThirdpartysubnetItemObject]
+    multicast_announcement: Literal["enable", "disable"]
+    announcement_count: int
+    intl_intf: FortiObjectList[PcpServerPoolsIntlintfItemObject]
+    recycle_delay: int
+
+
 class PcpServerObject(FortiObject):
     """Typed FortiObject for PcpServer with field access."""
     status: Literal["enable", "disable"]
-    pools: list[PcpServerPoolsItem]
+    pools: FortiObjectList[PcpServerPoolsItemObject]
 
 
 # ================================================================

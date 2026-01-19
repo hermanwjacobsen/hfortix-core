@@ -56,10 +56,20 @@ class VdomSflowResponse(TypedDict, total=False):
 # ================================================================
 
 
+class VdomSflowCollectorsItemObject(FortiObject[VdomSflowCollectorsItem]):
+    """Typed object for collectors table items with attribute access."""
+    id: int
+    collector_ip: str
+    collector_port: int
+    source_ip: str
+    interface_select_method: Literal["auto", "sdwan", "specify"]
+    interface: str
+
+
 class VdomSflowObject(FortiObject):
     """Typed FortiObject for VdomSflow with field access."""
     vdom_sflow: Literal["enable", "disable"]
-    collectors: list[VdomSflowCollectorsItem]
+    collectors: FortiObjectList[VdomSflowCollectorsItemObject]
 
 
 # ================================================================

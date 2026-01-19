@@ -69,16 +69,6 @@ class VendorMacSummary:
     ) -> FortiObject: ...
 
 
-    # ================================================================
-    # PUT Method
-    # ================================================================
-    
-    def put(
-        self,
-        payload_dict: dict[str, Any] | None = ...,
-        error_mode: Literal["raise", "return", "print"] | None = ...,
-        error_format: Literal["detailed", "simple", "code_only"] | None = ...,
-    ) -> FortiObject: ...
 
 
     # ================================================================

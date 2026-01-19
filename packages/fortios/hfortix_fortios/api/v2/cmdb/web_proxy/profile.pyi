@@ -26,12 +26,22 @@ from hfortix_fortios.models import (
 # TypedDict Payloads
 # ================================================================
 
+class ProfileHeadersDstaddrItem(TypedDict, total=False):
+    """Nested item for headers.dstaddr field."""
+    name: str
+
+
+class ProfileHeadersDstaddr6Item(TypedDict, total=False):
+    """Nested item for headers.dstaddr6 field."""
+    name: str
+
+
 class ProfileHeadersItem(TypedDict, total=False):
     """Nested item for headers field."""
     id: int
     name: str
-    dstaddr: str | list[str]
-    dstaddr6: str | list[str]
+    dstaddr: str | list[str] | list[ProfileHeadersDstaddrItem]
+    dstaddr6: str | list[str] | list[ProfileHeadersDstaddr6Item]
     action: Literal["add-to-request", "add-to-response", "remove-from-request", "remove-from-response", "monitor-request", "monitor-response"]
     content: str
     base64_encoding: Literal["disable", "enable"]
@@ -82,6 +92,19 @@ class ProfileResponse(TypedDict, total=False):
 # ================================================================
 
 
+class ProfileHeadersItemObject(FortiObject[ProfileHeadersItem]):
+    """Typed object for headers table items with attribute access."""
+    id: int
+    name: str
+    dstaddr: FortiObjectList[ProfileHeadersDstaddrItemObject]
+    dstaddr6: FortiObjectList[ProfileHeadersDstaddr6ItemObject]
+    action: Literal["add-to-request", "add-to-response", "remove-from-request", "remove-from-response", "monitor-request", "monitor-response"]
+    content: str
+    base64_encoding: Literal["disable", "enable"]
+    add_option: Literal["append", "new-on-not-found", "new", "replace", "replace-when-match"]
+    protocol: Literal["https", "http"]
+
+
 class ProfileObject(FortiObject):
     """Typed FortiObject for Profile with field access."""
     name: str
@@ -96,7 +119,7 @@ class ProfileObject(FortiObject):
     header_x_authenticated_groups: Literal["pass", "add", "remove"]
     strip_encoding: Literal["enable", "disable"]
     log_header_change: Literal["enable", "disable"]
-    headers: list[ProfileHeadersItem]
+    headers: FortiObjectList[ProfileHeadersItemObject]
 
 
 # ================================================================

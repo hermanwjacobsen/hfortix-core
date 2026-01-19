@@ -59,13 +59,19 @@ class ForwardServerGroupResponse(TypedDict, total=False):
 # ================================================================
 
 
+class ForwardServerGroupServerlistItemObject(FortiObject[ForwardServerGroupServerlistItem]):
+    """Typed object for server-list table items with attribute access."""
+    name: str
+    weight: int
+
+
 class ForwardServerGroupObject(FortiObject):
     """Typed FortiObject for ForwardServerGroup with field access."""
     name: str
     affinity: Literal["enable", "disable"]
     ldb_method: Literal["weighted", "least-session", "active-passive"]
     group_down_option: Literal["block", "pass"]
-    server_list: list[ForwardServerGroupServerlistItem]
+    server_list: FortiObjectList[ForwardServerGroupServerlistItemObject]
 
 
 # ================================================================

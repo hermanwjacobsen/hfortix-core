@@ -26,11 +26,16 @@ from hfortix_fortios.models import (
 # TypedDict Payloads
 # ================================================================
 
+class MulticastAddressTaggingTagsItem(TypedDict, total=False):
+    """Nested item for tagging.tags field."""
+    name: str
+
+
 class MulticastAddressTaggingItem(TypedDict, total=False):
     """Nested item for tagging field."""
     name: str
     category: str
-    tags: str | list[str]
+    tags: str | list[str] | list[MulticastAddressTaggingTagsItem]
 
 
 class MulticastAddressPayload(TypedDict, total=False):
@@ -68,6 +73,13 @@ class MulticastAddressResponse(TypedDict, total=False):
 # ================================================================
 
 
+class MulticastAddressTaggingItemObject(FortiObject[MulticastAddressTaggingItem]):
+    """Typed object for tagging table items with attribute access."""
+    name: str
+    category: str
+    tags: FortiObjectList[MulticastAddressTaggingTagsItemObject]
+
+
 class MulticastAddressObject(FortiObject):
     """Typed FortiObject for MulticastAddress with field access."""
     name: str
@@ -78,7 +90,7 @@ class MulticastAddressObject(FortiObject):
     comment: str
     associated_interface: str
     color: int
-    tagging: list[MulticastAddressTaggingItem]
+    tagging: FortiObjectList[MulticastAddressTaggingItemObject]
 
 
 # ================================================================

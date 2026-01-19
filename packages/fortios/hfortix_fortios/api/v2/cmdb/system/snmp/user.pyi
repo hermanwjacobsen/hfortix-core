@@ -94,6 +94,11 @@ class UserResponse(TypedDict, total=False):
 # ================================================================
 
 
+class UserVdomsItemObject(FortiObject[UserVdomsItem]):
+    """Typed object for vdoms table items with attribute access."""
+    name: str
+
+
 class UserObject(FortiObject):
     """Typed FortiObject for User with field access."""
     name: str
@@ -110,7 +115,7 @@ class UserObject(FortiObject):
     ha_direct: Literal["enable", "disable"]
     events: str
     mib_view: str
-    vdoms: list[UserVdomsItem]
+    vdoms: FortiObjectList[UserVdomsItemObject]
     security_level: Literal["no-auth-no-priv", "auth-no-priv", "auth-priv"]
     auth_proto: Literal["md5", "sha", "sha224", "sha256", "sha384", "sha512"]
     auth_pwd: str

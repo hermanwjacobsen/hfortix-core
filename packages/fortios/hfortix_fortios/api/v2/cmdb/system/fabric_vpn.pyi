@@ -97,6 +97,33 @@ class FabricVpnResponse(TypedDict, total=False):
 # ================================================================
 
 
+class FabricVpnOverlaysItemObject(FortiObject[FabricVpnOverlaysItem]):
+    """Typed object for overlays table items with attribute access."""
+    name: str
+    ipsec_network_id: int
+    overlay_tunnel_block: str
+    remote_gw: str
+    interface: str
+    bgp_neighbor: str
+    overlay_policy: int
+    bgp_network: int
+    route_policy: int
+    bgp_neighbor_group: str
+    bgp_neighbor_range: int
+    ipsec_phase1: str
+    sdwan_member: int
+
+
+class FabricVpnAdvertisedsubnetsItemObject(FortiObject[FabricVpnAdvertisedsubnetsItem]):
+    """Typed object for advertised-subnets table items with attribute access."""
+    id: int
+    prefix: str
+    access: Literal["inbound", "bidirectional"]
+    bgp_network: int
+    firewall_address: str
+    policies: int | list[int]
+
+
 class FabricVpnObject(FortiObject):
     """Typed FortiObject for FabricVpn with field access."""
     status: Literal["enable", "disable"]
@@ -104,8 +131,8 @@ class FabricVpnObject(FortiObject):
     branch_name: str
     policy_rule: Literal["health-check", "manual", "auto"]
     vpn_role: Literal["hub", "spoke"]
-    overlays: list[FabricVpnOverlaysItem]
-    advertised_subnets: list[FabricVpnAdvertisedsubnetsItem]
+    overlays: FortiObjectList[FabricVpnOverlaysItemObject]
+    advertised_subnets: FortiObjectList[FabricVpnAdvertisedsubnetsItemObject]
     loopback_address_block: str
     loopback_interface: str
     loopback_advertised_subnet: int

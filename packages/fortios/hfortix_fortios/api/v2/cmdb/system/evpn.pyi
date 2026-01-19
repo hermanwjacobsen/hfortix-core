@@ -65,12 +65,22 @@ class EvpnResponse(TypedDict, total=False):
 # ================================================================
 
 
+class EvpnImportrtItemObject(FortiObject[EvpnImportrtItem]):
+    """Typed object for import-rt table items with attribute access."""
+    route_target: str
+
+
+class EvpnExportrtItemObject(FortiObject[EvpnExportrtItem]):
+    """Typed object for export-rt table items with attribute access."""
+    route_target: str
+
+
 class EvpnObject(FortiObject):
     """Typed FortiObject for Evpn with field access."""
     id: int
     rd: str
-    import_rt: list[EvpnImportrtItem]
-    export_rt: list[EvpnExportrtItem]
+    import_rt: FortiObjectList[EvpnImportrtItemObject]
+    export_rt: FortiObjectList[EvpnExportrtItemObject]
     ip_local_learning: Literal["enable", "disable"]
     arp_suppression: Literal["enable", "disable"]
 
