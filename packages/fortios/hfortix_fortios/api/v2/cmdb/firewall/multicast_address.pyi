@@ -73,6 +73,11 @@ class MulticastAddressResponse(TypedDict, total=False):
 # ================================================================
 
 
+class MulticastAddressTaggingTagsItemObject(FortiObject[MulticastAddressTaggingTagsItem]):
+    """Typed object for tagging.tags table items with attribute access."""
+    name: str
+
+
 class MulticastAddressTaggingItemObject(FortiObject[MulticastAddressTaggingItem]):
     """Typed object for tagging table items with attribute access."""
     name: str

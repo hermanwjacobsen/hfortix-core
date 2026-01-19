@@ -123,6 +123,16 @@ class ServerResponse(TypedDict, total=False):
 # ================================================================
 
 
+class ServerOptionsVcistringItemObject(FortiObject[ServerOptionsVcistringItem]):
+    """Typed object for options.vci-string table items with attribute access."""
+    vci_string: str
+
+
+class ServerIprangeVcistringItemObject(FortiObject[ServerIprangeVcistringItem]):
+    """Typed object for ip-range.vci-string table items with attribute access."""
+    vci_string: str
+
+
 class ServerOptionsItemObject(FortiObject[ServerOptionsItem]):
     """Typed object for options table items with attribute access."""
     id: int

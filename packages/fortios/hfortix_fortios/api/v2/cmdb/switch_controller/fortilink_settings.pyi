@@ -26,6 +26,11 @@ from hfortix_fortios.models import (
 # TypedDict Payloads
 # ================================================================
 
+class FortilinkSettingsNacportsNacsegmentvlansItem(TypedDict, total=False):
+    """Nested item for nac-ports.nac-segment-vlans field."""
+    vlan_name: str
+
+
 class FortilinkSettingsNacportsDict(TypedDict, total=False):
     """Nested object type for nac-ports field."""
     onboarding_vlan: str
@@ -63,6 +68,11 @@ class FortilinkSettingsResponse(TypedDict, total=False):
 # ================================================================
 # Response Types (Class for attribute access)
 # ================================================================
+
+
+class FortilinkSettingsNacportsNacsegmentvlansItemObject(FortiObject[FortilinkSettingsNacportsNacsegmentvlansItem]):
+    """Typed object for nac-ports.nac-segment-vlans table items with attribute access."""
+    vlan_name: str
 
 
 class FortilinkSettingsNacportsObject(FortiObject):

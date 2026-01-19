@@ -101,6 +101,42 @@ class ProfileResponse(TypedDict, total=False):
 # ================================================================
 
 
+class ProfileSaasapplicationSafesearchcontrolItemObject(FortiObject[ProfileSaasapplicationSafesearchcontrolItem]):
+    """Typed object for saas-application.safe-search-control table items with attribute access."""
+    name: str
+
+
+class ProfileSaasapplicationTenantcontroltenantsItemObject(FortiObject[ProfileSaasapplicationTenantcontroltenantsItem]):
+    """Typed object for saas-application.tenant-control-tenants table items with attribute access."""
+    name: str
+
+
+class ProfileSaasapplicationAdvancedtenantcontrolItemObject(FortiObject[ProfileSaasapplicationAdvancedtenantcontrolItem]):
+    """Typed object for saas-application.advanced-tenant-control table items with attribute access."""
+    name: str
+    attribute: str | list[str]
+
+
+class ProfileSaasapplicationDomaincontroldomainsItemObject(FortiObject[ProfileSaasapplicationDomaincontroldomainsItem]):
+    """Typed object for saas-application.domain-control-domains table items with attribute access."""
+    name: str
+
+
+class ProfileSaasapplicationAccessruleItemObject(FortiObject[ProfileSaasapplicationAccessruleItem]):
+    """Typed object for saas-application.access-rule table items with attribute access."""
+    name: str
+    action: Literal["monitor", "bypass", "block"]
+    bypass: Literal["av", "dlp", "web-filter", "file-filter", "video-filter"]
+    attribute_filter: str | list[str]
+
+
+class ProfileSaasapplicationCustomcontrolItemObject(FortiObject[ProfileSaasapplicationCustomcontrolItem]):
+    """Typed object for saas-application.custom-control table items with attribute access."""
+    name: str
+    option: str | list[str]
+    attribute_filter: str | list[str]
+
+
 class ProfileSaasapplicationItemObject(FortiObject[ProfileSaasapplicationItem]):
     """Typed object for saas-application table items with attribute access."""
     name: str

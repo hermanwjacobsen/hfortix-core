@@ -102,6 +102,15 @@ class ManagedSwitchSystemdhcpserverOptionsItem(TypedDict, total=False):
     ip: str | list[str]
 
 
+class ManagedSwitchIgmpsnoopingVlansItem(TypedDict, total=False):
+    """Nested item for igmp-snooping.vlans field."""
+    vlan_name: str
+    proxy: Literal["disable", "enable", "global"]
+    querier: Literal["disable", "enable"]
+    querier_addr: str
+    version: int
+
+
 class ManagedSwitchRouteoffloadrouterItem(TypedDict, total=False):
     """Nested item for route-offload-router field."""
     vlan_name: str
@@ -587,6 +596,82 @@ class ManagedSwitchResponse(TypedDict, total=False):
 # ================================================================
 
 
+class ManagedSwitchPortsAllowedvlansItemObject(FortiObject[ManagedSwitchPortsAllowedvlansItem]):
+    """Typed object for ports.allowed-vlans table items with attribute access."""
+    vlan_name: str
+
+
+class ManagedSwitchPortsUntaggedvlansItemObject(FortiObject[ManagedSwitchPortsUntaggedvlansItem]):
+    """Typed object for ports.untagged-vlans table items with attribute access."""
+    vlan_name: str
+
+
+class ManagedSwitchPortsAclgroupItemObject(FortiObject[ManagedSwitchPortsAclgroupItem]):
+    """Typed object for ports.acl-group table items with attribute access."""
+    name: str
+
+
+class ManagedSwitchPortsFortiswitchaclsItemObject(FortiObject[ManagedSwitchPortsFortiswitchaclsItem]):
+    """Typed object for ports.fortiswitch-acls table items with attribute access."""
+    id: int
+
+
+class ManagedSwitchPortsDhcpsnoopoption82overrideItemObject(FortiObject[ManagedSwitchPortsDhcpsnoopoption82overrideItem]):
+    """Typed object for ports.dhcp-snoop-option82-override table items with attribute access."""
+    vlan_name: str
+    circuit_id: str
+    remote_id: str
+
+
+class ManagedSwitchPortsInterfacetagsItemObject(FortiObject[ManagedSwitchPortsInterfacetagsItem]):
+    """Typed object for ports.interface-tags table items with attribute access."""
+    tag_name: str
+
+
+class ManagedSwitchPortsMembersItemObject(FortiObject[ManagedSwitchPortsMembersItem]):
+    """Typed object for ports.members table items with attribute access."""
+    member_name: str
+
+
+class ManagedSwitchIpsourceguardBindingentryItemObject(FortiObject[ManagedSwitchIpsourceguardBindingentryItem]):
+    """Typed object for ip-source-guard.binding-entry table items with attribute access."""
+    entry_name: str
+    ip: str
+    mac: str
+
+
+class ManagedSwitchSnmpcommunityHostsItemObject(FortiObject[ManagedSwitchSnmpcommunityHostsItem]):
+    """Typed object for snmp-community.hosts table items with attribute access."""
+    id: int
+    ip: str
+
+
+class ManagedSwitchMirrorSrcingressItemObject(FortiObject[ManagedSwitchMirrorSrcingressItem]):
+    """Typed object for mirror.src-ingress table items with attribute access."""
+    name: str
+
+
+class ManagedSwitchMirrorSrcegressItemObject(FortiObject[ManagedSwitchMirrorSrcegressItem]):
+    """Typed object for mirror.src-egress table items with attribute access."""
+    name: str
+
+
+class ManagedSwitchSystemdhcpserverIprangeItemObject(FortiObject[ManagedSwitchSystemdhcpserverIprangeItem]):
+    """Typed object for system-dhcp-server.ip-range table items with attribute access."""
+    id: int
+    start_ip: str
+    end_ip: str
+
+
+class ManagedSwitchSystemdhcpserverOptionsItemObject(FortiObject[ManagedSwitchSystemdhcpserverOptionsItem]):
+    """Typed object for system-dhcp-server.options table items with attribute access."""
+    id: int
+    code: int
+    type: Literal["hex", "string", "ip", "fqdn"]
+    value: str
+    ip: str | list[str]
+
+
 class ManagedSwitchRouteoffloadrouterItemObject(FortiObject[ManagedSwitchRouteoffloadrouterItem]):
     """Typed object for route-offload-router table items with attribute access."""
     vlan_name: str
@@ -849,6 +934,15 @@ class ManagedSwitchSystemdhcpserverItemObject(FortiObject[ManagedSwitchSystemdhc
     interface: str
     ip_range: FortiObjectList[ManagedSwitchSystemdhcpserverIprangeItemObject]
     options: FortiObjectList[ManagedSwitchSystemdhcpserverOptionsItemObject]
+
+
+class ManagedSwitchIgmpsnoopingVlansItemObject(FortiObject[ManagedSwitchIgmpsnoopingVlansItem]):
+    """Typed object for igmp-snooping.vlans table items with attribute access."""
+    vlan_name: str
+    proxy: Literal["disable", "enable", "global"]
+    querier: Literal["disable", "enable"]
+    querier_addr: str
+    version: int
 
 
 class ManagedSwitchStpsettingsObject(FortiObject):

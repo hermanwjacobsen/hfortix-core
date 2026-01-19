@@ -26,6 +26,46 @@ from hfortix_fortios.models import (
 # TypedDict Payloads
 # ================================================================
 
+class WtpProfileRadio1VapsItem(TypedDict, total=False):
+    """Nested item for radio-1.vaps field."""
+    name: str
+
+
+class WtpProfileRadio1ChannelItem(TypedDict, total=False):
+    """Nested item for radio-1.channel field."""
+    chan: str
+
+
+class WtpProfileRadio2VapsItem(TypedDict, total=False):
+    """Nested item for radio-2.vaps field."""
+    name: str
+
+
+class WtpProfileRadio2ChannelItem(TypedDict, total=False):
+    """Nested item for radio-2.channel field."""
+    chan: str
+
+
+class WtpProfileRadio3VapsItem(TypedDict, total=False):
+    """Nested item for radio-3.vaps field."""
+    name: str
+
+
+class WtpProfileRadio3ChannelItem(TypedDict, total=False):
+    """Nested item for radio-3.channel field."""
+    chan: str
+
+
+class WtpProfileRadio4VapsItem(TypedDict, total=False):
+    """Nested item for radio-4.vaps field."""
+    name: str
+
+
+class WtpProfileRadio4ChannelItem(TypedDict, total=False):
+    """Nested item for radio-4.channel field."""
+    chan: str
+
+
 class WtpProfilePlatformDict(TypedDict, total=False):
     """Nested object type for platform field."""
     type: Literal["AP-11N", "C24JE", "421E", "423E", "221E", "222E", "223E", "224E", "231E", "321E", "431F", "431FL", "432F", "432FR", "433F", "433FL", "231F", "231FL", "234F", "23JF", "831F", "231G", "233G", "234G", "431G", "432G", "433G", "231K", "231KD", "23JK", "222KL", "241K", "243K", "244K", "441K", "432K", "443K", "U421E", "U422EV", "U423E", "U221EV", "U223EV", "U24JEV", "U321EV", "U323EV", "U431F", "U433F", "U231F", "U234F", "U432F", "U231G", "MVP"]
@@ -654,6 +694,46 @@ class WtpProfileSplittunnelingaclItemObject(FortiObject[WtpProfileSplittunneling
     """Typed object for split-tunneling-acl table items with attribute access."""
     id: int
     dest_ip: str
+
+
+class WtpProfileRadio1VapsItemObject(FortiObject[WtpProfileRadio1VapsItem]):
+    """Typed object for radio-1.vaps table items with attribute access."""
+    name: str
+
+
+class WtpProfileRadio1ChannelItemObject(FortiObject[WtpProfileRadio1ChannelItem]):
+    """Typed object for radio-1.channel table items with attribute access."""
+    chan: str
+
+
+class WtpProfileRadio2VapsItemObject(FortiObject[WtpProfileRadio2VapsItem]):
+    """Typed object for radio-2.vaps table items with attribute access."""
+    name: str
+
+
+class WtpProfileRadio2ChannelItemObject(FortiObject[WtpProfileRadio2ChannelItem]):
+    """Typed object for radio-2.channel table items with attribute access."""
+    chan: str
+
+
+class WtpProfileRadio3VapsItemObject(FortiObject[WtpProfileRadio3VapsItem]):
+    """Typed object for radio-3.vaps table items with attribute access."""
+    name: str
+
+
+class WtpProfileRadio3ChannelItemObject(FortiObject[WtpProfileRadio3ChannelItem]):
+    """Typed object for radio-3.channel table items with attribute access."""
+    chan: str
+
+
+class WtpProfileRadio4VapsItemObject(FortiObject[WtpProfileRadio4VapsItem]):
+    """Typed object for radio-4.vaps table items with attribute access."""
+    name: str
+
+
+class WtpProfileRadio4ChannelItemObject(FortiObject[WtpProfileRadio4ChannelItem]):
+    """Typed object for radio-4.channel table items with attribute access."""
+    chan: str
 
 
 class WtpProfilePlatformObject(FortiObject):

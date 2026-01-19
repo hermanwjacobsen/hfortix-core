@@ -80,6 +80,11 @@ class DynamicPortPolicyResponse(TypedDict, total=False):
 # ================================================================
 
 
+class DynamicPortPolicyPolicyInterfacetagsItemObject(FortiObject[DynamicPortPolicyPolicyInterfacetagsItem]):
+    """Typed object for policy.interface-tags table items with attribute access."""
+    tag_name: str
+
+
 class DynamicPortPolicyPolicyItemObject(FortiObject[DynamicPortPolicyPolicyItem]):
     """Typed object for policy table items with attribute access."""
     name: str

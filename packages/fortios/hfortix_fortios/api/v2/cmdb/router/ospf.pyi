@@ -238,6 +238,42 @@ class OspfResponse(TypedDict, total=False):
 # ================================================================
 
 
+class OspfAreaRangeItemObject(FortiObject[OspfAreaRangeItem]):
+    """Typed object for area.range table items with attribute access."""
+    id: int
+    prefix: str
+    advertise: Literal["disable", "enable"]
+    substitute: str
+    substitute_status: Literal["enable", "disable"]
+
+
+class OspfAreaVirtuallinkItemObject(FortiObject[OspfAreaVirtuallinkItem]):
+    """Typed object for area.virtual-link table items with attribute access."""
+    name: str
+    authentication: Literal["none", "text", "message-digest"]
+    authentication_key: str
+    keychain: str
+    dead_interval: int
+    hello_interval: int
+    retransmit_interval: int
+    transmit_delay: int
+    peer: str
+    md5_keys: str | list[str]
+
+
+class OspfAreaFilterlistItemObject(FortiObject[OspfAreaFilterlistItem]):
+    """Typed object for area.filter-list table items with attribute access."""
+    id: int
+    list: str
+    direction: Literal["in", "out"]
+
+
+class OspfOspfinterfaceMd5keysItemObject(FortiObject[OspfOspfinterfaceMd5keysItem]):
+    """Typed object for ospf-interface.md5-keys table items with attribute access."""
+    id: int
+    key_string: str
+
+
 class OspfAreaItemObject(FortiObject[OspfAreaItem]):
     """Typed object for area table items with attribute access."""
     id: str

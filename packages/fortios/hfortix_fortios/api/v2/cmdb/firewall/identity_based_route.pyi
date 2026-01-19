@@ -62,6 +62,11 @@ class IdentityBasedRouteResponse(TypedDict, total=False):
 # ================================================================
 
 
+class IdentityBasedRouteRuleGroupsItemObject(FortiObject[IdentityBasedRouteRuleGroupsItem]):
+    """Typed object for rule.groups table items with attribute access."""
+    name: str
+
+
 class IdentityBasedRouteRuleItemObject(FortiObject[IdentityBasedRouteRuleItem]):
     """Typed object for rule table items with attribute access."""
     id: int

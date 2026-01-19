@@ -102,6 +102,12 @@ class SamlResponse(TypedDict, total=False):
 # ================================================================
 
 
+class SamlServiceprovidersAssertionattributesItemObject(FortiObject[SamlServiceprovidersAssertionattributesItem]):
+    """Typed object for service-providers.assertion-attributes table items with attribute access."""
+    name: str
+    type: Literal["username", "email", "profile-name"]
+
+
 class SamlServiceprovidersItemObject(FortiObject[SamlServiceprovidersItem]):
     """Typed object for service-providers table items with attribute access."""
     name: str

@@ -190,6 +190,50 @@ class Ospf6Response(TypedDict, total=False):
 # ================================================================
 
 
+class Ospf6AreaIpseckeysItemObject(FortiObject[Ospf6AreaIpseckeysItem]):
+    """Typed object for area.ipsec-keys table items with attribute access."""
+    spi: int
+    auth_key: str
+    enc_key: str
+
+
+class Ospf6AreaRangeItemObject(FortiObject[Ospf6AreaRangeItem]):
+    """Typed object for area.range table items with attribute access."""
+    id: int
+    prefix6: str
+    advertise: Literal["disable", "enable"]
+
+
+class Ospf6AreaVirtuallinkItemObject(FortiObject[Ospf6AreaVirtuallinkItem]):
+    """Typed object for area.virtual-link table items with attribute access."""
+    name: str
+    dead_interval: int
+    hello_interval: int
+    retransmit_interval: int
+    transmit_delay: int
+    peer: str
+    authentication: Literal["none", "ah", "esp", "area"]
+    key_rollover_interval: int
+    ipsec_auth_alg: Literal["md5", "sha1", "sha256", "sha384", "sha512"]
+    ipsec_enc_alg: Literal["null", "des", "3des", "aes128", "aes192", "aes256"]
+    ipsec_keys: str | list[str]
+
+
+class Ospf6Ospf6interfaceIpseckeysItemObject(FortiObject[Ospf6Ospf6interfaceIpseckeysItem]):
+    """Typed object for ospf6-interface.ipsec-keys table items with attribute access."""
+    spi: int
+    auth_key: str
+    enc_key: str
+
+
+class Ospf6Ospf6interfaceNeighborItemObject(FortiObject[Ospf6Ospf6interfaceNeighborItem]):
+    """Typed object for ospf6-interface.neighbor table items with attribute access."""
+    ip6: str
+    poll_interval: int
+    cost: int
+    priority: int
+
+
 class Ospf6AreaItemObject(FortiObject[Ospf6AreaItem]):
     """Typed object for area table items with attribute access."""
     id: str

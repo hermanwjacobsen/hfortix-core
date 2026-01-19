@@ -26,6 +26,136 @@ from hfortix_fortios.models import (
 # TypedDict Payloads
 # ================================================================
 
+class ExtenderProfileCellularDataplanItem(TypedDict, total=False):
+    """Nested item for cellular.dataplan field."""
+    name: str
+
+
+class ExtenderProfileCellularControllerreportDict(TypedDict, total=False):
+    """Nested object type for cellular.controller-report field."""
+    status: Literal["disable", "enable"]
+    interval: int
+    signal_threshold: int
+
+
+class ExtenderProfileCellularSmsnotificationDict(TypedDict, total=False):
+    """Nested object type for cellular.sms-notification field."""
+    status: Literal["disable", "enable"]
+    alert: str
+    receiver: str | list[str]
+
+
+class ExtenderProfileCellularModem1Dict(TypedDict, total=False):
+    """Nested object type for cellular.modem1 field."""
+    redundant_mode: Literal["disable", "enable"]
+    redundant_intf: str
+    conn_status: int
+    default_sim: Literal["sim1", "sim2", "carrier", "cost"]
+    gps: Literal["disable", "enable"]
+    sim1_pin: Literal["disable", "enable"]
+    sim2_pin: Literal["disable", "enable"]
+    sim1_pin_code: str
+    sim2_pin_code: str
+    preferred_carrier: str
+    auto_switch: str
+    multiple_PDN: Literal["disable", "enable"]
+    pdn1_dataplan: str
+    pdn2_dataplan: str
+    pdn3_dataplan: str
+    pdn4_dataplan: str
+
+
+class ExtenderProfileCellularModem2Dict(TypedDict, total=False):
+    """Nested object type for cellular.modem2 field."""
+    redundant_mode: Literal["disable", "enable"]
+    redundant_intf: str
+    conn_status: int
+    default_sim: Literal["sim1", "sim2", "carrier", "cost"]
+    gps: Literal["disable", "enable"]
+    sim1_pin: Literal["disable", "enable"]
+    sim2_pin: Literal["disable", "enable"]
+    sim1_pin_code: str
+    sim2_pin_code: str
+    preferred_carrier: str
+    auto_switch: str
+    multiple_PDN: Literal["disable", "enable"]
+    pdn1_dataplan: str
+    pdn2_dataplan: str
+    pdn3_dataplan: str
+    pdn4_dataplan: str
+
+
+class ExtenderProfileWifiRadio1Dict(TypedDict, total=False):
+    """Nested object type for wifi.radio-1 field."""
+    mode: Literal["AP", "Client"]
+    band: Literal["2.4GHz"]
+    status: Literal["disable", "enable"]
+    operating_standard: Literal["auto", "11A-N-AC-AX", "11A-N-AC", "11A-N", "11A", "11N-AC-AX", "11AC-AX", "11AC", "11N-AC", "11B-G-N-AX", "11B-G-N", "11B-G", "11B", "11G-N-AX", "11N-AX", "11AX", "11G-N", "11N", "11G"]
+    guard_interval: Literal["auto", "400ns", "800ns"]
+    channel: Literal["CH1", "CH2", "CH3", "CH4", "CH5", "CH6", "CH7", "CH8", "CH9", "CH10", "CH11"]
+    bandwidth: Literal["auto", "20MHz", "40MHz", "80MHz"]
+    power_level: int
+    beacon_interval: int
+    x80211d: Literal["disable", "enable"]
+    max_clients: int
+    extension_channel: Literal["auto", "higher", "lower"]
+    bss_color_mode: Literal["auto", "static"]
+    bss_color: int
+    lan_ext_vap: str
+    local_vaps: str | list[str]
+
+
+class ExtenderProfileWifiRadio2Dict(TypedDict, total=False):
+    """Nested object type for wifi.radio-2 field."""
+    mode: Literal["AP", "Client"]
+    band: Literal["5GHz"]
+    status: Literal["disable", "enable"]
+    operating_standard: Literal["auto", "11A-N-AC-AX", "11A-N-AC", "11A-N", "11A", "11N-AC-AX", "11AC-AX", "11AC", "11N-AC", "11B-G-N-AX", "11B-G-N", "11B-G", "11B", "11G-N-AX", "11N-AX", "11AX", "11G-N", "11N", "11G"]
+    guard_interval: Literal["auto", "400ns", "800ns"]
+    channel: Literal["CH36", "CH40", "CH44", "CH48", "CH52", "CH56", "CH60", "CH64", "CH100", "CH104", "CH108", "CH112", "CH116", "CH120", "CH124", "CH128", "CH132", "CH136", "CH140", "CH144", "CH149", "CH153", "CH157", "CH161", "CH165"]
+    bandwidth: Literal["auto", "20MHz", "40MHz", "80MHz"]
+    power_level: int
+    beacon_interval: int
+    x80211d: Literal["disable", "enable"]
+    max_clients: int
+    extension_channel: Literal["auto", "higher", "lower"]
+    bss_color_mode: Literal["auto", "static"]
+    bss_color: int
+    lan_ext_vap: str
+    local_vaps: str | list[str]
+
+
+class ExtenderProfileLanextensionBackhaulItem(TypedDict, total=False):
+    """Nested item for lan-extension.backhaul field."""
+    name: str
+    port: Literal["wan", "lte1", "lte2", "port1", "port2", "port3", "port4", "port5", "sfp"]
+    role: Literal["primary", "secondary"]
+    weight: int
+    health_check_interval: int
+    health_check_probe_cnt: int
+    health_check_probe_tm: int
+    health_check_fail_cnt: int
+    health_check_recovery_cnt: int
+
+
+class ExtenderProfileLanextensionDownlinksItem(TypedDict, total=False):
+    """Nested item for lan-extension.downlinks field."""
+    name: str
+    type: Literal["port", "vap"]
+    port: Literal["port1", "port2", "port3", "port4", "port5", "lan1", "lan2", "lan"]
+    vap: str
+    pvid: int
+    vids: str | list[str]
+
+
+class ExtenderProfileLanextensionTrafficsplitservicesItem(TypedDict, total=False):
+    """Nested item for lan-extension.traffic-split-services field."""
+    name: str
+    vsdb: Literal["disable", "enable"]
+    address: str
+    service: str
+
+
 class ExtenderProfileCellularDict(TypedDict, total=False):
     """Nested object type for cellular field."""
     dataplan: str | list[str] | list[ExtenderProfileCellularDataplanItem]
@@ -92,6 +222,42 @@ class ExtenderProfileResponse(TypedDict, total=False):
 # ================================================================
 # Response Types (Class for attribute access)
 # ================================================================
+
+
+class ExtenderProfileCellularDataplanItemObject(FortiObject[ExtenderProfileCellularDataplanItem]):
+    """Typed object for cellular.dataplan table items with attribute access."""
+    name: str
+
+
+class ExtenderProfileLanextensionBackhaulItemObject(FortiObject[ExtenderProfileLanextensionBackhaulItem]):
+    """Typed object for lan-extension.backhaul table items with attribute access."""
+    name: str
+    port: Literal["wan", "lte1", "lte2", "port1", "port2", "port3", "port4", "port5", "sfp"]
+    role: Literal["primary", "secondary"]
+    weight: int
+    health_check_interval: int
+    health_check_probe_cnt: int
+    health_check_probe_tm: int
+    health_check_fail_cnt: int
+    health_check_recovery_cnt: int
+
+
+class ExtenderProfileLanextensionDownlinksItemObject(FortiObject[ExtenderProfileLanextensionDownlinksItem]):
+    """Typed object for lan-extension.downlinks table items with attribute access."""
+    name: str
+    type: Literal["port", "vap"]
+    port: Literal["port1", "port2", "port3", "port4", "port5", "lan1", "lan2", "lan"]
+    vap: str
+    pvid: int
+    vids: str | list[str]
+
+
+class ExtenderProfileLanextensionTrafficsplitservicesItemObject(FortiObject[ExtenderProfileLanextensionTrafficsplitservicesItem]):
+    """Typed object for lan-extension.traffic-split-services table items with attribute access."""
+    name: str
+    vsdb: Literal["disable", "enable"]
+    address: str
+    service: str
 
 
 class ExtenderProfileCellularObject(FortiObject):

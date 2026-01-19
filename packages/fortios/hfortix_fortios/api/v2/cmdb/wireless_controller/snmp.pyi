@@ -94,6 +94,18 @@ class SnmpResponse(TypedDict, total=False):
 # ================================================================
 
 
+class SnmpCommunityHostsItemObject(FortiObject[SnmpCommunityHostsItem]):
+    """Typed object for community.hosts table items with attribute access."""
+    id: int
+    ip: str
+
+
+class SnmpCommunityHosts6ItemObject(FortiObject[SnmpCommunityHosts6Item]):
+    """Typed object for community.hosts6 table items with attribute access."""
+    id: int
+    ipv6: str
+
+
 class SnmpCommunityItemObject(FortiObject[SnmpCommunityItem]):
     """Typed object for community table items with attribute access."""
     id: int

@@ -82,6 +82,16 @@ class TrafficSnifferResponse(TypedDict, total=False):
 # ================================================================
 
 
+class TrafficSnifferTargetportInportsItemObject(FortiObject[TrafficSnifferTargetportInportsItem]):
+    """Typed object for target-port.in-ports table items with attribute access."""
+    name: str
+
+
+class TrafficSnifferTargetportOutportsItemObject(FortiObject[TrafficSnifferTargetportOutportsItem]):
+    """Typed object for target-port.out-ports table items with attribute access."""
+    name: str
+
+
 class TrafficSnifferTargetmacItemObject(FortiObject[TrafficSnifferTargetmacItem]):
     """Typed object for target-mac table items with attribute access."""
     mac: str

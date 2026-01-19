@@ -115,6 +115,11 @@ class ProxyAddressResponse(TypedDict, total=False):
 # ================================================================
 
 
+class ProxyAddressTaggingTagsItemObject(FortiObject[ProxyAddressTaggingTagsItem]):
+    """Typed object for tagging.tags table items with attribute access."""
+    name: str
+
+
 class ProxyAddressCategoryItemObject(FortiObject[ProxyAddressCategoryItem]):
     """Typed object for category table items with attribute access."""
     id: int

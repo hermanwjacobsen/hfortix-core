@@ -76,6 +76,23 @@ class InternetServiceFortiguardResponse(TypedDict, total=False):
 # ================================================================
 
 
+class InternetServiceFortiguardEntryPortrangeItemObject(FortiObject[InternetServiceFortiguardEntryPortrangeItem]):
+    """Typed object for entry.port-range table items with attribute access."""
+    id: int
+    start_port: int
+    end_port: int
+
+
+class InternetServiceFortiguardEntryDstItemObject(FortiObject[InternetServiceFortiguardEntryDstItem]):
+    """Typed object for entry.dst table items with attribute access."""
+    name: str
+
+
+class InternetServiceFortiguardEntryDst6ItemObject(FortiObject[InternetServiceFortiguardEntryDst6Item]):
+    """Typed object for entry.dst6 table items with attribute access."""
+    name: str
+
+
 class InternetServiceFortiguardEntryItemObject(FortiObject[InternetServiceFortiguardEntryItem]):
     """Typed object for entry table items with attribute access."""
     id: int

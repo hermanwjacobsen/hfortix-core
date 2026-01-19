@@ -140,6 +140,32 @@ class ListResponse(TypedDict, total=False):
 # ================================================================
 
 
+class ListEntriesRiskItemObject(FortiObject[ListEntriesRiskItem]):
+    """Typed object for entries.risk table items with attribute access."""
+    level: int
+
+
+class ListEntriesCategoryItemObject(FortiObject[ListEntriesCategoryItem]):
+    """Typed object for entries.category table items with attribute access."""
+    id: int
+
+
+class ListEntriesApplicationItemObject(FortiObject[ListEntriesApplicationItem]):
+    """Typed object for entries.application table items with attribute access."""
+    id: int
+
+
+class ListEntriesExclusionItemObject(FortiObject[ListEntriesExclusionItem]):
+    """Typed object for entries.exclusion table items with attribute access."""
+    id: int
+
+
+class ListEntriesParametersItemObject(FortiObject[ListEntriesParametersItem]):
+    """Typed object for entries.parameters table items with attribute access."""
+    id: int
+    members: str | list[str]
+
+
 class ListEntriesItemObject(FortiObject[ListEntriesItem]):
     """Typed object for entries table items with attribute access."""
     id: int

@@ -35,6 +35,191 @@ class ProfileUrlaccessAccesspatternItem(TypedDict, total=False):
     negate: Literal["enable", "disable"]
 
 
+class ProfileSignatureMainclassItem(TypedDict, total=False):
+    """Nested item for signature.main-class field."""
+    id: int
+    status: Literal["enable", "disable"]
+    action: Literal["allow", "block", "erase"]
+    log: Literal["enable", "disable"]
+    severity: Literal["high", "medium", "low"]
+
+
+class ProfileSignatureDisabledsubclassItem(TypedDict, total=False):
+    """Nested item for signature.disabled-sub-class field."""
+    id: int
+
+
+class ProfileSignatureDisabledsignatureItem(TypedDict, total=False):
+    """Nested item for signature.disabled-signature field."""
+    id: int
+
+
+class ProfileSignatureCustomsignatureItem(TypedDict, total=False):
+    """Nested item for signature.custom-signature field."""
+    name: str
+    status: Literal["enable", "disable"]
+    action: Literal["allow", "block", "erase"]
+    log: Literal["enable", "disable"]
+    severity: Literal["high", "medium", "low"]
+    direction: Literal["request", "response"]
+    case_sensitivity: Literal["disable", "enable"]
+    pattern: str
+    target: Literal["arg", "arg-name", "req-body", "req-cookie", "req-cookie-name", "req-filename", "req-header", "req-header-name", "req-raw-uri", "req-uri", "resp-body", "resp-hdr", "resp-status"]
+
+
+class ProfileConstraintHeaderlengthDict(TypedDict, total=False):
+    """Nested object type for constraint.header-length field."""
+    status: Literal["enable", "disable"]
+    length: int
+    action: Literal["allow", "block"]
+    log: Literal["enable", "disable"]
+    severity: Literal["high", "medium", "low"]
+
+
+class ProfileConstraintContentlengthDict(TypedDict, total=False):
+    """Nested object type for constraint.content-length field."""
+    status: Literal["enable", "disable"]
+    length: int
+    action: Literal["allow", "block"]
+    log: Literal["enable", "disable"]
+    severity: Literal["high", "medium", "low"]
+
+
+class ProfileConstraintParamlengthDict(TypedDict, total=False):
+    """Nested object type for constraint.param-length field."""
+    status: Literal["enable", "disable"]
+    length: int
+    action: Literal["allow", "block"]
+    log: Literal["enable", "disable"]
+    severity: Literal["high", "medium", "low"]
+
+
+class ProfileConstraintLinelengthDict(TypedDict, total=False):
+    """Nested object type for constraint.line-length field."""
+    status: Literal["enable", "disable"]
+    length: int
+    action: Literal["allow", "block"]
+    log: Literal["enable", "disable"]
+    severity: Literal["high", "medium", "low"]
+
+
+class ProfileConstraintUrlparamlengthDict(TypedDict, total=False):
+    """Nested object type for constraint.url-param-length field."""
+    status: Literal["enable", "disable"]
+    length: int
+    action: Literal["allow", "block"]
+    log: Literal["enable", "disable"]
+    severity: Literal["high", "medium", "low"]
+
+
+class ProfileConstraintVersionDict(TypedDict, total=False):
+    """Nested object type for constraint.version field."""
+    status: Literal["enable", "disable"]
+    action: Literal["allow", "block"]
+    log: Literal["enable", "disable"]
+    severity: Literal["high", "medium", "low"]
+
+
+class ProfileConstraintMethodDict(TypedDict, total=False):
+    """Nested object type for constraint.method field."""
+    status: Literal["enable", "disable"]
+    action: Literal["allow", "block"]
+    log: Literal["enable", "disable"]
+    severity: Literal["high", "medium", "low"]
+
+
+class ProfileConstraintHostnameDict(TypedDict, total=False):
+    """Nested object type for constraint.hostname field."""
+    status: Literal["enable", "disable"]
+    action: Literal["allow", "block"]
+    log: Literal["enable", "disable"]
+    severity: Literal["high", "medium", "low"]
+
+
+class ProfileConstraintMalformedDict(TypedDict, total=False):
+    """Nested object type for constraint.malformed field."""
+    status: Literal["enable", "disable"]
+    action: Literal["allow", "block"]
+    log: Literal["enable", "disable"]
+    severity: Literal["high", "medium", "low"]
+
+
+class ProfileConstraintMaxcookieDict(TypedDict, total=False):
+    """Nested object type for constraint.max-cookie field."""
+    status: Literal["enable", "disable"]
+    max_cookie: int
+    action: Literal["allow", "block"]
+    log: Literal["enable", "disable"]
+    severity: Literal["high", "medium", "low"]
+
+
+class ProfileConstraintMaxheaderlineDict(TypedDict, total=False):
+    """Nested object type for constraint.max-header-line field."""
+    status: Literal["enable", "disable"]
+    max_header_line: int
+    action: Literal["allow", "block"]
+    log: Literal["enable", "disable"]
+    severity: Literal["high", "medium", "low"]
+
+
+class ProfileConstraintMaxurlparamDict(TypedDict, total=False):
+    """Nested object type for constraint.max-url-param field."""
+    status: Literal["enable", "disable"]
+    max_url_param: int
+    action: Literal["allow", "block"]
+    log: Literal["enable", "disable"]
+    severity: Literal["high", "medium", "low"]
+
+
+class ProfileConstraintMaxrangesegmentDict(TypedDict, total=False):
+    """Nested object type for constraint.max-range-segment field."""
+    status: Literal["enable", "disable"]
+    max_range_segment: int
+    action: Literal["allow", "block"]
+    log: Literal["enable", "disable"]
+    severity: Literal["high", "medium", "low"]
+
+
+class ProfileConstraintExceptionItem(TypedDict, total=False):
+    """Nested item for constraint.exception field."""
+    id: int
+    pattern: str
+    regex: Literal["enable", "disable"]
+    address: str
+    header_length: Literal["enable", "disable"]
+    content_length: Literal["enable", "disable"]
+    param_length: Literal["enable", "disable"]
+    line_length: Literal["enable", "disable"]
+    url_param_length: Literal["enable", "disable"]
+    version: Literal["enable", "disable"]
+    method: Literal["enable", "disable"]
+    hostname: Literal["enable", "disable"]
+    malformed: Literal["enable", "disable"]
+    max_cookie: Literal["enable", "disable"]
+    max_header_line: Literal["enable", "disable"]
+    max_url_param: Literal["enable", "disable"]
+    max_range_segment: Literal["enable", "disable"]
+
+
+class ProfileMethodMethodpolicyItem(TypedDict, total=False):
+    """Nested item for method.method-policy field."""
+    id: int
+    pattern: str
+    regex: Literal["enable", "disable"]
+    address: str
+    allowed_methods: Literal["get", "post", "put", "head", "connect", "trace", "options", "delete", "others"]
+
+
+class ProfileAddresslistTrustedaddressItem(TypedDict, total=False):
+    """Nested item for address-list.trusted-address field."""
+    name: str
+
+
+class ProfileAddresslistBlockedaddressItem(TypedDict, total=False):
+    """Nested item for address-list.blocked-address field."""
+    name: str
+
+
 class ProfileSignatureDict(TypedDict, total=False):
     """Nested object type for signature field."""
     main_class: str | list[str] | list[ProfileSignatureMainclassItem]
@@ -125,6 +310,15 @@ class ProfileResponse(TypedDict, total=False):
 # ================================================================
 
 
+class ProfileUrlaccessAccesspatternItemObject(FortiObject[ProfileUrlaccessAccesspatternItem]):
+    """Typed object for url-access.access-pattern table items with attribute access."""
+    id: int
+    srcaddr: str
+    pattern: str
+    regex: Literal["enable", "disable"]
+    negate: Literal["enable", "disable"]
+
+
 class ProfileUrlaccessItemObject(FortiObject[ProfileUrlaccessItem]):
     """Typed object for url-access table items with attribute access."""
     id: int
@@ -133,6 +327,78 @@ class ProfileUrlaccessItemObject(FortiObject[ProfileUrlaccessItem]):
     log: Literal["enable", "disable"]
     severity: Literal["high", "medium", "low"]
     access_pattern: FortiObjectList[ProfileUrlaccessAccesspatternItemObject]
+
+
+class ProfileSignatureMainclassItemObject(FortiObject[ProfileSignatureMainclassItem]):
+    """Typed object for signature.main-class table items with attribute access."""
+    id: int
+    status: Literal["enable", "disable"]
+    action: Literal["allow", "block", "erase"]
+    log: Literal["enable", "disable"]
+    severity: Literal["high", "medium", "low"]
+
+
+class ProfileSignatureDisabledsubclassItemObject(FortiObject[ProfileSignatureDisabledsubclassItem]):
+    """Typed object for signature.disabled-sub-class table items with attribute access."""
+    id: int
+
+
+class ProfileSignatureDisabledsignatureItemObject(FortiObject[ProfileSignatureDisabledsignatureItem]):
+    """Typed object for signature.disabled-signature table items with attribute access."""
+    id: int
+
+
+class ProfileSignatureCustomsignatureItemObject(FortiObject[ProfileSignatureCustomsignatureItem]):
+    """Typed object for signature.custom-signature table items with attribute access."""
+    name: str
+    status: Literal["enable", "disable"]
+    action: Literal["allow", "block", "erase"]
+    log: Literal["enable", "disable"]
+    severity: Literal["high", "medium", "low"]
+    direction: Literal["request", "response"]
+    case_sensitivity: Literal["disable", "enable"]
+    pattern: str
+    target: Literal["arg", "arg-name", "req-body", "req-cookie", "req-cookie-name", "req-filename", "req-header", "req-header-name", "req-raw-uri", "req-uri", "resp-body", "resp-hdr", "resp-status"]
+
+
+class ProfileConstraintExceptionItemObject(FortiObject[ProfileConstraintExceptionItem]):
+    """Typed object for constraint.exception table items with attribute access."""
+    id: int
+    pattern: str
+    regex: Literal["enable", "disable"]
+    address: str
+    header_length: Literal["enable", "disable"]
+    content_length: Literal["enable", "disable"]
+    param_length: Literal["enable", "disable"]
+    line_length: Literal["enable", "disable"]
+    url_param_length: Literal["enable", "disable"]
+    version: Literal["enable", "disable"]
+    method: Literal["enable", "disable"]
+    hostname: Literal["enable", "disable"]
+    malformed: Literal["enable", "disable"]
+    max_cookie: Literal["enable", "disable"]
+    max_header_line: Literal["enable", "disable"]
+    max_url_param: Literal["enable", "disable"]
+    max_range_segment: Literal["enable", "disable"]
+
+
+class ProfileMethodMethodpolicyItemObject(FortiObject[ProfileMethodMethodpolicyItem]):
+    """Typed object for method.method-policy table items with attribute access."""
+    id: int
+    pattern: str
+    regex: Literal["enable", "disable"]
+    address: str
+    allowed_methods: Literal["get", "post", "put", "head", "connect", "trace", "options", "delete", "others"]
+
+
+class ProfileAddresslistTrustedaddressItemObject(FortiObject[ProfileAddresslistTrustedaddressItem]):
+    """Typed object for address-list.trusted-address table items with attribute access."""
+    name: str
+
+
+class ProfileAddresslistBlockedaddressItemObject(FortiObject[ProfileAddresslistBlockedaddressItem]):
+    """Typed object for address-list.blocked-address table items with attribute access."""
+    name: str
 
 
 class ProfileSignatureObject(FortiObject):

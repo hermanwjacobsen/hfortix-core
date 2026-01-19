@@ -62,6 +62,13 @@ class AnqpNaiRealmResponse(TypedDict, total=False):
 # ================================================================
 
 
+class AnqpNaiRealmNailistEapmethodItemObject(FortiObject[AnqpNaiRealmNailistEapmethodItem]):
+    """Typed object for nai-list.eap-method table items with attribute access."""
+    index: int
+    method: Literal["eap-identity", "eap-md5", "eap-tls", "eap-ttls", "eap-peap", "eap-sim", "eap-aka", "eap-aka-prime"]
+    auth_param: str | list[str]
+
+
 class AnqpNaiRealmNailistItemObject(FortiObject[AnqpNaiRealmNailistItem]):
     """Typed object for nai-list table items with attribute access."""
     name: str

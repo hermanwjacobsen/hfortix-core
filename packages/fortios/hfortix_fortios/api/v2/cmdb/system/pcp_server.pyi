@@ -84,6 +84,21 @@ class PcpServerResponse(TypedDict, total=False):
 # ================================================================
 
 
+class PcpServerPoolsClientsubnetItemObject(FortiObject[PcpServerPoolsClientsubnetItem]):
+    """Typed object for pools.client-subnet table items with attribute access."""
+    subnet: str
+
+
+class PcpServerPoolsThirdpartysubnetItemObject(FortiObject[PcpServerPoolsThirdpartysubnetItem]):
+    """Typed object for pools.third-party-subnet table items with attribute access."""
+    subnet: str
+
+
+class PcpServerPoolsIntlintfItemObject(FortiObject[PcpServerPoolsIntlintfItem]):
+    """Typed object for pools.intl-intf table items with attribute access."""
+    interface_name: str
+
+
 class PcpServerPoolsItemObject(FortiObject[PcpServerPoolsItem]):
     """Typed object for pools table items with attribute access."""
     name: str

@@ -5,10 +5,11 @@ Provides type hints for zero-maintenance object wrappers for FortiOS API respons
 """
 
 import builtins
+from collections.abc import Mapping
 from typing import Any, Generator, Generic, Iterator, Literal, SupportsIndex, TypeVar, overload
 
 _T = TypeVar("_T")
-_DataT = TypeVar("_DataT", bound=dict[str, Any])
+_DataT = TypeVar("_DataT", bound=Mapping[str, Any])
 
 class FortiObject(Generic[_DataT]):
     """

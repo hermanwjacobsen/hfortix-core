@@ -92,6 +92,16 @@ class ProfileResponse(TypedDict, total=False):
 # ================================================================
 
 
+class ProfileHeadersDstaddrItemObject(FortiObject[ProfileHeadersDstaddrItem]):
+    """Typed object for headers.dstaddr table items with attribute access."""
+    name: str
+
+
+class ProfileHeadersDstaddr6ItemObject(FortiObject[ProfileHeadersDstaddr6Item]):
+    """Typed object for headers.dstaddr6 table items with attribute access."""
+    name: str
+
+
 class ProfileHeadersItemObject(FortiObject[ProfileHeadersItem]):
     """Typed object for headers table items with attribute access."""
     id: int

@@ -165,6 +165,11 @@ class AddressResponse(TypedDict, total=False):
 # ================================================================
 
 
+class AddressTaggingTagsItemObject(FortiObject[AddressTaggingTagsItem]):
+    """Typed object for tagging.tags table items with attribute access."""
+    name: str
+
+
 class AddressMacaddrItemObject(FortiObject[AddressMacaddrItem]):
     """Typed object for macaddr table items with attribute access."""
     macaddr: str

@@ -135,6 +135,19 @@ class ProfileResponse(TypedDict, total=False):
 # ================================================================
 
 
+class ProfileRespmodforwardrulesHeadergroupItemObject(FortiObject[ProfileRespmodforwardrulesHeadergroupItem]):
+    """Typed object for respmod-forward-rules.header-group table items with attribute access."""
+    id: int
+    header_name: str
+    header: str
+    case_sensitivity: Literal["disable", "enable"]
+
+
+class ProfileRespmodforwardrulesHttprespstatuscodeItemObject(FortiObject[ProfileRespmodforwardrulesHttprespstatuscodeItem]):
+    """Typed object for respmod-forward-rules.http-resp-status-code table items with attribute access."""
+    code: int
+
+
 class ProfileIcapheadersItemObject(FortiObject[ProfileIcapheadersItem]):
     """Typed object for icap-headers table items with attribute access."""
     id: int

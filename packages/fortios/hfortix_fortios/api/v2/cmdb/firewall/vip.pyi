@@ -330,6 +330,11 @@ class VipResponse(TypedDict, total=False):
 # ================================================================
 
 
+class VipRealserversMonitorItemObject(FortiObject[VipRealserversMonitorItem]):
+    """Typed object for realservers.monitor table items with attribute access."""
+    name: str
+
+
 class VipSrcfilterItemObject(FortiObject[VipSrcfilterItem]):
     """Typed object for src-filter table items with attribute access."""
     range: str

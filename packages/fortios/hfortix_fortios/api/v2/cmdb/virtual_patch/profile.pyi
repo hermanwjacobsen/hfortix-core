@@ -73,6 +73,16 @@ class ProfileResponse(TypedDict, total=False):
 # ================================================================
 
 
+class ProfileExemptionRuleItemObject(FortiObject[ProfileExemptionRuleItem]):
+    """Typed object for exemption.rule table items with attribute access."""
+    id: int
+
+
+class ProfileExemptionDeviceItemObject(FortiObject[ProfileExemptionDeviceItem]):
+    """Typed object for exemption.device table items with attribute access."""
+    mac: str
+
+
 class ProfileExemptionItemObject(FortiObject[ProfileExemptionItem]):
     """Typed object for exemption table items with attribute access."""
     id: int

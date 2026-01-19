@@ -26,6 +26,67 @@ from hfortix_fortios.models import (
 # TypedDict Payloads
 # ================================================================
 
+class ProfileOverrideOvrdusergroupItem(TypedDict, total=False):
+    """Nested item for override.ovrd-user-group field."""
+    name: str
+
+
+class ProfileOverrideProfileItem(TypedDict, total=False):
+    """Nested item for override.profile field."""
+    name: str
+
+
+class ProfileWebKeywordmatchItem(TypedDict, total=False):
+    """Nested item for web.keyword-match field."""
+    pattern: str
+
+
+class ProfileFtgdwfFiltersItem(TypedDict, total=False):
+    """Nested item for ftgd-wf.filters field."""
+    id: int
+    category: int
+    action: Literal["block", "authenticate", "monitor", "warning"]
+    warn_duration: str
+    auth_usr_grp: str | list[str]
+    log: Literal["enable", "disable"]
+    override_replacemsg: str
+    warning_prompt: Literal["per-domain", "per-category"]
+    warning_duration_type: Literal["session", "timeout"]
+
+
+class ProfileFtgdwfRiskItem(TypedDict, total=False):
+    """Nested item for ftgd-wf.risk field."""
+    id: int
+    risk_level: str
+    action: Literal["block", "monitor"]
+    log: Literal["enable", "disable"]
+
+
+class ProfileFtgdwfQuotaItem(TypedDict, total=False):
+    """Nested item for ftgd-wf.quota field."""
+    id: int
+    category: str | list[str]
+    type: Literal["time", "traffic"]
+    unit: Literal["B", "KB", "MB", "GB"]
+    value: int
+    duration: str
+    override_replacemsg: str
+
+
+class ProfileAntiphishInspectionentriesItem(TypedDict, total=False):
+    """Nested item for antiphish.inspection-entries field."""
+    name: str
+    fortiguard_category: str | list[str]
+    action: Literal["exempt", "log", "block"]
+
+
+class ProfileAntiphishCustompatternsItem(TypedDict, total=False):
+    """Nested item for antiphish.custom-patterns field."""
+    pattern: str
+    category: Literal["username", "password"]
+    type: Literal["regex", "literal"]
+
+
 class ProfileOverrideDict(TypedDict, total=False):
     """Nested object type for override field."""
     ovrd_cookie: Literal["allow", "deny"]
@@ -177,6 +238,67 @@ class ProfileResponse(TypedDict, total=False):
 class ProfileWispserversItemObject(FortiObject[ProfileWispserversItem]):
     """Typed object for wisp-servers table items with attribute access."""
     name: str
+
+
+class ProfileOverrideOvrdusergroupItemObject(FortiObject[ProfileOverrideOvrdusergroupItem]):
+    """Typed object for override.ovrd-user-group table items with attribute access."""
+    name: str
+
+
+class ProfileOverrideProfileItemObject(FortiObject[ProfileOverrideProfileItem]):
+    """Typed object for override.profile table items with attribute access."""
+    name: str
+
+
+class ProfileWebKeywordmatchItemObject(FortiObject[ProfileWebKeywordmatchItem]):
+    """Typed object for web.keyword-match table items with attribute access."""
+    pattern: str
+
+
+class ProfileFtgdwfFiltersItemObject(FortiObject[ProfileFtgdwfFiltersItem]):
+    """Typed object for ftgd-wf.filters table items with attribute access."""
+    id: int
+    category: int
+    action: Literal["block", "authenticate", "monitor", "warning"]
+    warn_duration: str
+    auth_usr_grp: str | list[str]
+    log: Literal["enable", "disable"]
+    override_replacemsg: str
+    warning_prompt: Literal["per-domain", "per-category"]
+    warning_duration_type: Literal["session", "timeout"]
+
+
+class ProfileFtgdwfRiskItemObject(FortiObject[ProfileFtgdwfRiskItem]):
+    """Typed object for ftgd-wf.risk table items with attribute access."""
+    id: int
+    risk_level: str
+    action: Literal["block", "monitor"]
+    log: Literal["enable", "disable"]
+
+
+class ProfileFtgdwfQuotaItemObject(FortiObject[ProfileFtgdwfQuotaItem]):
+    """Typed object for ftgd-wf.quota table items with attribute access."""
+    id: int
+    category: str | list[str]
+    type: Literal["time", "traffic"]
+    unit: Literal["B", "KB", "MB", "GB"]
+    value: int
+    duration: str
+    override_replacemsg: str
+
+
+class ProfileAntiphishInspectionentriesItemObject(FortiObject[ProfileAntiphishInspectionentriesItem]):
+    """Typed object for antiphish.inspection-entries table items with attribute access."""
+    name: str
+    fortiguard_category: str | list[str]
+    action: Literal["exempt", "log", "block"]
+
+
+class ProfileAntiphishCustompatternsItemObject(FortiObject[ProfileAntiphishCustompatternsItem]):
+    """Typed object for antiphish.custom-patterns table items with attribute access."""
+    pattern: str
+    category: Literal["username", "password"]
+    type: Literal["regex", "literal"]
 
 
 class ProfileOverrideObject(FortiObject):

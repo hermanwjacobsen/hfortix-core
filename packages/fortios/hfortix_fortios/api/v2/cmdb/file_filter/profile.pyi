@@ -75,6 +75,11 @@ class ProfileResponse(TypedDict, total=False):
 # ================================================================
 
 
+class ProfileRulesFiletypeItemObject(FortiObject[ProfileRulesFiletypeItem]):
+    """Typed object for rules.file-type table items with attribute access."""
+    name: str
+
+
 class ProfileRulesItemObject(FortiObject[ProfileRulesItem]):
     """Typed object for rules table items with attribute access."""
     name: str

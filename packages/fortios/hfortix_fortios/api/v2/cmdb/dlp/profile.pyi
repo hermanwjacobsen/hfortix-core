@@ -94,6 +94,16 @@ class ProfileResponse(TypedDict, total=False):
 # ================================================================
 
 
+class ProfileRuleSensitivityItemObject(FortiObject[ProfileRuleSensitivityItem]):
+    """Typed object for rule.sensitivity table items with attribute access."""
+    name: str
+
+
+class ProfileRuleSensorItemObject(FortiObject[ProfileRuleSensorItem]):
+    """Typed object for rule.sensor table items with attribute access."""
+    name: str
+
+
 class ProfileRuleItemObject(FortiObject[ProfileRuleItem]):
     """Typed object for rule table items with attribute access."""
     id: int

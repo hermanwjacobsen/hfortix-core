@@ -436,6 +436,170 @@ class SdwanResponse(TypedDict, total=False):
 # ================================================================
 
 
+class SdwanHealthcheckMembersItemObject(FortiObject[SdwanHealthcheckMembersItem]):
+    """Typed object for health-check.members table items with attribute access."""
+    seq_num: int
+
+
+class SdwanHealthcheckSlaItemObject(FortiObject[SdwanHealthcheckSlaItem]):
+    """Typed object for health-check.sla table items with attribute access."""
+    id: int
+    link_cost_factor: Literal["latency", "jitter", "packet-loss", "custom-profile-1", "mos", "remote"]
+    latency_threshold: int
+    jitter_threshold: int
+    packetloss_threshold: int
+    mos_threshold: str
+    custom_profile_threshold: int
+    priority_in_sla: int
+    priority_out_sla: int
+
+
+class SdwanServiceInputdeviceItemObject(FortiObject[SdwanServiceInputdeviceItem]):
+    """Typed object for service.input-device table items with attribute access."""
+    name: str
+
+
+class SdwanServiceInputzoneItemObject(FortiObject[SdwanServiceInputzoneItem]):
+    """Typed object for service.input-zone table items with attribute access."""
+    name: str
+
+
+class SdwanServiceDstItemObject(FortiObject[SdwanServiceDstItem]):
+    """Typed object for service.dst table items with attribute access."""
+    name: str
+
+
+class SdwanServiceSrcItemObject(FortiObject[SdwanServiceSrcItem]):
+    """Typed object for service.src table items with attribute access."""
+    name: str
+
+
+class SdwanServiceDst6ItemObject(FortiObject[SdwanServiceDst6Item]):
+    """Typed object for service.dst6 table items with attribute access."""
+    name: str
+
+
+class SdwanServiceSrc6ItemObject(FortiObject[SdwanServiceSrc6Item]):
+    """Typed object for service.src6 table items with attribute access."""
+    name: str
+
+
+class SdwanServiceUsersItemObject(FortiObject[SdwanServiceUsersItem]):
+    """Typed object for service.users table items with attribute access."""
+    name: str
+
+
+class SdwanServiceGroupsItemObject(FortiObject[SdwanServiceGroupsItem]):
+    """Typed object for service.groups table items with attribute access."""
+    name: str
+
+
+class SdwanServiceInternetservicecustomItemObject(FortiObject[SdwanServiceInternetservicecustomItem]):
+    """Typed object for service.internet-service-custom table items with attribute access."""
+    name: str
+
+
+class SdwanServiceInternetservicecustomgroupItemObject(FortiObject[SdwanServiceInternetservicecustomgroupItem]):
+    """Typed object for service.internet-service-custom-group table items with attribute access."""
+    name: str
+
+
+class SdwanServiceInternetservicefortiguardItemObject(FortiObject[SdwanServiceInternetservicefortiguardItem]):
+    """Typed object for service.internet-service-fortiguard table items with attribute access."""
+    name: str
+
+
+class SdwanServiceInternetservicenameItemObject(FortiObject[SdwanServiceInternetservicenameItem]):
+    """Typed object for service.internet-service-name table items with attribute access."""
+    name: str
+
+
+class SdwanServiceInternetservicegroupItemObject(FortiObject[SdwanServiceInternetservicegroupItem]):
+    """Typed object for service.internet-service-group table items with attribute access."""
+    name: str
+
+
+class SdwanServiceInternetserviceappctrlItemObject(FortiObject[SdwanServiceInternetserviceappctrlItem]):
+    """Typed object for service.internet-service-app-ctrl table items with attribute access."""
+    id: int
+
+
+class SdwanServiceInternetserviceappctrlgroupItemObject(FortiObject[SdwanServiceInternetserviceappctrlgroupItem]):
+    """Typed object for service.internet-service-app-ctrl-group table items with attribute access."""
+    name: str
+
+
+class SdwanServiceInternetserviceappctrlcategoryItemObject(FortiObject[SdwanServiceInternetserviceappctrlcategoryItem]):
+    """Typed object for service.internet-service-app-ctrl-category table items with attribute access."""
+    id: int
+
+
+class SdwanServiceHealthcheckItemObject(FortiObject[SdwanServiceHealthcheckItem]):
+    """Typed object for service.health-check table items with attribute access."""
+    name: str
+
+
+class SdwanServiceSlaItemObject(FortiObject[SdwanServiceSlaItem]):
+    """Typed object for service.sla table items with attribute access."""
+    health_check: str
+    id: int
+
+
+class SdwanServicePrioritymembersItemObject(FortiObject[SdwanServicePrioritymembersItem]):
+    """Typed object for service.priority-members table items with attribute access."""
+    seq_num: int
+
+
+class SdwanServicePriorityzoneItemObject(FortiObject[SdwanServicePriorityzoneItem]):
+    """Typed object for service.priority-zone table items with attribute access."""
+    name: str
+
+
+class SdwanNeighborMemberItemObject(FortiObject[SdwanNeighborMemberItem]):
+    """Typed object for neighbor.member table items with attribute access."""
+    seq_num: int
+
+
+class SdwanDuplicationServiceidItemObject(FortiObject[SdwanDuplicationServiceidItem]):
+    """Typed object for duplication.service-id table items with attribute access."""
+    id: int
+
+
+class SdwanDuplicationSrcaddrItemObject(FortiObject[SdwanDuplicationSrcaddrItem]):
+    """Typed object for duplication.srcaddr table items with attribute access."""
+    name: str
+
+
+class SdwanDuplicationDstaddrItemObject(FortiObject[SdwanDuplicationDstaddrItem]):
+    """Typed object for duplication.dstaddr table items with attribute access."""
+    name: str
+
+
+class SdwanDuplicationSrcaddr6ItemObject(FortiObject[SdwanDuplicationSrcaddr6Item]):
+    """Typed object for duplication.srcaddr6 table items with attribute access."""
+    name: str
+
+
+class SdwanDuplicationDstaddr6ItemObject(FortiObject[SdwanDuplicationDstaddr6Item]):
+    """Typed object for duplication.dstaddr6 table items with attribute access."""
+    name: str
+
+
+class SdwanDuplicationSrcintfItemObject(FortiObject[SdwanDuplicationSrcintfItem]):
+    """Typed object for duplication.srcintf table items with attribute access."""
+    name: str
+
+
+class SdwanDuplicationDstintfItemObject(FortiObject[SdwanDuplicationDstintfItem]):
+    """Typed object for duplication.dstintf table items with attribute access."""
+    name: str
+
+
+class SdwanDuplicationServiceItemObject(FortiObject[SdwanDuplicationServiceItem]):
+    """Typed object for duplication.service table items with attribute access."""
+    name: str
+
+
 class SdwanFailalertinterfacesItemObject(FortiObject[SdwanFailalertinterfacesItem]):
     """Typed object for fail-alert-interfaces table items with attribute access."""
     name: str

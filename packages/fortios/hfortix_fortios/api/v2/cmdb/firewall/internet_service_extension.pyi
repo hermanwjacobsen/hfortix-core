@@ -109,6 +109,44 @@ class InternetServiceExtensionResponse(TypedDict, total=False):
 # ================================================================
 
 
+class InternetServiceExtensionEntryPortrangeItemObject(FortiObject[InternetServiceExtensionEntryPortrangeItem]):
+    """Typed object for entry.port-range table items with attribute access."""
+    id: int
+    start_port: int
+    end_port: int
+
+
+class InternetServiceExtensionEntryDstItemObject(FortiObject[InternetServiceExtensionEntryDstItem]):
+    """Typed object for entry.dst table items with attribute access."""
+    name: str
+
+
+class InternetServiceExtensionEntryDst6ItemObject(FortiObject[InternetServiceExtensionEntryDst6Item]):
+    """Typed object for entry.dst6 table items with attribute access."""
+    name: str
+
+
+class InternetServiceExtensionDisableentryPortrangeItemObject(FortiObject[InternetServiceExtensionDisableentryPortrangeItem]):
+    """Typed object for disable-entry.port-range table items with attribute access."""
+    id: int
+    start_port: int
+    end_port: int
+
+
+class InternetServiceExtensionDisableentryIprangeItemObject(FortiObject[InternetServiceExtensionDisableentryIprangeItem]):
+    """Typed object for disable-entry.ip-range table items with attribute access."""
+    id: int
+    start_ip: str
+    end_ip: str
+
+
+class InternetServiceExtensionDisableentryIp6rangeItemObject(FortiObject[InternetServiceExtensionDisableentryIp6rangeItem]):
+    """Typed object for disable-entry.ip6-range table items with attribute access."""
+    id: int
+    start_ip6: str
+    end_ip6: str
+
+
 class InternetServiceExtensionEntryItemObject(FortiObject[InternetServiceExtensionEntryItem]):
     """Typed object for entry table items with attribute access."""
     id: int

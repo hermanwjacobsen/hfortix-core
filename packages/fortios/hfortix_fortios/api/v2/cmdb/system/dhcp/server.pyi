@@ -238,6 +238,36 @@ class ServerResponse(TypedDict, total=False):
 # ================================================================
 
 
+class ServerIprangeVcistringItemObject(FortiObject[ServerIprangeVcistringItem]):
+    """Typed object for ip-range.vci-string table items with attribute access."""
+    vci_string: str
+
+
+class ServerIprangeUcistringItemObject(FortiObject[ServerIprangeUcistringItem]):
+    """Typed object for ip-range.uci-string table items with attribute access."""
+    uci_string: str
+
+
+class ServerOptionsVcistringItemObject(FortiObject[ServerOptionsVcistringItem]):
+    """Typed object for options.vci-string table items with attribute access."""
+    vci_string: str
+
+
+class ServerOptionsUcistringItemObject(FortiObject[ServerOptionsUcistringItem]):
+    """Typed object for options.uci-string table items with attribute access."""
+    uci_string: str
+
+
+class ServerExcluderangeVcistringItemObject(FortiObject[ServerExcluderangeVcistringItem]):
+    """Typed object for exclude-range.vci-string table items with attribute access."""
+    vci_string: str
+
+
+class ServerExcluderangeUcistringItemObject(FortiObject[ServerExcluderangeUcistringItem]):
+    """Typed object for exclude-range.uci-string table items with attribute access."""
+    uci_string: str
+
+
 class ServerIprangeItemObject(FortiObject[ServerIprangeItem]):
     """Typed object for ip-range table items with attribute access."""
     id: int

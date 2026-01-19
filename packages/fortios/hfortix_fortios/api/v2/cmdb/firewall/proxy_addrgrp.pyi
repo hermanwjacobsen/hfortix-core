@@ -74,6 +74,11 @@ class ProxyAddrgrpResponse(TypedDict, total=False):
 # ================================================================
 
 
+class ProxyAddrgrpTaggingTagsItemObject(FortiObject[ProxyAddrgrpTaggingTagsItem]):
+    """Typed object for tagging.tags table items with attribute access."""
+    name: str
+
+
 class ProxyAddrgrpMemberItemObject(FortiObject[ProxyAddrgrpMemberItem]):
     """Typed object for member table items with attribute access."""
     name: str

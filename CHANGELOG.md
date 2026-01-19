@@ -7,6 +7,69 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.5.120] - 2026-01-19
+
+### Fixed
+
+- **Type System: Protocol Interface Updates**: Enhanced `IHTTPClient` protocol to match actual implementation
+  - **Issue**: Pylance showing stale type errors in some endpoint files after `models.pyi` changes from `dict[str, Any]` to `Mapping[str, Any]`
+  - **Root Cause**: `IHTTPClient` protocol was missing parameters that `ResponseProcessingClient` wrapper actually provides
+  - **Fix**: Added missing parameters to `IHTTPClient.get()` method signature:
+    - `unwrap_single: bool = False` - Auto-unwrap single-item lists to single object
+    - `action: Optional[str] = None` - Special action parameter (e.g., 'schema', 'default')
+  - **Impact**: Resolves type checking errors while maintaining backward compatibility
+  - **Files Updated**: `packages/core/hfortix_core/http/interface.py` (protocol definition)
+  - **Note**: All endpoint files are generated from same template - apparent errors were Pylance cache artifacts
+
+### Changed
+
+- **Type Safety: FortiObject Generic Bound**: Changed TypeVar bound from `dict[str, Any]` to `Mapping[str, Any]`
+  - **Location**: `packages/fortios/hfortix_fortios/models.pyi` line 11
+  - **Reason**: TypedDict types are compatible with `Mapping` but not with `dict` in Python's type system
+  - **Impact**: Allows generated TypedDict types to work seamlessly with `FortiObject[T]` generic wrapper
+  - **Related**: This change triggered Pylance cache issues that surfaced the `IHTTPClient` protocol incompleteness
+
+## [0.5.119] - 2026-01-19
+
+### Added
+
+- **Tests: Switch Controller Monitor Endpoints**: Added 11 test files for FortiLink device detection and policy matching:
+  - **switch_controller_detected_device.py** (3 tests): GET - Retrieve a list of devices detected on all switches (Access Group: wifi)
+    - Test: 12 physical devices detected on switch ports
+  - **switch_controller_matched_devices.py** (5 tests): GET - Return a list of devices that match NAC and/or dynamic port policies (Access Group: wifi)
+    - Test: NAC policy matching (0 devices, 1 test skips)
+  - **switch_controller_isl_lockdown_status.py** (3 tests): GET - Get current status of ISL lockdown (Access Group: wifi)
+    - Test: ISL lockdown status = "enable"
+
+- **Environment Variable Support**: Added `FORTIOS_PORT` environment variable support with automatic type conversion
+  - **Use Case**: Simplifies port configuration when using environment variables
+  - **Behavior**: Reads `FORTIOS_PORT` from environment and converts string to integer automatically
+  - **Priority**: Explicit `port` parameter > `FORTIOS_PORT` environment variable > default (443)
+  - **Example**: `export FORTIOS_PORT=8443` then `FortiOS()` - automatically uses port 8443
+  - **Documentation**: Updated docstring with example and added port parameter description explaining automatic conversion
+
+### Fixed
+
+- **Type Flexibility**: Port parameter now accepts both `int` and `str` types with automatic conversion
+  - **Issue**: Users passing environment variable values like `port=os.getenv("FORTIOS_PORT", "443")` got type errors because `os.getenv()` returns strings
+  - **Common Pattern**: Many users load configuration from environment: `port=FORTIGATE_PORT` where `FORTIGATE_PORT = os.getenv("FORTIOS_PORT", "443")`
+  - **Fix**: 
+    - Updated type hints in both `client.py` and `client.pyi` to `Union[int, str, None]`
+    - Added automatic string-to-int conversion in `__init__` for both direct parameters and environment variables
+    - Updated both sync and async overload signatures
+  - **Impact**: No more `int()` wrapper needed - can pass environment variable strings directly to port parameter
+  - **Example**: Both `port=8443` and `port="8443"` now work identically
+  - **Files Updated**: `client.py` (implementation + type hints), `client.pyi` (type stubs)
+
+### Documentation
+
+- **Schema Improvement Suggestions**: Updated `docs/fortios/SCHEMA_IMPROVEMENT_SUGGESTIONS.md` with OpenAPI vs FortiOS schema gap analysis
+  - **New Section**: "OpenAPI vs FortiOS Schema" explaining the difference between documentation and SDK schema requirements
+  - **Partial Schema Issue**: Documented endpoints with incomplete OpenAPI schemas (e.g., `dhcp-snooping` with undefined array items)
+  - **Example**: Shows how `dhcp-snooping` has `snooping_entries` defined as array but lacks item properties
+  - **Clarification**: OpenAPI specs exist but don't automatically provide type safety - FortiOS schema files need complete `response_fields`
+  - **Priority Updates**: Added notation for endpoints with partial OpenAPI documentation
+
 ## [0.5.118] - 2026-01-19
 
 ### Added

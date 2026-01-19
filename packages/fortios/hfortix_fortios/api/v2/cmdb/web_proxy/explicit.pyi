@@ -150,6 +150,21 @@ class ExplicitResponse(TypedDict, total=False):
 # ================================================================
 
 
+class ExplicitPacpolicySrcaddrItemObject(FortiObject[ExplicitPacpolicySrcaddrItem]):
+    """Typed object for pac-policy.srcaddr table items with attribute access."""
+    name: str
+
+
+class ExplicitPacpolicySrcaddr6ItemObject(FortiObject[ExplicitPacpolicySrcaddr6Item]):
+    """Typed object for pac-policy.srcaddr6 table items with attribute access."""
+    name: str
+
+
+class ExplicitPacpolicyDstaddrItemObject(FortiObject[ExplicitPacpolicyDstaddrItem]):
+    """Typed object for pac-policy.dstaddr table items with attribute access."""
+    name: str
+
+
 class ExplicitSecurewebproxycertItemObject(FortiObject[ExplicitSecurewebproxycertItem]):
     """Typed object for secure-web-proxy-cert table items with attribute access."""
     name: str

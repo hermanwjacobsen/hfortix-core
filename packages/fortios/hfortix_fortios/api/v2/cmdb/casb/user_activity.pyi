@@ -118,6 +118,36 @@ class UserActivityResponse(TypedDict, total=False):
 # ================================================================
 
 
+class UserActivityMatchRulesItemObject(FortiObject[UserActivityMatchRulesItem]):
+    """Typed object for match.rules table items with attribute access."""
+    id: int
+    type: Literal["domains", "host", "path", "header", "header-value", "method", "body"]
+    domains: str | list[str]
+    methods: str | list[str]
+    match_pattern: Literal["simple", "substr", "regexp"]
+    match_value: str
+    header_name: str
+    body_type: Literal["json"]
+    jq: str
+    case_sensitive: Literal["enable", "disable"]
+    negate: Literal["enable", "disable"]
+
+
+class UserActivityControloptionsOperationsItemObject(FortiObject[UserActivityControloptionsOperationsItem]):
+    """Typed object for control-options.operations table items with attribute access."""
+    name: str
+    target: Literal["header", "path", "body"]
+    action: Literal["append", "prepend", "replace", "new", "new-on-not-found", "delete"]
+    direction: Literal["request", "response"]
+    header_name: str
+    search_pattern: Literal["simple", "substr", "regexp"]
+    search_key: str
+    case_sensitive: Literal["enable", "disable"]
+    value_from_input: Literal["enable", "disable"]
+    value_name_from_input: str
+    values: str | list[str]
+
+
 class UserActivityMatchItemObject(FortiObject[UserActivityMatchItem]):
     """Typed object for match table items with attribute access."""
     id: int

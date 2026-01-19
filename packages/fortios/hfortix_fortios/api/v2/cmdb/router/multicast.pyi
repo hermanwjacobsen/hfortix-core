@@ -50,6 +50,13 @@ class MulticastInterfaceIgmpDict(TypedDict, total=False):
     router_alert_check: Literal["enable", "disable"]
 
 
+class MulticastPimsmglobalRpaddressItem(TypedDict, total=False):
+    """Nested item for pim-sm-global.rp-address field."""
+    id: int
+    ip_address: str
+    group: str
+
+
 class MulticastPimsmglobalDict(TypedDict, total=False):
     """Nested object type for pim-sm-global field."""
     message_interval: int
@@ -148,6 +155,18 @@ class MulticastResponse(TypedDict, total=False):
 # ================================================================
 
 
+class MulticastPimsmglobalvrfRpaddressItemObject(FortiObject[MulticastPimsmglobalvrfRpaddressItem]):
+    """Typed object for pim-sm-global-vrf.rp-address table items with attribute access."""
+    id: int
+    ip_address: str
+    group: str
+
+
+class MulticastInterfaceJoingroupItemObject(FortiObject[MulticastInterfaceJoingroupItem]):
+    """Typed object for interface.join-group table items with attribute access."""
+    address: str
+
+
 class MulticastPimsmglobalvrfItemObject(FortiObject[MulticastPimsmglobalvrfItem]):
     """Typed object for pim-sm-global-vrf table items with attribute access."""
     vrf: int
@@ -197,6 +216,13 @@ class MulticastInterfaceIgmpObject(FortiObject):
     query_interval: int
     query_timeout: int
     router_alert_check: Literal["enable", "disable"]
+
+
+class MulticastPimsmglobalRpaddressItemObject(FortiObject[MulticastPimsmglobalRpaddressItem]):
+    """Typed object for pim-sm-global.rp-address table items with attribute access."""
+    id: int
+    ip_address: str
+    group: str
 
 
 class MulticastPimsmglobalObject(FortiObject):

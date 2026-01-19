@@ -108,6 +108,28 @@ class SensorResponse(TypedDict, total=False):
 # ================================================================
 
 
+class SensorEntriesRuleItemObject(FortiObject[SensorEntriesRuleItem]):
+    """Typed object for entries.rule table items with attribute access."""
+    id: int
+
+
+class SensorEntriesCveItemObject(FortiObject[SensorEntriesCveItem]):
+    """Typed object for entries.cve table items with attribute access."""
+    cve_entry: str
+
+
+class SensorEntriesVulntypeItemObject(FortiObject[SensorEntriesVulntypeItem]):
+    """Typed object for entries.vuln-type table items with attribute access."""
+    id: int
+
+
+class SensorEntriesExemptipItemObject(FortiObject[SensorEntriesExemptipItem]):
+    """Typed object for entries.exempt-ip table items with attribute access."""
+    id: int
+    src_ip: str
+    dst_ip: str
+
+
 class SensorEntriesItemObject(FortiObject[SensorEntriesItem]):
     """Typed object for entries table items with attribute access."""
     id: int

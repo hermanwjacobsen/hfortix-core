@@ -63,6 +63,13 @@ class InternetServiceDefinitionResponse(TypedDict, total=False):
 # ================================================================
 
 
+class InternetServiceDefinitionEntryPortrangeItemObject(FortiObject[InternetServiceDefinitionEntryPortrangeItem]):
+    """Typed object for entry.port-range table items with attribute access."""
+    id: int
+    start_port: int
+    end_port: int
+
+
 class InternetServiceDefinitionEntryItemObject(FortiObject[InternetServiceDefinitionEntryItem]):
     """Typed object for entry table items with attribute access."""
     seq_num: int

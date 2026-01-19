@@ -272,6 +272,11 @@ class Vip6Response(TypedDict, total=False):
 # ================================================================
 
 
+class Vip6RealserversMonitorItemObject(FortiObject[Vip6RealserversMonitorItem]):
+    """Typed object for realservers.monitor table items with attribute access."""
+    name: str
+
+
 class Vip6SrcfilterItemObject(FortiObject[Vip6SrcfilterItem]):
     """Typed object for src-filter table items with attribute access."""
     range: str

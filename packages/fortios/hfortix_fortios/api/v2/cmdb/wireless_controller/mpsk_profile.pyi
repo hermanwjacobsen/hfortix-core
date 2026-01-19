@@ -78,6 +78,21 @@ class MpskProfileResponse(TypedDict, total=False):
 # ================================================================
 
 
+class MpskProfileMpskgroupMpskkeyItemObject(FortiObject[MpskProfileMpskgroupMpskkeyItem]):
+    """Typed object for mpsk-group.mpsk-key table items with attribute access."""
+    name: str
+    key_type: Literal["wpa2-personal", "wpa3-sae"]
+    mac: str
+    passphrase: str
+    sae_password: str
+    sae_pk: Literal["enable", "disable"]
+    sae_private_key: str
+    concurrent_client_limit_type: Literal["default", "unlimited", "specified"]
+    concurrent_clients: int
+    comment: str
+    mpsk_schedules: str | list[str]
+
+
 class MpskProfileMpskgroupItemObject(FortiObject[MpskProfileMpskgroupItem]):
     """Typed object for mpsk-group table items with attribute access."""
     name: str

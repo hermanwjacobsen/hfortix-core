@@ -37,6 +37,85 @@ class InterfaceTaggingTagsItem(TypedDict, total=False):
     name: str
 
 
+class InterfaceIpv6ClientoptionsItem(TypedDict, total=False):
+    """Nested item for ipv6.client-options field."""
+    id: int
+    code: int
+    type: Literal["hex", "string", "ip6", "fqdn"]
+    value: str
+    ip6: str | list[str]
+
+
+class InterfaceIpv6Ip6extraaddrItem(TypedDict, total=False):
+    """Nested item for ipv6.ip6-extra-addr field."""
+    prefix: str
+
+
+class InterfaceIpv6Ip6routelistItem(TypedDict, total=False):
+    """Nested item for ipv6.ip6-route-list field."""
+    route: str
+    route_pref: Literal["medium", "high", "low"]
+    route_life_time: int
+
+
+class InterfaceIpv6Ip6prefixlistItem(TypedDict, total=False):
+    """Nested item for ipv6.ip6-prefix-list field."""
+    prefix: str
+    autonomous_flag: Literal["enable", "disable"]
+    onlink_flag: Literal["enable", "disable"]
+    valid_life_time: int
+    preferred_life_time: int
+
+
+class InterfaceIpv6Ip6rdnsslistItem(TypedDict, total=False):
+    """Nested item for ipv6.ip6-rdnss-list field."""
+    rdnss: str
+    rdnss_life_time: int
+
+
+class InterfaceIpv6Ip6dnssllistItem(TypedDict, total=False):
+    """Nested item for ipv6.ip6-dnssl-list field."""
+    domain: str
+    dnssl_life_time: int
+
+
+class InterfaceIpv6Ip6delegatedprefixlistItem(TypedDict, total=False):
+    """Nested item for ipv6.ip6-delegated-prefix-list field."""
+    prefix_id: int
+    upstream_interface: str
+    delegated_prefix_iaid: int
+    autonomous_flag: Literal["enable", "disable"]
+    onlink_flag: Literal["enable", "disable"]
+    subnet: str
+    rdnss_service: Literal["delegated", "default", "specify"]
+    rdnss: str | list[str]
+    dnssl_service: Literal["enable", "disable"]
+
+
+class InterfaceIpv6Dhcp6iapdlistItem(TypedDict, total=False):
+    """Nested item for ipv6.dhcp6-iapd-list field."""
+    iaid: int
+    prefix_hint: str
+    prefix_hint_plt: int
+    prefix_hint_vlt: int
+
+
+class InterfaceIpv6Vrrp6Item(TypedDict, total=False):
+    """Nested item for ipv6.vrrp6 field."""
+    vrid: int
+    vrgrp: int
+    vrip6: str
+    priority: int
+    adv_interval: int
+    start_time: int
+    preempt: Literal["enable", "disable"]
+    accept_mode: Literal["enable", "disable"]
+    vrdst6: str | list[str]
+    vrdst_priority: int
+    ignore_default_route: Literal["enable", "disable"]
+    status: Literal["enable", "disable"]
+
+
 class InterfaceClientoptionsItem(TypedDict, total=False):
     """Nested item for client-options field."""
     id: int
@@ -627,6 +706,17 @@ class InterfaceResponse(TypedDict, total=False):
 # ================================================================
 
 
+class InterfaceVrrpProxyarpItemObject(FortiObject[InterfaceVrrpProxyarpItem]):
+    """Typed object for vrrp.proxy-arp table items with attribute access."""
+    id: int
+    ip: str
+
+
+class InterfaceTaggingTagsItemObject(FortiObject[InterfaceTaggingTagsItem]):
+    """Typed object for tagging.tags table items with attribute access."""
+    name: str
+
+
 class InterfaceClientoptionsItemObject(FortiObject[InterfaceClientoptionsItem]):
     """Typed object for client-options table items with attribute access."""
     id: int
@@ -693,6 +783,85 @@ class InterfaceTaggingItemObject(FortiObject[InterfaceTaggingItem]):
     name: str
     category: str
     tags: FortiObjectList[InterfaceTaggingTagsItemObject]
+
+
+class InterfaceIpv6ClientoptionsItemObject(FortiObject[InterfaceIpv6ClientoptionsItem]):
+    """Typed object for ipv6.client-options table items with attribute access."""
+    id: int
+    code: int
+    type: Literal["hex", "string", "ip6", "fqdn"]
+    value: str
+    ip6: str | list[str]
+
+
+class InterfaceIpv6Ip6extraaddrItemObject(FortiObject[InterfaceIpv6Ip6extraaddrItem]):
+    """Typed object for ipv6.ip6-extra-addr table items with attribute access."""
+    prefix: str
+
+
+class InterfaceIpv6Ip6routelistItemObject(FortiObject[InterfaceIpv6Ip6routelistItem]):
+    """Typed object for ipv6.ip6-route-list table items with attribute access."""
+    route: str
+    route_pref: Literal["medium", "high", "low"]
+    route_life_time: int
+
+
+class InterfaceIpv6Ip6prefixlistItemObject(FortiObject[InterfaceIpv6Ip6prefixlistItem]):
+    """Typed object for ipv6.ip6-prefix-list table items with attribute access."""
+    prefix: str
+    autonomous_flag: Literal["enable", "disable"]
+    onlink_flag: Literal["enable", "disable"]
+    valid_life_time: int
+    preferred_life_time: int
+
+
+class InterfaceIpv6Ip6rdnsslistItemObject(FortiObject[InterfaceIpv6Ip6rdnsslistItem]):
+    """Typed object for ipv6.ip6-rdnss-list table items with attribute access."""
+    rdnss: str
+    rdnss_life_time: int
+
+
+class InterfaceIpv6Ip6dnssllistItemObject(FortiObject[InterfaceIpv6Ip6dnssllistItem]):
+    """Typed object for ipv6.ip6-dnssl-list table items with attribute access."""
+    domain: str
+    dnssl_life_time: int
+
+
+class InterfaceIpv6Ip6delegatedprefixlistItemObject(FortiObject[InterfaceIpv6Ip6delegatedprefixlistItem]):
+    """Typed object for ipv6.ip6-delegated-prefix-list table items with attribute access."""
+    prefix_id: int
+    upstream_interface: str
+    delegated_prefix_iaid: int
+    autonomous_flag: Literal["enable", "disable"]
+    onlink_flag: Literal["enable", "disable"]
+    subnet: str
+    rdnss_service: Literal["delegated", "default", "specify"]
+    rdnss: str | list[str]
+    dnssl_service: Literal["enable", "disable"]
+
+
+class InterfaceIpv6Dhcp6iapdlistItemObject(FortiObject[InterfaceIpv6Dhcp6iapdlistItem]):
+    """Typed object for ipv6.dhcp6-iapd-list table items with attribute access."""
+    iaid: int
+    prefix_hint: str
+    prefix_hint_plt: int
+    prefix_hint_vlt: int
+
+
+class InterfaceIpv6Vrrp6ItemObject(FortiObject[InterfaceIpv6Vrrp6Item]):
+    """Typed object for ipv6.vrrp6 table items with attribute access."""
+    vrid: int
+    vrgrp: int
+    vrip6: str
+    priority: int
+    adv_interval: int
+    start_time: int
+    preempt: Literal["enable", "disable"]
+    accept_mode: Literal["enable", "disable"]
+    vrdst6: str | list[str]
+    vrdst_priority: int
+    ignore_default_route: Literal["enable", "disable"]
+    status: Literal["enable", "disable"]
 
 
 class InterfacePhysettingObject(FortiObject):

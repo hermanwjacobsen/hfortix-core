@@ -119,6 +119,11 @@ class CsfResponse(TypedDict, total=False):
 # ================================================================
 
 
+class CsfFabricconnectorVdomItemObject(FortiObject[CsfFabricconnectorVdomItem]):
+    """Typed object for fabric-connector.vdom table items with attribute access."""
+    name: str
+
+
 class CsfTrustedlistItemObject(FortiObject[CsfTrustedlistItem]):
     """Typed object for trusted-list table items with attribute access."""
     name: str

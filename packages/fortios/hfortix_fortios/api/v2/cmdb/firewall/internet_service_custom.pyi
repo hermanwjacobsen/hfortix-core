@@ -78,6 +78,23 @@ class InternetServiceCustomResponse(TypedDict, total=False):
 # ================================================================
 
 
+class InternetServiceCustomEntryPortrangeItemObject(FortiObject[InternetServiceCustomEntryPortrangeItem]):
+    """Typed object for entry.port-range table items with attribute access."""
+    id: int
+    start_port: int
+    end_port: int
+
+
+class InternetServiceCustomEntryDstItemObject(FortiObject[InternetServiceCustomEntryDstItem]):
+    """Typed object for entry.dst table items with attribute access."""
+    name: str
+
+
+class InternetServiceCustomEntryDst6ItemObject(FortiObject[InternetServiceCustomEntryDst6Item]):
+    """Typed object for entry.dst6 table items with attribute access."""
+    name: str
+
+
 class InternetServiceCustomEntryItemObject(FortiObject[InternetServiceCustomEntryItem]):
     """Typed object for entry table items with attribute access."""
     id: int

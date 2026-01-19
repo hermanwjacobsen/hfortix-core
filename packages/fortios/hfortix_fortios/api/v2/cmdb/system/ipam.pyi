@@ -100,6 +100,27 @@ class IpamResponse(TypedDict, total=False):
 # ================================================================
 
 
+class IpamPoolsExcludeItemObject(FortiObject[IpamPoolsExcludeItem]):
+    """Typed object for pools.exclude table items with attribute access."""
+    ID: int
+    exclude_subnet: str
+
+
+class IpamRulesDeviceItemObject(FortiObject[IpamRulesDeviceItem]):
+    """Typed object for rules.device table items with attribute access."""
+    name: str
+
+
+class IpamRulesInterfaceItemObject(FortiObject[IpamRulesInterfaceItem]):
+    """Typed object for rules.interface table items with attribute access."""
+    name: str
+
+
+class IpamRulesPoolItemObject(FortiObject[IpamRulesPoolItem]):
+    """Typed object for rules.pool table items with attribute access."""
+    name: str
+
+
 class IpamPoolsItemObject(FortiObject[IpamPoolsItem]):
     """Typed object for pools table items with attribute access."""
     name: str

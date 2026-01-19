@@ -87,6 +87,8 @@ class IHTTPClient(Protocol):
         params: Optional[dict[str, Any]] = None,
         vdom: Optional[Union[str, bool]] = None,
         raw_json: bool = False,
+        unwrap_single: bool = False,
+        action: Optional[str] = None,
     ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """
         Perform GET request to retrieve resource(s) from the API.
@@ -99,6 +101,8 @@ class IHTTPClient(Protocol):
             vdom: Virtual domain name, or False to skip VDOM parameter
             raw_json: If True, return full API response with metadata; if
             False, return only results
+            unwrap_single: If True and result is single-item list, return just the item
+            action: Special action parameter (e.g., 'schema', 'default')
 
         Returns:
             dict: API response (sync mode) or Coroutine[dict] (async mode)

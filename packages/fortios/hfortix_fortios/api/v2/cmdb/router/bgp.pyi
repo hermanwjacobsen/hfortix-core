@@ -653,6 +653,54 @@ class BgpResponse(TypedDict, total=False):
 # ================================================================
 
 
+class BgpNeighborConditionaladvertiseItemObject(FortiObject[BgpNeighborConditionaladvertiseItem]):
+    """Typed object for neighbor.conditional-advertise table items with attribute access."""
+    advertise_routemap: str
+    condition_routemap: str | list[str]
+    condition_type: Literal["exist", "non-exist"]
+
+
+class BgpNeighborConditionaladvertise6ItemObject(FortiObject[BgpNeighborConditionaladvertise6Item]):
+    """Typed object for neighbor.conditional-advertise6 table items with attribute access."""
+    advertise_routemap: str
+    condition_routemap: str | list[str]
+    condition_type: Literal["exist", "non-exist"]
+
+
+class BgpVrfExportrtItemObject(FortiObject[BgpVrfExportrtItem]):
+    """Typed object for vrf.export-rt table items with attribute access."""
+    route_target: str
+
+
+class BgpVrfImportrtItemObject(FortiObject[BgpVrfImportrtItem]):
+    """Typed object for vrf.import-rt table items with attribute access."""
+    route_target: str
+
+
+class BgpVrfLeaktargetItemObject(FortiObject[BgpVrfLeaktargetItem]):
+    """Typed object for vrf.leak-target table items with attribute access."""
+    vrf: str
+    route_map: str
+    interface: str
+
+
+class BgpVrf6ExportrtItemObject(FortiObject[BgpVrf6ExportrtItem]):
+    """Typed object for vrf6.export-rt table items with attribute access."""
+    route_target: str
+
+
+class BgpVrf6ImportrtItemObject(FortiObject[BgpVrf6ImportrtItem]):
+    """Typed object for vrf6.import-rt table items with attribute access."""
+    route_target: str
+
+
+class BgpVrf6LeaktargetItemObject(FortiObject[BgpVrf6LeaktargetItem]):
+    """Typed object for vrf6.leak-target table items with attribute access."""
+    vrf: str
+    route_map: str
+    interface: str
+
+
 class BgpConfederationpeersItemObject(FortiObject[BgpConfederationpeersItem]):
     """Typed object for confederation-peers table items with attribute access."""
     peer: str

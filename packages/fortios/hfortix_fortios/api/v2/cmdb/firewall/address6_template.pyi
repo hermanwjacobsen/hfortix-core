@@ -70,6 +70,12 @@ class Address6TemplateResponse(TypedDict, total=False):
 # ================================================================
 
 
+class Address6TemplateSubnetsegmentValuesItemObject(FortiObject[Address6TemplateSubnetsegmentValuesItem]):
+    """Typed object for subnet-segment.values table items with attribute access."""
+    name: str
+    value: str
+
+
 class Address6TemplateSubnetsegmentItemObject(FortiObject[Address6TemplateSubnetsegmentItem]):
     """Typed object for subnet-segment table items with attribute access."""
     id: int

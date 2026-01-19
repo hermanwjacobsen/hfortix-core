@@ -76,6 +76,16 @@ class AlarmResponse(TypedDict, total=False):
 # ================================================================
 
 
+class AlarmGroupsFwpolicyviolationsItemObject(FortiObject[AlarmGroupsFwpolicyviolationsItem]):
+    """Typed object for groups.fw-policy-violations table items with attribute access."""
+    id: int
+    threshold: int
+    src_ip: str
+    dst_ip: str
+    src_port: int
+    dst_port: int
+
+
 class AlarmGroupsItemObject(FortiObject[AlarmGroupsItem]):
     """Typed object for groups table items with attribute access."""
     id: int

@@ -64,6 +64,13 @@ class InternetServiceAdditionResponse(TypedDict, total=False):
 # ================================================================
 
 
+class InternetServiceAdditionEntryPortrangeItemObject(FortiObject[InternetServiceAdditionEntryPortrangeItem]):
+    """Typed object for entry.port-range table items with attribute access."""
+    id: int
+    start_port: int
+    end_port: int
+
+
 class InternetServiceAdditionEntryItemObject(FortiObject[InternetServiceAdditionEntryItem]):
     """Typed object for entry table items with attribute access."""
     id: int

@@ -33,6 +33,18 @@ class LayoutBodyitemParametersItem(TypedDict, total=False):
     value: str
 
 
+class LayoutPageHeaderDict(TypedDict, total=False):
+    """Nested object type for page.header field."""
+    style: str
+    header_item: str | list[str]
+
+
+class LayoutPageFooterDict(TypedDict, total=False):
+    """Nested object type for page.footer field."""
+    style: str
+    footer_item: str | list[str]
+
+
 class LayoutPageDict(TypedDict, total=False):
     """Nested object type for page field."""
     paper: Literal["a4", "letter"]
@@ -109,6 +121,13 @@ class LayoutResponse(TypedDict, total=False):
 # ================================================================
 # Response Types (Class for attribute access)
 # ================================================================
+
+
+class LayoutBodyitemParametersItemObject(FortiObject[LayoutBodyitemParametersItem]):
+    """Typed object for body-item.parameters table items with attribute access."""
+    id: int
+    name: str
+    value: str
 
 
 class LayoutBodyitemItemObject(FortiObject[LayoutBodyitemItem]):

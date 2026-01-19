@@ -236,6 +236,30 @@ class SdnConnectorResponse(TypedDict, total=False):
 # ================================================================
 
 
+class SdnConnectorExternalaccountlistRegionlistItemObject(FortiObject[SdnConnectorExternalaccountlistRegionlistItem]):
+    """Typed object for external-account-list.region-list table items with attribute access."""
+    region: str
+
+
+class SdnConnectorNicIpItemObject(FortiObject[SdnConnectorNicIpItem]):
+    """Typed object for nic.ip table items with attribute access."""
+    name: str
+    private_ip: str
+    public_ip: str
+    resource_group: str
+
+
+class SdnConnectorRoutetableRouteItemObject(FortiObject[SdnConnectorRoutetableRouteItem]):
+    """Typed object for route-table.route table items with attribute access."""
+    name: str
+    next_hop: str
+
+
+class SdnConnectorGcpprojectlistGcpzonelistItemObject(FortiObject[SdnConnectorGcpprojectlistGcpzonelistItem]):
+    """Typed object for gcp-project-list.gcp-zone-list table items with attribute access."""
+    name: str
+
+
 class SdnConnectorServerlistItemObject(FortiObject[SdnConnectorServerlistItem]):
     """Typed object for server-list table items with attribute access."""
     ip: str

@@ -26,6 +26,14 @@ from hfortix_fortios.models import (
 # TypedDict Payloads
 # ================================================================
 
+class ProfileFtgddnsFiltersItem(TypedDict, total=False):
+    """Nested item for ftgd-dns.filters field."""
+    id: int
+    category: int
+    action: Literal["block", "monitor"]
+    log: Literal["enable", "disable"]
+
+
 class ProfileDomainfilterDict(TypedDict, total=False):
     """Nested object type for domain-filter field."""
     domain_filter_table: int
@@ -132,6 +140,14 @@ class ProfileDnstranslationItemObject(FortiObject[ProfileDnstranslationItem]):
 class ProfileTransparentdnsdatabaseItemObject(FortiObject[ProfileTransparentdnsdatabaseItem]):
     """Typed object for transparent-dns-database table items with attribute access."""
     name: str
+
+
+class ProfileFtgddnsFiltersItemObject(FortiObject[ProfileFtgddnsFiltersItem]):
+    """Typed object for ftgd-dns.filters table items with attribute access."""
+    id: int
+    category: int
+    action: Literal["block", "monitor"]
+    log: Literal["enable", "disable"]
 
 
 class ProfileDomainfilterObject(FortiObject):

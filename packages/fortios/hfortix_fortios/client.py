@@ -80,7 +80,7 @@ class FortiOS:
         mode: Literal["sync"] = "sync",
         verify: bool = True,
         vdom: Optional[str] = None,
-        port: Optional[int] = None,
+        port: Union[int, str, None] = None,
         debug: Union[str, bool, None] = None,
         debug_options: Optional[dict[str, Any]] = None,
         max_retries: int = 3,
@@ -122,7 +122,7 @@ class FortiOS:
         mode: Literal["async"],
         verify: bool = True,
         vdom: Optional[str] = None,
-        port: Optional[int] = None,
+        port: Union[int, str, None] = None,
         debug: Union[str, bool, None] = None,
         debug_options: Optional[dict[str, Any]] = None,
         max_retries: int = 3,
@@ -163,7 +163,7 @@ class FortiOS:
         mode: Literal["sync", "async"] = "sync",
         verify: bool = True,
         vdom: Optional[str] = None,
-        port: Optional[int] = None,
+        port: Union[int, str, None] = None,
         debug: Union[str, bool, None] = None,
         debug_options: Optional[dict[str, Any]] = None,
         max_retries: int = 3,
@@ -228,6 +228,9 @@ class FortiOS:
             vdom: Virtual domain (default: None = FortiGate's default VDOM)
             port: HTTPS port (default: None = use 443, or specify custom port
             like 8443)
+                  Accepts both int and str types - string values are automatically
+                  converted to int. This allows passing environment variable values
+                  directly: `port=os.getenv("FORTIOS_PORT", "443")`
             debug: Logging level for this instance ('debug', 'info', 'warning',
             'error', 'off')
                    Can be a string level or boolean True for 'debug' level
@@ -489,6 +492,12 @@ class FortiOS:
             fgt = FortiOS()  # Reads from FORTIOS_HOST, FORTIOS_USERNAME,
             FORTIOS_PASSWORD
 
+            # Environment variables with custom port
+            # Set: export FORTIOS_HOST="192.0.2.10"
+            #      export FORTIOS_TOKEN="your_token_here"
+            #      export FORTIOS_PORT="8443"
+            fgt = FortiOS()  # Reads from FORTIOS_HOST, FORTIOS_TOKEN, FORTIOS_PORT
+
             # Custom port
             fgt = FortiOS("192.0.2.10", token="your_token_here", verify=False,
             port=8443)
@@ -530,6 +539,15 @@ class FortiOS:
         token = token or os.getenv("FORTIOS_TOKEN")
         username = username or os.getenv("FORTIOS_USERNAME")
         password = password or os.getenv("FORTIOS_PASSWORD")
+        
+        # Port from environment variable or parameter - convert string to int if needed
+        if port is None:
+            port_env = os.getenv("FORTIOS_PORT")
+            if port_env is not None:
+                port = int(port_env)
+        elif isinstance(port, str):
+            # Convert string port to int (for users passing os.getenv() directly)
+            port = int(port)
 
         self._host = host
         self._vdom = vdom

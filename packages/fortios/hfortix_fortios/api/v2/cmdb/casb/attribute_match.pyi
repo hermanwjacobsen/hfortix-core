@@ -68,6 +68,16 @@ class AttributeMatchResponse(TypedDict, total=False):
 # ================================================================
 
 
+class AttributeMatchMatchRuleItemObject(FortiObject[AttributeMatchMatchRuleItem]):
+    """Typed object for match.rule table items with attribute access."""
+    id: int
+    attribute: str
+    match_pattern: Literal["simple", "substr", "regexp"]
+    match_value: str
+    case_sensitive: Literal["enable", "disable"]
+    negate: Literal["enable", "disable"]
+
+
 class AttributeMatchMatchItemObject(FortiObject[AttributeMatchMatchItem]):
     """Typed object for match table items with attribute access."""
     id: int

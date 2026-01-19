@@ -72,6 +72,21 @@ class SecurityExemptListResponse(TypedDict, total=False):
 # ================================================================
 
 
+class SecurityExemptListRuleSrcaddrItemObject(FortiObject[SecurityExemptListRuleSrcaddrItem]):
+    """Typed object for rule.srcaddr table items with attribute access."""
+    name: str
+
+
+class SecurityExemptListRuleDstaddrItemObject(FortiObject[SecurityExemptListRuleDstaddrItem]):
+    """Typed object for rule.dstaddr table items with attribute access."""
+    name: str
+
+
+class SecurityExemptListRuleServiceItemObject(FortiObject[SecurityExemptListRuleServiceItem]):
+    """Typed object for rule.service table items with attribute access."""
+    name: str
+
+
 class SecurityExemptListRuleItemObject(FortiObject[SecurityExemptListRuleItem]):
     """Typed object for rule table items with attribute access."""
     id: int

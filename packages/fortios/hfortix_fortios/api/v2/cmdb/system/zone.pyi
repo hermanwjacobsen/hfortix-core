@@ -70,6 +70,11 @@ class ZoneResponse(TypedDict, total=False):
 # ================================================================
 
 
+class ZoneTaggingTagsItemObject(FortiObject[ZoneTaggingTagsItem]):
+    """Typed object for tagging.tags table items with attribute access."""
+    name: str
+
+
 class ZoneTaggingItemObject(FortiObject[ZoneTaggingItem]):
     """Typed object for tagging table items with attribute access."""
     name: str

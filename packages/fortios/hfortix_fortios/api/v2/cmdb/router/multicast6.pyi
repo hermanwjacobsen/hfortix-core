@@ -25,6 +25,12 @@ from hfortix_fortios.models import (
 # TypedDict Payloads
 # ================================================================
 
+class Multicast6PimsmglobalRpaddressItem(TypedDict, total=False):
+    """Nested item for pim-sm-global.rp-address field."""
+    id: int
+    ip6_address: str
+
+
 class Multicast6InterfaceItem(TypedDict, total=False):
     """Nested item for interface field."""
     name: str
@@ -69,6 +75,12 @@ class Multicast6InterfaceItemObject(FortiObject[Multicast6InterfaceItem]):
     name: str
     hello_interval: int
     hello_holdtime: int
+
+
+class Multicast6PimsmglobalRpaddressItemObject(FortiObject[Multicast6PimsmglobalRpaddressItem]):
+    """Typed object for pim-sm-global.rp-address table items with attribute access."""
+    id: int
+    ip6_address: str
 
 
 class Multicast6PimsmglobalObject(FortiObject):

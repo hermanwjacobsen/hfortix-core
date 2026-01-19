@@ -65,6 +65,14 @@ class QuarantineResponse(TypedDict, total=False):
 # ================================================================
 
 
+class QuarantineTargetsMacsItemObject(FortiObject[QuarantineTargetsMacsItem]):
+    """Typed object for targets.macs table items with attribute access."""
+    mac: str
+    description: str
+    drop: Literal["disable", "enable"]
+    parent: str
+
+
 class QuarantineTargetsItemObject(FortiObject[QuarantineTargetsItem]):
     """Typed object for targets table items with attribute access."""
     entry: str

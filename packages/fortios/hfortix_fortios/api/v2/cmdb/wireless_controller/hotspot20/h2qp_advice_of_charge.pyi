@@ -64,6 +64,14 @@ class H2qpAdviceOfChargeResponse(TypedDict, total=False):
 # ================================================================
 
 
+class H2qpAdviceOfChargeAoclistPlaninfoItemObject(FortiObject[H2qpAdviceOfChargeAoclistPlaninfoItem]):
+    """Typed object for aoc-list.plan-info table items with attribute access."""
+    name: str
+    lang: str
+    currency: str
+    info_file: str
+
+
 class H2qpAdviceOfChargeAoclistItemObject(FortiObject[H2qpAdviceOfChargeAoclistItem]):
     """Typed object for aoc-list table items with attribute access."""
     name: str

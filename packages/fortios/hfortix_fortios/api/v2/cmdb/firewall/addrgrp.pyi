@@ -89,6 +89,11 @@ class AddrgrpResponse(TypedDict, total=False):
 # ================================================================
 
 
+class AddrgrpTaggingTagsItemObject(FortiObject[AddrgrpTaggingTagsItem]):
+    """Typed object for tagging.tags table items with attribute access."""
+    name: str
+
+
 class AddrgrpMemberItemObject(FortiObject[AddrgrpMemberItem]):
     """Typed object for member table items with attribute access."""
     name: str

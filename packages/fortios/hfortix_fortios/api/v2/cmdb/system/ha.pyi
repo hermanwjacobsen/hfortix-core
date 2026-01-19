@@ -249,6 +249,11 @@ class HaResponse(TypedDict, total=False):
 # ================================================================
 
 
+class HaVclusterVdomItemObject(FortiObject[HaVclusterVdomItem]):
+    """Typed object for vcluster.vdom table items with attribute access."""
+    name: str
+
+
 class HaAutovirtualmacinterfaceItemObject(FortiObject[HaAutovirtualmacinterfaceItem]):
     """Typed object for auto-virtual-mac-interface table items with attribute access."""
     interface_name: str

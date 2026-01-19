@@ -26,6 +26,12 @@ from hfortix_fortios.models import (
 # TypedDict Payloads
 # ================================================================
 
+class ProfileProtocolOptionsCifsServerkeytabItem(TypedDict, total=False):
+    """Nested item for cifs.server-keytab field."""
+    principal: str
+    keytab: str
+
+
 class ProfileProtocolOptionsHttpDict(TypedDict, total=False):
     """Nested object type for http field."""
     ports: int | list[int]
@@ -246,6 +252,12 @@ class ProfileProtocolOptionsResponse(TypedDict, total=False):
 # ================================================================
 # Response Types (Class for attribute access)
 # ================================================================
+
+
+class ProfileProtocolOptionsCifsServerkeytabItemObject(FortiObject[ProfileProtocolOptionsCifsServerkeytabItem]):
+    """Typed object for cifs.server-keytab table items with attribute access."""
+    principal: str
+    keytab: str
 
 
 class ProfileProtocolOptionsHttpObject(FortiObject):

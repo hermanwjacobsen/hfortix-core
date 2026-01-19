@@ -121,6 +121,16 @@ class StandaloneClusterResponse(TypedDict, total=False):
 # ================================================================
 
 
+class StandaloneClusterClusterpeerSyncvdItemObject(FortiObject[StandaloneClusterClusterpeerSyncvdItem]):
+    """Typed object for cluster-peer.syncvd table items with attribute access."""
+    name: str
+
+
+class StandaloneClusterClusterpeerDownintfsbeforesesssyncItemObject(FortiObject[StandaloneClusterClusterpeerDownintfsbeforesesssyncItem]):
+    """Typed object for cluster-peer.down-intfs-before-sess-sync table items with attribute access."""
+    name: str
+
+
 class StandaloneClusterClusterpeerItemObject(FortiObject[StandaloneClusterClusterpeerItem]):
     """Typed object for cluster-peer table items with attribute access."""
     sync_id: int

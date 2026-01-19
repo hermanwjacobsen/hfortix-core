@@ -122,6 +122,26 @@ class RouteMapResponse(TypedDict, total=False):
 # ================================================================
 
 
+class RouteMapRuleSetaspathItemObject(FortiObject[RouteMapRuleSetaspathItem]):
+    """Typed object for rule.set-aspath table items with attribute access."""
+    asn: str
+
+
+class RouteMapRuleSetcommunityItemObject(FortiObject[RouteMapRuleSetcommunityItem]):
+    """Typed object for rule.set-community table items with attribute access."""
+    community: str
+
+
+class RouteMapRuleSetextcommunityrtItemObject(FortiObject[RouteMapRuleSetextcommunityrtItem]):
+    """Typed object for rule.set-extcommunity-rt table items with attribute access."""
+    community: str
+
+
+class RouteMapRuleSetextcommunitysooItemObject(FortiObject[RouteMapRuleSetextcommunitysooItem]):
+    """Typed object for rule.set-extcommunity-soo table items with attribute access."""
+    community: str
+
+
 class RouteMapRuleItemObject(FortiObject[RouteMapRuleItem]):
     """Typed object for rule table items with attribute access."""
     id: int
