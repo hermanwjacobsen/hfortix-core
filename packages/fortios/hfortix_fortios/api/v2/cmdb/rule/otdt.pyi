@@ -82,6 +82,19 @@ class OtdtResponse(TypedDict, total=False):
 # ================================================================
 
 
+class OtdtParametersItemObject(FortiObject[OtdtParametersItem]):
+    """Typed object for parameters table items with attribute access."""
+    name: str
+    default_value: str
+
+
+class OtdtMetadataItemObject(FortiObject[OtdtMetadataItem]):
+    """Typed object for metadata table items with attribute access."""
+    id: int
+    metaid: int
+    valueid: int
+
+
 class OtdtObject(FortiObject):
     """Typed FortiObject for Otdt with field access."""
     name: str
@@ -94,8 +107,8 @@ class OtdtObject(FortiObject):
     technology: str
     behavior: str
     vendor: str
-    parameters: list[OtdtParametersItem]
-    metadata: list[OtdtMetadataItem]
+    parameters: FortiObjectList[OtdtParametersItemObject]
+    metadata: FortiObjectList[OtdtMetadataItemObject]
     status: str
 
 
@@ -165,64 +178,8 @@ class Otdt:
         format: str = ...,
     ) -> FortiObject: ...
 
-    # ================================================================
-    # POST Method
-    # ================================================================
-    
-    def post(
-        self,
-        payload_dict: OtdtPayload | None = ...,
-        name: str | None = ...,
-        id: int | None = ...,
-        category: int | None = ...,
-        popularity: int | None = ...,
-        risk: int | None = ...,
-        weight: int | None = ...,
-        protocol: str | None = ...,
-        technology: str | None = ...,
-        behavior: str | None = ...,
-        vendor: str | None = ...,
-        parameters: str | list[str] | list[OtdtParametersItem] | None = ...,
-        metadata: str | list[str] | list[OtdtMetadataItem] | None = ...,
-        status: str | None = ...,
-        error_mode: Literal["raise", "return", "print"] | None = ...,
-        error_format: Literal["detailed", "simple", "code_only"] | None = ...,
-    ) -> OtdtObject: ...
 
-    # ================================================================
-    # PUT Method
-    # ================================================================
-    
-    def put(
-        self,
-        payload_dict: OtdtPayload | None = ...,
-        name: str | None = ...,
-        id: int | None = ...,
-        category: int | None = ...,
-        popularity: int | None = ...,
-        risk: int | None = ...,
-        weight: int | None = ...,
-        protocol: str | None = ...,
-        technology: str | None = ...,
-        behavior: str | None = ...,
-        vendor: str | None = ...,
-        parameters: str | list[str] | list[OtdtParametersItem] | None = ...,
-        metadata: str | list[str] | list[OtdtMetadataItem] | None = ...,
-        status: str | None = ...,
-        error_mode: Literal["raise", "return", "print"] | None = ...,
-        error_format: Literal["detailed", "simple", "code_only"] | None = ...,
-    ) -> OtdtObject: ...
 
-    # ================================================================
-    # DELETE Method
-    # ================================================================
-    
-    def delete(
-        self,
-        name: str | None = ...,
-        error_mode: Literal["raise", "return", "print"] | None = ...,
-        error_format: Literal["detailed", "simple", "code_only"] | None = ...,
-    ) -> FortiObject: ...
 
     # ================================================================
     # Utility Methods

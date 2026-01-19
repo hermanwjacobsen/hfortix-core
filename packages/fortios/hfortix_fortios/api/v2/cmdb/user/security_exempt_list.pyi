@@ -26,12 +26,27 @@ from hfortix_fortios.models import (
 # TypedDict Payloads
 # ================================================================
 
+class SecurityExemptListRuleSrcaddrItem(TypedDict, total=False):
+    """Nested item for rule.srcaddr field."""
+    name: str
+
+
+class SecurityExemptListRuleDstaddrItem(TypedDict, total=False):
+    """Nested item for rule.dstaddr field."""
+    name: str
+
+
+class SecurityExemptListRuleServiceItem(TypedDict, total=False):
+    """Nested item for rule.service field."""
+    name: str
+
+
 class SecurityExemptListRuleItem(TypedDict, total=False):
     """Nested item for rule field."""
     id: int
-    srcaddr: str | list[str]
-    dstaddr: str | list[str]
-    service: str | list[str]
+    srcaddr: str | list[str] | list[SecurityExemptListRuleSrcaddrItem]
+    dstaddr: str | list[str] | list[SecurityExemptListRuleDstaddrItem]
+    service: str | list[str] | list[SecurityExemptListRuleServiceItem]
 
 
 class SecurityExemptListPayload(TypedDict, total=False):
@@ -57,11 +72,19 @@ class SecurityExemptListResponse(TypedDict, total=False):
 # ================================================================
 
 
+class SecurityExemptListRuleItemObject(FortiObject[SecurityExemptListRuleItem]):
+    """Typed object for rule table items with attribute access."""
+    id: int
+    srcaddr: FortiObjectList[SecurityExemptListRuleSrcaddrItemObject]
+    dstaddr: FortiObjectList[SecurityExemptListRuleDstaddrItemObject]
+    service: FortiObjectList[SecurityExemptListRuleServiceItemObject]
+
+
 class SecurityExemptListObject(FortiObject):
     """Typed FortiObject for SecurityExemptList with field access."""
     name: str
     description: str
-    rule: list[SecurityExemptListRuleItem]
+    rule: FortiObjectList[SecurityExemptListRuleItemObject]
 
 
 # ================================================================

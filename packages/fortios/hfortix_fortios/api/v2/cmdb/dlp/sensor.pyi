@@ -61,13 +61,21 @@ class SensorResponse(TypedDict, total=False):
 # ================================================================
 
 
+class SensorEntriesItemObject(FortiObject[SensorEntriesItem]):
+    """Typed object for entries table items with attribute access."""
+    id: int
+    dictionary: str
+    count: int
+    status: Literal["enable", "disable"]
+
+
 class SensorObject(FortiObject):
     """Typed FortiObject for Sensor with field access."""
     name: str
     match_type: Literal["match-all", "match-any", "match-eval"]
     eval: str
     comment: str
-    entries: list[SensorEntriesItem]
+    entries: FortiObjectList[SensorEntriesItemObject]
 
 
 # ================================================================

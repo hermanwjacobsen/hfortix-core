@@ -185,6 +185,24 @@ class RadiusResponse(TypedDict, total=False):
 # ================================================================
 
 
+class RadiusClassItemObject(FortiObject[RadiusClassItem]):
+    """Typed object for class table items with attribute access."""
+    name: str
+
+
+class RadiusAccountingserverItemObject(FortiObject[RadiusAccountingserverItem]):
+    """Typed object for accounting-server table items with attribute access."""
+    id: int
+    status: Literal["enable", "disable"]
+    server: str
+    secret: str
+    port: int
+    source_ip: str
+    interface_select_method: Literal["auto", "sdwan", "specify"]
+    interface: str
+    vrf_select: int
+
+
 class RadiusObject(FortiObject):
     """Typed FortiObject for Radius with field access."""
     name: str
@@ -212,7 +230,7 @@ class RadiusObject(FortiObject):
     source_ip_interface: str
     username_case_sensitive: Literal["enable", "disable"]
     group_override_attr_type: Literal["filter-Id", "class"]
-    class_: list[RadiusClassItem]
+    class_: FortiObjectList[RadiusClassItemObject]
     password_renewal: Literal["enable", "disable"]
     require_message_authenticator: Literal["enable", "disable"]
     password_encoding: Literal["auto", "ISO-8859-1"]
@@ -248,7 +266,7 @@ class RadiusObject(FortiObject):
     rsso_flush_ip_session: Literal["enable", "disable"]
     rsso_ep_one_ip_only: Literal["enable", "disable"]
     delimiter: Literal["plus", "comma"]
-    accounting_server: list[RadiusAccountingserverItem]
+    accounting_server: FortiObjectList[RadiusAccountingserverItemObject]
 
 
 # ================================================================

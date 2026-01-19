@@ -26,13 +26,21 @@ from hfortix_fortios.models import (
 # TypedDict Payloads
 # ================================================================
 
+class H2qpAdviceOfChargeAoclistPlaninfoItem(TypedDict, total=False):
+    """Nested item for aoc-list.plan-info field."""
+    name: str
+    lang: str
+    currency: str
+    info_file: str
+
+
 class H2qpAdviceOfChargeAoclistItem(TypedDict, total=False):
     """Nested item for aoc-list field."""
     name: str
     type: Literal["time-based", "volume-based", "time-and-volume-based", "unlimited"]
     nai_realm_encoding: str
     nai_realm: str
-    plan_info: str | list[str]
+    plan_info: str | list[str] | list[H2qpAdviceOfChargeAoclistPlaninfoItem]
 
 
 class H2qpAdviceOfChargePayload(TypedDict, total=False):
@@ -56,10 +64,19 @@ class H2qpAdviceOfChargeResponse(TypedDict, total=False):
 # ================================================================
 
 
+class H2qpAdviceOfChargeAoclistItemObject(FortiObject[H2qpAdviceOfChargeAoclistItem]):
+    """Typed object for aoc-list table items with attribute access."""
+    name: str
+    type: Literal["time-based", "volume-based", "time-and-volume-based", "unlimited"]
+    nai_realm_encoding: str
+    nai_realm: str
+    plan_info: FortiObjectList[H2qpAdviceOfChargeAoclistPlaninfoItemObject]
+
+
 class H2qpAdviceOfChargeObject(FortiObject):
     """Typed FortiObject for H2qpAdviceOfCharge with field access."""
     name: str
-    aoc_list: list[H2qpAdviceOfChargeAoclistItem]
+    aoc_list: FortiObjectList[H2qpAdviceOfChargeAoclistItemObject]
 
 
 # ================================================================

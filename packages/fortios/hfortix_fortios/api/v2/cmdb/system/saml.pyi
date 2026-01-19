@@ -25,6 +25,12 @@ from hfortix_fortios.models import (
 # TypedDict Payloads
 # ================================================================
 
+class SamlServiceprovidersAssertionattributesItem(TypedDict, total=False):
+    """Nested item for service-providers.assertion-attributes field."""
+    name: str
+    type: Literal["username", "email", "profile-name"]
+
+
 class SamlServiceprovidersItem(TypedDict, total=False):
     """Nested item for service-providers field."""
     name: str
@@ -38,7 +44,7 @@ class SamlServiceprovidersItem(TypedDict, total=False):
     idp_entity_id: str
     idp_single_sign_on_url: str
     idp_single_logout_url: str
-    assertion_attributes: str | list[str]
+    assertion_attributes: str | list[str] | list[SamlServiceprovidersAssertionattributesItem]
 
 
 class SamlPayload(TypedDict, total=False):
@@ -96,6 +102,22 @@ class SamlResponse(TypedDict, total=False):
 # ================================================================
 
 
+class SamlServiceprovidersItemObject(FortiObject[SamlServiceprovidersItem]):
+    """Typed object for service-providers table items with attribute access."""
+    name: str
+    prefix: str
+    sp_binding_protocol: Literal["post", "redirect"]
+    sp_cert: str
+    sp_entity_id: str
+    sp_single_sign_on_url: str
+    sp_single_logout_url: str
+    sp_portal_url: str
+    idp_entity_id: str
+    idp_single_sign_on_url: str
+    idp_single_logout_url: str
+    assertion_attributes: FortiObjectList[SamlServiceprovidersAssertionattributesItemObject]
+
+
 class SamlObject(FortiObject):
     """Typed FortiObject for Saml with field access."""
     status: Literal["enable", "disable"]
@@ -116,7 +138,7 @@ class SamlObject(FortiObject):
     require_signed_resp_and_asrt: Literal["enable", "disable"]
     tolerance: int
     life: int
-    service_providers: list[SamlServiceprovidersItem]
+    service_providers: FortiObjectList[SamlServiceprovidersItemObject]
 
 
 # ================================================================

@@ -278,20 +278,35 @@ class WidsProfileResponse(TypedDict, total=False):
 # ================================================================
 
 
+class WidsProfileApscanchannellist2g5gItemObject(FortiObject[WidsProfileApscanchannellist2g5gItem]):
+    """Typed object for ap-scan-channel-list-2G-5G table items with attribute access."""
+    chan: str
+
+
+class WidsProfileApscanchannellist6gItemObject(FortiObject[WidsProfileApscanchannellist6gItem]):
+    """Typed object for ap-scan-channel-list-6G table items with attribute access."""
+    chan: str
+
+
+class WidsProfileApbgscandisableschedulesItemObject(FortiObject[WidsProfileApbgscandisableschedulesItem]):
+    """Typed object for ap-bgscan-disable-schedules table items with attribute access."""
+    name: str
+
+
 class WidsProfileObject(FortiObject):
     """Typed FortiObject for WidsProfile with field access."""
     name: str
     comment: str
     sensor_mode: Literal["disable", "foreign", "both"]
     ap_scan: Literal["disable", "enable"]
-    ap_scan_channel_list_2G_5G: list[WidsProfileApscanchannellist2g5gItem]
-    ap_scan_channel_list_6G: list[WidsProfileApscanchannellist6gItem]
+    ap_scan_channel_list_2G_5G: FortiObjectList[WidsProfileApscanchannellist2g5gItemObject]
+    ap_scan_channel_list_6G: FortiObjectList[WidsProfileApscanchannellist6gItemObject]
     ap_bgscan_period: int
     ap_bgscan_intv: int
     ap_bgscan_duration: int
     ap_bgscan_idle: int
     ap_bgscan_report_intv: int
-    ap_bgscan_disable_schedules: list[WidsProfileApbgscandisableschedulesItem]
+    ap_bgscan_disable_schedules: FortiObjectList[WidsProfileApbgscandisableschedulesItemObject]
     ap_fgscan_report_intv: int
     ap_scan_passive: Literal["enable", "disable"]
     ap_scan_threshold: str

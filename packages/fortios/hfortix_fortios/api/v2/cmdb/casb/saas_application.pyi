@@ -84,6 +84,29 @@ class SaasApplicationResponse(TypedDict, total=False):
 # ================================================================
 
 
+class SaasApplicationDomainsItemObject(FortiObject[SaasApplicationDomainsItem]):
+    """Typed object for domains table items with attribute access."""
+    domain: str
+
+
+class SaasApplicationOutputattributesItemObject(FortiObject[SaasApplicationOutputattributesItem]):
+    """Typed object for output-attributes table items with attribute access."""
+    name: str
+    description: str
+    type: Literal["string", "string-list", "integer", "integer-list", "boolean"]
+    optional: Literal["enable", "disable"]
+
+
+class SaasApplicationInputattributesItemObject(FortiObject[SaasApplicationInputattributesItem]):
+    """Typed object for input-attributes table items with attribute access."""
+    name: str
+    description: str
+    type: Literal["string"]
+    required: Literal["enable", "disable"]
+    default: Literal["string", "string-list"]
+    fallback_input: Literal["enable", "disable"]
+
+
 class SaasApplicationObject(FortiObject):
     """Typed FortiObject for SaasApplication with field access."""
     name: str
@@ -92,9 +115,9 @@ class SaasApplicationObject(FortiObject):
     type: Literal["built-in", "customized"]
     casb_name: str
     description: str
-    domains: list[SaasApplicationDomainsItem]
-    output_attributes: list[SaasApplicationOutputattributesItem]
-    input_attributes: list[SaasApplicationInputattributesItem]
+    domains: FortiObjectList[SaasApplicationDomainsItemObject]
+    output_attributes: FortiObjectList[SaasApplicationOutputattributesItemObject]
+    input_attributes: FortiObjectList[SaasApplicationInputattributesItemObject]
 
 
 # ================================================================

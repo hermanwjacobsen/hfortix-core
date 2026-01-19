@@ -107,6 +107,17 @@ class GlobalResponse(TypedDict, total=False):
 # ================================================================
 
 
+class GlobalDisablediscoveryItemObject(FortiObject[GlobalDisablediscoveryItem]):
+    """Typed object for disable-discovery table items with attribute access."""
+    name: str
+
+
+class GlobalCustomcommandItemObject(FortiObject[GlobalCustomcommandItem]):
+    """Typed object for custom-command table items with attribute access."""
+    command_entry: str
+    command_name: str
+
+
 class GlobalObject(FortiObject):
     """Typed FortiObject for Global with field access."""
     mac_aging_interval: int
@@ -114,7 +125,7 @@ class GlobalObject(FortiObject):
     vlan_all_mode: Literal["all", "defined"]
     vlan_optimization: Literal["prune", "configured", "none"]
     vlan_identity: Literal["description", "name"]
-    disable_discovery: list[GlobalDisablediscoveryItem]
+    disable_discovery: FortiObjectList[GlobalDisablediscoveryItemObject]
     mac_retention_period: int
     default_virtual_switch_vlan: str
     dhcp_server_access_list: Literal["enable", "disable"]
@@ -131,7 +142,7 @@ class GlobalObject(FortiObject):
     bounce_quarantined_link: Literal["disable", "enable"]
     quarantine_mode: Literal["by-vlan", "by-redirect"]
     update_user_device: str
-    custom_command: list[GlobalCustomcommandItem]
+    custom_command: FortiObjectList[GlobalCustomcommandItemObject]
     fips_enforce: Literal["disable", "enable"]
     firmware_provision_on_authorization: Literal["enable", "disable"]
     switch_on_deauth: Literal["no-op", "factory-reset"]

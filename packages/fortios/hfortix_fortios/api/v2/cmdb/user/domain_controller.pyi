@@ -105,6 +105,20 @@ class DomainControllerResponse(TypedDict, total=False):
 # ================================================================
 
 
+class DomainControllerExtraserverItemObject(FortiObject[DomainControllerExtraserverItem]):
+    """Typed object for extra-server table items with attribute access."""
+    id: int
+    ip_address: str
+    port: int
+    source_ip_address: str
+    source_port: int
+
+
+class DomainControllerLdapserverItemObject(FortiObject[DomainControllerLdapserverItem]):
+    """Typed object for ldap-server table items with attribute access."""
+    name: str
+
+
 class DomainControllerObject(FortiObject):
     """Typed FortiObject for DomainController with field access."""
     name: str
@@ -120,10 +134,10 @@ class DomainControllerObject(FortiObject):
     source_port: int
     interface_select_method: Literal["auto", "sdwan", "specify"]
     interface: str
-    extra_server: list[DomainControllerExtraserverItem]
+    extra_server: FortiObjectList[DomainControllerExtraserverItemObject]
     domain_name: str
     replication_port: int
-    ldap_server: list[DomainControllerLdapserverItem]
+    ldap_server: FortiObjectList[DomainControllerLdapserverItemObject]
     change_detection: Literal["enable", "disable"]
     change_detection_period: int
     dns_srv_lookup: Literal["enable", "disable"]

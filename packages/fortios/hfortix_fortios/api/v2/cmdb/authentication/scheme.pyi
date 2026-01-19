@@ -84,6 +84,11 @@ class SchemeResponse(TypedDict, total=False):
 # ================================================================
 
 
+class SchemeUserdatabaseItemObject(FortiObject[SchemeUserdatabaseItem]):
+    """Typed object for user-database table items with attribute access."""
+    name: str
+
+
 class SchemeObject(FortiObject):
     """Typed FortiObject for Scheme with field access."""
     name: str
@@ -98,7 +103,7 @@ class SchemeObject(FortiObject):
     fsso_guest: Literal["enable", "disable"]
     user_cert: Literal["enable", "disable"]
     cert_http_header: Literal["enable", "disable"]
-    user_database: list[SchemeUserdatabaseItem]
+    user_database: FortiObjectList[SchemeUserdatabaseItemObject]
     ssh_ca: str
     external_idp: str
     group_attr_type: Literal["display-name", "external-id"]

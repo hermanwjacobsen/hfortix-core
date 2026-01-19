@@ -105,6 +105,11 @@ class SettingResponse(TypedDict, total=False):
 # ================================================================
 
 
+class SettingCustomlogfieldsItemObject(FortiObject[SettingCustomlogfieldsItem]):
+    """Typed object for custom-log-fields table items with attribute access."""
+    field_id: str
+
+
 class SettingObject(FortiObject):
     """Typed FortiObject for Setting with field access."""
     resolve_ip: Literal["enable", "disable"]
@@ -134,7 +139,7 @@ class SettingObject(FortiObject):
     extended_utm_log: Literal["enable", "disable"]
     zone_name: Literal["enable", "disable"]
     web_svc_perf: Literal["enable", "disable"]
-    custom_log_fields: list[SettingCustomlogfieldsItem]
+    custom_log_fields: FortiObjectList[SettingCustomlogfieldsItemObject]
     anonymization_hash: str
 
 

@@ -69,14 +69,24 @@ class VlanPolicyResponse(TypedDict, total=False):
 # ================================================================
 
 
+class VlanPolicyAllowedvlansItemObject(FortiObject[VlanPolicyAllowedvlansItem]):
+    """Typed object for allowed-vlans table items with attribute access."""
+    vlan_name: str
+
+
+class VlanPolicyUntaggedvlansItemObject(FortiObject[VlanPolicyUntaggedvlansItem]):
+    """Typed object for untagged-vlans table items with attribute access."""
+    vlan_name: str
+
+
 class VlanPolicyObject(FortiObject):
     """Typed FortiObject for VlanPolicy with field access."""
     name: str
     description: str
     fortilink: str
     vlan: str
-    allowed_vlans: list[VlanPolicyAllowedvlansItem]
-    untagged_vlans: list[VlanPolicyUntaggedvlansItem]
+    allowed_vlans: FortiObjectList[VlanPolicyAllowedvlansItemObject]
+    untagged_vlans: FortiObjectList[VlanPolicyUntaggedvlansItemObject]
     allowed_vlans_all: Literal["enable", "disable"]
     discard_mode: Literal["none", "all-untagged", "all-tagged"]
 

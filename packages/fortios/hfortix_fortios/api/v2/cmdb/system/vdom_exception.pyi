@@ -56,6 +56,11 @@ class VdomExceptionResponse(TypedDict, total=False):
 # ================================================================
 
 
+class VdomExceptionVdomItemObject(FortiObject[VdomExceptionVdomItem]):
+    """Typed object for vdom table items with attribute access."""
+    name: str
+
+
 class VdomExceptionObject(FortiObject):
     """Typed FortiObject for VdomException with field access."""
     id: int

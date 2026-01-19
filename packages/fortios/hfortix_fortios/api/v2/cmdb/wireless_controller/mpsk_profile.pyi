@@ -26,12 +26,27 @@ from hfortix_fortios.models import (
 # TypedDict Payloads
 # ================================================================
 
+class MpskProfileMpskgroupMpskkeyItem(TypedDict, total=False):
+    """Nested item for mpsk-group.mpsk-key field."""
+    name: str
+    key_type: Literal["wpa2-personal", "wpa3-sae"]
+    mac: str
+    passphrase: str
+    sae_password: str
+    sae_pk: Literal["enable", "disable"]
+    sae_private_key: str
+    concurrent_client_limit_type: Literal["default", "unlimited", "specified"]
+    concurrent_clients: int
+    comment: str
+    mpsk_schedules: str | list[str]
+
+
 class MpskProfileMpskgroupItem(TypedDict, total=False):
     """Nested item for mpsk-group field."""
     name: str
     vlan_type: Literal["no-vlan", "fixed-vlan"]
     vlan_id: int
-    mpsk_key: str | list[str]
+    mpsk_key: str | list[str] | list[MpskProfileMpskgroupMpskkeyItem]
 
 
 class MpskProfilePayload(TypedDict, total=False):
@@ -63,6 +78,14 @@ class MpskProfileResponse(TypedDict, total=False):
 # ================================================================
 
 
+class MpskProfileMpskgroupItemObject(FortiObject[MpskProfileMpskgroupItem]):
+    """Typed object for mpsk-group table items with attribute access."""
+    name: str
+    vlan_type: Literal["no-vlan", "fixed-vlan"]
+    vlan_id: int
+    mpsk_key: FortiObjectList[MpskProfileMpskgroupMpskkeyItemObject]
+
+
 class MpskProfileObject(FortiObject):
     """Typed FortiObject for MpskProfile with field access."""
     name: str
@@ -70,7 +93,7 @@ class MpskProfileObject(FortiObject):
     mpsk_external_server_auth: Literal["enable", "disable"]
     mpsk_external_server: str
     mpsk_type: Literal["wpa2-personal", "wpa3-sae", "wpa3-sae-transition"]
-    mpsk_group: list[MpskProfileMpskgroupItem]
+    mpsk_group: FortiObjectList[MpskProfileMpskgroupItemObject]
 
 
 # ================================================================

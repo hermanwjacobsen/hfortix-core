@@ -36,7 +36,7 @@ class Multicast6PimsmglobalDict(TypedDict, total=False):
     """Nested object type for pim-sm-global field."""
     register_rate_limit: int
     pim_use_sdwan: Literal["enable", "disable"]
-    rp_address: str | list[str]
+    rp_address: str | list[str] | list[Multicast6PimsmglobalRpaddressItem]
 
 
 class Multicast6Payload(TypedDict, total=False):
@@ -64,6 +64,13 @@ class Multicast6Response(TypedDict, total=False):
 # ================================================================
 
 
+class Multicast6InterfaceItemObject(FortiObject[Multicast6InterfaceItem]):
+    """Typed object for interface table items with attribute access."""
+    name: str
+    hello_interval: int
+    hello_holdtime: int
+
+
 class Multicast6PimsmglobalObject(FortiObject):
     """Nested object for pim-sm-global field with attribute access."""
     register_rate_limit: int
@@ -75,7 +82,7 @@ class Multicast6Object(FortiObject):
     """Typed FortiObject for Multicast6 with field access."""
     multicast_routing: Literal["enable", "disable"]
     multicast_pmtu: Literal["enable", "disable"]
-    interface: list[Multicast6InterfaceItem]
+    interface: FortiObjectList[Multicast6InterfaceItemObject]
     pim_sm_global: Multicast6PimsmglobalObject
 
 

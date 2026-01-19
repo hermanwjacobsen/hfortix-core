@@ -62,6 +62,11 @@ class QkdResponse(TypedDict, total=False):
 # ================================================================
 
 
+class QkdCertificateItemObject(FortiObject[QkdCertificateItem]):
+    """Typed object for certificate table items with attribute access."""
+    name: str
+
+
 class QkdObject(FortiObject):
     """Typed FortiObject for Qkd with field access."""
     name: str
@@ -69,7 +74,7 @@ class QkdObject(FortiObject):
     port: int
     id: str
     peer: str
-    certificate: list[QkdCertificateItem]
+    certificate: FortiObjectList[QkdCertificateItemObject]
     comment: str
 
 

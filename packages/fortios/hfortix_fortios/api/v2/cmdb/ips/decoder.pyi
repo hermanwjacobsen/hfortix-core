@@ -55,10 +55,16 @@ class DecoderResponse(TypedDict, total=False):
 # ================================================================
 
 
+class DecoderParameterItemObject(FortiObject[DecoderParameterItem]):
+    """Typed object for parameter table items with attribute access."""
+    name: str
+    value: str
+
+
 class DecoderObject(FortiObject):
     """Typed FortiObject for Decoder with field access."""
     name: str
-    parameter: list[DecoderParameterItem]
+    parameter: FortiObjectList[DecoderParameterItemObject]
     status: str
 
 
@@ -128,44 +134,8 @@ class Decoder:
         format: str = ...,
     ) -> FortiObject: ...
 
-    # ================================================================
-    # POST Method
-    # ================================================================
-    
-    def post(
-        self,
-        payload_dict: DecoderPayload | None = ...,
-        name: str | None = ...,
-        parameter: str | list[str] | list[DecoderParameterItem] | None = ...,
-        status: str | None = ...,
-        error_mode: Literal["raise", "return", "print"] | None = ...,
-        error_format: Literal["detailed", "simple", "code_only"] | None = ...,
-    ) -> DecoderObject: ...
 
-    # ================================================================
-    # PUT Method
-    # ================================================================
-    
-    def put(
-        self,
-        payload_dict: DecoderPayload | None = ...,
-        name: str | None = ...,
-        parameter: str | list[str] | list[DecoderParameterItem] | None = ...,
-        status: str | None = ...,
-        error_mode: Literal["raise", "return", "print"] | None = ...,
-        error_format: Literal["detailed", "simple", "code_only"] | None = ...,
-    ) -> DecoderObject: ...
 
-    # ================================================================
-    # DELETE Method
-    # ================================================================
-    
-    def delete(
-        self,
-        name: str | None = ...,
-        error_mode: Literal["raise", "return", "print"] | None = ...,
-        error_format: Literal["detailed", "simple", "code_only"] | None = ...,
-    ) -> FortiObject: ...
 
     # ================================================================
     # Utility Methods

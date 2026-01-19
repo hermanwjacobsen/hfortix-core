@@ -134,24 +134,69 @@ class LocalInPolicyResponse(TypedDict, total=False):
 # ================================================================
 
 
+class LocalInPolicyIntfItemObject(FortiObject[LocalInPolicyIntfItem]):
+    """Typed object for intf table items with attribute access."""
+    name: str
+
+
+class LocalInPolicySrcaddrItemObject(FortiObject[LocalInPolicySrcaddrItem]):
+    """Typed object for srcaddr table items with attribute access."""
+    name: str
+
+
+class LocalInPolicyDstaddrItemObject(FortiObject[LocalInPolicyDstaddrItem]):
+    """Typed object for dstaddr table items with attribute access."""
+    name: str
+
+
+class LocalInPolicyInternetservicesrcnameItemObject(FortiObject[LocalInPolicyInternetservicesrcnameItem]):
+    """Typed object for internet-service-src-name table items with attribute access."""
+    name: str
+
+
+class LocalInPolicyInternetservicesrcgroupItemObject(FortiObject[LocalInPolicyInternetservicesrcgroupItem]):
+    """Typed object for internet-service-src-group table items with attribute access."""
+    name: str
+
+
+class LocalInPolicyInternetservicesrccustomItemObject(FortiObject[LocalInPolicyInternetservicesrccustomItem]):
+    """Typed object for internet-service-src-custom table items with attribute access."""
+    name: str
+
+
+class LocalInPolicyInternetservicesrccustomgroupItemObject(FortiObject[LocalInPolicyInternetservicesrccustomgroupItem]):
+    """Typed object for internet-service-src-custom-group table items with attribute access."""
+    name: str
+
+
+class LocalInPolicyInternetservicesrcfortiguardItemObject(FortiObject[LocalInPolicyInternetservicesrcfortiguardItem]):
+    """Typed object for internet-service-src-fortiguard table items with attribute access."""
+    name: str
+
+
+class LocalInPolicyServiceItemObject(FortiObject[LocalInPolicyServiceItem]):
+    """Typed object for service table items with attribute access."""
+    name: str
+
+
 class LocalInPolicyObject(FortiObject):
     """Typed FortiObject for LocalInPolicy with field access."""
     policyid: int
     uuid: str
     ha_mgmt_intf_only: Literal["enable", "disable"]
-    intf: list[LocalInPolicyIntfItem]
-    srcaddr: list[LocalInPolicySrcaddrItem]
+    intf: FortiObjectList[LocalInPolicyIntfItemObject]
+    srcaddr: FortiObjectList[LocalInPolicySrcaddrItemObject]
     srcaddr_negate: Literal["enable", "disable"]
-    dstaddr: list[LocalInPolicyDstaddrItem]
+    dstaddr: FortiObjectList[LocalInPolicyDstaddrItemObject]
     internet_service_src: Literal["enable", "disable"]
-    internet_service_src_name: list[LocalInPolicyInternetservicesrcnameItem]
-    internet_service_src_group: list[LocalInPolicyInternetservicesrcgroupItem]
-    internet_service_src_custom: list[LocalInPolicyInternetservicesrccustomItem]
-    internet_service_src_custom_group: list[LocalInPolicyInternetservicesrccustomgroupItem]
-    internet_service_src_fortiguard: list[LocalInPolicyInternetservicesrcfortiguardItem]
+    internet_service_src_name: FortiObjectList[LocalInPolicyInternetservicesrcnameItemObject]
+    internet_service_src_group: FortiObjectList[LocalInPolicyInternetservicesrcgroupItemObject]
+    internet_service_src_custom: FortiObjectList[LocalInPolicyInternetservicesrccustomItemObject]
+    internet_service_src_custom_group: FortiObjectList[LocalInPolicyInternetservicesrccustomgroupItemObject]
+    internet_service_src_fortiguard: FortiObjectList[LocalInPolicyInternetservicesrcfortiguardItemObject]
     dstaddr_negate: Literal["enable", "disable"]
     action: Literal["accept", "deny"]
-    service: list[LocalInPolicyServiceItem]
+    service: FortiObjectList[LocalInPolicyServiceItemObject]
     service_negate: Literal["enable", "disable"]
     internet_service_src_negate: Literal["enable", "disable"]
     schedule: str

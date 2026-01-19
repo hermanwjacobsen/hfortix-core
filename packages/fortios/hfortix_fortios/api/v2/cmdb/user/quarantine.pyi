@@ -25,11 +25,19 @@ from hfortix_fortios.models import (
 # TypedDict Payloads
 # ================================================================
 
+class QuarantineTargetsMacsItem(TypedDict, total=False):
+    """Nested item for targets.macs field."""
+    mac: str
+    description: str
+    drop: Literal["disable", "enable"]
+    parent: str
+
+
 class QuarantineTargetsItem(TypedDict, total=False):
     """Nested item for targets field."""
     entry: str
     description: str
-    macs: str | list[str]
+    macs: str | list[str] | list[QuarantineTargetsMacsItem]
 
 
 class QuarantinePayload(TypedDict, total=False):
@@ -57,12 +65,19 @@ class QuarantineResponse(TypedDict, total=False):
 # ================================================================
 
 
+class QuarantineTargetsItemObject(FortiObject[QuarantineTargetsItem]):
+    """Typed object for targets table items with attribute access."""
+    entry: str
+    description: str
+    macs: FortiObjectList[QuarantineTargetsMacsItemObject]
+
+
 class QuarantineObject(FortiObject):
     """Typed FortiObject for Quarantine with field access."""
     quarantine: Literal["enable", "disable"]
     traffic_policy: str
     firewall_groups: str
-    targets: list[QuarantineTargetsItem]
+    targets: FortiObjectList[QuarantineTargetsItemObject]
 
 
 # ================================================================

@@ -26,6 +26,30 @@ from hfortix_fortios.models import (
 # TypedDict Payloads
 # ================================================================
 
+class SdnConnectorExternalaccountlistRegionlistItem(TypedDict, total=False):
+    """Nested item for external-account-list.region-list field."""
+    region: str
+
+
+class SdnConnectorNicIpItem(TypedDict, total=False):
+    """Nested item for nic.ip field."""
+    name: str
+    private_ip: str
+    public_ip: str
+    resource_group: str
+
+
+class SdnConnectorRoutetableRouteItem(TypedDict, total=False):
+    """Nested item for route-table.route field."""
+    name: str
+    next_hop: str
+
+
+class SdnConnectorGcpprojectlistGcpzonelistItem(TypedDict, total=False):
+    """Nested item for gcp-project-list.gcp-zone-list field."""
+    name: str
+
+
 class SdnConnectorServerlistItem(TypedDict, total=False):
     """Nested item for server-list field."""
     ip: str
@@ -35,14 +59,14 @@ class SdnConnectorExternalaccountlistItem(TypedDict, total=False):
     """Nested item for external-account-list field."""
     role_arn: str
     external_id: str
-    region_list: str | list[str]
+    region_list: str | list[str] | list[SdnConnectorExternalaccountlistRegionlistItem]
 
 
 class SdnConnectorNicItem(TypedDict, total=False):
     """Nested item for nic field."""
     name: str
     peer_nic: str
-    ip: str | list[str]
+    ip: str | list[str] | list[SdnConnectorNicIpItem]
 
 
 class SdnConnectorRoutetableItem(TypedDict, total=False):
@@ -50,7 +74,7 @@ class SdnConnectorRoutetableItem(TypedDict, total=False):
     name: str
     subscription_id: str
     resource_group: str
-    route: str | list[str]
+    route: str | list[str] | list[SdnConnectorRoutetableRouteItem]
 
 
 class SdnConnectorCompartmentlistItem(TypedDict, total=False):
@@ -76,7 +100,7 @@ class SdnConnectorRouteItem(TypedDict, total=False):
 class SdnConnectorGcpprojectlistItem(TypedDict, total=False):
     """Nested item for gcp-project-list field."""
     id: str
-    gcp_zone_list: str | list[str]
+    gcp_zone_list: str | list[str] | list[SdnConnectorGcpprojectlistGcpzonelistItem]
 
 
 class SdnConnectorForwardingruleItem(TypedDict, total=False):
@@ -212,6 +236,65 @@ class SdnConnectorResponse(TypedDict, total=False):
 # ================================================================
 
 
+class SdnConnectorServerlistItemObject(FortiObject[SdnConnectorServerlistItem]):
+    """Typed object for server-list table items with attribute access."""
+    ip: str
+
+
+class SdnConnectorExternalaccountlistItemObject(FortiObject[SdnConnectorExternalaccountlistItem]):
+    """Typed object for external-account-list table items with attribute access."""
+    role_arn: str
+    external_id: str
+    region_list: FortiObjectList[SdnConnectorExternalaccountlistRegionlistItemObject]
+
+
+class SdnConnectorNicItemObject(FortiObject[SdnConnectorNicItem]):
+    """Typed object for nic table items with attribute access."""
+    name: str
+    peer_nic: str
+    ip: FortiObjectList[SdnConnectorNicIpItemObject]
+
+
+class SdnConnectorRoutetableItemObject(FortiObject[SdnConnectorRoutetableItem]):
+    """Typed object for route-table table items with attribute access."""
+    name: str
+    subscription_id: str
+    resource_group: str
+    route: FortiObjectList[SdnConnectorRoutetableRouteItemObject]
+
+
+class SdnConnectorCompartmentlistItemObject(FortiObject[SdnConnectorCompartmentlistItem]):
+    """Typed object for compartment-list table items with attribute access."""
+    compartment_id: str
+
+
+class SdnConnectorOciregionlistItemObject(FortiObject[SdnConnectorOciregionlistItem]):
+    """Typed object for oci-region-list table items with attribute access."""
+    region: str
+
+
+class SdnConnectorExternalipItemObject(FortiObject[SdnConnectorExternalipItem]):
+    """Typed object for external-ip table items with attribute access."""
+    name: str
+
+
+class SdnConnectorRouteItemObject(FortiObject[SdnConnectorRouteItem]):
+    """Typed object for route table items with attribute access."""
+    name: str
+
+
+class SdnConnectorGcpprojectlistItemObject(FortiObject[SdnConnectorGcpprojectlistItem]):
+    """Typed object for gcp-project-list table items with attribute access."""
+    id: str
+    gcp_zone_list: FortiObjectList[SdnConnectorGcpprojectlistGcpzonelistItemObject]
+
+
+class SdnConnectorForwardingruleItemObject(FortiObject[SdnConnectorForwardingruleItem]):
+    """Typed object for forwarding-rule table items with attribute access."""
+    rule_name: str
+    target: str
+
+
 class SdnConnectorObject(FortiObject):
     """Typed FortiObject for SdnConnector with field access."""
     name: str
@@ -223,7 +306,7 @@ class SdnConnectorObject(FortiObject):
     ha_status: Literal["disable", "enable"]
     verify_certificate: Literal["disable", "enable"]
     server: str
-    server_list: list[SdnConnectorServerlistItem]
+    server_list: FortiObjectList[SdnConnectorServerlistItemObject]
     server_port: int
     message_server_port: int
     username: str
@@ -236,7 +319,7 @@ class SdnConnectorObject(FortiObject):
     region: str
     vpc_id: str
     alt_resource_ip: Literal["disable", "enable"]
-    external_account_list: list[SdnConnectorExternalaccountlistItem]
+    external_account_list: FortiObjectList[SdnConnectorExternalaccountlistItemObject]
     tenant_id: str
     client_id: str
     client_secret: str
@@ -245,18 +328,18 @@ class SdnConnectorObject(FortiObject):
     login_endpoint: str
     resource_url: str
     azure_region: Literal["global", "china", "germany", "usgov", "local"]
-    nic: list[SdnConnectorNicItem]
-    route_table: list[SdnConnectorRoutetableItem]
+    nic: FortiObjectList[SdnConnectorNicItemObject]
+    route_table: FortiObjectList[SdnConnectorRoutetableItemObject]
     user_id: str
-    compartment_list: list[SdnConnectorCompartmentlistItem]
-    oci_region_list: list[SdnConnectorOciregionlistItem]
+    compartment_list: FortiObjectList[SdnConnectorCompartmentlistItemObject]
+    oci_region_list: FortiObjectList[SdnConnectorOciregionlistItemObject]
     oci_region_type: Literal["commercial", "government"]
     oci_cert: str
     oci_fingerprint: str
-    external_ip: list[SdnConnectorExternalipItem]
-    route: list[SdnConnectorRouteItem]
-    gcp_project_list: list[SdnConnectorGcpprojectlistItem]
-    forwarding_rule: list[SdnConnectorForwardingruleItem]
+    external_ip: FortiObjectList[SdnConnectorExternalipItemObject]
+    route: FortiObjectList[SdnConnectorRouteItemObject]
+    gcp_project_list: FortiObjectList[SdnConnectorGcpprojectlistItemObject]
+    forwarding_rule: FortiObjectList[SdnConnectorForwardingruleItemObject]
     service_account: str
     private_key: str
     secret_token: str

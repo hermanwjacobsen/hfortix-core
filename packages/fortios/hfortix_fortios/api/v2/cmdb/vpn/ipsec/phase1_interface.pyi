@@ -485,6 +485,50 @@ class Phase1InterfaceResponse(TypedDict, total=False):
 # ================================================================
 
 
+class Phase1InterfaceCertificateItemObject(FortiObject[Phase1InterfaceCertificateItem]):
+    """Typed object for certificate table items with attribute access."""
+    name: str
+
+
+class Phase1InterfaceMonitorItemObject(FortiObject[Phase1InterfaceMonitorItem]):
+    """Typed object for monitor table items with attribute access."""
+    name: str
+
+
+class Phase1InterfaceInternaldomainlistItemObject(FortiObject[Phase1InterfaceInternaldomainlistItem]):
+    """Typed object for internal-domain-list table items with attribute access."""
+    domain_name: str
+
+
+class Phase1InterfaceDnssuffixsearchItemObject(FortiObject[Phase1InterfaceDnssuffixsearchItem]):
+    """Typed object for dns-suffix-search table items with attribute access."""
+    dns_suffix: str
+
+
+class Phase1InterfaceIpv4excluderangeItemObject(FortiObject[Phase1InterfaceIpv4excluderangeItem]):
+    """Typed object for ipv4-exclude-range table items with attribute access."""
+    id: int
+    start_ip: str
+    end_ip: str
+
+
+class Phase1InterfaceIpv6excluderangeItemObject(FortiObject[Phase1InterfaceIpv6excluderangeItem]):
+    """Typed object for ipv6-exclude-range table items with attribute access."""
+    id: int
+    start_ip: str
+    end_ip: str
+
+
+class Phase1InterfaceBackupgatewayItemObject(FortiObject[Phase1InterfaceBackupgatewayItem]):
+    """Typed object for backup-gateway table items with attribute access."""
+    address: str
+
+
+class Phase1InterfaceRemotegwztnatagsItemObject(FortiObject[Phase1InterfaceRemotegwztnatagsItem]):
+    """Typed object for remote-gw-ztna-tags table items with attribute access."""
+    name: str
+
+
 class Phase1InterfaceObject(FortiObject):
     """Typed FortiObject for Phase1Interface with field access."""
     name: str
@@ -498,7 +542,7 @@ class Phase1InterfaceObject(FortiObject):
     remote_gw6: str
     remotegw_ddns: str
     keylife: int
-    certificate: list[Phase1InterfaceCertificateItem]
+    certificate: FortiObjectList[Phase1InterfaceCertificateItemObject]
     authmethod: Literal["psk", "signature"]
     authmethod_remote: Literal["psk", "signature"]
     mode: Literal["aggressive", "main"]
@@ -509,7 +553,7 @@ class Phase1InterfaceObject(FortiObject):
     usrgrp: str
     peer: str
     peergrp: str
-    monitor: list[Phase1InterfaceMonitorItem]
+    monitor: FortiObjectList[Phase1InterfaceMonitorItemObject]
     monitor_min: int
     monitor_hold_down_type: Literal["immediate", "delay", "time"]
     monitor_hold_down_delay: int
@@ -538,11 +582,11 @@ class Phase1InterfaceObject(FortiObject):
     ipv4_dns_server1: str
     ipv4_dns_server2: str
     ipv4_dns_server3: str
-    internal_domain_list: list[Phase1InterfaceInternaldomainlistItem]
-    dns_suffix_search: list[Phase1InterfaceDnssuffixsearchItem]
+    internal_domain_list: FortiObjectList[Phase1InterfaceInternaldomainlistItemObject]
+    dns_suffix_search: FortiObjectList[Phase1InterfaceDnssuffixsearchItemObject]
     ipv4_wins_server1: str
     ipv4_wins_server2: str
-    ipv4_exclude_range: list[Phase1InterfaceIpv4excluderangeItem]
+    ipv4_exclude_range: FortiObjectList[Phase1InterfaceIpv4excluderangeItemObject]
     ipv4_split_include: str
     split_include_service: str
     ipv4_name: str
@@ -552,7 +596,7 @@ class Phase1InterfaceObject(FortiObject):
     ipv6_dns_server1: str
     ipv6_dns_server2: str
     ipv6_dns_server3: str
-    ipv6_exclude_range: list[Phase1InterfaceIpv6excluderangeItem]
+    ipv6_exclude_range: FortiObjectList[Phase1InterfaceIpv6excluderangeItemObject]
     ipv6_split_include: str
     ipv6_name: str
     ip_delay_interval: int
@@ -565,7 +609,7 @@ class Phase1InterfaceObject(FortiObject):
     save_password: Literal["disable", "enable"]
     client_auto_negotiate: Literal["disable", "enable"]
     client_keep_alive: Literal["disable", "enable"]
-    backup_gateway: list[Phase1InterfaceBackupgatewayItem]
+    backup_gateway: FortiObjectList[Phase1InterfaceBackupgatewayItemObject]
     proposal: str
     add_route: Literal["disable", "enable"]
     add_gw_route: Literal["enable", "disable"]
@@ -678,7 +722,7 @@ class Phase1InterfaceObject(FortiObject):
     remote_gw_start_ip: str
     remote_gw_end_ip: str
     remote_gw_country: str
-    remote_gw_ztna_tags: list[Phase1InterfaceRemotegwztnatagsItem]
+    remote_gw_ztna_tags: FortiObjectList[Phase1InterfaceRemotegwztnatagsItemObject]
     remote_gw6_match: Literal["any", "ipprefix", "iprange", "geography"]
     remote_gw6_subnet: str
     remote_gw6_start_ip: str

@@ -58,10 +58,22 @@ class VdomNetflowResponse(TypedDict, total=False):
 # ================================================================
 
 
+class VdomNetflowCollectorsItemObject(FortiObject[VdomNetflowCollectorsItem]):
+    """Typed object for collectors table items with attribute access."""
+    id: int
+    collector_ip: str
+    collector_port: int
+    source_ip: str
+    source_ip_interface: str
+    interface_select_method: Literal["auto", "sdwan", "specify"]
+    interface: str
+    vrf_select: int
+
+
 class VdomNetflowObject(FortiObject):
     """Typed FortiObject for VdomNetflow with field access."""
     vdom_netflow: Literal["enable", "disable"]
-    collectors: list[VdomNetflowCollectorsItem]
+    collectors: FortiObjectList[VdomNetflowCollectorsItemObject]
 
 
 # ================================================================

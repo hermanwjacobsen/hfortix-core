@@ -109,6 +109,16 @@ class CustomResponse(TypedDict, total=False):
 # ================================================================
 
 
+class CustomAppcategoryItemObject(FortiObject[CustomAppcategoryItem]):
+    """Typed object for app-category table items with attribute access."""
+    id: int
+
+
+class CustomApplicationItemObject(FortiObject[CustomApplicationItem]):
+    """Typed object for application table items with attribute access."""
+    id: int
+
+
 class CustomObject(FortiObject):
     """Typed FortiObject for Custom with field access."""
     name: str
@@ -136,8 +146,8 @@ class CustomObject(FortiObject):
     comment: str
     color: int
     app_service_type: Literal["disable", "app-id", "app-category"]
-    app_category: list[CustomAppcategoryItem]
-    application: list[CustomApplicationItem]
+    app_category: FortiObjectList[CustomAppcategoryItemObject]
+    application: FortiObjectList[CustomApplicationItemObject]
     fabric_object: Literal["enable", "disable"]
 
 

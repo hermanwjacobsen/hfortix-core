@@ -93,13 +93,23 @@ class DdnsResponse(TypedDict, total=False):
 # ================================================================
 
 
+class DdnsDdnsserveraddrItemObject(FortiObject[DdnsDdnsserveraddrItem]):
+    """Typed object for ddns-server-addr table items with attribute access."""
+    addr: str
+
+
+class DdnsMonitorinterfaceItemObject(FortiObject[DdnsMonitorinterfaceItem]):
+    """Typed object for monitor-interface table items with attribute access."""
+    interface_name: str
+
+
 class DdnsObject(FortiObject):
     """Typed FortiObject for Ddns with field access."""
     ddnsid: int
     ddns_server: Literal["dyndns.org", "dyns.net", "tzo.com", "vavic.com", "dipdns.net", "now.net.cn", "dhs.org", "easydns.com", "genericDDNS", "FortiGuardDDNS", "noip.com"]
     addr_type: Literal["ipv4", "ipv6"]
     server_type: Literal["ipv4", "ipv6"]
-    ddns_server_addr: list[DdnsDdnsserveraddrItem]
+    ddns_server_addr: FortiObjectList[DdnsDdnsserveraddrItemObject]
     ddns_zone: str
     ddns_ttl: int
     ddns_auth: Literal["disable", "tsig"]
@@ -114,7 +124,7 @@ class DdnsObject(FortiObject):
     clear_text: Literal["disable", "enable"]
     ssl_certificate: str
     bound_ip: str
-    monitor_interface: list[DdnsMonitorinterfaceItem]
+    monitor_interface: FortiObjectList[DdnsMonitorinterfaceItemObject]
 
 
 # ================================================================

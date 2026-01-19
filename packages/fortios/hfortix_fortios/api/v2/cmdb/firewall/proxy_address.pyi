@@ -26,6 +26,11 @@ from hfortix_fortios.models import (
 # TypedDict Payloads
 # ================================================================
 
+class ProxyAddressTaggingTagsItem(TypedDict, total=False):
+    """Nested item for tagging.tags field."""
+    name: str
+
+
 class ProxyAddressCategoryItem(TypedDict, total=False):
     """Nested item for category field."""
     id: int
@@ -43,7 +48,7 @@ class ProxyAddressTaggingItem(TypedDict, total=False):
     """Nested item for tagging field."""
     name: str
     category: str
-    tags: str | list[str]
+    tags: str | list[str] | list[ProxyAddressTaggingTagsItem]
 
 
 class ProxyAddressApplicationItem(TypedDict, total=False):
@@ -110,6 +115,31 @@ class ProxyAddressResponse(TypedDict, total=False):
 # ================================================================
 
 
+class ProxyAddressCategoryItemObject(FortiObject[ProxyAddressCategoryItem]):
+    """Typed object for category table items with attribute access."""
+    id: int
+
+
+class ProxyAddressHeadergroupItemObject(FortiObject[ProxyAddressHeadergroupItem]):
+    """Typed object for header-group table items with attribute access."""
+    id: int
+    header_name: str
+    header: str
+    case_sensitivity: Literal["disable", "enable"]
+
+
+class ProxyAddressTaggingItemObject(FortiObject[ProxyAddressTaggingItem]):
+    """Typed object for tagging table items with attribute access."""
+    name: str
+    category: str
+    tags: FortiObjectList[ProxyAddressTaggingTagsItemObject]
+
+
+class ProxyAddressApplicationItemObject(FortiObject[ProxyAddressApplicationItem]):
+    """Typed object for application table items with attribute access."""
+    name: str
+
+
 class ProxyAddressObject(FortiObject):
     """Typed FortiObject for ProxyAddress with field access."""
     name: str
@@ -120,7 +150,7 @@ class ProxyAddressObject(FortiObject):
     path: str
     query: str
     referrer: Literal["enable", "disable"]
-    category: list[ProxyAddressCategoryItem]
+    category: FortiObjectList[ProxyAddressCategoryItemObject]
     method: str
     ua: str
     ua_min_ver: str
@@ -128,11 +158,11 @@ class ProxyAddressObject(FortiObject):
     header_name: str
     header: str
     case_sensitivity: Literal["disable", "enable"]
-    header_group: list[ProxyAddressHeadergroupItem]
+    header_group: FortiObjectList[ProxyAddressHeadergroupItemObject]
     color: int
-    tagging: list[ProxyAddressTaggingItem]
+    tagging: FortiObjectList[ProxyAddressTaggingItemObject]
     comment: str
-    application: list[ProxyAddressApplicationItem]
+    application: FortiObjectList[ProxyAddressApplicationItemObject]
 
 
 # ================================================================

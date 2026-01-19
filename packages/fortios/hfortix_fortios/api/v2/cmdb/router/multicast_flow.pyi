@@ -56,11 +56,18 @@ class MulticastFlowResponse(TypedDict, total=False):
 # ================================================================
 
 
+class MulticastFlowFlowsItemObject(FortiObject[MulticastFlowFlowsItem]):
+    """Typed object for flows table items with attribute access."""
+    id: int
+    group_addr: str
+    source_addr: str
+
+
 class MulticastFlowObject(FortiObject):
     """Typed FortiObject for MulticastFlow with field access."""
     name: str
     comments: str
-    flows: list[MulticastFlowFlowsItem]
+    flows: FortiObjectList[MulticastFlowFlowsItemObject]
 
 
 # ================================================================

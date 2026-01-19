@@ -491,19 +491,19 @@ class ProfileConstraint(BaseModel):
         str_strip_whitespace = True
         use_enum_values = True  # Use enum values instead of names
     
-    header_length: list[ProfileConstraintHeaderLength] = Field(default_factory=list, description="HTTP header length in request.")    
-    content_length: list[ProfileConstraintContentLength] = Field(default_factory=list, description="HTTP content length in request.")    
-    param_length: list[ProfileConstraintParamLength] = Field(default_factory=list, description="Maximum length of parameter in URL, HTTP POST request or HTTP body.")    
-    line_length: list[ProfileConstraintLineLength] = Field(default_factory=list, description="HTTP line length in request.")    
-    url_param_length: list[ProfileConstraintUrlParamLength] = Field(default_factory=list, description="Maximum length of parameter in URL.")    
-    version: list[ProfileConstraintVersion] = Field(default_factory=list, description="Enable/disable HTTP version check.")    
-    method: list[ProfileConstraintMethod] = Field(default_factory=list, description="Enable/disable HTTP method check.")    
-    hostname: list[ProfileConstraintHostname] = Field(default_factory=list, description="Enable/disable hostname check.")    
-    malformed: list[ProfileConstraintMalformed] = Field(default_factory=list, description="Enable/disable malformed HTTP request check.")    
-    max_cookie: list[ProfileConstraintMaxCookie] = Field(default_factory=list, description="Maximum number of cookies in HTTP request.")    
-    max_header_line: list[ProfileConstraintMaxHeaderLine] = Field(default_factory=list, description="Maximum number of HTTP header line.")    
-    max_url_param: list[ProfileConstraintMaxUrlParam] = Field(default_factory=list, description="Maximum number of parameters in URL.")    
-    max_range_segment: list[ProfileConstraintMaxRangeSegment] = Field(default_factory=list, description="Maximum number of range segments in HTTP range line.")    
+    header_length: ProfileConstraintHeaderLength | None = Field(default=None, description="HTTP header length in request.")    
+    content_length: ProfileConstraintContentLength | None = Field(default=None, description="HTTP content length in request.")    
+    param_length: ProfileConstraintParamLength | None = Field(default=None, description="Maximum length of parameter in URL, HTTP POST request or HTTP body.")    
+    line_length: ProfileConstraintLineLength | None = Field(default=None, description="HTTP line length in request.")    
+    url_param_length: ProfileConstraintUrlParamLength | None = Field(default=None, description="Maximum length of parameter in URL.")    
+    version: ProfileConstraintVersion | None = Field(default=None, description="Enable/disable HTTP version check.")    
+    method: ProfileConstraintMethod | None = Field(default=None, description="Enable/disable HTTP method check.")    
+    hostname: ProfileConstraintHostname | None = Field(default=None, description="Enable/disable hostname check.")    
+    malformed: ProfileConstraintMalformed | None = Field(default=None, description="Enable/disable malformed HTTP request check.")    
+    max_cookie: ProfileConstraintMaxCookie | None = Field(default=None, description="Maximum number of cookies in HTTP request.")    
+    max_header_line: ProfileConstraintMaxHeaderLine | None = Field(default=None, description="Maximum number of HTTP header line.")    
+    max_url_param: ProfileConstraintMaxUrlParam | None = Field(default=None, description="Maximum number of parameters in URL.")    
+    max_range_segment: ProfileConstraintMaxRangeSegment | None = Field(default=None, description="Maximum number of range segments in HTTP range line.")    
     exception: list[ProfileConstraintException] = Field(default_factory=list, description="HTTP constraint exception.")
 class ProfileAddressListTrustedAddress(BaseModel):
     """
@@ -582,10 +582,10 @@ class ProfileModel(BaseModel):
     name: str | None = Field(max_length=47, default=None, description="WAF Profile name.")    
     external: Literal["disable", "enable"] | None = Field(default="disable", description="Disable/Enable external HTTP Inspection.")    
     extended_log: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable extended logging.")    
-    signature: list[ProfileSignature] = Field(default_factory=list, description="WAF signatures.")    
-    constraint: list[ProfileConstraint] = Field(default_factory=list, description="WAF HTTP protocol restrictions.")    
-    method: list[ProfileMethod] = Field(default_factory=list, description="Method restriction.")    
-    address_list: list[ProfileAddressList] = Field(default_factory=list, description="Address block and allow lists.")    
+    signature: ProfileSignature | None = Field(default=None, description="WAF signatures.")    
+    constraint: ProfileConstraint | None = Field(default=None, description="WAF HTTP protocol restrictions.")    
+    method: ProfileMethod | None = Field(default=None, description="Method restriction.")    
+    address_list: ProfileAddressList | None = Field(default=None, description="Address block and allow lists.")    
     url_access: list[ProfileUrlAccess] = Field(default_factory=list, description="URL access list.")    
     comment: str | None = Field(max_length=1023, default=None, description="Comment.")    
     # ========================================================================
@@ -722,6 +722,6 @@ __all__ = [
 
 # ============================================================================
 # Generated by hfortix generator v0.6.0
-# Schema: 1.7.1
-# Generated: 2026-01-18T20:31:26.594466Z
+# Schema: 1.7.2
+# Generated: 2026-01-19T11:36:56.256859Z
 # ============================================================================

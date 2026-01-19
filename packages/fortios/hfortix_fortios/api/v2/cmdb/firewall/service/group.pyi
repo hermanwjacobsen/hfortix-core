@@ -62,12 +62,17 @@ class GroupResponse(TypedDict, total=False):
 # ================================================================
 
 
+class GroupMemberItemObject(FortiObject[GroupMemberItem]):
+    """Typed object for member table items with attribute access."""
+    name: str
+
+
 class GroupObject(FortiObject):
     """Typed FortiObject for Group with field access."""
     name: str
     uuid: str
     proxy: Literal["enable", "disable"]
-    member: list[GroupMemberItem]
+    member: FortiObjectList[GroupMemberItemObject]
     comment: str
     color: int
     fabric_object: Literal["enable", "disable"]

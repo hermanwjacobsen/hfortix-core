@@ -60,12 +60,21 @@ class ContentResponse(TypedDict, total=False):
 # ================================================================
 
 
+class ContentEntriesItemObject(FortiObject[ContentEntriesItem]):
+    """Typed object for entries table items with attribute access."""
+    name: str
+    pattern_type: Literal["wildcard", "regexp"]
+    status: Literal["enable", "disable"]
+    score: int
+    action: Literal["block", "exempt"]
+
+
 class ContentObject(FortiObject):
     """Typed FortiObject for Content with field access."""
     id: int
     name: str
     comment: str
-    entries: list[ContentEntriesItem]
+    entries: FortiObjectList[ContentEntriesItemObject]
 
 
 # ================================================================

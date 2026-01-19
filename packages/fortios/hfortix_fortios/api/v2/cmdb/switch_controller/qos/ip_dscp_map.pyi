@@ -58,11 +58,20 @@ class IpDscpMapResponse(TypedDict, total=False):
 # ================================================================
 
 
+class IpDscpMapMapItemObject(FortiObject[IpDscpMapMapItem]):
+    """Typed object for map table items with attribute access."""
+    name: str
+    cos_queue: int
+    diffserv: Literal["CS0", "CS1", "AF11", "AF12", "AF13", "CS2", "AF21", "AF22", "AF23", "CS3", "AF31", "AF32", "AF33", "CS4", "AF41", "AF42", "AF43", "CS5", "EF", "CS6", "CS7"]
+    ip_precedence: Literal["network-control", "internetwork-control", "critic-ecp", "flashoverride", "flash", "immediate", "priority", "routine"]
+    value: str
+
+
 class IpDscpMapObject(FortiObject):
     """Typed FortiObject for IpDscpMap with field access."""
     name: str
     description: str
-    map: list[IpDscpMapMapItem]
+    map: FortiObjectList[IpDscpMapMapItemObject]
 
 
 # ================================================================

@@ -188,7 +188,7 @@ class ProfileProtocolOptionsCifsDict(TypedDict, total=False):
     tcp_window_size: int
     server_credential_type: Literal["none", "credential-replication", "credential-keytab"]
     domain_controller: str
-    server_keytab: str | list[str]
+    server_keytab: str | list[str] | list[ProfileProtocolOptionsCifsServerkeytabItem]
 
 
 class ProfileProtocolOptionsMailsignatureDict(TypedDict, total=False):

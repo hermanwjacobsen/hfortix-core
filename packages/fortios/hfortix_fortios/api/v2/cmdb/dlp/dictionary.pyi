@@ -66,6 +66,17 @@ class DictionaryResponse(TypedDict, total=False):
 # ================================================================
 
 
+class DictionaryEntriesItemObject(FortiObject[DictionaryEntriesItem]):
+    """Typed object for entries table items with attribute access."""
+    id: int
+    type: str
+    pattern: str
+    ignore_case: Literal["enable", "disable"]
+    repeat: Literal["enable", "disable"]
+    status: Literal["enable", "disable"]
+    comment: str
+
+
 class DictionaryObject(FortiObject):
     """Typed FortiObject for Dictionary with field access."""
     uuid: str
@@ -73,7 +84,7 @@ class DictionaryObject(FortiObject):
     match_type: Literal["match-all", "match-any"]
     match_around: Literal["enable", "disable"]
     comment: str
-    entries: list[DictionaryEntriesItem]
+    entries: FortiObjectList[DictionaryEntriesItemObject]
 
 
 # ================================================================

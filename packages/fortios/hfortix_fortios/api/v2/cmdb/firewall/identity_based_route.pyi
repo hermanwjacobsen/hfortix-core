@@ -26,12 +26,17 @@ from hfortix_fortios.models import (
 # TypedDict Payloads
 # ================================================================
 
+class IdentityBasedRouteRuleGroupsItem(TypedDict, total=False):
+    """Nested item for rule.groups field."""
+    name: str
+
+
 class IdentityBasedRouteRuleItem(TypedDict, total=False):
     """Nested item for rule field."""
     id: int
     gateway: str
     device: str
-    groups: str | list[str]
+    groups: str | list[str] | list[IdentityBasedRouteRuleGroupsItem]
 
 
 class IdentityBasedRoutePayload(TypedDict, total=False):
@@ -57,11 +62,19 @@ class IdentityBasedRouteResponse(TypedDict, total=False):
 # ================================================================
 
 
+class IdentityBasedRouteRuleItemObject(FortiObject[IdentityBasedRouteRuleItem]):
+    """Typed object for rule table items with attribute access."""
+    id: int
+    gateway: str
+    device: str
+    groups: FortiObjectList[IdentityBasedRouteRuleGroupsItemObject]
+
+
 class IdentityBasedRouteObject(FortiObject):
     """Typed FortiObject for IdentityBasedRoute with field access."""
     name: str
     comments: str
-    rule: list[IdentityBasedRouteRuleItem]
+    rule: FortiObjectList[IdentityBasedRouteRuleItemObject]
 
 
 # ================================================================

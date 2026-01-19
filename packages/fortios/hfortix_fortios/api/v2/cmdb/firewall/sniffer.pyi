@@ -121,6 +121,24 @@ class SnifferResponse(TypedDict, total=False):
 # ================================================================
 
 
+class SnifferIpthreatfeedItemObject(FortiObject[SnifferIpthreatfeedItem]):
+    """Typed object for ip-threatfeed table items with attribute access."""
+    name: str
+
+
+class SnifferAnomalyItemObject(FortiObject[SnifferAnomalyItem]):
+    """Typed object for anomaly table items with attribute access."""
+    name: str
+    status: Literal["disable", "enable"]
+    log: Literal["enable", "disable"]
+    action: Literal["pass", "block"]
+    quarantine: Literal["none", "attacker"]
+    quarantine_expiry: str
+    quarantine_log: Literal["disable", "enable"]
+    threshold: int
+    threshold_default: int
+
+
 class SnifferObject(FortiObject):
     """Typed FortiObject for Sniffer with field access."""
     id: int
@@ -148,11 +166,11 @@ class SnifferObject(FortiObject):
     dlp_profile_status: Literal["enable", "disable"]
     dlp_profile: str
     ip_threatfeed_status: Literal["enable", "disable"]
-    ip_threatfeed: list[SnifferIpthreatfeedItem]
+    ip_threatfeed: FortiObjectList[SnifferIpthreatfeedItemObject]
     file_filter_profile_status: Literal["enable", "disable"]
     file_filter_profile: str
     ips_dos_status: Literal["enable", "disable"]
-    anomaly: list[SnifferAnomalyItem]
+    anomaly: FortiObjectList[SnifferAnomalyItemObject]
 
 
 # ================================================================

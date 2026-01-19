@@ -26,6 +26,11 @@ from hfortix_fortios.models import (
 # TypedDict Payloads
 # ================================================================
 
+class AddrgrpTaggingTagsItem(TypedDict, total=False):
+    """Nested item for tagging.tags field."""
+    name: str
+
+
 class AddrgrpMemberItem(TypedDict, total=False):
     """Nested item for member field."""
     name: str
@@ -40,7 +45,7 @@ class AddrgrpTaggingItem(TypedDict, total=False):
     """Nested item for tagging field."""
     name: str
     category: str
-    tags: str | list[str]
+    tags: str | list[str] | list[AddrgrpTaggingTagsItem]
 
 
 class AddrgrpPayload(TypedDict, total=False):
@@ -84,19 +89,36 @@ class AddrgrpResponse(TypedDict, total=False):
 # ================================================================
 
 
+class AddrgrpMemberItemObject(FortiObject[AddrgrpMemberItem]):
+    """Typed object for member table items with attribute access."""
+    name: str
+
+
+class AddrgrpExcludememberItemObject(FortiObject[AddrgrpExcludememberItem]):
+    """Typed object for exclude-member table items with attribute access."""
+    name: str
+
+
+class AddrgrpTaggingItemObject(FortiObject[AddrgrpTaggingItem]):
+    """Typed object for tagging table items with attribute access."""
+    name: str
+    category: str
+    tags: FortiObjectList[AddrgrpTaggingTagsItemObject]
+
+
 class AddrgrpObject(FortiObject):
     """Typed FortiObject for Addrgrp with field access."""
     name: str
     type: Literal["default", "folder"]
     category: Literal["default", "ztna-ems-tag", "ztna-geo-tag"]
     allow_routing: Literal["enable", "disable"]
-    member: list[AddrgrpMemberItem]
+    member: FortiObjectList[AddrgrpMemberItemObject]
     comment: str
     uuid: str
     exclude: Literal["enable", "disable"]
-    exclude_member: list[AddrgrpExcludememberItem]
+    exclude_member: FortiObjectList[AddrgrpExcludememberItemObject]
     color: int
-    tagging: list[AddrgrpTaggingItem]
+    tagging: FortiObjectList[AddrgrpTaggingItemObject]
     fabric_object: Literal["enable", "disable"]
 
 

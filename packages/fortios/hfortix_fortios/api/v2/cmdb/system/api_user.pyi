@@ -76,6 +76,19 @@ class ApiUserResponse(TypedDict, total=False):
 # ================================================================
 
 
+class ApiUserVdomItemObject(FortiObject[ApiUserVdomItem]):
+    """Typed object for vdom table items with attribute access."""
+    name: str
+
+
+class ApiUserTrusthostItemObject(FortiObject[ApiUserTrusthostItem]):
+    """Typed object for trusthost table items with attribute access."""
+    id: int
+    type: Literal["ipv4-trusthost", "ipv6-trusthost"]
+    ipv4_trusthost: str
+    ipv6_trusthost: str
+
+
 class ApiUserObject(FortiObject):
     """Typed FortiObject for ApiUser with field access."""
     name: str
@@ -86,7 +99,7 @@ class ApiUserObject(FortiObject):
     cors_allow_origin: str
     peer_auth: Literal["enable", "disable"]
     peer_group: str
-    trusthost: list[ApiUserTrusthostItem]
+    trusthost: FortiObjectList[ApiUserTrusthostItemObject]
 
 
 # ================================================================

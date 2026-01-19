@@ -26,6 +26,11 @@ from hfortix_fortios.models import (
 # TypedDict Payloads
 # ================================================================
 
+class VipRealserversMonitorItem(TypedDict, total=False):
+    """Nested item for realservers.monitor field."""
+    name: str
+
+
 class VipSrcfilterItem(TypedDict, total=False):
     """Nested item for src-filter field."""
     range: str
@@ -77,7 +82,7 @@ class VipRealserversItem(TypedDict, total=False):
     http_host: str
     translate_host: Literal["enable", "disable"]
     max_connections: int
-    monitor: str | list[str]
+    monitor: str | list[str] | list[VipRealserversMonitorItem]
     client_ip: str
     verify_cert: Literal["enable", "disable"]
 
@@ -325,6 +330,80 @@ class VipResponse(TypedDict, total=False):
 # ================================================================
 
 
+class VipSrcfilterItemObject(FortiObject[VipSrcfilterItem]):
+    """Typed object for src-filter table items with attribute access."""
+    range: str
+
+
+class VipServiceItemObject(FortiObject[VipServiceItem]):
+    """Typed object for service table items with attribute access."""
+    name: str
+
+
+class VipExtaddrItemObject(FortiObject[VipExtaddrItem]):
+    """Typed object for extaddr table items with attribute access."""
+    name: str
+
+
+class VipMappedipItemObject(FortiObject[VipMappedipItem]):
+    """Typed object for mappedip table items with attribute access."""
+    range: str
+
+
+class VipSrcintffilterItemObject(FortiObject[VipSrcintffilterItem]):
+    """Typed object for srcintf-filter table items with attribute access."""
+    interface_name: str
+
+
+class VipRealserversItemObject(FortiObject[VipRealserversItem]):
+    """Typed object for realservers table items with attribute access."""
+    id: int
+    type: Literal["ip", "address"]
+    address: str
+    ip: str
+    port: int
+    status: Literal["active", "standby", "disable"]
+    weight: int
+    holddown_interval: int
+    healthcheck: Literal["disable", "enable", "vip"]
+    http_host: str
+    translate_host: Literal["enable", "disable"]
+    max_connections: int
+    monitor: FortiObjectList[VipRealserversMonitorItemObject]
+    client_ip: str
+    verify_cert: Literal["enable", "disable"]
+
+
+class VipSslcertificateItemObject(FortiObject[VipSslcertificateItem]):
+    """Typed object for ssl-certificate table items with attribute access."""
+    name: str
+
+
+class VipSslciphersuitesItemObject(FortiObject[VipSslciphersuitesItem]):
+    """Typed object for ssl-cipher-suites table items with attribute access."""
+    priority: int
+    cipher: Literal["TLS-AES-128-GCM-SHA256", "TLS-AES-256-GCM-SHA384", "TLS-CHACHA20-POLY1305-SHA256", "TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256", "TLS-ECDHE-ECDSA-WITH-CHACHA20-POLY1305-SHA256", "TLS-DHE-RSA-WITH-CHACHA20-POLY1305-SHA256", "TLS-DHE-RSA-WITH-AES-128-CBC-SHA", "TLS-DHE-RSA-WITH-AES-256-CBC-SHA", "TLS-DHE-RSA-WITH-AES-128-CBC-SHA256", "TLS-DHE-RSA-WITH-AES-128-GCM-SHA256", "TLS-DHE-RSA-WITH-AES-256-CBC-SHA256", "TLS-DHE-RSA-WITH-AES-256-GCM-SHA384", "TLS-DHE-DSS-WITH-AES-128-CBC-SHA", "TLS-DHE-DSS-WITH-AES-256-CBC-SHA", "TLS-DHE-DSS-WITH-AES-128-CBC-SHA256", "TLS-DHE-DSS-WITH-AES-128-GCM-SHA256", "TLS-DHE-DSS-WITH-AES-256-CBC-SHA256", "TLS-DHE-DSS-WITH-AES-256-GCM-SHA384", "TLS-ECDHE-RSA-WITH-AES-128-CBC-SHA", "TLS-ECDHE-RSA-WITH-AES-128-CBC-SHA256", "TLS-ECDHE-RSA-WITH-AES-128-GCM-SHA256", "TLS-ECDHE-RSA-WITH-AES-256-CBC-SHA", "TLS-ECDHE-RSA-WITH-AES-256-CBC-SHA384", "TLS-ECDHE-RSA-WITH-AES-256-GCM-SHA384", "TLS-ECDHE-ECDSA-WITH-AES-128-CBC-SHA", "TLS-ECDHE-ECDSA-WITH-AES-128-CBC-SHA256", "TLS-ECDHE-ECDSA-WITH-AES-128-GCM-SHA256", "TLS-ECDHE-ECDSA-WITH-AES-256-CBC-SHA", "TLS-ECDHE-ECDSA-WITH-AES-256-CBC-SHA384", "TLS-ECDHE-ECDSA-WITH-AES-256-GCM-SHA384", "TLS-RSA-WITH-AES-128-CBC-SHA", "TLS-RSA-WITH-AES-256-CBC-SHA", "TLS-RSA-WITH-AES-128-CBC-SHA256", "TLS-RSA-WITH-AES-128-GCM-SHA256", "TLS-RSA-WITH-AES-256-CBC-SHA256", "TLS-RSA-WITH-AES-256-GCM-SHA384", "TLS-RSA-WITH-CAMELLIA-128-CBC-SHA", "TLS-RSA-WITH-CAMELLIA-256-CBC-SHA", "TLS-RSA-WITH-CAMELLIA-128-CBC-SHA256", "TLS-RSA-WITH-CAMELLIA-256-CBC-SHA256", "TLS-DHE-RSA-WITH-3DES-EDE-CBC-SHA", "TLS-DHE-RSA-WITH-CAMELLIA-128-CBC-SHA", "TLS-DHE-DSS-WITH-CAMELLIA-128-CBC-SHA", "TLS-DHE-RSA-WITH-CAMELLIA-256-CBC-SHA", "TLS-DHE-DSS-WITH-CAMELLIA-256-CBC-SHA", "TLS-DHE-RSA-WITH-CAMELLIA-128-CBC-SHA256", "TLS-DHE-DSS-WITH-CAMELLIA-128-CBC-SHA256", "TLS-DHE-RSA-WITH-CAMELLIA-256-CBC-SHA256", "TLS-DHE-DSS-WITH-CAMELLIA-256-CBC-SHA256", "TLS-DHE-RSA-WITH-SEED-CBC-SHA", "TLS-DHE-DSS-WITH-SEED-CBC-SHA", "TLS-DHE-RSA-WITH-ARIA-128-CBC-SHA256", "TLS-DHE-RSA-WITH-ARIA-256-CBC-SHA384", "TLS-DHE-DSS-WITH-ARIA-128-CBC-SHA256", "TLS-DHE-DSS-WITH-ARIA-256-CBC-SHA384", "TLS-RSA-WITH-SEED-CBC-SHA", "TLS-RSA-WITH-ARIA-128-CBC-SHA256", "TLS-RSA-WITH-ARIA-256-CBC-SHA384", "TLS-ECDHE-RSA-WITH-ARIA-128-CBC-SHA256", "TLS-ECDHE-RSA-WITH-ARIA-256-CBC-SHA384", "TLS-ECDHE-ECDSA-WITH-ARIA-128-CBC-SHA256", "TLS-ECDHE-ECDSA-WITH-ARIA-256-CBC-SHA384", "TLS-ECDHE-RSA-WITH-RC4-128-SHA", "TLS-ECDHE-RSA-WITH-3DES-EDE-CBC-SHA", "TLS-DHE-DSS-WITH-3DES-EDE-CBC-SHA", "TLS-RSA-WITH-3DES-EDE-CBC-SHA", "TLS-RSA-WITH-RC4-128-MD5", "TLS-RSA-WITH-RC4-128-SHA", "TLS-DHE-RSA-WITH-DES-CBC-SHA", "TLS-DHE-DSS-WITH-DES-CBC-SHA", "TLS-RSA-WITH-DES-CBC-SHA"]
+    versions: Literal["ssl-3.0", "tls-1.0", "tls-1.1", "tls-1.2", "tls-1.3"]
+
+
+class VipSslserverciphersuitesItemObject(FortiObject[VipSslserverciphersuitesItem]):
+    """Typed object for ssl-server-cipher-suites table items with attribute access."""
+    priority: int
+    cipher: Literal["TLS-AES-128-GCM-SHA256", "TLS-AES-256-GCM-SHA384", "TLS-CHACHA20-POLY1305-SHA256", "TLS-ECDHE-RSA-WITH-CHACHA20-POLY1305-SHA256", "TLS-ECDHE-ECDSA-WITH-CHACHA20-POLY1305-SHA256", "TLS-DHE-RSA-WITH-CHACHA20-POLY1305-SHA256", "TLS-DHE-RSA-WITH-AES-128-CBC-SHA", "TLS-DHE-RSA-WITH-AES-256-CBC-SHA", "TLS-DHE-RSA-WITH-AES-128-CBC-SHA256", "TLS-DHE-RSA-WITH-AES-128-GCM-SHA256", "TLS-DHE-RSA-WITH-AES-256-CBC-SHA256", "TLS-DHE-RSA-WITH-AES-256-GCM-SHA384", "TLS-DHE-DSS-WITH-AES-128-CBC-SHA", "TLS-DHE-DSS-WITH-AES-256-CBC-SHA", "TLS-DHE-DSS-WITH-AES-128-CBC-SHA256", "TLS-DHE-DSS-WITH-AES-128-GCM-SHA256", "TLS-DHE-DSS-WITH-AES-256-CBC-SHA256", "TLS-DHE-DSS-WITH-AES-256-GCM-SHA384", "TLS-ECDHE-RSA-WITH-AES-128-CBC-SHA", "TLS-ECDHE-RSA-WITH-AES-128-CBC-SHA256", "TLS-ECDHE-RSA-WITH-AES-128-GCM-SHA256", "TLS-ECDHE-RSA-WITH-AES-256-CBC-SHA", "TLS-ECDHE-RSA-WITH-AES-256-CBC-SHA384", "TLS-ECDHE-RSA-WITH-AES-256-GCM-SHA384", "TLS-ECDHE-ECDSA-WITH-AES-128-CBC-SHA", "TLS-ECDHE-ECDSA-WITH-AES-128-CBC-SHA256", "TLS-ECDHE-ECDSA-WITH-AES-128-GCM-SHA256", "TLS-ECDHE-ECDSA-WITH-AES-256-CBC-SHA", "TLS-ECDHE-ECDSA-WITH-AES-256-CBC-SHA384", "TLS-ECDHE-ECDSA-WITH-AES-256-GCM-SHA384", "TLS-RSA-WITH-AES-128-CBC-SHA", "TLS-RSA-WITH-AES-256-CBC-SHA", "TLS-RSA-WITH-AES-128-CBC-SHA256", "TLS-RSA-WITH-AES-128-GCM-SHA256", "TLS-RSA-WITH-AES-256-CBC-SHA256", "TLS-RSA-WITH-AES-256-GCM-SHA384", "TLS-RSA-WITH-CAMELLIA-128-CBC-SHA", "TLS-RSA-WITH-CAMELLIA-256-CBC-SHA", "TLS-RSA-WITH-CAMELLIA-128-CBC-SHA256", "TLS-RSA-WITH-CAMELLIA-256-CBC-SHA256", "TLS-DHE-RSA-WITH-3DES-EDE-CBC-SHA", "TLS-DHE-RSA-WITH-CAMELLIA-128-CBC-SHA", "TLS-DHE-DSS-WITH-CAMELLIA-128-CBC-SHA", "TLS-DHE-RSA-WITH-CAMELLIA-256-CBC-SHA", "TLS-DHE-DSS-WITH-CAMELLIA-256-CBC-SHA", "TLS-DHE-RSA-WITH-CAMELLIA-128-CBC-SHA256", "TLS-DHE-DSS-WITH-CAMELLIA-128-CBC-SHA256", "TLS-DHE-RSA-WITH-CAMELLIA-256-CBC-SHA256", "TLS-DHE-DSS-WITH-CAMELLIA-256-CBC-SHA256", "TLS-DHE-RSA-WITH-SEED-CBC-SHA", "TLS-DHE-DSS-WITH-SEED-CBC-SHA", "TLS-DHE-RSA-WITH-ARIA-128-CBC-SHA256", "TLS-DHE-RSA-WITH-ARIA-256-CBC-SHA384", "TLS-DHE-DSS-WITH-ARIA-128-CBC-SHA256", "TLS-DHE-DSS-WITH-ARIA-256-CBC-SHA384", "TLS-RSA-WITH-SEED-CBC-SHA", "TLS-RSA-WITH-ARIA-128-CBC-SHA256", "TLS-RSA-WITH-ARIA-256-CBC-SHA384", "TLS-ECDHE-RSA-WITH-ARIA-128-CBC-SHA256", "TLS-ECDHE-RSA-WITH-ARIA-256-CBC-SHA384", "TLS-ECDHE-ECDSA-WITH-ARIA-128-CBC-SHA256", "TLS-ECDHE-ECDSA-WITH-ARIA-256-CBC-SHA384", "TLS-ECDHE-RSA-WITH-RC4-128-SHA", "TLS-ECDHE-RSA-WITH-3DES-EDE-CBC-SHA", "TLS-DHE-DSS-WITH-3DES-EDE-CBC-SHA", "TLS-RSA-WITH-3DES-EDE-CBC-SHA", "TLS-RSA-WITH-RC4-128-MD5", "TLS-RSA-WITH-RC4-128-SHA", "TLS-DHE-RSA-WITH-DES-CBC-SHA", "TLS-DHE-DSS-WITH-DES-CBC-SHA", "TLS-RSA-WITH-DES-CBC-SHA"]
+    versions: Literal["ssl-3.0", "tls-1.0", "tls-1.1", "tls-1.2", "tls-1.3"]
+
+
+class VipMonitorItemObject(FortiObject[VipMonitorItem]):
+    """Typed object for monitor table items with attribute access."""
+    name: str
+
+
+class VipGslbpublicipsItemObject(FortiObject[VipGslbpublicipsItem]):
+    """Typed object for gslb-public-ips table items with attribute access."""
+    index: int
+    ip: str
+
+
 class VipQuicObject(FortiObject):
     """Nested object for quic field with attribute access."""
     max_idle_timeout: int
@@ -347,18 +426,18 @@ class VipObject(FortiObject):
     server_type: Literal["http", "https", "imaps", "pop3s", "smtps", "ssl", "tcp", "udp", "ip"]
     dns_mapping_ttl: int
     ldb_method: Literal["static", "round-robin", "weighted", "least-session", "least-rtt", "first-alive", "http-host"]
-    src_filter: list[VipSrcfilterItem]
+    src_filter: FortiObjectList[VipSrcfilterItemObject]
     src_vip_filter: Literal["disable", "enable"]
-    service: list[VipServiceItem]
+    service: FortiObjectList[VipServiceItemObject]
     extip: str
-    extaddr: list[VipExtaddrItem]
+    extaddr: FortiObjectList[VipExtaddrItemObject]
     h2_support: Literal["enable", "disable"]
     h3_support: Literal["enable", "disable"]
     quic: VipQuicObject
     nat44: Literal["disable", "enable"]
     nat46: Literal["disable", "enable"]
     add_nat46_route: Literal["disable", "enable"]
-    mappedip: list[VipMappedipItem]
+    mappedip: FortiObjectList[VipMappedipItemObject]
     mapped_addr: str
     extintf: str
     arp_reply: Literal["disable", "enable"]
@@ -371,12 +450,12 @@ class VipObject(FortiObject):
     extport: str
     mappedport: str
     gratuitous_arp_interval: int
-    srcintf_filter: list[VipSrcintffilterItem]
+    srcintf_filter: FortiObjectList[VipSrcintffilterItemObject]
     portmapping_type: Literal["1-to-1", "m-to-n"]
     empty_cert_action: Literal["accept", "block", "accept-unmanageable"]
     user_agent_detect: Literal["disable", "enable"]
     client_cert: Literal["disable", "enable"]
-    realservers: list[VipRealserversItem]
+    realservers: FortiObjectList[VipRealserversItemObject]
     http_cookie_domain_from_host: Literal["disable", "enable"]
     http_cookie_domain: str
     http_cookie_path: str
@@ -394,12 +473,12 @@ class VipObject(FortiObject):
     weblogic_server: Literal["disable", "enable"]
     websphere_server: Literal["disable", "enable"]
     ssl_mode: Literal["half", "full"]
-    ssl_certificate: list[VipSslcertificateItem]
+    ssl_certificate: FortiObjectList[VipSslcertificateItemObject]
     ssl_dh_bits: Literal["768", "1024", "1536", "2048", "3072", "4096"]
     ssl_algorithm: Literal["high", "medium", "low", "custom"]
-    ssl_cipher_suites: list[VipSslciphersuitesItem]
+    ssl_cipher_suites: FortiObjectList[VipSslciphersuitesItemObject]
     ssl_server_algorithm: Literal["high", "medium", "low", "custom", "client"]
-    ssl_server_cipher_suites: list[VipSslserverciphersuitesItem]
+    ssl_server_cipher_suites: FortiObjectList[VipSslserverciphersuitesItemObject]
     ssl_pfs: Literal["require", "deny", "allow"]
     ssl_min_version: Literal["ssl-3.0", "tls-1.0", "tls-1.1", "tls-1.2", "tls-1.3"]
     ssl_max_version: Literal["ssl-3.0", "tls-1.0", "tls-1.1", "tls-1.2", "tls-1.3"]
@@ -428,7 +507,7 @@ class VipObject(FortiObject):
     ssl_hsts: Literal["disable", "enable"]
     ssl_hsts_age: int
     ssl_hsts_include_subdomains: Literal["disable", "enable"]
-    monitor: list[VipMonitorItem]
+    monitor: FortiObjectList[VipMonitorItemObject]
     max_embryonic_connections: int
     color: int
     ipv6_mappedip: str
@@ -436,7 +515,7 @@ class VipObject(FortiObject):
     one_click_gslb_server: Literal["disable", "enable"]
     gslb_hostname: str
     gslb_domain_name: str
-    gslb_public_ips: list[VipGslbpublicipsItem]
+    gslb_public_ips: FortiObjectList[VipGslbpublicipsItemObject]
 
 
 # ================================================================

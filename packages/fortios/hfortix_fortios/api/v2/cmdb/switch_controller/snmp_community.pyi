@@ -79,12 +79,18 @@ class SnmpCommunityResponse(TypedDict, total=False):
 # ================================================================
 
 
+class SnmpCommunityHostsItemObject(FortiObject[SnmpCommunityHostsItem]):
+    """Typed object for hosts table items with attribute access."""
+    id: int
+    ip: str
+
+
 class SnmpCommunityObject(FortiObject):
     """Typed FortiObject for SnmpCommunity with field access."""
     id: int
     name: str
     status: Literal["disable", "enable"]
-    hosts: list[SnmpCommunityHostsItem]
+    hosts: FortiObjectList[SnmpCommunityHostsItemObject]
     query_v1_status: Literal["disable", "enable"]
     query_v1_port: int
     query_v2c_status: Literal["disable", "enable"]

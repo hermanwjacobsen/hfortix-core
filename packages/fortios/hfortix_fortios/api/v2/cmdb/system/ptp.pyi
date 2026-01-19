@@ -63,6 +63,13 @@ class PtpResponse(TypedDict, total=False):
 # ================================================================
 
 
+class PtpServerinterfaceItemObject(FortiObject[PtpServerinterfaceItem]):
+    """Typed object for server-interface table items with attribute access."""
+    id: int
+    server_interface_name: str
+    delay_mechanism: Literal["E2E", "P2P"]
+
+
 class PtpObject(FortiObject):
     """Typed FortiObject for Ptp with field access."""
     status: Literal["enable", "disable"]
@@ -71,7 +78,7 @@ class PtpObject(FortiObject):
     request_interval: int
     interface: str
     server_mode: Literal["enable", "disable"]
-    server_interface: list[PtpServerinterfaceItem]
+    server_interface: FortiObjectList[PtpServerinterfaceItemObject]
 
 
 # ================================================================

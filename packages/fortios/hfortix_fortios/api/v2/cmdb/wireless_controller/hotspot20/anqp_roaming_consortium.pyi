@@ -54,10 +54,17 @@ class AnqpRoamingConsortiumResponse(TypedDict, total=False):
 # ================================================================
 
 
+class AnqpRoamingConsortiumOilistItemObject(FortiObject[AnqpRoamingConsortiumOilistItem]):
+    """Typed object for oi-list table items with attribute access."""
+    index: int
+    oi: str
+    comment: str
+
+
 class AnqpRoamingConsortiumObject(FortiObject):
     """Typed FortiObject for AnqpRoamingConsortium with field access."""
     name: str
-    oi_list: list[AnqpRoamingConsortiumOilistItem]
+    oi_list: FortiObjectList[AnqpRoamingConsortiumOilistItemObject]
 
 
 # ================================================================

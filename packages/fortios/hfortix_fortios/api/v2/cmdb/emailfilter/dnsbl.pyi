@@ -59,12 +59,20 @@ class DnsblResponse(TypedDict, total=False):
 # ================================================================
 
 
+class DnsblEntriesItemObject(FortiObject[DnsblEntriesItem]):
+    """Typed object for entries table items with attribute access."""
+    status: Literal["enable", "disable"]
+    id: int
+    server: str
+    action: Literal["reject", "spam"]
+
+
 class DnsblObject(FortiObject):
     """Typed FortiObject for Dnsbl with field access."""
     id: int
     name: str
     comment: str
-    entries: list[DnsblEntriesItem]
+    entries: FortiObjectList[DnsblEntriesItemObject]
 
 
 # ================================================================

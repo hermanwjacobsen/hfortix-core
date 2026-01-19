@@ -139,23 +139,90 @@ class RipngResponse(TypedDict, total=False):
 # ================================================================
 
 
+class RipngDistanceItemObject(FortiObject[RipngDistanceItem]):
+    """Typed object for distance table items with attribute access."""
+    id: int
+    distance: int
+    prefix6: str
+    access_list6: str
+
+
+class RipngDistributelistItemObject(FortiObject[RipngDistributelistItem]):
+    """Typed object for distribute-list table items with attribute access."""
+    id: int
+    status: Literal["enable", "disable"]
+    direction: Literal["in", "out"]
+    listname: str
+    interface: str
+
+
+class RipngNeighborItemObject(FortiObject[RipngNeighborItem]):
+    """Typed object for neighbor table items with attribute access."""
+    id: int
+    ip6: str
+    interface: str
+
+
+class RipngNetworkItemObject(FortiObject[RipngNetworkItem]):
+    """Typed object for network table items with attribute access."""
+    id: int
+    prefix: str
+
+
+class RipngAggregateaddressItemObject(FortiObject[RipngAggregateaddressItem]):
+    """Typed object for aggregate-address table items with attribute access."""
+    id: int
+    prefix6: str
+
+
+class RipngOffsetlistItemObject(FortiObject[RipngOffsetlistItem]):
+    """Typed object for offset-list table items with attribute access."""
+    id: int
+    status: Literal["enable", "disable"]
+    direction: Literal["in", "out"]
+    access_list6: str
+    offset: int
+    interface: str
+
+
+class RipngPassiveinterfaceItemObject(FortiObject[RipngPassiveinterfaceItem]):
+    """Typed object for passive-interface table items with attribute access."""
+    name: str
+
+
+class RipngRedistributeItemObject(FortiObject[RipngRedistributeItem]):
+    """Typed object for redistribute table items with attribute access."""
+    name: str
+    status: Literal["enable", "disable"]
+    metric: int
+    routemap: str
+
+
+class RipngInterfaceItemObject(FortiObject[RipngInterfaceItem]):
+    """Typed object for interface table items with attribute access."""
+    name: str
+    split_horizon_status: Literal["enable", "disable"]
+    split_horizon: Literal["poisoned", "regular"]
+    flags: int
+
+
 class RipngObject(FortiObject):
     """Typed FortiObject for Ripng with field access."""
     default_information_originate: Literal["enable", "disable"]
     default_metric: int
     max_out_metric: int
-    distance: list[RipngDistanceItem]
-    distribute_list: list[RipngDistributelistItem]
-    neighbor: list[RipngNeighborItem]
-    network: list[RipngNetworkItem]
-    aggregate_address: list[RipngAggregateaddressItem]
-    offset_list: list[RipngOffsetlistItem]
-    passive_interface: list[RipngPassiveinterfaceItem]
-    redistribute: list[RipngRedistributeItem]
+    distance: FortiObjectList[RipngDistanceItemObject]
+    distribute_list: FortiObjectList[RipngDistributelistItemObject]
+    neighbor: FortiObjectList[RipngNeighborItemObject]
+    network: FortiObjectList[RipngNetworkItemObject]
+    aggregate_address: FortiObjectList[RipngAggregateaddressItemObject]
+    offset_list: FortiObjectList[RipngOffsetlistItemObject]
+    passive_interface: FortiObjectList[RipngPassiveinterfaceItemObject]
+    redistribute: FortiObjectList[RipngRedistributeItemObject]
     update_timer: int
     timeout_timer: int
     garbage_timer: int
-    interface: list[RipngInterfaceItem]
+    interface: FortiObjectList[RipngInterfaceItemObject]
 
 
 # ================================================================

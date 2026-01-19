@@ -54,10 +54,17 @@ class H2qpOperatorNameResponse(TypedDict, total=False):
 # ================================================================
 
 
+class H2qpOperatorNameValuelistItemObject(FortiObject[H2qpOperatorNameValuelistItem]):
+    """Typed object for value-list table items with attribute access."""
+    index: int
+    lang: str
+    value: str
+
+
 class H2qpOperatorNameObject(FortiObject):
     """Typed FortiObject for H2qpOperatorName with field access."""
     name: str
-    value_list: list[H2qpOperatorNameValuelistItem]
+    value_list: FortiObjectList[H2qpOperatorNameValuelistItemObject]
 
 
 # ================================================================

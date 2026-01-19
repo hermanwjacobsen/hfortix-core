@@ -60,12 +60,21 @@ class IptrustResponse(TypedDict, total=False):
 # ================================================================
 
 
+class IptrustEntriesItemObject(FortiObject[IptrustEntriesItem]):
+    """Typed object for entries table items with attribute access."""
+    status: Literal["enable", "disable"]
+    id: int
+    addr_type: Literal["ipv4", "ipv6"]
+    ip4_subnet: str
+    ip6_subnet: str
+
+
 class IptrustObject(FortiObject):
     """Typed FortiObject for Iptrust with field access."""
     id: int
     name: str
     comment: str
-    entries: list[IptrustEntriesItem]
+    entries: FortiObjectList[IptrustEntriesItemObject]
 
 
 # ================================================================

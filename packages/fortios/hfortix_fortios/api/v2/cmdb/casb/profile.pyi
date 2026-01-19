@@ -26,20 +26,56 @@ from hfortix_fortios.models import (
 # TypedDict Payloads
 # ================================================================
 
+class ProfileSaasapplicationSafesearchcontrolItem(TypedDict, total=False):
+    """Nested item for saas-application.safe-search-control field."""
+    name: str
+
+
+class ProfileSaasapplicationTenantcontroltenantsItem(TypedDict, total=False):
+    """Nested item for saas-application.tenant-control-tenants field."""
+    name: str
+
+
+class ProfileSaasapplicationAdvancedtenantcontrolItem(TypedDict, total=False):
+    """Nested item for saas-application.advanced-tenant-control field."""
+    name: str
+    attribute: str | list[str]
+
+
+class ProfileSaasapplicationDomaincontroldomainsItem(TypedDict, total=False):
+    """Nested item for saas-application.domain-control-domains field."""
+    name: str
+
+
+class ProfileSaasapplicationAccessruleItem(TypedDict, total=False):
+    """Nested item for saas-application.access-rule field."""
+    name: str
+    action: Literal["monitor", "bypass", "block"]
+    bypass: Literal["av", "dlp", "web-filter", "file-filter", "video-filter"]
+    attribute_filter: str | list[str]
+
+
+class ProfileSaasapplicationCustomcontrolItem(TypedDict, total=False):
+    """Nested item for saas-application.custom-control field."""
+    name: str
+    option: str | list[str]
+    attribute_filter: str | list[str]
+
+
 class ProfileSaasapplicationItem(TypedDict, total=False):
     """Nested item for saas-application field."""
     name: str
     status: Literal["enable", "disable"]
     safe_search: Literal["enable", "disable"]
-    safe_search_control: str | list[str]
+    safe_search_control: str | list[str] | list[ProfileSaasapplicationSafesearchcontrolItem]
     tenant_control: Literal["enable", "disable"]
-    tenant_control_tenants: str | list[str]
-    advanced_tenant_control: str | list[str]
+    tenant_control_tenants: str | list[str] | list[ProfileSaasapplicationTenantcontroltenantsItem]
+    advanced_tenant_control: str | list[str] | list[ProfileSaasapplicationAdvancedtenantcontrolItem]
     domain_control: Literal["enable", "disable"]
-    domain_control_domains: str | list[str]
+    domain_control_domains: str | list[str] | list[ProfileSaasapplicationDomaincontroldomainsItem]
     log: Literal["enable", "disable"]
-    access_rule: str | list[str]
-    custom_control: str | list[str]
+    access_rule: str | list[str] | list[ProfileSaasapplicationAccessruleItem]
+    custom_control: str | list[str] | list[ProfileSaasapplicationCustomcontrolItem]
 
 
 class ProfilePayload(TypedDict, total=False):
@@ -65,11 +101,27 @@ class ProfileResponse(TypedDict, total=False):
 # ================================================================
 
 
+class ProfileSaasapplicationItemObject(FortiObject[ProfileSaasapplicationItem]):
+    """Typed object for saas-application table items with attribute access."""
+    name: str
+    status: Literal["enable", "disable"]
+    safe_search: Literal["enable", "disable"]
+    safe_search_control: FortiObjectList[ProfileSaasapplicationSafesearchcontrolItemObject]
+    tenant_control: Literal["enable", "disable"]
+    tenant_control_tenants: FortiObjectList[ProfileSaasapplicationTenantcontroltenantsItemObject]
+    advanced_tenant_control: FortiObjectList[ProfileSaasapplicationAdvancedtenantcontrolItemObject]
+    domain_control: Literal["enable", "disable"]
+    domain_control_domains: FortiObjectList[ProfileSaasapplicationDomaincontroldomainsItemObject]
+    log: Literal["enable", "disable"]
+    access_rule: FortiObjectList[ProfileSaasapplicationAccessruleItemObject]
+    custom_control: FortiObjectList[ProfileSaasapplicationCustomcontrolItemObject]
+
+
 class ProfileObject(FortiObject):
     """Typed FortiObject for Profile with field access."""
     name: str
     comment: str
-    saas_application: list[ProfileSaasapplicationItem]
+    saas_application: FortiObjectList[ProfileSaasapplicationItemObject]
 
 
 # ================================================================

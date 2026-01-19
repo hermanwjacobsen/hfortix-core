@@ -92,6 +92,11 @@ class StaticResponse(TypedDict, total=False):
 # ================================================================
 
 
+class StaticSdwanzoneItemObject(FortiObject[StaticSdwanzoneItem]):
+    """Typed object for sdwan-zone table items with attribute access."""
+    name: str
+
+
 class StaticObject(FortiObject):
     """Typed FortiObject for Static with field access."""
     seq_num: int
@@ -107,7 +112,7 @@ class StaticObject(FortiObject):
     comment: str
     blackhole: Literal["enable", "disable"]
     dynamic_gateway: Literal["enable", "disable"]
-    sdwan_zone: list[StaticSdwanzoneItem]
+    sdwan_zone: FortiObjectList[StaticSdwanzoneItemObject]
     dstaddr: str
     internet_service: int
     internet_service_custom: str

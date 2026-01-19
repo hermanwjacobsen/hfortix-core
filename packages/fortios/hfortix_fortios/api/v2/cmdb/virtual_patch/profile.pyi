@@ -26,12 +26,22 @@ from hfortix_fortios.models import (
 # TypedDict Payloads
 # ================================================================
 
+class ProfileExemptionRuleItem(TypedDict, total=False):
+    """Nested item for exemption.rule field."""
+    id: int
+
+
+class ProfileExemptionDeviceItem(TypedDict, total=False):
+    """Nested item for exemption.device field."""
+    mac: str
+
+
 class ProfileExemptionItem(TypedDict, total=False):
     """Nested item for exemption field."""
     id: int
     status: Literal["enable", "disable"]
-    rule: str | list[str]
-    device: str | list[str]
+    rule: str | list[str] | list[ProfileExemptionRuleItem]
+    device: str | list[str] | list[ProfileExemptionDeviceItem]
 
 
 class ProfilePayload(TypedDict, total=False):
@@ -63,6 +73,14 @@ class ProfileResponse(TypedDict, total=False):
 # ================================================================
 
 
+class ProfileExemptionItemObject(FortiObject[ProfileExemptionItem]):
+    """Typed object for exemption table items with attribute access."""
+    id: int
+    status: Literal["enable", "disable"]
+    rule: FortiObjectList[ProfileExemptionRuleItemObject]
+    device: FortiObjectList[ProfileExemptionDeviceItemObject]
+
+
 class ProfileObject(FortiObject):
     """Typed FortiObject for Profile with field access."""
     name: str
@@ -70,7 +88,7 @@ class ProfileObject(FortiObject):
     severity: str
     action: Literal["pass", "block"]
     log: Literal["enable", "disable"]
-    exemption: list[ProfileExemptionItem]
+    exemption: FortiObjectList[ProfileExemptionItemObject]
 
 
 # ================================================================

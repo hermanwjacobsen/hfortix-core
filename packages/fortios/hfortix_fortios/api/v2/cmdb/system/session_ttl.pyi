@@ -56,10 +56,20 @@ class SessionTtlResponse(TypedDict, total=False):
 # ================================================================
 
 
+class SessionTtlPortItemObject(FortiObject[SessionTtlPortItem]):
+    """Typed object for port table items with attribute access."""
+    id: int
+    protocol: int
+    start_port: int
+    end_port: int
+    timeout: str
+    refresh_direction: Literal["both", "outgoing", "incoming"]
+
+
 class SessionTtlObject(FortiObject):
     """Typed FortiObject for SessionTtl with field access."""
     default: str
-    port: list[SessionTtlPortItem]
+    port: FortiObjectList[SessionTtlPortItemObject]
 
 
 # ================================================================

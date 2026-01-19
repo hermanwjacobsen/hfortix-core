@@ -64,12 +64,25 @@ class BlockAllowListResponse(TypedDict, total=False):
 # ================================================================
 
 
+class BlockAllowListEntriesItemObject(FortiObject[BlockAllowListEntriesItem]):
+    """Typed object for entries table items with attribute access."""
+    status: Literal["enable", "disable"]
+    id: int
+    type: Literal["ip", "email-to", "email-from", "subject"]
+    action: Literal["reject", "spam", "clear"]
+    addr_type: Literal["ipv4", "ipv6"]
+    ip4_subnet: str
+    ip6_subnet: str
+    pattern_type: Literal["wildcard", "regexp"]
+    pattern: str
+
+
 class BlockAllowListObject(FortiObject):
     """Typed FortiObject for BlockAllowList with field access."""
     id: int
     name: str
     comment: str
-    entries: list[BlockAllowListEntriesItem]
+    entries: FortiObjectList[BlockAllowListEntriesItemObject]
 
 
 # ================================================================

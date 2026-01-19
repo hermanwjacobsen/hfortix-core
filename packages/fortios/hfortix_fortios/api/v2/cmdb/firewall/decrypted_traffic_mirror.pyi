@@ -58,13 +58,18 @@ class DecryptedTrafficMirrorResponse(TypedDict, total=False):
 # ================================================================
 
 
+class DecryptedTrafficMirrorInterfaceItemObject(FortiObject[DecryptedTrafficMirrorInterfaceItem]):
+    """Typed object for interface table items with attribute access."""
+    name: str
+
+
 class DecryptedTrafficMirrorObject(FortiObject):
     """Typed FortiObject for DecryptedTrafficMirror with field access."""
     name: str
     dstmac: str
     traffic_type: str
     traffic_source: Literal["client", "server", "both"]
-    interface: list[DecryptedTrafficMirrorInterfaceItem]
+    interface: FortiObjectList[DecryptedTrafficMirrorInterfaceItemObject]
 
 
 # ================================================================

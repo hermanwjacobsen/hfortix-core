@@ -279,6 +279,11 @@ class ProfileResponse(TypedDict, total=False):
 # ================================================================
 
 
+class ProfileExternalblocklistItemObject(FortiObject[ProfileExternalblocklistItem]):
+    """Typed object for external-blocklist table items with attribute access."""
+    name: str
+
+
 class ProfileHttpObject(FortiObject):
     """Nested object for http field with attribute access."""
     av_scan: Literal["disable", "block", "monitor"]
@@ -469,7 +474,7 @@ class ProfileObject(FortiObject):
     content_disarm: ProfileContentdisarmObject
     outbreak_prevention_archive_scan: Literal["disable", "enable"]
     external_blocklist_enable_all: Literal["disable", "enable"]
-    external_blocklist: list[ProfileExternalblocklistItem]
+    external_blocklist: FortiObjectList[ProfileExternalblocklistItemObject]
     ems_threat_feed: Literal["disable", "enable"]
     fortindr_error_action: Literal["log-only", "block", "ignore"]
     fortindr_timeout_action: Literal["log-only", "block", "ignore"]

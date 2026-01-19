@@ -26,12 +26,19 @@ from hfortix_fortios.models import (
 # TypedDict Payloads
 # ================================================================
 
+class AnqpNaiRealmNailistEapmethodItem(TypedDict, total=False):
+    """Nested item for nai-list.eap-method field."""
+    index: int
+    method: Literal["eap-identity", "eap-md5", "eap-tls", "eap-ttls", "eap-peap", "eap-sim", "eap-aka", "eap-aka-prime"]
+    auth_param: str | list[str]
+
+
 class AnqpNaiRealmNailistItem(TypedDict, total=False):
     """Nested item for nai-list field."""
     name: str
     encoding: Literal["disable", "enable"]
     nai_realm: str
-    eap_method: str | list[str]
+    eap_method: str | list[str] | list[AnqpNaiRealmNailistEapmethodItem]
 
 
 class AnqpNaiRealmPayload(TypedDict, total=False):
@@ -55,10 +62,18 @@ class AnqpNaiRealmResponse(TypedDict, total=False):
 # ================================================================
 
 
+class AnqpNaiRealmNailistItemObject(FortiObject[AnqpNaiRealmNailistItem]):
+    """Typed object for nai-list table items with attribute access."""
+    name: str
+    encoding: Literal["disable", "enable"]
+    nai_realm: str
+    eap_method: FortiObjectList[AnqpNaiRealmNailistEapmethodItemObject]
+
+
 class AnqpNaiRealmObject(FortiObject):
     """Typed FortiObject for AnqpNaiRealm with field access."""
     name: str
-    nai_list: list[AnqpNaiRealmNailistItem]
+    nai_list: FortiObjectList[AnqpNaiRealmNailistItemObject]
 
 
 # ================================================================

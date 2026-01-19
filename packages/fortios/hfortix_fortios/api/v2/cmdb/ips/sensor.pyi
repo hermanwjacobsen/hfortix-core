@@ -26,10 +26,32 @@ from hfortix_fortios.models import (
 # TypedDict Payloads
 # ================================================================
 
+class SensorEntriesRuleItem(TypedDict, total=False):
+    """Nested item for entries.rule field."""
+    id: int
+
+
+class SensorEntriesCveItem(TypedDict, total=False):
+    """Nested item for entries.cve field."""
+    cve_entry: str
+
+
+class SensorEntriesVulntypeItem(TypedDict, total=False):
+    """Nested item for entries.vuln-type field."""
+    id: int
+
+
+class SensorEntriesExemptipItem(TypedDict, total=False):
+    """Nested item for entries.exempt-ip field."""
+    id: int
+    src_ip: str
+    dst_ip: str
+
+
 class SensorEntriesItem(TypedDict, total=False):
     """Nested item for entries field."""
     id: int
-    rule: str | list[str]
+    rule: str | list[str] | list[SensorEntriesRuleItem]
     location: str | list[str]
     severity: str | list[str]
     protocol: str | list[str]
@@ -37,8 +59,8 @@ class SensorEntriesItem(TypedDict, total=False):
     application: str | list[str]
     default_action: Literal["all", "pass", "block"]
     default_status: Literal["all", "enable", "disable"]
-    cve: str | list[str]
-    vuln_type: str | list[str]
+    cve: str | list[str] | list[SensorEntriesCveItem]
+    vuln_type: str | list[str] | list[SensorEntriesVulntypeItem]
     last_modified: str
     status: Literal["disable", "enable", "default"]
     log: Literal["disable", "enable"]
@@ -49,7 +71,7 @@ class SensorEntriesItem(TypedDict, total=False):
     rate_duration: int
     rate_mode: Literal["periodical", "continuous"]
     rate_track: Literal["none", "src-ip", "dest-ip", "dhcp-client-mac", "dns-domain"]
-    exempt_ip: str | list[str]
+    exempt_ip: str | list[str] | list[SensorEntriesExemptipItem]
     quarantine: Literal["none", "attacker"]
     quarantine_expiry: str
     quarantine_log: Literal["disable", "enable"]
@@ -86,6 +108,35 @@ class SensorResponse(TypedDict, total=False):
 # ================================================================
 
 
+class SensorEntriesItemObject(FortiObject[SensorEntriesItem]):
+    """Typed object for entries table items with attribute access."""
+    id: int
+    rule: FortiObjectList[SensorEntriesRuleItemObject]
+    location: str | list[str]
+    severity: str | list[str]
+    protocol: str | list[str]
+    os: str | list[str]
+    application: str | list[str]
+    default_action: Literal["all", "pass", "block"]
+    default_status: Literal["all", "enable", "disable"]
+    cve: FortiObjectList[SensorEntriesCveItemObject]
+    vuln_type: FortiObjectList[SensorEntriesVulntypeItemObject]
+    last_modified: str
+    status: Literal["disable", "enable", "default"]
+    log: Literal["disable", "enable"]
+    log_packet: Literal["disable", "enable"]
+    log_attack_context: Literal["disable", "enable"]
+    action: Literal["pass", "block", "reset", "default"]
+    rate_count: int
+    rate_duration: int
+    rate_mode: Literal["periodical", "continuous"]
+    rate_track: Literal["none", "src-ip", "dest-ip", "dhcp-client-mac", "dns-domain"]
+    exempt_ip: FortiObjectList[SensorEntriesExemptipItemObject]
+    quarantine: Literal["none", "attacker"]
+    quarantine_expiry: str
+    quarantine_log: Literal["disable", "enable"]
+
+
 class SensorObject(FortiObject):
     """Typed FortiObject for Sensor with field access."""
     name: str
@@ -94,7 +145,7 @@ class SensorObject(FortiObject):
     block_malicious_url: Literal["disable", "enable"]
     scan_botnet_connections: Literal["disable", "block", "monitor"]
     extended_log: Literal["enable", "disable"]
-    entries: list[SensorEntriesItem]
+    entries: FortiObjectList[SensorEntriesItemObject]
 
 
 # ================================================================

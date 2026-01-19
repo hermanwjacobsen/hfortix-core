@@ -26,6 +26,16 @@ from hfortix_fortios.models import (
 # TypedDict Payloads
 # ================================================================
 
+class ServerOptionsVcistringItem(TypedDict, total=False):
+    """Nested item for options.vci-string field."""
+    vci_string: str
+
+
+class ServerIprangeVcistringItem(TypedDict, total=False):
+    """Nested item for ip-range.vci-string field."""
+    vci_string: str
+
+
 class ServerOptionsItem(TypedDict, total=False):
     """Nested item for options field."""
     id: int
@@ -34,7 +44,7 @@ class ServerOptionsItem(TypedDict, total=False):
     value: str
     ip6: str | list[str]
     vci_match: Literal["disable", "enable"]
-    vci_string: str | list[str]
+    vci_string: str | list[str] | list[ServerOptionsVcistringItem]
 
 
 class ServerPrefixrangeItem(TypedDict, total=False):
@@ -51,7 +61,7 @@ class ServerIprangeItem(TypedDict, total=False):
     start_ip: str
     end_ip: str
     vci_match: Literal["disable", "enable"]
-    vci_string: str | list[str]
+    vci_string: str | list[str] | list[ServerIprangeVcistringItem]
 
 
 class ServerPayload(TypedDict, total=False):
@@ -113,6 +123,34 @@ class ServerResponse(TypedDict, total=False):
 # ================================================================
 
 
+class ServerOptionsItemObject(FortiObject[ServerOptionsItem]):
+    """Typed object for options table items with attribute access."""
+    id: int
+    code: int
+    type: Literal["hex", "string", "ip6", "fqdn"]
+    value: str
+    ip6: str | list[str]
+    vci_match: Literal["disable", "enable"]
+    vci_string: FortiObjectList[ServerOptionsVcistringItemObject]
+
+
+class ServerPrefixrangeItemObject(FortiObject[ServerPrefixrangeItem]):
+    """Typed object for prefix-range table items with attribute access."""
+    id: int
+    start_prefix: str
+    end_prefix: str
+    prefix_length: int
+
+
+class ServerIprangeItemObject(FortiObject[ServerIprangeItem]):
+    """Typed object for ip-range table items with attribute access."""
+    id: int
+    start_ip: str
+    end_ip: str
+    vci_match: Literal["disable", "enable"]
+    vci_string: FortiObjectList[ServerIprangeVcistringItemObject]
+
+
 class ServerObject(FortiObject):
     """Typed FortiObject for Server with field access."""
     id: int
@@ -129,13 +167,13 @@ class ServerObject(FortiObject):
     subnet: str
     interface: str
     delegated_prefix_route: Literal["disable", "enable"]
-    options: list[ServerOptionsItem]
+    options: FortiObjectList[ServerOptionsItemObject]
     upstream_interface: str
     delegated_prefix_iaid: int
     ip_mode: Literal["range", "delegated"]
     prefix_mode: Literal["dhcp6", "ra"]
-    prefix_range: list[ServerPrefixrangeItem]
-    ip_range: list[ServerIprangeItem]
+    prefix_range: FortiObjectList[ServerPrefixrangeItemObject]
+    ip_range: FortiObjectList[ServerIprangeItemObject]
 
 
 # ================================================================

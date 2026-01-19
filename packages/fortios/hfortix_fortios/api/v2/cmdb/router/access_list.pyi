@@ -58,11 +58,20 @@ class AccessListResponse(TypedDict, total=False):
 # ================================================================
 
 
+class AccessListRuleItemObject(FortiObject[AccessListRuleItem]):
+    """Typed object for rule table items with attribute access."""
+    id: int
+    action: Literal["permit", "deny"]
+    prefix: str
+    wildcard: str
+    exact_match: Literal["enable", "disable"]
+
+
 class AccessListObject(FortiObject):
     """Typed FortiObject for AccessList with field access."""
     name: str
     comments: str
-    rule: list[AccessListRuleItem]
+    rule: FortiObjectList[AccessListRuleItemObject]
 
 
 # ================================================================

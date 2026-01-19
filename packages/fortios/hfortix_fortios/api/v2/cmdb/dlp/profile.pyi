@@ -26,6 +26,16 @@ from hfortix_fortios.models import (
 # TypedDict Payloads
 # ================================================================
 
+class ProfileRuleSensitivityItem(TypedDict, total=False):
+    """Nested item for rule.sensitivity field."""
+    name: str
+
+
+class ProfileRuleSensorItem(TypedDict, total=False):
+    """Nested item for rule.sensor field."""
+    name: str
+
+
 class ProfileRuleItem(TypedDict, total=False):
     """Nested item for rule field."""
     id: int
@@ -35,10 +45,10 @@ class ProfileRuleItem(TypedDict, total=False):
     proto: Literal["smtp", "pop3", "imap", "http-get", "http-post", "ftp", "nntp", "mapi", "ssh", "cifs"]
     filter_by: Literal["sensor", "label", "fingerprint", "encrypted", "none"]
     file_size: int
-    sensitivity: str | list[str]
+    sensitivity: str | list[str] | list[ProfileRuleSensitivityItem]
     match_percentage: int
     file_type: int
-    sensor: str | list[str]
+    sensor: str | list[str] | list[ProfileRuleSensorItem]
     label: str
     archive: Literal["disable", "enable"]
     action: Literal["allow", "log-only", "block", "quarantine-ip"]
@@ -84,13 +94,32 @@ class ProfileResponse(TypedDict, total=False):
 # ================================================================
 
 
+class ProfileRuleItemObject(FortiObject[ProfileRuleItem]):
+    """Typed object for rule table items with attribute access."""
+    id: int
+    name: str
+    severity: Literal["info", "low", "medium", "high", "critical"]
+    type: Literal["file", "message"]
+    proto: Literal["smtp", "pop3", "imap", "http-get", "http-post", "ftp", "nntp", "mapi", "ssh", "cifs"]
+    filter_by: Literal["sensor", "label", "fingerprint", "encrypted", "none"]
+    file_size: int
+    sensitivity: FortiObjectList[ProfileRuleSensitivityItemObject]
+    match_percentage: int
+    file_type: int
+    sensor: FortiObjectList[ProfileRuleSensorItemObject]
+    label: str
+    archive: Literal["disable", "enable"]
+    action: Literal["allow", "log-only", "block", "quarantine-ip"]
+    expiry: str
+
+
 class ProfileObject(FortiObject):
     """Typed FortiObject for Profile with field access."""
     name: str
     comment: str
     feature_set: Literal["flow", "proxy"]
     replacemsg_group: str
-    rule: list[ProfileRuleItem]
+    rule: FortiObjectList[ProfileRuleItemObject]
     dlp_log: Literal["enable", "disable"]
     extended_log: Literal["enable", "disable"]
     nac_quar_log: Literal["enable", "disable"]

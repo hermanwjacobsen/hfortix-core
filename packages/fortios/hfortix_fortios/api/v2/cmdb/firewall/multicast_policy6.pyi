@@ -87,6 +87,16 @@ class MulticastPolicy6Response(TypedDict, total=False):
 # ================================================================
 
 
+class MulticastPolicy6SrcaddrItemObject(FortiObject[MulticastPolicy6SrcaddrItem]):
+    """Typed object for srcaddr table items with attribute access."""
+    name: str
+
+
+class MulticastPolicy6DstaddrItemObject(FortiObject[MulticastPolicy6DstaddrItem]):
+    """Typed object for dstaddr table items with attribute access."""
+    name: str
+
+
 class MulticastPolicy6Object(FortiObject):
     """Typed FortiObject for MulticastPolicy6 with field access."""
     id: int
@@ -95,8 +105,8 @@ class MulticastPolicy6Object(FortiObject):
     name: str
     srcintf: str
     dstintf: str
-    srcaddr: list[MulticastPolicy6SrcaddrItem]
-    dstaddr: list[MulticastPolicy6DstaddrItem]
+    srcaddr: FortiObjectList[MulticastPolicy6SrcaddrItemObject]
+    dstaddr: FortiObjectList[MulticastPolicy6DstaddrItemObject]
     action: Literal["accept", "deny"]
     protocol: int
     start_port: int

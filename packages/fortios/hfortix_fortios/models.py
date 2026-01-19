@@ -10,6 +10,18 @@ import json as json_module
 from typing import Any, Iterator
 
 
+# API field to Python keyword mapping (reverse of PYTHON_KEYWORD_TO_API_FIELD)
+# When the API returns fields that are Python keywords, map them to safe names
+API_FIELD_TO_PYTHON_KEYWORD = {
+    "as": "asn",  # BGP AS number (API 'as' -> Python 'asn')
+    "class": "class_",  # Class fields (API 'class' -> Python 'class_')
+    "type": "type_",  # Type fields (API 'type' -> Python 'type_')
+    "from": "from_",  # From fields
+    "import": "import_",  # Import fields
+    "global": "global_",  # Global fields
+}
+
+
 class FortiObject:
     """
     Zero-maintenance wrapper for FortiOS API responses.
@@ -276,14 +288,27 @@ class FortiObject:
             'fd12:3456:789a:bcde::1/128'
             >>> obj.action  # Regular field
             'accept'
+            >>> obj.asn  # Python keyword mapping (API 'as' -> Python 'asn')
+            '65001'
         """
         if name.startswith("_"):
             raise AttributeError(
                 f"'{type(self).__name__}' object has no attribute '{name}'"
             )
 
-        # Resolve key: try exact name first, then snake_case -> hyphen-case
-        key = name if name in self._data else name.replace("_", "-")
+        # Resolve key with priority order:
+        # 1. Check if name maps to API keyword (e.g., 'asn' -> 'as')
+        # 2. Try exact name match
+        # 3. Try snake_case -> hyphen-case conversion
+        
+        # Check reverse keyword mapping (Python name -> API field)
+        reverse_keyword_map = {v: k for k, v in API_FIELD_TO_PYTHON_KEYWORD.items()}
+        if name in reverse_keyword_map:
+            key = reverse_keyword_map[name]
+        elif name in self._data:
+            key = name
+        else:
+            key = name.replace("_", "-")
 
         # If key not present, behave like previous implementation and return None
         if key not in self._data:
@@ -295,10 +320,14 @@ class FortiObject:
         if isinstance(value, dict):
             return FortiObject(value)
 
-        # Auto-wrap member_table fields (lists of dicts) in FortiObject
-        if isinstance(value, list) and value:
+        # Auto-wrap member_table fields (lists of dicts) in FortiObjectList
+        # Wrap both empty and non-empty lists so .dict property is always available
+        if isinstance(value, list):
+            if not value:
+                # Empty list - wrap in FortiObjectList for consistent .dict access
+                return FortiObjectList([])
             if isinstance(value[0], dict):
-                return [FortiObject(item) for item in value]
+                return FortiObjectList([FortiObject(item) for item in value])
 
         return value
 
@@ -319,8 +348,14 @@ class FortiObject:
             >>> obj.get_full('srcaddr')
             [{'name': 'addr1', 'q_origin_key': 'addr1'}]
         """
-        # Support both snake_case attribute names and hyphenated keys
-        key = name if name in self._data else name.replace("_", "-")
+        # Support reverse keyword mapping, exact names, and hyphenated keys
+        reverse_keyword_map = {v: k for k, v in API_FIELD_TO_PYTHON_KEYWORD.items()}
+        if name in reverse_keyword_map:
+            key = reverse_keyword_map[name]
+        elif name in self._data:
+            key = name
+        else:
+            key = name.replace("_", "-")
         return self._data.get(key)
 
     def to_dict(self) -> dict:
@@ -626,7 +661,7 @@ class FortiObject:
 
         value = self._data[raw_key]
         if isinstance(value, list) and value and isinstance(value[0], dict):
-            return [FortiObject(item) for item in value]
+            return FortiObjectList([FortiObject(item) for item in value])
         return value
 
 

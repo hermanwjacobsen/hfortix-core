@@ -551,6 +551,11 @@ class GlobalResponse(TypedDict, total=False):
 # ================================================================
 
 
+class GlobalInternetservicedownloadlistItemObject(FortiObject[GlobalInternetservicedownloadlistItem]):
+    """Typed object for internet-service-download-list table items with attribute access."""
+    id: int
+
+
 class GlobalObject(FortiObject):
     """Typed FortiObject for Global with field access."""
     language: Literal["english", "french", "spanish", "portuguese", "japanese", "trach", "simch", "korean"]
@@ -789,7 +794,7 @@ class GlobalObject(FortiObject):
     forticonverter_integration: Literal["enable", "disable"]
     forticonverter_config_upload: Literal["once", "disable"]
     internet_service_database: Literal["mini", "standard", "full", "on-demand"]
-    internet_service_download_list: list[GlobalInternetservicedownloadlistItem]
+    internet_service_download_list: FortiObjectList[GlobalInternetservicedownloadlistItemObject]
     geoip_full_db: Literal["enable", "disable"]
     early_tcp_npu_session: Literal["enable", "disable"]
     npu_neighbor_update: Literal["enable", "disable"]

@@ -131,51 +131,8 @@ class ViewMap:
         format: str = ...,
     ) -> FortiObject: ...
 
-    # ================================================================
-    # POST Method
-    # ================================================================
-    
-    def post(
-        self,
-        payload_dict: ViewMapPayload | None = ...,
-        id: int | None = ...,
-        vdom_id: int | None = ...,
-        policy_id: int | None = ...,
-        id_policy_id: int | None = ...,
-        which: Literal["firewall", "interface", "interface6", "sniffer", "sniffer6", "explicit"] | None = ...,
-        vdom: str | bool | None = ...,
-        error_mode: Literal["raise", "return", "print"] | None = ...,
-        error_format: Literal["detailed", "simple", "code_only"] | None = ...,
-    ) -> ViewMapObject: ...
 
-    # ================================================================
-    # PUT Method
-    # ================================================================
-    
-    def put(
-        self,
-        payload_dict: ViewMapPayload | None = ...,
-        id: int | None = ...,
-        vdom_id: int | None = ...,
-        policy_id: int | None = ...,
-        id_policy_id: int | None = ...,
-        which: Literal["firewall", "interface", "interface6", "sniffer", "sniffer6", "explicit"] | None = ...,
-        vdom: str | bool | None = ...,
-        error_mode: Literal["raise", "return", "print"] | None = ...,
-        error_format: Literal["detailed", "simple", "code_only"] | None = ...,
-    ) -> ViewMapObject: ...
 
-    # ================================================================
-    # DELETE Method
-    # ================================================================
-    
-    def delete(
-        self,
-        id: int | None = ...,
-        vdom: str | bool | None = ...,
-        error_mode: Literal["raise", "return", "print"] | None = ...,
-        error_format: Literal["detailed", "simple", "code_only"] | None = ...,
-    ) -> FortiObject: ...
 
     # ================================================================
     # Utility Methods

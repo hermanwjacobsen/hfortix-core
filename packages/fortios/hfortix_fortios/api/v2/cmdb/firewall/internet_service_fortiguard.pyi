@@ -26,14 +26,31 @@ from hfortix_fortios.models import (
 # TypedDict Payloads
 # ================================================================
 
+class InternetServiceFortiguardEntryPortrangeItem(TypedDict, total=False):
+    """Nested item for entry.port-range field."""
+    id: int
+    start_port: int
+    end_port: int
+
+
+class InternetServiceFortiguardEntryDstItem(TypedDict, total=False):
+    """Nested item for entry.dst field."""
+    name: str
+
+
+class InternetServiceFortiguardEntryDst6Item(TypedDict, total=False):
+    """Nested item for entry.dst6 field."""
+    name: str
+
+
 class InternetServiceFortiguardEntryItem(TypedDict, total=False):
     """Nested item for entry field."""
     id: int
     addr_mode: Literal["ipv4", "ipv6"]
     protocol: int
-    port_range: str | list[str]
-    dst: str | list[str]
-    dst6: str | list[str]
+    port_range: str | list[str] | list[InternetServiceFortiguardEntryPortrangeItem]
+    dst: str | list[str] | list[InternetServiceFortiguardEntryDstItem]
+    dst6: str | list[str] | list[InternetServiceFortiguardEntryDst6Item]
 
 
 class InternetServiceFortiguardPayload(TypedDict, total=False):
@@ -59,11 +76,21 @@ class InternetServiceFortiguardResponse(TypedDict, total=False):
 # ================================================================
 
 
+class InternetServiceFortiguardEntryItemObject(FortiObject[InternetServiceFortiguardEntryItem]):
+    """Typed object for entry table items with attribute access."""
+    id: int
+    addr_mode: Literal["ipv4", "ipv6"]
+    protocol: int
+    port_range: FortiObjectList[InternetServiceFortiguardEntryPortrangeItemObject]
+    dst: FortiObjectList[InternetServiceFortiguardEntryDstItemObject]
+    dst6: FortiObjectList[InternetServiceFortiguardEntryDst6ItemObject]
+
+
 class InternetServiceFortiguardObject(FortiObject):
     """Typed FortiObject for InternetServiceFortiguard with field access."""
     name: str
     comment: str
-    entry: list[InternetServiceFortiguardEntryItem]
+    entry: FortiObjectList[InternetServiceFortiguardEntryItemObject]
 
 
 # ================================================================

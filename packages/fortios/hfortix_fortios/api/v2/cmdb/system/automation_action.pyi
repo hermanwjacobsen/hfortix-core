@@ -147,6 +147,30 @@ class AutomationActionResponse(TypedDict, total=False):
 # ================================================================
 
 
+class AutomationActionEmailtoItemObject(FortiObject[AutomationActionEmailtoItem]):
+    """Typed object for email-to table items with attribute access."""
+    name: str
+
+
+class AutomationActionHttpheadersItemObject(FortiObject[AutomationActionHttpheadersItem]):
+    """Typed object for http-headers table items with attribute access."""
+    id: int
+    key: str
+    value: str
+
+
+class AutomationActionFormdataItemObject(FortiObject[AutomationActionFormdataItem]):
+    """Typed object for form-data table items with attribute access."""
+    id: int
+    key: str
+    value: str
+
+
+class AutomationActionSdnconnectorItemObject(FortiObject[AutomationActionSdnconnectorItem]):
+    """Typed object for sdn-connector table items with attribute access."""
+    name: str
+
+
 class AutomationActionObject(FortiObject):
     """Typed FortiObject for AutomationAction with field access."""
     name: str
@@ -155,7 +179,7 @@ class AutomationActionObject(FortiObject):
     system_action: Literal["reboot", "shutdown", "backup-config"]
     tls_certificate: str
     forticare_email: Literal["enable", "disable"]
-    email_to: list[AutomationActionEmailtoItem]
+    email_to: FortiObjectList[AutomationActionEmailtoItemObject]
     email_from: str
     email_subject: str
     minimum_interval: int
@@ -174,8 +198,8 @@ class AutomationActionObject(FortiObject):
     uri: str
     http_body: str
     port: int
-    http_headers: list[AutomationActionHttpheadersItem]
-    form_data: list[AutomationActionFormdataItem]
+    http_headers: FortiObjectList[AutomationActionHttpheadersItemObject]
+    form_data: FortiObjectList[AutomationActionFormdataItemObject]
     verify_host_cert: Literal["enable", "disable"]
     script: str
     output_size: int
@@ -188,7 +212,7 @@ class AutomationActionObject(FortiObject):
     regular_expression: str
     log_debug_print: Literal["enable", "disable"]
     security_tag: str
-    sdn_connector: list[AutomationActionSdnconnectorItem]
+    sdn_connector: FortiObjectList[AutomationActionSdnconnectorItemObject]
 
 
 # ================================================================

@@ -105,6 +105,11 @@ class OverrideSettingResponse(TypedDict, total=False):
 # ================================================================
 
 
+class OverrideSettingSerialItemObject(FortiObject[OverrideSettingSerialItem]):
+    """Typed object for serial table items with attribute access."""
+    name: str
+
+
 class OverrideSettingObject(FortiObject):
     """Typed FortiObject for OverrideSetting with field access."""
     use_management_vdom: Literal["enable", "disable"]

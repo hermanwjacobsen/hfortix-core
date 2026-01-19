@@ -86,12 +86,26 @@ class FlowTrackingResponse(TypedDict, total=False):
 # ================================================================
 
 
+class FlowTrackingCollectorsItemObject(FortiObject[FlowTrackingCollectorsItem]):
+    """Typed object for collectors table items with attribute access."""
+    name: str
+    ip: str
+    port: int
+    transport: Literal["udp", "tcp", "sctp"]
+
+
+class FlowTrackingAggregatesItemObject(FortiObject[FlowTrackingAggregatesItem]):
+    """Typed object for aggregates table items with attribute access."""
+    id: int
+    ip: str
+
+
 class FlowTrackingObject(FortiObject):
     """Typed FortiObject for FlowTracking with field access."""
     sample_mode: Literal["local", "perimeter", "device-ingress"]
     sample_rate: int
     format: Literal["netflow1", "netflow5", "netflow9", "ipfix"]
-    collectors: list[FlowTrackingCollectorsItem]
+    collectors: FortiObjectList[FlowTrackingCollectorsItemObject]
     level: Literal["vlan", "ip", "port", "proto", "mac"]
     max_export_pkt_size: int
     template_export_period: int
@@ -102,7 +116,7 @@ class FlowTrackingObject(FortiObject):
     timeout_tcp_fin: int
     timeout_tcp_rst: int
     timeout_udp: int
-    aggregates: list[FlowTrackingAggregatesItem]
+    aggregates: FortiObjectList[FlowTrackingAggregatesItemObject]
 
 
 # ================================================================

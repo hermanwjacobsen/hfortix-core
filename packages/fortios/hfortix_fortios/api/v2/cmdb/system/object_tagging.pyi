@@ -62,6 +62,11 @@ class ObjectTaggingResponse(TypedDict, total=False):
 # ================================================================
 
 
+class ObjectTaggingTagsItemObject(FortiObject[ObjectTaggingTagsItem]):
+    """Typed object for tags table items with attribute access."""
+    name: str
+
+
 class ObjectTaggingObject(FortiObject):
     """Typed FortiObject for ObjectTagging with field access."""
     category: str
@@ -70,7 +75,7 @@ class ObjectTaggingObject(FortiObject):
     interface: Literal["disable", "mandatory", "optional"]
     multiple: Literal["enable", "disable"]
     color: int
-    tags: list[ObjectTaggingTagsItem]
+    tags: FortiObjectList[ObjectTaggingTagsItemObject]
 
 
 # ================================================================

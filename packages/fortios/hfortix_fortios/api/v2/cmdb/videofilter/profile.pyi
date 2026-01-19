@@ -69,11 +69,23 @@ class ProfileResponse(TypedDict, total=False):
 # ================================================================
 
 
+class ProfileFiltersItemObject(FortiObject[ProfileFiltersItem]):
+    """Typed object for filters table items with attribute access."""
+    id: int
+    comment: str
+    type: Literal["category", "channel", "title", "description"]
+    keyword: int
+    category: str
+    channel: str
+    action: Literal["allow", "monitor", "block"]
+    log: Literal["enable", "disable"]
+
+
 class ProfileObject(FortiObject):
     """Typed FortiObject for Profile with field access."""
     name: str
     comment: str
-    filters: list[ProfileFiltersItem]
+    filters: FortiObjectList[ProfileFiltersItemObject]
     youtube: Literal["enable", "disable"]
     vimeo: Literal["enable", "disable"]
     dailymotion: Literal["enable", "disable"]

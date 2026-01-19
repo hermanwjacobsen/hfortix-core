@@ -26,14 +26,31 @@ from hfortix_fortios.models import (
 # TypedDict Payloads
 # ================================================================
 
+class InternetServiceCustomEntryPortrangeItem(TypedDict, total=False):
+    """Nested item for entry.port-range field."""
+    id: int
+    start_port: int
+    end_port: int
+
+
+class InternetServiceCustomEntryDstItem(TypedDict, total=False):
+    """Nested item for entry.dst field."""
+    name: str
+
+
+class InternetServiceCustomEntryDst6Item(TypedDict, total=False):
+    """Nested item for entry.dst6 field."""
+    name: str
+
+
 class InternetServiceCustomEntryItem(TypedDict, total=False):
     """Nested item for entry field."""
     id: int
     addr_mode: Literal["ipv4", "ipv6"]
     protocol: int
-    port_range: str | list[str]
-    dst: str | list[str]
-    dst6: str | list[str]
+    port_range: str | list[str] | list[InternetServiceCustomEntryPortrangeItem]
+    dst: str | list[str] | list[InternetServiceCustomEntryDstItem]
+    dst6: str | list[str] | list[InternetServiceCustomEntryDst6Item]
 
 
 class InternetServiceCustomPayload(TypedDict, total=False):
@@ -61,12 +78,22 @@ class InternetServiceCustomResponse(TypedDict, total=False):
 # ================================================================
 
 
+class InternetServiceCustomEntryItemObject(FortiObject[InternetServiceCustomEntryItem]):
+    """Typed object for entry table items with attribute access."""
+    id: int
+    addr_mode: Literal["ipv4", "ipv6"]
+    protocol: int
+    port_range: FortiObjectList[InternetServiceCustomEntryPortrangeItemObject]
+    dst: FortiObjectList[InternetServiceCustomEntryDstItemObject]
+    dst6: FortiObjectList[InternetServiceCustomEntryDst6ItemObject]
+
+
 class InternetServiceCustomObject(FortiObject):
     """Typed FortiObject for InternetServiceCustom with field access."""
     name: str
     reputation: int
     comment: str
-    entry: list[InternetServiceCustomEntryItem]
+    entry: FortiObjectList[InternetServiceCustomEntryItemObject]
 
 
 # ================================================================

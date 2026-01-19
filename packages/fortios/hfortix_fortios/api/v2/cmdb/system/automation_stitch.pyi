@@ -77,16 +77,34 @@ class AutomationStitchResponse(TypedDict, total=False):
 # ================================================================
 
 
+class AutomationStitchConditionItemObject(FortiObject[AutomationStitchConditionItem]):
+    """Typed object for condition table items with attribute access."""
+    name: str
+
+
+class AutomationStitchActionsItemObject(FortiObject[AutomationStitchActionsItem]):
+    """Typed object for actions table items with attribute access."""
+    id: int
+    action: str
+    delay: int
+    required: Literal["enable", "disable"]
+
+
+class AutomationStitchDestinationItemObject(FortiObject[AutomationStitchDestinationItem]):
+    """Typed object for destination table items with attribute access."""
+    name: str
+
+
 class AutomationStitchObject(FortiObject):
     """Typed FortiObject for AutomationStitch with field access."""
     name: str
     description: str
     status: Literal["enable", "disable"]
     trigger: str
-    condition: list[AutomationStitchConditionItem]
+    condition: FortiObjectList[AutomationStitchConditionItemObject]
     condition_logic: Literal["and", "or"]
-    actions: list[AutomationStitchActionsItem]
-    destination: list[AutomationStitchDestinationItem]
+    actions: FortiObjectList[AutomationStitchActionsItemObject]
+    destination: FortiObjectList[AutomationStitchDestinationItemObject]
 
 
 # ================================================================

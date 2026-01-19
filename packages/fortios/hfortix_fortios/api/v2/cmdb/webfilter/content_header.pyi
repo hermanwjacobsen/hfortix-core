@@ -58,12 +58,19 @@ class ContentHeaderResponse(TypedDict, total=False):
 # ================================================================
 
 
+class ContentHeaderEntriesItemObject(FortiObject[ContentHeaderEntriesItem]):
+    """Typed object for entries table items with attribute access."""
+    pattern: str
+    action: Literal["block", "allow", "exempt"]
+    category: str | list[str]
+
+
 class ContentHeaderObject(FortiObject):
     """Typed FortiObject for ContentHeader with field access."""
     id: int
     name: str
     comment: str
-    entries: list[ContentHeaderEntriesItem]
+    entries: FortiObjectList[ContentHeaderEntriesItemObject]
 
 
 # ================================================================

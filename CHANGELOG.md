@@ -7,6 +7,29 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.5.116] - 2026-01-19
+
+### Added
+
+- **Tests: Rule Endpoint Test Suite**: Added tests for read-only CMDB rule endpoints (reference data):
+  - **rule/fmwp**: Show FMWP signatures
+  - **rule/iotd**: Show IOT detection signatures
+  - **rule/otdt**: Show OT detection signatures
+  - **rule/otvp**: Show OT patch signatures
+  - All rule endpoints are read-only (GET operations only) and provide reference data for security signatures
+
+### Fixed
+
+- **Generator: Type stubs for read-only endpoints**: Fixed `.pyi` stub generator to respect `readonly` flag:
+  - **Issue**: Type stub files (`.pyi`) were generating POST/PUT/DELETE method signatures for read-only endpoints, causing IDE autocomplete to show non-existent methods
+  - **Root Cause**: Template `endpoint_class.pyi.j2` only checked `capabilities.crud.{create,update,delete}` flags without checking `schema.readonly` flag
+  - **Fix**: Added `not schema.readonly` check to all CRUD method generation in `.pyi` template:
+    - Line 485: POST method now requires `{% if not schema.readonly and schema.capabilities.crud.create %}`
+    - Line 536: PUT method now requires `{% if not schema.readonly and schema.capabilities.crud.update %}`
+    - Line 587: DELETE method now requires `{% if not schema.readonly and schema.capabilities.crud.delete %}`
+  - **Impact**: Read-only endpoints (e.g., `rule/fmwp`, `rule/iotd`, system reference tables) no longer show POST/PUT/DELETE in IDE autocomplete
+  - **Consistency**: `.pyi` template now matches Python template logic which already had readonly checks for `SUPPORTS_CREATE/UPDATE/DELETE` flags
+
 ## [0.5.115] - 2026-01-19
 
 ### Added

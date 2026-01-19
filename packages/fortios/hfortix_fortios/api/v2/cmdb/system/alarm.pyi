@@ -25,6 +25,16 @@ from hfortix_fortios.models import (
 # TypedDict Payloads
 # ================================================================
 
+class AlarmGroupsFwpolicyviolationsItem(TypedDict, total=False):
+    """Nested item for groups.fw-policy-violations field."""
+    id: int
+    threshold: int
+    src_ip: str
+    dst_ip: str
+    src_port: int
+    dst_port: int
+
+
 class AlarmGroupsItem(TypedDict, total=False):
     """Nested item for groups field."""
     id: int
@@ -38,7 +48,7 @@ class AlarmGroupsItem(TypedDict, total=False):
     log_full_warning_threshold: int
     encryption_failure_threshold: int
     decryption_failure_threshold: int
-    fw_policy_violations: str | list[str]
+    fw_policy_violations: str | list[str] | list[AlarmGroupsFwpolicyviolationsItem]
     fw_policy_id: int
     fw_policy_id_threshold: int
 
@@ -66,11 +76,29 @@ class AlarmResponse(TypedDict, total=False):
 # ================================================================
 
 
+class AlarmGroupsItemObject(FortiObject[AlarmGroupsItem]):
+    """Typed object for groups table items with attribute access."""
+    id: int
+    period: int
+    admin_auth_failure_threshold: int
+    admin_auth_lockout_threshold: int
+    user_auth_failure_threshold: int
+    user_auth_lockout_threshold: int
+    replay_attempt_threshold: int
+    self_test_failure_threshold: int
+    log_full_warning_threshold: int
+    encryption_failure_threshold: int
+    decryption_failure_threshold: int
+    fw_policy_violations: FortiObjectList[AlarmGroupsFwpolicyviolationsItemObject]
+    fw_policy_id: int
+    fw_policy_id_threshold: int
+
+
 class AlarmObject(FortiObject):
     """Typed FortiObject for Alarm with field access."""
     status: Literal["enable", "disable"]
     audible: Literal["enable", "disable"]
-    groups: list[AlarmGroupsItem]
+    groups: FortiObjectList[AlarmGroupsItemObject]
 
 
 # ================================================================

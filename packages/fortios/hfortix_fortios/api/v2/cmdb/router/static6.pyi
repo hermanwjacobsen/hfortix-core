@@ -84,6 +84,11 @@ class Static6Response(TypedDict, total=False):
 # ================================================================
 
 
+class Static6SdwanzoneItemObject(FortiObject[Static6SdwanzoneItem]):
+    """Typed object for sdwan-zone table items with attribute access."""
+    name: str
+
+
 class Static6Object(FortiObject):
     """Typed FortiObject for Static6 with field access."""
     seq_num: int
@@ -98,7 +103,7 @@ class Static6Object(FortiObject):
     comment: str
     blackhole: Literal["enable", "disable"]
     dynamic_gateway: Literal["enable", "disable"]
-    sdwan_zone: list[Static6SdwanzoneItem]
+    sdwan_zone: FortiObjectList[Static6SdwanzoneItemObject]
     dstaddr: str
     link_monitor_exempt: Literal["enable", "disable"]
     vrf: int

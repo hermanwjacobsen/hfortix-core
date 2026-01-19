@@ -54,11 +54,16 @@ class CountryResponse(TypedDict, total=False):
 # ================================================================
 
 
+class CountryRegionItemObject(FortiObject[CountryRegionItem]):
+    """Typed object for region table items with attribute access."""
+    id: int
+
+
 class CountryObject(FortiObject):
     """Typed FortiObject for Country with field access."""
     id: int
     name: str
-    region: list[CountryRegionItem]
+    region: FortiObjectList[CountryRegionItemObject]
 
 
 # ================================================================
@@ -127,44 +132,8 @@ class Country:
         format: str = ...,
     ) -> FortiObject: ...
 
-    # ================================================================
-    # POST Method
-    # ================================================================
-    
-    def post(
-        self,
-        payload_dict: CountryPayload | None = ...,
-        id: int | None = ...,
-        name: str | None = ...,
-        region: str | list[str] | list[CountryRegionItem] | None = ...,
-        error_mode: Literal["raise", "return", "print"] | None = ...,
-        error_format: Literal["detailed", "simple", "code_only"] | None = ...,
-    ) -> CountryObject: ...
 
-    # ================================================================
-    # PUT Method
-    # ================================================================
-    
-    def put(
-        self,
-        payload_dict: CountryPayload | None = ...,
-        id: int | None = ...,
-        name: str | None = ...,
-        region: str | list[str] | list[CountryRegionItem] | None = ...,
-        error_mode: Literal["raise", "return", "print"] | None = ...,
-        error_format: Literal["detailed", "simple", "code_only"] | None = ...,
-    ) -> CountryObject: ...
 
-    # ================================================================
-    # DELETE Method
-    # ================================================================
-    
-    def delete(
-        self,
-        id: int | None = ...,
-        error_mode: Literal["raise", "return", "print"] | None = ...,
-        error_format: Literal["detailed", "simple", "code_only"] | None = ...,
-    ) -> FortiObject: ...
 
     # ================================================================
     # Utility Methods

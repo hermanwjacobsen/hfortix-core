@@ -63,6 +63,14 @@ class LabelResponse(TypedDict, total=False):
 # ================================================================
 
 
+class LabelEntriesItemObject(FortiObject[LabelEntriesItem]):
+    """Typed object for entries table items with attribute access."""
+    id: int
+    fortidata_label_name: str
+    mpip_label_name: str
+    guid: str
+
+
 class LabelObject(FortiObject):
     """Typed FortiObject for Label with field access."""
     name: str
@@ -70,7 +78,7 @@ class LabelObject(FortiObject):
     mpip_type: Literal["remote", "local"]
     connector: str
     comment: str
-    entries: list[LabelEntriesItem]
+    entries: FortiObjectList[LabelEntriesItemObject]
 
 
 # ================================================================

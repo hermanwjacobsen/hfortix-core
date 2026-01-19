@@ -52,10 +52,15 @@ class PeergrpResponse(TypedDict, total=False):
 # ================================================================
 
 
+class PeergrpMemberItemObject(FortiObject[PeergrpMemberItem]):
+    """Typed object for member table items with attribute access."""
+    name: str
+
+
 class PeergrpObject(FortiObject):
     """Typed FortiObject for Peergrp with field access."""
     name: str
-    member: list[PeergrpMemberItem]
+    member: FortiObjectList[PeergrpMemberItemObject]
 
 
 # ================================================================

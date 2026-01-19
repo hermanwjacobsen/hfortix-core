@@ -56,12 +56,17 @@ class ConcentratorResponse(TypedDict, total=False):
 # ================================================================
 
 
+class ConcentratorMemberItemObject(FortiObject[ConcentratorMemberItem]):
+    """Typed object for member table items with attribute access."""
+    name: str
+
+
 class ConcentratorObject(FortiObject):
     """Typed FortiObject for Concentrator with field access."""
     id: int
     name: str
     src_check: Literal["disable", "enable"]
-    member: list[ConcentratorMemberItem]
+    member: FortiObjectList[ConcentratorMemberItemObject]
 
 
 # ================================================================

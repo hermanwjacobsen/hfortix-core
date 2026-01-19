@@ -370,52 +370,217 @@ class SecurityPolicyResponse(TypedDict, total=False):
 # ================================================================
 
 
+class SecurityPolicySrcintfItemObject(FortiObject[SecurityPolicySrcintfItem]):
+    """Typed object for srcintf table items with attribute access."""
+    name: str
+
+
+class SecurityPolicyDstintfItemObject(FortiObject[SecurityPolicyDstintfItem]):
+    """Typed object for dstintf table items with attribute access."""
+    name: str
+
+
+class SecurityPolicySrcaddrItemObject(FortiObject[SecurityPolicySrcaddrItem]):
+    """Typed object for srcaddr table items with attribute access."""
+    name: str
+
+
+class SecurityPolicyDstaddrItemObject(FortiObject[SecurityPolicyDstaddrItem]):
+    """Typed object for dstaddr table items with attribute access."""
+    name: str
+
+
+class SecurityPolicySrcaddr6ItemObject(FortiObject[SecurityPolicySrcaddr6Item]):
+    """Typed object for srcaddr6 table items with attribute access."""
+    name: str
+
+
+class SecurityPolicyDstaddr6ItemObject(FortiObject[SecurityPolicyDstaddr6Item]):
+    """Typed object for dstaddr6 table items with attribute access."""
+    name: str
+
+
+class SecurityPolicyInternetservicenameItemObject(FortiObject[SecurityPolicyInternetservicenameItem]):
+    """Typed object for internet-service-name table items with attribute access."""
+    name: str
+
+
+class SecurityPolicyInternetservicegroupItemObject(FortiObject[SecurityPolicyInternetservicegroupItem]):
+    """Typed object for internet-service-group table items with attribute access."""
+    name: str
+
+
+class SecurityPolicyInternetservicecustomItemObject(FortiObject[SecurityPolicyInternetservicecustomItem]):
+    """Typed object for internet-service-custom table items with attribute access."""
+    name: str
+
+
+class SecurityPolicyInternetservicecustomgroupItemObject(FortiObject[SecurityPolicyInternetservicecustomgroupItem]):
+    """Typed object for internet-service-custom-group table items with attribute access."""
+    name: str
+
+
+class SecurityPolicyInternetservicefortiguardItemObject(FortiObject[SecurityPolicyInternetservicefortiguardItem]):
+    """Typed object for internet-service-fortiguard table items with attribute access."""
+    name: str
+
+
+class SecurityPolicyInternetservicesrcnameItemObject(FortiObject[SecurityPolicyInternetservicesrcnameItem]):
+    """Typed object for internet-service-src-name table items with attribute access."""
+    name: str
+
+
+class SecurityPolicyInternetservicesrcgroupItemObject(FortiObject[SecurityPolicyInternetservicesrcgroupItem]):
+    """Typed object for internet-service-src-group table items with attribute access."""
+    name: str
+
+
+class SecurityPolicyInternetservicesrccustomItemObject(FortiObject[SecurityPolicyInternetservicesrccustomItem]):
+    """Typed object for internet-service-src-custom table items with attribute access."""
+    name: str
+
+
+class SecurityPolicyInternetservicesrccustomgroupItemObject(FortiObject[SecurityPolicyInternetservicesrccustomgroupItem]):
+    """Typed object for internet-service-src-custom-group table items with attribute access."""
+    name: str
+
+
+class SecurityPolicyInternetservicesrcfortiguardItemObject(FortiObject[SecurityPolicyInternetservicesrcfortiguardItem]):
+    """Typed object for internet-service-src-fortiguard table items with attribute access."""
+    name: str
+
+
+class SecurityPolicyInternetservice6nameItemObject(FortiObject[SecurityPolicyInternetservice6nameItem]):
+    """Typed object for internet-service6-name table items with attribute access."""
+    name: str
+
+
+class SecurityPolicyInternetservice6groupItemObject(FortiObject[SecurityPolicyInternetservice6groupItem]):
+    """Typed object for internet-service6-group table items with attribute access."""
+    name: str
+
+
+class SecurityPolicyInternetservice6customItemObject(FortiObject[SecurityPolicyInternetservice6customItem]):
+    """Typed object for internet-service6-custom table items with attribute access."""
+    name: str
+
+
+class SecurityPolicyInternetservice6customgroupItemObject(FortiObject[SecurityPolicyInternetservice6customgroupItem]):
+    """Typed object for internet-service6-custom-group table items with attribute access."""
+    name: str
+
+
+class SecurityPolicyInternetservice6fortiguardItemObject(FortiObject[SecurityPolicyInternetservice6fortiguardItem]):
+    """Typed object for internet-service6-fortiguard table items with attribute access."""
+    name: str
+
+
+class SecurityPolicyInternetservice6srcnameItemObject(FortiObject[SecurityPolicyInternetservice6srcnameItem]):
+    """Typed object for internet-service6-src-name table items with attribute access."""
+    name: str
+
+
+class SecurityPolicyInternetservice6srcgroupItemObject(FortiObject[SecurityPolicyInternetservice6srcgroupItem]):
+    """Typed object for internet-service6-src-group table items with attribute access."""
+    name: str
+
+
+class SecurityPolicyInternetservice6srccustomItemObject(FortiObject[SecurityPolicyInternetservice6srccustomItem]):
+    """Typed object for internet-service6-src-custom table items with attribute access."""
+    name: str
+
+
+class SecurityPolicyInternetservice6srccustomgroupItemObject(FortiObject[SecurityPolicyInternetservice6srccustomgroupItem]):
+    """Typed object for internet-service6-src-custom-group table items with attribute access."""
+    name: str
+
+
+class SecurityPolicyInternetservice6srcfortiguardItemObject(FortiObject[SecurityPolicyInternetservice6srcfortiguardItem]):
+    """Typed object for internet-service6-src-fortiguard table items with attribute access."""
+    name: str
+
+
+class SecurityPolicyServiceItemObject(FortiObject[SecurityPolicyServiceItem]):
+    """Typed object for service table items with attribute access."""
+    name: str
+
+
+class SecurityPolicyApplicationItemObject(FortiObject[SecurityPolicyApplicationItem]):
+    """Typed object for application table items with attribute access."""
+    id: int
+
+
+class SecurityPolicyAppcategoryItemObject(FortiObject[SecurityPolicyAppcategoryItem]):
+    """Typed object for app-category table items with attribute access."""
+    id: int
+
+
+class SecurityPolicyAppgroupItemObject(FortiObject[SecurityPolicyAppgroupItem]):
+    """Typed object for app-group table items with attribute access."""
+    name: str
+
+
+class SecurityPolicyGroupsItemObject(FortiObject[SecurityPolicyGroupsItem]):
+    """Typed object for groups table items with attribute access."""
+    name: str
+
+
+class SecurityPolicyUsersItemObject(FortiObject[SecurityPolicyUsersItem]):
+    """Typed object for users table items with attribute access."""
+    name: str
+
+
+class SecurityPolicyFssogroupsItemObject(FortiObject[SecurityPolicyFssogroupsItem]):
+    """Typed object for fsso-groups table items with attribute access."""
+    name: str
+
+
 class SecurityPolicyObject(FortiObject):
     """Typed FortiObject for SecurityPolicy with field access."""
     uuid: str
     policyid: int
     name: str
     comments: str
-    srcintf: list[SecurityPolicySrcintfItem]
-    dstintf: list[SecurityPolicyDstintfItem]
-    srcaddr: list[SecurityPolicySrcaddrItem]
+    srcintf: FortiObjectList[SecurityPolicySrcintfItemObject]
+    dstintf: FortiObjectList[SecurityPolicyDstintfItemObject]
+    srcaddr: FortiObjectList[SecurityPolicySrcaddrItemObject]
     srcaddr_negate: Literal["enable", "disable"]
-    dstaddr: list[SecurityPolicyDstaddrItem]
+    dstaddr: FortiObjectList[SecurityPolicyDstaddrItemObject]
     dstaddr_negate: Literal["enable", "disable"]
-    srcaddr6: list[SecurityPolicySrcaddr6Item]
+    srcaddr6: FortiObjectList[SecurityPolicySrcaddr6ItemObject]
     srcaddr6_negate: Literal["enable", "disable"]
-    dstaddr6: list[SecurityPolicyDstaddr6Item]
+    dstaddr6: FortiObjectList[SecurityPolicyDstaddr6ItemObject]
     dstaddr6_negate: Literal["enable", "disable"]
     internet_service: Literal["enable", "disable"]
-    internet_service_name: list[SecurityPolicyInternetservicenameItem]
+    internet_service_name: FortiObjectList[SecurityPolicyInternetservicenameItemObject]
     internet_service_negate: Literal["enable", "disable"]
-    internet_service_group: list[SecurityPolicyInternetservicegroupItem]
-    internet_service_custom: list[SecurityPolicyInternetservicecustomItem]
-    internet_service_custom_group: list[SecurityPolicyInternetservicecustomgroupItem]
-    internet_service_fortiguard: list[SecurityPolicyInternetservicefortiguardItem]
+    internet_service_group: FortiObjectList[SecurityPolicyInternetservicegroupItemObject]
+    internet_service_custom: FortiObjectList[SecurityPolicyInternetservicecustomItemObject]
+    internet_service_custom_group: FortiObjectList[SecurityPolicyInternetservicecustomgroupItemObject]
+    internet_service_fortiguard: FortiObjectList[SecurityPolicyInternetservicefortiguardItemObject]
     internet_service_src: Literal["enable", "disable"]
-    internet_service_src_name: list[SecurityPolicyInternetservicesrcnameItem]
+    internet_service_src_name: FortiObjectList[SecurityPolicyInternetservicesrcnameItemObject]
     internet_service_src_negate: Literal["enable", "disable"]
-    internet_service_src_group: list[SecurityPolicyInternetservicesrcgroupItem]
-    internet_service_src_custom: list[SecurityPolicyInternetservicesrccustomItem]
-    internet_service_src_custom_group: list[SecurityPolicyInternetservicesrccustomgroupItem]
-    internet_service_src_fortiguard: list[SecurityPolicyInternetservicesrcfortiguardItem]
+    internet_service_src_group: FortiObjectList[SecurityPolicyInternetservicesrcgroupItemObject]
+    internet_service_src_custom: FortiObjectList[SecurityPolicyInternetservicesrccustomItemObject]
+    internet_service_src_custom_group: FortiObjectList[SecurityPolicyInternetservicesrccustomgroupItemObject]
+    internet_service_src_fortiguard: FortiObjectList[SecurityPolicyInternetservicesrcfortiguardItemObject]
     internet_service6: Literal["enable", "disable"]
-    internet_service6_name: list[SecurityPolicyInternetservice6nameItem]
+    internet_service6_name: FortiObjectList[SecurityPolicyInternetservice6nameItemObject]
     internet_service6_negate: Literal["enable", "disable"]
-    internet_service6_group: list[SecurityPolicyInternetservice6groupItem]
-    internet_service6_custom: list[SecurityPolicyInternetservice6customItem]
-    internet_service6_custom_group: list[SecurityPolicyInternetservice6customgroupItem]
-    internet_service6_fortiguard: list[SecurityPolicyInternetservice6fortiguardItem]
+    internet_service6_group: FortiObjectList[SecurityPolicyInternetservice6groupItemObject]
+    internet_service6_custom: FortiObjectList[SecurityPolicyInternetservice6customItemObject]
+    internet_service6_custom_group: FortiObjectList[SecurityPolicyInternetservice6customgroupItemObject]
+    internet_service6_fortiguard: FortiObjectList[SecurityPolicyInternetservice6fortiguardItemObject]
     internet_service6_src: Literal["enable", "disable"]
-    internet_service6_src_name: list[SecurityPolicyInternetservice6srcnameItem]
+    internet_service6_src_name: FortiObjectList[SecurityPolicyInternetservice6srcnameItemObject]
     internet_service6_src_negate: Literal["enable", "disable"]
-    internet_service6_src_group: list[SecurityPolicyInternetservice6srcgroupItem]
-    internet_service6_src_custom: list[SecurityPolicyInternetservice6srccustomItem]
-    internet_service6_src_custom_group: list[SecurityPolicyInternetservice6srccustomgroupItem]
-    internet_service6_src_fortiguard: list[SecurityPolicyInternetservice6srcfortiguardItem]
+    internet_service6_src_group: FortiObjectList[SecurityPolicyInternetservice6srcgroupItemObject]
+    internet_service6_src_custom: FortiObjectList[SecurityPolicyInternetservice6srccustomItemObject]
+    internet_service6_src_custom_group: FortiObjectList[SecurityPolicyInternetservice6srccustomgroupItemObject]
+    internet_service6_src_fortiguard: FortiObjectList[SecurityPolicyInternetservice6srcfortiguardItemObject]
     enforce_default_app_port: Literal["enable", "disable"]
-    service: list[SecurityPolicyServiceItem]
+    service: FortiObjectList[SecurityPolicyServiceItemObject]
     service_negate: Literal["enable", "disable"]
     action: Literal["accept", "deny"]
     send_deny_packet: Literal["disable", "enable"]
@@ -446,13 +611,13 @@ class SecurityPolicyObject(FortiObject):
     videofilter_profile: str
     ssh_filter_profile: str
     casb_profile: str
-    application: list[SecurityPolicyApplicationItem]
-    app_category: list[SecurityPolicyAppcategoryItem]
+    application: FortiObjectList[SecurityPolicyApplicationItemObject]
+    app_category: FortiObjectList[SecurityPolicyAppcategoryItemObject]
     url_category: str | list[str]
-    app_group: list[SecurityPolicyAppgroupItem]
-    groups: list[SecurityPolicyGroupsItem]
-    users: list[SecurityPolicyUsersItem]
-    fsso_groups: list[SecurityPolicyFssogroupsItem]
+    app_group: FortiObjectList[SecurityPolicyAppgroupItemObject]
+    groups: FortiObjectList[SecurityPolicyGroupsItemObject]
+    users: FortiObjectList[SecurityPolicyUsersItemObject]
+    fsso_groups: FortiObjectList[SecurityPolicyFssogroupsItemObject]
 
 
 # ================================================================

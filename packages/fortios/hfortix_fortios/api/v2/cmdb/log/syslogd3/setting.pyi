@@ -83,6 +83,13 @@ class SettingResponse(TypedDict, total=False):
 # ================================================================
 
 
+class SettingCustomfieldnameItemObject(FortiObject[SettingCustomfieldnameItem]):
+    """Typed object for custom-field-name table items with attribute access."""
+    id: int
+    name: str
+    custom: str
+
+
 class SettingObject(FortiObject):
     """Typed FortiObject for Setting with field access."""
     status: Literal["enable", "disable"]
@@ -98,7 +105,7 @@ class SettingObject(FortiObject):
     enc_algorithm: Literal["high-medium", "high", "low", "disable"]
     ssl_min_proto_version: Literal["default", "SSLv3", "TLSv1", "TLSv1-1", "TLSv1-2", "TLSv1-3"]
     certificate: str
-    custom_field_name: list[SettingCustomfieldnameItem]
+    custom_field_name: FortiObjectList[SettingCustomfieldnameItemObject]
     interface_select_method: Literal["auto", "sdwan", "specify"]
     interface: str
     vrf_select: int

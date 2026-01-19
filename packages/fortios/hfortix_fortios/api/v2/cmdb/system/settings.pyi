@@ -331,6 +331,11 @@ class SettingsResponse(TypedDict, total=False):
 # ================================================================
 
 
+class SettingsGuidefaultpolicycolumnsItemObject(FortiObject[SettingsGuidefaultpolicycolumnsItem]):
+    """Typed object for gui-default-policy-columns table items with attribute access."""
+    name: str
+
+
 class SettingsObject(FortiObject):
     """Typed FortiObject for Settings with field access."""
     comments: str
@@ -369,7 +374,7 @@ class SettingsObject(FortiObject):
     dhcp_server_ip: str | list[str]
     dhcp6_server_ip: str | list[str]
     central_nat: Literal["enable", "disable"]
-    gui_default_policy_columns: list[SettingsGuidefaultpolicycolumnsItem]
+    gui_default_policy_columns: FortiObjectList[SettingsGuidefaultpolicycolumnsItemObject]
     lldp_reception: Literal["enable", "disable", "global"]
     lldp_transmission: Literal["enable", "disable", "global"]
     link_down_access: Literal["enable", "disable"]

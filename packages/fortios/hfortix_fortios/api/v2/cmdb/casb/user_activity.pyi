@@ -26,19 +26,57 @@ from hfortix_fortios.models import (
 # TypedDict Payloads
 # ================================================================
 
+class UserActivityMatchRulesItem(TypedDict, total=False):
+    """Nested item for match.rules field."""
+    id: int
+    type: Literal["domains", "host", "path", "header", "header-value", "method", "body"]
+    domains: str | list[str]
+    methods: str | list[str]
+    match_pattern: Literal["simple", "substr", "regexp"]
+    match_value: str
+    header_name: str
+    body_type: Literal["json"]
+    jq: str
+    case_sensitive: Literal["enable", "disable"]
+    negate: Literal["enable", "disable"]
+
+
+class UserActivityMatchTenantextractionDict(TypedDict, total=False):
+    """Nested object type for match.tenant-extraction field."""
+    status: Literal["disable", "enable"]
+    type: Literal["json-query"]
+    jq: str
+    filters: str | list[str]
+
+
+class UserActivityControloptionsOperationsItem(TypedDict, total=False):
+    """Nested item for control-options.operations field."""
+    name: str
+    target: Literal["header", "path", "body"]
+    action: Literal["append", "prepend", "replace", "new", "new-on-not-found", "delete"]
+    direction: Literal["request", "response"]
+    header_name: str
+    search_pattern: Literal["simple", "substr", "regexp"]
+    search_key: str
+    case_sensitive: Literal["enable", "disable"]
+    value_from_input: Literal["enable", "disable"]
+    value_name_from_input: str
+    values: str | list[str]
+
+
 class UserActivityMatchItem(TypedDict, total=False):
     """Nested item for match field."""
     id: int
     strategy: Literal["and", "or"]
-    rules: str | list[str]
-    tenant_extraction: str
+    rules: str | list[str] | list[UserActivityMatchRulesItem]
+    tenant_extraction: UserActivityMatchTenantextractionDict
 
 
 class UserActivityControloptionsItem(TypedDict, total=False):
     """Nested item for control-options field."""
     name: str
     status: Literal["enable", "disable"]
-    operations: str | list[str]
+    operations: str | list[str] | list[UserActivityControloptionsOperationsItem]
 
 
 class UserActivityPayload(TypedDict, total=False):
@@ -80,6 +118,29 @@ class UserActivityResponse(TypedDict, total=False):
 # ================================================================
 
 
+class UserActivityMatchItemObject(FortiObject[UserActivityMatchItem]):
+    """Typed object for match table items with attribute access."""
+    id: int
+    strategy: Literal["and", "or"]
+    rules: FortiObjectList[UserActivityMatchRulesItemObject]
+    tenant_extraction: UserActivityMatchTenantextractionObject
+
+
+class UserActivityControloptionsItemObject(FortiObject[UserActivityControloptionsItem]):
+    """Typed object for control-options table items with attribute access."""
+    name: str
+    status: Literal["enable", "disable"]
+    operations: FortiObjectList[UserActivityControloptionsOperationsItemObject]
+
+
+class UserActivityMatchTenantextractionObject(FortiObject):
+    """Nested object for match.tenant-extraction field with attribute access."""
+    status: Literal["disable", "enable"]
+    type: Literal["json-query"]
+    jq: str
+    filters: str | list[str]
+
+
 class UserActivityObject(FortiObject):
     """Typed FortiObject for UserActivity with field access."""
     name: str
@@ -91,8 +152,8 @@ class UserActivityObject(FortiObject):
     application: str
     category: Literal["activity-control", "tenant-control", "domain-control", "safe-search-control", "advanced-tenant-control", "other"]
     match_strategy: Literal["and", "or"]
-    match: list[UserActivityMatchItem]
-    control_options: list[UserActivityControloptionsItem]
+    match: FortiObjectList[UserActivityMatchItemObject]
+    control_options: FortiObjectList[UserActivityControloptionsItemObject]
 
 
 # ================================================================

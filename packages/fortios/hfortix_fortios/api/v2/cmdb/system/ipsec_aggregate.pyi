@@ -54,10 +54,15 @@ class IpsecAggregateResponse(TypedDict, total=False):
 # ================================================================
 
 
+class IpsecAggregateMemberItemObject(FortiObject[IpsecAggregateMemberItem]):
+    """Typed object for member table items with attribute access."""
+    tunnel_name: str
+
+
 class IpsecAggregateObject(FortiObject):
     """Typed FortiObject for IpsecAggregate with field access."""
     name: str
-    member: list[IpsecAggregateMemberItem]
+    member: FortiObjectList[IpsecAggregateMemberItemObject]
     algorithm: Literal["L3", "L4", "round-robin", "redundant", "weighted-round-robin"]
 
 

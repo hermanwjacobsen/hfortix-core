@@ -34,7 +34,7 @@ class ProfileDomainfilterDict(TypedDict, total=False):
 class ProfileFtgddnsDict(TypedDict, total=False):
     """Nested object type for ftgd-dns field."""
     options: Literal["error-allow", "ftgd-disable"]
-    filters: str | list[str]
+    filters: str | list[str] | list[ProfileFtgddnsFiltersItem]
 
 
 class ProfileExternalipblocklistItem(TypedDict, total=False):
@@ -111,6 +111,29 @@ class ProfileResponse(TypedDict, total=False):
 # ================================================================
 
 
+class ProfileExternalipblocklistItemObject(FortiObject[ProfileExternalipblocklistItem]):
+    """Typed object for external-ip-blocklist table items with attribute access."""
+    name: str
+
+
+class ProfileDnstranslationItemObject(FortiObject[ProfileDnstranslationItem]):
+    """Typed object for dns-translation table items with attribute access."""
+    id: int
+    addr_type: Literal["ipv4", "ipv6"]
+    src: str
+    dst: str
+    netmask: str
+    status: Literal["enable", "disable"]
+    src6: str
+    dst6: str
+    prefix: int
+
+
+class ProfileTransparentdnsdatabaseItemObject(FortiObject[ProfileTransparentdnsdatabaseItem]):
+    """Typed object for transparent-dns-database table items with attribute access."""
+    name: str
+
+
 class ProfileDomainfilterObject(FortiObject):
     """Nested object for domain-filter field with attribute access."""
     domain_filter_table: int
@@ -137,9 +160,9 @@ class ProfileObject(FortiObject):
     block_botnet: Literal["disable", "enable"]
     safe_search: Literal["disable", "enable"]
     youtube_restrict: Literal["strict", "moderate", "none"]
-    external_ip_blocklist: list[ProfileExternalipblocklistItem]
-    dns_translation: list[ProfileDnstranslationItem]
-    transparent_dns_database: list[ProfileTransparentdnsdatabaseItem]
+    external_ip_blocklist: FortiObjectList[ProfileExternalipblocklistItemObject]
+    dns_translation: FortiObjectList[ProfileDnstranslationItemObject]
+    transparent_dns_database: FortiObjectList[ProfileTransparentdnsdatabaseItemObject]
     strip_ech: Literal["disable", "enable"]
 
 

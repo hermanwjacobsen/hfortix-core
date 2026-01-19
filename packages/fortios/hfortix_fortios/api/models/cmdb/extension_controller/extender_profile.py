@@ -466,8 +466,8 @@ class ExtenderProfileWifi(BaseModel):
         use_enum_values = True  # Use enum values instead of names
     
     country: ExtenderProfileWifiCountryEnum | None = Field(default=ExtenderProfileWifiCountryEnum.__, description="Country in which this FEX will operate (default = NA).")    
-    radio_1: list[ExtenderProfileWifiRadio1] = Field(default_factory=list, description="Radio-1 config for Wi-Fi 2.4GHz")    
-    radio_2: list[ExtenderProfileWifiRadio2] = Field(default_factory=list, description="Radio-2 config for Wi-Fi 5GHz")
+    radio_1: ExtenderProfileWifiRadio1 | None = Field(default=None, description="Radio-1 config for Wi-Fi 2.4GHz")    
+    radio_2: ExtenderProfileWifiRadio2 | None = Field(default=None, description="Radio-2 config for Wi-Fi 5GHz")
 class ExtenderProfileLanExtensionTrafficSplitServices(BaseModel):
     """
     Child table model for lan-extension.traffic-split-services.
@@ -611,7 +611,7 @@ class ExtenderProfileCellularSmsNotification(BaseModel):
         use_enum_values = True  # Use enum values instead of names
     
     status: Literal["disable", "enable"] = Field(default="disable", description="FortiExtender SMS notification status.")    
-    alert: list[ExtenderProfileCellularSmsNotificationAlert] = Field(default_factory=list, description="SMS alert list.")    
+    alert: ExtenderProfileCellularSmsNotificationAlert | None = Field(default=None, description="SMS alert list.")    
     receiver: list[ExtenderProfileCellularSmsNotificationReceiver] = Field(default_factory=list, description="SMS notification receiver list.")
 class ExtenderProfileCellularModem2AutoSwitch(BaseModel):
     """
@@ -657,7 +657,7 @@ class ExtenderProfileCellularModem2(BaseModel):
     sim1_pin_code: Any = Field(max_length=27, default=None, description="SIM #1 PIN password.")    
     sim2_pin_code: Any = Field(max_length=27, default=None, description="SIM #2 PIN password.")    
     preferred_carrier: str | None = Field(max_length=31, default=None, description="Preferred carrier.")    
-    auto_switch: list[ExtenderProfileCellularModem2AutoSwitch] = Field(default_factory=list, description="FortiExtender auto switch configuration.")    
+    auto_switch: ExtenderProfileCellularModem2AutoSwitch | None = Field(default=None, description="FortiExtender auto switch configuration.")    
     multiple_PDN: Literal["disable", "enable"] | None = Field(default="disable", description="Multiple-PDN enable/disable.")    
     pdn1_dataplan: str | None = Field(max_length=31, default=None, description="PDN1-dataplan.")  # datasource: ['extension-controller.dataplan.name']    
     pdn2_dataplan: str | None = Field(max_length=31, default=None, description="PDN2-dataplan.")  # datasource: ['extension-controller.dataplan.name']    
@@ -707,7 +707,7 @@ class ExtenderProfileCellularModem1(BaseModel):
     sim1_pin_code: Any = Field(max_length=27, default=None, description="SIM #1 PIN password.")    
     sim2_pin_code: Any = Field(max_length=27, default=None, description="SIM #2 PIN password.")    
     preferred_carrier: str | None = Field(max_length=31, default=None, description="Preferred carrier.")    
-    auto_switch: list[ExtenderProfileCellularModem1AutoSwitch] = Field(default_factory=list, description="FortiExtender auto switch configuration.")    
+    auto_switch: ExtenderProfileCellularModem1AutoSwitch | None = Field(default=None, description="FortiExtender auto switch configuration.")    
     multiple_PDN: Literal["disable", "enable"] | None = Field(default="disable", description="Multiple-PDN enable/disable.")    
     pdn1_dataplan: str | None = Field(max_length=31, default=None, description="PDN1-dataplan.")  # datasource: ['extension-controller.dataplan.name']    
     pdn2_dataplan: str | None = Field(max_length=31, default=None, description="PDN2-dataplan.")  # datasource: ['extension-controller.dataplan.name']    
@@ -757,10 +757,10 @@ class ExtenderProfileCellular(BaseModel):
         use_enum_values = True  # Use enum values instead of names
     
     dataplan: list[ExtenderProfileCellularDataplan] = Field(default_factory=list, description="Dataplan names.")    
-    controller_report: list[ExtenderProfileCellularControllerReport] = Field(default_factory=list, description="FortiExtender controller report configuration.")    
-    sms_notification: list[ExtenderProfileCellularSmsNotification] = Field(default_factory=list, description="FortiExtender cellular SMS notification configuration.")    
-    modem1: list[ExtenderProfileCellularModem1] = Field(default_factory=list, description="Configuration options for modem 1.")    
-    modem2: list[ExtenderProfileCellularModem2] = Field(default_factory=list, description="Configuration options for modem 2.")
+    controller_report: ExtenderProfileCellularControllerReport | None = Field(default=None, description="FortiExtender controller report configuration.")    
+    sms_notification: ExtenderProfileCellularSmsNotification | None = Field(default=None, description="FortiExtender cellular SMS notification configuration.")    
+    modem1: ExtenderProfileCellularModem1 | None = Field(default=None, description="Configuration options for modem 1.")    
+    modem2: ExtenderProfileCellularModem2 | None = Field(default=None, description="Configuration options for modem 2.")
 # ============================================================================
 # Enum Definitions (for fields with 4+ allowed values)
 # ============================================================================
@@ -838,9 +838,9 @@ class ExtenderProfileModel(BaseModel):
     login_password: Any = Field(max_length=27, description="Set the managed extender's administrator password.")    
     enforce_bandwidth: Literal["enable", "disable"] | None = Field(default="disable", description="Enable/disable enforcement of bandwidth on LAN extension interface.")    
     bandwidth_limit: int = Field(ge=1, le=16776000, default=1024, description="FortiExtender LAN extension bandwidth limit (Mbps).")    
-    cellular: list[ExtenderProfileCellular] = Field(description="FortiExtender cellular configuration.")    
-    wifi: list[ExtenderProfileWifi] = Field(default_factory=list, description="FortiExtender Wi-Fi configuration.")    
-    lan_extension: list[ExtenderProfileLanExtension] = Field(description="FortiExtender LAN extension configuration.")    
+    cellular: ExtenderProfileCellular | None = Field(description="FortiExtender cellular configuration.")    
+    wifi: ExtenderProfileWifi | None = Field(default=None, description="FortiExtender Wi-Fi configuration.")    
+    lan_extension: ExtenderProfileLanExtension | None = Field(description="FortiExtender LAN extension configuration.")    
     # ========================================================================
     # Custom Validators
     # ========================================================================
@@ -973,6 +973,6 @@ __all__ = [
 
 # ============================================================================
 # Generated by hfortix generator v0.6.0
-# Schema: 1.7.1
-# Generated: 2026-01-18T20:31:27.472381Z
+# Schema: 1.7.2
+# Generated: 2026-01-19T11:36:57.081498Z
 # ============================================================================

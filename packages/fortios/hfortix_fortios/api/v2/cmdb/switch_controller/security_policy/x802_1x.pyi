@@ -94,11 +94,16 @@ class X8021xResponse(TypedDict, total=False):
 # ================================================================
 
 
+class X8021xUsergroupItemObject(FortiObject[X8021xUsergroupItem]):
+    """Typed object for user-group table items with attribute access."""
+    name: str
+
+
 class X8021xObject(FortiObject):
     """Typed FortiObject for X8021x with field access."""
     name: str
     security_mode: Literal["802.1X", "802.1X-mac-based"]
-    user_group: list[X8021xUsergroupItem]
+    user_group: FortiObjectList[X8021xUsergroupItemObject]
     mac_auth_bypass: Literal["disable", "enable"]
     auth_order: Literal["dot1x-mab", "mab-dot1x", "mab"]
     auth_priority: Literal["legacy", "dot1x-mab", "mab-dot1x"]

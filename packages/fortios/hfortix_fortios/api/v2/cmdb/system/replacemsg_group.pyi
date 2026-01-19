@@ -209,27 +209,155 @@ class ReplacemsgGroupResponse(TypedDict, total=False):
 # ================================================================
 
 
+class ReplacemsgGroupMailItemObject(FortiObject[ReplacemsgGroupMailItem]):
+    """Typed object for mail table items with attribute access."""
+    msg_type: str
+    buffer: str
+    header: Literal["none", "http", "8bit"]
+    format: Literal["none", "text", "html"]
+
+
+class ReplacemsgGroupHttpItemObject(FortiObject[ReplacemsgGroupHttpItem]):
+    """Typed object for http table items with attribute access."""
+    msg_type: str
+    buffer: str
+    header: Literal["none", "http", "8bit"]
+    format: Literal["none", "text", "html"]
+
+
+class ReplacemsgGroupWebproxyItemObject(FortiObject[ReplacemsgGroupWebproxyItem]):
+    """Typed object for webproxy table items with attribute access."""
+    msg_type: str
+    buffer: str
+    header: Literal["none", "http", "8bit"]
+    format: Literal["none", "text", "html"]
+
+
+class ReplacemsgGroupFtpItemObject(FortiObject[ReplacemsgGroupFtpItem]):
+    """Typed object for ftp table items with attribute access."""
+    msg_type: str
+    buffer: str
+    header: Literal["none", "http", "8bit"]
+    format: Literal["none", "text", "html"]
+
+
+class ReplacemsgGroupFortiguardwfItemObject(FortiObject[ReplacemsgGroupFortiguardwfItem]):
+    """Typed object for fortiguard-wf table items with attribute access."""
+    msg_type: str
+    buffer: str
+    header: Literal["none", "http", "8bit"]
+    format: Literal["none", "text", "html"]
+
+
+class ReplacemsgGroupSpamItemObject(FortiObject[ReplacemsgGroupSpamItem]):
+    """Typed object for spam table items with attribute access."""
+    msg_type: str
+    buffer: str
+    header: Literal["none", "http", "8bit"]
+    format: Literal["none", "text", "html"]
+
+
+class ReplacemsgGroupAlertmailItemObject(FortiObject[ReplacemsgGroupAlertmailItem]):
+    """Typed object for alertmail table items with attribute access."""
+    msg_type: str
+    buffer: str
+    header: Literal["none", "http", "8bit"]
+    format: Literal["none", "text", "html"]
+
+
+class ReplacemsgGroupAdminItemObject(FortiObject[ReplacemsgGroupAdminItem]):
+    """Typed object for admin table items with attribute access."""
+    msg_type: str
+    buffer: str
+    header: Literal["none", "http", "8bit"]
+    format: Literal["none", "text", "html"]
+
+
+class ReplacemsgGroupAuthItemObject(FortiObject[ReplacemsgGroupAuthItem]):
+    """Typed object for auth table items with attribute access."""
+    msg_type: str
+    buffer: str
+    header: Literal["none", "http", "8bit"]
+    format: Literal["none", "text", "html"]
+
+
+class ReplacemsgGroupSslvpnItemObject(FortiObject[ReplacemsgGroupSslvpnItem]):
+    """Typed object for sslvpn table items with attribute access."""
+    msg_type: str
+    buffer: str
+    header: Literal["none", "http", "8bit"]
+    format: Literal["none", "text", "html"]
+
+
+class ReplacemsgGroupNacquarItemObject(FortiObject[ReplacemsgGroupNacquarItem]):
+    """Typed object for nac-quar table items with attribute access."""
+    msg_type: str
+    buffer: str
+    header: Literal["none", "http", "8bit"]
+    format: Literal["none", "text", "html"]
+
+
+class ReplacemsgGroupTrafficquotaItemObject(FortiObject[ReplacemsgGroupTrafficquotaItem]):
+    """Typed object for traffic-quota table items with attribute access."""
+    msg_type: str
+    buffer: str
+    header: Literal["none", "http", "8bit"]
+    format: Literal["none", "text", "html"]
+
+
+class ReplacemsgGroupUtmItemObject(FortiObject[ReplacemsgGroupUtmItem]):
+    """Typed object for utm table items with attribute access."""
+    msg_type: str
+    buffer: str
+    header: Literal["none", "http", "8bit"]
+    format: Literal["none", "text", "html"]
+
+
+class ReplacemsgGroupCustommessageItemObject(FortiObject[ReplacemsgGroupCustommessageItem]):
+    """Typed object for custom-message table items with attribute access."""
+    msg_type: str
+    buffer: str
+    header: Literal["none", "http", "8bit"]
+    format: Literal["none", "text", "html"]
+
+
+class ReplacemsgGroupIcapItemObject(FortiObject[ReplacemsgGroupIcapItem]):
+    """Typed object for icap table items with attribute access."""
+    msg_type: str
+    buffer: str
+    header: Literal["none", "http", "8bit"]
+    format: Literal["none", "text", "html"]
+
+
+class ReplacemsgGroupAutomationItemObject(FortiObject[ReplacemsgGroupAutomationItem]):
+    """Typed object for automation table items with attribute access."""
+    msg_type: str
+    buffer: str
+    header: Literal["none", "http", "8bit"]
+    format: Literal["none", "text", "html"]
+
+
 class ReplacemsgGroupObject(FortiObject):
     """Typed FortiObject for ReplacemsgGroup with field access."""
     name: str
     comment: str
     group_type: Literal["default", "utm", "auth"]
-    mail: list[ReplacemsgGroupMailItem]
-    http: list[ReplacemsgGroupHttpItem]
-    webproxy: list[ReplacemsgGroupWebproxyItem]
-    ftp: list[ReplacemsgGroupFtpItem]
-    fortiguard_wf: list[ReplacemsgGroupFortiguardwfItem]
-    spam: list[ReplacemsgGroupSpamItem]
-    alertmail: list[ReplacemsgGroupAlertmailItem]
-    admin: list[ReplacemsgGroupAdminItem]
-    auth: list[ReplacemsgGroupAuthItem]
-    sslvpn: list[ReplacemsgGroupSslvpnItem]
-    nac_quar: list[ReplacemsgGroupNacquarItem]
-    traffic_quota: list[ReplacemsgGroupTrafficquotaItem]
-    utm: list[ReplacemsgGroupUtmItem]
-    custom_message: list[ReplacemsgGroupCustommessageItem]
-    icap: list[ReplacemsgGroupIcapItem]
-    automation: list[ReplacemsgGroupAutomationItem]
+    mail: FortiObjectList[ReplacemsgGroupMailItemObject]
+    http: FortiObjectList[ReplacemsgGroupHttpItemObject]
+    webproxy: FortiObjectList[ReplacemsgGroupWebproxyItemObject]
+    ftp: FortiObjectList[ReplacemsgGroupFtpItemObject]
+    fortiguard_wf: FortiObjectList[ReplacemsgGroupFortiguardwfItemObject]
+    spam: FortiObjectList[ReplacemsgGroupSpamItemObject]
+    alertmail: FortiObjectList[ReplacemsgGroupAlertmailItemObject]
+    admin: FortiObjectList[ReplacemsgGroupAdminItemObject]
+    auth: FortiObjectList[ReplacemsgGroupAuthItemObject]
+    sslvpn: FortiObjectList[ReplacemsgGroupSslvpnItemObject]
+    nac_quar: FortiObjectList[ReplacemsgGroupNacquarItemObject]
+    traffic_quota: FortiObjectList[ReplacemsgGroupTrafficquotaItemObject]
+    utm: FortiObjectList[ReplacemsgGroupUtmItemObject]
+    custom_message: FortiObjectList[ReplacemsgGroupCustommessageItemObject]
+    icap: FortiObjectList[ReplacemsgGroupIcapItemObject]
+    automation: FortiObjectList[ReplacemsgGroupAutomationItemObject]
 
 
 # ================================================================

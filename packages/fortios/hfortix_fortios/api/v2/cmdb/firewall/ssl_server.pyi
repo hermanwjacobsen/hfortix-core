@@ -76,6 +76,11 @@ class SslServerResponse(TypedDict, total=False):
 # ================================================================
 
 
+class SslServerSslcertItemObject(FortiObject[SslServerSslcertItem]):
+    """Typed object for ssl-cert table items with attribute access."""
+    name: str
+
+
 class SslServerObject(FortiObject):
     """Typed FortiObject for SslServer with field access."""
     name: str
@@ -84,7 +89,7 @@ class SslServerObject(FortiObject):
     ssl_mode: Literal["half", "full"]
     add_header_x_forwarded_proto: Literal["enable", "disable"]
     mapped_port: int
-    ssl_cert: list[SslServerSslcertItem]
+    ssl_cert: FortiObjectList[SslServerSslcertItemObject]
     ssl_dh_bits: Literal["768", "1024", "1536", "2048"]
     ssl_algorithm: Literal["high", "medium", "low"]
     ssl_client_renegotiation: Literal["allow", "deny", "secure"]

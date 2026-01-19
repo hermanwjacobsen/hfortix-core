@@ -74,14 +74,29 @@ class OnDemandSnifferResponse(TypedDict, total=False):
 # ================================================================
 
 
+class OnDemandSnifferHostsItemObject(FortiObject[OnDemandSnifferHostsItem]):
+    """Typed object for hosts table items with attribute access."""
+    host: str
+
+
+class OnDemandSnifferPortsItemObject(FortiObject[OnDemandSnifferPortsItem]):
+    """Typed object for ports table items with attribute access."""
+    port: int
+
+
+class OnDemandSnifferProtocolsItemObject(FortiObject[OnDemandSnifferProtocolsItem]):
+    """Typed object for protocols table items with attribute access."""
+    protocol: int
+
+
 class OnDemandSnifferObject(FortiObject):
     """Typed FortiObject for OnDemandSniffer with field access."""
     name: str
     interface: str
     max_packet_count: int
-    hosts: list[OnDemandSnifferHostsItem]
-    ports: list[OnDemandSnifferPortsItem]
-    protocols: list[OnDemandSnifferProtocolsItem]
+    hosts: FortiObjectList[OnDemandSnifferHostsItemObject]
+    ports: FortiObjectList[OnDemandSnifferPortsItemObject]
+    protocols: FortiObjectList[OnDemandSnifferProtocolsItemObject]
     non_ip_packet: Literal["enable", "disable"]
     advanced_filter: str
 

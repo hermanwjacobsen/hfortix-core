@@ -61,12 +61,22 @@ class MheaderResponse(TypedDict, total=False):
 # ================================================================
 
 
+class MheaderEntriesItemObject(FortiObject[MheaderEntriesItem]):
+    """Typed object for entries table items with attribute access."""
+    status: Literal["enable", "disable"]
+    id: int
+    fieldname: str
+    fieldbody: str
+    pattern_type: Literal["wildcard", "regexp"]
+    action: Literal["spam", "clear"]
+
+
 class MheaderObject(FortiObject):
     """Typed FortiObject for Mheader with field access."""
     id: int
     name: str
     comment: str
-    entries: list[MheaderEntriesItem]
+    entries: FortiObjectList[MheaderEntriesItemObject]
 
 
 # ================================================================

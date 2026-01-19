@@ -51,10 +51,15 @@ class NdProxyResponse(TypedDict, total=False):
 # ================================================================
 
 
+class NdProxyMemberItemObject(FortiObject[NdProxyMemberItem]):
+    """Typed object for member table items with attribute access."""
+    interface_name: str
+
+
 class NdProxyObject(FortiObject):
     """Typed FortiObject for NdProxy with field access."""
     status: Literal["enable", "disable"]
-    member: list[NdProxyMemberItem]
+    member: FortiObjectList[NdProxyMemberItemObject]
 
 
 # ================================================================

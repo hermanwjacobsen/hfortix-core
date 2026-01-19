@@ -87,12 +87,48 @@ class WebPortalBookmarkResponse(TypedDict, total=False):
 # ================================================================
 
 
+class WebPortalBookmarkUsersItemObject(FortiObject[WebPortalBookmarkUsersItem]):
+    """Typed object for users table items with attribute access."""
+    name: str
+
+
+class WebPortalBookmarkGroupsItemObject(FortiObject[WebPortalBookmarkGroupsItem]):
+    """Typed object for groups table items with attribute access."""
+    name: str
+
+
+class WebPortalBookmarkBookmarksItemObject(FortiObject[WebPortalBookmarkBookmarksItem]):
+    """Typed object for bookmarks table items with attribute access."""
+    name: str
+    apptype: Literal["ftp", "rdp", "sftp", "smb", "ssh", "telnet", "vnc", "web"]
+    url: str
+    host: str
+    folder: str
+    domain: str
+    description: str
+    keyboard_layout: Literal["ar-101", "ar-102", "ar-102-azerty", "can-mul", "cz", "cz-qwerty", "cz-pr", "da", "nl", "de", "de-ch", "de-ibm", "en-uk", "en-uk-ext", "en-us", "en-us-dvorak", "es", "es-var", "fi", "fi-sami", "fr", "fr-apple", "fr-ca", "fr-ch", "fr-be", "hr", "hu", "hu-101", "it", "it-142", "ja", "ja-106", "ko", "la-am", "lt", "lt-ibm", "lt-std", "lav-std", "lav-leg", "mk", "mk-std", "no", "no-sami", "pol-214", "pol-pr", "pt", "pt-br", "pt-br-abnt2", "ru", "ru-mne", "ru-t", "sl", "sv", "sv-sami", "tuk", "tur-f", "tur-q", "zh-sym-sg-us", "zh-sym-us", "zh-tr-hk", "zh-tr-mo", "zh-tr-us"]
+    security: Literal["any", "rdp", "nla", "tls"]
+    send_preconnection_id: Literal["enable", "disable"]
+    preconnection_id: int
+    preconnection_blob: str
+    load_balancing_info: str
+    restricted_admin: Literal["enable", "disable"]
+    port: int
+    logon_user: str
+    logon_password: str
+    color_depth: Literal["32", "16", "8"]
+    sso: Literal["disable", "enable"]
+    width: int
+    height: int
+    vnc_keyboard_layout: Literal["default", "da", "nl", "en-uk", "en-uk-ext", "fi", "fr", "fr-be", "fr-ca-mul", "de", "de-ch", "it", "it-142", "pt", "pt-br-abnt2", "no", "gd", "es", "sv", "us-intl"]
+
+
 class WebPortalBookmarkObject(FortiObject):
     """Typed FortiObject for WebPortalBookmark with field access."""
     name: str
-    users: list[WebPortalBookmarkUsersItem]
-    groups: list[WebPortalBookmarkGroupsItem]
-    bookmarks: list[WebPortalBookmarkBookmarksItem]
+    users: FortiObjectList[WebPortalBookmarkUsersItemObject]
+    groups: FortiObjectList[WebPortalBookmarkGroupsItemObject]
+    bookmarks: FortiObjectList[WebPortalBookmarkBookmarksItemObject]
 
 
 # ================================================================

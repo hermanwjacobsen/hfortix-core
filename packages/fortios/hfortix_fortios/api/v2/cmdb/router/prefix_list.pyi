@@ -58,11 +58,20 @@ class PrefixListResponse(TypedDict, total=False):
 # ================================================================
 
 
+class PrefixListRuleItemObject(FortiObject[PrefixListRuleItem]):
+    """Typed object for rule table items with attribute access."""
+    id: int
+    action: Literal["permit", "deny"]
+    prefix: str
+    ge: int
+    le: int
+
+
 class PrefixListObject(FortiObject):
     """Typed FortiObject for PrefixList with field access."""
     name: str
     comments: str
-    rule: list[PrefixListRuleItem]
+    rule: FortiObjectList[PrefixListRuleItemObject]
 
 
 # ================================================================

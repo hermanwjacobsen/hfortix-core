@@ -98,6 +98,19 @@ class DnsDatabaseResponse(TypedDict, total=False):
 # ================================================================
 
 
+class DnsDatabaseDnsentryItemObject(FortiObject[DnsDatabaseDnsentryItem]):
+    """Typed object for dns-entry table items with attribute access."""
+    id: int
+    status: Literal["enable", "disable"]
+    type: Literal["A", "NS", "CNAME", "MX", "AAAA", "PTR", "PTR_V6"]
+    ttl: int
+    preference: int
+    ip: str
+    ipv6: str
+    hostname: str
+    canonical_name: str
+
+
 class DnsDatabaseObject(FortiObject):
     """Typed FortiObject for DnsDatabase with field access."""
     name: str
@@ -117,7 +130,7 @@ class DnsDatabaseObject(FortiObject):
     source_ip6: str
     source_ip_interface: str
     rr_max: int
-    dns_entry: list[DnsDatabaseDnsentryItem]
+    dns_entry: FortiObjectList[DnsDatabaseDnsentryItemObject]
     interface_select_method: Literal["auto", "sdwan", "specify"]
     interface: str
     vrf_select: int

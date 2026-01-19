@@ -80,14 +80,29 @@ class GroupResponse(TypedDict, total=False):
 # ================================================================
 
 
+class GroupApplicationItemObject(FortiObject[GroupApplicationItem]):
+    """Typed object for application table items with attribute access."""
+    id: int
+
+
+class GroupCategoryItemObject(FortiObject[GroupCategoryItem]):
+    """Typed object for category table items with attribute access."""
+    id: int
+
+
+class GroupRiskItemObject(FortiObject[GroupRiskItem]):
+    """Typed object for risk table items with attribute access."""
+    level: int
+
+
 class GroupObject(FortiObject):
     """Typed FortiObject for Group with field access."""
     name: str
     comment: str
     type: Literal["application", "filter"]
-    application: list[GroupApplicationItem]
-    category: list[GroupCategoryItem]
-    risk: list[GroupRiskItem]
+    application: FortiObjectList[GroupApplicationItemObject]
+    category: FortiObjectList[GroupCategoryItemObject]
+    risk: FortiObjectList[GroupRiskItemObject]
     protocols: str | list[str]
     vendor: str | list[str]
     technology: str | list[str]

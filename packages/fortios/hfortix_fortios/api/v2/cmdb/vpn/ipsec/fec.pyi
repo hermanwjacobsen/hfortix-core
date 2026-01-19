@@ -59,10 +59,22 @@ class FecResponse(TypedDict, total=False):
 # ================================================================
 
 
+class FecMappingsItemObject(FortiObject[FecMappingsItem]):
+    """Typed object for mappings table items with attribute access."""
+    seqno: int
+    base: int
+    redundant: int
+    packet_loss_threshold: int
+    latency_threshold: int
+    bandwidth_up_threshold: int
+    bandwidth_down_threshold: int
+    bandwidth_bi_threshold: int
+
+
 class FecObject(FortiObject):
     """Typed FortiObject for Fec with field access."""
     name: str
-    mappings: list[FecMappingsItem]
+    mappings: FortiObjectList[FecMappingsItemObject]
 
 
 # ================================================================

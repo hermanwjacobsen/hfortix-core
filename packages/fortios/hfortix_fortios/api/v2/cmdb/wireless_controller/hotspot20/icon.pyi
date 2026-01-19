@@ -57,10 +57,20 @@ class IconResponse(TypedDict, total=False):
 # ================================================================
 
 
+class IconIconlistItemObject(FortiObject[IconIconlistItem]):
+    """Typed object for icon-list table items with attribute access."""
+    name: str
+    lang: str
+    file: str
+    type: Literal["bmp", "gif", "jpeg", "png", "tiff"]
+    width: int
+    height: int
+
+
 class IconObject(FortiObject):
     """Typed FortiObject for Icon with field access."""
     name: str
-    icon_list: list[IconIconlistItem]
+    icon_list: FortiObjectList[IconIconlistItemObject]
 
 
 # ================================================================

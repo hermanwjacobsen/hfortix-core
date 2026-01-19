@@ -70,9 +70,9 @@ class WtpRadio1Dict(TypedDict, total=False):
     power_value: int
     override_vaps: Literal["enable", "disable"]
     vap_all: Literal["tunnel", "bridge", "manual"]
-    vaps: str | list[str]
+    vaps: str | list[str] | list[WtpRadio1VapsItem]
     override_channel: Literal["enable", "disable"]
-    channel: str | list[str]
+    channel: str | list[str] | list[WtpRadio1ChannelItem]
     drma_manual_mode: Literal["ap", "monitor", "ncf", "ncf-peek"]
 
 
@@ -90,9 +90,9 @@ class WtpRadio2Dict(TypedDict, total=False):
     power_value: int
     override_vaps: Literal["enable", "disable"]
     vap_all: Literal["tunnel", "bridge", "manual"]
-    vaps: str | list[str]
+    vaps: str | list[str] | list[WtpRadio2VapsItem]
     override_channel: Literal["enable", "disable"]
-    channel: str | list[str]
+    channel: str | list[str] | list[WtpRadio2ChannelItem]
     drma_manual_mode: Literal["ap", "monitor", "ncf", "ncf-peek"]
 
 
@@ -110,9 +110,9 @@ class WtpRadio3Dict(TypedDict, total=False):
     power_value: int
     override_vaps: Literal["enable", "disable"]
     vap_all: Literal["tunnel", "bridge", "manual"]
-    vaps: str | list[str]
+    vaps: str | list[str] | list[WtpRadio3VapsItem]
     override_channel: Literal["enable", "disable"]
-    channel: str | list[str]
+    channel: str | list[str] | list[WtpRadio3ChannelItem]
     drma_manual_mode: Literal["ap", "monitor", "ncf", "ncf-peek"]
 
 
@@ -130,9 +130,9 @@ class WtpRadio4Dict(TypedDict, total=False):
     power_value: int
     override_vaps: Literal["enable", "disable"]
     vap_all: Literal["tunnel", "bridge", "manual"]
-    vaps: str | list[str]
+    vaps: str | list[str] | list[WtpRadio4VapsItem]
     override_channel: Literal["enable", "disable"]
-    channel: str | list[str]
+    channel: str | list[str] | list[WtpRadio4ChannelItem]
     drma_manual_mode: Literal["ap", "monitor", "ncf", "ncf-peek"]
 
 
@@ -245,6 +245,12 @@ class WtpResponse(TypedDict, total=False):
 # ================================================================
 # Response Types (Class for attribute access)
 # ================================================================
+
+
+class WtpSplittunnelingaclItemObject(FortiObject[WtpSplittunnelingaclItem]):
+    """Typed object for split-tunneling-acl table items with attribute access."""
+    id: int
+    dest_ip: str
 
 
 class WtpLanObject(FortiObject):
@@ -381,7 +387,7 @@ class WtpObject(FortiObject):
     override_split_tunnel: Literal["enable", "disable"]
     split_tunneling_acl_path: Literal["tunnel", "local"]
     split_tunneling_acl_local_ap_subnet: Literal["enable", "disable"]
-    split_tunneling_acl: list[WtpSplittunnelingaclItem]
+    split_tunneling_acl: FortiObjectList[WtpSplittunnelingaclItemObject]
     override_lan: Literal["enable", "disable"]
     lan: WtpLanObject
     override_allowaccess: Literal["enable", "disable"]

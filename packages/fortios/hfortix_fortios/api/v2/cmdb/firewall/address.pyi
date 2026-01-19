@@ -26,6 +26,11 @@ from hfortix_fortios.models import (
 # TypedDict Payloads
 # ================================================================
 
+class AddressTaggingTagsItem(TypedDict, total=False):
+    """Nested item for tagging.tags field."""
+    name: str
+
+
 class AddressMacaddrItem(TypedDict, total=False):
     """Nested item for macaddr field."""
     macaddr: str
@@ -50,7 +55,7 @@ class AddressTaggingItem(TypedDict, total=False):
     """Nested item for tagging field."""
     name: str
     category: str
-    tags: str | list[str]
+    tags: str | list[str] | list[AddressTaggingTagsItem]
 
 
 class AddressPayload(TypedDict, total=False):
@@ -160,6 +165,33 @@ class AddressResponse(TypedDict, total=False):
 # ================================================================
 
 
+class AddressMacaddrItemObject(FortiObject[AddressMacaddrItem]):
+    """Typed object for macaddr table items with attribute access."""
+    macaddr: str
+
+
+class AddressFssogroupItemObject(FortiObject[AddressFssogroupItem]):
+    """Typed object for fsso-group table items with attribute access."""
+    name: str
+
+
+class AddressSsoattributevalueItemObject(FortiObject[AddressSsoattributevalueItem]):
+    """Typed object for sso-attribute-value table items with attribute access."""
+    name: str
+
+
+class AddressListItemObject(FortiObject[AddressListItem]):
+    """Typed object for list table items with attribute access."""
+    ip: str
+
+
+class AddressTaggingItemObject(FortiObject[AddressTaggingItem]):
+    """Typed object for tagging table items with attribute access."""
+    name: str
+    category: str
+    tags: FortiObjectList[AddressTaggingTagsItemObject]
+
+
 class AddressObject(FortiObject):
     """Typed FortiObject for Address with field access."""
     name: str
@@ -169,7 +201,7 @@ class AddressObject(FortiObject):
     route_tag: int
     sub_type: Literal["sdn", "clearpass-spt", "fsso", "rsso", "ems-tag", "fortivoice-tag", "fortinac-tag", "swc-tag", "device-identification", "external-resource", "obsolete"]
     clearpass_spt: Literal["unknown", "healthy", "quarantine", "checkup", "transient", "infected"]
-    macaddr: list[AddressMacaddrItem]
+    macaddr: FortiObjectList[AddressMacaddrItemObject]
     start_ip: str
     end_ip: str
     fqdn: str
@@ -178,8 +210,8 @@ class AddressObject(FortiObject):
     cache_ttl: int
     wildcard: str
     sdn: str
-    fsso_group: list[AddressFssogroupItem]
-    sso_attribute_value: list[AddressSsoattributevalueItem]
+    fsso_group: FortiObjectList[AddressFssogroupItemObject]
+    sso_attribute_value: FortiObjectList[AddressSsoattributevalueItemObject]
     interface: str
     tenant: str
     organization: str
@@ -202,7 +234,7 @@ class AddressObject(FortiObject):
     sdn_addr_type: Literal["private", "public", "all"]
     node_ip_only: Literal["enable", "disable"]
     obj_id: str
-    tagging: list[AddressTaggingItem]
+    tagging: FortiObjectList[AddressTaggingItemObject]
     allow_routing: Literal["enable", "disable"]
     passive_fqdn_learning: Literal["disable", "enable"]
     fabric_object: Literal["enable", "disable"]

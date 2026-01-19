@@ -26,6 +26,11 @@ from hfortix_fortios.models import (
 # TypedDict Payloads
 # ================================================================
 
+class ProxyAddrgrpTaggingTagsItem(TypedDict, total=False):
+    """Nested item for tagging.tags field."""
+    name: str
+
+
 class ProxyAddrgrpMemberItem(TypedDict, total=False):
     """Nested item for member field."""
     name: str
@@ -35,7 +40,7 @@ class ProxyAddrgrpTaggingItem(TypedDict, total=False):
     """Nested item for tagging field."""
     name: str
     category: str
-    tags: str | list[str]
+    tags: str | list[str] | list[ProxyAddrgrpTaggingTagsItem]
 
 
 class ProxyAddrgrpPayload(TypedDict, total=False):
@@ -69,14 +74,26 @@ class ProxyAddrgrpResponse(TypedDict, total=False):
 # ================================================================
 
 
+class ProxyAddrgrpMemberItemObject(FortiObject[ProxyAddrgrpMemberItem]):
+    """Typed object for member table items with attribute access."""
+    name: str
+
+
+class ProxyAddrgrpTaggingItemObject(FortiObject[ProxyAddrgrpTaggingItem]):
+    """Typed object for tagging table items with attribute access."""
+    name: str
+    category: str
+    tags: FortiObjectList[ProxyAddrgrpTaggingTagsItemObject]
+
+
 class ProxyAddrgrpObject(FortiObject):
     """Typed FortiObject for ProxyAddrgrp with field access."""
     name: str
     type: Literal["src", "dst"]
     uuid: str
-    member: list[ProxyAddrgrpMemberItem]
+    member: FortiObjectList[ProxyAddrgrpMemberItemObject]
     color: int
-    tagging: list[ProxyAddrgrpTaggingItem]
+    tagging: FortiObjectList[ProxyAddrgrpTaggingItemObject]
     comment: str
 
 

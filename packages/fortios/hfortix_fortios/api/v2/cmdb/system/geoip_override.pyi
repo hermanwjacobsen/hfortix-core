@@ -67,13 +67,27 @@ class GeoipOverrideResponse(TypedDict, total=False):
 # ================================================================
 
 
+class GeoipOverrideIprangeItemObject(FortiObject[GeoipOverrideIprangeItem]):
+    """Typed object for ip-range table items with attribute access."""
+    id: int
+    start_ip: str
+    end_ip: str
+
+
+class GeoipOverrideIp6rangeItemObject(FortiObject[GeoipOverrideIp6rangeItem]):
+    """Typed object for ip6-range table items with attribute access."""
+    id: int
+    start_ip: str
+    end_ip: str
+
+
 class GeoipOverrideObject(FortiObject):
     """Typed FortiObject for GeoipOverride with field access."""
     name: str
     description: str
     country_id: str
-    ip_range: list[GeoipOverrideIprangeItem]
-    ip6_range: list[GeoipOverrideIp6rangeItem]
+    ip_range: FortiObjectList[GeoipOverrideIprangeItemObject]
+    ip6_range: FortiObjectList[GeoipOverrideIp6rangeItemObject]
 
 
 # ================================================================

@@ -56,12 +56,17 @@ class WtpGroupResponse(TypedDict, total=False):
 # ================================================================
 
 
+class WtpGroupWtpsItemObject(FortiObject[WtpGroupWtpsItem]):
+    """Typed object for wtps table items with attribute access."""
+    wtp_id: str
+
+
 class WtpGroupObject(FortiObject):
     """Typed FortiObject for WtpGroup with field access."""
     name: str
     platform_type: Literal["AP-11N", "C24JE", "421E", "423E", "221E", "222E", "223E", "224E", "231E", "321E", "431F", "431FL", "432F", "432FR", "433F", "433FL", "231F", "231FL", "234F", "23JF", "831F", "231G", "233G", "234G", "431G", "432G", "433G", "231K", "231KD", "23JK", "222KL", "241K", "243K", "244K", "441K", "432K", "443K", "U421E", "U422EV", "U423E", "U221EV", "U223EV", "U24JEV", "U321EV", "U323EV", "U431F", "U433F", "U231F", "U234F", "U432F", "U231G", "MVP"]
     ble_major_id: int
-    wtps: list[WtpGroupWtpsItem]
+    wtps: FortiObjectList[WtpGroupWtpsItemObject]
 
 
 # ================================================================

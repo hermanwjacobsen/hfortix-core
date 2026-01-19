@@ -63,12 +63,24 @@ class BwordResponse(TypedDict, total=False):
 # ================================================================
 
 
+class BwordEntriesItemObject(FortiObject[BwordEntriesItem]):
+    """Typed object for entries table items with attribute access."""
+    status: Literal["enable", "disable"]
+    id: int
+    pattern: str
+    pattern_type: Literal["wildcard", "regexp"]
+    action: Literal["spam", "clear"]
+    where: Literal["subject", "body", "all"]
+    language: Literal["western", "simch", "trach", "japanese", "korean", "french", "thai", "spanish"]
+    score: int
+
+
 class BwordObject(FortiObject):
     """Typed FortiObject for Bword with field access."""
     id: int
     name: str
     comment: str
-    entries: list[BwordEntriesItem]
+    entries: FortiObjectList[BwordEntriesItemObject]
 
 
 # ================================================================

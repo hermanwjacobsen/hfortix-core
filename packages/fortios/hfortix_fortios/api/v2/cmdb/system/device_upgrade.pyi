@@ -80,12 +80,17 @@ class DeviceUpgradeResponse(TypedDict, total=False):
 # ================================================================
 
 
+class DeviceUpgradeKnownhamembersItemObject(FortiObject[DeviceUpgradeKnownhamembersItem]):
+    """Typed object for known-ha-members table items with attribute access."""
+    serial: str
+
+
 class DeviceUpgradeObject(FortiObject):
     """Typed FortiObject for DeviceUpgrade with field access."""
     status: Literal["disabled", "initialized", "downloading", "device-disconnected", "ready", "coordinating", "staging", "final-check", "upgrade-devices", "cancelled", "confirmed", "done", "failed"]
     ha_reboot_controller: str
     next_path_index: int
-    known_ha_members: list[DeviceUpgradeKnownhamembersItem]
+    known_ha_members: FortiObjectList[DeviceUpgradeKnownhamembersItemObject]
     initial_version: str
     starter_admin: str
     timing: Literal["immediate", "scheduled"]

@@ -104,6 +104,23 @@ class AutomationTriggerResponse(TypedDict, total=False):
 # ================================================================
 
 
+class AutomationTriggerVdomItemObject(FortiObject[AutomationTriggerVdomItem]):
+    """Typed object for vdom table items with attribute access."""
+    name: str
+
+
+class AutomationTriggerLogidItemObject(FortiObject[AutomationTriggerLogidItem]):
+    """Typed object for logid table items with attribute access."""
+    id: int
+
+
+class AutomationTriggerFieldsItemObject(FortiObject[AutomationTriggerFieldsItem]):
+    """Typed object for fields table items with attribute access."""
+    id: int
+    name: str
+    value: str
+
+
 class AutomationTriggerObject(FortiObject):
     """Typed FortiObject for AutomationTrigger with field access."""
     name: str
@@ -113,14 +130,14 @@ class AutomationTriggerObject(FortiObject):
     license_type: Literal["forticare-support", "fortiguard-webfilter", "fortiguard-antispam", "fortiguard-antivirus", "fortiguard-ips", "fortiguard-management", "forticloud", "any"]
     report_type: Literal["posture", "coverage", "optimization", "any"]
     stitch_name: str
-    logid: list[AutomationTriggerLogidItem]
+    logid: FortiObjectList[AutomationTriggerLogidItemObject]
     trigger_frequency: Literal["hourly", "daily", "weekly", "monthly", "once"]
     trigger_weekday: Literal["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"]
     trigger_day: int
     trigger_hour: int
     trigger_minute: int
     trigger_datetime: str
-    fields: list[AutomationTriggerFieldsItem]
+    fields: FortiObjectList[AutomationTriggerFieldsItemObject]
     faz_event_name: str
     faz_event_severity: str
     faz_event_tags: str

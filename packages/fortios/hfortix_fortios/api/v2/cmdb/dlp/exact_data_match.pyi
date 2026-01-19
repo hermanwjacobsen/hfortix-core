@@ -58,12 +58,19 @@ class ExactDataMatchResponse(TypedDict, total=False):
 # ================================================================
 
 
+class ExactDataMatchColumnsItemObject(FortiObject[ExactDataMatchColumnsItem]):
+    """Typed object for columns table items with attribute access."""
+    index: int
+    type: str
+    optional: Literal["enable", "disable"]
+
+
 class ExactDataMatchObject(FortiObject):
     """Typed FortiObject for ExactDataMatch with field access."""
     name: str
     optional: int
     data: str
-    columns: list[ExactDataMatchColumnsItem]
+    columns: FortiObjectList[ExactDataMatchColumnsItemObject]
 
 
 # ================================================================

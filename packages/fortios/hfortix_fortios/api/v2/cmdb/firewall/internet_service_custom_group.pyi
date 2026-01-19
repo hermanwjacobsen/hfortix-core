@@ -54,11 +54,16 @@ class InternetServiceCustomGroupResponse(TypedDict, total=False):
 # ================================================================
 
 
+class InternetServiceCustomGroupMemberItemObject(FortiObject[InternetServiceCustomGroupMemberItem]):
+    """Typed object for member table items with attribute access."""
+    name: str
+
+
 class InternetServiceCustomGroupObject(FortiObject):
     """Typed FortiObject for InternetServiceCustomGroup with field access."""
     name: str
     comment: str
-    member: list[InternetServiceCustomGroupMemberItem]
+    member: FortiObjectList[InternetServiceCustomGroupMemberItemObject]
 
 
 # ================================================================

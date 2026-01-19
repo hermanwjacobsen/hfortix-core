@@ -75,12 +75,36 @@ class AccessControlListResponse(TypedDict, total=False):
 # ================================================================
 
 
+class AccessControlListLayer3ipv4rulesItemObject(FortiObject[AccessControlListLayer3ipv4rulesItem]):
+    """Typed object for layer3-ipv4-rules table items with attribute access."""
+    rule_id: int
+    comment: str
+    srcaddr: str
+    srcport: int
+    dstaddr: str
+    dstport: int
+    protocol: int
+    action: Literal["allow", "deny"]
+
+
+class AccessControlListLayer3ipv6rulesItemObject(FortiObject[AccessControlListLayer3ipv6rulesItem]):
+    """Typed object for layer3-ipv6-rules table items with attribute access."""
+    rule_id: int
+    comment: str
+    srcaddr: str
+    srcport: int
+    dstaddr: str
+    dstport: int
+    protocol: int
+    action: Literal["allow", "deny"]
+
+
 class AccessControlListObject(FortiObject):
     """Typed FortiObject for AccessControlList with field access."""
     name: str
     comment: str
-    layer3_ipv4_rules: list[AccessControlListLayer3ipv4rulesItem]
-    layer3_ipv6_rules: list[AccessControlListLayer3ipv6rulesItem]
+    layer3_ipv4_rules: FortiObjectList[AccessControlListLayer3ipv4rulesItemObject]
+    layer3_ipv6_rules: FortiObjectList[AccessControlListLayer3ipv6rulesItemObject]
 
 
 # ================================================================

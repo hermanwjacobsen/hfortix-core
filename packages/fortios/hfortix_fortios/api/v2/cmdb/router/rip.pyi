@@ -138,22 +138,88 @@ class RipResponse(TypedDict, total=False):
 # ================================================================
 
 
+class RipDistanceItemObject(FortiObject[RipDistanceItem]):
+    """Typed object for distance table items with attribute access."""
+    id: int
+    prefix: str
+    distance: int
+    access_list: str
+
+
+class RipDistributelistItemObject(FortiObject[RipDistributelistItem]):
+    """Typed object for distribute-list table items with attribute access."""
+    id: int
+    status: Literal["enable", "disable"]
+    direction: Literal["in", "out"]
+    listname: str
+    interface: str
+
+
+class RipNeighborItemObject(FortiObject[RipNeighborItem]):
+    """Typed object for neighbor table items with attribute access."""
+    id: int
+    ip: str
+
+
+class RipNetworkItemObject(FortiObject[RipNetworkItem]):
+    """Typed object for network table items with attribute access."""
+    id: int
+    prefix: str
+
+
+class RipOffsetlistItemObject(FortiObject[RipOffsetlistItem]):
+    """Typed object for offset-list table items with attribute access."""
+    id: int
+    status: Literal["enable", "disable"]
+    direction: Literal["in", "out"]
+    access_list: str
+    offset: int
+    interface: str
+
+
+class RipPassiveinterfaceItemObject(FortiObject[RipPassiveinterfaceItem]):
+    """Typed object for passive-interface table items with attribute access."""
+    name: str
+
+
+class RipRedistributeItemObject(FortiObject[RipRedistributeItem]):
+    """Typed object for redistribute table items with attribute access."""
+    name: str
+    status: Literal["enable", "disable"]
+    metric: int
+    routemap: str
+
+
+class RipInterfaceItemObject(FortiObject[RipInterfaceItem]):
+    """Typed object for interface table items with attribute access."""
+    name: str
+    auth_keychain: str
+    auth_mode: Literal["none", "text", "md5"]
+    auth_string: str
+    receive_version: Literal["1", "2"]
+    send_version: Literal["1", "2"]
+    send_version2_broadcast: Literal["disable", "enable"]
+    split_horizon_status: Literal["enable", "disable"]
+    split_horizon: Literal["poisoned", "regular"]
+    flags: int
+
+
 class RipObject(FortiObject):
     """Typed FortiObject for Rip with field access."""
     default_information_originate: Literal["enable", "disable"]
     default_metric: int
     max_out_metric: int
-    distance: list[RipDistanceItem]
-    distribute_list: list[RipDistributelistItem]
-    neighbor: list[RipNeighborItem]
-    network: list[RipNetworkItem]
-    offset_list: list[RipOffsetlistItem]
-    passive_interface: list[RipPassiveinterfaceItem]
-    redistribute: list[RipRedistributeItem]
+    distance: FortiObjectList[RipDistanceItemObject]
+    distribute_list: FortiObjectList[RipDistributelistItemObject]
+    neighbor: FortiObjectList[RipNeighborItemObject]
+    network: FortiObjectList[RipNetworkItemObject]
+    offset_list: FortiObjectList[RipOffsetlistItemObject]
+    passive_interface: FortiObjectList[RipPassiveinterfaceItemObject]
+    redistribute: FortiObjectList[RipRedistributeItemObject]
     update_timer: int
     timeout_timer: int
     garbage_timer: int
-    interface: list[RipInterfaceItem]
+    interface: FortiObjectList[RipInterfaceItemObject]
 
 
 # ================================================================

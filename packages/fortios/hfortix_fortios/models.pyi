@@ -269,7 +269,7 @@ class FortiObject(Generic[_DataT]):
         ...
     
     @property
-    def dict(self) -> dict[str, Any]:
+    def dict(self) -> _DataT:
         """
         Get the dictionary representation of the object.
 
@@ -277,7 +277,7 @@ class FortiObject(Generic[_DataT]):
         FortiObject back to a plain dictionary when needed.
 
         Returns:
-            Original API response dictionary
+            Original API response dictionary (typed based on the data type)
 
         Examples:
             >>> policy = fgt.api.cmdb.firewall.policy.get(policyid=1)
@@ -332,10 +332,23 @@ class FortiObject(Generic[_DataT]):
         """
         ...
 
-    # NOTE: __getitem__ is intentionally omitted from the stub.
-    # This forces users to use attribute access (obj.field) for typed access,
-    # or convert to dict first (obj.dict["field"]) for dict-style access.
-    # The runtime implementation still supports obj["field"] for convenience.
+    def __getitem__(self, key: str) -> Any:
+        """
+        Dictionary-style access to object fields.
+        
+        For typed access, use .dict["field"] instead.
+        
+        Args:
+            key: Field name to retrieve
+        
+        Returns:
+            Field value (untyped)
+        
+        Examples:
+            >>> obj["name"]
+            'my-policy'
+        """
+        ...
 
     def __len__(self) -> int:
         """

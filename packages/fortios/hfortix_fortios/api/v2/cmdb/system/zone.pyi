@@ -26,11 +26,16 @@ from hfortix_fortios.models import (
 # TypedDict Payloads
 # ================================================================
 
+class ZoneTaggingTagsItem(TypedDict, total=False):
+    """Nested item for tagging.tags field."""
+    name: str
+
+
 class ZoneTaggingItem(TypedDict, total=False):
     """Nested item for tagging field."""
     name: str
     category: str
-    tags: str | list[str]
+    tags: str | list[str] | list[ZoneTaggingTagsItem]
 
 
 class ZoneInterfaceItem(TypedDict, total=False):
@@ -65,13 +70,25 @@ class ZoneResponse(TypedDict, total=False):
 # ================================================================
 
 
+class ZoneTaggingItemObject(FortiObject[ZoneTaggingItem]):
+    """Typed object for tagging table items with attribute access."""
+    name: str
+    category: str
+    tags: FortiObjectList[ZoneTaggingTagsItemObject]
+
+
+class ZoneInterfaceItemObject(FortiObject[ZoneInterfaceItem]):
+    """Typed object for interface table items with attribute access."""
+    interface_name: str
+
+
 class ZoneObject(FortiObject):
     """Typed FortiObject for Zone with field access."""
     name: str
-    tagging: list[ZoneTaggingItem]
+    tagging: FortiObjectList[ZoneTaggingItemObject]
     description: str
     intrazone: Literal["allow", "deny"]
-    interface: list[ZoneInterfaceItem]
+    interface: FortiObjectList[ZoneInterfaceItemObject]
 
 
 # ================================================================

@@ -159,6 +159,16 @@ class AdminResponse(TypedDict, total=False):
 # ================================================================
 
 
+class AdminVdomItemObject(FortiObject[AdminVdomItem]):
+    """Typed object for vdom table items with attribute access."""
+    name: str
+
+
+class AdminGuestusergroupsItemObject(FortiObject[AdminGuestusergroupsItem]):
+    """Typed object for guest-usergroups table items with attribute access."""
+    name: str
+
+
 class AdminObject(FortiObject):
     """Typed FortiObject for Admin with field access."""
     name: str
@@ -209,7 +219,7 @@ class AdminObject(FortiObject):
     sms_custom_server: str
     sms_phone: str
     guest_auth: Literal["disable", "enable"]
-    guest_usergroups: list[AdminGuestusergroupsItem]
+    guest_usergroups: FortiObjectList[AdminGuestusergroupsItemObject]
     guest_lang: str
     status: str
 

@@ -26,6 +26,11 @@ from hfortix_fortios.models import (
 # TypedDict Payloads
 # ================================================================
 
+class Address6TaggingTagsItem(TypedDict, total=False):
+    """Nested item for tagging.tags field."""
+    name: str
+
+
 class Address6MacaddrItem(TypedDict, total=False):
     """Nested item for macaddr field."""
     macaddr: str
@@ -35,7 +40,7 @@ class Address6TaggingItem(TypedDict, total=False):
     """Nested item for tagging field."""
     name: str
     category: str
-    tags: str | list[str]
+    tags: str | list[str] | list[Address6TaggingTagsItem]
 
 
 class Address6SubnetsegmentItem(TypedDict, total=False):
@@ -125,13 +130,37 @@ class Address6Response(TypedDict, total=False):
 # ================================================================
 
 
+class Address6MacaddrItemObject(FortiObject[Address6MacaddrItem]):
+    """Typed object for macaddr table items with attribute access."""
+    macaddr: str
+
+
+class Address6TaggingItemObject(FortiObject[Address6TaggingItem]):
+    """Typed object for tagging table items with attribute access."""
+    name: str
+    category: str
+    tags: FortiObjectList[Address6TaggingTagsItemObject]
+
+
+class Address6SubnetsegmentItemObject(FortiObject[Address6SubnetsegmentItem]):
+    """Typed object for subnet-segment table items with attribute access."""
+    name: str
+    type: Literal["any", "specific"]
+    value: str
+
+
+class Address6ListItemObject(FortiObject[Address6ListItem]):
+    """Typed object for list table items with attribute access."""
+    ip: str
+
+
 class Address6Object(FortiObject):
     """Typed FortiObject for Address6 with field access."""
     name: str
     uuid: str
     type: Literal["ipprefix", "iprange", "fqdn", "geography", "dynamic", "template", "mac", "route-tag", "wildcard"]
     route_tag: int
-    macaddr: list[Address6MacaddrItem]
+    macaddr: FortiObjectList[Address6MacaddrItemObject]
     sdn: str
     ip6: str
     wildcard: str
@@ -142,10 +171,10 @@ class Address6Object(FortiObject):
     cache_ttl: int
     color: int
     obj_id: str
-    tagging: list[Address6TaggingItem]
+    tagging: FortiObjectList[Address6TaggingItemObject]
     comment: str
     template: str
-    subnet_segment: list[Address6SubnetsegmentItem]
+    subnet_segment: FortiObjectList[Address6SubnetsegmentItemObject]
     host_type: Literal["any", "specific"]
     host: str
     tenant: str

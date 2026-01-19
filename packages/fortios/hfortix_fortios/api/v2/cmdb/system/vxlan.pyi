@@ -77,15 +77,25 @@ class VxlanResponse(TypedDict, total=False):
 # ================================================================
 
 
+class VxlanRemoteipItemObject(FortiObject[VxlanRemoteipItem]):
+    """Typed object for remote-ip table items with attribute access."""
+    ip: str
+
+
+class VxlanRemoteip6ItemObject(FortiObject[VxlanRemoteip6Item]):
+    """Typed object for remote-ip6 table items with attribute access."""
+    ip6: str
+
+
 class VxlanObject(FortiObject):
     """Typed FortiObject for Vxlan with field access."""
     name: str
     interface: str
     vni: int
     ip_version: Literal["ipv4-unicast", "ipv6-unicast", "ipv4-multicast", "ipv6-multicast"]
-    remote_ip: list[VxlanRemoteipItem]
+    remote_ip: FortiObjectList[VxlanRemoteipItemObject]
     local_ip: str
-    remote_ip6: list[VxlanRemoteip6Item]
+    remote_ip6: FortiObjectList[VxlanRemoteip6ItemObject]
     local_ip6: str
     dstport: int
     multicast_ttl: int

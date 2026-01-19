@@ -73,12 +73,22 @@ class SwitchInterfaceResponse(TypedDict, total=False):
 # ================================================================
 
 
+class SwitchInterfaceSpansourceportItemObject(FortiObject[SwitchInterfaceSpansourceportItem]):
+    """Typed object for span-source-port table items with attribute access."""
+    interface_name: str
+
+
+class SwitchInterfaceMemberItemObject(FortiObject[SwitchInterfaceMemberItem]):
+    """Typed object for member table items with attribute access."""
+    interface_name: str
+
+
 class SwitchInterfaceObject(FortiObject):
     """Typed FortiObject for SwitchInterface with field access."""
     name: str
     span_dest_port: str
-    span_source_port: list[SwitchInterfaceSpansourceportItem]
-    member: list[SwitchInterfaceMemberItem]
+    span_source_port: FortiObjectList[SwitchInterfaceSpansourceportItemObject]
+    member: FortiObjectList[SwitchInterfaceMemberItemObject]
     type: Literal["switch", "hub"]
     intra_switch_policy: Literal["implicit", "explicit"]
     mac_ttl: int

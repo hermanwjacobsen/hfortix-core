@@ -53,10 +53,16 @@ class CustomResponse(TypedDict, total=False):
 # ================================================================
 
 
+class CustomSwitchbindingItemObject(FortiObject[CustomSwitchbindingItem]):
+    """Typed object for switch-binding table items with attribute access."""
+    switch_id: str
+    policy: str
+
+
 class CustomObject(FortiObject):
     """Typed FortiObject for Custom with field access."""
     name: str
-    switch_binding: list[CustomSwitchbindingItem]
+    switch_binding: FortiObjectList[CustomSwitchbindingItemObject]
 
 
 # ================================================================

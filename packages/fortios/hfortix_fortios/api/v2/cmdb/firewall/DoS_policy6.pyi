@@ -89,6 +89,34 @@ class DosPolicy6Response(TypedDict, total=False):
 # ================================================================
 
 
+class DosPolicy6SrcaddrItemObject(FortiObject[DosPolicy6SrcaddrItem]):
+    """Typed object for srcaddr table items with attribute access."""
+    name: str
+
+
+class DosPolicy6DstaddrItemObject(FortiObject[DosPolicy6DstaddrItem]):
+    """Typed object for dstaddr table items with attribute access."""
+    name: str
+
+
+class DosPolicy6ServiceItemObject(FortiObject[DosPolicy6ServiceItem]):
+    """Typed object for service table items with attribute access."""
+    name: str
+
+
+class DosPolicy6AnomalyItemObject(FortiObject[DosPolicy6AnomalyItem]):
+    """Typed object for anomaly table items with attribute access."""
+    name: str
+    status: Literal["disable", "enable"]
+    log: Literal["enable", "disable"]
+    action: Literal["pass", "block"]
+    quarantine: Literal["none", "attacker"]
+    quarantine_expiry: str
+    quarantine_log: Literal["disable", "enable"]
+    threshold: int
+    threshold_default: int
+
+
 class DosPolicy6Object(FortiObject):
     """Typed FortiObject for DosPolicy6 with field access."""
     policyid: int
@@ -96,10 +124,10 @@ class DosPolicy6Object(FortiObject):
     name: str
     comments: str
     interface: str
-    srcaddr: list[DosPolicy6SrcaddrItem]
-    dstaddr: list[DosPolicy6DstaddrItem]
-    service: list[DosPolicy6ServiceItem]
-    anomaly: list[DosPolicy6AnomalyItem]
+    srcaddr: FortiObjectList[DosPolicy6SrcaddrItemObject]
+    dstaddr: FortiObjectList[DosPolicy6DstaddrItemObject]
+    service: FortiObjectList[DosPolicy6ServiceItemObject]
+    anomaly: FortiObjectList[DosPolicy6AnomalyItemObject]
 
 
 # ================================================================

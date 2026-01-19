@@ -85,6 +85,25 @@ class FederatedUpgradeResponse(TypedDict, total=False):
 # ================================================================
 
 
+class FederatedUpgradeKnownhamembersItemObject(FortiObject[FederatedUpgradeKnownhamembersItem]):
+    """Typed object for known-ha-members table items with attribute access."""
+    serial: str
+
+
+class FederatedUpgradeNodelistItemObject(FortiObject[FederatedUpgradeNodelistItem]):
+    """Typed object for node-list table items with attribute access."""
+    serial: str
+    timing: Literal["immediate", "scheduled"]
+    maximum_minutes: int
+    time: str
+    setup_time: str
+    upgrade_path: str
+    device_type: Literal["fortigate", "fortiswitch", "fortiap", "fortiextender"]
+    allow_download: Literal["enable", "disable"]
+    coordinating_fortigate: str
+    failure_reason: Literal["none", "internal", "timeout", "device-type-unsupported", "download-failed", "device-missing", "version-unavailable", "staging-failed", "reboot-failed", "device-not-reconnected", "node-not-ready", "no-final-confirmation", "no-confirmation-query", "config-error-log-nonempty", "csf-tree-not-supported", "firmware-changed", "node-failed", "image-missing"]
+
+
 class FederatedUpgradeObject(FortiObject):
     """Typed FortiObject for FederatedUpgrade with field access."""
     status: Literal["disabled", "initialized", "downloading", "device-disconnected", "ready", "coordinating", "staging", "final-check", "upgrade-devices", "cancelled", "confirmed", "done", "failed"]
@@ -95,10 +114,10 @@ class FederatedUpgradeObject(FortiObject):
     next_path_index: int
     ignore_signing_errors: Literal["enable", "disable"]
     ha_reboot_controller: str
-    known_ha_members: list[FederatedUpgradeKnownhamembersItem]
+    known_ha_members: FortiObjectList[FederatedUpgradeKnownhamembersItemObject]
     initial_version: str
     starter_admin: str
-    node_list: list[FederatedUpgradeNodelistItem]
+    node_list: FortiObjectList[FederatedUpgradeNodelistItemObject]
 
 
 # ================================================================

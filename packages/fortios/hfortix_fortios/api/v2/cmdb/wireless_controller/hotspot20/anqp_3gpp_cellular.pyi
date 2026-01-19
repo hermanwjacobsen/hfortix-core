@@ -54,10 +54,17 @@ class Anqp3gppCellularResponse(TypedDict, total=False):
 # ================================================================
 
 
+class Anqp3gppCellularMccmnclistItemObject(FortiObject[Anqp3gppCellularMccmnclistItem]):
+    """Typed object for mcc-mnc-list table items with attribute access."""
+    id: int
+    mcc: str
+    mnc: str
+
+
 class Anqp3gppCellularObject(FortiObject):
     """Typed FortiObject for Anqp3gppCellular with field access."""
     name: str
-    mcc_mnc_list: list[Anqp3gppCellularMccmnclistItem]
+    mcc_mnc_list: FortiObjectList[Anqp3gppCellularMccmnclistItemObject]
 
 
 # ================================================================

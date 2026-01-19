@@ -104,6 +104,31 @@ class LldpProfileResponse(TypedDict, total=False):
 # ================================================================
 
 
+class LldpProfileMednetworkpolicyItemObject(FortiObject[LldpProfileMednetworkpolicyItem]):
+    """Typed object for med-network-policy table items with attribute access."""
+    name: str
+    status: Literal["disable", "enable"]
+    vlan_intf: str
+    assign_vlan: Literal["disable", "enable"]
+    priority: int
+    dscp: int
+
+
+class LldpProfileMedlocationserviceItemObject(FortiObject[LldpProfileMedlocationserviceItem]):
+    """Typed object for med-location-service table items with attribute access."""
+    name: str
+    status: Literal["disable", "enable"]
+    sys_location_id: str
+
+
+class LldpProfileCustomtlvsItemObject(FortiObject[LldpProfileCustomtlvsItem]):
+    """Typed object for custom-tlvs table items with attribute access."""
+    name: str
+    oui: str
+    subtype: int
+    information_string: str
+
+
 class LldpProfileObject(FortiObject):
     """Typed FortiObject for LldpProfile with field access."""
     name: str
@@ -121,9 +146,9 @@ class LldpProfileObject(FortiObject):
     auto_isl_auth_reauth: int
     auto_isl_auth_encrypt: Literal["none", "mixed", "must"]
     auto_isl_auth_macsec_profile: str
-    med_network_policy: list[LldpProfileMednetworkpolicyItem]
-    med_location_service: list[LldpProfileMedlocationserviceItem]
-    custom_tlvs: list[LldpProfileCustomtlvsItem]
+    med_network_policy: FortiObjectList[LldpProfileMednetworkpolicyItemObject]
+    med_location_service: FortiObjectList[LldpProfileMedlocationserviceItemObject]
+    custom_tlvs: FortiObjectList[LldpProfileCustomtlvsItemObject]
 
 
 # ================================================================

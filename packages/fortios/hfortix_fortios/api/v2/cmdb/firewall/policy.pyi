@@ -626,56 +626,271 @@ class PolicyResponse(TypedDict, total=False):
 # ================================================================
 
 
+class PolicySrcintfItemObject(FortiObject[PolicySrcintfItem]):
+    """Typed object for srcintf table items with attribute access."""
+    name: str
+
+
+class PolicyDstintfItemObject(FortiObject[PolicyDstintfItem]):
+    """Typed object for dstintf table items with attribute access."""
+    name: str
+
+
+class PolicySrcaddrItemObject(FortiObject[PolicySrcaddrItem]):
+    """Typed object for srcaddr table items with attribute access."""
+    name: str
+
+
+class PolicyDstaddrItemObject(FortiObject[PolicyDstaddrItem]):
+    """Typed object for dstaddr table items with attribute access."""
+    name: str
+
+
+class PolicySrcaddr6ItemObject(FortiObject[PolicySrcaddr6Item]):
+    """Typed object for srcaddr6 table items with attribute access."""
+    name: str
+
+
+class PolicyDstaddr6ItemObject(FortiObject[PolicyDstaddr6Item]):
+    """Typed object for dstaddr6 table items with attribute access."""
+    name: str
+
+
+class PolicyZtnaemstagItemObject(FortiObject[PolicyZtnaemstagItem]):
+    """Typed object for ztna-ems-tag table items with attribute access."""
+    name: str
+
+
+class PolicyZtnaemstagsecondaryItemObject(FortiObject[PolicyZtnaemstagsecondaryItem]):
+    """Typed object for ztna-ems-tag-secondary table items with attribute access."""
+    name: str
+
+
+class PolicyZtnageotagItemObject(FortiObject[PolicyZtnageotagItem]):
+    """Typed object for ztna-geo-tag table items with attribute access."""
+    name: str
+
+
+class PolicyInternetservicenameItemObject(FortiObject[PolicyInternetservicenameItem]):
+    """Typed object for internet-service-name table items with attribute access."""
+    name: str
+
+
+class PolicyInternetservicegroupItemObject(FortiObject[PolicyInternetservicegroupItem]):
+    """Typed object for internet-service-group table items with attribute access."""
+    name: str
+
+
+class PolicyInternetservicecustomItemObject(FortiObject[PolicyInternetservicecustomItem]):
+    """Typed object for internet-service-custom table items with attribute access."""
+    name: str
+
+
+class PolicyNetworkservicedynamicItemObject(FortiObject[PolicyNetworkservicedynamicItem]):
+    """Typed object for network-service-dynamic table items with attribute access."""
+    name: str
+
+
+class PolicyInternetservicecustomgroupItemObject(FortiObject[PolicyInternetservicecustomgroupItem]):
+    """Typed object for internet-service-custom-group table items with attribute access."""
+    name: str
+
+
+class PolicyInternetservicesrcnameItemObject(FortiObject[PolicyInternetservicesrcnameItem]):
+    """Typed object for internet-service-src-name table items with attribute access."""
+    name: str
+
+
+class PolicyInternetservicesrcgroupItemObject(FortiObject[PolicyInternetservicesrcgroupItem]):
+    """Typed object for internet-service-src-group table items with attribute access."""
+    name: str
+
+
+class PolicyInternetservicesrccustomItemObject(FortiObject[PolicyInternetservicesrccustomItem]):
+    """Typed object for internet-service-src-custom table items with attribute access."""
+    name: str
+
+
+class PolicyNetworkservicesrcdynamicItemObject(FortiObject[PolicyNetworkservicesrcdynamicItem]):
+    """Typed object for network-service-src-dynamic table items with attribute access."""
+    name: str
+
+
+class PolicyInternetservicesrccustomgroupItemObject(FortiObject[PolicyInternetservicesrccustomgroupItem]):
+    """Typed object for internet-service-src-custom-group table items with attribute access."""
+    name: str
+
+
+class PolicySrcvendormacItemObject(FortiObject[PolicySrcvendormacItem]):
+    """Typed object for src-vendor-mac table items with attribute access."""
+    id: int
+
+
+class PolicyInternetservice6nameItemObject(FortiObject[PolicyInternetservice6nameItem]):
+    """Typed object for internet-service6-name table items with attribute access."""
+    name: str
+
+
+class PolicyInternetservice6groupItemObject(FortiObject[PolicyInternetservice6groupItem]):
+    """Typed object for internet-service6-group table items with attribute access."""
+    name: str
+
+
+class PolicyInternetservice6customItemObject(FortiObject[PolicyInternetservice6customItem]):
+    """Typed object for internet-service6-custom table items with attribute access."""
+    name: str
+
+
+class PolicyInternetservice6customgroupItemObject(FortiObject[PolicyInternetservice6customgroupItem]):
+    """Typed object for internet-service6-custom-group table items with attribute access."""
+    name: str
+
+
+class PolicyInternetservice6srcnameItemObject(FortiObject[PolicyInternetservice6srcnameItem]):
+    """Typed object for internet-service6-src-name table items with attribute access."""
+    name: str
+
+
+class PolicyInternetservice6srcgroupItemObject(FortiObject[PolicyInternetservice6srcgroupItem]):
+    """Typed object for internet-service6-src-group table items with attribute access."""
+    name: str
+
+
+class PolicyInternetservice6srccustomItemObject(FortiObject[PolicyInternetservice6srccustomItem]):
+    """Typed object for internet-service6-src-custom table items with attribute access."""
+    name: str
+
+
+class PolicyInternetservice6srccustomgroupItemObject(FortiObject[PolicyInternetservice6srccustomgroupItem]):
+    """Typed object for internet-service6-src-custom-group table items with attribute access."""
+    name: str
+
+
+class PolicyRtpaddrItemObject(FortiObject[PolicyRtpaddrItem]):
+    """Typed object for rtp-addr table items with attribute access."""
+    name: str
+
+
+class PolicyServiceItemObject(FortiObject[PolicyServiceItem]):
+    """Typed object for service table items with attribute access."""
+    name: str
+
+
+class PolicyPcppoolnameItemObject(FortiObject[PolicyPcppoolnameItem]):
+    """Typed object for pcp-poolname table items with attribute access."""
+    name: str
+
+
+class PolicyPoolnameItemObject(FortiObject[PolicyPoolnameItem]):
+    """Typed object for poolname table items with attribute access."""
+    name: str
+
+
+class PolicyPoolname6ItemObject(FortiObject[PolicyPoolname6Item]):
+    """Typed object for poolname6 table items with attribute access."""
+    name: str
+
+
+class PolicyNtlmenabledbrowsersItemObject(FortiObject[PolicyNtlmenabledbrowsersItem]):
+    """Typed object for ntlm-enabled-browsers table items with attribute access."""
+    user_agent_string: str
+
+
+class PolicyGroupsItemObject(FortiObject[PolicyGroupsItem]):
+    """Typed object for groups table items with attribute access."""
+    name: str
+
+
+class PolicyUsersItemObject(FortiObject[PolicyUsersItem]):
+    """Typed object for users table items with attribute access."""
+    name: str
+
+
+class PolicyFssogroupsItemObject(FortiObject[PolicyFssogroupsItem]):
+    """Typed object for fsso-groups table items with attribute access."""
+    name: str
+
+
+class PolicyCustomlogfieldsItemObject(FortiObject[PolicyCustomlogfieldsItem]):
+    """Typed object for custom-log-fields table items with attribute access."""
+    field_id: str
+
+
+class PolicySgtItemObject(FortiObject[PolicySgtItem]):
+    """Typed object for sgt table items with attribute access."""
+    id: int
+
+
+class PolicyInternetservicefortiguardItemObject(FortiObject[PolicyInternetservicefortiguardItem]):
+    """Typed object for internet-service-fortiguard table items with attribute access."""
+    name: str
+
+
+class PolicyInternetservicesrcfortiguardItemObject(FortiObject[PolicyInternetservicesrcfortiguardItem]):
+    """Typed object for internet-service-src-fortiguard table items with attribute access."""
+    name: str
+
+
+class PolicyInternetservice6fortiguardItemObject(FortiObject[PolicyInternetservice6fortiguardItem]):
+    """Typed object for internet-service6-fortiguard table items with attribute access."""
+    name: str
+
+
+class PolicyInternetservice6srcfortiguardItemObject(FortiObject[PolicyInternetservice6srcfortiguardItem]):
+    """Typed object for internet-service6-src-fortiguard table items with attribute access."""
+    name: str
+
+
 class PolicyObject(FortiObject):
     """Typed FortiObject for Policy with field access."""
     policyid: int
     status: Literal["enable", "disable"]
     name: str
     uuid: str
-    srcintf: list[PolicySrcintfItem]
-    dstintf: list[PolicyDstintfItem]
+    srcintf: FortiObjectList[PolicySrcintfItemObject]
+    dstintf: FortiObjectList[PolicyDstintfItemObject]
     action: Literal["accept", "deny", "ipsec"]
     nat64: Literal["enable", "disable"]
     nat46: Literal["enable", "disable"]
     ztna_status: Literal["enable", "disable"]
     ztna_device_ownership: Literal["enable", "disable"]
-    srcaddr: list[PolicySrcaddrItem]
-    dstaddr: list[PolicyDstaddrItem]
-    srcaddr6: list[PolicySrcaddr6Item]
-    dstaddr6: list[PolicyDstaddr6Item]
-    ztna_ems_tag: list[PolicyZtnaemstagItem]
-    ztna_ems_tag_secondary: list[PolicyZtnaemstagsecondaryItem]
+    srcaddr: FortiObjectList[PolicySrcaddrItemObject]
+    dstaddr: FortiObjectList[PolicyDstaddrItemObject]
+    srcaddr6: FortiObjectList[PolicySrcaddr6ItemObject]
+    dstaddr6: FortiObjectList[PolicyDstaddr6ItemObject]
+    ztna_ems_tag: FortiObjectList[PolicyZtnaemstagItemObject]
+    ztna_ems_tag_secondary: FortiObjectList[PolicyZtnaemstagsecondaryItemObject]
     ztna_tags_match_logic: Literal["or", "and"]
-    ztna_geo_tag: list[PolicyZtnageotagItem]
+    ztna_geo_tag: FortiObjectList[PolicyZtnageotagItemObject]
     internet_service: Literal["enable", "disable"]
-    internet_service_name: list[PolicyInternetservicenameItem]
-    internet_service_group: list[PolicyInternetservicegroupItem]
-    internet_service_custom: list[PolicyInternetservicecustomItem]
-    network_service_dynamic: list[PolicyNetworkservicedynamicItem]
-    internet_service_custom_group: list[PolicyInternetservicecustomgroupItem]
+    internet_service_name: FortiObjectList[PolicyInternetservicenameItemObject]
+    internet_service_group: FortiObjectList[PolicyInternetservicegroupItemObject]
+    internet_service_custom: FortiObjectList[PolicyInternetservicecustomItemObject]
+    network_service_dynamic: FortiObjectList[PolicyNetworkservicedynamicItemObject]
+    internet_service_custom_group: FortiObjectList[PolicyInternetservicecustomgroupItemObject]
     internet_service_src: Literal["enable", "disable"]
-    internet_service_src_name: list[PolicyInternetservicesrcnameItem]
-    internet_service_src_group: list[PolicyInternetservicesrcgroupItem]
-    internet_service_src_custom: list[PolicyInternetservicesrccustomItem]
-    network_service_src_dynamic: list[PolicyNetworkservicesrcdynamicItem]
-    internet_service_src_custom_group: list[PolicyInternetservicesrccustomgroupItem]
+    internet_service_src_name: FortiObjectList[PolicyInternetservicesrcnameItemObject]
+    internet_service_src_group: FortiObjectList[PolicyInternetservicesrcgroupItemObject]
+    internet_service_src_custom: FortiObjectList[PolicyInternetservicesrccustomItemObject]
+    network_service_src_dynamic: FortiObjectList[PolicyNetworkservicesrcdynamicItemObject]
+    internet_service_src_custom_group: FortiObjectList[PolicyInternetservicesrccustomgroupItemObject]
     reputation_minimum: int
     reputation_direction: Literal["source", "destination"]
-    src_vendor_mac: list[PolicySrcvendormacItem]
+    src_vendor_mac: FortiObjectList[PolicySrcvendormacItemObject]
     internet_service6: Literal["enable", "disable"]
-    internet_service6_name: list[PolicyInternetservice6nameItem]
-    internet_service6_group: list[PolicyInternetservice6groupItem]
-    internet_service6_custom: list[PolicyInternetservice6customItem]
-    internet_service6_custom_group: list[PolicyInternetservice6customgroupItem]
+    internet_service6_name: FortiObjectList[PolicyInternetservice6nameItemObject]
+    internet_service6_group: FortiObjectList[PolicyInternetservice6groupItemObject]
+    internet_service6_custom: FortiObjectList[PolicyInternetservice6customItemObject]
+    internet_service6_custom_group: FortiObjectList[PolicyInternetservice6customgroupItemObject]
     internet_service6_src: Literal["enable", "disable"]
-    internet_service6_src_name: list[PolicyInternetservice6srcnameItem]
-    internet_service6_src_group: list[PolicyInternetservice6srcgroupItem]
-    internet_service6_src_custom: list[PolicyInternetservice6srccustomItem]
-    internet_service6_src_custom_group: list[PolicyInternetservice6srccustomgroupItem]
+    internet_service6_src_name: FortiObjectList[PolicyInternetservice6srcnameItemObject]
+    internet_service6_src_group: FortiObjectList[PolicyInternetservice6srcgroupItemObject]
+    internet_service6_src_custom: FortiObjectList[PolicyInternetservice6srccustomItemObject]
+    internet_service6_src_custom_group: FortiObjectList[PolicyInternetservice6srccustomgroupItemObject]
     reputation_minimum6: int
     reputation_direction6: Literal["source", "destination"]
     rtp_nat: Literal["disable", "enable"]
-    rtp_addr: list[PolicyRtpaddrItem]
+    rtp_addr: FortiObjectList[PolicyRtpaddrItemObject]
     send_deny_packet: Literal["disable", "enable"]
     firewall_session_dirty: Literal["check-all", "check-new"]
     schedule: str
@@ -683,7 +898,7 @@ class PolicyObject(FortiObject):
     policy_expiry: Literal["enable", "disable"]
     policy_expiry_date: str
     policy_expiry_date_utc: str
-    service: list[PolicyServiceItem]
+    service: FortiObjectList[PolicyServiceItemObject]
     tos_mask: str
     tos: str
     tos_negate: Literal["enable", "disable"]
@@ -741,15 +956,15 @@ class PolicyObject(FortiObject):
     nat: Literal["enable", "disable"]
     pcp_outbound: Literal["enable", "disable"]
     pcp_inbound: Literal["enable", "disable"]
-    pcp_poolname: list[PolicyPcppoolnameItem]
+    pcp_poolname: FortiObjectList[PolicyPcppoolnameItemObject]
     permit_any_host: Literal["enable", "disable"]
     permit_stun_host: Literal["enable", "disable"]
     fixedport: Literal["enable", "disable"]
     port_preserve: Literal["enable", "disable"]
     port_random: Literal["enable", "disable"]
     ippool: Literal["enable", "disable"]
-    poolname: list[PolicyPoolnameItem]
-    poolname6: list[PolicyPoolname6Item]
+    poolname: FortiObjectList[PolicyPoolnameItemObject]
+    poolname6: FortiObjectList[PolicyPoolname6ItemObject]
     session_ttl: str
     vlan_cos_fwd: int
     vlan_cos_rev: int
@@ -761,11 +976,11 @@ class PolicyObject(FortiObject):
     wccp: Literal["enable", "disable"]
     ntlm: Literal["enable", "disable"]
     ntlm_guest: Literal["enable", "disable"]
-    ntlm_enabled_browsers: list[PolicyNtlmenabledbrowsersItem]
+    ntlm_enabled_browsers: FortiObjectList[PolicyNtlmenabledbrowsersItemObject]
     fsso_agent_for_ntlm: str
-    groups: list[PolicyGroupsItem]
-    users: list[PolicyUsersItem]
-    fsso_groups: list[PolicyFssogroupsItem]
+    groups: FortiObjectList[PolicyGroupsItemObject]
+    users: FortiObjectList[PolicyUsersItemObject]
+    fsso_groups: FortiObjectList[PolicyFssogroupsItemObject]
     auth_path: Literal["enable", "disable"]
     disclaimer: Literal["enable", "disable"]
     email_collect: Literal["enable", "disable"]
@@ -786,7 +1001,7 @@ class PolicyObject(FortiObject):
     redirect_url: str
     identity_based_route: str
     block_notification: Literal["enable", "disable"]
-    custom_log_fields: list[PolicyCustomlogfieldsItem]
+    custom_log_fields: FortiObjectList[PolicyCustomlogfieldsItemObject]
     replacemsg_override_group: str
     srcaddr_negate: Literal["enable", "disable"]
     srcaddr6_negate: Literal["enable", "disable"]
@@ -807,11 +1022,11 @@ class PolicyObject(FortiObject):
     delay_tcp_npu_session: Literal["enable", "disable"]
     vlan_filter: str
     sgt_check: Literal["enable", "disable"]
-    sgt: list[PolicySgtItem]
-    internet_service_fortiguard: list[PolicyInternetservicefortiguardItem]
-    internet_service_src_fortiguard: list[PolicyInternetservicesrcfortiguardItem]
-    internet_service6_fortiguard: list[PolicyInternetservice6fortiguardItem]
-    internet_service6_src_fortiguard: list[PolicyInternetservice6srcfortiguardItem]
+    sgt: FortiObjectList[PolicySgtItemObject]
+    internet_service_fortiguard: FortiObjectList[PolicyInternetservicefortiguardItemObject]
+    internet_service_src_fortiguard: FortiObjectList[PolicyInternetservicesrcfortiguardItemObject]
+    internet_service6_fortiguard: FortiObjectList[PolicyInternetservice6fortiguardItemObject]
+    internet_service6_src_fortiguard: FortiObjectList[PolicyInternetservice6srcfortiguardItemObject]
 
 
 # ================================================================

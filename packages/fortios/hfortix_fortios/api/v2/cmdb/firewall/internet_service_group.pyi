@@ -56,12 +56,17 @@ class InternetServiceGroupResponse(TypedDict, total=False):
 # ================================================================
 
 
+class InternetServiceGroupMemberItemObject(FortiObject[InternetServiceGroupMemberItem]):
+    """Typed object for member table items with attribute access."""
+    name: str
+
+
 class InternetServiceGroupObject(FortiObject):
     """Typed FortiObject for InternetServiceGroup with field access."""
     name: str
     comment: str
     direction: Literal["source", "destination", "both"]
-    member: list[InternetServiceGroupMemberItem]
+    member: FortiObjectList[InternetServiceGroupMemberItemObject]
 
 
 # ================================================================

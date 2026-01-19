@@ -57,11 +57,19 @@ class ProfileResponse(TypedDict, total=False):
 # ================================================================
 
 
+class ProfilePpidfiltersItemObject(FortiObject[ProfilePpidfiltersItem]):
+    """Typed object for ppid-filters table items with attribute access."""
+    id: int
+    ppid: int
+    action: Literal["pass", "reset", "replace"]
+    comment: str
+
+
 class ProfileObject(FortiObject):
     """Typed FortiObject for Profile with field access."""
     name: str
     comment: str
-    ppid_filters: list[ProfilePpidfiltersItem]
+    ppid_filters: FortiObjectList[ProfilePpidfiltersItemObject]
 
 
 # ================================================================

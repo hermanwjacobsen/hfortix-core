@@ -339,40 +339,170 @@ class ProxyPolicyResponse(TypedDict, total=False):
 # ================================================================
 
 
+class ProxyPolicyAccessproxyItemObject(FortiObject[ProxyPolicyAccessproxyItem]):
+    """Typed object for access-proxy table items with attribute access."""
+    name: str
+
+
+class ProxyPolicyAccessproxy6ItemObject(FortiObject[ProxyPolicyAccessproxy6Item]):
+    """Typed object for access-proxy6 table items with attribute access."""
+    name: str
+
+
+class ProxyPolicyZtnaproxyItemObject(FortiObject[ProxyPolicyZtnaproxyItem]):
+    """Typed object for ztna-proxy table items with attribute access."""
+    name: str
+
+
+class ProxyPolicySrcintfItemObject(FortiObject[ProxyPolicySrcintfItem]):
+    """Typed object for srcintf table items with attribute access."""
+    name: str
+
+
+class ProxyPolicyDstintfItemObject(FortiObject[ProxyPolicyDstintfItem]):
+    """Typed object for dstintf table items with attribute access."""
+    name: str
+
+
+class ProxyPolicySrcaddrItemObject(FortiObject[ProxyPolicySrcaddrItem]):
+    """Typed object for srcaddr table items with attribute access."""
+    name: str
+
+
+class ProxyPolicyPoolnameItemObject(FortiObject[ProxyPolicyPoolnameItem]):
+    """Typed object for poolname table items with attribute access."""
+    name: str
+
+
+class ProxyPolicyPoolname6ItemObject(FortiObject[ProxyPolicyPoolname6Item]):
+    """Typed object for poolname6 table items with attribute access."""
+    name: str
+
+
+class ProxyPolicyDstaddrItemObject(FortiObject[ProxyPolicyDstaddrItem]):
+    """Typed object for dstaddr table items with attribute access."""
+    name: str
+
+
+class ProxyPolicyZtnaemstagItemObject(FortiObject[ProxyPolicyZtnaemstagItem]):
+    """Typed object for ztna-ems-tag table items with attribute access."""
+    name: str
+
+
+class ProxyPolicyUrlriskItemObject(FortiObject[ProxyPolicyUrlriskItem]):
+    """Typed object for url-risk table items with attribute access."""
+    name: str
+
+
+class ProxyPolicyInternetservicenameItemObject(FortiObject[ProxyPolicyInternetservicenameItem]):
+    """Typed object for internet-service-name table items with attribute access."""
+    name: str
+
+
+class ProxyPolicyInternetservicegroupItemObject(FortiObject[ProxyPolicyInternetservicegroupItem]):
+    """Typed object for internet-service-group table items with attribute access."""
+    name: str
+
+
+class ProxyPolicyInternetservicecustomItemObject(FortiObject[ProxyPolicyInternetservicecustomItem]):
+    """Typed object for internet-service-custom table items with attribute access."""
+    name: str
+
+
+class ProxyPolicyInternetservicecustomgroupItemObject(FortiObject[ProxyPolicyInternetservicecustomgroupItem]):
+    """Typed object for internet-service-custom-group table items with attribute access."""
+    name: str
+
+
+class ProxyPolicyInternetservicefortiguardItemObject(FortiObject[ProxyPolicyInternetservicefortiguardItem]):
+    """Typed object for internet-service-fortiguard table items with attribute access."""
+    name: str
+
+
+class ProxyPolicyInternetservice6nameItemObject(FortiObject[ProxyPolicyInternetservice6nameItem]):
+    """Typed object for internet-service6-name table items with attribute access."""
+    name: str
+
+
+class ProxyPolicyInternetservice6groupItemObject(FortiObject[ProxyPolicyInternetservice6groupItem]):
+    """Typed object for internet-service6-group table items with attribute access."""
+    name: str
+
+
+class ProxyPolicyInternetservice6customItemObject(FortiObject[ProxyPolicyInternetservice6customItem]):
+    """Typed object for internet-service6-custom table items with attribute access."""
+    name: str
+
+
+class ProxyPolicyInternetservice6customgroupItemObject(FortiObject[ProxyPolicyInternetservice6customgroupItem]):
+    """Typed object for internet-service6-custom-group table items with attribute access."""
+    name: str
+
+
+class ProxyPolicyInternetservice6fortiguardItemObject(FortiObject[ProxyPolicyInternetservice6fortiguardItem]):
+    """Typed object for internet-service6-fortiguard table items with attribute access."""
+    name: str
+
+
+class ProxyPolicyServiceItemObject(FortiObject[ProxyPolicyServiceItem]):
+    """Typed object for service table items with attribute access."""
+    name: str
+
+
+class ProxyPolicySrcaddr6ItemObject(FortiObject[ProxyPolicySrcaddr6Item]):
+    """Typed object for srcaddr6 table items with attribute access."""
+    name: str
+
+
+class ProxyPolicyDstaddr6ItemObject(FortiObject[ProxyPolicyDstaddr6Item]):
+    """Typed object for dstaddr6 table items with attribute access."""
+    name: str
+
+
+class ProxyPolicyGroupsItemObject(FortiObject[ProxyPolicyGroupsItem]):
+    """Typed object for groups table items with attribute access."""
+    name: str
+
+
+class ProxyPolicyUsersItemObject(FortiObject[ProxyPolicyUsersItem]):
+    """Typed object for users table items with attribute access."""
+    name: str
+
+
 class ProxyPolicyObject(FortiObject):
     """Typed FortiObject for ProxyPolicy with field access."""
     uuid: str
     policyid: int
     name: str
     proxy: Literal["explicit-web", "transparent-web", "ftp", "ssh", "ssh-tunnel", "access-proxy", "ztna-proxy", "wanopt"]
-    access_proxy: list[ProxyPolicyAccessproxyItem]
-    access_proxy6: list[ProxyPolicyAccessproxy6Item]
-    ztna_proxy: list[ProxyPolicyZtnaproxyItem]
-    srcintf: list[ProxyPolicySrcintfItem]
-    dstintf: list[ProxyPolicyDstintfItem]
-    srcaddr: list[ProxyPolicySrcaddrItem]
-    poolname: list[ProxyPolicyPoolnameItem]
-    poolname6: list[ProxyPolicyPoolname6Item]
-    dstaddr: list[ProxyPolicyDstaddrItem]
-    ztna_ems_tag: list[ProxyPolicyZtnaemstagItem]
+    access_proxy: FortiObjectList[ProxyPolicyAccessproxyItemObject]
+    access_proxy6: FortiObjectList[ProxyPolicyAccessproxy6ItemObject]
+    ztna_proxy: FortiObjectList[ProxyPolicyZtnaproxyItemObject]
+    srcintf: FortiObjectList[ProxyPolicySrcintfItemObject]
+    dstintf: FortiObjectList[ProxyPolicyDstintfItemObject]
+    srcaddr: FortiObjectList[ProxyPolicySrcaddrItemObject]
+    poolname: FortiObjectList[ProxyPolicyPoolnameItemObject]
+    poolname6: FortiObjectList[ProxyPolicyPoolname6ItemObject]
+    dstaddr: FortiObjectList[ProxyPolicyDstaddrItemObject]
+    ztna_ems_tag: FortiObjectList[ProxyPolicyZtnaemstagItemObject]
     ztna_tags_match_logic: Literal["or", "and"]
     device_ownership: Literal["enable", "disable"]
-    url_risk: list[ProxyPolicyUrlriskItem]
+    url_risk: FortiObjectList[ProxyPolicyUrlriskItemObject]
     internet_service: Literal["enable", "disable"]
     internet_service_negate: Literal["enable", "disable"]
-    internet_service_name: list[ProxyPolicyInternetservicenameItem]
-    internet_service_group: list[ProxyPolicyInternetservicegroupItem]
-    internet_service_custom: list[ProxyPolicyInternetservicecustomItem]
-    internet_service_custom_group: list[ProxyPolicyInternetservicecustomgroupItem]
-    internet_service_fortiguard: list[ProxyPolicyInternetservicefortiguardItem]
+    internet_service_name: FortiObjectList[ProxyPolicyInternetservicenameItemObject]
+    internet_service_group: FortiObjectList[ProxyPolicyInternetservicegroupItemObject]
+    internet_service_custom: FortiObjectList[ProxyPolicyInternetservicecustomItemObject]
+    internet_service_custom_group: FortiObjectList[ProxyPolicyInternetservicecustomgroupItemObject]
+    internet_service_fortiguard: FortiObjectList[ProxyPolicyInternetservicefortiguardItemObject]
     internet_service6: Literal["enable", "disable"]
     internet_service6_negate: Literal["enable", "disable"]
-    internet_service6_name: list[ProxyPolicyInternetservice6nameItem]
-    internet_service6_group: list[ProxyPolicyInternetservice6groupItem]
-    internet_service6_custom: list[ProxyPolicyInternetservice6customItem]
-    internet_service6_custom_group: list[ProxyPolicyInternetservice6customgroupItem]
-    internet_service6_fortiguard: list[ProxyPolicyInternetservice6fortiguardItem]
-    service: list[ProxyPolicyServiceItem]
+    internet_service6_name: FortiObjectList[ProxyPolicyInternetservice6nameItemObject]
+    internet_service6_group: FortiObjectList[ProxyPolicyInternetservice6groupItemObject]
+    internet_service6_custom: FortiObjectList[ProxyPolicyInternetservice6customItemObject]
+    internet_service6_custom_group: FortiObjectList[ProxyPolicyInternetservice6customgroupItemObject]
+    internet_service6_fortiguard: FortiObjectList[ProxyPolicyInternetservice6fortiguardItemObject]
+    service: FortiObjectList[ProxyPolicyServiceItemObject]
     srcaddr_negate: Literal["enable", "disable"]
     dstaddr_negate: Literal["enable", "disable"]
     ztna_ems_tag_negate: Literal["enable", "disable"]
@@ -382,10 +512,10 @@ class ProxyPolicyObject(FortiObject):
     schedule: str
     logtraffic: Literal["all", "utm", "disable"]
     session_ttl: int
-    srcaddr6: list[ProxyPolicySrcaddr6Item]
-    dstaddr6: list[ProxyPolicyDstaddr6Item]
-    groups: list[ProxyPolicyGroupsItem]
-    users: list[ProxyPolicyUsersItem]
+    srcaddr6: FortiObjectList[ProxyPolicySrcaddr6ItemObject]
+    dstaddr6: FortiObjectList[ProxyPolicyDstaddr6ItemObject]
+    groups: FortiObjectList[ProxyPolicyGroupsItemObject]
+    users: FortiObjectList[ProxyPolicyUsersItemObject]
     http_tunnel_auth: Literal["enable", "disable"]
     ssh_policy_redirect: Literal["enable", "disable"]
     webproxy_forward_server: str

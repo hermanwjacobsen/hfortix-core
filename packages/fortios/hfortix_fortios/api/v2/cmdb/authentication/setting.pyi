@@ -94,6 +94,16 @@ class SettingResponse(TypedDict, total=False):
 # ================================================================
 
 
+class SettingUsercertcaItemObject(FortiObject[SettingUsercertcaItem]):
+    """Typed object for user-cert-ca table items with attribute access."""
+    name: str
+
+
+class SettingDevrangeItemObject(FortiObject[SettingDevrangeItem]):
+    """Typed object for dev-range table items with attribute access."""
+    name: str
+
+
 class SettingObject(FortiObject):
     """Typed FortiObject for Setting with field access."""
     active_auth_scheme: str
@@ -115,8 +125,8 @@ class SettingObject(FortiObject):
     captive_portal_port: int
     auth_https: Literal["enable", "disable"]
     captive_portal_ssl_port: int
-    user_cert_ca: list[SettingUsercertcaItem]
-    dev_range: list[SettingDevrangeItem]
+    user_cert_ca: FortiObjectList[SettingUsercertcaItemObject]
+    dev_range: FortiObjectList[SettingDevrangeItemObject]
 
 
 # ================================================================

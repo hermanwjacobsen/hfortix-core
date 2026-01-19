@@ -56,10 +56,19 @@ class KeyChainResponse(TypedDict, total=False):
 # ================================================================
 
 
+class KeyChainKeyItemObject(FortiObject[KeyChainKeyItem]):
+    """Typed object for key table items with attribute access."""
+    id: str
+    accept_lifetime: str
+    send_lifetime: str
+    key_string: str
+    algorithm: Literal["md5", "hmac-sha1", "hmac-sha256", "hmac-sha384", "hmac-sha512", "cmac-aes128"]
+
+
 class KeyChainObject(FortiObject):
     """Typed FortiObject for KeyChain with field access."""
     name: str
-    key: list[KeyChainKeyItem]
+    key: FortiObjectList[KeyChainKeyItemObject]
 
 
 # ================================================================

@@ -150,8 +150,8 @@ class WtpProfileRadio1Dict(TypedDict, total=False):
     max_clients: int
     max_distance: int
     vap_all: Literal["tunnel", "bridge", "manual"]
-    vaps: str | list[str]
-    channel: str | list[str]
+    vaps: str | list[str] | list[WtpProfileRadio1VapsItem]
+    channel: str | list[str] | list[WtpProfileRadio1ChannelItem]
     call_admission_control: Literal["enable", "disable"]
     call_capacity: int
     bandwidth_admission_control: Literal["enable", "disable"]
@@ -234,8 +234,8 @@ class WtpProfileRadio2Dict(TypedDict, total=False):
     max_clients: int
     max_distance: int
     vap_all: Literal["tunnel", "bridge", "manual"]
-    vaps: str | list[str]
-    channel: str | list[str]
+    vaps: str | list[str] | list[WtpProfileRadio2VapsItem]
+    channel: str | list[str] | list[WtpProfileRadio2ChannelItem]
     call_admission_control: Literal["enable", "disable"]
     call_capacity: int
     bandwidth_admission_control: Literal["enable", "disable"]
@@ -318,8 +318,8 @@ class WtpProfileRadio3Dict(TypedDict, total=False):
     max_clients: int
     max_distance: int
     vap_all: Literal["tunnel", "bridge", "manual"]
-    vaps: str | list[str]
-    channel: str | list[str]
+    vaps: str | list[str] | list[WtpProfileRadio3VapsItem]
+    channel: str | list[str] | list[WtpProfileRadio3ChannelItem]
     call_admission_control: Literal["enable", "disable"]
     call_capacity: int
     bandwidth_admission_control: Literal["enable", "disable"]
@@ -402,8 +402,8 @@ class WtpProfileRadio4Dict(TypedDict, total=False):
     max_clients: int
     max_distance: int
     vap_all: Literal["tunnel", "bridge", "manual"]
-    vaps: str | list[str]
-    channel: str | list[str]
+    vaps: str | list[str] | list[WtpProfileRadio4VapsItem]
+    channel: str | list[str] | list[WtpProfileRadio4ChannelItem]
     call_admission_control: Literal["enable", "disable"]
     call_capacity: int
     bandwidth_admission_control: Literal["enable", "disable"]
@@ -637,6 +637,23 @@ class WtpProfileResponse(TypedDict, total=False):
 # ================================================================
 # Response Types (Class for attribute access)
 # ================================================================
+
+
+class WtpProfileLedschedulesItemObject(FortiObject[WtpProfileLedschedulesItem]):
+    """Typed object for led-schedules table items with attribute access."""
+    name: str
+
+
+class WtpProfileDenymaclistItemObject(FortiObject[WtpProfileDenymaclistItem]):
+    """Typed object for deny-mac-list table items with attribute access."""
+    id: int
+    mac: str
+
+
+class WtpProfileSplittunnelingaclItemObject(FortiObject[WtpProfileSplittunnelingaclItem]):
+    """Typed object for split-tunneling-acl table items with attribute access."""
+    id: int
+    dest_ip: str
 
 
 class WtpProfilePlatformObject(FortiObject):
@@ -1081,21 +1098,21 @@ class WtpProfileObject(FortiObject):
     lan: WtpProfileLanObject
     energy_efficient_ethernet: Literal["enable", "disable"]
     led_state: Literal["enable", "disable"]
-    led_schedules: list[WtpProfileLedschedulesItem]
+    led_schedules: FortiObjectList[WtpProfileLedschedulesItemObject]
     dtls_policy: str
     dtls_in_kernel: Literal["enable", "disable"]
     max_clients: int
     handoff_rssi: int
     handoff_sta_thresh: int
     handoff_roaming: Literal["enable", "disable"]
-    deny_mac_list: list[WtpProfileDenymaclistItem]
+    deny_mac_list: FortiObjectList[WtpProfileDenymaclistItemObject]
     ap_country: Literal["--", "AF", "AL", "DZ", "AS", "AO", "AR", "AM", "AU", "AT", "AZ", "BS", "BH", "BD", "BB", "BY", "BE", "BZ", "BJ", "BM", "BT", "BO", "BA", "BW", "BR", "BN", "BG", "BF", "KH", "CM", "KY", "CF", "TD", "CL", "CN", "CX", "CO", "CG", "CD", "CR", "HR", "CY", "CZ", "DK", "DJ", "DM", "DO", "EC", "EG", "SV", "ET", "EE", "GF", "PF", "FO", "FJ", "FI", "FR", "GA", "GE", "GM", "DE", "GH", "GI", "GR", "GL", "GD", "GP", "GU", "GT", "GY", "HT", "HN", "HK", "HU", "IS", "IN", "ID", "IQ", "IE", "IM", "IL", "IT", "CI", "JM", "JO", "KZ", "KE", "KR", "KW", "LA", "LV", "LB", "LS", "LR", "LY", "LI", "LT", "LU", "MO", "MK", "MG", "MW", "MY", "MV", "ML", "MT", "MH", "MQ", "MR", "MU", "YT", "MX", "FM", "MD", "MC", "MN", "MA", "MZ", "MM", "NA", "NP", "NL", "AN", "AW", "NZ", "NI", "NE", "NG", "NO", "MP", "OM", "PK", "PW", "PA", "PG", "PY", "PE", "PH", "PL", "PT", "PR", "QA", "RE", "RO", "RU", "RW", "BL", "KN", "LC", "MF", "PM", "VC", "SA", "SN", "RS", "ME", "SL", "SG", "SK", "SI", "SO", "ZA", "ES", "LK", "SR", "SZ", "SE", "CH", "TW", "TZ", "TH", "TL", "TG", "TT", "TN", "TR", "TM", "AE", "TC", "UG", "UA", "GB", "US", "PS", "UY", "UZ", "VU", "VE", "VN", "VI", "WF", "YE", "ZM", "ZW", "JP", "CA"]
     ip_fragment_preventing: str
     tun_mtu_uplink: int
     tun_mtu_downlink: int
     split_tunneling_acl_path: Literal["tunnel", "local"]
     split_tunneling_acl_local_ap_subnet: Literal["enable", "disable"]
-    split_tunneling_acl: list[WtpProfileSplittunnelingaclItem]
+    split_tunneling_acl: FortiObjectList[WtpProfileSplittunnelingaclItemObject]
     allowaccess: str
     login_passwd_change: Literal["yes", "default", "no"]
     login_passwd: str

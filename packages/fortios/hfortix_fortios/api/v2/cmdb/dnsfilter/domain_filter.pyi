@@ -61,12 +61,22 @@ class DomainFilterResponse(TypedDict, total=False):
 # ================================================================
 
 
+class DomainFilterEntriesItemObject(FortiObject[DomainFilterEntriesItem]):
+    """Typed object for entries table items with attribute access."""
+    id: int
+    domain: str
+    type: Literal["simple", "regex", "wildcard"]
+    action: Literal["block", "allow", "monitor"]
+    status: Literal["enable", "disable"]
+    comment: str
+
+
 class DomainFilterObject(FortiObject):
     """Typed FortiObject for DomainFilter with field access."""
     id: int
     name: str
     comment: str
-    entries: list[DomainFilterEntriesItem]
+    entries: FortiObjectList[DomainFilterEntriesItemObject]
 
 
 # ================================================================
