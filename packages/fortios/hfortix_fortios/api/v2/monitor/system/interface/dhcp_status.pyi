@@ -28,7 +28,7 @@ from hfortix_fortios.models import (
 class DhcpStatusPayload(TypedDict, total=False):
     """Payload type for DhcpStatus operations."""
     mkey: str
-    ipv6: str
+    ipv6: bool
 
 
 # ================================================================
@@ -38,7 +38,7 @@ class DhcpStatusPayload(TypedDict, total=False):
 class DhcpStatusResponse(TypedDict, total=False):
     """Response type for DhcpStatus - use with .dict property for typed dict access."""
     mkey: str
-    ipv6: str
+    ipv6: bool
 
 
 # ================================================================
@@ -48,7 +48,7 @@ class DhcpStatusResponse(TypedDict, total=False):
 
 class DhcpStatusObject(FortiObject):
     """Typed FortiObject for DhcpStatus with field access."""
-    ipv6: str
+    ipv6: bool
 
 
 # ================================================================
@@ -101,7 +101,7 @@ class DhcpStatus:
         self,
         payload_dict: DhcpStatusPayload | None = ...,
         mkey: str | None = ...,
-        ipv6: str | None = ...,
+        ipv6: bool | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,

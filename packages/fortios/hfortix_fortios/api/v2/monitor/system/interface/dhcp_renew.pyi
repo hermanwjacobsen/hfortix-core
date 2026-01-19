@@ -28,7 +28,7 @@ from hfortix_fortios.models import (
 class DhcpRenewPayload(TypedDict, total=False):
     """Payload type for DhcpRenew operations."""
     mkey: str
-    ipv6: str
+    ipv6: bool
 
 
 # ================================================================
@@ -38,7 +38,7 @@ class DhcpRenewPayload(TypedDict, total=False):
 class DhcpRenewResponse(TypedDict, total=False):
     """Response type for DhcpRenew - use with .dict property for typed dict access."""
     mkey: str
-    ipv6: str
+    ipv6: bool
 
 
 # ================================================================
@@ -48,7 +48,7 @@ class DhcpRenewResponse(TypedDict, total=False):
 
 class DhcpRenewObject(FortiObject):
     """Typed FortiObject for DhcpRenew with field access."""
-    ipv6: str
+    ipv6: bool
 
 
 # ================================================================
@@ -98,7 +98,7 @@ class DhcpRenew:
         self,
         payload_dict: DhcpRenewPayload | None = ...,
         mkey: str | None = ...,
-        ipv6: str | None = ...,
+        ipv6: bool | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -112,7 +112,7 @@ class DhcpRenew:
         self,
         payload_dict: DhcpRenewPayload | None = ...,
         mkey: str | None = ...,
-        ipv6: str | None = ...,
+        ipv6: bool | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,

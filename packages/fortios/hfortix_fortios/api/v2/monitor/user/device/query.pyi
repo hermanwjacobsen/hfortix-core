@@ -33,10 +33,10 @@ class QueryPayload(TypedDict, total=False):
     query_type: str
     view_type: str
     query_id: int
-    cache_query: str
-    key_only: str
+    cache_query: bool
+    key_only: bool
     filter_logic: str
-    total_only: str
+    total_only: bool
 
 
 # ================================================================
@@ -51,10 +51,10 @@ class QueryResponse(TypedDict, total=False):
     query_type: str
     view_type: str
     query_id: int
-    cache_query: str
-    key_only: str
+    cache_query: bool
+    key_only: bool
     filter_logic: str
-    total_only: str
+    total_only: bool
 
 
 # ================================================================
@@ -70,10 +70,10 @@ class QueryObject(FortiObject):
     query_type: str
     view_type: str
     query_id: int
-    cache_query: str
-    key_only: str
+    cache_query: bool
+    key_only: bool
     filter_logic: str
-    total_only: str
+    total_only: bool
 
 
 # ================================================================
@@ -139,10 +139,10 @@ class Query:
         query_type: str | None = ...,
         view_type: str | None = ...,
         query_id: int | None = ...,
-        cache_query: str | None = ...,
-        key_only: str | None = ...,
+        cache_query: bool | None = ...,
+        key_only: bool | None = ...,
         filter_logic: str | None = ...,
-        total_only: str | None = ...,
+        total_only: bool | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,

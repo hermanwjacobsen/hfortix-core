@@ -29,7 +29,7 @@ class SessionsPayload(TypedDict, total=False):
     """Payload type for Sessions operations."""
     ip_version: str
     count: int
-    summary: str
+    summary: bool
     srcaddr: str
     dstaddr: str
     srcaddr6: str
@@ -59,7 +59,7 @@ class SessionsResponse(TypedDict, total=False):
     """Response type for Sessions - use with .dict property for typed dict access."""
     ip_version: str
     count: int
-    summary: str
+    summary: bool
     srcaddr: str
     dstaddr: str
     srcaddr6: str
@@ -90,7 +90,7 @@ class SessionsObject(FortiObject):
     """Typed FortiObject for Sessions with field access."""
     ip_version: str
     count: int
-    summary: str
+    summary: bool
     srcaddr: str
     dstaddr: str
     srcaddr6: str
@@ -182,7 +182,7 @@ class Sessions:
         payload_dict: SessionsPayload | None = ...,
         ip_version: str | None = ...,
         count: int | None = ...,
-        summary: str | None = ...,
+        summary: bool | None = ...,
         srcaddr: str | None = ...,
         dstaddr: str | None = ...,
         srcaddr6: str | None = ...,

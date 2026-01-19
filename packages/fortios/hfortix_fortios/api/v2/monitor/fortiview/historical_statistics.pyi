@@ -32,7 +32,7 @@ class HistoricalStatisticsPayload(TypedDict, total=False):
     device: str
     report_by: str
     sort_by: str
-    chart_only: str
+    chart_only: bool
     end: int
     ip_version: str
 
@@ -48,7 +48,7 @@ class HistoricalStatisticsResponse(TypedDict, total=False):
     device: str
     report_by: str
     sort_by: str
-    chart_only: str
+    chart_only: bool
     end: int
     ip_version: str
 
@@ -65,7 +65,7 @@ class HistoricalStatisticsObject(FortiObject):
     device: str
     report_by: str
     sort_by: str
-    chart_only: str
+    chart_only: bool
     end: int
     ip_version: str
 
@@ -129,7 +129,7 @@ class HistoricalStatistics:
         device: str | None = ...,
         report_by: str | None = ...,
         sort_by: str | None = ...,
-        chart_only: str | None = ...,
+        chart_only: bool | None = ...,
         end: int | None = ...,
         ip_version: str | None = ...,
         vdom: str | bool | None = ...,

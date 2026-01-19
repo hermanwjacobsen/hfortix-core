@@ -28,7 +28,7 @@ from hfortix_fortios.models import (
 class DeviceStatusPayload(TypedDict, total=False):
     """Payload type for DeviceStatus operations."""
     serials: str
-    update_cache: str
+    update_cache: bool
 
 
 # ================================================================
@@ -38,7 +38,7 @@ class DeviceStatusPayload(TypedDict, total=False):
 class DeviceStatusResponse(TypedDict, total=False):
     """Response type for DeviceStatus - use with .dict property for typed dict access."""
     serials: str
-    update_cache: str
+    update_cache: bool
 
 
 # ================================================================
@@ -49,7 +49,7 @@ class DeviceStatusResponse(TypedDict, total=False):
 class DeviceStatusObject(FortiObject):
     """Typed FortiObject for DeviceStatus with field access."""
     serials: str
-    update_cache: str
+    update_cache: bool
 
 
 # ================================================================
@@ -102,7 +102,7 @@ class DeviceStatus:
         self,
         payload_dict: DeviceStatusPayload | None = ...,
         serials: str | None = ...,
-        update_cache: str | None = ...,
+        update_cache: bool | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,

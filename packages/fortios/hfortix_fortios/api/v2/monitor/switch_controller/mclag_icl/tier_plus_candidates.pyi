@@ -30,7 +30,7 @@ class TierPlusCandidatesPayload(TypedDict, total=False):
     fortilink: str
     parent_peer1: str
     parent_peer2: str
-    is_tier2: str
+    is_tier2: bool
 
 
 # ================================================================
@@ -42,7 +42,7 @@ class TierPlusCandidatesResponse(TypedDict, total=False):
     fortilink: str
     parent_peer1: str
     parent_peer2: str
-    is_tier2: str
+    is_tier2: bool
 
 
 # ================================================================
@@ -55,7 +55,7 @@ class TierPlusCandidatesObject(FortiObject):
     fortilink: str
     parent_peer1: str
     parent_peer2: str
-    is_tier2: str
+    is_tier2: bool
 
 
 # ================================================================
@@ -112,7 +112,7 @@ class TierPlusCandidates:
         fortilink: str | None = ...,
         parent_peer1: str | None = ...,
         parent_peer2: str | None = ...,
-        is_tier2: str | None = ...,
+        is_tier2: bool | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,

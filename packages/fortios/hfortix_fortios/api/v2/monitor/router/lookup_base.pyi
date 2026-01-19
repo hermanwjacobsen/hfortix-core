@@ -27,7 +27,7 @@ from hfortix_fortios.models import (
 
 class LookupPayload(TypedDict, total=False):
     """Payload type for Lookup operations."""
-    ipv6: str
+    ipv6: bool
     destination: str
 
 
@@ -37,7 +37,7 @@ class LookupPayload(TypedDict, total=False):
 
 class LookupResponse(TypedDict, total=False):
     """Response type for Lookup - use with .dict property for typed dict access."""
-    ipv6: str
+    ipv6: bool
     destination: str
 
 
@@ -48,7 +48,7 @@ class LookupResponse(TypedDict, total=False):
 
 class LookupObject(FortiObject):
     """Typed FortiObject for Lookup with field access."""
-    ipv6: str
+    ipv6: bool
     destination: str
 
 
@@ -101,7 +101,7 @@ class Lookup:
     def put(
         self,
         payload_dict: LookupPayload | None = ...,
-        ipv6: str | None = ...,
+        ipv6: bool | None = ...,
         destination: str | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,

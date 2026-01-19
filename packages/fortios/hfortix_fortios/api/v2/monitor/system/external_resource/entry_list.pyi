@@ -28,9 +28,9 @@ from hfortix_fortios.models import (
 class EntryListPayload(TypedDict, total=False):
     """Payload type for EntryList operations."""
     mkey: str
-    status_only: str
-    include_notes: str
-    counts_only: str
+    status_only: bool
+    include_notes: bool
+    counts_only: bool
     entry: str
 
 
@@ -41,9 +41,9 @@ class EntryListPayload(TypedDict, total=False):
 class EntryListResponse(TypedDict, total=False):
     """Response type for EntryList - use with .dict property for typed dict access."""
     mkey: str
-    status_only: str
-    include_notes: str
-    counts_only: str
+    status_only: bool
+    include_notes: bool
+    counts_only: bool
     entry: str
 
 
@@ -54,9 +54,9 @@ class EntryListResponse(TypedDict, total=False):
 
 class EntryListObject(FortiObject):
     """Typed FortiObject for EntryList with field access."""
-    status_only: str
-    include_notes: str
-    counts_only: str
+    status_only: bool
+    include_notes: bool
+    counts_only: bool
     entry: str
 
 
@@ -113,9 +113,9 @@ class EntryList:
         self,
         payload_dict: EntryListPayload | None = ...,
         mkey: str | None = ...,
-        status_only: str | None = ...,
-        include_notes: str | None = ...,
-        counts_only: str | None = ...,
+        status_only: bool | None = ...,
+        include_notes: bool | None = ...,
+        counts_only: bool | None = ...,
         entry: str | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,

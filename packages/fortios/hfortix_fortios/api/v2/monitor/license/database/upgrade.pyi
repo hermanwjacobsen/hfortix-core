@@ -28,8 +28,8 @@ from hfortix_fortios.models import (
 class UpgradePayload(TypedDict, total=False):
     """Payload type for Upgrade operations."""
     db_name: str
-    confirm_not_signed: str
-    confirm_not_ga_certified: str
+    confirm_not_signed: bool
+    confirm_not_ga_certified: bool
     file_id: str
     file_content: str
 
@@ -41,8 +41,8 @@ class UpgradePayload(TypedDict, total=False):
 class UpgradeResponse(TypedDict, total=False):
     """Response type for Upgrade - use with .dict property for typed dict access."""
     db_name: str
-    confirm_not_signed: str
-    confirm_not_ga_certified: str
+    confirm_not_signed: bool
+    confirm_not_ga_certified: bool
     file_id: str
     file_content: str
 
@@ -55,8 +55,8 @@ class UpgradeResponse(TypedDict, total=False):
 class UpgradeObject(FortiObject):
     """Typed FortiObject for Upgrade with field access."""
     db_name: str
-    confirm_not_signed: str
-    confirm_not_ga_certified: str
+    confirm_not_signed: bool
+    confirm_not_ga_certified: bool
     file_id: str
     file_content: str
 
@@ -108,8 +108,8 @@ class Upgrade:
         self,
         payload_dict: UpgradePayload | None = ...,
         db_name: str | None = ...,
-        confirm_not_signed: str | None = ...,
-        confirm_not_ga_certified: str | None = ...,
+        confirm_not_signed: bool | None = ...,
+        confirm_not_ga_certified: bool | None = ...,
         file_id: str | None = ...,
         file_content: str | None = ...,
         vdom: str | bool | None = ...,
@@ -125,8 +125,8 @@ class Upgrade:
         self,
         payload_dict: UpgradePayload | None = ...,
         db_name: str | None = ...,
-        confirm_not_signed: str | None = ...,
-        confirm_not_ga_certified: str | None = ...,
+        confirm_not_signed: bool | None = ...,
+        confirm_not_ga_certified: bool | None = ...,
         file_id: str | None = ...,
         file_content: str | None = ...,
         vdom: str | bool | None = ...,

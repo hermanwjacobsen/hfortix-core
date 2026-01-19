@@ -30,7 +30,7 @@ class BouncePortPayload(TypedDict, total=False):
     mkey: str
     port: str
     duration: int
-    stop: str
+    stop: bool
 
 
 # ================================================================
@@ -42,7 +42,7 @@ class BouncePortResponse(TypedDict, total=False):
     mkey: str
     port: str
     duration: int
-    stop: str
+    stop: bool
 
 
 # ================================================================
@@ -54,7 +54,7 @@ class BouncePortObject(FortiObject):
     """Typed FortiObject for BouncePort with field access."""
     port: str
     duration: int
-    stop: str
+    stop: bool
 
 
 # ================================================================
@@ -106,7 +106,7 @@ class BouncePort:
         mkey: str | None = ...,
         port: str | None = ...,
         duration: int | None = ...,
-        stop: str | None = ...,
+        stop: bool | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -122,7 +122,7 @@ class BouncePort:
         mkey: str | None = ...,
         port: str | None = ...,
         duration: int | None = ...,
-        stop: str | None = ...,
+        stop: bool | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,

@@ -31,7 +31,7 @@ class GlobalSearchPayload(TypedDict, total=False):
     scope: str
     search_tables: str
     skip_tables: str
-    exact: str
+    exact: bool
 
 
 # ================================================================
@@ -44,7 +44,7 @@ class GlobalSearchResponse(TypedDict, total=False):
     scope: str
     search_tables: str
     skip_tables: str
-    exact: str
+    exact: bool
 
 
 # ================================================================
@@ -58,7 +58,7 @@ class GlobalSearchObject(FortiObject):
     scope: str
     search_tables: str
     skip_tables: str
-    exact: str
+    exact: bool
 
 
 # ================================================================
@@ -117,7 +117,7 @@ class GlobalSearch:
         scope: str | None = ...,
         search_tables: str | None = ...,
         skip_tables: str | None = ...,
-        exact: str | None = ...,
+        exact: bool | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,

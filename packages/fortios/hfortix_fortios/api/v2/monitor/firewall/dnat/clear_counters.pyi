@@ -28,7 +28,7 @@ from hfortix_fortios.models import (
 class ClearCountersPayload(TypedDict, total=False):
     """Payload type for ClearCounters operations."""
     id: int
-    is_ipv6: str
+    is_ipv6: bool
 
 
 # ================================================================
@@ -38,7 +38,7 @@ class ClearCountersPayload(TypedDict, total=False):
 class ClearCountersResponse(TypedDict, total=False):
     """Response type for ClearCounters - use with .dict property for typed dict access."""
     id: int
-    is_ipv6: str
+    is_ipv6: bool
 
 
 # ================================================================
@@ -49,7 +49,7 @@ class ClearCountersResponse(TypedDict, total=False):
 class ClearCountersObject(FortiObject):
     """Typed FortiObject for ClearCounters with field access."""
     id: int
-    is_ipv6: str
+    is_ipv6: bool
 
 
 # ================================================================
@@ -99,7 +99,7 @@ class ClearCounters:
         self,
         payload_dict: ClearCountersPayload | None = ...,
         id: int | None = ...,
-        is_ipv6: str | None = ...,
+        is_ipv6: bool | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -113,7 +113,7 @@ class ClearCounters:
         self,
         payload_dict: ClearCountersPayload | None = ...,
         id: int | None = ...,
-        is_ipv6: str | None = ...,
+        is_ipv6: bool | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,

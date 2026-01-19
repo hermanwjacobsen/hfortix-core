@@ -33,8 +33,8 @@ class RegisterDevicePayload(TypedDict, total=False):
     reseller: str
     reseller_id: int
     country: str
-    is_government: str
-    agreement_accepted: str
+    is_government: bool
+    agreement_accepted: bool
 
 
 # ================================================================
@@ -49,8 +49,8 @@ class RegisterDeviceResponse(TypedDict, total=False):
     reseller: str
     reseller_id: int
     country: str
-    is_government: str
-    agreement_accepted: str
+    is_government: bool
+    agreement_accepted: bool
 
 
 # ================================================================
@@ -65,8 +65,8 @@ class RegisterDeviceObject(FortiObject):
     reseller: str
     reseller_id: int
     country: str
-    is_government: str
-    agreement_accepted: str
+    is_government: bool
+    agreement_accepted: bool
 
 
 # ================================================================
@@ -121,8 +121,8 @@ class RegisterDevice:
         reseller: str | None = ...,
         reseller_id: int | None = ...,
         country: str | None = ...,
-        is_government: str | None = ...,
-        agreement_accepted: str | None = ...,
+        is_government: bool | None = ...,
+        agreement_accepted: bool | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -141,8 +141,8 @@ class RegisterDevice:
         reseller: str | None = ...,
         reseller_id: int | None = ...,
         country: str | None = ...,
-        is_government: str | None = ...,
-        agreement_accepted: str | None = ...,
+        is_government: bool | None = ...,
+        agreement_accepted: bool | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,

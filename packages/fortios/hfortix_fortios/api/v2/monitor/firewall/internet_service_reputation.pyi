@@ -28,7 +28,7 @@ from hfortix_fortios.models import (
 class InternetServiceReputationPayload(TypedDict, total=False):
     """Payload type for InternetServiceReputation operations."""
     ip: str
-    is_ipv6: str
+    is_ipv6: bool
 
 
 # ================================================================
@@ -38,7 +38,7 @@ class InternetServiceReputationPayload(TypedDict, total=False):
 class InternetServiceReputationResponse(TypedDict, total=False):
     """Response type for InternetServiceReputation - use with .dict property for typed dict access."""
     ip: str
-    is_ipv6: str
+    is_ipv6: bool
 
 
 # ================================================================
@@ -49,7 +49,7 @@ class InternetServiceReputationResponse(TypedDict, total=False):
 class InternetServiceReputationObject(FortiObject):
     """Typed FortiObject for InternetServiceReputation with field access."""
     ip: str
-    is_ipv6: str
+    is_ipv6: bool
 
 
 # ================================================================
@@ -102,7 +102,7 @@ class InternetServiceReputation:
         self,
         payload_dict: InternetServiceReputationPayload | None = ...,
         ip: str | None = ...,
-        is_ipv6: str | None = ...,
+        is_ipv6: bool | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,

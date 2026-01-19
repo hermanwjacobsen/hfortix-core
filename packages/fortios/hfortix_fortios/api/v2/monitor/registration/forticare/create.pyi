@@ -45,7 +45,7 @@ class CreatePayload(TypedDict, total=False):
     orgsize_id: int
     reseller_name: str
     reseller_id: int
-    is_government: str
+    is_government: bool
 
 
 # ================================================================
@@ -72,7 +72,7 @@ class CreateResponse(TypedDict, total=False):
     orgsize_id: int
     reseller_name: str
     reseller_id: int
-    is_government: str
+    is_government: bool
 
 
 # ================================================================
@@ -100,7 +100,7 @@ class CreateObject(FortiObject):
     orgsize_id: int
     reseller_name: str
     reseller_id: int
-    is_government: str
+    is_government: bool
 
 
 # ================================================================
@@ -167,7 +167,7 @@ class Create:
         orgsize_id: int | None = ...,
         reseller_name: str | None = ...,
         reseller_id: int | None = ...,
-        is_government: str | None = ...,
+        is_government: bool | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -198,7 +198,7 @@ class Create:
         orgsize_id: int | None = ...,
         reseller_name: str | None = ...,
         reseller_id: int | None = ...,
-        is_government: str | None = ...,
+        is_government: bool | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,

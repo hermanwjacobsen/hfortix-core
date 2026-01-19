@@ -27,7 +27,7 @@ from hfortix_fortios.models import (
 
 class UnassociatedDevicesPayload(TypedDict, total=False):
     """Payload type for UnassociatedDevices operations."""
-    with_triangulation: str
+    with_triangulation: bool
 
 
 # ================================================================
@@ -36,7 +36,7 @@ class UnassociatedDevicesPayload(TypedDict, total=False):
 
 class UnassociatedDevicesResponse(TypedDict, total=False):
     """Response type for UnassociatedDevices - use with .dict property for typed dict access."""
-    with_triangulation: str
+    with_triangulation: bool
 
 
 # ================================================================
@@ -46,7 +46,7 @@ class UnassociatedDevicesResponse(TypedDict, total=False):
 
 class UnassociatedDevicesObject(FortiObject):
     """Typed FortiObject for UnassociatedDevices with field access."""
-    with_triangulation: str
+    with_triangulation: bool
 
 
 # ================================================================
@@ -97,7 +97,7 @@ class UnassociatedDevices:
     def put(
         self,
         payload_dict: UnassociatedDevicesPayload | None = ...,
-        with_triangulation: str | None = ...,
+        with_triangulation: bool | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,

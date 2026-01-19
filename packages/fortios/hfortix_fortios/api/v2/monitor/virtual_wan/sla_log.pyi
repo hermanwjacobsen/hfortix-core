@@ -31,11 +31,11 @@ class SlaLogPayload(TypedDict, total=False):
     interface: str
     since: int
     seconds: int
-    latest: str
+    latest: bool
     min_sample_interval: int
     sampling_interval: int
-    skip_vpn_child: str
-    include_sla_targets_met: str
+    skip_vpn_child: bool
+    include_sla_targets_met: bool
 
 
 # ================================================================
@@ -48,11 +48,11 @@ class SlaLogResponse(TypedDict, total=False):
     interface: str
     since: int
     seconds: int
-    latest: str
+    latest: bool
     min_sample_interval: int
     sampling_interval: int
-    skip_vpn_child: str
-    include_sla_targets_met: str
+    skip_vpn_child: bool
+    include_sla_targets_met: bool
 
 
 # ================================================================
@@ -66,11 +66,11 @@ class SlaLogObject(FortiObject):
     interface: str
     since: int
     seconds: int
-    latest: str
+    latest: bool
     min_sample_interval: int
     sampling_interval: int
-    skip_vpn_child: str
-    include_sla_targets_met: str
+    skip_vpn_child: bool
+    include_sla_targets_met: bool
 
 
 # ================================================================
@@ -133,11 +133,11 @@ class SlaLog:
         interface: str | None = ...,
         since: int | None = ...,
         seconds: int | None = ...,
-        latest: str | None = ...,
+        latest: bool | None = ...,
         min_sample_interval: int | None = ...,
         sampling_interval: int | None = ...,
-        skip_vpn_child: str | None = ...,
-        include_sla_targets_met: str | None = ...,
+        skip_vpn_child: bool | None = ...,
+        include_sla_targets_met: bool | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,

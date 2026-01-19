@@ -28,8 +28,8 @@ from hfortix_fortios.models import (
 class InterfacePayload(TypedDict, total=False):
     """Payload type for Interface operations."""
     interface_name: str
-    include_vlan: str
-    include_aggregate: str
+    include_vlan: bool
+    include_aggregate: bool
     scope: str
 
 
@@ -40,8 +40,8 @@ class InterfacePayload(TypedDict, total=False):
 class InterfaceResponse(TypedDict, total=False):
     """Response type for Interface - use with .dict property for typed dict access."""
     interface_name: str
-    include_vlan: str
-    include_aggregate: str
+    include_vlan: bool
+    include_aggregate: bool
     scope: str
 
 
@@ -53,8 +53,8 @@ class InterfaceResponse(TypedDict, total=False):
 class InterfaceObject(FortiObject):
     """Typed FortiObject for Interface with field access."""
     interface_name: str
-    include_vlan: str
-    include_aggregate: str
+    include_vlan: bool
+    include_aggregate: bool
     scope: str
 
 
@@ -110,8 +110,8 @@ class Interface:
         self,
         payload_dict: InterfacePayload | None = ...,
         interface_name: str | None = ...,
-        include_vlan: str | None = ...,
-        include_aggregate: str | None = ...,
+        include_vlan: bool | None = ...,
+        include_aggregate: bool | None = ...,
         scope: str | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,

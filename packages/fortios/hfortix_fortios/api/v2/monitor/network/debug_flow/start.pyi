@@ -28,8 +28,8 @@ from hfortix_fortios.models import (
 class StartPayload(TypedDict, total=False):
     """Payload type for Start operations."""
     num_packets: int
-    ipv6: str
-    negate: str
+    ipv6: bool
+    negate: bool
     addr_from: str
     addr_to: str
     daddr_from: str
@@ -52,8 +52,8 @@ class StartPayload(TypedDict, total=False):
 class StartResponse(TypedDict, total=False):
     """Response type for Start - use with .dict property for typed dict access."""
     num_packets: int
-    ipv6: str
-    negate: str
+    ipv6: bool
+    negate: bool
     addr_from: str
     addr_to: str
     daddr_from: str
@@ -77,8 +77,8 @@ class StartResponse(TypedDict, total=False):
 class StartObject(FortiObject):
     """Typed FortiObject for Start with field access."""
     num_packets: int
-    ipv6: str
-    negate: str
+    ipv6: bool
+    negate: bool
     addr_from: str
     addr_to: str
     daddr_from: str
@@ -141,8 +141,8 @@ class Start:
         self,
         payload_dict: StartPayload | None = ...,
         num_packets: int | None = ...,
-        ipv6: str | None = ...,
-        negate: str | None = ...,
+        ipv6: bool | None = ...,
+        negate: bool | None = ...,
         addr_from: str | None = ...,
         addr_to: str | None = ...,
         daddr_from: str | None = ...,
@@ -169,8 +169,8 @@ class Start:
         self,
         payload_dict: StartPayload | None = ...,
         num_packets: int | None = ...,
-        ipv6: str | None = ...,
-        negate: str | None = ...,
+        ipv6: bool | None = ...,
+        negate: bool | None = ...,
         addr_from: str | None = ...,
         addr_to: str | None = ...,
         daddr_from: str | None = ...,

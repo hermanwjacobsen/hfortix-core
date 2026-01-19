@@ -28,8 +28,8 @@ from hfortix_fortios.models import (
 class ManagedApPayload(TypedDict, total=False):
     """Payload type for ManagedAp operations."""
     wtp_id: str
-    incl_local: str
-    skip_eos: str
+    incl_local: bool
+    skip_eos: bool
 
 
 # ================================================================
@@ -39,8 +39,8 @@ class ManagedApPayload(TypedDict, total=False):
 class ManagedApResponse(TypedDict, total=False):
     """Response type for ManagedAp - use with .dict property for typed dict access."""
     wtp_id: str
-    incl_local: str
-    skip_eos: str
+    incl_local: bool
+    skip_eos: bool
 
 
 # ================================================================
@@ -51,8 +51,8 @@ class ManagedApResponse(TypedDict, total=False):
 class ManagedApObject(FortiObject):
     """Typed FortiObject for ManagedAp with field access."""
     wtp_id: str
-    incl_local: str
-    skip_eos: str
+    incl_local: bool
+    skip_eos: bool
 
 
 # ================================================================
@@ -106,8 +106,8 @@ class ManagedAp:
         self,
         payload_dict: ManagedApPayload | None = ...,
         wtp_id: str | None = ...,
-        incl_local: str | None = ...,
-        skip_eos: str | None = ...,
+        incl_local: bool | None = ...,
+        skip_eos: bool | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,

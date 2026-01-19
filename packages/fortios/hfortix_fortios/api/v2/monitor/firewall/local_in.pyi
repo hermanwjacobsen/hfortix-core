@@ -27,7 +27,7 @@ from hfortix_fortios.models import (
 
 class LocalInPayload(TypedDict, total=False):
     """Payload type for LocalIn operations."""
-    include_ttl: str
+    include_ttl: bool
 
 
 # ================================================================
@@ -36,7 +36,7 @@ class LocalInPayload(TypedDict, total=False):
 
 class LocalInResponse(TypedDict, total=False):
     """Response type for LocalIn - use with .dict property for typed dict access."""
-    include_ttl: str
+    include_ttl: bool
 
 
 # ================================================================
@@ -46,7 +46,7 @@ class LocalInResponse(TypedDict, total=False):
 
 class LocalInObject(FortiObject):
     """Typed FortiObject for LocalIn with field access."""
-    include_ttl: str
+    include_ttl: bool
 
 
 # ================================================================
@@ -97,7 +97,7 @@ class LocalIn:
     def put(
         self,
         payload_dict: LocalInPayload | None = ...,
-        include_ttl: str | None = ...,
+        include_ttl: bool | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,

@@ -29,7 +29,7 @@ class DownloadEvalPayload(TypedDict, total=False):
     """Payload type for DownloadEval operations."""
     account_id: str
     account_password: str
-    is_government: str
+    is_government: bool
 
 
 # ================================================================
@@ -40,7 +40,7 @@ class DownloadEvalResponse(TypedDict, total=False):
     """Response type for DownloadEval - use with .dict property for typed dict access."""
     account_id: str
     account_password: str
-    is_government: str
+    is_government: bool
 
 
 # ================================================================
@@ -52,7 +52,7 @@ class DownloadEvalObject(FortiObject):
     """Typed FortiObject for DownloadEval with field access."""
     account_id: str
     account_password: str
-    is_government: str
+    is_government: bool
 
 
 # ================================================================
@@ -103,7 +103,7 @@ class DownloadEval:
         payload_dict: DownloadEvalPayload | None = ...,
         account_id: str | None = ...,
         account_password: str | None = ...,
-        is_government: str | None = ...,
+        is_government: bool | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -118,7 +118,7 @@ class DownloadEval:
         payload_dict: DownloadEvalPayload | None = ...,
         account_id: str | None = ...,
         account_password: str | None = ...,
-        is_government: str | None = ...,
+        is_government: bool | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,

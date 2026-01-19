@@ -27,7 +27,7 @@ from hfortix_fortios.models import (
 
 class ResolveFqdnPayload(TypedDict, total=False):
     """Payload type for ResolveFqdn operations."""
-    ipv6: str
+    ipv6: bool
     fqdn: str
 
 
@@ -37,7 +37,7 @@ class ResolveFqdnPayload(TypedDict, total=False):
 
 class ResolveFqdnResponse(TypedDict, total=False):
     """Response type for ResolveFqdn - use with .dict property for typed dict access."""
-    ipv6: str
+    ipv6: bool
     fqdn: str
 
 
@@ -48,7 +48,7 @@ class ResolveFqdnResponse(TypedDict, total=False):
 
 class ResolveFqdnObject(FortiObject):
     """Typed FortiObject for ResolveFqdn with field access."""
-    ipv6: str
+    ipv6: bool
     fqdn: str
 
 
@@ -101,7 +101,7 @@ class ResolveFqdn:
     def put(
         self,
         payload_dict: ResolveFqdnPayload | None = ...,
-        ipv6: str | None = ...,
+        ipv6: bool | None = ...,
         fqdn: str | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
