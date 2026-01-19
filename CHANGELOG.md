@@ -9,6 +9,24 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [0.5.115] - 2026-01-19
 
+### Added
+
+- **Tests: Comprehensive Router Protocol Test Suite**: Added 163 tests across 12 test files covering all major router endpoints:
+  - **router/setting** (9 tests): Singleton endpoint - hostname, kernel-route-distance, boundary values (min 0, max 255), multi-field updates
+  - **router/static** (17 tests): IPv4 static routes - distance/weight/priority, blackhole, source prefix, disabled routes, tags, BFD, CRUD operations
+  - **router/static6** (17 tests): IPv6 static routes - link-local gateways (fe80::), distance/weight/priority, blackhole, tags, BFD, CRUD operations
+  - **router/prefix-list** (14 tests): IPv4 prefix filtering - permit/deny rules, GE/LE prefix matching, multiple rules, CRUD operations
+  - **router/prefix-list6** (14 tests): IPv6 prefix filtering - GE/LE matching, CRUD operations
+  - **router/policy** (14 tests): IPv4 policy routing - source/destination matching, ports, TOS, input/output devices, deny rules, CRUD operations
+  - **router/policy6** (15 tests): IPv6 policy routing - addr6 field, ports, TOS, input/output devices, CRUD operations (known limitation: combining src+dst in same rule causes error)
+  - **router/rip** (13 tests): RIPv2 configuration - networks, interfaces with authentication, neighbors, redistribution, timers, distances
+  - **router/ripng** (14 tests): RIPng for IPv6 - link-local networks (fe80::/10), aggregate addresses, neighbors, redistribution, timers (key discovery: network field requires link-local IPv6 addresses)
+  - **router/route-map** (19 tests): Route map rules - match/set conditions (metric, tag, origin, local-preference, weight), metric-type ("external-type1/2"), multiple rules
+  - **router/ospf** (13 tests): OSPF configuration - areas (backbone, stub, NSSA), interfaces, networks, redistribution, graceful restart, timers
+  - **router/ospf6** (13 tests): OSPFv3 for IPv6 - areas, stub/NSSA types, IPv6 interfaces, summary addresses, redistribution
+  - All tests include comprehensive cleanup functions and dynamic configuration discovery
+  - All tests passing in both direct execution and pytest
+
 ### Fixed
 
 - **Generator: Complex fields nested in table items**: Fixed code generator to properly handle complex fields nested within table items (e.g., `router.multicast.interface.igmp`):
