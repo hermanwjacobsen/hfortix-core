@@ -450,6 +450,47 @@ fgt.firewall.schedule_recurring.*
 fgt.firewall.traffic_shaper.*
 ```
 
+## Known Limitations
+
+### Monitor Endpoint Schema Limitations
+
+Many monitor endpoints return `FortiObject[Any]` instead of fully typed responses due to missing response field schemas. This affects IDE autocomplete and type checking for these endpoints.
+
+**Affected Endpoint Categories:**
+- Switch controller monitoring (17 endpoints)
+- System status and diagnostics (15 endpoints)
+- VPN monitoring (12 endpoints)
+- Firewall session monitoring (8 endpoints)
+- Network diagnostics (10+ endpoints)
+- Routing information (10+ endpoints)
+- WiFi monitoring (10+ endpoints)
+
+**Impact:**
+- ✅ **Runtime functionality**: All endpoints work correctly at runtime
+- ✅ **Dynamic access**: Field access works via attribute/dict notation
+- ❌ **IDE autocomplete**: No field name suggestions
+- ❌ **Type checking**: No compile-time validation of field names
+
+**Example:**
+```python
+# Works at runtime but no IDE autocomplete
+result = fgt.api.monitor.switch_controller.managed_switch.dhcp_snooping.get()
+for entry in result:  # ✅ Iteration works (v0.5.118+)
+    print(entry.switch_id)  # ✅ Works but no autocomplete
+    print(entry.snooping_entries)  # ✅ Works but no autocomplete
+```
+
+**Workarounds:**
+- Use dynamic attribute access (works at runtime)
+- Use iteration support (added in v0.5.118)
+- Use `.dict` or `.json` properties for data access
+- Consult FortiOS API documentation for field names
+
+**Resolution:**
+We've documented this issue and created comprehensive schema improvement suggestions for Fortinet. See [SCHEMA_IMPROVEMENT_SUGGESTIONS.md](https://github.com/hermanwjacobsen/hfortix/blob/main/docs/fortios/SCHEMA_IMPROVEMENT_SUGGESTIONS.md) for details.
+
+---
+
 ## Documentation
 
 **Main Guides:**
@@ -547,6 +588,41 @@ fgt.api.cmdb.vpn.ipsec.phase1_interface.create(
 ## License
 
 Proprietary - See LICENSE file
+
+## Known Limitations
+
+### Monitor Endpoint Response Field Definitions
+
+Many **monitor endpoints** lack response field definitions in the FortiOS API schema. This affects:
+
+- **Type safety**: Endpoints return `FortiObject[Any]` instead of specific typed objects
+- **IDE autocomplete**: No field-level autocomplete for response attributes
+- **Documentation**: Cannot programmatically discover available response fields
+
+**Affected endpoints include:**
+- Switch controller monitoring endpoints (dhcp-snooping, transceivers, bios, health-status, port-health, etc.)
+- System status/statistics endpoints
+- VPN status endpoints
+- Network diagnostics endpoints
+
+**Impact:**
+```python
+# Without schema field definitions - returns generic type
+result = fgt.api.monitor.switch_controller.managed_switch.dhcp_snooping.get()
+# Type: FortiObject[Any] - no field autocomplete ❌
+
+# You can still access fields dynamically, but without type checking:
+for entry in result:
+    print(entry.switch_id)  # Works at runtime, but Pylance can't verify ⚠️
+    print(entry.snooping_entries)  # Works at runtime, no autocomplete ⚠️
+```
+
+**Workaround:**
+- Use `getattr()` or dynamic attribute access for monitor endpoint responses
+- Iterate over list responses using `FortiObject.__iter__` support (added in v0.5.118)
+- See [Schema Improvement Suggestions](../../docs/fortios/SCHEMA_IMPROVEMENT_SUGGESTIONS.md) for details on missing schema definitions
+
+We've documented these issues for Fortinet to improve future API schema releases.
 
 ## Support
 

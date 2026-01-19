@@ -363,6 +363,23 @@ class FortiObject(Generic[_DataT]):
         """
         ...
 
+    def __iter__(self) -> Iterator[FortiObject[Any]]:
+        """
+        Iterate over items when FortiObject wraps a list response.
+
+        This method allows iteration over FortiObject instances when the
+        underlying data is a list (common in monitor endpoints).
+
+        Returns:
+            Iterator yielding FortiObject instances for each list item
+
+        Examples:
+            >>> result = fgt.api.monitor.switch_controller.managed_switch.dhcp_snooping.get()
+            >>> for entry in result:
+            ...     print(entry.switch_id)
+        """
+        ...
+
     def keys(self) -> Any:
         """
         Get all field names.

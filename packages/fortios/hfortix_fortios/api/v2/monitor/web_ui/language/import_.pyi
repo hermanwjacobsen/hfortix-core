@@ -58,7 +58,7 @@ class Import:
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
-    ) -> FortiObject: ...
+    ) -> FortiObject[Any]: ...
     
 
     # ================================================================
@@ -71,7 +71,7 @@ class Import:
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
-    ) -> FortiObject: ...
+    ) -> FortiObject[Any]: ...
 
     # ================================================================
     # PUT Method
@@ -83,7 +83,7 @@ class Import:
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
-    ) -> FortiObject: ...
+    ) -> FortiObject[Any]: ...
 
 
     # ================================================================
@@ -102,7 +102,7 @@ class Import:
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
-    ) -> FortiObject: ...
+    ) -> FortiObject[Any]: ...
     
     # Helper methods
     @staticmethod
@@ -112,7 +112,7 @@ class Import:
     def fields(detailed: bool = ...) -> list[str] | list[dict[str, Any]]: ...
     
     @staticmethod
-    def field_info(field_name: str) -> FortiObject: ...
+    def field_info(field_name: str) -> FortiObject[Any]: ...
     
     @staticmethod
     def validate_field(name: str, value: Any) -> bool: ...
@@ -121,10 +121,10 @@ class Import:
     def required_fields() -> list[str]: ...
     
     @staticmethod
-    def defaults() -> FortiObject: ...
+    def defaults() -> FortiObject[Any]: ...
     
     @staticmethod
-    def schema() -> FortiObject: ...
+    def schema() -> FortiObject[Any]: ...
 
 
 __all__ = [
