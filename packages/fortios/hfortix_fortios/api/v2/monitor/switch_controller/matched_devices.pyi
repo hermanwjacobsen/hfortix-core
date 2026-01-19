@@ -28,7 +28,7 @@ from hfortix_fortios.models import (
 class MatchedDevicesPayload(TypedDict, total=False):
     """Payload type for MatchedDevices operations."""
     mkey: str
-    include_dynamic: str
+    include_dynamic: bool
     mac: str
 
 
@@ -39,7 +39,7 @@ class MatchedDevicesPayload(TypedDict, total=False):
 class MatchedDevicesResponse(TypedDict, total=False):
     """Response type for MatchedDevices - use with .dict property for typed dict access."""
     mkey: str
-    include_dynamic: str
+    include_dynamic: bool
     mac: str
 
 
@@ -50,7 +50,7 @@ class MatchedDevicesResponse(TypedDict, total=False):
 
 class MatchedDevicesObject(FortiObject):
     """Typed FortiObject for MatchedDevices with field access."""
-    include_dynamic: str
+    include_dynamic: bool
     mac: str
 
 
@@ -105,7 +105,7 @@ class MatchedDevices:
         self,
         payload_dict: MatchedDevicesPayload | None = ...,
         mkey: str | None = ...,
-        include_dynamic: str | None = ...,
+        include_dynamic: bool | None = ...,
         mac: str | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,

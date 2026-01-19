@@ -32,8 +32,8 @@ class LoginPayload(TypedDict, total=False):
     password: str
     reseller_name: str
     reseller_id: int
-    agreement_accepted: str
-    is_government: str
+    agreement_accepted: bool
+    is_government: bool
 
 
 # ================================================================
@@ -47,8 +47,8 @@ class LoginResponse(TypedDict, total=False):
     password: str
     reseller_name: str
     reseller_id: int
-    agreement_accepted: str
-    is_government: str
+    agreement_accepted: bool
+    is_government: bool
 
 
 # ================================================================
@@ -62,8 +62,8 @@ class LoginObject(FortiObject):
     password: str
     reseller_name: str
     reseller_id: int
-    agreement_accepted: str
-    is_government: str
+    agreement_accepted: bool
+    is_government: bool
 
 
 # ================================================================
@@ -117,8 +117,8 @@ class Login:
         password: str | None = ...,
         reseller_name: str | None = ...,
         reseller_id: int | None = ...,
-        agreement_accepted: str | None = ...,
-        is_government: str | None = ...,
+        agreement_accepted: bool | None = ...,
+        is_government: bool | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -136,8 +136,8 @@ class Login:
         password: str | None = ...,
         reseller_name: str | None = ...,
         reseller_id: int | None = ...,
-        agreement_accepted: str | None = ...,
-        is_government: str | None = ...,
+        agreement_accepted: bool | None = ...,
+        is_government: bool | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,

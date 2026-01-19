@@ -28,8 +28,8 @@ from hfortix_fortios.models import (
 class QueryPayload(TypedDict, total=False):
     """Payload type for Query operations."""
     mkey: str
-    server_info_only: str
-    skip_schema: str
+    server_info_only: bool
+    skip_schema: bool
     ldap_filter: str
     ldap: str
 
@@ -41,8 +41,8 @@ class QueryPayload(TypedDict, total=False):
 class QueryResponse(TypedDict, total=False):
     """Response type for Query - use with .dict property for typed dict access."""
     mkey: str
-    server_info_only: str
-    skip_schema: str
+    server_info_only: bool
+    skip_schema: bool
     ldap_filter: str
     ldap: str
 
@@ -54,8 +54,8 @@ class QueryResponse(TypedDict, total=False):
 
 class QueryObject(FortiObject):
     """Typed FortiObject for Query with field access."""
-    server_info_only: str
-    skip_schema: str
+    server_info_only: bool
+    skip_schema: bool
     ldap_filter: str
     ldap: str
 
@@ -113,8 +113,8 @@ class Query:
         self,
         payload_dict: QueryPayload | None = ...,
         mkey: str | None = ...,
-        server_info_only: str | None = ...,
-        skip_schema: str | None = ...,
+        server_info_only: bool | None = ...,
+        skip_schema: bool | None = ...,
         ldap_filter: str | None = ...,
         ldap: str | None = ...,
         vdom: str | bool | None = ...,

@@ -33,7 +33,7 @@ class RestorePayload(TypedDict, total=False):
     password: str
     scope: str
     vdom: str
-    confirm_password_mask: str
+    confirm_password_mask: bool
     file_content: str
 
 
@@ -49,7 +49,7 @@ class RestoreResponse(TypedDict, total=False):
     password: str
     scope: str
     vdom: str
-    confirm_password_mask: str
+    confirm_password_mask: bool
     file_content: str
 
 
@@ -65,7 +65,7 @@ class RestoreObject(FortiObject):
     config_id: int
     password: str
     scope: str
-    confirm_password_mask: str
+    confirm_password_mask: bool
     file_content: str
 
 
@@ -120,7 +120,7 @@ class Restore:
         config_id: int | None = ...,
         password: str | None = ...,
         scope: str | None = ...,
-        confirm_password_mask: str | None = ...,
+        confirm_password_mask: bool | None = ...,
         file_content: str | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
@@ -139,7 +139,7 @@ class Restore:
         config_id: int | None = ...,
         password: str | None = ...,
         scope: str | None = ...,
-        confirm_password_mask: str | None = ...,
+        confirm_password_mask: bool | None = ...,
         file_content: str | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,

@@ -28,7 +28,7 @@ from hfortix_fortios.models import (
 class AvailableInterfacesPayload(TypedDict, total=False):
     """Payload type for AvailableInterfaces operations."""
     mkey: str
-    include_ha: str
+    include_ha: bool
     view_type: str
     scope: str
 
@@ -40,7 +40,7 @@ class AvailableInterfacesPayload(TypedDict, total=False):
 class AvailableInterfacesResponse(TypedDict, total=False):
     """Response type for AvailableInterfaces - use with .dict property for typed dict access."""
     mkey: str
-    include_ha: str
+    include_ha: bool
     view_type: str
     scope: str
 
@@ -52,7 +52,7 @@ class AvailableInterfacesResponse(TypedDict, total=False):
 
 class AvailableInterfacesObject(FortiObject):
     """Typed FortiObject for AvailableInterfaces with field access."""
-    include_ha: str
+    include_ha: bool
     view_type: str
     scope: str
 
@@ -109,7 +109,7 @@ class AvailableInterfaces:
         self,
         payload_dict: AvailableInterfacesPayload | None = ...,
         mkey: str | None = ...,
-        include_ha: str | None = ...,
+        include_ha: bool | None = ...,
         view_type: str | None = ...,
         scope: str | None = ...,
         vdom: str | bool | None = ...,

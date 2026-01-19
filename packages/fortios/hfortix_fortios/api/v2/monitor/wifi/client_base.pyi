@@ -28,8 +28,8 @@ from hfortix_fortios.models import (
 class ClientPayload(TypedDict, total=False):
     """Payload type for Client operations."""
     type: str
-    with_triangulation: str
-    with_stats: str
+    with_triangulation: bool
+    with_stats: bool
     mac: str
 
 
@@ -40,8 +40,8 @@ class ClientPayload(TypedDict, total=False):
 class ClientResponse(TypedDict, total=False):
     """Response type for Client - use with .dict property for typed dict access."""
     type: str
-    with_triangulation: str
-    with_stats: str
+    with_triangulation: bool
+    with_stats: bool
     mac: str
 
 
@@ -53,8 +53,8 @@ class ClientResponse(TypedDict, total=False):
 class ClientObject(FortiObject):
     """Typed FortiObject for Client with field access."""
     type: str
-    with_triangulation: str
-    with_stats: str
+    with_triangulation: bool
+    with_stats: bool
     mac: str
 
 
@@ -110,8 +110,8 @@ class Client:
         self,
         payload_dict: ClientPayload | None = ...,
         type: str | None = ...,
-        with_triangulation: str | None = ...,
-        with_stats: str | None = ...,
+        with_triangulation: bool | None = ...,
+        with_stats: bool | None = ...,
         mac: str | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,

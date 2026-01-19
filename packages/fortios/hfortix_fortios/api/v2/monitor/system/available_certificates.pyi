@@ -28,11 +28,11 @@ from hfortix_fortios.models import (
 class AvailableCertificatesPayload(TypedDict, total=False):
     """Payload type for AvailableCertificates operations."""
     scope: str
-    with_remote: str
-    with_ca: str
-    with_crl: str
+    with_remote: bool
+    with_ca: bool
+    with_crl: bool
     mkey: str
-    find_all_references: str
+    find_all_references: bool
 
 
 # ================================================================
@@ -42,11 +42,11 @@ class AvailableCertificatesPayload(TypedDict, total=False):
 class AvailableCertificatesResponse(TypedDict, total=False):
     """Response type for AvailableCertificates - use with .dict property for typed dict access."""
     scope: str
-    with_remote: str
-    with_ca: str
-    with_crl: str
+    with_remote: bool
+    with_ca: bool
+    with_crl: bool
     mkey: str
-    find_all_references: str
+    find_all_references: bool
 
 
 # ================================================================
@@ -57,10 +57,10 @@ class AvailableCertificatesResponse(TypedDict, total=False):
 class AvailableCertificatesObject(FortiObject):
     """Typed FortiObject for AvailableCertificates with field access."""
     scope: str
-    with_remote: str
-    with_ca: str
-    with_crl: str
-    find_all_references: str
+    with_remote: bool
+    with_ca: bool
+    with_crl: bool
+    find_all_references: bool
 
 
 # ================================================================
@@ -117,11 +117,11 @@ class AvailableCertificates:
         self,
         payload_dict: AvailableCertificatesPayload | None = ...,
         scope: str | None = ...,
-        with_remote: str | None = ...,
-        with_ca: str | None = ...,
-        with_crl: str | None = ...,
+        with_remote: bool | None = ...,
+        with_ca: bool | None = ...,
+        with_crl: bool | None = ...,
         mkey: str | None = ...,
-        find_all_references: str | None = ...,
+        find_all_references: bool | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,

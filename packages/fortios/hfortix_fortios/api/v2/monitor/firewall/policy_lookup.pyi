@@ -27,7 +27,7 @@ from hfortix_fortios.models import (
 
 class PolicyLookupPayload(TypedDict, total=False):
     """Payload type for PolicyLookup operations."""
-    ipv6: str
+    ipv6: bool
     srcintf: str
     sourceport: int
     sourceip: str
@@ -50,7 +50,7 @@ class PolicyLookupPayload(TypedDict, total=False):
 
 class PolicyLookupResponse(TypedDict, total=False):
     """Response type for PolicyLookup - use with .dict property for typed dict access."""
-    ipv6: str
+    ipv6: bool
     srcintf: str
     sourceport: int
     sourceip: str
@@ -74,7 +74,7 @@ class PolicyLookupResponse(TypedDict, total=False):
 
 class PolicyLookupObject(FortiObject):
     """Typed FortiObject for PolicyLookup with field access."""
-    ipv6: str
+    ipv6: bool
     srcintf: str
     sourceport: int
     sourceip: str
@@ -153,7 +153,7 @@ class PolicyLookup:
     def put(
         self,
         payload_dict: PolicyLookupPayload | None = ...,
-        ipv6: str | None = ...,
+        ipv6: bool | None = ...,
         srcintf: str | None = ...,
         sourceport: int | None = ...,
         sourceip: str | None = ...,

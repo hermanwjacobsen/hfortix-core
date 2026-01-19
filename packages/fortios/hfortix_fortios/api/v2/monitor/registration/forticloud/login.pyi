@@ -29,7 +29,7 @@ class LoginPayload(TypedDict, total=False):
     """Payload type for Login operations."""
     email: str
     password: str
-    send_logs: str
+    send_logs: bool
     domain: str
 
 
@@ -41,7 +41,7 @@ class LoginResponse(TypedDict, total=False):
     """Response type for Login - use with .dict property for typed dict access."""
     email: str
     password: str
-    send_logs: str
+    send_logs: bool
     domain: str
 
 
@@ -54,7 +54,7 @@ class LoginObject(FortiObject):
     """Typed FortiObject for Login with field access."""
     email: str
     password: str
-    send_logs: str
+    send_logs: bool
     domain: str
 
 
@@ -106,7 +106,7 @@ class Login:
         payload_dict: LoginPayload | None = ...,
         email: str | None = ...,
         password: str | None = ...,
-        send_logs: str | None = ...,
+        send_logs: bool | None = ...,
         domain: str | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
@@ -122,7 +122,7 @@ class Login:
         payload_dict: LoginPayload | None = ...,
         email: str | None = ...,
         password: str | None = ...,
-        send_logs: str | None = ...,
+        send_logs: bool | None = ...,
         domain: str | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,

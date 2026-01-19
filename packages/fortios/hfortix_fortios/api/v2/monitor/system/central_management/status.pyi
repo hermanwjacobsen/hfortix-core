@@ -27,7 +27,7 @@ from hfortix_fortios.models import (
 
 class StatusPayload(TypedDict, total=False):
     """Payload type for Status operations."""
-    skip_detect: str
+    skip_detect: bool
 
 
 # ================================================================
@@ -36,7 +36,7 @@ class StatusPayload(TypedDict, total=False):
 
 class StatusResponse(TypedDict, total=False):
     """Response type for Status - use with .dict property for typed dict access."""
-    skip_detect: str
+    skip_detect: bool
 
 
 # ================================================================
@@ -46,7 +46,7 @@ class StatusResponse(TypedDict, total=False):
 
 class StatusObject(FortiObject):
     """Typed FortiObject for Status with field access."""
-    skip_detect: str
+    skip_detect: bool
 
 
 # ================================================================
@@ -97,7 +97,7 @@ class Status:
     def put(
         self,
         payload_dict: StatusPayload | None = ...,
-        skip_detect: str | None = ...,
+        skip_detect: bool | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,

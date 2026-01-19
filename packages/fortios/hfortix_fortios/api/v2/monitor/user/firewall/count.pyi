@@ -27,9 +27,9 @@ from hfortix_fortios.models import (
 
 class CountPayload(TypedDict, total=False):
     """Payload type for Count operations."""
-    ipv4: str
-    ipv6: str
-    include_fsso: str
+    ipv4: bool
+    ipv6: bool
+    include_fsso: bool
 
 
 # ================================================================
@@ -38,9 +38,9 @@ class CountPayload(TypedDict, total=False):
 
 class CountResponse(TypedDict, total=False):
     """Response type for Count - use with .dict property for typed dict access."""
-    ipv4: str
-    ipv6: str
-    include_fsso: str
+    ipv4: bool
+    ipv6: bool
+    include_fsso: bool
 
 
 # ================================================================
@@ -50,9 +50,9 @@ class CountResponse(TypedDict, total=False):
 
 class CountObject(FortiObject):
     """Typed FortiObject for Count with field access."""
-    ipv4: str
-    ipv6: str
-    include_fsso: str
+    ipv4: bool
+    ipv6: bool
+    include_fsso: bool
 
 
 # ================================================================
@@ -105,9 +105,9 @@ class Count:
     def put(
         self,
         payload_dict: CountPayload | None = ...,
-        ipv4: str | None = ...,
-        ipv6: str | None = ...,
-        include_fsso: str | None = ...,
+        ipv4: bool | None = ...,
+        ipv6: bool | None = ...,
+        include_fsso: bool | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,

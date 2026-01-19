@@ -7,6 +7,39 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.5.117] - 2026-01-19
+
+### Added
+
+- **Tests: Switch Controller Managed Switch Test Suite**: Added 5 test files with 14 tests for FortiSwitch management:
+  - **switch_controller_managed_switch_status.py** (1 test): GET managed switch status
+  - **switch_controller_managed_switch_port_stats.py** (3 tests): GET all FortiSwitch port statistics, verify port statistics structure, GET with mkey filter
+  - **switch_controller_managed_switch_port_stats_reset.py** (3 tests): POST to reset all port statistics, POST to reset specific ports, verify reset operation
+  - **switch_controller_managed_switch_poe_reset.py** (3 tests): POST to reset PoE on safe port (down + PoE-capable), verify safe port selection, list and categorize all ports
+  - **switch_controller_managed_switch_port_bounce.py** (4 tests): POST to bounce a port (1 second duration), POST with different durations (2 seconds, default), POST to start and stop a bounce (5 second bounce interrupted), list safe ports and bounce one
+
+- **Tests: SCTP Filter Test**: Added test for SCTP filter endpoint
+  - **sctp-filter**: SCTP filter configuration and CRUD operations
+
+### Fixed
+
+- **Generator: Boolean field types in all templates**: Fixed `.pyi` stub generator to properly type boolean fields across all contexts:
+  - **Issue**: Boolean fields (e.g., `stop` in `switch-controller/managed-switch/bounce-port`) were incorrectly typed as `str` instead of `bool`
+  - **Root Cause**: Template only checked for `options` (Literal) and `integer` types, defaulting everything else to `str`
+  - **Fix**: Added `{% elif field.type == 'boolean' %}` checks before `str` fallback in 11 template locations:
+    - TypedDict Payload definitions (for user input construction)
+    - TypedDict Response definitions (for API response typing)
+    - FortiObject class field definitions (for attribute access)
+    - POST method parameter signatures
+    - PUT method parameter signatures
+    - Nested complex field TypedDicts
+    - Nested table field TypedDicts
+    - Nested complex field Object classes
+    - Nested table field Object classes
+  - **Impact**: All boolean fields across all 1064 endpoints now correctly typed as `bool`, enabling proper type checking for values like `True`/`False`
+  - **Example**: `fgt.api.monitor.switch_controller.managed_switch.bounce_port.post(stop=True)` now passes type checking (was showing error: "Literal[True] cannot be assigned to parameter of type str | None")
+  - **Templates verified**: `endpoint_class.pyi.j2` (all other templates don't generate field-level type annotations)
+
 ## [0.5.116] - 2026-01-19
 
 ### Added
@@ -24,11 +57,23 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - **Issue**: Type stub files (`.pyi`) were generating POST/PUT/DELETE method signatures for read-only endpoints, causing IDE autocomplete to show non-existent methods
   - **Root Cause**: Template `endpoint_class.pyi.j2` only checked `capabilities.crud.{create,update,delete}` flags without checking `schema.readonly` flag
   - **Fix**: Added `not schema.readonly` check to all CRUD method generation in `.pyi` template:
-    - Line 485: POST method now requires `{% if not schema.readonly and schema.capabilities.crud.create %}`
-    - Line 536: PUT method now requires `{% if not schema.readonly and schema.capabilities.crud.update %}`
-    - Line 587: DELETE method now requires `{% if not schema.readonly and schema.capabilities.crud.delete %}`
+    - Line 505: POST method now requires `{% if not schema.readonly and schema.capabilities.crud.create %}`
+    - Line 557: PUT method now requires `{% if not schema.readonly and schema.capabilities.crud.update %}`
+    - Line 609: DELETE method now requires `{% if not schema.readonly and schema.capabilities.crud.delete %}`
   - **Impact**: Read-only endpoints (e.g., `rule/fmwp`, `rule/iotd`, system reference tables) no longer show POST/PUT/DELETE in IDE autocomplete
   - **Consistency**: `.pyi` template now matches Python template logic which already had readonly checks for `SUPPORTS_CREATE/UPDATE/DELETE` flags
+
+- **Generator: Boolean field types**: Fixed `.pyi` stub generator to properly type boolean fields:
+  - **Issue**: Boolean fields (e.g., `stop` in `switch-controller/managed-switch/bounce-port`) were incorrectly typed as `str` instead of `bool`
+  - **Root Cause**: Template only checked for `options` (Literal) and `integer` types, defaulting everything else to `str`
+  - **Fix**: Added `{% elif field.type == 'boolean' %}` checks before `str` fallback in 11 template locations:
+    - TypedDict Payload definitions (for user input)
+    - TypedDict Response definitions (for API responses)
+    - FortiObject class definitions (for attribute access)
+    - POST/PUT method parameter signatures
+    - Nested complex/table field definitions
+  - **Impact**: All boolean fields across all endpoints now correctly typed as `bool`, enabling proper type checking for values like `True`/`False`
+  - **Example**: `fgt.api.monitor.switch_controller.managed_switch.bounce_port.post(stop=True)` now passes type checking
 
 ## [0.5.115] - 2026-01-19
 

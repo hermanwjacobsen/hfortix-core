@@ -28,7 +28,7 @@ from hfortix_fortios.models import (
 class RefreshPayload(TypedDict, total=False):
     """Payload type for Refresh operations."""
     mkey: str
-    check_status_only: str
+    check_status_only: bool
     last_connection_time: int
 
 
@@ -39,7 +39,7 @@ class RefreshPayload(TypedDict, total=False):
 class RefreshResponse(TypedDict, total=False):
     """Response type for Refresh - use with .dict property for typed dict access."""
     mkey: str
-    check_status_only: str
+    check_status_only: bool
     last_connection_time: int
 
 
@@ -50,7 +50,7 @@ class RefreshResponse(TypedDict, total=False):
 
 class RefreshObject(FortiObject):
     """Typed FortiObject for Refresh with field access."""
-    check_status_only: str
+    check_status_only: bool
     last_connection_time: int
 
 
@@ -101,7 +101,7 @@ class Refresh:
         self,
         payload_dict: RefreshPayload | None = ...,
         mkey: str | None = ...,
-        check_status_only: str | None = ...,
+        check_status_only: bool | None = ...,
         last_connection_time: int | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
@@ -116,7 +116,7 @@ class Refresh:
         self,
         payload_dict: RefreshPayload | None = ...,
         mkey: str | None = ...,
-        check_status_only: str | None = ...,
+        check_status_only: bool | None = ...,
         last_connection_time: int | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,

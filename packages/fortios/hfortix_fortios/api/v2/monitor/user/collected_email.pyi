@@ -27,7 +27,7 @@ from hfortix_fortios.models import (
 
 class CollectedEmailPayload(TypedDict, total=False):
     """Payload type for CollectedEmail operations."""
-    ipv6: str
+    ipv6: bool
 
 
 # ================================================================
@@ -36,7 +36,7 @@ class CollectedEmailPayload(TypedDict, total=False):
 
 class CollectedEmailResponse(TypedDict, total=False):
     """Response type for CollectedEmail - use with .dict property for typed dict access."""
-    ipv6: str
+    ipv6: bool
 
 
 # ================================================================
@@ -46,7 +46,7 @@ class CollectedEmailResponse(TypedDict, total=False):
 
 class CollectedEmailObject(FortiObject):
     """Typed FortiObject for CollectedEmail with field access."""
-    ipv6: str
+    ipv6: bool
 
 
 # ================================================================
@@ -97,7 +97,7 @@ class CollectedEmail:
     def put(
         self,
         payload_dict: CollectedEmailPayload | None = ...,
-        ipv6: str | None = ...,
+        ipv6: bool | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,

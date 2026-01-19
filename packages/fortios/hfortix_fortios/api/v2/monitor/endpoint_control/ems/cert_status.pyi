@@ -29,7 +29,7 @@ class CertStatusPayload(TypedDict, total=False):
     """Payload type for CertStatus operations."""
     ems_id: int
     scope: str
-    with_cert: str
+    with_cert: bool
 
 
 # ================================================================
@@ -40,7 +40,7 @@ class CertStatusResponse(TypedDict, total=False):
     """Response type for CertStatus - use with .dict property for typed dict access."""
     ems_id: int
     scope: str
-    with_cert: str
+    with_cert: bool
 
 
 # ================================================================
@@ -52,7 +52,7 @@ class CertStatusObject(FortiObject):
     """Typed FortiObject for CertStatus with field access."""
     ems_id: int
     scope: str
-    with_cert: str
+    with_cert: bool
 
 
 # ================================================================
@@ -107,7 +107,7 @@ class CertStatus:
         payload_dict: CertStatusPayload | None = ...,
         ems_id: int | None = ...,
         scope: str | None = ...,
-        with_cert: str | None = ...,
+        with_cert: bool | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,

@@ -31,8 +31,8 @@ class InternetServiceDetailsPayload(TypedDict, total=False):
     country_id: int
     region_id: int
     city_id: int
-    summary_only: str
-    ipv6_only: str
+    summary_only: bool
+    ipv6_only: bool
 
 
 # ================================================================
@@ -45,8 +45,8 @@ class InternetServiceDetailsResponse(TypedDict, total=False):
     country_id: int
     region_id: int
     city_id: int
-    summary_only: str
-    ipv6_only: str
+    summary_only: bool
+    ipv6_only: bool
 
 
 # ================================================================
@@ -60,8 +60,8 @@ class InternetServiceDetailsObject(FortiObject):
     country_id: int
     region_id: int
     city_id: int
-    summary_only: str
-    ipv6_only: str
+    summary_only: bool
+    ipv6_only: bool
 
 
 # ================================================================
@@ -121,8 +121,8 @@ class InternetServiceDetails:
         country_id: int | None = ...,
         region_id: int | None = ...,
         city_id: int | None = ...,
-        summary_only: str | None = ...,
-        ipv6_only: str | None = ...,
+        summary_only: bool | None = ...,
+        ipv6_only: bool | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,

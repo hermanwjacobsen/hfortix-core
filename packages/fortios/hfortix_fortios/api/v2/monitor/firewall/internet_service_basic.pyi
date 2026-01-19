@@ -27,7 +27,7 @@ from hfortix_fortios.models import (
 
 class InternetServiceBasicPayload(TypedDict, total=False):
     """Payload type for InternetServiceBasic operations."""
-    ipv6_only: str
+    ipv6_only: bool
 
 
 # ================================================================
@@ -36,7 +36,7 @@ class InternetServiceBasicPayload(TypedDict, total=False):
 
 class InternetServiceBasicResponse(TypedDict, total=False):
     """Response type for InternetServiceBasic - use with .dict property for typed dict access."""
-    ipv6_only: str
+    ipv6_only: bool
 
 
 # ================================================================
@@ -46,7 +46,7 @@ class InternetServiceBasicResponse(TypedDict, total=False):
 
 class InternetServiceBasicObject(FortiObject):
     """Typed FortiObject for InternetServiceBasic with field access."""
-    ipv6_only: str
+    ipv6_only: bool
 
 
 # ================================================================
@@ -97,7 +97,7 @@ class InternetServiceBasic:
     def put(
         self,
         payload_dict: InternetServiceBasicPayload | None = ...,
-        ipv6_only: str | None = ...,
+        ipv6_only: bool | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,

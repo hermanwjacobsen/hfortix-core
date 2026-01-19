@@ -28,7 +28,7 @@ from hfortix_fortios.models import (
 class InternetServiceMatchPayload(TypedDict, total=False):
     """Payload type for InternetServiceMatch operations."""
     ip: str
-    is_ipv6: str
+    is_ipv6: bool
     ipv4_mask: str
     ipv6_prefix: int
 
@@ -40,7 +40,7 @@ class InternetServiceMatchPayload(TypedDict, total=False):
 class InternetServiceMatchResponse(TypedDict, total=False):
     """Response type for InternetServiceMatch - use with .dict property for typed dict access."""
     ip: str
-    is_ipv6: str
+    is_ipv6: bool
     ipv4_mask: str
     ipv6_prefix: int
 
@@ -53,7 +53,7 @@ class InternetServiceMatchResponse(TypedDict, total=False):
 class InternetServiceMatchObject(FortiObject):
     """Typed FortiObject for InternetServiceMatch with field access."""
     ip: str
-    is_ipv6: str
+    is_ipv6: bool
     ipv4_mask: str
     ipv6_prefix: int
 
@@ -110,7 +110,7 @@ class InternetServiceMatch:
         self,
         payload_dict: InternetServiceMatchPayload | None = ...,
         ip: str | None = ...,
-        is_ipv6: str | None = ...,
+        is_ipv6: bool | None = ...,
         ipv4_mask: str | None = ...,
         ipv6_prefix: int | None = ...,
         vdom: str | bool | None = ...,

@@ -27,7 +27,7 @@ from hfortix_fortios.models import (
 
 class SetPayload(TypedDict, total=False):
     """Payload type for Set operations."""
-    enable: str
+    enable: bool
     password: str
 
 
@@ -37,7 +37,7 @@ class SetPayload(TypedDict, total=False):
 
 class SetResponse(TypedDict, total=False):
     """Response type for Set - use with .dict property for typed dict access."""
-    enable: str
+    enable: bool
     password: str
 
 
@@ -48,7 +48,7 @@ class SetResponse(TypedDict, total=False):
 
 class SetObject(FortiObject):
     """Typed FortiObject for Set with field access."""
-    enable: str
+    enable: bool
     password: str
 
 
@@ -98,7 +98,7 @@ class Set:
     def post(
         self,
         payload_dict: SetPayload | None = ...,
-        enable: str | None = ...,
+        enable: bool | None = ...,
         password: str | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
@@ -112,7 +112,7 @@ class Set:
     def put(
         self,
         payload_dict: SetPayload | None = ...,
-        enable: str | None = ...,
+        enable: bool | None = ...,
         password: str | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,

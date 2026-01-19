@@ -28,7 +28,7 @@ from hfortix_fortios.models import (
 class HaPeerPayload(TypedDict, total=False):
     """Payload type for HaPeer operations."""
     serial: str
-    ipv6: str
+    ipv6: bool
     destination: str
 
 
@@ -39,7 +39,7 @@ class HaPeerPayload(TypedDict, total=False):
 class HaPeerResponse(TypedDict, total=False):
     """Response type for HaPeer - use with .dict property for typed dict access."""
     serial: str
-    ipv6: str
+    ipv6: bool
     destination: str
 
 
@@ -50,7 +50,7 @@ class HaPeerResponse(TypedDict, total=False):
 
 class HaPeerObject(FortiObject):
     """Typed FortiObject for HaPeer with field access."""
-    ipv6: str
+    ipv6: bool
     destination: str
 
 
@@ -105,7 +105,7 @@ class HaPeer:
         self,
         payload_dict: HaPeerPayload | None = ...,
         serial: str | None = ...,
-        ipv6: str | None = ...,
+        ipv6: bool | None = ...,
         destination: str | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,

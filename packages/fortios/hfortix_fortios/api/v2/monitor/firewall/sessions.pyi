@@ -29,7 +29,7 @@ class SessionsPayload(TypedDict, total=False):
     """Payload type for Sessions operations."""
     ip_version: str
     count: int
-    summary: str
+    summary: bool
     srcport: str
     policyid: str
     security_policyid: str
@@ -65,7 +65,7 @@ class SessionsResponse(TypedDict, total=False):
     """Response type for Sessions - use with .dict property for typed dict access."""
     ip_version: str
     count: int
-    summary: str
+    summary: bool
     srcport: str
     policyid: str
     security_policyid: str
@@ -102,7 +102,7 @@ class SessionsObject(FortiObject):
     """Typed FortiObject for Sessions with field access."""
     ip_version: str
     count: int
-    summary: str
+    summary: bool
     srcport: str
     policyid: str
     security_policyid: str
@@ -207,7 +207,7 @@ class Sessions:
         payload_dict: SessionsPayload | None = ...,
         ip_version: str | None = ...,
         count: int | None = ...,
-        summary: str | None = ...,
+        summary: bool | None = ...,
         srcport: str | None = ...,
         policyid: str | None = ...,
         security_policyid: str | None = ...,

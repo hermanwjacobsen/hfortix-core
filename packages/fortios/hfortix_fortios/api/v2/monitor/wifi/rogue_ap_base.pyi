@@ -27,7 +27,7 @@ from hfortix_fortios.models import (
 
 class RogueApPayload(TypedDict, total=False):
     """Payload type for RogueAp operations."""
-    managed_ssid_only: str
+    managed_ssid_only: bool
 
 
 # ================================================================
@@ -36,7 +36,7 @@ class RogueApPayload(TypedDict, total=False):
 
 class RogueApResponse(TypedDict, total=False):
     """Response type for RogueAp - use with .dict property for typed dict access."""
-    managed_ssid_only: str
+    managed_ssid_only: bool
 
 
 # ================================================================
@@ -46,7 +46,7 @@ class RogueApResponse(TypedDict, total=False):
 
 class RogueApObject(FortiObject):
     """Typed FortiObject for RogueAp with field access."""
-    managed_ssid_only: str
+    managed_ssid_only: bool
 
 
 # ================================================================
@@ -97,7 +97,7 @@ class RogueAp:
     def put(
         self,
         payload_dict: RogueApPayload | None = ...,
-        managed_ssid_only: str | None = ...,
+        managed_ssid_only: bool | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,

@@ -31,7 +31,7 @@ class TransferPayload(TypedDict, total=False):
     password: str
     old_email: str
     old_password: str
-    is_government: str
+    is_government: bool
 
 
 # ================================================================
@@ -44,7 +44,7 @@ class TransferResponse(TypedDict, total=False):
     password: str
     old_email: str
     old_password: str
-    is_government: str
+    is_government: bool
 
 
 # ================================================================
@@ -58,7 +58,7 @@ class TransferObject(FortiObject):
     password: str
     old_email: str
     old_password: str
-    is_government: str
+    is_government: bool
 
 
 # ================================================================
@@ -111,7 +111,7 @@ class Transfer:
         password: str | None = ...,
         old_email: str | None = ...,
         old_password: str | None = ...,
-        is_government: str | None = ...,
+        is_government: bool | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -128,7 +128,7 @@ class Transfer:
         password: str | None = ...,
         old_email: str | None = ...,
         old_password: str | None = ...,
-        is_government: str | None = ...,
+        is_government: bool | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,

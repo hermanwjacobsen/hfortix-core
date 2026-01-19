@@ -30,12 +30,12 @@ class UpgradePayload(TypedDict, total=False):
     source: str
     url: str
     passphrase: str
-    force: str
+    force: bool
     filename: str
-    format_partition: str
-    ignore_invalid_signature: str
+    format_partition: bool
+    ignore_invalid_signature: bool
     file_id: str
-    ignore_admin_lockout_upon_downgrade: str
+    ignore_admin_lockout_upon_downgrade: bool
     file_content: str
 
 
@@ -48,12 +48,12 @@ class UpgradeResponse(TypedDict, total=False):
     source: str
     url: str
     passphrase: str
-    force: str
+    force: bool
     filename: str
-    format_partition: str
-    ignore_invalid_signature: str
+    format_partition: bool
+    ignore_invalid_signature: bool
     file_id: str
-    ignore_admin_lockout_upon_downgrade: str
+    ignore_admin_lockout_upon_downgrade: bool
     file_content: str
 
 
@@ -67,12 +67,12 @@ class UpgradeObject(FortiObject):
     source: str
     url: str
     passphrase: str
-    force: str
+    force: bool
     filename: str
-    format_partition: str
-    ignore_invalid_signature: str
+    format_partition: bool
+    ignore_invalid_signature: bool
     file_id: str
-    ignore_admin_lockout_upon_downgrade: str
+    ignore_admin_lockout_upon_downgrade: bool
     file_content: str
 
 
@@ -125,12 +125,12 @@ class Upgrade:
         source: str | None = ...,
         url: str | None = ...,
         passphrase: str | None = ...,
-        force: str | None = ...,
+        force: bool | None = ...,
         filename: str | None = ...,
-        format_partition: str | None = ...,
-        ignore_invalid_signature: str | None = ...,
+        format_partition: bool | None = ...,
+        ignore_invalid_signature: bool | None = ...,
         file_id: str | None = ...,
-        ignore_admin_lockout_upon_downgrade: str | None = ...,
+        ignore_admin_lockout_upon_downgrade: bool | None = ...,
         file_content: str | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
@@ -147,12 +147,12 @@ class Upgrade:
         source: str | None = ...,
         url: str | None = ...,
         passphrase: str | None = ...,
-        force: str | None = ...,
+        force: bool | None = ...,
         filename: str | None = ...,
-        format_partition: str | None = ...,
-        ignore_invalid_signature: str | None = ...,
+        format_partition: bool | None = ...,
+        ignore_invalid_signature: bool | None = ...,
         file_id: str | None = ...,
-        ignore_admin_lockout_upon_downgrade: str | None = ...,
+        ignore_admin_lockout_upon_downgrade: bool | None = ...,
         file_content: str | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,

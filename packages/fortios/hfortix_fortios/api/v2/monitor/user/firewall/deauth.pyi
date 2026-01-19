@@ -32,7 +32,7 @@ class DeauthPayload(TypedDict, total=False):
     ip: str
     ip_version: str
     method: str
-    all: str
+    all: bool
     users: str
 
 
@@ -47,7 +47,7 @@ class DeauthResponse(TypedDict, total=False):
     ip: str
     ip_version: str
     method: str
-    all: str
+    all: bool
     users: str
 
 
@@ -63,7 +63,7 @@ class DeauthObject(FortiObject):
     ip: str
     ip_version: str
     method: str
-    all: str
+    all: bool
     users: str
 
 
@@ -118,7 +118,7 @@ class Deauth:
         ip: str | None = ...,
         ip_version: str | None = ...,
         method: str | None = ...,
-        all: str | None = ...,
+        all: bool | None = ...,
         users: str | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
@@ -137,7 +137,7 @@ class Deauth:
         ip: str | None = ...,
         ip_version: str | None = ...,
         method: str | None = ...,
-        all: str | None = ...,
+        all: bool | None = ...,
         users: str | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,

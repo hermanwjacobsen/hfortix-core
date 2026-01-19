@@ -27,7 +27,7 @@ from hfortix_fortios.models import (
 
 class PolicyPayload(TypedDict, total=False):
     """Payload type for Policy operations."""
-    count_only: str
+    count_only: bool
 
 
 # ================================================================
@@ -36,7 +36,7 @@ class PolicyPayload(TypedDict, total=False):
 
 class PolicyResponse(TypedDict, total=False):
     """Response type for Policy - use with .dict property for typed dict access."""
-    count_only: str
+    count_only: bool
 
 
 # ================================================================
@@ -46,7 +46,7 @@ class PolicyResponse(TypedDict, total=False):
 
 class PolicyObject(FortiObject):
     """Typed FortiObject for Policy with field access."""
-    count_only: str
+    count_only: bool
 
 
 # ================================================================
@@ -97,7 +97,7 @@ class Policy:
     def put(
         self,
         payload_dict: PolicyPayload | None = ...,
-        count_only: str | None = ...,
+        count_only: bool | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
