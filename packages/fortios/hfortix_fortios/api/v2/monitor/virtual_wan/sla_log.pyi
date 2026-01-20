@@ -27,7 +27,7 @@ from hfortix_fortios.models import (
 
 class SlaLogPayload(TypedDict, total=False):
     """Payload type for SlaLog operations."""
-    sla: str
+    sla: int | str | list[int | str]
     interface: str
     since: int
     seconds: int
@@ -44,7 +44,7 @@ class SlaLogPayload(TypedDict, total=False):
 
 class SlaLogResponse(TypedDict, total=False):
     """Response type for SlaLog - use with .dict property for typed dict access."""
-    sla: str
+    sla: list[str]
     interface: str
     since: int
     seconds: int
@@ -62,7 +62,7 @@ class SlaLogResponse(TypedDict, total=False):
 
 class SlaLogObject(FortiObject):
     """Typed FortiObject for SlaLog with field access."""
-    sla: str
+    sla: list[str]
     interface: str
     since: int
     seconds: int
@@ -129,7 +129,7 @@ class SlaLog:
     def put(
         self,
         payload_dict: SlaLogPayload | None = ...,
-        sla: str | None = ...,
+        sla: int | str | list[int | str] | None = ...,
         interface: str | None = ...,
         since: int | None = ...,
         seconds: int | None = ...,
@@ -157,15 +157,15 @@ class SlaLog:
     def set(
         self,
         payload_dict: SlaLogPayload | None = ...,
-        sla: str | None = ...,
+        sla: int | str | list[int | str] | None = ...,
         interface: str | None = ...,
         since: int | None = ...,
         seconds: int | None = ...,
-        latest: str | None = ...,
+        latest: bool | None = ...,
         min_sample_interval: int | None = ...,
         sampling_interval: int | None = ...,
-        skip_vpn_child: str | None = ...,
-        include_sla_targets_met: str | None = ...,
+        skip_vpn_child: bool | None = ...,
+        include_sla_targets_met: bool | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,

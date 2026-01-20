@@ -529,6 +529,7 @@ class Ha(CRUDEndpoint, MetadataMixin):
         
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             group_id=group_id,
             group_name=group_name,
             mode=mode,

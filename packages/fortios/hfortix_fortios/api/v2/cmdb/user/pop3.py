@@ -286,6 +286,7 @@ class Pop3(CRUDEndpoint, MetadataMixin):
         """
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             name=name,
             server=server,
             port=port,
@@ -387,6 +388,7 @@ class Pop3(CRUDEndpoint, MetadataMixin):
         """
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             name=name,
             server=server,
             port=port,
@@ -605,6 +607,7 @@ class Pop3(CRUDEndpoint, MetadataMixin):
         """
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             name=name,
             server=server,
             port=port,

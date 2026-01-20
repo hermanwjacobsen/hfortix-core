@@ -350,6 +350,7 @@ class X8021x(CRUDEndpoint, MetadataMixin):
         
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             name=name,
             security_mode=security_mode,
             user_group=user_group,
@@ -520,6 +521,7 @@ class X8021x(CRUDEndpoint, MetadataMixin):
         
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             name=name,
             security_mode=security_mode,
             user_group=user_group,
@@ -802,6 +804,7 @@ class X8021x(CRUDEndpoint, MetadataMixin):
         
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             name=name,
             security_mode=security_mode,
             user_group=user_group,

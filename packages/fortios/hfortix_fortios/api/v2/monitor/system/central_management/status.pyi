@@ -117,7 +117,7 @@ class Status:
     def set(
         self,
         payload_dict: StatusPayload | None = ...,
-        skip_detect: str | None = ...,
+        skip_detect: bool | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,

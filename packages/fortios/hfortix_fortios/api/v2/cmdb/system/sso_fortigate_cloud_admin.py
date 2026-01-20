@@ -309,6 +309,7 @@ class SsoFortigateCloudAdmin(CRUDEndpoint, MetadataMixin):
         
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             name=name,
             accprofile=accprofile,
             data=payload_dict,
@@ -417,6 +418,7 @@ class SsoFortigateCloudAdmin(CRUDEndpoint, MetadataMixin):
         
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             name=name,
             accprofile=accprofile,
             data=payload_dict,
@@ -636,6 +638,7 @@ class SsoFortigateCloudAdmin(CRUDEndpoint, MetadataMixin):
         
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             name=name,
             accprofile=accprofile,
             data=payload_dict,

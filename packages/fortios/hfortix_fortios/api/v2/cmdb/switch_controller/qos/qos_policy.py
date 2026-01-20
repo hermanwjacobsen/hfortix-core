@@ -286,6 +286,7 @@ class QosPolicy(CRUDEndpoint, MetadataMixin):
         """
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             name=name,
             default_cos=default_cos,
             trust_dot1p_map=trust_dot1p_map,
@@ -387,6 +388,7 @@ class QosPolicy(CRUDEndpoint, MetadataMixin):
         """
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             name=name,
             default_cos=default_cos,
             trust_dot1p_map=trust_dot1p_map,
@@ -605,6 +607,7 @@ class QosPolicy(CRUDEndpoint, MetadataMixin):
         """
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             name=name,
             default_cos=default_cos,
             trust_dot1p_map=trust_dot1p_map,

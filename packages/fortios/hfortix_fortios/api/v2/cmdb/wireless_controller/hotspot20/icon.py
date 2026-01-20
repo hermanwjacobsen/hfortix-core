@@ -308,6 +308,7 @@ class Icon(CRUDEndpoint, MetadataMixin):
         
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             name=name,
             icon_list=icon_list,
             data=payload_dict,
@@ -415,6 +416,7 @@ class Icon(CRUDEndpoint, MetadataMixin):
         
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             name=name,
             icon_list=icon_list,
             data=payload_dict,
@@ -634,6 +636,7 @@ class Icon(CRUDEndpoint, MetadataMixin):
         
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             name=name,
             icon_list=icon_list,
             data=payload_dict,

@@ -271,6 +271,7 @@ class PhysicalSwitch(CRUDEndpoint, MetadataMixin):
         """
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             data=payload_dict,
         )
         

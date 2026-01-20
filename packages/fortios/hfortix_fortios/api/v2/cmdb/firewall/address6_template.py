@@ -314,6 +314,7 @@ class Address6Template(CRUDEndpoint, MetadataMixin):
         
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             name=name,
             uuid=uuid,
             ip6=ip6,
@@ -431,6 +432,7 @@ class Address6Template(CRUDEndpoint, MetadataMixin):
         
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             name=name,
             uuid=uuid,
             ip6=ip6,
@@ -662,6 +664,7 @@ class Address6Template(CRUDEndpoint, MetadataMixin):
         
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             name=name,
             uuid=uuid,
             ip6=ip6,

@@ -356,6 +356,7 @@ class Ddns(CRUDEndpoint, MetadataMixin):
         
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             ddnsid=ddnsid,
             ddns_server=ddns_server,
             addr_type=addr_type,
@@ -528,6 +529,7 @@ class Ddns(CRUDEndpoint, MetadataMixin):
         
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             ddnsid=ddnsid,
             ddns_server=ddns_server,
             addr_type=addr_type,
@@ -803,6 +805,7 @@ class Ddns(CRUDEndpoint, MetadataMixin):
         
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             ddnsid=ddnsid,
             ddns_server=ddns_server,
             addr_type=addr_type,

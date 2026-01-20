@@ -145,7 +145,7 @@ class BouncePort:
         mkey: str | None = ...,
         port: str | None = ...,
         duration: int | None = ...,
-        stop: str | None = ...,
+        stop: bool | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,

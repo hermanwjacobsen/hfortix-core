@@ -284,6 +284,7 @@ class LocalAccess(CRUDEndpoint, MetadataMixin):
         
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             name=name,
             mgmt_allowaccess=mgmt_allowaccess,
             internal_allowaccess=internal_allowaccess,
@@ -381,6 +382,7 @@ class LocalAccess(CRUDEndpoint, MetadataMixin):
         
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             name=name,
             mgmt_allowaccess=mgmt_allowaccess,
             internal_allowaccess=internal_allowaccess,
@@ -595,6 +597,7 @@ class LocalAccess(CRUDEndpoint, MetadataMixin):
         
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             name=name,
             mgmt_allowaccess=mgmt_allowaccess,
             internal_allowaccess=internal_allowaccess,

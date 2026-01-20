@@ -141,6 +141,7 @@ class Upgrade(CRUDEndpoint, MetadataMixin):
         """
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="monitor",
             db_name=db_name,
             confirm_not_signed=confirm_not_signed,
             confirm_not_ga_certified=confirm_not_ga_certified,

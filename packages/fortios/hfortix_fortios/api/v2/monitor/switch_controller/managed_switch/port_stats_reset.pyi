@@ -28,7 +28,7 @@ from hfortix_fortios.models import (
 class PortStatsResetPayload(TypedDict, total=False):
     """Payload type for PortStatsReset operations."""
     mkey: str
-    ports: str
+    ports: int | str | list[int | str]
 
 
 # ================================================================
@@ -38,7 +38,7 @@ class PortStatsResetPayload(TypedDict, total=False):
 class PortStatsResetResponse(TypedDict, total=False):
     """Response type for PortStatsReset - use with .dict property for typed dict access."""
     mkey: str
-    ports: str
+    ports: list[str]
 
 
 # ================================================================
@@ -48,7 +48,7 @@ class PortStatsResetResponse(TypedDict, total=False):
 
 class PortStatsResetObject(FortiObject):
     """Typed FortiObject for PortStatsReset with field access."""
-    ports: str
+    ports: list[str]
 
 
 # ================================================================
@@ -98,7 +98,7 @@ class PortStatsReset:
         self,
         payload_dict: PortStatsResetPayload | None = ...,
         mkey: str | None = ...,
-        ports: str | None = ...,
+        ports: int | str | list[int | str] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -112,7 +112,7 @@ class PortStatsReset:
         self,
         payload_dict: PortStatsResetPayload | None = ...,
         mkey: str | None = ...,
-        ports: str | None = ...,
+        ports: int | str | list[int | str] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -133,7 +133,7 @@ class PortStatsReset:
         self,
         payload_dict: PortStatsResetPayload | None = ...,
         mkey: str | None = ...,
-        ports: str | None = ...,
+        ports: int | str | list[int | str] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,

@@ -159,7 +159,7 @@ class Backup:
         usb_filename: str | None = ...,
         password: str | None = ...,
         scope: str | None = ...,
-        password_mask: str | None = ...,
+        password_mask: bool | None = ...,
         file_format: str | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,

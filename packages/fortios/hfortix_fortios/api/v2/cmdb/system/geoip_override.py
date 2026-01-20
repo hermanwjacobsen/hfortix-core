@@ -326,6 +326,7 @@ class GeoipOverride(CRUDEndpoint, MetadataMixin):
         
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             name=name,
             description=description,
             country_id=country_id,
@@ -453,6 +454,7 @@ class GeoipOverride(CRUDEndpoint, MetadataMixin):
         
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             name=name,
             description=description,
             country_id=country_id,
@@ -683,6 +685,7 @@ class GeoipOverride(CRUDEndpoint, MetadataMixin):
         
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             name=name,
             description=description,
             country_id=country_id,

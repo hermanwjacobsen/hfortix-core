@@ -302,6 +302,7 @@ class PasswordPolicy(CRUDEndpoint, MetadataMixin):
         """
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             name=name,
             expire_status=expire_status,
             expire_days=expire_days,
@@ -427,6 +428,7 @@ class PasswordPolicy(CRUDEndpoint, MetadataMixin):
         """
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             name=name,
             expire_status=expire_status,
             expire_days=expire_days,
@@ -669,6 +671,7 @@ class PasswordPolicy(CRUDEndpoint, MetadataMixin):
         """
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             name=name,
             expire_status=expire_status,
             expire_days=expire_days,

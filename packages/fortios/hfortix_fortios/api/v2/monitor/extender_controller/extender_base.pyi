@@ -27,7 +27,7 @@ from hfortix_fortios.models import (
 
 class ExtenderPayload(TypedDict, total=False):
     """Payload type for Extender operations."""
-    fortiextender_name: str
+    fortiextender_name: int | str | list[int | str]
     type: str
 
 
@@ -37,7 +37,7 @@ class ExtenderPayload(TypedDict, total=False):
 
 class ExtenderResponse(TypedDict, total=False):
     """Response type for Extender - use with .dict property for typed dict access."""
-    fortiextender_name: str
+    fortiextender_name: list[str]
     type: str
 
 
@@ -48,7 +48,7 @@ class ExtenderResponse(TypedDict, total=False):
 
 class ExtenderObject(FortiObject):
     """Typed FortiObject for Extender with field access."""
-    fortiextender_name: str
+    fortiextender_name: list[str]
     type: str
 
 
@@ -101,7 +101,7 @@ class Extender:
     def put(
         self,
         payload_dict: ExtenderPayload | None = ...,
-        fortiextender_name: str | None = ...,
+        fortiextender_name: int | str | list[int | str] | None = ...,
         type: str | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
@@ -122,7 +122,7 @@ class Extender:
     def set(
         self,
         payload_dict: ExtenderPayload | None = ...,
-        fortiextender_name: str | None = ...,
+        fortiextender_name: int | str | list[int | str] | None = ...,
         type: str | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,

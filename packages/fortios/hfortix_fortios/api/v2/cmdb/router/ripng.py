@@ -465,6 +465,7 @@ class Ripng(CRUDEndpoint, MetadataMixin):
         
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             default_information_originate=default_information_originate,
             default_metric=default_metric,
             max_out_metric=max_out_metric,

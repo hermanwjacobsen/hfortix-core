@@ -288,6 +288,7 @@ class SwitchProfile(CRUDEndpoint, MetadataMixin):
         """
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             name=name,
             login_passwd_override=login_passwd_override,
             login_passwd=login_passwd,
@@ -392,6 +393,7 @@ class SwitchProfile(CRUDEndpoint, MetadataMixin):
         """
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             name=name,
             login_passwd_override=login_passwd_override,
             login_passwd=login_passwd,
@@ -613,6 +615,7 @@ class SwitchProfile(CRUDEndpoint, MetadataMixin):
         """
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             name=name,
             login_passwd_override=login_passwd_override,
             login_passwd=login_passwd,

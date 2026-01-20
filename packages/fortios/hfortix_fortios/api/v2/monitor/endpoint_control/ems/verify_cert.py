@@ -137,6 +137,7 @@ class VerifyCert(CRUDEndpoint, MetadataMixin):
         """
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="monitor",
             ems_id=ems_id,
             scope=scope,
             fingerprint=fingerprint,

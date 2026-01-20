@@ -90,7 +90,6 @@ class Upload(CRUDEndpoint, MetadataMixin):
         payload_dict: dict[str, Any] | None = None,
         filename: str | None = None,
         file_content: str | None = None,
-        vdom: str | bool | None = None,
         error_mode: Literal["raise", "return", "print"] | None = None,
         error_format: Literal["detailed", "simple", "code_only"] | None = None,
     ):  # type: ignore[no-untyped-def]
@@ -103,7 +102,6 @@ class Upload(CRUDEndpoint, MetadataMixin):
             payload_dict: Complete object data as dict. Alternative to individual parameters.
             filename: filename
             file_content: file_content
-            vdom: Virtual domain name. Use True for global, string for specific VDOM.
             error_mode: Override client-level error_mode. "raise" raises exceptions, "return" returns error dict, "print" prints errors.
             error_format: Override client-level error_format. "detailed" provides full context, "simple" is concise, "code_only" returns just status code.
 
@@ -135,6 +133,7 @@ class Upload(CRUDEndpoint, MetadataMixin):
         """
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="monitor",
             filename=filename,
             file_content=file_content,
             data=payload_dict,
@@ -152,7 +151,7 @@ class Upload(CRUDEndpoint, MetadataMixin):
 
         endpoint = "/system/config-script/upload"
         return self._client.post(
-            "monitor", endpoint, data=payload_data, vdom=vdom        )
+            "monitor", endpoint, data=payload_data, vdom=False        )
 
 
 

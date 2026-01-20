@@ -135,6 +135,7 @@ class Reset(CRUDEndpoint, MetadataMixin):
         """
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="monitor",
             profile=profile,
             user=user,
             data=payload_dict,

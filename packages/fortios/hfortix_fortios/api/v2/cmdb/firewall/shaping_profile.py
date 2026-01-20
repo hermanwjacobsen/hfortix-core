@@ -316,6 +316,7 @@ class ShapingProfile(CRUDEndpoint, MetadataMixin):
         
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             profile_name=profile_name,
             comment=comment,
             type=type,
@@ -435,6 +436,7 @@ class ShapingProfile(CRUDEndpoint, MetadataMixin):
         
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             profile_name=profile_name,
             comment=comment,
             type=type,
@@ -666,6 +668,7 @@ class ShapingProfile(CRUDEndpoint, MetadataMixin):
         
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             profile_name=profile_name,
             comment=comment,
             type=type,

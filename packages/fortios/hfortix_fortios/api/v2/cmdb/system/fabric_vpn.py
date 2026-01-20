@@ -337,6 +337,7 @@ class FabricVpn(CRUDEndpoint, MetadataMixin):
         
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             status=status,
             sync_mode=sync_mode,
             branch_name=branch_name,

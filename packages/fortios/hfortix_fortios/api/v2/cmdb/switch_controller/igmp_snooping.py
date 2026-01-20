@@ -277,6 +277,7 @@ class IgmpSnooping(CRUDEndpoint, MetadataMixin):
         """
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             aging_time=aging_time,
             flood_unknown_multicast=flood_unknown_multicast,
             query_interval=query_interval,

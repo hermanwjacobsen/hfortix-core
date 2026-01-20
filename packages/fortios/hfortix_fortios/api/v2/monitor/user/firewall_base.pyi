@@ -127,9 +127,9 @@ class Firewall:
     def set(
         self,
         payload_dict: FirewallPayload | None = ...,
-        ipv4: str | None = ...,
-        ipv6: str | None = ...,
-        include_fsso: str | None = ...,
+        ipv4: bool | None = ...,
+        ipv6: bool | None = ...,
+        include_fsso: bool | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,

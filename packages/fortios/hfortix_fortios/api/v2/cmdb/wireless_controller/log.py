@@ -297,6 +297,7 @@ class Log(CRUDEndpoint, MetadataMixin):
         """
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             status=status,
             addrgrp_log=addrgrp_log,
             ble_log=ble_log,

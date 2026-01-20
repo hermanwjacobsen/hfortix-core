@@ -334,6 +334,7 @@ class H2qpOsuProvider(CRUDEndpoint, MetadataMixin):
         
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             name=name,
             friendly_name=friendly_name,
             server_uri=server_uri,
@@ -467,6 +468,7 @@ class H2qpOsuProvider(CRUDEndpoint, MetadataMixin):
         
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             name=name,
             friendly_name=friendly_name,
             server_uri=server_uri,
@@ -711,6 +713,7 @@ class H2qpOsuProvider(CRUDEndpoint, MetadataMixin):
         
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             name=name,
             friendly_name=friendly_name,
             server_uri=server_uri,

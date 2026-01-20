@@ -143,6 +143,7 @@ class SetTierPlus(CRUDEndpoint, MetadataMixin):
         """
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="monitor",
             fortilink=fortilink,
             parent_peer1=parent_peer1,
             parent_peer2=parent_peer2,

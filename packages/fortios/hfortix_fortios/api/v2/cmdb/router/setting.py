@@ -277,6 +277,7 @@ class Setting(CRUDEndpoint, MetadataMixin):
         """
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             show_filter=show_filter,
             hostname=hostname,
             kernel_route_distance=kernel_route_distance,

@@ -317,6 +317,7 @@ class Bfd(CRUDEndpoint, MetadataMixin):
         
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             neighbor=neighbor,
             multihop_template=multihop_template,
             data=payload_dict,

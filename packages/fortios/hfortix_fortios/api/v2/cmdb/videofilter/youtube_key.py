@@ -280,6 +280,7 @@ class YoutubeKey(CRUDEndpoint, MetadataMixin):
         """
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             id=id,
             key=key,
             data=payload_dict,
@@ -372,6 +373,7 @@ class YoutubeKey(CRUDEndpoint, MetadataMixin):
         """
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             id=id,
             key=key,
             data=payload_dict,
@@ -581,6 +583,7 @@ class YoutubeKey(CRUDEndpoint, MetadataMixin):
         """
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             id=id,
             key=key,
             data=payload_dict,

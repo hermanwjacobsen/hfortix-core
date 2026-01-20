@@ -30,7 +30,7 @@ class RegisterAppliancePayload(TypedDict, total=False):
     type: str
     mgmt_ip: str
     mgmt_port: int
-    mgmt_url_parameters: str
+    mgmt_url_parameters: int | str | list[int | str]
     serial: str
     hostname: str
 
@@ -44,7 +44,7 @@ class RegisterApplianceResponse(TypedDict, total=False):
     type: str
     mgmt_ip: str
     mgmt_port: int
-    mgmt_url_parameters: str
+    mgmt_url_parameters: list[str]
     serial: str
     hostname: str
 
@@ -59,7 +59,7 @@ class RegisterApplianceObject(FortiObject):
     type: str
     mgmt_ip: str
     mgmt_port: int
-    mgmt_url_parameters: str
+    mgmt_url_parameters: list[str]
     hostname: str
 
 
@@ -112,7 +112,7 @@ class RegisterAppliance:
         type: str | None = ...,
         mgmt_ip: str | None = ...,
         mgmt_port: int | None = ...,
-        mgmt_url_parameters: str | None = ...,
+        mgmt_url_parameters: int | str | list[int | str] | None = ...,
         serial: str | None = ...,
         hostname: str | None = ...,
         vdom: str | bool | None = ...,
@@ -130,7 +130,7 @@ class RegisterAppliance:
         type: str | None = ...,
         mgmt_ip: str | None = ...,
         mgmt_port: int | None = ...,
-        mgmt_url_parameters: str | None = ...,
+        mgmt_url_parameters: int | str | list[int | str] | None = ...,
         serial: str | None = ...,
         hostname: str | None = ...,
         vdom: str | bool | None = ...,
@@ -155,7 +155,7 @@ class RegisterAppliance:
         type: str | None = ...,
         mgmt_ip: str | None = ...,
         mgmt_port: int | None = ...,
-        mgmt_url_parameters: str | None = ...,
+        mgmt_url_parameters: int | str | list[int | str] | None = ...,
         serial: str | None = ...,
         hostname: str | None = ...,
         vdom: str | bool | None = ...,

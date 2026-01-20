@@ -492,6 +492,7 @@ class LocalInPolicy6(CRUDEndpoint, MetadataMixin):
         
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             policyid=policyid,
             uuid=uuid,
             intf=intf,
@@ -763,6 +764,7 @@ class LocalInPolicy6(CRUDEndpoint, MetadataMixin):
         
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             policyid=policyid,
             uuid=uuid,
             intf=intf,
@@ -1106,6 +1108,7 @@ class LocalInPolicy6(CRUDEndpoint, MetadataMixin):
         
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             policyid=policyid,
             uuid=uuid,
             intf=intf,

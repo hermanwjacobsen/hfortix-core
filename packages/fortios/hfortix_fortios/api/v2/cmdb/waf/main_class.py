@@ -274,6 +274,7 @@ class MainClass(CRUDEndpoint, MetadataMixin):
         """
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             name=name,
             id=id,
             data=payload_dict,
@@ -364,6 +365,7 @@ class MainClass(CRUDEndpoint, MetadataMixin):
         """
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             name=name,
             id=id,
             data=payload_dict,
@@ -567,6 +569,7 @@ class MainClass(CRUDEndpoint, MetadataMixin):
         """
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             name=name,
             id=id,
             data=payload_dict,

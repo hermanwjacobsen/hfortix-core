@@ -283,6 +283,7 @@ class Setting(CRUDEndpoint, MetadataMixin):
         
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             pdf_report=pdf_report,
             fortiview=fortiview,
             report_source=report_source,

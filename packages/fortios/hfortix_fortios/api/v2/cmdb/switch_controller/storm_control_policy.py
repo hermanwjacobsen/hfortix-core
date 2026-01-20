@@ -292,6 +292,7 @@ class StormControlPolicy(CRUDEndpoint, MetadataMixin):
         """
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             name=name,
             description=description,
             storm_control_mode=storm_control_mode,
@@ -402,6 +403,7 @@ class StormControlPolicy(CRUDEndpoint, MetadataMixin):
         """
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             name=name,
             description=description,
             storm_control_mode=storm_control_mode,
@@ -629,6 +631,7 @@ class StormControlPolicy(CRUDEndpoint, MetadataMixin):
         """
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             name=name,
             description=description,
             storm_control_mode=storm_control_mode,

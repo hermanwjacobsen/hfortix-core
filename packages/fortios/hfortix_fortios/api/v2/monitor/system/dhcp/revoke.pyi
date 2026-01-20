@@ -27,7 +27,7 @@ from hfortix_fortios.models import (
 
 class RevokePayload(TypedDict, total=False):
     """Payload type for Revoke operations."""
-    ip: str
+    ip: int | str | list[int | str]
 
 
 # ================================================================
@@ -36,7 +36,7 @@ class RevokePayload(TypedDict, total=False):
 
 class RevokeResponse(TypedDict, total=False):
     """Response type for Revoke - use with .dict property for typed dict access."""
-    ip: str
+    ip: list[str]
 
 
 # ================================================================
@@ -46,7 +46,7 @@ class RevokeResponse(TypedDict, total=False):
 
 class RevokeObject(FortiObject):
     """Typed FortiObject for Revoke with field access."""
-    ip: str
+    ip: list[str]
 
 
 # ================================================================
@@ -95,7 +95,7 @@ class Revoke:
     def post(
         self,
         payload_dict: RevokePayload | None = ...,
-        ip: str | None = ...,
+        ip: int | str | list[int | str] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -108,7 +108,7 @@ class Revoke:
     def put(
         self,
         payload_dict: RevokePayload | None = ...,
-        ip: str | None = ...,
+        ip: int | str | list[int | str] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -128,7 +128,7 @@ class Revoke:
     def set(
         self,
         payload_dict: RevokePayload | None = ...,
-        ip: str | None = ...,
+        ip: int | str | list[int | str] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,

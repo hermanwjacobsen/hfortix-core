@@ -335,6 +335,7 @@ class DeviceUpgrade(CRUDEndpoint, MetadataMixin):
         
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             status=status,
             ha_reboot_controller=ha_reboot_controller,
             next_path_index=next_path_index,
@@ -482,6 +483,7 @@ class DeviceUpgrade(CRUDEndpoint, MetadataMixin):
         
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             status=status,
             ha_reboot_controller=ha_reboot_controller,
             next_path_index=next_path_index,
@@ -740,6 +742,7 @@ class DeviceUpgrade(CRUDEndpoint, MetadataMixin):
         
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             status=status,
             ha_reboot_controller=ha_reboot_controller,
             next_path_index=next_path_index,

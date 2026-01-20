@@ -309,6 +309,7 @@ class AuthPortal(CRUDEndpoint, MetadataMixin):
         
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             groups=groups,
             portal_addr=portal_addr,
             portal_addr6=portal_addr6,

@@ -165,7 +165,7 @@ class Restore:
         config_id: int | None = ...,
         password: str | None = ...,
         scope: str | None = ...,
-        confirm_password_mask: str | None = ...,
+        confirm_password_mask: bool | None = ...,
         file_content: str | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,

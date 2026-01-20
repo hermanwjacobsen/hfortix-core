@@ -314,6 +314,7 @@ class MulticastAddress6(CRUDEndpoint, MetadataMixin):
         
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             name=name,
             ip6=ip6,
             comment=comment,
@@ -430,6 +431,7 @@ class MulticastAddress6(CRUDEndpoint, MetadataMixin):
         
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             name=name,
             ip6=ip6,
             comment=comment,
@@ -658,6 +660,7 @@ class MulticastAddress6(CRUDEndpoint, MetadataMixin):
         
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             name=name,
             ip6=ip6,
             comment=comment,

@@ -90,7 +90,6 @@ class ConfigScript(CRUDEndpoint, MetadataMixin):
         count: int | None = None,
         start: int | None = None,
         payload_dict: dict[str, Any] | None = None,
-        vdom: str | bool | None = None,
         error_mode: Literal["raise", "return", "print"] | None = None,
         error_format: Literal["detailed", "simple", "code_only"] | None = None,
     ):  # type: ignore[no-untyped-def]
@@ -116,7 +115,6 @@ class ConfigScript(CRUDEndpoint, MetadataMixin):
                 - scope (str): Query scope - "global", "vdom", or "both"
                 - action (str): Special actions - "schema", "default"
                 See FortiOS REST API documentation for complete list.
-            vdom: Virtual domain name. Use True for global, string for specific VDOM, None for default.
             error_mode: Override client-level error_mode. "raise" raises exceptions, "return" returns error dict, "print" prints errors.
             error_format: Override client-level error_format. "detailed" provides full context, "simple" is concise, "code_only" returns just status code.
 
@@ -176,7 +174,7 @@ class ConfigScript(CRUDEndpoint, MetadataMixin):
             unwrap_single = False
         
         return self._client.get(
-            "monitor", endpoint, params=params, vdom=vdom, unwrap_single=unwrap_single
+            "monitor", endpoint, params=params, vdom=False, unwrap_single=unwrap_single
         )
 
 
@@ -194,14 +192,12 @@ class ConfigScript(CRUDEndpoint, MetadataMixin):
     def exists(
         self,
         name: str,
-        vdom: str | bool | None = None,
     ) -> bool:
         """
         Check if system/config_script object exists.
         
         Args:
             name: Name to check
-            vdom: Virtual domain name
             
         Returns:
             True if object exists, False otherwise
@@ -225,7 +221,7 @@ class ConfigScript(CRUDEndpoint, MetadataMixin):
                 "monitor",
                 endpoint,
                 params=None,
-                vdom=vdom,
+                vdom=False,
                 raw_json=True,
                 silent=True,
             )

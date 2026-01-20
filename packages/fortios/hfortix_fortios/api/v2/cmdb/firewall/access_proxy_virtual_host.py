@@ -320,6 +320,7 @@ class AccessProxyVirtualHost(CRUDEndpoint, MetadataMixin):
         
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             name=name,
             ssl_certificate=ssl_certificate,
             host=host,
@@ -445,6 +446,7 @@ class AccessProxyVirtualHost(CRUDEndpoint, MetadataMixin):
         
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             name=name,
             ssl_certificate=ssl_certificate,
             host=host,
@@ -682,6 +684,7 @@ class AccessProxyVirtualHost(CRUDEndpoint, MetadataMixin):
         
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             name=name,
             ssl_certificate=ssl_certificate,
             host=host,

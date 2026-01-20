@@ -269,6 +269,7 @@ class SpeedTestSetting(CRUDEndpoint, MetadataMixin):
         """
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             latency_threshold=latency_threshold,
             multiple_tcp_stream=multiple_tcp_stream,
             data=payload_dict,

@@ -137,6 +137,7 @@ class UpdateGlobalLabel(CRUDEndpoint, MetadataMixin):
         """
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="monitor",
             policyid=policyid,
             current_label=current_label,
             new_label=new_label,

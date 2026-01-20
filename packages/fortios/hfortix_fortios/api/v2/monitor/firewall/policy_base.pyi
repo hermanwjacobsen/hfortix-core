@@ -27,7 +27,7 @@ from hfortix_fortios.models import (
 
 class PolicyPayload(TypedDict, total=False):
     """Payload type for Policy operations."""
-    policyid: str
+    policyid: int | str | list[int | str]
     ip_version: str
 
 
@@ -37,7 +37,7 @@ class PolicyPayload(TypedDict, total=False):
 
 class PolicyResponse(TypedDict, total=False):
     """Response type for Policy - use with .dict property for typed dict access."""
-    policyid: str
+    policyid: list[str]
     ip_version: str
 
 
@@ -48,7 +48,7 @@ class PolicyResponse(TypedDict, total=False):
 
 class PolicyObject(FortiObject):
     """Typed FortiObject for Policy with field access."""
-    policyid: str
+    policyid: list[str]
     ip_version: str
 
 
@@ -101,7 +101,7 @@ class Policy:
     def put(
         self,
         payload_dict: PolicyPayload | None = ...,
-        policyid: str | None = ...,
+        policyid: int | str | list[int | str] | None = ...,
         ip_version: str | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
@@ -122,7 +122,7 @@ class Policy:
     def set(
         self,
         payload_dict: PolicyPayload | None = ...,
-        policyid: str | None = ...,
+        policyid: int | str | list[int | str] | None = ...,
         ip_version: str | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,

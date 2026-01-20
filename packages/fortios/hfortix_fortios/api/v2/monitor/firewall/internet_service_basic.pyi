@@ -117,7 +117,7 @@ class InternetServiceBasic:
     def set(
         self,
         payload_dict: InternetServiceBasicPayload | None = ...,
-        ipv6_only: str | None = ...,
+        ipv6_only: bool | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,

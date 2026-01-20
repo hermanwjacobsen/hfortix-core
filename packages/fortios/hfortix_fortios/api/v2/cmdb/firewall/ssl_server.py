@@ -332,6 +332,7 @@ class SslServer(CRUDEndpoint, MetadataMixin):
         
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             name=name,
             ip=ip,
             port=port,
@@ -475,6 +476,7 @@ class SslServer(CRUDEndpoint, MetadataMixin):
         
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             name=name,
             ip=ip,
             port=port,
@@ -730,6 +732,7 @@ class SslServer(CRUDEndpoint, MetadataMixin):
         
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             name=name,
             ip=ip,
             port=port,

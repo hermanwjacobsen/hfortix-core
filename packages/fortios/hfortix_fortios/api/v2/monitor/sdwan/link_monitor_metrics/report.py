@@ -149,6 +149,7 @@ class Report(CRUDEndpoint, MetadataMixin):
         """
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="monitor",
             agent_ip=agent_ip,
             application_name=application_name,
             application_id=application_id,

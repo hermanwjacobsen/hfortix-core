@@ -357,6 +357,7 @@ class ThreatWeight(CRUDEndpoint, MetadataMixin):
         
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             status=status,
             level=level,
             blocked_connection=blocked_connection,

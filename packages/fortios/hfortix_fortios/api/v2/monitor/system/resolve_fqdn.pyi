@@ -28,7 +28,7 @@ from hfortix_fortios.models import (
 class ResolveFqdnPayload(TypedDict, total=False):
     """Payload type for ResolveFqdn operations."""
     ipv6: bool
-    fqdn: str
+    fqdn: int | str | list[int | str]
 
 
 # ================================================================
@@ -38,7 +38,7 @@ class ResolveFqdnPayload(TypedDict, total=False):
 class ResolveFqdnResponse(TypedDict, total=False):
     """Response type for ResolveFqdn - use with .dict property for typed dict access."""
     ipv6: bool
-    fqdn: str
+    fqdn: list[str]
 
 
 # ================================================================
@@ -49,7 +49,7 @@ class ResolveFqdnResponse(TypedDict, total=False):
 class ResolveFqdnObject(FortiObject):
     """Typed FortiObject for ResolveFqdn with field access."""
     ipv6: bool
-    fqdn: str
+    fqdn: list[str]
 
 
 # ================================================================
@@ -102,7 +102,7 @@ class ResolveFqdn:
         self,
         payload_dict: ResolveFqdnPayload | None = ...,
         ipv6: bool | None = ...,
-        fqdn: str | None = ...,
+        fqdn: int | str | list[int | str] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -122,8 +122,8 @@ class ResolveFqdn:
     def set(
         self,
         payload_dict: ResolveFqdnPayload | None = ...,
-        ipv6: str | None = ...,
-        fqdn: str | None = ...,
+        ipv6: bool | None = ...,
+        fqdn: int | str | list[int | str] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,

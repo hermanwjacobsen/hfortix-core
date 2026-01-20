@@ -288,6 +288,7 @@ class Certificate(CRUDEndpoint, MetadataMixin):
         """
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             name=name,
             id=id,
             status=status,
@@ -392,6 +393,7 @@ class Certificate(CRUDEndpoint, MetadataMixin):
         """
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             name=name,
             id=id,
             status=status,
@@ -613,6 +615,7 @@ class Certificate(CRUDEndpoint, MetadataMixin):
         """
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             name=name,
             id=id,
             status=status,

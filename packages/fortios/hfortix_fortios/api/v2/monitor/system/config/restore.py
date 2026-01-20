@@ -146,6 +146,7 @@ class Restore(CRUDEndpoint, MetadataMixin):
         """
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="monitor",
             source=source,
             usb_filename=usb_filename,
             config_id=config_id,

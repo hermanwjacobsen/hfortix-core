@@ -29,8 +29,8 @@ class GlobalSearchPayload(TypedDict, total=False):
     """Payload type for GlobalSearch operations."""
     search: str
     scope: str
-    search_tables: str
-    skip_tables: str
+    search_tables: int | str | list[int | str]
+    skip_tables: int | str | list[int | str]
     exact: bool
 
 
@@ -42,8 +42,8 @@ class GlobalSearchResponse(TypedDict, total=False):
     """Response type for GlobalSearch - use with .dict property for typed dict access."""
     search: str
     scope: str
-    search_tables: str
-    skip_tables: str
+    search_tables: list[str]
+    skip_tables: list[str]
     exact: bool
 
 
@@ -56,8 +56,8 @@ class GlobalSearchObject(FortiObject):
     """Typed FortiObject for GlobalSearch with field access."""
     search: str
     scope: str
-    search_tables: str
-    skip_tables: str
+    search_tables: list[str]
+    skip_tables: list[str]
     exact: bool
 
 
@@ -115,8 +115,8 @@ class GlobalSearch:
         payload_dict: GlobalSearchPayload | None = ...,
         search: str | None = ...,
         scope: str | None = ...,
-        search_tables: str | None = ...,
-        skip_tables: str | None = ...,
+        search_tables: int | str | list[int | str] | None = ...,
+        skip_tables: int | str | list[int | str] | None = ...,
         exact: bool | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
@@ -139,9 +139,9 @@ class GlobalSearch:
         payload_dict: GlobalSearchPayload | None = ...,
         search: str | None = ...,
         scope: str | None = ...,
-        search_tables: str | None = ...,
-        skip_tables: str | None = ...,
-        exact: str | None = ...,
+        search_tables: int | str | list[int | str] | None = ...,
+        skip_tables: int | str | list[int | str] | None = ...,
+        exact: bool | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,

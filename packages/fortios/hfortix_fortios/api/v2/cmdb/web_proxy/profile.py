@@ -330,6 +330,7 @@ class Profile(CRUDEndpoint, MetadataMixin):
         
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             name=name,
             header_client_ip=header_client_ip,
             header_via_request=header_via_request,
@@ -470,6 +471,7 @@ class Profile(CRUDEndpoint, MetadataMixin):
         
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             name=name,
             header_client_ip=header_client_ip,
             header_via_request=header_via_request,
@@ -722,6 +724,7 @@ class Profile(CRUDEndpoint, MetadataMixin):
         
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             name=name,
             header_client_ip=header_client_ip,
             header_via_request=header_via_request,

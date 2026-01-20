@@ -279,6 +279,7 @@ class NetworkVisibility(CRUDEndpoint, MetadataMixin):
         """
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             destination_visibility=destination_visibility,
             source_location=source_location,
             destination_hostname_visibility=destination_hostname_visibility,

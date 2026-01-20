@@ -280,6 +280,7 @@ class TrafficClass(CRUDEndpoint, MetadataMixin):
         """
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             class_id=class_id,
             class_name=class_name,
             data=payload_dict,
@@ -372,6 +373,7 @@ class TrafficClass(CRUDEndpoint, MetadataMixin):
         """
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             class_id=class_id,
             class_name=class_name,
             data=payload_dict,
@@ -581,6 +583,7 @@ class TrafficClass(CRUDEndpoint, MetadataMixin):
         """
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             class_id=class_id,
             class_name=class_name,
             data=payload_dict,

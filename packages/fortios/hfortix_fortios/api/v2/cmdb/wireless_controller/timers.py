@@ -317,6 +317,7 @@ class Timers(CRUDEndpoint, MetadataMixin):
         """
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             echo_interval=echo_interval,
             nat_session_keep_alive=nat_session_keep_alive,
             discovery_interval=discovery_interval,

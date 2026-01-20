@@ -312,6 +312,7 @@ class WtpGroup(CRUDEndpoint, MetadataMixin):
         
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             name=name,
             platform_type=platform_type,
             ble_major_id=ble_major_id,
@@ -425,6 +426,7 @@ class WtpGroup(CRUDEndpoint, MetadataMixin):
         
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             name=name,
             platform_type=platform_type,
             ble_major_id=ble_major_id,
@@ -650,6 +652,7 @@ class WtpGroup(CRUDEndpoint, MetadataMixin):
         
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             name=name,
             platform_type=platform_type,
             ble_major_id=ble_major_id,

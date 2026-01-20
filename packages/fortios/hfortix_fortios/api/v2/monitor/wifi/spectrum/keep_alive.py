@@ -137,6 +137,7 @@ class KeepAlive(CRUDEndpoint, MetadataMixin):
         """
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="monitor",
             wtp_id=wtp_id,
             radio_id=radio_id,
             duration=duration,

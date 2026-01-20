@@ -282,6 +282,7 @@ class AnqpNetworkAuthType(CRUDEndpoint, MetadataMixin):
         """
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             name=name,
             auth_type=auth_type,
             url=url,
@@ -377,6 +378,7 @@ class AnqpNetworkAuthType(CRUDEndpoint, MetadataMixin):
         """
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             name=name,
             auth_type=auth_type,
             url=url,
@@ -589,6 +591,7 @@ class AnqpNetworkAuthType(CRUDEndpoint, MetadataMixin):
         """
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             name=name,
             auth_type=auth_type,
             url=url,

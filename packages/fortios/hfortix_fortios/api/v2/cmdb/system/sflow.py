@@ -293,6 +293,7 @@ class Sflow(CRUDEndpoint, MetadataMixin):
         
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             collectors=collectors,
             data=payload_dict,
         )

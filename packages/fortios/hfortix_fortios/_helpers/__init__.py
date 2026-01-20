@@ -56,6 +56,7 @@ from hfortix_fortios._helpers.normalizers import (
     normalize_member_list,
     normalize_table_field,
     normalize_to_name_list,
+    normalize_to_string_list,
 )
 
 # Response helpers
@@ -116,6 +117,7 @@ __all__ = [
     "normalize_to_name_list",
     "normalize_member_list",
     "normalize_table_field",
+    "normalize_to_string_list",
     # Data cleaning and conversion
     "filter_empty_values",
     "convert_boolean_to_str",

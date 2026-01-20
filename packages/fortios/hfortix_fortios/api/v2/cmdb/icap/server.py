@@ -298,6 +298,7 @@ class Server(CRUDEndpoint, MetadataMixin):
         """
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             name=name,
             addr_type=addr_type,
             ip_address=ip_address,
@@ -417,6 +418,7 @@ class Server(CRUDEndpoint, MetadataMixin):
         """
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             name=name,
             addr_type=addr_type,
             ip_address=ip_address,
@@ -653,6 +655,7 @@ class Server(CRUDEndpoint, MetadataMixin):
         """
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             name=name,
             addr_type=addr_type,
             ip_address=ip_address,

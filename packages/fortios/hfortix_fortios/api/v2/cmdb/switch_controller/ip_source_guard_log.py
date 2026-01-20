@@ -275,6 +275,7 @@ class IpSourceGuardLog(CRUDEndpoint, MetadataMixin):
         """
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             log_violations=log_violations,
             violation_timer=violation_timer,
             data=payload_dict,

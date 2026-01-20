@@ -474,6 +474,7 @@ class CentralSnatMap(CRUDEndpoint, MetadataMixin):
         
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             policyid=policyid,
             uuid=uuid,
             status=status,
@@ -732,6 +733,7 @@ class CentralSnatMap(CRUDEndpoint, MetadataMixin):
         
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             policyid=policyid,
             uuid=uuid,
             status=status,
@@ -1067,6 +1069,7 @@ class CentralSnatMap(CRUDEndpoint, MetadataMixin):
         
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             policyid=policyid,
             uuid=uuid,
             status=status,

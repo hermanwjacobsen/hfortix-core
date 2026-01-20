@@ -288,6 +288,7 @@ class DnsServer(CRUDEndpoint, MetadataMixin):
         """
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             name=name,
             mode=mode,
             dnsfilter_profile=dnsfilter_profile,
@@ -392,6 +393,7 @@ class DnsServer(CRUDEndpoint, MetadataMixin):
         """
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             name=name,
             mode=mode,
             dnsfilter_profile=dnsfilter_profile,
@@ -613,6 +615,7 @@ class DnsServer(CRUDEndpoint, MetadataMixin):
         """
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             name=name,
             mode=mode,
             dnsfilter_profile=dnsfilter_profile,

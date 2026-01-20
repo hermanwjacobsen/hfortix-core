@@ -267,6 +267,7 @@ class Global(CRUDEndpoint, MetadataMixin):
         """
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             banned_ip_persistency=banned_ip_persistency,
             data=payload_dict,
         )

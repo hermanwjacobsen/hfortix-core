@@ -271,6 +271,7 @@ class FipsCc(CRUDEndpoint, MetadataMixin):
         """
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             status=status,
             self_test_period=self_test_period,
             key_generation_self_test=key_generation_self_test,

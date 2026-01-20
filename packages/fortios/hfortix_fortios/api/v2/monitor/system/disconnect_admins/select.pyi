@@ -29,7 +29,7 @@ class SelectPayload(TypedDict, total=False):
     """Payload type for Select operations."""
     id: int
     method: str
-    admins: str
+    admins: int | str | list[int | str]
 
 
 # ================================================================
@@ -40,7 +40,7 @@ class SelectResponse(TypedDict, total=False):
     """Response type for Select - use with .dict property for typed dict access."""
     id: int
     method: str
-    admins: str
+    admins: list[str]
 
 
 # ================================================================
@@ -52,7 +52,7 @@ class SelectObject(FortiObject):
     """Typed FortiObject for Select with field access."""
     id: int
     method: str
-    admins: str
+    admins: list[str]
 
 
 # ================================================================
@@ -103,7 +103,7 @@ class Select:
         payload_dict: SelectPayload | None = ...,
         id: int | None = ...,
         method: str | None = ...,
-        admins: str | None = ...,
+        admins: int | str | list[int | str] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -118,7 +118,7 @@ class Select:
         payload_dict: SelectPayload | None = ...,
         id: int | None = ...,
         method: str | None = ...,
-        admins: str | None = ...,
+        admins: int | str | list[int | str] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -140,7 +140,7 @@ class Select:
         payload_dict: SelectPayload | None = ...,
         id: int | None = ...,
         method: str | None = ...,
-        admins: str | None = ...,
+        admins: int | str | list[int | str] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,

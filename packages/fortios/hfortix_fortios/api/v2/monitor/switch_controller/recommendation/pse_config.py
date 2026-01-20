@@ -133,6 +133,7 @@ class PseConfig(CRUDEndpoint, MetadataMixin):
         """
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="monitor",
             fortilink=fortilink,
             data=payload_dict,
         )

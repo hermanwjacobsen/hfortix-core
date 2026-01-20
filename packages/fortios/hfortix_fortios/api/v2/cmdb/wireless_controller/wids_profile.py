@@ -560,6 +560,7 @@ class WidsProfile(CRUDEndpoint, MetadataMixin):
         
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             name=name,
             comment=comment,
             sensor_mode=sensor_mode,
@@ -1017,6 +1018,7 @@ class WidsProfile(CRUDEndpoint, MetadataMixin):
         
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             name=name,
             comment=comment,
             sensor_mode=sensor_mode,
@@ -1576,6 +1578,7 @@ class WidsProfile(CRUDEndpoint, MetadataMixin):
         
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             name=name,
             comment=comment,
             sensor_mode=sensor_mode,

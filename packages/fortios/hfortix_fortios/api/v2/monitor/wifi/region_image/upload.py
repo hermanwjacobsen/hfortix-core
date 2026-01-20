@@ -137,6 +137,7 @@ class Upload(CRUDEndpoint, MetadataMixin):
         """
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="monitor",
             region_name=region_name,
             image_type=image_type,
             file_content=file_content,

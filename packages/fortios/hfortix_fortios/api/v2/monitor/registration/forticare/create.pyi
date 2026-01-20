@@ -236,7 +236,7 @@ class Create:
         orgsize_id: int | None = ...,
         reseller_name: str | None = ...,
         reseller_id: int | None = ...,
-        is_government: str | None = ...,
+        is_government: bool | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,

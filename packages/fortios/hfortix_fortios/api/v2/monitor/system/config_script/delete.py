@@ -89,7 +89,6 @@ class Delete(CRUDEndpoint, MetadataMixin):
         self,
         payload_dict: dict[str, Any] | None = None,
         id_list: Any | None = None,
-        vdom: str | bool | None = None,
         error_mode: Literal["raise", "return", "print"] | None = None,
         error_format: Literal["detailed", "simple", "code_only"] | None = None,
     ):  # type: ignore[no-untyped-def]
@@ -101,7 +100,6 @@ class Delete(CRUDEndpoint, MetadataMixin):
         Args:
             payload_dict: Complete object data as dict. Alternative to individual parameters.
             id_list: id_list
-            vdom: Virtual domain name. Use True for global, string for specific VDOM.
             error_mode: Override client-level error_mode. "raise" raises exceptions, "return" returns error dict, "print" prints errors.
             error_format: Override client-level error_format. "detailed" provides full context, "simple" is concise, "code_only" returns just status code.
 
@@ -133,6 +131,7 @@ class Delete(CRUDEndpoint, MetadataMixin):
         """
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="monitor",
             id_list=id_list,
             data=payload_dict,
         )
@@ -149,7 +148,7 @@ class Delete(CRUDEndpoint, MetadataMixin):
 
         endpoint = "/system/config-script/delete"
         return self._client.post(
-            "monitor", endpoint, data=payload_data, vdom=vdom        )
+            "monitor", endpoint, data=payload_data, vdom=False        )
 
 
 

@@ -310,6 +310,7 @@ class InternetServiceCustomGroup(CRUDEndpoint, MetadataMixin):
         
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             name=name,
             comment=comment,
             member=member,
@@ -420,6 +421,7 @@ class InternetServiceCustomGroup(CRUDEndpoint, MetadataMixin):
         
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             name=name,
             comment=comment,
             member=member,
@@ -642,6 +644,7 @@ class InternetServiceCustomGroup(CRUDEndpoint, MetadataMixin):
         
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             name=name,
             comment=comment,
             member=member,

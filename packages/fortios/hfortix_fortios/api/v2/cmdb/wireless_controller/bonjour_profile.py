@@ -312,6 +312,7 @@ class BonjourProfile(CRUDEndpoint, MetadataMixin):
         
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             name=name,
             comment=comment,
             micro_location=micro_location,
@@ -425,6 +426,7 @@ class BonjourProfile(CRUDEndpoint, MetadataMixin):
         
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             name=name,
             comment=comment,
             micro_location=micro_location,
@@ -650,6 +652,7 @@ class BonjourProfile(CRUDEndpoint, MetadataMixin):
         
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             name=name,
             comment=comment,
             micro_location=micro_location,

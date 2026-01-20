@@ -7,6 +7,396 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.5.130] - 2026-01-20
+
+### Fixed
+
+- **CRITICAL: Context-Aware Field Name Conversion**: Fixed `ems_id` and other fields used across multiple API types
+  - **Root Cause**: Fields like `ems_id` appear in both CMDB and Monitor endpoints but need different handling:
+    - CMDB endpoints: `ems_id` → `ems-id` (convert to kebab-case)
+    - Monitor endpoints: `ems_id` → `ems_id` (preserve underscore)
+  - **Previous Issue**: `build_api_payload()` checked ALL underscore preservation lists, causing CMDB endpoints to incorrectly preserve underscores
+  - **Example Bug**: `cmdb.endpoint_control.fctems.put(ems_id=3)` sent `{"ems_id": 3}` but API expects `{"ems-id": 3}` → HTTP 500
+  - **Solution**: Added `api_type` parameter to `build_api_payload()` for context-specific behavior
+    - CMDB endpoints: Only check `CMDB_BODY_FIELD_NO_HYPHEN` (4 fields)
+    - Monitor endpoints: Only check `MONITOR_BODY_FIELD_NO_HYPHEN` (200 fields)
+    - Log endpoints: Only check `LOG_BODY_FIELD_NO_HYPHEN` (0 fields)
+    - Service endpoints: Auto-detect based on context
+  - **Impact**: Context-sensitive fields now work correctly in all API types
+    - ✅ `cmdb.endpoint_control.fctems.put(ems_id=3)` → `{"ems-id": 3}` (CMDB: converts to hyphen)
+    - ✅ `monitor.endpoint_control.ems.status.get(ems_id=5)` → `{"ems_id": 5}` (Monitor: preserves underscore)
+    - ✅ All 1,064 endpoints regenerated with proper `api_type` context
+
+### Changed
+
+- **Generator Template**: Updated `endpoint_class.py.j2` to emit `api_type="{{ schema.category }}"` in all `build_api_payload()` calls
+- **Payload Builders**: Enhanced `build_api_payload()` with context-aware field name conversion
+  - New parameter: `api_type: Literal["cmdb", "monitor", "log", "service"] | None`
+  - Context-specific underscore preservation based on API type
+  - Legacy behavior preserved when `api_type=None` (checks all lists)
+- **All Endpoints**: Regenerated 1,064 endpoints with proper API type context
+
+### Documentation
+
+- Updated builder function docstrings with `api_type` parameter documentation
+
+### Tests
+
+- **System Monitor Endpoints**: Added comprehensive testing for FortiGate system monitoring endpoints (11 files, 22 tests)
+  - **Configuration Management** (2 files, 7 tests):
+    - `system/config-script` (4 tests): Script execution history, upload/execute, delete
+    - `system/config-revision` (3 tests): List revisions, save revision, update comments
+  - **Admin & Session Monitoring** (2 files, 2 tests):
+    - `system/current-admins` (1 test): Active admin sessions
+    - `system/interface-connected-admins-info` (1 test): Admin sessions by interface
+  - **System Resources & Status** (4 files, 4 tests):
+    - `system/vdom-resource` (1 test): VDOM resource usage statistics
+    - `system/global-resources` (1 test): Global system resource allocation
+    - `system/vdom-link` (1 test): VDOM link configuration and status
+    - `system/ntp-status` (1 test): NTP synchronization status
+  - **Time Management** (1 file, 2 tests):
+    - `system/time` (2 tests): Get/set system time with Unix timestamp and component-based formats
+  - **DHCP Management** (1 file, 2 tests):
+    - `system/dhcp` (2 tests): Active DHCP lease monitoring, lease revocation by IP
+  - **Security Fabric** (1 file, 2 tests):
+    - `system/csf` (2 tests): Fabric topology, pending device authorizations
+  - **System Upgrade** (1 file, 3 tests):
+    - `system/upgrade/report` (3 tests): Saved reports, report existence check, current report
+  - **Test Environment**: FortiGate v7.6.5 build 3651, VDOM: test, hfortix-fortios v0.5.130
+  - **Test Results**: 214 total monitor tests passed, 1 skipped
+
+## [0.5.129] - 2026-01-20
+
+### Fixed
+
+- **CRITICAL: Schema-Driven Field Preservation**: Auto-generated comprehensive lists of fields with underscores
+  - **Root Cause**: FortiOS API inconsistently uses both underscores AND hyphens in field names
+    - CMDB endpoints: Mostly kebab-case (`ems-id`, `source-ip`)
+    - Monitor endpoints: Mix of both (`id_list`, `file_content` with underscores, others with hyphens)
+    - Same parameter differs by context: `ems-id` in CMDB vs `ems_id` in Monitor
+  - **Previous Issue**: Only 2 Monitor fields preserved (file_content, key_file_content), but API has 200+ underscore fields!
+  - **Solution**: Created automated schema scanner that found ALL fields with underscores
+    - Scanned 1,350+ schema files
+    - Found 204 total fields where API expects underscores (not hyphens)
+  - **New Field Lists** (auto-generated from schemas):
+    - `CMDB_BODY_FIELD_NO_HYPHEN`: 4 fields (block_ack_flood, block_ack_flood_thresh, block_ack_flood_time, switch_dhcp_opt43_key)
+    - `MONITOR_BODY_FIELD_NO_HYPHEN`: 200 fields (id_list, file_content, ems_id, account_id, ip_address, mac_address, etc.)
+    - `LOG_BODY_FIELD_NO_HYPHEN`: 0 fields
+    - `SERVICE_BODY_FIELD_NO_HYPHEN`: 0 fields
+  - **Impact**: All underscore fields now work correctly
+    - ✅ `monitor.system.config_script.delete.post(id_list=[...])` → `{"id_list": [...]}` (was `{"id-list": [...]}` → HTTP 400)
+    - ✅ `monitor.system.config_script.upload.post(file_content="...")` → `{"file_content": "..."}`
+    - ✅ `monitor.endpoint_control.ems.status.get(ems_id=5)` → params with `ems_id=5`
+    - ✅ `monitor.registration.forticare.login.post(account_id="user@example.com")` → `{"account_id": "..."}`
+    - ✅ All 200+ Monitor underscore fields now preserved correctly
+
+### Added
+
+- **Generator Tools** (`generator/` directory):
+  - `scan_underscore_fields.py` - Scans all schemas to find fields with underscores
+  - `update_field_overrides.py` - Auto-updates field_overrides.py from schemas
+  - `example_generator_integration.py` - Integration example for generator workflow
+  - `README.md` - Documentation for generator tools
+  - **Integration**: Can be called during code generation to keep field lists in sync with schemas
+
+### Changed
+
+- **Field Override Lists**: Now auto-generated from schemas (was manually maintained)
+  - `CMDB_BODY_FIELD_NO_HYPHEN`: 0 → 4 fields
+  - `MONITOR_BODY_FIELD_NO_HYPHEN`: 2 → 200 fields
+  - Ensures field conversion always matches actual API expectations
+
+### Documentation
+
+- `docs/fortios/UNDERSCORE_HYPHEN_INCONSISTENCY.md` - Comprehensive guide to the API inconsistency
+- `UNDERSCORE_HYPHEN_FIX_SUMMARY.md` - Fix summary and impact analysis
+- `generator/README.md` - Generator tools documentation
+
+### Tests
+
+- `test_underscore_preservation.py` - Unit tests for underscore field preservation
+- `test_id_list_bug_fix.py` - Integration test for original user bug report
+
+## [0.5.128] - 2026-01-20
+
+### Fixed
+
+- **CRITICAL: Context-Aware Parameter Conversion System**: Implemented proper separation of query parameter vs body field handling
+  - **Root Cause**: Previous whitelist didn't distinguish between query params (keep underscore) and body fields (convert to hyphen)
+  - **Solution**: Split into context-specific lists for each API type
+    - `*_QUERY_PARAM_NO_HYPHEN` - Query/path parameters that preserve underscores
+    - `*_BODY_FIELD_NO_HYPHEN` - Body fields that exceptionally preserve underscores (rare!)
+  - **New Architecture**:
+    - CMDB: 7 query params, 0 body field exceptions
+    - Monitor: 104 query params, 0 body field exceptions
+    - Log: 7 query params, 0 body field exceptions
+    - Service: 0 query params, 0 body field exceptions
+  - **Impact**: Body fields now correctly convert to hyphen format
+    - ✅ `icap/server.post(ip_address="192.168.1.1")` → `{"ip-address": "192.168.1.1"}` (was HTTP 500)
+    - ✅ `user/banned/check.post(ip_address="10.0.0.1")` → `{"ip-address": "10.0.0.1"}`
+    - ✅ `router/charts.post(ip_mask="255.255.255.0")` → `{"ip-mask": "255.255.255.0"}`
+    - ✅ `fortiview.post(ip_version=4)` → `{"ip-version": 4}`
+    - ✅ `user/device/query.post(filter_logic="and")` → `{"filter-logic": "and"}`
+    - ✅ All 102 dual-context parameters now work correctly in both contexts
+  - **Files Updated**:
+    - `_helpers/field_overrides.py` - New context-specific lists
+    - `_helpers/builders.py` - Use `*_BODY_FIELD_NO_HYPHEN` for body conversion
+
+### Added
+
+- **Context-Specific Parameter Lists**: Eight new lists for fine-grained control
+  - `CMDB_QUERY_PARAM_NO_HYPHEN` - 7 params (datasource_format, find_all_references, primary_keys, skip_to, unfiltered_count, with_contents_hash, with_meta)
+  - `CMDB_BODY_FIELD_NO_HYPHEN` - 0 params (empty - all CMDB body fields use hyphens)
+  - `MONITOR_QUERY_PARAM_NO_HYPHEN` - 104 params (ip_address, ip_mask, ip_version, filter_logic, timestamp_from, etc.)
+  - `MONITOR_BODY_FIELD_NO_HYPHEN` - 0 params (empty - all Monitor body fields use hyphens)
+  - `LOG_QUERY_PARAM_NO_HYPHEN` - 7 params (filter_logic, is_ha_member, keep_session_alive, serial_no, session_id, timestamp_from, timestamp_to)
+  - `LOG_BODY_FIELD_NO_HYPHEN` - 0 params (empty - all Log body fields use hyphens)
+  - `SERVICE_QUERY_PARAM_NO_HYPHEN` - 0 params (empty)
+  - `SERVICE_BODY_FIELD_NO_HYPHEN` - 0 params (empty)
+
+### Changed
+
+- **Payload Builders**: Updated to use context-specific body field lists
+  - `build_cmdb_payload()` - Uses `CMDB_BODY_FIELD_NO_HYPHEN` (currently empty)
+  - `build_cmdb_payload_normalized()` - Uses `CMDB_BODY_FIELD_NO_HYPHEN`
+  - `build_api_payload()` - Uses `MONITOR_BODY_FIELD_NO_HYPHEN` (for Monitor/Service)
+  - All body fields now default to kebab-case conversion unless explicitly whitelisted
+
+### Deprecated
+
+- **Legacy Unified Lists**: `NO_HYPHEN_PARAMETERS_*` lists maintained for backward compatibility
+  - These are computed as union of query + body lists for each API type
+  - New code should use context-specific `*_QUERY_PARAM_NO_HYPHEN` or `*_BODY_FIELD_NO_HYPHEN` lists
+
+### Technical Details
+
+- **Dual-Context Parameters**: 102 parameters used in BOTH query and body contexts
+  - Examples: ip_address, ip_version, filter_logic, timestamp_from, mac_address
+  - Now properly handled: underscore in queries, hyphen in body
+- **Body Field Exceptions**: Currently 0 across all API types
+  - All known "exceptions" were actually query parameters
+  - Future exceptions can be added to `*_BODY_FIELD_NO_HYPHEN` as discovered
+
+## [0.5.127] - 2026-01-20
+
+### Fixed
+
+- **Critical Bug Fix: CMDB endpoint-control.fctems**: Fixed `fctems.put(ems_id=4)` failing with "ems-id is required for PUT"
+  - **Root Cause**: `ems_id` was incorrectly in `NO_HYPHEN_PARAMETERS`, preventing conversion to API field name `ems-id`
+  - **Impact**: All CMDB endpoints using `ems_id` as body field (e.g., PUT/POST operations) now work correctly
+  - **Note**: Monitor endpoints using `ems_id` as query parameter are unaffected (query params handled separately)
+
+### Changed
+
+- **NO_HYPHEN_PARAMETERS Cleanup**: Removed 97 incorrect entries, reducing from 211 to 113 parameters
+  - **Analysis**: Comprehensive schema scan revealed many parameters in the list don't actually exist in schemas
+  - **Verification**: All 113 remaining parameters confirmed to exist across 2,591+ schema files
+  - **Categories**: CMDB (8), Monitor (104), Log (4), Service (0)
+  - **Breaking**: No user-facing impact - only internal whitelist cleanup
+
+### Added
+
+- **API-Type-Specific Parameter Lists**: Split `NO_HYPHEN_PARAMETERS` by API type for better maintainability
+  - `NO_HYPHEN_PARAMETERS_CMDB`: 8 parameters (query/path params for CMDB endpoints)
+  - `NO_HYPHEN_PARAMETERS_MONITOR`: 104 parameters (query/path params for Monitor endpoints)
+  - `NO_HYPHEN_PARAMETERS_LOG`: 4 parameters (query/path params for Log endpoints)
+  - `NO_HYPHEN_PARAMETERS_SERVICE`: 0 parameters (empty set, reserved for future)
+  - **Backward Compatibility**: Unified `NO_HYPHEN_PARAMETERS` maintained as union of all sets
+
+## [0.5.126] - 2026-01-20
+
+### Changed
+
+- **Upload to PyPI**: Published hfortix-fortios, hfortix-core, and hfortix meta-packages
+
+## [0.5.125] - 2026-01-20
+
+### Changed
+
+- **Comprehensive NO_HYPHEN_PARAMETERS Update**: Expanded parameter whitelist from 3 to 162 parameters to prevent incorrect conversion:
+  - **Analysis**: Scanned 2,591+ schema files across FortiOS 7.4.8 and 7.6.5
+  - **Previous**: Only `file_content`, `key_file_content`, `id_list` (3 parameters)
+  - **Updated**: All 162 request parameters containing underscores now preserved
+  - **Verification**: Confirmed zero format conflicts (no param exists in both formats)
+  - **Impact**: Eliminates entire class of potential parameter conversion bugs
+  - **Categories Covered**:
+    - File operations (36+ endpoints): `file_content`, `key_file_content`, `file_id`
+    - Network/IP params (32+ endpoints): `ip_version`, `ip_address`, `ip_mask`, etc.
+    - Authentication (20+): `account_id`, `old_password`, `new_password`, `is_government`
+    - Certificates/PKI (15+): `acme_*`, `scep_*`, `common_name`, `subject_alt_name`
+    - Queries (20+): `query_id`, `filter_logic`, `timestamp_from`, `timestamp_to`
+    - WiFi/Wireless (15+): `wtp_id`, `radio_id`, `image_id`, `region_name`
+    - HA/Clustering (10+): `serial_no`, `vcluster_id`, `parent_peer1`
+    - And 85+ more across all categories
+  - **Documentation**: New `docs/fortios/NO_HYPHEN_PARAMETERS.md` with complete reference
+  - **Files Updated**: `packages/fortios/hfortix_fortios/_helpers/field_overrides.py`
+
+### Added
+
+- **Documentation**: `docs/fortios/NO_HYPHEN_PARAMETERS.md` - Comprehensive reference for all 162 parameters
+- **Documentation**: `docs/fortios/NO_HYPHEN_PARAMETERS_ANALYSIS.md` - Detailed analysis report with statistics
+
+## [0.5.124] - 2026-01-20
+
+### Fixed
+
+- **Generator Bug: Array type handling in .pyi stub files**: Fixed critical bug where generator incorrectly converted `"type": "array"` from JSON schemas to `str` instead of `list[Any]` in type stub files:
+  - **Issue**: Array fields like `id_list` were typed as `str` causing type checking errors
+  - **Root Causes**:
+    1. `_to_python_type()` function in `pyi_generator.py` had no mapping for `'array'` type
+    2. Template `endpoint_class.pyi.j2` had no conditional check for `field.type == 'array'`
+  - **Fix Applied in TWO locations**:
+    1. **Generator** (`.dev/generator/generators/pyi_generator.py`):
+       - Added `'array': 'list[Any]'` to type mapping in `_to_python_type()`
+    2. **Template** (`.dev/generator/templates/endpoint_class.pyi.j2`):
+       - Added `{% elif field.type == 'array' %}` checks in 6 locations:
+         - Payload TypedDict (line ~193)
+         - Response TypedDict (line ~226)
+         - Object Class (line ~394)
+         - POST method signature (line ~648)
+         - PUT method signature (line ~704)
+         - SET method signature (line ~788)
+  - **Impact**: All endpoints with array fields now have correct type hints
+  - **Example Fix** (`monitor/system/config-script/delete`):
+    ```python
+    # Before (WRONG):
+    id_list: str | None = ...
+    
+    # After (CORRECT):
+    id_list: list[Any] | None = ...
+    ```
+
+- **Parameter Name Conversion: Added `id_list` to NO_HYPHEN_PARAMETERS**: Fixed bug where `id_list` parameter was incorrectly converted to `id-list` when sending to API:
+  - **Issue**: Same category of bug as `file_content` - library converting underscores to hyphens when API expects underscores
+  - **Root Cause**: `id_list` not in `NO_HYPHEN_PARAMETERS` whitelist
+  - **Fix**: Added `"id_list"` to `NO_HYPHEN_PARAMETERS` set in `_helpers/field_overrides.py`
+  - **Affected Endpoint**: `monitor/system/config-script/delete`
+  - **Files Updated**: `packages/fortios/hfortix_fortios/_helpers/field_overrides.py`
+
+## [0.5.123] - 2026-01-20
+
+### Fixed
+
+- **File Upload Endpoints: Complete fix for parameter transformation bug**: Fixed critical bug where `file_content` and `key_file_content` parameters were being incorrectly transformed in TWO locations, causing HTTP 400 errors on all file upload/import endpoints:
+  - **Issue**: v0.5.122 only fixed ONE of two conversion points - the bug persisted
+  - **Root Cause**: Library converts parameter names in two separate locations:
+    1. ✅ Payload builders (`_helpers/builders.py`) - FIXED in v0.5.122
+    2. ❌ Client wrapper (`client.py` line 740) - STILL BROKEN in v0.5.122
+  - **Complete Fix**: Added `NO_HYPHEN_PARAMETERS` whitelist to BOTH locations:
+    - `build_api_payload()` in `_helpers/builders.py` ✅
+    - `build_cmdb_payload()` in `_helpers/builders.py` ✅
+    - `build_cmdb_payload_normalized()` in `_helpers/builders.py` ✅
+    - `convert_field_names()` in `client.py` ✅ NEW in v0.5.123
+  - **Centralized Configuration**: Created `_helpers/field_overrides.py` for single source of truth:
+    - `NO_HYPHEN_PARAMETERS` - Parameters that must keep underscores
+    - `PYTHON_KEYWORD_TO_API_FIELD` - Python keyword mappings (also moved here)
+  - **Files Updated**:
+    - `packages/fortios/hfortix_fortios/client.py` - Fixed `convert_field_names()`
+    - `packages/fortios/hfortix_fortios/_helpers/field_overrides.py` - NEW centralized config
+    - `packages/fortios/hfortix_fortios/_helpers/builders.py` - Import from central config
+  - **Impact**: All 15+ file upload endpoints now work correctly
+  - **Example**:
+    ```python
+    # Now works correctly end-to-end:
+    result = fgt.api.monitor.system.config_script.upload.post(
+        filename="test.conf",
+        file_content=base64_content  # ✅ Preserved through entire pipeline
+    )
+    ```
+
+## [0.5.122] - 2026-01-20
+
+### Fixed
+
+- **File Upload Endpoints: Incorrect parameter transformation** (INCOMPLETE FIX - see v0.5.123): Fixed critical bug where `file_content` and `key_file_content` parameters were incorrectly transformed from underscore to hyphen format, causing HTTP 400 errors on all file upload/import endpoints:
+  - **Issue**: Library converted `file_content="data"` → `{"file-content": "data"}` but FortiOS API expects `{"file_content": "data"}` (underscore, not hyphen)
+  - **Root Cause**: `build_api_payload()` unconditionally converted ALL snake_case parameters to kebab-case, but these file parameters are exceptions
+  - **Affected Endpoints** (15+):
+    - `monitor/system/config-script/upload` - Upload and run config script
+    - `monitor/system/config/restore` - Restore configuration from file
+    - `monitor/system/firmware/upgrade` - Upload firmware image
+    - `monitor/vpn-certificate/ca/import` - Import CA certificate
+    - `monitor/vpn-certificate/local/import` - Import local certificate (also has `key_file_content`)
+    - `monitor/wifi/firmware/upload` - Upload WiFi firmware
+    - `monitor/switch-controller/fsw-firmware/upload` - Upload FortiSwitch firmware
+    - `monitor/extender-controller/extender/upgrade` - Upload FortiExtender firmware
+    - `monitor/license/database/upgrade` - Upload license database
+    - `monitor/web-ui/language/import` - Import language file
+    - `monitor/wifi/region-image/upload` - Upload WiFi region image
+    - And 5+ more firmware/certificate/config endpoints
+  - **Fix**: Added `NO_HYPHEN_PARAMETERS` whitelist in `_helpers/builders.py`:
+    ```python
+    NO_HYPHEN_PARAMETERS = {
+        "file_content",      # File upload endpoints
+        "key_file_content",  # Certificate import endpoints
+    }
+    ```
+  - **Implementation**: Updated conversion logic in all 3 payload builders:
+    - `build_cmdb_payload()` - CMDB API endpoints
+    - `build_cmdb_payload_normalized()` - CMDB with auto-normalization
+    - `build_api_payload()` - Monitor/Service endpoints
+  - **Impact**: All file upload endpoints now work correctly
+  - **Example**:
+    ```python
+    # Before (v0.5.121 and earlier): HTTP 400 error
+    result = fgt.api.monitor.system.config_script.upload.post(
+        filename="test.conf",
+        file_content=base64_content  # ❌ Sent as "file-content"
+    )
+    
+    # After (v0.5.122+): Works correctly
+    result = fgt.api.monitor.system.config_script.upload.post(
+        filename="test.conf",
+        file_content=base64_content  # ✅ Sent as "file_content"
+    )
+    ```
+  - **Schema Verification**: Confirmed all affected schemas define `"file_content"` with underscore in 7.4.8 and 7.6.5 schema files
+  - **Files Updated**: `packages/fortios/hfortix_fortios/_helpers/builders.py`
+
+## [0.5.121] - 2026-01-20
+
+### Added
+
+- **Schema Override System**: Implemented flexible JSON-based override system for schema metadata corrections
+  - **Purpose**: Fix schema metadata issues that cannot be auto-detected from FortiOS API documentation
+  - **Location**: `.dev/generator/schema_management/schema_overrides.json`
+  - **Capabilities**:
+    - `scope` - Override endpoint scope (global/vdom/unknown)
+    - `scope_options` - Set valid scope options (e.g., ['global'] for global-only endpoints)
+    - `readonly` - Mark endpoints as read-only
+    - `capabilities` - Deep merge capabilities metadata (CRUD flags, features, limits)
+    - `response_fields` - Add response field definitions for monitor/service endpoints
+    - `query_params` - Add or override query parameters by HTTP method
+  - **Implementation**: 
+    - `SchemaParser.load_overrides()` - Loads overrides from JSON (cached)
+    - `SchemaParser.apply_overrides()` - Deep merges overrides into parsed schemas
+    - Automatic application during schema parsing
+  - **Documentation**: 
+    - `SCHEMA_OVERRIDES.md` - Comprehensive usage guide with examples
+    - JSON file includes inline documentation and examples
+  - **Files Added**:
+    - `.dev/generator/schema_management/schema_overrides.json`
+    - `.dev/generator/schema_management/SCHEMA_OVERRIDES.md`
+  - **Files Updated**:
+    - `.dev/generator/schema_management/schema_parser.py` (added override methods)
+
+### Fixed
+
+- **Monitor Endpoints: Config-Script Scope Correction**: Fixed incorrect scope for system config-script endpoints
+  - **Issue**: All 4 config-script endpoints incorrectly marked as `scope="unknown"` instead of `"global"`
+  - **Affected Endpoints**:
+    - `monitor/system/config-script` - List/retrieve config scripts
+    - `monitor/system/config-script/run` - Execute config script
+    - `monitor/system/config-script/delete` - Delete config script history
+    - `monitor/system/config-script/upload` - Upload and run config script
+  - **Fix**: Applied schema overrides setting `scope="global"` and `scope_options=["global"]`
+  - **Impact**: Generated endpoints now correctly:
+    - Omit `vdom` parameter from method signatures (global-only)
+    - Hardcode `vdom=False` in API calls
+    - Operate at global scope only (affects entire FortiGate system)
+  - **Technical**: Override system enables permanent fixes without manual schema edits
+  - **Files Updated**: All regenerated monitor/system/config_script* endpoints
+
 ## [0.5.120] - 2026-01-19
 
 ### Fixed

@@ -342,6 +342,7 @@ class Scheme(CRUDEndpoint, MetadataMixin):
         
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             name=name,
             method=method,
             negotiate_ntlm=negotiate_ntlm,
@@ -499,6 +500,7 @@ class Scheme(CRUDEndpoint, MetadataMixin):
         
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             name=name,
             method=method,
             negotiate_ntlm=negotiate_ntlm,
@@ -768,6 +770,7 @@ class Scheme(CRUDEndpoint, MetadataMixin):
         
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             name=name,
             method=method,
             negotiate_ntlm=negotiate_ntlm,

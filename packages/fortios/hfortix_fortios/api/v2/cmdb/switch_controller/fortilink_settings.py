@@ -288,6 +288,7 @@ class FortilinkSettings(CRUDEndpoint, MetadataMixin):
         """
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             name=name,
             fortilink=fortilink,
             inactive_timer=inactive_timer,
@@ -392,6 +393,7 @@ class FortilinkSettings(CRUDEndpoint, MetadataMixin):
         """
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             name=name,
             fortilink=fortilink,
             inactive_timer=inactive_timer,
@@ -613,6 +615,7 @@ class FortilinkSettings(CRUDEndpoint, MetadataMixin):
         """
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             name=name,
             fortilink=fortilink,
             inactive_timer=inactive_timer,

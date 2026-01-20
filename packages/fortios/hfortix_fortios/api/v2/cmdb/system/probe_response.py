@@ -279,6 +279,7 @@ class ProbeResponse(CRUDEndpoint, MetadataMixin):
         """
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             port=port,
             http_probe_value=http_probe_value,
             ttl_mode=ttl_mode,

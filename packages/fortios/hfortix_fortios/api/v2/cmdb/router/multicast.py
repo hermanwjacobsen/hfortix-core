@@ -329,6 +329,7 @@ class Multicast(CRUDEndpoint, MetadataMixin):
         
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             route_threshold=route_threshold,
             route_limit=route_limit,
             multicast_routing=multicast_routing,

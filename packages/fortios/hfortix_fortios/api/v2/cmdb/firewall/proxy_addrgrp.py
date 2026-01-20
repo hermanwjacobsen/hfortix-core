@@ -336,6 +336,7 @@ class ProxyAddrgrp(CRUDEndpoint, MetadataMixin):
         
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             name=name,
             type=type,
             uuid=uuid,
@@ -471,6 +472,7 @@ class ProxyAddrgrp(CRUDEndpoint, MetadataMixin):
         
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             name=name,
             type=type,
             uuid=uuid,
@@ -713,6 +715,7 @@ class ProxyAddrgrp(CRUDEndpoint, MetadataMixin):
         
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             name=name,
             type=type,
             uuid=uuid,

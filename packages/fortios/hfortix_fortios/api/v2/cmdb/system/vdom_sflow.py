@@ -301,6 +301,7 @@ class VdomSflow(CRUDEndpoint, MetadataMixin):
         
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             vdom_sflow=vdom_sflow,
             collectors=collectors,
             data=payload_dict,

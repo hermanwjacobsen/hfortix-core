@@ -323,6 +323,7 @@ class Netflow(CRUDEndpoint, MetadataMixin):
         
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             active_flow_timeout=active_flow_timeout,
             inactive_flow_timeout=inactive_flow_timeout,
             template_tx_timeout=template_tx_timeout,

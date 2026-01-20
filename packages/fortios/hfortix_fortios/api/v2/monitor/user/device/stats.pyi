@@ -31,7 +31,7 @@ class StatsPayload(TypedDict, total=False):
     stat_key: str
     timestamp_from: int
     timestamp_to: int
-    filters: str
+    filters: int | str | list[int | str]
     filter_logic: str
 
 
@@ -45,7 +45,7 @@ class StatsResponse(TypedDict, total=False):
     stat_key: str
     timestamp_from: int
     timestamp_to: int
-    filters: str
+    filters: list[str]
     filter_logic: str
 
 
@@ -60,7 +60,7 @@ class StatsObject(FortiObject):
     stat_key: str
     timestamp_from: int
     timestamp_to: int
-    filters: str
+    filters: list[str]
     filter_logic: str
 
 
@@ -121,7 +121,7 @@ class Stats:
         stat_key: str | None = ...,
         timestamp_from: int | None = ...,
         timestamp_to: int | None = ...,
-        filters: str | None = ...,
+        filters: int | str | list[int | str] | None = ...,
         filter_logic: str | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
@@ -146,7 +146,7 @@ class Stats:
         stat_key: str | None = ...,
         timestamp_from: int | None = ...,
         timestamp_to: int | None = ...,
-        filters: str | None = ...,
+        filters: int | str | list[int | str] | None = ...,
         filter_logic: str | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,

@@ -27,7 +27,7 @@ from hfortix_fortios.models import (
 
 class UuidTypeLookupPayload(TypedDict, total=False):
     """Payload type for UuidTypeLookup operations."""
-    uuids: str
+    uuids: int | str | list[int | str]
 
 
 # ================================================================
@@ -36,7 +36,7 @@ class UuidTypeLookupPayload(TypedDict, total=False):
 
 class UuidTypeLookupResponse(TypedDict, total=False):
     """Response type for UuidTypeLookup - use with .dict property for typed dict access."""
-    uuids: str
+    uuids: list[str]
 
 
 # ================================================================
@@ -46,7 +46,7 @@ class UuidTypeLookupResponse(TypedDict, total=False):
 
 class UuidTypeLookupObject(FortiObject):
     """Typed FortiObject for UuidTypeLookup with field access."""
-    uuids: str
+    uuids: list[str]
 
 
 # ================================================================
@@ -97,7 +97,7 @@ class UuidTypeLookup:
     def put(
         self,
         payload_dict: UuidTypeLookupPayload | None = ...,
-        uuids: str | None = ...,
+        uuids: int | str | list[int | str] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -117,7 +117,7 @@ class UuidTypeLookup:
     def set(
         self,
         payload_dict: UuidTypeLookupPayload | None = ...,
-        uuids: str | None = ...,
+        uuids: int | str | list[int | str] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,

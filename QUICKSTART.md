@@ -1,6 +1,10 @@
-# HFortix - Quick Reference (v0.5.89-beta)
+# HFortix - Quick Reference (v0.5.130)
 
 ⚠️ **Breaking Changes in v0.5.0**: Convenience wrappers have been removed. Use direct API access via `fgt.api.*` instead.
+
+✨ **New in v0.5.130**: Context-aware field name conversion, comprehensive system monitor endpoint tests (22 tests across 11 files)!
+
+✨ **New in v0.5.129**: Schema-driven field preservation with 204 underscore fields auto-detected!
 
 ✨ **New in v0.5.89**: Generator fixes for nested objects, new service/monitor/emailfilter endpoints with 52 new tests!
 

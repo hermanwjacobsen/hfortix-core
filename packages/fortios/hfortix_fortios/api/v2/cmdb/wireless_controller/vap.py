@@ -740,6 +740,7 @@ class Vap(CRUDEndpoint, MetadataMixin):
         
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             name=name,
             pre_auth=pre_auth,
             external_pre_auth=external_pre_auth,
@@ -1424,6 +1425,7 @@ class Vap(CRUDEndpoint, MetadataMixin):
         
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             name=name,
             pre_auth=pre_auth,
             external_pre_auth=external_pre_auth,
@@ -2195,6 +2197,7 @@ class Vap(CRUDEndpoint, MetadataMixin):
         
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             name=name,
             pre_auth=pre_auth,
             external_pre_auth=external_pre_auth,

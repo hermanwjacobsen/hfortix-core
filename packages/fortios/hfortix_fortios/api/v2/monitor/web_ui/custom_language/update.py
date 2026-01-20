@@ -139,6 +139,7 @@ class Update(CRUDEndpoint, MetadataMixin):
         """
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="monitor",
             mkey=mkey,
             lang_name=lang_name,
             lang_comments=lang_comments,

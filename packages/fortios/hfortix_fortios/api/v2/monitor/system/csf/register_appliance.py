@@ -143,6 +143,7 @@ class RegisterAppliance(CRUDEndpoint, MetadataMixin):
         """
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="monitor",
             type=type,
             mgmt_ip=mgmt_ip,
             mgmt_port=mgmt_port,

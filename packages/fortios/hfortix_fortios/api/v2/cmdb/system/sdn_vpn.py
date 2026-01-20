@@ -308,6 +308,7 @@ class SdnVpn(CRUDEndpoint, MetadataMixin):
         """
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             name=name,
             sdn=sdn,
             remote_type=remote_type,
@@ -449,6 +450,7 @@ class SdnVpn(CRUDEndpoint, MetadataMixin):
         """
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             name=name,
             sdn=sdn,
             remote_type=remote_type,
@@ -703,6 +705,7 @@ class SdnVpn(CRUDEndpoint, MetadataMixin):
         """
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             name=name,
             sdn=sdn,
             remote_type=remote_type,

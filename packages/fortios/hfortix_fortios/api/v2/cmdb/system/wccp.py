@@ -324,6 +324,7 @@ class Wccp(CRUDEndpoint, MetadataMixin):
         
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             service_id=service_id,
             router_id=router_id,
             cache_id=cache_id,
@@ -481,6 +482,7 @@ class Wccp(CRUDEndpoint, MetadataMixin):
         
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             service_id=service_id,
             router_id=router_id,
             cache_id=cache_id,
@@ -755,6 +757,7 @@ class Wccp(CRUDEndpoint, MetadataMixin):
         
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             service_id=service_id,
             router_id=router_id,
             cache_id=cache_id,

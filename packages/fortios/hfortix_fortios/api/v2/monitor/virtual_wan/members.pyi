@@ -27,7 +27,7 @@ from hfortix_fortios.models import (
 
 class MembersPayload(TypedDict, total=False):
     """Payload type for Members operations."""
-    interface: str
+    interface: int | str | list[int | str]
     zone: str
     sla: str
     skip_vpn_child: bool
@@ -39,7 +39,7 @@ class MembersPayload(TypedDict, total=False):
 
 class MembersResponse(TypedDict, total=False):
     """Response type for Members - use with .dict property for typed dict access."""
-    interface: str
+    interface: list[str]
     zone: str
     sla: str
     skip_vpn_child: bool
@@ -52,7 +52,7 @@ class MembersResponse(TypedDict, total=False):
 
 class MembersObject(FortiObject):
     """Typed FortiObject for Members with field access."""
-    interface: str
+    interface: list[str]
     zone: str
     sla: str
     skip_vpn_child: bool
@@ -109,7 +109,7 @@ class Members:
     def put(
         self,
         payload_dict: MembersPayload | None = ...,
-        interface: str | None = ...,
+        interface: int | str | list[int | str] | None = ...,
         zone: str | None = ...,
         sla: str | None = ...,
         skip_vpn_child: bool | None = ...,
@@ -132,10 +132,10 @@ class Members:
     def set(
         self,
         payload_dict: MembersPayload | None = ...,
-        interface: str | None = ...,
+        interface: int | str | list[int | str] | None = ...,
         zone: str | None = ...,
         sla: str | None = ...,
-        skip_vpn_child: str | None = ...,
+        skip_vpn_child: bool | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,

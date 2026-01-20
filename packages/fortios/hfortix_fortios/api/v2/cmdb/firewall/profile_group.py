@@ -318,6 +318,7 @@ class ProfileGroup(CRUDEndpoint, MetadataMixin):
         """
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             name=name,
             profile_protocol_options=profile_protocol_options,
             ssl_ssh_profile=ssl_ssh_profile,
@@ -467,6 +468,7 @@ class ProfileGroup(CRUDEndpoint, MetadataMixin):
         """
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             name=name,
             profile_protocol_options=profile_protocol_options,
             ssl_ssh_profile=ssl_ssh_profile,
@@ -733,6 +735,7 @@ class ProfileGroup(CRUDEndpoint, MetadataMixin):
         """
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             name=name,
             profile_protocol_options=profile_protocol_options,
             ssl_ssh_profile=ssl_ssh_profile,

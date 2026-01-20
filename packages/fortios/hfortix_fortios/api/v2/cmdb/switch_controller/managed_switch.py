@@ -694,6 +694,7 @@ class ManagedSwitch(CRUDEndpoint, MetadataMixin):
         
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             switch_id=switch_id,
             sn=sn,
             description=description,
@@ -1178,6 +1179,7 @@ class ManagedSwitch(CRUDEndpoint, MetadataMixin):
         
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             switch_id=switch_id,
             sn=sn,
             description=description,
@@ -1715,6 +1717,7 @@ class ManagedSwitch(CRUDEndpoint, MetadataMixin):
         
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             switch_id=switch_id,
             sn=sn,
             description=description,

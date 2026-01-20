@@ -323,6 +323,7 @@ class Acme(CRUDEndpoint, MetadataMixin):
         
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             interface=interface,
             use_ha_direct=use_ha_direct,
             source_ip=source_ip,

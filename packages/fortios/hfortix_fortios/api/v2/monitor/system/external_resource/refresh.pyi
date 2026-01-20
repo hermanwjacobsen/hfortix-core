@@ -138,7 +138,7 @@ class Refresh:
         self,
         payload_dict: RefreshPayload | None = ...,
         mkey: str | None = ...,
-        check_status_only: str | None = ...,
+        check_status_only: bool | None = ...,
         last_connection_time: int | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,

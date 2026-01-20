@@ -441,6 +441,7 @@ class Sdwan(CRUDEndpoint, MetadataMixin):
         
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             status=status,
             load_balance_mode=load_balance_mode,
             speedtest_bypass_routing=speedtest_bypass_routing,

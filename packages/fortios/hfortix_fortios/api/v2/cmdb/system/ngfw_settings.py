@@ -277,6 +277,7 @@ class NgfwSettings(CRUDEndpoint, MetadataMixin):
         """
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             match_timeout=match_timeout,
             tcp_match_timeout=tcp_match_timeout,
             tcp_halfopen_match_timeout=tcp_halfopen_match_timeout,

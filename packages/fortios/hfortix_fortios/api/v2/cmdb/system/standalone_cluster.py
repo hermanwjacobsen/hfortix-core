@@ -371,6 +371,7 @@ class StandaloneCluster(CRUDEndpoint, MetadataMixin):
         
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             standalone_group_id=standalone_group_id,
             group_member_id=group_member_id,
             layer2_connection=layer2_connection,

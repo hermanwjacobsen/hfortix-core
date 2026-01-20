@@ -281,6 +281,7 @@ class LldpSettings(CRUDEndpoint, MetadataMixin):
         """
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             tx_hold=tx_hold,
             tx_interval=tx_interval,
             fast_start_interval=fast_start_interval,

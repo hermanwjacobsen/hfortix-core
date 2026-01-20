@@ -27,7 +27,7 @@ from hfortix_fortios.models import (
 
 class DynamicPayload(TypedDict, total=False):
     """Payload type for Dynamic operations."""
-    commands: str
+    commands: int | str | list[int | str]
 
 
 # ================================================================
@@ -36,7 +36,7 @@ class DynamicPayload(TypedDict, total=False):
 
 class DynamicResponse(TypedDict, total=False):
     """Response type for Dynamic - use with .dict property for typed dict access."""
-    commands: str
+    commands: list[str]
 
 
 # ================================================================
@@ -46,7 +46,7 @@ class DynamicResponse(TypedDict, total=False):
 
 class DynamicObject(FortiObject):
     """Typed FortiObject for Dynamic with field access."""
-    commands: str
+    commands: list[str]
 
 
 # ================================================================
@@ -95,7 +95,7 @@ class Dynamic:
     def post(
         self,
         payload_dict: DynamicPayload | None = ...,
-        commands: str | None = ...,
+        commands: int | str | list[int | str] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -108,7 +108,7 @@ class Dynamic:
     def put(
         self,
         payload_dict: DynamicPayload | None = ...,
-        commands: str | None = ...,
+        commands: int | str | list[int | str] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -128,7 +128,7 @@ class Dynamic:
     def set(
         self,
         payload_dict: DynamicPayload | None = ...,
-        commands: str | None = ...,
+        commands: int | str | list[int | str] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,

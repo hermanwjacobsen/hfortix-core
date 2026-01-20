@@ -368,6 +368,7 @@ class Community(CRUDEndpoint, MetadataMixin):
         
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             id=id,
             name=name,
             status=status,
@@ -545,6 +546,7 @@ class Community(CRUDEndpoint, MetadataMixin):
         
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             id=id,
             name=name,
             status=status,
@@ -824,6 +826,7 @@ class Community(CRUDEndpoint, MetadataMixin):
         
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             id=id,
             name=name,
             status=status,

@@ -291,6 +291,7 @@ class Sysinfo(CRUDEndpoint, MetadataMixin):
         """
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             status=status,
             engine_id_type=engine_id_type,
             engine_id=engine_id,

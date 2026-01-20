@@ -286,3 +286,61 @@ def normalize_day_field(value: str | list[str] | None) -> str | None:
         )
 
     return " ".join(days)
+
+
+# =============================================================================
+# Simple Array Field Normalizers
+# =============================================================================
+
+
+def normalize_to_string_list(
+    value: int | str | list[int | str] | None,
+) -> list[str] | None:
+    """
+    Normalize various input formats to a simple list of strings.
+
+    Used for array fields like 'id_list' that accept lists of IDs/values
+    but don't use the [{'name': '...'}] dict format.
+
+    Args:
+        value: Can be:
+            - int: 5 → ['5']
+            - str: '5' → ['5']
+            - list of ints: [1, 2, 3] → ['1', '2', '3']
+            - list of strings: ['1', '2', '3'] → ['1', '2', '3']
+            - mixed list: [1, '2', 3] → ['1', '2', '3']
+            - None: None
+
+    Returns:
+        List of strings, or None if input is None
+
+    Examples:
+        >>> normalize_to_string_list(5)
+        ['5']
+
+        >>> normalize_to_string_list('5')
+        ['5']
+
+        >>> normalize_to_string_list([1, 2, 3])
+        ['1', '2', '3']
+
+        >>> normalize_to_string_list(['1', '2', '3'])
+        ['1', '2', '3']
+
+        >>> normalize_to_string_list([1, '2', 3])
+        ['1', '2', '3']
+
+        >>> normalize_to_string_list(None)
+        None
+    """
+    if value is None:
+        return None
+
+    # Already a list - convert all items to strings
+    if isinstance(value, list):
+        if not value:
+            return []
+        return [str(item).strip() for item in value if item is not None]
+
+    # Single value (int or str) - convert to list with single string
+    return [str(value).strip()]

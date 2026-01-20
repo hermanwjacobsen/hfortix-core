@@ -139,6 +139,7 @@ class Disconnect(CRUDEndpoint, MetadataMixin):
         """
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="monitor",
             serial_no=serial_no,
             interface=interface,
             ip=ip,

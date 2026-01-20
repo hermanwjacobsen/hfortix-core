@@ -133,6 +133,7 @@ class ClearCounters(CRUDEndpoint, MetadataMixin):
         """
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="monitor",
             policy=policy,
             data=payload_dict,
         )

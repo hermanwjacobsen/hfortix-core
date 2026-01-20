@@ -133,7 +133,7 @@ class Set:
     def set(
         self,
         payload_dict: SetPayload | None = ...,
-        enable: str | None = ...,
+        enable: bool | None = ...,
         password: str | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,

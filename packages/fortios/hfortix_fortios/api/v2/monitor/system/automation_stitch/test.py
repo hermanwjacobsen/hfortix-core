@@ -135,6 +135,7 @@ class Test(CRUDEndpoint, MetadataMixin):
         """
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="monitor",
             mkey=mkey,
             log=log,
             data=payload_dict,

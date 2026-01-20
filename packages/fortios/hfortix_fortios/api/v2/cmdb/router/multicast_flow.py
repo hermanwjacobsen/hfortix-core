@@ -308,6 +308,7 @@ class MulticastFlow(CRUDEndpoint, MetadataMixin):
         
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             name=name,
             comments=comments,
             flows=flows,
@@ -416,6 +417,7 @@ class MulticastFlow(CRUDEndpoint, MetadataMixin):
         
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             name=name,
             comments=comments,
             flows=flows,
@@ -638,6 +640,7 @@ class MulticastFlow(CRUDEndpoint, MetadataMixin):
         
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             name=name,
             comments=comments,
             flows=flows,

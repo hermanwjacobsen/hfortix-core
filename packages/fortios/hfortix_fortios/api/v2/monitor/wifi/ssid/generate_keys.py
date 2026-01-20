@@ -141,6 +141,7 @@ class GenerateKeys(CRUDEndpoint, MetadataMixin):
         """
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="monitor",
             mpsk_profile=mpsk_profile,
             group=group,
             prefix=prefix,

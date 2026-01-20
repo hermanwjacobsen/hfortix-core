@@ -345,6 +345,7 @@ class TrafficSniffer(CRUDEndpoint, MetadataMixin):
         
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             mode=mode,
             erspan_ip=erspan_ip,
             target_mac=target_mac,

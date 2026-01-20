@@ -277,6 +277,7 @@ class GuiDisplay(CRUDEndpoint, MetadataMixin):
         """
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             resolve_hosts=resolve_hosts,
             resolve_apps=resolve_apps,
             fortiview_unscanned_apps=fortiview_unscanned_apps,

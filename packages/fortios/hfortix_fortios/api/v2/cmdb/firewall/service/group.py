@@ -318,6 +318,7 @@ class Group(CRUDEndpoint, MetadataMixin):
         
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             name=name,
             uuid=uuid,
             proxy=proxy,
@@ -440,6 +441,7 @@ class Group(CRUDEndpoint, MetadataMixin):
         
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             name=name,
             uuid=uuid,
             proxy=proxy,
@@ -674,6 +676,7 @@ class Group(CRUDEndpoint, MetadataMixin):
         
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             name=name,
             uuid=uuid,
             proxy=proxy,

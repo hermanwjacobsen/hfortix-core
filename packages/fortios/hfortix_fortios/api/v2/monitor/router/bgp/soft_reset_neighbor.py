@@ -133,6 +133,7 @@ class SoftResetNeighbor(CRUDEndpoint, MetadataMixin):
         """
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="monitor",
             ip=ip,
             data=payload_dict,
         )

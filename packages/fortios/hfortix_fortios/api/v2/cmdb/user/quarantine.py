@@ -307,6 +307,7 @@ class Quarantine(CRUDEndpoint, MetadataMixin):
         
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             quarantine=quarantine,
             traffic_policy=traffic_policy,
             firewall_groups=firewall_groups,

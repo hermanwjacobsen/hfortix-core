@@ -314,6 +314,7 @@ class Dataplan(CRUDEndpoint, MetadataMixin):
         """
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             name=name,
             modem_id=modem_id,
             type=type,
@@ -457,6 +458,7 @@ class Dataplan(CRUDEndpoint, MetadataMixin):
         """
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             name=name,
             modem_id=modem_id,
             type=type,
@@ -717,6 +719,7 @@ class Dataplan(CRUDEndpoint, MetadataMixin):
         """
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             name=name,
             modem_id=modem_id,
             type=type,

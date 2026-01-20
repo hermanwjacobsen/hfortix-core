@@ -38,7 +38,7 @@ class PolicyLookupPayload(TypedDict, total=False):
     icmpcode: int
     policy_type: str
     auth_type: str
-    user_group: str
+    user_group: int | str | list[int | str]
     server_name: str
     user_db: str
     group_attr_type: str
@@ -61,7 +61,7 @@ class PolicyLookupResponse(TypedDict, total=False):
     icmpcode: int
     policy_type: str
     auth_type: str
-    user_group: str
+    user_group: list[str]
     server_name: str
     user_db: str
     group_attr_type: str
@@ -85,7 +85,7 @@ class PolicyLookupObject(FortiObject):
     icmpcode: int
     policy_type: str
     auth_type: str
-    user_group: str
+    user_group: list[str]
     server_name: str
     user_db: str
     group_attr_type: str
@@ -164,7 +164,7 @@ class PolicyLookup:
         icmpcode: int | None = ...,
         policy_type: str | None = ...,
         auth_type: str | None = ...,
-        user_group: str | None = ...,
+        user_group: int | str | list[int | str] | None = ...,
         server_name: str | None = ...,
         user_db: str | None = ...,
         group_attr_type: str | None = ...,
@@ -187,7 +187,7 @@ class PolicyLookup:
     def set(
         self,
         payload_dict: PolicyLookupPayload | None = ...,
-        ipv6: str | None = ...,
+        ipv6: bool | None = ...,
         srcintf: str | None = ...,
         sourceport: int | None = ...,
         sourceip: str | None = ...,
@@ -198,7 +198,7 @@ class PolicyLookup:
         icmpcode: int | None = ...,
         policy_type: str | None = ...,
         auth_type: str | None = ...,
-        user_group: str | None = ...,
+        user_group: int | str | list[int | str] | None = ...,
         server_name: str | None = ...,
         user_db: str | None = ...,
         group_attr_type: str | None = ...,

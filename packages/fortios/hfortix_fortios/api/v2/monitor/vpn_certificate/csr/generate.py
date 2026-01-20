@@ -163,6 +163,7 @@ class Generate(CRUDEndpoint, MetadataMixin):
         """
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="monitor",
             certname=certname,
             subject=subject,
             keytype=keytype,

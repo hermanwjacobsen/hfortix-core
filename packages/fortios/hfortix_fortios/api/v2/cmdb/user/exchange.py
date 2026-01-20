@@ -332,6 +332,7 @@ class Exchange(CRUDEndpoint, MetadataMixin):
         
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             name=name,
             server_name=server_name,
             domain_name=domain_name,
@@ -475,6 +476,7 @@ class Exchange(CRUDEndpoint, MetadataMixin):
         
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             name=name,
             server_name=server_name,
             domain_name=domain_name,
@@ -730,6 +732,7 @@ class Exchange(CRUDEndpoint, MetadataMixin):
         
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             name=name,
             server_name=server_name,
             domain_name=domain_name,

@@ -135,6 +135,7 @@ class ChangePassword(CRUDEndpoint, MetadataMixin):
         """
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="monitor",
             username=username,
             new_password=new_password,
             data=payload_dict,

@@ -312,6 +312,7 @@ class Concentrator(CRUDEndpoint, MetadataMixin):
         
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             id=id,
             name=name,
             src_check=src_check,
@@ -425,6 +426,7 @@ class Concentrator(CRUDEndpoint, MetadataMixin):
         
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             id=id,
             name=name,
             src_check=src_check,
@@ -650,6 +652,7 @@ class Concentrator(CRUDEndpoint, MetadataMixin):
         
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             id=id,
             name=name,
             src_check=src_check,

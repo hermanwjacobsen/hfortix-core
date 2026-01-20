@@ -283,6 +283,7 @@ class Settings(CRUDEndpoint, MetadataMixin):
         """
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             packet_log_history=packet_log_history,
             packet_log_post_attack=packet_log_post_attack,
             packet_log_memory=packet_log_memory,

@@ -799,6 +799,7 @@ class Global(CRUDEndpoint, MetadataMixin):
         
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             language=language,
             gui_ipv6=gui_ipv6,
             gui_replacement_message_groups=gui_replacement_message_groups,

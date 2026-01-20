@@ -283,6 +283,7 @@ class Pptp(CRUDEndpoint, MetadataMixin):
         """
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             status=status,
             ip_mode=ip_mode,
             eip=eip,

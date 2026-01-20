@@ -137,6 +137,7 @@ class Refresh(CRUDEndpoint, MetadataMixin):
         """
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="monitor",
             mkey=mkey,
             check_status_only=check_status_only,
             last_connection_time=last_connection_time,

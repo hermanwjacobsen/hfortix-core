@@ -135,6 +135,7 @@ class DhcpRenew(CRUDEndpoint, MetadataMixin):
         """
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="monitor",
             mkey=mkey,
             ipv6=ipv6,
             data=payload_dict,

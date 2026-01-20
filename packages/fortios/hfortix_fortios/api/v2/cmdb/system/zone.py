@@ -332,6 +332,7 @@ class Zone(CRUDEndpoint, MetadataMixin):
         
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             name=name,
             tagging=tagging,
             description=description,
@@ -461,6 +462,7 @@ class Zone(CRUDEndpoint, MetadataMixin):
         
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             name=name,
             tagging=tagging,
             description=description,
@@ -697,6 +699,7 @@ class Zone(CRUDEndpoint, MetadataMixin):
         
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             name=name,
             tagging=tagging,
             description=description,

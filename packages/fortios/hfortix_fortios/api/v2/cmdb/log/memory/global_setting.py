@@ -273,6 +273,7 @@ class GlobalSetting(CRUDEndpoint, MetadataMixin):
         """
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             max_size=max_size,
             full_first_warning_threshold=full_first_warning_threshold,
             full_second_warning_threshold=full_second_warning_threshold,

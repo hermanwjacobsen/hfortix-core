@@ -310,6 +310,7 @@ class ExactDataMatch(CRUDEndpoint, MetadataMixin):
         
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             name=name,
             optional=optional,
             columns=columns,
@@ -420,6 +421,7 @@ class ExactDataMatch(CRUDEndpoint, MetadataMixin):
         
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             name=name,
             optional=optional,
             columns=columns,
@@ -644,6 +646,7 @@ class ExactDataMatch(CRUDEndpoint, MetadataMixin):
         
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             name=name,
             optional=optional,
             columns=columns,

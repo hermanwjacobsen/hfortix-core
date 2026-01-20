@@ -670,6 +670,7 @@ class FortiOS:
 
         # Wrap the client to enable response processing (object mode)
         from hfortix_fortios.models import process_response
+        from hfortix_fortios._helpers.field_overrides import NO_HYPHEN_PARAMETERS
         import time as _time
 
         def convert_field_names(data: Any) -> Any:
@@ -679,9 +680,13 @@ class FortiOS:
             Recursively processes dictionaries and lists to convert all field names
             from snake_case (Python convention) to hyphenated format (FortiOS API).
             
+            EXCEPTION: Parameters in NO_HYPHEN_PARAMETERS are preserved with underscores
+            because the FortiOS API expects them that way (e.g., file_content).
+            
             Examples:
                 ip6_address -> ip6-address
                 src_addr -> src-addr
+                file_content -> file_content (preserved - in whitelist)
                 
             Args:
                 data: Dictionary, list, or primitive value to convert
@@ -691,7 +696,7 @@ class FortiOS:
             """
             if isinstance(data, dict):
                 return {
-                    key.replace("_", "-"): convert_field_names(value)
+                    key if key in NO_HYPHEN_PARAMETERS else key.replace("_", "-"): convert_field_names(value)
                     for key, value in data.items()
                 }
             elif isinstance(data, list):

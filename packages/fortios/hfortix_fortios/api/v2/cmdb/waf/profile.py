@@ -322,6 +322,7 @@ class Profile(CRUDEndpoint, MetadataMixin):
         
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             name=name,
             external=external,
             extended_log=extended_log,
@@ -450,6 +451,7 @@ class Profile(CRUDEndpoint, MetadataMixin):
         
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             name=name,
             external=external,
             extended_log=extended_log,
@@ -690,6 +692,7 @@ class Profile(CRUDEndpoint, MetadataMixin):
         
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             name=name,
             external=external,
             extended_log=extended_log,

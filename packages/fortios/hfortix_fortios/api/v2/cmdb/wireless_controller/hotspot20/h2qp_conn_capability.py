@@ -300,6 +300,7 @@ class H2qpConnCapability(CRUDEndpoint, MetadataMixin):
         """
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             name=name,
             icmp_port=icmp_port,
             ftp_port=ftp_port,
@@ -422,6 +423,7 @@ class H2qpConnCapability(CRUDEndpoint, MetadataMixin):
         """
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             name=name,
             icmp_port=icmp_port,
             ftp_port=ftp_port,
@@ -661,6 +663,7 @@ class H2qpConnCapability(CRUDEndpoint, MetadataMixin):
         """
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             name=name,
             icmp_port=icmp_port,
             ftp_port=ftp_port,
