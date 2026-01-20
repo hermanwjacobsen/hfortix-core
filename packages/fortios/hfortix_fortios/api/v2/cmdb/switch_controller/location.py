@@ -284,6 +284,7 @@ class Location(CRUDEndpoint, MetadataMixin):
         """
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             name=name,
             address_civic=address_civic,
             coordinates=coordinates,
@@ -382,6 +383,7 @@ class Location(CRUDEndpoint, MetadataMixin):
         """
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             name=name,
             address_civic=address_civic,
             coordinates=coordinates,
@@ -597,6 +599,7 @@ class Location(CRUDEndpoint, MetadataMixin):
         """
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             name=name,
             address_civic=address_civic,
             coordinates=coordinates,

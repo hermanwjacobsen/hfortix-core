@@ -306,6 +306,7 @@ class H2qpOperatorName(CRUDEndpoint, MetadataMixin):
         
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             name=name,
             value_list=value_list,
             data=payload_dict,
@@ -411,6 +412,7 @@ class H2qpOperatorName(CRUDEndpoint, MetadataMixin):
         
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             name=name,
             value_list=value_list,
             data=payload_dict,
@@ -630,6 +632,7 @@ class H2qpOperatorName(CRUDEndpoint, MetadataMixin):
         
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             name=name,
             value_list=value_list,
             data=payload_dict,

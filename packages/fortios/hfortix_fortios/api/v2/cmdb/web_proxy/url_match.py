@@ -290,6 +290,7 @@ class UrlMatch(CRUDEndpoint, MetadataMixin):
         """
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             name=name,
             status=status,
             url_pattern=url_pattern,
@@ -397,6 +398,7 @@ class UrlMatch(CRUDEndpoint, MetadataMixin):
         """
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             name=name,
             status=status,
             url_pattern=url_pattern,
@@ -621,6 +623,7 @@ class UrlMatch(CRUDEndpoint, MetadataMixin):
         """
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             name=name,
             status=status,
             url_pattern=url_pattern,

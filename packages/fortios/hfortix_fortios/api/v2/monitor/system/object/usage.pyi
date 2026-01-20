@@ -29,7 +29,7 @@ class UsagePayload(TypedDict, total=False):
     """Payload type for Usage operations."""
     q_path: str
     q_name: str
-    qtypes: str
+    qtypes: int | str | list[int | str]
     scope: str
     mkey: str
     child_path: str
@@ -43,7 +43,7 @@ class UsageResponse(TypedDict, total=False):
     """Response type for Usage - use with .dict property for typed dict access."""
     q_path: str
     q_name: str
-    qtypes: str
+    qtypes: list[str]
     scope: str
     mkey: str
     child_path: str
@@ -58,7 +58,7 @@ class UsageObject(FortiObject):
     """Typed FortiObject for Usage with field access."""
     q_path: str
     q_name: str
-    qtypes: str
+    qtypes: list[str]
     scope: str
     child_path: str
 
@@ -118,7 +118,7 @@ class Usage:
         payload_dict: UsagePayload | None = ...,
         q_path: str | None = ...,
         q_name: str | None = ...,
-        qtypes: str | None = ...,
+        qtypes: int | str | list[int | str] | None = ...,
         scope: str | None = ...,
         mkey: str | None = ...,
         child_path: str | None = ...,
@@ -143,7 +143,7 @@ class Usage:
         payload_dict: UsagePayload | None = ...,
         q_path: str | None = ...,
         q_name: str | None = ...,
-        qtypes: str | None = ...,
+        qtypes: int | str | list[int | str] | None = ...,
         scope: str | None = ...,
         mkey: str | None = ...,
         child_path: str | None = ...,

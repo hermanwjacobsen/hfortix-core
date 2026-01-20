@@ -341,6 +341,7 @@ class SwitchInterface(CRUDEndpoint, MetadataMixin):
         
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             name=name,
             span_dest_port=span_dest_port,
             span_source_port=span_source_port,
@@ -483,6 +484,7 @@ class SwitchInterface(CRUDEndpoint, MetadataMixin):
         
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             name=name,
             span_dest_port=span_dest_port,
             span_source_port=span_source_port,
@@ -731,6 +733,7 @@ class SwitchInterface(CRUDEndpoint, MetadataMixin):
         
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             name=name,
             span_dest_port=span_dest_port,
             span_source_port=span_source_port,

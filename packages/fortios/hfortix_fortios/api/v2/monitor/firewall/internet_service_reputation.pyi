@@ -123,7 +123,7 @@ class InternetServiceReputation:
         self,
         payload_dict: InternetServiceReputationPayload | None = ...,
         ip: str | None = ...,
-        is_ipv6: str | None = ...,
+        is_ipv6: bool | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,

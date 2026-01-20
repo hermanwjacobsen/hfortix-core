@@ -133,6 +133,7 @@ class Delete(CRUDEndpoint, MetadataMixin):
         """
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="monitor",
             config_ids=config_ids,
             data=payload_dict,
         )

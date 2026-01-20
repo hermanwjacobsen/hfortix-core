@@ -27,8 +27,8 @@ from hfortix_fortios.models import (
 
 class SetStatusPayload(TypedDict, total=False):
     """Payload type for SetStatus operations."""
-    bssid: str
-    ssid: str
+    bssid: int | str | list[int | str]
+    ssid: int | str | list[int | str]
     status: str
 
 
@@ -38,8 +38,8 @@ class SetStatusPayload(TypedDict, total=False):
 
 class SetStatusResponse(TypedDict, total=False):
     """Response type for SetStatus - use with .dict property for typed dict access."""
-    bssid: str
-    ssid: str
+    bssid: list[str]
+    ssid: list[str]
     status: str
 
 
@@ -50,8 +50,8 @@ class SetStatusResponse(TypedDict, total=False):
 
 class SetStatusObject(FortiObject):
     """Typed FortiObject for SetStatus with field access."""
-    bssid: str
-    ssid: str
+    bssid: list[str]
+    ssid: list[str]
     status: str
 
 
@@ -101,8 +101,8 @@ class SetStatus:
     def post(
         self,
         payload_dict: SetStatusPayload | None = ...,
-        bssid: str | None = ...,
-        ssid: str | None = ...,
+        bssid: int | str | list[int | str] | None = ...,
+        ssid: int | str | list[int | str] | None = ...,
         status: str | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
@@ -116,8 +116,8 @@ class SetStatus:
     def put(
         self,
         payload_dict: SetStatusPayload | None = ...,
-        bssid: str | None = ...,
-        ssid: str | None = ...,
+        bssid: int | str | list[int | str] | None = ...,
+        ssid: int | str | list[int | str] | None = ...,
         status: str | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
@@ -138,8 +138,8 @@ class SetStatus:
     def set(
         self,
         payload_dict: SetStatusPayload | None = ...,
-        bssid: str | None = ...,
-        ssid: str | None = ...,
+        bssid: int | str | list[int | str] | None = ...,
+        ssid: int | str | list[int | str] | None = ...,
         status: str | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,

@@ -647,6 +647,7 @@ class Bgp(CRUDEndpoint, MetadataMixin):
         
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             asn=asn,
             router_id=router_id,
             keepalive_timer=keepalive_timer,

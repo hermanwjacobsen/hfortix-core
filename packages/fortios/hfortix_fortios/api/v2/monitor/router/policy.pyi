@@ -117,7 +117,7 @@ class Policy:
     def set(
         self,
         payload_dict: PolicyPayload | None = ...,
-        count_only: str | None = ...,
+        count_only: bool | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,

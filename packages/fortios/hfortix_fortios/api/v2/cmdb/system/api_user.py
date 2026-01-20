@@ -341,6 +341,7 @@ class ApiUser(CRUDEndpoint, MetadataMixin):
         
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             name=name,
             comments=comments,
             api_key=api_key,
@@ -483,6 +484,7 @@ class ApiUser(CRUDEndpoint, MetadataMixin):
         
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             name=name,
             comments=comments,
             api_key=api_key,
@@ -731,6 +733,7 @@ class ApiUser(CRUDEndpoint, MetadataMixin):
         
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             name=name,
             comments=comments,
             api_key=api_key,

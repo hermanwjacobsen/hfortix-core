@@ -289,6 +289,7 @@ class System(CRUDEndpoint, MetadataMixin):
         """
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             parallel_process_override=parallel_process_override,
             parallel_process=parallel_process,
             data_sync_interval=data_sync_interval,

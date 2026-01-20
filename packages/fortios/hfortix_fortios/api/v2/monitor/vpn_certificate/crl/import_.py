@@ -135,6 +135,7 @@ class Import(CRUDEndpoint, MetadataMixin):
         """
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="monitor",
             scope=scope,
             file_content=file_content,
             data=payload_dict,

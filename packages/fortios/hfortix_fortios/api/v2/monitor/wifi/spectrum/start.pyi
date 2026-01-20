@@ -29,7 +29,7 @@ class StartPayload(TypedDict, total=False):
     """Payload type for Start operations."""
     wtp_id: str
     radio_id: int
-    channels: str
+    channels: int | str | list[int | str]
     duration: int
 
 
@@ -41,7 +41,7 @@ class StartResponse(TypedDict, total=False):
     """Response type for Start - use with .dict property for typed dict access."""
     wtp_id: str
     radio_id: int
-    channels: str
+    channels: list[str]
     duration: int
 
 
@@ -54,7 +54,7 @@ class StartObject(FortiObject):
     """Typed FortiObject for Start with field access."""
     wtp_id: str
     radio_id: int
-    channels: str
+    channels: list[str]
     duration: int
 
 
@@ -106,7 +106,7 @@ class Start:
         payload_dict: StartPayload | None = ...,
         wtp_id: str | None = ...,
         radio_id: int | None = ...,
-        channels: str | None = ...,
+        channels: int | str | list[int | str] | None = ...,
         duration: int | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
@@ -122,7 +122,7 @@ class Start:
         payload_dict: StartPayload | None = ...,
         wtp_id: str | None = ...,
         radio_id: int | None = ...,
-        channels: str | None = ...,
+        channels: int | str | list[int | str] | None = ...,
         duration: int | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
@@ -145,7 +145,7 @@ class Start:
         payload_dict: StartPayload | None = ...,
         wtp_id: str | None = ...,
         radio_id: int | None = ...,
-        channels: str | None = ...,
+        channels: int | str | list[int | str] | None = ...,
         duration: int | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,

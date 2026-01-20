@@ -135,6 +135,7 @@ class BackupAction(CRUDEndpoint, MetadataMixin):
         """
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="monitor",
             operation=operation,
             objects=objects,
             data=payload_dict,

@@ -34,9 +34,9 @@ class RealtimeStatisticsPayload(TypedDict, total=False):
     srcport: str
     dstport: str
     srcintf: str
-    srcintfrole: str
+    srcintfrole: int | str | list[int | str]
     dstintf: str
-    dstintfrole: str
+    dstintfrole: int | str | list[int | str]
     policyid: str
     security_policyid: str
     protocol: str
@@ -70,9 +70,9 @@ class RealtimeStatisticsResponse(TypedDict, total=False):
     srcport: str
     dstport: str
     srcintf: str
-    srcintfrole: str
+    srcintfrole: list[str]
     dstintf: str
-    dstintfrole: str
+    dstintfrole: list[str]
     policyid: str
     security_policyid: str
     protocol: str
@@ -107,9 +107,9 @@ class RealtimeStatisticsObject(FortiObject):
     srcport: str
     dstport: str
     srcintf: str
-    srcintfrole: str
+    srcintfrole: list[str]
     dstintf: str
-    dstintfrole: str
+    dstintfrole: list[str]
     policyid: str
     security_policyid: str
     protocol: str
@@ -212,9 +212,9 @@ class RealtimeStatistics:
         srcport: str | None = ...,
         dstport: str | None = ...,
         srcintf: str | None = ...,
-        srcintfrole: str | None = ...,
+        srcintfrole: int | str | list[int | str] | None = ...,
         dstintf: str | None = ...,
-        dstintfrole: str | None = ...,
+        dstintfrole: int | str | list[int | str] | None = ...,
         policyid: str | None = ...,
         security_policyid: str | None = ...,
         protocol: str | None = ...,
@@ -259,9 +259,9 @@ class RealtimeStatistics:
         srcport: str | None = ...,
         dstport: str | None = ...,
         srcintf: str | None = ...,
-        srcintfrole: str | None = ...,
+        srcintfrole: int | str | list[int | str] | None = ...,
         dstintf: str | None = ...,
-        dstintfrole: str | None = ...,
+        dstintfrole: int | str | list[int | str] | None = ...,
         policyid: str | None = ...,
         security_policyid: str | None = ...,
         protocol: str | None = ...,

@@ -333,6 +333,7 @@ class Global(CRUDEndpoint, MetadataMixin):
         
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             name=name,
             location=location,
             acd_process_count=acd_process_count,

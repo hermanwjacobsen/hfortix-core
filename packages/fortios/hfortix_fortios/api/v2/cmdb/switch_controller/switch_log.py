@@ -275,6 +275,7 @@ class SwitchLog(CRUDEndpoint, MetadataMixin):
         """
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             status=status,
             severity=severity,
             data=payload_dict,

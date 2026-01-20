@@ -82,7 +82,6 @@ class Run:
         count: int | None = ...,
         start: int | None = ...,
         payload_dict: dict[str, Any] | None = ...,
-        vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> RunObject: ...
@@ -96,7 +95,6 @@ class Run:
         self,
         payload_dict: RunPayload | None = ...,
         remote_script: str | None = ...,
-        vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> RunObject: ...
@@ -109,7 +107,6 @@ class Run:
         self,
         payload_dict: RunPayload | None = ...,
         remote_script: str | None = ...,
-        vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> RunObject: ...
@@ -122,14 +119,12 @@ class Run:
     def exists(
         self,
         name: str,
-        vdom: str | bool | None = ...,
     ) -> bool: ...
     
     def set(
         self,
         payload_dict: RunPayload | None = ...,
         remote_script: str | None = ...,
-        vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> FortiObject[Any]: ...

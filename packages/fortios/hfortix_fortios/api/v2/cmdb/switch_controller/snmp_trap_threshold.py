@@ -277,6 +277,7 @@ class SnmpTrapThreshold(CRUDEndpoint, MetadataMixin):
         """
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             trap_high_cpu_threshold=trap_high_cpu_threshold,
             trap_low_memory_threshold=trap_low_memory_threshold,
             trap_log_full_threshold=trap_log_full_threshold,

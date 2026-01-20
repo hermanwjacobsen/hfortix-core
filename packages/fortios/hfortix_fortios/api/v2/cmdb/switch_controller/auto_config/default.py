@@ -277,6 +277,7 @@ class Default(CRUDEndpoint, MetadataMixin):
         """
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             fgt_policy=fgt_policy,
             isl_policy=isl_policy,
             icl_policy=icl_policy,

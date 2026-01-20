@@ -38,8 +38,8 @@ class SessionsPayload(TypedDict, total=False):
     dstport: str
     srcintf: str
     dstintf: str
-    srcintfrole: str
-    dstintfrole: str
+    srcintfrole: int | str | list[int | str]
+    dstintfrole: int | str | list[int | str]
     srcaddr: str
     srcaddr6: str
     srcuuid: str
@@ -74,8 +74,8 @@ class SessionsResponse(TypedDict, total=False):
     dstport: str
     srcintf: str
     dstintf: str
-    srcintfrole: str
-    dstintfrole: str
+    srcintfrole: list[str]
+    dstintfrole: list[str]
     srcaddr: str
     srcaddr6: str
     srcuuid: str
@@ -111,8 +111,8 @@ class SessionsObject(FortiObject):
     dstport: str
     srcintf: str
     dstintf: str
-    srcintfrole: str
-    dstintfrole: str
+    srcintfrole: list[str]
+    dstintfrole: list[str]
     srcaddr: str
     srcaddr6: str
     srcuuid: str
@@ -216,8 +216,8 @@ class Sessions:
         dstport: str | None = ...,
         srcintf: str | None = ...,
         dstintf: str | None = ...,
-        srcintfrole: str | None = ...,
-        dstintfrole: str | None = ...,
+        srcintfrole: int | str | list[int | str] | None = ...,
+        dstintfrole: int | str | list[int | str] | None = ...,
         srcaddr: str | None = ...,
         srcaddr6: str | None = ...,
         srcuuid: str | None = ...,
@@ -254,7 +254,7 @@ class Sessions:
         payload_dict: SessionsPayload | None = ...,
         ip_version: str | None = ...,
         count: int | None = ...,
-        summary: str | None = ...,
+        summary: bool | None = ...,
         srcport: str | None = ...,
         policyid: str | None = ...,
         security_policyid: str | None = ...,
@@ -263,8 +263,8 @@ class Sessions:
         dstport: str | None = ...,
         srcintf: str | None = ...,
         dstintf: str | None = ...,
-        srcintfrole: str | None = ...,
-        dstintfrole: str | None = ...,
+        srcintfrole: int | str | list[int | str] | None = ...,
+        dstintfrole: int | str | list[int | str] | None = ...,
         srcaddr: str | None = ...,
         srcaddr6: str | None = ...,
         srcuuid: str | None = ...,

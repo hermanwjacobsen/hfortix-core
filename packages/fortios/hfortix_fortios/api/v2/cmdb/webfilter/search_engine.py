@@ -290,6 +290,7 @@ class SearchEngine(CRUDEndpoint, MetadataMixin):
         """
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             name=name,
             hostname=hostname,
             url=url,
@@ -397,6 +398,7 @@ class SearchEngine(CRUDEndpoint, MetadataMixin):
         """
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             name=name,
             hostname=hostname,
             url=url,
@@ -621,6 +623,7 @@ class SearchEngine(CRUDEndpoint, MetadataMixin):
         """
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             name=name,
             hostname=hostname,
             url=url,

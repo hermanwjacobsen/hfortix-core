@@ -378,6 +378,7 @@ class LldpProfile(CRUDEndpoint, MetadataMixin):
         
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             name=name,
             med_tlvs=med_tlvs,
             x802_1_tlvs=x802_1_tlvs,
@@ -561,6 +562,7 @@ class LldpProfile(CRUDEndpoint, MetadataMixin):
         
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             name=name,
             med_tlvs=med_tlvs,
             x802_1_tlvs=x802_1_tlvs,
@@ -846,6 +848,7 @@ class LldpProfile(CRUDEndpoint, MetadataMixin):
         
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             name=name,
             med_tlvs=med_tlvs,
             x802_1_tlvs=x802_1_tlvs,

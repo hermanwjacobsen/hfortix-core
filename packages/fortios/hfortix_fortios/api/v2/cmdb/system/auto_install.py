@@ -273,6 +273,7 @@ class AutoInstall(CRUDEndpoint, MetadataMixin):
         """
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             auto_install_config=auto_install_config,
             auto_install_image=auto_install_image,
             default_config_file=default_config_file,

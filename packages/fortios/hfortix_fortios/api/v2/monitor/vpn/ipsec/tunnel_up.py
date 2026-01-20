@@ -137,6 +137,7 @@ class TunnelUp(CRUDEndpoint, MetadataMixin):
         """
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="monitor",
             p1name=p1name,
             p2name=p2name,
             p2serial=p2serial,

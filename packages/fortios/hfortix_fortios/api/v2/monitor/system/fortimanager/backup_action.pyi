@@ -28,7 +28,7 @@ from hfortix_fortios.models import (
 class BackupActionPayload(TypedDict, total=False):
     """Payload type for BackupAction operations."""
     operation: str
-    objects: str
+    objects: int | str | list[int | str]
 
 
 # ================================================================
@@ -38,7 +38,7 @@ class BackupActionPayload(TypedDict, total=False):
 class BackupActionResponse(TypedDict, total=False):
     """Response type for BackupAction - use with .dict property for typed dict access."""
     operation: str
-    objects: str
+    objects: list[str]
 
 
 # ================================================================
@@ -49,7 +49,7 @@ class BackupActionResponse(TypedDict, total=False):
 class BackupActionObject(FortiObject):
     """Typed FortiObject for BackupAction with field access."""
     operation: str
-    objects: str
+    objects: list[str]
 
 
 # ================================================================
@@ -99,7 +99,7 @@ class BackupAction:
         self,
         payload_dict: BackupActionPayload | None = ...,
         operation: str | None = ...,
-        objects: str | None = ...,
+        objects: int | str | list[int | str] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -113,7 +113,7 @@ class BackupAction:
         self,
         payload_dict: BackupActionPayload | None = ...,
         operation: str | None = ...,
-        objects: str | None = ...,
+        objects: int | str | list[int | str] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -134,7 +134,7 @@ class BackupAction:
         self,
         payload_dict: BackupActionPayload | None = ...,
         operation: str | None = ...,
-        objects: str | None = ...,
+        objects: int | str | list[int | str] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,

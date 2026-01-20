@@ -316,6 +316,7 @@ class MpskProfile(CRUDEndpoint, MetadataMixin):
         
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             name=name,
             mpsk_concurrent_clients=mpsk_concurrent_clients,
             mpsk_external_server_auth=mpsk_external_server_auth,
@@ -435,6 +436,7 @@ class MpskProfile(CRUDEndpoint, MetadataMixin):
         
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             name=name,
             mpsk_concurrent_clients=mpsk_concurrent_clients,
             mpsk_external_server_auth=mpsk_external_server_auth,
@@ -666,6 +668,7 @@ class MpskProfile(CRUDEndpoint, MetadataMixin):
         
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             name=name,
             mpsk_concurrent_clients=mpsk_concurrent_clients,
             mpsk_external_server_auth=mpsk_external_server_auth,

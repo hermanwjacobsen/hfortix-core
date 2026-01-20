@@ -145,7 +145,7 @@ class Login:
         payload_dict: LoginPayload | None = ...,
         email: str | None = ...,
         password: str | None = ...,
-        send_logs: str | None = ...,
+        send_logs: bool | None = ...,
         domain: str | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,

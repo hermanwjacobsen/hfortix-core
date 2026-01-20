@@ -277,6 +277,7 @@ class Dns64(CRUDEndpoint, MetadataMixin):
         """
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             status=status,
             dns64_prefix=dns64_prefix,
             always_synthesize_aaaa_record=always_synthesize_aaaa_record,

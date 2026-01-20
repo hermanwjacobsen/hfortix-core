@@ -141,6 +141,7 @@ class Transfer(CRUDEndpoint, MetadataMixin):
         """
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="monitor",
             email=email,
             password=password,
             old_email=old_email,

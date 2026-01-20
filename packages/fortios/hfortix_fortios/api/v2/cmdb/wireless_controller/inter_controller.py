@@ -307,6 +307,7 @@ class InterController(CRUDEndpoint, MetadataMixin):
         
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             inter_controller_mode=inter_controller_mode,
             l3_roaming=l3_roaming,
             inter_controller_key=inter_controller_key,

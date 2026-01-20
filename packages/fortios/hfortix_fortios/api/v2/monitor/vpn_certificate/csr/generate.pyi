@@ -32,7 +32,7 @@ class GeneratePayload(TypedDict, total=False):
     keytype: str
     keysize: int
     curvename: str
-    orgunits: str
+    orgunits: int | str | list[int | str]
     org: str
     city: str
     state: str
@@ -56,7 +56,7 @@ class GenerateResponse(TypedDict, total=False):
     keytype: str
     keysize: int
     curvename: str
-    orgunits: str
+    orgunits: list[str]
     org: str
     city: str
     state: str
@@ -81,7 +81,7 @@ class GenerateObject(FortiObject):
     keytype: str
     keysize: int
     curvename: str
-    orgunits: str
+    orgunits: list[str]
     org: str
     city: str
     state: str
@@ -145,7 +145,7 @@ class Generate:
         keytype: str | None = ...,
         keysize: int | None = ...,
         curvename: str | None = ...,
-        orgunits: str | None = ...,
+        orgunits: int | str | list[int | str] | None = ...,
         org: str | None = ...,
         city: str | None = ...,
         state: str | None = ...,
@@ -173,7 +173,7 @@ class Generate:
         keytype: str | None = ...,
         keysize: int | None = ...,
         curvename: str | None = ...,
-        orgunits: str | None = ...,
+        orgunits: int | str | list[int | str] | None = ...,
         org: str | None = ...,
         city: str | None = ...,
         state: str | None = ...,
@@ -208,7 +208,7 @@ class Generate:
         keytype: str | None = ...,
         keysize: int | None = ...,
         curvename: str | None = ...,
-        orgunits: str | None = ...,
+        orgunits: int | str | list[int | str] | None = ...,
         org: str | None = ...,
         city: str | None = ...,
         state: str | None = ...,

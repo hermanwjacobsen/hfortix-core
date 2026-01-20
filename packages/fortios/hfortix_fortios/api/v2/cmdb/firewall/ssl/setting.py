@@ -287,6 +287,7 @@ class Setting(CRUDEndpoint, MetadataMixin):
         """
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             proxy_connect_timeout=proxy_connect_timeout,
             ssl_dh_bits=ssl_dh_bits,
             ssl_send_empty_frags=ssl_send_empty_frags,

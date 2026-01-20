@@ -347,6 +347,7 @@ class FlowTracking(CRUDEndpoint, MetadataMixin):
         
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             sample_mode=sample_mode,
             sample_rate=sample_rate,
             format=format,

@@ -281,6 +281,7 @@ class Settings(CRUDEndpoint, MetadataMixin):
         """
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             machine_learning_detection=machine_learning_detection,
             use_extreme_db=use_extreme_db,
             grayware=grayware,

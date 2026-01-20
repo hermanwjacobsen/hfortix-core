@@ -284,6 +284,7 @@ class AutoScript(CRUDEndpoint, MetadataMixin):
         """
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             name=name,
             interval=interval,
             repeat=repeat,
@@ -389,6 +390,7 @@ class AutoScript(CRUDEndpoint, MetadataMixin):
         """
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             name=name,
             interval=interval,
             repeat=repeat,
@@ -607,6 +609,7 @@ class AutoScript(CRUDEndpoint, MetadataMixin):
         """
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             name=name,
             interval=interval,
             repeat=repeat,

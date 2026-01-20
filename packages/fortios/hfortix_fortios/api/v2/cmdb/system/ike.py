@@ -313,6 +313,7 @@ class Ike(CRUDEndpoint, MetadataMixin):
         """
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             embryonic_limit=embryonic_limit,
             dh_multiprocess=dh_multiprocess,
             dh_worker_count=dh_worker_count,

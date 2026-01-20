@@ -286,6 +286,7 @@ class Table(CRUDEndpoint, MetadataMixin):
         """
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             seq_num=seq_num,
             ip=ip,
             mac=mac,
@@ -387,6 +388,7 @@ class Table(CRUDEndpoint, MetadataMixin):
         """
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             seq_num=seq_num,
             ip=ip,
             mac=mac,
@@ -605,6 +607,7 @@ class Table(CRUDEndpoint, MetadataMixin):
         """
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             seq_num=seq_num,
             ip=ip,
             mac=mac,

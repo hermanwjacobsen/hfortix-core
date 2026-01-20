@@ -375,6 +375,7 @@ class Global(CRUDEndpoint, MetadataMixin):
         
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             ssl_cert=ssl_cert,
             ssl_ca_cert=ssl_ca_cert,
             fast_policy_match=fast_policy_match,

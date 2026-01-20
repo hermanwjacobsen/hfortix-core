@@ -135,6 +135,7 @@ class DeregisterDevice(CRUDEndpoint, MetadataMixin):
         """
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="monitor",
             email=email,
             password=password,
             data=payload_dict,

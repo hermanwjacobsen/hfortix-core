@@ -319,6 +319,7 @@ class Explicit(CRUDEndpoint, MetadataMixin):
         
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             status=status,
             incoming_port=incoming_port,
             incoming_ip=incoming_ip,

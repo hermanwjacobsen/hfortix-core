@@ -127,7 +127,7 @@ class MatchedDevices:
         self,
         payload_dict: MatchedDevicesPayload | None = ...,
         mkey: str | None = ...,
-        include_dynamic: str | None = ...,
+        include_dynamic: bool | None = ...,
         mac: str | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,

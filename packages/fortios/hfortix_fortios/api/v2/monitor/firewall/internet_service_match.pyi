@@ -133,7 +133,7 @@ class InternetServiceMatch:
         self,
         payload_dict: InternetServiceMatchPayload | None = ...,
         ip: str | None = ...,
-        is_ipv6: str | None = ...,
+        is_ipv6: bool | None = ...,
         ipv4_mask: str | None = ...,
         ipv6_prefix: int | None = ...,
         vdom: str | bool | None = ...,

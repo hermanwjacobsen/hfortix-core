@@ -288,6 +288,7 @@ class Policy(CRUDEndpoint, MetadataMixin):
         """
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             name=name,
             qos_policy=qos_policy,
             storm_control_policy=storm_control_policy,
@@ -392,6 +393,7 @@ class Policy(CRUDEndpoint, MetadataMixin):
         """
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             name=name,
             qos_policy=qos_policy,
             storm_control_policy=storm_control_policy,
@@ -613,6 +615,7 @@ class Policy(CRUDEndpoint, MetadataMixin):
         """
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             name=name,
             qos_policy=qos_policy,
             storm_control_policy=storm_control_policy,

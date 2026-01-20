@@ -407,6 +407,7 @@ class Ospf6(CRUDEndpoint, MetadataMixin):
         
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             abr_type=abr_type,
             auto_cost_ref_bandwidth=auto_cost_ref_bandwidth,
             default_information_originate=default_information_originate,

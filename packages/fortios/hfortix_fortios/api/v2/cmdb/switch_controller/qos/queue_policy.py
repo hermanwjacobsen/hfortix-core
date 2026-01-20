@@ -312,6 +312,7 @@ class QueuePolicy(CRUDEndpoint, MetadataMixin):
         
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             name=name,
             schedule=schedule,
             rate_by=rate_by,
@@ -425,6 +426,7 @@ class QueuePolicy(CRUDEndpoint, MetadataMixin):
         
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             name=name,
             schedule=schedule,
             rate_by=rate_by,
@@ -650,6 +652,7 @@ class QueuePolicy(CRUDEndpoint, MetadataMixin):
         
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             name=name,
             schedule=schedule,
             rate_by=rate_by,

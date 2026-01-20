@@ -282,6 +282,7 @@ class CustomCommand(CRUDEndpoint, MetadataMixin):
         """
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             command_name=command_name,
             description=description,
             command=command,
@@ -377,6 +378,7 @@ class CustomCommand(CRUDEndpoint, MetadataMixin):
         """
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             command_name=command_name,
             description=description,
             command=command,
@@ -589,6 +591,7 @@ class CustomCommand(CRUDEndpoint, MetadataMixin):
         """
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             command_name=command_name,
             description=description,
             command=command,

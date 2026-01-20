@@ -373,6 +373,7 @@ class Global(CRUDEndpoint, MetadataMixin):
         
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             mac_aging_interval=mac_aging_interval,
             https_image_push=https_image_push,
             vlan_all_mode=vlan_all_mode,

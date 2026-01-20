@@ -223,7 +223,7 @@ class Sessions:
         payload_dict: SessionsPayload | None = ...,
         ip_version: str | None = ...,
         count: int | None = ...,
-        summary: str | None = ...,
+        summary: bool | None = ...,
         srcaddr: str | None = ...,
         dstaddr: str | None = ...,
         srcaddr6: str | None = ...,

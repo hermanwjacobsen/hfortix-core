@@ -133,6 +133,7 @@ class Abort(CRUDEndpoint, MetadataMixin):
         """
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="monitor",
             query_id=query_id,
             data=payload_dict,
         )

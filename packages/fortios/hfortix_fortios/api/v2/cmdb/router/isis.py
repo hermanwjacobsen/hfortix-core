@@ -473,6 +473,7 @@ class Isis(CRUDEndpoint, MetadataMixin):
         
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             is_type=is_type,
             adv_passive_only=adv_passive_only,
             adv_passive_only6=adv_passive_only6,

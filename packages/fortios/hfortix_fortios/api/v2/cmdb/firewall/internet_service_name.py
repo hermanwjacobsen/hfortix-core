@@ -288,6 +288,7 @@ class InternetServiceName(CRUDEndpoint, MetadataMixin):
         """
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             name=name,
             type=type,
             internet_service_id=internet_service_id,
@@ -392,6 +393,7 @@ class InternetServiceName(CRUDEndpoint, MetadataMixin):
         """
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             name=name,
             type=type,
             internet_service_id=internet_service_id,
@@ -613,6 +615,7 @@ class InternetServiceName(CRUDEndpoint, MetadataMixin):
         """
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             name=name,
             type=type,
             internet_service_id=internet_service_id,

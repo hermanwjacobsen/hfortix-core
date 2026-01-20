@@ -291,6 +291,7 @@ class PasswordPolicy(CRUDEndpoint, MetadataMixin):
         
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             status=status,
             apply_to=apply_to,
             minimum_length=minimum_length,

@@ -285,6 +285,7 @@ class CloudService(CRUDEndpoint, MetadataMixin):
         """
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             name=name,
             vendor=vendor,
             traffic_vdom=traffic_vdom,
@@ -391,6 +392,7 @@ class CloudService(CRUDEndpoint, MetadataMixin):
         """
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             name=name,
             vendor=vendor,
             traffic_vdom=traffic_vdom,
@@ -609,6 +611,7 @@ class CloudService(CRUDEndpoint, MetadataMixin):
         """
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             name=name,
             vendor=vendor,
             traffic_vdom=traffic_vdom,

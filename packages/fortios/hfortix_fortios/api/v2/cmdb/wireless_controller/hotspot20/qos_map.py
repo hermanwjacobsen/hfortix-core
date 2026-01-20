@@ -328,6 +328,7 @@ class QosMap(CRUDEndpoint, MetadataMixin):
         
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             name=name,
             dscp_except=dscp_except,
             dscp_range=dscp_range,
@@ -451,6 +452,7 @@ class QosMap(CRUDEndpoint, MetadataMixin):
         
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             name=name,
             dscp_except=dscp_except,
             dscp_range=dscp_range,
@@ -681,6 +683,7 @@ class QosMap(CRUDEndpoint, MetadataMixin):
         
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             name=name,
             dscp_except=dscp_except,
             dscp_range=dscp_range,

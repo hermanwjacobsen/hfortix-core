@@ -135,6 +135,7 @@ class Diagnose(CRUDEndpoint, MetadataMixin):
         """
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="monitor",
             id=id,
             cmd=cmd,
             data=payload_dict,

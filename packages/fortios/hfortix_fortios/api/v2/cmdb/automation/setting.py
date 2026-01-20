@@ -271,6 +271,7 @@ class Setting(CRUDEndpoint, MetadataMixin):
         """
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             max_concurrent_stitches=max_concurrent_stitches,
             fabric_sync=fabric_sync,
             secure_mode=secure_mode,

@@ -135,6 +135,7 @@ class GenerateKey(CRUDEndpoint, MetadataMixin):
         """
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="monitor",
             api_user=api_user,
             expiry=expiry,
             data=payload_dict,

@@ -271,6 +271,7 @@ class HaMonitor(CRUDEndpoint, MetadataMixin):
         """
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             monitor_vlan=monitor_vlan,
             vlan_hb_interval=vlan_hb_interval,
             vlan_hb_lost_threshold=vlan_hb_lost_threshold,

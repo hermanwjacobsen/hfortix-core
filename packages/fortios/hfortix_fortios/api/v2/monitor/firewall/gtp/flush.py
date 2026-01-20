@@ -159,6 +159,7 @@ class Flush(CRUDEndpoint, MetadataMixin):
         """
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="monitor",
             scope=scope,
             gtp_profile=gtp_profile,
             version=version,

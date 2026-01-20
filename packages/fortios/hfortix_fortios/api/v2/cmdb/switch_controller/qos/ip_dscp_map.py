@@ -308,6 +308,7 @@ class IpDscpMap(CRUDEndpoint, MetadataMixin):
         
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             name=name,
             description=description,
             map=map,
@@ -416,6 +417,7 @@ class IpDscpMap(CRUDEndpoint, MetadataMixin):
         
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             name=name,
             description=description,
             map=map,
@@ -638,6 +640,7 @@ class IpDscpMap(CRUDEndpoint, MetadataMixin):
         
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             name=name,
             description=description,
             map=map,

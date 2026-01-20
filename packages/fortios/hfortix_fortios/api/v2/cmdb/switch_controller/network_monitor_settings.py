@@ -273,6 +273,7 @@ class NetworkMonitorSettings(CRUDEndpoint, MetadataMixin):
         """
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             network_monitoring=network_monitoring,
             data=payload_dict,
         )

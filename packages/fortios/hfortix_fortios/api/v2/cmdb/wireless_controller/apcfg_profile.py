@@ -320,6 +320,7 @@ class ApcfgProfile(CRUDEndpoint, MetadataMixin):
         
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             name=name,
             ap_family=ap_family,
             comment=comment,
@@ -445,6 +446,7 @@ class ApcfgProfile(CRUDEndpoint, MetadataMixin):
         
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             name=name,
             ap_family=ap_family,
             comment=comment,
@@ -682,6 +684,7 @@ class ApcfgProfile(CRUDEndpoint, MetadataMixin):
         
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             name=name,
             ap_family=ap_family,
             comment=comment,

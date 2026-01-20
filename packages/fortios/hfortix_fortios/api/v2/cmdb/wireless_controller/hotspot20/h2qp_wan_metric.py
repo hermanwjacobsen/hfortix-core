@@ -294,6 +294,7 @@ class H2qpWanMetric(CRUDEndpoint, MetadataMixin):
         """
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             name=name,
             link_status=link_status,
             symmetric_wan_link=symmetric_wan_link,
@@ -407,6 +408,7 @@ class H2qpWanMetric(CRUDEndpoint, MetadataMixin):
         """
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             name=name,
             link_status=link_status,
             symmetric_wan_link=symmetric_wan_link,
@@ -637,6 +639,7 @@ class H2qpWanMetric(CRUDEndpoint, MetadataMixin):
         """
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             name=name,
             link_status=link_status,
             symmetric_wan_link=symmetric_wan_link,

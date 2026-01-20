@@ -276,6 +276,7 @@ class ReplacemsgImage(CRUDEndpoint, MetadataMixin):
         """
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             name=name,
             image_type=image_type,
             image_base64=image_base64,
@@ -369,6 +370,7 @@ class ReplacemsgImage(CRUDEndpoint, MetadataMixin):
         """
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             name=name,
             image_type=image_type,
             image_base64=image_base64,
@@ -575,6 +577,7 @@ class ReplacemsgImage(CRUDEndpoint, MetadataMixin):
         """
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             name=name,
             image_type=image_type,
             image_base64=image_base64,

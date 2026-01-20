@@ -284,6 +284,7 @@ class FortigateProfile(CRUDEndpoint, MetadataMixin):
         """
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             name=name,
             id=id,
             extension=extension,
@@ -382,6 +383,7 @@ class FortigateProfile(CRUDEndpoint, MetadataMixin):
         """
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             name=name,
             id=id,
             extension=extension,
@@ -597,6 +599,7 @@ class FortigateProfile(CRUDEndpoint, MetadataMixin):
         """
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             name=name,
             id=id,
             extension=extension,

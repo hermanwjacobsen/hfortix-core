@@ -282,6 +282,7 @@ class AnqpIpAddressType(CRUDEndpoint, MetadataMixin):
         """
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             name=name,
             ipv6_address_type=ipv6_address_type,
             ipv4_address_type=ipv4_address_type,
@@ -377,6 +378,7 @@ class AnqpIpAddressType(CRUDEndpoint, MetadataMixin):
         """
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             name=name,
             ipv6_address_type=ipv6_address_type,
             ipv4_address_type=ipv4_address_type,
@@ -589,6 +591,7 @@ class AnqpIpAddressType(CRUDEndpoint, MetadataMixin):
         """
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             name=name,
             ipv6_address_type=ipv6_address_type,
             ipv4_address_type=ipv4_address_type,

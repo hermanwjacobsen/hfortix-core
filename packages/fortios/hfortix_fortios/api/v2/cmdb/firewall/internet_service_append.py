@@ -271,6 +271,7 @@ class InternetServiceAppend(CRUDEndpoint, MetadataMixin):
         """
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             addr_mode=addr_mode,
             match_port=match_port,
             append_port=append_port,

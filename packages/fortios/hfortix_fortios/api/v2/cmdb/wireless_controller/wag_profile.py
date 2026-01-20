@@ -294,6 +294,7 @@ class WagProfile(CRUDEndpoint, MetadataMixin):
         """
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             name=name,
             comment=comment,
             tunnel_type=tunnel_type,
@@ -407,6 +408,7 @@ class WagProfile(CRUDEndpoint, MetadataMixin):
         """
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             name=name,
             comment=comment,
             tunnel_type=tunnel_type,
@@ -637,6 +639,7 @@ class WagProfile(CRUDEndpoint, MetadataMixin):
         """
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             name=name,
             comment=comment,
             tunnel_type=tunnel_type,

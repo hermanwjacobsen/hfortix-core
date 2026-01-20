@@ -307,6 +307,7 @@ class Multicast6(CRUDEndpoint, MetadataMixin):
         
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             multicast_routing=multicast_routing,
             multicast_pmtu=multicast_pmtu,
             interface=interface,

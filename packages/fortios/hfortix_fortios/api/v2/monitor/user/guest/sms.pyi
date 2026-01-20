@@ -28,7 +28,7 @@ from hfortix_fortios.models import (
 class SmsPayload(TypedDict, total=False):
     """Payload type for Sms operations."""
     group: str
-    guest: str
+    guest: int | str | list[int | str]
 
 
 # ================================================================
@@ -38,7 +38,7 @@ class SmsPayload(TypedDict, total=False):
 class SmsResponse(TypedDict, total=False):
     """Response type for Sms - use with .dict property for typed dict access."""
     group: str
-    guest: str
+    guest: list[str]
 
 
 # ================================================================
@@ -49,7 +49,7 @@ class SmsResponse(TypedDict, total=False):
 class SmsObject(FortiObject):
     """Typed FortiObject for Sms with field access."""
     group: str
-    guest: str
+    guest: list[str]
 
 
 # ================================================================
@@ -99,7 +99,7 @@ class Sms:
         self,
         payload_dict: SmsPayload | None = ...,
         group: str | None = ...,
-        guest: str | None = ...,
+        guest: int | str | list[int | str] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -113,7 +113,7 @@ class Sms:
         self,
         payload_dict: SmsPayload | None = ...,
         group: str | None = ...,
-        guest: str | None = ...,
+        guest: int | str | list[int | str] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -134,7 +134,7 @@ class Sms:
         self,
         payload_dict: SmsPayload | None = ...,
         group: str | None = ...,
-        guest: str | None = ...,
+        guest: int | str | list[int | str] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,

@@ -137,6 +137,7 @@ class DownloadEval(CRUDEndpoint, MetadataMixin):
         """
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="monitor",
             account_id=account_id,
             account_password=account_password,
             is_government=is_government,

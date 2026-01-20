@@ -306,6 +306,7 @@ class AspathList(CRUDEndpoint, MetadataMixin):
         
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             name=name,
             rule=rule,
             data=payload_dict,
@@ -411,6 +412,7 @@ class AspathList(CRUDEndpoint, MetadataMixin):
         
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             name=name,
             rule=rule,
             data=payload_dict,
@@ -630,6 +632,7 @@ class AspathList(CRUDEndpoint, MetadataMixin):
         
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             name=name,
             rule=rule,
             data=payload_dict,

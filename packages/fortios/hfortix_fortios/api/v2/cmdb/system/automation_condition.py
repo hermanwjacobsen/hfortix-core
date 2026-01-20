@@ -285,6 +285,7 @@ class AutomationCondition(CRUDEndpoint, MetadataMixin):
         """
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             name=name,
             description=description,
             condition_type=condition_type,
@@ -391,6 +392,7 @@ class AutomationCondition(CRUDEndpoint, MetadataMixin):
         """
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             name=name,
             description=description,
             condition_type=condition_type,
@@ -609,6 +611,7 @@ class AutomationCondition(CRUDEndpoint, MetadataMixin):
         """
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             name=name,
             description=description,
             condition_type=condition_type,

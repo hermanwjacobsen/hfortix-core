@@ -359,6 +359,7 @@ class Setting(CRUDEndpoint, MetadataMixin):
         
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             active_auth_scheme=active_auth_scheme,
             sso_auth_scheme=sso_auth_scheme,
             update_time=update_time,

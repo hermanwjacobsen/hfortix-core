@@ -127,7 +127,7 @@ class HaPeer:
         self,
         payload_dict: HaPeerPayload | None = ...,
         serial: str | None = ...,
-        ipv6: str | None = ...,
+        ipv6: bool | None = ...,
         destination: str | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,

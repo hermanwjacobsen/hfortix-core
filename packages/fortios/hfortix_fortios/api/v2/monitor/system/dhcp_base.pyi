@@ -128,7 +128,7 @@ class Dhcp:
         self,
         payload_dict: DhcpPayload | None = ...,
         scope: str | None = ...,
-        ipv6: str | None = ...,
+        ipv6: bool | None = ...,
         interface: str | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,

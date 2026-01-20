@@ -273,6 +273,7 @@ class OverrideSetting(CRUDEndpoint, MetadataMixin):
         """
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             status=status,
             data=payload_dict,
         )

@@ -122,7 +122,7 @@ class DhcpStatus:
         self,
         payload_dict: DhcpStatusPayload | None = ...,
         mkey: str | None = ...,
-        ipv6: str | None = ...,
+        ipv6: bool | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,

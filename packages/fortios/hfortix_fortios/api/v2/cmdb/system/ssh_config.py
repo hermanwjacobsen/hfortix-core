@@ -281,6 +281,7 @@ class SshConfig(CRUDEndpoint, MetadataMixin):
         
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             ssh_kex_algo=ssh_kex_algo,
             ssh_enc_algo=ssh_enc_algo,
             ssh_mac_algo=ssh_mac_algo,

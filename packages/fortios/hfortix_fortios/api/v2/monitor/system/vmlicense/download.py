@@ -135,6 +135,7 @@ class Download(CRUDEndpoint, MetadataMixin):
         """
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="monitor",
             token=token,
             proxy_url=proxy_url,
             data=payload_dict,

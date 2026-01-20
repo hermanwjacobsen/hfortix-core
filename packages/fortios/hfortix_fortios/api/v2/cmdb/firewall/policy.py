@@ -1428,6 +1428,7 @@ class Policy(CRUDEndpoint, MetadataMixin):
         
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             policyid=policyid,
             status=status,
             name=name,
@@ -2627,6 +2628,7 @@ class Policy(CRUDEndpoint, MetadataMixin):
         
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             policyid=policyid,
             status=status,
             name=name,
@@ -3728,6 +3730,7 @@ class Policy(CRUDEndpoint, MetadataMixin):
         
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             policyid=policyid,
             status=status,
             name=name,

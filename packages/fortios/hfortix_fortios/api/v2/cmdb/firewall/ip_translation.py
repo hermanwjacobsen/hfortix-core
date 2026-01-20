@@ -286,6 +286,7 @@ class IpTranslation(CRUDEndpoint, MetadataMixin):
         """
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             transid=transid,
             type=type,
             startip=startip,
@@ -387,6 +388,7 @@ class IpTranslation(CRUDEndpoint, MetadataMixin):
         """
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             transid=transid,
             type=type,
             startip=startip,
@@ -605,6 +607,7 @@ class IpTranslation(CRUDEndpoint, MetadataMixin):
         """
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             transid=transid,
             type=type,
             startip=startip,

@@ -27,7 +27,7 @@ from hfortix_fortios.models import (
 
 class CheckPortAvailabilityPayload(TypedDict, total=False):
     """Payload type for CheckPortAvailability operations."""
-    port_ranges: str
+    port_ranges: int | str | list[int | str]
     service: str
 
 
@@ -37,7 +37,7 @@ class CheckPortAvailabilityPayload(TypedDict, total=False):
 
 class CheckPortAvailabilityResponse(TypedDict, total=False):
     """Response type for CheckPortAvailability - use with .dict property for typed dict access."""
-    port_ranges: str
+    port_ranges: list[str]
     service: str
 
 
@@ -48,7 +48,7 @@ class CheckPortAvailabilityResponse(TypedDict, total=False):
 
 class CheckPortAvailabilityObject(FortiObject):
     """Typed FortiObject for CheckPortAvailability with field access."""
-    port_ranges: str
+    port_ranges: list[str]
     service: str
 
 
@@ -101,7 +101,7 @@ class CheckPortAvailability:
     def put(
         self,
         payload_dict: CheckPortAvailabilityPayload | None = ...,
-        port_ranges: str | None = ...,
+        port_ranges: int | str | list[int | str] | None = ...,
         service: str | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
@@ -122,7 +122,7 @@ class CheckPortAvailability:
     def set(
         self,
         payload_dict: CheckPortAvailabilityPayload | None = ...,
-        port_ranges: str | None = ...,
+        port_ranges: int | str | list[int | str] | None = ...,
         service: str | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,

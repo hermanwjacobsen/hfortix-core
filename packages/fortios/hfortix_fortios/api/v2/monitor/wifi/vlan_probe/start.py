@@ -143,6 +143,7 @@ class Start(CRUDEndpoint, MetadataMixin):
         """
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="monitor",
             ap_interface=ap_interface,
             wtp=wtp,
             start_vlan_id=start_vlan_id,

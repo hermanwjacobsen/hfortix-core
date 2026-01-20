@@ -133,6 +133,7 @@ class Reboot(CRUDEndpoint, MetadataMixin):
         """
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="monitor",
             event_log_message=event_log_message,
             data=payload_dict,
         )

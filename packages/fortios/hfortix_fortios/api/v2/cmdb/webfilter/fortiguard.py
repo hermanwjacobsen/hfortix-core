@@ -289,6 +289,7 @@ class Fortiguard(CRUDEndpoint, MetadataMixin):
         """
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             cache_mode=cache_mode,
             cache_prefix_match=cache_prefix_match,
             cache_mem_permille=cache_mem_permille,

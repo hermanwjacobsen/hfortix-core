@@ -135,6 +135,7 @@ class PortStatsReset(CRUDEndpoint, MetadataMixin):
         """
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="monitor",
             mkey=mkey,
             ports=ports,
             data=payload_dict,

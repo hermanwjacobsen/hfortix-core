@@ -284,6 +284,7 @@ class Dnstranslation(CRUDEndpoint, MetadataMixin):
         """
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             id=id,
             src=src,
             dst=dst,
@@ -382,6 +383,7 @@ class Dnstranslation(CRUDEndpoint, MetadataMixin):
         """
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             id=id,
             src=src,
             dst=dst,
@@ -597,6 +599,7 @@ class Dnstranslation(CRUDEndpoint, MetadataMixin):
         """
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             id=id,
             src=src,
             dst=dst,

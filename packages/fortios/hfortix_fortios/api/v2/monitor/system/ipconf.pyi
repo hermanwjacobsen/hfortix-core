@@ -27,7 +27,7 @@ from hfortix_fortios.models import (
 
 class IpconfPayload(TypedDict, total=False):
     """Payload type for Ipconf operations."""
-    devs: str
+    devs: int | str | list[int | str]
     ipaddr: str
 
 
@@ -37,7 +37,7 @@ class IpconfPayload(TypedDict, total=False):
 
 class IpconfResponse(TypedDict, total=False):
     """Response type for Ipconf - use with .dict property for typed dict access."""
-    devs: str
+    devs: list[str]
     ipaddr: str
 
 
@@ -48,7 +48,7 @@ class IpconfResponse(TypedDict, total=False):
 
 class IpconfObject(FortiObject):
     """Typed FortiObject for Ipconf with field access."""
-    devs: str
+    devs: list[str]
     ipaddr: str
 
 
@@ -101,7 +101,7 @@ class Ipconf:
     def put(
         self,
         payload_dict: IpconfPayload | None = ...,
-        devs: str | None = ...,
+        devs: int | str | list[int | str] | None = ...,
         ipaddr: str | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
@@ -122,7 +122,7 @@ class Ipconf:
     def set(
         self,
         payload_dict: IpconfPayload | None = ...,
-        devs: str | None = ...,
+        devs: int | str | list[int | str] | None = ...,
         ipaddr: str | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,

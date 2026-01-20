@@ -117,7 +117,7 @@ class LocalIn:
     def set(
         self,
         payload_dict: LocalInPayload | None = ...,
-        include_ttl: str | None = ...,
+        include_ttl: bool | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,

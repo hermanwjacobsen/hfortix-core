@@ -341,6 +341,7 @@ class Setting(CRUDEndpoint, MetadataMixin):
         """
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             username=username,
             mailto1=mailto1,
             mailto2=mailto2,

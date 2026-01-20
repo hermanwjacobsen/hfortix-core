@@ -294,6 +294,7 @@ class LwProfile(CRUDEndpoint, MetadataMixin):
         """
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             name=name,
             comment=comment,
             lw_protocol=lw_protocol,
@@ -407,6 +408,7 @@ class LwProfile(CRUDEndpoint, MetadataMixin):
         """
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             name=name,
             comment=comment,
             lw_protocol=lw_protocol,
@@ -637,6 +639,7 @@ class LwProfile(CRUDEndpoint, MetadataMixin):
         """
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             name=name,
             comment=comment,
             lw_protocol=lw_protocol,

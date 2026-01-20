@@ -316,6 +316,7 @@ class DecryptedTrafficMirror(CRUDEndpoint, MetadataMixin):
         
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             name=name,
             dstmac=dstmac,
             traffic_type=traffic_type,
@@ -434,6 +435,7 @@ class DecryptedTrafficMirror(CRUDEndpoint, MetadataMixin):
         
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             name=name,
             dstmac=dstmac,
             traffic_type=traffic_type,
@@ -664,6 +666,7 @@ class DecryptedTrafficMirror(CRUDEndpoint, MetadataMixin):
         
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             name=name,
             dstmac=dstmac,
             traffic_type=traffic_type,

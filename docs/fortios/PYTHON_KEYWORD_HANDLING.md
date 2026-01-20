@@ -250,6 +250,144 @@ When you access attributes on a `FortiObject` response:
 
 4. **Return Value**: You get the value as if you accessed `.asn`
 
+## Special Case: Parameters That Keep Underscores
+
+### Overview
+
+While most FortiOS API parameters use **kebab-case** (hyphens), a small number of parameters use **snake_case** (underscores). The most notable examples are file upload parameters.
+
+**Version Added**: v0.5.122 (January 20, 2026)
+
+### The NO_HYPHEN_PARAMETERS Whitelist
+
+HFortix maintains a whitelist of parameters that should **NOT** be converted from underscores to hyphens:
+
+```python
+# From packages/fortios/hfortix_fortios/_helpers/builders.py
+NO_HYPHEN_PARAMETERS = {
+    "file_content",      # File upload endpoints
+    "key_file_content",  # Certificate import endpoints
+}
+```
+
+### Why This Matters
+
+Before v0.5.122, these parameters were incorrectly converted, causing HTTP 400 errors:
+
+```python
+# ❌ Before v0.5.122 (BROKEN):
+result = fgt.api.monitor.system.config_script.upload.post(
+    filename="backup.conf",
+    file_content=base64_data  # Incorrectly sent as "file-content"
+)
+# Result: HTTP 400 - Parameter not found
+
+# ✅ After v0.5.122 (FIXED):
+result = fgt.api.monitor.system.config_script.upload.post(
+    filename="backup.conf",
+    file_content=base64_data  # Correctly sent as "file_content"
+)
+# Result: HTTP 200 - Success
+```
+
+### Affected Endpoints (15+)
+
+All endpoints that accept file uploads or certificate imports:
+
+#### System Configuration
+- `monitor/system/config-script/upload` - Upload and run config script
+- `monitor/system/config/restore` - Restore configuration from file
+- `monitor/system/firmware/upgrade` - Upload firmware image
+
+#### VPN Certificates
+- `monitor/vpn-certificate/ca/import` - Import CA certificate (`file_content`)
+- `monitor/vpn-certificate/local/import` - Import local certificate (`file_content` + `key_file_content`)
+
+#### Firmware Uploads
+- `monitor/wifi/firmware/upload` - Upload WiFi firmware
+- `monitor/wifi/region-image/upload` - Upload WiFi region image
+- `monitor/switch-controller/fsw-firmware/upload` - Upload FortiSwitch firmware
+- `monitor/extender-controller/extender/upgrade` - Upload FortiExtender firmware
+
+#### Other Upload Endpoints
+- `monitor/license/database/upgrade` - Upload license database
+- `monitor/web-ui/language/import` - Import custom language file
+
+### Implementation
+
+The payload builder functions check this whitelist before converting underscores:
+
+```python
+# From packages/fortios/hfortix_fortios/_helpers/builders.py
+
+for param_name, value in params.items():
+    if value is None:
+        continue
+
+    # First, check if this is a Python keyword that needs reverse mapping
+    if param_name in PYTHON_KEYWORD_TO_API_FIELD:
+        api_key = PYTHON_KEYWORD_TO_API_FIELD[param_name]
+    # Check if this parameter should keep underscores (e.g., file_content)
+    elif param_name in NO_HYPHEN_PARAMETERS:
+        api_key = param_name  # Keep underscore - don't convert
+    else:
+        # Convert snake_case to kebab-case for FortiOS API
+        api_key = param_name.replace("_", "-")
+    
+    payload[api_key] = value
+```
+
+### Usage Example: Certificate Import
+
+```python
+import base64
+from hfortix_fortios import FortiOS
+
+fgt = FortiOS(host="192.168.1.99", token="your-api-token")
+
+# Read certificate and key files
+with open("server.crt", "rb") as f:
+    cert_content = base64.b64encode(f.read()).decode()
+
+with open("server.key", "rb") as f:
+    key_content = base64.b64encode(f.read()).decode()
+
+# Import certificate with both file_content and key_file_content
+result = fgt.api.monitor.vpn_certificate.local_.import_.post(
+    certname="my-server-cert",
+    file_content=cert_content,      # ✅ Sent as "file_content" (underscore)
+    key_file_content=key_content,   # ✅ Sent as "key_file_content" (underscore)
+    password="key-password"         # ✅ Sent as "password" (no underscore)
+)
+
+print(f"Certificate imported: {result.http_status_code == 200}")
+```
+
+**API Payload Sent:**
+```json
+{
+    "certname": "my-server-cert",
+    "file_content": "LS0tLS1CRUdJTi...",
+    "key_file_content": "LS0tLS1CRUdJTi...",
+    "password": "key-password"
+}
+```
+
+### How to Identify These Parameters
+
+1. **Schema Files**: Check schema files in `/schema/{version}/monitor/` - these parameters are defined with underscores:
+   ```json
+   "file_content": {
+       "name": "file_content",
+       "type": "string",
+       "summary": "Provided when uploading a file: base64 encoded file data."
+   }
+   ```
+
+2. **FortiOS API Documentation**: Official docs show these as `file_content` (not `file-content`)
+
+3. **Error Messages**: If you get HTTP 400 with "parameter not found" on a file upload, it might be a missing NO_HYPHEN parameter
+
 ### Implementation Locations
 
 **Outbound (v0.5.110+):**

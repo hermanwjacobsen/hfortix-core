@@ -135,6 +135,7 @@ class Kill(CRUDEndpoint, MetadataMixin):
         """
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="monitor",
             pid=pid,
             signal=signal,
             data=payload_dict,

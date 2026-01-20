@@ -276,6 +276,7 @@ class DeviceUpgradeExemptions(CRUDEndpoint, MetadataMixin):
         """
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             id=id,
             fortinet_device=fortinet_device,
             version=version,
@@ -369,6 +370,7 @@ class DeviceUpgradeExemptions(CRUDEndpoint, MetadataMixin):
         """
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             id=id,
             fortinet_device=fortinet_device,
             version=version,
@@ -575,6 +577,7 @@ class DeviceUpgradeExemptions(CRUDEndpoint, MetadataMixin):
         """
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             id=id,
             fortinet_device=fortinet_device,
             version=version,

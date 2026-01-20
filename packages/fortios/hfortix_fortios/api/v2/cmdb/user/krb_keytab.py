@@ -314,6 +314,7 @@ class KrbKeytab(CRUDEndpoint, MetadataMixin):
         
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             name=name,
             pac_data=pac_data,
             principal=principal,
@@ -430,6 +431,7 @@ class KrbKeytab(CRUDEndpoint, MetadataMixin):
         
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             name=name,
             pac_data=pac_data,
             principal=principal,
@@ -658,6 +660,7 @@ class KrbKeytab(CRUDEndpoint, MetadataMixin):
         
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             name=name,
             pac_data=pac_data,
             principal=principal,

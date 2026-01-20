@@ -300,6 +300,7 @@ class DataType(CRUDEndpoint, MetadataMixin):
         """
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             name=name,
             pattern=pattern,
             verify=verify,
@@ -422,6 +423,7 @@ class DataType(CRUDEndpoint, MetadataMixin):
         """
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             name=name,
             pattern=pattern,
             verify=verify,
@@ -661,6 +663,7 @@ class DataType(CRUDEndpoint, MetadataMixin):
         """
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             name=name,
             pattern=pattern,
             verify=verify,

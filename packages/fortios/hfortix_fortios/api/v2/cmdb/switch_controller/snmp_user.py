@@ -292,6 +292,7 @@ class SnmpUser(CRUDEndpoint, MetadataMixin):
         """
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             name=name,
             queries=queries,
             query_port=query_port,
@@ -402,6 +403,7 @@ class SnmpUser(CRUDEndpoint, MetadataMixin):
         """
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             name=name,
             queries=queries,
             query_port=query_port,
@@ -629,6 +631,7 @@ class SnmpUser(CRUDEndpoint, MetadataMixin):
         """
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             name=name,
             queries=queries,
             query_port=query_port,

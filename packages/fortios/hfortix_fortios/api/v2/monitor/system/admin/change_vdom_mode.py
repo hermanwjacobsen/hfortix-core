@@ -133,6 +133,7 @@ class ChangeVdomMode(CRUDEndpoint, MetadataMixin):
         """
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="monitor",
             vdom_mode=vdom_mode,
             data=payload_dict,
         )

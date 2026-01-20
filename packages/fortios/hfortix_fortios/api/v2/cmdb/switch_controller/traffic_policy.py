@@ -292,6 +292,7 @@ class TrafficPolicy(CRUDEndpoint, MetadataMixin):
         """
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             name=name,
             description=description,
             policer_status=policer_status,
@@ -402,6 +403,7 @@ class TrafficPolicy(CRUDEndpoint, MetadataMixin):
         """
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             name=name,
             description=description,
             policer_status=policer_status,
@@ -629,6 +631,7 @@ class TrafficPolicy(CRUDEndpoint, MetadataMixin):
         """
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             name=name,
             description=description,
             policer_status=policer_status,

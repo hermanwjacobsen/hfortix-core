@@ -286,6 +286,7 @@ class FastFallback(CRUDEndpoint, MetadataMixin):
         """
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             name=name,
             status=status,
             connection_mode=connection_mode,
@@ -387,6 +388,7 @@ class FastFallback(CRUDEndpoint, MetadataMixin):
         """
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             name=name,
             status=status,
             connection_mode=connection_mode,
@@ -605,6 +607,7 @@ class FastFallback(CRUDEndpoint, MetadataMixin):
         """
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             name=name,
             status=status,
             connection_mode=connection_mode,

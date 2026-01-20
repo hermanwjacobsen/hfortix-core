@@ -276,6 +276,7 @@ class Controls(CRUDEndpoint, MetadataMixin):
         """
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             name=name,
             display_report=display_report,
             display_insight=display_insight,
@@ -369,6 +370,7 @@ class Controls(CRUDEndpoint, MetadataMixin):
         """
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             name=name,
             display_report=display_report,
             display_insight=display_insight,
@@ -575,6 +577,7 @@ class Controls(CRUDEndpoint, MetadataMixin):
         """
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             name=name,
             display_report=display_report,
             display_insight=display_insight,

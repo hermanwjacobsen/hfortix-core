@@ -330,6 +330,7 @@ class AccessControlList(CRUDEndpoint, MetadataMixin):
         
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             name=name,
             comment=comment,
             layer3_ipv4_rules=layer3_ipv4_rules,
@@ -456,6 +457,7 @@ class AccessControlList(CRUDEndpoint, MetadataMixin):
         
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             name=name,
             comment=comment,
             layer3_ipv4_rules=layer3_ipv4_rules,
@@ -689,6 +691,7 @@ class AccessControlList(CRUDEndpoint, MetadataMixin):
         
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             name=name,
             comment=comment,
             layer3_ipv4_rules=layer3_ipv4_rules,

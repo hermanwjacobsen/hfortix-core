@@ -310,6 +310,7 @@ class ServerGroup(CRUDEndpoint, MetadataMixin):
         
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             name=name,
             ldb_method=ldb_method,
             server_list=server_list,
@@ -420,6 +421,7 @@ class ServerGroup(CRUDEndpoint, MetadataMixin):
         
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             name=name,
             ldb_method=ldb_method,
             server_list=server_list,
@@ -642,6 +644,7 @@ class ServerGroup(CRUDEndpoint, MetadataMixin):
         
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             name=name,
             ldb_method=ldb_method,
             server_list=server_list,

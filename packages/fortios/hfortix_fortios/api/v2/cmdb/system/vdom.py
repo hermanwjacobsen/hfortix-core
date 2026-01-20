@@ -278,6 +278,7 @@ class Vdom(CRUDEndpoint, MetadataMixin):
         """
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             name=name,
             short_name=short_name,
             vcluster_id=vcluster_id,
@@ -374,6 +375,7 @@ class Vdom(CRUDEndpoint, MetadataMixin):
         """
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             name=name,
             short_name=short_name,
             vcluster_id=vcluster_id,
@@ -583,6 +585,7 @@ class Vdom(CRUDEndpoint, MetadataMixin):
         """
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             name=name,
             short_name=short_name,
             vcluster_id=vcluster_id,

@@ -27,7 +27,7 @@ from hfortix_fortios.models import (
 
 class ThumbnailPayload(TypedDict, total=False):
     """Payload type for Thumbnail operations."""
-    filters: str
+    filters: int | str | list[int | str]
 
 
 # ================================================================
@@ -36,7 +36,7 @@ class ThumbnailPayload(TypedDict, total=False):
 
 class ThumbnailResponse(TypedDict, total=False):
     """Response type for Thumbnail - use with .dict property for typed dict access."""
-    filters: str
+    filters: list[str]
 
 
 # ================================================================
@@ -46,7 +46,7 @@ class ThumbnailResponse(TypedDict, total=False):
 
 class ThumbnailObject(FortiObject):
     """Typed FortiObject for Thumbnail with field access."""
-    filters: str
+    filters: list[str]
 
 
 # ================================================================
@@ -97,7 +97,7 @@ class Thumbnail:
     def put(
         self,
         payload_dict: ThumbnailPayload | None = ...,
-        filters: str | None = ...,
+        filters: int | str | list[int | str] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -117,7 +117,7 @@ class Thumbnail:
     def set(
         self,
         payload_dict: ThumbnailPayload | None = ...,
-        filters: str | None = ...,
+        filters: int | str | list[int | str] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,

@@ -7,19 +7,45 @@ Python SDK for FortiGate/FortiOS API - Complete, type-safe, production-ready.
 [![Python 3.10+](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/downloads/)
 
 
-> **⚠️ BETA STATUS - Version 0.5.57 (January 14, 2026)**
+> **⚠️ BETA STATUS - Version 0.5.130 (January 20, 2026)**
 >
 > **Breaking Changes:** See v0.5.33 and v0.5.32 for important return type changes in dict/object mode.
 > **Status:** Production-ready but in beta until v1.0 with comprehensive unit tests.
-> **What's New:** Major bug fixes, expanded test suite, improved type stubs!
+> **What's New:** Context-aware field name conversion, schema-driven field preservation, comprehensive system monitor tests!
 
-**Version:** 0.5.57
+**Version:** 0.5.130
 **Status:** Beta (100% auto-generated, production-ready, optimized for performance)
 
 
-## 🚀 What's New in v0.5.57 (January 2026)
+## 🚀 What's New in v0.5.130 (January 20, 2026)
 
-### Latest Bug Fixes (v0.5.57)
+### Critical Bug Fixes (v0.5.130)
+
+- **Context-Aware Field Name Conversion**: Fixed `ems_id` and dual-context parameters
+  - CMDB endpoints: `ems_id` → `ems-id` (convert to kebab-case)
+  - Monitor endpoints: `ems_id` → `ems_id` (preserve underscore)
+  - Added `api_type` parameter to `build_api_payload()` for context-specific behavior
+  - All 1,064 endpoints regenerated with proper API type context
+
+- **Schema-Driven Field Preservation**: Auto-generated comprehensive lists
+  - Scanned 1,350+ schema files to find ALL fields with underscores
+  - Found 204 total fields where API expects underscores (not hyphens)
+  - `MONITOR_BODY_FIELD_NO_HYPHEN`: 200 fields (was only 2)
+  - All underscore fields now work correctly
+
+### Comprehensive System Monitor Tests (v0.5.130)
+
+- **22 tests across 11 files** covering system monitoring endpoints
+  - Configuration management (config-script, config-revision)
+  - Admin & session monitoring
+  - System resources & status
+  - Time management, DHCP management
+  - Security Fabric, system upgrades
+  - **Test results**: 214 monitor tests passed, 1 skipped
+
+## 🚀 Previous Updates (v0.5.57 - January 2026)
+
+### Bug Fixes (v0.5.57)
 
 - **Bug #21**: `CompositeHandler.error_summary` now correctly tracks handler errors
 - **Bug #22**: `process_response()` no longer crashes on lists of non-dict items

@@ -131,6 +131,7 @@ class Update(CRUDEndpoint, MetadataMixin):
         """
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="monitor",
             data=payload_dict,
         )
 

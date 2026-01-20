@@ -141,6 +141,7 @@ class Import(CRUDEndpoint, MetadataMixin):
         """
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="monitor",
             import_method=import_method,
             scep_url=scep_url,
             scep_ca_id=scep_ca_id,

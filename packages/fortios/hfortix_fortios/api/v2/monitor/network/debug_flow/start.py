@@ -163,6 +163,7 @@ class Start(CRUDEndpoint, MetadataMixin):
         """
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="monitor",
             num_packets=num_packets,
             ipv6=ipv6,
             negate=negate,

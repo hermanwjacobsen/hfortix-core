@@ -144,6 +144,7 @@ class Backup(CRUDEndpoint, MetadataMixin):
         """
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="monitor",
             destination=destination,
             usb_filename=usb_filename,
             password=password,

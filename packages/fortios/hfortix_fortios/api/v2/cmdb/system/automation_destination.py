@@ -306,6 +306,7 @@ class AutomationDestination(CRUDEndpoint, MetadataMixin):
         
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             name=name,
             type=type,
             destination=destination,
@@ -417,6 +418,7 @@ class AutomationDestination(CRUDEndpoint, MetadataMixin):
         
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             name=name,
             type=type,
             destination=destination,
@@ -636,6 +638,7 @@ class AutomationDestination(CRUDEndpoint, MetadataMixin):
         
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             name=name,
             type=type,
             destination=destination,

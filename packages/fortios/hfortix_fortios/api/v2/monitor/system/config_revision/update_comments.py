@@ -135,6 +135,7 @@ class UpdateComments(CRUDEndpoint, MetadataMixin):
         """
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="monitor",
             config_id=config_id,
             comments=comments,
             data=payload_dict,

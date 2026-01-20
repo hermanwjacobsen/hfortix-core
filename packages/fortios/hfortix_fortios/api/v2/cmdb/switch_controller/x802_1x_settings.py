@@ -291,6 +291,7 @@ class X8021xSettings(CRUDEndpoint, MetadataMixin):
         """
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             link_down_auth=link_down_auth,
             reauth_period=reauth_period,
             max_reauth_attempt=max_reauth_attempt,

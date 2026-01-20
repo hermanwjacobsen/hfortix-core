@@ -297,6 +297,7 @@ class Global(CRUDEndpoint, MetadataMixin):
         """
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             fail_open=fail_open,
             database=database,
             traffic_submit=traffic_submit,

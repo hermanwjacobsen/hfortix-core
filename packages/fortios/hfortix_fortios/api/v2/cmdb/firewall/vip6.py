@@ -560,6 +560,7 @@ class Vip6(CRUDEndpoint, MetadataMixin):
         
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             name=name,
             id=id,
             uuid=uuid,
@@ -975,6 +976,7 @@ class Vip6(CRUDEndpoint, MetadataMixin):
         
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             name=name,
             id=id,
             uuid=uuid,
@@ -1477,6 +1479,7 @@ class Vip6(CRUDEndpoint, MetadataMixin):
         
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             name=name,
             id=id,
             uuid=uuid,

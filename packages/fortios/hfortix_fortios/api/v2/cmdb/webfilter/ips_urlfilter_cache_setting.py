@@ -269,6 +269,7 @@ class IpsUrlfilterCacheSetting(CRUDEndpoint, MetadataMixin):
         """
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             dns_retry_interval=dns_retry_interval,
             extended_ttl=extended_ttl,
             data=payload_dict,

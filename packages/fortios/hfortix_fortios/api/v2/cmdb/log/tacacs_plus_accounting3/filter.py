@@ -277,6 +277,7 @@ class Filter(CRUDEndpoint, MetadataMixin):
         """
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             login_audit=login_audit,
             config_change_audit=config_change_audit,
             cli_cmd_audit=cli_cmd_audit,

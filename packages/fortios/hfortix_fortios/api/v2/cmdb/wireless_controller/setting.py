@@ -349,6 +349,7 @@ class Setting(CRUDEndpoint, MetadataMixin):
         
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             account_id=account_id,
             country=country,
             duplicate_ssid=duplicate_ssid,

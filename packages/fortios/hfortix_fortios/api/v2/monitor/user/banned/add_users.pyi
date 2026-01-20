@@ -27,7 +27,7 @@ from hfortix_fortios.models import (
 
 class AddUsersPayload(TypedDict, total=False):
     """Payload type for AddUsers operations."""
-    ip_addresses: str
+    ip_addresses: int | str | list[int | str]
     expiry: int
 
 
@@ -37,7 +37,7 @@ class AddUsersPayload(TypedDict, total=False):
 
 class AddUsersResponse(TypedDict, total=False):
     """Response type for AddUsers - use with .dict property for typed dict access."""
-    ip_addresses: str
+    ip_addresses: list[str]
     expiry: int
 
 
@@ -48,7 +48,7 @@ class AddUsersResponse(TypedDict, total=False):
 
 class AddUsersObject(FortiObject):
     """Typed FortiObject for AddUsers with field access."""
-    ip_addresses: str
+    ip_addresses: list[str]
     expiry: int
 
 
@@ -98,7 +98,7 @@ class AddUsers:
     def post(
         self,
         payload_dict: AddUsersPayload | None = ...,
-        ip_addresses: str | None = ...,
+        ip_addresses: int | str | list[int | str] | None = ...,
         expiry: int | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
@@ -112,7 +112,7 @@ class AddUsers:
     def put(
         self,
         payload_dict: AddUsersPayload | None = ...,
-        ip_addresses: str | None = ...,
+        ip_addresses: int | str | list[int | str] | None = ...,
         expiry: int | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
@@ -133,7 +133,7 @@ class AddUsers:
     def set(
         self,
         payload_dict: AddUsersPayload | None = ...,
-        ip_addresses: str | None = ...,
+        ip_addresses: int | str | list[int | str] | None = ...,
         expiry: int | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,

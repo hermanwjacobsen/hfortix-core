@@ -275,6 +275,7 @@ class Ips(CRUDEndpoint, MetadataMixin):
         """
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             signature_hold_time=signature_hold_time,
             override_signature_hold_by_id=override_signature_hold_by_id,
             data=payload_dict,

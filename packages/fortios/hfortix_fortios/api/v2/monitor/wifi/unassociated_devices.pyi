@@ -117,7 +117,7 @@ class UnassociatedDevices:
     def set(
         self,
         payload_dict: UnassociatedDevicesPayload | None = ...,
-        with_triangulation: str | None = ...,
+        with_triangulation: bool | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,

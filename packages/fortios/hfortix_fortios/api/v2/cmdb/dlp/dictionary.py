@@ -314,6 +314,7 @@ class Dictionary(CRUDEndpoint, MetadataMixin):
         
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             uuid=uuid,
             name=name,
             match_type=match_type,
@@ -431,6 +432,7 @@ class Dictionary(CRUDEndpoint, MetadataMixin):
         
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             uuid=uuid,
             name=name,
             match_type=match_type,
@@ -662,6 +664,7 @@ class Dictionary(CRUDEndpoint, MetadataMixin):
         
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             uuid=uuid,
             name=name,
             match_type=match_type,

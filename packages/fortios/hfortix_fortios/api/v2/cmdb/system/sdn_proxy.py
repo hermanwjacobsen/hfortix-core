@@ -282,6 +282,7 @@ class SdnProxy(CRUDEndpoint, MetadataMixin):
         """
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             name=name,
             type=type,
             server=server,
@@ -384,6 +385,7 @@ class SdnProxy(CRUDEndpoint, MetadataMixin):
         """
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             name=name,
             type=type,
             server=server,
@@ -599,6 +601,7 @@ class SdnProxy(CRUDEndpoint, MetadataMixin):
         """
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             name=name,
             type=type,
             server=server,

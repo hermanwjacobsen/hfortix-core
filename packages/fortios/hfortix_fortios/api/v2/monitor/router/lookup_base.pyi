@@ -122,7 +122,7 @@ class Lookup:
     def set(
         self,
         payload_dict: LookupPayload | None = ...,
-        ipv6: str | None = ...,
+        ipv6: bool | None = ...,
         destination: str | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,

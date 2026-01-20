@@ -147,7 +147,7 @@ class LookupPolicy:
     def set(
         self,
         payload_dict: LookupPolicyPayload | None = ...,
-        ipv6: str | None = ...,
+        ipv6: bool | None = ...,
         destination: str | None = ...,
         source: str | None = ...,
         destination_port: int | None = ...,

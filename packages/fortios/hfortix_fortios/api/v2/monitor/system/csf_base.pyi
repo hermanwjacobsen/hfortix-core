@@ -123,7 +123,7 @@ class Csf:
         self,
         payload_dict: CsfPayload | None = ...,
         scope: str | None = ...,
-        all_vdoms: str | None = ...,
+        all_vdoms: bool | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,

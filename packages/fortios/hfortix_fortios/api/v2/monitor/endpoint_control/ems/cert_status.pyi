@@ -129,7 +129,7 @@ class CertStatus:
         payload_dict: CertStatusPayload | None = ...,
         ems_id: int | None = ...,
         scope: str | None = ...,
-        with_cert: str | None = ...,
+        with_cert: bool | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,

@@ -320,6 +320,7 @@ class Saml(CRUDEndpoint, MetadataMixin):
         """
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             name=name,
             cert=cert,
             entity_id=entity_id,
@@ -472,6 +473,7 @@ class Saml(CRUDEndpoint, MetadataMixin):
         """
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             name=name,
             cert=cert,
             entity_id=entity_id,
@@ -741,6 +743,7 @@ class Saml(CRUDEndpoint, MetadataMixin):
         """
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             name=name,
             cert=cert,
             entity_id=entity_id,

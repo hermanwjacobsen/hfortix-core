@@ -135,6 +135,7 @@ class Push(CRUDEndpoint, MetadataMixin):
         """
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="monitor",
             serial=serial,
             image_id=image_id,
             data=payload_dict,

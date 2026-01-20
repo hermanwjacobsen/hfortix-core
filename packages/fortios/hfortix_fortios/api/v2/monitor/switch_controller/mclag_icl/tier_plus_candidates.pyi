@@ -135,7 +135,7 @@ class TierPlusCandidates:
         fortilink: str | None = ...,
         parent_peer1: str | None = ...,
         parent_peer2: str | None = ...,
-        is_tier2: str | None = ...,
+        is_tier2: bool | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,

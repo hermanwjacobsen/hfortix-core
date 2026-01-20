@@ -310,6 +310,7 @@ class SecurityExemptList(CRUDEndpoint, MetadataMixin):
         
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             name=name,
             description=description,
             rule=rule,
@@ -420,6 +421,7 @@ class SecurityExemptList(CRUDEndpoint, MetadataMixin):
         
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             name=name,
             description=description,
             rule=rule,
@@ -642,6 +644,7 @@ class SecurityExemptList(CRUDEndpoint, MetadataMixin):
         
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             name=name,
             description=description,
             rule=rule,

@@ -137,6 +137,7 @@ class LedBlink(CRUDEndpoint, MetadataMixin):
         """
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="monitor",
             serials=serials,
             blink=blink,
             duration=duration,

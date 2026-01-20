@@ -276,6 +276,7 @@ class IpsUrlfilterDns(CRUDEndpoint, MetadataMixin):
         """
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             address=address,
             status=status,
             ipv6_capability=ipv6_capability,
@@ -369,6 +370,7 @@ class IpsUrlfilterDns(CRUDEndpoint, MetadataMixin):
         """
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             address=address,
             status=status,
             ipv6_capability=ipv6_capability,
@@ -575,6 +577,7 @@ class IpsUrlfilterDns(CRUDEndpoint, MetadataMixin):
         """
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             address=address,
             status=status,
             ipv6_capability=ipv6_capability,

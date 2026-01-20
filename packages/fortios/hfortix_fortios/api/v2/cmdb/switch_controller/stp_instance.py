@@ -308,6 +308,7 @@ class StpInstance(CRUDEndpoint, MetadataMixin):
         
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             id=id,
             vlan_range=vlan_range,
             data=payload_dict,
@@ -415,6 +416,7 @@ class StpInstance(CRUDEndpoint, MetadataMixin):
         
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             id=id,
             vlan_range=vlan_range,
             data=payload_dict,
@@ -634,6 +636,7 @@ class StpInstance(CRUDEndpoint, MetadataMixin):
         
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             id=id,
             vlan_range=vlan_range,
             data=payload_dict,

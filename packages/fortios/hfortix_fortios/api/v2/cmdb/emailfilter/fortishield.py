@@ -271,6 +271,7 @@ class Fortishield(CRUDEndpoint, MetadataMixin):
         """
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             spam_submit_srv=spam_submit_srv,
             spam_submit_force=spam_submit_force,
             spam_submit_txt2htm=spam_submit_txt2htm,

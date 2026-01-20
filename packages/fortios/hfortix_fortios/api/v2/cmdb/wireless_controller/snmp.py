@@ -325,6 +325,7 @@ class Snmp(CRUDEndpoint, MetadataMixin):
         
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             engine_id=engine_id,
             contact_info=contact_info,
             trap_high_cpu_threshold=trap_high_cpu_threshold,

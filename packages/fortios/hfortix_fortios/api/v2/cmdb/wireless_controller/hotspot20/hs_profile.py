@@ -390,6 +390,7 @@ class HsProfile(CRUDEndpoint, MetadataMixin):
         
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             name=name,
             release=release,
             access_network_type=access_network_type,
@@ -620,6 +621,7 @@ class HsProfile(CRUDEndpoint, MetadataMixin):
         
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             name=name,
             release=release,
             access_network_type=access_network_type,
@@ -962,6 +964,7 @@ class HsProfile(CRUDEndpoint, MetadataMixin):
         
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             name=name,
             release=release,
             access_network_type=access_network_type,

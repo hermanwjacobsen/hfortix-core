@@ -27,7 +27,7 @@ from hfortix_fortios.models import (
 
 class DeletePayload(TypedDict, total=False):
     """Payload type for Delete operations."""
-    mkeys: str
+    mkeys: int | str | list[int | str]
 
 
 # ================================================================
@@ -36,7 +36,7 @@ class DeletePayload(TypedDict, total=False):
 
 class DeleteResponse(TypedDict, total=False):
     """Response type for Delete - use with .dict property for typed dict access."""
-    mkeys: str
+    mkeys: list[str]
 
 
 # ================================================================
@@ -46,7 +46,7 @@ class DeleteResponse(TypedDict, total=False):
 
 class DeleteObject(FortiObject):
     """Typed FortiObject for Delete with field access."""
-    mkeys: str
+    mkeys: list[str]
 
 
 # ================================================================
@@ -95,7 +95,7 @@ class Delete:
     def post(
         self,
         payload_dict: DeletePayload | None = ...,
-        mkeys: str | None = ...,
+        mkeys: int | str | list[int | str] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -108,7 +108,7 @@ class Delete:
     def put(
         self,
         payload_dict: DeletePayload | None = ...,
-        mkeys: str | None = ...,
+        mkeys: int | str | list[int | str] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -128,7 +128,7 @@ class Delete:
     def set(
         self,
         payload_dict: DeletePayload | None = ...,
-        mkeys: str | None = ...,
+        mkeys: int | str | list[int | str] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,

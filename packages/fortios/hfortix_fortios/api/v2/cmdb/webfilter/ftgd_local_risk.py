@@ -284,6 +284,7 @@ class FtgdLocalRisk(CRUDEndpoint, MetadataMixin):
         """
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             url=url,
             status=status,
             comment=comment,
@@ -382,6 +383,7 @@ class FtgdLocalRisk(CRUDEndpoint, MetadataMixin):
         """
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             url=url,
             status=status,
             comment=comment,
@@ -597,6 +599,7 @@ class FtgdLocalRisk(CRUDEndpoint, MetadataMixin):
         """
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             url=url,
             status=status,
             comment=comment,

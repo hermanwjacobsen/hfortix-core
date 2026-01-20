@@ -281,6 +281,7 @@ class StormControl(CRUDEndpoint, MetadataMixin):
         """
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             rate=rate,
             burst_size_level=burst_size_level,
             unknown_unicast=unknown_unicast,

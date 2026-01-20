@@ -322,6 +322,7 @@ class AccessProxySshClientCert(CRUDEndpoint, MetadataMixin):
         
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             name=name,
             source_address=source_address,
             permit_x11_forwarding=permit_x11_forwarding,
@@ -450,6 +451,7 @@ class AccessProxySshClientCert(CRUDEndpoint, MetadataMixin):
         
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             name=name,
             source_address=source_address,
             permit_x11_forwarding=permit_x11_forwarding,
@@ -690,6 +692,7 @@ class AccessProxySshClientCert(CRUDEndpoint, MetadataMixin):
         
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             name=name,
             source_address=source_address,
             permit_x11_forwarding=permit_x11_forwarding,

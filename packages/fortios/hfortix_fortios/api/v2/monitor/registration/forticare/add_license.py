@@ -133,6 +133,7 @@ class AddLicense(CRUDEndpoint, MetadataMixin):
         """
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="monitor",
             registration_code=registration_code,
             data=payload_dict,
         )

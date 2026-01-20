@@ -308,6 +308,7 @@ class AnqpRoamingConsortium(CRUDEndpoint, MetadataMixin):
         
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             name=name,
             oi_list=oi_list,
             data=payload_dict,
@@ -415,6 +416,7 @@ class AnqpRoamingConsortium(CRUDEndpoint, MetadataMixin):
         
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             name=name,
             oi_list=oi_list,
             data=payload_dict,
@@ -634,6 +636,7 @@ class AnqpRoamingConsortium(CRUDEndpoint, MetadataMixin):
         
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             name=name,
             oi_list=oi_list,
             data=payload_dict,

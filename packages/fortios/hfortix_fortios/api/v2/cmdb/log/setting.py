@@ -357,6 +357,7 @@ class Setting(CRUDEndpoint, MetadataMixin):
         
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             resolve_ip=resolve_ip,
             resolve_port=resolve_port,
             log_user_in_upper=log_user_in_upper,

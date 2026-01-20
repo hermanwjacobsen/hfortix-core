@@ -85,7 +85,6 @@ class Upload:
         count: int | None = ...,
         start: int | None = ...,
         payload_dict: dict[str, Any] | None = ...,
-        vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> UploadObject: ...
@@ -100,7 +99,6 @@ class Upload:
         payload_dict: UploadPayload | None = ...,
         filename: str | None = ...,
         file_content: str | None = ...,
-        vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> UploadObject: ...
@@ -114,7 +112,6 @@ class Upload:
         payload_dict: UploadPayload | None = ...,
         filename: str | None = ...,
         file_content: str | None = ...,
-        vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> UploadObject: ...
@@ -127,7 +124,6 @@ class Upload:
     def exists(
         self,
         name: str,
-        vdom: str | bool | None = ...,
     ) -> bool: ...
     
     def set(
@@ -135,7 +131,6 @@ class Upload:
         payload_dict: UploadPayload | None = ...,
         filename: str | None = ...,
         file_content: str | None = ...,
-        vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> FortiObject[Any]: ...

@@ -287,6 +287,7 @@ class Vlans(CRUDEndpoint, MetadataMixin):
         """
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             optional_vlans=optional_vlans,
             default_vlan=default_vlan,
             quarantine=quarantine,

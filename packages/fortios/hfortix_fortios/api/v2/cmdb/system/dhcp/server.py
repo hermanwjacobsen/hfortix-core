@@ -492,6 +492,7 @@ class Server(CRUDEndpoint, MetadataMixin):
         # Note: auto_normalize=False because this endpoint has unitary fields
         # (like 'interface') that would be incorrectly converted to list format
         payload_data = build_api_payload(
+            api_type="cmdb",
             auto_normalize=False,
             id=id,
             status=status,
@@ -809,6 +810,7 @@ class Server(CRUDEndpoint, MetadataMixin):
         # Note: auto_normalize=False because this endpoint has unitary fields
         # (like 'interface') that would be incorrectly converted to list format
         payload_data = build_api_payload(
+            api_type="cmdb",
             auto_normalize=False,
             id=id,
             status=status,
@@ -1221,6 +1223,7 @@ class Server(CRUDEndpoint, MetadataMixin):
         # Note: auto_normalize=False because this endpoint has unitary fields
         # (like 'interface') that would be incorrectly converted to list format
         payload_data = build_api_payload(
+            api_type="cmdb",
             auto_normalize=False,
             id=id,
             status=status,

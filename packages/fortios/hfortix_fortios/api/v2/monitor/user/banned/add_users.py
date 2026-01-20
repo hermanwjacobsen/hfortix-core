@@ -135,6 +135,7 @@ class AddUsers(CRUDEndpoint, MetadataMixin):
         """
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="monitor",
             ip_addresses=ip_addresses,
             expiry=expiry,
             data=payload_dict,

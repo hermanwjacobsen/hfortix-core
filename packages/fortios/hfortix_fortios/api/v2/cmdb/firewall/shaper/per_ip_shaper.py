@@ -296,6 +296,7 @@ class PerIpShaper(CRUDEndpoint, MetadataMixin):
         """
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             name=name,
             max_bandwidth=max_bandwidth,
             bandwidth_unit=bandwidth_unit,
@@ -412,6 +413,7 @@ class PerIpShaper(CRUDEndpoint, MetadataMixin):
         """
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             name=name,
             max_bandwidth=max_bandwidth,
             bandwidth_unit=bandwidth_unit,
@@ -645,6 +647,7 @@ class PerIpShaper(CRUDEndpoint, MetadataMixin):
         """
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             name=name,
             max_bandwidth=max_bandwidth,
             bandwidth_unit=bandwidth_unit,

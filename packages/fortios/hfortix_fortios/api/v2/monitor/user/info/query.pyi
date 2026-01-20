@@ -29,7 +29,7 @@ class QueryPayload(TypedDict, total=False):
     """Payload type for Query operations."""
     timestamp_from: int
     timestamp_to: int
-    filters: str
+    filters: int | str | list[int | str]
     query_type: str
     query_id: int
     cache_query: bool
@@ -46,7 +46,7 @@ class QueryResponse(TypedDict, total=False):
     """Response type for Query - use with .dict property for typed dict access."""
     timestamp_from: int
     timestamp_to: int
-    filters: str
+    filters: list[str]
     query_type: str
     query_id: int
     cache_query: bool
@@ -64,7 +64,7 @@ class QueryObject(FortiObject):
     """Typed FortiObject for Query with field access."""
     timestamp_from: int
     timestamp_to: int
-    filters: str
+    filters: list[str]
     query_type: str
     query_id: int
     cache_query: bool
@@ -131,7 +131,7 @@ class Query:
         payload_dict: QueryPayload | None = ...,
         timestamp_from: int | None = ...,
         timestamp_to: int | None = ...,
-        filters: str | None = ...,
+        filters: int | str | list[int | str] | None = ...,
         query_type: str | None = ...,
         query_id: int | None = ...,
         cache_query: bool | None = ...,
@@ -159,13 +159,13 @@ class Query:
         payload_dict: QueryPayload | None = ...,
         timestamp_from: int | None = ...,
         timestamp_to: int | None = ...,
-        filters: str | None = ...,
+        filters: int | str | list[int | str] | None = ...,
         query_type: str | None = ...,
         query_id: int | None = ...,
-        cache_query: str | None = ...,
-        key_only: str | None = ...,
+        cache_query: bool | None = ...,
+        key_only: bool | None = ...,
         filter_logic: str | None = ...,
-        total_only: str | None = ...,
+        total_only: bool | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,

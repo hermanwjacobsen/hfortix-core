@@ -145,6 +145,7 @@ class Deauth(CRUDEndpoint, MetadataMixin):
         """
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="monitor",
             user_type=user_type,
             id=id,
             ip=ip,

@@ -267,6 +267,7 @@ class Options(CRUDEndpoint, MetadataMixin):
         """
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             dns_timeout=dns_timeout,
             data=payload_dict,
         )

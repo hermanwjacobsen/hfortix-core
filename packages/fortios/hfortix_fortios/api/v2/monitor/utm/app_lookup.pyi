@@ -27,7 +27,7 @@ from hfortix_fortios.models import (
 
 class AppLookupPayload(TypedDict, total=False):
     """Payload type for AppLookup operations."""
-    hosts: str
+    hosts: int | str | list[int | str]
 
 
 # ================================================================
@@ -36,7 +36,7 @@ class AppLookupPayload(TypedDict, total=False):
 
 class AppLookupResponse(TypedDict, total=False):
     """Response type for AppLookup - use with .dict property for typed dict access."""
-    hosts: str
+    hosts: list[str]
 
 
 # ================================================================
@@ -46,7 +46,7 @@ class AppLookupResponse(TypedDict, total=False):
 
 class AppLookupObject(FortiObject):
     """Typed FortiObject for AppLookup with field access."""
-    hosts: str
+    hosts: list[str]
 
 
 # ================================================================
@@ -97,7 +97,7 @@ class AppLookup:
     def put(
         self,
         payload_dict: AppLookupPayload | None = ...,
-        hosts: str | None = ...,
+        hosts: int | str | list[int | str] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -117,7 +117,7 @@ class AppLookup:
     def set(
         self,
         payload_dict: AppLookupPayload | None = ...,
-        hosts: str | None = ...,
+        hosts: int | str | list[int | str] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,

@@ -320,6 +320,7 @@ class Urlfilter(CRUDEndpoint, MetadataMixin):
         
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             id=id,
             name=name,
             comment=comment,
@@ -445,6 +446,7 @@ class Urlfilter(CRUDEndpoint, MetadataMixin):
         
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             id=id,
             name=name,
             comment=comment,
@@ -682,6 +684,7 @@ class Urlfilter(CRUDEndpoint, MetadataMixin):
         
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="cmdb",
             id=id,
             name=name,
             comment=comment,

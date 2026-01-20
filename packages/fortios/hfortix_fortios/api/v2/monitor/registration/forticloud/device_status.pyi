@@ -27,7 +27,7 @@ from hfortix_fortios.models import (
 
 class DeviceStatusPayload(TypedDict, total=False):
     """Payload type for DeviceStatus operations."""
-    serials: str
+    serials: int | str | list[int | str]
     update_cache: bool
 
 
@@ -37,7 +37,7 @@ class DeviceStatusPayload(TypedDict, total=False):
 
 class DeviceStatusResponse(TypedDict, total=False):
     """Response type for DeviceStatus - use with .dict property for typed dict access."""
-    serials: str
+    serials: list[str]
     update_cache: bool
 
 
@@ -48,7 +48,7 @@ class DeviceStatusResponse(TypedDict, total=False):
 
 class DeviceStatusObject(FortiObject):
     """Typed FortiObject for DeviceStatus with field access."""
-    serials: str
+    serials: list[str]
     update_cache: bool
 
 
@@ -101,7 +101,7 @@ class DeviceStatus:
     def put(
         self,
         payload_dict: DeviceStatusPayload | None = ...,
-        serials: str | None = ...,
+        serials: int | str | list[int | str] | None = ...,
         update_cache: bool | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
@@ -122,8 +122,8 @@ class DeviceStatus:
     def set(
         self,
         payload_dict: DeviceStatusPayload | None = ...,
-        serials: str | None = ...,
-        update_cache: str | None = ...,
+        serials: int | str | list[int | str] | None = ...,
+        update_cache: bool | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,

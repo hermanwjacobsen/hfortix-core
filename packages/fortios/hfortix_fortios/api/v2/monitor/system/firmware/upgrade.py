@@ -151,6 +151,7 @@ class Upgrade(CRUDEndpoint, MetadataMixin):
         """
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="monitor",
             source=source,
             url=url,
             passphrase=passphrase,

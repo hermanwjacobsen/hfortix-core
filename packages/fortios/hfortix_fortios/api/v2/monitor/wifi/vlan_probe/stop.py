@@ -135,6 +135,7 @@ class Stop(CRUDEndpoint, MetadataMixin):
         """
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="monitor",
             ap_interface=ap_interface,
             wtp=wtp,
             data=payload_dict,

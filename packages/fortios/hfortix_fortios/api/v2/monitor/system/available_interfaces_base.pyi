@@ -132,7 +132,7 @@ class AvailableInterfaces:
         self,
         payload_dict: AvailableInterfacesPayload | None = ...,
         mkey: str | None = ...,
-        include_ha: str | None = ...,
+        include_ha: bool | None = ...,
         view_type: str | None = ...,
         scope: str | None = ...,
         vdom: str | bool | None = ...,

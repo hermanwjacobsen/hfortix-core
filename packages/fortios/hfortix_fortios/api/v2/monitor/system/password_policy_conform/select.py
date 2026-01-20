@@ -139,6 +139,7 @@ class Select(CRUDEndpoint, MetadataMixin):
         """
         # Build payload using helper function
         payload_data = build_api_payload(
+            api_type="monitor",
             mkey=mkey,
             apply_to=apply_to,
             password=password,
