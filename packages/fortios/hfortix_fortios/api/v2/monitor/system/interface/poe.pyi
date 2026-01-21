@@ -28,7 +28,7 @@ from hfortix_fortios.models import (
 class PoePayload(TypedDict, total=False):
     """Payload type for Poe operations."""
     mkey: str
-    scope: str
+    scope: Literal["vdom", "global"]
 
 
 # ================================================================
@@ -38,7 +38,7 @@ class PoePayload(TypedDict, total=False):
 class PoeResponse(TypedDict, total=False):
     """Response type for Poe - use with .dict property for typed dict access."""
     mkey: str
-    scope: str
+    scope: Literal["vdom", "global"]
 
 
 # ================================================================
@@ -48,7 +48,7 @@ class PoeResponse(TypedDict, total=False):
 
 class PoeObject(FortiObject):
     """Typed FortiObject for Poe with field access."""
-    scope: str
+    scope: Literal["vdom", "global"]
 
 
 # ================================================================
@@ -101,7 +101,7 @@ class Poe:
         self,
         payload_dict: PoePayload | None = ...,
         mkey: str | None = ...,
-        scope: str | None = ...,
+        scope: Literal["vdom", "global"] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -122,7 +122,7 @@ class Poe:
         self,
         payload_dict: PoePayload | None = ...,
         mkey: str | None = ...,
-        scope: str | None = ...,
+        scope: Literal["vdom", "global"] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,

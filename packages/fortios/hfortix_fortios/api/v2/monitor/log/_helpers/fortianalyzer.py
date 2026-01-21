@@ -73,6 +73,14 @@ NESTED_SCHEMAS = {
 
 
 # Valid enum values from API documentation
+VALID_BODY_SCOPE = [
+    "vdom",
+    "global",
+]
+VALID_BODY_SRCIP = [
+    "<ip>",
+    "auto",
+]
 VALID_QUERY_ACTION = ["default", "schema"]
 
 # ============================================================================
@@ -119,6 +127,24 @@ def validate_log_fortianalyzer_post(
         return (False, error)
 
     # Step 2: Validate enum values using central function
+    if "scope" in payload:
+        is_valid, error = _validate_enum_field(
+            "scope",
+            payload["scope"],
+            VALID_BODY_SCOPE,
+            FIELD_DESCRIPTIONS
+        )
+        if not is_valid:
+            return (False, error)
+    if "srcip" in payload:
+        is_valid, error = _validate_enum_field(
+            "srcip",
+            payload["srcip"],
+            VALID_BODY_SRCIP,
+            FIELD_DESCRIPTIONS
+        )
+        if not is_valid:
+            return (False, error)
 
     return (True, None)
 
@@ -134,6 +160,24 @@ def validate_log_fortianalyzer_put(
 ) -> tuple[bool, str | None]:
     """Validate PUT request to update log/fortianalyzer."""
     # Validate enum values using central function
+    if "scope" in payload:
+        is_valid, error = _validate_enum_field(
+            "scope",
+            payload["scope"],
+            VALID_BODY_SCOPE,
+            FIELD_DESCRIPTIONS
+        )
+        if not is_valid:
+            return (False, error)
+    if "srcip" in payload:
+        is_valid, error = _validate_enum_field(
+            "srcip",
+            payload["srcip"],
+            VALID_BODY_SRCIP,
+            FIELD_DESCRIPTIONS
+        )
+        if not is_valid:
+            return (False, error)
 
     return (True, None)
 

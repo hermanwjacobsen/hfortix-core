@@ -77,6 +77,13 @@ NESTED_SCHEMAS = {
 
 
 # Valid enum values from API documentation
+VALID_BODY_AUTH_TYPE = [
+    "auto",
+    "ms_chap_v2",
+    "ms_chap",
+    "chap",
+    "pap",
+]
 VALID_QUERY_ACTION = ["default", "schema"]
 
 # ============================================================================
@@ -123,6 +130,15 @@ def validate_user_radius_get_test_connect_post(
         return (False, error)
 
     # Step 2: Validate enum values using central function
+    if "auth_type" in payload:
+        is_valid, error = _validate_enum_field(
+            "auth_type",
+            payload["auth_type"],
+            VALID_BODY_AUTH_TYPE,
+            FIELD_DESCRIPTIONS
+        )
+        if not is_valid:
+            return (False, error)
 
     return (True, None)
 
@@ -138,6 +154,15 @@ def validate_user_radius_get_test_connect_put(
 ) -> tuple[bool, str | None]:
     """Validate PUT request to update user/radius/get_test_connect."""
     # Validate enum values using central function
+    if "auth_type" in payload:
+        is_valid, error = _validate_enum_field(
+            "auth_type",
+            payload["auth_type"],
+            VALID_BODY_AUTH_TYPE,
+            FIELD_DESCRIPTIONS
+        )
+        if not is_valid:
+            return (False, error)
 
     return (True, None)
 

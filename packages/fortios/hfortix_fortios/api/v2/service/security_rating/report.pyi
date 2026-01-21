@@ -27,9 +27,9 @@ from hfortix_fortios.models import (
 
 class ReportPayload(TypedDict, total=False):
     """Payload type for Report operations."""
-    scope: str
+    scope: Literal["global", "vdom"]
     standalone: str
-    type: str
+    type: Literal["psirt", "insight"]
     checks: str
     show_hidden: str
 
@@ -40,9 +40,9 @@ class ReportPayload(TypedDict, total=False):
 
 class ReportResponse(TypedDict, total=False):
     """Response type for Report - use with .dict property for typed dict access."""
-    scope: str
+    scope: Literal["global", "vdom"]
     standalone: str
-    type: str
+    type: Literal["psirt", "insight"]
     checks: str
     show_hidden: str
 
@@ -54,9 +54,9 @@ class ReportResponse(TypedDict, total=False):
 
 class ReportObject(FortiObject):
     """Typed FortiObject for Report with field access."""
-    scope: str
+    scope: Literal["global", "vdom"]
     standalone: str
-    type: str
+    type: Literal["psirt", "insight"]
     checks: str
     show_hidden: str
 
@@ -113,9 +113,9 @@ class Report:
     def put(
         self,
         payload_dict: ReportPayload | None = ...,
-        scope: str | None = ...,
+        scope: Literal["global", "vdom"] | None = ...,
         standalone: str | None = ...,
-        type: str | None = ...,
+        type: Literal["psirt", "insight"] | None = ...,
         checks: str | None = ...,
         show_hidden: str | None = ...,
         vdom: str | bool | None = ...,
@@ -137,9 +137,9 @@ class Report:
     def set(
         self,
         payload_dict: ReportPayload | None = ...,
-        scope: str | None = ...,
+        scope: Literal["global", "vdom"] | None = ...,
         standalone: str | None = ...,
-        type: str | None = ...,
+        type: Literal["psirt", "insight"] | None = ...,
         checks: str | None = ...,
         show_hidden: str | None = ...,
         vdom: str | bool | None = ...,

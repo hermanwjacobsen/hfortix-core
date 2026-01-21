@@ -71,6 +71,12 @@ NESTED_SCHEMAS = {
 
 
 # Valid enum values from API documentation
+VALID_BODY_DEV = [
+    "memory",
+    "disk",
+    "fortianalyzer",
+    "forticloud",
+]
 VALID_QUERY_ACTION = ["default", "schema"]
 
 # ============================================================================
@@ -117,6 +123,15 @@ def validate_log_stats_post(
         return (False, error)
 
     # Step 2: Validate enum values using central function
+    if "dev" in payload:
+        is_valid, error = _validate_enum_field(
+            "dev",
+            payload["dev"],
+            VALID_BODY_DEV,
+            FIELD_DESCRIPTIONS
+        )
+        if not is_valid:
+            return (False, error)
 
     return (True, None)
 
@@ -132,6 +147,15 @@ def validate_log_stats_put(
 ) -> tuple[bool, str | None]:
     """Validate PUT request to update log/stats."""
     # Validate enum values using central function
+    if "dev" in payload:
+        is_valid, error = _validate_enum_field(
+            "dev",
+            payload["dev"],
+            VALID_BODY_DEV,
+            FIELD_DESCRIPTIONS
+        )
+        if not is_valid:
+            return (False, error)
 
     return (True, None)
 

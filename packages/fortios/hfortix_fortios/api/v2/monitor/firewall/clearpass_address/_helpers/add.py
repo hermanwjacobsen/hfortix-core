@@ -73,6 +73,14 @@ NESTED_SCHEMAS = {
 
 
 # Valid enum values from API documentation
+VALID_BODY_SPT = [
+    "healthy",
+    "checkup",
+    "transient",
+    "quarantine",
+    "infected",
+    "unknown",
+]
 VALID_QUERY_ACTION = ["default", "schema"]
 
 # ============================================================================
@@ -119,6 +127,15 @@ def validate_firewall_clearpass_address_add_post(
         return (False, error)
 
     # Step 2: Validate enum values using central function
+    if "spt" in payload:
+        is_valid, error = _validate_enum_field(
+            "spt",
+            payload["spt"],
+            VALID_BODY_SPT,
+            FIELD_DESCRIPTIONS
+        )
+        if not is_valid:
+            return (False, error)
 
     return (True, None)
 
@@ -134,6 +151,15 @@ def validate_firewall_clearpass_address_add_put(
 ) -> tuple[bool, str | None]:
     """Validate PUT request to update firewall/clearpass_address/add."""
     # Validate enum values using central function
+    if "spt" in payload:
+        is_valid, error = _validate_enum_field(
+            "spt",
+            payload["spt"],
+            VALID_BODY_SPT,
+            FIELD_DESCRIPTIONS
+        )
+        if not is_valid:
+            return (False, error)
 
     return (True, None)
 

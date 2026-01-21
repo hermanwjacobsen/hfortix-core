@@ -27,7 +27,7 @@ from hfortix_fortios.models import (
 
 class PsirtVulnerabilitiesPayload(TypedDict, total=False):
     """Payload type for PsirtVulnerabilities operations."""
-    severity: str
+    severity: Literal["critical", "high", "low"]
     count: str
 
 
@@ -37,7 +37,7 @@ class PsirtVulnerabilitiesPayload(TypedDict, total=False):
 
 class PsirtVulnerabilitiesResponse(TypedDict, total=False):
     """Response type for PsirtVulnerabilities - use with .dict property for typed dict access."""
-    severity: str
+    severity: Literal["critical", "high", "low"]
     count: str
 
 
@@ -48,7 +48,7 @@ class PsirtVulnerabilitiesResponse(TypedDict, total=False):
 
 class PsirtVulnerabilitiesObject(FortiObject):
     """Typed FortiObject for PsirtVulnerabilities with field access."""
-    severity: str
+    severity: Literal["critical", "high", "low"]
     count: str
 
 
@@ -99,7 +99,7 @@ class PsirtVulnerabilities:
     def put(
         self,
         payload_dict: PsirtVulnerabilitiesPayload | None = ...,
-        severity: str | None = ...,
+        severity: Literal["critical", "high", "low"] | None = ...,
         count: str | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
@@ -120,7 +120,7 @@ class PsirtVulnerabilities:
     def set(
         self,
         payload_dict: PsirtVulnerabilitiesPayload | None = ...,
-        severity: str | None = ...,
+        severity: Literal["critical", "high", "low"] | None = ...,
         count: str | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,

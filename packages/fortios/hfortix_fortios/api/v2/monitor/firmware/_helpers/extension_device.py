@@ -74,6 +74,11 @@ NESTED_SCHEMAS = {
 
 
 # Valid enum values from API documentation
+VALID_BODY_TYPE = [
+    "fortiswitch",
+    "fortiap",
+    "fortiextender",
+]
 VALID_QUERY_ACTION = ["default", "schema"]
 
 # ============================================================================
@@ -120,6 +125,15 @@ def validate_firmware_extension_device_post(
         return (False, error)
 
     # Step 2: Validate enum values using central function
+    if "type" in payload:
+        is_valid, error = _validate_enum_field(
+            "type",
+            payload["type"],
+            VALID_BODY_TYPE,
+            FIELD_DESCRIPTIONS
+        )
+        if not is_valid:
+            return (False, error)
 
     return (True, None)
 
@@ -135,6 +149,15 @@ def validate_firmware_extension_device_put(
 ) -> tuple[bool, str | None]:
     """Validate PUT request to update firmware/extension_device."""
     # Validate enum values using central function
+    if "type" in payload:
+        is_valid, error = _validate_enum_field(
+            "type",
+            payload["type"],
+            VALID_BODY_TYPE,
+            FIELD_DESCRIPTIONS
+        )
+        if not is_valid:
+            return (False, error)
 
     return (True, None)
 

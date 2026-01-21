@@ -88,11 +88,11 @@ class Import(CRUDEndpoint, MetadataMixin):
     def post(
         self,
         payload_dict: dict[str, Any] | None = None,
-        type: str | None = None,
+        type: Literal["local", "pkcs12", "regular"] | None = None,
         certname: str | None = None,
         password: str | None = None,
         key_file_content: str | None = None,
-        scope: str | None = None,
+        scope: Literal["vdom", "global"] | None = None,
         acme_domain: str | None = None,
         acme_email: str | None = None,
         acme_ca_url: str | None = None,

@@ -72,6 +72,11 @@ NESTED_SCHEMAS = {
 
 
 # Valid enum values from API documentation
+VALID_BODY_ADMIN = [
+    "enable",
+    "disable",
+    "discovered",
+]
 VALID_QUERY_ACTION = ["default", "schema"]
 
 # ============================================================================
@@ -118,6 +123,15 @@ def validate_switch_controller_managed_switch_update_post(
         return (False, error)
 
     # Step 2: Validate enum values using central function
+    if "admin" in payload:
+        is_valid, error = _validate_enum_field(
+            "admin",
+            payload["admin"],
+            VALID_BODY_ADMIN,
+            FIELD_DESCRIPTIONS
+        )
+        if not is_valid:
+            return (False, error)
 
     return (True, None)
 
@@ -133,6 +147,15 @@ def validate_switch_controller_managed_switch_update_put(
 ) -> tuple[bool, str | None]:
     """Validate PUT request to update switch_controller/managed_switch/update."""
     # Validate enum values using central function
+    if "admin" in payload:
+        is_valid, error = _validate_enum_field(
+            "admin",
+            payload["admin"],
+            VALID_BODY_ADMIN,
+            FIELD_DESCRIPTIONS
+        )
+        if not is_valid:
+            return (False, error)
 
     return (True, None)
 

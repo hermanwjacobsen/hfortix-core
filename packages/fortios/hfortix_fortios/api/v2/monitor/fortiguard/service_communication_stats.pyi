@@ -27,8 +27,8 @@ from hfortix_fortios.models import (
 
 class ServiceCommunicationStatsPayload(TypedDict, total=False):
     """Payload type for ServiceCommunicationStats operations."""
-    service_type: str
-    timeslot: str
+    service_type: Literal["forticare", "fortiguard_download", "fortiguard_query", "forticloud_log", "fortisandbox_cloud", "fortiguard.com", "sdns", "fortitoken_registration", "sms_service"]
+    timeslot: Literal["1_hour", "24_hour", "1_week"]
 
 
 # ================================================================
@@ -37,8 +37,8 @@ class ServiceCommunicationStatsPayload(TypedDict, total=False):
 
 class ServiceCommunicationStatsResponse(TypedDict, total=False):
     """Response type for ServiceCommunicationStats - use with .dict property for typed dict access."""
-    service_type: str
-    timeslot: str
+    service_type: Literal["forticare", "fortiguard_download", "fortiguard_query", "forticloud_log", "fortisandbox_cloud", "fortiguard.com", "sdns", "fortitoken_registration", "sms_service"]
+    timeslot: Literal["1_hour", "24_hour", "1_week"]
 
 
 # ================================================================
@@ -48,8 +48,8 @@ class ServiceCommunicationStatsResponse(TypedDict, total=False):
 
 class ServiceCommunicationStatsObject(FortiObject):
     """Typed FortiObject for ServiceCommunicationStats with field access."""
-    service_type: str
-    timeslot: str
+    service_type: Literal["forticare", "fortiguard_download", "fortiguard_query", "forticloud_log", "fortisandbox_cloud", "fortiguard.com", "sdns", "fortitoken_registration", "sms_service"]
+    timeslot: Literal["1_hour", "24_hour", "1_week"]
 
 
 # ================================================================
@@ -101,8 +101,8 @@ class ServiceCommunicationStats:
     def put(
         self,
         payload_dict: ServiceCommunicationStatsPayload | None = ...,
-        service_type: str | None = ...,
-        timeslot: str | None = ...,
+        service_type: Literal["forticare", "fortiguard_download", "fortiguard_query", "forticloud_log", "fortisandbox_cloud", "fortiguard.com", "sdns", "fortitoken_registration", "sms_service"] | None = ...,
+        timeslot: Literal["1_hour", "24_hour", "1_week"] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -122,8 +122,8 @@ class ServiceCommunicationStats:
     def set(
         self,
         payload_dict: ServiceCommunicationStatsPayload | None = ...,
-        service_type: str | None = ...,
-        timeslot: str | None = ...,
+        service_type: Literal["forticare", "fortiguard_download", "fortiguard_query", "forticloud_log", "fortisandbox_cloud", "fortiguard.com", "sdns", "fortitoken_registration", "sms_service"] | None = ...,
+        timeslot: Literal["1_hour", "24_hour", "1_week"] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,

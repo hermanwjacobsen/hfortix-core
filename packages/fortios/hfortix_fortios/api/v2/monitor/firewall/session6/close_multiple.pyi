@@ -27,7 +27,7 @@ from hfortix_fortios.models import (
 
 class CloseMultiplePayload(TypedDict, total=False):
     """Payload type for CloseMultiple operations."""
-    proto: str
+    proto: Literal["tcp", "udp", "icmp", "..."]
     saddr: str
     daddr: str
     sport: int
@@ -41,7 +41,7 @@ class CloseMultiplePayload(TypedDict, total=False):
 
 class CloseMultipleResponse(TypedDict, total=False):
     """Response type for CloseMultiple - use with .dict property for typed dict access."""
-    proto: str
+    proto: Literal["tcp", "udp", "icmp", "..."]
     saddr: str
     daddr: str
     sport: int
@@ -56,7 +56,7 @@ class CloseMultipleResponse(TypedDict, total=False):
 
 class CloseMultipleObject(FortiObject):
     """Typed FortiObject for CloseMultiple with field access."""
-    proto: str
+    proto: Literal["tcp", "udp", "icmp", "..."]
     saddr: str
     daddr: str
     sport: int
@@ -110,7 +110,7 @@ class CloseMultiple:
     def post(
         self,
         payload_dict: CloseMultiplePayload | None = ...,
-        proto: str | None = ...,
+        proto: Literal["tcp", "udp", "icmp", "..."] | None = ...,
         saddr: str | None = ...,
         daddr: str | None = ...,
         sport: int | None = ...,
@@ -128,7 +128,7 @@ class CloseMultiple:
     def put(
         self,
         payload_dict: CloseMultiplePayload | None = ...,
-        proto: str | None = ...,
+        proto: Literal["tcp", "udp", "icmp", "..."] | None = ...,
         saddr: str | None = ...,
         daddr: str | None = ...,
         sport: int | None = ...,
@@ -153,7 +153,7 @@ class CloseMultiple:
     def set(
         self,
         payload_dict: CloseMultiplePayload | None = ...,
-        proto: str | None = ...,
+        proto: Literal["tcp", "udp", "icmp", "..."] | None = ...,
         saddr: str | None = ...,
         daddr: str | None = ...,
         sport: int | None = ...,

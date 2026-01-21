@@ -88,7 +88,7 @@ class Delete(CRUDEndpoint, MetadataMixin):
     def post(
         self,
         payload_dict: dict[str, Any] | None = None,
-        type: str | None = None,
+        type: Literal["websession", "subsession"] | None = None,
         index: Any | None = None,
         vdom: str | bool | None = None,
         error_mode: Literal["raise", "return", "print"] | None = None,

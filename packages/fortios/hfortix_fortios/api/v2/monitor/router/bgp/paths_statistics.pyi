@@ -27,7 +27,7 @@ from hfortix_fortios.models import (
 
 class PathsStatisticsPayload(TypedDict, total=False):
     """Payload type for PathsStatistics operations."""
-    ip_version: str
+    ip_version: Literal["ipv4", "ipv6", "ipboth"]
 
 
 # ================================================================
@@ -36,7 +36,7 @@ class PathsStatisticsPayload(TypedDict, total=False):
 
 class PathsStatisticsResponse(TypedDict, total=False):
     """Response type for PathsStatistics - use with .dict property for typed dict access."""
-    ip_version: str
+    ip_version: Literal["ipv4", "ipv6", "ipboth"]
 
 
 # ================================================================
@@ -46,7 +46,7 @@ class PathsStatisticsResponse(TypedDict, total=False):
 
 class PathsStatisticsObject(FortiObject):
     """Typed FortiObject for PathsStatistics with field access."""
-    ip_version: str
+    ip_version: Literal["ipv4", "ipv6", "ipboth"]
 
 
 # ================================================================
@@ -97,7 +97,7 @@ class PathsStatistics:
     def put(
         self,
         payload_dict: PathsStatisticsPayload | None = ...,
-        ip_version: str | None = ...,
+        ip_version: Literal["ipv4", "ipv6", "ipboth"] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -117,7 +117,7 @@ class PathsStatistics:
     def set(
         self,
         payload_dict: PathsStatisticsPayload | None = ...,
-        ip_version: str | None = ...,
+        ip_version: Literal["ipv4", "ipv6", "ipboth"] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,

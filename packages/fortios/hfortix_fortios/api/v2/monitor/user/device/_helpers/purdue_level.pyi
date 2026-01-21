@@ -1,6 +1,7 @@
 from typing import Any, Literal
 
 # Enum type aliases for validation
+VALID_BODY_LEVEL: Literal["1", "1.5", "2", "2.5", "3", "3.5", "4", "5", "5.5"]
 
 # Metadata dictionaries
 FIELD_TYPES: dict[str, str]
@@ -25,6 +26,7 @@ def get_schema_info() -> dict[str, Any]: ...
 
 
 __all__ = [
+    "VALID_BODY_LEVEL",
     "FIELD_TYPES",
     "FIELD_DESCRIPTIONS",
     "FIELD_CONSTRAINTS",

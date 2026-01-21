@@ -71,6 +71,13 @@ NESTED_SCHEMAS = {
 
 
 # Valid enum values from API documentation
+VALID_BODY_PERIOD = [
+    "10-min",
+    "hour",
+    "day",
+    "week",
+    "30-day",
+]
 VALID_QUERY_ACTION = ["default", "schema"]
 
 # ============================================================================
@@ -117,6 +124,15 @@ def validate_wanopt_webcache_post(
         return (False, error)
 
     # Step 2: Validate enum values using central function
+    if "period" in payload:
+        is_valid, error = _validate_enum_field(
+            "period",
+            payload["period"],
+            VALID_BODY_PERIOD,
+            FIELD_DESCRIPTIONS
+        )
+        if not is_valid:
+            return (False, error)
 
     return (True, None)
 
@@ -132,6 +148,15 @@ def validate_wanopt_webcache_put(
 ) -> tuple[bool, str | None]:
     """Validate PUT request to update wanopt/webcache."""
     # Validate enum values using central function
+    if "period" in payload:
+        is_valid, error = _validate_enum_field(
+            "period",
+            payload["period"],
+            VALID_BODY_PERIOD,
+            FIELD_DESCRIPTIONS
+        )
+        if not is_valid:
+            return (False, error)
 
     return (True, None)
 

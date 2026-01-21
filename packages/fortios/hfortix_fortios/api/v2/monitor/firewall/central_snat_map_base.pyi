@@ -28,7 +28,7 @@ from hfortix_fortios.models import (
 class CentralSnatMapPayload(TypedDict, total=False):
     """Payload type for CentralSnatMap operations."""
     policyid: int
-    ip_version: str
+    ip_version: Literal["ipv4", "ipv6"]
 
 
 # ================================================================
@@ -38,7 +38,7 @@ class CentralSnatMapPayload(TypedDict, total=False):
 class CentralSnatMapResponse(TypedDict, total=False):
     """Response type for CentralSnatMap - use with .dict property for typed dict access."""
     policyid: int
-    ip_version: str
+    ip_version: Literal["ipv4", "ipv6"]
 
 
 # ================================================================
@@ -49,7 +49,7 @@ class CentralSnatMapResponse(TypedDict, total=False):
 class CentralSnatMapObject(FortiObject):
     """Typed FortiObject for CentralSnatMap with field access."""
     policyid: int
-    ip_version: str
+    ip_version: Literal["ipv4", "ipv6"]
 
 
 # ================================================================
@@ -102,7 +102,7 @@ class CentralSnatMap:
         self,
         payload_dict: CentralSnatMapPayload | None = ...,
         policyid: int | None = ...,
-        ip_version: str | None = ...,
+        ip_version: Literal["ipv4", "ipv6"] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -123,7 +123,7 @@ class CentralSnatMap:
         self,
         payload_dict: CentralSnatMapPayload | None = ...,
         policyid: int | None = ...,
-        ip_version: str | None = ...,
+        ip_version: Literal["ipv4", "ipv6"] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,

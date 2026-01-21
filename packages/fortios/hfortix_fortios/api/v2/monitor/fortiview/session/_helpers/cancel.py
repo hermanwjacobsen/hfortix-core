@@ -74,6 +74,10 @@ NESTED_SCHEMAS = {
 
 
 # Valid enum values from API documentation
+VALID_BODY_DEVICE = [
+    "disk",
+    "faz",
+]
 VALID_QUERY_ACTION = ["default", "schema"]
 
 # ============================================================================
@@ -120,6 +124,15 @@ def validate_fortiview_session_cancel_post(
         return (False, error)
 
     # Step 2: Validate enum values using central function
+    if "device" in payload:
+        is_valid, error = _validate_enum_field(
+            "device",
+            payload["device"],
+            VALID_BODY_DEVICE,
+            FIELD_DESCRIPTIONS
+        )
+        if not is_valid:
+            return (False, error)
 
     return (True, None)
 
@@ -135,6 +148,15 @@ def validate_fortiview_session_cancel_put(
 ) -> tuple[bool, str | None]:
     """Validate PUT request to update fortiview/session/cancel."""
     # Validate enum values using central function
+    if "device" in payload:
+        is_valid, error = _validate_enum_field(
+            "device",
+            payload["device"],
+            VALID_BODY_DEVICE,
+            FIELD_DESCRIPTIONS
+        )
+        if not is_valid:
+            return (False, error)
 
     return (True, None)
 

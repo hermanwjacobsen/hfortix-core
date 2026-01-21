@@ -30,7 +30,7 @@ class InterfacePayload(TypedDict, total=False):
     interface_name: str
     include_vlan: bool
     include_aggregate: bool
-    scope: str
+    scope: Literal["vdom", "global"]
 
 
 # ================================================================
@@ -42,7 +42,7 @@ class InterfaceResponse(TypedDict, total=False):
     interface_name: str
     include_vlan: bool
     include_aggregate: bool
-    scope: str
+    scope: Literal["vdom", "global"]
 
 
 # ================================================================
@@ -55,7 +55,7 @@ class InterfaceObject(FortiObject):
     interface_name: str
     include_vlan: bool
     include_aggregate: bool
-    scope: str
+    scope: Literal["vdom", "global"]
 
 
 # ================================================================
@@ -112,7 +112,7 @@ class Interface:
         interface_name: str | None = ...,
         include_vlan: bool | None = ...,
         include_aggregate: bool | None = ...,
-        scope: str | None = ...,
+        scope: Literal["vdom", "global"] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -135,7 +135,7 @@ class Interface:
         interface_name: str | None = ...,
         include_vlan: bool | None = ...,
         include_aggregate: bool | None = ...,
-        scope: str | None = ...,
+        scope: Literal["vdom", "global"] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,

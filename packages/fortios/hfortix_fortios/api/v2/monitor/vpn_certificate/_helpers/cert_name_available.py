@@ -73,6 +73,10 @@ NESTED_SCHEMAS = {
 
 
 # Valid enum values from API documentation
+VALID_BODY_SCOPE = [
+    "vdom",
+    "global",
+]
 VALID_QUERY_ACTION = ["default", "schema"]
 
 # ============================================================================
@@ -119,6 +123,15 @@ def validate_vpn_certificate_cert_name_available_post(
         return (False, error)
 
     # Step 2: Validate enum values using central function
+    if "scope" in payload:
+        is_valid, error = _validate_enum_field(
+            "scope",
+            payload["scope"],
+            VALID_BODY_SCOPE,
+            FIELD_DESCRIPTIONS
+        )
+        if not is_valid:
+            return (False, error)
 
     return (True, None)
 
@@ -134,6 +147,15 @@ def validate_vpn_certificate_cert_name_available_put(
 ) -> tuple[bool, str | None]:
     """Validate PUT request to update vpn_certificate/cert_name_available."""
     # Validate enum values using central function
+    if "scope" in payload:
+        is_valid, error = _validate_enum_field(
+            "scope",
+            payload["scope"],
+            VALID_BODY_SCOPE,
+            FIELD_DESCRIPTIONS
+        )
+        if not is_valid:
+            return (False, error)
 
     return (True, None)
 

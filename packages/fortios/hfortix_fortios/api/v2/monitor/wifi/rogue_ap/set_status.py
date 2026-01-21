@@ -90,7 +90,7 @@ class SetStatus(CRUDEndpoint, MetadataMixin):
         payload_dict: dict[str, Any] | None = None,
         bssid: Any | None = None,
         ssid: Any | None = None,
-        status: str | None = None,
+        status: Literal["unclassified", "rogue", "accepted", "suppressed"] | None = None,
         vdom: str | bool | None = None,
         error_mode: Literal["raise", "return", "print"] | None = None,
         error_format: Literal["detailed", "simple", "code_only"] | None = None,

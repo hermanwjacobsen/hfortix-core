@@ -28,7 +28,7 @@ from hfortix_fortios.models import (
 class CertNameAvailablePayload(TypedDict, total=False):
     """Payload type for CertNameAvailable operations."""
     mkey: str
-    scope: str
+    scope: Literal["vdom", "global"]
 
 
 # ================================================================
@@ -38,7 +38,7 @@ class CertNameAvailablePayload(TypedDict, total=False):
 class CertNameAvailableResponse(TypedDict, total=False):
     """Response type for CertNameAvailable - use with .dict property for typed dict access."""
     mkey: str
-    scope: str
+    scope: Literal["vdom", "global"]
 
 
 # ================================================================
@@ -48,7 +48,7 @@ class CertNameAvailableResponse(TypedDict, total=False):
 
 class CertNameAvailableObject(FortiObject):
     """Typed FortiObject for CertNameAvailable with field access."""
-    scope: str
+    scope: Literal["vdom", "global"]
 
 
 # ================================================================
@@ -101,7 +101,7 @@ class CertNameAvailable:
         self,
         payload_dict: CertNameAvailablePayload | None = ...,
         mkey: str | None = ...,
-        scope: str | None = ...,
+        scope: Literal["vdom", "global"] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -122,7 +122,7 @@ class CertNameAvailable:
         self,
         payload_dict: CertNameAvailablePayload | None = ...,
         mkey: str | None = ...,
-        scope: str | None = ...,
+        scope: Literal["vdom", "global"] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,

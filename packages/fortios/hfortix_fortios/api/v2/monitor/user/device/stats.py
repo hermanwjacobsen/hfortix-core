@@ -89,7 +89,7 @@ class Stats(CRUDEndpoint, MetadataMixin):
         stat_key: Literal["os_name", "hardware_type", "detected_interface", "is_online", "max_vuln_level", "fortiswitch_id", "fortiswitch_port_name"] | None = None,
         timestamp_from: int | None = None,
         timestamp_to: int | None = None,
-        filters: Literal["exact", "contains"] | None = None,
+        filters: list[str] | None = None,
         filter_logic: Literal["and", "or"] | None = None,
         filter: list[str] | None = None,
         count: int | None = None,

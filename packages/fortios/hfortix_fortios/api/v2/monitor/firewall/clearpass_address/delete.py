@@ -89,7 +89,7 @@ class Delete(CRUDEndpoint, MetadataMixin):
         self,
         payload_dict: dict[str, Any] | None = None,
         endpoint_ip: Any | None = None,
-        spt: str | None = None,
+        spt: Literal["healthy", "checkup", "transient", "quarantine", "infected", "unknown"] | None = None,
         vdom: str | bool | None = None,
         error_mode: Literal["raise", "return", "print"] | None = None,
         error_format: Literal["detailed", "simple", "code_only"] | None = None,

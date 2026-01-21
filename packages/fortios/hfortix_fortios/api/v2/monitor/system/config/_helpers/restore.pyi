@@ -1,6 +1,8 @@
 from typing import Any, Literal
 
 # Enum type aliases for validation
+VALID_BODY_SOURCE: Literal["upload", "usb", "revision"]
+VALID_BODY_SCOPE: Literal["global", "vdom"]
 
 # Metadata dictionaries
 FIELD_TYPES: dict[str, str]
@@ -25,6 +27,8 @@ def get_schema_info() -> dict[str, Any]: ...
 
 
 __all__ = [
+    "VALID_BODY_SOURCE",
+    "VALID_BODY_SCOPE",
     "FIELD_TYPES",
     "FIELD_DESCRIPTIONS",
     "FIELD_CONSTRAINTS",

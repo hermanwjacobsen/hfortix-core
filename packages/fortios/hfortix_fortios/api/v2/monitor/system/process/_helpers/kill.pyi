@@ -1,6 +1,7 @@
 from typing import Any, Literal
 
 # Enum type aliases for validation
+VALID_BODY_SIGNAL: Literal["9 (SIGKILL)", "11 (SIGSEGV)", "15 (SIGTERM)"]
 
 # Metadata dictionaries
 FIELD_TYPES: dict[str, str]
@@ -25,6 +26,7 @@ def get_schema_info() -> dict[str, Any]: ...
 
 
 __all__ = [
+    "VALID_BODY_SIGNAL",
     "FIELD_TYPES",
     "FIELD_DESCRIPTIONS",
     "FIELD_CONSTRAINTS",

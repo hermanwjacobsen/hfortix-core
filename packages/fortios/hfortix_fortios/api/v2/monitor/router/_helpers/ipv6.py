@@ -76,6 +76,10 @@ NESTED_SCHEMAS = {
 
 
 # Valid enum values from API documentation
+VALID_BODY_OPERATOR = [
+    "and",
+    "or",
+]
 VALID_QUERY_ACTION = ["default", "schema"]
 
 # ============================================================================
@@ -122,6 +126,15 @@ def validate_router_ipv6_post(
         return (False, error)
 
     # Step 2: Validate enum values using central function
+    if "operator" in payload:
+        is_valid, error = _validate_enum_field(
+            "operator",
+            payload["operator"],
+            VALID_BODY_OPERATOR,
+            FIELD_DESCRIPTIONS
+        )
+        if not is_valid:
+            return (False, error)
 
     return (True, None)
 
@@ -137,6 +150,15 @@ def validate_router_ipv6_put(
 ) -> tuple[bool, str | None]:
     """Validate PUT request to update router/ipv6."""
     # Validate enum values using central function
+    if "operator" in payload:
+        is_valid, error = _validate_enum_field(
+            "operator",
+            payload["operator"],
+            VALID_BODY_OPERATOR,
+            FIELD_DESCRIPTIONS
+        )
+        if not is_valid:
+            return (False, error)
 
     return (True, None)
 

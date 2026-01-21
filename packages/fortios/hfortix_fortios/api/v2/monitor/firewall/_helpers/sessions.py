@@ -99,6 +99,19 @@ NESTED_SCHEMAS = {
 
 
 # Valid enum values from API documentation
+VALID_BODY_IP_VERSION = [
+    "ipv4",
+    "ipv6",
+    "ipboth",
+]
+VALID_BODY_PROTOCOL = [
+    "all",
+    "igmp",
+    "tcp",
+    "udp",
+    "icmp",
+    "etc",
+]
 VALID_QUERY_ACTION = ["default", "schema"]
 
 # ============================================================================
@@ -145,6 +158,24 @@ def validate_firewall_sessions_post(
         return (False, error)
 
     # Step 2: Validate enum values using central function
+    if "ip_version" in payload:
+        is_valid, error = _validate_enum_field(
+            "ip_version",
+            payload["ip_version"],
+            VALID_BODY_IP_VERSION,
+            FIELD_DESCRIPTIONS
+        )
+        if not is_valid:
+            return (False, error)
+    if "protocol" in payload:
+        is_valid, error = _validate_enum_field(
+            "protocol",
+            payload["protocol"],
+            VALID_BODY_PROTOCOL,
+            FIELD_DESCRIPTIONS
+        )
+        if not is_valid:
+            return (False, error)
 
     return (True, None)
 
@@ -160,6 +191,24 @@ def validate_firewall_sessions_put(
 ) -> tuple[bool, str | None]:
     """Validate PUT request to update firewall/sessions."""
     # Validate enum values using central function
+    if "ip_version" in payload:
+        is_valid, error = _validate_enum_field(
+            "ip_version",
+            payload["ip_version"],
+            VALID_BODY_IP_VERSION,
+            FIELD_DESCRIPTIONS
+        )
+        if not is_valid:
+            return (False, error)
+    if "protocol" in payload:
+        is_valid, error = _validate_enum_field(
+            "protocol",
+            payload["protocol"],
+            VALID_BODY_PROTOCOL,
+            FIELD_DESCRIPTIONS
+        )
+        if not is_valid:
+            return (False, error)
 
     return (True, None)
 

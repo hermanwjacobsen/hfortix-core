@@ -27,7 +27,7 @@ from hfortix_fortios.models import (
 
 class BackupActionPayload(TypedDict, total=False):
     """Payload type for BackupAction operations."""
-    operation: str
+    operation: Literal["import", "update"]
     objects: int | str | list[int | str]
 
 
@@ -37,7 +37,7 @@ class BackupActionPayload(TypedDict, total=False):
 
 class BackupActionResponse(TypedDict, total=False):
     """Response type for BackupAction - use with .dict property for typed dict access."""
-    operation: str
+    operation: Literal["import", "update"]
     objects: list[str]
 
 
@@ -48,7 +48,7 @@ class BackupActionResponse(TypedDict, total=False):
 
 class BackupActionObject(FortiObject):
     """Typed FortiObject for BackupAction with field access."""
-    operation: str
+    operation: Literal["import", "update"]
     objects: list[str]
 
 
@@ -98,7 +98,7 @@ class BackupAction:
     def post(
         self,
         payload_dict: BackupActionPayload | None = ...,
-        operation: str | None = ...,
+        operation: Literal["import", "update"] | None = ...,
         objects: int | str | list[int | str] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
@@ -112,7 +112,7 @@ class BackupAction:
     def put(
         self,
         payload_dict: BackupActionPayload | None = ...,
-        operation: str | None = ...,
+        operation: Literal["import", "update"] | None = ...,
         objects: int | str | list[int | str] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
@@ -133,7 +133,7 @@ class BackupAction:
     def set(
         self,
         payload_dict: BackupActionPayload | None = ...,
-        operation: str | None = ...,
+        operation: Literal["import", "update"] | None = ...,
         objects: int | str | list[int | str] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,

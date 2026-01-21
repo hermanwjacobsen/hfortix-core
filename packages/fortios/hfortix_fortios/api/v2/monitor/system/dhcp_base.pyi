@@ -27,7 +27,7 @@ from hfortix_fortios.models import (
 
 class DhcpPayload(TypedDict, total=False):
     """Payload type for Dhcp operations."""
-    scope: str
+    scope: Literal["vdom", "global"]
     ipv6: bool
     interface: str
 
@@ -38,7 +38,7 @@ class DhcpPayload(TypedDict, total=False):
 
 class DhcpResponse(TypedDict, total=False):
     """Response type for Dhcp - use with .dict property for typed dict access."""
-    scope: str
+    scope: Literal["vdom", "global"]
     ipv6: bool
     interface: str
 
@@ -50,7 +50,7 @@ class DhcpResponse(TypedDict, total=False):
 
 class DhcpObject(FortiObject):
     """Typed FortiObject for Dhcp with field access."""
-    scope: str
+    scope: Literal["vdom", "global"]
     ipv6: bool
     interface: str
 
@@ -105,7 +105,7 @@ class Dhcp:
     def put(
         self,
         payload_dict: DhcpPayload | None = ...,
-        scope: str | None = ...,
+        scope: Literal["vdom", "global"] | None = ...,
         ipv6: bool | None = ...,
         interface: str | None = ...,
         vdom: str | bool | None = ...,
@@ -127,7 +127,7 @@ class Dhcp:
     def set(
         self,
         payload_dict: DhcpPayload | None = ...,
-        scope: str | None = ...,
+        scope: Literal["vdom", "global"] | None = ...,
         ipv6: bool | None = ...,
         interface: str | None = ...,
         vdom: str | bool | None = ...,

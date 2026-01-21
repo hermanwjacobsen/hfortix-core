@@ -89,7 +89,7 @@ class Cancel(CRUDEndpoint, MetadataMixin):
         self,
         payload_dict: dict[str, Any] | None = None,
         sessionid: Any | None = None,
-        device: str | None = None,
+        device: Literal["disk", "faz"] | None = None,
         report_by: str | None = None,
         view_level: str | None = None,
         vdom: str | bool | None = None,

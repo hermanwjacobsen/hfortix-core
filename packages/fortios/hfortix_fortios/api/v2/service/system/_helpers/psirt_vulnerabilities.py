@@ -73,6 +73,11 @@ NESTED_SCHEMAS = {
 
 
 # Valid enum values from API documentation
+VALID_BODY_SEVERITY = [
+    "critical",
+    "high",
+    "low",
+]
 VALID_QUERY_ACTION = ["default", "schema"]
 
 # ============================================================================
@@ -119,6 +124,15 @@ def validate_system_psirt_vulnerabilities_post(
         return (False, error)
 
     # Step 2: Validate enum values using central function
+    if "severity" in payload:
+        is_valid, error = _validate_enum_field(
+            "severity",
+            payload["severity"],
+            VALID_BODY_SEVERITY,
+            FIELD_DESCRIPTIONS
+        )
+        if not is_valid:
+            return (False, error)
 
     return (True, None)
 
@@ -134,6 +148,15 @@ def validate_system_psirt_vulnerabilities_put(
 ) -> tuple[bool, str | None]:
     """Validate PUT request to update system/psirt_vulnerabilities."""
     # Validate enum values using central function
+    if "severity" in payload:
+        is_valid, error = _validate_enum_field(
+            "severity",
+            payload["severity"],
+            VALID_BODY_SEVERITY,
+            FIELD_DESCRIPTIONS
+        )
+        if not is_valid:
+            return (False, error)
 
     return (True, None)
 

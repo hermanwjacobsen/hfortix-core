@@ -31,7 +31,7 @@ class GetTestConnectPayload(TypedDict, total=False):
     ordinal: str
     server: str
     secret: str
-    auth_type: str
+    auth_type: Literal["auto", "ms_chap_v2", "ms_chap", "chap", "pap"]
     user: str
     password: str
 
@@ -46,7 +46,7 @@ class GetTestConnectResponse(TypedDict, total=False):
     ordinal: str
     server: str
     secret: str
-    auth_type: str
+    auth_type: Literal["auto", "ms_chap_v2", "ms_chap", "chap", "pap"]
     user: str
     password: str
 
@@ -61,7 +61,7 @@ class GetTestConnectObject(FortiObject):
     ordinal: str
     server: str
     secret: str
-    auth_type: str
+    auth_type: Literal["auto", "ms_chap_v2", "ms_chap", "chap", "pap"]
     user: str
     password: str
 
@@ -124,7 +124,7 @@ class GetTestConnect:
         ordinal: str | None = ...,
         server: str | None = ...,
         secret: str | None = ...,
-        auth_type: str | None = ...,
+        auth_type: Literal["auto", "ms_chap_v2", "ms_chap", "chap", "pap"] | None = ...,
         user: str | None = ...,
         password: str | None = ...,
         vdom: str | bool | None = ...,
@@ -150,7 +150,7 @@ class GetTestConnect:
         ordinal: str | None = ...,
         server: str | None = ...,
         secret: str | None = ...,
-        auth_type: str | None = ...,
+        auth_type: Literal["auto", "ms_chap_v2", "ms_chap", "chap", "pap"] | None = ...,
         user: str | None = ...,
         password: str | None = ...,
         vdom: str | bool | None = ...,

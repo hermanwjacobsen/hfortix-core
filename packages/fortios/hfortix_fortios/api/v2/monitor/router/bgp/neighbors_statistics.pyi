@@ -27,7 +27,7 @@ from hfortix_fortios.models import (
 
 class NeighborsStatisticsPayload(TypedDict, total=False):
     """Payload type for NeighborsStatistics operations."""
-    ip_version: str
+    ip_version: Literal["ipv4", "ipv6", "ipboth"]
 
 
 # ================================================================
@@ -36,7 +36,7 @@ class NeighborsStatisticsPayload(TypedDict, total=False):
 
 class NeighborsStatisticsResponse(TypedDict, total=False):
     """Response type for NeighborsStatistics - use with .dict property for typed dict access."""
-    ip_version: str
+    ip_version: Literal["ipv4", "ipv6", "ipboth"]
 
 
 # ================================================================
@@ -46,7 +46,7 @@ class NeighborsStatisticsResponse(TypedDict, total=False):
 
 class NeighborsStatisticsObject(FortiObject):
     """Typed FortiObject for NeighborsStatistics with field access."""
-    ip_version: str
+    ip_version: Literal["ipv4", "ipv6", "ipboth"]
 
 
 # ================================================================
@@ -97,7 +97,7 @@ class NeighborsStatistics:
     def put(
         self,
         payload_dict: NeighborsStatisticsPayload | None = ...,
-        ip_version: str | None = ...,
+        ip_version: Literal["ipv4", "ipv6", "ipboth"] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -117,7 +117,7 @@ class NeighborsStatistics:
     def set(
         self,
         payload_dict: NeighborsStatisticsPayload | None = ...,
-        ip_version: str | None = ...,
+        ip_version: Literal["ipv4", "ipv6", "ipboth"] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,

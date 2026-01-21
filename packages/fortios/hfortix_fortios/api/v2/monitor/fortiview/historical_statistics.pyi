@@ -29,12 +29,12 @@ class HistoricalStatisticsPayload(TypedDict, total=False):
     """Payload type for HistoricalStatistics operations."""
     filter: str
     sessionid: int
-    device: str
+    device: Literal["disk", "fortianalyzer", "forticloud"]
     report_by: str
     sort_by: str
     chart_only: bool
     end: int
-    ip_version: str
+    ip_version: Literal["ipv4", "ipv6", "ipboth"]
 
 
 # ================================================================
@@ -45,12 +45,12 @@ class HistoricalStatisticsResponse(TypedDict, total=False):
     """Response type for HistoricalStatistics - use with .dict property for typed dict access."""
     filter: str
     sessionid: int
-    device: str
+    device: Literal["disk", "fortianalyzer", "forticloud"]
     report_by: str
     sort_by: str
     chart_only: bool
     end: int
-    ip_version: str
+    ip_version: Literal["ipv4", "ipv6", "ipboth"]
 
 
 # ================================================================
@@ -62,12 +62,12 @@ class HistoricalStatisticsObject(FortiObject):
     """Typed FortiObject for HistoricalStatistics with field access."""
     filter: str
     sessionid: int
-    device: str
+    device: Literal["disk", "fortianalyzer", "forticloud"]
     report_by: str
     sort_by: str
     chart_only: bool
     end: int
-    ip_version: str
+    ip_version: Literal["ipv4", "ipv6", "ipboth"]
 
 
 # ================================================================
@@ -126,12 +126,12 @@ class HistoricalStatistics:
         payload_dict: HistoricalStatisticsPayload | None = ...,
         filter: str | None = ...,
         sessionid: int | None = ...,
-        device: str | None = ...,
+        device: Literal["disk", "fortianalyzer", "forticloud"] | None = ...,
         report_by: str | None = ...,
         sort_by: str | None = ...,
         chart_only: bool | None = ...,
         end: int | None = ...,
-        ip_version: str | None = ...,
+        ip_version: Literal["ipv4", "ipv6", "ipboth"] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -153,12 +153,12 @@ class HistoricalStatistics:
         payload_dict: HistoricalStatisticsPayload | None = ...,
         filter: str | None = ...,
         sessionid: int | None = ...,
-        device: str | None = ...,
+        device: Literal["disk", "fortianalyzer", "forticloud"] | None = ...,
         report_by: str | None = ...,
         sort_by: str | None = ...,
         chart_only: bool | None = ...,
         end: int | None = ...,
-        ip_version: str | None = ...,
+        ip_version: Literal["ipv4", "ipv6", "ipboth"] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,

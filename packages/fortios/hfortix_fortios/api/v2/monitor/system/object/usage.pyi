@@ -30,7 +30,7 @@ class UsagePayload(TypedDict, total=False):
     q_path: str
     q_name: str
     qtypes: int | str | list[int | str]
-    scope: str
+    scope: Literal["vdom", "global"]
     mkey: str
     child_path: str
 
@@ -44,7 +44,7 @@ class UsageResponse(TypedDict, total=False):
     q_path: str
     q_name: str
     qtypes: list[str]
-    scope: str
+    scope: Literal["vdom", "global"]
     mkey: str
     child_path: str
 
@@ -59,7 +59,7 @@ class UsageObject(FortiObject):
     q_path: str
     q_name: str
     qtypes: list[str]
-    scope: str
+    scope: Literal["vdom", "global"]
     child_path: str
 
 
@@ -119,7 +119,7 @@ class Usage:
         q_path: str | None = ...,
         q_name: str | None = ...,
         qtypes: int | str | list[int | str] | None = ...,
-        scope: str | None = ...,
+        scope: Literal["vdom", "global"] | None = ...,
         mkey: str | None = ...,
         child_path: str | None = ...,
         vdom: str | bool | None = ...,
@@ -144,7 +144,7 @@ class Usage:
         q_path: str | None = ...,
         q_name: str | None = ...,
         qtypes: int | str | list[int | str] | None = ...,
-        scope: str | None = ...,
+        scope: Literal["vdom", "global"] | None = ...,
         mkey: str | None = ...,
         child_path: str | None = ...,
         vdom: str | bool | None = ...,

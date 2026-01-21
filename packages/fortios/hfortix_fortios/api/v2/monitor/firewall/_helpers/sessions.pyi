@@ -1,6 +1,8 @@
 from typing import Any, Literal
 
 # Enum type aliases for validation
+VALID_BODY_IP_VERSION: Literal["ipv4", "ipv6", "ipboth"]
+VALID_BODY_PROTOCOL: Literal["all", "igmp", "tcp", "udp", "icmp", "etc"]
 
 # Metadata dictionaries
 FIELD_TYPES: dict[str, str]
@@ -25,6 +27,8 @@ def get_schema_info() -> dict[str, Any]: ...
 
 
 __all__ = [
+    "VALID_BODY_IP_VERSION",
+    "VALID_BODY_PROTOCOL",
     "FIELD_TYPES",
     "FIELD_DESCRIPTIONS",
     "FIELD_CONSTRAINTS",

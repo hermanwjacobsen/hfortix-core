@@ -88,10 +88,10 @@ class Import(CRUDEndpoint, MetadataMixin):
     def post(
         self,
         payload_dict: dict[str, Any] | None = None,
-        import_method: str | None = None,
+        import_method: Literal["file", "scep"] | None = None,
         scep_url: str | None = None,
         scep_ca_id: str | None = None,
-        scope: str | None = None,
+        scope: Literal["vdom", "global"] | None = None,
         file_content: str | None = None,
         vdom: str | bool | None = None,
         error_mode: Literal["raise", "return", "print"] | None = None,

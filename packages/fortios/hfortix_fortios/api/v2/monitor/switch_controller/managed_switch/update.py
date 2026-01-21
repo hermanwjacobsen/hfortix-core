@@ -89,7 +89,7 @@ class Update(CRUDEndpoint, MetadataMixin):
         self,
         payload_dict: dict[str, Any] | None = None,
         mkey: str | None = None,
-        admin: str | None = None,
+        admin: Literal["enable", "disable", "discovered"] | None = None,
         vdom: str | bool | None = None,
         error_mode: Literal["raise", "return", "print"] | None = None,
         error_format: Literal["detailed", "simple", "code_only"] | None = None,

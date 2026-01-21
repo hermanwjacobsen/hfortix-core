@@ -1,6 +1,8 @@
 from typing import Any, Literal
 
 # Enum type aliases for validation
+VALID_BODY_SERVICE_TYPE: Literal["forticare", "fortiguard_download", "fortiguard_query", "forticloud_log", "fortisandbox_cloud", "fortiguard.com", "sdns", "fortitoken_registration", "sms_service"]
+VALID_BODY_TIMESLOT: Literal["1_hour", "24_hour", "1_week"]
 
 # Metadata dictionaries
 FIELD_TYPES: dict[str, str]
@@ -25,6 +27,8 @@ def get_schema_info() -> dict[str, Any]: ...
 
 
 __all__ = [
+    "VALID_BODY_SERVICE_TYPE",
+    "VALID_BODY_TIMESLOT",
     "FIELD_TYPES",
     "FIELD_DESCRIPTIONS",
     "FIELD_CONSTRAINTS",

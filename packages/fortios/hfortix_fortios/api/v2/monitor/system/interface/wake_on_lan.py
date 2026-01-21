@@ -90,7 +90,7 @@ class WakeOnLan(CRUDEndpoint, MetadataMixin):
         payload_dict: dict[str, Any] | None = None,
         mkey: str | None = None,
         mac: str | None = None,
-        protocol_option: str | None = None,
+        protocol_option: Literal["wol", "udp"] | None = None,
         port: Any | None = None,
         address: str | None = None,
         secureon_password: str | None = None,

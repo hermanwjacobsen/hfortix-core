@@ -27,7 +27,7 @@ from hfortix_fortios.models import (
 
 class ChangeVdomModePayload(TypedDict, total=False):
     """Payload type for ChangeVdomMode operations."""
-    vdom_mode: str
+    vdom_mode: Literal["no-vdom", "split-vdom", "multi-vdom"]
 
 
 # ================================================================
@@ -36,7 +36,7 @@ class ChangeVdomModePayload(TypedDict, total=False):
 
 class ChangeVdomModeResponse(TypedDict, total=False):
     """Response type for ChangeVdomMode - use with .dict property for typed dict access."""
-    vdom_mode: str
+    vdom_mode: Literal["no-vdom", "split-vdom", "multi-vdom"]
 
 
 # ================================================================
@@ -46,7 +46,7 @@ class ChangeVdomModeResponse(TypedDict, total=False):
 
 class ChangeVdomModeObject(FortiObject):
     """Typed FortiObject for ChangeVdomMode with field access."""
-    vdom_mode: str
+    vdom_mode: Literal["no-vdom", "split-vdom", "multi-vdom"]
 
 
 # ================================================================
@@ -95,7 +95,7 @@ class ChangeVdomMode:
     def post(
         self,
         payload_dict: ChangeVdomModePayload | None = ...,
-        vdom_mode: str | None = ...,
+        vdom_mode: Literal["no-vdom", "split-vdom", "multi-vdom"] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -108,7 +108,7 @@ class ChangeVdomMode:
     def put(
         self,
         payload_dict: ChangeVdomModePayload | None = ...,
-        vdom_mode: str | None = ...,
+        vdom_mode: Literal["no-vdom", "split-vdom", "multi-vdom"] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -128,7 +128,7 @@ class ChangeVdomMode:
     def set(
         self,
         payload_dict: ChangeVdomModePayload | None = ...,
-        vdom_mode: str | None = ...,
+        vdom_mode: Literal["no-vdom", "split-vdom", "multi-vdom"] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,

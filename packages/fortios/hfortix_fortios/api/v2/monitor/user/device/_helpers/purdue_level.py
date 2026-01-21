@@ -75,6 +75,17 @@ NESTED_SCHEMAS = {
 
 
 # Valid enum values from API documentation
+VALID_BODY_LEVEL = [
+    "1",
+    "1.5",
+    "2",
+    "2.5",
+    "3",
+    "3.5",
+    "4",
+    "5",
+    "5.5",
+]
 VALID_QUERY_ACTION = ["default", "schema"]
 
 # ============================================================================
@@ -121,6 +132,15 @@ def validate_user_device_purdue_level_post(
         return (False, error)
 
     # Step 2: Validate enum values using central function
+    if "level" in payload:
+        is_valid, error = _validate_enum_field(
+            "level",
+            payload["level"],
+            VALID_BODY_LEVEL,
+            FIELD_DESCRIPTIONS
+        )
+        if not is_valid:
+            return (False, error)
 
     return (True, None)
 
@@ -136,6 +156,15 @@ def validate_user_device_purdue_level_put(
 ) -> tuple[bool, str | None]:
     """Validate PUT request to update user/device/purdue_level."""
     # Validate enum values using central function
+    if "level" in payload:
+        is_valid, error = _validate_enum_field(
+            "level",
+            payload["level"],
+            VALID_BODY_LEVEL,
+            FIELD_DESCRIPTIONS
+        )
+        if not is_valid:
+            return (False, error)
 
     return (True, None)
 

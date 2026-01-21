@@ -88,7 +88,7 @@ class Upgrade(CRUDEndpoint, MetadataMixin):
     def post(
         self,
         payload_dict: dict[str, Any] | None = None,
-        source: str | None = None,
+        source: Literal["upload", "usb", "fortiguard", "url"] | None = None,
         url: str | None = None,
         passphrase: str | None = None,
         force: Any | None = None,

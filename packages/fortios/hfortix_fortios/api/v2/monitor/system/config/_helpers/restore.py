@@ -80,6 +80,15 @@ NESTED_SCHEMAS = {
 
 
 # Valid enum values from API documentation
+VALID_BODY_SOURCE = [
+    "upload",
+    "usb",
+    "revision",
+]
+VALID_BODY_SCOPE = [
+    "global",
+    "vdom",
+]
 VALID_QUERY_ACTION = ["default", "schema"]
 
 # ============================================================================
@@ -126,6 +135,24 @@ def validate_system_config_restore_post(
         return (False, error)
 
     # Step 2: Validate enum values using central function
+    if "source" in payload:
+        is_valid, error = _validate_enum_field(
+            "source",
+            payload["source"],
+            VALID_BODY_SOURCE,
+            FIELD_DESCRIPTIONS
+        )
+        if not is_valid:
+            return (False, error)
+    if "scope" in payload:
+        is_valid, error = _validate_enum_field(
+            "scope",
+            payload["scope"],
+            VALID_BODY_SCOPE,
+            FIELD_DESCRIPTIONS
+        )
+        if not is_valid:
+            return (False, error)
 
     return (True, None)
 
@@ -141,6 +168,24 @@ def validate_system_config_restore_put(
 ) -> tuple[bool, str | None]:
     """Validate PUT request to update system/config/restore."""
     # Validate enum values using central function
+    if "source" in payload:
+        is_valid, error = _validate_enum_field(
+            "source",
+            payload["source"],
+            VALID_BODY_SOURCE,
+            FIELD_DESCRIPTIONS
+        )
+        if not is_valid:
+            return (False, error)
+    if "scope" in payload:
+        is_valid, error = _validate_enum_field(
+            "scope",
+            payload["scope"],
+            VALID_BODY_SCOPE,
+            FIELD_DESCRIPTIONS
+        )
+        if not is_valid:
+            return (False, error)
 
     return (True, None)
 

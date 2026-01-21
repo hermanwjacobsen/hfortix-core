@@ -27,11 +27,11 @@ from hfortix_fortios.models import (
 
 class ImportPayload(TypedDict, total=False):
     """Payload type for Import operations."""
-    type: str
+    type: Literal["local", "pkcs12", "regular"]
     certname: str
     password: str
     key_file_content: str
-    scope: str
+    scope: Literal["vdom", "global"]
     acme_domain: str
     acme_email: str
     acme_ca_url: str
@@ -46,11 +46,11 @@ class ImportPayload(TypedDict, total=False):
 
 class ImportResponse(TypedDict, total=False):
     """Response type for Import - use with .dict property for typed dict access."""
-    type: str
+    type: Literal["local", "pkcs12", "regular"]
     certname: str
     password: str
     key_file_content: str
-    scope: str
+    scope: Literal["vdom", "global"]
     acme_domain: str
     acme_email: str
     acme_ca_url: str
@@ -66,11 +66,11 @@ class ImportResponse(TypedDict, total=False):
 
 class ImportObject(FortiObject):
     """Typed FortiObject for Import with field access."""
-    type: str
+    type: Literal["local", "pkcs12", "regular"]
     certname: str
     password: str
     key_file_content: str
-    scope: str
+    scope: Literal["vdom", "global"]
     acme_domain: str
     acme_email: str
     acme_ca_url: str
@@ -125,11 +125,11 @@ class Import:
     def post(
         self,
         payload_dict: ImportPayload | None = ...,
-        type: str | None = ...,
+        type: Literal["local", "pkcs12", "regular"] | None = ...,
         certname: str | None = ...,
         password: str | None = ...,
         key_file_content: str | None = ...,
-        scope: str | None = ...,
+        scope: Literal["vdom", "global"] | None = ...,
         acme_domain: str | None = ...,
         acme_email: str | None = ...,
         acme_ca_url: str | None = ...,
@@ -148,11 +148,11 @@ class Import:
     def put(
         self,
         payload_dict: ImportPayload | None = ...,
-        type: str | None = ...,
+        type: Literal["local", "pkcs12", "regular"] | None = ...,
         certname: str | None = ...,
         password: str | None = ...,
         key_file_content: str | None = ...,
-        scope: str | None = ...,
+        scope: Literal["vdom", "global"] | None = ...,
         acme_domain: str | None = ...,
         acme_email: str | None = ...,
         acme_ca_url: str | None = ...,
@@ -178,11 +178,11 @@ class Import:
     def set(
         self,
         payload_dict: ImportPayload | None = ...,
-        type: str | None = ...,
+        type: Literal["local", "pkcs12", "regular"] | None = ...,
         certname: str | None = ...,
         password: str | None = ...,
         key_file_content: str | None = ...,
-        scope: str | None = ...,
+        scope: Literal["vdom", "global"] | None = ...,
         acme_domain: str | None = ...,
         acme_email: str | None = ...,
         acme_ca_url: str | None = ...,

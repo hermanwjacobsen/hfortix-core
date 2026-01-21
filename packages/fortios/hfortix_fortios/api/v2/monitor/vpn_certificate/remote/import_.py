@@ -88,7 +88,7 @@ class Import(CRUDEndpoint, MetadataMixin):
     def post(
         self,
         payload_dict: dict[str, Any] | None = None,
-        scope: str | None = None,
+        scope: Literal["vdom", "global"] | None = None,
         file_content: str | None = None,
         vdom: str | bool | None = None,
         error_mode: Literal["raise", "return", "print"] | None = None,

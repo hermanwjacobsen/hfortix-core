@@ -27,9 +27,9 @@ from hfortix_fortios.models import (
 
 class FortianalyzerPayload(TypedDict, total=False):
     """Payload type for Fortianalyzer operations."""
-    scope: str
+    scope: Literal["vdom", "global"]
     server: str
-    srcip: str
+    srcip: Literal["\u003cip\u003e", "auto"]
 
 
 # ================================================================
@@ -38,9 +38,9 @@ class FortianalyzerPayload(TypedDict, total=False):
 
 class FortianalyzerResponse(TypedDict, total=False):
     """Response type for Fortianalyzer - use with .dict property for typed dict access."""
-    scope: str
+    scope: Literal["vdom", "global"]
     server: str
-    srcip: str
+    srcip: Literal["\u003cip\u003e", "auto"]
 
 
 # ================================================================
@@ -50,9 +50,9 @@ class FortianalyzerResponse(TypedDict, total=False):
 
 class FortianalyzerObject(FortiObject):
     """Typed FortiObject for Fortianalyzer with field access."""
-    scope: str
+    scope: Literal["vdom", "global"]
     server: str
-    srcip: str
+    srcip: Literal["\u003cip\u003e", "auto"]
 
 
 # ================================================================
@@ -105,9 +105,9 @@ class Fortianalyzer:
     def put(
         self,
         payload_dict: FortianalyzerPayload | None = ...,
-        scope: str | None = ...,
+        scope: Literal["vdom", "global"] | None = ...,
         server: str | None = ...,
-        srcip: str | None = ...,
+        srcip: Literal["\u003cip\u003e", "auto"] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -127,9 +127,9 @@ class Fortianalyzer:
     def set(
         self,
         payload_dict: FortianalyzerPayload | None = ...,
-        scope: str | None = ...,
+        scope: Literal["vdom", "global"] | None = ...,
         server: str | None = ...,
-        srcip: str | None = ...,
+        srcip: Literal["\u003cip\u003e", "auto"] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,

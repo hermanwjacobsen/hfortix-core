@@ -28,7 +28,7 @@ from hfortix_fortios.models import (
 class StatusPayload(TypedDict, total=False):
     """Payload type for Status operations."""
     ems_id: int
-    scope: str
+    scope: Literal["vdom", "global"]
 
 
 # ================================================================
@@ -38,7 +38,7 @@ class StatusPayload(TypedDict, total=False):
 class StatusResponse(TypedDict, total=False):
     """Response type for Status - use with .dict property for typed dict access."""
     ems_id: int
-    scope: str
+    scope: Literal["vdom", "global"]
 
 
 # ================================================================
@@ -49,7 +49,7 @@ class StatusResponse(TypedDict, total=False):
 class StatusObject(FortiObject):
     """Typed FortiObject for Status with field access."""
     ems_id: int
-    scope: str
+    scope: Literal["vdom", "global"]
 
 
 # ================================================================
@@ -102,7 +102,7 @@ class Status:
         self,
         payload_dict: StatusPayload | None = ...,
         ems_id: int | None = ...,
-        scope: str | None = ...,
+        scope: Literal["vdom", "global"] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -123,7 +123,7 @@ class Status:
         self,
         payload_dict: StatusPayload | None = ...,
         ems_id: int | None = ...,
-        scope: str | None = ...,
+        scope: Literal["vdom", "global"] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,

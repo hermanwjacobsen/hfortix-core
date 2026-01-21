@@ -84,6 +84,10 @@ NESTED_SCHEMAS = {
 
 
 # Valid enum values from API documentation
+VALID_BODY_SCOPE = [
+    "global",
+    "vdom",
+]
 VALID_QUERY_ACTION = ["default", "schema"]
 
 # ============================================================================
@@ -130,6 +134,15 @@ def validate_firewall_gtp_flush_post(
         return (False, error)
 
     # Step 2: Validate enum values using central function
+    if "scope" in payload:
+        is_valid, error = _validate_enum_field(
+            "scope",
+            payload["scope"],
+            VALID_BODY_SCOPE,
+            FIELD_DESCRIPTIONS
+        )
+        if not is_valid:
+            return (False, error)
 
     return (True, None)
 
@@ -145,6 +158,15 @@ def validate_firewall_gtp_flush_put(
 ) -> tuple[bool, str | None]:
     """Validate PUT request to update firewall/gtp/flush."""
     # Validate enum values using central function
+    if "scope" in payload:
+        is_valid, error = _validate_enum_field(
+            "scope",
+            payload["scope"],
+            VALID_BODY_SCOPE,
+            FIELD_DESCRIPTIONS
+        )
+        if not is_valid:
+            return (False, error)
 
     return (True, None)
 

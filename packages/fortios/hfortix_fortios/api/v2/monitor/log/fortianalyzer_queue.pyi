@@ -27,7 +27,7 @@ from hfortix_fortios.models import (
 
 class FortianalyzerQueuePayload(TypedDict, total=False):
     """Payload type for FortianalyzerQueue operations."""
-    scope: str
+    scope: Literal["vdom", "global"]
 
 
 # ================================================================
@@ -36,7 +36,7 @@ class FortianalyzerQueuePayload(TypedDict, total=False):
 
 class FortianalyzerQueueResponse(TypedDict, total=False):
     """Response type for FortianalyzerQueue - use with .dict property for typed dict access."""
-    scope: str
+    scope: Literal["vdom", "global"]
 
 
 # ================================================================
@@ -46,7 +46,7 @@ class FortianalyzerQueueResponse(TypedDict, total=False):
 
 class FortianalyzerQueueObject(FortiObject):
     """Typed FortiObject for FortianalyzerQueue with field access."""
-    scope: str
+    scope: Literal["vdom", "global"]
 
 
 # ================================================================
@@ -97,7 +97,7 @@ class FortianalyzerQueue:
     def put(
         self,
         payload_dict: FortianalyzerQueuePayload | None = ...,
-        scope: str | None = ...,
+        scope: Literal["vdom", "global"] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -117,7 +117,7 @@ class FortianalyzerQueue:
     def set(
         self,
         payload_dict: FortianalyzerQueuePayload | None = ...,
-        scope: str | None = ...,
+        scope: Literal["vdom", "global"] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,

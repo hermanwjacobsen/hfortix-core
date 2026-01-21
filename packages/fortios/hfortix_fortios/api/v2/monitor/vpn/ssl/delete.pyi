@@ -27,7 +27,7 @@ from hfortix_fortios.models import (
 
 class DeletePayload(TypedDict, total=False):
     """Payload type for Delete operations."""
-    type: str
+    type: Literal["websession", "subsession"]
     index: int
 
 
@@ -37,7 +37,7 @@ class DeletePayload(TypedDict, total=False):
 
 class DeleteResponse(TypedDict, total=False):
     """Response type for Delete - use with .dict property for typed dict access."""
-    type: str
+    type: Literal["websession", "subsession"]
     index: int
 
 
@@ -48,7 +48,7 @@ class DeleteResponse(TypedDict, total=False):
 
 class DeleteObject(FortiObject):
     """Typed FortiObject for Delete with field access."""
-    type: str
+    type: Literal["websession", "subsession"]
     index: int
 
 
@@ -98,7 +98,7 @@ class Delete:
     def post(
         self,
         payload_dict: DeletePayload | None = ...,
-        type: str | None = ...,
+        type: Literal["websession", "subsession"] | None = ...,
         index: int | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
@@ -112,7 +112,7 @@ class Delete:
     def put(
         self,
         payload_dict: DeletePayload | None = ...,
-        type: str | None = ...,
+        type: Literal["websession", "subsession"] | None = ...,
         index: int | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
@@ -133,7 +133,7 @@ class Delete:
     def set(
         self,
         payload_dict: DeletePayload | None = ...,
-        type: str | None = ...,
+        type: Literal["websession", "subsession"] | None = ...,
         index: int | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,

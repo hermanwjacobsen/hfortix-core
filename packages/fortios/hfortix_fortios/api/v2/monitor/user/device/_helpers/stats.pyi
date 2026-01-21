@@ -1,6 +1,10 @@
 from typing import Any, Literal
 
 # Enum type aliases for validation
+VALID_BODY_STAT_QUERY_TYPE: Literal["device", "fortiswitch_client", "forticlient"]
+VALID_BODY_STAT_KEY: Literal["os_name", "hardware_type", "detected_interface", "is_online", "max_vuln_level", "fortiswitch_id", "fortiswitch_port_name"]
+VALID_BODY_FILTERS: Literal["exact", "contains"]
+VALID_BODY_FILTER_LOGIC: Literal["and", "or"]
 
 # Metadata dictionaries
 FIELD_TYPES: dict[str, str]
@@ -25,6 +29,10 @@ def get_schema_info() -> dict[str, Any]: ...
 
 
 __all__ = [
+    "VALID_BODY_STAT_QUERY_TYPE",
+    "VALID_BODY_STAT_KEY",
+    "VALID_BODY_FILTERS",
+    "VALID_BODY_FILTER_LOGIC",
     "FIELD_TYPES",
     "FIELD_DESCRIPTIONS",
     "FIELD_CONSTRAINTS",

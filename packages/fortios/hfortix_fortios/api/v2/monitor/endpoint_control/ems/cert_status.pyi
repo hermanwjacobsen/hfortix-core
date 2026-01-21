@@ -28,7 +28,7 @@ from hfortix_fortios.models import (
 class CertStatusPayload(TypedDict, total=False):
     """Payload type for CertStatus operations."""
     ems_id: int
-    scope: str
+    scope: Literal["vdom", "global"]
     with_cert: bool
 
 
@@ -39,7 +39,7 @@ class CertStatusPayload(TypedDict, total=False):
 class CertStatusResponse(TypedDict, total=False):
     """Response type for CertStatus - use with .dict property for typed dict access."""
     ems_id: int
-    scope: str
+    scope: Literal["vdom", "global"]
     with_cert: bool
 
 
@@ -51,7 +51,7 @@ class CertStatusResponse(TypedDict, total=False):
 class CertStatusObject(FortiObject):
     """Typed FortiObject for CertStatus with field access."""
     ems_id: int
-    scope: str
+    scope: Literal["vdom", "global"]
     with_cert: bool
 
 
@@ -106,7 +106,7 @@ class CertStatus:
         self,
         payload_dict: CertStatusPayload | None = ...,
         ems_id: int | None = ...,
-        scope: str | None = ...,
+        scope: Literal["vdom", "global"] | None = ...,
         with_cert: bool | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
@@ -128,7 +128,7 @@ class CertStatus:
         self,
         payload_dict: CertStatusPayload | None = ...,
         ems_id: int | None = ...,
-        scope: str | None = ...,
+        scope: Literal["vdom", "global"] | None = ...,
         with_cert: bool | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,

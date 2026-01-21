@@ -92,7 +92,7 @@ class TestConnect(CRUDEndpoint, MetadataMixin):
         ordinal: str | None = None,
         server: str | None = None,
         secret: str | None = None,
-        auth_type: str | None = None,
+        auth_type: Literal["auto", "ms_chap_v2", "ms_chap", "chap", "pap"] | None = None,
         user: str | None = None,
         password: str | None = None,
         vdom: str | bool | None = None,

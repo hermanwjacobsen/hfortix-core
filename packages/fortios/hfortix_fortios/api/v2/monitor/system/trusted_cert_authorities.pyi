@@ -27,7 +27,7 @@ from hfortix_fortios.models import (
 
 class TrustedCertAuthoritiesPayload(TypedDict, total=False):
     """Payload type for TrustedCertAuthorities operations."""
-    scope: str
+    scope: Literal["vdom", "global"]
 
 
 # ================================================================
@@ -36,7 +36,7 @@ class TrustedCertAuthoritiesPayload(TypedDict, total=False):
 
 class TrustedCertAuthoritiesResponse(TypedDict, total=False):
     """Response type for TrustedCertAuthorities - use with .dict property for typed dict access."""
-    scope: str
+    scope: Literal["vdom", "global"]
 
 
 # ================================================================
@@ -46,7 +46,7 @@ class TrustedCertAuthoritiesResponse(TypedDict, total=False):
 
 class TrustedCertAuthoritiesObject(FortiObject):
     """Typed FortiObject for TrustedCertAuthorities with field access."""
-    scope: str
+    scope: Literal["vdom", "global"]
 
 
 # ================================================================
@@ -97,7 +97,7 @@ class TrustedCertAuthorities:
     def put(
         self,
         payload_dict: TrustedCertAuthoritiesPayload | None = ...,
-        scope: str | None = ...,
+        scope: Literal["vdom", "global"] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -117,7 +117,7 @@ class TrustedCertAuthorities:
     def set(
         self,
         payload_dict: TrustedCertAuthoritiesPayload | None = ...,
-        scope: str | None = ...,
+        scope: Literal["vdom", "global"] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,

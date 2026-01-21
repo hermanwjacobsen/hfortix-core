@@ -74,6 +74,10 @@ NESTED_SCHEMAS = {
 
 
 # Valid enum values from API documentation
+VALID_BODY_OPERATION = [
+    "import",
+    "update",
+]
 VALID_QUERY_ACTION = ["default", "schema"]
 
 # ============================================================================
@@ -120,6 +124,15 @@ def validate_system_fortimanager_backup_action_post(
         return (False, error)
 
     # Step 2: Validate enum values using central function
+    if "operation" in payload:
+        is_valid, error = _validate_enum_field(
+            "operation",
+            payload["operation"],
+            VALID_BODY_OPERATION,
+            FIELD_DESCRIPTIONS
+        )
+        if not is_valid:
+            return (False, error)
 
     return (True, None)
 
@@ -135,6 +148,15 @@ def validate_system_fortimanager_backup_action_put(
 ) -> tuple[bool, str | None]:
     """Validate PUT request to update system/fortimanager/backup_action."""
     # Validate enum values using central function
+    if "operation" in payload:
+        is_valid, error = _validate_enum_field(
+            "operation",
+            payload["operation"],
+            VALID_BODY_OPERATION,
+            FIELD_DESCRIPTIONS
+        )
+        if not is_valid:
+            return (False, error)
 
     return (True, None)
 

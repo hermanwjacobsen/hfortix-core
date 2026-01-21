@@ -27,7 +27,7 @@ from hfortix_fortios.models import (
 
 class NeighborsPayload(TypedDict, total=False):
     """Payload type for Neighbors operations."""
-    scope: str
+    scope: Literal["vdom", "global"]
     port: str
 
 
@@ -37,7 +37,7 @@ class NeighborsPayload(TypedDict, total=False):
 
 class NeighborsResponse(TypedDict, total=False):
     """Response type for Neighbors - use with .dict property for typed dict access."""
-    scope: str
+    scope: Literal["vdom", "global"]
     port: str
 
 
@@ -48,7 +48,7 @@ class NeighborsResponse(TypedDict, total=False):
 
 class NeighborsObject(FortiObject):
     """Typed FortiObject for Neighbors with field access."""
-    scope: str
+    scope: Literal["vdom", "global"]
     port: str
 
 
@@ -101,7 +101,7 @@ class Neighbors:
     def put(
         self,
         payload_dict: NeighborsPayload | None = ...,
-        scope: str | None = ...,
+        scope: Literal["vdom", "global"] | None = ...,
         port: str | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
@@ -122,7 +122,7 @@ class Neighbors:
     def set(
         self,
         payload_dict: NeighborsPayload | None = ...,
-        scope: str | None = ...,
+        scope: Literal["vdom", "global"] | None = ...,
         port: str | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,

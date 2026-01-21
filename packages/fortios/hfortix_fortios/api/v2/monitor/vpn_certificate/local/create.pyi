@@ -29,7 +29,7 @@ class CreatePayload(TypedDict, total=False):
     """Payload type for Create operations."""
     certname: str
     common_name: str
-    scope: str
+    scope: Literal["vdom", "global"]
 
 
 # ================================================================
@@ -40,7 +40,7 @@ class CreateResponse(TypedDict, total=False):
     """Response type for Create - use with .dict property for typed dict access."""
     certname: str
     common_name: str
-    scope: str
+    scope: Literal["vdom", "global"]
 
 
 # ================================================================
@@ -52,7 +52,7 @@ class CreateObject(FortiObject):
     """Typed FortiObject for Create with field access."""
     certname: str
     common_name: str
-    scope: str
+    scope: Literal["vdom", "global"]
 
 
 # ================================================================
@@ -103,7 +103,7 @@ class Create:
         payload_dict: CreatePayload | None = ...,
         certname: str | None = ...,
         common_name: str | None = ...,
-        scope: str | None = ...,
+        scope: Literal["vdom", "global"] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -118,7 +118,7 @@ class Create:
         payload_dict: CreatePayload | None = ...,
         certname: str | None = ...,
         common_name: str | None = ...,
-        scope: str | None = ...,
+        scope: Literal["vdom", "global"] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -140,7 +140,7 @@ class Create:
         payload_dict: CreatePayload | None = ...,
         certname: str | None = ...,
         common_name: str | None = ...,
-        scope: str | None = ...,
+        scope: Literal["vdom", "global"] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,

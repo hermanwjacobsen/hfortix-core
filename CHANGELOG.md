@@ -7,6 +7,17 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+
+- **Literal Types for Array Parameters**: Fixed incorrect Literal type extraction for array-type parameters
+  - **Issue**: Schema parser was extracting enum values from array parameter descriptions and applying them to the array parameter itself
+  - **Example Bug**: `filters: Literal["exact", "contains", ...]` instead of `filters: list[str]`
+  - **Root Cause**: Description text like "Op: filter operator [exact|contains|...]" was being parsed as Literal values for the `filters` array parameter
+  - **Solution**: Modified schema parser to skip Literal type extraction for parameters with `type: "array"`
+  - **Impact**: Array parameters now correctly typed as `list[str]` while preserving Literal types for actual enum parameters
+    - ✅ `monitor.user.device.query.get(filters=["..."])` → correctly typed as `list[str] | None`
+    - ✅ `monitor.user.device.query.get(query_type="latest")` → still has `Literal["latest", "unified_latest", "unified_history"]`
+
 ## [0.5.130] - 2026-01-20
 
 ### Fixed

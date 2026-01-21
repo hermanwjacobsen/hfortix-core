@@ -89,7 +89,7 @@ class Kill(CRUDEndpoint, MetadataMixin):
         self,
         payload_dict: dict[str, Any] | None = None,
         pid: Any | None = None,
-        signal: Any | None = None,
+        signal: Literal["9 (SIGKILL)", "11 (SIGSEGV)", "15 (SIGTERM)"] | None = None,
         vdom: str | bool | None = None,
         error_mode: Literal["raise", "return", "print"] | None = None,
         error_format: Literal["detailed", "simple", "code_only"] | None = None,

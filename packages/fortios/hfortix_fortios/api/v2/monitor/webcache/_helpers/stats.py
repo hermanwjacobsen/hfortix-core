@@ -71,6 +71,12 @@ NESTED_SCHEMAS = {
 
 
 # Valid enum values from API documentation
+VALID_BODY_PERIOD = [
+    "10min",
+    "hour",
+    "day",
+    "month",
+]
 VALID_QUERY_ACTION = ["default", "schema"]
 
 # ============================================================================
@@ -117,6 +123,15 @@ def validate_webcache_stats_post(
         return (False, error)
 
     # Step 2: Validate enum values using central function
+    if "period" in payload:
+        is_valid, error = _validate_enum_field(
+            "period",
+            payload["period"],
+            VALID_BODY_PERIOD,
+            FIELD_DESCRIPTIONS
+        )
+        if not is_valid:
+            return (False, error)
 
     return (True, None)
 
@@ -132,6 +147,15 @@ def validate_webcache_stats_put(
 ) -> tuple[bool, str | None]:
     """Validate PUT request to update webcache/stats."""
     # Validate enum values using central function
+    if "period" in payload:
+        is_valid, error = _validate_enum_field(
+            "period",
+            payload["period"],
+            VALID_BODY_PERIOD,
+            FIELD_DESCRIPTIONS
+        )
+        if not is_valid:
+            return (False, error)
 
     return (True, None)
 

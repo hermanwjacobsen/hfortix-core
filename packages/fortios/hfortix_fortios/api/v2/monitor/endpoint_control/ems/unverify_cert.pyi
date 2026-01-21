@@ -28,7 +28,7 @@ from hfortix_fortios.models import (
 class UnverifyCertPayload(TypedDict, total=False):
     """Payload type for UnverifyCert operations."""
     ems_id: int
-    scope: str
+    scope: Literal["vdom", "global"]
 
 
 # ================================================================
@@ -38,7 +38,7 @@ class UnverifyCertPayload(TypedDict, total=False):
 class UnverifyCertResponse(TypedDict, total=False):
     """Response type for UnverifyCert - use with .dict property for typed dict access."""
     ems_id: int
-    scope: str
+    scope: Literal["vdom", "global"]
 
 
 # ================================================================
@@ -49,7 +49,7 @@ class UnverifyCertResponse(TypedDict, total=False):
 class UnverifyCertObject(FortiObject):
     """Typed FortiObject for UnverifyCert with field access."""
     ems_id: int
-    scope: str
+    scope: Literal["vdom", "global"]
 
 
 # ================================================================
@@ -99,7 +99,7 @@ class UnverifyCert:
         self,
         payload_dict: UnverifyCertPayload | None = ...,
         ems_id: int | None = ...,
-        scope: str | None = ...,
+        scope: Literal["vdom", "global"] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -113,7 +113,7 @@ class UnverifyCert:
         self,
         payload_dict: UnverifyCertPayload | None = ...,
         ems_id: int | None = ...,
-        scope: str | None = ...,
+        scope: Literal["vdom", "global"] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -134,7 +134,7 @@ class UnverifyCert:
         self,
         payload_dict: UnverifyCertPayload | None = ...,
         ems_id: int | None = ...,
-        scope: str | None = ...,
+        scope: Literal["vdom", "global"] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,

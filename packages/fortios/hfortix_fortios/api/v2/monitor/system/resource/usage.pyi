@@ -27,9 +27,9 @@ from hfortix_fortios.models import (
 
 class UsagePayload(TypedDict, total=False):
     """Payload type for Usage operations."""
-    scope: str
-    resource: str
-    interval: str
+    scope: Literal["vdom", "global"]
+    resource: Literal["cpu", "mem", "disk", "session", "session6", "setuprate", "setuprate6", "disk_lograte", "faz_lograte", "forticloud_lograte", "gtp_tunnel", "gtp_tunnel_setup_rate"]
+    interval: Literal["1-min", "10-min", "30-min", "1-hour", "12-hour", "24-hour"]
 
 
 # ================================================================
@@ -38,9 +38,9 @@ class UsagePayload(TypedDict, total=False):
 
 class UsageResponse(TypedDict, total=False):
     """Response type for Usage - use with .dict property for typed dict access."""
-    scope: str
-    resource: str
-    interval: str
+    scope: Literal["vdom", "global"]
+    resource: Literal["cpu", "mem", "disk", "session", "session6", "setuprate", "setuprate6", "disk_lograte", "faz_lograte", "forticloud_lograte", "gtp_tunnel", "gtp_tunnel_setup_rate"]
+    interval: Literal["1-min", "10-min", "30-min", "1-hour", "12-hour", "24-hour"]
 
 
 # ================================================================
@@ -50,9 +50,9 @@ class UsageResponse(TypedDict, total=False):
 
 class UsageObject(FortiObject):
     """Typed FortiObject for Usage with field access."""
-    scope: str
-    resource: str
-    interval: str
+    scope: Literal["vdom", "global"]
+    resource: Literal["cpu", "mem", "disk", "session", "session6", "setuprate", "setuprate6", "disk_lograte", "faz_lograte", "forticloud_lograte", "gtp_tunnel", "gtp_tunnel_setup_rate"]
+    interval: Literal["1-min", "10-min", "30-min", "1-hour", "12-hour", "24-hour"]
 
 
 # ================================================================
@@ -105,9 +105,9 @@ class Usage:
     def put(
         self,
         payload_dict: UsagePayload | None = ...,
-        scope: str | None = ...,
-        resource: str | None = ...,
-        interval: str | None = ...,
+        scope: Literal["vdom", "global"] | None = ...,
+        resource: Literal["cpu", "mem", "disk", "session", "session6", "setuprate", "setuprate6", "disk_lograte", "faz_lograte", "forticloud_lograte", "gtp_tunnel", "gtp_tunnel_setup_rate"] | None = ...,
+        interval: Literal["1-min", "10-min", "30-min", "1-hour", "12-hour", "24-hour"] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -127,9 +127,9 @@ class Usage:
     def set(
         self,
         payload_dict: UsagePayload | None = ...,
-        scope: str | None = ...,
-        resource: str | None = ...,
-        interval: str | None = ...,
+        scope: Literal["vdom", "global"] | None = ...,
+        resource: Literal["cpu", "mem", "disk", "session", "session6", "setuprate", "setuprate6", "disk_lograte", "faz_lograte", "forticloud_lograte", "gtp_tunnel", "gtp_tunnel_setup_rate"] | None = ...,
+        interval: Literal["1-min", "10-min", "30-min", "1-hour", "12-hour", "24-hour"] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,

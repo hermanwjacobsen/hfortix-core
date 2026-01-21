@@ -28,7 +28,7 @@ from hfortix_fortios.models import (
 class PolicyPayload(TypedDict, total=False):
     """Payload type for Policy operations."""
     policyid: int | str | list[int | str]
-    ip_version: str
+    ip_version: Literal["ipv4", "ipv6"]
 
 
 # ================================================================
@@ -38,7 +38,7 @@ class PolicyPayload(TypedDict, total=False):
 class PolicyResponse(TypedDict, total=False):
     """Response type for Policy - use with .dict property for typed dict access."""
     policyid: list[str]
-    ip_version: str
+    ip_version: Literal["ipv4", "ipv6"]
 
 
 # ================================================================
@@ -49,7 +49,7 @@ class PolicyResponse(TypedDict, total=False):
 class PolicyObject(FortiObject):
     """Typed FortiObject for Policy with field access."""
     policyid: list[str]
-    ip_version: str
+    ip_version: Literal["ipv4", "ipv6"]
 
 
 # ================================================================
@@ -102,7 +102,7 @@ class Policy:
         self,
         payload_dict: PolicyPayload | None = ...,
         policyid: int | str | list[int | str] | None = ...,
-        ip_version: str | None = ...,
+        ip_version: Literal["ipv4", "ipv6"] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -123,7 +123,7 @@ class Policy:
         self,
         payload_dict: PolicyPayload | None = ...,
         policyid: int | str | list[int | str] | None = ...,
-        ip_version: str | None = ...,
+        ip_version: Literal["ipv4", "ipv6"] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,

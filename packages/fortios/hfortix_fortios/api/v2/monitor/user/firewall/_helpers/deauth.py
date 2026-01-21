@@ -77,6 +77,23 @@ NESTED_SCHEMAS = {
 
 
 # Valid enum values from API documentation
+VALID_BODY_USER_TYPE = [
+    "proxy",
+    "firewall",
+]
+VALID_BODY_IP_VERSION = [
+    "ip4",
+    "ip6",
+]
+VALID_BODY_METHOD = [
+    "fsso",
+    "rsso",
+    "ntlm",
+    "firewall",
+    "wsso",
+    "fsso_citrix",
+    "sso_guest",
+]
 VALID_QUERY_ACTION = ["default", "schema"]
 
 # ============================================================================
@@ -123,6 +140,33 @@ def validate_user_firewall_deauth_post(
         return (False, error)
 
     # Step 2: Validate enum values using central function
+    if "user_type" in payload:
+        is_valid, error = _validate_enum_field(
+            "user_type",
+            payload["user_type"],
+            VALID_BODY_USER_TYPE,
+            FIELD_DESCRIPTIONS
+        )
+        if not is_valid:
+            return (False, error)
+    if "ip_version" in payload:
+        is_valid, error = _validate_enum_field(
+            "ip_version",
+            payload["ip_version"],
+            VALID_BODY_IP_VERSION,
+            FIELD_DESCRIPTIONS
+        )
+        if not is_valid:
+            return (False, error)
+    if "method" in payload:
+        is_valid, error = _validate_enum_field(
+            "method",
+            payload["method"],
+            VALID_BODY_METHOD,
+            FIELD_DESCRIPTIONS
+        )
+        if not is_valid:
+            return (False, error)
 
     return (True, None)
 
@@ -138,6 +182,33 @@ def validate_user_firewall_deauth_put(
 ) -> tuple[bool, str | None]:
     """Validate PUT request to update user/firewall/deauth."""
     # Validate enum values using central function
+    if "user_type" in payload:
+        is_valid, error = _validate_enum_field(
+            "user_type",
+            payload["user_type"],
+            VALID_BODY_USER_TYPE,
+            FIELD_DESCRIPTIONS
+        )
+        if not is_valid:
+            return (False, error)
+    if "ip_version" in payload:
+        is_valid, error = _validate_enum_field(
+            "ip_version",
+            payload["ip_version"],
+            VALID_BODY_IP_VERSION,
+            FIELD_DESCRIPTIONS
+        )
+        if not is_valid:
+            return (False, error)
+    if "method" in payload:
+        is_valid, error = _validate_enum_field(
+            "method",
+            payload["method"],
+            VALID_BODY_METHOD,
+            FIELD_DESCRIPTIONS
+        )
+        if not is_valid:
+            return (False, error)
 
     return (True, None)
 

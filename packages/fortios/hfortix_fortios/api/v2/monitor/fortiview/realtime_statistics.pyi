@@ -54,7 +54,7 @@ class RealtimeStatisticsPayload(TypedDict, total=False):
     sessionid: int
     report_by: str
     sort_by: str
-    ip_version: str
+    ip_version: Literal["ipv4", "ipv6", "ipboth"]
 
 
 # ================================================================
@@ -90,7 +90,7 @@ class RealtimeStatisticsResponse(TypedDict, total=False):
     sessionid: int
     report_by: str
     sort_by: str
-    ip_version: str
+    ip_version: Literal["ipv4", "ipv6", "ipboth"]
 
 
 # ================================================================
@@ -127,7 +127,7 @@ class RealtimeStatisticsObject(FortiObject):
     sessionid: int
     report_by: str
     sort_by: str
-    ip_version: str
+    ip_version: Literal["ipv4", "ipv6", "ipboth"]
 
 
 # ================================================================
@@ -232,7 +232,7 @@ class RealtimeStatistics:
         sessionid: int | None = ...,
         report_by: str | None = ...,
         sort_by: str | None = ...,
-        ip_version: str | None = ...,
+        ip_version: Literal["ipv4", "ipv6", "ipboth"] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -279,7 +279,7 @@ class RealtimeStatistics:
         sessionid: int | None = ...,
         report_by: str | None = ...,
         sort_by: str | None = ...,
-        ip_version: str | None = ...,
+        ip_version: Literal["ipv4", "ipv6", "ipboth"] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,

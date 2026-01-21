@@ -29,13 +29,13 @@ class QueryPayload(TypedDict, total=False):
     """Payload type for Query operations."""
     timestamp_from: int
     timestamp_to: int
-    filters: int | str | list[int | str]
-    query_type: str
-    view_type: str
+    filters: Literal["exact", "contains", "greaterThanEqualTo", "lessThanEqualTo"]
+    query_type: Literal["latest", "unified_latest", "unified_history"]
+    view_type: Literal["device", "fortiswitch_client", "forticlient", "iot_vuln_info"]
     query_id: int
     cache_query: bool
     key_only: bool
-    filter_logic: str
+    filter_logic: Literal["and", "or"]
     total_only: bool
 
 
@@ -47,13 +47,13 @@ class QueryResponse(TypedDict, total=False):
     """Response type for Query - use with .dict property for typed dict access."""
     timestamp_from: int
     timestamp_to: int
-    filters: list[str]
-    query_type: str
-    view_type: str
+    filters: Literal["exact", "contains", "greaterThanEqualTo", "lessThanEqualTo"]
+    query_type: Literal["latest", "unified_latest", "unified_history"]
+    view_type: Literal["device", "fortiswitch_client", "forticlient", "iot_vuln_info"]
     query_id: int
     cache_query: bool
     key_only: bool
-    filter_logic: str
+    filter_logic: Literal["and", "or"]
     total_only: bool
 
 
@@ -66,13 +66,13 @@ class QueryObject(FortiObject):
     """Typed FortiObject for Query with field access."""
     timestamp_from: int
     timestamp_to: int
-    filters: list[str]
-    query_type: str
-    view_type: str
+    filters: Literal["exact", "contains", "greaterThanEqualTo", "lessThanEqualTo"]
+    query_type: Literal["latest", "unified_latest", "unified_history"]
+    view_type: Literal["device", "fortiswitch_client", "forticlient", "iot_vuln_info"]
     query_id: int
     cache_query: bool
     key_only: bool
-    filter_logic: str
+    filter_logic: Literal["and", "or"]
     total_only: bool
 
 
@@ -107,7 +107,7 @@ class Query:
         *,
         timestamp_from: int | None = ...,
         timestamp_to: int | None = ...,
-        filters: Literal["exact", "contains", "greaterThanEqualTo", "lessThanEqualTo"] | None = ...,
+        filters: list[str] | None = ...,
         query_type: Literal["latest", "unified_latest", "unified_history"] | None = ...,
         view_type: Literal["device", "fortiswitch_client", "forticlient", "iot_vuln_info"] | None = ...,
         query_id: int | None = ...,
@@ -135,13 +135,13 @@ class Query:
         payload_dict: QueryPayload | None = ...,
         timestamp_from: int | None = ...,
         timestamp_to: int | None = ...,
-        filters: int | str | list[int | str] | None = ...,
-        query_type: str | None = ...,
-        view_type: str | None = ...,
+        filters: Literal["exact", "contains", "greaterThanEqualTo", "lessThanEqualTo"] | None = ...,
+        query_type: Literal["latest", "unified_latest", "unified_history"] | None = ...,
+        view_type: Literal["device", "fortiswitch_client", "forticlient", "iot_vuln_info"] | None = ...,
         query_id: int | None = ...,
         cache_query: bool | None = ...,
         key_only: bool | None = ...,
-        filter_logic: str | None = ...,
+        filter_logic: Literal["and", "or"] | None = ...,
         total_only: bool | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
@@ -164,13 +164,13 @@ class Query:
         payload_dict: QueryPayload | None = ...,
         timestamp_from: int | None = ...,
         timestamp_to: int | None = ...,
-        filters: int | str | list[int | str] | None = ...,
-        query_type: str | None = ...,
-        view_type: str | None = ...,
+        filters: Literal["exact", "contains", "greaterThanEqualTo", "lessThanEqualTo"] | None = ...,
+        query_type: Literal["latest", "unified_latest", "unified_history"] | None = ...,
+        view_type: Literal["device", "fortiswitch_client", "forticlient", "iot_vuln_info"] | None = ...,
         query_id: int | None = ...,
         cache_query: bool | None = ...,
         key_only: bool | None = ...,
-        filter_logic: str | None = ...,
+        filter_logic: Literal["and", "or"] | None = ...,
         total_only: bool | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,

@@ -28,7 +28,7 @@ from hfortix_fortios.models import (
 class CheckPortAvailabilityPayload(TypedDict, total=False):
     """Payload type for CheckPortAvailability operations."""
     port_ranges: int | str | list[int | str]
-    service: str
+    service: Literal["reserved", "sysglobal", "webproxy", "ftpproxy", "sslvpn", "slaprobe", "fsso", "ftm_push"]
 
 
 # ================================================================
@@ -38,7 +38,7 @@ class CheckPortAvailabilityPayload(TypedDict, total=False):
 class CheckPortAvailabilityResponse(TypedDict, total=False):
     """Response type for CheckPortAvailability - use with .dict property for typed dict access."""
     port_ranges: list[str]
-    service: str
+    service: Literal["reserved", "sysglobal", "webproxy", "ftpproxy", "sslvpn", "slaprobe", "fsso", "ftm_push"]
 
 
 # ================================================================
@@ -49,7 +49,7 @@ class CheckPortAvailabilityResponse(TypedDict, total=False):
 class CheckPortAvailabilityObject(FortiObject):
     """Typed FortiObject for CheckPortAvailability with field access."""
     port_ranges: list[str]
-    service: str
+    service: Literal["reserved", "sysglobal", "webproxy", "ftpproxy", "sslvpn", "slaprobe", "fsso", "ftm_push"]
 
 
 # ================================================================
@@ -102,7 +102,7 @@ class CheckPortAvailability:
         self,
         payload_dict: CheckPortAvailabilityPayload | None = ...,
         port_ranges: int | str | list[int | str] | None = ...,
-        service: str | None = ...,
+        service: Literal["reserved", "sysglobal", "webproxy", "ftpproxy", "sslvpn", "slaprobe", "fsso", "ftm_push"] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -123,7 +123,7 @@ class CheckPortAvailability:
         self,
         payload_dict: CheckPortAvailabilityPayload | None = ...,
         port_ranges: int | str | list[int | str] | None = ...,
-        service: str | None = ...,
+        service: Literal["reserved", "sysglobal", "webproxy", "ftpproxy", "sslvpn", "slaprobe", "fsso", "ftm_push"] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,

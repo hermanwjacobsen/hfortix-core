@@ -27,7 +27,7 @@ from hfortix_fortios.models import (
 
 class ImportPayload(TypedDict, total=False):
     """Payload type for Import operations."""
-    scope: str
+    scope: Literal["vdom", "global"]
     file_content: str
 
 
@@ -37,7 +37,7 @@ class ImportPayload(TypedDict, total=False):
 
 class ImportResponse(TypedDict, total=False):
     """Response type for Import - use with .dict property for typed dict access."""
-    scope: str
+    scope: Literal["vdom", "global"]
     file_content: str
 
 
@@ -48,7 +48,7 @@ class ImportResponse(TypedDict, total=False):
 
 class ImportObject(FortiObject):
     """Typed FortiObject for Import with field access."""
-    scope: str
+    scope: Literal["vdom", "global"]
     file_content: str
 
 
@@ -98,7 +98,7 @@ class Import:
     def post(
         self,
         payload_dict: ImportPayload | None = ...,
-        scope: str | None = ...,
+        scope: Literal["vdom", "global"] | None = ...,
         file_content: str | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
@@ -112,7 +112,7 @@ class Import:
     def put(
         self,
         payload_dict: ImportPayload | None = ...,
-        scope: str | None = ...,
+        scope: Literal["vdom", "global"] | None = ...,
         file_content: str | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
@@ -133,7 +133,7 @@ class Import:
     def set(
         self,
         payload_dict: ImportPayload | None = ...,
-        scope: str | None = ...,
+        scope: Literal["vdom", "global"] | None = ...,
         file_content: str | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,

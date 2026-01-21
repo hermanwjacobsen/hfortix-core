@@ -28,7 +28,7 @@ from hfortix_fortios.models import (
 class DnatPayload(TypedDict, total=False):
     """Payload type for Dnat operations."""
     uuid: int | str | list[int | str]
-    ip_version: str
+    ip_version: Literal["ipv4", "ipv6"]
 
 
 # ================================================================
@@ -38,7 +38,7 @@ class DnatPayload(TypedDict, total=False):
 class DnatResponse(TypedDict, total=False):
     """Response type for Dnat - use with .dict property for typed dict access."""
     uuid: list[str]
-    ip_version: str
+    ip_version: Literal["ipv4", "ipv6"]
 
 
 # ================================================================
@@ -49,7 +49,7 @@ class DnatResponse(TypedDict, total=False):
 class DnatObject(FortiObject):
     """Typed FortiObject for Dnat with field access."""
     uuid: list[str]
-    ip_version: str
+    ip_version: Literal["ipv4", "ipv6"]
 
 
 # ================================================================
@@ -102,7 +102,7 @@ class Dnat:
         self,
         payload_dict: DnatPayload | None = ...,
         uuid: int | str | list[int | str] | None = ...,
-        ip_version: str | None = ...,
+        ip_version: Literal["ipv4", "ipv6"] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -123,7 +123,7 @@ class Dnat:
         self,
         payload_dict: DnatPayload | None = ...,
         uuid: int | str | list[int | str] | None = ...,
-        ip_version: str | None = ...,
+        ip_version: Literal["ipv4", "ipv6"] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,

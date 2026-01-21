@@ -27,7 +27,7 @@ from hfortix_fortios.models import (
 
 class HistoryPayload(TypedDict, total=False):
     """Payload type for History operations."""
-    period: str
+    period: Literal["10-min", "hour", "day", "week", "30-day"]
 
 
 # ================================================================
@@ -36,7 +36,7 @@ class HistoryPayload(TypedDict, total=False):
 
 class HistoryResponse(TypedDict, total=False):
     """Response type for History - use with .dict property for typed dict access."""
-    period: str
+    period: Literal["10-min", "hour", "day", "week", "30-day"]
 
 
 # ================================================================
@@ -46,7 +46,7 @@ class HistoryResponse(TypedDict, total=False):
 
 class HistoryObject(FortiObject):
     """Typed FortiObject for History with field access."""
-    period: str
+    period: Literal["10-min", "hour", "day", "week", "30-day"]
 
 
 # ================================================================
@@ -97,7 +97,7 @@ class History:
     def put(
         self,
         payload_dict: HistoryPayload | None = ...,
-        period: str | None = ...,
+        period: Literal["10-min", "hour", "day", "week", "30-day"] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -117,7 +117,7 @@ class History:
     def set(
         self,
         payload_dict: HistoryPayload | None = ...,
-        period: str | None = ...,
+        period: Literal["10-min", "hour", "day", "week", "30-day"] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,

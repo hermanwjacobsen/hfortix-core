@@ -27,7 +27,7 @@ from hfortix_fortios.models import (
 
 class TopApplicationsPayload(TypedDict, total=False):
     """Payload type for TopApplications operations."""
-    time_period: str
+    time_period: Literal["hour", "day", "week"]
 
 
 # ================================================================
@@ -36,7 +36,7 @@ class TopApplicationsPayload(TypedDict, total=False):
 
 class TopApplicationsResponse(TypedDict, total=False):
     """Response type for TopApplications - use with .dict property for typed dict access."""
-    time_period: str
+    time_period: Literal["hour", "day", "week"]
 
 
 # ================================================================
@@ -46,7 +46,7 @@ class TopApplicationsResponse(TypedDict, total=False):
 
 class TopApplicationsObject(FortiObject):
     """Typed FortiObject for TopApplications with field access."""
-    time_period: str
+    time_period: Literal["hour", "day", "week"]
 
 
 # ================================================================
@@ -97,7 +97,7 @@ class TopApplications:
     def put(
         self,
         payload_dict: TopApplicationsPayload | None = ...,
-        time_period: str | None = ...,
+        time_period: Literal["hour", "day", "week"] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -117,7 +117,7 @@ class TopApplications:
     def set(
         self,
         payload_dict: TopApplicationsPayload | None = ...,
-        time_period: str | None = ...,
+        time_period: Literal["hour", "day", "week"] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,

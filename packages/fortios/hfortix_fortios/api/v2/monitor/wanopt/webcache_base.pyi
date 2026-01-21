@@ -27,7 +27,7 @@ from hfortix_fortios.models import (
 
 class WebcachePayload(TypedDict, total=False):
     """Payload type for Webcache operations."""
-    period: str
+    period: Literal["10-min", "hour", "day", "week", "30-day"]
 
 
 # ================================================================
@@ -36,7 +36,7 @@ class WebcachePayload(TypedDict, total=False):
 
 class WebcacheResponse(TypedDict, total=False):
     """Response type for Webcache - use with .dict property for typed dict access."""
-    period: str
+    period: Literal["10-min", "hour", "day", "week", "30-day"]
 
 
 # ================================================================
@@ -46,7 +46,7 @@ class WebcacheResponse(TypedDict, total=False):
 
 class WebcacheObject(FortiObject):
     """Typed FortiObject for Webcache with field access."""
-    period: str
+    period: Literal["10-min", "hour", "day", "week", "30-day"]
 
 
 # ================================================================
@@ -97,7 +97,7 @@ class Webcache:
     def put(
         self,
         payload_dict: WebcachePayload | None = ...,
-        period: str | None = ...,
+        period: Literal["10-min", "hour", "day", "week", "30-day"] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -117,7 +117,7 @@ class Webcache:
     def set(
         self,
         payload_dict: WebcachePayload | None = ...,
-        period: str | None = ...,
+        period: Literal["10-min", "hour", "day", "week", "30-day"] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,

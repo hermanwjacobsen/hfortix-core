@@ -27,7 +27,7 @@ from hfortix_fortios.models import (
 
 class CsfPayload(TypedDict, total=False):
     """Payload type for Csf operations."""
-    scope: str
+    scope: Literal["vdom", "global"]
     all_vdoms: bool
 
 
@@ -37,7 +37,7 @@ class CsfPayload(TypedDict, total=False):
 
 class CsfResponse(TypedDict, total=False):
     """Response type for Csf - use with .dict property for typed dict access."""
-    scope: str
+    scope: Literal["vdom", "global"]
     all_vdoms: bool
 
 
@@ -48,7 +48,7 @@ class CsfResponse(TypedDict, total=False):
 
 class CsfObject(FortiObject):
     """Typed FortiObject for Csf with field access."""
-    scope: str
+    scope: Literal["vdom", "global"]
     all_vdoms: bool
 
 
@@ -101,7 +101,7 @@ class Csf:
     def put(
         self,
         payload_dict: CsfPayload | None = ...,
-        scope: str | None = ...,
+        scope: Literal["vdom", "global"] | None = ...,
         all_vdoms: bool | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
@@ -122,7 +122,7 @@ class Csf:
     def set(
         self,
         payload_dict: CsfPayload | None = ...,
-        scope: str | None = ...,
+        scope: Literal["vdom", "global"] | None = ...,
         all_vdoms: bool | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,

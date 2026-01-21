@@ -27,9 +27,9 @@ from hfortix_fortios.models import (
 
 class TestAvailabilityPayload(TypedDict, total=False):
     """Payload type for TestAvailability operations."""
-    protocol: str
+    protocol: Literal["https", "udp", "http"]
     port: int
-    service: str
+    service: Literal["emailfilter", "webfilter"]
 
 
 # ================================================================
@@ -38,9 +38,9 @@ class TestAvailabilityPayload(TypedDict, total=False):
 
 class TestAvailabilityResponse(TypedDict, total=False):
     """Response type for TestAvailability - use with .dict property for typed dict access."""
-    protocol: str
+    protocol: Literal["https", "udp", "http"]
     port: int
-    service: str
+    service: Literal["emailfilter", "webfilter"]
 
 
 # ================================================================
@@ -50,9 +50,9 @@ class TestAvailabilityResponse(TypedDict, total=False):
 
 class TestAvailabilityObject(FortiObject):
     """Typed FortiObject for TestAvailability with field access."""
-    protocol: str
+    protocol: Literal["https", "udp", "http"]
     port: int
-    service: str
+    service: Literal["emailfilter", "webfilter"]
 
 
 # ================================================================
@@ -101,9 +101,9 @@ class TestAvailability:
     def post(
         self,
         payload_dict: TestAvailabilityPayload | None = ...,
-        protocol: str | None = ...,
+        protocol: Literal["https", "udp", "http"] | None = ...,
         port: int | None = ...,
-        service: str | None = ...,
+        service: Literal["emailfilter", "webfilter"] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -116,9 +116,9 @@ class TestAvailability:
     def put(
         self,
         payload_dict: TestAvailabilityPayload | None = ...,
-        protocol: str | None = ...,
+        protocol: Literal["https", "udp", "http"] | None = ...,
         port: int | None = ...,
-        service: str | None = ...,
+        service: Literal["emailfilter", "webfilter"] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -138,9 +138,9 @@ class TestAvailability:
     def set(
         self,
         payload_dict: TestAvailabilityPayload | None = ...,
-        protocol: str | None = ...,
+        protocol: Literal["https", "udp", "http"] | None = ...,
         port: int | None = ...,
-        service: str | None = ...,
+        service: Literal["emailfilter", "webfilter"] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,

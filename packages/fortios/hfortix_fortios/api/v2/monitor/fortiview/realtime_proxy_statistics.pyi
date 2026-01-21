@@ -29,7 +29,7 @@ class RealtimeProxyStatisticsPayload(TypedDict, total=False):
     """Payload type for RealtimeProxyStatistics operations."""
     report_by: str
     sort_by: str
-    ip_version: str
+    ip_version: Literal["ipv4", "ipv6", "ipboth"]
     srcaddr: str
     dstaddr: str
     srcaddr6: str
@@ -59,7 +59,7 @@ class RealtimeProxyStatisticsResponse(TypedDict, total=False):
     """Response type for RealtimeProxyStatistics - use with .dict property for typed dict access."""
     report_by: str
     sort_by: str
-    ip_version: str
+    ip_version: Literal["ipv4", "ipv6", "ipboth"]
     srcaddr: str
     dstaddr: str
     srcaddr6: str
@@ -90,7 +90,7 @@ class RealtimeProxyStatisticsObject(FortiObject):
     """Typed FortiObject for RealtimeProxyStatistics with field access."""
     report_by: str
     sort_by: str
-    ip_version: str
+    ip_version: Literal["ipv4", "ipv6", "ipboth"]
     srcaddr: str
     dstaddr: str
     srcaddr6: str
@@ -183,7 +183,7 @@ class RealtimeProxyStatistics:
         payload_dict: RealtimeProxyStatisticsPayload | None = ...,
         report_by: str | None = ...,
         sort_by: str | None = ...,
-        ip_version: str | None = ...,
+        ip_version: Literal["ipv4", "ipv6", "ipboth"] | None = ...,
         srcaddr: str | None = ...,
         dstaddr: str | None = ...,
         srcaddr6: str | None = ...,
@@ -224,7 +224,7 @@ class RealtimeProxyStatistics:
         payload_dict: RealtimeProxyStatisticsPayload | None = ...,
         report_by: str | None = ...,
         sort_by: str | None = ...,
-        ip_version: str | None = ...,
+        ip_version: Literal["ipv4", "ipv6", "ipboth"] | None = ...,
         srcaddr: str | None = ...,
         dstaddr: str | None = ...,
         srcaddr6: str | None = ...,

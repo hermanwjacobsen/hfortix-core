@@ -73,6 +73,16 @@ NESTED_SCHEMAS = {
 
 
 # Valid enum values from API documentation
+VALID_BODY_SERVICE = [
+    "reserved",
+    "sysglobal",
+    "webproxy",
+    "ftpproxy",
+    "sslvpn",
+    "slaprobe",
+    "fsso",
+    "ftm_push",
+]
 VALID_QUERY_ACTION = ["default", "schema"]
 
 # ============================================================================
@@ -119,6 +129,15 @@ def validate_system_check_port_availability_post(
         return (False, error)
 
     # Step 2: Validate enum values using central function
+    if "service" in payload:
+        is_valid, error = _validate_enum_field(
+            "service",
+            payload["service"],
+            VALID_BODY_SERVICE,
+            FIELD_DESCRIPTIONS
+        )
+        if not is_valid:
+            return (False, error)
 
     return (True, None)
 
@@ -134,6 +153,15 @@ def validate_system_check_port_availability_put(
 ) -> tuple[bool, str | None]:
     """Validate PUT request to update system/check_port_availability."""
     # Validate enum values using central function
+    if "service" in payload:
+        is_valid, error = _validate_enum_field(
+            "service",
+            payload["service"],
+            VALID_BODY_SERVICE,
+            FIELD_DESCRIPTIONS
+        )
+        if not is_valid:
+            return (False, error)
 
     return (True, None)
 

@@ -87,7 +87,7 @@ class Query(CRUDEndpoint, MetadataMixin):
         self,
         timestamp_from: int | None = None,
         timestamp_to: int | None = None,
-        filters: Literal["exact", "contains", "greaterThanEqualTo", "lessThanEqualTo"] | None = None,
+        filters: list[str] | None = None,
         query_type: Literal["latest", "unified_latest", "unified_history"] | None = None,
         query_id: int | None = None,
         cache_query: bool | None = None,

@@ -73,6 +73,32 @@ NESTED_SCHEMAS = {
 
 
 # Valid enum values from API documentation
+VALID_BODY_SCOPE = [
+    "vdom",
+    "global",
+]
+VALID_BODY_RESOURCE = [
+    "cpu",
+    "mem",
+    "disk",
+    "session",
+    "session6",
+    "setuprate",
+    "setuprate6",
+    "disk_lograte",
+    "faz_lograte",
+    "forticloud_lograte",
+    "gtp_tunnel",
+    "gtp_tunnel_setup_rate",
+]
+VALID_BODY_INTERVAL = [
+    "1-min",
+    "10-min",
+    "30-min",
+    "1-hour",
+    "12-hour",
+    "24-hour",
+]
 VALID_QUERY_ACTION = ["default", "schema"]
 
 # ============================================================================
@@ -119,6 +145,33 @@ def validate_system_resource_usage_post(
         return (False, error)
 
     # Step 2: Validate enum values using central function
+    if "scope" in payload:
+        is_valid, error = _validate_enum_field(
+            "scope",
+            payload["scope"],
+            VALID_BODY_SCOPE,
+            FIELD_DESCRIPTIONS
+        )
+        if not is_valid:
+            return (False, error)
+    if "resource" in payload:
+        is_valid, error = _validate_enum_field(
+            "resource",
+            payload["resource"],
+            VALID_BODY_RESOURCE,
+            FIELD_DESCRIPTIONS
+        )
+        if not is_valid:
+            return (False, error)
+    if "interval" in payload:
+        is_valid, error = _validate_enum_field(
+            "interval",
+            payload["interval"],
+            VALID_BODY_INTERVAL,
+            FIELD_DESCRIPTIONS
+        )
+        if not is_valid:
+            return (False, error)
 
     return (True, None)
 
@@ -134,6 +187,33 @@ def validate_system_resource_usage_put(
 ) -> tuple[bool, str | None]:
     """Validate PUT request to update system/resource/usage."""
     # Validate enum values using central function
+    if "scope" in payload:
+        is_valid, error = _validate_enum_field(
+            "scope",
+            payload["scope"],
+            VALID_BODY_SCOPE,
+            FIELD_DESCRIPTIONS
+        )
+        if not is_valid:
+            return (False, error)
+    if "resource" in payload:
+        is_valid, error = _validate_enum_field(
+            "resource",
+            payload["resource"],
+            VALID_BODY_RESOURCE,
+            FIELD_DESCRIPTIONS
+        )
+        if not is_valid:
+            return (False, error)
+    if "interval" in payload:
+        is_valid, error = _validate_enum_field(
+            "interval",
+            payload["interval"],
+            VALID_BODY_INTERVAL,
+            FIELD_DESCRIPTIONS
+        )
+        if not is_valid:
+            return (False, error)
 
     return (True, None)
 

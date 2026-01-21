@@ -27,7 +27,7 @@ from hfortix_fortios.models import (
 
 class StatePayload(TypedDict, total=False):
     """Payload type for State operations."""
-    scope: str
+    scope: Literal["vdom", "global"]
 
 
 # ================================================================
@@ -36,7 +36,7 @@ class StatePayload(TypedDict, total=False):
 
 class StateResponse(TypedDict, total=False):
     """Response type for State - use with .dict property for typed dict access."""
-    scope: str
+    scope: Literal["vdom", "global"]
 
 
 # ================================================================
@@ -46,7 +46,7 @@ class StateResponse(TypedDict, total=False):
 
 class StateObject(FortiObject):
     """Typed FortiObject for State with field access."""
-    scope: str
+    scope: Literal["vdom", "global"]
 
 
 # ================================================================
@@ -97,7 +97,7 @@ class State:
     def put(
         self,
         payload_dict: StatePayload | None = ...,
-        scope: str | None = ...,
+        scope: Literal["vdom", "global"] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -117,7 +117,7 @@ class State:
     def set(
         self,
         payload_dict: StatePayload | None = ...,
-        scope: str | None = ...,
+        scope: Literal["vdom", "global"] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,

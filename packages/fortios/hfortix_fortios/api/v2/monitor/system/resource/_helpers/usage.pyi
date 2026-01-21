@@ -1,6 +1,9 @@
 from typing import Any, Literal
 
 # Enum type aliases for validation
+VALID_BODY_SCOPE: Literal["vdom", "global"]
+VALID_BODY_RESOURCE: Literal["cpu", "mem", "disk", "session", "session6", "setuprate", "setuprate6", "disk_lograte", "faz_lograte", "forticloud_lograte", "gtp_tunnel", "gtp_tunnel_setup_rate"]
+VALID_BODY_INTERVAL: Literal["1-min", "10-min", "30-min", "1-hour", "12-hour", "24-hour"]
 
 # Metadata dictionaries
 FIELD_TYPES: dict[str, str]
@@ -25,6 +28,9 @@ def get_schema_info() -> dict[str, Any]: ...
 
 
 __all__ = [
+    "VALID_BODY_SCOPE",
+    "VALID_BODY_RESOURCE",
+    "VALID_BODY_INTERVAL",
     "FIELD_TYPES",
     "FIELD_DESCRIPTIONS",
     "FIELD_CONSTRAINTS",

@@ -28,7 +28,7 @@ from hfortix_fortios.models import (
 class ExtenderPayload(TypedDict, total=False):
     """Payload type for Extender operations."""
     fortiextender_name: int | str | list[int | str]
-    type: str
+    type: Literal["system", "modem", "usage", "last"]
 
 
 # ================================================================
@@ -38,7 +38,7 @@ class ExtenderPayload(TypedDict, total=False):
 class ExtenderResponse(TypedDict, total=False):
     """Response type for Extender - use with .dict property for typed dict access."""
     fortiextender_name: list[str]
-    type: str
+    type: Literal["system", "modem", "usage", "last"]
 
 
 # ================================================================
@@ -49,7 +49,7 @@ class ExtenderResponse(TypedDict, total=False):
 class ExtenderObject(FortiObject):
     """Typed FortiObject for Extender with field access."""
     fortiextender_name: list[str]
-    type: str
+    type: Literal["system", "modem", "usage", "last"]
 
 
 # ================================================================
@@ -102,7 +102,7 @@ class Extender:
         self,
         payload_dict: ExtenderPayload | None = ...,
         fortiextender_name: int | str | list[int | str] | None = ...,
-        type: str | None = ...,
+        type: Literal["system", "modem", "usage", "last"] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -123,7 +123,7 @@ class Extender:
         self,
         payload_dict: ExtenderPayload | None = ...,
         fortiextender_name: int | str | list[int | str] | None = ...,
-        type: str | None = ...,
+        type: Literal["system", "modem", "usage", "last"] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,

@@ -1,6 +1,10 @@
 from typing import Any, Literal
 
 # Enum type aliases for validation
+VALID_BODY_KEYTYPE: Literal["rsa", "ec"]
+VALID_BODY_KEYSIZE: Literal["1024", "1536", "2048", "4096"]
+VALID_BODY_CURVENAME: Literal["secp256r1", "secp384r1", "secp521r1"]
+VALID_BODY_SCOPE: Literal["vdom", "global"]
 
 # Metadata dictionaries
 FIELD_TYPES: dict[str, str]
@@ -25,6 +29,10 @@ def get_schema_info() -> dict[str, Any]: ...
 
 
 __all__ = [
+    "VALID_BODY_KEYTYPE",
+    "VALID_BODY_KEYSIZE",
+    "VALID_BODY_CURVENAME",
+    "VALID_BODY_SCOPE",
     "FIELD_TYPES",
     "FIELD_DESCRIPTIONS",
     "FIELD_CONSTRAINTS",

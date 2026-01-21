@@ -27,7 +27,7 @@ from hfortix_fortios.models import (
 
 class ClientPayload(TypedDict, total=False):
     """Payload type for Client operations."""
-    type: str
+    type: Literal["all", "fail-login"]
     with_triangulation: bool
     with_stats: bool
     mac: str
@@ -39,7 +39,7 @@ class ClientPayload(TypedDict, total=False):
 
 class ClientResponse(TypedDict, total=False):
     """Response type for Client - use with .dict property for typed dict access."""
-    type: str
+    type: Literal["all", "fail-login"]
     with_triangulation: bool
     with_stats: bool
     mac: str
@@ -52,7 +52,7 @@ class ClientResponse(TypedDict, total=False):
 
 class ClientObject(FortiObject):
     """Typed FortiObject for Client with field access."""
-    type: str
+    type: Literal["all", "fail-login"]
     with_triangulation: bool
     with_stats: bool
     mac: str
@@ -109,7 +109,7 @@ class Client:
     def put(
         self,
         payload_dict: ClientPayload | None = ...,
-        type: str | None = ...,
+        type: Literal["all", "fail-login"] | None = ...,
         with_triangulation: bool | None = ...,
         with_stats: bool | None = ...,
         mac: str | None = ...,
@@ -132,7 +132,7 @@ class Client:
     def set(
         self,
         payload_dict: ClientPayload | None = ...,
-        type: str | None = ...,
+        type: Literal["all", "fail-login"] | None = ...,
         with_triangulation: bool | None = ...,
         with_stats: bool | None = ...,
         mac: str | None = ...,

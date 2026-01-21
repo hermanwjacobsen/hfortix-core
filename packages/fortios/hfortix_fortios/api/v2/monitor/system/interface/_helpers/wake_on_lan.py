@@ -78,6 +78,10 @@ NESTED_SCHEMAS = {
 
 
 # Valid enum values from API documentation
+VALID_BODY_PROTOCOL_OPTION = [
+    "wol",
+    "udp",
+]
 VALID_QUERY_ACTION = ["default", "schema"]
 
 # ============================================================================
@@ -124,6 +128,15 @@ def validate_system_interface_wake_on_lan_post(
         return (False, error)
 
     # Step 2: Validate enum values using central function
+    if "protocol_option" in payload:
+        is_valid, error = _validate_enum_field(
+            "protocol_option",
+            payload["protocol_option"],
+            VALID_BODY_PROTOCOL_OPTION,
+            FIELD_DESCRIPTIONS
+        )
+        if not is_valid:
+            return (False, error)
 
     return (True, None)
 
@@ -139,6 +152,15 @@ def validate_system_interface_wake_on_lan_put(
 ) -> tuple[bool, str | None]:
     """Validate PUT request to update system/interface/wake_on_lan."""
     # Validate enum values using central function
+    if "protocol_option" in payload:
+        is_valid, error = _validate_enum_field(
+            "protocol_option",
+            payload["protocol_option"],
+            VALID_BODY_PROTOCOL_OPTION,
+            FIELD_DESCRIPTIONS
+        )
+        if not is_valid:
+            return (False, error)
 
     return (True, None)
 

@@ -28,7 +28,7 @@ from hfortix_fortios.models import (
 class RecommendationsPayload(TypedDict, total=False):
     """Payload type for Recommendations operations."""
     checks: str
-    scope: str
+    scope: Literal["global", "vdom"]
 
 
 # ================================================================
@@ -38,7 +38,7 @@ class RecommendationsPayload(TypedDict, total=False):
 class RecommendationsResponse(TypedDict, total=False):
     """Response type for Recommendations - use with .dict property for typed dict access."""
     checks: str
-    scope: str
+    scope: Literal["global", "vdom"]
 
 
 # ================================================================
@@ -49,7 +49,7 @@ class RecommendationsResponse(TypedDict, total=False):
 class RecommendationsObject(FortiObject):
     """Typed FortiObject for Recommendations with field access."""
     checks: str
-    scope: str
+    scope: Literal["global", "vdom"]
 
 
 # ================================================================
@@ -102,7 +102,7 @@ class Recommendations:
         self,
         payload_dict: RecommendationsPayload | None = ...,
         checks: str | None = ...,
-        scope: str | None = ...,
+        scope: Literal["global", "vdom"] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -123,7 +123,7 @@ class Recommendations:
         self,
         payload_dict: RecommendationsPayload | None = ...,
         checks: str | None = ...,
-        scope: str | None = ...,
+        scope: Literal["global", "vdom"] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,

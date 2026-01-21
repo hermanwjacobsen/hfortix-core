@@ -71,6 +71,11 @@ NESTED_SCHEMAS = {
 
 
 # Valid enum values from API documentation
+VALID_BODY_MODEM = [
+    "all",
+    "1",
+    "2",
+]
 VALID_QUERY_ACTION = ["default", "schema"]
 
 # ============================================================================
@@ -117,6 +122,15 @@ def validate_system_modem5g_status_post(
         return (False, error)
 
     # Step 2: Validate enum values using central function
+    if "modem" in payload:
+        is_valid, error = _validate_enum_field(
+            "modem",
+            payload["modem"],
+            VALID_BODY_MODEM,
+            FIELD_DESCRIPTIONS
+        )
+        if not is_valid:
+            return (False, error)
 
     return (True, None)
 
@@ -132,6 +146,15 @@ def validate_system_modem5g_status_put(
 ) -> tuple[bool, str | None]:
     """Validate PUT request to update system/modem5g/status."""
     # Validate enum values using central function
+    if "modem" in payload:
+        is_valid, error = _validate_enum_field(
+            "modem",
+            payload["modem"],
+            VALID_BODY_MODEM,
+            FIELD_DESCRIPTIONS
+        )
+        if not is_valid:
+            return (False, error)
 
     return (True, None)
 

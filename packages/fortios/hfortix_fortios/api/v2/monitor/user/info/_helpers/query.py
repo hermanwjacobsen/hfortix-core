@@ -79,6 +79,21 @@ NESTED_SCHEMAS = {
 
 
 # Valid enum values from API documentation
+VALID_BODY_FILTERS = [
+    "exact",
+    "contains",
+    "greaterThanEqualTo",
+    "lessThanEqualTo",
+]
+VALID_BODY_QUERY_TYPE = [
+    "latest",
+    "unified_latest",
+    "unified_history",
+]
+VALID_BODY_FILTER_LOGIC = [
+    "and",
+    "or",
+]
 VALID_QUERY_ACTION = ["default", "schema"]
 
 # ============================================================================
@@ -125,6 +140,33 @@ def validate_user_info_query_post(
         return (False, error)
 
     # Step 2: Validate enum values using central function
+    if "filters" in payload:
+        is_valid, error = _validate_enum_field(
+            "filters",
+            payload["filters"],
+            VALID_BODY_FILTERS,
+            FIELD_DESCRIPTIONS
+        )
+        if not is_valid:
+            return (False, error)
+    if "query_type" in payload:
+        is_valid, error = _validate_enum_field(
+            "query_type",
+            payload["query_type"],
+            VALID_BODY_QUERY_TYPE,
+            FIELD_DESCRIPTIONS
+        )
+        if not is_valid:
+            return (False, error)
+    if "filter_logic" in payload:
+        is_valid, error = _validate_enum_field(
+            "filter_logic",
+            payload["filter_logic"],
+            VALID_BODY_FILTER_LOGIC,
+            FIELD_DESCRIPTIONS
+        )
+        if not is_valid:
+            return (False, error)
 
     return (True, None)
 
@@ -140,6 +182,33 @@ def validate_user_info_query_put(
 ) -> tuple[bool, str | None]:
     """Validate PUT request to update user/info/query."""
     # Validate enum values using central function
+    if "filters" in payload:
+        is_valid, error = _validate_enum_field(
+            "filters",
+            payload["filters"],
+            VALID_BODY_FILTERS,
+            FIELD_DESCRIPTIONS
+        )
+        if not is_valid:
+            return (False, error)
+    if "query_type" in payload:
+        is_valid, error = _validate_enum_field(
+            "query_type",
+            payload["query_type"],
+            VALID_BODY_QUERY_TYPE,
+            FIELD_DESCRIPTIONS
+        )
+        if not is_valid:
+            return (False, error)
+    if "filter_logic" in payload:
+        is_valid, error = _validate_enum_field(
+            "filter_logic",
+            payload["filter_logic"],
+            VALID_BODY_FILTER_LOGIC,
+            FIELD_DESCRIPTIONS
+        )
+        if not is_valid:
+            return (False, error)
 
     return (True, None)
 

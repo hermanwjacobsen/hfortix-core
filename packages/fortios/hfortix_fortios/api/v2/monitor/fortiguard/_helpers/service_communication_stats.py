@@ -72,6 +72,22 @@ NESTED_SCHEMAS = {
 
 
 # Valid enum values from API documentation
+VALID_BODY_SERVICE_TYPE = [
+    "forticare",
+    "fortiguard_download",
+    "fortiguard_query",
+    "forticloud_log",
+    "fortisandbox_cloud",
+    "fortiguard.com",
+    "sdns",
+    "fortitoken_registration",
+    "sms_service",
+]
+VALID_BODY_TIMESLOT = [
+    "1_hour",
+    "24_hour",
+    "1_week",
+]
 VALID_QUERY_ACTION = ["default", "schema"]
 
 # ============================================================================
@@ -118,6 +134,24 @@ def validate_fortiguard_service_communication_stats_post(
         return (False, error)
 
     # Step 2: Validate enum values using central function
+    if "service_type" in payload:
+        is_valid, error = _validate_enum_field(
+            "service_type",
+            payload["service_type"],
+            VALID_BODY_SERVICE_TYPE,
+            FIELD_DESCRIPTIONS
+        )
+        if not is_valid:
+            return (False, error)
+    if "timeslot" in payload:
+        is_valid, error = _validate_enum_field(
+            "timeslot",
+            payload["timeslot"],
+            VALID_BODY_TIMESLOT,
+            FIELD_DESCRIPTIONS
+        )
+        if not is_valid:
+            return (False, error)
 
     return (True, None)
 
@@ -133,6 +167,24 @@ def validate_fortiguard_service_communication_stats_put(
 ) -> tuple[bool, str | None]:
     """Validate PUT request to update fortiguard/service_communication_stats."""
     # Validate enum values using central function
+    if "service_type" in payload:
+        is_valid, error = _validate_enum_field(
+            "service_type",
+            payload["service_type"],
+            VALID_BODY_SERVICE_TYPE,
+            FIELD_DESCRIPTIONS
+        )
+        if not is_valid:
+            return (False, error)
+    if "timeslot" in payload:
+        is_valid, error = _validate_enum_field(
+            "timeslot",
+            payload["timeslot"],
+            VALID_BODY_TIMESLOT,
+            FIELD_DESCRIPTIONS
+        )
+        if not is_valid:
+            return (False, error)
 
     return (True, None)
 

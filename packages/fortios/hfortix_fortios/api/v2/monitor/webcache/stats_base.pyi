@@ -27,7 +27,7 @@ from hfortix_fortios.models import (
 
 class StatsPayload(TypedDict, total=False):
     """Payload type for Stats operations."""
-    period: str
+    period: Literal["10min", "hour", "day", "month"]
 
 
 # ================================================================
@@ -36,7 +36,7 @@ class StatsPayload(TypedDict, total=False):
 
 class StatsResponse(TypedDict, total=False):
     """Response type for Stats - use with .dict property for typed dict access."""
-    period: str
+    period: Literal["10min", "hour", "day", "month"]
 
 
 # ================================================================
@@ -46,7 +46,7 @@ class StatsResponse(TypedDict, total=False):
 
 class StatsObject(FortiObject):
     """Typed FortiObject for Stats with field access."""
-    period: str
+    period: Literal["10min", "hour", "day", "month"]
 
 
 # ================================================================
@@ -97,7 +97,7 @@ class Stats:
     def put(
         self,
         payload_dict: StatsPayload | None = ...,
-        period: str | None = ...,
+        period: Literal["10min", "hour", "day", "month"] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -117,7 +117,7 @@ class Stats:
     def set(
         self,
         payload_dict: StatsPayload | None = ...,
-        period: str | None = ...,
+        period: Literal["10min", "hour", "day", "month"] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,

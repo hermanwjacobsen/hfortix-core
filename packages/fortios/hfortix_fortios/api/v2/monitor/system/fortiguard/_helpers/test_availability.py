@@ -76,6 +76,15 @@ NESTED_SCHEMAS = {
 
 
 # Valid enum values from API documentation
+VALID_BODY_PROTOCOL = [
+    "https",
+    "udp",
+    "http",
+]
+VALID_BODY_SERVICE = [
+    "emailfilter",
+    "webfilter",
+]
 VALID_QUERY_ACTION = ["default", "schema"]
 
 # ============================================================================
@@ -122,6 +131,24 @@ def validate_system_fortiguard_test_availability_post(
         return (False, error)
 
     # Step 2: Validate enum values using central function
+    if "protocol" in payload:
+        is_valid, error = _validate_enum_field(
+            "protocol",
+            payload["protocol"],
+            VALID_BODY_PROTOCOL,
+            FIELD_DESCRIPTIONS
+        )
+        if not is_valid:
+            return (False, error)
+    if "service" in payload:
+        is_valid, error = _validate_enum_field(
+            "service",
+            payload["service"],
+            VALID_BODY_SERVICE,
+            FIELD_DESCRIPTIONS
+        )
+        if not is_valid:
+            return (False, error)
 
     return (True, None)
 
@@ -137,6 +164,24 @@ def validate_system_fortiguard_test_availability_put(
 ) -> tuple[bool, str | None]:
     """Validate PUT request to update system/fortiguard/test_availability."""
     # Validate enum values using central function
+    if "protocol" in payload:
+        is_valid, error = _validate_enum_field(
+            "protocol",
+            payload["protocol"],
+            VALID_BODY_PROTOCOL,
+            FIELD_DESCRIPTIONS
+        )
+        if not is_valid:
+            return (False, error)
+    if "service" in payload:
+        is_valid, error = _validate_enum_field(
+            "service",
+            payload["service"],
+            VALID_BODY_SERVICE,
+            FIELD_DESCRIPTIONS
+        )
+        if not is_valid:
+            return (False, error)
 
     return (True, None)
 

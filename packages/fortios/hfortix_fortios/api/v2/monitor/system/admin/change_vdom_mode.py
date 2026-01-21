@@ -88,7 +88,7 @@ class ChangeVdomMode(CRUDEndpoint, MetadataMixin):
     def post(
         self,
         payload_dict: dict[str, Any] | None = None,
-        vdom_mode: str | None = None,
+        vdom_mode: Literal["no-vdom", "split-vdom", "multi-vdom"] | None = None,
         vdom: str | bool | None = None,
         error_mode: Literal["raise", "return", "print"] | None = None,
         error_format: Literal["detailed", "simple", "code_only"] | None = None,

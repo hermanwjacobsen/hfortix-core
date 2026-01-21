@@ -1,6 +1,8 @@
 from typing import Any, Literal
 
 # Enum type aliases for validation
+VALID_BODY_DEVICE: Literal["disk", "fortianalyzer", "forticloud"]
+VALID_BODY_IP_VERSION: Literal["ipv4", "ipv6", "ipboth"]
 
 # Metadata dictionaries
 FIELD_TYPES: dict[str, str]
@@ -25,6 +27,8 @@ def get_schema_info() -> dict[str, Any]: ...
 
 
 __all__ = [
+    "VALID_BODY_DEVICE",
+    "VALID_BODY_IP_VERSION",
     "FIELD_TYPES",
     "FIELD_DESCRIPTIONS",
     "FIELD_CONSTRAINTS",

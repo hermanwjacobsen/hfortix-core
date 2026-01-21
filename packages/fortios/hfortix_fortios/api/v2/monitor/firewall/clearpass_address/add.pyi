@@ -28,7 +28,7 @@ from hfortix_fortios.models import (
 class AddPayload(TypedDict, total=False):
     """Payload type for Add operations."""
     endpoint_ip: int | str | list[int | str]
-    spt: str
+    spt: Literal["healthy", "checkup", "transient", "quarantine", "infected", "unknown"]
 
 
 # ================================================================
@@ -38,7 +38,7 @@ class AddPayload(TypedDict, total=False):
 class AddResponse(TypedDict, total=False):
     """Response type for Add - use with .dict property for typed dict access."""
     endpoint_ip: list[str]
-    spt: str
+    spt: Literal["healthy", "checkup", "transient", "quarantine", "infected", "unknown"]
 
 
 # ================================================================
@@ -49,7 +49,7 @@ class AddResponse(TypedDict, total=False):
 class AddObject(FortiObject):
     """Typed FortiObject for Add with field access."""
     endpoint_ip: list[str]
-    spt: str
+    spt: Literal["healthy", "checkup", "transient", "quarantine", "infected", "unknown"]
 
 
 # ================================================================
@@ -99,7 +99,7 @@ class Add:
         self,
         payload_dict: AddPayload | None = ...,
         endpoint_ip: int | str | list[int | str] | None = ...,
-        spt: str | None = ...,
+        spt: Literal["healthy", "checkup", "transient", "quarantine", "infected", "unknown"] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -113,7 +113,7 @@ class Add:
         self,
         payload_dict: AddPayload | None = ...,
         endpoint_ip: int | str | list[int | str] | None = ...,
-        spt: str | None = ...,
+        spt: Literal["healthy", "checkup", "transient", "quarantine", "infected", "unknown"] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -134,7 +134,7 @@ class Add:
         self,
         payload_dict: AddPayload | None = ...,
         endpoint_ip: int | str | list[int | str] | None = ...,
-        spt: str | None = ...,
+        spt: Literal["healthy", "checkup", "transient", "quarantine", "infected", "unknown"] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,

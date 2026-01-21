@@ -27,11 +27,11 @@ from hfortix_fortios.models import (
 
 class RestorePayload(TypedDict, total=False):
     """Payload type for Restore operations."""
-    source: str
+    source: Literal["upload", "usb", "revision"]
     usb_filename: str
     config_id: int
     password: str
-    scope: str
+    scope: Literal["global", "vdom"]
     vdom: str
     confirm_password_mask: bool
     file_content: str
@@ -43,11 +43,11 @@ class RestorePayload(TypedDict, total=False):
 
 class RestoreResponse(TypedDict, total=False):
     """Response type for Restore - use with .dict property for typed dict access."""
-    source: str
+    source: Literal["upload", "usb", "revision"]
     usb_filename: str
     config_id: int
     password: str
-    scope: str
+    scope: Literal["global", "vdom"]
     vdom: str
     confirm_password_mask: bool
     file_content: str
@@ -60,11 +60,11 @@ class RestoreResponse(TypedDict, total=False):
 
 class RestoreObject(FortiObject):
     """Typed FortiObject for Restore with field access."""
-    source: str
+    source: Literal["upload", "usb", "revision"]
     usb_filename: str
     config_id: int
     password: str
-    scope: str
+    scope: Literal["global", "vdom"]
     confirm_password_mask: bool
     file_content: str
 
@@ -115,11 +115,11 @@ class Restore:
     def post(
         self,
         payload_dict: RestorePayload | None = ...,
-        source: str | None = ...,
+        source: Literal["upload", "usb", "revision"] | None = ...,
         usb_filename: str | None = ...,
         config_id: int | None = ...,
         password: str | None = ...,
-        scope: str | None = ...,
+        scope: Literal["global", "vdom"] | None = ...,
         confirm_password_mask: bool | None = ...,
         file_content: str | None = ...,
         vdom: str | bool | None = ...,
@@ -134,11 +134,11 @@ class Restore:
     def put(
         self,
         payload_dict: RestorePayload | None = ...,
-        source: str | None = ...,
+        source: Literal["upload", "usb", "revision"] | None = ...,
         usb_filename: str | None = ...,
         config_id: int | None = ...,
         password: str | None = ...,
-        scope: str | None = ...,
+        scope: Literal["global", "vdom"] | None = ...,
         confirm_password_mask: bool | None = ...,
         file_content: str | None = ...,
         vdom: str | bool | None = ...,
@@ -160,11 +160,11 @@ class Restore:
     def set(
         self,
         payload_dict: RestorePayload | None = ...,
-        source: str | None = ...,
+        source: Literal["upload", "usb", "revision"] | None = ...,
         usb_filename: str | None = ...,
         config_id: int | None = ...,
         password: str | None = ...,
-        scope: str | None = ...,
+        scope: Literal["global", "vdom"] | None = ...,
         confirm_password_mask: bool | None = ...,
         file_content: str | None = ...,
         vdom: str | bool | None = ...,

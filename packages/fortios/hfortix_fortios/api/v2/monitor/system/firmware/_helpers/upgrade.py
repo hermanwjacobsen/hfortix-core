@@ -81,6 +81,12 @@ NESTED_SCHEMAS = {
 
 
 # Valid enum values from API documentation
+VALID_BODY_SOURCE = [
+    "upload",
+    "usb",
+    "fortiguard",
+    "url",
+]
 VALID_QUERY_ACTION = ["default", "schema"]
 
 # ============================================================================
@@ -127,6 +133,15 @@ def validate_system_firmware_upgrade_post(
         return (False, error)
 
     # Step 2: Validate enum values using central function
+    if "source" in payload:
+        is_valid, error = _validate_enum_field(
+            "source",
+            payload["source"],
+            VALID_BODY_SOURCE,
+            FIELD_DESCRIPTIONS
+        )
+        if not is_valid:
+            return (False, error)
 
     return (True, None)
 
@@ -142,6 +157,15 @@ def validate_system_firmware_upgrade_put(
 ) -> tuple[bool, str | None]:
     """Validate PUT request to update system/firmware/upgrade."""
     # Validate enum values using central function
+    if "source" in payload:
+        is_valid, error = _validate_enum_field(
+            "source",
+            payload["source"],
+            VALID_BODY_SOURCE,
+            FIELD_DESCRIPTIONS
+        )
+        if not is_valid:
+            return (False, error)
 
     return (True, None)
 

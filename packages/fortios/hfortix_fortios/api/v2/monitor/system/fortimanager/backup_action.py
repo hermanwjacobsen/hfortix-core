@@ -88,7 +88,7 @@ class BackupAction(CRUDEndpoint, MetadataMixin):
     def post(
         self,
         payload_dict: dict[str, Any] | None = None,
-        operation: str | None = None,
+        operation: Literal["import", "update"] | None = None,
         objects: Any | None = None,
         vdom: str | bool | None = None,
         error_mode: Literal["raise", "return", "print"] | None = None,

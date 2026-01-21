@@ -27,7 +27,7 @@ from hfortix_fortios.models import (
 
 class AvailableCertificatesPayload(TypedDict, total=False):
     """Payload type for AvailableCertificates operations."""
-    scope: str
+    scope: Literal["vdom", "global"]
     with_remote: bool
     with_ca: bool
     with_crl: bool
@@ -41,7 +41,7 @@ class AvailableCertificatesPayload(TypedDict, total=False):
 
 class AvailableCertificatesResponse(TypedDict, total=False):
     """Response type for AvailableCertificates - use with .dict property for typed dict access."""
-    scope: str
+    scope: Literal["vdom", "global"]
     with_remote: bool
     with_ca: bool
     with_crl: bool
@@ -56,7 +56,7 @@ class AvailableCertificatesResponse(TypedDict, total=False):
 
 class AvailableCertificatesObject(FortiObject):
     """Typed FortiObject for AvailableCertificates with field access."""
-    scope: str
+    scope: Literal["vdom", "global"]
     with_remote: bool
     with_ca: bool
     with_crl: bool
@@ -116,7 +116,7 @@ class AvailableCertificates:
     def put(
         self,
         payload_dict: AvailableCertificatesPayload | None = ...,
-        scope: str | None = ...,
+        scope: Literal["vdom", "global"] | None = ...,
         with_remote: bool | None = ...,
         with_ca: bool | None = ...,
         with_crl: bool | None = ...,
@@ -141,7 +141,7 @@ class AvailableCertificates:
     def set(
         self,
         payload_dict: AvailableCertificatesPayload | None = ...,
-        scope: str | None = ...,
+        scope: Literal["vdom", "global"] | None = ...,
         with_remote: bool | None = ...,
         with_ca: bool | None = ...,
         with_crl: bool | None = ...,

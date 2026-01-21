@@ -28,7 +28,7 @@ from hfortix_fortios.models import (
 class PortsPayload(TypedDict, total=False):
     """Payload type for Ports operations."""
     mkey: str
-    scope: str
+    scope: Literal["vdom", "global"]
 
 
 # ================================================================
@@ -38,7 +38,7 @@ class PortsPayload(TypedDict, total=False):
 class PortsResponse(TypedDict, total=False):
     """Response type for Ports - use with .dict property for typed dict access."""
     mkey: str
-    scope: str
+    scope: Literal["vdom", "global"]
 
 
 # ================================================================
@@ -48,7 +48,7 @@ class PortsResponse(TypedDict, total=False):
 
 class PortsObject(FortiObject):
     """Typed FortiObject for Ports with field access."""
-    scope: str
+    scope: Literal["vdom", "global"]
 
 
 # ================================================================
@@ -101,7 +101,7 @@ class Ports:
         self,
         payload_dict: PortsPayload | None = ...,
         mkey: str | None = ...,
-        scope: str | None = ...,
+        scope: Literal["vdom", "global"] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -122,7 +122,7 @@ class Ports:
         self,
         payload_dict: PortsPayload | None = ...,
         mkey: str | None = ...,
-        scope: str | None = ...,
+        scope: Literal["vdom", "global"] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,

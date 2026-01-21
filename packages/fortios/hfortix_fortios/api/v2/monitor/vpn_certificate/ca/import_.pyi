@@ -27,10 +27,10 @@ from hfortix_fortios.models import (
 
 class ImportPayload(TypedDict, total=False):
     """Payload type for Import operations."""
-    import_method: str
+    import_method: Literal["file", "scep"]
     scep_url: str
     scep_ca_id: str
-    scope: str
+    scope: Literal["vdom", "global"]
     file_content: str
 
 
@@ -40,10 +40,10 @@ class ImportPayload(TypedDict, total=False):
 
 class ImportResponse(TypedDict, total=False):
     """Response type for Import - use with .dict property for typed dict access."""
-    import_method: str
+    import_method: Literal["file", "scep"]
     scep_url: str
     scep_ca_id: str
-    scope: str
+    scope: Literal["vdom", "global"]
     file_content: str
 
 
@@ -54,10 +54,10 @@ class ImportResponse(TypedDict, total=False):
 
 class ImportObject(FortiObject):
     """Typed FortiObject for Import with field access."""
-    import_method: str
+    import_method: Literal["file", "scep"]
     scep_url: str
     scep_ca_id: str
-    scope: str
+    scope: Literal["vdom", "global"]
     file_content: str
 
 
@@ -107,10 +107,10 @@ class Import:
     def post(
         self,
         payload_dict: ImportPayload | None = ...,
-        import_method: str | None = ...,
+        import_method: Literal["file", "scep"] | None = ...,
         scep_url: str | None = ...,
         scep_ca_id: str | None = ...,
-        scope: str | None = ...,
+        scope: Literal["vdom", "global"] | None = ...,
         file_content: str | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
@@ -124,10 +124,10 @@ class Import:
     def put(
         self,
         payload_dict: ImportPayload | None = ...,
-        import_method: str | None = ...,
+        import_method: Literal["file", "scep"] | None = ...,
         scep_url: str | None = ...,
         scep_ca_id: str | None = ...,
-        scope: str | None = ...,
+        scope: Literal["vdom", "global"] | None = ...,
         file_content: str | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
@@ -148,10 +148,10 @@ class Import:
     def set(
         self,
         payload_dict: ImportPayload | None = ...,
-        import_method: str | None = ...,
+        import_method: Literal["file", "scep"] | None = ...,
         scep_url: str | None = ...,
         scep_ca_id: str | None = ...,
-        scope: str | None = ...,
+        scope: Literal["vdom", "global"] | None = ...,
         file_content: str | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,

@@ -27,7 +27,7 @@ from hfortix_fortios.models import (
 
 class StatusSummaryPayload(TypedDict, total=False):
     """Payload type for StatusSummary operations."""
-    scope: str
+    scope: Literal["vdom", "global"]
 
 
 # ================================================================
@@ -36,7 +36,7 @@ class StatusSummaryPayload(TypedDict, total=False):
 
 class StatusSummaryResponse(TypedDict, total=False):
     """Response type for StatusSummary - use with .dict property for typed dict access."""
-    scope: str
+    scope: Literal["vdom", "global"]
 
 
 # ================================================================
@@ -46,7 +46,7 @@ class StatusSummaryResponse(TypedDict, total=False):
 
 class StatusSummaryObject(FortiObject):
     """Typed FortiObject for StatusSummary with field access."""
-    scope: str
+    scope: Literal["vdom", "global"]
 
 
 # ================================================================
@@ -97,7 +97,7 @@ class StatusSummary:
     def put(
         self,
         payload_dict: StatusSummaryPayload | None = ...,
-        scope: str | None = ...,
+        scope: Literal["vdom", "global"] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -117,7 +117,7 @@ class StatusSummary:
     def set(
         self,
         payload_dict: StatusSummaryPayload | None = ...,
-        scope: str | None = ...,
+        scope: Literal["vdom", "global"] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,

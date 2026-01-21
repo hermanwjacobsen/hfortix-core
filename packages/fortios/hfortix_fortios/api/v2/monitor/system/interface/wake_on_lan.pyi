@@ -29,7 +29,7 @@ class WakeOnLanPayload(TypedDict, total=False):
     """Payload type for WakeOnLan operations."""
     mkey: str
     mac: str
-    protocol_option: str
+    protocol_option: Literal["wol", "udp"]
     port: int
     address: str
     secureon_password: str
@@ -43,7 +43,7 @@ class WakeOnLanResponse(TypedDict, total=False):
     """Response type for WakeOnLan - use with .dict property for typed dict access."""
     mkey: str
     mac: str
-    protocol_option: str
+    protocol_option: Literal["wol", "udp"]
     port: int
     address: str
     secureon_password: str
@@ -57,7 +57,7 @@ class WakeOnLanResponse(TypedDict, total=False):
 class WakeOnLanObject(FortiObject):
     """Typed FortiObject for WakeOnLan with field access."""
     mac: str
-    protocol_option: str
+    protocol_option: Literal["wol", "udp"]
     port: int
     address: str
     secureon_password: str
@@ -111,7 +111,7 @@ class WakeOnLan:
         payload_dict: WakeOnLanPayload | None = ...,
         mkey: str | None = ...,
         mac: str | None = ...,
-        protocol_option: str | None = ...,
+        protocol_option: Literal["wol", "udp"] | None = ...,
         port: int | None = ...,
         address: str | None = ...,
         secureon_password: str | None = ...,
@@ -129,7 +129,7 @@ class WakeOnLan:
         payload_dict: WakeOnLanPayload | None = ...,
         mkey: str | None = ...,
         mac: str | None = ...,
-        protocol_option: str | None = ...,
+        protocol_option: Literal["wol", "udp"] | None = ...,
         port: int | None = ...,
         address: str | None = ...,
         secureon_password: str | None = ...,
@@ -154,7 +154,7 @@ class WakeOnLan:
         payload_dict: WakeOnLanPayload | None = ...,
         mkey: str | None = ...,
         mac: str | None = ...,
-        protocol_option: str | None = ...,
+        protocol_option: Literal["wol", "udp"] | None = ...,
         port: int | None = ...,
         address: str | None = ...,
         secureon_password: str | None = ...,

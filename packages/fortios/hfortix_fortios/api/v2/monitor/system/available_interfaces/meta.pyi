@@ -27,7 +27,7 @@ from hfortix_fortios.models import (
 
 class MetaPayload(TypedDict, total=False):
     """Payload type for Meta operations."""
-    scope: str
+    scope: Literal["vdom", "global"]
     include_ha: bool
 
 
@@ -37,7 +37,7 @@ class MetaPayload(TypedDict, total=False):
 
 class MetaResponse(TypedDict, total=False):
     """Response type for Meta - use with .dict property for typed dict access."""
-    scope: str
+    scope: Literal["vdom", "global"]
     include_ha: bool
 
 
@@ -48,7 +48,7 @@ class MetaResponse(TypedDict, total=False):
 
 class MetaObject(FortiObject):
     """Typed FortiObject for Meta with field access."""
-    scope: str
+    scope: Literal["vdom", "global"]
     include_ha: bool
 
 
@@ -101,7 +101,7 @@ class Meta:
     def put(
         self,
         payload_dict: MetaPayload | None = ...,
-        scope: str | None = ...,
+        scope: Literal["vdom", "global"] | None = ...,
         include_ha: bool | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
@@ -122,7 +122,7 @@ class Meta:
     def set(
         self,
         payload_dict: MetaPayload | None = ...,
-        scope: str | None = ...,
+        scope: Literal["vdom", "global"] | None = ...,
         include_ha: bool | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,

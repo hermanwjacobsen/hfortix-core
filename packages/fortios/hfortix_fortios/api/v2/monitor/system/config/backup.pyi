@@ -27,13 +27,13 @@ from hfortix_fortios.models import (
 
 class BackupPayload(TypedDict, total=False):
     """Payload type for Backup operations."""
-    destination: str
+    destination: Literal["file", "usb"]
     usb_filename: str
     password: str
-    scope: str
+    scope: Literal["global", "vdom"]
     vdom: str
     password_mask: bool
-    file_format: str
+    file_format: Literal["fos", "yaml"]
 
 
 # ================================================================
@@ -42,13 +42,13 @@ class BackupPayload(TypedDict, total=False):
 
 class BackupResponse(TypedDict, total=False):
     """Response type for Backup - use with .dict property for typed dict access."""
-    destination: str
+    destination: Literal["file", "usb"]
     usb_filename: str
     password: str
-    scope: str
+    scope: Literal["global", "vdom"]
     vdom: str
     password_mask: bool
-    file_format: str
+    file_format: Literal["fos", "yaml"]
 
 
 # ================================================================
@@ -58,12 +58,12 @@ class BackupResponse(TypedDict, total=False):
 
 class BackupObject(FortiObject):
     """Typed FortiObject for Backup with field access."""
-    destination: str
+    destination: Literal["file", "usb"]
     usb_filename: str
     password: str
-    scope: str
+    scope: Literal["global", "vdom"]
     password_mask: bool
-    file_format: str
+    file_format: Literal["fos", "yaml"]
 
 
 # ================================================================
@@ -112,12 +112,12 @@ class Backup:
     def post(
         self,
         payload_dict: BackupPayload | None = ...,
-        destination: str | None = ...,
+        destination: Literal["file", "usb"] | None = ...,
         usb_filename: str | None = ...,
         password: str | None = ...,
-        scope: str | None = ...,
+        scope: Literal["global", "vdom"] | None = ...,
         password_mask: bool | None = ...,
-        file_format: str | None = ...,
+        file_format: Literal["fos", "yaml"] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -130,12 +130,12 @@ class Backup:
     def put(
         self,
         payload_dict: BackupPayload | None = ...,
-        destination: str | None = ...,
+        destination: Literal["file", "usb"] | None = ...,
         usb_filename: str | None = ...,
         password: str | None = ...,
-        scope: str | None = ...,
+        scope: Literal["global", "vdom"] | None = ...,
         password_mask: bool | None = ...,
-        file_format: str | None = ...,
+        file_format: Literal["fos", "yaml"] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -155,12 +155,12 @@ class Backup:
     def set(
         self,
         payload_dict: BackupPayload | None = ...,
-        destination: str | None = ...,
+        destination: Literal["file", "usb"] | None = ...,
         usb_filename: str | None = ...,
         password: str | None = ...,
-        scope: str | None = ...,
+        scope: Literal["global", "vdom"] | None = ...,
         password_mask: bool | None = ...,
-        file_format: str | None = ...,
+        file_format: Literal["fos", "yaml"] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,

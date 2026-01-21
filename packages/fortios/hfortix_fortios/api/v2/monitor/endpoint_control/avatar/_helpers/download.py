@@ -74,6 +74,12 @@ NESTED_SCHEMAS = {
 
 
 # Valid enum values from API documentation
+VALID_BODY_DEFAULT = [
+    "'authuser'",
+    "'unauthuser'",
+    "'authuser_72'",
+    "'unauthuser_72'",
+]
 VALID_QUERY_ACTION = ["default", "schema"]
 
 # ============================================================================
@@ -120,6 +126,15 @@ def validate_endpoint_control_avatar_download_post(
         return (False, error)
 
     # Step 2: Validate enum values using central function
+    if "default" in payload:
+        is_valid, error = _validate_enum_field(
+            "default",
+            payload["default"],
+            VALID_BODY_DEFAULT,
+            FIELD_DESCRIPTIONS
+        )
+        if not is_valid:
+            return (False, error)
 
     return (True, None)
 
@@ -135,6 +150,15 @@ def validate_endpoint_control_avatar_download_put(
 ) -> tuple[bool, str | None]:
     """Validate PUT request to update endpoint_control/avatar/download."""
     # Validate enum values using central function
+    if "default" in payload:
+        is_valid, error = _validate_enum_field(
+            "default",
+            payload["default"],
+            VALID_BODY_DEFAULT,
+            FIELD_DESCRIPTIONS
+        )
+        if not is_valid:
+            return (False, error)
 
     return (True, None)
 

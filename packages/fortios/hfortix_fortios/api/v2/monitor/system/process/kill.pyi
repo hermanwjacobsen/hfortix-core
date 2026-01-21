@@ -28,7 +28,7 @@ from hfortix_fortios.models import (
 class KillPayload(TypedDict, total=False):
     """Payload type for Kill operations."""
     pid: int
-    signal: int
+    signal: Literal["9 (SIGKILL)", "11 (SIGSEGV)", "15 (SIGTERM)"]
 
 
 # ================================================================
@@ -38,7 +38,7 @@ class KillPayload(TypedDict, total=False):
 class KillResponse(TypedDict, total=False):
     """Response type for Kill - use with .dict property for typed dict access."""
     pid: int
-    signal: int
+    signal: Literal["9 (SIGKILL)", "11 (SIGSEGV)", "15 (SIGTERM)"]
 
 
 # ================================================================
@@ -49,7 +49,7 @@ class KillResponse(TypedDict, total=False):
 class KillObject(FortiObject):
     """Typed FortiObject for Kill with field access."""
     pid: int
-    signal: int
+    signal: Literal["9 (SIGKILL)", "11 (SIGSEGV)", "15 (SIGTERM)"]
 
 
 # ================================================================
@@ -99,7 +99,7 @@ class Kill:
         self,
         payload_dict: KillPayload | None = ...,
         pid: int | None = ...,
-        signal: int | None = ...,
+        signal: Literal["9 (SIGKILL)", "11 (SIGSEGV)", "15 (SIGTERM)"] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -113,7 +113,7 @@ class Kill:
         self,
         payload_dict: KillPayload | None = ...,
         pid: int | None = ...,
-        signal: int | None = ...,
+        signal: Literal["9 (SIGKILL)", "11 (SIGSEGV)", "15 (SIGTERM)"] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -134,7 +134,7 @@ class Kill:
         self,
         payload_dict: KillPayload | None = ...,
         pid: int | None = ...,
-        signal: int | None = ...,
+        signal: Literal["9 (SIGKILL)", "11 (SIGSEGV)", "15 (SIGTERM)"] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,

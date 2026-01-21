@@ -29,9 +29,9 @@ class GeneratePayload(TypedDict, total=False):
     """Payload type for Generate operations."""
     certname: str
     subject: str
-    keytype: str
-    keysize: int
-    curvename: str
+    keytype: Literal["rsa", "ec"]
+    keysize: Literal["1024", "1536", "2048", "4096"]
+    curvename: Literal["secp256r1", "secp384r1", "secp521r1"]
     orgunits: int | str | list[int | str]
     org: str
     city: str
@@ -42,7 +42,7 @@ class GeneratePayload(TypedDict, total=False):
     password: str
     scep_url: str
     scep_password: str
-    scope: str
+    scope: Literal["vdom", "global"]
 
 
 # ================================================================
@@ -53,9 +53,9 @@ class GenerateResponse(TypedDict, total=False):
     """Response type for Generate - use with .dict property for typed dict access."""
     certname: str
     subject: str
-    keytype: str
-    keysize: int
-    curvename: str
+    keytype: Literal["rsa", "ec"]
+    keysize: Literal["1024", "1536", "2048", "4096"]
+    curvename: Literal["secp256r1", "secp384r1", "secp521r1"]
     orgunits: list[str]
     org: str
     city: str
@@ -66,7 +66,7 @@ class GenerateResponse(TypedDict, total=False):
     password: str
     scep_url: str
     scep_password: str
-    scope: str
+    scope: Literal["vdom", "global"]
 
 
 # ================================================================
@@ -78,9 +78,9 @@ class GenerateObject(FortiObject):
     """Typed FortiObject for Generate with field access."""
     certname: str
     subject: str
-    keytype: str
-    keysize: int
-    curvename: str
+    keytype: Literal["rsa", "ec"]
+    keysize: Literal["1024", "1536", "2048", "4096"]
+    curvename: Literal["secp256r1", "secp384r1", "secp521r1"]
     orgunits: list[str]
     org: str
     city: str
@@ -91,7 +91,7 @@ class GenerateObject(FortiObject):
     password: str
     scep_url: str
     scep_password: str
-    scope: str
+    scope: Literal["vdom", "global"]
 
 
 # ================================================================
@@ -142,9 +142,9 @@ class Generate:
         payload_dict: GeneratePayload | None = ...,
         certname: str | None = ...,
         subject: str | None = ...,
-        keytype: str | None = ...,
-        keysize: int | None = ...,
-        curvename: str | None = ...,
+        keytype: Literal["rsa", "ec"] | None = ...,
+        keysize: Literal["1024", "1536", "2048", "4096"] | None = ...,
+        curvename: Literal["secp256r1", "secp384r1", "secp521r1"] | None = ...,
         orgunits: int | str | list[int | str] | None = ...,
         org: str | None = ...,
         city: str | None = ...,
@@ -155,7 +155,7 @@ class Generate:
         password: str | None = ...,
         scep_url: str | None = ...,
         scep_password: str | None = ...,
-        scope: str | None = ...,
+        scope: Literal["vdom", "global"] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -170,9 +170,9 @@ class Generate:
         payload_dict: GeneratePayload | None = ...,
         certname: str | None = ...,
         subject: str | None = ...,
-        keytype: str | None = ...,
-        keysize: int | None = ...,
-        curvename: str | None = ...,
+        keytype: Literal["rsa", "ec"] | None = ...,
+        keysize: Literal["1024", "1536", "2048", "4096"] | None = ...,
+        curvename: Literal["secp256r1", "secp384r1", "secp521r1"] | None = ...,
         orgunits: int | str | list[int | str] | None = ...,
         org: str | None = ...,
         city: str | None = ...,
@@ -183,7 +183,7 @@ class Generate:
         password: str | None = ...,
         scep_url: str | None = ...,
         scep_password: str | None = ...,
-        scope: str | None = ...,
+        scope: Literal["vdom", "global"] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -205,9 +205,9 @@ class Generate:
         payload_dict: GeneratePayload | None = ...,
         certname: str | None = ...,
         subject: str | None = ...,
-        keytype: str | None = ...,
-        keysize: int | None = ...,
-        curvename: str | None = ...,
+        keytype: Literal["rsa", "ec"] | None = ...,
+        keysize: Literal["1024", "1536", "2048", "4096"] | None = ...,
+        curvename: Literal["secp256r1", "secp384r1", "secp521r1"] | None = ...,
         orgunits: int | str | list[int | str] | None = ...,
         org: str | None = ...,
         city: str | None = ...,
@@ -218,7 +218,7 @@ class Generate:
         password: str | None = ...,
         scep_url: str | None = ...,
         scep_password: str | None = ...,
-        scope: str | None = ...,
+        scope: Literal["vdom", "global"] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,

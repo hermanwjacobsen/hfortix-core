@@ -28,9 +28,9 @@ from hfortix_fortios.models import (
 class GlobalSearchPayload(TypedDict, total=False):
     """Payload type for GlobalSearch operations."""
     search: str
-    scope: str
-    search_tables: int | str | list[int | str]
-    skip_tables: int | str | list[int | str]
+    scope: Literal["vdom", "global"]
+    search_tables: Literal["firewall.address", "firewall.address6"]
+    skip_tables: Literal["firewall.address", "firewall.address6"]
     exact: bool
 
 
@@ -41,9 +41,9 @@ class GlobalSearchPayload(TypedDict, total=False):
 class GlobalSearchResponse(TypedDict, total=False):
     """Response type for GlobalSearch - use with .dict property for typed dict access."""
     search: str
-    scope: str
-    search_tables: list[str]
-    skip_tables: list[str]
+    scope: Literal["vdom", "global"]
+    search_tables: Literal["firewall.address", "firewall.address6"]
+    skip_tables: Literal["firewall.address", "firewall.address6"]
     exact: bool
 
 
@@ -55,9 +55,9 @@ class GlobalSearchResponse(TypedDict, total=False):
 class GlobalSearchObject(FortiObject):
     """Typed FortiObject for GlobalSearch with field access."""
     search: str
-    scope: str
-    search_tables: list[str]
-    skip_tables: list[str]
+    scope: Literal["vdom", "global"]
+    search_tables: Literal["firewall.address", "firewall.address6"]
+    skip_tables: Literal["firewall.address", "firewall.address6"]
     exact: bool
 
 
@@ -92,8 +92,8 @@ class GlobalSearch:
         *,
         search: str,
         scope: Literal["vdom", "global"] | None = ...,
-        search_tables: Literal["firewall.address", "firewall.address6"] | None = ...,
-        skip_tables: Literal["firewall.address", "firewall.address6"] | None = ...,
+        search_tables: list[str] | None = ...,
+        skip_tables: list[str] | None = ...,
         exact: bool | None = ...,
         filter: str | list[str] | None = ...,
         count: int | None = ...,
@@ -114,9 +114,9 @@ class GlobalSearch:
         self,
         payload_dict: GlobalSearchPayload | None = ...,
         search: str | None = ...,
-        scope: str | None = ...,
-        search_tables: int | str | list[int | str] | None = ...,
-        skip_tables: int | str | list[int | str] | None = ...,
+        scope: Literal["vdom", "global"] | None = ...,
+        search_tables: Literal["firewall.address", "firewall.address6"] | None = ...,
+        skip_tables: Literal["firewall.address", "firewall.address6"] | None = ...,
         exact: bool | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
@@ -138,9 +138,9 @@ class GlobalSearch:
         self,
         payload_dict: GlobalSearchPayload | None = ...,
         search: str | None = ...,
-        scope: str | None = ...,
-        search_tables: int | str | list[int | str] | None = ...,
-        skip_tables: int | str | list[int | str] | None = ...,
+        scope: Literal["vdom", "global"] | None = ...,
+        search_tables: Literal["firewall.address", "firewall.address6"] | None = ...,
+        skip_tables: Literal["firewall.address", "firewall.address6"] | None = ...,
         exact: bool | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,

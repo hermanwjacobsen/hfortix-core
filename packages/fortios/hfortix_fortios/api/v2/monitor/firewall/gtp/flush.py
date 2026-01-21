@@ -88,7 +88,7 @@ class Flush(CRUDEndpoint, MetadataMixin):
     def post(
         self,
         payload_dict: dict[str, Any] | None = None,
-        scope: str | None = None,
+        scope: Literal["global", "vdom"] | None = None,
         gtp_profile: str | None = None,
         version: Any | None = None,
         imsi: str | None = None,

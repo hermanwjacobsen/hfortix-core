@@ -74,6 +74,10 @@ NESTED_SCHEMAS = {
 
 
 # Valid enum values from API documentation
+VALID_BODY_STATUS = [
+    "enable",
+    "disable",
+]
 VALID_QUERY_ACTION = ["default", "schema"]
 
 # ============================================================================
@@ -120,6 +124,15 @@ def validate_switch_controller_isl_lockdown_update_post(
         return (False, error)
 
     # Step 2: Validate enum values using central function
+    if "status" in payload:
+        is_valid, error = _validate_enum_field(
+            "status",
+            payload["status"],
+            VALID_BODY_STATUS,
+            FIELD_DESCRIPTIONS
+        )
+        if not is_valid:
+            return (False, error)
 
     return (True, None)
 
@@ -135,6 +148,15 @@ def validate_switch_controller_isl_lockdown_update_put(
 ) -> tuple[bool, str | None]:
     """Validate PUT request to update switch_controller/isl_lockdown/update."""
     # Validate enum values using central function
+    if "status" in payload:
+        is_valid, error = _validate_enum_field(
+            "status",
+            payload["status"],
+            VALID_BODY_STATUS,
+            FIELD_DESCRIPTIONS
+        )
+        if not is_valid:
+            return (False, error)
 
     return (True, None)
 

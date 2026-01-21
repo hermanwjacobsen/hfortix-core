@@ -27,7 +27,7 @@ from hfortix_fortios.models import (
 
 class SessionsPayload(TypedDict, total=False):
     """Payload type for Sessions operations."""
-    ip_version: str
+    ip_version: Literal["ipv4", "ipv6", "ipboth"]
     count: int
     summary: bool
     srcaddr: str
@@ -57,7 +57,7 @@ class SessionsPayload(TypedDict, total=False):
 
 class SessionsResponse(TypedDict, total=False):
     """Response type for Sessions - use with .dict property for typed dict access."""
-    ip_version: str
+    ip_version: Literal["ipv4", "ipv6", "ipboth"]
     count: int
     summary: bool
     srcaddr: str
@@ -88,7 +88,7 @@ class SessionsResponse(TypedDict, total=False):
 
 class SessionsObject(FortiObject):
     """Typed FortiObject for Sessions with field access."""
-    ip_version: str
+    ip_version: Literal["ipv4", "ipv6", "ipboth"]
     count: int
     summary: bool
     srcaddr: str
@@ -180,7 +180,7 @@ class Sessions:
     def put(
         self,
         payload_dict: SessionsPayload | None = ...,
-        ip_version: str | None = ...,
+        ip_version: Literal["ipv4", "ipv6", "ipboth"] | None = ...,
         count: int | None = ...,
         summary: bool | None = ...,
         srcaddr: str | None = ...,
@@ -221,7 +221,7 @@ class Sessions:
     def set(
         self,
         payload_dict: SessionsPayload | None = ...,
-        ip_version: str | None = ...,
+        ip_version: Literal["ipv4", "ipv6", "ipboth"] | None = ...,
         count: int | None = ...,
         summary: bool | None = ...,
         srcaddr: str | None = ...,

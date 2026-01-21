@@ -28,7 +28,7 @@ from hfortix_fortios.models import (
 class UpdatePayload(TypedDict, total=False):
     """Payload type for Update operations."""
     mkey: str
-    admin: str
+    admin: Literal["enable", "disable", "discovered"]
 
 
 # ================================================================
@@ -38,7 +38,7 @@ class UpdatePayload(TypedDict, total=False):
 class UpdateResponse(TypedDict, total=False):
     """Response type for Update - use with .dict property for typed dict access."""
     mkey: str
-    admin: str
+    admin: Literal["enable", "disable", "discovered"]
 
 
 # ================================================================
@@ -48,7 +48,7 @@ class UpdateResponse(TypedDict, total=False):
 
 class UpdateObject(FortiObject):
     """Typed FortiObject for Update with field access."""
-    admin: str
+    admin: Literal["enable", "disable", "discovered"]
 
 
 # ================================================================
@@ -98,7 +98,7 @@ class Update:
         self,
         payload_dict: UpdatePayload | None = ...,
         mkey: str | None = ...,
-        admin: str | None = ...,
+        admin: Literal["enable", "disable", "discovered"] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -112,7 +112,7 @@ class Update:
         self,
         payload_dict: UpdatePayload | None = ...,
         mkey: str | None = ...,
-        admin: str | None = ...,
+        admin: Literal["enable", "disable", "discovered"] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -133,7 +133,7 @@ class Update:
         self,
         payload_dict: UpdatePayload | None = ...,
         mkey: str | None = ...,
-        admin: str | None = ...,
+        admin: Literal["enable", "disable", "discovered"] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,

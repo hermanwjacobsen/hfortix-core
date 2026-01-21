@@ -76,6 +76,15 @@ NESTED_SCHEMAS = {
 
 
 # Valid enum values from API documentation
+VALID_BODY_DB_NAME = [
+    "ips",
+    "appctrl",
+    "industrial_db",
+    "antivirus",
+    "security_rating",
+    "isdb",
+    "iotddb",
+]
 VALID_QUERY_ACTION = ["default", "schema"]
 
 # ============================================================================
@@ -122,6 +131,15 @@ def validate_license_database_upgrade_post(
         return (False, error)
 
     # Step 2: Validate enum values using central function
+    if "db_name" in payload:
+        is_valid, error = _validate_enum_field(
+            "db_name",
+            payload["db_name"],
+            VALID_BODY_DB_NAME,
+            FIELD_DESCRIPTIONS
+        )
+        if not is_valid:
+            return (False, error)
 
     return (True, None)
 
@@ -137,6 +155,15 @@ def validate_license_database_upgrade_put(
 ) -> tuple[bool, str | None]:
     """Validate PUT request to update license/database/upgrade."""
     # Validate enum values using central function
+    if "db_name" in payload:
+        is_valid, error = _validate_enum_field(
+            "db_name",
+            payload["db_name"],
+            VALID_BODY_DB_NAME,
+            FIELD_DESCRIPTIONS
+        )
+        if not is_valid:
+            return (False, error)
 
     return (True, None)
 

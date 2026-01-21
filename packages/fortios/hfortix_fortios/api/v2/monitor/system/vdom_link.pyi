@@ -27,7 +27,7 @@ from hfortix_fortios.models import (
 
 class VdomLinkPayload(TypedDict, total=False):
     """Payload type for VdomLink operations."""
-    scope: str
+    scope: Literal["vdom", "global"]
 
 
 # ================================================================
@@ -36,7 +36,7 @@ class VdomLinkPayload(TypedDict, total=False):
 
 class VdomLinkResponse(TypedDict, total=False):
     """Response type for VdomLink - use with .dict property for typed dict access."""
-    scope: str
+    scope: Literal["vdom", "global"]
 
 
 # ================================================================
@@ -46,7 +46,7 @@ class VdomLinkResponse(TypedDict, total=False):
 
 class VdomLinkObject(FortiObject):
     """Typed FortiObject for VdomLink with field access."""
-    scope: str
+    scope: Literal["vdom", "global"]
 
 
 # ================================================================
@@ -97,7 +97,7 @@ class VdomLink:
     def put(
         self,
         payload_dict: VdomLinkPayload | None = ...,
-        scope: str | None = ...,
+        scope: Literal["vdom", "global"] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -117,7 +117,7 @@ class VdomLink:
     def set(
         self,
         payload_dict: VdomLinkPayload | None = ...,
-        scope: str | None = ...,
+        scope: Literal["vdom", "global"] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,

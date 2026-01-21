@@ -27,7 +27,7 @@ from hfortix_fortios.models import (
 
 class StatisticsPayload(TypedDict, total=False):
     """Payload type for Statistics operations."""
-    operator: str
+    operator: Literal["and", "or"]
     ip_version: int
     ip_mask: str
     gateway: str
@@ -42,7 +42,7 @@ class StatisticsPayload(TypedDict, total=False):
 
 class StatisticsResponse(TypedDict, total=False):
     """Response type for Statistics - use with .dict property for typed dict access."""
-    operator: str
+    operator: Literal["and", "or"]
     ip_version: int
     ip_mask: str
     gateway: str
@@ -58,7 +58,7 @@ class StatisticsResponse(TypedDict, total=False):
 
 class StatisticsObject(FortiObject):
     """Typed FortiObject for Statistics with field access."""
-    operator: str
+    operator: Literal["and", "or"]
     ip_version: int
     ip_mask: str
     gateway: str
@@ -121,7 +121,7 @@ class Statistics:
     def put(
         self,
         payload_dict: StatisticsPayload | None = ...,
-        operator: str | None = ...,
+        operator: Literal["and", "or"] | None = ...,
         ip_version: int | None = ...,
         ip_mask: str | None = ...,
         gateway: str | None = ...,
@@ -147,7 +147,7 @@ class Statistics:
     def set(
         self,
         payload_dict: StatisticsPayload | None = ...,
-        operator: str | None = ...,
+        operator: Literal["and", "or"] | None = ...,
         ip_version: int | None = ...,
         ip_mask: str | None = ...,
         gateway: str | None = ...,

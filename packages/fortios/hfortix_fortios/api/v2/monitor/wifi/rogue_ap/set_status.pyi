@@ -29,7 +29,7 @@ class SetStatusPayload(TypedDict, total=False):
     """Payload type for SetStatus operations."""
     bssid: int | str | list[int | str]
     ssid: int | str | list[int | str]
-    status: str
+    status: Literal["unclassified", "rogue", "accepted", "suppressed"]
 
 
 # ================================================================
@@ -40,7 +40,7 @@ class SetStatusResponse(TypedDict, total=False):
     """Response type for SetStatus - use with .dict property for typed dict access."""
     bssid: list[str]
     ssid: list[str]
-    status: str
+    status: Literal["unclassified", "rogue", "accepted", "suppressed"]
 
 
 # ================================================================
@@ -52,7 +52,7 @@ class SetStatusObject(FortiObject):
     """Typed FortiObject for SetStatus with field access."""
     bssid: list[str]
     ssid: list[str]
-    status: str
+    status: Literal["unclassified", "rogue", "accepted", "suppressed"]
 
 
 # ================================================================
@@ -103,7 +103,7 @@ class SetStatus:
         payload_dict: SetStatusPayload | None = ...,
         bssid: int | str | list[int | str] | None = ...,
         ssid: int | str | list[int | str] | None = ...,
-        status: str | None = ...,
+        status: Literal["unclassified", "rogue", "accepted", "suppressed"] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -118,7 +118,7 @@ class SetStatus:
         payload_dict: SetStatusPayload | None = ...,
         bssid: int | str | list[int | str] | None = ...,
         ssid: int | str | list[int | str] | None = ...,
-        status: str | None = ...,
+        status: Literal["unclassified", "rogue", "accepted", "suppressed"] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -140,7 +140,7 @@ class SetStatus:
         payload_dict: SetStatusPayload | None = ...,
         bssid: int | str | list[int | str] | None = ...,
         ssid: int | str | list[int | str] | None = ...,
-        status: str | None = ...,
+        status: Literal["unclassified", "rogue", "accepted", "suppressed"] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,

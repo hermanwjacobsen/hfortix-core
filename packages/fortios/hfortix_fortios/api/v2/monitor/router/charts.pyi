@@ -27,7 +27,7 @@ from hfortix_fortios.models import (
 
 class ChartsPayload(TypedDict, total=False):
     """Payload type for Charts operations."""
-    operator: str
+    operator: Literal["and", "or"]
     ip_version: int
     ip_mask: str
     gateway: str
@@ -42,7 +42,7 @@ class ChartsPayload(TypedDict, total=False):
 
 class ChartsResponse(TypedDict, total=False):
     """Response type for Charts - use with .dict property for typed dict access."""
-    operator: str
+    operator: Literal["and", "or"]
     ip_version: int
     ip_mask: str
     gateway: str
@@ -58,7 +58,7 @@ class ChartsResponse(TypedDict, total=False):
 
 class ChartsObject(FortiObject):
     """Typed FortiObject for Charts with field access."""
-    operator: str
+    operator: Literal["and", "or"]
     ip_version: int
     ip_mask: str
     gateway: str
@@ -121,7 +121,7 @@ class Charts:
     def put(
         self,
         payload_dict: ChartsPayload | None = ...,
-        operator: str | None = ...,
+        operator: Literal["and", "or"] | None = ...,
         ip_version: int | None = ...,
         ip_mask: str | None = ...,
         gateway: str | None = ...,
@@ -147,7 +147,7 @@ class Charts:
     def set(
         self,
         payload_dict: ChartsPayload | None = ...,
-        operator: str | None = ...,
+        operator: Literal["and", "or"] | None = ...,
         ip_version: int | None = ...,
         ip_mask: str | None = ...,
         gateway: str | None = ...,

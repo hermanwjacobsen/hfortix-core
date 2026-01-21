@@ -88,7 +88,7 @@ class Close(CRUDEndpoint, MetadataMixin):
     def post(
         self,
         payload_dict: dict[str, Any] | None = None,
-        pro: str | None = None,
+        pro: Literal["tcp", "udp", "icmp", "..."] | None = None,
         saddr: str | None = None,
         daddr: str | None = None,
         sport: Any | None = None,

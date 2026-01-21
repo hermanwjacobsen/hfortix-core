@@ -28,7 +28,7 @@ from hfortix_fortios.models import (
 class AcmeCertificateStatusPayload(TypedDict, total=False):
     """Payload type for AcmeCertificateStatus operations."""
     mkey: str
-    scope: str
+    scope: Literal["vdom", "global"]
 
 
 # ================================================================
@@ -38,7 +38,7 @@ class AcmeCertificateStatusPayload(TypedDict, total=False):
 class AcmeCertificateStatusResponse(TypedDict, total=False):
     """Response type for AcmeCertificateStatus - use with .dict property for typed dict access."""
     mkey: str
-    scope: str
+    scope: Literal["vdom", "global"]
 
 
 # ================================================================
@@ -48,7 +48,7 @@ class AcmeCertificateStatusResponse(TypedDict, total=False):
 
 class AcmeCertificateStatusObject(FortiObject):
     """Typed FortiObject for AcmeCertificateStatus with field access."""
-    scope: str
+    scope: Literal["vdom", "global"]
 
 
 # ================================================================
@@ -101,7 +101,7 @@ class AcmeCertificateStatus:
         self,
         payload_dict: AcmeCertificateStatusPayload | None = ...,
         mkey: str | None = ...,
-        scope: str | None = ...,
+        scope: Literal["vdom", "global"] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -122,7 +122,7 @@ class AcmeCertificateStatus:
         self,
         payload_dict: AcmeCertificateStatusPayload | None = ...,
         mkey: str | None = ...,
-        scope: str | None = ...,
+        scope: Literal["vdom", "global"] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,

@@ -28,7 +28,7 @@ from hfortix_fortios.models import (
 class CheckAddrgrpExcludeMacMemberPayload(TypedDict, total=False):
     """Payload type for CheckAddrgrpExcludeMacMember operations."""
     mkey: str
-    ip_version: str
+    ip_version: Literal["ipv4", "ipv6"]
 
 
 # ================================================================
@@ -38,7 +38,7 @@ class CheckAddrgrpExcludeMacMemberPayload(TypedDict, total=False):
 class CheckAddrgrpExcludeMacMemberResponse(TypedDict, total=False):
     """Response type for CheckAddrgrpExcludeMacMember - use with .dict property for typed dict access."""
     mkey: str
-    ip_version: str
+    ip_version: Literal["ipv4", "ipv6"]
 
 
 # ================================================================
@@ -48,7 +48,7 @@ class CheckAddrgrpExcludeMacMemberResponse(TypedDict, total=False):
 
 class CheckAddrgrpExcludeMacMemberObject(FortiObject):
     """Typed FortiObject for CheckAddrgrpExcludeMacMember with field access."""
-    ip_version: str
+    ip_version: Literal["ipv4", "ipv6"]
 
 
 # ================================================================
@@ -101,7 +101,7 @@ class CheckAddrgrpExcludeMacMember:
         self,
         payload_dict: CheckAddrgrpExcludeMacMemberPayload | None = ...,
         mkey: str | None = ...,
-        ip_version: str | None = ...,
+        ip_version: Literal["ipv4", "ipv6"] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -122,7 +122,7 @@ class CheckAddrgrpExcludeMacMember:
         self,
         payload_dict: CheckAddrgrpExcludeMacMemberPayload | None = ...,
         mkey: str | None = ...,
-        ip_version: str | None = ...,
+        ip_version: Literal["ipv4", "ipv6"] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,

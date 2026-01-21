@@ -28,7 +28,7 @@ from hfortix_fortios.models import (
 class InterfacePayload(TypedDict, total=False):
     """Payload type for Interface operations."""
     interface: str
-    time_period: str
+    time_period: Literal["hour", "day", "week"]
 
 
 # ================================================================
@@ -38,7 +38,7 @@ class InterfacePayload(TypedDict, total=False):
 class InterfaceResponse(TypedDict, total=False):
     """Response type for Interface - use with .dict property for typed dict access."""
     interface: str
-    time_period: str
+    time_period: Literal["hour", "day", "week"]
 
 
 # ================================================================
@@ -49,7 +49,7 @@ class InterfaceResponse(TypedDict, total=False):
 class InterfaceObject(FortiObject):
     """Typed FortiObject for Interface with field access."""
     interface: str
-    time_period: str
+    time_period: Literal["hour", "day", "week"]
 
 
 # ================================================================
@@ -102,7 +102,7 @@ class Interface:
         self,
         payload_dict: InterfacePayload | None = ...,
         interface: str | None = ...,
-        time_period: str | None = ...,
+        time_period: Literal["hour", "day", "week"] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -123,7 +123,7 @@ class Interface:
         self,
         payload_dict: InterfacePayload | None = ...,
         interface: str | None = ...,
-        time_period: str | None = ...,
+        time_period: Literal["hour", "day", "week"] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,

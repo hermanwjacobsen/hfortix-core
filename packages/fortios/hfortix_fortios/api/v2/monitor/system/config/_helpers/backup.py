@@ -78,6 +78,18 @@ NESTED_SCHEMAS = {
 
 
 # Valid enum values from API documentation
+VALID_BODY_DESTINATION = [
+    "file",
+    "usb",
+]
+VALID_BODY_SCOPE = [
+    "global",
+    "vdom",
+]
+VALID_BODY_FILE_FORMAT = [
+    "fos",
+    "yaml",
+]
 VALID_QUERY_ACTION = ["default", "schema"]
 
 # ============================================================================
@@ -124,6 +136,33 @@ def validate_system_config_backup_post(
         return (False, error)
 
     # Step 2: Validate enum values using central function
+    if "destination" in payload:
+        is_valid, error = _validate_enum_field(
+            "destination",
+            payload["destination"],
+            VALID_BODY_DESTINATION,
+            FIELD_DESCRIPTIONS
+        )
+        if not is_valid:
+            return (False, error)
+    if "scope" in payload:
+        is_valid, error = _validate_enum_field(
+            "scope",
+            payload["scope"],
+            VALID_BODY_SCOPE,
+            FIELD_DESCRIPTIONS
+        )
+        if not is_valid:
+            return (False, error)
+    if "file_format" in payload:
+        is_valid, error = _validate_enum_field(
+            "file_format",
+            payload["file_format"],
+            VALID_BODY_FILE_FORMAT,
+            FIELD_DESCRIPTIONS
+        )
+        if not is_valid:
+            return (False, error)
 
     return (True, None)
 
@@ -139,6 +178,33 @@ def validate_system_config_backup_put(
 ) -> tuple[bool, str | None]:
     """Validate PUT request to update system/config/backup."""
     # Validate enum values using central function
+    if "destination" in payload:
+        is_valid, error = _validate_enum_field(
+            "destination",
+            payload["destination"],
+            VALID_BODY_DESTINATION,
+            FIELD_DESCRIPTIONS
+        )
+        if not is_valid:
+            return (False, error)
+    if "scope" in payload:
+        is_valid, error = _validate_enum_field(
+            "scope",
+            payload["scope"],
+            VALID_BODY_SCOPE,
+            FIELD_DESCRIPTIONS
+        )
+        if not is_valid:
+            return (False, error)
+    if "file_format" in payload:
+        is_valid, error = _validate_enum_field(
+            "file_format",
+            payload["file_format"],
+            VALID_BODY_FILE_FORMAT,
+            FIELD_DESCRIPTIONS
+        )
+        if not is_valid:
+            return (False, error)
 
     return (True, None)
 

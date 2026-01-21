@@ -89,6 +89,20 @@ NESTED_SCHEMAS = {
 
 
 # Valid enum values from API documentation
+VALID_BODY_POLICY_TYPE = [
+    "policy",
+    "proxy",
+]
+VALID_BODY_AUTH_TYPE = [
+    "user",
+    "group",
+    "saml",
+    "ldap",
+]
+VALID_BODY_GROUP_ATTR_TYPE = [
+    "name",
+    "id",
+]
 VALID_QUERY_ACTION = ["default", "schema"]
 
 # ============================================================================
@@ -135,6 +149,33 @@ def validate_firewall_policy_lookup_post(
         return (False, error)
 
     # Step 2: Validate enum values using central function
+    if "policy_type" in payload:
+        is_valid, error = _validate_enum_field(
+            "policy_type",
+            payload["policy_type"],
+            VALID_BODY_POLICY_TYPE,
+            FIELD_DESCRIPTIONS
+        )
+        if not is_valid:
+            return (False, error)
+    if "auth_type" in payload:
+        is_valid, error = _validate_enum_field(
+            "auth_type",
+            payload["auth_type"],
+            VALID_BODY_AUTH_TYPE,
+            FIELD_DESCRIPTIONS
+        )
+        if not is_valid:
+            return (False, error)
+    if "group_attr_type" in payload:
+        is_valid, error = _validate_enum_field(
+            "group_attr_type",
+            payload["group_attr_type"],
+            VALID_BODY_GROUP_ATTR_TYPE,
+            FIELD_DESCRIPTIONS
+        )
+        if not is_valid:
+            return (False, error)
 
     return (True, None)
 
@@ -150,6 +191,33 @@ def validate_firewall_policy_lookup_put(
 ) -> tuple[bool, str | None]:
     """Validate PUT request to update firewall/policy_lookup."""
     # Validate enum values using central function
+    if "policy_type" in payload:
+        is_valid, error = _validate_enum_field(
+            "policy_type",
+            payload["policy_type"],
+            VALID_BODY_POLICY_TYPE,
+            FIELD_DESCRIPTIONS
+        )
+        if not is_valid:
+            return (False, error)
+    if "auth_type" in payload:
+        is_valid, error = _validate_enum_field(
+            "auth_type",
+            payload["auth_type"],
+            VALID_BODY_AUTH_TYPE,
+            FIELD_DESCRIPTIONS
+        )
+        if not is_valid:
+            return (False, error)
+    if "group_attr_type" in payload:
+        is_valid, error = _validate_enum_field(
+            "group_attr_type",
+            payload["group_attr_type"],
+            VALID_BODY_GROUP_ATTR_TYPE,
+            FIELD_DESCRIPTIONS
+        )
+        if not is_valid:
+            return (False, error)
 
     return (True, None)
 

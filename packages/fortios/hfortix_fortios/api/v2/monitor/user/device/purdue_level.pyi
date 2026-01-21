@@ -29,7 +29,7 @@ class PurdueLevelPayload(TypedDict, total=False):
     """Payload type for PurdueLevel operations."""
     mac: str
     ip: str
-    level: str
+    level: Literal["1", "1.5", "2", "2.5", "3", "3.5", "4", "5", "5.5"]
 
 
 # ================================================================
@@ -40,7 +40,7 @@ class PurdueLevelResponse(TypedDict, total=False):
     """Response type for PurdueLevel - use with .dict property for typed dict access."""
     mac: str
     ip: str
-    level: str
+    level: Literal["1", "1.5", "2", "2.5", "3", "3.5", "4", "5", "5.5"]
 
 
 # ================================================================
@@ -52,7 +52,7 @@ class PurdueLevelObject(FortiObject):
     """Typed FortiObject for PurdueLevel with field access."""
     mac: str
     ip: str
-    level: str
+    level: Literal["1", "1.5", "2", "2.5", "3", "3.5", "4", "5", "5.5"]
 
 
 # ================================================================
@@ -103,7 +103,7 @@ class PurdueLevel:
         payload_dict: PurdueLevelPayload | None = ...,
         mac: str | None = ...,
         ip: str | None = ...,
-        level: str | None = ...,
+        level: Literal["1", "1.5", "2", "2.5", "3", "3.5", "4", "5", "5.5"] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -118,7 +118,7 @@ class PurdueLevel:
         payload_dict: PurdueLevelPayload | None = ...,
         mac: str | None = ...,
         ip: str | None = ...,
-        level: str | None = ...,
+        level: Literal["1", "1.5", "2", "2.5", "3", "3.5", "4", "5", "5.5"] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -140,7 +140,7 @@ class PurdueLevel:
         payload_dict: PurdueLevelPayload | None = ...,
         mac: str | None = ...,
         ip: str | None = ...,
-        level: str | None = ...,
+        level: Literal["1", "1.5", "2", "2.5", "3", "3.5", "4", "5", "5.5"] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,

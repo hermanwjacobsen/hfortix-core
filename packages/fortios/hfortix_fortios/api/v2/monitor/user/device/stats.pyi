@@ -27,12 +27,12 @@ from hfortix_fortios.models import (
 
 class StatsPayload(TypedDict, total=False):
     """Payload type for Stats operations."""
-    stat_query_type: str
-    stat_key: str
+    stat_query_type: Literal["device", "fortiswitch_client", "forticlient"]
+    stat_key: Literal["os_name", "hardware_type", "detected_interface", "is_online", "max_vuln_level", "fortiswitch_id", "fortiswitch_port_name"]
     timestamp_from: int
     timestamp_to: int
-    filters: int | str | list[int | str]
-    filter_logic: str
+    filters: Literal["exact", "contains"]
+    filter_logic: Literal["and", "or"]
 
 
 # ================================================================
@@ -41,12 +41,12 @@ class StatsPayload(TypedDict, total=False):
 
 class StatsResponse(TypedDict, total=False):
     """Response type for Stats - use with .dict property for typed dict access."""
-    stat_query_type: str
-    stat_key: str
+    stat_query_type: Literal["device", "fortiswitch_client", "forticlient"]
+    stat_key: Literal["os_name", "hardware_type", "detected_interface", "is_online", "max_vuln_level", "fortiswitch_id", "fortiswitch_port_name"]
     timestamp_from: int
     timestamp_to: int
-    filters: list[str]
-    filter_logic: str
+    filters: Literal["exact", "contains"]
+    filter_logic: Literal["and", "or"]
 
 
 # ================================================================
@@ -56,12 +56,12 @@ class StatsResponse(TypedDict, total=False):
 
 class StatsObject(FortiObject):
     """Typed FortiObject for Stats with field access."""
-    stat_query_type: str
-    stat_key: str
+    stat_query_type: Literal["device", "fortiswitch_client", "forticlient"]
+    stat_key: Literal["os_name", "hardware_type", "detected_interface", "is_online", "max_vuln_level", "fortiswitch_id", "fortiswitch_port_name"]
     timestamp_from: int
     timestamp_to: int
-    filters: list[str]
-    filter_logic: str
+    filters: Literal["exact", "contains"]
+    filter_logic: Literal["and", "or"]
 
 
 # ================================================================
@@ -97,7 +97,7 @@ class Stats:
         stat_key: Literal["os_name", "hardware_type", "detected_interface", "is_online", "max_vuln_level", "fortiswitch_id", "fortiswitch_port_name"],
         timestamp_from: int | None = ...,
         timestamp_to: int,
-        filters: Literal["exact", "contains"] | None = ...,
+        filters: list[str] | None = ...,
         filter_logic: Literal["and", "or"] | None = ...,
         filter: str | list[str] | None = ...,
         count: int | None = ...,
@@ -117,12 +117,12 @@ class Stats:
     def put(
         self,
         payload_dict: StatsPayload | None = ...,
-        stat_query_type: str | None = ...,
-        stat_key: str | None = ...,
+        stat_query_type: Literal["device", "fortiswitch_client", "forticlient"] | None = ...,
+        stat_key: Literal["os_name", "hardware_type", "detected_interface", "is_online", "max_vuln_level", "fortiswitch_id", "fortiswitch_port_name"] | None = ...,
         timestamp_from: int | None = ...,
         timestamp_to: int | None = ...,
-        filters: int | str | list[int | str] | None = ...,
-        filter_logic: str | None = ...,
+        filters: Literal["exact", "contains"] | None = ...,
+        filter_logic: Literal["and", "or"] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -142,12 +142,12 @@ class Stats:
     def set(
         self,
         payload_dict: StatsPayload | None = ...,
-        stat_query_type: str | None = ...,
-        stat_key: str | None = ...,
+        stat_query_type: Literal["device", "fortiswitch_client", "forticlient"] | None = ...,
+        stat_key: Literal["os_name", "hardware_type", "detected_interface", "is_online", "max_vuln_level", "fortiswitch_id", "fortiswitch_port_name"] | None = ...,
         timestamp_from: int | None = ...,
         timestamp_to: int | None = ...,
-        filters: int | str | list[int | str] | None = ...,
-        filter_logic: str | None = ...,
+        filters: Literal["exact", "contains"] | None = ...,
+        filter_logic: Literal["and", "or"] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,

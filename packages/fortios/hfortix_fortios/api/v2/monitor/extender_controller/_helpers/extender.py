@@ -72,6 +72,12 @@ NESTED_SCHEMAS = {
 
 
 # Valid enum values from API documentation
+VALID_BODY_TYPE = [
+    "system",
+    "modem",
+    "usage",
+    "last",
+]
 VALID_QUERY_ACTION = ["default", "schema"]
 
 # ============================================================================
@@ -118,6 +124,15 @@ def validate_extender_controller_extender_post(
         return (False, error)
 
     # Step 2: Validate enum values using central function
+    if "type" in payload:
+        is_valid, error = _validate_enum_field(
+            "type",
+            payload["type"],
+            VALID_BODY_TYPE,
+            FIELD_DESCRIPTIONS
+        )
+        if not is_valid:
+            return (False, error)
 
     return (True, None)
 
@@ -133,6 +148,15 @@ def validate_extender_controller_extender_put(
 ) -> tuple[bool, str | None]:
     """Validate PUT request to update extender_controller/extender."""
     # Validate enum values using central function
+    if "type" in payload:
+        is_valid, error = _validate_enum_field(
+            "type",
+            payload["type"],
+            VALID_BODY_TYPE,
+            FIELD_DESCRIPTIONS
+        )
+        if not is_valid:
+            return (False, error)
 
     return (True, None)
 

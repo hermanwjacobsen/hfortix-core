@@ -27,7 +27,7 @@ from hfortix_fortios.models import (
 
 class Ipv4Payload(TypedDict, total=False):
     """Payload type for Ipv4 operations."""
-    operator: str
+    operator: Literal["and", "or"]
     ip_mask: str
     gateway: str
     type: str
@@ -41,7 +41,7 @@ class Ipv4Payload(TypedDict, total=False):
 
 class Ipv4Response(TypedDict, total=False):
     """Response type for Ipv4 - use with .dict property for typed dict access."""
-    operator: str
+    operator: Literal["and", "or"]
     ip_mask: str
     gateway: str
     type: str
@@ -56,7 +56,7 @@ class Ipv4Response(TypedDict, total=False):
 
 class Ipv4Object(FortiObject):
     """Typed FortiObject for Ipv4 with field access."""
-    operator: str
+    operator: Literal["and", "or"]
     ip_mask: str
     gateway: str
     type: str
@@ -117,7 +117,7 @@ class Ipv4:
     def put(
         self,
         payload_dict: Ipv4Payload | None = ...,
-        operator: str | None = ...,
+        operator: Literal["and", "or"] | None = ...,
         ip_mask: str | None = ...,
         gateway: str | None = ...,
         type: str | None = ...,
@@ -142,7 +142,7 @@ class Ipv4:
     def set(
         self,
         payload_dict: Ipv4Payload | None = ...,
-        operator: str | None = ...,
+        operator: Literal["and", "or"] | None = ...,
         ip_mask: str | None = ...,
         gateway: str | None = ...,
         type: str | None = ...,

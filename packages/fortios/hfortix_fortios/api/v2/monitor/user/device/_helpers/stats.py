@@ -78,6 +78,28 @@ NESTED_SCHEMAS = {
 
 
 # Valid enum values from API documentation
+VALID_BODY_STAT_QUERY_TYPE = [
+    "device",
+    "fortiswitch_client",
+    "forticlient",
+]
+VALID_BODY_STAT_KEY = [
+    "os_name",
+    "hardware_type",
+    "detected_interface",
+    "is_online",
+    "max_vuln_level",
+    "fortiswitch_id",
+    "fortiswitch_port_name",
+]
+VALID_BODY_FILTERS = [
+    "exact",
+    "contains",
+]
+VALID_BODY_FILTER_LOGIC = [
+    "and",
+    "or",
+]
 VALID_QUERY_ACTION = ["default", "schema"]
 
 # ============================================================================
@@ -124,6 +146,42 @@ def validate_user_device_stats_post(
         return (False, error)
 
     # Step 2: Validate enum values using central function
+    if "stat-query-type" in payload:
+        is_valid, error = _validate_enum_field(
+            "stat-query-type",
+            payload["stat-query-type"],
+            VALID_BODY_STAT_QUERY_TYPE,
+            FIELD_DESCRIPTIONS
+        )
+        if not is_valid:
+            return (False, error)
+    if "stat-key" in payload:
+        is_valid, error = _validate_enum_field(
+            "stat-key",
+            payload["stat-key"],
+            VALID_BODY_STAT_KEY,
+            FIELD_DESCRIPTIONS
+        )
+        if not is_valid:
+            return (False, error)
+    if "filters" in payload:
+        is_valid, error = _validate_enum_field(
+            "filters",
+            payload["filters"],
+            VALID_BODY_FILTERS,
+            FIELD_DESCRIPTIONS
+        )
+        if not is_valid:
+            return (False, error)
+    if "filter_logic" in payload:
+        is_valid, error = _validate_enum_field(
+            "filter_logic",
+            payload["filter_logic"],
+            VALID_BODY_FILTER_LOGIC,
+            FIELD_DESCRIPTIONS
+        )
+        if not is_valid:
+            return (False, error)
 
     return (True, None)
 
@@ -139,6 +197,42 @@ def validate_user_device_stats_put(
 ) -> tuple[bool, str | None]:
     """Validate PUT request to update user/device/stats."""
     # Validate enum values using central function
+    if "stat-query-type" in payload:
+        is_valid, error = _validate_enum_field(
+            "stat-query-type",
+            payload["stat-query-type"],
+            VALID_BODY_STAT_QUERY_TYPE,
+            FIELD_DESCRIPTIONS
+        )
+        if not is_valid:
+            return (False, error)
+    if "stat-key" in payload:
+        is_valid, error = _validate_enum_field(
+            "stat-key",
+            payload["stat-key"],
+            VALID_BODY_STAT_KEY,
+            FIELD_DESCRIPTIONS
+        )
+        if not is_valid:
+            return (False, error)
+    if "filters" in payload:
+        is_valid, error = _validate_enum_field(
+            "filters",
+            payload["filters"],
+            VALID_BODY_FILTERS,
+            FIELD_DESCRIPTIONS
+        )
+        if not is_valid:
+            return (False, error)
+    if "filter_logic" in payload:
+        is_valid, error = _validate_enum_field(
+            "filter_logic",
+            payload["filter_logic"],
+            VALID_BODY_FILTER_LOGIC,
+            FIELD_DESCRIPTIONS
+        )
+        if not is_valid:
+            return (False, error)
 
     return (True, None)
 

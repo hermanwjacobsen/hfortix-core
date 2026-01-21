@@ -28,8 +28,8 @@ from hfortix_fortios.models import (
 class DownloadPayload(TypedDict, total=False):
     """Payload type for Download operations."""
     mkey: str
-    type: str
-    scope: str
+    type: Literal["local-cer", "remote-cer", "local-ca", "remote-ca", "local-csr", "crl"]
+    scope: Literal["vdom", "global"]
 
 
 # ================================================================
@@ -39,8 +39,8 @@ class DownloadPayload(TypedDict, total=False):
 class DownloadResponse(TypedDict, total=False):
     """Response type for Download - use with .dict property for typed dict access."""
     mkey: str
-    type: str
-    scope: str
+    type: Literal["local-cer", "remote-cer", "local-ca", "remote-ca", "local-csr", "crl"]
+    scope: Literal["vdom", "global"]
 
 
 # ================================================================
@@ -50,8 +50,8 @@ class DownloadResponse(TypedDict, total=False):
 
 class DownloadObject(FortiObject):
     """Typed FortiObject for Download with field access."""
-    type: str
-    scope: str
+    type: Literal["local-cer", "remote-cer", "local-ca", "remote-ca", "local-csr", "crl"]
+    scope: Literal["vdom", "global"]
 
 
 # ================================================================
@@ -105,8 +105,8 @@ class Download:
         self,
         payload_dict: DownloadPayload | None = ...,
         mkey: str | None = ...,
-        type: str | None = ...,
-        scope: str | None = ...,
+        type: Literal["local-cer", "remote-cer", "local-ca", "remote-ca", "local-csr", "crl"] | None = ...,
+        scope: Literal["vdom", "global"] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -127,8 +127,8 @@ class Download:
         self,
         payload_dict: DownloadPayload | None = ...,
         mkey: str | None = ...,
-        type: str | None = ...,
-        scope: str | None = ...,
+        type: Literal["local-cer", "remote-cer", "local-ca", "remote-ca", "local-csr", "crl"] | None = ...,
+        scope: Literal["vdom", "global"] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,

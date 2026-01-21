@@ -36,12 +36,12 @@ class PolicyLookupPayload(TypedDict, total=False):
     destport: int
     icmptype: int
     icmpcode: int
-    policy_type: str
-    auth_type: str
+    policy_type: Literal["policy", "proxy"]
+    auth_type: Literal["user", "group", "saml", "ldap"]
     user_group: int | str | list[int | str]
     server_name: str
     user_db: str
-    group_attr_type: str
+    group_attr_type: Literal["name", "id"]
 
 
 # ================================================================
@@ -59,12 +59,12 @@ class PolicyLookupResponse(TypedDict, total=False):
     destport: int
     icmptype: int
     icmpcode: int
-    policy_type: str
-    auth_type: str
+    policy_type: Literal["policy", "proxy"]
+    auth_type: Literal["user", "group", "saml", "ldap"]
     user_group: list[str]
     server_name: str
     user_db: str
-    group_attr_type: str
+    group_attr_type: Literal["name", "id"]
 
 
 # ================================================================
@@ -83,12 +83,12 @@ class PolicyLookupObject(FortiObject):
     destport: int
     icmptype: int
     icmpcode: int
-    policy_type: str
-    auth_type: str
+    policy_type: Literal["policy", "proxy"]
+    auth_type: Literal["user", "group", "saml", "ldap"]
     user_group: list[str]
     server_name: str
     user_db: str
-    group_attr_type: str
+    group_attr_type: Literal["name", "id"]
 
 
 # ================================================================
@@ -162,12 +162,12 @@ class PolicyLookup:
         destport: int | None = ...,
         icmptype: int | None = ...,
         icmpcode: int | None = ...,
-        policy_type: str | None = ...,
-        auth_type: str | None = ...,
+        policy_type: Literal["policy", "proxy"] | None = ...,
+        auth_type: Literal["user", "group", "saml", "ldap"] | None = ...,
         user_group: int | str | list[int | str] | None = ...,
         server_name: str | None = ...,
         user_db: str | None = ...,
-        group_attr_type: str | None = ...,
+        group_attr_type: Literal["name", "id"] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -196,12 +196,12 @@ class PolicyLookup:
         destport: int | None = ...,
         icmptype: int | None = ...,
         icmpcode: int | None = ...,
-        policy_type: str | None = ...,
-        auth_type: str | None = ...,
+        policy_type: Literal["policy", "proxy"] | None = ...,
+        auth_type: Literal["user", "group", "saml", "ldap"] | None = ...,
         user_group: int | str | list[int | str] | None = ...,
         server_name: str | None = ...,
         user_db: str | None = ...,
-        group_attr_type: str | None = ...,
+        group_attr_type: Literal["name", "id"] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,

@@ -93,6 +93,11 @@ NESTED_SCHEMAS = {
 
 
 # Valid enum values from API documentation
+VALID_BODY_IP_VERSION = [
+    "ipv4",
+    "ipv6",
+    "ipboth",
+]
 VALID_QUERY_ACTION = ["default", "schema"]
 
 # ============================================================================
@@ -139,6 +144,15 @@ def validate_firewall_proxy_sessions_post(
         return (False, error)
 
     # Step 2: Validate enum values using central function
+    if "ip_version" in payload:
+        is_valid, error = _validate_enum_field(
+            "ip_version",
+            payload["ip_version"],
+            VALID_BODY_IP_VERSION,
+            FIELD_DESCRIPTIONS
+        )
+        if not is_valid:
+            return (False, error)
 
     return (True, None)
 
@@ -154,6 +168,15 @@ def validate_firewall_proxy_sessions_put(
 ) -> tuple[bool, str | None]:
     """Validate PUT request to update firewall/proxy/sessions."""
     # Validate enum values using central function
+    if "ip_version" in payload:
+        is_valid, error = _validate_enum_field(
+            "ip_version",
+            payload["ip_version"],
+            VALID_BODY_IP_VERSION,
+            FIELD_DESCRIPTIONS
+        )
+        if not is_valid:
+            return (False, error)
 
     return (True, None)
 

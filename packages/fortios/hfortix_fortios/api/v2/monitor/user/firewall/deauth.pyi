@@ -27,11 +27,11 @@ from hfortix_fortios.models import (
 
 class DeauthPayload(TypedDict, total=False):
     """Payload type for Deauth operations."""
-    user_type: str
+    user_type: Literal["proxy", "firewall"]
     id: int
     ip: str
-    ip_version: str
-    method: str
+    ip_version: Literal["ip4", "ip6"]
+    method: Literal["fsso", "rsso", "ntlm", "firewall", "wsso", "fsso_citrix", "sso_guest"]
     all: bool
     users: int | str | list[int | str]
 
@@ -42,11 +42,11 @@ class DeauthPayload(TypedDict, total=False):
 
 class DeauthResponse(TypedDict, total=False):
     """Response type for Deauth - use with .dict property for typed dict access."""
-    user_type: str
+    user_type: Literal["proxy", "firewall"]
     id: int
     ip: str
-    ip_version: str
-    method: str
+    ip_version: Literal["ip4", "ip6"]
+    method: Literal["fsso", "rsso", "ntlm", "firewall", "wsso", "fsso_citrix", "sso_guest"]
     all: bool
     users: list[str]
 
@@ -58,11 +58,11 @@ class DeauthResponse(TypedDict, total=False):
 
 class DeauthObject(FortiObject):
     """Typed FortiObject for Deauth with field access."""
-    user_type: str
+    user_type: Literal["proxy", "firewall"]
     id: int
     ip: str
-    ip_version: str
-    method: str
+    ip_version: Literal["ip4", "ip6"]
+    method: Literal["fsso", "rsso", "ntlm", "firewall", "wsso", "fsso_citrix", "sso_guest"]
     all: bool
     users: list[str]
 
@@ -113,11 +113,11 @@ class Deauth:
     def post(
         self,
         payload_dict: DeauthPayload | None = ...,
-        user_type: str | None = ...,
+        user_type: Literal["proxy", "firewall"] | None = ...,
         id: int | None = ...,
         ip: str | None = ...,
-        ip_version: str | None = ...,
-        method: str | None = ...,
+        ip_version: Literal["ip4", "ip6"] | None = ...,
+        method: Literal["fsso", "rsso", "ntlm", "firewall", "wsso", "fsso_citrix", "sso_guest"] | None = ...,
         all: bool | None = ...,
         users: int | str | list[int | str] | None = ...,
         vdom: str | bool | None = ...,
@@ -132,11 +132,11 @@ class Deauth:
     def put(
         self,
         payload_dict: DeauthPayload | None = ...,
-        user_type: str | None = ...,
+        user_type: Literal["proxy", "firewall"] | None = ...,
         id: int | None = ...,
         ip: str | None = ...,
-        ip_version: str | None = ...,
-        method: str | None = ...,
+        ip_version: Literal["ip4", "ip6"] | None = ...,
+        method: Literal["fsso", "rsso", "ntlm", "firewall", "wsso", "fsso_citrix", "sso_guest"] | None = ...,
         all: bool | None = ...,
         users: int | str | list[int | str] | None = ...,
         vdom: str | bool | None = ...,
@@ -158,11 +158,11 @@ class Deauth:
     def set(
         self,
         payload_dict: DeauthPayload | None = ...,
-        user_type: str | None = ...,
+        user_type: Literal["proxy", "firewall"] | None = ...,
         id: int | None = ...,
         ip: str | None = ...,
-        ip_version: str | None = ...,
-        method: str | None = ...,
+        ip_version: Literal["ip4", "ip6"] | None = ...,
+        method: Literal["fsso", "rsso", "ntlm", "firewall", "wsso", "fsso_citrix", "sso_guest"] | None = ...,
         all: bool | None = ...,
         users: int | str | list[int | str] | None = ...,
         vdom: str | bool | None = ...,

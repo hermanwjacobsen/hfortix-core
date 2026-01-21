@@ -27,7 +27,7 @@ from hfortix_fortios.models import (
 
 class ExtensionDevicePayload(TypedDict, total=False):
     """Payload type for ExtensionDevice operations."""
-    type: str
+    type: Literal["fortiswitch", "fortiap", "fortiextender"]
     timeout: int
     version: str
 
@@ -38,7 +38,7 @@ class ExtensionDevicePayload(TypedDict, total=False):
 
 class ExtensionDeviceResponse(TypedDict, total=False):
     """Response type for ExtensionDevice - use with .dict property for typed dict access."""
-    type: str
+    type: Literal["fortiswitch", "fortiap", "fortiextender"]
     timeout: int
     version: str
 
@@ -50,7 +50,7 @@ class ExtensionDeviceResponse(TypedDict, total=False):
 
 class ExtensionDeviceObject(FortiObject):
     """Typed FortiObject for ExtensionDevice with field access."""
-    type: str
+    type: Literal["fortiswitch", "fortiap", "fortiextender"]
     timeout: int
 
 
@@ -104,7 +104,7 @@ class ExtensionDevice:
     def put(
         self,
         payload_dict: ExtensionDevicePayload | None = ...,
-        type: str | None = ...,
+        type: Literal["fortiswitch", "fortiap", "fortiextender"] | None = ...,
         timeout: int | None = ...,
         version: str | None = ...,
         vdom: str | bool | None = ...,
@@ -126,7 +126,7 @@ class ExtensionDevice:
     def set(
         self,
         payload_dict: ExtensionDevicePayload | None = ...,
-        type: str | None = ...,
+        type: Literal["fortiswitch", "fortiap", "fortiextender"] | None = ...,
         timeout: int | None = ...,
         version: str | None = ...,
         vdom: str | bool | None = ...,

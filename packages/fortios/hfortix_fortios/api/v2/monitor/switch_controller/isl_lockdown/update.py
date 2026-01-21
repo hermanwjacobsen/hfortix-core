@@ -89,7 +89,7 @@ class Update(CRUDEndpoint, MetadataMixin):
         self,
         payload_dict: dict[str, Any] | None = None,
         fortilink: str | None = None,
-        status: str | None = None,
+        status: Literal["enable", "disable"] | None = None,
         vdom: str | bool | None = None,
         error_mode: Literal["raise", "return", "print"] | None = None,
         error_format: Literal["detailed", "simple", "code_only"] | None = None,

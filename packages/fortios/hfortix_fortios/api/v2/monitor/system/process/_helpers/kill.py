@@ -73,6 +73,11 @@ NESTED_SCHEMAS = {
 
 
 # Valid enum values from API documentation
+VALID_BODY_SIGNAL = [
+    "9 (SIGKILL)",
+    "11 (SIGSEGV)",
+    "15 (SIGTERM)",
+]
 VALID_QUERY_ACTION = ["default", "schema"]
 
 # ============================================================================
@@ -119,6 +124,15 @@ def validate_system_process_kill_post(
         return (False, error)
 
     # Step 2: Validate enum values using central function
+    if "signal" in payload:
+        is_valid, error = _validate_enum_field(
+            "signal",
+            payload["signal"],
+            VALID_BODY_SIGNAL,
+            FIELD_DESCRIPTIONS
+        )
+        if not is_valid:
+            return (False, error)
 
     return (True, None)
 
@@ -134,6 +148,15 @@ def validate_system_process_kill_put(
 ) -> tuple[bool, str | None]:
     """Validate PUT request to update system/process/kill."""
     # Validate enum values using central function
+    if "signal" in payload:
+        is_valid, error = _validate_enum_field(
+            "signal",
+            payload["signal"],
+            VALID_BODY_SIGNAL,
+            FIELD_DESCRIPTIONS
+        )
+        if not is_valid:
+            return (False, error)
 
     return (True, None)
 

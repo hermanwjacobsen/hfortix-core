@@ -30,7 +30,7 @@ class DownloadPayload(TypedDict, total=False):
     uid: str
     user: str
     fingerprint: str
-    default: str
+    default: Literal["\u0027authuser\u0027", "\u0027unauthuser\u0027", "\u0027authuser_72\u0027", "\u0027unauthuser_72\u0027"]
 
 
 # ================================================================
@@ -42,7 +42,7 @@ class DownloadResponse(TypedDict, total=False):
     uid: str
     user: str
     fingerprint: str
-    default: str
+    default: Literal["\u0027authuser\u0027", "\u0027unauthuser\u0027", "\u0027authuser_72\u0027", "\u0027unauthuser_72\u0027"]
 
 
 # ================================================================
@@ -55,7 +55,7 @@ class DownloadObject(FortiObject):
     uid: str
     user: str
     fingerprint: str
-    default: str
+    default: Literal["\u0027authuser\u0027", "\u0027unauthuser\u0027", "\u0027authuser_72\u0027", "\u0027unauthuser_72\u0027"]
 
 
 # ================================================================
@@ -112,7 +112,7 @@ class Download:
         uid: str | None = ...,
         user: str | None = ...,
         fingerprint: str | None = ...,
-        default: str | None = ...,
+        default: Literal["\u0027authuser\u0027", "\u0027unauthuser\u0027", "\u0027authuser_72\u0027", "\u0027unauthuser_72\u0027"] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -135,7 +135,7 @@ class Download:
         uid: str | None = ...,
         user: str | None = ...,
         fingerprint: str | None = ...,
-        default: str | None = ...,
+        default: Literal["\u0027authuser\u0027", "\u0027unauthuser\u0027", "\u0027authuser_72\u0027", "\u0027unauthuser_72\u0027"] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,

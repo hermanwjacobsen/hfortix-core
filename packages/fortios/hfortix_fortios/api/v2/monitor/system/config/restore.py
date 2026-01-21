@@ -88,11 +88,11 @@ class Restore(CRUDEndpoint, MetadataMixin):
     def post(
         self,
         payload_dict: dict[str, Any] | None = None,
-        source: str | None = None,
+        source: Literal["upload", "usb", "revision"] | None = None,
         usb_filename: str | None = None,
         config_id: Any | None = None,
         password: str | None = None,
-        scope: str | None = None,
+        scope: Literal["global", "vdom"] | None = None,
         confirm_password_mask: Any | None = None,
         file_content: str | None = None,
         vdom: str | bool | None = None,

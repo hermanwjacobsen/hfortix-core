@@ -90,7 +90,7 @@ class PurdueLevel(CRUDEndpoint, MetadataMixin):
         payload_dict: dict[str, Any] | None = None,
         mac: str | None = None,
         ip: str | None = None,
-        level: str | None = None,
+        level: Literal["1", "1.5", "2", "2.5", "3", "3.5", "4", "5", "5.5"] | None = None,
         vdom: str | bool | None = None,
         error_mode: Literal["raise", "return", "print"] | None = None,
         error_format: Literal["detailed", "simple", "code_only"] | None = None,

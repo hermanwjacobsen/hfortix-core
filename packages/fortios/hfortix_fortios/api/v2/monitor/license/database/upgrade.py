@@ -88,7 +88,7 @@ class Upgrade(CRUDEndpoint, MetadataMixin):
     def post(
         self,
         payload_dict: dict[str, Any] | None = None,
-        db_name: str | None = None,
+        db_name: Literal["ips", "appctrl", "industrial_db", "antivirus", "security_rating", "isdb", "iotddb"] | None = None,
         confirm_not_signed: Any | None = None,
         confirm_not_ga_certified: Any | None = None,
         file_id: str | None = None,

@@ -76,6 +76,14 @@ NESTED_SCHEMAS = {
 
 
 # Valid enum values from API documentation
+VALID_BODY_IMPORT_METHOD = [
+    "file",
+    "scep",
+]
+VALID_BODY_SCOPE = [
+    "vdom",
+    "global",
+]
 VALID_QUERY_ACTION = ["default", "schema"]
 
 # ============================================================================
@@ -122,6 +130,24 @@ def validate_vpn_certificate_ca_import_post(
         return (False, error)
 
     # Step 2: Validate enum values using central function
+    if "import_method" in payload:
+        is_valid, error = _validate_enum_field(
+            "import_method",
+            payload["import_method"],
+            VALID_BODY_IMPORT_METHOD,
+            FIELD_DESCRIPTIONS
+        )
+        if not is_valid:
+            return (False, error)
+    if "scope" in payload:
+        is_valid, error = _validate_enum_field(
+            "scope",
+            payload["scope"],
+            VALID_BODY_SCOPE,
+            FIELD_DESCRIPTIONS
+        )
+        if not is_valid:
+            return (False, error)
 
     return (True, None)
 
@@ -137,6 +163,24 @@ def validate_vpn_certificate_ca_import_put(
 ) -> tuple[bool, str | None]:
     """Validate PUT request to update vpn_certificate/ca/import_."""
     # Validate enum values using central function
+    if "import_method" in payload:
+        is_valid, error = _validate_enum_field(
+            "import_method",
+            payload["import_method"],
+            VALID_BODY_IMPORT_METHOD,
+            FIELD_DESCRIPTIONS
+        )
+        if not is_valid:
+            return (False, error)
+    if "scope" in payload:
+        is_valid, error = _validate_enum_field(
+            "scope",
+            payload["scope"],
+            VALID_BODY_SCOPE,
+            FIELD_DESCRIPTIONS
+        )
+        if not is_valid:
+            return (False, error)
 
     return (True, None)
 

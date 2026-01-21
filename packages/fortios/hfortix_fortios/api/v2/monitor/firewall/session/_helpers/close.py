@@ -80,6 +80,12 @@ NESTED_SCHEMAS = {
 
 
 # Valid enum values from API documentation
+VALID_BODY_PRO = [
+    "tcp",
+    "udp",
+    "icmp",
+    "...",
+]
 VALID_QUERY_ACTION = ["default", "schema"]
 
 # ============================================================================
@@ -126,6 +132,15 @@ def validate_firewall_session_close_post(
         return (False, error)
 
     # Step 2: Validate enum values using central function
+    if "pro" in payload:
+        is_valid, error = _validate_enum_field(
+            "pro",
+            payload["pro"],
+            VALID_BODY_PRO,
+            FIELD_DESCRIPTIONS
+        )
+        if not is_valid:
+            return (False, error)
 
     return (True, None)
 
@@ -141,6 +156,15 @@ def validate_firewall_session_close_put(
 ) -> tuple[bool, str | None]:
     """Validate PUT request to update firewall/session/close."""
     # Validate enum values using central function
+    if "pro" in payload:
+        is_valid, error = _validate_enum_field(
+            "pro",
+            payload["pro"],
+            VALID_BODY_PRO,
+            FIELD_DESCRIPTIONS
+        )
+        if not is_valid:
+            return (False, error)
 
     return (True, None)
 

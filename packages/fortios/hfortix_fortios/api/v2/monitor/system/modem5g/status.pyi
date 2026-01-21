@@ -27,7 +27,7 @@ from hfortix_fortios.models import (
 
 class StatusPayload(TypedDict, total=False):
     """Payload type for Status operations."""
-    modem: str
+    modem: Literal["all", "1", "2"]
 
 
 # ================================================================
@@ -36,7 +36,7 @@ class StatusPayload(TypedDict, total=False):
 
 class StatusResponse(TypedDict, total=False):
     """Response type for Status - use with .dict property for typed dict access."""
-    modem: str
+    modem: Literal["all", "1", "2"]
 
 
 # ================================================================
@@ -46,7 +46,7 @@ class StatusResponse(TypedDict, total=False):
 
 class StatusObject(FortiObject):
     """Typed FortiObject for Status with field access."""
-    modem: str
+    modem: Literal["all", "1", "2"]
 
 
 # ================================================================
@@ -97,7 +97,7 @@ class Status:
     def put(
         self,
         payload_dict: StatusPayload | None = ...,
-        modem: str | None = ...,
+        modem: Literal["all", "1", "2"] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -117,7 +117,7 @@ class Status:
     def set(
         self,
         payload_dict: StatusPayload | None = ...,
-        modem: str | None = ...,
+        modem: Literal["all", "1", "2"] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,

@@ -89,7 +89,7 @@ class UnverifyCert(CRUDEndpoint, MetadataMixin):
         self,
         payload_dict: dict[str, Any] | None = None,
         ems_id: Any | None = None,
-        scope: str | None = None,
+        scope: Literal["vdom", "global"] | None = None,
         vdom: str | bool | None = None,
         error_mode: Literal["raise", "return", "print"] | None = None,
         error_format: Literal["detailed", "simple", "code_only"] | None = None,

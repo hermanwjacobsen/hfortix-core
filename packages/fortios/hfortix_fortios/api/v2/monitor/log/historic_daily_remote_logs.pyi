@@ -27,7 +27,7 @@ from hfortix_fortios.models import (
 
 class HistoricDailyRemoteLogsPayload(TypedDict, total=False):
     """Payload type for HistoricDailyRemoteLogs operations."""
-    server: str
+    server: Literal["forticloud", "fortianalyzer", "fortianalyzercloud", "nulldevice"]
 
 
 # ================================================================
@@ -36,7 +36,7 @@ class HistoricDailyRemoteLogsPayload(TypedDict, total=False):
 
 class HistoricDailyRemoteLogsResponse(TypedDict, total=False):
     """Response type for HistoricDailyRemoteLogs - use with .dict property for typed dict access."""
-    server: str
+    server: Literal["forticloud", "fortianalyzer", "fortianalyzercloud", "nulldevice"]
 
 
 # ================================================================
@@ -46,7 +46,7 @@ class HistoricDailyRemoteLogsResponse(TypedDict, total=False):
 
 class HistoricDailyRemoteLogsObject(FortiObject):
     """Typed FortiObject for HistoricDailyRemoteLogs with field access."""
-    server: str
+    server: Literal["forticloud", "fortianalyzer", "fortianalyzercloud", "nulldevice"]
 
 
 # ================================================================
@@ -97,7 +97,7 @@ class HistoricDailyRemoteLogs:
     def put(
         self,
         payload_dict: HistoricDailyRemoteLogsPayload | None = ...,
-        server: str | None = ...,
+        server: Literal["forticloud", "fortianalyzer", "fortianalyzercloud", "nulldevice"] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -117,7 +117,7 @@ class HistoricDailyRemoteLogs:
     def set(
         self,
         payload_dict: HistoricDailyRemoteLogsPayload | None = ...,
-        server: str | None = ...,
+        server: Literal["forticloud", "fortianalyzer", "fortianalyzercloud", "nulldevice"] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,

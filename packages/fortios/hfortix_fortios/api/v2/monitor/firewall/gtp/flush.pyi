@@ -27,7 +27,7 @@ from hfortix_fortios.models import (
 
 class FlushPayload(TypedDict, total=False):
     """Payload type for Flush operations."""
-    scope: str
+    scope: Literal["global", "vdom"]
     gtp_profile: str
     version: int
     imsi: str
@@ -49,7 +49,7 @@ class FlushPayload(TypedDict, total=False):
 
 class FlushResponse(TypedDict, total=False):
     """Response type for Flush - use with .dict property for typed dict access."""
-    scope: str
+    scope: Literal["global", "vdom"]
     gtp_profile: str
     version: int
     imsi: str
@@ -72,7 +72,7 @@ class FlushResponse(TypedDict, total=False):
 
 class FlushObject(FortiObject):
     """Typed FortiObject for Flush with field access."""
-    scope: str
+    scope: Literal["global", "vdom"]
     gtp_profile: str
     imsi: str
     msisdn: str
@@ -133,7 +133,7 @@ class Flush:
     def post(
         self,
         payload_dict: FlushPayload | None = ...,
-        scope: str | None = ...,
+        scope: Literal["global", "vdom"] | None = ...,
         gtp_profile: str | None = ...,
         version: int | None = ...,
         imsi: str | None = ...,
@@ -159,7 +159,7 @@ class Flush:
     def put(
         self,
         payload_dict: FlushPayload | None = ...,
-        scope: str | None = ...,
+        scope: Literal["global", "vdom"] | None = ...,
         gtp_profile: str | None = ...,
         version: int | None = ...,
         imsi: str | None = ...,
@@ -192,7 +192,7 @@ class Flush:
     def set(
         self,
         payload_dict: FlushPayload | None = ...,
-        scope: str | None = ...,
+        scope: Literal["global", "vdom"] | None = ...,
         gtp_profile: str | None = ...,
         version: int | None = ...,
         imsi: str | None = ...,

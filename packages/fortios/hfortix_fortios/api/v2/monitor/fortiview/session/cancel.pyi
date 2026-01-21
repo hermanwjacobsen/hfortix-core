@@ -28,7 +28,7 @@ from hfortix_fortios.models import (
 class CancelPayload(TypedDict, total=False):
     """Payload type for Cancel operations."""
     sessionid: int
-    device: str
+    device: Literal["disk", "faz"]
     report_by: str
     view_level: str
 
@@ -40,7 +40,7 @@ class CancelPayload(TypedDict, total=False):
 class CancelResponse(TypedDict, total=False):
     """Response type for Cancel - use with .dict property for typed dict access."""
     sessionid: int
-    device: str
+    device: Literal["disk", "faz"]
     report_by: str
     view_level: str
 
@@ -53,7 +53,7 @@ class CancelResponse(TypedDict, total=False):
 class CancelObject(FortiObject):
     """Typed FortiObject for Cancel with field access."""
     sessionid: int
-    device: str
+    device: Literal["disk", "faz"]
     report_by: str
     view_level: str
 
@@ -105,7 +105,7 @@ class Cancel:
         self,
         payload_dict: CancelPayload | None = ...,
         sessionid: int | None = ...,
-        device: str | None = ...,
+        device: Literal["disk", "faz"] | None = ...,
         report_by: str | None = ...,
         view_level: str | None = ...,
         vdom: str | bool | None = ...,
@@ -121,7 +121,7 @@ class Cancel:
         self,
         payload_dict: CancelPayload | None = ...,
         sessionid: int | None = ...,
-        device: str | None = ...,
+        device: Literal["disk", "faz"] | None = ...,
         report_by: str | None = ...,
         view_level: str | None = ...,
         vdom: str | bool | None = ...,
@@ -144,7 +144,7 @@ class Cancel:
         self,
         payload_dict: CancelPayload | None = ...,
         sessionid: int | None = ...,
-        device: str | None = ...,
+        device: Literal["disk", "faz"] | None = ...,
         report_by: str | None = ...,
         view_level: str | None = ...,
         vdom: str | bool | None = ...,

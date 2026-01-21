@@ -1,6 +1,9 @@
 from typing import Any, Literal
 
 # Enum type aliases for validation
+VALID_BODY_POLICY_TYPE: Literal["policy", "proxy"]
+VALID_BODY_AUTH_TYPE: Literal["user", "group", "saml", "ldap"]
+VALID_BODY_GROUP_ATTR_TYPE: Literal["name", "id"]
 
 # Metadata dictionaries
 FIELD_TYPES: dict[str, str]
@@ -25,6 +28,9 @@ def get_schema_info() -> dict[str, Any]: ...
 
 
 __all__ = [
+    "VALID_BODY_POLICY_TYPE",
+    "VALID_BODY_AUTH_TYPE",
+    "VALID_BODY_GROUP_ATTR_TYPE",
     "FIELD_TYPES",
     "FIELD_DESCRIPTIONS",
     "FIELD_CONSTRAINTS",

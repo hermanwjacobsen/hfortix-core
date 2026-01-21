@@ -72,6 +72,11 @@ NESTED_SCHEMAS = {
 
 
 # Valid enum values from API documentation
+VALID_BODY_VDOM_MODE = [
+    "no-vdom",
+    "split-vdom",
+    "multi-vdom",
+]
 VALID_QUERY_ACTION = ["default", "schema"]
 
 # ============================================================================
@@ -118,6 +123,15 @@ def validate_system_admin_change_vdom_mode_post(
         return (False, error)
 
     # Step 2: Validate enum values using central function
+    if "vdom-mode" in payload:
+        is_valid, error = _validate_enum_field(
+            "vdom-mode",
+            payload["vdom-mode"],
+            VALID_BODY_VDOM_MODE,
+            FIELD_DESCRIPTIONS
+        )
+        if not is_valid:
+            return (False, error)
 
     return (True, None)
 
@@ -133,6 +147,15 @@ def validate_system_admin_change_vdom_mode_put(
 ) -> tuple[bool, str | None]:
     """Validate PUT request to update system/admin/change_vdom_mode."""
     # Validate enum values using central function
+    if "vdom-mode" in payload:
+        is_valid, error = _validate_enum_field(
+            "vdom-mode",
+            payload["vdom-mode"],
+            VALID_BODY_VDOM_MODE,
+            FIELD_DESCRIPTIONS
+        )
+        if not is_valid:
+            return (False, error)
 
     return (True, None)
 

@@ -27,7 +27,7 @@ from hfortix_fortios.models import (
 
 class UpgradePayload(TypedDict, total=False):
     """Payload type for Upgrade operations."""
-    source: str
+    source: Literal["upload", "usb", "fortiguard", "url"]
     url: str
     passphrase: str
     force: bool
@@ -45,7 +45,7 @@ class UpgradePayload(TypedDict, total=False):
 
 class UpgradeResponse(TypedDict, total=False):
     """Response type for Upgrade - use with .dict property for typed dict access."""
-    source: str
+    source: Literal["upload", "usb", "fortiguard", "url"]
     url: str
     passphrase: str
     force: bool
@@ -64,7 +64,7 @@ class UpgradeResponse(TypedDict, total=False):
 
 class UpgradeObject(FortiObject):
     """Typed FortiObject for Upgrade with field access."""
-    source: str
+    source: Literal["upload", "usb", "fortiguard", "url"]
     url: str
     passphrase: str
     force: bool
@@ -122,7 +122,7 @@ class Upgrade:
     def post(
         self,
         payload_dict: UpgradePayload | None = ...,
-        source: str | None = ...,
+        source: Literal["upload", "usb", "fortiguard", "url"] | None = ...,
         url: str | None = ...,
         passphrase: str | None = ...,
         force: bool | None = ...,
@@ -144,7 +144,7 @@ class Upgrade:
     def put(
         self,
         payload_dict: UpgradePayload | None = ...,
-        source: str | None = ...,
+        source: Literal["upload", "usb", "fortiguard", "url"] | None = ...,
         url: str | None = ...,
         passphrase: str | None = ...,
         force: bool | None = ...,
@@ -173,7 +173,7 @@ class Upgrade:
     def set(
         self,
         payload_dict: UpgradePayload | None = ...,
-        source: str | None = ...,
+        source: Literal["upload", "usb", "fortiguard", "url"] | None = ...,
         url: str | None = ...,
         passphrase: str | None = ...,
         force: bool | None = ...,
