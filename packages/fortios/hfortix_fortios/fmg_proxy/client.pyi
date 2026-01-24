@@ -4,6 +4,7 @@ from typing import Any, Literal, TypeAlias
 
 from hfortix_core.http import HTTPClientFMG
 from hfortix_fortios.api import API
+from hfortix_fortios.models import FortiObject, FortiObjectList
 from .models import ProxyResponse, DeviceResult
 from .wrappers import FMGDevice, FMGAdom
 
@@ -99,8 +100,8 @@ class FortiManagerProxy:
     @property
     def is_authenticated(self) -> bool: ...
     
-    def login(self) -> dict[str, Any]: ...
-    def logout(self) -> dict[str, Any]: ...
+    def login(self) -> FortiObject: ...
+    def logout(self) -> FortiObject: ...
     
     def proxy(
         self,

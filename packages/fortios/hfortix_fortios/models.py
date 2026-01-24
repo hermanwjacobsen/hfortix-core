@@ -234,6 +234,73 @@ class FortiObject:
         """
         return self._response_time * 1000 if self._response_time else None
 
+    # ========================================================================
+    # FortiManager Proxy Metadata Properties
+    # ========================================================================
+    
+    @property
+    def fmg_proxy_status_code(self) -> int | None:
+        """FortiManager proxy status code for this request."""
+        if self._raw_envelope:
+            return self._raw_envelope.get("fmg_proxy_status_code")
+        return self._data.get("fmg_proxy_status_code")
+    
+    @property
+    def fmg_proxy_status_message(self) -> str | None:
+        """FortiManager proxy status message for this request."""
+        if self._raw_envelope:
+            return self._raw_envelope.get("fmg_proxy_status_message")
+        return self._data.get("fmg_proxy_status_message")
+    
+    @property
+    def fmg_proxy_target(self) -> str | None:
+        """Target device name in FortiManager proxy request."""
+        if self._raw_envelope:
+            return self._raw_envelope.get("fmg_proxy_target")
+        return self._data.get("fmg_proxy_target")
+    
+    @property
+    def fmg_proxy_url(self) -> str | None:
+        """FortiManager proxy URL used for this request."""
+        if self._raw_envelope:
+            return self._raw_envelope.get("fmg_proxy_url")
+        return self._data.get("fmg_proxy_url")
+    
+    @property
+    def fmg_url(self) -> str | None:
+        """FortiGate API URL called through FortiManager."""
+        if self._raw_envelope:
+            return self._raw_envelope.get("fmg_url")
+        return self._data.get("fmg_url")
+    
+    @property
+    def fmg_status_code(self) -> int | None:
+        """FortiManager status code for the device response."""
+        if self._raw_envelope:
+            return self._raw_envelope.get("fmg_status_code")
+        return self._data.get("fmg_status_code")
+    
+    @property
+    def fmg_status_message(self) -> str | None:
+        """FortiManager status message for the device response."""
+        if self._raw_envelope:
+            return self._raw_envelope.get("fmg_status_message")
+        return self._data.get("fmg_status_message")
+    
+    @property
+    def fmg_id(self) -> int | None:
+        """FortiManager request ID."""
+        if self._raw_envelope:
+            return self._raw_envelope.get("fmg_id")
+        return self._data.get("fmg_id")
+    
+    @property
+    def fmg_raw(self) -> dict | None:
+        """Raw FortiManager response data."""
+        if self._raw_envelope:
+            return self._raw_envelope.get("fmg_raw")
+        return self._data.get("fmg_raw")
+
     @property
     def http_stats(self) -> dict[str, Any]:
         """
@@ -389,7 +456,31 @@ class FortiObject:
             }
         """
         import json
-        return json.dumps(self._data, indent=2)
+        
+        # Create a sanitized copy to avoid circular reference issues
+        # This can happen with FMG proxy responses where fmg_raw contains the full response
+        def _sanitize_dict(obj: Any, seen: set | None = None) -> Any:
+            """Remove circular references from nested dicts."""
+            if seen is None:
+                seen = set()
+            
+            if isinstance(obj, dict):
+                obj_id = id(obj)
+                if obj_id in seen:
+                    return "<circular reference>"
+                seen.add(obj_id)
+                
+                result = {}
+                for key, value in obj.items():
+                    result[key] = _sanitize_dict(value, seen.copy())
+                return result
+            elif isinstance(obj, list):
+                return [_sanitize_dict(item, seen.copy()) for item in obj]
+            else:
+                return obj
+        
+        sanitized_data = _sanitize_dict(self._data)
+        return json.dumps(sanitized_data, indent=2)
     
     @property
     def dict(self) -> dict:
@@ -810,6 +901,55 @@ class FortiObjectList(list):
         }
 
     # ========================================================================
+    # FortiManager Proxy Metadata Properties
+    # ========================================================================
+    
+    @property
+    def fmg_proxy_status_code(self) -> int | None:
+        """FortiManager proxy status code for this request."""
+        return self._raw_envelope.get("fmg_proxy_status_code") if self._raw_envelope else None
+    
+    @property
+    def fmg_proxy_status_message(self) -> str | None:
+        """FortiManager proxy status message for this request."""
+        return self._raw_envelope.get("fmg_proxy_status_message") if self._raw_envelope else None
+    
+    @property
+    def fmg_proxy_target(self) -> str | None:
+        """Target device name in FortiManager proxy request."""
+        return self._raw_envelope.get("fmg_proxy_target") if self._raw_envelope else None
+    
+    @property
+    def fmg_proxy_url(self) -> str | None:
+        """FortiManager proxy URL used for this request."""
+        return self._raw_envelope.get("fmg_proxy_url") if self._raw_envelope else None
+    
+    @property
+    def fmg_url(self) -> str | None:
+        """FortiGate API URL called through FortiManager."""
+        return self._raw_envelope.get("fmg_url") if self._raw_envelope else None
+    
+    @property
+    def fmg_status_code(self) -> int | None:
+        """FortiManager status code for the device response."""
+        return self._raw_envelope.get("fmg_status_code") if self._raw_envelope else None
+    
+    @property
+    def fmg_status_message(self) -> str | None:
+        """FortiManager status message for the device response."""
+        return self._raw_envelope.get("fmg_status_message") if self._raw_envelope else None
+    
+    @property
+    def fmg_id(self) -> int | None:
+        """FortiManager request ID."""
+        return self._raw_envelope.get("fmg_id") if self._raw_envelope else None
+    
+    @property
+    def fmg_raw(self) -> dict | None:
+        """Raw FortiManager response data."""
+        return self._raw_envelope.get("fmg_raw") if self._raw_envelope else None
+
+    # ========================================================================
     # Envelope properties (common API response fields)
     # ========================================================================
 
@@ -873,7 +1013,31 @@ class FortiObjectList(list):
             JSON string with 2-space indentation
         """
         import json
-        return json.dumps(self.dict, indent=2)
+        
+        # Create a sanitized copy to avoid circular reference issues
+        # This can happen with FMG proxy responses where fmg_raw contains the full response
+        def _sanitize_dict(obj: Any, seen: set | None = None) -> Any:
+            """Remove circular references from nested dicts."""
+            if seen is None:
+                seen = set()
+            
+            if isinstance(obj, dict):
+                obj_id = id(obj)
+                if obj_id in seen:
+                    return "<circular reference>"
+                seen.add(obj_id)
+                
+                result = {}
+                for key, value in obj.items():
+                    result[key] = _sanitize_dict(value, seen.copy())
+                return result
+            elif isinstance(obj, list):
+                return [_sanitize_dict(item, seen.copy()) for item in obj]
+            else:
+                return obj
+        
+        sanitized_dict = _sanitize_dict(self.dict)
+        return json.dumps(sanitized_dict, indent=2)
     
     @property
     def raw(self) -> dict | list[dict]:

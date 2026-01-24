@@ -13,6 +13,7 @@ from .models import parse_fortios_config as parse_fortios_config
 
 # FortiManager proxy support
 from .fmg_proxy import FortiManagerProxy as FortiManagerProxy
+from .fmg_proxy import ProxiedFortiOS as ProxiedFortiOS
 from .fmg_proxy import ProxyResponse as ProxyResponse
 from .fmg_proxy import DeviceResult as DeviceResult
 

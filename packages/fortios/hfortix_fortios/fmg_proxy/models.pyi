@@ -5,6 +5,15 @@ from typing import Any
 
 @dataclass
 class DeviceResult:
+    fmg_raw: dict[str, Any] | None
+    fmg_proxy_status_code: int | None
+    fmg_proxy_status_message: str | None
+    fmg_proxy_target: str | None
+    fmg_proxy_url: str | None
+    fmg_url: str | None
+    fmg_status_code: int | None
+    fmg_status_message: str | None
+    fmg_id: int | None
     """Result from a single device in a proxy response."""
     target: str
     response: dict[str, Any]
@@ -22,6 +31,12 @@ class DeviceResult:
 
 @dataclass
 class ProxyResponse:
+    fmg_raw: dict[str, Any] | None
+    fmg_proxy_status_code: int | None
+    fmg_proxy_status_message: str | None
+    fmg_proxy_url: str | None
+    fmg_url: str | None
+    fmg_id: int | None
     """Response from a FortiManager proxy request."""
     data: list[DeviceResult] = ...
     status: dict[str, Any] = ...

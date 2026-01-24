@@ -7,9 +7,12 @@ Provides type hints for zero-maintenance object wrappers for FortiOS API respons
 import builtins
 from collections.abc import Mapping
 from typing import Any, Generator, Generic, Iterator, Literal, SupportsIndex, TypeVar, overload
+from typing_extensions import Self
 
 _T = TypeVar("_T")
 _DataT = TypeVar("_DataT", bound=Mapping[str, Any])
+_KT = TypeVar("_KT", bound=str)
+_VT = TypeVar("_VT")
 
 class FortiObject(Generic[_DataT]):
     """
@@ -177,6 +180,55 @@ class FortiObject(Generic[_DataT]):
         """
         ...
 
+    # ========================================================================
+    # FortiManager Proxy Metadata Properties
+    # ========================================================================
+    
+    @property
+    def fmg_proxy_status_code(self) -> int | None:
+        """FortiManager proxy status code for this request."""
+        ...
+    
+    @property
+    def fmg_proxy_status_message(self) -> str | None:
+        """FortiManager proxy status message for this request."""
+        ...
+    
+    @property
+    def fmg_proxy_target(self) -> str | None:
+        """Target device name in FortiManager proxy request."""
+        ...
+    
+    @property
+    def fmg_proxy_url(self) -> str | None:
+        """FortiManager proxy URL used for this request."""
+        ...
+    
+    @property
+    def fmg_url(self) -> str | None:
+        """FortiGate API URL called through FortiManager."""
+        ...
+    
+    @property
+    def fmg_status_code(self) -> int | None:
+        """FortiManager status code for the device response."""
+        ...
+    
+    @property
+    def fmg_status_message(self) -> str | None:
+        """FortiManager status message for the device response."""
+        ...
+    
+    @property
+    def fmg_id(self) -> int | None:
+        """FortiManager request ID."""
+        ...
+    
+    @property
+    def fmg_raw(self) -> dict | None:
+        """Raw FortiManager response data."""
+        ...
+
     @property
     def http_stats(self) -> dict[str, Any]:
         """
@@ -201,7 +253,7 @@ class FortiObject(Generic[_DataT]):
 
     def __init__(
         self,
-        data: dict[str, Any],
+        data: _DataT,
         raw_envelope: dict[str, Any] | None = None,
         response_time: float | None = None,
     ) -> None:
@@ -209,14 +261,14 @@ class FortiObject(Generic[_DataT]):
         Initialize FortiObject with API response data.
 
         Args:
-            data: Dictionary containing the API response fields
+            data: Dictionary containing the API response fields (typed based on _DataT)
         """
         ...
 
     # NOTE: __getattr__ is intentionally omitted from the stub.
-    # This allows typed subclasses (like AddressObject) to properly
-    # report errors for nonexistent fields. The runtime implementation
-    # still has __getattr__ for dynamic access.
+    # This allows typed subclasses (like AddressObject, SettingObject) to properly
+    # report errors for nonexistent fields. The runtime implementation still has
+    # __getattr__ for dynamic access, but the stub omits it for better type safety.
 
     def get_full(self, name: str) -> Any:
         """
@@ -579,6 +631,55 @@ class FortiObjectList(list[_ObjectT], Generic[_ObjectT]):
     @property
     def build(self) -> int | None:
         """FortiOS firmware build number."""
+        ...
+    
+    # ========================================================================
+    # FortiManager Proxy Metadata Properties
+    # ========================================================================
+    
+    @property
+    def fmg_proxy_status_code(self) -> int | None:
+        """FortiManager proxy status code for this request."""
+        ...
+    
+    @property
+    def fmg_proxy_status_message(self) -> str | None:
+        """FortiManager proxy status message for this request."""
+        ...
+    
+    @property
+    def fmg_proxy_target(self) -> str | None:
+        """Target device name in FortiManager proxy request."""
+        ...
+    
+    @property
+    def fmg_proxy_url(self) -> str | None:
+        """FortiManager proxy URL used for this request."""
+        ...
+    
+    @property
+    def fmg_url(self) -> str | None:
+        """FortiGate API URL called through FortiManager."""
+        ...
+    
+    @property
+    def fmg_status_code(self) -> int | None:
+        """FortiManager status code for the device response."""
+        ...
+    
+    @property
+    def fmg_status_message(self) -> str | None:
+        """FortiManager status message for the device response."""
+        ...
+    
+    @property
+    def fmg_id(self) -> int | None:
+        """FortiManager request ID."""
+        ...
+    
+    @property
+    def fmg_raw(self) -> dict | None:
+        """Raw FortiManager response data."""
         ...
     
     @property

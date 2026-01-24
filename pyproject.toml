@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "hfortix"
-version = "0.5.121"
+version = "0.5.141"
 description = "Meta-package for HFortix - Python SDK for Fortinet Products (FortiOS, FortiManager, FortiAnalyzer)"
 readme = "README.md"
 authors = [
@@ -31,8 +31,8 @@ classifiers = [
 requires-python = ">=3.10"
 # Meta-package: just depends on the actual implementation packages
 dependencies = [
-    "hfortix-core>=0.5.30",
-    "hfortix-fortios>=0.5.30",
+    "hfortix-core>=0.5.141",
+    "hfortix-fortios>=0.5.141",
 ]
 
 [project.optional-dependencies]
