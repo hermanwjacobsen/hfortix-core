@@ -28,7 +28,7 @@ from hfortix_fortios.models import (
 class ResolveFqdnPayload(TypedDict, total=False):
     """Payload type for ResolveFqdn operations."""
     ipv6: bool
-    fqdn: int | str | list[int | str]
+    fqdn: list[str]
 
 
 # ================================================================
@@ -102,7 +102,7 @@ class ResolveFqdn:
         self,
         payload_dict: ResolveFqdnPayload | None = ...,
         ipv6: bool | None = ...,
-        fqdn: int | str | list[int | str] | None = ...,
+        fqdn: list[str] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -123,7 +123,7 @@ class ResolveFqdn:
         self,
         payload_dict: ResolveFqdnPayload | None = ...,
         ipv6: bool | None = ...,
-        fqdn: int | str | list[int | str] | None = ...,
+        fqdn: list[str] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,

@@ -27,7 +27,7 @@ from hfortix_fortios.models import (
 
 class PolicyPayload(TypedDict, total=False):
     """Payload type for Policy operations."""
-    policyid: int | str | list[int | str]
+    policyid: list[str]
     ip_version: Literal["ipv4", "ipv6"]
 
 
@@ -101,7 +101,7 @@ class Policy:
     def put(
         self,
         payload_dict: PolicyPayload | None = ...,
-        policyid: int | str | list[int | str] | None = ...,
+        policyid: list[str] | None = ...,
         ip_version: Literal["ipv4", "ipv6"] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
@@ -122,7 +122,7 @@ class Policy:
     def set(
         self,
         payload_dict: PolicyPayload | None = ...,
-        policyid: int | str | list[int | str] | None = ...,
+        policyid: list[str] | None = ...,
         ip_version: Literal["ipv4", "ipv6"] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,

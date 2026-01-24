@@ -38,8 +38,8 @@ class SessionsPayload(TypedDict, total=False):
     dstport: str
     srcintf: str
     dstintf: str
-    srcintfrole: int | str | list[int | str]
-    dstintfrole: int | str | list[int | str]
+    srcintfrole: list[str]
+    dstintfrole: list[str]
     srcaddr: str
     srcaddr6: str
     srcuuid: str
@@ -216,8 +216,8 @@ class Sessions:
         dstport: str | None = ...,
         srcintf: str | None = ...,
         dstintf: str | None = ...,
-        srcintfrole: int | str | list[int | str] | None = ...,
-        dstintfrole: int | str | list[int | str] | None = ...,
+        srcintfrole: list[str] | None = ...,
+        dstintfrole: list[str] | None = ...,
         srcaddr: str | None = ...,
         srcaddr6: str | None = ...,
         srcuuid: str | None = ...,
@@ -263,8 +263,8 @@ class Sessions:
         dstport: str | None = ...,
         srcintf: str | None = ...,
         dstintf: str | None = ...,
-        srcintfrole: int | str | list[int | str] | None = ...,
-        dstintfrole: int | str | list[int | str] | None = ...,
+        srcintfrole: list[str] | None = ...,
+        dstintfrole: list[str] | None = ...,
         srcaddr: str | None = ...,
         srcaddr6: str | None = ...,
         srcuuid: str | None = ...,

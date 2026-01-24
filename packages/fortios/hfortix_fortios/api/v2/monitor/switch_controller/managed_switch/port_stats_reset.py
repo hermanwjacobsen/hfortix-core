@@ -89,7 +89,7 @@ class PortStatsReset(CRUDEndpoint, MetadataMixin):
         self,
         payload_dict: dict[str, Any] | None = None,
         mkey: str | None = None,
-        ports: Any | None = None,
+        ports: list[str] | None = None,
         vdom: str | bool | None = None,
         error_mode: Literal["raise", "return", "print"] | None = None,
         error_format: Literal["detailed", "simple", "code_only"] | None = None,

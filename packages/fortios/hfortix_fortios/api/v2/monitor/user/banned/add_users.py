@@ -88,7 +88,7 @@ class AddUsers(CRUDEndpoint, MetadataMixin):
     def post(
         self,
         payload_dict: dict[str, Any] | None = None,
-        ip_addresses: Any | None = None,
+        ip_addresses: list[str] | None = None,
         expiry: Any | None = None,
         vdom: str | bool | None = None,
         error_mode: Literal["raise", "return", "print"] | None = None,

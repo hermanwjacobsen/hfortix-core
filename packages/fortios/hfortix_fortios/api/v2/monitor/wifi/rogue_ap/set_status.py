@@ -88,8 +88,8 @@ class SetStatus(CRUDEndpoint, MetadataMixin):
     def post(
         self,
         payload_dict: dict[str, Any] | None = None,
-        bssid: Any | None = None,
-        ssid: Any | None = None,
+        bssid: list[str] | None = None,
+        ssid: list[str] | None = None,
         status: Literal["unclassified", "rogue", "accepted", "suppressed"] | None = None,
         vdom: str | bool | None = None,
         error_mode: Literal["raise", "return", "print"] | None = None,

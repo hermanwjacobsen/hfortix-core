@@ -88,7 +88,7 @@ class Select(CRUDEndpoint, MetadataMixin):
     def post(
         self,
         payload_dict: dict[str, Any] | None = None,
-        url: Any | None = None,
+        url: list[str] | None = None,
         lang: str | None = None,
         vdom: str | bool | None = None,
         error_mode: Literal["raise", "return", "print"] | None = None,

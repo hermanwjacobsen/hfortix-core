@@ -27,7 +27,7 @@ from hfortix_fortios.models import (
 
 class ExtenderPayload(TypedDict, total=False):
     """Payload type for Extender operations."""
-    fortiextender_name: int | str | list[int | str]
+    fortiextender_name: list[str]
     type: Literal["system", "modem", "usage", "last"]
 
 
@@ -101,7 +101,7 @@ class Extender:
     def put(
         self,
         payload_dict: ExtenderPayload | None = ...,
-        fortiextender_name: int | str | list[int | str] | None = ...,
+        fortiextender_name: list[str] | None = ...,
         type: Literal["system", "modem", "usage", "last"] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
@@ -122,7 +122,7 @@ class Extender:
     def set(
         self,
         payload_dict: ExtenderPayload | None = ...,
-        fortiextender_name: int | str | list[int | str] | None = ...,
+        fortiextender_name: list[str] | None = ...,
         type: Literal["system", "modem", "usage", "last"] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,

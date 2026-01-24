@@ -34,9 +34,9 @@ class RealtimeStatisticsPayload(TypedDict, total=False):
     srcport: str
     dstport: str
     srcintf: str
-    srcintfrole: int | str | list[int | str]
+    srcintfrole: list[str]
     dstintf: str
-    dstintfrole: int | str | list[int | str]
+    dstintfrole: list[str]
     policyid: str
     security_policyid: str
     protocol: str
@@ -212,9 +212,9 @@ class RealtimeStatistics:
         srcport: str | None = ...,
         dstport: str | None = ...,
         srcintf: str | None = ...,
-        srcintfrole: int | str | list[int | str] | None = ...,
+        srcintfrole: list[str] | None = ...,
         dstintf: str | None = ...,
-        dstintfrole: int | str | list[int | str] | None = ...,
+        dstintfrole: list[str] | None = ...,
         policyid: str | None = ...,
         security_policyid: str | None = ...,
         protocol: str | None = ...,
@@ -259,9 +259,9 @@ class RealtimeStatistics:
         srcport: str | None = ...,
         dstport: str | None = ...,
         srcintf: str | None = ...,
-        srcintfrole: int | str | list[int | str] | None = ...,
+        srcintfrole: list[str] | None = ...,
         dstintf: str | None = ...,
-        dstintfrole: int | str | list[int | str] | None = ...,
+        dstintfrole: list[str] | None = ...,
         policyid: str | None = ...,
         security_policyid: str | None = ...,
         protocol: str | None = ...,

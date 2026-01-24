@@ -27,7 +27,7 @@ from hfortix_fortios.models import (
 
 class DeletePayload(TypedDict, total=False):
     """Payload type for Delete operations."""
-    endpoint_ip: int | str | list[int | str]
+    endpoint_ip: list[str]
     spt: Literal["healthy", "checkup", "transient", "quarantine", "infected", "unknown"]
 
 
@@ -98,7 +98,7 @@ class Delete:
     def post(
         self,
         payload_dict: DeletePayload | None = ...,
-        endpoint_ip: int | str | list[int | str] | None = ...,
+        endpoint_ip: list[str] | None = ...,
         spt: Literal["healthy", "checkup", "transient", "quarantine", "infected", "unknown"] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
@@ -112,7 +112,7 @@ class Delete:
     def put(
         self,
         payload_dict: DeletePayload | None = ...,
-        endpoint_ip: int | str | list[int | str] | None = ...,
+        endpoint_ip: list[str] | None = ...,
         spt: Literal["healthy", "checkup", "transient", "quarantine", "infected", "unknown"] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
@@ -133,7 +133,7 @@ class Delete:
     def set(
         self,
         payload_dict: DeletePayload | None = ...,
-        endpoint_ip: int | str | list[int | str] | None = ...,
+        endpoint_ip: list[str] | None = ...,
         spt: Literal["healthy", "checkup", "transient", "quarantine", "infected", "unknown"] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,

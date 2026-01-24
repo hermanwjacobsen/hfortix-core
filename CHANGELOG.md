@@ -1,3 +1,114 @@
+
+# [0.5.144] - 2026-01-24
+
+### Changed
+
+- **FortiManager Login/Logout Now Return Responses**: Updated `login()` and `logout()` methods to return response dictionaries instead of `None`, providing access to status codes, messages, and session information.
+  
+  **Breaking Change**: 
+  - `fmg.login()` now returns `dict[str, Any]` (was `None`)
+  - `fmg.logout()` now returns `dict[str, Any]` (was `None`)
+  
+  **Usage**:
+  ```python
+  # Login response
+  login_response = fmg.login()
+  print(login_response["result"][0]["status"]["code"])  # 0 = success
+  print(login_response["session"])  # Session token
+  
+  # Logout response
+  logout_response = fmg.logout()
+  print(logout_response["status"]["code"])  # 0 = success
+  print(logout_response["status"]["message"])  # Status message
+  ```
+  
+  **Benefits**:
+  - Consistent API - all FMG operations return response objects
+  - Access to status codes and error messages
+  - Better error handling and debugging
+  - Type hints updated in stub files (.pyi)
+
+### Technical Details
+
+- Modified `HTTPClientFMG.login()` and `HTTPClientFMG.logout()` in core library
+- Modified `FortiManagerProxy.login()` and `FortiManagerProxy.logout()` wrappers
+- Updated type stubs to reflect new return types
+- Maintains backward compatibility (return values can be ignored if not needed)
+
+# [0.5.143] - 2026-01-23
+
+### Fixed
+
+- **Type Safety for CMDB Response Objects**: Restored proper type checking for undefined attributes on CMDB response objects (SettingObject, AddressObject, etc.). Previously, `__getattr__` was accidentally added to the FortiObject stub file during this session, which made Pylance treat all undefined attributes as `Any` instead of showing errors.
+
+  **Solution**: 
+  - Removed `__getattr__` from `models.pyi` stub file (restored to last commit state)
+  - Runtime `models.py` still has `__getattr__` for dynamic access at runtime
+  - Stub omission forces Pylance to validate attributes against typed subclasses
+  
+  **Behavior**:
+  - ✅ Defined fields (e.g., `status.username`, `status.mailto1`) → proper types with autocomplete
+  - ❌ Undefined fields (e.g., `status.nonexistent`) → Pylance error: "Attribute is unknown"
+  - ✅ Runtime still works with dynamic fields via `models.py` implementation
+
+### Technical Details
+
+- The intentional omission of `__getattr__` from stub files is a documented pattern for achieving type safety with dynamic attribute access. This was the original design (see commit 4d49b9cdb) and has been restored.
+
+# [0.5.142] - 2026-01-23
+
+### Fixed
+
+- **Circular Reference in FMG Proxy Responses**: Fixed `ValueError: Circular reference detected` error when calling `.json` property on FortiObject instances created from FortiManager proxy responses. The issue was caused by adding `fmg_raw` (which contains the full response) to the `results` dict, creating an infinite loop: `results['fmg_raw']['response']['results']['fmg_raw']...`
+  
+  **Solution**: 
+  - Modified FMG proxy client to NOT add `fmg_raw` to the `results` dict (prevents circular reference at source)
+  - `fmg_raw` remains accessible via `.fmg_raw` property on FortiObject instances
+  - All other FMG metadata (status codes, target, URL, etc.) still available in `results`
+  - Added defensive circular reference detection in `FortiObject.json` and `FortiObjectList.json` properties as a safety net
+
+- **JSON Serialization Safety**: Enhanced `FortiObject.json` and `FortiObjectList.json` properties with circular reference detection. Any circular references (from any source) are now replaced with `"<circular reference>"` placeholder instead of crashing.
+
+### Changed
+
+- **FMG Proxy Response Structure**: Cleaner data structure without circular references. `fmg_raw` is now only at the envelope level (accessible via property), not embedded in `results` dict. This improves memory efficiency and prevents JSON serialization issues.
+
+# [0.5.141] - 2026-01-22
+
+### Fixed
+
+- **FortiManager HTTP Status**: Fixed missing `http_status` field in FortiManager proxy responses. FMG proxy responses now synthesize `http_status` (200 for success, 400 for error) based on the response status since FMG's JSON-RPC protocol doesn't provide HTTP status codes.
+- **FortiObject Attribute Access**: Fixed critical bug where `__getattr__` method was accidentally deleted, breaking all dynamic attribute access on `FortiObject` instances. All endpoint-specific fields (e.g., `mailto1`, `name`, etc.) now work correctly again.
+- **FMG Properties on FortiObject**: Added FMG metadata properties to the base `FortiObject` class (not just `FMGFortiObject`) to ensure they're accessible on all responses from FMG proxy requests. Properties check both `_raw_envelope` and `_data` for maximum compatibility.
+
+### Changed
+
+- **FMG Proxy Client**: Updated to add synthesized `http_status` field to responses when not present, ensuring consistent behavior between direct FortiOS connections and FMG proxy connections.
+
+# [0.5.140] - 2026-01-22
+
+### Fixed
+
+- **DeviceResult AttributeError**: Fixed `AttributeError: 'DeviceResult' object has no attribute '_data'` that occurred when checking `if proxy_response.first`. Removed `FMGFortiObject` inheritance from `DeviceResult` and `ProxyResponse` dataclasses since they don't need dict-wrapping behavior.
+- **FMG Metadata Accessibility**: Added FMG metadata properties (`fmg_proxy_status_code`, `fmg_proxy_status_message`, `fmg_proxy_target`, `fmg_proxy_url`, `fmg_url`, `fmg_status_code`, `fmg_status_message`, `fmg_id`, `fmg_raw`) to both `FortiObject` and `FortiObjectList` classes. These properties are now accessible on all responses from FMG proxy requests with full IDE autocomplete support via updated type stubs.
+- **FMG Proxy Response Processing**: Updated FMG proxy client to merge metadata into both top-level response envelope and `results` dict, ensuring metadata is preserved when responses are processed into `FortiObject` or `FortiObjectList` instances.
+
+### Changed
+
+- **Type Stub Updates**: Updated `.pyi` stub files for `FortiObject` and `FortiObjectList` to include FMG metadata properties for full Pylance/IDE autocomplete support.
+
+# [0.5.139] - 2026-01-22
+
+### Fixed
+
+- **Version Alignment & PyPI Fix**: All packages (`hfortix-core`, `hfortix-fortios`, `hfortix`) bumped to 0.5.139 to resolve PyPI version propagation issues and ensure all dependencies are aligned. This fixes installation errors due to missing or mismatched meta-package versions on PyPI.
+
+# [0.5.137] - 2026-01-22
+
+### Changed
+
+- **FMG Field Scoping Refactor**: FMG proxy/status fields (`fmg_proxy_status_code`, `fmg_proxy_status_message`, `fmg_proxy_target`, `fmg_proxy_url`, `fmg_url`, `fmg_status_code`, `fmg_status_message`, `fmg_id`, `fmg_raw`) are now only present on `FMGFortiObject`, which is used by FMGProxy models (`DeviceResult`, `ProxyResponse`). The base `FortiObject` is unchanged for all other usage. This resolves type and attribute errors and ensures correct field scoping for FMG-specific data.
+
 # Changelog
 
 All notable changes to this project will be documented in this file.
@@ -5,9 +116,84 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+
+
+## [0.5.135] - 2026-01-22
+
+### Added
+
+- **FMG Proxy/Status/Raw Fields**: `DeviceResult` and `ProxyResponse` now include:
+  - `.fmg_proxy_status_code`, `.fmg_proxy_status_message`, `.fmg_proxy_target`, `.fmg_proxy_url`, `.fmg_url`, `.fmg_status_code`, `.fmg_status_message`, `.fmg_id`, `.fmg_raw`
+  - These fields provide direct access to FortiManager proxy status, target, URLs, and the full raw FMG JSON-RPC response for both the top-level proxy and each device result.
+- **Type Stub Support**: All new fields are included in `.pyi` stubs for full IDE/Pylance autocomplete and type checking.
+
+### Changed
+
+- **Dependencies**: Installing `hfortix-fortios` now also installs `hfortix` and `hfortix-core` (all >=0.5.135). All inter-package dependencies updated to `>=0.5.135`.
 
 ### Fixed
+
+- Dataclass field order and indentation issues in `models.py` resolved for compatibility with Python and Pylance.
+
+## [0.5.131] - 2026-01-21
+
+Readme and other docs updated
+
+
+## [0.5.136] - 2026-01-22
+
+### Changed
+
+- Removed debug print of full FMG JSON-RPC response in FMG proxy client; output is now normal.
+- FMG proxy/status fields (`fmg_status_code`, `fmg_proxy_status_code`, etc.) are now available on all `FortiObject` instances for universal autocomplete and compatibility.
+
+### Note
+
+FMG fields are now only present on `FMGFortiObject`, which is used by FMGProxy models (`DeviceResult`, `ProxyResponse`). The base `FortiObject` is unchanged for all other usage.
+
+### Added
+
+- **FortiManagerProxy Enhancements**: Added `get_devices()`, `get_adoms()`, and `get_device()` methods for device and ADOM queries via FortiManager.
+- **Type Stub Updates**: Updated `.pyi` files to provide IDE/Pylance support for new proxy methods.
+
+### Fixed
+
+- **Pylance Attribute Errors**: Resolved unknown attribute errors in IDE by updating type stubs for new methods.
+
+### Changed
+
+- **Version Bump and PyPI Release**: Bumped all package versions to `0.5.134` and published to PyPI.
+
+## [0.5.133] - 2026-01-22
+
+### Changed
+
+- Bumped package versions to `0.5.133` for PyPI release.
+
+## [0.5.132] - 2026-01-22
+
+### Changed
+
+- Bumped package versions to `0.5.132` for PyPI release.
+
+### Fixed
+
+- **Array Type in TypedDict Payloads**: Fixed array fields in .pyi stub files causing type variance errors
+  - **Issue**: Array fields in TypedDict payloads typed as `int | str | list[int | str]` caused variance errors
+  - **Example Bug**: `url: int | str | list[int | str]` rejected `list[str]` due to list invariance
+  - **Root Cause**: Template added union types for "convenience" but Python's `list` is invariant
+  - **Solution**: Changed array fields to `list[str]` in .pyi stub files
+  - **Impact**: Array parameters now accept lists without type variance errors
+    - ✅ `select.post(url=["https://..."])` → no type error
+    - ✅ TypedDict payloads properly typed for type checkers
+
+- **Array Type Parameters**: Fixed array-type request fields being typed as `Any` instead of `list[str]`
+  - **Issue**: Generator's type mapping didn't include `"array"` type, causing fallback to `Any`
+  - **Example Bug**: `url: Any | None` instead of `url: list[str] | None` for utm/rating-lookup/select
+  - **Solution**: Added `"array": "list[str]"` mapping to `_to_python_type()` function
+  - **Impact**: All array-type request fields now correctly typed as `list[str]`
+    - ✅ `monitor.utm.rating_lookup.select.post(url=["..."])` → correctly typed as `list[str] | None`
+    - ✅ Type checker no longer shows variance errors for list parameters
 
 - **Literal Types for Array Parameters**: Fixed incorrect Literal type extraction for array-type parameters
   - **Issue**: Schema parser was extracting enum values from array parameter descriptions and applying them to the array parameter itself
@@ -17,6 +203,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - **Impact**: Array parameters now correctly typed as `list[str]` while preserving Literal types for actual enum parameters
     - ✅ `monitor.user.device.query.get(filters=["..."])` → correctly typed as `list[str] | None`
     - ✅ `monitor.user.device.query.get(query_type="latest")` → still has `Literal["latest", "unified_latest", "unified_history"]`
+
+### Tests
+
+- **UTM Rating Lookup Endpoints** (1 file, 3 tests):
+  - `utm/rating-lookup/select` (3 tests): URL rating lookup, language parameter support, multiple URL batch queries
+  - Test coverage for FortiGuard web filtering rating queries
 
 ## [0.5.130] - 2026-01-20
 

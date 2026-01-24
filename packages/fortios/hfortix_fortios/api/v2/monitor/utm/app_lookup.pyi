@@ -27,7 +27,7 @@ from hfortix_fortios.models import (
 
 class AppLookupPayload(TypedDict, total=False):
     """Payload type for AppLookup operations."""
-    hosts: int | str | list[int | str]
+    hosts: list[str]
 
 
 # ================================================================
@@ -97,7 +97,7 @@ class AppLookup:
     def put(
         self,
         payload_dict: AppLookupPayload | None = ...,
-        hosts: int | str | list[int | str] | None = ...,
+        hosts: list[str] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -117,7 +117,7 @@ class AppLookup:
     def set(
         self,
         payload_dict: AppLookupPayload | None = ...,
-        hosts: int | str | list[int | str] | None = ...,
+        hosts: list[str] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,

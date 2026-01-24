@@ -27,7 +27,7 @@ from hfortix_fortios.models import (
 
 class MembersPayload(TypedDict, total=False):
     """Payload type for Members operations."""
-    interface: int | str | list[int | str]
+    interface: list[str]
     zone: str
     sla: str
     skip_vpn_child: bool
@@ -109,7 +109,7 @@ class Members:
     def put(
         self,
         payload_dict: MembersPayload | None = ...,
-        interface: int | str | list[int | str] | None = ...,
+        interface: list[str] | None = ...,
         zone: str | None = ...,
         sla: str | None = ...,
         skip_vpn_child: bool | None = ...,
@@ -132,7 +132,7 @@ class Members:
     def set(
         self,
         payload_dict: MembersPayload | None = ...,
-        interface: int | str | list[int | str] | None = ...,
+        interface: list[str] | None = ...,
         zone: str | None = ...,
         sla: str | None = ...,
         skip_vpn_child: bool | None = ...,

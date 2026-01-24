@@ -94,7 +94,7 @@ class Deauth(CRUDEndpoint, MetadataMixin):
         ip_version: Literal["ip4", "ip6"] | None = None,
         method: Literal["fsso", "rsso", "ntlm", "firewall", "wsso", "fsso_citrix", "sso_guest"] | None = None,
         all: Any | None = None,
-        users: Any | None = None,
+        users: list[str] | None = None,
         vdom: str | bool | None = None,
         error_mode: Literal["raise", "return", "print"] | None = None,
         error_format: Literal["detailed", "simple", "code_only"] | None = None,

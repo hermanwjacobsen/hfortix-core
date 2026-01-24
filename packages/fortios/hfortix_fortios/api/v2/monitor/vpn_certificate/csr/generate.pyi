@@ -32,7 +32,7 @@ class GeneratePayload(TypedDict, total=False):
     keytype: Literal["rsa", "ec"]
     keysize: Literal["1024", "1536", "2048", "4096"]
     curvename: Literal["secp256r1", "secp384r1", "secp521r1"]
-    orgunits: int | str | list[int | str]
+    orgunits: list[str]
     org: str
     city: str
     state: str
@@ -145,7 +145,7 @@ class Generate:
         keytype: Literal["rsa", "ec"] | None = ...,
         keysize: Literal["1024", "1536", "2048", "4096"] | None = ...,
         curvename: Literal["secp256r1", "secp384r1", "secp521r1"] | None = ...,
-        orgunits: int | str | list[int | str] | None = ...,
+        orgunits: list[str] | None = ...,
         org: str | None = ...,
         city: str | None = ...,
         state: str | None = ...,
@@ -173,7 +173,7 @@ class Generate:
         keytype: Literal["rsa", "ec"] | None = ...,
         keysize: Literal["1024", "1536", "2048", "4096"] | None = ...,
         curvename: Literal["secp256r1", "secp384r1", "secp521r1"] | None = ...,
-        orgunits: int | str | list[int | str] | None = ...,
+        orgunits: list[str] | None = ...,
         org: str | None = ...,
         city: str | None = ...,
         state: str | None = ...,
@@ -208,7 +208,7 @@ class Generate:
         keytype: Literal["rsa", "ec"] | None = ...,
         keysize: Literal["1024", "1536", "2048", "4096"] | None = ...,
         curvename: Literal["secp256r1", "secp384r1", "secp521r1"] | None = ...,
-        orgunits: int | str | list[int | str] | None = ...,
+        orgunits: list[str] | None = ...,
         org: str | None = ...,
         city: str | None = ...,
         state: str | None = ...,

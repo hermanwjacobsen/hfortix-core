@@ -91,7 +91,7 @@ class RegisterAppliance(CRUDEndpoint, MetadataMixin):
         type: str | None = None,
         mgmt_ip: str | None = None,
         mgmt_port: Any | None = None,
-        mgmt_url_parameters: Any | None = None,
+        mgmt_url_parameters: list[str] | None = None,
         serial: str | None = None,
         hostname: str | None = None,
         vdom: str | bool | None = None,

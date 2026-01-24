@@ -27,7 +27,7 @@ from hfortix_fortios.models import (
 
 class RevokePayload(TypedDict, total=False):
     """Payload type for Revoke operations."""
-    ip: int | str | list[int | str]
+    ip: list[str]
 
 
 # ================================================================
@@ -95,7 +95,7 @@ class Revoke:
     def post(
         self,
         payload_dict: RevokePayload | None = ...,
-        ip: int | str | list[int | str] | None = ...,
+        ip: list[str] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -108,7 +108,7 @@ class Revoke:
     def put(
         self,
         payload_dict: RevokePayload | None = ...,
-        ip: int | str | list[int | str] | None = ...,
+        ip: list[str] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -128,7 +128,7 @@ class Revoke:
     def set(
         self,
         payload_dict: RevokePayload | None = ...,
-        ip: int | str | list[int | str] | None = ...,
+        ip: list[str] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,

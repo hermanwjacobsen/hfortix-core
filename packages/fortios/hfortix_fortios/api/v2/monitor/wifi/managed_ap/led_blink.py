@@ -88,7 +88,7 @@ class LedBlink(CRUDEndpoint, MetadataMixin):
     def post(
         self,
         payload_dict: dict[str, Any] | None = None,
-        serials: Any | None = None,
+        serials: list[str] | None = None,
         blink: Any | None = None,
         duration: Any | None = None,
         vdom: str | bool | None = None,

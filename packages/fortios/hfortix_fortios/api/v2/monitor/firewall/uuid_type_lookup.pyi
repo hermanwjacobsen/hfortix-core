@@ -27,7 +27,7 @@ from hfortix_fortios.models import (
 
 class UuidTypeLookupPayload(TypedDict, total=False):
     """Payload type for UuidTypeLookup operations."""
-    uuids: int | str | list[int | str]
+    uuids: list[str]
 
 
 # ================================================================
@@ -97,7 +97,7 @@ class UuidTypeLookup:
     def put(
         self,
         payload_dict: UuidTypeLookupPayload | None = ...,
-        uuids: int | str | list[int | str] | None = ...,
+        uuids: list[str] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -117,7 +117,7 @@ class UuidTypeLookup:
     def set(
         self,
         payload_dict: UuidTypeLookupPayload | None = ...,
-        uuids: int | str | list[int | str] | None = ...,
+        uuids: list[str] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
