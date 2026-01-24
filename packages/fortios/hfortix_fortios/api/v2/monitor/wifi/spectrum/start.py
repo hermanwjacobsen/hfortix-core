@@ -90,7 +90,7 @@ class Start(CRUDEndpoint, MetadataMixin):
         payload_dict: dict[str, Any] | None = None,
         wtp_id: str | None = None,
         radio_id: Any | None = None,
-        channels: Any | None = None,
+        channels: list[str] | None = None,
         duration: Any | None = None,
         vdom: str | bool | None = None,
         error_mode: Literal["raise", "return", "print"] | None = None,

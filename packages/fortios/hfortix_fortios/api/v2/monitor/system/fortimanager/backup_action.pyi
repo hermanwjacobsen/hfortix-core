@@ -28,7 +28,7 @@ from hfortix_fortios.models import (
 class BackupActionPayload(TypedDict, total=False):
     """Payload type for BackupAction operations."""
     operation: Literal["import", "update"]
-    objects: int | str | list[int | str]
+    objects: list[str]
 
 
 # ================================================================
@@ -99,7 +99,7 @@ class BackupAction:
         self,
         payload_dict: BackupActionPayload | None = ...,
         operation: Literal["import", "update"] | None = ...,
-        objects: int | str | list[int | str] | None = ...,
+        objects: list[str] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -113,7 +113,7 @@ class BackupAction:
         self,
         payload_dict: BackupActionPayload | None = ...,
         operation: Literal["import", "update"] | None = ...,
-        objects: int | str | list[int | str] | None = ...,
+        objects: list[str] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -134,7 +134,7 @@ class BackupAction:
         self,
         payload_dict: BackupActionPayload | None = ...,
         operation: Literal["import", "update"] | None = ...,
-        objects: int | str | list[int | str] | None = ...,
+        objects: list[str] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,

@@ -38,7 +38,7 @@ class PolicyLookupPayload(TypedDict, total=False):
     icmpcode: int
     policy_type: Literal["policy", "proxy"]
     auth_type: Literal["user", "group", "saml", "ldap"]
-    user_group: int | str | list[int | str]
+    user_group: list[str]
     server_name: str
     user_db: str
     group_attr_type: Literal["name", "id"]
@@ -164,7 +164,7 @@ class PolicyLookup:
         icmpcode: int | None = ...,
         policy_type: Literal["policy", "proxy"] | None = ...,
         auth_type: Literal["user", "group", "saml", "ldap"] | None = ...,
-        user_group: int | str | list[int | str] | None = ...,
+        user_group: list[str] | None = ...,
         server_name: str | None = ...,
         user_db: str | None = ...,
         group_attr_type: Literal["name", "id"] | None = ...,
@@ -198,7 +198,7 @@ class PolicyLookup:
         icmpcode: int | None = ...,
         policy_type: Literal["policy", "proxy"] | None = ...,
         auth_type: Literal["user", "group", "saml", "ldap"] | None = ...,
-        user_group: int | str | list[int | str] | None = ...,
+        user_group: list[str] | None = ...,
         server_name: str | None = ...,
         user_db: str | None = ...,
         group_attr_type: Literal["name", "id"] | None = ...,

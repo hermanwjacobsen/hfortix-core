@@ -88,7 +88,7 @@ class Add(CRUDEndpoint, MetadataMixin):
     def post(
         self,
         payload_dict: dict[str, Any] | None = None,
-        endpoint_ip: Any | None = None,
+        endpoint_ip: list[str] | None = None,
         spt: Literal["healthy", "checkup", "transient", "quarantine", "infected", "unknown"] | None = None,
         vdom: str | bool | None = None,
         error_mode: Literal["raise", "return", "print"] | None = None,

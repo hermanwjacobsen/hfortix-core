@@ -28,7 +28,7 @@ from hfortix_fortios.models import (
 class SmsPayload(TypedDict, total=False):
     """Payload type for Sms operations."""
     group: str
-    guest: int | str | list[int | str]
+    guest: list[str]
 
 
 # ================================================================
@@ -99,7 +99,7 @@ class Sms:
         self,
         payload_dict: SmsPayload | None = ...,
         group: str | None = ...,
-        guest: int | str | list[int | str] | None = ...,
+        guest: list[str] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -113,7 +113,7 @@ class Sms:
         self,
         payload_dict: SmsPayload | None = ...,
         group: str | None = ...,
-        guest: int | str | list[int | str] | None = ...,
+        guest: list[str] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -134,7 +134,7 @@ class Sms:
         self,
         payload_dict: SmsPayload | None = ...,
         group: str | None = ...,
-        guest: int | str | list[int | str] | None = ...,
+        guest: list[str] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,

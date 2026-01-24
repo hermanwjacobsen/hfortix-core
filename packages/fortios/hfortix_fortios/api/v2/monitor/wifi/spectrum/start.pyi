@@ -29,7 +29,7 @@ class StartPayload(TypedDict, total=False):
     """Payload type for Start operations."""
     wtp_id: str
     radio_id: int
-    channels: int | str | list[int | str]
+    channels: list[str]
     duration: int
 
 
@@ -106,7 +106,7 @@ class Start:
         payload_dict: StartPayload | None = ...,
         wtp_id: str | None = ...,
         radio_id: int | None = ...,
-        channels: int | str | list[int | str] | None = ...,
+        channels: list[str] | None = ...,
         duration: int | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
@@ -122,7 +122,7 @@ class Start:
         payload_dict: StartPayload | None = ...,
         wtp_id: str | None = ...,
         radio_id: int | None = ...,
-        channels: int | str | list[int | str] | None = ...,
+        channels: list[str] | None = ...,
         duration: int | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
@@ -145,7 +145,7 @@ class Start:
         payload_dict: StartPayload | None = ...,
         wtp_id: str | None = ...,
         radio_id: int | None = ...,
-        channels: int | str | list[int | str] | None = ...,
+        channels: list[str] | None = ...,
         duration: int | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,

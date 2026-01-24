@@ -90,7 +90,7 @@ class Select(CRUDEndpoint, MetadataMixin):
         payload_dict: dict[str, Any] | None = None,
         id: Any | None = None,
         method: str | None = None,
-        admins: Any | None = None,
+        admins: list[str] | None = None,
         vdom: str | bool | None = None,
         error_mode: Literal["raise", "return", "print"] | None = None,
         error_format: Literal["detailed", "simple", "code_only"] | None = None,

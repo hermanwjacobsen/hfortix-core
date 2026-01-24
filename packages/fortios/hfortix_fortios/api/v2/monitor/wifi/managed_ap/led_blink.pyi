@@ -27,7 +27,7 @@ from hfortix_fortios.models import (
 
 class LedBlinkPayload(TypedDict, total=False):
     """Payload type for LedBlink operations."""
-    serials: int | str | list[int | str]
+    serials: list[str]
     blink: bool
     duration: int
 
@@ -101,7 +101,7 @@ class LedBlink:
     def post(
         self,
         payload_dict: LedBlinkPayload | None = ...,
-        serials: int | str | list[int | str] | None = ...,
+        serials: list[str] | None = ...,
         blink: bool | None = ...,
         duration: int | None = ...,
         vdom: str | bool | None = ...,
@@ -116,7 +116,7 @@ class LedBlink:
     def put(
         self,
         payload_dict: LedBlinkPayload | None = ...,
-        serials: int | str | list[int | str] | None = ...,
+        serials: list[str] | None = ...,
         blink: bool | None = ...,
         duration: int | None = ...,
         vdom: str | bool | None = ...,
@@ -138,7 +138,7 @@ class LedBlink:
     def set(
         self,
         payload_dict: LedBlinkPayload | None = ...,
-        serials: int | str | list[int | str] | None = ...,
+        serials: list[str] | None = ...,
         blink: bool | None = ...,
         duration: int | None = ...,
         vdom: str | bool | None = ...,

@@ -27,7 +27,7 @@ from hfortix_fortios.models import (
 
 class DynamicPayload(TypedDict, total=False):
     """Payload type for Dynamic operations."""
-    commands: int | str | list[int | str]
+    commands: list[str]
 
 
 # ================================================================
@@ -95,7 +95,7 @@ class Dynamic:
     def post(
         self,
         payload_dict: DynamicPayload | None = ...,
-        commands: int | str | list[int | str] | None = ...,
+        commands: list[str] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -108,7 +108,7 @@ class Dynamic:
     def put(
         self,
         payload_dict: DynamicPayload | None = ...,
-        commands: int | str | list[int | str] | None = ...,
+        commands: list[str] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -128,7 +128,7 @@ class Dynamic:
     def set(
         self,
         payload_dict: DynamicPayload | None = ...,
-        commands: int | str | list[int | str] | None = ...,
+        commands: list[str] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,

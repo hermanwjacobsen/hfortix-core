@@ -27,8 +27,8 @@ from hfortix_fortios.models import (
 
 class SetStatusPayload(TypedDict, total=False):
     """Payload type for SetStatus operations."""
-    bssid: int | str | list[int | str]
-    ssid: int | str | list[int | str]
+    bssid: list[str]
+    ssid: list[str]
     status: Literal["unclassified", "rogue", "accepted", "suppressed"]
 
 
@@ -101,8 +101,8 @@ class SetStatus:
     def post(
         self,
         payload_dict: SetStatusPayload | None = ...,
-        bssid: int | str | list[int | str] | None = ...,
-        ssid: int | str | list[int | str] | None = ...,
+        bssid: list[str] | None = ...,
+        ssid: list[str] | None = ...,
         status: Literal["unclassified", "rogue", "accepted", "suppressed"] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
@@ -116,8 +116,8 @@ class SetStatus:
     def put(
         self,
         payload_dict: SetStatusPayload | None = ...,
-        bssid: int | str | list[int | str] | None = ...,
-        ssid: int | str | list[int | str] | None = ...,
+        bssid: list[str] | None = ...,
+        ssid: list[str] | None = ...,
         status: Literal["unclassified", "rogue", "accepted", "suppressed"] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
@@ -138,8 +138,8 @@ class SetStatus:
     def set(
         self,
         payload_dict: SetStatusPayload | None = ...,
-        bssid: int | str | list[int | str] | None = ...,
-        ssid: int | str | list[int | str] | None = ...,
+        bssid: list[str] | None = ...,
+        ssid: list[str] | None = ...,
         status: Literal["unclassified", "rogue", "accepted", "suppressed"] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,

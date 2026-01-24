@@ -29,7 +29,7 @@ class UsagePayload(TypedDict, total=False):
     """Payload type for Usage operations."""
     q_path: str
     q_name: str
-    qtypes: int | str | list[int | str]
+    qtypes: list[str]
     scope: Literal["vdom", "global"]
     mkey: str
     child_path: str
@@ -118,7 +118,7 @@ class Usage:
         payload_dict: UsagePayload | None = ...,
         q_path: str | None = ...,
         q_name: str | None = ...,
-        qtypes: int | str | list[int | str] | None = ...,
+        qtypes: list[str] | None = ...,
         scope: Literal["vdom", "global"] | None = ...,
         mkey: str | None = ...,
         child_path: str | None = ...,
@@ -143,7 +143,7 @@ class Usage:
         payload_dict: UsagePayload | None = ...,
         q_path: str | None = ...,
         q_name: str | None = ...,
-        qtypes: int | str | list[int | str] | None = ...,
+        qtypes: list[str] | None = ...,
         scope: Literal["vdom", "global"] | None = ...,
         mkey: str | None = ...,
         child_path: str | None = ...,

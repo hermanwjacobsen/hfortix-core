@@ -27,7 +27,7 @@ from hfortix_fortios.models import (
 
 class SelectPayload(TypedDict, total=False):
     """Payload type for Select operations."""
-    url: int | str | list[int | str]
+    url: list[str]
     lang: str
 
 
@@ -98,7 +98,7 @@ class Select:
     def post(
         self,
         payload_dict: SelectPayload | None = ...,
-        url: int | str | list[int | str] | None = ...,
+        url: list[str] | None = ...,
         lang: str | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
@@ -112,7 +112,7 @@ class Select:
     def put(
         self,
         payload_dict: SelectPayload | None = ...,
-        url: int | str | list[int | str] | None = ...,
+        url: list[str] | None = ...,
         lang: str | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
@@ -133,7 +133,7 @@ class Select:
     def set(
         self,
         payload_dict: SelectPayload | None = ...,
-        url: int | str | list[int | str] | None = ...,
+        url: list[str] | None = ...,
         lang: str | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,

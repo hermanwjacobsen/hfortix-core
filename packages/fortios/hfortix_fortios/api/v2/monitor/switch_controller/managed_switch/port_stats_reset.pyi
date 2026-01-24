@@ -28,7 +28,7 @@ from hfortix_fortios.models import (
 class PortStatsResetPayload(TypedDict, total=False):
     """Payload type for PortStatsReset operations."""
     mkey: str
-    ports: int | str | list[int | str]
+    ports: list[str]
 
 
 # ================================================================
@@ -98,7 +98,7 @@ class PortStatsReset:
         self,
         payload_dict: PortStatsResetPayload | None = ...,
         mkey: str | None = ...,
-        ports: int | str | list[int | str] | None = ...,
+        ports: list[str] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -112,7 +112,7 @@ class PortStatsReset:
         self,
         payload_dict: PortStatsResetPayload | None = ...,
         mkey: str | None = ...,
-        ports: int | str | list[int | str] | None = ...,
+        ports: list[str] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -133,7 +133,7 @@ class PortStatsReset:
         self,
         payload_dict: PortStatsResetPayload | None = ...,
         mkey: str | None = ...,
-        ports: int | str | list[int | str] | None = ...,
+        ports: list[str] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,

@@ -149,15 +149,22 @@ class HTTPClientFMG(BaseHTTPClient):
         self._request_id += 1
         return self._request_id
     
-    def login(self) -> None:
+    def login(self) -> dict[str, Any]:
         """
         Authenticate with FortiManager.
+        
+        Returns:
+            FMG login response dict with session and status information
         
         Raises:
             RuntimeError: If authentication fails
         """
         if self._session_token:
-            return  # Already logged in
+            # Already logged in - return success status
+            return {
+                "result": [{"status": {"code": 0, "message": "Already authenticated"}}],
+                "session": self._session_token
+            }
         
         request = {
             "id": self._next_id(),
@@ -195,11 +202,17 @@ class HTTPClientFMG(BaseHTTPClient):
             raise RuntimeError("FMG login succeeded but no session token received")
         
         logger.info("Successfully logged in to FortiManager")
+        return data
     
-    def logout(self) -> None:
-        """End FortiManager session."""
+    def logout(self) -> dict[str, Any]:
+        """
+        End FortiManager session.
+        
+        Returns:
+            FMG logout response dict with status information
+        """
         if not self._session_token:
-            return
+            return {"status": {"code": 0, "message": "Not logged in"}}
         
         try:
             request = {
@@ -210,10 +223,13 @@ class HTTPClientFMG(BaseHTTPClient):
             }
             
             client = self._get_http_client()
-            client.post(self.jsonrpc_url, json=request)
+            response = client.post(self.jsonrpc_url, json=request)
+            result = response.json()
             logger.debug("Logged out from FortiManager")
+            return result
         except Exception as e:
-            logger.debug("Logout error (ignored): %s", e)
+            logger.debug("Logout error: %s", e)
+            return {"status": {"code": -1, "message": str(e)}}
         finally:
             self._session_token = None
     

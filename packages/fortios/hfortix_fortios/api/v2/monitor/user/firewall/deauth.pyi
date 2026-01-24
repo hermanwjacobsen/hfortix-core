@@ -33,7 +33,7 @@ class DeauthPayload(TypedDict, total=False):
     ip_version: Literal["ip4", "ip6"]
     method: Literal["fsso", "rsso", "ntlm", "firewall", "wsso", "fsso_citrix", "sso_guest"]
     all: bool
-    users: int | str | list[int | str]
+    users: list[str]
 
 
 # ================================================================
@@ -119,7 +119,7 @@ class Deauth:
         ip_version: Literal["ip4", "ip6"] | None = ...,
         method: Literal["fsso", "rsso", "ntlm", "firewall", "wsso", "fsso_citrix", "sso_guest"] | None = ...,
         all: bool | None = ...,
-        users: int | str | list[int | str] | None = ...,
+        users: list[str] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -138,7 +138,7 @@ class Deauth:
         ip_version: Literal["ip4", "ip6"] | None = ...,
         method: Literal["fsso", "rsso", "ntlm", "firewall", "wsso", "fsso_citrix", "sso_guest"] | None = ...,
         all: bool | None = ...,
-        users: int | str | list[int | str] | None = ...,
+        users: list[str] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -164,7 +164,7 @@ class Deauth:
         ip_version: Literal["ip4", "ip6"] | None = ...,
         method: Literal["fsso", "rsso", "ntlm", "firewall", "wsso", "fsso_citrix", "sso_guest"] | None = ...,
         all: bool | None = ...,
-        users: int | str | list[int | str] | None = ...,
+        users: list[str] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,

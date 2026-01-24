@@ -93,7 +93,7 @@ class Generate(CRUDEndpoint, MetadataMixin):
         keytype: Literal["rsa", "ec"] | None = None,
         keysize: Literal["1024", "1536", "2048", "4096"] | None = None,
         curvename: Literal["secp256r1", "secp384r1", "secp521r1"] | None = None,
-        orgunits: Any | None = None,
+        orgunits: list[str] | None = None,
         org: str | None = None,
         city: str | None = None,
         state: str | None = None,

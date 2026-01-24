@@ -27,7 +27,7 @@ from hfortix_fortios.models import (
 
 class AddUsersPayload(TypedDict, total=False):
     """Payload type for AddUsers operations."""
-    ip_addresses: int | str | list[int | str]
+    ip_addresses: list[str]
     expiry: int
 
 
@@ -98,7 +98,7 @@ class AddUsers:
     def post(
         self,
         payload_dict: AddUsersPayload | None = ...,
-        ip_addresses: int | str | list[int | str] | None = ...,
+        ip_addresses: list[str] | None = ...,
         expiry: int | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
@@ -112,7 +112,7 @@ class AddUsers:
     def put(
         self,
         payload_dict: AddUsersPayload | None = ...,
-        ip_addresses: int | str | list[int | str] | None = ...,
+        ip_addresses: list[str] | None = ...,
         expiry: int | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
@@ -133,7 +133,7 @@ class AddUsers:
     def set(
         self,
         payload_dict: AddUsersPayload | None = ...,
-        ip_addresses: int | str | list[int | str] | None = ...,
+        ip_addresses: list[str] | None = ...,
         expiry: int | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,

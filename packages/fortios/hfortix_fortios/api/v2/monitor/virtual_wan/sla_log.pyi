@@ -27,7 +27,7 @@ from hfortix_fortios.models import (
 
 class SlaLogPayload(TypedDict, total=False):
     """Payload type for SlaLog operations."""
-    sla: int | str | list[int | str]
+    sla: list[str]
     interface: str
     since: int
     seconds: int
@@ -129,7 +129,7 @@ class SlaLog:
     def put(
         self,
         payload_dict: SlaLogPayload | None = ...,
-        sla: int | str | list[int | str] | None = ...,
+        sla: list[str] | None = ...,
         interface: str | None = ...,
         since: int | None = ...,
         seconds: int | None = ...,
@@ -157,7 +157,7 @@ class SlaLog:
     def set(
         self,
         payload_dict: SlaLogPayload | None = ...,
-        sla: int | str | list[int | str] | None = ...,
+        sla: list[str] | None = ...,
         interface: str | None = ...,
         since: int | None = ...,
         seconds: int | None = ...,

@@ -27,7 +27,7 @@ from hfortix_fortios.models import (
 
 class DnatPayload(TypedDict, total=False):
     """Payload type for Dnat operations."""
-    uuid: int | str | list[int | str]
+    uuid: list[str]
     ip_version: Literal["ipv4", "ipv6"]
 
 
@@ -101,7 +101,7 @@ class Dnat:
     def put(
         self,
         payload_dict: DnatPayload | None = ...,
-        uuid: int | str | list[int | str] | None = ...,
+        uuid: list[str] | None = ...,
         ip_version: Literal["ipv4", "ipv6"] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
@@ -122,7 +122,7 @@ class Dnat:
     def set(
         self,
         payload_dict: DnatPayload | None = ...,
-        uuid: int | str | list[int | str] | None = ...,
+        uuid: list[str] | None = ...,
         ip_version: Literal["ipv4", "ipv6"] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,

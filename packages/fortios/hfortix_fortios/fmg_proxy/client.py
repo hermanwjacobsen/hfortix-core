@@ -11,6 +11,7 @@ from typing import Any, Literal, cast
 
 from hfortix_core.http import HTTPClientFMG
 
+from ..models import FortiObject, FortiObjectList
 from .models import ProxyResponse, DeviceResult
 
 
@@ -123,16 +124,66 @@ class ProxyHTTPClient:
             payload=data,
             timeout=self._timeout,
         )
-        
+
+
+
         self._last_response_time = time.perf_counter() - start_time
-        
+
         # Parse the FMG response
         proxy_response = ProxyResponse.from_fmg_response(raw_response)
-        
-        # For single-device proxy, return the FortiOS response directly
+
+        # For single-device proxy, return the FortiOS response with FMG metadata
         if proxy_response.first:
-            return proxy_response.first.response
-        
+            device_result = proxy_response.first
+            # Merge FMG metadata into the response
+            response_with_metadata = device_result.response.copy()
+            
+            # Synthesize http_status based on response status
+            # FMG proxy doesn't provide HTTP status codes, so we infer them
+            if "http_status" not in response_with_metadata:
+                status = response_with_metadata.get("status", "")
+                if status == "success":
+                    response_with_metadata["http_status"] = 200
+                elif status == "error":
+                    response_with_metadata["http_status"] = 400
+                else:
+                    response_with_metadata["http_status"] = 200  # Default to success
+            
+            # Add FMG metadata to the top-level response
+            fmg_metadata = {
+                "fmg_proxy_status_code": device_result.fmg_proxy_status_code,
+                "fmg_proxy_status_message": device_result.fmg_proxy_status_message,
+                "fmg_proxy_target": device_result.fmg_proxy_target,
+                "fmg_proxy_url": device_result.fmg_proxy_url,
+                "fmg_url": device_result.fmg_url,
+                "fmg_status_code": device_result.fmg_status_code,
+                "fmg_status_message": device_result.fmg_status_message,
+                "fmg_id": device_result.fmg_id,
+                "fmg_raw": device_result.fmg_raw,
+            }
+            response_with_metadata.update(fmg_metadata)
+            
+            # Note: We intentionally do NOT add fmg_raw to the results dict to avoid circular references.
+            # The fmg_raw is available at the envelope level, and users can access it via the .fmg_raw property.
+            # Adding it to results would create: results['fmg_raw']['response']['results']['fmg_raw']...
+            # 
+            # If needed, add other FMG metadata to results (but NOT fmg_raw):
+            if "results" in response_with_metadata and isinstance(response_with_metadata["results"], dict):
+                results_metadata = {
+                    "fmg_proxy_status_code": device_result.fmg_proxy_status_code,
+                    "fmg_proxy_status_message": device_result.fmg_proxy_status_message,
+                    "fmg_proxy_target": device_result.fmg_proxy_target,
+                    "fmg_proxy_url": device_result.fmg_proxy_url,
+                    "fmg_url": device_result.fmg_url,
+                    "fmg_status_code": device_result.fmg_status_code,
+                    "fmg_status_message": device_result.fmg_status_message,
+                    "fmg_id": device_result.fmg_id,
+                    # fmg_raw is NOT included here to prevent circular references
+                }
+                response_with_metadata["results"].update(results_metadata)
+            
+            return response_with_metadata
+
         # No response - return empty success
         return {"status": "error", "http_status": 500, "results": []}
     
@@ -281,17 +332,122 @@ class FortiManagerProxy:
         """Check if connected to FortiManager."""
         return self._session.is_authenticated
     
-    def login(self) -> None:
+    def login(self) -> dict[str, Any]:
         """
         Authenticate with FortiManager.
         
         Called automatically on first proxy request if not already authenticated.
+        
+        Returns:
+            FMG login response dict with session and status information
         """
-        self._session.login()
+        return self._session.login()
     
-    def logout(self) -> None:
-        """End FortiManager session."""
-        self._session.logout()
+    def logout(self) -> dict[str, Any]:
+        """
+        End FortiManager session.
+        
+        Returns:
+            FMG logout response dict with status information
+        """
+        return self._session.logout()
+    
+    def get_adoms(self) -> list[FortiObject]:
+        """
+        Get list of ADOMs from FortiManager.
+        
+        Returns:
+            List of FortiObject instances with ADOM information.
+            Each ADOM has attributes like:
+            - name: ADOM name
+            - desc: Description
+            - flags: ADOM flags
+            - mode: ADOM mode (e.g., 'normal', 'backup')
+            - os_ver: Target OS version
+            - restricted_prds: Restricted products
+            
+        Example:
+            >>> adoms = fmg.get_adoms()
+            >>> for adom in adoms:
+            ...     print(f"{adom.name}: {adom.desc}")
+        """
+        response = self._session.execute(
+            method="get",
+            params=[{"url": "/dvmdb/adom"}]
+        )
+        
+        # Extract ADOM list from response
+        result = response.get("result", [{}])[0]
+        adoms_data = result.get("data", [])
+        
+        # Wrap each ADOM in FortiObject for attribute access
+        return [FortiObject(adom) for adom in adoms_data]
+    
+    def get_devices(self, adom: str | None = None) -> list[FortiObject]:
+        """
+        Get list of managed devices from FortiManager.
+        
+        Args:
+            adom: ADOM name (uses default if not specified)
+            
+        Returns:
+            List of FortiObject instances with device information.
+            Each device has attributes like:
+            - name: Device name
+            - sn: Serial number
+            - ip: Management IP
+            - platform_str: Platform (e.g., "FortiGate-60F")
+            - os_ver: OS major version
+            - mr: OS minor version
+            - conn_status: Connection status (0=unknown, 1=up, 2=down)
+            - db_status: DB status
+            - conf_status: Config status
+            
+        Example:
+            >>> devices = fmg.get_devices()
+            >>> for dev in devices:
+            ...     print(f"{dev.name}: {dev.sn} ({dev.ip})")
+        """
+        effective_adom = adom or self._default_adom
+        
+        if effective_adom:
+            url = f"/dvmdb/adom/{effective_adom}/device"
+        else:
+            url = "/dvmdb/device"
+        
+        response = self._session.execute(
+            method="get",
+            params=[{"url": url}]
+        )
+        
+        # Extract device list from response
+        result = response.get("result", [{}])[0]
+        devices_data = result.get("data", [])
+        
+        # Wrap each device in FortiObject for attribute access and IDE autocomplete
+        return [FortiObject(device) for device in devices_data]
+    
+    def get_device(self, name: str, adom: str | None = None) -> FortiObject | None:
+        """
+        Get a specific device by name.
+        
+        Args:
+            name: Device name in FortiManager
+            adom: ADOM name (uses default if not specified)
+            
+        Returns:
+            FortiObject instance with device info, or None if not found
+            
+        Example:
+            >>> device = fmg.get_device("fw01")
+            >>> if device:
+            ...     print(f"Serial: {device.sn}, IP: {device.ip}")
+        """
+        devices = self.get_devices(adom=adom)
+        for dev in devices:
+            if dev.name == name:
+                return dev
+        return None
     
     def proxy(
         self,

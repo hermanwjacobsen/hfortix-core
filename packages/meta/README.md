@@ -5,14 +5,12 @@ Complete Python SDK for Fortinet Products - Modular, type-safe, production-ready
 [![PyPI version](https://badge.fury.io/py/hfortix.svg)](https://pypi.org/project/hfortix/)
 [![Python 3.10+](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/downloads/)
 
-> **⚠️ BETA STATUS - Version 0.5.45 (January 9, 2026)**
+> **⚠️ BETA STATUS - Version 0.5.132 (January 21, 2026)**
 >
-> **Breaking Changes**: v0.5.0 removes convenience wrappers. Use direct API access via `fgt.api.*`
 > **Status**: Production-ready but in beta until v1.0 with comprehensive unit tests.
-> **What's New**: Core `fmt` module with 13 formatting utilities, automatic key normalization!
 
-**Version:** 0.5.45
-**Status:** Beta (100% auto-generated, production-ready, pending comprehensive unit tests for v1.0)
+**Version:** 0.5.132
+**Status:** Beta (100% auto-generated, production-ready)
 
 ## Overview
 
@@ -68,22 +66,56 @@ fgt = FortiOS(
     verify=False
 )
 
-# Get system status
-status = fgt.monitor.system.status()
-print(f"Hostname: {status['hostname']}")
+# Get system status (Monitor endpoint - GET)
+status = fgt.api.monitor.system.status.get()
+print(f"Hostname: {status.hostname}")
+print(f"Version: {status.version}")
 
-# Manage firewall addresses
-fgt.api.cmdb.firewall.address.create(
+# Create a firewall address (CMDB endpoint - POST)
+fgt.api.cmdb.firewall.address.post(
     name="web-server",
-    subnet="192.168.1.100 255.255.255.255"
+    subnet="192.168.1.100 255.255.255.255",
+    comment="Production web server"
 )
 
-# Use convenience wrappers
-fgt.firewall.service_custom.create(
-    name="HTTPS-8443",
-    tcp_portrange="8443",
-    protocol="TCP/UDP/SCTP"
+# Update an existing address (CMDB endpoint - PUT)
+fgt.api.cmdb.firewall.address.put(
+    name="web-server",
+    subnet="192.168.1.101 255.255.255.255"
 )
+
+# Delete an address (CMDB endpoint - DELETE)
+fgt.api.cmdb.firewall.address.delete(name="web-server")
+```
+
+### FortiManager Proxy
+
+Route FortiOS API calls through FortiManager to managed devices:
+
+```python
+from hfortix_fortios import FortiManagerProxy
+
+# Connect to FortiManager
+fmg = FortiManagerProxy(
+    host="fortimanager.example.com",
+    username="admin",
+    password="password",
+    adom="root",
+    verify=False
+)
+
+# Get a proxied FortiOS connection to a managed device
+fgt = fmg.get_device("fw01")
+
+# Use the same API as direct FortiOS!
+addresses = fgt.api.cmdb.firewall.address.get()
+fgt.api.cmdb.firewall.address.post(
+    name="Server-01",
+    subnet="10.0.1.10 255.255.255.255"
+)
+
+# Clean up
+fmg.logout()
 ```
 
 ## Package Structure
@@ -172,9 +204,8 @@ from hfortix.FortiOS import FortiOS
 
 ## Migration from v0.4.x
 
-**Breaking Changes in v0.5.0:**
-- All convenience wrappers have been removed
-- Use direct API access via `fgt.api.cmdb.*`, `fgt.api.monitor.*`, `fgt.api.log.*`
+**Changes in v0.5.0:**
+- Direct API access via `fgt.api.cmdb.*`, `fgt.api.monitor.*`, `fgt.api.log.*`
 
 **Old (v0.4.x):**
 ```python
@@ -183,15 +214,16 @@ addr = FirewallAddress(fgt)
 result = addr.create(name="test", subnet="10.0.0.1/32")
 ```
 
-**New (v0.5.0):**
+**New (v0.5.0+):**
 ```python
-result = fgt.api.cmdb.firewall.address.create(
+# Uses standard REST methods: .get(), .post(), .put(), .delete()
+result = fgt.api.cmdb.firewall.address.post(
     name="test",
-    subnet="10.0.0.1/32"
+    subnet="10.0.0.1 255.255.255.255"
 )
 ```
 
-All methods work the same - just accessed directly through the endpoint.
+All endpoints use REST verbs (`.get()`, `.post()`, `.put()`, `.delete()`) and return FortiObject with attribute access.
 
 ## Documentation
 

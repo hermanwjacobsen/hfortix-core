@@ -27,7 +27,7 @@ from hfortix_fortios.models import (
 
 class DeletePayload(TypedDict, total=False):
     """Payload type for Delete operations."""
-    id_list: int | str | list[int | str]
+    id_list: list[str]
 
 
 # ================================================================
@@ -94,7 +94,7 @@ class Delete:
     def post(
         self,
         payload_dict: DeletePayload | None = ...,
-        id_list: int | str | list[int | str] | None = ...,
+        id_list: list[str] | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> DeleteObject: ...
@@ -106,7 +106,7 @@ class Delete:
     def put(
         self,
         payload_dict: DeletePayload | None = ...,
-        id_list: int | str | list[int | str] | None = ...,
+        id_list: list[str] | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> DeleteObject: ...
@@ -124,7 +124,7 @@ class Delete:
     def set(
         self,
         payload_dict: DeletePayload | None = ...,
-        id_list: int | str | list[int | str] | None = ...,
+        id_list: list[str] | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
     ) -> FortiObject[Any]: ...

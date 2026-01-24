@@ -27,7 +27,7 @@ from hfortix_fortios.models import (
 
 class CheckPortAvailabilityPayload(TypedDict, total=False):
     """Payload type for CheckPortAvailability operations."""
-    port_ranges: int | str | list[int | str]
+    port_ranges: list[str]
     service: Literal["reserved", "sysglobal", "webproxy", "ftpproxy", "sslvpn", "slaprobe", "fsso", "ftm_push"]
 
 
@@ -101,7 +101,7 @@ class CheckPortAvailability:
     def put(
         self,
         payload_dict: CheckPortAvailabilityPayload | None = ...,
-        port_ranges: int | str | list[int | str] | None = ...,
+        port_ranges: list[str] | None = ...,
         service: Literal["reserved", "sysglobal", "webproxy", "ftpproxy", "sslvpn", "slaprobe", "fsso", "ftm_push"] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
@@ -122,7 +122,7 @@ class CheckPortAvailability:
     def set(
         self,
         payload_dict: CheckPortAvailabilityPayload | None = ...,
-        port_ranges: int | str | list[int | str] | None = ...,
+        port_ranges: list[str] | None = ...,
         service: Literal["reserved", "sysglobal", "webproxy", "ftpproxy", "sslvpn", "slaprobe", "fsso", "ftm_push"] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,

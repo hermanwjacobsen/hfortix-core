@@ -9,9 +9,9 @@ Python client library for Fortinet products including FortiOS, FortiManager, and
 
 ## 🎯 Current Status
 
-> **⚠️ BETA STATUS - Version 0.5.130**
+> **⚠️ BETA STATUS - Version 0.5.132**
 >
-> - **Current Version**: 0.5.130 (Released - January 20, 2026)
+> - **Current Version**: 0.5.132 (Released - January 22, 2026)
 > - **Schema Version**: v1.7.0 (1,348 endpoints with enhanced metadata)
 > - **Package Size**: ~30 MB (optimized with MetadataMixin refactoring)
 > - **Implementation**: Advanced Features (100% complete) - Production ready!
@@ -658,11 +658,10 @@ hfortix/
 - **[docs/fortios/FILTERING_GUIDE.md](docs/fortios/FILTERING_GUIDE.md)** - FortiOS filtering with 50+ examples
 - **[docs/fortios/PERFORMANCE_TESTING.md](docs/fortios/PERFORMANCE_TESTING.md)** - Performance testing and optimization
 
-> **⚡ Performance Note**: When using convenience wrappers like `fgt.firewall.policy.exists()`:
+> **⚡ Performance Note**: When using `.exists()` method:
 >
-> - **By ID** (`policy_id=123`) - Direct API call, fastest method
-> - **By Name** (`name="MyPolicy"`) - Requires recursive lookup through all policies, slower but more convenient
-> - Recommendation: Use `policy_id` for performance-critical code, `name` for readability and convenience
+> - **By mkey** (e.g., `name="MyAddress"`) - Direct API call, fastest method
+> - Returns `True` or `False` without raising exceptions
 
 ### API Reference
 
@@ -771,16 +770,30 @@ fgt = FortiOS(
 # Uses conservative defaults: max_connections=10, max_keepalive=5
 # Run fgt.api.utils.performance_test() to get device-specific optimal settings!
 
-# List firewall addresses
-addresses = fgt.api.cmdb.firewall.address.list()
-print(f"Found {len(addresses['results'])} addresses")
+# Get system status (Monitor endpoint)
+status = fgt.api.monitor.system.status.get()
+print(f"Hostname: {status.hostname}, Version: {status.version}")
 
-# Create a new address
-result = fgt.api.cmdb.firewall.address.create(
+# Get all firewall addresses (CMDB endpoint - GET)
+addresses = fgt.api.cmdb.firewall.address.get()
+for addr in addresses:
+    print(f"{addr.name}: {addr.subnet}")
+
+# Create a new address (CMDB endpoint - POST)
+result = fgt.api.cmdb.firewall.address.post(
     name='web-server',
-    subnet='192.168.10.50/32',
+    subnet='192.168.10.50 255.255.255.255',
     comment='Production web server'
 )
+
+# Update an address (CMDB endpoint - PUT)
+fgt.api.cmdb.firewall.address.put(
+    name='web-server',
+    comment='Updated comment'
+)
+
+# Delete an address (CMDB endpoint - DELETE)
+fgt.api.cmdb.firewall.address.delete(name='web-server')
 ```
 
 ### 🎯 IDE Autocomplete with Literal Types ✨ NEW in v0.5.4
@@ -793,7 +806,7 @@ from hfortix import FortiOS
 fgt = FortiOS(host='192.168.1.99', token='your-token')
 
 # ✨ IDE autocomplete for ALL enum fields!
-fgt.api.cmdb.firewall.policy.create(
+fgt.api.cmdb.firewall.policy.post(
     name='allow-web',
     action='accept',      # 💡 IDE suggests: 'accept', 'deny', 'ipsec'
     status='enable',      # 💡 IDE suggests: 'enable', 'disable'
@@ -804,7 +817,7 @@ fgt.api.cmdb.firewall.policy.create(
 )
 
 # 🛡️ Type safety - catches errors before runtime
-fgt.api.cmdb.system.interface.create(
+fgt.api.cmdb.system.interface.post(
     name='port1',
     mode='static',        # 💡 IDE suggests: 'static', 'dhcp', 'pppoe'
     type='physical',      # 💡 IDE suggests: 'physical', 'vlan', 'tunnel', 'loopback', ...
@@ -812,7 +825,7 @@ fgt.api.cmdb.system.interface.create(
 )
 
 # 📚 Self-documenting - hover to see all valid options
-fgt.api.cmdb.firewall.address.create(
+fgt.api.cmdb.firewall.address.post(
     name='server1',
     type='ipmask',        # 💡 Hover shows: 'ipmask', 'iprange', 'fqdn', 'geography', ...
     subnet='10.0.1.5/32'
@@ -841,27 +854,28 @@ See [.dev/LITERAL_TYPES_QUICKSTART.md](.dev/LITERAL_TYPES_QUICKSTART.md) for mor
 All API methods support `raw_json` parameter for full response access:
 
 ```python
-# Default behavior - returns just the results
-addresses = fgt.api.cmdb.firewall.address.list()
-print(addresses)  # ['obj1', 'obj2', 'obj3']
+# Default behavior - returns FortiObject with attribute access
+addresses = fgt.api.cmdb.firewall.address.get()
+for addr in addresses:
+    print(addr.name)  # Attribute access
 
-# With raw_json=True - returns complete API response
-response = fgt.api.cmdb.firewall.address.list(raw_json=True)
+# With raw_json=True - returns complete API response as dict
+response = fgt.api.cmdb.firewall.address.get(raw_json=True)
 print(response['http_status'])  # 200
 print(response['status'])       # 'success'
-print(response['results'])      # ['obj1', 'obj2', 'obj3']
+print(response['results'])      # [{'name': 'addr1', ...}, ...]
 print(response['serial'])       # 'FGT60FTK19000001'
 print(response['version'])      # 'v7.6.5'
 
 # Useful for error checking
-result = fgt.api.cmdb.firewall.address.get('web-server', raw_json=True)
+result = fgt.api.cmdb.firewall.address.get(name='web-server', raw_json=True)
 if result['http_status'] == 200:
     print(f"Object found: {result['results']}")
 else:
     print(f"Error: {result.get('error', 'Unknown error')}")
 ```
 
-**Available on:** All 45+ API methods (100% coverage)
+**Available on:** All API methods (100% coverage)
 
 ### Environment Variables ✨ NEW in v0.3.18
 
@@ -962,7 +976,7 @@ fgt = FortiOS(
 )
 
 # All API calls are automatically logged with full context
-fgt.api.cmdb.firewall.address.create(name="web-server", subnet="10.0.0.1/32")
+fgt.api.cmdb.firewall.address.post(name="web-server", subnet="10.0.0.1 255.255.255.255")
 ```
 
 **Audit Log Output (JSONL format)**:
@@ -1041,13 +1055,13 @@ fgt = FortiOS(
 )
 
 # All operations automatically logged with full context
-fgt.api.cmdb.firewall.policy.create(
+fgt.api.cmdb.firewall.policy.post(
     policyid=100,
-    srcintf=["port1"],
-    dstintf=["port2"],
-    srcaddr=["all"],
-    dstaddr=["all"],
-    service=["ALL"],
+    srcintf=[{"name": "port1"}],
+    dstintf=[{"name": "port2"}],
+    srcaddr=[{"name": "all"}],
+    dstaddr=[{"name": "all"}],
+    service=[{"name": "ALL"}],
     action="accept",
     schedule="always"
 )
@@ -1108,8 +1122,8 @@ handler = SlackNotifier("https://hooks.slack.com/services/YOUR/WEBHOOK")
 fgt = FortiOS("192.168.1.99", token="token", audit_handler=handler)
 
 # Now all firewall policy changes trigger Slack notifications
-fgt.api.cmdb.firewall.policy.create(name="Block-Malware", ...)
-# → Slack: "🔥 Firewall changed by admin: create Block-Malware"
+fgt.api.cmdb.firewall.policy.post(name="Block-Malware", action="deny")
+# → Slack: "🔥 Firewall changed by admin: post Block-Malware"
 ```
 
 #### Enhanced CompositeHandler
@@ -1440,7 +1454,7 @@ audit_client = AuditLoggingHTTPClient(real_client, my_audit_logger)
 fgt = FortiOS(client=audit_client)
 
 # All API calls are now logged to your audit system
-fgt.api.cmdb.firewall.address.create(name="web-server", subnet="10.0.0.1/32")
+fgt.api.cmdb.firewall.address.post(name="web-server", subnet="10.0.0.1 255.255.255.255")
 ```
 
 **Protocol Interface:**
@@ -1632,22 +1646,22 @@ HFortix supports **flexible dual-pattern syntax** - use dictionaries, keywords, 
 # Pattern 1: Dictionary-based (great for templates)
 config = {
     'name': 'web-server',
-    'subnet': '192.168.10.50/32',
+    'subnet': '192.168.10.50 255.255.255.255',
     'comment': 'Production web server'
 }
-fgt.api.cmdb.firewall.address.create(data_dict=config)
+fgt.api.cmdb.firewall.address.post(payload_dict=config)
 
 # Pattern 2: Keyword-based (great for readability)
-fgt.api.cmdb.firewall.address.create(
+fgt.api.cmdb.firewall.address.post(
     name='web-server',
-    subnet='192.168.10.50/32',
+    subnet='192.168.10.50 255.255.255.255',
     comment='Production web server'
 )
 
 # Pattern 3: Mixed (template + overrides)
 base_config = load_template('address_template.json')
-fgt.api.cmdb.firewall.address.create(
-    data_dict=base_config,
+fgt.api.cmdb.firewall.address.post(
+    payload_dict=base_config,
     name=f'server-{site_id}',  # Override name
     comment=f'Site: {site_name}'
 )
@@ -1669,9 +1683,9 @@ from hfortix import (
 )
 
 try:
-    result = fgt.api.cmdb.firewall.address.create(
+    result = fgt.api.cmdb.firewall.address.post(
         name='test-address',
-        subnet='10.0.0.0/24'
+        subnet='10.0.0.0 255.255.255.0'
     )
 except DuplicateEntryError as e:
     print(f"Address already exists: {e}")
@@ -1738,7 +1752,7 @@ from hfortix import FortiOS
 async def main():
     # Enable async mode
     async with FortiOS(host='192.168.1.99', token='your-token', mode="async") as fgt:
-        addresses = await fgt.api.cmdb.firewall.address.list()
+        addresses = await fgt.api.cmdb.firewall.address.get()
         print(f"Found {len(addresses)} addresses")
 
 asyncio.run(main())
@@ -1767,18 +1781,18 @@ from hfortix import FortiOS
 
 fgt = FortiOS(host='192.168.1.99', token='your-token', verify=False)
 
-# List addresses
-addresses = fgt.api.cmdb.firewall.address.list()
+# Get all addresses
+addresses = fgt.api.cmdb.firewall.address.get()
 
-# Create address
-result = fgt.api.cmdb.firewall.address.create(
+# Create address (POST)
+result = fgt.api.cmdb.firewall.address.post(
     name='web-server',
-    subnet='10.0.1.100/32',
+    subnet='10.0.1.100 255.255.255.255',
     comment='Production web server'
 )
 
-# Update address
-result = fgt.api.cmdb.firewall.address.update(
+# Update address (PUT)
+result = fgt.api.cmdb.firewall.address.put(
     name='web-server',
     comment='Updated comment'
 )
@@ -1789,33 +1803,63 @@ result = fgt.api.cmdb.firewall.address.update(
 result = fgt.api.cmdb.firewall.address.delete(name='web-server')
 ```
 
-### FortiOS - DoS Protection (NEW!)
+### FortiManager Proxy
+
+Route FortiOS API calls through FortiManager to managed devices:
 
 ```python
-# Create IPv4 DoS policy with simplified API
-result = fgt.api.cmdb.firewall.dos_policy.create(
+from hfortix_fortios import FortiManagerProxy
+
+# Connect to FortiManager
+fmg = FortiManagerProxy(
+    host="fortimanager.example.com",
+    username="admin",
+    password="password",
+    adom="root",
+    verify=False
+)
+
+# Get a proxied FortiOS connection to a managed device
+fgt = fmg.get_device("fw01")
+
+# Use the same API as direct FortiOS!
+addresses = fgt.api.cmdb.firewall.address.get()
+for addr in addresses:
+    print(f"{addr.name}: {addr.subnet}")
+
+# Create, update, delete - all work through the proxy
+fgt.api.cmdb.firewall.address.post(
+    name="Server-01",
+    subnet="10.0.1.10 255.255.255.255"
+)
+
+# Clean up
+fmg.logout()
+```
+
+### FortiOS - DoS Protection
+
+```python
+# Create IPv4 DoS policy
+result = fgt.api.cmdb.firewall.dos_policy.post(
     policyid=1,
     name='protect-web-servers',
-    interface='port3',              # Simple string format
-    srcaddr=['all'],                # Simple list format
-    dstaddr=['web-servers'],
-    service=['HTTP', 'HTTPS'],
+    interface='port3',
+    srcaddr=[{"name": "all"}],
+    dstaddr=[{"name": "web-servers"}],
+    service=[{"name": "HTTP"}, {"name": "HTTPS"}],
     status='enable',
     comments='Protect web farm from DoS attacks'
 )
 
-# API automatically converts to FortiGate format:
-# interface='port3' → {'q_origin_key': 'port3'}
-# service=['HTTP'] → [{'name': 'HTTP'}]
-
 # Custom anomaly detection thresholds
-result = fgt.api.cmdb.firewall.dos_policy.create(
+result = fgt.api.cmdb.firewall.dos_policy.post(
     policyid=2,
     name='strict-dos-policy',
     interface='wan1',
-    srcaddr=['all'],
-    dstaddr=['all'],
-    service=['ALL'],
+    srcaddr=[{"name": "all"}],
+    dstaddr=[{"name": "all"}],
+    service=[{"name": "ALL"}],
     anomaly=[
         {'name': 'tcp_syn_flood', 'threshold': 500, 'action': 'block'},
         {'name': 'udp_flood', 'threshold': 1000, 'action': 'block'}
@@ -1823,44 +1867,41 @@ result = fgt.api.cmdb.firewall.dos_policy.create(
 )
 ```
 
-### FortiOS - Reverse Proxy/WAF (NEW!)
+### FortiOS - Reverse Proxy/WAF
 
 ```python
 # Create access proxy (requires VIP with type='access-proxy')
-result = fgt.api.cmdb.firewall.access_proxy.create(
+result = fgt.api.cmdb.firewall.access_proxy.post(
     name='web-proxy',
-    vip='web-vip',                    # VIP must be type='access-proxy'
+    vip='web-vip',
     auth_portal='enable',
     log_blocked_traffic='enable',
     http_supported_max_version='2.0',
     svr_pool_multiplex='enable'
 )
 
-# Create virtual host with simplified API
-result = fgt.api.cmdb.firewall.access_proxy_virtual_host.create(
+# Create virtual host
+result = fgt.api.cmdb.firewall.access_proxy_virtual_host.post(
     name='api-vhost',
     host='*.api.example.com',
     host_type='wildcard',
-    ssl_certificate='Fortinet_Factory'  # String auto-converts to list
+    ssl_certificate=[{"name": "Fortinet_Factory"}]
 )
-
-# API automatically converts:
-# ssl_certificate='cert' → [{'name': 'cert'}]
 ```
 
-### FortiOS - Address & Address Group Management (NEW!)
+### FortiOS - Address & Address Group Management
 
 ```python
 # Create IPv4 address (subnet)
-result = fgt.api.cmdb.firewall.address.create(
+result = fgt.api.cmdb.firewall.address.post(
     name='internal-net',
     type='ipmask',
-    subnet='192.168.1.0/24',
+    subnet='192.168.1.0 255.255.255.0',
     comment='Internal network'
 )
 
 # Create IPv4 address (IP range)
-result = fgt.api.cmdb.firewall.address.create(
+result = fgt.api.cmdb.firewall.address.post(
     name='dhcp-range',
     type='iprange',
     start_ip='192.168.1.100',
@@ -1868,39 +1909,36 @@ result = fgt.api.cmdb.firewall.address.create(
 )
 
 # Create IPv4 address (FQDN)
-result = fgt.api.cmdb.firewall.address.create(
+result = fgt.api.cmdb.firewall.address.post(
     name='google-dns',
     type='fqdn',
     fqdn='dns.google.com'
 )
 
 # Create IPv6 address
-result = fgt.api.cmdb.firewall.address6.create(
+result = fgt.api.cmdb.firewall.address6.post(
     name='ipv6-internal',
     type='ipprefix',
     ip6='2001:db8::/32',
     comment='IPv6 internal network'
 )
 
-# Create address group with simplified API
-result = fgt.api.cmdb.firewall.addrgrp.create(
+# Create address group
+result = fgt.api.cmdb.firewall.addrgrp.post(
     name='internal-networks',
-    member=['subnet1', 'subnet2', 'subnet3'],  # Simple string list!
+    member=[{"name": "subnet1"}, {"name": "subnet2"}, {"name": "subnet3"}],
     comment='All internal networks'
 )
 
-# API automatically converts:
-# member=['addr1', 'addr2'] → [{'name': 'addr1'}, {'name': 'addr2'}]
-
 # Create IPv6 address group
-result = fgt.api.cmdb.firewall.addrgrp6.create(
+result = fgt.api.cmdb.firewall.addrgrp6.post(
     name='ipv6-internal-networks',
-    member=['ipv6-subnet1', 'ipv6-subnet2'],
+    member=[{"name": "ipv6-subnet1"}, {"name": "ipv6-subnet2"}],
     comment='All internal IPv6 networks'
 )
 
 # Create IPv6 address template
-result = fgt.api.cmdb.firewall.address6_template.create(
+result = fgt.api.cmdb.firewall.address6_template.post(
     name='ipv6-subnet-template',
     ip6='2001:db8::/32',
     subnet_segment_count=2,
@@ -1912,9 +1950,9 @@ result = fgt.api.cmdb.firewall.address6_template.create(
 
 ```python
 # Create recurring schedule
-result = fgt.api.cmdb.firewall.schedule.recurring.create(
+result = fgt.api.cmdb.firewall.schedule.recurring.post(
     name='business-hours',
-    day=['monday', 'tuesday', 'wednesday', 'thursday', 'friday'],
+    day='monday tuesday wednesday thursday friday',
     start='08:00',
     end='18:00'
 )
@@ -1925,7 +1963,7 @@ tomorrow = datetime.now() + timedelta(days=1)
 start = f"09:00 {tomorrow.strftime('%Y/%m/%d')}"
 end = f"17:00 {tomorrow.strftime('%Y/%m/%d')}"
 
-result = fgt.api.cmdb.firewall.schedule.onetime.create(
+result = fgt.api.cmdb.firewall.schedule.onetime.post(
     name='maintenance-window',
     start=start,
     end=end,
@@ -1941,9 +1979,9 @@ result = fgt.api.cmdb.firewall.schedule.onetime.create(
 
 ```python
 # Standard CRUD - simple and intuitive
-fgt.api.cmdb.firewall.address.create(name='test', subnet='192.168.1.0/24')
-fgt.api.cmdb.firewall.address.update(name='test', comment='updated')
-fgt.api.cmdb.firewall.address.delete('test')
+fgt.api.cmdb.firewall.address.post(name='test', subnet='192.168.1.0 255.255.255.0')
+fgt.api.cmdb.firewall.address.put(name='test', comment='updated')
+fgt.api.cmdb.firewall.address.delete(name='test')
 ```
 
 **Singleton Endpoints** (BGP, OSPF, RIP, ISIS, etc.) require GET→Modify→PUT pattern:
@@ -1961,7 +1999,7 @@ elif isinstance(result, dict) and 'results' in result:
     if isinstance(config, list):
         config = config[0] if config else {}
 else:
-    config = result
+    config = result.to_dict() if hasattr(result, 'to_dict') else result
 
 # Step 3: Modify nested objects (neighbors, networks, etc.)
 neighbors = config.get('neighbor', [])
@@ -1973,13 +2011,12 @@ neighbors.append({
 })
 config['neighbor'] = neighbors
 
-# Step 4: Send entire config back
-result = fgt.api.cmdb.router.bgp.update(data_dict=config)
+# Step 4: Send entire config back (PUT)
+result = fgt.api.cmdb.router.bgp.put(payload_dict=config)
 
 # Verify
 config = fgt.api.cmdb.router.bgp.get()
-# Extract config again (same as step 2)
-neighbors = config.get('neighbor', []) if isinstance(config, dict) else []
+neighbors = config.neighbor if hasattr(config, 'neighbor') else []
 print(f"BGP now has {len(neighbors)} neighbors")
 ```
 
@@ -1988,17 +2025,15 @@ OSPF Network Management (same pattern)
 ```python
 # OSPF Network Management - same pattern
 config = fgt.api.cmdb.router.ospf.get()
-# Extract config (same pattern as BGP)
-if isinstance(config, list):
-    config = config[0] if config else {}
+config_dict = config.to_dict() if hasattr(config, 'to_dict') else config
 
-networks = config.get('network', [])
+networks = config_dict.get('network', [])
 networks.append({
     'id': 9999,
     'prefix': '192.168.1.0 255.255.255.0'
 })
-config['network'] = networks
-fgt.api.cmdb.router.ospf.update(data_dict=config)
+config_dict['network'] = networks
+fgt.api.cmdb.router.ospf.put(payload_dict=config_dict)
 ```
 
 RIP Network Management
@@ -2006,13 +2041,12 @@ RIP Network Management
 ```python
 # RIP Network Management
 config = fgt.api.cmdb.router.rip.get()
-if isinstance(config, list):
-    config = config[0]
+config_dict = config.to_dict() if hasattr(config, 'to_dict') else config
 
-networks = config.get('network', [])
+networks = config_dict.get('network', [])
 networks.append({'id': 1, 'prefix': '10.0.0.0 255.0.0.0'})
-config['network'] = networks
-fgt.api.cmdb.router.rip.update(data_dict=config)
+config_dict['network'] = networks
+fgt.api.cmdb.router.rip.put(payload_dict=config_dict)
 ```
 
 **Why This Pattern?**
@@ -2054,25 +2088,25 @@ from hfortix import FortiOS
 fgt = FortiOS(host='192.168.1.99', token='your-token', verify=False)
 
 # Check if object exists before operations
-if fgt.api.cmdb.firewall.address.exists('web-server'):
+if fgt.api.cmdb.firewall.address.exists(name='web-server'):
     print("Address already exists")
-    fgt.api.cmdb.firewall.address.update('web-server', comment='Updated')
+    fgt.api.cmdb.firewall.address.put(name='web-server', comment='Updated')
 else:
     print("Creating new address")
-    fgt.api.cmdb.firewall.address.create(
+    fgt.api.cmdb.firewall.address.post(
         name='web-server',
-        subnet='10.0.1.100/32'
+        subnet='10.0.1.100 255.255.255.255'
     )
 
 # Safe deletion pattern
-if fgt.api.cmdb.user.local.exists('testuser'):
-    fgt.api.cmdb.user.local.delete('testuser')
+if fgt.api.cmdb.user.local.exists(name='testuser'):
+    fgt.api.cmdb.user.local.delete(name='testuser')
 
 # Conditional processing
 users = ['alice', 'bob', 'charlie']
 for user in users:
-    if not fgt.api.cmdb.user.local.exists(user):
-        fgt.api.cmdb.user.local.create(
+    if not fgt.api.cmdb.user.local.exists(name=user):
+        fgt.api.cmdb.user.local.post(
             name=user,
             type='password',
             passwd='SecureP@ss123'
@@ -2266,8 +2300,8 @@ fgt = FortiOS(
 
   ```python
   # Simple add/remove pattern
-  fgt.api.cmdb.firewall.address.create(name='test', subnet='192.168.1.0/24')
-  fgt.api.cmdb.firewall.address.delete('test')
+  fgt.api.cmdb.firewall.address.post(name='test', subnet='192.168.1.0 255.255.255.0')
+  fgt.api.cmdb.firewall.address.delete(name='test')
   ```
 
 - **Singleton Endpoints** (bgp, ospf, rip, isis, etc.): Require GET→Modify→PUT pattern
@@ -2275,8 +2309,9 @@ fgt = FortiOS(
   ```python
   # Must get entire config, modify, and send back
   config = fgt.api.cmdb.router.bgp.get()
-  config['neighbor'].append({'ip': '10.0.0.1', 'remote-as': 65001})
-  fgt.api.cmdb.router.bgp.update(data_dict=config)
+  config_dict = config.to_dict()
+  config_dict['neighbor'].append({'ip': '10.0.0.1', 'remote-as': 65001})
+  fgt.api.cmdb.router.bgp.put(payload_dict=config_dict)
   ```
 
 **Why?** This is a FortiOS API design - routing protocols are singleton objects with nested lists (neighbors, networks, areas). The API requires sending the entire configuration on updates.

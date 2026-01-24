@@ -27,7 +27,7 @@ from hfortix_fortios.models import (
 
 class DeviceStatusPayload(TypedDict, total=False):
     """Payload type for DeviceStatus operations."""
-    serials: int | str | list[int | str]
+    serials: list[str]
     update_cache: bool
 
 
@@ -101,7 +101,7 @@ class DeviceStatus:
     def put(
         self,
         payload_dict: DeviceStatusPayload | None = ...,
-        serials: int | str | list[int | str] | None = ...,
+        serials: list[str] | None = ...,
         update_cache: bool | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
@@ -122,7 +122,7 @@ class DeviceStatus:
     def set(
         self,
         payload_dict: DeviceStatusPayload | None = ...,
-        serials: int | str | list[int | str] | None = ...,
+        serials: list[str] | None = ...,
         update_cache: bool | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
