@@ -332,25 +332,33 @@ class FortiManagerProxy:
         """Check if connected to FortiManager."""
         return self._session.is_authenticated
     
-    def login(self) -> dict[str, Any]:
+    def login(self) -> FortiObject:
         """
         Authenticate with FortiManager.
         
         Called automatically on first proxy request if not already authenticated.
         
         Returns:
-            FMG login response dict with session and status information
+            FMG login response wrapped in FortiObject with fmg_raw property
         """
-        return self._session.login()
+        response = self._session.login()
+        # Wrap in FortiObject so it supports .fmg_raw and other FMG properties
+        # Add fmg_raw key to the response data for property access
+        envelope = {**response, "fmg_raw": response}
+        return FortiObject(response, raw_envelope=envelope)
     
-    def logout(self) -> dict[str, Any]:
+    def logout(self) -> FortiObject:
         """
         End FortiManager session.
         
         Returns:
-            FMG logout response dict with status information
+            FMG logout response wrapped in FortiObject with fmg_raw property
         """
-        return self._session.logout()
+        response = self._session.logout()
+        # Wrap in FortiObject so it supports .fmg_raw and other FMG properties
+        # Add fmg_raw key to the response data for property access
+        envelope = {**response, "fmg_raw": response}
+        return FortiObject(response, raw_envelope=envelope)
     
     def get_adoms(self) -> list[FortiObject]:
         """

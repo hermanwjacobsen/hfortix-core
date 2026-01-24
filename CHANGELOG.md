@@ -1,39 +1,99 @@
 
-# [0.5.144] - 2026-01-24
+# [0.5.145] - 2026-01-24
 
 ### Changed
 
-- **FortiManager Login/Logout Now Return Responses**: Updated `login()` and `logout()` methods to return response dictionaries instead of `None`, providing access to status codes, messages, and session information.
+- **FortiManager Login/Logout Now Return FortiObject**: Updated `login()` and `logout()` methods to return `FortiObject` instances instead of plain dicts, providing access to status codes, messages, session information, and FMG metadata properties.
   
   **Breaking Change**: 
-  - `fmg.login()` now returns `dict[str, Any]` (was `None`)
-  - `fmg.logout()` now returns `dict[str, Any]` (was `None`)
+  - `fmg.login()` now returns `FortiObject` (was `dict[str, Any]`)
+  - `fmg.logout()` now returns `FortiObject` (was `dict[str, Any]`)
   
   **Usage**:
   ```python
-  # Login response
+  # Login response (FortiObject with FMG properties)
   login_response = fmg.login()
   print(login_response["result"][0]["status"]["code"])  # 0 = success
   print(login_response["session"])  # Session token
+  print(login_response.fmg_raw)  # Full raw response
   
-  # Logout response
+  # Logout response (FortiObject with FMG properties)
   logout_response = fmg.logout()
   print(logout_response["status"]["code"])  # 0 = success
   print(logout_response["status"]["message"])  # Status message
+  print(logout_response.fmg_raw)  # Full raw response
+  
+  # FMG metadata properties available:
+  # - .fmg_raw - Full JSON-RPC response
+  # - .fmg_status_code - Status code from response
+  # - .fmg_status_message - Status message
+  # - .json - JSON serializable dict
+  # - .dict - Dictionary representation
   ```
   
   **Benefits**:
-  - Consistent API - all FMG operations return response objects
+  - Consistent API - all FMG operations return FortiObject instances
+  - Access to all FMG metadata properties (.fmg_raw, etc.)
   - Access to status codes and error messages
   - Better error handling and debugging
   - Type hints updated in stub files (.pyi)
 
 ### Technical Details
 
-- Modified `HTTPClientFMG.login()` and `HTTPClientFMG.logout()` in core library
-- Modified `FortiManagerProxy.login()` and `FortiManagerProxy.logout()` wrappers
-- Updated type stubs to reflect new return types
-- Maintains backward compatibility (return values can be ignored if not needed)
+- Modified `FortiManagerProxy.login()` and `FortiManagerProxy.logout()` to wrap responses in FortiObject
+- Core library `HTTPClientFMG.login()` and `HTTPClientFMG.logout()` still return plain dicts
+- FortiObject wrapper provides FMG metadata properties (.fmg_raw, .fmg_status_code, etc.)
+- Updated type stubs to reflect new return types (FortiObject instead of dict[str, Any])
+- Maintains backward compatibility for dict-style access (response["key"])
+- Adds attribute-style access for FMG properties (response.fmg_raw)
+
+# [0.5.144] - 2026-01-24
+
+### Changed
+
+- **FortiManager Login/Logout Now Return FortiObject**: Updated `login()` and `logout()` methods to return `FortiObject` instances instead of `None`, providing access to status codes, messages, session information, and FMG metadata properties.
+  
+  **Breaking Change**: 
+  - `fmg.login()` now returns `FortiObject` (was `None`)
+  - `fmg.logout()` now returns `FortiObject` (was `None`)
+  
+  **Usage**:
+  ```python
+  # Login response (FortiObject with FMG properties)
+  login_response = fmg.login()
+  print(login_response["result"][0]["status"]["code"])  # 0 = success
+  print(login_response["session"])  # Session token
+  print(login_response.fmg_raw)  # Full raw response
+  
+  # Logout response (FortiObject with FMG properties)
+  logout_response = fmg.logout()
+  print(logout_response["status"]["code"])  # 0 = success
+  print(logout_response["status"]["message"])  # Status message
+  print(logout_response.fmg_raw)  # Full raw response
+  
+  # FMG metadata properties available:
+  # - .fmg_raw - Full JSON-RPC response
+  # - .fmg_status_code - Status code from response
+  # - .fmg_status_message - Status message
+  # - .json - JSON serializable dict
+  # - .dict - Dictionary representation
+  ```
+  
+  **Benefits**:
+  - Consistent API - all FMG operations return FortiObject instances
+  - Access to all FMG metadata properties (.fmg_raw, etc.)
+  - Access to status codes and error messages
+  - Better error handling and debugging
+  - Type hints updated in stub files (.pyi)
+
+### Technical Details
+
+- Modified `FortiManagerProxy.login()` and `FortiManagerProxy.logout()` to wrap responses in FortiObject
+- Core library `HTTPClientFMG.login()` and `HTTPClientFMG.logout()` still return plain dicts
+- FortiObject wrapper provides FMG metadata properties (.fmg_raw, .fmg_status_code, etc.)
+- Updated type stubs to reflect new return types (FortiObject instead of dict[str, Any])
+- Maintains backward compatibility for dict-style access (response["key"])
+- Adds attribute-style access for FMG properties (response.fmg_raw)
 
 # [0.5.143] - 2026-01-23
 

@@ -22,7 +22,17 @@ class DeviceResult:
     """
     target: str
     response: dict[str, Any]
+    # All fields with defaults must come after required fields
     status: dict[str, Any] = field(default_factory=lambda: {"code": 0, "message": "OK"})
+    fmg_proxy_status_code: int | None = None
+    fmg_proxy_status_message: str | None = None
+    fmg_proxy_target: str | None = None
+    fmg_proxy_url: str | None = None
+    fmg_url: str | None = None
+    fmg_status_code: int | None = None
+    fmg_status_message: str | None = None
+    fmg_id: int | None = None
+    fmg_raw: dict[str, Any] | None = None
     
     @property
     def success(self) -> bool:
@@ -47,6 +57,7 @@ class DeviceResult:
 
 @dataclass
 class ProxyResponse:
+    fmg_raw: dict[str, Any] | None = None
     """
     Response from a FortiManager proxy request.
     
@@ -60,6 +71,12 @@ class ProxyResponse:
     data: list[DeviceResult] = field(default_factory=list)
     status: dict[str, Any] = field(default_factory=lambda: {"code": 0, "message": "OK"})
     url: str = "/sys/proxy/json"
+    # FMG proxy fields (top-level)
+    fmg_proxy_status_code: int | None = None
+    fmg_proxy_status_message: str | None = None
+    fmg_proxy_url: str | None = None
+    fmg_url: str | None = None
+    fmg_id: int | None = None
     
     def __iter__(self):
         """Iterate over device results."""
@@ -97,22 +114,23 @@ class ProxyResponse:
     def from_fmg_response(cls, response: dict[str, Any]) -> "ProxyResponse":
         """
         Parse a FortiManager JSON-RPC response into a ProxyResponse.
-        
         Args:
             response: Raw FMG response dict
-            
         Returns:
             ProxyResponse object
         """
         result = response.get("result", [{}])[0]
-        
+        fmg_id = response.get("id")
+        fmg_proxy_status = result.get("status", {})
+        fmg_proxy_status_code = fmg_proxy_status.get("code")
+        fmg_proxy_status_message = fmg_proxy_status.get("message")
         device_results = []
+        fmg_proxy_url = result.get("url", "/sys/proxy/json")
+        fmg_url = None
         for item in result.get("data", []):
             raw_response = item.get("response", {})
-            
             # Handle non-dict responses (e.g., HTML error pages from FortiGate)
             if isinstance(raw_response, str):
-                # Check if it's an HTML error page
                 if raw_response.strip().startswith("<!DOCTYPE") or raw_response.strip().startswith("<html"):
                     raw_response = {
                         "status": "error",
@@ -123,7 +141,6 @@ class ProxyResponse:
                         "results": [],
                     }
                 else:
-                    # Some other string response - wrap it
                     raw_response = {
                         "status": "error",
                         "http_status": 500,
@@ -132,7 +149,6 @@ class ProxyResponse:
                         "results": [],
                     }
             elif not isinstance(raw_response, dict):
-                # Handle any other non-dict type
                 raw_response = {
                     "status": "error",
                     "http_status": 500,
@@ -140,15 +156,33 @@ class ProxyResponse:
                     "message": str(raw_response),
                     "results": [],
                 }
-            
-            device_results.append(DeviceResult(
+            # FMG status for this device
+            device_status = item.get("status", {"code": -1, "message": "Unknown"})
+            device_result = DeviceResult(
                 target=item.get("target", "unknown"),
                 response=raw_response,
-                status=item.get("status", {"code": -1, "message": "Unknown"}),
-            ))
-        
+                status=device_status,
+                fmg_proxy_status_code=fmg_proxy_status_code,
+                fmg_proxy_status_message=fmg_proxy_status_message,
+                fmg_proxy_target=item.get("target"),
+                fmg_proxy_url=fmg_proxy_url,
+                fmg_url=item.get("url"),
+                fmg_status_code=device_status.get("code"),
+                fmg_status_message=device_status.get("message"),
+                fmg_id=fmg_id,
+                fmg_raw=item,
+            )
+            device_results.append(device_result)
+            if not fmg_url and item.get("url"):
+                fmg_url = item.get("url")
         return cls(
             data=device_results,
-            status=result.get("status", {"code": -1, "message": "Unknown"}),
-            url=result.get("url", "/sys/proxy/json"),
+            status=fmg_proxy_status,
+            url=fmg_proxy_url,
+            fmg_proxy_status_code=fmg_proxy_status_code,
+            fmg_proxy_status_message=fmg_proxy_status_message,
+            fmg_proxy_url=fmg_proxy_url,
+            fmg_url=fmg_url,
+            fmg_id=fmg_id,
+            fmg_raw=response,
         )

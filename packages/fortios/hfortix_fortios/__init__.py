@@ -54,6 +54,7 @@ from .models import FortiObject, FortiObjectList, ContentResponse, CONTENT_ENDPO
 # FortiManager proxy support
 from .fmg_proxy import (
     FortiManagerProxy,
+    ProxiedFortiOS,
     ProxyResponse,
     DeviceResult,
 )
@@ -86,6 +87,7 @@ __all__ = [
     "configure_logging",
     # FortiManager proxy
     "FortiManagerProxy",
+    "ProxiedFortiOS",
     "ProxyResponse",
     "DeviceResult",
     # Formatting utilities
