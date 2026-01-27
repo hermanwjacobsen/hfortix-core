@@ -1,3 +1,47 @@
+# [Unreleased]
+
+### Fixed
+
+- **Generator: Module Alias Resolution in Type Stubs**: Fixed critical bug where module aliases in category `__init__.py` files were not being resolved correctly when generating `.pyi` type stub files.
+  
+  **The Problem**: When a category imports a module with an alias (e.g., `from . import client as client_ns`), the generator was capturing the alias name instead of the actual module name, resulting in broken imports like `from .client_ns import Client` (module doesn't exist).
+  
+  **The Solution**: Enhanced generator to:
+  - Parse both `from . import module` and `from . import module as alias` patterns
+  - Build `module_aliases` dict to map aliases to actual module names
+  - Resolve aliases back to actual module names when generating imports
+  
+  **Impact**:
+  - ✅ WiFi client autocomplete now works correctly (`client.mac`, `client.ip`, etc.)
+  - ✅ Type checking properly shows errors for non-existent fields (`client.nonexistent_field`)
+  - ✅ Fixed for all categories with aliased imports (338 .pyi files regenerated)
+  
+  **Files Changed**:
+  - `.dev/generator/generate.py`: Added alias resolution logic
+  - All category `__init__.pyi` files: Regenerated with correct import paths
+
+### Improved
+
+- **Schema: Major Response Fields Enhancement**: Significant improvements to response field coverage and accuracy across all endpoint categories:
+  
+  **Log Archives**: 12/12 endpoints now have detailed response fields (was 0)
+  - All log archive endpoints (`app_ctrl.archive`, `dlp.archive`, etc.) now include 7-8 response fields
+  - Fields include: `filename`, `filesize`, `download_available`, timestamps, etc.
+  
+  **Monitor Endpoints**: Enhanced response field definitions
+  - Integer enum values now properly handled (previously caused generation failures)
+  - 490 monitor endpoints regenerate successfully with accurate type hints
+  
+  **Overall Coverage**:
+  - CMDB: 560/561 endpoints (99.8%)
+  - Monitor: 230/490 endpoints with response fields (46.9%)
+  - Service: 8/11 endpoints (72.7%)
+  - Log: 12/12 endpoints with response fields (100%)
+  
+  **Impact**:
+  - Better IDE autocomplete for API responses
+  - More accurate type hints for response data
+  - Improved documentation and field descriptions
 
 # [0.5.145] - 2026-01-24
 
