@@ -32,24 +32,28 @@ class HaPeerPayload(TypedDict, total=False):
 
 
 # ================================================================
-# Response Types (TypedDict for dict-style access)
+# Response Types for Monitor/Log/Service Endpoints
 # ================================================================
 
 class HaPeerResponse(TypedDict, total=False):
     """Response type for HaPeer - use with .dict property for typed dict access."""
     serial_no: str
     vcluster_id: int
+    priority: int
+    hostname: str
+    master: bool
+    primary: bool
 
 
-# ================================================================
-# Response Types (Class for attribute access)
-# ================================================================
-
-
-class HaPeerObject(FortiObject):
+class HaPeerObject(FortiObject[HaPeerResponse]):
     """Typed FortiObject for HaPeer with field access."""
     serial_no: str
     vcluster_id: int
+    priority: int
+    hostname: str
+    master: bool
+    primary: bool
+
 
 
 # ================================================================
@@ -90,7 +94,7 @@ class HaPeer:
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
-    ) -> HaPeerObject: ...
+    ) -> FortiObjectList[HaPeerObject]: ...
     
 
 
@@ -154,7 +158,6 @@ class HaPeer:
 
 __all__ = [
     "HaPeer",
-    "HaPeerPayload",
     "HaPeerResponse",
     "HaPeerObject",
 ]

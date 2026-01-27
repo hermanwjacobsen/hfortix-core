@@ -31,22 +31,22 @@ class InterfaceConnectedAdminsInfoPayload(TypedDict, total=False):
 
 
 # ================================================================
-# Response Types (TypedDict for dict-style access)
+# Response Types for Monitor/Log/Service Endpoints
 # ================================================================
 
 class InterfaceConnectedAdminsInfoResponse(TypedDict, total=False):
     """Response type for InterfaceConnectedAdminsInfo - use with .dict property for typed dict access."""
-    interface: str
+    current_admin_connected: bool
+    num_admins_connected: int
+    admin_methods: str
 
 
-# ================================================================
-# Response Types (Class for attribute access)
-# ================================================================
-
-
-class InterfaceConnectedAdminsInfoObject(FortiObject):
+class InterfaceConnectedAdminsInfoObject(FortiObject[InterfaceConnectedAdminsInfoResponse]):
     """Typed FortiObject for InterfaceConnectedAdminsInfo with field access."""
-    interface: str
+    current_admin_connected: bool
+    num_admins_connected: int
+    admin_methods: str
+
 
 
 # ================================================================
@@ -86,7 +86,7 @@ class InterfaceConnectedAdminsInfo:
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
-    ) -> InterfaceConnectedAdminsInfoObject: ...
+    ) -> FortiObjectList[InterfaceConnectedAdminsInfoObject]: ...
     
 
 
@@ -148,7 +148,6 @@ class InterfaceConnectedAdminsInfo:
 
 __all__ = [
     "InterfaceConnectedAdminsInfo",
-    "InterfaceConnectedAdminsInfoPayload",
     "InterfaceConnectedAdminsInfoResponse",
     "InterfaceConnectedAdminsInfoObject",
 ]

@@ -23,6 +23,33 @@ from hfortix_fortios.models import (
 
 
 # ================================================================
+# Response Types for Monitor/Log/Service Endpoints
+# ================================================================
+
+class Paths6Response(TypedDict, total=False):
+    """Response type for Paths6 - use with .dict property for typed dict access."""
+    nlri_prefix: str
+    nlri_prefix_len: int
+    learned_from: str
+    next_hop_local: str
+    next_hop_global: str
+    origin: str
+    is_best: bool
+
+
+class Paths6Object(FortiObject[Paths6Response]):
+    """Typed FortiObject for Paths6 with field access."""
+    nlri_prefix: str
+    nlri_prefix_len: int
+    learned_from: str
+    next_hop_local: str
+    next_hop_global: str
+    origin: str
+    is_best: bool
+
+
+
+# ================================================================
 # Main Endpoint Class
 # ================================================================
 
@@ -58,7 +85,7 @@ class Paths6:
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
-    ) -> FortiObject[Any]: ...
+    ) -> FortiObjectList[Paths6Object]: ...
     
 
 
@@ -118,4 +145,6 @@ class Paths6:
 
 __all__ = [
     "Paths6",
+    "Paths6Response",
+    "Paths6Object",
 ]

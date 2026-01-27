@@ -31,22 +31,28 @@ class ShaperPayload(TypedDict, total=False):
 
 
 # ================================================================
-# Response Types (TypedDict for dict-style access)
+# Response Types for Monitor/Log/Service Endpoints
 # ================================================================
 
 class ShaperResponse(TypedDict, total=False):
     """Response type for Shaper - use with .dict property for typed dict access."""
-    shaper_name: str
+    shapers: str
+    ipv4: str
+    ipv6: str
+    drops: str
+    dropped_bytes: str
+    data: list[str]
 
 
-# ================================================================
-# Response Types (Class for attribute access)
-# ================================================================
-
-
-class ShaperObject(FortiObject):
+class ShaperObject(FortiObject[ShaperResponse]):
     """Typed FortiObject for Shaper with field access."""
-    shaper_name: str
+    shapers: str
+    ipv4: str
+    ipv6: str
+    drops: str
+    dropped_bytes: str
+    data: list[str]
+
 
 
 # ================================================================
@@ -86,7 +92,7 @@ class Shaper:
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
-    ) -> ShaperObject: ...
+    ) -> FortiObjectList[ShaperObject]: ...
     
 
 
@@ -148,7 +154,6 @@ class Shaper:
 
 __all__ = [
     "Shaper",
-    "ShaperPayload",
     "ShaperResponse",
     "ShaperObject",
 ]

@@ -21,6 +21,39 @@ from hfortix_fortios.models import (
 )
 
 
+# ================================================================
+# TypedDict Payloads
+# ================================================================
+
+class NpuHpePayload(TypedDict, total=False):
+    """Payload type for NpuHpe operations."""
+    status: Literal["enable", "disable"]
+    interval: int
+    multipliers: str
+
+
+# ================================================================
+# Response Types (TypedDict for dict-style access)
+# ================================================================
+
+class NpuHpeResponse(TypedDict, total=False):
+    """Response type for NpuHpe - use with .dict property for typed dict access."""
+    status: Literal["enable", "disable"]
+    interval: int
+    multipliers: str
+
+
+# ================================================================
+# Response Types (Class for attribute access)
+# ================================================================
+
+
+class NpuHpeObject(FortiObject):
+    """Typed FortiObject for NpuHpe with field access."""
+    status: Literal["enable", "disable"]
+    interval: int
+    multipliers: str
+
 
 # ================================================================
 # Main Endpoint Class
@@ -62,7 +95,7 @@ class NpuHpe:
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
-    ) -> FortiObject[Any]: ...
+    ) -> NpuHpeObject: ...
     
     def get_schema(
         self,
@@ -77,11 +110,14 @@ class NpuHpe:
     
     def put(
         self,
-        payload_dict: dict[str, Any] | None = ...,
+        payload_dict: NpuHpePayload | None = ...,
+        status: Literal["enable", "disable"] | None = ...,
+        interval: int | None = ...,
+        multipliers: str | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
-    ) -> FortiObject[Any]: ...
+    ) -> NpuHpeObject: ...
 
 
     # ================================================================
@@ -96,7 +132,10 @@ class NpuHpe:
     
     def set(
         self,
-        payload_dict: dict[str, Any] | None = ...,
+        payload_dict: NpuHpePayload | None = ...,
+        status: Literal["enable", "disable"] | None = ...,
+        interval: int | None = ...,
+        multipliers: str | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -127,4 +166,7 @@ class NpuHpe:
 
 __all__ = [
     "NpuHpe",
+    "NpuHpePayload",
+    "NpuHpeResponse",
+    "NpuHpeObject",
 ]

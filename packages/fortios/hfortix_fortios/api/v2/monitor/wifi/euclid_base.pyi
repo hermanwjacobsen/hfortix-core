@@ -23,6 +23,29 @@ from hfortix_fortios.models import (
 
 
 # ================================================================
+# Response Types for Monitor/Log/Service Endpoints
+# ================================================================
+
+class EuclidResponse(TypedDict, total=False):
+    """Response type for Euclid - use with .dict property for typed dict access."""
+    vs: int
+    sn: str
+    sq: int
+    tp: str
+    ht: list[str]
+
+
+class EuclidObject(FortiObject[EuclidResponse]):
+    """Typed FortiObject for Euclid with field access."""
+    vs: int
+    sn: str
+    sq: int
+    tp: str
+    ht: list[str]
+
+
+
+# ================================================================
 # Main Endpoint Class
 # ================================================================
 
@@ -58,7 +81,7 @@ class Euclid:
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
-    ) -> FortiObject[Any]: ...
+    ) -> FortiObjectList[EuclidObject]: ...
     
 
 
@@ -118,4 +141,6 @@ class Euclid:
 
 __all__ = [
     "Euclid",
+    "EuclidResponse",
+    "EuclidObject",
 ]

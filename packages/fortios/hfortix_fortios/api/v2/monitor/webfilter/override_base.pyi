@@ -23,6 +23,43 @@ from hfortix_fortios.models import (
 
 
 # ================================================================
+# Response Types for Monitor/Log/Service Endpoints
+# ================================================================
+
+class OverrideResponse(TypedDict, total=False):
+    """Response type for Override - use with .dict property for typed dict access."""
+    id: str
+    status: str
+    initiator: str
+    user: str
+    scope: str
+    old_profile: str
+    new_profile: str
+    expires: str
+    type: str
+    user_group: str
+    ip: str
+    ip6: str
+
+
+class OverrideObject(FortiObject[OverrideResponse]):
+    """Typed FortiObject for Override with field access."""
+    id: str
+    status: str
+    initiator: str
+    user: str
+    scope: str
+    old_profile: str
+    new_profile: str
+    expires: str
+    type: str
+    user_group: str
+    ip: str
+    ip6: str
+
+
+
+# ================================================================
 # Main Endpoint Class
 # ================================================================
 
@@ -58,7 +95,7 @@ class Override:
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
-    ) -> FortiObject[Any]: ...
+    ) -> FortiObjectList[OverrideObject]: ...
     
 
 
@@ -118,4 +155,6 @@ class Override:
 
 __all__ = [
     "Override",
+    "OverrideResponse",
+    "OverrideObject",
 ]

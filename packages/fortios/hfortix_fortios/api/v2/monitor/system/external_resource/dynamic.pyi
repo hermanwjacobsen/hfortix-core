@@ -31,22 +31,26 @@ class DynamicPayload(TypedDict, total=False):
 
 
 # ================================================================
-# Response Types (TypedDict for dict-style access)
+# Response Types for Monitor/Log/Service Endpoints
 # ================================================================
 
 class DynamicResponse(TypedDict, total=False):
     """Response type for Dynamic - use with .dict property for typed dict access."""
-    commands: list[str]
+    name: str
+    command: str
+    status: str
+    error: str
+    invalidEntries: list[str]
 
 
-# ================================================================
-# Response Types (Class for attribute access)
-# ================================================================
-
-
-class DynamicObject(FortiObject):
+class DynamicObject(FortiObject[DynamicResponse]):
     """Typed FortiObject for Dynamic with field access."""
-    commands: list[str]
+    name: str
+    command: str
+    status: str
+    error: str
+    invalidEntries: list[str]
+
 
 
 # ================================================================
@@ -85,7 +89,7 @@ class Dynamic:
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
-    ) -> DynamicObject: ...
+    ) -> FortiObjectList[DynamicObject]: ...
     
 
     # ================================================================
@@ -159,7 +163,6 @@ class Dynamic:
 
 __all__ = [
     "Dynamic",
-    "DynamicPayload",
     "DynamicResponse",
     "DynamicObject",
 ]

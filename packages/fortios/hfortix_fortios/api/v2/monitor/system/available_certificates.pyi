@@ -36,31 +36,110 @@ class AvailableCertificatesPayload(TypedDict, total=False):
 
 
 # ================================================================
-# Response Types (TypedDict for dict-style access)
+# Response Types for Monitor/Log/Service Endpoints
 # ================================================================
 
 class AvailableCertificatesResponse(TypedDict, total=False):
     """Response type for AvailableCertificates - use with .dict property for typed dict access."""
-    scope: Literal["vdom", "global"]
-    with_remote: bool
-    with_ca: bool
-    with_crl: bool
-    mkey: str
-    find_all_references: bool
+    name: str
+    status: str
+    source: str
+    comments: str
+    range: str
+    exists: bool
+    is_ssl_server_cert: bool
+    is_ssl_client_cert: bool
+    is_proxy_ssl_cert: bool
+    is_general_allowable_cert: bool
+    is_default_local: bool
+    is_built_in: bool
+    is_wifi_cert: bool
+    is_deep_inspection_cert: bool
+    trusted: bool
+    has_valid_cert_key: bool
+    saml_sig_algo_supported: bool
+    revoked_serials: list[str]
+    key_type: str
+    key_size: int
+    cert_protocol: str
+    is_local_ca_cert: bool
+    type: str
+    lastupdate: int
+    nextupdate: int
+    lastupdate_raw: str
+    nextupdate_raw: str
+    valid_from: int
+    valid_to: int
+    valid_from_raw: str
+    valid_to_raw: str
+    signature_algorithm: str
+    subject: str
+    subject_raw: str
+    issuer: str
+    issuer_raw: str
+    fingerprint: str
+    version: int
+    is_ca: bool
+    serial_number: str
+    q_path: str
+    q_name: str
+    q_ref: int
+    q_static: bool
+    q_type: int
+    ext: list[str]
+    acme_status: str
 
 
-# ================================================================
-# Response Types (Class for attribute access)
-# ================================================================
-
-
-class AvailableCertificatesObject(FortiObject):
+class AvailableCertificatesObject(FortiObject[AvailableCertificatesResponse]):
     """Typed FortiObject for AvailableCertificates with field access."""
-    scope: Literal["vdom", "global"]
-    with_remote: bool
-    with_ca: bool
-    with_crl: bool
-    find_all_references: bool
+    name: str
+    status: str
+    source: str
+    comments: str
+    range: str
+    exists: bool
+    is_ssl_server_cert: bool
+    is_ssl_client_cert: bool
+    is_proxy_ssl_cert: bool
+    is_general_allowable_cert: bool
+    is_default_local: bool
+    is_built_in: bool
+    is_wifi_cert: bool
+    is_deep_inspection_cert: bool
+    trusted: bool
+    has_valid_cert_key: bool
+    saml_sig_algo_supported: bool
+    revoked_serials: list[str]
+    key_type: str
+    key_size: int
+    cert_protocol: str
+    is_local_ca_cert: bool
+    type: str
+    lastupdate: int
+    nextupdate: int
+    lastupdate_raw: str
+    nextupdate_raw: str
+    valid_from: int
+    valid_to: int
+    valid_from_raw: str
+    valid_to_raw: str
+    signature_algorithm: str
+    subject: str
+    subject_raw: str
+    issuer: str
+    issuer_raw: str
+    fingerprint: str
+    version: int
+    is_ca: bool
+    serial_number: str
+    q_path: str
+    q_name: str
+    q_ref: int
+    q_static: bool
+    q_type: int
+    ext: list[str]
+    acme_status: str
+
 
 
 # ================================================================
@@ -105,7 +184,7 @@ class AvailableCertificates:
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
-    ) -> AvailableCertificatesObject: ...
+    ) -> FortiObjectList[AvailableCertificatesObject]: ...
     
 
 
@@ -177,7 +256,6 @@ class AvailableCertificates:
 
 __all__ = [
     "AvailableCertificates",
-    "AvailableCertificatesPayload",
     "AvailableCertificatesResponse",
     "AvailableCertificatesObject",
 ]

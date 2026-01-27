@@ -34,28 +34,42 @@ class MembersPayload(TypedDict, total=False):
 
 
 # ================================================================
-# Response Types (TypedDict for dict-style access)
+# Response Types for Monitor/Log/Service Endpoints
 # ================================================================
 
 class MembersResponse(TypedDict, total=False):
     """Response type for Members - use with .dict property for typed dict access."""
-    interface: list[str]
-    zone: str
-    sla: str
-    skip_vpn_child: bool
+    interface: str
+    seq_num: str
+    status: str
+    ipv4_gateway: str
+    ipv6_gateway: str
+    link: str
+    session: int
+    tx_bytes: int
+    rx_bytes: int
+    tx_bandwidth: int
+    rx_bandwidth: int
+    state_changed: int
+    child_intfs: str
 
 
-# ================================================================
-# Response Types (Class for attribute access)
-# ================================================================
-
-
-class MembersObject(FortiObject):
+class MembersObject(FortiObject[MembersResponse]):
     """Typed FortiObject for Members with field access."""
-    interface: list[str]
-    zone: str
-    sla: str
-    skip_vpn_child: bool
+    interface: str
+    seq_num: str
+    status: str
+    ipv4_gateway: str
+    ipv6_gateway: str
+    link: str
+    session: int
+    tx_bytes: int
+    rx_bytes: int
+    tx_bandwidth: int
+    rx_bandwidth: int
+    state_changed: int
+    child_intfs: str
+
 
 
 # ================================================================
@@ -98,7 +112,7 @@ class Members:
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
-    ) -> MembersObject: ...
+    ) -> FortiObjectList[MembersObject]: ...
     
 
 
@@ -166,7 +180,6 @@ class Members:
 
 __all__ = [
     "Members",
-    "MembersPayload",
     "MembersResponse",
     "MembersObject",
 ]

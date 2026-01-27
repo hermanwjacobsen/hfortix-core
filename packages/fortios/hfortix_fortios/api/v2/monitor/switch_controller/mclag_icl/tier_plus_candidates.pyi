@@ -34,28 +34,22 @@ class TierPlusCandidatesPayload(TypedDict, total=False):
 
 
 # ================================================================
-# Response Types (TypedDict for dict-style access)
+# Response Types for Monitor/Log/Service Endpoints
 # ================================================================
 
 class TierPlusCandidatesResponse(TypedDict, total=False):
     """Response type for TierPlusCandidates - use with .dict property for typed dict access."""
-    fortilink: str
-    parent_peer1: str
-    parent_peer2: str
-    is_tier2: bool
+    status: str
+    peer1_candidate: str
+    peer2_candidate: str
 
 
-# ================================================================
-# Response Types (Class for attribute access)
-# ================================================================
-
-
-class TierPlusCandidatesObject(FortiObject):
+class TierPlusCandidatesObject(FortiObject[TierPlusCandidatesResponse]):
     """Typed FortiObject for TierPlusCandidates with field access."""
-    fortilink: str
-    parent_peer1: str
-    parent_peer2: str
-    is_tier2: bool
+    status: str
+    peer1_candidate: str
+    peer2_candidate: str
+
 
 
 # ================================================================
@@ -98,7 +92,7 @@ class TierPlusCandidates:
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
-    ) -> TierPlusCandidatesObject: ...
+    ) -> FortiObjectList[TierPlusCandidatesObject]: ...
     
 
 
@@ -166,7 +160,6 @@ class TierPlusCandidates:
 
 __all__ = [
     "TierPlusCandidates",
-    "TierPlusCandidatesPayload",
     "TierPlusCandidatesResponse",
     "TierPlusCandidatesObject",
 ]

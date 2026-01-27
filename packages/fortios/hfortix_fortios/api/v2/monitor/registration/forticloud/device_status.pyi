@@ -32,24 +32,24 @@ class DeviceStatusPayload(TypedDict, total=False):
 
 
 # ================================================================
-# Response Types (TypedDict for dict-style access)
+# Response Types for Monitor/Log/Service Endpoints
 # ================================================================
 
 class DeviceStatusResponse(TypedDict, total=False):
     """Response type for DeviceStatus - use with .dict property for typed dict access."""
-    serials: list[str]
-    update_cache: bool
+    serial: str
+    account: str
+    status: str
+    time: int
 
 
-# ================================================================
-# Response Types (Class for attribute access)
-# ================================================================
-
-
-class DeviceStatusObject(FortiObject):
+class DeviceStatusObject(FortiObject[DeviceStatusResponse]):
     """Typed FortiObject for DeviceStatus with field access."""
-    serials: list[str]
-    update_cache: bool
+    serial: str
+    account: str
+    status: str
+    time: int
+
 
 
 # ================================================================
@@ -90,7 +90,7 @@ class DeviceStatus:
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
-    ) -> DeviceStatusObject: ...
+    ) -> FortiObjectList[DeviceStatusObject]: ...
     
 
 
@@ -154,7 +154,6 @@ class DeviceStatus:
 
 __all__ = [
     "DeviceStatus",
-    "DeviceStatusPayload",
     "DeviceStatusResponse",
     "DeviceStatusObject",
 ]

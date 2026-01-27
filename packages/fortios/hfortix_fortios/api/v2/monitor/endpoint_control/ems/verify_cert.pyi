@@ -33,26 +33,30 @@ class VerifyCertPayload(TypedDict, total=False):
 
 
 # ================================================================
-# Response Types (TypedDict for dict-style access)
+# Response Types for Monitor/Log/Service Endpoints
 # ================================================================
 
 class VerifyCertResponse(TypedDict, total=False):
     """Response type for VerifyCert - use with .dict property for typed dict access."""
     ems_id: int
-    scope: Literal["vdom", "global"]
-    fingerprint: str
+    ems_name: str
+    status: str
+    ems_status_id: int
+    ems_status: str
+    error: str
+    cert: str
 
 
-# ================================================================
-# Response Types (Class for attribute access)
-# ================================================================
-
-
-class VerifyCertObject(FortiObject):
+class VerifyCertObject(FortiObject[VerifyCertResponse]):
     """Typed FortiObject for VerifyCert with field access."""
     ems_id: int
-    scope: Literal["vdom", "global"]
-    fingerprint: str
+    ems_name: str
+    status: str
+    ems_status_id: int
+    ems_status: str
+    error: str
+    cert: str
+
 
 
 # ================================================================
@@ -91,7 +95,7 @@ class VerifyCert:
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
-    ) -> VerifyCertObject: ...
+    ) -> FortiObjectList[VerifyCertObject]: ...
     
 
     # ================================================================
@@ -171,7 +175,6 @@ class VerifyCert:
 
 __all__ = [
     "VerifyCert",
-    "VerifyCertPayload",
     "VerifyCertResponse",
     "VerifyCertObject",
 ]

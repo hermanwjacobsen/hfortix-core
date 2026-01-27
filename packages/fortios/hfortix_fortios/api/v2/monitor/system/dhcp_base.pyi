@@ -33,26 +33,46 @@ class DhcpPayload(TypedDict, total=False):
 
 
 # ================================================================
-# Response Types (TypedDict for dict-style access)
+# Response Types for Monitor/Log/Service Endpoints
 # ================================================================
 
 class DhcpResponse(TypedDict, total=False):
     """Response type for Dhcp - use with .dict property for typed dict access."""
-    scope: Literal["vdom", "global"]
-    ipv6: bool
+    type: str
+    status: str
+    ip: str
+    expire_time: int
     interface: str
+    server_mkey: int
+    server_ipam_enabled: bool
+    reserved: bool
+    mac: str
+    vci: str
+    hostname: str
+    duid: str
+    iaid: int
+    ssid: str
+    access_point: str
 
 
-# ================================================================
-# Response Types (Class for attribute access)
-# ================================================================
-
-
-class DhcpObject(FortiObject):
+class DhcpObject(FortiObject[DhcpResponse]):
     """Typed FortiObject for Dhcp with field access."""
-    scope: Literal["vdom", "global"]
-    ipv6: bool
+    type: str
+    status: str
+    ip: str
+    expire_time: int
     interface: str
+    server_mkey: int
+    server_ipam_enabled: bool
+    reserved: bool
+    mac: str
+    vci: str
+    hostname: str
+    duid: str
+    iaid: int
+    ssid: str
+    access_point: str
+
 
 
 # ================================================================
@@ -94,7 +114,7 @@ class Dhcp:
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
-    ) -> DhcpObject: ...
+    ) -> FortiObjectList[DhcpObject]: ...
     
 
 
@@ -160,7 +180,6 @@ class Dhcp:
 
 __all__ = [
     "Dhcp",
-    "DhcpPayload",
     "DhcpResponse",
     "DhcpObject",
 ]

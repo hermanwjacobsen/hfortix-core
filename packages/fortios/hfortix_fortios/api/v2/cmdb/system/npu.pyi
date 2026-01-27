@@ -21,6 +21,68 @@ from hfortix_fortios.models import (
 )
 
 
+# ================================================================
+# TypedDict Payloads
+# ================================================================
+
+class NpuPriorityprotocolItem(TypedDict, total=False):
+    """Nested item for priority-protocol field."""
+    bgp: Literal["enable", "disable"]
+    slbc: Literal["enable", "disable"]
+    bfd: Literal["enable", "disable"]
+
+
+class NpuPayload(TypedDict, total=False):
+    """Payload type for Npu operations."""
+    dedicated_management_cpu: Literal["enable", "disable"]
+    dedicated_management_affinity: str
+    capwap_offload: Literal["enable", "disable"]
+    ipsec_mtu_override: Literal["disable", "enable"]
+    ipsec_ordering: Literal["disable", "enable"]
+    ipsec_enc_subengine_mask: str
+    ipsec_dec_subengine_mask: str
+    priority_protocol: str | list[str] | list[NpuPriorityprotocolItem]
+
+
+# ================================================================
+# Response Types (TypedDict for dict-style access)
+# ================================================================
+
+class NpuResponse(TypedDict, total=False):
+    """Response type for Npu - use with .dict property for typed dict access."""
+    dedicated_management_cpu: Literal["enable", "disable"]
+    dedicated_management_affinity: str
+    capwap_offload: Literal["enable", "disable"]
+    ipsec_mtu_override: Literal["disable", "enable"]
+    ipsec_ordering: Literal["disable", "enable"]
+    ipsec_enc_subengine_mask: str
+    ipsec_dec_subengine_mask: str
+    priority_protocol: list[NpuPriorityprotocolItem]
+
+
+# ================================================================
+# Response Types (Class for attribute access)
+# ================================================================
+
+
+class NpuPriorityprotocolItemObject(FortiObject[NpuPriorityprotocolItem]):
+    """Typed object for priority-protocol table items with attribute access."""
+    bgp: Literal["enable", "disable"]
+    slbc: Literal["enable", "disable"]
+    bfd: Literal["enable", "disable"]
+
+
+class NpuObject(FortiObject):
+    """Typed FortiObject for Npu with field access."""
+    dedicated_management_cpu: Literal["enable", "disable"]
+    dedicated_management_affinity: str
+    capwap_offload: Literal["enable", "disable"]
+    ipsec_mtu_override: Literal["disable", "enable"]
+    ipsec_ordering: Literal["disable", "enable"]
+    ipsec_enc_subengine_mask: str
+    ipsec_dec_subengine_mask: str
+    priority_protocol: FortiObjectList[NpuPriorityprotocolItemObject]
+
 
 # ================================================================
 # Main Endpoint Class
@@ -62,7 +124,7 @@ class Npu:
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
-    ) -> FortiObject[Any]: ...
+    ) -> NpuObject: ...
     
     def get_schema(
         self,
@@ -77,11 +139,19 @@ class Npu:
     
     def put(
         self,
-        payload_dict: dict[str, Any] | None = ...,
+        payload_dict: NpuPayload | None = ...,
+        dedicated_management_cpu: Literal["enable", "disable"] | None = ...,
+        dedicated_management_affinity: str | None = ...,
+        capwap_offload: Literal["enable", "disable"] | None = ...,
+        ipsec_mtu_override: Literal["disable", "enable"] | None = ...,
+        ipsec_ordering: Literal["disable", "enable"] | None = ...,
+        ipsec_enc_subengine_mask: str | None = ...,
+        ipsec_dec_subengine_mask: str | None = ...,
+        priority_protocol: str | list[str] | list[NpuPriorityprotocolItem] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
-    ) -> FortiObject[Any]: ...
+    ) -> NpuObject: ...
 
 
     # ================================================================
@@ -96,7 +166,15 @@ class Npu:
     
     def set(
         self,
-        payload_dict: dict[str, Any] | None = ...,
+        payload_dict: NpuPayload | None = ...,
+        dedicated_management_cpu: Literal["enable", "disable"] | None = ...,
+        dedicated_management_affinity: str | None = ...,
+        capwap_offload: Literal["enable", "disable"] | None = ...,
+        ipsec_mtu_override: Literal["disable", "enable"] | None = ...,
+        ipsec_ordering: Literal["disable", "enable"] | None = ...,
+        ipsec_enc_subengine_mask: str | None = ...,
+        ipsec_dec_subengine_mask: str | None = ...,
+        priority_protocol: str | list[str] | list[NpuPriorityprotocolItem] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -127,4 +205,7 @@ class Npu:
 
 __all__ = [
     "Npu",
+    "NpuPayload",
+    "NpuResponse",
+    "NpuObject",
 ]

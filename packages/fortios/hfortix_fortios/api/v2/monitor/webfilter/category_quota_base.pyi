@@ -32,24 +32,28 @@ class CategoryQuotaPayload(TypedDict, total=False):
 
 
 # ================================================================
-# Response Types (TypedDict for dict-style access)
+# Response Types for Monitor/Log/Service Endpoints
 # ================================================================
 
 class CategoryQuotaResponse(TypedDict, total=False):
     """Response type for CategoryQuota - use with .dict property for typed dict access."""
-    profile: str
-    user: str
+    id: int
+    category: str
+    time: int
+    remaining_time: int
+    traffic: int
+    remaining_traffic: int
 
 
-# ================================================================
-# Response Types (Class for attribute access)
-# ================================================================
-
-
-class CategoryQuotaObject(FortiObject):
+class CategoryQuotaObject(FortiObject[CategoryQuotaResponse]):
     """Typed FortiObject for CategoryQuota with field access."""
-    profile: str
-    user: str
+    id: int
+    category: str
+    time: int
+    remaining_time: int
+    traffic: int
+    remaining_traffic: int
+
 
 
 # ================================================================
@@ -90,7 +94,7 @@ class CategoryQuota:
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
-    ) -> CategoryQuotaObject: ...
+    ) -> FortiObjectList[CategoryQuotaObject]: ...
     
 
 
@@ -154,7 +158,6 @@ class CategoryQuota:
 
 __all__ = [
     "CategoryQuota",
-    "CategoryQuotaPayload",
     "CategoryQuotaResponse",
     "CategoryQuotaObject",
 ]

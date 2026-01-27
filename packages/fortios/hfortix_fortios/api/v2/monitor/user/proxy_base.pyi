@@ -23,6 +23,41 @@ from hfortix_fortios.models import (
 
 
 # ================================================================
+# Response Types for Monitor/Log/Service Endpoints
+# ================================================================
+
+class ProxyResponse(TypedDict, total=False):
+    """Response type for Proxy - use with .dict property for typed dict access."""
+    id: int
+    type: str
+    username: str
+    usergroup: str
+    uid: int
+    policyid: int
+    duration_secs: int
+    expiry_secs: int
+    traffic_vol_bytes: int
+    ipaddr: str
+    method: str
+
+
+class ProxyObject(FortiObject[ProxyResponse]):
+    """Typed FortiObject for Proxy with field access."""
+    id: int
+    type: str
+    username: str
+    usergroup: str
+    uid: int
+    policyid: int
+    duration_secs: int
+    expiry_secs: int
+    traffic_vol_bytes: int
+    ipaddr: str
+    method: str
+
+
+
+# ================================================================
 # Main Endpoint Class
 # ================================================================
 
@@ -58,7 +93,7 @@ class Proxy:
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
-    ) -> FortiObject[Any]: ...
+    ) -> FortiObjectList[ProxyObject]: ...
     
 
 
@@ -118,4 +153,6 @@ class Proxy:
 
 __all__ = [
     "Proxy",
+    "ProxyResponse",
+    "ProxyObject",
 ]

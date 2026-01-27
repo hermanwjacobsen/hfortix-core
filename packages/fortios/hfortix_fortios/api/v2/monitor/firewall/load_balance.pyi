@@ -31,22 +31,26 @@ class LoadBalancePayload(TypedDict, total=False):
 
 
 # ================================================================
-# Response Types (TypedDict for dict-style access)
+# Response Types for Monitor/Log/Service Endpoints
 # ================================================================
 
 class LoadBalanceResponse(TypedDict, total=False):
     """Response type for LoadBalance - use with .dict property for typed dict access."""
-    count: int
+    virtual_server_ip: str
+    virtual_server_name: str
+    virtual_server_port: str
+    virtual_server_type: str
+    list: list[str]
 
 
-# ================================================================
-# Response Types (Class for attribute access)
-# ================================================================
-
-
-class LoadBalanceObject(FortiObject):
+class LoadBalanceObject(FortiObject[LoadBalanceResponse]):
     """Typed FortiObject for LoadBalance with field access."""
-    count: int
+    virtual_server_ip: str
+    virtual_server_name: str
+    virtual_server_port: str
+    virtual_server_type: str
+    list: list[str]
+
 
 
 # ================================================================
@@ -85,7 +89,7 @@ class LoadBalance:
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
-    ) -> LoadBalanceObject: ...
+    ) -> FortiObjectList[LoadBalanceObject]: ...
     
 
 
@@ -147,7 +151,6 @@ class LoadBalance:
 
 __all__ = [
     "LoadBalance",
-    "LoadBalancePayload",
     "LoadBalanceResponse",
     "LoadBalanceObject",
 ]

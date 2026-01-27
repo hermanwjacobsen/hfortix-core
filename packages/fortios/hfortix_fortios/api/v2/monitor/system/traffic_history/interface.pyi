@@ -32,24 +32,24 @@ class InterfacePayload(TypedDict, total=False):
 
 
 # ================================================================
-# Response Types (TypedDict for dict-style access)
+# Response Types for Monitor/Log/Service Endpoints
 # ================================================================
 
 class InterfaceResponse(TypedDict, total=False):
     """Response type for Interface - use with .dict property for typed dict access."""
-    interface: str
-    time_period: Literal["hour", "day", "week"]
+    last_rx: int
+    last_tx: int
+    rx: list[str]
+    tx: list[str]
 
 
-# ================================================================
-# Response Types (Class for attribute access)
-# ================================================================
-
-
-class InterfaceObject(FortiObject):
+class InterfaceObject(FortiObject[InterfaceResponse]):
     """Typed FortiObject for Interface with field access."""
-    interface: str
-    time_period: Literal["hour", "day", "week"]
+    last_rx: int
+    last_tx: int
+    rx: list[str]
+    tx: list[str]
+
 
 
 # ================================================================
@@ -90,7 +90,7 @@ class Interface:
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
-    ) -> InterfaceObject: ...
+    ) -> FortiObjectList[InterfaceObject]: ...
     
 
 
@@ -154,7 +154,6 @@ class Interface:
 
 __all__ = [
     "Interface",
-    "InterfacePayload",
     "InterfaceResponse",
     "InterfaceObject",
 ]

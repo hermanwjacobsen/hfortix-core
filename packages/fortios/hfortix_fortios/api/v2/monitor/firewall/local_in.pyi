@@ -31,22 +31,24 @@ class LocalInPayload(TypedDict, total=False):
 
 
 # ================================================================
-# Response Types (TypedDict for dict-style access)
+# Response Types for Monitor/Log/Service Endpoints
 # ================================================================
 
 class LocalInResponse(TypedDict, total=False):
     """Response type for LocalIn - use with .dict property for typed dict access."""
-    include_ttl: bool
+    implicit: list[str]
+    admin: list[str]
+    custom: list[str]
+    ttl: list[str]
 
 
-# ================================================================
-# Response Types (Class for attribute access)
-# ================================================================
-
-
-class LocalInObject(FortiObject):
+class LocalInObject(FortiObject[LocalInResponse]):
     """Typed FortiObject for LocalIn with field access."""
-    include_ttl: bool
+    implicit: list[str]
+    admin: list[str]
+    custom: list[str]
+    ttl: list[str]
+
 
 
 # ================================================================
@@ -86,7 +88,7 @@ class LocalIn:
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
-    ) -> LocalInObject: ...
+    ) -> FortiObjectList[LocalInObject]: ...
     
 
 
@@ -148,7 +150,6 @@ class LocalIn:
 
 __all__ = [
     "LocalIn",
-    "LocalInPayload",
     "LocalInResponse",
     "LocalInObject",
 ]

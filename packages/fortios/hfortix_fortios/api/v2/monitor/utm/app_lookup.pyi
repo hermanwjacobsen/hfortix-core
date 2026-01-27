@@ -31,22 +31,26 @@ class AppLookupPayload(TypedDict, total=False):
 
 
 # ================================================================
-# Response Types (TypedDict for dict-style access)
+# Response Types for Monitor/Log/Service Endpoints
 # ================================================================
 
 class AppLookupResponse(TypedDict, total=False):
     """Response type for AppLookup - use with .dict property for typed dict access."""
-    hosts: list[str]
+    address: str
+    dst_port: str
+    protocol: str
+    protocol_name: str
+    apps: list[str]
 
 
-# ================================================================
-# Response Types (Class for attribute access)
-# ================================================================
-
-
-class AppLookupObject(FortiObject):
+class AppLookupObject(FortiObject[AppLookupResponse]):
     """Typed FortiObject for AppLookup with field access."""
-    hosts: list[str]
+    address: str
+    dst_port: str
+    protocol: str
+    protocol_name: str
+    apps: list[str]
+
 
 
 # ================================================================
@@ -86,7 +90,7 @@ class AppLookup:
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
-    ) -> AppLookupObject: ...
+    ) -> FortiObjectList[AppLookupObject]: ...
     
 
 
@@ -148,7 +152,6 @@ class AppLookup:
 
 __all__ = [
     "AppLookup",
-    "AppLookupPayload",
     "AppLookupResponse",
     "AppLookupObject",
 ]

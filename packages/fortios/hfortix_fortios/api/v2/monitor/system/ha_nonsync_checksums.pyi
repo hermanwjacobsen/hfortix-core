@@ -23,6 +23,31 @@ from hfortix_fortios.models import (
 
 
 # ================================================================
+# Response Types for Monitor/Log/Service Endpoints
+# ================================================================
+
+class HaNonsyncChecksumsResponse(TypedDict, total=False):
+    """Response type for HaNonsyncChecksums - use with .dict property for typed dict access."""
+    is_manage_master: int
+    is_root_master: int
+    is_manage_primary: bool
+    is_root_primary: bool
+    serial_no: str
+    checksum: str
+
+
+class HaNonsyncChecksumsObject(FortiObject[HaNonsyncChecksumsResponse]):
+    """Typed FortiObject for HaNonsyncChecksums with field access."""
+    is_manage_master: int
+    is_root_master: int
+    is_manage_primary: bool
+    is_root_primary: bool
+    serial_no: str
+    checksum: str
+
+
+
+# ================================================================
 # Main Endpoint Class
 # ================================================================
 
@@ -58,7 +83,7 @@ class HaNonsyncChecksums:
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
-    ) -> FortiObject[Any]: ...
+    ) -> FortiObjectList[HaNonsyncChecksumsObject]: ...
     
 
 
@@ -118,4 +143,6 @@ class HaNonsyncChecksums:
 
 __all__ = [
     "HaNonsyncChecksums",
+    "HaNonsyncChecksumsResponse",
+    "HaNonsyncChecksumsObject",
 ]

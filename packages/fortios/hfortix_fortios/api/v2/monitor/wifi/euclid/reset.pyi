@@ -23,6 +23,21 @@ from hfortix_fortios.models import (
 
 
 # ================================================================
+# Response Types for Monitor/Log/Service Endpoints
+# ================================================================
+
+class ResetResponse(TypedDict, total=False):
+    """Response type for Reset - use with .dict property for typed dict access."""
+    status: str
+
+
+class ResetObject(FortiObject[ResetResponse]):
+    """Typed FortiObject for Reset with field access."""
+    status: str
+
+
+
+# ================================================================
 # Main Endpoint Class
 # ================================================================
 
@@ -58,7 +73,7 @@ class Reset:
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
-    ) -> FortiObject[Any]: ...
+    ) -> FortiObjectList[ResetObject]: ...
     
 
     # ================================================================
@@ -129,4 +144,6 @@ class Reset:
 
 __all__ = [
     "Reset",
+    "ResetResponse",
+    "ResetObject",
 ]

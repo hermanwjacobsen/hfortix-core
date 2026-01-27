@@ -21,6 +21,63 @@ from hfortix_fortios.models import (
 )
 
 
+# ================================================================
+# TypedDict Payloads
+# ================================================================
+
+class LteModemPayload(TypedDict, total=False):
+    """Payload type for LteModem operations."""
+    status: Literal["enable", "disable"]
+    extra_init: str
+    pdptype: Literal["IPv4"]
+    authtype: Literal["none", "pap", "chap"]
+    username: str
+    passwd: str
+    apn: str
+    modem_port: int
+    mode: Literal["standalone", "redundant"]
+    holddown_timer: int
+    interface: str
+
+
+# ================================================================
+# Response Types (TypedDict for dict-style access)
+# ================================================================
+
+class LteModemResponse(TypedDict, total=False):
+    """Response type for LteModem - use with .dict property for typed dict access."""
+    status: Literal["enable", "disable"]
+    extra_init: str
+    pdptype: Literal["IPv4"]
+    authtype: Literal["none", "pap", "chap"]
+    username: str
+    passwd: str
+    apn: str
+    modem_port: int
+    mode: Literal["standalone", "redundant"]
+    holddown_timer: int
+    interface: str
+
+
+# ================================================================
+# Response Types (Class for attribute access)
+# ================================================================
+
+
+class LteModemObject(FortiObject):
+    """Typed FortiObject for LteModem with field access."""
+    status: Literal["enable", "disable"]
+    extra_init: str
+    pdptype: Literal["IPv4"]
+    authtype: Literal["none", "pap", "chap"]
+    username: str
+    passwd: str
+    apn: str
+    modem_port: int
+    mode: Literal["standalone", "redundant"]
+    holddown_timer: int
+    interface: str
+
 
 # ================================================================
 # Main Endpoint Class
@@ -62,7 +119,7 @@ class LteModem:
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
-    ) -> FortiObject[Any]: ...
+    ) -> LteModemObject: ...
     
     def get_schema(
         self,
@@ -77,11 +134,22 @@ class LteModem:
     
     def put(
         self,
-        payload_dict: dict[str, Any] | None = ...,
+        payload_dict: LteModemPayload | None = ...,
+        status: Literal["enable", "disable"] | None = ...,
+        extra_init: str | None = ...,
+        pdptype: Literal["IPv4"] | None = ...,
+        authtype: Literal["none", "pap", "chap"] | None = ...,
+        username: str | None = ...,
+        passwd: str | None = ...,
+        apn: str | None = ...,
+        modem_port: int | None = ...,
+        mode: Literal["standalone", "redundant"] | None = ...,
+        holddown_timer: int | None = ...,
+        interface: str | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
-    ) -> FortiObject[Any]: ...
+    ) -> LteModemObject: ...
 
 
     # ================================================================
@@ -96,7 +164,18 @@ class LteModem:
     
     def set(
         self,
-        payload_dict: dict[str, Any] | None = ...,
+        payload_dict: LteModemPayload | None = ...,
+        status: Literal["enable", "disable"] | None = ...,
+        extra_init: str | None = ...,
+        pdptype: Literal["IPv4"] | None = ...,
+        authtype: Literal["none", "pap", "chap"] | None = ...,
+        username: str | None = ...,
+        passwd: str | None = ...,
+        apn: str | None = ...,
+        modem_port: int | None = ...,
+        mode: Literal["standalone", "redundant"] | None = ...,
+        holddown_timer: int | None = ...,
+        interface: str | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -127,4 +206,7 @@ class LteModem:
 
 __all__ = [
     "LteModem",
+    "LteModemPayload",
+    "LteModemResponse",
+    "LteModemObject",
 ]

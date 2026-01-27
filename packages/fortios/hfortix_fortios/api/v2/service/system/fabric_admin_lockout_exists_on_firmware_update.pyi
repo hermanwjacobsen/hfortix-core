@@ -23,6 +23,21 @@ from hfortix_fortios.models import (
 
 
 # ================================================================
+# Response Types for Monitor/Log/Service Endpoints
+# ================================================================
+
+class FabricAdminLockoutExistsOnFirmwareUpdateResponse(TypedDict, total=False):
+    """Response type for FabricAdminLockoutExistsOnFirmwareUpdate - use with .dict property for typed dict access."""
+    exists: bool
+
+
+class FabricAdminLockoutExistsOnFirmwareUpdateObject(FortiObject[FabricAdminLockoutExistsOnFirmwareUpdateResponse]):
+    """Typed FortiObject for FabricAdminLockoutExistsOnFirmwareUpdate with field access."""
+    exists: bool
+
+
+
+# ================================================================
 # Main Endpoint Class
 # ================================================================
 
@@ -58,7 +73,7 @@ class FabricAdminLockoutExistsOnFirmwareUpdate:
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
-    ) -> FortiObject[Any]: ...
+    ) -> FortiObjectList[FabricAdminLockoutExistsOnFirmwareUpdateObject]: ...
     
 
 
@@ -118,4 +133,6 @@ class FabricAdminLockoutExistsOnFirmwareUpdate:
 
 __all__ = [
     "FabricAdminLockoutExistsOnFirmwareUpdate",
+    "FabricAdminLockoutExistsOnFirmwareUpdateResponse",
+    "FabricAdminLockoutExistsOnFirmwareUpdateObject",
 ]

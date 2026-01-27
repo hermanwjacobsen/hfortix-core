@@ -23,6 +23,23 @@ from hfortix_fortios.models import (
 
 
 # ================================================================
+# Response Types for Monitor/Log/Service Endpoints
+# ================================================================
+
+class ConfigScriptResponse(TypedDict, total=False):
+    """Response type for ConfigScript - use with .dict property for typed dict access."""
+    conf_scripts: str
+    backup_service_available: bool
+
+
+class ConfigScriptObject(FortiObject[ConfigScriptResponse]):
+    """Typed FortiObject for ConfigScript with field access."""
+    conf_scripts: str
+    backup_service_available: bool
+
+
+
+# ================================================================
 # Main Endpoint Class
 # ================================================================
 
@@ -57,7 +74,7 @@ class ConfigScript:
         payload_dict: dict[str, Any] | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
-    ) -> FortiObject[Any]: ...
+    ) -> FortiObjectList[ConfigScriptObject]: ...
     
 
 
@@ -114,4 +131,6 @@ class ConfigScript:
 
 __all__ = [
     "ConfigScript",
+    "ConfigScriptResponse",
+    "ConfigScriptObject",
 ]

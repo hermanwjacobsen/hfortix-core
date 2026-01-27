@@ -23,6 +23,23 @@ from hfortix_fortios.models import (
 
 
 # ================================================================
+# Response Types for Monitor/Log/Service Endpoints
+# ================================================================
+
+class DhcpSnoopingResponse(TypedDict, total=False):
+    """Response type for DhcpSnooping - use with .dict property for typed dict access."""
+    switch_id: str
+    snooping_entries: list[str]
+
+
+class DhcpSnoopingObject(FortiObject[DhcpSnoopingResponse]):
+    """Typed FortiObject for DhcpSnooping with field access."""
+    switch_id: str
+    snooping_entries: list[str]
+
+
+
+# ================================================================
 # Main Endpoint Class
 # ================================================================
 
@@ -58,7 +75,7 @@ class DhcpSnooping:
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
-    ) -> FortiObject[Any]: ...
+    ) -> FortiObjectList[DhcpSnoopingObject]: ...
     
 
 
@@ -118,4 +135,6 @@ class DhcpSnooping:
 
 __all__ = [
     "DhcpSnooping",
+    "DhcpSnoopingResponse",
+    "DhcpSnoopingObject",
 ]

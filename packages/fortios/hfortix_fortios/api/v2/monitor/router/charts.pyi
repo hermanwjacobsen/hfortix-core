@@ -37,34 +37,24 @@ class ChartsPayload(TypedDict, total=False):
 
 
 # ================================================================
-# Response Types (TypedDict for dict-style access)
+# Response Types for Monitor/Log/Service Endpoints
 # ================================================================
 
 class ChartsResponse(TypedDict, total=False):
     """Response type for Charts - use with .dict property for typed dict access."""
-    operator: Literal["and", "or"]
-    ip_version: int
-    ip_mask: str
-    gateway: str
-    type: str
-    origin: str
-    interface: str
+    dumped_ipv4: int
+    dumped_ipv6: int
+    interfaces: str
+    types: str
 
 
-# ================================================================
-# Response Types (Class for attribute access)
-# ================================================================
-
-
-class ChartsObject(FortiObject):
+class ChartsObject(FortiObject[ChartsResponse]):
     """Typed FortiObject for Charts with field access."""
-    operator: Literal["and", "or"]
-    ip_version: int
-    ip_mask: str
-    gateway: str
-    type: str
-    origin: str
-    interface: str
+    dumped_ipv4: int
+    dumped_ipv6: int
+    interfaces: str
+    types: str
+
 
 
 # ================================================================
@@ -110,7 +100,7 @@ class Charts:
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
-    ) -> ChartsObject: ...
+    ) -> FortiObjectList[ChartsObject]: ...
     
 
 
@@ -184,7 +174,6 @@ class Charts:
 
 __all__ = [
     "Charts",
-    "ChartsPayload",
     "ChartsResponse",
     "ChartsObject",
 ]

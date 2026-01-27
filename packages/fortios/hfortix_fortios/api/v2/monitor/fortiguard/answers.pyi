@@ -35,30 +35,34 @@ class AnswersPayload(TypedDict, total=False):
 
 
 # ================================================================
-# Response Types (TypedDict for dict-style access)
+# Response Types for Monitor/Log/Service Endpoints
 # ================================================================
 
 class AnswersResponse(TypedDict, total=False):
     """Response type for Answers - use with .dict property for typed dict access."""
+    name: str
+    sort: str
     page: int
-    pagesize: int
-    sortkey: str
-    topics: str
-    limit: int
+    pageSize: int
+    pageCount: int
+    listCount: int
+    totalCount: int
+    sorts: list[str]
+    list: list[str]
 
 
-# ================================================================
-# Response Types (Class for attribute access)
-# ================================================================
-
-
-class AnswersObject(FortiObject):
+class AnswersObject(FortiObject[AnswersResponse]):
     """Typed FortiObject for Answers with field access."""
+    name: str
+    sort: str
     page: int
-    pagesize: int
-    sortkey: str
-    topics: str
-    limit: int
+    pageSize: int
+    pageCount: int
+    listCount: int
+    totalCount: int
+    sorts: list[str]
+    list: list[str]
+
 
 
 # ================================================================
@@ -102,7 +106,7 @@ class Answers:
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
-    ) -> AnswersObject: ...
+    ) -> FortiObjectList[AnswersObject]: ...
     
 
 
@@ -172,7 +176,6 @@ class Answers:
 
 __all__ = [
     "Answers",
-    "AnswersPayload",
     "AnswersResponse",
     "AnswersObject",
 ]

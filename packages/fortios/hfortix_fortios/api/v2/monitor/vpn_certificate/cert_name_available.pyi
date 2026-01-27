@@ -32,23 +32,20 @@ class CertNameAvailablePayload(TypedDict, total=False):
 
 
 # ================================================================
-# Response Types (TypedDict for dict-style access)
+# Response Types for Monitor/Log/Service Endpoints
 # ================================================================
 
 class CertNameAvailableResponse(TypedDict, total=False):
     """Response type for CertNameAvailable - use with .dict property for typed dict access."""
-    mkey: str
-    scope: Literal["vdom", "global"]
+    is_valid: bool
+    value: str
 
 
-# ================================================================
-# Response Types (Class for attribute access)
-# ================================================================
-
-
-class CertNameAvailableObject(FortiObject):
+class CertNameAvailableObject(FortiObject[CertNameAvailableResponse]):
     """Typed FortiObject for CertNameAvailable with field access."""
-    scope: Literal["vdom", "global"]
+    is_valid: bool
+    value: str
+
 
 
 # ================================================================
@@ -89,7 +86,7 @@ class CertNameAvailable:
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
-    ) -> CertNameAvailableObject: ...
+    ) -> FortiObjectList[CertNameAvailableObject]: ...
     
 
 
@@ -153,7 +150,6 @@ class CertNameAvailable:
 
 __all__ = [
     "CertNameAvailable",
-    "CertNameAvailablePayload",
     "CertNameAvailableResponse",
     "CertNameAvailableObject",
 ]

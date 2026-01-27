@@ -31,22 +31,30 @@ class SecurityPolicyPayload(TypedDict, total=False):
 
 
 # ================================================================
-# Response Types (TypedDict for dict-style access)
+# Response Types for Monitor/Log/Service Endpoints
 # ================================================================
 
 class SecurityPolicyResponse(TypedDict, total=False):
     """Response type for SecurityPolicy - use with .dict property for typed dict access."""
     policyid: int
+    last_used: int
+    first_used: int
+    hit_count: int
+    uuid: str
+    uuid_type: str
+    x1_week: str
 
 
-# ================================================================
-# Response Types (Class for attribute access)
-# ================================================================
-
-
-class SecurityPolicyObject(FortiObject):
+class SecurityPolicyObject(FortiObject[SecurityPolicyResponse]):
     """Typed FortiObject for SecurityPolicy with field access."""
     policyid: int
+    last_used: int
+    first_used: int
+    hit_count: int
+    uuid: str
+    uuid_type: str
+    x1_week: str
+
 
 
 # ================================================================
@@ -86,7 +94,7 @@ class SecurityPolicy:
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
-    ) -> SecurityPolicyObject: ...
+    ) -> FortiObjectList[SecurityPolicyObject]: ...
     
 
 
@@ -148,7 +156,6 @@ class SecurityPolicy:
 
 __all__ = [
     "SecurityPolicy",
-    "SecurityPolicyPayload",
     "SecurityPolicyResponse",
     "SecurityPolicyObject",
 ]

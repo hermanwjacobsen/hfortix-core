@@ -23,6 +23,23 @@ from hfortix_fortios.models import (
 
 
 # ================================================================
+# Response Types for Monitor/Log/Service Endpoints
+# ================================================================
+
+class SaasApplicationResponse(TypedDict, total=False):
+    """Response type for SaasApplication - use with .dict property for typed dict access."""
+    name: str
+    type: str
+
+
+class SaasApplicationObject(FortiObject[SaasApplicationResponse]):
+    """Typed FortiObject for SaasApplication with field access."""
+    name: str
+    type: str
+
+
+
+# ================================================================
 # Main Endpoint Class
 # ================================================================
 
@@ -58,7 +75,7 @@ class SaasApplication:
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
-    ) -> FortiObject[Any]: ...
+    ) -> FortiObjectList[SaasApplicationObject]: ...
     
 
 
@@ -118,4 +135,6 @@ class SaasApplication:
 
 __all__ = [
     "SaasApplication",
+    "SaasApplicationResponse",
+    "SaasApplicationObject",
 ]

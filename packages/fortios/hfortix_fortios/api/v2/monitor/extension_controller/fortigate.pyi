@@ -23,6 +23,31 @@ from hfortix_fortios.models import (
 
 
 # ================================================================
+# Response Types for Monitor/Log/Service Endpoints
+# ================================================================
+
+class FortigateResponse(TypedDict, total=False):
+    """Response type for Fortigate - use with .dict property for typed dict access."""
+    name: str
+    ip: str
+    status: str
+    uptime: str
+    port: str
+    authorization_status_locked: bool
+
+
+class FortigateObject(FortiObject[FortigateResponse]):
+    """Typed FortiObject for Fortigate with field access."""
+    name: str
+    ip: str
+    status: str
+    uptime: str
+    port: str
+    authorization_status_locked: bool
+
+
+
+# ================================================================
 # Main Endpoint Class
 # ================================================================
 
@@ -58,7 +83,7 @@ class Fortigate:
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
-    ) -> FortiObject[Any]: ...
+    ) -> FortiObjectList[FortigateObject]: ...
     
 
 
@@ -118,4 +143,6 @@ class Fortigate:
 
 __all__ = [
     "Fortigate",
+    "FortigateResponse",
+    "FortigateObject",
 ]

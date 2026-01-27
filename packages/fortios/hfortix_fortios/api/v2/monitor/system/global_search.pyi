@@ -35,30 +35,24 @@ class GlobalSearchPayload(TypedDict, total=False):
 
 
 # ================================================================
-# Response Types (TypedDict for dict-style access)
+# Response Types for Monitor/Log/Service Endpoints
 # ================================================================
 
 class GlobalSearchResponse(TypedDict, total=False):
     """Response type for GlobalSearch - use with .dict property for typed dict access."""
-    search: str
-    scope: Literal["vdom", "global"]
-    search_tables: Literal["firewall.address", "firewall.address6"]
-    skip_tables: Literal["firewall.address", "firewall.address6"]
-    exact: bool
+    mkey: int
+    pathname: str
+    weight: int
+    matched_properties: list[str]
 
 
-# ================================================================
-# Response Types (Class for attribute access)
-# ================================================================
-
-
-class GlobalSearchObject(FortiObject):
+class GlobalSearchObject(FortiObject[GlobalSearchResponse]):
     """Typed FortiObject for GlobalSearch with field access."""
-    search: str
-    scope: Literal["vdom", "global"]
-    search_tables: Literal["firewall.address", "firewall.address6"]
-    skip_tables: Literal["firewall.address", "firewall.address6"]
-    exact: bool
+    mkey: int
+    pathname: str
+    weight: int
+    matched_properties: list[str]
+
 
 
 # ================================================================
@@ -102,7 +96,7 @@ class GlobalSearch:
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
-    ) -> GlobalSearchObject: ...
+    ) -> FortiObjectList[GlobalSearchObject]: ...
     
 
 
@@ -172,7 +166,6 @@ class GlobalSearch:
 
 __all__ = [
     "GlobalSearch",
-    "GlobalSearchPayload",
     "GlobalSearchResponse",
     "GlobalSearchObject",
 ]

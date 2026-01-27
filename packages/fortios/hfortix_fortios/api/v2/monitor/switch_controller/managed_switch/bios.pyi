@@ -31,21 +31,20 @@ class BiosPayload(TypedDict, total=False):
 
 
 # ================================================================
-# Response Types (TypedDict for dict-style access)
+# Response Types for Monitor/Log/Service Endpoints
 # ================================================================
 
 class BiosResponse(TypedDict, total=False):
     """Response type for Bios - use with .dict property for typed dict access."""
-    mkey: str
+    switch_id: str
+    bios: str
 
 
-# ================================================================
-# Response Types (Class for attribute access)
-# ================================================================
-
-
-class BiosObject(FortiObject):
+class BiosObject(FortiObject[BiosResponse]):
     """Typed FortiObject for Bios with field access."""
+    switch_id: str
+    bios: str
+
 
 
 # ================================================================
@@ -85,7 +84,7 @@ class Bios:
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
-    ) -> BiosObject: ...
+    ) -> FortiObjectList[BiosObject]: ...
     
 
 
@@ -147,7 +146,6 @@ class Bios:
 
 __all__ = [
     "Bios",
-    "BiosPayload",
     "BiosResponse",
     "BiosObject",
 ]

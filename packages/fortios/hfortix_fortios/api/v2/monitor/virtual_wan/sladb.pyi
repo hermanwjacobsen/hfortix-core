@@ -23,6 +23,23 @@ from hfortix_fortios.models import (
 
 
 # ================================================================
+# Response Types for Monitor/Log/Service Endpoints
+# ================================================================
+
+class SladbResponse(TypedDict, total=False):
+    """Response type for Sladb - use with .dict property for typed dict access."""
+    target_name: str
+    domains: list[str]
+
+
+class SladbObject(FortiObject[SladbResponse]):
+    """Typed FortiObject for Sladb with field access."""
+    target_name: str
+    domains: list[str]
+
+
+
+# ================================================================
 # Main Endpoint Class
 # ================================================================
 
@@ -58,7 +75,7 @@ class Sladb:
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
-    ) -> FortiObject[Any]: ...
+    ) -> FortiObjectList[SladbObject]: ...
     
 
 
@@ -118,4 +135,6 @@ class Sladb:
 
 __all__ = [
     "Sladb",
+    "SladbResponse",
+    "SladbObject",
 ]

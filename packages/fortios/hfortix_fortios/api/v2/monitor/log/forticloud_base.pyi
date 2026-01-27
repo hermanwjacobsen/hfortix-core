@@ -23,6 +23,27 @@ from hfortix_fortios.models import (
 
 
 # ================================================================
+# Response Types for Monitor/Log/Service Endpoints
+# ================================================================
+
+class ForticloudResponse(TypedDict, total=False):
+    """Response type for Forticloud - use with .dict property for typed dict access."""
+    error: int
+    expires: int
+    disk: str
+    dlp: bool
+
+
+class ForticloudObject(FortiObject[ForticloudResponse]):
+    """Typed FortiObject for Forticloud with field access."""
+    error: int
+    expires: int
+    disk: str
+    dlp: bool
+
+
+
+# ================================================================
 # Main Endpoint Class
 # ================================================================
 
@@ -58,7 +79,7 @@ class Forticloud:
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
-    ) -> FortiObject[Any]: ...
+    ) -> FortiObjectList[ForticloudObject]: ...
     
 
 
@@ -118,4 +139,6 @@ class Forticloud:
 
 __all__ = [
     "Forticloud",
+    "ForticloudResponse",
+    "ForticloudObject",
 ]

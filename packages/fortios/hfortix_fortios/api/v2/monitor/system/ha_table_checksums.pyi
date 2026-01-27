@@ -32,24 +32,20 @@ class HaTableChecksumsPayload(TypedDict, total=False):
 
 
 # ================================================================
-# Response Types (TypedDict for dict-style access)
+# Response Types for Monitor/Log/Service Endpoints
 # ================================================================
 
 class HaTableChecksumsResponse(TypedDict, total=False):
     """Response type for HaTableChecksums - use with .dict property for typed dict access."""
     serial_no: str
-    vdom_name: str
+    tables: str
 
 
-# ================================================================
-# Response Types (Class for attribute access)
-# ================================================================
-
-
-class HaTableChecksumsObject(FortiObject):
+class HaTableChecksumsObject(FortiObject[HaTableChecksumsResponse]):
     """Typed FortiObject for HaTableChecksums with field access."""
     serial_no: str
-    vdom_name: str
+    tables: str
+
 
 
 # ================================================================
@@ -90,7 +86,7 @@ class HaTableChecksums:
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
-    ) -> HaTableChecksumsObject: ...
+    ) -> FortiObjectList[HaTableChecksumsObject]: ...
     
 
 
@@ -154,7 +150,6 @@ class HaTableChecksums:
 
 __all__ = [
     "HaTableChecksums",
-    "HaTableChecksumsPayload",
     "HaTableChecksumsResponse",
     "HaTableChecksumsObject",
 ]

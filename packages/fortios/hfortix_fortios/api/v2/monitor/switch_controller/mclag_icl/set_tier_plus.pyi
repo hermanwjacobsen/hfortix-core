@@ -36,32 +36,20 @@ class SetTierPlusPayload(TypedDict, total=False):
 
 
 # ================================================================
-# Response Types (TypedDict for dict-style access)
+# Response Types for Monitor/Log/Service Endpoints
 # ================================================================
 
 class SetTierPlusResponse(TypedDict, total=False):
     """Response type for SetTierPlus - use with .dict property for typed dict access."""
-    fortilink: str
-    parent_peer1: str
-    parent_peer2: str
-    peer1: str
-    peer2: str
-    isl_port_group: str
+    success: bool
+    error: str
 
 
-# ================================================================
-# Response Types (Class for attribute access)
-# ================================================================
-
-
-class SetTierPlusObject(FortiObject):
+class SetTierPlusObject(FortiObject[SetTierPlusResponse]):
     """Typed FortiObject for SetTierPlus with field access."""
-    fortilink: str
-    parent_peer1: str
-    parent_peer2: str
-    peer1: str
-    peer2: str
-    isl_port_group: str
+    success: bool
+    error: str
+
 
 
 # ================================================================
@@ -100,7 +88,7 @@ class SetTierPlus:
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
-    ) -> SetTierPlusObject: ...
+    ) -> FortiObjectList[SetTierPlusObject]: ...
     
 
     # ================================================================
@@ -189,7 +177,6 @@ class SetTierPlus:
 
 __all__ = [
     "SetTierPlus",
-    "SetTierPlusPayload",
     "SetTierPlusResponse",
     "SetTierPlusObject",
 ]

@@ -32,24 +32,22 @@ class LookupPayload(TypedDict, total=False):
 
 
 # ================================================================
-# Response Types (TypedDict for dict-style access)
+# Response Types for Monitor/Log/Service Endpoints
 # ================================================================
 
 class LookupResponse(TypedDict, total=False):
     """Response type for Lookup - use with .dict property for typed dict access."""
-    ipv6: bool
-    destination: str
+    success: bool
+    error_message: str
+    entries: list[str]
 
 
-# ================================================================
-# Response Types (Class for attribute access)
-# ================================================================
-
-
-class LookupObject(FortiObject):
+class LookupObject(FortiObject[LookupResponse]):
     """Typed FortiObject for Lookup with field access."""
-    ipv6: bool
-    destination: str
+    success: bool
+    error_message: str
+    entries: list[str]
+
 
 
 # ================================================================
@@ -90,7 +88,7 @@ class Lookup:
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
-    ) -> LookupObject: ...
+    ) -> FortiObjectList[LookupObject]: ...
     
 
 
@@ -154,7 +152,6 @@ class Lookup:
 
 __all__ = [
     "Lookup",
-    "LookupPayload",
     "LookupResponse",
     "LookupObject",
 ]

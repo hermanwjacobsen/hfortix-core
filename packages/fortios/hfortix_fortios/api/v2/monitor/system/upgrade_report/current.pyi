@@ -23,6 +23,47 @@ from hfortix_fortios.models import (
 
 
 # ================================================================
+# Response Types for Monitor/Log/Service Endpoints
+# ================================================================
+
+class CurrentResponse(TypedDict, total=False):
+    """Response type for Current - use with .dict property for typed dict access."""
+    ipv4_sessions: int
+    ipv6_sessions: int
+    sslvpn_tunnels: int
+    ipsec_tunnels: int
+    cpu_usage: int
+    memory_usage: int
+    total_routes: int
+    total_ospf_routes: int
+    total_bgp_routes: int
+    fortigate_stats: str
+    fortiap_stats: str
+    fortiswitch_stats: str
+    fortiextender_stats: str
+    endpoint_device_stats: str
+
+
+class CurrentObject(FortiObject[CurrentResponse]):
+    """Typed FortiObject for Current with field access."""
+    ipv4_sessions: int
+    ipv6_sessions: int
+    sslvpn_tunnels: int
+    ipsec_tunnels: int
+    cpu_usage: int
+    memory_usage: int
+    total_routes: int
+    total_ospf_routes: int
+    total_bgp_routes: int
+    fortigate_stats: str
+    fortiap_stats: str
+    fortiswitch_stats: str
+    fortiextender_stats: str
+    endpoint_device_stats: str
+
+
+
+# ================================================================
 # Main Endpoint Class
 # ================================================================
 
@@ -58,7 +99,7 @@ class Current:
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
-    ) -> FortiObject[Any]: ...
+    ) -> FortiObjectList[CurrentObject]: ...
     
 
 
@@ -118,4 +159,6 @@ class Current:
 
 __all__ = [
     "Current",
+    "CurrentResponse",
+    "CurrentObject",
 ]

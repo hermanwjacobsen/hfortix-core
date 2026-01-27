@@ -1,6 +1,11 @@
 from typing import Any, Literal
 
 # Enum type aliases for validation
+VALID_BODY_FASTPATH: Literal["disable", "enable"]
+VALID_BODY_PER_SESSION_ACCOUNTING: Literal["disable", "traffic-log-only", "enable"]
+VALID_BODY_IPSEC_INNER_FRAGMENT: Literal["disable", "enable"]
+VALID_BODY_IPSEC_THROUGHPUT_MSG_FREQUENCY: Literal["disable", "32kb", "64kb", "128kb", "256kb", "512kb", "1mb", "2mb", "4mb", "8mb", "16mb", "32mb", "64mb", "128mb", "256mb", "512mb", "1gb"]
+VALID_BODY_IPSEC_STS_TIMEOUT: Literal["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"]
 
 # Metadata dictionaries
 FIELD_TYPES: dict[str, str]
@@ -25,6 +30,11 @@ def get_schema_info() -> dict[str, Any]: ...
 
 
 __all__ = [
+    "VALID_BODY_FASTPATH",
+    "VALID_BODY_PER_SESSION_ACCOUNTING",
+    "VALID_BODY_IPSEC_INNER_FRAGMENT",
+    "VALID_BODY_IPSEC_THROUGHPUT_MSG_FREQUENCY",
+    "VALID_BODY_IPSEC_STS_TIMEOUT",
     "FIELD_TYPES",
     "FIELD_DESCRIPTIONS",
     "FIELD_CONSTRAINTS",

@@ -32,24 +32,20 @@ class DeregisterDevicePayload(TypedDict, total=False):
 
 
 # ================================================================
-# Response Types (TypedDict for dict-style access)
+# Response Types for Monitor/Log/Service Endpoints
 # ================================================================
 
 class DeregisterDeviceResponse(TypedDict, total=False):
     """Response type for DeregisterDevice - use with .dict property for typed dict access."""
-    email: str
-    password: str
+    error: str
+    success: bool
 
 
-# ================================================================
-# Response Types (Class for attribute access)
-# ================================================================
-
-
-class DeregisterDeviceObject(FortiObject):
+class DeregisterDeviceObject(FortiObject[DeregisterDeviceResponse]):
     """Typed FortiObject for DeregisterDevice with field access."""
-    email: str
-    password: str
+    error: str
+    success: bool
+
 
 
 # ================================================================
@@ -88,7 +84,7 @@ class DeregisterDevice:
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
-    ) -> DeregisterDeviceObject: ...
+    ) -> FortiObjectList[DeregisterDeviceObject]: ...
     
 
     # ================================================================
@@ -165,7 +161,6 @@ class DeregisterDevice:
 
 __all__ = [
     "DeregisterDevice",
-    "DeregisterDevicePayload",
     "DeregisterDeviceResponse",
     "DeregisterDeviceObject",
 ]

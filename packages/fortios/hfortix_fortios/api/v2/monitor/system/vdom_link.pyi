@@ -31,22 +31,22 @@ class VdomLinkPayload(TypedDict, total=False):
 
 
 # ================================================================
-# Response Types (TypedDict for dict-style access)
+# Response Types for Monitor/Log/Service Endpoints
 # ================================================================
 
 class VdomLinkResponse(TypedDict, total=False):
     """Response type for VdomLink - use with .dict property for typed dict access."""
-    scope: Literal["vdom", "global"]
+    name: str
+    type: str
+    pairs: list[str]
 
 
-# ================================================================
-# Response Types (Class for attribute access)
-# ================================================================
-
-
-class VdomLinkObject(FortiObject):
+class VdomLinkObject(FortiObject[VdomLinkResponse]):
     """Typed FortiObject for VdomLink with field access."""
-    scope: Literal["vdom", "global"]
+    name: str
+    type: str
+    pairs: list[str]
+
 
 
 # ================================================================
@@ -86,7 +86,7 @@ class VdomLink:
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
-    ) -> VdomLinkObject: ...
+    ) -> FortiObjectList[VdomLinkObject]: ...
     
 
 
@@ -148,7 +148,6 @@ class VdomLink:
 
 __all__ = [
     "VdomLink",
-    "VdomLinkPayload",
     "VdomLinkResponse",
     "VdomLinkObject",
 ]

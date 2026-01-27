@@ -31,22 +31,92 @@ class TrustedCertAuthoritiesPayload(TypedDict, total=False):
 
 
 # ================================================================
-# Response Types (TypedDict for dict-style access)
+# Response Types for Monitor/Log/Service Endpoints
 # ================================================================
 
 class TrustedCertAuthoritiesResponse(TypedDict, total=False):
     """Response type for TrustedCertAuthorities - use with .dict property for typed dict access."""
-    scope: Literal["vdom", "global"]
+    name: str
+    status: str
+    source: str
+    comments: str
+    range: str
+    exists: bool
+    is_ssl_server_cert: bool
+    is_proxy_ssl_cert: bool
+    is_general_allowable_cert: bool
+    is_default_local: bool
+    is_built_in: bool
+    is_wifi_cert: bool
+    is_deep_inspection_cert: bool
+    trusted: bool
+    has_valid_cert_key: bool
+    key_type: str
+    key_size: int
+    is_local_ca_cert: bool
+    type: str
+    valid_from: int
+    valid_to: int
+    valid_from_raw: str
+    valid_to_raw: str
+    signature_algorithm: str
+    subject: str
+    subject_raw: str
+    issuer: str
+    issuer_raw: str
+    fingerprint: str
+    version: int
+    is_ca: bool
+    serial_number: str
+    q_path: str
+    q_name: str
+    q_ref: int
+    q_static: bool
+    q_type: int
+    ext: list[str]
 
 
-# ================================================================
-# Response Types (Class for attribute access)
-# ================================================================
-
-
-class TrustedCertAuthoritiesObject(FortiObject):
+class TrustedCertAuthoritiesObject(FortiObject[TrustedCertAuthoritiesResponse]):
     """Typed FortiObject for TrustedCertAuthorities with field access."""
-    scope: Literal["vdom", "global"]
+    name: str
+    status: str
+    source: str
+    comments: str
+    range: str
+    exists: bool
+    is_ssl_server_cert: bool
+    is_proxy_ssl_cert: bool
+    is_general_allowable_cert: bool
+    is_default_local: bool
+    is_built_in: bool
+    is_wifi_cert: bool
+    is_deep_inspection_cert: bool
+    trusted: bool
+    has_valid_cert_key: bool
+    key_type: str
+    key_size: int
+    is_local_ca_cert: bool
+    type: str
+    valid_from: int
+    valid_to: int
+    valid_from_raw: str
+    valid_to_raw: str
+    signature_algorithm: str
+    subject: str
+    subject_raw: str
+    issuer: str
+    issuer_raw: str
+    fingerprint: str
+    version: int
+    is_ca: bool
+    serial_number: str
+    q_path: str
+    q_name: str
+    q_ref: int
+    q_static: bool
+    q_type: int
+    ext: list[str]
+
 
 
 # ================================================================
@@ -86,7 +156,7 @@ class TrustedCertAuthorities:
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
-    ) -> TrustedCertAuthoritiesObject: ...
+    ) -> FortiObjectList[TrustedCertAuthoritiesObject]: ...
     
 
 
@@ -148,7 +218,6 @@ class TrustedCertAuthorities:
 
 __all__ = [
     "TrustedCertAuthorities",
-    "TrustedCertAuthoritiesPayload",
     "TrustedCertAuthoritiesResponse",
     "TrustedCertAuthoritiesObject",
 ]

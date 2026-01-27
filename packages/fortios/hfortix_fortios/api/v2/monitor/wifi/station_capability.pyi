@@ -33,26 +33,24 @@ class StationCapabilityPayload(TypedDict, total=False):
 
 
 # ================================================================
-# Response Types (TypedDict for dict-style access)
+# Response Types for Monitor/Log/Service Endpoints
 # ================================================================
 
 class StationCapabilityResponse(TypedDict, total=False):
     """Response type for StationCapability - use with .dict property for typed dict access."""
     mac_address: str
-    min_age: int
-    max_age: int
+    vfid: int
+    band_capability: list[str]
+    wtp: list[str]
 
 
-# ================================================================
-# Response Types (Class for attribute access)
-# ================================================================
-
-
-class StationCapabilityObject(FortiObject):
+class StationCapabilityObject(FortiObject[StationCapabilityResponse]):
     """Typed FortiObject for StationCapability with field access."""
     mac_address: str
-    min_age: int
-    max_age: int
+    vfid: int
+    band_capability: list[str]
+    wtp: list[str]
+
 
 
 # ================================================================
@@ -94,7 +92,7 @@ class StationCapability:
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
-    ) -> StationCapabilityObject: ...
+    ) -> FortiObjectList[StationCapabilityObject]: ...
     
 
 
@@ -160,7 +158,6 @@ class StationCapability:
 
 __all__ = [
     "StationCapability",
-    "StationCapabilityPayload",
     "StationCapabilityResponse",
     "StationCapabilityObject",
 ]

@@ -31,21 +31,28 @@ class ListPayload(TypedDict, total=False):
 
 
 # ================================================================
-# Response Types (TypedDict for dict-style access)
+# Response Types for Monitor/Log/Service Endpoints
 # ================================================================
 
 class ListResponse(TypedDict, total=False):
     """Response type for List - use with .dict property for typed dict access."""
     mkey: str
+    status: str
+    config: str
+    start_time: str
+    end_time: str
+    vdom: str
 
 
-# ================================================================
-# Response Types (Class for attribute access)
-# ================================================================
-
-
-class ListObject(FortiObject):
+class ListObject(FortiObject[ListResponse]):
     """Typed FortiObject for List with field access."""
+    mkey: str
+    status: str
+    config: str
+    start_time: str
+    end_time: str
+    vdom: str
+
 
 
 # ================================================================
@@ -85,7 +92,7 @@ class List:
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
-    ) -> ListObject: ...
+    ) -> FortiObjectList[ListObject]: ...
     
 
 
@@ -147,7 +154,6 @@ class List:
 
 __all__ = [
     "List",
-    "ListPayload",
     "ListResponse",
     "ListObject",
 ]

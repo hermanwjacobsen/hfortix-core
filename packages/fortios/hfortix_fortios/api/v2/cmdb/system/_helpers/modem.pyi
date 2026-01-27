@@ -1,6 +1,26 @@
 from typing import Any, Literal
 
 # Enum type aliases for validation
+VALID_BODY_STATUS: Literal["enable", "disable"]
+VALID_BODY_MODE: Literal["standalone", "redundant"]
+VALID_BODY_AUTO_DIAL: Literal["enable", "disable"]
+VALID_BODY_DIAL_ON_DEMAND: Literal["enable", "disable"]
+VALID_BODY_REDIAL: Literal["none", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10"]
+VALID_BODY_DONT_SEND_CR1: Literal["enable", "disable"]
+VALID_BODY_PEER_MODEM1: Literal["generic", "actiontec", "ascend_TNT"]
+VALID_BODY_PPP_ECHO_REQUEST1: Literal["enable", "disable"]
+VALID_BODY_AUTHTYPE1: Literal["pap", "chap", "mschap", "mschapv2"]
+VALID_BODY_DONT_SEND_CR2: Literal["enable", "disable"]
+VALID_BODY_PEER_MODEM2: Literal["generic", "actiontec", "ascend_TNT"]
+VALID_BODY_PPP_ECHO_REQUEST2: Literal["enable", "disable"]
+VALID_BODY_AUTHTYPE2: Literal["pap", "chap", "mschap", "mschapv2"]
+VALID_BODY_DONT_SEND_CR3: Literal["enable", "disable"]
+VALID_BODY_PEER_MODEM3: Literal["generic", "actiontec", "ascend_TNT"]
+VALID_BODY_PPP_ECHO_REQUEST3: Literal["enable", "disable"]
+VALID_BODY_ALTMODE: Literal["enable", "disable"]
+VALID_BODY_AUTHTYPE3: Literal["pap", "chap", "mschap", "mschapv2"]
+VALID_BODY_TRAFFIC_CHECK: Literal["enable", "disable"]
+VALID_BODY_ACTION: Literal["dial", "stop", "none"]
 
 # Metadata dictionaries
 FIELD_TYPES: dict[str, str]
@@ -25,6 +45,26 @@ def get_schema_info() -> dict[str, Any]: ...
 
 
 __all__ = [
+    "VALID_BODY_STATUS",
+    "VALID_BODY_MODE",
+    "VALID_BODY_AUTO_DIAL",
+    "VALID_BODY_DIAL_ON_DEMAND",
+    "VALID_BODY_REDIAL",
+    "VALID_BODY_DONT_SEND_CR1",
+    "VALID_BODY_PEER_MODEM1",
+    "VALID_BODY_PPP_ECHO_REQUEST1",
+    "VALID_BODY_AUTHTYPE1",
+    "VALID_BODY_DONT_SEND_CR2",
+    "VALID_BODY_PEER_MODEM2",
+    "VALID_BODY_PPP_ECHO_REQUEST2",
+    "VALID_BODY_AUTHTYPE2",
+    "VALID_BODY_DONT_SEND_CR3",
+    "VALID_BODY_PEER_MODEM3",
+    "VALID_BODY_PPP_ECHO_REQUEST3",
+    "VALID_BODY_ALTMODE",
+    "VALID_BODY_AUTHTYPE3",
+    "VALID_BODY_TRAFFIC_CHECK",
+    "VALID_BODY_ACTION",
     "FIELD_TYPES",
     "FIELD_DESCRIPTIONS",
     "FIELD_CONSTRAINTS",

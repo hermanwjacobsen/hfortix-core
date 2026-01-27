@@ -23,6 +23,25 @@ from hfortix_fortios.models import (
 
 
 # ================================================================
+# Response Types for Monitor/Log/Service Endpoints
+# ================================================================
+
+class ApNamesResponse(TypedDict, total=False):
+    """Response type for ApNames - use with .dict property for typed dict access."""
+    prefix: str
+    model: str
+    platform: str
+
+
+class ApNamesObject(FortiObject[ApNamesResponse]):
+    """Typed FortiObject for ApNames with field access."""
+    prefix: str
+    model: str
+    platform: str
+
+
+
+# ================================================================
 # Main Endpoint Class
 # ================================================================
 
@@ -58,7 +77,7 @@ class ApNames:
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
-    ) -> FortiObject[Any]: ...
+    ) -> FortiObjectList[ApNamesObject]: ...
     
 
 
@@ -118,4 +137,6 @@ class ApNames:
 
 __all__ = [
     "ApNames",
+    "ApNamesResponse",
+    "ApNamesObject",
 ]

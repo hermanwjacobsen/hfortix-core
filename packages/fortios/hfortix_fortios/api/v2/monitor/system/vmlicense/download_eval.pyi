@@ -33,26 +33,20 @@ class DownloadEvalPayload(TypedDict, total=False):
 
 
 # ================================================================
-# Response Types (TypedDict for dict-style access)
+# Response Types for Monitor/Log/Service Endpoints
 # ================================================================
 
 class DownloadEvalResponse(TypedDict, total=False):
     """Response type for DownloadEval - use with .dict property for typed dict access."""
-    account_id: str
-    account_password: str
-    is_government: bool
+    forticare_error_code: int
+    forticare_error_message: str
 
 
-# ================================================================
-# Response Types (Class for attribute access)
-# ================================================================
-
-
-class DownloadEvalObject(FortiObject):
+class DownloadEvalObject(FortiObject[DownloadEvalResponse]):
     """Typed FortiObject for DownloadEval with field access."""
-    account_id: str
-    account_password: str
-    is_government: bool
+    forticare_error_code: int
+    forticare_error_message: str
+
 
 
 # ================================================================
@@ -91,7 +85,7 @@ class DownloadEval:
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
-    ) -> DownloadEvalObject: ...
+    ) -> FortiObjectList[DownloadEvalObject]: ...
     
 
     # ================================================================
@@ -171,7 +165,6 @@ class DownloadEval:
 
 __all__ = [
     "DownloadEval",
-    "DownloadEvalPayload",
     "DownloadEvalResponse",
     "DownloadEvalObject",
 ]

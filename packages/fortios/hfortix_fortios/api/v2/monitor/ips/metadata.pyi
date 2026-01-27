@@ -23,6 +23,21 @@ from hfortix_fortios.models import (
 
 
 # ================================================================
+# Response Types for Monitor/Log/Service Endpoints
+# ================================================================
+
+class MetadataResponse(TypedDict, total=False):
+    """Response type for Metadata - use with .dict property for typed dict access."""
+    cloud_app_ctrl_meta_id: int
+
+
+class MetadataObject(FortiObject[MetadataResponse]):
+    """Typed FortiObject for Metadata with field access."""
+    cloud_app_ctrl_meta_id: int
+
+
+
+# ================================================================
 # Main Endpoint Class
 # ================================================================
 
@@ -58,7 +73,7 @@ class Metadata:
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
-    ) -> FortiObject[Any]: ...
+    ) -> FortiObjectList[MetadataObject]: ...
     
 
 
@@ -118,4 +133,6 @@ class Metadata:
 
 __all__ = [
     "Metadata",
+    "MetadataResponse",
+    "MetadataObject",
 ]

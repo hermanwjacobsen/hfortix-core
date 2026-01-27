@@ -39,38 +39,22 @@ class QueryPayload(TypedDict, total=False):
 
 
 # ================================================================
-# Response Types (TypedDict for dict-style access)
+# Response Types for Monitor/Log/Service Endpoints
 # ================================================================
 
 class QueryResponse(TypedDict, total=False):
     """Response type for Query - use with .dict property for typed dict access."""
-    timestamp_from: int
-    timestamp_to: int
-    filters: Literal["exact", "contains", "greaterThanEqualTo", "lessThanEqualTo"]
-    query_type: Literal["latest", "unified_latest", "unified_history"]
-    query_id: int
-    cache_query: bool
-    key_only: bool
-    filter_logic: Literal["and", "or"]
-    total_only: bool
+    total: int
+    count: int
+    entries: list[str]
 
 
-# ================================================================
-# Response Types (Class for attribute access)
-# ================================================================
-
-
-class QueryObject(FortiObject):
+class QueryObject(FortiObject[QueryResponse]):
     """Typed FortiObject for Query with field access."""
-    timestamp_from: int
-    timestamp_to: int
-    filters: Literal["exact", "contains", "greaterThanEqualTo", "lessThanEqualTo"]
-    query_type: Literal["latest", "unified_latest", "unified_history"]
-    query_id: int
-    cache_query: bool
-    key_only: bool
-    filter_logic: Literal["and", "or"]
-    total_only: bool
+    total: int
+    count: int
+    entries: list[str]
+
 
 
 # ================================================================
@@ -118,7 +102,7 @@ class Query:
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
-    ) -> QueryObject: ...
+    ) -> FortiObjectList[QueryObject]: ...
     
 
 
@@ -196,7 +180,6 @@ class Query:
 
 __all__ = [
     "Query",
-    "QueryPayload",
     "QueryResponse",
     "QueryObject",
 ]

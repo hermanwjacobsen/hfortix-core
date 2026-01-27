@@ -31,22 +31,44 @@ class MulticastPolicyPayload(TypedDict, total=False):
 
 
 # ================================================================
-# Response Types (TypedDict for dict-style access)
+# Response Types for Monitor/Log/Service Endpoints
 # ================================================================
 
 class MulticastPolicyResponse(TypedDict, total=False):
     """Response type for MulticastPolicy - use with .dict property for typed dict access."""
     policyid: int
+    active_sessions: int
+    bytes: int
+    packets: int
+    last_used: int
+    first_used: int
+    hit_count: int
+    uuid: str
+    uuid_type: str
+    session_count: int
+    session_first_used: int
+    session_last_used: int
+    oversize: bool
+    x1_week_ipv4: str
 
 
-# ================================================================
-# Response Types (Class for attribute access)
-# ================================================================
-
-
-class MulticastPolicyObject(FortiObject):
+class MulticastPolicyObject(FortiObject[MulticastPolicyResponse]):
     """Typed FortiObject for MulticastPolicy with field access."""
     policyid: int
+    active_sessions: int
+    bytes: int
+    packets: int
+    last_used: int
+    first_used: int
+    hit_count: int
+    uuid: str
+    uuid_type: str
+    session_count: int
+    session_first_used: int
+    session_last_used: int
+    oversize: bool
+    x1_week_ipv4: str
+
 
 
 # ================================================================
@@ -86,7 +108,7 @@ class MulticastPolicy:
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
-    ) -> MulticastPolicyObject: ...
+    ) -> FortiObjectList[MulticastPolicyObject]: ...
     
 
 
@@ -148,7 +170,6 @@ class MulticastPolicy:
 
 __all__ = [
     "MulticastPolicy",
-    "MulticastPolicyPayload",
     "MulticastPolicyResponse",
     "MulticastPolicyObject",
 ]

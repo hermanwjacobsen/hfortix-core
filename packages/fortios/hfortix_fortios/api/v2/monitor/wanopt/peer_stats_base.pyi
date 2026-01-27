@@ -23,6 +23,25 @@ from hfortix_fortios.models import (
 
 
 # ================================================================
+# Response Types for Monitor/Log/Service Endpoints
+# ================================================================
+
+class PeerStatsResponse(TypedDict, total=False):
+    """Response type for PeerStats - use with .dict property for typed dict access."""
+    peers: list[str]
+    status: str
+    error: str
+
+
+class PeerStatsObject(FortiObject[PeerStatsResponse]):
+    """Typed FortiObject for PeerStats with field access."""
+    peers: list[str]
+    status: str
+    error: str
+
+
+
+# ================================================================
 # Main Endpoint Class
 # ================================================================
 
@@ -58,7 +77,7 @@ class PeerStats:
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
-    ) -> FortiObject[Any]: ...
+    ) -> FortiObjectList[PeerStatsObject]: ...
     
 
 
@@ -118,4 +137,6 @@ class PeerStats:
 
 __all__ = [
     "PeerStats",
+    "PeerStatsResponse",
+    "PeerStatsObject",
 ]

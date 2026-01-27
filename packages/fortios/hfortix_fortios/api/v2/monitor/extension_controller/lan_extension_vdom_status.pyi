@@ -23,6 +23,31 @@ from hfortix_fortios.models import (
 
 
 # ================================================================
+# Response Types for Monitor/Log/Service Endpoints
+# ================================================================
+
+class LanExtensionVdomStatusResponse(TypedDict, total=False):
+    """Response type for LanExtensionVdomStatus - use with .dict property for typed dict access."""
+    name: str
+    ip: str
+    status: str
+    uptime: str
+    port: str
+    uplink: list[str]
+
+
+class LanExtensionVdomStatusObject(FortiObject[LanExtensionVdomStatusResponse]):
+    """Typed FortiObject for LanExtensionVdomStatus with field access."""
+    name: str
+    ip: str
+    status: str
+    uptime: str
+    port: str
+    uplink: list[str]
+
+
+
+# ================================================================
 # Main Endpoint Class
 # ================================================================
 
@@ -58,7 +83,7 @@ class LanExtensionVdomStatus:
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
-    ) -> FortiObject[Any]: ...
+    ) -> FortiObjectList[LanExtensionVdomStatusObject]: ...
     
 
 
@@ -118,4 +143,6 @@ class LanExtensionVdomStatus:
 
 __all__ = [
     "LanExtensionVdomStatus",
+    "LanExtensionVdomStatusResponse",
+    "LanExtensionVdomStatusObject",
 ]

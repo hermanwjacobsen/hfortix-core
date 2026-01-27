@@ -32,23 +32,28 @@ class StatusPayload(TypedDict, total=False):
 
 
 # ================================================================
-# Response Types (TypedDict for dict-style access)
+# Response Types for Monitor/Log/Service Endpoints
 # ================================================================
 
 class StatusResponse(TypedDict, total=False):
     """Response type for Status - use with .dict property for typed dict access."""
-    mkey: str
+    name: str
     type: str
+    status: str
+    updating: bool
+    last_update: int
+    active_server: str
 
 
-# ================================================================
-# Response Types (Class for attribute access)
-# ================================================================
-
-
-class StatusObject(FortiObject):
+class StatusObject(FortiObject[StatusResponse]):
     """Typed FortiObject for Status with field access."""
+    name: str
     type: str
+    status: str
+    updating: bool
+    last_update: int
+    active_server: str
+
 
 
 # ================================================================
@@ -89,7 +94,7 @@ class Status:
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
-    ) -> StatusObject: ...
+    ) -> FortiObjectList[StatusObject]: ...
     
 
 
@@ -153,7 +158,6 @@ class Status:
 
 __all__ = [
     "Status",
-    "StatusPayload",
     "StatusResponse",
     "StatusObject",
 ]

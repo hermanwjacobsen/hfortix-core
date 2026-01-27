@@ -23,6 +23,23 @@ from hfortix_fortios.models import (
 
 
 # ================================================================
+# Response Types for Monitor/Log/Service Endpoints
+# ================================================================
+
+class HitsResponse(TypedDict, total=False):
+    """Response type for Hits - use with .dict property for typed dict access."""
+    domain: str
+    count: int
+
+
+class HitsObject(FortiObject[HitsResponse]):
+    """Typed FortiObject for Hits with field access."""
+    domain: str
+    count: int
+
+
+
+# ================================================================
 # Main Endpoint Class
 # ================================================================
 
@@ -58,7 +75,7 @@ class Hits:
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
-    ) -> FortiObject[Any]: ...
+    ) -> FortiObjectList[HitsObject]: ...
     
 
 
@@ -118,4 +135,6 @@ class Hits:
 
 __all__ = [
     "Hits",
+    "HitsResponse",
+    "HitsObject",
 ]

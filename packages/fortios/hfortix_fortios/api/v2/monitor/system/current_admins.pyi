@@ -23,6 +23,37 @@ from hfortix_fortios.models import (
 
 
 # ================================================================
+# Response Types for Monitor/Log/Service Endpoints
+# ================================================================
+
+class CurrentAdminsResponse(TypedDict, total=False):
+    """Response type for CurrentAdmins - use with .dict property for typed dict access."""
+    admin: str
+    disconnect_enabled: bool
+    id: int
+    intf: str
+    is_current: bool
+    method: str
+    profile: str
+    srcaddr: str
+    time: int
+
+
+class CurrentAdminsObject(FortiObject[CurrentAdminsResponse]):
+    """Typed FortiObject for CurrentAdmins with field access."""
+    admin: str
+    disconnect_enabled: bool
+    id: int
+    intf: str
+    is_current: bool
+    method: str
+    profile: str
+    srcaddr: str
+    time: int
+
+
+
+# ================================================================
 # Main Endpoint Class
 # ================================================================
 
@@ -58,7 +89,7 @@ class CurrentAdmins:
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
-    ) -> FortiObject[Any]: ...
+    ) -> FortiObjectList[CurrentAdminsObject]: ...
     
 
 
@@ -118,4 +149,6 @@ class CurrentAdmins:
 
 __all__ = [
     "CurrentAdmins",
+    "CurrentAdminsResponse",
+    "CurrentAdminsObject",
 ]

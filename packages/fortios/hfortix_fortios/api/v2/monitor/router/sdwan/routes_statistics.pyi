@@ -31,22 +31,22 @@ class RoutesStatisticsPayload(TypedDict, total=False):
 
 
 # ================================================================
-# Response Types (TypedDict for dict-style access)
+# Response Types for Monitor/Log/Service Endpoints
 # ================================================================
 
 class RoutesStatisticsResponse(TypedDict, total=False):
     """Response type for RoutesStatistics - use with .dict property for typed dict access."""
-    ip_version: Literal["ipv4", "ipv6", "ipboth"]
+    total: int
+    ipv4: int
+    ipv6: int
 
 
-# ================================================================
-# Response Types (Class for attribute access)
-# ================================================================
-
-
-class RoutesStatisticsObject(FortiObject):
+class RoutesStatisticsObject(FortiObject[RoutesStatisticsResponse]):
     """Typed FortiObject for RoutesStatistics with field access."""
-    ip_version: Literal["ipv4", "ipv6", "ipboth"]
+    total: int
+    ipv4: int
+    ipv6: int
+
 
 
 # ================================================================
@@ -86,7 +86,7 @@ class RoutesStatistics:
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
-    ) -> RoutesStatisticsObject: ...
+    ) -> FortiObjectList[RoutesStatisticsObject]: ...
     
 
 
@@ -148,7 +148,6 @@ class RoutesStatistics:
 
 __all__ = [
     "RoutesStatistics",
-    "RoutesStatisticsPayload",
     "RoutesStatisticsResponse",
     "RoutesStatisticsObject",
 ]

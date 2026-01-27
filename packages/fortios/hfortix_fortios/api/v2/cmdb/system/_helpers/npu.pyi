@@ -1,6 +1,10 @@
 from typing import Any, Literal
 
 # Enum type aliases for validation
+VALID_BODY_DEDICATED_MANAGEMENT_CPU: Literal["enable", "disable"]
+VALID_BODY_CAPWAP_OFFLOAD: Literal["enable", "disable"]
+VALID_BODY_IPSEC_MTU_OVERRIDE: Literal["disable", "enable"]
+VALID_BODY_IPSEC_ORDERING: Literal["disable", "enable"]
 
 # Metadata dictionaries
 FIELD_TYPES: dict[str, str]
@@ -25,6 +29,10 @@ def get_schema_info() -> dict[str, Any]: ...
 
 
 __all__ = [
+    "VALID_BODY_DEDICATED_MANAGEMENT_CPU",
+    "VALID_BODY_CAPWAP_OFFLOAD",
+    "VALID_BODY_IPSEC_MTU_OVERRIDE",
+    "VALID_BODY_IPSEC_ORDERING",
     "FIELD_TYPES",
     "FIELD_DESCRIPTIONS",
     "FIELD_CONSTRAINTS",

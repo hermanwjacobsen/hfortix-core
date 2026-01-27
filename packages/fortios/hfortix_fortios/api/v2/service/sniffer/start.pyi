@@ -31,21 +31,20 @@ class StartPayload(TypedDict, total=False):
 
 
 # ================================================================
-# Response Types (TypedDict for dict-style access)
+# Response Types for Monitor/Log/Service Endpoints
 # ================================================================
 
 class StartResponse(TypedDict, total=False):
     """Response type for Start - use with .dict property for typed dict access."""
+    status: str
     mkey: str
 
 
-# ================================================================
-# Response Types (Class for attribute access)
-# ================================================================
-
-
-class StartObject(FortiObject):
+class StartObject(FortiObject[StartResponse]):
     """Typed FortiObject for Start with field access."""
+    status: str
+    mkey: str
+
 
 
 # ================================================================
@@ -84,7 +83,7 @@ class Start:
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
-    ) -> StartObject: ...
+    ) -> FortiObjectList[StartObject]: ...
     
 
     # ================================================================
@@ -158,7 +157,6 @@ class Start:
 
 __all__ = [
     "Start",
-    "StartPayload",
     "StartResponse",
     "StartObject",
 ]

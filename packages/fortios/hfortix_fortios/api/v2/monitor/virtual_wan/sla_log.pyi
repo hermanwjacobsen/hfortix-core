@@ -39,38 +39,24 @@ class SlaLogPayload(TypedDict, total=False):
 
 
 # ================================================================
-# Response Types (TypedDict for dict-style access)
+# Response Types for Monitor/Log/Service Endpoints
 # ================================================================
 
 class SlaLogResponse(TypedDict, total=False):
     """Response type for SlaLog - use with .dict property for typed dict access."""
-    sla: list[str]
+    name: str
     interface: str
-    since: int
-    seconds: int
-    latest: bool
-    min_sample_interval: int
-    sampling_interval: int
-    skip_vpn_child: bool
-    include_sla_targets_met: bool
+    logs: list[str]
+    child_intfs: str
 
 
-# ================================================================
-# Response Types (Class for attribute access)
-# ================================================================
-
-
-class SlaLogObject(FortiObject):
+class SlaLogObject(FortiObject[SlaLogResponse]):
     """Typed FortiObject for SlaLog with field access."""
-    sla: list[str]
+    name: str
     interface: str
-    since: int
-    seconds: int
-    latest: bool
-    min_sample_interval: int
-    sampling_interval: int
-    skip_vpn_child: bool
-    include_sla_targets_met: bool
+    logs: list[str]
+    child_intfs: str
+
 
 
 # ================================================================
@@ -118,7 +104,7 @@ class SlaLog:
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
-    ) -> SlaLogObject: ...
+    ) -> FortiObjectList[SlaLogObject]: ...
     
 
 
@@ -196,7 +182,6 @@ class SlaLog:
 
 __all__ = [
     "SlaLog",
-    "SlaLogPayload",
     "SlaLogResponse",
     "SlaLogObject",
 ]

@@ -32,24 +32,22 @@ class VlanProbePayload(TypedDict, total=False):
 
 
 # ================================================================
-# Response Types (TypedDict for dict-style access)
+# Response Types for Monitor/Log/Service Endpoints
 # ================================================================
 
 class VlanProbeResponse(TypedDict, total=False):
     """Response type for VlanProbe - use with .dict property for typed dict access."""
-    ap_interface: int
-    wtp: str
+    results: list[str]
+    probe_results_exist: bool
+    probe_in_progress: bool
 
 
-# ================================================================
-# Response Types (Class for attribute access)
-# ================================================================
-
-
-class VlanProbeObject(FortiObject):
+class VlanProbeObject(FortiObject[VlanProbeResponse]):
     """Typed FortiObject for VlanProbe with field access."""
-    ap_interface: int
-    wtp: str
+    results: list[str]
+    probe_results_exist: bool
+    probe_in_progress: bool
+
 
 
 # ================================================================
@@ -90,7 +88,7 @@ class VlanProbe:
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
-    ) -> VlanProbeObject: ...
+    ) -> FortiObjectList[VlanProbeObject]: ...
     
 
 
@@ -154,7 +152,6 @@ class VlanProbe:
 
 __all__ = [
     "VlanProbe",
-    "VlanProbePayload",
     "VlanProbeResponse",
     "VlanProbeObject",
 ]

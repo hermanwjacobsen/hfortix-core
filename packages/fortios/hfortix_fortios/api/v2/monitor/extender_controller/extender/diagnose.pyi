@@ -32,24 +32,20 @@ class DiagnosePayload(TypedDict, total=False):
 
 
 # ================================================================
-# Response Types (TypedDict for dict-style access)
+# Response Types for Monitor/Log/Service Endpoints
 # ================================================================
 
 class DiagnoseResponse(TypedDict, total=False):
     """Response type for Diagnose - use with .dict property for typed dict access."""
-    id: str
-    cmd: str
+    result: str
+    error: int
 
 
-# ================================================================
-# Response Types (Class for attribute access)
-# ================================================================
-
-
-class DiagnoseObject(FortiObject):
+class DiagnoseObject(FortiObject[DiagnoseResponse]):
     """Typed FortiObject for Diagnose with field access."""
-    id: str
-    cmd: str
+    result: str
+    error: int
+
 
 
 # ================================================================
@@ -88,7 +84,7 @@ class Diagnose:
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
-    ) -> DiagnoseObject: ...
+    ) -> FortiObjectList[DiagnoseObject]: ...
     
 
     # ================================================================
@@ -165,7 +161,6 @@ class Diagnose:
 
 __all__ = [
     "Diagnose",
-    "DiagnosePayload",
     "DiagnoseResponse",
     "DiagnoseObject",
 ]

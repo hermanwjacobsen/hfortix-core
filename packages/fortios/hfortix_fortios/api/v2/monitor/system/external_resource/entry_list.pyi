@@ -35,29 +35,50 @@ class EntryListPayload(TypedDict, total=False):
 
 
 # ================================================================
-# Response Types (TypedDict for dict-style access)
+# Response Types for Monitor/Log/Service Endpoints
 # ================================================================
 
 class EntryListResponse(TypedDict, total=False):
     """Response type for EntryList - use with .dict property for typed dict access."""
-    mkey: str
-    status_only: bool
-    include_notes: bool
-    counts_only: bool
-    entry: str
+    status: str
+    error: str
+    error_code: int
+    http_status_code: int
+    conn_attempt_time: int
+    resource_file_status: str
+    last_content_update_time: int
+    last_conn_success_time: int
+    entries: list[str]
+    invalid_count: int
+    valid_count: int
+    accepted_count: int
+    accepted_limit: int
+    overflow: bool
+    matched_invalid: int
+    matched_valid: int
+    notes: list[str]
 
 
-# ================================================================
-# Response Types (Class for attribute access)
-# ================================================================
-
-
-class EntryListObject(FortiObject):
+class EntryListObject(FortiObject[EntryListResponse]):
     """Typed FortiObject for EntryList with field access."""
-    status_only: bool
-    include_notes: bool
-    counts_only: bool
-    entry: str
+    status: str
+    error: str
+    error_code: int
+    http_status_code: int
+    conn_attempt_time: int
+    resource_file_status: str
+    last_content_update_time: int
+    last_conn_success_time: int
+    entries: list[str]
+    invalid_count: int
+    valid_count: int
+    accepted_count: int
+    accepted_limit: int
+    overflow: bool
+    matched_invalid: int
+    matched_valid: int
+    notes: list[str]
+
 
 
 # ================================================================
@@ -101,7 +122,7 @@ class EntryList:
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
-    ) -> EntryListObject: ...
+    ) -> FortiObjectList[EntryListObject]: ...
     
 
 
@@ -171,7 +192,6 @@ class EntryList:
 
 __all__ = [
     "EntryList",
-    "EntryListPayload",
     "EntryListResponse",
     "EntryListObject",
 ]

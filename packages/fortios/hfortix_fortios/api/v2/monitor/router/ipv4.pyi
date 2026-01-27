@@ -36,32 +36,46 @@ class Ipv4Payload(TypedDict, total=False):
 
 
 # ================================================================
-# Response Types (TypedDict for dict-style access)
+# Response Types for Monitor/Log/Service Endpoints
 # ================================================================
 
 class Ipv4Response(TypedDict, total=False):
     """Response type for Ipv4 - use with .dict property for typed dict access."""
-    operator: Literal["and", "or"]
-    ip_mask: str
-    gateway: str
+    ip_version: int
     type: str
     origin: str
+    subtype: str
+    ip_mask: str
+    distance: int
+    metric: int
+    priority: int
+    vrf: int
+    gateway: str
+    non_rc_gateway: str
     interface: str
+    is_tunnel_route: bool
+    tunnel_parent: str
+    install_date: int
 
 
-# ================================================================
-# Response Types (Class for attribute access)
-# ================================================================
-
-
-class Ipv4Object(FortiObject):
+class Ipv4Object(FortiObject[Ipv4Response]):
     """Typed FortiObject for Ipv4 with field access."""
-    operator: Literal["and", "or"]
-    ip_mask: str
-    gateway: str
+    ip_version: int
     type: str
     origin: str
+    subtype: str
+    ip_mask: str
+    distance: int
+    metric: int
+    priority: int
+    vrf: int
+    gateway: str
+    non_rc_gateway: str
     interface: str
+    is_tunnel_route: bool
+    tunnel_parent: str
+    install_date: int
+
 
 
 # ================================================================
@@ -106,7 +120,7 @@ class Ipv4:
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
-    ) -> Ipv4Object: ...
+    ) -> FortiObjectList[Ipv4Object]: ...
     
 
 
@@ -178,7 +192,6 @@ class Ipv4:
 
 __all__ = [
     "Ipv4",
-    "Ipv4Payload",
     "Ipv4Response",
     "Ipv4Object",
 ]

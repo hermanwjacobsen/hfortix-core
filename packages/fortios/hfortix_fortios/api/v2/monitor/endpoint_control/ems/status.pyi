@@ -32,24 +32,40 @@ class StatusPayload(TypedDict, total=False):
 
 
 # ================================================================
-# Response Types (TypedDict for dict-style access)
+# Response Types for Monitor/Log/Service Endpoints
 # ================================================================
 
 class StatusResponse(TypedDict, total=False):
     """Response type for Status - use with .dict property for typed dict access."""
     ems_id: int
-    scope: Literal["vdom", "global"]
+    ems_name: str
+    ems_serial: str
+    ems_tenant_id: str
+    ems_status_id: int
+    ems_status: str
+    ems_is_connected: bool
+    ems_is_verified: bool
+    api_status: list[str]
+    ws_status: str
+    mgmt_ip: str
+    mgmt_port: int
 
 
-# ================================================================
-# Response Types (Class for attribute access)
-# ================================================================
-
-
-class StatusObject(FortiObject):
+class StatusObject(FortiObject[StatusResponse]):
     """Typed FortiObject for Status with field access."""
     ems_id: int
-    scope: Literal["vdom", "global"]
+    ems_name: str
+    ems_serial: str
+    ems_tenant_id: str
+    ems_status_id: int
+    ems_status: str
+    ems_is_connected: bool
+    ems_is_verified: bool
+    api_status: list[str]
+    ws_status: str
+    mgmt_ip: str
+    mgmt_port: int
+
 
 
 # ================================================================
@@ -90,7 +106,7 @@ class Status:
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
-    ) -> StatusObject: ...
+    ) -> FortiObjectList[StatusObject]: ...
     
 
 
@@ -154,7 +170,6 @@ class Status:
 
 __all__ = [
     "Status",
-    "StatusPayload",
     "StatusResponse",
     "StatusObject",
 ]

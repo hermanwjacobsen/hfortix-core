@@ -31,22 +31,24 @@ class UnassociatedDevicesPayload(TypedDict, total=False):
 
 
 # ================================================================
-# Response Types (TypedDict for dict-style access)
+# Response Types for Monitor/Log/Service Endpoints
 # ================================================================
 
 class UnassociatedDevicesResponse(TypedDict, total=False):
     """Response type for UnassociatedDevices - use with .dict property for typed dict access."""
-    with_triangulation: bool
+    type: str
+    mac: str
+    manufacturer: str
+    triangulation_regions: list[str]
 
 
-# ================================================================
-# Response Types (Class for attribute access)
-# ================================================================
-
-
-class UnassociatedDevicesObject(FortiObject):
+class UnassociatedDevicesObject(FortiObject[UnassociatedDevicesResponse]):
     """Typed FortiObject for UnassociatedDevices with field access."""
-    with_triangulation: bool
+    type: str
+    mac: str
+    manufacturer: str
+    triangulation_regions: list[str]
+
 
 
 # ================================================================
@@ -86,7 +88,7 @@ class UnassociatedDevices:
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
-    ) -> UnassociatedDevicesObject: ...
+    ) -> FortiObjectList[UnassociatedDevicesObject]: ...
     
 
 
@@ -148,7 +150,6 @@ class UnassociatedDevices:
 
 __all__ = [
     "UnassociatedDevices",
-    "UnassociatedDevicesPayload",
     "UnassociatedDevicesResponse",
     "UnassociatedDevicesObject",
 ]

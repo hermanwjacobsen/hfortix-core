@@ -33,25 +33,20 @@ class RefreshPayload(TypedDict, total=False):
 
 
 # ================================================================
-# Response Types (TypedDict for dict-style access)
+# Response Types for Monitor/Log/Service Endpoints
 # ================================================================
 
 class RefreshResponse(TypedDict, total=False):
     """Response type for Refresh - use with .dict property for typed dict access."""
-    mkey: str
-    check_status_only: bool
+    status: str
     last_connection_time: int
 
 
-# ================================================================
-# Response Types (Class for attribute access)
-# ================================================================
-
-
-class RefreshObject(FortiObject):
+class RefreshObject(FortiObject[RefreshResponse]):
     """Typed FortiObject for Refresh with field access."""
-    check_status_only: bool
+    status: str
     last_connection_time: int
+
 
 
 # ================================================================
@@ -90,7 +85,7 @@ class Refresh:
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
-    ) -> RefreshObject: ...
+    ) -> FortiObjectList[RefreshObject]: ...
     
 
     # ================================================================
@@ -170,7 +165,6 @@ class Refresh:
 
 __all__ = [
     "Refresh",
-    "RefreshPayload",
     "RefreshResponse",
     "RefreshObject",
 ]

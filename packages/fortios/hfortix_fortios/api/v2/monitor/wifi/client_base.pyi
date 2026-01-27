@@ -34,28 +34,142 @@ class ClientPayload(TypedDict, total=False):
 
 
 # ================================================================
-# Response Types (TypedDict for dict-style access)
+# Response Types for Monitor/Log/Service Endpoints
 # ================================================================
 
 class ClientResponse(TypedDict, total=False):
     """Response type for Client - use with .dict property for typed dict access."""
-    type: Literal["all", "fail-login"]
-    with_triangulation: bool
-    with_stats: bool
+    sta_maxrate: int
+    sta_rxrate: int
+    x11k_capable: bool
+    x11v_capable: bool
+    x11r_capable: bool
+    sta_rxrate_mcs: int
+    sta_rxrate_score: int
+    sta_txrate: int
+    sta_txrate_mcs: int
+    sta_txrate_score: int
+    sta_atf_val: int
+    ip6: list[str]
+    ip: str
+    wtp_name: str
+    wtp_id: str
+    wtp_radio: int
+    wtp_ip: str
+    wtp_control_ip: str
+    wtp_control_local_ip: str
+    vap_name: str
+    ssid: str
+    user: str
+    group: str
     mac: str
+    os: str
+    authentication: str
+    uses_captive_portal: bool
+    captive_portal_authenticated: int
+    bytes_rx: int
+    bytes_tx: int
+    packets_rx: int
+    packets_tx: int
+    peak_bandwidth_bytes_rx: int
+    peak_bandwidth_bytes_tx: int
+    peak_bandwidth_packets_rx: int
+    peak_bandwidth_packets_tx: int
+    manufacturer: str
+    data_rate_bps: int
+    data_rxrate_bps: int
+    data_txrate_bps: int
+    snr: int
+    idle_time: int
+    association_time: int
+    bandwidth_tx: int
+    bandwidth_rx: int
+    lan_authenticated: bool
+    channel: int
+    signal: int
+    vci: str
+    host: str
+    security: int
+    security_str: str
+    encrypt: int
+    noise: int
+    radio_type: str
+    mimo: str
+    vlan_id: int
+    tx_discard_percentage: int
+    tx_retry_percentage: int
+    mpsk_name: str
+    triangulation_regions: list[str]
+    health: str
+    statistics: str
 
 
-# ================================================================
-# Response Types (Class for attribute access)
-# ================================================================
-
-
-class ClientObject(FortiObject):
+class ClientObject(FortiObject[ClientResponse]):
     """Typed FortiObject for Client with field access."""
-    type: Literal["all", "fail-login"]
-    with_triangulation: bool
-    with_stats: bool
+    sta_maxrate: int
+    sta_rxrate: int
+    x11k_capable: bool
+    x11v_capable: bool
+    x11r_capable: bool
+    sta_rxrate_mcs: int
+    sta_rxrate_score: int
+    sta_txrate: int
+    sta_txrate_mcs: int
+    sta_txrate_score: int
+    sta_atf_val: int
+    ip6: list[str]
+    ip: str
+    wtp_name: str
+    wtp_id: str
+    wtp_radio: int
+    wtp_ip: str
+    wtp_control_ip: str
+    wtp_control_local_ip: str
+    vap_name: str
+    ssid: str
+    user: str
+    group: str
     mac: str
+    os: str
+    authentication: str
+    uses_captive_portal: bool
+    captive_portal_authenticated: int
+    bytes_rx: int
+    bytes_tx: int
+    packets_rx: int
+    packets_tx: int
+    peak_bandwidth_bytes_rx: int
+    peak_bandwidth_bytes_tx: int
+    peak_bandwidth_packets_rx: int
+    peak_bandwidth_packets_tx: int
+    manufacturer: str
+    data_rate_bps: int
+    data_rxrate_bps: int
+    data_txrate_bps: int
+    snr: int
+    idle_time: int
+    association_time: int
+    bandwidth_tx: int
+    bandwidth_rx: int
+    lan_authenticated: bool
+    channel: int
+    signal: int
+    vci: str
+    host: str
+    security: int
+    security_str: str
+    encrypt: int
+    noise: int
+    radio_type: str
+    mimo: str
+    vlan_id: int
+    tx_discard_percentage: int
+    tx_retry_percentage: int
+    mpsk_name: str
+    triangulation_regions: list[str]
+    health: str
+    statistics: str
+
 
 
 # ================================================================
@@ -98,7 +212,7 @@ class Client:
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
-    ) -> ClientObject: ...
+    ) -> FortiObjectList[ClientObject]: ...
     
 
 
@@ -166,7 +280,6 @@ class Client:
 
 __all__ = [
     "Client",
-    "ClientPayload",
     "ClientResponse",
     "ClientObject",
 ]

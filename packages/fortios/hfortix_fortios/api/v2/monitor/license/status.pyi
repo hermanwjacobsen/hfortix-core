@@ -23,6 +23,117 @@ from hfortix_fortios.models import (
 
 
 # ================================================================
+# Response Types for Monitor/Log/Service Endpoints
+# ================================================================
+
+class StatusResponse(TypedDict, total=False):
+    """Response type for Status - use with .dict property for typed dict access."""
+    antivirus: str
+    appctrl: str
+    genai_app: str
+    forticare: str
+    ips: str
+    ot_detection: str
+    iot_detection: str
+    vm: str
+    web_filtering: str
+    security_rating: str
+    mobile_malware: str
+    ai_malware_detection: str
+    industrial_db: str
+    internet_service_db: str
+    device_os_id: str
+    botnet_domain: str
+    data_leak_prevention: str
+    psirt_security_rating: str
+    fortitelemetry: str
+    timezone_database: str
+    geoip_db: str
+    trusted_cert_db: str
+    outbreak_security_rating: str
+    icdb: str
+    inline_casb: str
+    local_in_virtual_patching: str
+    malicious_urls: str
+    blacklisted_certificates: str
+    firmware_updates: str
+    outbreak_prevention: str
+    antispam: str
+    sdwan_network_monitor: str
+    forticloud: str
+    forticloud_logging: str
+    forticloud_sandbox: str
+    fortianalyzer_cloud: str
+    fortianalyzer_cloud_premium: str
+    fortimanager_cloud: str
+    fortisandbox_cloud: str
+    fortiguard_ai_based_sandbox: str
+    forticonverter: str
+    sdwan_overlay_aas: str
+    sovereign_sase: str
+    fortiems_cloud: str
+    fortimanager_cloud_alci: str
+    fortisandbox_cloud_alci: str
+    vdom: str
+    sms: str
+    load_balance_fpc: str
+
+
+class StatusObject(FortiObject[StatusResponse]):
+    """Typed FortiObject for Status with field access."""
+    antivirus: str
+    appctrl: str
+    genai_app: str
+    forticare: str
+    ips: str
+    ot_detection: str
+    iot_detection: str
+    vm: str
+    web_filtering: str
+    security_rating: str
+    mobile_malware: str
+    ai_malware_detection: str
+    industrial_db: str
+    internet_service_db: str
+    device_os_id: str
+    botnet_domain: str
+    data_leak_prevention: str
+    psirt_security_rating: str
+    fortitelemetry: str
+    timezone_database: str
+    geoip_db: str
+    trusted_cert_db: str
+    outbreak_security_rating: str
+    icdb: str
+    inline_casb: str
+    local_in_virtual_patching: str
+    malicious_urls: str
+    blacklisted_certificates: str
+    firmware_updates: str
+    outbreak_prevention: str
+    antispam: str
+    sdwan_network_monitor: str
+    forticloud: str
+    forticloud_logging: str
+    forticloud_sandbox: str
+    fortianalyzer_cloud: str
+    fortianalyzer_cloud_premium: str
+    fortimanager_cloud: str
+    fortisandbox_cloud: str
+    fortiguard_ai_based_sandbox: str
+    forticonverter: str
+    sdwan_overlay_aas: str
+    sovereign_sase: str
+    fortiems_cloud: str
+    fortimanager_cloud_alci: str
+    fortisandbox_cloud_alci: str
+    vdom: str
+    sms: str
+    load_balance_fpc: str
+
+
+
+# ================================================================
 # Main Endpoint Class
 # ================================================================
 
@@ -58,7 +169,7 @@ class Status:
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
-    ) -> FortiObject[Any]: ...
+    ) -> FortiObjectList[StatusObject]: ...
     
 
 
@@ -118,4 +229,6 @@ class Status:
 
 __all__ = [
     "Status",
+    "StatusResponse",
+    "StatusObject",
 ]

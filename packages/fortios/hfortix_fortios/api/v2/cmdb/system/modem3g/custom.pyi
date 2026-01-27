@@ -21,6 +21,54 @@ from hfortix_fortios.models import (
 )
 
 
+# ================================================================
+# TypedDict Payloads
+# ================================================================
+
+class CustomPayload(TypedDict, total=False):
+    """Payload type for Custom operations."""
+    id: int
+    vendor: str
+    model: str
+    vendor_id: str
+    product_id: str
+    class_id: str
+    init_string: str
+    modeswitch_string: str
+
+
+# ================================================================
+# Response Types (TypedDict for dict-style access)
+# ================================================================
+
+class CustomResponse(TypedDict, total=False):
+    """Response type for Custom - use with .dict property for typed dict access."""
+    id: int
+    vendor: str
+    model: str
+    vendor_id: str
+    product_id: str
+    class_id: str
+    init_string: str
+    modeswitch_string: str
+
+
+# ================================================================
+# Response Types (Class for attribute access)
+# ================================================================
+
+
+class CustomObject(FortiObject):
+    """Typed FortiObject for Custom with field access."""
+    id: int
+    vendor: str
+    model: str
+    vendor_id: str
+    product_id: str
+    class_id: str
+    init_string: str
+    modeswitch_string: str
+
 
 # ================================================================
 # Main Endpoint Class
@@ -62,7 +110,7 @@ class Custom:
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
-    ) -> FortiObject[Any]: ...
+    ) -> CustomObject: ...
     
     def get_schema(
         self,
@@ -76,11 +124,19 @@ class Custom:
     
     def post(
         self,
-        payload_dict: dict[str, Any] | None = ...,
+        payload_dict: CustomPayload | None = ...,
+        id: int | None = ...,
+        vendor: str | None = ...,
+        model: str | None = ...,
+        vendor_id: str | None = ...,
+        product_id: str | None = ...,
+        class_id: str | None = ...,
+        init_string: str | None = ...,
+        modeswitch_string: str | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
-    ) -> FortiObject[Any]: ...
+    ) -> CustomObject: ...
 
     # ================================================================
     # PUT Method
@@ -88,11 +144,19 @@ class Custom:
     
     def put(
         self,
-        payload_dict: dict[str, Any] | None = ...,
+        payload_dict: CustomPayload | None = ...,
+        id: int | None = ...,
+        vendor: str | None = ...,
+        model: str | None = ...,
+        vendor_id: str | None = ...,
+        product_id: str | None = ...,
+        class_id: str | None = ...,
+        init_string: str | None = ...,
+        modeswitch_string: str | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
-    ) -> FortiObject[Any]: ...
+    ) -> CustomObject: ...
 
     # ================================================================
     # DELETE Method
@@ -118,7 +182,15 @@ class Custom:
     
     def set(
         self,
-        payload_dict: dict[str, Any] | None = ...,
+        payload_dict: CustomPayload | None = ...,
+        id: int | None = ...,
+        vendor: str | None = ...,
+        model: str | None = ...,
+        vendor_id: str | None = ...,
+        product_id: str | None = ...,
+        class_id: str | None = ...,
+        init_string: str | None = ...,
+        modeswitch_string: str | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -149,4 +221,7 @@ class Custom:
 
 __all__ = [
     "Custom",
+    "CustomPayload",
+    "CustomResponse",
+    "CustomObject",
 ]

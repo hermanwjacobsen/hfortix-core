@@ -23,6 +23,29 @@ from hfortix_fortios.models import (
 
 
 # ================================================================
+# Response Types for Monitor/Log/Service Endpoints
+# ================================================================
+
+class RateBasedResponse(TypedDict, total=False):
+    """Response type for RateBased - use with .dict property for typed dict access."""
+    id: int
+    name: str
+    rate_count: int
+    rate_duration: int
+    rate_track: str
+
+
+class RateBasedObject(FortiObject[RateBasedResponse]):
+    """Typed FortiObject for RateBased with field access."""
+    id: int
+    name: str
+    rate_count: int
+    rate_duration: int
+    rate_track: str
+
+
+
+# ================================================================
 # Main Endpoint Class
 # ================================================================
 
@@ -58,7 +81,7 @@ class RateBased:
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
-    ) -> FortiObject[Any]: ...
+    ) -> FortiObjectList[RateBasedObject]: ...
     
 
 
@@ -118,4 +141,6 @@ class RateBased:
 
 __all__ = [
     "RateBased",
+    "RateBasedResponse",
+    "RateBasedObject",
 ]

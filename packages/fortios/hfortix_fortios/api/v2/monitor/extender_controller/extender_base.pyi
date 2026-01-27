@@ -32,24 +32,24 @@ class ExtenderPayload(TypedDict, total=False):
 
 
 # ================================================================
-# Response Types (TypedDict for dict-style access)
+# Response Types for Monitor/Log/Service Endpoints
 # ================================================================
 
 class ExtenderResponse(TypedDict, total=False):
     """Response type for Extender - use with .dict property for typed dict access."""
-    fortiextender_name: list[str]
-    type: Literal["system", "modem", "usage", "last"]
+    name: str
+    id: str
+    authorization_status_locked: bool
+    system: str
 
 
-# ================================================================
-# Response Types (Class for attribute access)
-# ================================================================
-
-
-class ExtenderObject(FortiObject):
+class ExtenderObject(FortiObject[ExtenderResponse]):
     """Typed FortiObject for Extender with field access."""
-    fortiextender_name: list[str]
-    type: Literal["system", "modem", "usage", "last"]
+    name: str
+    id: str
+    authorization_status_locked: bool
+    system: str
+
 
 
 # ================================================================
@@ -90,7 +90,7 @@ class Extender:
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
-    ) -> ExtenderObject: ...
+    ) -> FortiObjectList[ExtenderObject]: ...
     
 
 
@@ -154,7 +154,6 @@ class Extender:
 
 __all__ = [
     "Extender",
-    "ExtenderPayload",
     "ExtenderResponse",
     "ExtenderObject",
 ]

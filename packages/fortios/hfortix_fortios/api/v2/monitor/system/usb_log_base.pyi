@@ -23,6 +23,43 @@ from hfortix_fortios.models import (
 
 
 # ================================================================
+# Response Types for Monitor/Log/Service Endpoints
+# ================================================================
+
+class UsbLogResponse(TypedDict, total=False):
+    """Response type for UsbLog - use with .dict property for typed dict access."""
+    usb_attached: bool
+    max_usb_filename_length: str
+    auto_install_image: bool
+    auto_install_conf: bool
+    disk_size: str
+    avail_space: str
+    model: str
+    progress: str
+    same_vdom: bool
+    is_copying: bool
+    log_size: str
+    log_file_no: str
+
+
+class UsbLogObject(FortiObject[UsbLogResponse]):
+    """Typed FortiObject for UsbLog with field access."""
+    usb_attached: bool
+    max_usb_filename_length: str
+    auto_install_image: bool
+    auto_install_conf: bool
+    disk_size: str
+    avail_space: str
+    model: str
+    progress: str
+    same_vdom: bool
+    is_copying: bool
+    log_size: str
+    log_file_no: str
+
+
+
+# ================================================================
 # Main Endpoint Class
 # ================================================================
 
@@ -58,7 +95,7 @@ class UsbLog:
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
-    ) -> FortiObject[Any]: ...
+    ) -> FortiObjectList[UsbLogObject]: ...
     
 
 
@@ -118,4 +155,6 @@ class UsbLog:
 
 __all__ = [
     "UsbLog",
+    "UsbLogResponse",
+    "UsbLogObject",
 ]

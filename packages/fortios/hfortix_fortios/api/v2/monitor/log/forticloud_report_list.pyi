@@ -23,6 +23,31 @@ from hfortix_fortios.models import (
 
 
 # ================================================================
+# Response Types for Monitor/Log/Service Endpoints
+# ================================================================
+
+class ForticloudReportListResponse(TypedDict, total=False):
+    """Response type for ForticloudReportList - use with .dict property for typed dict access."""
+    name: str
+    file_name: str
+    schedule_type: str
+    start: int
+    end: int
+    oid: int
+
+
+class ForticloudReportListObject(FortiObject[ForticloudReportListResponse]):
+    """Typed FortiObject for ForticloudReportList with field access."""
+    name: str
+    file_name: str
+    schedule_type: str
+    start: int
+    end: int
+    oid: int
+
+
+
+# ================================================================
 # Main Endpoint Class
 # ================================================================
 
@@ -58,7 +83,7 @@ class ForticloudReportList:
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
-    ) -> FortiObject[Any]: ...
+    ) -> FortiObjectList[ForticloudReportListObject]: ...
     
 
 
@@ -118,4 +143,6 @@ class ForticloudReportList:
 
 __all__ = [
     "ForticloudReportList",
+    "ForticloudReportListResponse",
+    "ForticloudReportListObject",
 ]

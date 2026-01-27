@@ -31,22 +31,28 @@ class StatePayload(TypedDict, total=False):
 
 
 # ================================================================
-# Response Types (TypedDict for dict-style access)
+# Response Types for Monitor/Log/Service Endpoints
 # ================================================================
 
 class StateResponse(TypedDict, total=False):
     """Response type for State - use with .dict property for typed dict access."""
-    scope: Literal["vdom", "global"]
+    memory: str
+    disk: str
+    fortianalyzer: str
+    fortianalyzer_cloud: str
+    forticloud: str
+    is_fortiview_supported: bool
 
 
-# ================================================================
-# Response Types (Class for attribute access)
-# ================================================================
-
-
-class StateObject(FortiObject):
+class StateObject(FortiObject[StateResponse]):
     """Typed FortiObject for State with field access."""
-    scope: Literal["vdom", "global"]
+    memory: str
+    disk: str
+    fortianalyzer: str
+    fortianalyzer_cloud: str
+    forticloud: str
+    is_fortiview_supported: bool
+
 
 
 # ================================================================
@@ -86,7 +92,7 @@ class State:
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
-    ) -> StateObject: ...
+    ) -> FortiObjectList[StateObject]: ...
     
 
 
@@ -148,7 +154,6 @@ class State:
 
 __all__ = [
     "State",
-    "StatePayload",
     "StateResponse",
     "StateObject",
 ]

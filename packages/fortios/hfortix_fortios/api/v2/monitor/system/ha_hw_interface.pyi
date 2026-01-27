@@ -23,6 +23,23 @@ from hfortix_fortios.models import (
 
 
 # ================================================================
+# Response Types for Monitor/Log/Service Endpoints
+# ================================================================
+
+class HaHwInterfaceResponse(TypedDict, total=False):
+    """Response type for HaHwInterface - use with .dict property for typed dict access."""
+    interface: list[str]
+    synchronized: bool
+
+
+class HaHwInterfaceObject(FortiObject[HaHwInterfaceResponse]):
+    """Typed FortiObject for HaHwInterface with field access."""
+    interface: list[str]
+    synchronized: bool
+
+
+
+# ================================================================
 # Main Endpoint Class
 # ================================================================
 
@@ -58,7 +75,7 @@ class HaHwInterface:
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
-    ) -> FortiObject[Any]: ...
+    ) -> FortiObjectList[HaHwInterfaceObject]: ...
     
 
 
@@ -118,4 +135,6 @@ class HaHwInterface:
 
 __all__ = [
     "HaHwInterface",
+    "HaHwInterfaceResponse",
+    "HaHwInterfaceObject",
 ]

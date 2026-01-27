@@ -31,22 +31,46 @@ class ReadInfoPayload(TypedDict, total=False):
 
 
 # ================================================================
-# Response Types (TypedDict for dict-style access)
+# Response Types for Monitor/Log/Service Endpoints
 # ================================================================
 
 class ReadInfoResponse(TypedDict, total=False):
     """Response type for ReadInfo - use with .dict property for typed dict access."""
-    value: str
+    status: str
+    valid_from: int
+    valid_to: int
+    valid_from_raw: str
+    valid_to_raw: str
+    signature_algorithm: str
+    subject: str
+    subject_raw: str
+    issuer: str
+    issuer_raw: str
+    fingerprint: str
+    version: int
+    is_ca: bool
+    serial_number: str
+    ext: list[str]
 
 
-# ================================================================
-# Response Types (Class for attribute access)
-# ================================================================
-
-
-class ReadInfoObject(FortiObject):
+class ReadInfoObject(FortiObject[ReadInfoResponse]):
     """Typed FortiObject for ReadInfo with field access."""
-    value: str
+    status: str
+    valid_from: int
+    valid_to: int
+    valid_from_raw: str
+    valid_to_raw: str
+    signature_algorithm: str
+    subject: str
+    subject_raw: str
+    issuer: str
+    issuer_raw: str
+    fingerprint: str
+    version: int
+    is_ca: bool
+    serial_number: str
+    ext: list[str]
+
 
 
 # ================================================================
@@ -85,7 +109,7 @@ class ReadInfo:
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
-    ) -> ReadInfoObject: ...
+    ) -> FortiObjectList[ReadInfoObject]: ...
     
 
     # ================================================================
@@ -159,7 +183,6 @@ class ReadInfo:
 
 __all__ = [
     "ReadInfo",
-    "ReadInfoPayload",
     "ReadInfoResponse",
     "ReadInfoObject",
 ]

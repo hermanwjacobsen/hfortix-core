@@ -32,23 +32,20 @@ class GenericAddressPayload(TypedDict, total=False):
 
 
 # ================================================================
-# Response Types (TypedDict for dict-style access)
+# Response Types for Monitor/Log/Service Endpoints
 # ================================================================
 
 class GenericAddressResponse(TypedDict, total=False):
     """Response type for GenericAddress - use with .dict property for typed dict access."""
-    mkey: str
-    data: str
+    error: str
+    status: str
 
 
-# ================================================================
-# Response Types (Class for attribute access)
-# ================================================================
-
-
-class GenericAddressObject(FortiObject):
+class GenericAddressObject(FortiObject[GenericAddressResponse]):
     """Typed FortiObject for GenericAddress with field access."""
-    data: str
+    error: str
+    status: str
+
 
 
 # ================================================================
@@ -87,7 +84,7 @@ class GenericAddress:
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
-    ) -> GenericAddressObject: ...
+    ) -> FortiObjectList[GenericAddressObject]: ...
     
 
     # ================================================================
@@ -164,7 +161,6 @@ class GenericAddress:
 
 __all__ = [
     "GenericAddress",
-    "GenericAddressPayload",
     "GenericAddressResponse",
     "GenericAddressObject",
 ]

@@ -32,24 +32,36 @@ class InternetServiceReputationPayload(TypedDict, total=False):
 
 
 # ================================================================
-# Response Types (TypedDict for dict-style access)
+# Response Types for Monitor/Log/Service Endpoints
 # ================================================================
 
 class InternetServiceReputationResponse(TypedDict, total=False):
     """Response type for InternetServiceReputation - use with .dict property for typed dict access."""
-    ip: str
-    is_ipv6: bool
+    id: int
+    name: str
+    reputation: int
+    popularity: int
+    botnet_id: int
+    domain_id: int
+    country_id: int
+    region_id: int
+    city_id: int
+    blocklist: list[str]
 
 
-# ================================================================
-# Response Types (Class for attribute access)
-# ================================================================
-
-
-class InternetServiceReputationObject(FortiObject):
+class InternetServiceReputationObject(FortiObject[InternetServiceReputationResponse]):
     """Typed FortiObject for InternetServiceReputation with field access."""
-    ip: str
-    is_ipv6: bool
+    id: int
+    name: str
+    reputation: int
+    popularity: int
+    botnet_id: int
+    domain_id: int
+    country_id: int
+    region_id: int
+    city_id: int
+    blocklist: list[str]
+
 
 
 # ================================================================
@@ -90,7 +102,7 @@ class InternetServiceReputation:
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
-    ) -> InternetServiceReputationObject: ...
+    ) -> FortiObjectList[InternetServiceReputationObject]: ...
     
 
 
@@ -154,7 +166,6 @@ class InternetServiceReputation:
 
 __all__ = [
     "InternetServiceReputation",
-    "InternetServiceReputationPayload",
     "InternetServiceReputationResponse",
     "InternetServiceReputationObject",
 ]

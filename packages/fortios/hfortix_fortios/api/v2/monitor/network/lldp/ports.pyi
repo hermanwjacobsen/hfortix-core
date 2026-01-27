@@ -32,23 +32,24 @@ class PortsPayload(TypedDict, total=False):
 
 
 # ================================================================
-# Response Types (TypedDict for dict-style access)
+# Response Types for Monitor/Log/Service Endpoints
 # ================================================================
 
 class PortsResponse(TypedDict, total=False):
     """Response type for Ports - use with .dict property for typed dict access."""
-    mkey: str
-    scope: Literal["vdom", "global"]
+    index: str
+    name: str
+    rx: int
+    neighbors: int
 
 
-# ================================================================
-# Response Types (Class for attribute access)
-# ================================================================
-
-
-class PortsObject(FortiObject):
+class PortsObject(FortiObject[PortsResponse]):
     """Typed FortiObject for Ports with field access."""
-    scope: Literal["vdom", "global"]
+    index: str
+    name: str
+    rx: int
+    neighbors: int
+
 
 
 # ================================================================
@@ -89,7 +90,7 @@ class Ports:
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
-    ) -> PortsObject: ...
+    ) -> FortiObjectList[PortsObject]: ...
     
 
 
@@ -153,7 +154,6 @@ class Ports:
 
 __all__ = [
     "Ports",
-    "PortsPayload",
     "PortsResponse",
     "PortsObject",
 ]

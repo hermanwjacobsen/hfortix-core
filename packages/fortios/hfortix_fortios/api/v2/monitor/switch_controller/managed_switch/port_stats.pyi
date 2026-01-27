@@ -31,21 +31,22 @@ class PortStatsPayload(TypedDict, total=False):
 
 
 # ================================================================
-# Response Types (TypedDict for dict-style access)
+# Response Types for Monitor/Log/Service Endpoints
 # ================================================================
 
 class PortStatsResponse(TypedDict, total=False):
     """Response type for PortStats - use with .dict property for typed dict access."""
-    mkey: str
+    serial: str
+    switch_id: str
+    ports: str
 
 
-# ================================================================
-# Response Types (Class for attribute access)
-# ================================================================
-
-
-class PortStatsObject(FortiObject):
+class PortStatsObject(FortiObject[PortStatsResponse]):
     """Typed FortiObject for PortStats with field access."""
+    serial: str
+    switch_id: str
+    ports: str
+
 
 
 # ================================================================
@@ -85,7 +86,7 @@ class PortStats:
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
-    ) -> PortStatsObject: ...
+    ) -> FortiObjectList[PortStatsObject]: ...
     
 
 
@@ -147,7 +148,6 @@ class PortStats:
 
 __all__ = [
     "PortStats",
-    "PortStatsPayload",
     "PortStatsResponse",
     "PortStatsObject",
 ]

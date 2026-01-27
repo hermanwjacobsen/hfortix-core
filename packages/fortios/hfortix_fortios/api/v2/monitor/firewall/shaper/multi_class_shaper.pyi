@@ -23,6 +23,35 @@ from hfortix_fortios.models import (
 
 
 # ================================================================
+# Response Types for Monitor/Log/Service Endpoints
+# ================================================================
+
+class MultiClassShaperResponse(TypedDict, total=False):
+    """Response type for MultiClassShaper - use with .dict property for typed dict access."""
+    interface: str
+    bandwidth: int
+    default_class: int
+    active_classes: list[str]
+    parent: str
+    remote_gateway: str
+    network_id: int
+    peer_id: str
+
+
+class MultiClassShaperObject(FortiObject[MultiClassShaperResponse]):
+    """Typed FortiObject for MultiClassShaper with field access."""
+    interface: str
+    bandwidth: int
+    default_class: int
+    active_classes: list[str]
+    parent: str
+    remote_gateway: str
+    network_id: int
+    peer_id: str
+
+
+
+# ================================================================
 # Main Endpoint Class
 # ================================================================
 
@@ -58,7 +87,7 @@ class MultiClassShaper:
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
-    ) -> FortiObject[Any]: ...
+    ) -> FortiObjectList[MultiClassShaperObject]: ...
     
 
 
@@ -118,4 +147,6 @@ class MultiClassShaper:
 
 __all__ = [
     "MultiClassShaper",
+    "MultiClassShaperResponse",
+    "MultiClassShaperObject",
 ]

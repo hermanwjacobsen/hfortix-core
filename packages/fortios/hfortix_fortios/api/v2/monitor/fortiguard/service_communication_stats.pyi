@@ -32,24 +32,34 @@ class ServiceCommunicationStatsPayload(TypedDict, total=False):
 
 
 # ================================================================
-# Response Types (TypedDict for dict-style access)
+# Response Types for Monitor/Log/Service Endpoints
 # ================================================================
 
 class ServiceCommunicationStatsResponse(TypedDict, total=False):
     """Response type for ServiceCommunicationStats - use with .dict property for typed dict access."""
-    service_type: Literal["forticare", "fortiguard_download", "fortiguard_query", "forticloud_log", "fortisandbox_cloud", "fortiguard.com", "sdns", "fortitoken_registration", "sms_service"]
-    timeslot: Literal["1_hour", "24_hour", "1_week"]
+    forticare: str
+    fortiguard_download: str
+    fortiguard_query: str
+    forticloud_log: str
+    fortisandbox_cloud: str
+    fortiguard_com: str
+    sdns: str
+    fortitoken_registration: str
+    sms_service: str
 
 
-# ================================================================
-# Response Types (Class for attribute access)
-# ================================================================
-
-
-class ServiceCommunicationStatsObject(FortiObject):
+class ServiceCommunicationStatsObject(FortiObject[ServiceCommunicationStatsResponse]):
     """Typed FortiObject for ServiceCommunicationStats with field access."""
-    service_type: Literal["forticare", "fortiguard_download", "fortiguard_query", "forticloud_log", "fortisandbox_cloud", "fortiguard.com", "sdns", "fortitoken_registration", "sms_service"]
-    timeslot: Literal["1_hour", "24_hour", "1_week"]
+    forticare: str
+    fortiguard_download: str
+    fortiguard_query: str
+    forticloud_log: str
+    fortisandbox_cloud: str
+    fortiguard_com: str
+    sdns: str
+    fortitoken_registration: str
+    sms_service: str
+
 
 
 # ================================================================
@@ -90,7 +100,7 @@ class ServiceCommunicationStats:
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
-    ) -> ServiceCommunicationStatsObject: ...
+    ) -> FortiObjectList[ServiceCommunicationStatsObject]: ...
     
 
 
@@ -154,7 +164,6 @@ class ServiceCommunicationStats:
 
 __all__ = [
     "ServiceCommunicationStats",
-    "ServiceCommunicationStatsPayload",
     "ServiceCommunicationStatsResponse",
     "ServiceCommunicationStatsObject",
 ]

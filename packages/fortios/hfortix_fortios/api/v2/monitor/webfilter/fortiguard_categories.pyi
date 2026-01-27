@@ -23,6 +23,37 @@ from hfortix_fortios.models import (
 
 
 # ================================================================
+# Response Types for Monitor/Log/Service Endpoints
+# ================================================================
+
+class FortiguardCategoriesResponse(TypedDict, total=False):
+    """Response type for FortiguardCategories - use with .dict property for typed dict access."""
+    id: int
+    name: str
+    name_key: str
+    group_id: int
+    group: str
+    group_key: str
+    rating: str
+    default_wf_action: str
+    blocked_in_ratings: list[str]
+
+
+class FortiguardCategoriesObject(FortiObject[FortiguardCategoriesResponse]):
+    """Typed FortiObject for FortiguardCategories with field access."""
+    id: int
+    name: str
+    name_key: str
+    group_id: int
+    group: str
+    group_key: str
+    rating: str
+    default_wf_action: str
+    blocked_in_ratings: list[str]
+
+
+
+# ================================================================
 # Main Endpoint Class
 # ================================================================
 
@@ -58,7 +89,7 @@ class FortiguardCategories:
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
-    ) -> FortiObject[Any]: ...
+    ) -> FortiObjectList[FortiguardCategoriesObject]: ...
     
 
 
@@ -118,4 +149,6 @@ class FortiguardCategories:
 
 __all__ = [
     "FortiguardCategories",
+    "FortiguardCategoriesResponse",
+    "FortiguardCategoriesObject",
 ]

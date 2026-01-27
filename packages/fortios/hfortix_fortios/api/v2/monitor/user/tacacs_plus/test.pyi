@@ -36,31 +36,20 @@ class TestPayload(TypedDict, total=False):
 
 
 # ================================================================
-# Response Types (TypedDict for dict-style access)
+# Response Types for Monitor/Log/Service Endpoints
 # ================================================================
 
 class TestResponse(TypedDict, total=False):
     """Response type for Test - use with .dict property for typed dict access."""
-    mkey: str
-    ordinal: str
-    server: str
-    secret: str
-    port: int
-    source_ip: str
+    status: int
+    message: str
 
 
-# ================================================================
-# Response Types (Class for attribute access)
-# ================================================================
-
-
-class TestObject(FortiObject):
+class TestObject(FortiObject[TestResponse]):
     """Typed FortiObject for Test with field access."""
-    ordinal: str
-    server: str
-    secret: str
-    port: int
-    source_ip: str
+    status: int
+    message: str
+
 
 
 # ================================================================
@@ -99,7 +88,7 @@ class Test:
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
-    ) -> TestObject: ...
+    ) -> FortiObjectList[TestObject]: ...
     
 
     # ================================================================
@@ -188,7 +177,6 @@ class Test:
 
 __all__ = [
     "Test",
-    "TestPayload",
     "TestResponse",
     "TestObject",
 ]

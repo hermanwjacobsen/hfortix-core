@@ -23,6 +23,83 @@ from hfortix_fortios.models import (
 
 
 # ================================================================
+# Response Types for Monitor/Log/Service Endpoints
+# ================================================================
+
+class StatusResponse(TypedDict, total=False):
+    """Response type for Status - use with .dict property for typed dict access."""
+    status: str
+    manufacturer: str
+    model: str
+    revision: str
+    msisdn: str
+    esn: str
+    imei: str
+    meid: str
+    cell_id: str
+    hw_revision: str
+    sw_revision: str
+    sku: str
+    fsn: str
+    operating_mode: str
+    billing_date: int
+    gps_status: bool
+    gps: str
+    sim_auto_switch: bool
+    sim_auto_switch_time: int
+    roaming: bool
+    signal: str
+    data_limit: int
+    data_usage_tracking: bool
+    active_plan: str
+    idle_plan: str
+    active_sim: str
+    connection_status_ipv4: str
+    connection_status_ipv6: str
+    interface: str
+    ipv4: str
+    ipv6: str
+    profile: str
+
+
+class StatusObject(FortiObject[StatusResponse]):
+    """Typed FortiObject for Status with field access."""
+    status: str
+    manufacturer: str
+    model: str
+    revision: str
+    msisdn: str
+    esn: str
+    imei: str
+    meid: str
+    cell_id: str
+    hw_revision: str
+    sw_revision: str
+    sku: str
+    fsn: str
+    operating_mode: str
+    billing_date: int
+    gps_status: bool
+    gps: str
+    sim_auto_switch: bool
+    sim_auto_switch_time: int
+    roaming: bool
+    signal: str
+    data_limit: int
+    data_usage_tracking: bool
+    active_plan: str
+    idle_plan: str
+    active_sim: str
+    connection_status_ipv4: str
+    connection_status_ipv6: str
+    interface: str
+    ipv4: str
+    ipv6: str
+    profile: str
+
+
+
+# ================================================================
 # Main Endpoint Class
 # ================================================================
 
@@ -58,7 +135,7 @@ class Status:
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
-    ) -> FortiObject[Any]: ...
+    ) -> FortiObjectList[StatusObject]: ...
     
 
 
@@ -118,4 +195,6 @@ class Status:
 
 __all__ = [
     "Status",
+    "StatusResponse",
+    "StatusObject",
 ]

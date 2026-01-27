@@ -31,22 +31,20 @@ class GroupsPayload(TypedDict, total=False):
 
 
 # ================================================================
-# Response Types (TypedDict for dict-style access)
+# Response Types for Monitor/Log/Service Endpoints
 # ================================================================
 
 class GroupsResponse(TypedDict, total=False):
     """Response type for Groups - use with .dict property for typed dict access."""
-    client_name: str
+    display_name: str
+    external_id: str
 
 
-# ================================================================
-# Response Types (Class for attribute access)
-# ================================================================
-
-
-class GroupsObject(FortiObject):
+class GroupsObject(FortiObject[GroupsResponse]):
     """Typed FortiObject for Groups with field access."""
-    client_name: str
+    display_name: str
+    external_id: str
+
 
 
 # ================================================================
@@ -86,7 +84,7 @@ class Groups:
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
-    ) -> GroupsObject: ...
+    ) -> FortiObjectList[GroupsObject]: ...
     
 
 
@@ -148,7 +146,6 @@ class Groups:
 
 __all__ = [
     "Groups",
-    "GroupsPayload",
     "GroupsResponse",
     "GroupsObject",
 ]

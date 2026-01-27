@@ -23,6 +23,23 @@ from hfortix_fortios.models import (
 
 
 # ================================================================
+# Response Types for Monitor/Log/Service Endpoints
+# ================================================================
+
+class FirmwareResponse(TypedDict, total=False):
+    """Response type for Firmware - use with .dict property for typed dict access."""
+    current: str
+    available: list[str]
+
+
+class FirmwareObject(FortiObject[FirmwareResponse]):
+    """Typed FortiObject for Firmware with field access."""
+    current: str
+    available: list[str]
+
+
+
+# ================================================================
 # Main Endpoint Class
 # ================================================================
 
@@ -58,7 +75,7 @@ class Firmware:
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
-    ) -> FortiObject[Any]: ...
+    ) -> FortiObjectList[FirmwareObject]: ...
     
 
 
@@ -118,4 +135,6 @@ class Firmware:
 
 __all__ = [
     "Firmware",
+    "FirmwareResponse",
+    "FirmwareObject",
 ]

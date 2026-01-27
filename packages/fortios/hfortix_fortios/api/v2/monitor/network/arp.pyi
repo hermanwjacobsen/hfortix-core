@@ -23,6 +23,27 @@ from hfortix_fortios.models import (
 
 
 # ================================================================
+# Response Types for Monitor/Log/Service Endpoints
+# ================================================================
+
+class ArpResponse(TypedDict, total=False):
+    """Response type for Arp - use with .dict property for typed dict access."""
+    ip: str
+    age: int
+    interface: str
+    mac: str
+
+
+class ArpObject(FortiObject[ArpResponse]):
+    """Typed FortiObject for Arp with field access."""
+    ip: str
+    age: int
+    interface: str
+    mac: str
+
+
+
+# ================================================================
 # Main Endpoint Class
 # ================================================================
 
@@ -58,7 +79,7 @@ class Arp:
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
-    ) -> FortiObject[Any]: ...
+    ) -> FortiObjectList[ArpObject]: ...
     
 
 
@@ -118,4 +139,6 @@ class Arp:
 
 __all__ = [
     "Arp",
+    "ArpResponse",
+    "ArpObject",
 ]

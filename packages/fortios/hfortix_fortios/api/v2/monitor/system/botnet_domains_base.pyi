@@ -23,6 +23,25 @@ from hfortix_fortios.models import (
 
 
 # ================================================================
+# Response Types for Monitor/Log/Service Endpoints
+# ================================================================
+
+class BotnetDomainsResponse(TypedDict, total=False):
+    """Response type for BotnetDomains - use with .dict property for typed dict access."""
+    domain: str
+    app_name: str
+    app_category: str
+
+
+class BotnetDomainsObject(FortiObject[BotnetDomainsResponse]):
+    """Typed FortiObject for BotnetDomains with field access."""
+    domain: str
+    app_name: str
+    app_category: str
+
+
+
+# ================================================================
 # Main Endpoint Class
 # ================================================================
 
@@ -58,7 +77,7 @@ class BotnetDomains:
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
-    ) -> FortiObject[Any]: ...
+    ) -> FortiObjectList[BotnetDomainsObject]: ...
     
 
 
@@ -118,4 +137,6 @@ class BotnetDomains:
 
 __all__ = [
     "BotnetDomains",
+    "BotnetDomainsResponse",
+    "BotnetDomainsObject",
 ]

@@ -31,21 +31,20 @@ class ModemFirmwarePayload(TypedDict, total=False):
 
 
 # ================================================================
-# Response Types (TypedDict for dict-style access)
+# Response Types for Monitor/Log/Service Endpoints
 # ================================================================
 
 class ModemFirmwareResponse(TypedDict, total=False):
     """Response type for ModemFirmware - use with .dict property for typed dict access."""
-    serial: str
+    current: str
+    available: list[str]
 
 
-# ================================================================
-# Response Types (Class for attribute access)
-# ================================================================
-
-
-class ModemFirmwareObject(FortiObject):
+class ModemFirmwareObject(FortiObject[ModemFirmwareResponse]):
     """Typed FortiObject for ModemFirmware with field access."""
+    current: str
+    available: list[str]
+
 
 
 # ================================================================
@@ -85,7 +84,7 @@ class ModemFirmware:
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
-    ) -> ModemFirmwareObject: ...
+    ) -> FortiObjectList[ModemFirmwareObject]: ...
     
 
 
@@ -147,7 +146,6 @@ class ModemFirmware:
 
 __all__ = [
     "ModemFirmware",
-    "ModemFirmwarePayload",
     "ModemFirmwareResponse",
     "ModemFirmwareObject",
 ]

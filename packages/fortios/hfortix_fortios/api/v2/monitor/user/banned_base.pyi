@@ -23,6 +23,29 @@ from hfortix_fortios.models import (
 
 
 # ================================================================
+# Response Types for Monitor/Log/Service Endpoints
+# ================================================================
+
+class BannedResponse(TypedDict, total=False):
+    """Response type for Banned - use with .dict property for typed dict access."""
+    ip_address: str
+    source: str
+    ipv6: int
+    created: int
+    expires: int
+
+
+class BannedObject(FortiObject[BannedResponse]):
+    """Typed FortiObject for Banned with field access."""
+    ip_address: str
+    source: str
+    ipv6: int
+    created: int
+    expires: int
+
+
+
+# ================================================================
 # Main Endpoint Class
 # ================================================================
 
@@ -58,7 +81,7 @@ class Banned:
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
-    ) -> FortiObject[Any]: ...
+    ) -> FortiObjectList[BannedObject]: ...
     
 
 
@@ -118,4 +141,6 @@ class Banned:
 
 __all__ = [
     "Banned",
+    "BannedResponse",
+    "BannedObject",
 ]

@@ -23,6 +23,37 @@ from hfortix_fortios.models import (
 
 
 # ================================================================
+# Response Types for Monitor/Log/Service Endpoints
+# ================================================================
+
+class RoutesResponse(TypedDict, total=False):
+    """Response type for Routes - use with .dict property for typed dict access."""
+    ip_version: int
+    type: str
+    ip_mask: str
+    distance: int
+    metric: int
+    priority: int
+    vrf: int
+    gateway: str
+    interface: str
+
+
+class RoutesObject(FortiObject[RoutesResponse]):
+    """Typed FortiObject for Routes with field access."""
+    ip_version: int
+    type: str
+    ip_mask: str
+    distance: int
+    metric: int
+    priority: int
+    vrf: int
+    gateway: str
+    interface: str
+
+
+
+# ================================================================
 # Main Endpoint Class
 # ================================================================
 
@@ -58,7 +89,7 @@ class Routes:
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
-    ) -> FortiObject[Any]: ...
+    ) -> FortiObjectList[RoutesObject]: ...
     
 
 
@@ -118,4 +149,6 @@ class Routes:
 
 __all__ = [
     "Routes",
+    "RoutesResponse",
+    "RoutesObject",
 ]

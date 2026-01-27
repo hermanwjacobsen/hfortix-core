@@ -23,6 +23,33 @@ from hfortix_fortios.models import (
 
 
 # ================================================================
+# Response Types for Monitor/Log/Service Endpoints
+# ================================================================
+
+class TransceiversResponse(TypedDict, total=False):
+    """Response type for Transceivers - use with .dict property for typed dict access."""
+    fortiswitch_id: str
+    port: str
+    status: str
+    type: str
+    vendor: str
+    vendor_part_number: str
+    vendor_serial_number: str
+
+
+class TransceiversObject(FortiObject[TransceiversResponse]):
+    """Typed FortiObject for Transceivers with field access."""
+    fortiswitch_id: str
+    port: str
+    status: str
+    type: str
+    vendor: str
+    vendor_part_number: str
+    vendor_serial_number: str
+
+
+
+# ================================================================
 # Main Endpoint Class
 # ================================================================
 
@@ -58,7 +85,7 @@ class Transceivers:
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
-    ) -> FortiObject[Any]: ...
+    ) -> FortiObjectList[TransceiversObject]: ...
     
 
 
@@ -118,4 +145,6 @@ class Transceivers:
 
 __all__ = [
     "Transceivers",
+    "TransceiversResponse",
+    "TransceiversObject",
 ]

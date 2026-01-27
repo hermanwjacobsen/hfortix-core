@@ -31,21 +31,26 @@ class MappingPayload(TypedDict, total=False):
 
 
 # ================================================================
-# Response Types (TypedDict for dict-style access)
+# Response Types for Monitor/Log/Service Endpoints
 # ================================================================
 
 class MappingResponse(TypedDict, total=False):
     """Response type for Mapping - use with .dict property for typed dict access."""
-    mkey: str
+    nat_type: str
+    internal_ip: str
+    external_ip: str
+    start_port: int
+    end_port: int
 
 
-# ================================================================
-# Response Types (Class for attribute access)
-# ================================================================
-
-
-class MappingObject(FortiObject):
+class MappingObject(FortiObject[MappingResponse]):
     """Typed FortiObject for Mapping with field access."""
+    nat_type: str
+    internal_ip: str
+    external_ip: str
+    start_port: int
+    end_port: int
+
 
 
 # ================================================================
@@ -85,7 +90,7 @@ class Mapping:
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
-    ) -> MappingObject: ...
+    ) -> FortiObjectList[MappingObject]: ...
     
 
 
@@ -147,7 +152,6 @@ class Mapping:
 
 __all__ = [
     "Mapping",
-    "MappingPayload",
     "MappingResponse",
     "MappingObject",
 ]

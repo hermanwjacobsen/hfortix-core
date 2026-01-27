@@ -21,6 +21,47 @@ from hfortix_fortios.models import (
 )
 
 
+# ================================================================
+# TypedDict Payloads
+# ================================================================
+
+class StpPayload(TypedDict, total=False):
+    """Payload type for Stp operations."""
+    switch_priority: Literal["0", "4096", "8192", "12288", "16384", "20480", "24576", "28672", "32768", "36864", "40960", "45056", "49152", "53248", "57344"]
+    hello_time: int
+    forward_delay: int
+    max_age: int
+    max_hops: int
+    list: str
+
+
+# ================================================================
+# Response Types (TypedDict for dict-style access)
+# ================================================================
+
+class StpResponse(TypedDict, total=False):
+    """Response type for Stp - use with .dict property for typed dict access."""
+    switch_priority: Literal["0", "4096", "8192", "12288", "16384", "20480", "24576", "28672", "32768", "36864", "40960", "45056", "49152", "53248", "57344"]
+    hello_time: int
+    forward_delay: int
+    max_age: int
+    max_hops: int
+    list: str
+
+
+# ================================================================
+# Response Types (Class for attribute access)
+# ================================================================
+
+
+class StpObject(FortiObject):
+    """Typed FortiObject for Stp with field access."""
+    switch_priority: Literal["0", "4096", "8192", "12288", "16384", "20480", "24576", "28672", "32768", "36864", "40960", "45056", "49152", "53248", "57344"]
+    hello_time: int
+    forward_delay: int
+    max_age: int
+    max_hops: int
+
 
 # ================================================================
 # Main Endpoint Class
@@ -62,7 +103,7 @@ class Stp:
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
-    ) -> FortiObject[Any]: ...
+    ) -> StpObject: ...
     
     def get_schema(
         self,
@@ -77,11 +118,17 @@ class Stp:
     
     def put(
         self,
-        payload_dict: dict[str, Any] | None = ...,
+        payload_dict: StpPayload | None = ...,
+        switch_priority: Literal["0", "4096", "8192", "12288", "16384", "20480", "24576", "28672", "32768", "36864", "40960", "45056", "49152", "53248", "57344"] | None = ...,
+        hello_time: int | None = ...,
+        forward_delay: int | None = ...,
+        max_age: int | None = ...,
+        max_hops: int | None = ...,
+        list: str | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
-    ) -> FortiObject[Any]: ...
+    ) -> StpObject: ...
 
 
     # ================================================================
@@ -96,7 +143,13 @@ class Stp:
     
     def set(
         self,
-        payload_dict: dict[str, Any] | None = ...,
+        payload_dict: StpPayload | None = ...,
+        switch_priority: Literal["0", "4096", "8192", "12288", "16384", "20480", "24576", "28672", "32768", "36864", "40960", "45056", "49152", "53248", "57344"] | None = ...,
+        hello_time: int | None = ...,
+        forward_delay: int | None = ...,
+        max_age: int | None = ...,
+        max_hops: int | None = ...,
+        list: str | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -127,4 +180,7 @@ class Stp:
 
 __all__ = [
     "Stp",
+    "StpPayload",
+    "StpResponse",
+    "StpObject",
 ]

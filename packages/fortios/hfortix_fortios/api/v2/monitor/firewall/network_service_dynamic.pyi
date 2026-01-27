@@ -31,21 +31,20 @@ class NetworkServiceDynamicPayload(TypedDict, total=False):
 
 
 # ================================================================
-# Response Types (TypedDict for dict-style access)
+# Response Types for Monitor/Log/Service Endpoints
 # ================================================================
 
 class NetworkServiceDynamicResponse(TypedDict, total=False):
     """Response type for NetworkServiceDynamic - use with .dict property for typed dict access."""
-    mkey: str
+    ip: str
+    port: str
 
 
-# ================================================================
-# Response Types (Class for attribute access)
-# ================================================================
-
-
-class NetworkServiceDynamicObject(FortiObject):
+class NetworkServiceDynamicObject(FortiObject[NetworkServiceDynamicResponse]):
     """Typed FortiObject for NetworkServiceDynamic with field access."""
+    ip: str
+    port: str
+
 
 
 # ================================================================
@@ -85,7 +84,7 @@ class NetworkServiceDynamic:
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
-    ) -> NetworkServiceDynamicObject: ...
+    ) -> FortiObjectList[NetworkServiceDynamicObject]: ...
     
 
 
@@ -147,7 +146,6 @@ class NetworkServiceDynamic:
 
 __all__ = [
     "NetworkServiceDynamic",
-    "NetworkServiceDynamicPayload",
     "NetworkServiceDynamicResponse",
     "NetworkServiceDynamicObject",
 ]

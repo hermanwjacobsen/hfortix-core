@@ -23,6 +23,27 @@ from hfortix_fortios.models import (
 
 
 # ================================================================
+# Response Types for Monitor/Log/Service Endpoints
+# ================================================================
+
+class LiveServicesLatencyResponse(TypedDict, total=False):
+    """Response type for LiveServicesLatency - use with .dict property for typed dict access."""
+    service: str
+    ip: str
+    latency: int
+    last_update: int
+
+
+class LiveServicesLatencyObject(FortiObject[LiveServicesLatencyResponse]):
+    """Typed FortiObject for LiveServicesLatency with field access."""
+    service: str
+    ip: str
+    latency: int
+    last_update: int
+
+
+
+# ================================================================
 # Main Endpoint Class
 # ================================================================
 
@@ -58,7 +79,7 @@ class LiveServicesLatency:
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
-    ) -> FortiObject[Any]: ...
+    ) -> FortiObjectList[LiveServicesLatencyObject]: ...
     
 
 
@@ -118,4 +139,6 @@ class LiveServicesLatency:
 
 __all__ = [
     "LiveServicesLatency",
+    "LiveServicesLatencyResponse",
+    "LiveServicesLatencyObject",
 ]

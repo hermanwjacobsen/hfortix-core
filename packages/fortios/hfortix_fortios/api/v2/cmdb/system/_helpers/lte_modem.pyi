@@ -1,6 +1,10 @@
 from typing import Any, Literal
 
 # Enum type aliases for validation
+VALID_BODY_STATUS: Literal["enable", "disable"]
+VALID_BODY_PDPTYPE: Literal["IPv4"]
+VALID_BODY_AUTHTYPE: Literal["none", "pap", "chap"]
+VALID_BODY_MODE: Literal["standalone", "redundant"]
 
 # Metadata dictionaries
 FIELD_TYPES: dict[str, str]
@@ -25,6 +29,10 @@ def get_schema_info() -> dict[str, Any]: ...
 
 
 __all__ = [
+    "VALID_BODY_STATUS",
+    "VALID_BODY_PDPTYPE",
+    "VALID_BODY_AUTHTYPE",
+    "VALID_BODY_MODE",
     "FIELD_TYPES",
     "FIELD_DESCRIPTIONS",
     "FIELD_CONSTRAINTS",

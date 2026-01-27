@@ -31,21 +31,68 @@ class StatusPayload(TypedDict, total=False):
 
 
 # ================================================================
-# Response Types (TypedDict for dict-style access)
+# Response Types for Monitor/Log/Service Endpoints
 # ================================================================
 
 class StatusResponse(TypedDict, total=False):
     """Response type for Status - use with .dict property for typed dict access."""
-    mkey: str
+    serial: str
+    switch_id: str
+    fgt_peer_intf_name: str
+    state: str
+    status: str
+    os_version: str
+    connecting_from: str
+    join_time: str
+    ports: list[str]
+    max_poe_budget: int
+    igmp_snooping_supported: bool
+    dhcp_snooping_supported: bool
+    mc_lag_supported: bool
+    led_blink_supported: bool
+    vlan_segment_supported: bool
+    vlan_segment_lite_supported: bool
+    is_l3: bool
+    faceplate_xml: str
+    vdom: str
+    image_download_progress: int
+    type: str
+    owner_vdom: str
+    eos: bool
+    eos_date: str
+    forticare_registration_status: str
+    ptp_capable: bool
 
 
-# ================================================================
-# Response Types (Class for attribute access)
-# ================================================================
-
-
-class StatusObject(FortiObject):
+class StatusObject(FortiObject[StatusResponse]):
     """Typed FortiObject for Status with field access."""
+    serial: str
+    switch_id: str
+    fgt_peer_intf_name: str
+    state: str
+    status: str
+    os_version: str
+    connecting_from: str
+    join_time: str
+    ports: list[str]
+    max_poe_budget: int
+    igmp_snooping_supported: bool
+    dhcp_snooping_supported: bool
+    mc_lag_supported: bool
+    led_blink_supported: bool
+    vlan_segment_supported: bool
+    vlan_segment_lite_supported: bool
+    is_l3: bool
+    faceplate_xml: str
+    vdom: str
+    image_download_progress: int
+    type: str
+    owner_vdom: str
+    eos: bool
+    eos_date: str
+    forticare_registration_status: str
+    ptp_capable: bool
+
 
 
 # ================================================================
@@ -85,7 +132,7 @@ class Status:
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
-    ) -> StatusObject: ...
+    ) -> FortiObjectList[StatusObject]: ...
     
 
 
@@ -147,7 +194,6 @@ class Status:
 
 __all__ = [
     "Status",
-    "StatusPayload",
     "StatusResponse",
     "StatusObject",
 ]

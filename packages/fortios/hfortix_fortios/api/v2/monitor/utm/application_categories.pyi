@@ -23,6 +23,23 @@ from hfortix_fortios.models import (
 
 
 # ================================================================
+# Response Types for Monitor/Log/Service Endpoints
+# ================================================================
+
+class ApplicationCategoriesResponse(TypedDict, total=False):
+    """Response type for ApplicationCategories - use with .dict property for typed dict access."""
+    name: str
+    id: int
+
+
+class ApplicationCategoriesObject(FortiObject[ApplicationCategoriesResponse]):
+    """Typed FortiObject for ApplicationCategories with field access."""
+    name: str
+    id: int
+
+
+
+# ================================================================
 # Main Endpoint Class
 # ================================================================
 
@@ -58,7 +75,7 @@ class ApplicationCategories:
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
-    ) -> FortiObject[Any]: ...
+    ) -> FortiObjectList[ApplicationCategoriesObject]: ...
     
 
 
@@ -118,4 +135,6 @@ class ApplicationCategories:
 
 __all__ = [
     "ApplicationCategories",
+    "ApplicationCategoriesResponse",
+    "ApplicationCategoriesObject",
 ]

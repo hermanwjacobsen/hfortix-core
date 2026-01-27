@@ -31,22 +31,66 @@ class RogueApPayload(TypedDict, total=False):
 
 
 # ================================================================
-# Response Types (TypedDict for dict-style access)
+# Response Types for Monitor/Log/Service Endpoints
 # ================================================================
 
 class RogueApResponse(TypedDict, total=False):
     """Response type for RogueAp - use with .dict property for typed dict access."""
-    managed_ssid_only: bool
+    status: str
+    is_managed: str
+    is_dead: bool
+    is_wired: bool
+    is_fake: bool
+    capinfo: str
+    ssid: str
+    band: str
+    mac: str
+    manufacturer: str
+    security_mode: str
+    encryption: str
+    signal_strength_noise: str
+    signal_strength: int
+    noise: int
+    channel: int
+    rate: int
+    first_seen: str
+    first_seen_utc: int
+    last_seen: str
+    last_seen_utc: int
+    sta_mac: str
+    wtp_count: int
+    detected_by_wtp: list[str]
+    onwire: bool
 
 
-# ================================================================
-# Response Types (Class for attribute access)
-# ================================================================
-
-
-class RogueApObject(FortiObject):
+class RogueApObject(FortiObject[RogueApResponse]):
     """Typed FortiObject for RogueAp with field access."""
-    managed_ssid_only: bool
+    status: str
+    is_managed: str
+    is_dead: bool
+    is_wired: bool
+    is_fake: bool
+    capinfo: str
+    ssid: str
+    band: str
+    mac: str
+    manufacturer: str
+    security_mode: str
+    encryption: str
+    signal_strength_noise: str
+    signal_strength: int
+    noise: int
+    channel: int
+    rate: int
+    first_seen: str
+    first_seen_utc: int
+    last_seen: str
+    last_seen_utc: int
+    sta_mac: str
+    wtp_count: int
+    detected_by_wtp: list[str]
+    onwire: bool
+
 
 
 # ================================================================
@@ -86,7 +130,7 @@ class RogueAp:
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
-    ) -> RogueApObject: ...
+    ) -> FortiObjectList[RogueApObject]: ...
     
 
 
@@ -148,7 +192,6 @@ class RogueAp:
 
 __all__ = [
     "RogueAp",
-    "RogueApPayload",
     "RogueApResponse",
     "RogueApObject",
 ]

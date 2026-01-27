@@ -32,23 +32,26 @@ class PoePayload(TypedDict, total=False):
 
 
 # ================================================================
-# Response Types (TypedDict for dict-style access)
+# Response Types for Monitor/Log/Service Endpoints
 # ================================================================
 
 class PoeResponse(TypedDict, total=False):
     """Response type for Poe - use with .dict property for typed dict access."""
-    mkey: str
-    scope: Literal["vdom", "global"]
+    interface: str
+    enabled: bool
+    power_status: str
+    used: int
+    reserved: int
 
 
-# ================================================================
-# Response Types (Class for attribute access)
-# ================================================================
-
-
-class PoeObject(FortiObject):
+class PoeObject(FortiObject[PoeResponse]):
     """Typed FortiObject for Poe with field access."""
-    scope: Literal["vdom", "global"]
+    interface: str
+    enabled: bool
+    power_status: str
+    used: int
+    reserved: int
+
 
 
 # ================================================================
@@ -89,7 +92,7 @@ class Poe:
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
-    ) -> PoeObject: ...
+    ) -> FortiObjectList[PoeObject]: ...
     
 
 
@@ -153,7 +156,6 @@ class Poe:
 
 __all__ = [
     "Poe",
-    "PoePayload",
     "PoeResponse",
     "PoeObject",
 ]

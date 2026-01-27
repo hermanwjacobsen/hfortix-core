@@ -31,22 +31,26 @@ class TransceiversPayload(TypedDict, total=False):
 
 
 # ================================================================
-# Response Types (TypedDict for dict-style access)
+# Response Types for Monitor/Log/Service Endpoints
 # ================================================================
 
 class TransceiversResponse(TypedDict, total=False):
     """Response type for Transceivers - use with .dict property for typed dict access."""
-    scope: Literal["vdom", "global"]
+    interface: str
+    type: str
+    vendor: str
+    vendor_part_number: str
+    vendor_serial_number: str
 
 
-# ================================================================
-# Response Types (Class for attribute access)
-# ================================================================
-
-
-class TransceiversObject(FortiObject):
+class TransceiversObject(FortiObject[TransceiversResponse]):
     """Typed FortiObject for Transceivers with field access."""
-    scope: Literal["vdom", "global"]
+    interface: str
+    type: str
+    vendor: str
+    vendor_part_number: str
+    vendor_serial_number: str
+
 
 
 # ================================================================
@@ -86,7 +90,7 @@ class Transceivers:
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
-    ) -> TransceiversObject: ...
+    ) -> FortiObjectList[TransceiversObject]: ...
     
 
 
@@ -148,7 +152,6 @@ class Transceivers:
 
 __all__ = [
     "Transceivers",
-    "TransceiversPayload",
     "TransceiversResponse",
     "TransceiversObject",
 ]

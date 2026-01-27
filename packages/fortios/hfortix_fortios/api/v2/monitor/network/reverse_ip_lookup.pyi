@@ -31,22 +31,20 @@ class ReverseIpLookupPayload(TypedDict, total=False):
 
 
 # ================================================================
-# Response Types (TypedDict for dict-style access)
+# Response Types for Monitor/Log/Service Endpoints
 # ================================================================
 
 class ReverseIpLookupResponse(TypedDict, total=False):
     """Response type for ReverseIpLookup - use with .dict property for typed dict access."""
-    ip: str
+    domain: str
+    resolved: bool
 
 
-# ================================================================
-# Response Types (Class for attribute access)
-# ================================================================
-
-
-class ReverseIpLookupObject(FortiObject):
+class ReverseIpLookupObject(FortiObject[ReverseIpLookupResponse]):
     """Typed FortiObject for ReverseIpLookup with field access."""
-    ip: str
+    domain: str
+    resolved: bool
+
 
 
 # ================================================================
@@ -86,7 +84,7 @@ class ReverseIpLookup:
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
-    ) -> ReverseIpLookupObject: ...
+    ) -> FortiObjectList[ReverseIpLookupObject]: ...
     
 
 
@@ -148,7 +146,6 @@ class ReverseIpLookup:
 
 __all__ = [
     "ReverseIpLookup",
-    "ReverseIpLookupPayload",
     "ReverseIpLookupResponse",
     "ReverseIpLookupObject",
 ]

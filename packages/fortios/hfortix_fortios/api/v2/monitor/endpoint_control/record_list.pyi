@@ -31,22 +31,54 @@ class RecordListPayload(TypedDict, total=False):
 
 
 # ================================================================
-# Response Types (TypedDict for dict-style access)
+# Response Types for Monitor/Log/Service Endpoints
 # ================================================================
 
 class RecordListResponse(TypedDict, total=False):
     """Response type for RecordList - use with .dict property for typed dict access."""
-    intf_name: str
+    uid: str
+    mac: str
+    mac_list: str
+    online: int
+    on_net: int
+    forticlient_version: str
+    addr: str
+    manufacturer: str
+    domain: str
+    host: str
+    os: str
+    user: str
+    interface: str
+    intf_allow_fortiheartbeat: bool
+    avatar_username: str
+    avatar_email: str
+    avatar_phone: str
+    avatar_source: str
+    quarantined: bool
 
 
-# ================================================================
-# Response Types (Class for attribute access)
-# ================================================================
-
-
-class RecordListObject(FortiObject):
+class RecordListObject(FortiObject[RecordListResponse]):
     """Typed FortiObject for RecordList with field access."""
-    intf_name: str
+    uid: str
+    mac: str
+    mac_list: str
+    online: int
+    on_net: int
+    forticlient_version: str
+    addr: str
+    manufacturer: str
+    domain: str
+    host: str
+    os: str
+    user: str
+    interface: str
+    intf_allow_fortiheartbeat: bool
+    avatar_username: str
+    avatar_email: str
+    avatar_phone: str
+    avatar_source: str
+    quarantined: bool
+
 
 
 # ================================================================
@@ -86,7 +118,7 @@ class RecordList:
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
-    ) -> RecordListObject: ...
+    ) -> FortiObjectList[RecordListObject]: ...
     
 
 
@@ -148,7 +180,6 @@ class RecordList:
 
 __all__ = [
     "RecordList",
-    "RecordListPayload",
     "RecordListResponse",
     "RecordListObject",
 ]

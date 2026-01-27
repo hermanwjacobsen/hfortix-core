@@ -31,22 +31,30 @@ class MatchedDevicesPayload(TypedDict, total=False):
 
 
 # ================================================================
-# Response Types (TypedDict for dict-style access)
+# Response Types for Monitor/Log/Service Endpoints
 # ================================================================
 
 class MatchedDevicesResponse(TypedDict, total=False):
     """Response type for MatchedDevices - use with .dict property for typed dict access."""
     mac: str
+    ip: str
+    matched_nac_policy: str
+    wlan_name: str
+    wlan_type: str
+    vlan_id: str
+    default_vlan_id: str
 
 
-# ================================================================
-# Response Types (Class for attribute access)
-# ================================================================
-
-
-class MatchedDevicesObject(FortiObject):
+class MatchedDevicesObject(FortiObject[MatchedDevicesResponse]):
     """Typed FortiObject for MatchedDevices with field access."""
     mac: str
+    ip: str
+    matched_nac_policy: str
+    wlan_name: str
+    wlan_type: str
+    vlan_id: str
+    default_vlan_id: str
+
 
 
 # ================================================================
@@ -86,7 +94,7 @@ class MatchedDevices:
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
-    ) -> MatchedDevicesObject: ...
+    ) -> FortiObjectList[MatchedDevicesObject]: ...
     
 
 
@@ -148,7 +156,6 @@ class MatchedDevices:
 
 __all__ = [
     "MatchedDevices",
-    "MatchedDevicesPayload",
     "MatchedDevicesResponse",
     "MatchedDevicesObject",
 ]

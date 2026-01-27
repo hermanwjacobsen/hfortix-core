@@ -23,6 +23,25 @@ from hfortix_fortios.models import (
 
 
 # ================================================================
+# Response Types for Monitor/Log/Service Endpoints
+# ================================================================
+
+class KnownNacDeviceCriteriaListResponse(TypedDict, total=False):
+    """Response type for KnownNacDeviceCriteriaList - use with .dict property for typed dict access."""
+    name: str
+    description: str
+    device: str
+
+
+class KnownNacDeviceCriteriaListObject(FortiObject[KnownNacDeviceCriteriaListResponse]):
+    """Typed FortiObject for KnownNacDeviceCriteriaList with field access."""
+    name: str
+    description: str
+    device: str
+
+
+
+# ================================================================
 # Main Endpoint Class
 # ================================================================
 
@@ -58,7 +77,7 @@ class KnownNacDeviceCriteriaList:
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
-    ) -> FortiObject[Any]: ...
+    ) -> FortiObjectList[KnownNacDeviceCriteriaListObject]: ...
     
 
 
@@ -118,4 +137,6 @@ class KnownNacDeviceCriteriaList:
 
 __all__ = [
     "KnownNacDeviceCriteriaList",
+    "KnownNacDeviceCriteriaListResponse",
+    "KnownNacDeviceCriteriaListObject",
 ]

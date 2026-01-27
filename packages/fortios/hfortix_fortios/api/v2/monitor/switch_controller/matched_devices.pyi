@@ -33,25 +33,34 @@ class MatchedDevicesPayload(TypedDict, total=False):
 
 
 # ================================================================
-# Response Types (TypedDict for dict-style access)
+# Response Types for Monitor/Log/Service Endpoints
 # ================================================================
 
 class MatchedDevicesResponse(TypedDict, total=False):
     """Response type for MatchedDevices - use with .dict property for typed dict access."""
-    mkey: str
-    include_dynamic: bool
     mac: str
+    last_known_switch: str
+    last_known_port: str
+    matched_nac_policy: str
+    matched_dynamic_port_policy: str
+    mac_policy: str
+    matched_policy: str
+    is_dynamic: bool
+    is_nac: bool
 
 
-# ================================================================
-# Response Types (Class for attribute access)
-# ================================================================
-
-
-class MatchedDevicesObject(FortiObject):
+class MatchedDevicesObject(FortiObject[MatchedDevicesResponse]):
     """Typed FortiObject for MatchedDevices with field access."""
-    include_dynamic: bool
     mac: str
+    last_known_switch: str
+    last_known_port: str
+    matched_nac_policy: str
+    matched_dynamic_port_policy: str
+    mac_policy: str
+    matched_policy: str
+    is_dynamic: bool
+    is_nac: bool
+
 
 
 # ================================================================
@@ -93,7 +102,7 @@ class MatchedDevices:
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
-    ) -> MatchedDevicesObject: ...
+    ) -> FortiObjectList[MatchedDevicesObject]: ...
     
 
 
@@ -159,7 +168,6 @@ class MatchedDevices:
 
 __all__ = [
     "MatchedDevices",
-    "MatchedDevicesPayload",
     "MatchedDevicesResponse",
     "MatchedDevicesObject",
 ]

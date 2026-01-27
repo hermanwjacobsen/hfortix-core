@@ -23,6 +23,31 @@ from hfortix_fortios.models import (
 
 
 # ================================================================
+# Response Types for Monitor/Log/Service Endpoints
+# ================================================================
+
+class StatusResponse(TypedDict, total=False):
+    """Response type for Status - use with .dict property for typed dict access."""
+    chassis_id: int
+    svcgrp_id: int
+    slot_id: int
+    heartbeat_devices: list[str]
+    management_devices: list[str]
+    members: list[str]
+
+
+class StatusObject(FortiObject[StatusResponse]):
+    """Typed FortiObject for Status with field access."""
+    chassis_id: int
+    svcgrp_id: int
+    slot_id: int
+    heartbeat_devices: list[str]
+    management_devices: list[str]
+    members: list[str]
+
+
+
+# ================================================================
 # Main Endpoint Class
 # ================================================================
 
@@ -58,7 +83,7 @@ class Status:
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
-    ) -> FortiObject[Any]: ...
+    ) -> FortiObjectList[StatusObject]: ...
     
 
 
@@ -118,4 +143,6 @@ class Status:
 
 __all__ = [
     "Status",
+    "StatusResponse",
+    "StatusObject",
 ]

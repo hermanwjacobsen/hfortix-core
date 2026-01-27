@@ -33,26 +33,24 @@ class ApChannelsPayload(TypedDict, total=False):
 
 
 # ================================================================
-# Response Types (TypedDict for dict-style access)
+# Response Types for Monitor/Log/Service Endpoints
 # ================================================================
 
 class ApChannelsResponse(TypedDict, total=False):
     """Response type for ApChannels - use with .dict property for typed dict access."""
-    country: str
-    platform_type: str
-    indoor_outdoor: int
+    outdoor: bool
+    local: bool
+    unii4_5ghz_band_country_support: bool
+    channel_lists: str
 
 
-# ================================================================
-# Response Types (Class for attribute access)
-# ================================================================
-
-
-class ApChannelsObject(FortiObject):
+class ApChannelsObject(FortiObject[ApChannelsResponse]):
     """Typed FortiObject for ApChannels with field access."""
-    country: str
-    platform_type: str
-    indoor_outdoor: int
+    outdoor: bool
+    local: bool
+    unii4_5ghz_band_country_support: bool
+    channel_lists: str
+
 
 
 # ================================================================
@@ -94,7 +92,7 @@ class ApChannels:
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
-    ) -> ApChannelsObject: ...
+    ) -> FortiObjectList[ApChannelsObject]: ...
     
 
 
@@ -160,7 +158,6 @@ class ApChannels:
 
 __all__ = [
     "ApChannels",
-    "ApChannelsPayload",
     "ApChannelsResponse",
     "ApChannelsObject",
 ]

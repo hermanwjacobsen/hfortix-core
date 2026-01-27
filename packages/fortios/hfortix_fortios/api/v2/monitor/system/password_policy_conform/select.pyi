@@ -34,27 +34,32 @@ class SelectPayload(TypedDict, total=False):
 
 
 # ================================================================
-# Response Types (TypedDict for dict-style access)
+# Response Types for Monitor/Log/Service Endpoints
 # ================================================================
 
 class SelectResponse(TypedDict, total=False):
     """Response type for Select - use with .dict property for typed dict access."""
-    mkey: str
-    apply_to: str
-    password: str
-    old_password: str
+    valid: bool
+    minimum_length: bool
+    invalid_user: bool
+    min_upper_case_letter: bool
+    min_lower_case_letter: bool
+    min_number: bool
+    min_non_alphanumeric: bool
+    reuse_password: bool
 
 
-# ================================================================
-# Response Types (Class for attribute access)
-# ================================================================
-
-
-class SelectObject(FortiObject):
+class SelectObject(FortiObject[SelectResponse]):
     """Typed FortiObject for Select with field access."""
-    apply_to: str
-    password: str
-    old_password: str
+    valid: bool
+    minimum_length: bool
+    invalid_user: bool
+    min_upper_case_letter: bool
+    min_lower_case_letter: bool
+    min_number: bool
+    min_non_alphanumeric: bool
+    reuse_password: bool
+
 
 
 # ================================================================
@@ -93,7 +98,7 @@ class Select:
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
-    ) -> SelectObject: ...
+    ) -> FortiObjectList[SelectObject]: ...
     
 
     # ================================================================
@@ -176,7 +181,6 @@ class Select:
 
 __all__ = [
     "Select",
-    "SelectPayload",
     "SelectResponse",
     "SelectObject",
 ]

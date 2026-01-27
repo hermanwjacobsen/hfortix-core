@@ -31,22 +31,20 @@ class ConnectionPayload(TypedDict, total=False):
 
 
 # ================================================================
-# Response Types (TypedDict for dict-style access)
+# Response Types for Monitor/Log/Service Endpoints
 # ================================================================
 
 class ConnectionResponse(TypedDict, total=False):
     """Response type for Connection - use with .dict property for typed dict access."""
-    server: str
+    status: str
+    type: str
 
 
-# ================================================================
-# Response Types (Class for attribute access)
-# ================================================================
-
-
-class ConnectionObject(FortiObject):
+class ConnectionObject(FortiObject[ConnectionResponse]):
     """Typed FortiObject for Connection with field access."""
-    server: str
+    status: str
+    type: str
+
 
 
 # ================================================================
@@ -86,7 +84,7 @@ class Connection:
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
-    ) -> ConnectionObject: ...
+    ) -> FortiObjectList[ConnectionObject]: ...
     
 
 
@@ -148,7 +146,6 @@ class Connection:
 
 __all__ = [
     "Connection",
-    "ConnectionPayload",
     "ConnectionResponse",
     "ConnectionObject",
 ]

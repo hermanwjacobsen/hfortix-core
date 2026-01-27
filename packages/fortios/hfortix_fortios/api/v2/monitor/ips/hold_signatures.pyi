@@ -31,22 +31,20 @@ class HoldSignaturesPayload(TypedDict, total=False):
 
 
 # ================================================================
-# Response Types (TypedDict for dict-style access)
+# Response Types for Monitor/Log/Service Endpoints
 # ================================================================
 
 class HoldSignaturesResponse(TypedDict, total=False):
     """Response type for HoldSignatures - use with .dict property for typed dict access."""
-    ips_sensor: str
+    id: int
+    hold_hours: int
 
 
-# ================================================================
-# Response Types (Class for attribute access)
-# ================================================================
-
-
-class HoldSignaturesObject(FortiObject):
+class HoldSignaturesObject(FortiObject[HoldSignaturesResponse]):
     """Typed FortiObject for HoldSignatures with field access."""
-    ips_sensor: str
+    id: int
+    hold_hours: int
+
 
 
 # ================================================================
@@ -86,7 +84,7 @@ class HoldSignatures:
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
-    ) -> HoldSignaturesObject: ...
+    ) -> FortiObjectList[HoldSignaturesObject]: ...
     
 
 
@@ -148,7 +146,6 @@ class HoldSignatures:
 
 __all__ = [
     "HoldSignatures",
-    "HoldSignaturesPayload",
     "HoldSignaturesResponse",
     "HoldSignaturesObject",
 ]

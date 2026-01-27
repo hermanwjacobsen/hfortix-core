@@ -23,6 +23,63 @@ from hfortix_fortios.models import (
 
 
 # ================================================================
+# Response Types for Monitor/Log/Service Endpoints
+# ================================================================
+
+class VdomResourceResponse(TypedDict, total=False):
+    """Response type for VdomResource - use with .dict property for typed dict access."""
+    cpu: str
+    memory: str
+    setup_rate: str
+    is_deletable: bool
+    session: str
+    ipsec_phase1: str
+    ipsec_phase2: str
+    ipsec_phase1_interface: str
+    ipsec_phase2_interface: str
+    dialup_tunnel: str
+    firewall_policy: str
+    firewall_address: str
+    firewall_addrgrp: str
+    custom_service: str
+    service_group: str
+    onetime_schedule: str
+    recurring_schedule: str
+    user: str
+    user_group: str
+    sslvpn: str
+    proxy: str
+    log_disk_quota: str
+
+
+class VdomResourceObject(FortiObject[VdomResourceResponse]):
+    """Typed FortiObject for VdomResource with field access."""
+    cpu: str
+    memory: str
+    setup_rate: str
+    is_deletable: bool
+    session: str
+    ipsec_phase1: str
+    ipsec_phase2: str
+    ipsec_phase1_interface: str
+    ipsec_phase2_interface: str
+    dialup_tunnel: str
+    firewall_policy: str
+    firewall_address: str
+    firewall_addrgrp: str
+    custom_service: str
+    service_group: str
+    onetime_schedule: str
+    recurring_schedule: str
+    user: str
+    user_group: str
+    sslvpn: str
+    proxy: str
+    log_disk_quota: str
+
+
+
+# ================================================================
 # Main Endpoint Class
 # ================================================================
 
@@ -58,7 +115,7 @@ class VdomResource:
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
-    ) -> FortiObject[Any]: ...
+    ) -> FortiObjectList[VdomResourceObject]: ...
     
 
 
@@ -118,4 +175,6 @@ class VdomResource:
 
 __all__ = [
     "VdomResource",
+    "VdomResourceResponse",
+    "VdomResourceObject",
 ]

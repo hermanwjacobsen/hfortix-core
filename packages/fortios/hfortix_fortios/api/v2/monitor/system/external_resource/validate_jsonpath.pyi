@@ -31,22 +31,20 @@ class ValidateJsonpathPayload(TypedDict, total=False):
 
 
 # ================================================================
-# Response Types (TypedDict for dict-style access)
+# Response Types for Monitor/Log/Service Endpoints
 # ================================================================
 
 class ValidateJsonpathResponse(TypedDict, total=False):
     """Response type for ValidateJsonpath - use with .dict property for typed dict access."""
-    path_name: str
+    valid: bool
+    error_code: int
 
 
-# ================================================================
-# Response Types (Class for attribute access)
-# ================================================================
-
-
-class ValidateJsonpathObject(FortiObject):
+class ValidateJsonpathObject(FortiObject[ValidateJsonpathResponse]):
     """Typed FortiObject for ValidateJsonpath with field access."""
-    path_name: str
+    valid: bool
+    error_code: int
+
 
 
 # ================================================================
@@ -86,7 +84,7 @@ class ValidateJsonpath:
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
-    ) -> ValidateJsonpathObject: ...
+    ) -> FortiObjectList[ValidateJsonpathObject]: ...
     
 
 
@@ -148,7 +146,6 @@ class ValidateJsonpath:
 
 __all__ = [
     "ValidateJsonpath",
-    "ValidateJsonpathPayload",
     "ValidateJsonpathResponse",
     "ValidateJsonpathObject",
 ]

@@ -23,6 +23,25 @@ from hfortix_fortios.models import (
 
 
 # ================================================================
+# Response Types for Monitor/Log/Service Endpoints
+# ================================================================
+
+class UtilizationResponse(TypedDict, total=False):
+    """Response type for Utilization - use with .dict property for typed dict access."""
+    ipam_ip_count: int
+    manual_ip_count: int
+    total_ip_count: int
+
+
+class UtilizationObject(FortiObject[UtilizationResponse]):
+    """Typed FortiObject for Utilization with field access."""
+    ipam_ip_count: int
+    manual_ip_count: int
+    total_ip_count: int
+
+
+
+# ================================================================
 # Main Endpoint Class
 # ================================================================
 
@@ -58,7 +77,7 @@ class Utilization:
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
-    ) -> FortiObject[Any]: ...
+    ) -> FortiObjectList[UtilizationObject]: ...
     
 
 
@@ -118,4 +137,6 @@ class Utilization:
 
 __all__ = [
     "Utilization",
+    "UtilizationResponse",
+    "UtilizationObject",
 ]

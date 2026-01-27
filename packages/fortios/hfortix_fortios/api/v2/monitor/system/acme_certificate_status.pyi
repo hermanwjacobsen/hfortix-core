@@ -32,23 +32,20 @@ class AcmeCertificateStatusPayload(TypedDict, total=False):
 
 
 # ================================================================
-# Response Types (TypedDict for dict-style access)
+# Response Types for Monitor/Log/Service Endpoints
 # ================================================================
 
 class AcmeCertificateStatusResponse(TypedDict, total=False):
     """Response type for AcmeCertificateStatus - use with .dict property for typed dict access."""
-    mkey: str
-    scope: Literal["vdom", "global"]
+    is_ssl_server_cert: bool
+    acme_status: str
 
 
-# ================================================================
-# Response Types (Class for attribute access)
-# ================================================================
-
-
-class AcmeCertificateStatusObject(FortiObject):
+class AcmeCertificateStatusObject(FortiObject[AcmeCertificateStatusResponse]):
     """Typed FortiObject for AcmeCertificateStatus with field access."""
-    scope: Literal["vdom", "global"]
+    is_ssl_server_cert: bool
+    acme_status: str
+
 
 
 # ================================================================
@@ -89,7 +86,7 @@ class AcmeCertificateStatus:
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
-    ) -> AcmeCertificateStatusObject: ...
+    ) -> FortiObjectList[AcmeCertificateStatusObject]: ...
     
 
 
@@ -153,7 +150,6 @@ class AcmeCertificateStatus:
 
 __all__ = [
     "AcmeCertificateStatus",
-    "AcmeCertificateStatusPayload",
     "AcmeCertificateStatusResponse",
     "AcmeCertificateStatusObject",
 ]

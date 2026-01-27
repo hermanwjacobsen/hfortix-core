@@ -23,6 +23,57 @@ from hfortix_fortios.models import (
 
 
 # ================================================================
+# Response Types for Monitor/Log/Service Endpoints
+# ================================================================
+
+class VmInformationResponse(TypedDict, total=False):
+    """Response type for VmInformation - use with .dict property for typed dict access."""
+    cpu_used: int
+    cpu_max: int
+    mem_used: int
+    mem_max: int
+    is_payg: bool
+    nva_payg_billing_status: str
+    type: str
+    valid: bool
+    status: str
+    license_model: int
+    license_platform_name: str
+    license_source: str
+    expires: int
+    validation_overdue_since: int
+    closed_network: bool
+    is_autoscale_master: bool
+    autoscale_set_size: int
+    autoscale_enabled: bool
+    autoscale_peers: list[str]
+
+
+class VmInformationObject(FortiObject[VmInformationResponse]):
+    """Typed FortiObject for VmInformation with field access."""
+    cpu_used: int
+    cpu_max: int
+    mem_used: int
+    mem_max: int
+    is_payg: bool
+    nva_payg_billing_status: str
+    type: str
+    valid: bool
+    status: str
+    license_model: int
+    license_platform_name: str
+    license_source: str
+    expires: int
+    validation_overdue_since: int
+    closed_network: bool
+    is_autoscale_master: bool
+    autoscale_set_size: int
+    autoscale_enabled: bool
+    autoscale_peers: list[str]
+
+
+
+# ================================================================
 # Main Endpoint Class
 # ================================================================
 
@@ -58,7 +109,7 @@ class VmInformation:
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
-    ) -> FortiObject[Any]: ...
+    ) -> FortiObjectList[VmInformationObject]: ...
     
 
 
@@ -118,4 +169,6 @@ class VmInformation:
 
 __all__ = [
     "VmInformation",
+    "VmInformationResponse",
+    "VmInformationObject",
 ]

@@ -33,25 +33,22 @@ class ExtensionDevicePayload(TypedDict, total=False):
 
 
 # ================================================================
-# Response Types (TypedDict for dict-style access)
+# Response Types for Monitor/Log/Service Endpoints
 # ================================================================
 
 class ExtensionDeviceResponse(TypedDict, total=False):
     """Response type for ExtensionDevice - use with .dict property for typed dict access."""
-    type: Literal["fortiswitch", "fortiap", "fortiextender"]
-    timeout: int
-    version: str
+    fds_response: str
+    fds_response_code: str
+    model_versions: list[str]
 
 
-# ================================================================
-# Response Types (Class for attribute access)
-# ================================================================
-
-
-class ExtensionDeviceObject(FortiObject):
+class ExtensionDeviceObject(FortiObject[ExtensionDeviceResponse]):
     """Typed FortiObject for ExtensionDevice with field access."""
-    type: Literal["fortiswitch", "fortiap", "fortiextender"]
-    timeout: int
+    fds_response: str
+    fds_response_code: str
+    model_versions: list[str]
+
 
 
 # ================================================================
@@ -93,7 +90,7 @@ class ExtensionDevice:
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
-    ) -> ExtensionDeviceObject: ...
+    ) -> FortiObjectList[ExtensionDeviceObject]: ...
     
 
 
@@ -159,7 +156,6 @@ class ExtensionDevice:
 
 __all__ = [
     "ExtensionDevice",
-    "ExtensionDevicePayload",
     "ExtensionDeviceResponse",
     "ExtensionDeviceObject",
 ]

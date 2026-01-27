@@ -35,30 +35,28 @@ class ReportPayload(TypedDict, total=False):
 
 
 # ================================================================
-# Response Types (TypedDict for dict-style access)
+# Response Types for Monitor/Log/Service Endpoints
 # ================================================================
 
 class ReportResponse(TypedDict, total=False):
     """Response type for Report - use with .dict property for typed dict access."""
-    scope: Literal["global", "vdom"]
-    standalone: str
-    type: Literal["psirt", "insight"]
-    checks: str
-    show_hidden: str
+    check: str
+    title: str
+    description: str
+    severity: str
+    customMetadata: str
+    summary: list[str]
 
 
-# ================================================================
-# Response Types (Class for attribute access)
-# ================================================================
-
-
-class ReportObject(FortiObject):
+class ReportObject(FortiObject[ReportResponse]):
     """Typed FortiObject for Report with field access."""
-    scope: Literal["global", "vdom"]
-    standalone: str
-    type: Literal["psirt", "insight"]
-    checks: str
-    show_hidden: str
+    check: str
+    title: str
+    description: str
+    severity: str
+    customMetadata: str
+    summary: list[str]
+
 
 
 # ================================================================
@@ -102,7 +100,7 @@ class Report:
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
-    ) -> ReportObject: ...
+    ) -> FortiObjectList[ReportObject]: ...
     
 
 
@@ -172,7 +170,6 @@ class Report:
 
 __all__ = [
     "Report",
-    "ReportPayload",
     "ReportResponse",
     "ReportObject",
 ]

@@ -33,26 +33,20 @@ class SetTier1Payload(TypedDict, total=False):
 
 
 # ================================================================
-# Response Types (TypedDict for dict-style access)
+# Response Types for Monitor/Log/Service Endpoints
 # ================================================================
 
 class SetTier1Response(TypedDict, total=False):
     """Response type for SetTier1 - use with .dict property for typed dict access."""
-    fortilink: str
-    peer1: str
-    peer2: str
+    success: bool
+    error: str
 
 
-# ================================================================
-# Response Types (Class for attribute access)
-# ================================================================
-
-
-class SetTier1Object(FortiObject):
+class SetTier1Object(FortiObject[SetTier1Response]):
     """Typed FortiObject for SetTier1 with field access."""
-    fortilink: str
-    peer1: str
-    peer2: str
+    success: bool
+    error: str
+
 
 
 # ================================================================
@@ -91,7 +85,7 @@ class SetTier1:
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
-    ) -> SetTier1Object: ...
+    ) -> FortiObjectList[SetTier1Object]: ...
     
 
     # ================================================================
@@ -171,7 +165,6 @@ class SetTier1:
 
 __all__ = [
     "SetTier1",
-    "SetTier1Payload",
     "SetTier1Response",
     "SetTier1Object",
 ]

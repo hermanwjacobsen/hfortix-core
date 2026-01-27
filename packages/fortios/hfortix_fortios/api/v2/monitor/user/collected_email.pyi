@@ -31,22 +31,28 @@ class CollectedEmailPayload(TypedDict, total=False):
 
 
 # ================================================================
-# Response Types (TypedDict for dict-style access)
+# Response Types for Monitor/Log/Service Endpoints
 # ================================================================
 
 class CollectedEmailResponse(TypedDict, total=False):
     """Response type for CollectedEmail - use with .dict property for typed dict access."""
-    ipv6: bool
+    collected_email: str
+    duration_secs: int
+    ipaddr: str
+    expiry_secs: int
+    traffic_vol_bytes: int
+    mac: str
 
 
-# ================================================================
-# Response Types (Class for attribute access)
-# ================================================================
-
-
-class CollectedEmailObject(FortiObject):
+class CollectedEmailObject(FortiObject[CollectedEmailResponse]):
     """Typed FortiObject for CollectedEmail with field access."""
-    ipv6: bool
+    collected_email: str
+    duration_secs: int
+    ipaddr: str
+    expiry_secs: int
+    traffic_vol_bytes: int
+    mac: str
+
 
 
 # ================================================================
@@ -86,7 +92,7 @@ class CollectedEmail:
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
-    ) -> CollectedEmailObject: ...
+    ) -> FortiObjectList[CollectedEmailObject]: ...
     
 
 
@@ -148,7 +154,6 @@ class CollectedEmail:
 
 __all__ = [
     "CollectedEmail",
-    "CollectedEmailPayload",
     "CollectedEmailResponse",
     "CollectedEmailObject",
 ]

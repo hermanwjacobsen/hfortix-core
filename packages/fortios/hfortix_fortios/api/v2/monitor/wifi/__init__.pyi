@@ -16,7 +16,7 @@ if TYPE_CHECKING:
     from .statistics import Statistics
     from .unassociated_devices import UnassociatedDevices
     from .ap_profile import ApProfile
-    from .client_ns import Client
+    from .client import Client
     from .euclid import Euclid
     from .firmware import Firmware
     from .managed_ap import ManagedAp

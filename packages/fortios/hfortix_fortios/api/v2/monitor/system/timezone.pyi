@@ -23,6 +23,33 @@ from hfortix_fortios.models import (
 
 
 # ================================================================
+# Response Types for Monitor/Log/Service Endpoints
+# ================================================================
+
+class TimezoneResponse(TypedDict, total=False):
+    """Response type for Timezone - use with .dict property for typed dict access."""
+    q_origin_key: str
+    name: str
+    utc_offset: str
+    dst_offset: str
+    current_utc_offset: str
+    utc_offset_hours: str
+    is_dst_timezone: bool
+
+
+class TimezoneObject(FortiObject[TimezoneResponse]):
+    """Typed FortiObject for Timezone with field access."""
+    q_origin_key: str
+    name: str
+    utc_offset: str
+    dst_offset: str
+    current_utc_offset: str
+    utc_offset_hours: str
+    is_dst_timezone: bool
+
+
+
+# ================================================================
 # Main Endpoint Class
 # ================================================================
 
@@ -58,7 +85,7 @@ class Timezone:
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
-    ) -> FortiObject[Any]: ...
+    ) -> FortiObjectList[TimezoneObject]: ...
     
 
 
@@ -118,4 +145,6 @@ class Timezone:
 
 __all__ = [
     "Timezone",
+    "TimezoneResponse",
+    "TimezoneObject",
 ]

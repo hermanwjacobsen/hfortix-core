@@ -33,26 +33,44 @@ class FirewallPayload(TypedDict, total=False):
 
 
 # ================================================================
-# Response Types (TypedDict for dict-style access)
+# Response Types for Monitor/Log/Service Endpoints
 # ================================================================
 
 class FirewallResponse(TypedDict, total=False):
     """Response type for Firewall - use with .dict property for typed dict access."""
-    ipv4: bool
-    ipv6: bool
-    include_fsso: bool
+    id: int
+    index: int
+    type: str
+    username: str
+    server: str
+    usergroup: list[str]
+    policyid: int
+    duration_secs: int
+    auth_type: int
+    ipaddr: str
+    src_type: str
+    expiry_secs: int
+    traffic_vol_bytes: int
+    method: str
 
 
-# ================================================================
-# Response Types (Class for attribute access)
-# ================================================================
-
-
-class FirewallObject(FortiObject):
+class FirewallObject(FortiObject[FirewallResponse]):
     """Typed FortiObject for Firewall with field access."""
-    ipv4: bool
-    ipv6: bool
-    include_fsso: bool
+    id: int
+    index: int
+    type: str
+    username: str
+    server: str
+    usergroup: list[str]
+    policyid: int
+    duration_secs: int
+    auth_type: int
+    ipaddr: str
+    src_type: str
+    expiry_secs: int
+    traffic_vol_bytes: int
+    method: str
+
 
 
 # ================================================================
@@ -94,7 +112,7 @@ class Firewall:
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
-    ) -> FirewallObject: ...
+    ) -> FortiObjectList[FirewallObject]: ...
     
 
 
@@ -160,7 +178,6 @@ class Firewall:
 
 __all__ = [
     "Firewall",
-    "FirewallPayload",
     "FirewallResponse",
     "FirewallObject",
 ]

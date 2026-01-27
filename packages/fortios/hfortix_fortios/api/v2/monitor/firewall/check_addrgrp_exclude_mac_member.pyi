@@ -32,23 +32,18 @@ class CheckAddrgrpExcludeMacMemberPayload(TypedDict, total=False):
 
 
 # ================================================================
-# Response Types (TypedDict for dict-style access)
+# Response Types for Monitor/Log/Service Endpoints
 # ================================================================
 
 class CheckAddrgrpExcludeMacMemberResponse(TypedDict, total=False):
     """Response type for CheckAddrgrpExcludeMacMember - use with .dict property for typed dict access."""
-    mkey: str
-    ip_version: Literal["ipv4", "ipv6"]
+    exclude_mac_member: bool
 
 
-# ================================================================
-# Response Types (Class for attribute access)
-# ================================================================
-
-
-class CheckAddrgrpExcludeMacMemberObject(FortiObject):
+class CheckAddrgrpExcludeMacMemberObject(FortiObject[CheckAddrgrpExcludeMacMemberResponse]):
     """Typed FortiObject for CheckAddrgrpExcludeMacMember with field access."""
-    ip_version: Literal["ipv4", "ipv6"]
+    exclude_mac_member: bool
+
 
 
 # ================================================================
@@ -89,7 +84,7 @@ class CheckAddrgrpExcludeMacMember:
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
-    ) -> CheckAddrgrpExcludeMacMemberObject: ...
+    ) -> FortiObjectList[CheckAddrgrpExcludeMacMemberObject]: ...
     
 
 
@@ -153,7 +148,6 @@ class CheckAddrgrpExcludeMacMember:
 
 __all__ = [
     "CheckAddrgrpExcludeMacMember",
-    "CheckAddrgrpExcludeMacMemberPayload",
     "CheckAddrgrpExcludeMacMemberResponse",
     "CheckAddrgrpExcludeMacMemberObject",
 ]

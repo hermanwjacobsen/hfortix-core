@@ -23,6 +23,25 @@ from hfortix_fortios.models import (
 
 
 # ================================================================
+# Response Types for Monitor/Log/Service Endpoints
+# ================================================================
+
+class KernelInterfacesResponse(TypedDict, total=False):
+    """Response type for KernelInterfaces - use with .dict property for typed dict access."""
+    id: int
+    name: str
+    link: int
+
+
+class KernelInterfacesObject(FortiObject[KernelInterfacesResponse]):
+    """Typed FortiObject for KernelInterfaces with field access."""
+    id: int
+    name: str
+    link: int
+
+
+
+# ================================================================
 # Main Endpoint Class
 # ================================================================
 
@@ -58,7 +77,7 @@ class KernelInterfaces:
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
-    ) -> FortiObject[Any]: ...
+    ) -> FortiObjectList[KernelInterfacesObject]: ...
     
 
 
@@ -118,4 +137,6 @@ class KernelInterfaces:
 
 __all__ = [
     "KernelInterfaces",
+    "KernelInterfacesResponse",
+    "KernelInterfacesObject",
 ]

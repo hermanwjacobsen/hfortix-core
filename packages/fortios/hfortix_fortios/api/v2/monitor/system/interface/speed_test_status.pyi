@@ -31,22 +31,26 @@ class SpeedTestStatusPayload(TypedDict, total=False):
 
 
 # ================================================================
-# Response Types (TypedDict for dict-style access)
+# Response Types for Monitor/Log/Service Endpoints
 # ================================================================
 
 class SpeedTestStatusResponse(TypedDict, total=False):
     """Response type for SpeedTestStatus - use with .dict property for typed dict access."""
-    id: int
+    progress: int
+    measured_upstream_bandwidth: int
+    measured_downstream_bandwidth: int
+    measure_time: int
+    error_code: int
 
 
-# ================================================================
-# Response Types (Class for attribute access)
-# ================================================================
-
-
-class SpeedTestStatusObject(FortiObject):
+class SpeedTestStatusObject(FortiObject[SpeedTestStatusResponse]):
     """Typed FortiObject for SpeedTestStatus with field access."""
-    id: int
+    progress: int
+    measured_upstream_bandwidth: int
+    measured_downstream_bandwidth: int
+    measure_time: int
+    error_code: int
+
 
 
 # ================================================================
@@ -86,7 +90,7 @@ class SpeedTestStatus:
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
-    ) -> SpeedTestStatusObject: ...
+    ) -> FortiObjectList[SpeedTestStatusObject]: ...
     
 
 
@@ -148,7 +152,6 @@ class SpeedTestStatus:
 
 __all__ = [
     "SpeedTestStatus",
-    "SpeedTestStatusPayload",
     "SpeedTestStatusResponse",
     "SpeedTestStatusObject",
 ]

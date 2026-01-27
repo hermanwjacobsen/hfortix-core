@@ -23,6 +23,21 @@ from hfortix_fortios.models import (
 
 
 # ================================================================
+# Response Types for Monitor/Log/Service Endpoints
+# ================================================================
+
+class HaBackupHbUsedResponse(TypedDict, total=False):
+    """Response type for HaBackupHbUsed - use with .dict property for typed dict access."""
+    backup_hb_used: bool
+
+
+class HaBackupHbUsedObject(FortiObject[HaBackupHbUsedResponse]):
+    """Typed FortiObject for HaBackupHbUsed with field access."""
+    backup_hb_used: bool
+
+
+
+# ================================================================
 # Main Endpoint Class
 # ================================================================
 
@@ -58,7 +73,7 @@ class HaBackupHbUsed:
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
-    ) -> FortiObject[Any]: ...
+    ) -> FortiObjectList[HaBackupHbUsedObject]: ...
     
 
 
@@ -118,4 +133,6 @@ class HaBackupHbUsed:
 
 __all__ = [
     "HaBackupHbUsed",
+    "HaBackupHbUsedResponse",
+    "HaBackupHbUsedObject",
 ]

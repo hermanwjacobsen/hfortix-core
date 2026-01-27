@@ -23,6 +23,27 @@ from hfortix_fortios.models import (
 
 
 # ================================================================
+# Response Types for Monitor/Log/Service Endpoints
+# ================================================================
+
+class MetaResponse(TypedDict, total=False):
+    """Response type for Meta - use with .dict property for typed dict access."""
+    max_packet_captures: str
+    max_packet_count: str
+    default_packet_count: str
+    has_disk: str
+
+
+class MetaObject(FortiObject[MetaResponse]):
+    """Typed FortiObject for Meta with field access."""
+    max_packet_captures: str
+    max_packet_count: str
+    default_packet_count: str
+    has_disk: str
+
+
+
+# ================================================================
 # Main Endpoint Class
 # ================================================================
 
@@ -58,7 +79,7 @@ class Meta:
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
-    ) -> FortiObject[Any]: ...
+    ) -> FortiObjectList[MetaObject]: ...
     
 
 
@@ -118,4 +139,6 @@ class Meta:
 
 __all__ = [
     "Meta",
+    "MetaResponse",
+    "MetaObject",
 ]

@@ -23,6 +23,21 @@ from hfortix_fortios.models import (
 
 
 # ================================================================
+# Response Types for Monitor/Log/Service Endpoints
+# ================================================================
+
+class CountResponse(TypedDict, total=False):
+    """Response type for Count - use with .dict property for typed dict access."""
+    total: int
+
+
+class CountObject(FortiObject[CountResponse]):
+    """Typed FortiObject for Count with field access."""
+    total: int
+
+
+
+# ================================================================
 # Main Endpoint Class
 # ================================================================
 
@@ -58,7 +73,7 @@ class Count:
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
-    ) -> FortiObject[Any]: ...
+    ) -> FortiObjectList[CountObject]: ...
     
 
 
@@ -118,4 +133,6 @@ class Count:
 
 __all__ = [
     "Count",
+    "CountResponse",
+    "CountObject",
 ]

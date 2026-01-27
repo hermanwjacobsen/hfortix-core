@@ -36,32 +36,20 @@ class StatsPayload(TypedDict, total=False):
 
 
 # ================================================================
-# Response Types (TypedDict for dict-style access)
+# Response Types for Monitor/Log/Service Endpoints
 # ================================================================
 
 class StatsResponse(TypedDict, total=False):
     """Response type for Stats - use with .dict property for typed dict access."""
-    stat_query_type: Literal["device", "fortiswitch_client", "forticlient"]
-    stat_key: Literal["os_name", "hardware_type", "detected_interface", "is_online", "max_vuln_level", "fortiswitch_id", "fortiswitch_port_name"]
-    timestamp_from: int
-    timestamp_to: int
-    filters: Literal["exact", "contains"]
-    filter_logic: Literal["and", "or"]
+    chart_value: str
+    chart_count: str
 
 
-# ================================================================
-# Response Types (Class for attribute access)
-# ================================================================
-
-
-class StatsObject(FortiObject):
+class StatsObject(FortiObject[StatsResponse]):
     """Typed FortiObject for Stats with field access."""
-    stat_query_type: Literal["device", "fortiswitch_client", "forticlient"]
-    stat_key: Literal["os_name", "hardware_type", "detected_interface", "is_online", "max_vuln_level", "fortiswitch_id", "fortiswitch_port_name"]
-    timestamp_from: int
-    timestamp_to: int
-    filters: Literal["exact", "contains"]
-    filter_logic: Literal["and", "or"]
+    chart_value: str
+    chart_count: str
+
 
 
 # ================================================================
@@ -106,7 +94,7 @@ class Stats:
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
-    ) -> StatsObject: ...
+    ) -> FortiObjectList[StatsObject]: ...
     
 
 
@@ -178,7 +166,6 @@ class Stats:
 
 __all__ = [
     "Stats",
-    "StatsPayload",
     "StatsResponse",
     "StatsObject",
 ]

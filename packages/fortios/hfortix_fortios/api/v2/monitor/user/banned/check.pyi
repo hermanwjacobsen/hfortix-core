@@ -31,22 +31,20 @@ class CheckPayload(TypedDict, total=False):
 
 
 # ================================================================
-# Response Types (TypedDict for dict-style access)
+# Response Types for Monitor/Log/Service Endpoints
 # ================================================================
 
 class CheckResponse(TypedDict, total=False):
     """Response type for Check - use with .dict property for typed dict access."""
     ip_address: str
+    is_banned: bool
 
 
-# ================================================================
-# Response Types (Class for attribute access)
-# ================================================================
-
-
-class CheckObject(FortiObject):
+class CheckObject(FortiObject[CheckResponse]):
     """Typed FortiObject for Check with field access."""
     ip_address: str
+    is_banned: bool
+
 
 
 # ================================================================
@@ -86,7 +84,7 @@ class Check:
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
-    ) -> CheckObject: ...
+    ) -> FortiObjectList[CheckObject]: ...
     
 
 
@@ -148,7 +146,6 @@ class Check:
 
 __all__ = [
     "Check",
-    "CheckPayload",
     "CheckResponse",
     "CheckObject",
 ]

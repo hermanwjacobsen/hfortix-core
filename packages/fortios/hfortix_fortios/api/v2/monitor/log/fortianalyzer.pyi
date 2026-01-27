@@ -33,26 +33,50 @@ class FortianalyzerPayload(TypedDict, total=False):
 
 
 # ================================================================
-# Response Types (TypedDict for dict-style access)
+# Response Types for Monitor/Log/Service Endpoints
 # ================================================================
 
 class FortianalyzerResponse(TypedDict, total=False):
     """Response type for Fortianalyzer - use with .dict property for typed dict access."""
-    scope: Literal["vdom", "global"]
-    server: str
-    srcip: Literal["\u003cip\u003e", "auto"]
+    serial: str
+    error_message_details: str
+    error: int
+    status: str
+    device: str
+    registration: str
+    connection: str
+    received: int
+    mgmt_ip: str
+    mgmt_port: int
+    disk: str
+    adom_name: str
+    log: str
+    ips: str
+    dlp: str
+    quar: str
+    license: str
 
 
-# ================================================================
-# Response Types (Class for attribute access)
-# ================================================================
-
-
-class FortianalyzerObject(FortiObject):
+class FortianalyzerObject(FortiObject[FortianalyzerResponse]):
     """Typed FortiObject for Fortianalyzer with field access."""
-    scope: Literal["vdom", "global"]
-    server: str
-    srcip: Literal["\u003cip\u003e", "auto"]
+    serial: str
+    error_message_details: str
+    error: int
+    status: str
+    device: str
+    registration: str
+    connection: str
+    received: int
+    mgmt_ip: str
+    mgmt_port: int
+    disk: str
+    adom_name: str
+    log: str
+    ips: str
+    dlp: str
+    quar: str
+    license: str
+
 
 
 # ================================================================
@@ -94,7 +118,7 @@ class Fortianalyzer:
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
-    ) -> FortianalyzerObject: ...
+    ) -> FortiObjectList[FortianalyzerObject]: ...
     
 
 
@@ -160,7 +184,6 @@ class Fortianalyzer:
 
 __all__ = [
     "Fortianalyzer",
-    "FortianalyzerPayload",
     "FortianalyzerResponse",
     "FortianalyzerObject",
 ]

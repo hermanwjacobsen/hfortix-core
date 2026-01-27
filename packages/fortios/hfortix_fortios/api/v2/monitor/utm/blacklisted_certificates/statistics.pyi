@@ -23,6 +23,21 @@ from hfortix_fortios.models import (
 
 
 # ================================================================
+# Response Types for Monitor/Log/Service Endpoints
+# ================================================================
+
+class StatisticsResponse(TypedDict, total=False):
+    """Response type for Statistics - use with .dict property for typed dict access."""
+    count: int
+
+
+class StatisticsObject(FortiObject[StatisticsResponse]):
+    """Typed FortiObject for Statistics with field access."""
+    count: int
+
+
+
+# ================================================================
 # Main Endpoint Class
 # ================================================================
 
@@ -58,7 +73,7 @@ class Statistics:
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
-    ) -> FortiObject[Any]: ...
+    ) -> FortiObjectList[StatisticsObject]: ...
     
 
 
@@ -118,4 +133,6 @@ class Statistics:
 
 __all__ = [
     "Statistics",
+    "StatisticsResponse",
+    "StatisticsObject",
 ]

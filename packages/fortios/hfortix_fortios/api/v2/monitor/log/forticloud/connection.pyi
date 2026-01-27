@@ -23,6 +23,21 @@ from hfortix_fortios.models import (
 
 
 # ================================================================
+# Response Types for Monitor/Log/Service Endpoints
+# ================================================================
+
+class ConnectionResponse(TypedDict, total=False):
+    """Response type for Connection - use with .dict property for typed dict access."""
+    connection: str
+
+
+class ConnectionObject(FortiObject[ConnectionResponse]):
+    """Typed FortiObject for Connection with field access."""
+    connection: str
+
+
+
+# ================================================================
 # Main Endpoint Class
 # ================================================================
 
@@ -58,7 +73,7 @@ class Connection:
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
-    ) -> FortiObject[Any]: ...
+    ) -> FortiObjectList[ConnectionObject]: ...
     
 
 
@@ -118,4 +133,6 @@ class Connection:
 
 __all__ = [
     "Connection",
+    "ConnectionResponse",
+    "ConnectionObject",
 ]

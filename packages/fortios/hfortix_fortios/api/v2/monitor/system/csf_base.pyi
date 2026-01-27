@@ -32,24 +32,28 @@ class CsfPayload(TypedDict, total=False):
 
 
 # ================================================================
-# Response Types (TypedDict for dict-style access)
+# Response Types for Monitor/Log/Service Endpoints
 # ================================================================
 
 class CsfResponse(TypedDict, total=False):
     """Response type for Csf - use with .dict property for typed dict access."""
-    scope: Literal["vdom", "global"]
-    all_vdoms: bool
+    protocol_enabled: bool
+    csf_group_name: str
+    pending: list[str]
+    trusted: list[str]
+    devices: str
+    faceplate_map: str
 
 
-# ================================================================
-# Response Types (Class for attribute access)
-# ================================================================
-
-
-class CsfObject(FortiObject):
+class CsfObject(FortiObject[CsfResponse]):
     """Typed FortiObject for Csf with field access."""
-    scope: Literal["vdom", "global"]
-    all_vdoms: bool
+    protocol_enabled: bool
+    csf_group_name: str
+    pending: list[str]
+    trusted: list[str]
+    devices: str
+    faceplate_map: str
+
 
 
 # ================================================================
@@ -90,7 +94,7 @@ class Csf:
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
-    ) -> CsfObject: ...
+    ) -> FortiObjectList[CsfObject]: ...
     
 
 
@@ -154,7 +158,6 @@ class Csf:
 
 __all__ = [
     "Csf",
-    "CsfPayload",
     "CsfResponse",
     "CsfObject",
 ]

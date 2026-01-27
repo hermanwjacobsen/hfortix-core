@@ -45,50 +45,50 @@ class PolicyLookupPayload(TypedDict, total=False):
 
 
 # ================================================================
-# Response Types (TypedDict for dict-style access)
+# Response Types for Monitor/Log/Service Endpoints
 # ================================================================
 
 class PolicyLookupResponse(TypedDict, total=False):
     """Response type for PolicyLookup - use with .dict property for typed dict access."""
-    ipv6: bool
-    srcintf: str
-    sourceport: int
-    sourceip: str
-    protocol: str
-    dest: str
-    destport: int
-    icmptype: int
-    icmpcode: int
-    policy_type: Literal["policy", "proxy"]
-    auth_type: Literal["user", "group", "saml", "ldap"]
-    user_group: list[str]
-    server_name: str
-    user_db: str
-    group_attr_type: Literal["name", "id"]
+    dstaddr: str
+    dst_cate: int
+    match: bool
+    matched_policy_type: str
+    policy_action: str
+    policy_id: int
+    proxy_policy_id: int
+    remote_groups: list[str]
+    sec_default_action: str
+    srcaddr: str
+    success: bool
+    urlf_entry_id: int
+    user_group: str
+    webfilter_action: str
+    webfilter_category: int
+    webfilter_profile: str
+    error_code: str
 
 
-# ================================================================
-# Response Types (Class for attribute access)
-# ================================================================
-
-
-class PolicyLookupObject(FortiObject):
+class PolicyLookupObject(FortiObject[PolicyLookupResponse]):
     """Typed FortiObject for PolicyLookup with field access."""
-    ipv6: bool
-    srcintf: str
-    sourceport: int
-    sourceip: str
-    protocol: str
-    dest: str
-    destport: int
-    icmptype: int
-    icmpcode: int
-    policy_type: Literal["policy", "proxy"]
-    auth_type: Literal["user", "group", "saml", "ldap"]
-    user_group: list[str]
-    server_name: str
-    user_db: str
-    group_attr_type: Literal["name", "id"]
+    dstaddr: str
+    dst_cate: int
+    match: bool
+    matched_policy_type: str
+    policy_action: str
+    policy_id: int
+    proxy_policy_id: int
+    remote_groups: list[str]
+    sec_default_action: str
+    srcaddr: str
+    success: bool
+    urlf_entry_id: int
+    user_group: str
+    webfilter_action: str
+    webfilter_category: int
+    webfilter_profile: str
+    error_code: str
+
 
 
 # ================================================================
@@ -142,7 +142,7 @@ class PolicyLookup:
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
-    ) -> PolicyLookupObject: ...
+    ) -> FortiObjectList[PolicyLookupObject]: ...
     
 
 
@@ -232,7 +232,6 @@ class PolicyLookup:
 
 __all__ = [
     "PolicyLookup",
-    "PolicyLookupPayload",
     "PolicyLookupResponse",
     "PolicyLookupObject",
 ]

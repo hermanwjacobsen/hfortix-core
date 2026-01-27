@@ -31,21 +31,26 @@ class AddressFqdnsPayload(TypedDict, total=False):
 
 
 # ================================================================
-# Response Types (TypedDict for dict-style access)
+# Response Types for Monitor/Log/Service Endpoints
 # ================================================================
 
 class AddressFqdnsResponse(TypedDict, total=False):
     """Response type for AddressFqdns - use with .dict property for typed dict access."""
-    mkey: str
+    name: str
+    fqdn: str
+    addrs: list[str]
+    addrs_count: str
+    wildcard: bool
 
 
-# ================================================================
-# Response Types (Class for attribute access)
-# ================================================================
-
-
-class AddressFqdnsObject(FortiObject):
+class AddressFqdnsObject(FortiObject[AddressFqdnsResponse]):
     """Typed FortiObject for AddressFqdns with field access."""
+    name: str
+    fqdn: str
+    addrs: list[str]
+    addrs_count: str
+    wildcard: bool
+
 
 
 # ================================================================
@@ -85,7 +90,7 @@ class AddressFqdns:
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
-    ) -> AddressFqdnsObject: ...
+    ) -> FortiObjectList[AddressFqdnsObject]: ...
     
 
 
@@ -147,7 +152,6 @@ class AddressFqdns:
 
 __all__ = [
     "AddressFqdns",
-    "AddressFqdnsPayload",
     "AddressFqdnsResponse",
     "AddressFqdnsObject",
 ]

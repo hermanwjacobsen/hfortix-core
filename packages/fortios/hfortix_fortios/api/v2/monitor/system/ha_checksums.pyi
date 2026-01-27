@@ -23,6 +23,31 @@ from hfortix_fortios.models import (
 
 
 # ================================================================
+# Response Types for Monitor/Log/Service Endpoints
+# ================================================================
+
+class HaChecksumsResponse(TypedDict, total=False):
+    """Response type for HaChecksums - use with .dict property for typed dict access."""
+    is_manage_master: int
+    is_root_master: int
+    is_manage_primary: bool
+    is_root_primary: bool
+    serial_no: str
+    checksum: str
+
+
+class HaChecksumsObject(FortiObject[HaChecksumsResponse]):
+    """Typed FortiObject for HaChecksums with field access."""
+    is_manage_master: int
+    is_root_master: int
+    is_manage_primary: bool
+    is_root_primary: bool
+    serial_no: str
+    checksum: str
+
+
+
+# ================================================================
 # Main Endpoint Class
 # ================================================================
 
@@ -58,7 +83,7 @@ class HaChecksums:
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
-    ) -> FortiObject[Any]: ...
+    ) -> FortiObjectList[HaChecksumsObject]: ...
     
 
 
@@ -118,4 +143,6 @@ class HaChecksums:
 
 __all__ = [
     "HaChecksums",
+    "HaChecksumsResponse",
+    "HaChecksumsObject",
 ]

@@ -31,22 +31,58 @@ class HistoricDailyRemoteLogsPayload(TypedDict, total=False):
 
 
 # ================================================================
-# Response Types (TypedDict for dict-style access)
+# Response Types for Monitor/Log/Service Endpoints
 # ================================================================
 
 class HistoricDailyRemoteLogsResponse(TypedDict, total=False):
     """Response type for HistoricDailyRemoteLogs - use with .dict property for typed dict access."""
-    server: Literal["forticloud", "fortianalyzer", "fortianalyzercloud", "nulldevice"]
+    traffic: str
+    event: str
+    virus: str
+    ips: str
+    emailfilter: str
+    anomaly: str
+    voip: str
+    dlp: str
+    app_ctrl: str
+    webfilter: str
+    waf: str
+    dns: str
+    ssh: str
+    ssl: str
+    file_filter: str
+    icap: str
+    sctp_filter: str
+    forti_switch: str
+    virtual_patch: str
+    casb: str
+    unknown: str
 
 
-# ================================================================
-# Response Types (Class for attribute access)
-# ================================================================
-
-
-class HistoricDailyRemoteLogsObject(FortiObject):
+class HistoricDailyRemoteLogsObject(FortiObject[HistoricDailyRemoteLogsResponse]):
     """Typed FortiObject for HistoricDailyRemoteLogs with field access."""
-    server: Literal["forticloud", "fortianalyzer", "fortianalyzercloud", "nulldevice"]
+    traffic: str
+    event: str
+    virus: str
+    ips: str
+    emailfilter: str
+    anomaly: str
+    voip: str
+    dlp: str
+    app_ctrl: str
+    webfilter: str
+    waf: str
+    dns: str
+    ssh: str
+    ssl: str
+    file_filter: str
+    icap: str
+    sctp_filter: str
+    forti_switch: str
+    virtual_patch: str
+    casb: str
+    unknown: str
+
 
 
 # ================================================================
@@ -86,7 +122,7 @@ class HistoricDailyRemoteLogs:
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
-    ) -> HistoricDailyRemoteLogsObject: ...
+    ) -> FortiObjectList[HistoricDailyRemoteLogsObject]: ...
     
 
 
@@ -148,7 +184,6 @@ class HistoricDailyRemoteLogs:
 
 __all__ = [
     "HistoricDailyRemoteLogs",
-    "HistoricDailyRemoteLogsPayload",
     "HistoricDailyRemoteLogsResponse",
     "HistoricDailyRemoteLogsObject",
 ]

@@ -58,76 +58,20 @@ class SessionsPayload(TypedDict, total=False):
 
 
 # ================================================================
-# Response Types (TypedDict for dict-style access)
+# Response Types for Monitor/Log/Service Endpoints
 # ================================================================
 
 class SessionsResponse(TypedDict, total=False):
     """Response type for Sessions - use with .dict property for typed dict access."""
-    ip_version: Literal["ipv4", "ipv6", "ipboth"]
-    count: int
-    summary: bool
-    srcport: str
-    policyid: str
-    security_policyid: str
-    application: str
-    protocol: Literal["all", "igmp", "tcp", "udp", "icmp", "etc"]
-    dstport: str
-    srcintf: str
-    dstintf: str
-    srcintfrole: list[str]
-    dstintfrole: list[str]
-    srcaddr: str
-    srcaddr6: str
-    srcuuid: str
-    dstaddr: str
-    dstaddr6: str
-    dstuuid: str
-    username: str
-    shaper: str
-    country: str
-    owner: str
-    natsourceaddress: str
-    natsourceport: str
-    since: str
-    seconds: str
-    fortiasic: str
+    summary: str
+    details: list[str]
 
 
-# ================================================================
-# Response Types (Class for attribute access)
-# ================================================================
-
-
-class SessionsObject(FortiObject):
+class SessionsObject(FortiObject[SessionsResponse]):
     """Typed FortiObject for Sessions with field access."""
-    ip_version: Literal["ipv4", "ipv6", "ipboth"]
-    count: int
-    summary: bool
-    srcport: str
-    policyid: str
-    security_policyid: str
-    application: str
-    protocol: Literal["all", "igmp", "tcp", "udp", "icmp", "etc"]
-    dstport: str
-    srcintf: str
-    dstintf: str
-    srcintfrole: list[str]
-    dstintfrole: list[str]
-    srcaddr: str
-    srcaddr6: str
-    srcuuid: str
-    dstaddr: str
-    dstaddr6: str
-    dstuuid: str
-    username: str
-    shaper: str
-    country: str
-    owner: str
-    natsourceaddress: str
-    natsourceport: str
-    since: str
-    seconds: str
-    fortiasic: str
+    summary: str
+    details: list[str]
+
 
 
 # ================================================================
@@ -194,7 +138,7 @@ class Sessions:
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
-    ) -> SessionsObject: ...
+    ) -> FortiObjectList[SessionsObject]: ...
     
 
 
@@ -310,7 +254,6 @@ class Sessions:
 
 __all__ = [
     "Sessions",
-    "SessionsPayload",
     "SessionsResponse",
     "SessionsObject",
 ]

@@ -31,22 +31,24 @@ class StatusSummaryPayload(TypedDict, total=False):
 
 
 # ================================================================
-# Response Types (TypedDict for dict-style access)
+# Response Types for Monitor/Log/Service Endpoints
 # ================================================================
 
 class StatusSummaryResponse(TypedDict, total=False):
     """Response type for StatusSummary - use with .dict property for typed dict access."""
-    scope: Literal["vdom", "global"]
+    id: str
+    name: str
+    cert_status: str
+    conn_status: str
 
 
-# ================================================================
-# Response Types (Class for attribute access)
-# ================================================================
-
-
-class StatusSummaryObject(FortiObject):
+class StatusSummaryObject(FortiObject[StatusSummaryResponse]):
     """Typed FortiObject for StatusSummary with field access."""
-    scope: Literal["vdom", "global"]
+    id: str
+    name: str
+    cert_status: str
+    conn_status: str
+
 
 
 # ================================================================
@@ -86,7 +88,7 @@ class StatusSummary:
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
-    ) -> StatusSummaryObject: ...
+    ) -> FortiObjectList[StatusSummaryObject]: ...
     
 
 
@@ -148,7 +150,6 @@ class StatusSummary:
 
 __all__ = [
     "StatusSummary",
-    "StatusSummaryPayload",
     "StatusSummaryResponse",
     "StatusSummaryObject",
 ]

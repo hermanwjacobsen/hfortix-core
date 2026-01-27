@@ -23,6 +23,59 @@ from hfortix_fortios.models import (
 
 
 # ================================================================
+# Response Types for Monitor/Log/Service Endpoints
+# ================================================================
+
+class GtpStatisticsResponse(TypedDict, total=False):
+    """Response type for GtpStatistics - use with .dict property for typed dict access."""
+    request: int
+    echo_request: int
+    tunnel: int
+    tunnel_v0: int
+    path: int
+    bearer: int
+    fteid: int
+    ds_fteid: int
+    profile: int
+    imsi: int
+    apn: int
+    apn_shaper: int
+    tunnel_limiter: int
+    adv_policy: int
+    ie_remove_policy: int
+    ip_policy: int
+    noip_policy: int
+    ie_wl_entry: int
+    clash: int
+    drop: int
+
+
+class GtpStatisticsObject(FortiObject[GtpStatisticsResponse]):
+    """Typed FortiObject for GtpStatistics with field access."""
+    request: int
+    echo_request: int
+    tunnel: int
+    tunnel_v0: int
+    path: int
+    bearer: int
+    fteid: int
+    ds_fteid: int
+    profile: int
+    imsi: int
+    apn: int
+    apn_shaper: int
+    tunnel_limiter: int
+    adv_policy: int
+    ie_remove_policy: int
+    ip_policy: int
+    noip_policy: int
+    ie_wl_entry: int
+    clash: int
+    drop: int
+
+
+
+# ================================================================
 # Main Endpoint Class
 # ================================================================
 
@@ -58,7 +111,7 @@ class GtpStatistics:
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
-    ) -> FortiObject[Any]: ...
+    ) -> FortiObjectList[GtpStatisticsObject]: ...
     
 
 
@@ -118,4 +171,6 @@ class GtpStatistics:
 
 __all__ = [
     "GtpStatistics",
+    "GtpStatisticsResponse",
+    "GtpStatisticsObject",
 ]

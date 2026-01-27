@@ -31,22 +31,18 @@ class HistoryPayload(TypedDict, total=False):
 
 
 # ================================================================
-# Response Types (TypedDict for dict-style access)
+# Response Types for Monitor/Log/Service Endpoints
 # ================================================================
 
 class HistoryResponse(TypedDict, total=False):
     """Response type for History - use with .dict property for typed dict access."""
-    period: Literal["10-min", "hour", "day", "week", "30-day"]
+    protocol: str
 
 
-# ================================================================
-# Response Types (Class for attribute access)
-# ================================================================
-
-
-class HistoryObject(FortiObject):
+class HistoryObject(FortiObject[HistoryResponse]):
     """Typed FortiObject for History with field access."""
-    period: Literal["10-min", "hour", "day", "week", "30-day"]
+    protocol: str
+
 
 
 # ================================================================
@@ -86,7 +82,7 @@ class History:
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
-    ) -> HistoryObject: ...
+    ) -> FortiObjectList[HistoryObject]: ...
     
 
 
@@ -148,7 +144,6 @@ class History:
 
 __all__ = [
     "History",
-    "HistoryPayload",
     "HistoryResponse",
     "HistoryObject",
 ]

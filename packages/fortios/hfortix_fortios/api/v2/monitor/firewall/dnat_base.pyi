@@ -32,24 +32,32 @@ class DnatPayload(TypedDict, total=False):
 
 
 # ================================================================
-# Response Types (TypedDict for dict-style access)
+# Response Types for Monitor/Log/Service Endpoints
 # ================================================================
 
 class DnatResponse(TypedDict, total=False):
     """Response type for Dnat - use with .dict property for typed dict access."""
-    uuid: list[str]
-    ip_version: Literal["ipv4", "ipv6"]
+    id: int
+    last_used: int
+    first_used: int
+    hit_count: int
+    uuid: str
+    uuid_type: str
+    x1_week_ipv4: str
+    x1_week_ipv6: str
 
 
-# ================================================================
-# Response Types (Class for attribute access)
-# ================================================================
-
-
-class DnatObject(FortiObject):
+class DnatObject(FortiObject[DnatResponse]):
     """Typed FortiObject for Dnat with field access."""
-    uuid: list[str]
-    ip_version: Literal["ipv4", "ipv6"]
+    id: int
+    last_used: int
+    first_used: int
+    hit_count: int
+    uuid: str
+    uuid_type: str
+    x1_week_ipv4: str
+    x1_week_ipv6: str
+
 
 
 # ================================================================
@@ -90,7 +98,7 @@ class Dnat:
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
-    ) -> DnatObject: ...
+    ) -> FortiObjectList[DnatObject]: ...
     
 
 
@@ -154,7 +162,6 @@ class Dnat:
 
 __all__ = [
     "Dnat",
-    "DnatPayload",
     "DnatResponse",
     "DnatObject",
 ]

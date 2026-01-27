@@ -35,30 +35,20 @@ class TransferPayload(TypedDict, total=False):
 
 
 # ================================================================
-# Response Types (TypedDict for dict-style access)
+# Response Types for Monitor/Log/Service Endpoints
 # ================================================================
 
 class TransferResponse(TypedDict, total=False):
     """Response type for Transfer - use with .dict property for typed dict access."""
-    email: str
-    password: str
-    old_email: str
-    old_password: str
-    is_government: bool
+    forticare_error: str
+    forticare_success: bool
 
 
-# ================================================================
-# Response Types (Class for attribute access)
-# ================================================================
-
-
-class TransferObject(FortiObject):
+class TransferObject(FortiObject[TransferResponse]):
     """Typed FortiObject for Transfer with field access."""
-    email: str
-    password: str
-    old_email: str
-    old_password: str
-    is_government: bool
+    forticare_error: str
+    forticare_success: bool
+
 
 
 # ================================================================
@@ -97,7 +87,7 @@ class Transfer:
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
-    ) -> TransferObject: ...
+    ) -> FortiObjectList[TransferObject]: ...
     
 
     # ================================================================
@@ -183,7 +173,6 @@ class Transfer:
 
 __all__ = [
     "Transfer",
-    "TransferPayload",
     "TransferResponse",
     "TransferObject",
 ]

@@ -23,6 +23,31 @@ from hfortix_fortios.models import (
 
 
 # ================================================================
+# Response Types for Monitor/Log/Service Endpoints
+# ================================================================
+
+class NeighborsResponse(TypedDict, total=False):
+    """Response type for Neighbors - use with .dict property for typed dict access."""
+    neighbor_ip: str
+    local_ip: str
+    remote_as: str
+    admin_status: bool
+    state: str
+    type: str
+
+
+class NeighborsObject(FortiObject[NeighborsResponse]):
+    """Typed FortiObject for Neighbors with field access."""
+    neighbor_ip: str
+    local_ip: str
+    remote_as: str
+    admin_status: bool
+    state: str
+    type: str
+
+
+
+# ================================================================
 # Main Endpoint Class
 # ================================================================
 
@@ -58,7 +83,7 @@ class Neighbors:
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
-    ) -> FortiObject[Any]: ...
+    ) -> FortiObjectList[NeighborsObject]: ...
     
 
 
@@ -118,4 +143,6 @@ class Neighbors:
 
 __all__ = [
     "Neighbors",
+    "NeighborsResponse",
+    "NeighborsObject",
 ]

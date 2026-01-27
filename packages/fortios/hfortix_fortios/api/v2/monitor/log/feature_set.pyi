@@ -23,6 +23,23 @@ from hfortix_fortios.models import (
 
 
 # ================================================================
+# Response Types for Monitor/Log/Service Endpoints
+# ================================================================
+
+class FeatureSetResponse(TypedDict, total=False):
+    """Response type for FeatureSet - use with .dict property for typed dict access."""
+    general: str
+    fortiview: str
+
+
+class FeatureSetObject(FortiObject[FeatureSetResponse]):
+    """Typed FortiObject for FeatureSet with field access."""
+    general: str
+    fortiview: str
+
+
+
+# ================================================================
 # Main Endpoint Class
 # ================================================================
 
@@ -58,7 +75,7 @@ class FeatureSet:
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
-    ) -> FortiObject[Any]: ...
+    ) -> FortiObjectList[FeatureSetObject]: ...
     
 
 
@@ -118,4 +135,6 @@ class FeatureSet:
 
 __all__ = [
     "FeatureSet",
+    "FeatureSetResponse",
+    "FeatureSetObject",
 ]

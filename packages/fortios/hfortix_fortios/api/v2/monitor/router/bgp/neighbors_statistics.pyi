@@ -31,22 +31,22 @@ class NeighborsStatisticsPayload(TypedDict, total=False):
 
 
 # ================================================================
-# Response Types (TypedDict for dict-style access)
+# Response Types for Monitor/Log/Service Endpoints
 # ================================================================
 
 class NeighborsStatisticsResponse(TypedDict, total=False):
     """Response type for NeighborsStatistics - use with .dict property for typed dict access."""
-    ip_version: Literal["ipv4", "ipv6", "ipboth"]
+    total: int
+    ipv4: int
+    ipv6: int
 
 
-# ================================================================
-# Response Types (Class for attribute access)
-# ================================================================
-
-
-class NeighborsStatisticsObject(FortiObject):
+class NeighborsStatisticsObject(FortiObject[NeighborsStatisticsResponse]):
     """Typed FortiObject for NeighborsStatistics with field access."""
-    ip_version: Literal["ipv4", "ipv6", "ipboth"]
+    total: int
+    ipv4: int
+    ipv6: int
+
 
 
 # ================================================================
@@ -86,7 +86,7 @@ class NeighborsStatistics:
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
-    ) -> NeighborsStatisticsObject: ...
+    ) -> FortiObjectList[NeighborsStatisticsObject]: ...
     
 
 
@@ -148,7 +148,6 @@ class NeighborsStatistics:
 
 __all__ = [
     "NeighborsStatistics",
-    "NeighborsStatisticsPayload",
     "NeighborsStatisticsResponse",
     "NeighborsStatisticsObject",
 ]

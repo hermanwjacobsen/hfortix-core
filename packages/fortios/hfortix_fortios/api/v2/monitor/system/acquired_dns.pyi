@@ -23,6 +23,25 @@ from hfortix_fortios.models import (
 
 
 # ================================================================
+# Response Types for Monitor/Log/Service Endpoints
+# ================================================================
+
+class AcquiredDnsResponse(TypedDict, total=False):
+    """Response type for AcquiredDns - use with .dict property for typed dict access."""
+    interface: str
+    vdom: str
+    dns_servers: list[str]
+
+
+class AcquiredDnsObject(FortiObject[AcquiredDnsResponse]):
+    """Typed FortiObject for AcquiredDns with field access."""
+    interface: str
+    vdom: str
+    dns_servers: list[str]
+
+
+
+# ================================================================
 # Main Endpoint Class
 # ================================================================
 
@@ -58,7 +77,7 @@ class AcquiredDns:
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
-    ) -> FortiObject[Any]: ...
+    ) -> FortiObjectList[AcquiredDnsObject]: ...
     
 
 
@@ -118,4 +137,6 @@ class AcquiredDns:
 
 __all__ = [
     "AcquiredDns",
+    "AcquiredDnsResponse",
+    "AcquiredDnsObject",
 ]

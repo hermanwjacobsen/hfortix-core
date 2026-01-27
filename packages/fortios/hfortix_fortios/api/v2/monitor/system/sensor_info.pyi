@@ -23,6 +23,31 @@ from hfortix_fortios.models import (
 
 
 # ================================================================
+# Response Types for Monitor/Log/Service Endpoints
+# ================================================================
+
+class SensorInfoResponse(TypedDict, total=False):
+    """Response type for SensorInfo - use with .dict property for typed dict access."""
+    id: str
+    name: str
+    type: str
+    value: str
+    alarm: bool
+    thresholds: str
+
+
+class SensorInfoObject(FortiObject[SensorInfoResponse]):
+    """Typed FortiObject for SensorInfo with field access."""
+    id: str
+    name: str
+    type: str
+    value: str
+    alarm: bool
+    thresholds: str
+
+
+
+# ================================================================
 # Main Endpoint Class
 # ================================================================
 
@@ -58,7 +83,7 @@ class SensorInfo:
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
-    ) -> FortiObject[Any]: ...
+    ) -> FortiObjectList[SensorInfoObject]: ...
     
 
 
@@ -118,4 +143,6 @@ class SensorInfo:
 
 __all__ = [
     "SensorInfo",
+    "SensorInfoResponse",
+    "SensorInfoObject",
 ]

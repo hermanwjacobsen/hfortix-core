@@ -31,22 +31,22 @@ class EligiblePeerPayload(TypedDict, total=False):
 
 
 # ================================================================
-# Response Types (TypedDict for dict-style access)
+# Response Types for Monitor/Log/Service Endpoints
 # ================================================================
 
 class EligiblePeerResponse(TypedDict, total=False):
     """Response type for EligiblePeer - use with .dict property for typed dict access."""
-    fortilink: str
+    status: str
+    candidate1: str
+    candidate2: str
 
 
-# ================================================================
-# Response Types (Class for attribute access)
-# ================================================================
-
-
-class EligiblePeerObject(FortiObject):
+class EligiblePeerObject(FortiObject[EligiblePeerResponse]):
     """Typed FortiObject for EligiblePeer with field access."""
-    fortilink: str
+    status: str
+    candidate1: str
+    candidate2: str
+
 
 
 # ================================================================
@@ -86,7 +86,7 @@ class EligiblePeer:
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
-    ) -> EligiblePeerObject: ...
+    ) -> FortiObjectList[EligiblePeerObject]: ...
     
 
 
@@ -148,7 +148,6 @@ class EligiblePeer:
 
 __all__ = [
     "EligiblePeer",
-    "EligiblePeerPayload",
     "EligiblePeerResponse",
     "EligiblePeerObject",
 ]

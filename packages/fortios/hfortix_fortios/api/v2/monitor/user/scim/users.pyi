@@ -33,26 +33,30 @@ class UsersPayload(TypedDict, total=False):
 
 
 # ================================================================
-# Response Types (TypedDict for dict-style access)
+# Response Types for Monitor/Log/Service Endpoints
 # ================================================================
 
 class UsersResponse(TypedDict, total=False):
     """Response type for Users - use with .dict property for typed dict access."""
-    client_name: str
-    group_name: str
-    user_name: str
+    displayName: str
+    userName: str
+    name: str
+    active: int
+    meta: str
+    emails: list[str]
+    groups: list[str]
 
 
-# ================================================================
-# Response Types (Class for attribute access)
-# ================================================================
-
-
-class UsersObject(FortiObject):
+class UsersObject(FortiObject[UsersResponse]):
     """Typed FortiObject for Users with field access."""
-    client_name: str
-    group_name: str
-    user_name: str
+    displayName: str
+    userName: str
+    name: str
+    active: int
+    meta: str
+    emails: list[str]
+    groups: list[str]
+
 
 
 # ================================================================
@@ -94,7 +98,7 @@ class Users:
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
-    ) -> UsersObject: ...
+    ) -> FortiObjectList[UsersObject]: ...
     
 
 
@@ -160,7 +164,6 @@ class Users:
 
 __all__ = [
     "Users",
-    "UsersPayload",
     "UsersResponse",
     "UsersObject",
 ]

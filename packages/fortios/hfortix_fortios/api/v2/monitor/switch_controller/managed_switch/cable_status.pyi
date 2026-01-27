@@ -32,23 +32,26 @@ class CableStatusPayload(TypedDict, total=False):
 
 
 # ================================================================
-# Response Types (TypedDict for dict-style access)
+# Response Types for Monitor/Log/Service Endpoints
 # ================================================================
 
 class CableStatusResponse(TypedDict, total=False):
     """Response type for CableStatus - use with .dict property for typed dict access."""
-    mkey: str
+    type: str
     port: str
+    error_range: int
+    unit: str
+    pairs: list[str]
 
 
-# ================================================================
-# Response Types (Class for attribute access)
-# ================================================================
-
-
-class CableStatusObject(FortiObject):
+class CableStatusObject(FortiObject[CableStatusResponse]):
     """Typed FortiObject for CableStatus with field access."""
+    type: str
     port: str
+    error_range: int
+    unit: str
+    pairs: list[str]
+
 
 
 # ================================================================
@@ -89,7 +92,7 @@ class CableStatus:
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
-    ) -> CableStatusObject: ...
+    ) -> FortiObjectList[CableStatusObject]: ...
     
 
 
@@ -153,7 +156,6 @@ class CableStatus:
 
 __all__ = [
     "CableStatus",
-    "CableStatusPayload",
     "CableStatusResponse",
     "CableStatusObject",
 ]

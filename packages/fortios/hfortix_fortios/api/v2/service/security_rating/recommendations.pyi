@@ -32,24 +32,20 @@ class RecommendationsPayload(TypedDict, total=False):
 
 
 # ================================================================
-# Response Types (TypedDict for dict-style access)
+# Response Types for Monitor/Log/Service Endpoints
 # ================================================================
 
 class RecommendationsResponse(TypedDict, total=False):
     """Response type for Recommendations - use with .dict property for typed dict access."""
-    checks: str
-    scope: Literal["global", "vdom"]
+    check: str
+    summary: list[str]
 
 
-# ================================================================
-# Response Types (Class for attribute access)
-# ================================================================
-
-
-class RecommendationsObject(FortiObject):
+class RecommendationsObject(FortiObject[RecommendationsResponse]):
     """Typed FortiObject for Recommendations with field access."""
-    checks: str
-    scope: Literal["global", "vdom"]
+    check: str
+    summary: list[str]
+
 
 
 # ================================================================
@@ -90,7 +86,7 @@ class Recommendations:
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
-    ) -> RecommendationsObject: ...
+    ) -> FortiObjectList[RecommendationsObject]: ...
     
 
 
@@ -154,7 +150,6 @@ class Recommendations:
 
 __all__ = [
     "Recommendations",
-    "RecommendationsPayload",
     "RecommendationsResponse",
     "RecommendationsObject",
 ]

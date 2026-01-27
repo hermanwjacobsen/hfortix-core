@@ -32,24 +32,20 @@ class IotQueryPayload(TypedDict, total=False):
 
 
 # ================================================================
-# Response Types (TypedDict for dict-style access)
+# Response Types for Monitor/Log/Service Endpoints
 # ================================================================
 
 class IotQueryResponse(TypedDict, total=False):
     """Response type for IotQuery - use with .dict property for typed dict access."""
-    mac: str
-    ip: str
+    iot_info: str
+    iot_vulnerability: list[str]
 
 
-# ================================================================
-# Response Types (Class for attribute access)
-# ================================================================
-
-
-class IotQueryObject(FortiObject):
+class IotQueryObject(FortiObject[IotQueryResponse]):
     """Typed FortiObject for IotQuery with field access."""
-    mac: str
-    ip: str
+    iot_info: str
+    iot_vulnerability: list[str]
+
 
 
 # ================================================================
@@ -90,7 +86,7 @@ class IotQuery:
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
-    ) -> IotQueryObject: ...
+    ) -> FortiObjectList[IotQueryObject]: ...
     
 
 
@@ -154,7 +150,6 @@ class IotQuery:
 
 __all__ = [
     "IotQuery",
-    "IotQueryPayload",
     "IotQueryResponse",
     "IotQueryObject",
 ]

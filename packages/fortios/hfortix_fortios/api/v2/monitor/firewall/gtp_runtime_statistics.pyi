@@ -23,6 +23,33 @@ from hfortix_fortios.models import (
 
 
 # ================================================================
+# Response Types for Monitor/Log/Service Endpoints
+# ================================================================
+
+class GtpRuntimeStatisticsResponse(TypedDict, total=False):
+    """Response type for GtpRuntimeStatistics - use with .dict property for typed dict access."""
+    control_packet_forwarded: int
+    control_packet_rejected: int
+    control_packet_dropped: str
+    data_packet_forwarded: int
+    data_packet_dropped: str
+    billing_packet_forwarded: int
+    billing_packet_dropped: str
+
+
+class GtpRuntimeStatisticsObject(FortiObject[GtpRuntimeStatisticsResponse]):
+    """Typed FortiObject for GtpRuntimeStatistics with field access."""
+    control_packet_forwarded: int
+    control_packet_rejected: int
+    control_packet_dropped: str
+    data_packet_forwarded: int
+    data_packet_dropped: str
+    billing_packet_forwarded: int
+    billing_packet_dropped: str
+
+
+
+# ================================================================
 # Main Endpoint Class
 # ================================================================
 
@@ -58,7 +85,7 @@ class GtpRuntimeStatistics:
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
-    ) -> FortiObject[Any]: ...
+    ) -> FortiObjectList[GtpRuntimeStatisticsObject]: ...
     
 
 
@@ -118,4 +145,6 @@ class GtpRuntimeStatistics:
 
 __all__ = [
     "GtpRuntimeStatistics",
+    "GtpRuntimeStatisticsResponse",
+    "GtpRuntimeStatisticsObject",
 ]

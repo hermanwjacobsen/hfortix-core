@@ -21,6 +21,39 @@ from hfortix_fortios.models import (
 )
 
 
+# ================================================================
+# TypedDict Payloads
+# ================================================================
+
+class PhysicalSwitchPayload(TypedDict, total=False):
+    """Payload type for PhysicalSwitch operations."""
+    name: str
+    age_enable: Literal["enable", "disable"]
+    age_val: int
+
+
+# ================================================================
+# Response Types (TypedDict for dict-style access)
+# ================================================================
+
+class PhysicalSwitchResponse(TypedDict, total=False):
+    """Response type for PhysicalSwitch - use with .dict property for typed dict access."""
+    name: str
+    age_enable: Literal["enable", "disable"]
+    age_val: int
+
+
+# ================================================================
+# Response Types (Class for attribute access)
+# ================================================================
+
+
+class PhysicalSwitchObject(FortiObject):
+    """Typed FortiObject for PhysicalSwitch with field access."""
+    name: str
+    age_enable: Literal["enable", "disable"]
+    age_val: int
+
 
 # ================================================================
 # Main Endpoint Class
@@ -62,7 +95,7 @@ class PhysicalSwitch:
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
-    ) -> FortiObject[Any]: ...
+    ) -> PhysicalSwitchObject: ...
     
     def get_schema(
         self,
@@ -76,11 +109,14 @@ class PhysicalSwitch:
     
     def post(
         self,
-        payload_dict: dict[str, Any] | None = ...,
+        payload_dict: PhysicalSwitchPayload | None = ...,
+        name: str | None = ...,
+        age_enable: Literal["enable", "disable"] | None = ...,
+        age_val: int | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
-    ) -> FortiObject[Any]: ...
+    ) -> PhysicalSwitchObject: ...
 
     # ================================================================
     # PUT Method
@@ -88,11 +124,14 @@ class PhysicalSwitch:
     
     def put(
         self,
-        payload_dict: dict[str, Any] | None = ...,
+        payload_dict: PhysicalSwitchPayload | None = ...,
+        name: str | None = ...,
+        age_enable: Literal["enable", "disable"] | None = ...,
+        age_val: int | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
-    ) -> FortiObject[Any]: ...
+    ) -> PhysicalSwitchObject: ...
 
     # ================================================================
     # DELETE Method
@@ -118,7 +157,10 @@ class PhysicalSwitch:
     
     def set(
         self,
-        payload_dict: dict[str, Any] | None = ...,
+        payload_dict: PhysicalSwitchPayload | None = ...,
+        name: str | None = ...,
+        age_enable: Literal["enable", "disable"] | None = ...,
+        age_val: int | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -149,4 +191,7 @@ class PhysicalSwitch:
 
 __all__ = [
     "PhysicalSwitch",
+    "PhysicalSwitchPayload",
+    "PhysicalSwitchResponse",
+    "PhysicalSwitchObject",
 ]

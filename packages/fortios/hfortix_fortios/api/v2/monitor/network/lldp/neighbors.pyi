@@ -32,24 +32,36 @@ class NeighborsPayload(TypedDict, total=False):
 
 
 # ================================================================
-# Response Types (TypedDict for dict-style access)
+# Response Types for Monitor/Log/Service Endpoints
 # ================================================================
 
 class NeighborsResponse(TypedDict, total=False):
     """Response type for Neighbors - use with .dict property for typed dict access."""
-    scope: Literal["vdom", "global"]
-    port: str
+    port: int
+    port_name: str
+    mac: str
+    chassis_id: str
+    port_id: str
+    port_desc: str
+    system_name: str
+    system_desc: str
+    ttl: int
+    addresses: list[str]
 
 
-# ================================================================
-# Response Types (Class for attribute access)
-# ================================================================
-
-
-class NeighborsObject(FortiObject):
+class NeighborsObject(FortiObject[NeighborsResponse]):
     """Typed FortiObject for Neighbors with field access."""
-    scope: Literal["vdom", "global"]
-    port: str
+    port: int
+    port_name: str
+    mac: str
+    chassis_id: str
+    port_id: str
+    port_desc: str
+    system_name: str
+    system_desc: str
+    ttl: int
+    addresses: list[str]
+
 
 
 # ================================================================
@@ -90,7 +102,7 @@ class Neighbors:
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
-    ) -> NeighborsObject: ...
+    ) -> FortiObjectList[NeighborsObject]: ...
     
 
 
@@ -154,7 +166,6 @@ class Neighbors:
 
 __all__ = [
     "Neighbors",
-    "NeighborsPayload",
     "NeighborsResponse",
     "NeighborsObject",
 ]

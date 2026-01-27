@@ -31,22 +31,18 @@ class FabricTimeInSyncPayload(TypedDict, total=False):
 
 
 # ================================================================
-# Response Types (TypedDict for dict-style access)
+# Response Types for Monitor/Log/Service Endpoints
 # ================================================================
 
 class FabricTimeInSyncResponse(TypedDict, total=False):
     """Response type for FabricTimeInSync - use with .dict property for typed dict access."""
-    utc: str
+    synchronized: bool
 
 
-# ================================================================
-# Response Types (Class for attribute access)
-# ================================================================
-
-
-class FabricTimeInSyncObject(FortiObject):
+class FabricTimeInSyncObject(FortiObject[FabricTimeInSyncResponse]):
     """Typed FortiObject for FabricTimeInSync with field access."""
-    utc: str
+    synchronized: bool
+
 
 
 # ================================================================
@@ -86,7 +82,7 @@ class FabricTimeInSync:
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
-    ) -> FabricTimeInSyncObject: ...
+    ) -> FortiObjectList[FabricTimeInSyncObject]: ...
     
 
 
@@ -148,7 +144,6 @@ class FabricTimeInSync:
 
 __all__ = [
     "FabricTimeInSync",
-    "FabricTimeInSyncPayload",
     "FabricTimeInSyncResponse",
     "FabricTimeInSyncObject",
 ]

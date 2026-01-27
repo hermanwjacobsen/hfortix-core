@@ -31,22 +31,22 @@ class SpectrumPayload(TypedDict, total=False):
 
 
 # ================================================================
-# Response Types (TypedDict for dict-style access)
+# Response Types for Monitor/Log/Service Endpoints
 # ================================================================
 
 class SpectrumResponse(TypedDict, total=False):
     """Response type for Spectrum - use with .dict property for typed dict access."""
-    wtp_id: str
+    name: str
+    serial: str
+    bands: list[str]
 
 
-# ================================================================
-# Response Types (Class for attribute access)
-# ================================================================
-
-
-class SpectrumObject(FortiObject):
+class SpectrumObject(FortiObject[SpectrumResponse]):
     """Typed FortiObject for Spectrum with field access."""
-    wtp_id: str
+    name: str
+    serial: str
+    bands: list[str]
+
 
 
 # ================================================================
@@ -86,7 +86,7 @@ class Spectrum:
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
-    ) -> SpectrumObject: ...
+    ) -> FortiObjectList[SpectrumObject]: ...
     
 
 
@@ -148,7 +148,6 @@ class Spectrum:
 
 __all__ = [
     "Spectrum",
-    "SpectrumPayload",
     "SpectrumResponse",
     "SpectrumObject",
 ]

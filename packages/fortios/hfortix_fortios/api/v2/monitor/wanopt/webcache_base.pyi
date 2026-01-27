@@ -31,22 +31,22 @@ class WebcachePayload(TypedDict, total=False):
 
 
 # ================================================================
-# Response Types (TypedDict for dict-style access)
+# Response Types for Monitor/Log/Service Endpoints
 # ================================================================
 
 class WebcacheResponse(TypedDict, total=False):
     """Response type for Webcache - use with .dict property for typed dict access."""
-    period: Literal["10-min", "hour", "day", "week", "30-day"]
+    request: list[str]
+    traffic: list[str]
+    video: list[str]
 
 
-# ================================================================
-# Response Types (Class for attribute access)
-# ================================================================
-
-
-class WebcacheObject(FortiObject):
+class WebcacheObject(FortiObject[WebcacheResponse]):
     """Typed FortiObject for Webcache with field access."""
-    period: Literal["10-min", "hour", "day", "week", "30-day"]
+    request: list[str]
+    traffic: list[str]
+    video: list[str]
+
 
 
 # ================================================================
@@ -86,7 +86,7 @@ class Webcache:
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
-    ) -> WebcacheObject: ...
+    ) -> FortiObjectList[WebcacheObject]: ...
     
 
 
@@ -148,7 +148,6 @@ class Webcache:
 
 __all__ = [
     "Webcache",
-    "WebcachePayload",
     "WebcacheResponse",
     "WebcacheObject",
 ]

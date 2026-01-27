@@ -31,22 +31,28 @@ class TopApplicationsPayload(TypedDict, total=False):
 
 
 # ================================================================
-# Response Types (TypedDict for dict-style access)
+# Response Types for Monitor/Log/Service Endpoints
 # ================================================================
 
 class TopApplicationsResponse(TypedDict, total=False):
     """Response type for TopApplications - use with .dict property for typed dict access."""
-    time_period: Literal["hour", "day", "week"]
+    app_id: int
+    last_rx: int
+    last_tx: int
+    rx: list[str]
+    tx: list[str]
+    total_bytes: int
 
 
-# ================================================================
-# Response Types (Class for attribute access)
-# ================================================================
-
-
-class TopApplicationsObject(FortiObject):
+class TopApplicationsObject(FortiObject[TopApplicationsResponse]):
     """Typed FortiObject for TopApplications with field access."""
-    time_period: Literal["hour", "day", "week"]
+    app_id: int
+    last_rx: int
+    last_tx: int
+    rx: list[str]
+    tx: list[str]
+    total_bytes: int
+
 
 
 # ================================================================
@@ -86,7 +92,7 @@ class TopApplications:
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
-    ) -> TopApplicationsObject: ...
+    ) -> FortiObjectList[TopApplicationsObject]: ...
     
 
 
@@ -148,7 +154,6 @@ class TopApplications:
 
 __all__ = [
     "TopApplications",
-    "TopApplicationsPayload",
     "TopApplicationsResponse",
     "TopApplicationsObject",
 ]

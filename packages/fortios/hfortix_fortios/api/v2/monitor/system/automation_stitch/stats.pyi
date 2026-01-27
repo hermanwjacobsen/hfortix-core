@@ -31,21 +31,26 @@ class StatsPayload(TypedDict, total=False):
 
 
 # ================================================================
-# Response Types (TypedDict for dict-style access)
+# Response Types for Monitor/Log/Service Endpoints
 # ================================================================
 
 class StatsResponse(TypedDict, total=False):
     """Response type for Stats - use with .dict property for typed dict access."""
-    mkey: str
+    name: str
+    trigger_count: int
+    relayed_trigger_count: int
+    last_trigger_time: int
+    next_trigger_time: int
 
 
-# ================================================================
-# Response Types (Class for attribute access)
-# ================================================================
-
-
-class StatsObject(FortiObject):
+class StatsObject(FortiObject[StatsResponse]):
     """Typed FortiObject for Stats with field access."""
+    name: str
+    trigger_count: int
+    relayed_trigger_count: int
+    last_trigger_time: int
+    next_trigger_time: int
+
 
 
 # ================================================================
@@ -85,7 +90,7 @@ class Stats:
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
-    ) -> StatsObject: ...
+    ) -> FortiObjectList[StatsObject]: ...
     
 
 
@@ -147,7 +152,6 @@ class Stats:
 
 __all__ = [
     "Stats",
-    "StatsPayload",
     "StatsResponse",
     "StatsObject",
 ]

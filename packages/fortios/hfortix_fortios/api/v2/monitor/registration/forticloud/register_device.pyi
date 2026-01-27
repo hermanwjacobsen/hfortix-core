@@ -38,35 +38,24 @@ class RegisterDevicePayload(TypedDict, total=False):
 
 
 # ================================================================
-# Response Types (TypedDict for dict-style access)
+# Response Types for Monitor/Log/Service Endpoints
 # ================================================================
 
 class RegisterDeviceResponse(TypedDict, total=False):
     """Response type for RegisterDevice - use with .dict property for typed dict access."""
-    serial: str
-    email: str
-    password: str
-    reseller: str
-    reseller_id: int
-    country: str
-    is_government: bool
-    agreement_accepted: bool
+    successful_registration_count: int
+    failed_registration_count: int
+    success: bool
+    forticare_agreement: str
 
 
-# ================================================================
-# Response Types (Class for attribute access)
-# ================================================================
-
-
-class RegisterDeviceObject(FortiObject):
+class RegisterDeviceObject(FortiObject[RegisterDeviceResponse]):
     """Typed FortiObject for RegisterDevice with field access."""
-    email: str
-    password: str
-    reseller: str
-    reseller_id: int
-    country: str
-    is_government: bool
-    agreement_accepted: bool
+    successful_registration_count: int
+    failed_registration_count: int
+    success: bool
+    forticare_agreement: str
+
 
 
 # ================================================================
@@ -105,7 +94,7 @@ class RegisterDevice:
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
-    ) -> RegisterDeviceObject: ...
+    ) -> FortiObjectList[RegisterDeviceObject]: ...
     
 
     # ================================================================
@@ -200,7 +189,6 @@ class RegisterDevice:
 
 __all__ = [
     "RegisterDevice",
-    "RegisterDevicePayload",
     "RegisterDeviceResponse",
     "RegisterDeviceObject",
 ]

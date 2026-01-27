@@ -23,6 +23,47 @@ from hfortix_fortios.models import (
 
 
 # ================================================================
+# Response Types for Monitor/Log/Service Endpoints
+# ================================================================
+
+class GtpResponse(TypedDict, total=False):
+    """Response type for Gtp - use with .dict property for typed dict access."""
+    gtp_profile: str
+    life: int
+    idle: int
+    version: int
+    imsi: str
+    msisdn: str
+    ms_addr: str
+    c_pkt: int
+    c_bytes: int
+    u_pkt: str
+    u_bytes: str
+    rat_type: str
+    cfteids: list[str]
+    bearers: list[str]
+
+
+class GtpObject(FortiObject[GtpResponse]):
+    """Typed FortiObject for Gtp with field access."""
+    gtp_profile: str
+    life: int
+    idle: int
+    version: int
+    imsi: str
+    msisdn: str
+    ms_addr: str
+    c_pkt: int
+    c_bytes: int
+    u_pkt: str
+    u_bytes: str
+    rat_type: str
+    cfteids: list[str]
+    bearers: list[str]
+
+
+
+# ================================================================
 # Main Endpoint Class
 # ================================================================
 
@@ -58,7 +99,7 @@ class Gtp:
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
-    ) -> FortiObject[Any]: ...
+    ) -> FortiObjectList[GtpObject]: ...
     
 
 
@@ -118,4 +159,6 @@ class Gtp:
 
 __all__ = [
     "Gtp",
+    "GtpResponse",
+    "GtpObject",
 ]

@@ -32,24 +32,26 @@ class InterferingApPayload(TypedDict, total=False):
 
 
 # ================================================================
-# Response Types (TypedDict for dict-style access)
+# Response Types for Monitor/Log/Service Endpoints
 # ================================================================
 
 class InterferingApResponse(TypedDict, total=False):
     """Response type for InterferingAp - use with .dict property for typed dict access."""
-    wtp: str
-    radio: int
+    mac: str
+    channel: int
+    ssid: str
+    signal: int
+    is_infra_ssid: bool
 
 
-# ================================================================
-# Response Types (Class for attribute access)
-# ================================================================
-
-
-class InterferingApObject(FortiObject):
+class InterferingApObject(FortiObject[InterferingApResponse]):
     """Typed FortiObject for InterferingAp with field access."""
-    wtp: str
-    radio: int
+    mac: str
+    channel: int
+    ssid: str
+    signal: int
+    is_infra_ssid: bool
+
 
 
 # ================================================================
@@ -90,7 +92,7 @@ class InterferingAp:
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
-    ) -> InterferingApObject: ...
+    ) -> FortiObjectList[InterferingApObject]: ...
     
 
 
@@ -154,7 +156,6 @@ class InterferingAp:
 
 __all__ = [
     "InterferingAp",
-    "InterferingApPayload",
     "InterferingApResponse",
     "InterferingApObject",
 ]

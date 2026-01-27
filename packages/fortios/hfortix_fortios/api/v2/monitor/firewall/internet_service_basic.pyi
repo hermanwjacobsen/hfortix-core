@@ -31,22 +31,34 @@ class InternetServiceBasicPayload(TypedDict, total=False):
 
 
 # ================================================================
-# Response Types (TypedDict for dict-style access)
+# Response Types for Monitor/Log/Service Endpoints
 # ================================================================
 
 class InternetServiceBasicResponse(TypedDict, total=False):
     """Response type for InternetServiceBasic - use with .dict property for typed dict access."""
-    ipv6_only: bool
+    id: int
+    q_origin_key: int
+    name: str
+    direction: str
+    database: str
+    ip_range_number: int
+    ip6_range_number: int
+    ip_number: int
+    icon_id: int
 
 
-# ================================================================
-# Response Types (Class for attribute access)
-# ================================================================
-
-
-class InternetServiceBasicObject(FortiObject):
+class InternetServiceBasicObject(FortiObject[InternetServiceBasicResponse]):
     """Typed FortiObject for InternetServiceBasic with field access."""
-    ipv6_only: bool
+    id: int
+    q_origin_key: int
+    name: str
+    direction: str
+    database: str
+    ip_range_number: int
+    ip6_range_number: int
+    ip_number: int
+    icon_id: int
+
 
 
 # ================================================================
@@ -86,7 +98,7 @@ class InternetServiceBasic:
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
-    ) -> InternetServiceBasicObject: ...
+    ) -> FortiObjectList[InternetServiceBasicObject]: ...
     
 
 
@@ -148,7 +160,6 @@ class InternetServiceBasic:
 
 __all__ = [
     "InternetServiceBasic",
-    "InternetServiceBasicPayload",
     "InternetServiceBasicResponse",
     "InternetServiceBasicObject",
 ]

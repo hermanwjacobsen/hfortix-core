@@ -21,6 +21,64 @@ from hfortix_fortios.models import (
 )
 
 
+# ================================================================
+# TypedDict Payloads
+# ================================================================
+
+class CfmServiceItem(TypedDict, total=False):
+    """Nested item for service field."""
+    service_id: int
+    service_name: str
+    interface: str
+    mepid: int
+    message_interval: Literal["100", "1000", "10000", "60000", "600000"]
+    cos: int
+    sender_id: Literal["None", "Hostname"]
+
+
+class CfmPayload(TypedDict, total=False):
+    """Payload type for Cfm operations."""
+    domain_id: int
+    domain_name: str
+    domain_level: int
+    service: str | list[str] | list[CfmServiceItem]
+
+
+# ================================================================
+# Response Types (TypedDict for dict-style access)
+# ================================================================
+
+class CfmResponse(TypedDict, total=False):
+    """Response type for Cfm - use with .dict property for typed dict access."""
+    domain_id: int
+    domain_name: str
+    domain_level: int
+    service: list[CfmServiceItem]
+
+
+# ================================================================
+# Response Types (Class for attribute access)
+# ================================================================
+
+
+class CfmServiceItemObject(FortiObject[CfmServiceItem]):
+    """Typed object for service table items with attribute access."""
+    service_id: int
+    service_name: str
+    interface: str
+    mepid: int
+    message_interval: Literal["100", "1000", "10000", "60000", "600000"]
+    cos: int
+    sender_id: Literal["None", "Hostname"]
+
+
+class CfmObject(FortiObject):
+    """Typed FortiObject for Cfm with field access."""
+    domain_id: int
+    domain_name: str
+    domain_level: int
+    service: FortiObjectList[CfmServiceItemObject]
+
 
 # ================================================================
 # Main Endpoint Class
@@ -62,7 +120,7 @@ class Cfm:
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
-    ) -> FortiObject[Any]: ...
+    ) -> CfmObject: ...
     
     def get_schema(
         self,
@@ -76,11 +134,15 @@ class Cfm:
     
     def post(
         self,
-        payload_dict: dict[str, Any] | None = ...,
+        payload_dict: CfmPayload | None = ...,
+        domain_id: int | None = ...,
+        domain_name: str | None = ...,
+        domain_level: int | None = ...,
+        service: str | list[str] | list[CfmServiceItem] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
-    ) -> FortiObject[Any]: ...
+    ) -> CfmObject: ...
 
     # ================================================================
     # PUT Method
@@ -88,11 +150,15 @@ class Cfm:
     
     def put(
         self,
-        payload_dict: dict[str, Any] | None = ...,
+        payload_dict: CfmPayload | None = ...,
+        domain_id: int | None = ...,
+        domain_name: str | None = ...,
+        domain_level: int | None = ...,
+        service: str | list[str] | list[CfmServiceItem] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
-    ) -> FortiObject[Any]: ...
+    ) -> CfmObject: ...
 
     # ================================================================
     # DELETE Method
@@ -118,7 +184,11 @@ class Cfm:
     
     def set(
         self,
-        payload_dict: dict[str, Any] | None = ...,
+        payload_dict: CfmPayload | None = ...,
+        domain_id: int | None = ...,
+        domain_name: str | None = ...,
+        domain_level: int | None = ...,
+        service: str | list[str] | list[CfmServiceItem] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -149,4 +219,7 @@ class Cfm:
 
 __all__ = [
     "Cfm",
+    "CfmPayload",
+    "CfmResponse",
+    "CfmObject",
 ]

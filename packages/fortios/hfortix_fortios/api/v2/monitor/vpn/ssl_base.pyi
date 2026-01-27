@@ -23,6 +23,43 @@ from hfortix_fortios.models import (
 
 
 # ================================================================
+# Response Types for Monitor/Log/Service Endpoints
+# ================================================================
+
+class SslResponse(TypedDict, total=False):
+    """Response type for Ssl - use with .dict property for typed dict access."""
+    index: int
+    user_name: str
+    group_name: str
+    remote_host: str
+    fct_uid: str
+    last_login_timestamp: int
+    interface: str
+    duration: int
+    two_factor_auth: bool
+    subsessions: list[str]
+    subsession_type: str
+    subsession_desc: str
+
+
+class SslObject(FortiObject[SslResponse]):
+    """Typed FortiObject for Ssl with field access."""
+    index: int
+    user_name: str
+    group_name: str
+    remote_host: str
+    fct_uid: str
+    last_login_timestamp: int
+    interface: str
+    duration: int
+    two_factor_auth: bool
+    subsessions: list[str]
+    subsession_type: str
+    subsession_desc: str
+
+
+
+# ================================================================
 # Main Endpoint Class
 # ================================================================
 
@@ -58,7 +95,7 @@ class Ssl:
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
-    ) -> FortiObject[Any]: ...
+    ) -> FortiObjectList[SslObject]: ...
     
 
 
@@ -118,4 +155,6 @@ class Ssl:
 
 __all__ = [
     "Ssl",
+    "SslResponse",
+    "SslObject",
 ]

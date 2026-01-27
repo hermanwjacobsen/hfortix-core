@@ -31,22 +31,24 @@ class RestoreStatusPayload(TypedDict, total=False):
 
 
 # ================================================================
-# Response Types (TypedDict for dict-style access)
+# Response Types for Monitor/Log/Service Endpoints
 # ================================================================
 
 class RestoreStatusResponse(TypedDict, total=False):
     """Response type for RestoreStatus - use with .dict property for typed dict access."""
-    session_id: str
+    success: bool
+    session_file_not_found: bool
+    in_progress: bool
+    error: int
 
 
-# ================================================================
-# Response Types (Class for attribute access)
-# ================================================================
-
-
-class RestoreStatusObject(FortiObject):
+class RestoreStatusObject(FortiObject[RestoreStatusResponse]):
     """Typed FortiObject for RestoreStatus with field access."""
-    session_id: str
+    success: bool
+    session_file_not_found: bool
+    in_progress: bool
+    error: int
+
 
 
 # ================================================================
@@ -86,7 +88,7 @@ class RestoreStatus:
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
-    ) -> RestoreStatusObject: ...
+    ) -> FortiObjectList[RestoreStatusObject]: ...
     
 
 
@@ -148,7 +150,6 @@ class RestoreStatus:
 
 __all__ = [
     "RestoreStatus",
-    "RestoreStatusPayload",
     "RestoreStatusResponse",
     "RestoreStatusObject",
 ]

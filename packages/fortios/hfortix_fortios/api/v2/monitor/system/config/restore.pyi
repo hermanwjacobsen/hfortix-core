@@ -38,35 +38,24 @@ class RestorePayload(TypedDict, total=False):
 
 
 # ================================================================
-# Response Types (TypedDict for dict-style access)
+# Response Types for Monitor/Log/Service Endpoints
 # ================================================================
 
 class RestoreResponse(TypedDict, total=False):
     """Response type for Restore - use with .dict property for typed dict access."""
-    source: Literal["upload", "usb", "revision"]
-    usb_filename: str
-    config_id: int
-    password: str
-    scope: Literal["global", "vdom"]
-    vdom: str
-    confirm_password_mask: bool
-    file_content: str
+    restore_started: bool
+    error: str
+    session_id: str
+    config_restored: bool
 
 
-# ================================================================
-# Response Types (Class for attribute access)
-# ================================================================
-
-
-class RestoreObject(FortiObject):
+class RestoreObject(FortiObject[RestoreResponse]):
     """Typed FortiObject for Restore with field access."""
-    source: Literal["upload", "usb", "revision"]
-    usb_filename: str
-    config_id: int
-    password: str
-    scope: Literal["global", "vdom"]
-    confirm_password_mask: bool
-    file_content: str
+    restore_started: bool
+    error: str
+    session_id: str
+    config_restored: bool
+
 
 
 # ================================================================
@@ -105,7 +94,7 @@ class Restore:
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
-    ) -> RestoreObject: ...
+    ) -> FortiObjectList[RestoreObject]: ...
     
 
     # ================================================================
@@ -197,7 +186,6 @@ class Restore:
 
 __all__ = [
     "Restore",
-    "RestorePayload",
     "RestoreResponse",
     "RestoreObject",
 ]

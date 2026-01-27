@@ -21,6 +21,66 @@ from hfortix_fortios.models import (
 )
 
 
+# ================================================================
+# TypedDict Payloads
+# ================================================================
+
+class VirtualSwitchPortItem(TypedDict, total=False):
+    """Nested item for port field."""
+    name: str
+    alias: str
+
+
+class VirtualSwitchPayload(TypedDict, total=False):
+    """Payload type for VirtualSwitch operations."""
+    name: str
+    physical_switch: str
+    vlan: int
+    port: str | list[str] | list[VirtualSwitchPortItem]
+    span: Literal["disable", "enable"]
+    span_source_port: str
+    span_dest_port: str
+    span_direction: Literal["rx", "tx", "both"]
+
+
+# ================================================================
+# Response Types (TypedDict for dict-style access)
+# ================================================================
+
+class VirtualSwitchResponse(TypedDict, total=False):
+    """Response type for VirtualSwitch - use with .dict property for typed dict access."""
+    name: str
+    physical_switch: str
+    vlan: int
+    port: list[VirtualSwitchPortItem]
+    span: Literal["disable", "enable"]
+    span_source_port: str
+    span_dest_port: str
+    span_direction: Literal["rx", "tx", "both"]
+
+
+# ================================================================
+# Response Types (Class for attribute access)
+# ================================================================
+
+
+class VirtualSwitchPortItemObject(FortiObject[VirtualSwitchPortItem]):
+    """Typed object for port table items with attribute access."""
+    name: str
+    alias: str
+
+
+class VirtualSwitchObject(FortiObject):
+    """Typed FortiObject for VirtualSwitch with field access."""
+    name: str
+    physical_switch: str
+    vlan: int
+    port: FortiObjectList[VirtualSwitchPortItemObject]
+    span: Literal["disable", "enable"]
+    span_source_port: str
+    span_dest_port: str
+    span_direction: Literal["rx", "tx", "both"]
+
 
 # ================================================================
 # Main Endpoint Class
@@ -62,7 +122,7 @@ class VirtualSwitch:
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
-    ) -> FortiObject[Any]: ...
+    ) -> VirtualSwitchObject: ...
     
     def get_schema(
         self,
@@ -76,11 +136,19 @@ class VirtualSwitch:
     
     def post(
         self,
-        payload_dict: dict[str, Any] | None = ...,
+        payload_dict: VirtualSwitchPayload | None = ...,
+        name: str | None = ...,
+        physical_switch: str | None = ...,
+        vlan: int | None = ...,
+        port: str | list[str] | list[VirtualSwitchPortItem] | None = ...,
+        span: Literal["disable", "enable"] | None = ...,
+        span_source_port: str | None = ...,
+        span_dest_port: str | None = ...,
+        span_direction: Literal["rx", "tx", "both"] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
-    ) -> FortiObject[Any]: ...
+    ) -> VirtualSwitchObject: ...
 
     # ================================================================
     # PUT Method
@@ -88,11 +156,19 @@ class VirtualSwitch:
     
     def put(
         self,
-        payload_dict: dict[str, Any] | None = ...,
+        payload_dict: VirtualSwitchPayload | None = ...,
+        name: str | None = ...,
+        physical_switch: str | None = ...,
+        vlan: int | None = ...,
+        port: str | list[str] | list[VirtualSwitchPortItem] | None = ...,
+        span: Literal["disable", "enable"] | None = ...,
+        span_source_port: str | None = ...,
+        span_dest_port: str | None = ...,
+        span_direction: Literal["rx", "tx", "both"] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
-    ) -> FortiObject[Any]: ...
+    ) -> VirtualSwitchObject: ...
 
     # ================================================================
     # DELETE Method
@@ -118,7 +194,15 @@ class VirtualSwitch:
     
     def set(
         self,
-        payload_dict: dict[str, Any] | None = ...,
+        payload_dict: VirtualSwitchPayload | None = ...,
+        name: str | None = ...,
+        physical_switch: str | None = ...,
+        vlan: int | None = ...,
+        port: str | list[str] | list[VirtualSwitchPortItem] | None = ...,
+        span: Literal["disable", "enable"] | None = ...,
+        span_source_port: str | None = ...,
+        span_dest_port: str | None = ...,
+        span_direction: Literal["rx", "tx", "both"] | None = ...,
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
@@ -149,4 +233,7 @@ class VirtualSwitch:
 
 __all__ = [
     "VirtualSwitch",
+    "VirtualSwitchPayload",
+    "VirtualSwitchResponse",
+    "VirtualSwitchObject",
 ]

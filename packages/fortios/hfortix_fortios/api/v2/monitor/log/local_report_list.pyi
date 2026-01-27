@@ -23,6 +23,33 @@ from hfortix_fortios.models import (
 
 
 # ================================================================
+# Response Types for Monitor/Log/Service Endpoints
+# ================================================================
+
+class LocalReportListResponse(TypedDict, total=False):
+    """Response type for LocalReportList - use with .dict property for typed dict access."""
+    name: str
+    layout: str
+    start: str
+    end: str
+    format_size: str
+    data_start: str
+    data_end: str
+
+
+class LocalReportListObject(FortiObject[LocalReportListResponse]):
+    """Typed FortiObject for LocalReportList with field access."""
+    name: str
+    layout: str
+    start: str
+    end: str
+    format_size: str
+    data_start: str
+    data_end: str
+
+
+
+# ================================================================
 # Main Endpoint Class
 # ================================================================
 
@@ -58,7 +85,7 @@ class LocalReportList:
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
-    ) -> FortiObject[Any]: ...
+    ) -> FortiObjectList[LocalReportListObject]: ...
     
 
 
@@ -118,4 +145,6 @@ class LocalReportList:
 
 __all__ = [
     "LocalReportList",
+    "LocalReportListResponse",
+    "LocalReportListObject",
 ]

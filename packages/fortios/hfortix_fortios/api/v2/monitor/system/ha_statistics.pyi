@@ -23,6 +23,47 @@ from hfortix_fortios.models import (
 
 
 # ================================================================
+# Response Types for Monitor/Log/Service Endpoints
+# ================================================================
+
+class HaStatisticsResponse(TypedDict, total=False):
+    """Response type for HaStatistics - use with .dict property for typed dict access."""
+    hostname: str
+    serial_no: str
+    tnow: int
+    sessions: int
+    sessions6: int
+    tpacket: int
+    vir_usage: int
+    net_usage: int
+    tbyte: int
+    intr_usage: int
+    cpu_usage: int
+    mem_usage: int
+    uptime: int
+    per_vdom_stats: list[str]
+
+
+class HaStatisticsObject(FortiObject[HaStatisticsResponse]):
+    """Typed FortiObject for HaStatistics with field access."""
+    hostname: str
+    serial_no: str
+    tnow: int
+    sessions: int
+    sessions6: int
+    tpacket: int
+    vir_usage: int
+    net_usage: int
+    tbyte: int
+    intr_usage: int
+    cpu_usage: int
+    mem_usage: int
+    uptime: int
+    per_vdom_stats: list[str]
+
+
+
+# ================================================================
 # Main Endpoint Class
 # ================================================================
 
@@ -58,7 +99,7 @@ class HaStatistics:
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
-    ) -> FortiObject[Any]: ...
+    ) -> FortiObjectList[HaStatisticsObject]: ...
     
 
 
@@ -118,4 +159,6 @@ class HaStatistics:
 
 __all__ = [
     "HaStatistics",
+    "HaStatisticsResponse",
+    "HaStatisticsObject",
 ]

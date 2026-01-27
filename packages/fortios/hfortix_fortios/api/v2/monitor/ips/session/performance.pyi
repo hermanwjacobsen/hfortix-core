@@ -23,6 +23,27 @@ from hfortix_fortios.models import (
 
 
 # ================================================================
+# Response Types for Monitor/Log/Service Endpoints
+# ================================================================
+
+class PerformanceResponse(TypedDict, total=False):
+    """Response type for Performance - use with .dict property for typed dict access."""
+    pid: int
+    memory: int
+    cycles: str
+    packets: str
+
+
+class PerformanceObject(FortiObject[PerformanceResponse]):
+    """Typed FortiObject for Performance with field access."""
+    pid: int
+    memory: int
+    cycles: str
+    packets: str
+
+
+
+# ================================================================
 # Main Endpoint Class
 # ================================================================
 
@@ -58,7 +79,7 @@ class Performance:
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
-    ) -> FortiObject[Any]: ...
+    ) -> FortiObjectList[PerformanceObject]: ...
     
 
 
@@ -118,4 +139,6 @@ class Performance:
 
 __all__ = [
     "Performance",
+    "PerformanceResponse",
+    "PerformanceObject",
 ]

@@ -23,6 +23,49 @@ from hfortix_fortios.models import (
 
 
 # ================================================================
+# Response Types for Monitor/Log/Service Endpoints
+# ================================================================
+
+class ApStatusResponse(TypedDict, total=False):
+    """Response type for ApStatus - use with .dict property for typed dict access."""
+    wtp_session_count: int
+    wtp_active: int
+    wtp_down: int
+    wtp_rebooted: int
+    client_count: int
+    client_count_max: int
+    client_peak_2g_1hour: list[str]
+    client_peak_5g_1hour: list[str]
+    client_peak_6g_1hour: list[str]
+    client_peak_2g_24hour: list[str]
+    client_peak_5g_24hour: list[str]
+    client_peak_6g_24hour: list[str]
+    client_peak_2g_30day: list[str]
+    client_peak_5g_30day: list[str]
+    client_peak_6g_30day: list[str]
+
+
+class ApStatusObject(FortiObject[ApStatusResponse]):
+    """Typed FortiObject for ApStatus with field access."""
+    wtp_session_count: int
+    wtp_active: int
+    wtp_down: int
+    wtp_rebooted: int
+    client_count: int
+    client_count_max: int
+    client_peak_2g_1hour: list[str]
+    client_peak_5g_1hour: list[str]
+    client_peak_6g_1hour: list[str]
+    client_peak_2g_24hour: list[str]
+    client_peak_5g_24hour: list[str]
+    client_peak_6g_24hour: list[str]
+    client_peak_2g_30day: list[str]
+    client_peak_5g_30day: list[str]
+    client_peak_6g_30day: list[str]
+
+
+
+# ================================================================
 # Main Endpoint Class
 # ================================================================
 
@@ -58,7 +101,7 @@ class ApStatus:
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
-    ) -> FortiObject[Any]: ...
+    ) -> FortiObjectList[ApStatusObject]: ...
     
 
 
@@ -118,4 +161,6 @@ class ApStatus:
 
 __all__ = [
     "ApStatus",
+    "ApStatusResponse",
+    "ApStatusObject",
 ]

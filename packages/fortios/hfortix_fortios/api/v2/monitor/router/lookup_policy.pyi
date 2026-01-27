@@ -37,34 +37,24 @@ class LookupPolicyPayload(TypedDict, total=False):
 
 
 # ================================================================
-# Response Types (TypedDict for dict-style access)
+# Response Types for Monitor/Log/Service Endpoints
 # ================================================================
 
 class LookupPolicyResponse(TypedDict, total=False):
     """Response type for LookupPolicy - use with .dict property for typed dict access."""
-    ipv6: bool
-    destination: str
-    source: str
-    destination_port: int
-    source_port: int
-    interface_name: str
-    protocol_number: int
+    success: bool
+    is_vwl_route: bool
+    is_static_route: bool
+    id: int
 
 
-# ================================================================
-# Response Types (Class for attribute access)
-# ================================================================
-
-
-class LookupPolicyObject(FortiObject):
+class LookupPolicyObject(FortiObject[LookupPolicyResponse]):
     """Typed FortiObject for LookupPolicy with field access."""
-    ipv6: bool
-    destination: str
-    source: str
-    destination_port: int
-    source_port: int
-    interface_name: str
-    protocol_number: int
+    success: bool
+    is_vwl_route: bool
+    is_static_route: bool
+    id: int
+
 
 
 # ================================================================
@@ -110,7 +100,7 @@ class LookupPolicy:
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
-    ) -> LookupPolicyObject: ...
+    ) -> FortiObjectList[LookupPolicyObject]: ...
     
 
 
@@ -184,7 +174,6 @@ class LookupPolicy:
 
 __all__ = [
     "LookupPolicy",
-    "LookupPolicyPayload",
     "LookupPolicyResponse",
     "LookupPolicyObject",
 ]

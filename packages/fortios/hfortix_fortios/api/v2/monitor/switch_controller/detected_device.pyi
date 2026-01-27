@@ -23,6 +23,33 @@ from hfortix_fortios.models import (
 
 
 # ================================================================
+# Response Types for Monitor/Log/Service Endpoints
+# ================================================================
+
+class DetectedDeviceResponse(TypedDict, total=False):
+    """Response type for DetectedDevice - use with .dict property for typed dict access."""
+    mac: str
+    switch_id: str
+    port_name: str
+    port_id: str
+    vlan_id: str
+    last_seen: str
+    vdom: str
+
+
+class DetectedDeviceObject(FortiObject[DetectedDeviceResponse]):
+    """Typed FortiObject for DetectedDevice with field access."""
+    mac: str
+    switch_id: str
+    port_name: str
+    port_id: str
+    vlan_id: str
+    last_seen: str
+    vdom: str
+
+
+
+# ================================================================
 # Main Endpoint Class
 # ================================================================
 
@@ -58,7 +85,7 @@ class DetectedDevice:
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
-    ) -> FortiObject[Any]: ...
+    ) -> FortiObjectList[DetectedDeviceObject]: ...
     
 
 
@@ -118,4 +145,6 @@ class DetectedDevice:
 
 __all__ = [
     "DetectedDevice",
+    "DetectedDeviceResponse",
+    "DetectedDeviceObject",
 ]

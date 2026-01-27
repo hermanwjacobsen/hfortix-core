@@ -32,24 +32,24 @@ class BlacklistedCertificatesPayload(TypedDict, total=False):
 
 
 # ================================================================
-# Response Types (TypedDict for dict-style access)
+# Response Types for Monitor/Log/Service Endpoints
 # ================================================================
 
 class BlacklistedCertificatesResponse(TypedDict, total=False):
     """Response type for BlacklistedCertificates - use with .dict property for typed dict access."""
-    start: int
-    count: int
+    listing_date: int
+    hash: str
+    common_name: str
+    reason: str
 
 
-# ================================================================
-# Response Types (Class for attribute access)
-# ================================================================
-
-
-class BlacklistedCertificatesObject(FortiObject):
+class BlacklistedCertificatesObject(FortiObject[BlacklistedCertificatesResponse]):
     """Typed FortiObject for BlacklistedCertificates with field access."""
-    start: int
-    count: int
+    listing_date: int
+    hash: str
+    common_name: str
+    reason: str
+
 
 
 # ================================================================
@@ -88,7 +88,7 @@ class BlacklistedCertificates:
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
-    ) -> BlacklistedCertificatesObject: ...
+    ) -> FortiObjectList[BlacklistedCertificatesObject]: ...
     
 
 
@@ -152,7 +152,6 @@ class BlacklistedCertificates:
 
 __all__ = [
     "BlacklistedCertificates",
-    "BlacklistedCertificatesPayload",
     "BlacklistedCertificatesResponse",
     "BlacklistedCertificatesObject",
 ]

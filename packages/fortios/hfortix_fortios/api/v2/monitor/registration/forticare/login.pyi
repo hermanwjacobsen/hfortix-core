@@ -37,33 +37,22 @@ class LoginPayload(TypedDict, total=False):
 
 
 # ================================================================
-# Response Types (TypedDict for dict-style access)
+# Response Types for Monitor/Log/Service Endpoints
 # ================================================================
 
 class LoginResponse(TypedDict, total=False):
     """Response type for Login - use with .dict property for typed dict access."""
-    serial: str
-    email: str
-    password: str
-    reseller_name: str
-    reseller_id: int
-    agreement_accepted: bool
-    is_government: bool
+    forticare_error: str
+    forticare_success: bool
+    forticare_agreement: str
 
 
-# ================================================================
-# Response Types (Class for attribute access)
-# ================================================================
-
-
-class LoginObject(FortiObject):
+class LoginObject(FortiObject[LoginResponse]):
     """Typed FortiObject for Login with field access."""
-    email: str
-    password: str
-    reseller_name: str
-    reseller_id: int
-    agreement_accepted: bool
-    is_government: bool
+    forticare_error: str
+    forticare_success: bool
+    forticare_agreement: str
+
 
 
 # ================================================================
@@ -102,7 +91,7 @@ class Login:
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
-    ) -> LoginObject: ...
+    ) -> FortiObjectList[LoginObject]: ...
     
 
     # ================================================================
@@ -194,7 +183,6 @@ class Login:
 
 __all__ = [
     "Login",
-    "LoginPayload",
     "LoginResponse",
     "LoginObject",
 ]

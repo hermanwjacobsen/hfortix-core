@@ -32,24 +32,20 @@ class UpgradePayload(TypedDict, total=False):
 
 
 # ================================================================
-# Response Types (TypedDict for dict-style access)
+# Response Types for Monitor/Log/Service Endpoints
 # ================================================================
 
 class UpgradeResponse(TypedDict, total=False):
     """Response type for Upgrade - use with .dict property for typed dict access."""
-    id: str
-    file_content: str
+    status: str
+    error: int
 
 
-# ================================================================
-# Response Types (Class for attribute access)
-# ================================================================
-
-
-class UpgradeObject(FortiObject):
+class UpgradeObject(FortiObject[UpgradeResponse]):
     """Typed FortiObject for Upgrade with field access."""
-    id: str
-    file_content: str
+    status: str
+    error: int
+
 
 
 # ================================================================
@@ -88,7 +84,7 @@ class Upgrade:
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
-    ) -> UpgradeObject: ...
+    ) -> FortiObjectList[UpgradeObject]: ...
     
 
     # ================================================================
@@ -165,7 +161,6 @@ class Upgrade:
 
 __all__ = [
     "Upgrade",
-    "UpgradePayload",
     "UpgradeResponse",
     "UpgradeObject",
 ]

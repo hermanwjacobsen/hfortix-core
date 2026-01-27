@@ -32,24 +32,26 @@ class PsirtVulnerabilitiesPayload(TypedDict, total=False):
 
 
 # ================================================================
-# Response Types (TypedDict for dict-style access)
+# Response Types for Monitor/Log/Service Endpoints
 # ================================================================
 
 class PsirtVulnerabilitiesResponse(TypedDict, total=False):
     """Response type for PsirtVulnerabilities - use with .dict property for typed dict access."""
-    severity: Literal["critical", "high", "low"]
-    count: str
+    name: str
+    irNumber: str
+    serial: str
+    upgradeToVersion: str
+    severity: str
 
 
-# ================================================================
-# Response Types (Class for attribute access)
-# ================================================================
-
-
-class PsirtVulnerabilitiesObject(FortiObject):
+class PsirtVulnerabilitiesObject(FortiObject[PsirtVulnerabilitiesResponse]):
     """Typed FortiObject for PsirtVulnerabilities with field access."""
-    severity: Literal["critical", "high", "low"]
-    count: str
+    name: str
+    irNumber: str
+    serial: str
+    upgradeToVersion: str
+    severity: str
+
 
 
 # ================================================================
@@ -88,7 +90,7 @@ class PsirtVulnerabilities:
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
-    ) -> PsirtVulnerabilitiesObject: ...
+    ) -> FortiObjectList[PsirtVulnerabilitiesObject]: ...
     
 
 
@@ -152,7 +154,6 @@ class PsirtVulnerabilities:
 
 __all__ = [
     "PsirtVulnerabilities",
-    "PsirtVulnerabilitiesPayload",
     "PsirtVulnerabilitiesResponse",
     "PsirtVulnerabilitiesObject",
 ]

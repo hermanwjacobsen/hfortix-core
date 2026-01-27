@@ -23,6 +23,23 @@ from hfortix_fortios.models import (
 
 
 # ================================================================
+# Response Types for Monitor/Log/Service Endpoints
+# ================================================================
+
+class UpgradePathsResponse(TypedDict, total=False):
+    """Response type for UpgradePaths - use with .dict property for typed dict access."""
+    from_: str
+    to: str
+
+
+class UpgradePathsObject(FortiObject[UpgradePathsResponse]):
+    """Typed FortiObject for UpgradePaths with field access."""
+    from_: str
+    to: str
+
+
+
+# ================================================================
 # Main Endpoint Class
 # ================================================================
 
@@ -58,7 +75,7 @@ class UpgradePaths:
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
-    ) -> FortiObject[Any]: ...
+    ) -> FortiObjectList[UpgradePathsObject]: ...
     
 
 
@@ -118,4 +135,6 @@ class UpgradePaths:
 
 __all__ = [
     "UpgradePaths",
+    "UpgradePathsResponse",
+    "UpgradePathsObject",
 ]

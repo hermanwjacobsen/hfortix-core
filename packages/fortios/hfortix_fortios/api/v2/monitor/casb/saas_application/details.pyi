@@ -31,21 +31,24 @@ class DetailsPayload(TypedDict, total=False):
 
 
 # ================================================================
-# Response Types (TypedDict for dict-style access)
+# Response Types for Monitor/Log/Service Endpoints
 # ================================================================
 
 class DetailsResponse(TypedDict, total=False):
     """Response type for Details - use with .dict property for typed dict access."""
-    mkey: str
+    name: str
+    icon_id: str
+    casb_display_name: str
+    domains: list[str]
 
 
-# ================================================================
-# Response Types (Class for attribute access)
-# ================================================================
-
-
-class DetailsObject(FortiObject):
+class DetailsObject(FortiObject[DetailsResponse]):
     """Typed FortiObject for Details with field access."""
+    name: str
+    icon_id: str
+    casb_display_name: str
+    domains: list[str]
+
 
 
 # ================================================================
@@ -85,7 +88,7 @@ class Details:
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
-    ) -> DetailsObject: ...
+    ) -> FortiObjectList[DetailsObject]: ...
     
 
 
@@ -147,7 +150,6 @@ class Details:
 
 __all__ = [
     "Details",
-    "DetailsPayload",
     "DetailsResponse",
     "DetailsObject",
 ]

@@ -33,26 +33,22 @@ class CountPayload(TypedDict, total=False):
 
 
 # ================================================================
-# Response Types (TypedDict for dict-style access)
+# Response Types for Monitor/Log/Service Endpoints
 # ================================================================
 
 class CountResponse(TypedDict, total=False):
     """Response type for Count - use with .dict property for typed dict access."""
-    ipv4: bool
-    ipv6: bool
-    include_fsso: bool
+    ipv4: int
+    ipv6: int
+    total: int
 
 
-# ================================================================
-# Response Types (Class for attribute access)
-# ================================================================
-
-
-class CountObject(FortiObject):
+class CountObject(FortiObject[CountResponse]):
     """Typed FortiObject for Count with field access."""
-    ipv4: bool
-    ipv6: bool
-    include_fsso: bool
+    ipv4: int
+    ipv6: int
+    total: int
+
 
 
 # ================================================================
@@ -94,7 +90,7 @@ class Count:
         vdom: str | bool | None = ...,
         error_mode: Literal["raise", "return", "print"] | None = ...,
         error_format: Literal["detailed", "simple", "code_only"] | None = ...,
-    ) -> CountObject: ...
+    ) -> FortiObjectList[CountObject]: ...
     
 
 
@@ -160,7 +156,6 @@ class Count:
 
 __all__ = [
     "Count",
-    "CountPayload",
     "CountResponse",
     "CountObject",
 ]
