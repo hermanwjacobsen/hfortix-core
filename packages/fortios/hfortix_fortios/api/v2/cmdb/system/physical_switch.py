@@ -226,6 +226,9 @@ class PhysicalSwitch(CRUDEndpoint, MetadataMixin):
     def put(
         self,
         payload_dict: dict[str, Any] | None = None,
+        name: str | None = None,
+        age_enable: Literal["enable", "disable"] | None = None,
+        age_val: int | None = None,
         q_action: Literal["move"] | None = None,
         q_before: str | None = None,
         q_after: str | None = None,
@@ -241,6 +244,11 @@ class PhysicalSwitch(CRUDEndpoint, MetadataMixin):
 
         Args:
             payload_dict: Object data as dict. Must include name (primary key).
+            name: Name.
+            age_enable: Enable/disable layer 2 age timer.   
+enable:Enable layer 2 ageing timer.   
+disable:Disable layer 2 ageing timer.
+            age_val: Layer 2 table age timer value.
             vdom: Virtual domain name.
             error_mode: Override client-level error_mode. "raise" raises exceptions, "return" returns error dict, "print" prints errors.
             error_format: Override client-level error_format. "detailed" provides full context, "simple" is concise, "code_only" returns just status code.
@@ -272,6 +280,9 @@ class PhysicalSwitch(CRUDEndpoint, MetadataMixin):
         # Build payload using helper function
         payload_data = build_api_payload(
             api_type="cmdb",
+            name=name,
+            age_enable=age_enable,
+            age_val=age_val,
             data=payload_dict,
         )
         

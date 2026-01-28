@@ -54,10 +54,30 @@ DEPRECATED_FIELDS = {
 
 # Field types mapping
 FIELD_TYPES = {
+    "name": "string",  # Name of the virtual switch.
+    "physical-switch": "string",  # Physical switch parent.
+    "vlan": "integer",  # VLAN.
+    "port": "table",  # Configure member ports.
+    "span": "option",  # Enable/disable SPAN.   
+disable:Disable SPAN.   
+enable:Enab
+    "span-source-port": "string",  # SPAN source port.
+    "span-dest-port": "string",  # SPAN destination port.
+    "span-direction": "option",  # SPAN direction.   
+rx:SPAN receive direction only.   
+tx:SPA
 }
 
 # Field descriptions (help text from FortiOS API)
 FIELD_DESCRIPTIONS = {
+    "name": "Name of the virtual switch.",
+    "physical-switch": "Physical switch parent.",
+    "vlan": "VLAN.",
+    "port": "Configure member ports.",
+    "span": "Enable/disable SPAN.    disable:Disable SPAN.    enable:Enable SPAN.",
+    "span-source-port": "SPAN source port.",
+    "span-dest-port": "SPAN destination port.",
+    "span-direction": "SPAN direction.    rx:SPAN receive direction only.    tx:SPAN transmit direction only.    both:SPAN both directions.",
 }
 
 # Field constraints (string lengths, integer ranges)
@@ -66,10 +86,29 @@ FIELD_CONSTRAINTS = {
 
 # Nested schemas (for table/list fields with children)
 NESTED_SCHEMAS = {
+    "port": {
+        "name": {
+            "type": "string",
+            "help": "Physical interface name.",
+        },
+        "alias": {
+            "type": "string",
+            "help": "Alias.",
+        },
+    },
 }
 
 
 # Valid enum values from API documentation
+VALID_BODY_SPAN = [
+    "disable",
+    "enable",
+]
+VALID_BODY_SPAN_DIRECTION = [
+    "rx",
+    "tx",
+    "both",
+]
 VALID_QUERY_ACTION = ["default", "schema"]
 
 # ============================================================================
@@ -116,6 +155,24 @@ def validate_system_virtual_switch_post(
         return (False, error)
 
     # Step 2: Validate enum values using central function
+    if "span" in payload:
+        is_valid, error = _validate_enum_field(
+            "span",
+            payload["span"],
+            VALID_BODY_SPAN,
+            FIELD_DESCRIPTIONS
+        )
+        if not is_valid:
+            return (False, error)
+    if "span-direction" in payload:
+        is_valid, error = _validate_enum_field(
+            "span-direction",
+            payload["span-direction"],
+            VALID_BODY_SPAN_DIRECTION,
+            FIELD_DESCRIPTIONS
+        )
+        if not is_valid:
+            return (False, error)
 
     return (True, None)
 
@@ -131,6 +188,24 @@ def validate_system_virtual_switch_put(
 ) -> tuple[bool, str | None]:
     """Validate PUT request to update system/virtual_switch."""
     # Validate enum values using central function
+    if "span" in payload:
+        is_valid, error = _validate_enum_field(
+            "span",
+            payload["span"],
+            VALID_BODY_SPAN,
+            FIELD_DESCRIPTIONS
+        )
+        if not is_valid:
+            return (False, error)
+    if "span-direction" in payload:
+        is_valid, error = _validate_enum_field(
+            "span-direction",
+            payload["span-direction"],
+            VALID_BODY_SPAN_DIRECTION,
+            FIELD_DESCRIPTIONS
+        )
+        if not is_valid:
+            return (False, error)
 
     return (True, None)
 
@@ -179,7 +254,7 @@ SCHEMA_INFO = {
     "category": "cmdb",
     "api_path": "system/virtual-switch",
     "help": "Configuration for system/virtual_switch",
-    "total_fields": 0,
+    "total_fields": 8,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,
 }

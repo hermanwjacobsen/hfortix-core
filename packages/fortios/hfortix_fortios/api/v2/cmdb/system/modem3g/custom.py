@@ -226,6 +226,14 @@ class Custom(CRUDEndpoint, MetadataMixin):
     def put(
         self,
         payload_dict: dict[str, Any] | None = None,
+        id: int | None = None,
+        vendor: str | None = None,
+        model: str | None = None,
+        vendor_id: str | None = None,
+        product_id: str | None = None,
+        class_id: str | None = None,
+        init_string: str | None = None,
+        modeswitch_string: str | None = None,
         q_action: Literal["move"] | None = None,
         q_before: str | None = None,
         q_after: str | None = None,
@@ -241,6 +249,14 @@ class Custom(CRUDEndpoint, MetadataMixin):
 
         Args:
             payload_dict: Object data as dict. Must include name (primary key).
+            id: ID.
+            vendor: MODEM vendor name.
+            model: MODEM model name.
+            vendor_id: USB vendor ID in hexadecimal format (0000-ffff).
+            product_id: USB product ID in hexadecimal format (0000-ffff).
+            class_id: USB interface class in hexadecimal format (00-ff).
+            init_string: Init string in hexadecimal format (even length).
+            modeswitch_string: USB modeswitch arguments. For example: '-v 1410 -p 9030 -V 1410 -P 9032 -u 3'.
             vdom: Virtual domain name.
             error_mode: Override client-level error_mode. "raise" raises exceptions, "return" returns error dict, "print" prints errors.
             error_format: Override client-level error_format. "detailed" provides full context, "simple" is concise, "code_only" returns just status code.
@@ -272,6 +288,14 @@ class Custom(CRUDEndpoint, MetadataMixin):
         # Build payload using helper function
         payload_data = build_api_payload(
             api_type="cmdb",
+            id=id,
+            vendor=vendor,
+            model=model,
+            vendor_id=vendor_id,
+            product_id=product_id,
+            class_id=class_id,
+            init_string=init_string,
+            modeswitch_string=modeswitch_string,
             data=payload_dict,
         )
         

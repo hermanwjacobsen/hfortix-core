@@ -339,14 +339,15 @@ class FortiOS:
             error_mode: How convenience wrappers handle errors (default:
             "raise").
 
-                       - "raise": Raise exceptions (stops program unless
-                       caught with try/except)
-                       - "return": Return error dict instead of raising
-                       (program always continues)
-                       - "log": Log error and return None (program always
-                       continues)
+                - "raise": Raise exceptions (stops program unless
+                  caught with try/except)
+                - "return": Return error dict instead of raising
+                  (program always continues)
+                - "log": Log error and return None (program always
+                  continues)
 
-                       Can be overridden per method call.
+                Can be overridden per method call.
+
             error_format: Error message detail level (default: "detailed").
 
                 - "detailed": Full context with endpoint, parameters,
@@ -354,8 +355,8 @@ class FortiOS:
                 - "simple": Just error message and code
                 - "code_only": Just the error code number
 
-              Can be overridden per method call. Affects both raised
-              exceptions and returned error dicts depending on error_mode.
+                Can be overridden per method call. Affects both raised
+                exceptions and returned error dicts depending on error_mode.
             audit_handler: Handler for enterprise audit logging (default: None).
                           Automatically logs all API operations for compliance
                           (SOC 2, HIPAA, PCI-DSS).

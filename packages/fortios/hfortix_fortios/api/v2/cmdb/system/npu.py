@@ -47,6 +47,7 @@ from hfortix_fortios._helpers import (
     build_cmdb_payload,  # Keep for backward compatibility / manual usage
     is_success,
     quote_path_param,  # URL encoding for path parameters
+    normalize_table_field,  # For table field normalization
 )
 # Import metadata mixin for schema introspection
 from hfortix_fortios._helpers.metadata_mixin import MetadataMixin
@@ -59,6 +60,18 @@ class Npu(CRUDEndpoint, MetadataMixin):
     
     # Configure metadata mixin to use this endpoint's helper module
     _helper_module_name = "npu"
+    
+    # ========================================================================
+    # Table Fields Metadata (for normalization)
+    # Auto-generated from schema - supports flexible input formats
+    # ========================================================================
+    _TABLE_FIELDS = {
+        "priority_protocol": {
+            "mkey": "name",
+            "required_fields": ['name'],
+            "example": "[{'name': 'value'}]",
+        },
+    }
     
     # ========================================================================
     # Capabilities (from schema metadata)
@@ -226,6 +239,14 @@ class Npu(CRUDEndpoint, MetadataMixin):
     def put(
         self,
         payload_dict: dict[str, Any] | None = None,
+        dedicated_management_cpu: Literal["enable", "disable"] | None = None,
+        dedicated_management_affinity: str | None = None,
+        capwap_offload: Literal["enable", "disable"] | None = None,
+        ipsec_mtu_override: Literal["disable", "enable"] | None = None,
+        ipsec_ordering: Literal["disable", "enable"] | None = None,
+        ipsec_enc_subengine_mask: str | None = None,
+        ipsec_dec_subengine_mask: str | None = None,
+        priority_protocol: Any | list[str] | list[dict[str, Any]] | None = None,
         q_action: Literal["move"] | None = None,
         q_before: str | None = None,
         q_after: str | None = None,
@@ -241,6 +262,27 @@ class Npu(CRUDEndpoint, MetadataMixin):
 
         Args:
             payload_dict: Object data as dict. Must include name (primary key).
+            dedicated_management_cpu: Enable to dedicate one CPU for GUI and CLI connections when NPs are busy.   
+enable:Enable dedication of CPU #0 for management tasks.   
+disable:Disable dedication of CPU #0 for management tasks.
+            dedicated_management_affinity: Affinity setting for management daemons (hexadecimal value up to 256 bits in the format of xxxxxxxxxxxxxxxx).
+            capwap_offload: Enable/disable offloading managed FortiAP and FortiLink CAPWAP sessions.   
+enable:Enable CAPWAP offload.   
+disable:Disable CAPWAP offload.
+            ipsec_mtu_override: Enable/disable NP6 IPsec MTU override.   
+disable:Disable NP6 IPsec MTU override.   
+enable:Enable NP6 IPsec MTU override.
+            ipsec_ordering: Enable/disable IPsec ordering.   
+disable:Disable IPsec ordering.   
+enable:Enable IPsec ordering.
+            ipsec_enc_subengine_mask: IPsec encryption subengine mask (0x1 - 0x0f, default 0x0f).
+            ipsec_dec_subengine_mask: IPsec decryption subengine mask (0x1 - 0x0f, default 0x0f).
+            priority_protocol: Configure NPU priority protocol.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
             vdom: Virtual domain name.
             error_mode: Override client-level error_mode. "raise" raises exceptions, "return" returns error dict, "print" prints errors.
             error_format: Override client-level error_format. "detailed" provides full context, "simple" is concise, "code_only" returns just status code.
@@ -269,9 +311,27 @@ class Npu(CRUDEndpoint, MetadataMixin):
             - post(): Create new object
             - set(): Intelligent create or update
         """
+        # Apply normalization for table fields (supports flexible input formats)
+        if priority_protocol is not None:
+            priority_protocol = normalize_table_field(
+                priority_protocol,
+                mkey="name",
+                required_fields=['name'],
+                field_name="priority_protocol",
+                example="[{'name': 'value'}]",
+            )
+        
         # Build payload using helper function
         payload_data = build_api_payload(
             api_type="cmdb",
+            dedicated_management_cpu=dedicated_management_cpu,
+            dedicated_management_affinity=dedicated_management_affinity,
+            capwap_offload=capwap_offload,
+            ipsec_mtu_override=ipsec_mtu_override,
+            ipsec_ordering=ipsec_ordering,
+            ipsec_enc_subengine_mask=ipsec_enc_subengine_mask,
+            ipsec_dec_subengine_mask=ipsec_dec_subengine_mask,
+            priority_protocol=priority_protocol,
             data=payload_dict,
         )
         

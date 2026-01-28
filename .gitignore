@@ -55,6 +55,12 @@ archive_*/
 
 # Examples directory (demonstrations only, not for distribution)
 examples/
+Examples/
+example_*.py
+*_example.py
+
+# But DO keep .env.example
+!.env.example
 
 # Testing
 .pytest_cache/

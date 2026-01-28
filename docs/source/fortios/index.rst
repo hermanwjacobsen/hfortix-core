@@ -3,13 +3,6 @@ FortiOS
 
 Complete Python SDK for FortiOS/FortiGate automation with 100% API coverage (1,219 endpoints: 886 CMDB + 295 Monitor + 38 Log).
 
-.. warning::
-   **v0.5.0 BREAKING CHANGES**
-   
-   - ❌ All convenience wrappers removed (``fgt.firewall.policy``, ``fgt.system.schedule``, etc.)
-   - ✅ Use direct API methods: ``fgt.api.cmdb.firewall.policy.create()``
-   - ✅ Use ``request()`` method for zero-translation from FortiGate GUI JSON
-
 .. grid:: 2
     :gutter: 3
 

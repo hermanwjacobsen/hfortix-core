@@ -226,6 +226,17 @@ class LteModem(CRUDEndpoint, MetadataMixin):
     def put(
         self,
         payload_dict: dict[str, Any] | None = None,
+        status: Literal["enable", "disable"] | None = None,
+        extra_init: str | None = None,
+        pdptype: Literal["IPv4"] | None = None,
+        authtype: Literal["none", "pap", "chap"] | None = None,
+        username: str | None = None,
+        passwd: str | None = None,
+        apn: str | None = None,
+        modem_port: int | None = None,
+        mode: Literal["standalone", "redundant"] | None = None,
+        holddown_timer: int | None = None,
+        interface: str | None = None,
         q_action: Literal["move"] | None = None,
         q_before: str | None = None,
         q_after: str | None = None,
@@ -241,6 +252,25 @@ class LteModem(CRUDEndpoint, MetadataMixin):
 
         Args:
             payload_dict: Object data as dict. Must include name (primary key).
+            status: Enable/disable USB LTE/WIMAX device.   
+enable:Enable USB LTE/WIMA device.   
+disable:Disable USB LTE/WIMA device.
+            extra_init: Extra initialization string for USB LTE/WIMAX devices.
+            pdptype: Packet Data Protocol (PDP) context type.   
+IPv4:Only IPv4.
+            authtype: Authentication type for PDP-IP packet data calls.   
+none:Username and password not required.   
+pap:Use PAP authentication.   
+chap:Use CHAP authentication.
+            username: Authentication username for PDP-IP packet data calls.
+            passwd: Authentication password for PDP-IP packet data calls.
+            apn: Login APN string for PDP-IP packet data calls.
+            modem_port: Modem port index (0 - 20).
+            mode: Modem operation mode.   
+standalone:Standalone modem operation mode.   
+redundant:Redundant modem operation mode where the modem is used as a backup interface.
+            holddown_timer: Hold down timer (10 - 60 sec).
+            interface: The interface that the modem is acting as a redundant interface for.
             vdom: Virtual domain name.
             error_mode: Override client-level error_mode. "raise" raises exceptions, "return" returns error dict, "print" prints errors.
             error_format: Override client-level error_format. "detailed" provides full context, "simple" is concise, "code_only" returns just status code.
@@ -270,8 +300,22 @@ class LteModem(CRUDEndpoint, MetadataMixin):
             - set(): Intelligent create or update
         """
         # Build payload using helper function
+        # Note: auto_normalize=False because this endpoint has unitary fields
+        # (like 'interface') that would be incorrectly converted to list format
         payload_data = build_api_payload(
             api_type="cmdb",
+            auto_normalize=False,
+            status=status,
+            extra_init=extra_init,
+            pdptype=pdptype,
+            authtype=authtype,
+            username=username,
+            passwd=passwd,
+            apn=apn,
+            modem_port=modem_port,
+            mode=mode,
+            holddown_timer=holddown_timer,
+            interface=interface,
             data=payload_dict,
         )
         

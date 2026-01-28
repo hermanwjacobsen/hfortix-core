@@ -35,7 +35,7 @@ Method Reference
 ----------------
 
 ``post()``
-^^^^^^^^
+^^^^^^^^^^
 
 .. code-block:: python
 

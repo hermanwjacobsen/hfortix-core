@@ -54,10 +54,18 @@ DEPRECATED_FIELDS = {
 
 # Field types mapping
 FIELD_TYPES = {
+    "domain-id": "integer",  # OAM domain ID.
+    "domain-name": "string",  # OAM domain name. Maintenance Domain Identifier (MDID).
+    "domain-level": "integer",  # OAM maintenance level (0 - 7)
+    "service": "table",  # CFM service configuration.
 }
 
 # Field descriptions (help text from FortiOS API)
 FIELD_DESCRIPTIONS = {
+    "domain-id": "OAM domain ID.",
+    "domain-name": "OAM domain name. Maintenance Domain Identifier (MDID).",
+    "domain-level": "OAM maintenance level (0 - 7)",
+    "service": "CFM service configuration.",
 }
 
 # Field constraints (string lengths, integer ranges)
@@ -66,6 +74,38 @@ FIELD_CONSTRAINTS = {
 
 # Nested schemas (for table/list fields with children)
 NESTED_SCHEMAS = {
+    "service": {
+        "service-id": {
+            "type": "integer",
+            "help": "Service ID to specify service",
+        },
+        "service-name": {
+            "type": "string",
+            "help": "Short MA Name (SMAN)",
+        },
+        "interface": {
+            "type": "string",
+            "help": "VLAN interface name where service is enabled",
+        },
+        "mepid": {
+            "type": "integer",
+            "help": "ID of the local MEP. range[1 - 8191]",
+        },
+        "message-interval": {
+            "type": "option",
+            "help": "Continuity-check message frequency interval in ms    100:100 msc    1000:1000 msc    10000:10000 msc    60000:60000 msc    600000:600000 msc",
+            "options": ["100", "1000", "10000", "60000", "600000"],
+        },
+        "cos": {
+            "type": "integer",
+            "help": "Set Class of service (CoS) bit for continuity-check messages. range[0 - 7]",
+        },
+        "sender-id": {
+            "type": "option",
+            "help": "TLV Sender ID. {None | Hostname}    None:None    Hostname:Hostname",
+            "options": ["None", "Hostname"],
+        },
+    },
 }
 
 
@@ -179,7 +219,7 @@ SCHEMA_INFO = {
     "category": "cmdb",
     "api_path": "ethernet-oam/cfm",
     "help": "Configuration for ethernet_oam/cfm",
-    "total_fields": 0,
+    "total_fields": 4,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,
 }

@@ -54,10 +54,17 @@ DEPRECATED_FIELDS = {
 
 # Field types mapping
 FIELD_TYPES = {
+    "name": "string",  # Name.
+    "age-enable": "option",  # Enable/disable layer 2 age timer.   
+enable:Enable layer 2 a
+    "age-val": "integer",  # Layer 2 table age timer value.
 }
 
 # Field descriptions (help text from FortiOS API)
 FIELD_DESCRIPTIONS = {
+    "name": "Name.",
+    "age-enable": "Enable/disable layer 2 age timer.    enable:Enable layer 2 ageing timer.    disable:Disable layer 2 ageing timer.",
+    "age-val": "Layer 2 table age timer value.",
 }
 
 # Field constraints (string lengths, integer ranges)
@@ -70,6 +77,10 @@ NESTED_SCHEMAS = {
 
 
 # Valid enum values from API documentation
+VALID_BODY_AGE_ENABLE = [
+    "enable",
+    "disable",
+]
 VALID_QUERY_ACTION = ["default", "schema"]
 
 # ============================================================================
@@ -116,6 +127,15 @@ def validate_system_physical_switch_post(
         return (False, error)
 
     # Step 2: Validate enum values using central function
+    if "age-enable" in payload:
+        is_valid, error = _validate_enum_field(
+            "age-enable",
+            payload["age-enable"],
+            VALID_BODY_AGE_ENABLE,
+            FIELD_DESCRIPTIONS
+        )
+        if not is_valid:
+            return (False, error)
 
     return (True, None)
 
@@ -131,6 +151,15 @@ def validate_system_physical_switch_put(
 ) -> tuple[bool, str | None]:
     """Validate PUT request to update system/physical_switch."""
     # Validate enum values using central function
+    if "age-enable" in payload:
+        is_valid, error = _validate_enum_field(
+            "age-enable",
+            payload["age-enable"],
+            VALID_BODY_AGE_ENABLE,
+            FIELD_DESCRIPTIONS
+        )
+        if not is_valid:
+            return (False, error)
 
     return (True, None)
 
@@ -179,7 +208,7 @@ SCHEMA_INFO = {
     "category": "cmdb",
     "api_path": "system/physical-switch",
     "help": "Configuration for system/physical_switch",
-    "total_fields": 0,
+    "total_fields": 3,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,
 }

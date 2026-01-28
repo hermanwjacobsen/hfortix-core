@@ -54,10 +54,22 @@ DEPRECATED_FIELDS = {
 
 # Field types mapping
 FIELD_TYPES = {
+    "switch-priority": "option",  # STP switch priority; the lower the number the higher the pri
+    "hello-time": "integer",  # Hello time (1 - 10 sec, default = 2).
+    "forward-delay": "integer",  # Forward delay (4 - 30 sec, default = 15).
+    "max-age": "integer",  # Maximum packet age (6 - 40 sec, default = 20).
+    "max-hops": "integer",  # Maximum number of hops (1 - 40, default = 20).
+    "list": "string",  # Display STP status.
 }
 
 # Field descriptions (help text from FortiOS API)
 FIELD_DESCRIPTIONS = {
+    "switch-priority": "STP switch priority; the lower the number the higher the priority (select from 0, 4096, 8192, 12288, 16384, 20480, 24576, 28672, 32768, 36864, 40960, 45056, 49152, 53248, and 57344).    0:0    4096:4096    8192:8192    12288:12288    16384:16384    20480:20480    24576:24576    28672:28672    32768:32768    36864:36864    40960:40960    45056:45056    49152:49152    53248:53248    57344:57344",
+    "hello-time": "Hello time (1 - 10 sec, default = 2).",
+    "forward-delay": "Forward delay (4 - 30 sec, default = 15).",
+    "max-age": "Maximum packet age (6 - 40 sec, default = 20).",
+    "max-hops": "Maximum number of hops (1 - 40, default = 20).",
+    "list": "Display STP status.",
 }
 
 # Field constraints (string lengths, integer ranges)
@@ -70,6 +82,23 @@ NESTED_SCHEMAS = {
 
 
 # Valid enum values from API documentation
+VALID_BODY_SWITCH_PRIORITY = [
+    "0",
+    "4096",
+    "8192",
+    "12288",
+    "16384",
+    "20480",
+    "24576",
+    "28672",
+    "32768",
+    "36864",
+    "40960",
+    "45056",
+    "49152",
+    "53248",
+    "57344",
+]
 VALID_QUERY_ACTION = ["default", "schema"]
 
 # ============================================================================
@@ -116,6 +145,15 @@ def validate_system_stp_post(
         return (False, error)
 
     # Step 2: Validate enum values using central function
+    if "switch-priority" in payload:
+        is_valid, error = _validate_enum_field(
+            "switch-priority",
+            payload["switch-priority"],
+            VALID_BODY_SWITCH_PRIORITY,
+            FIELD_DESCRIPTIONS
+        )
+        if not is_valid:
+            return (False, error)
 
     return (True, None)
 
@@ -131,6 +169,15 @@ def validate_system_stp_put(
 ) -> tuple[bool, str | None]:
     """Validate PUT request to update system/stp."""
     # Validate enum values using central function
+    if "switch-priority" in payload:
+        is_valid, error = _validate_enum_field(
+            "switch-priority",
+            payload["switch-priority"],
+            VALID_BODY_SWITCH_PRIORITY,
+            FIELD_DESCRIPTIONS
+        )
+        if not is_valid:
+            return (False, error)
 
     return (True, None)
 
@@ -179,7 +226,7 @@ SCHEMA_INFO = {
     "category": "cmdb",
     "api_path": "system/stp",
     "help": "Configuration for system/stp",
-    "total_fields": 0,
+    "total_fields": 6,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,
 }

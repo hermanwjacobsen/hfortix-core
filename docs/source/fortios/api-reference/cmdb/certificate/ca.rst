@@ -35,7 +35,7 @@ Method Reference
 ----------------
 
 ``get()``
-^^^^^^^
+^^^^^^^^^
 
 .. code-block:: python
 

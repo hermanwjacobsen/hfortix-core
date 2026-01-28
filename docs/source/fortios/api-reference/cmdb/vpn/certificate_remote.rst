@@ -43,7 +43,7 @@ Method Reference
 ----------------
 
 ``get()``
-^^^^^^^
+^^^^^^^^^
 
 .. code-block:: python
 
@@ -63,7 +63,7 @@ Select a specific entry from a CLI table.
 
 
 ``post()``
-^^^^^^^^
+^^^^^^^^^^
 
 .. code-block:: python
 

@@ -27,27 +27,14 @@ HFortix - Python SDK for Fortinet Products
       :link-type: doc
 
       Complete FortiOS API client with 1,219 endpoints (886 CMDB + 295 Monitor + 38 Log).
-      **Available Now** - v0.5.0 Beta
+      **Available Now** - v0.5.146 Beta
 
    .. grid-item-card:: ⚙️ Core Framework
       :link: core/index
       :link-type: doc
 
       Foundation HTTP client and exception handling.
-      **Available Now** - v0.5.0 Beta
-
-.. warning::
-   **BETA STATUS - Version 0.5.0**
-   
-   **BREAKING CHANGES IN v0.5.0:**
-   
-   - ❌ **All convenience wrappers REMOVED** (``fgt.firewall.policy``, ``fgt.system.schedule``, etc.)
-   - ✅ Use direct API methods: ``fgt.api.cmdb.firewall.policy.create()``
-   - ✅ Use ``request()`` method for zero-translation workflow from FortiGate GUI JSON
-   
-   All implementations are functional but in **BETA**. APIs work correctly but may have incomplete
-   parameter coverage or undiscovered edge cases. All packages remain in beta until version 1.0.0
-   with comprehensive unit test coverage.
+      **Available Now** - v0.5.146 Beta
 
 Key Features
 ------------
@@ -56,7 +43,7 @@ Key Features
    100% coverage of FortiOS 7.6.5 API (1,219 endpoints: 886 CMDB + 295 Monitor + 38 Log)
 
 🎯 **Fully Typed**
-   Complete type hints with .pyi stubs for excellent IDE support and type safety
+   Complete type hints with .pyi stubs for excellent IDE support. 100% coverage for CMDB endpoints; some Monitor/Log endpoints may have incomplete response fields due to FortiOS schema documentation limitations.
 
 ⚡ **Modern & Fast**
    Async/await support with httpx, HTTP/2, connection pooling, and circuit breakers
@@ -169,7 +156,7 @@ Coverage Status
       :class-header: bg-success text-white
 
       886 endpoints
-      ^^^
+      ^^^^^^^^^^^^^^^^^^^
       **100% coverage** - Configuration database management
       
       🔷 v0.5.0 Beta
@@ -178,7 +165,7 @@ Coverage Status
       :class-header: bg-success text-white
 
       295 endpoints
-      ^^^
+      ^^^^^^^^^^^^^^^^^^^
       **100% coverage** - Real-time monitoring and statistics
       
       🔷 v0.5.0 Beta
@@ -187,7 +174,7 @@ Coverage Status
       :class-header: bg-success text-white
 
       38 endpoints
-      ^^^
+      ^^^^^^^^^^^^^^^^^^
       **100% coverage** - Log retrieval with full parameterization
       
       🔷 v0.5.0 Beta

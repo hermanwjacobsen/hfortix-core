@@ -47,6 +47,7 @@ from hfortix_fortios._helpers import (
     build_cmdb_payload,  # Keep for backward compatibility / manual usage
     is_success,
     quote_path_param,  # URL encoding for path parameters
+    normalize_table_field,  # For table field normalization
 )
 # Import metadata mixin for schema introspection
 from hfortix_fortios._helpers.metadata_mixin import MetadataMixin
@@ -59,6 +60,23 @@ class Np6xlite(CRUDEndpoint, MetadataMixin):
     
     # Configure metadata mixin to use this endpoint's helper module
     _helper_module_name = "np6xlite"
+    
+    # ========================================================================
+    # Table Fields Metadata (for normalization)
+    # Auto-generated from schema - supports flexible input formats
+    # ========================================================================
+    _TABLE_FIELDS = {
+        "hpe": {
+            "mkey": "name",
+            "required_fields": ['name'],
+            "example": "[{'name': 'value'}]",
+        },
+        "fp_anomaly": {
+            "mkey": "name",
+            "required_fields": ['name'],
+            "example": "[{'name': 'value'}]",
+        },
+    }
     
     # ========================================================================
     # Capabilities (from schema metadata)
@@ -226,6 +244,15 @@ class Np6xlite(CRUDEndpoint, MetadataMixin):
     def put(
         self,
         payload_dict: dict[str, Any] | None = None,
+        name: str | None = None,
+        fastpath: Literal["disable", "enable"] | None = None,
+        per_session_accounting: Literal["disable", "traffic-log-only", "enable"] | None = None,
+        session_timeout_interval: int | None = None,
+        ipsec_inner_fragment: Literal["disable", "enable"] | None = None,
+        ipsec_throughput_msg_frequency: Literal["disable", "32kb", "64kb", "128kb", "256kb", "512kb", "1mb", "2mb", "4mb", "8mb", "16mb", "32mb", "64mb", "128mb", "256mb", "512mb", "1gb"] | None = None,
+        ipsec_sts_timeout: Literal["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"] | None = None,
+        hpe: Any | list[str] | list[dict[str, Any]] | None = None,
+        fp_anomaly: Any | list[str] | list[dict[str, Any]] | None = None,
         q_action: Literal["move"] | None = None,
         q_before: str | None = None,
         q_after: str | None = None,
@@ -241,6 +268,59 @@ class Np6xlite(CRUDEndpoint, MetadataMixin):
 
         Args:
             payload_dict: Object data as dict. Must include name (primary key).
+            name: Device Name.
+            fastpath: Enable/disable NP6XLITE offloading (also called fast path).   
+disable:Disable NP6XLITE offloading (fast path).   
+enable:Enable NP6XLITE offloading (fast path).
+            per_session_accounting: Enable/disable per-session accounting.   
+disable:Disable per-session accounting.   
+traffic-log-only:Per-session accounting only for sessions with traffic logging enabled in firewall policy.   
+enable:Per-session accounting for all sessions.
+            session_timeout_interval: Set session timeout interval (0 - 1000 sec, default 40 sec).
+            ipsec_inner_fragment: Enable/disable NP6XLite IPsec fragmentation type: inner.   
+disable:NP6XLite ipsec fragmentation type: outer.   
+enable:Enable NP6XLite ipsec fragmentation type: inner.
+            ipsec_throughput_msg_frequency: Set NP6XLite IPsec throughput message frequency (0 = disable).   
+disable:Disable NP6Xlite throughput update message.   
+32kb:Set NP6Xlite throughput update message frequency to 32KB.   
+64kb:Set NP6Xlite throughput update message frequency to 64KB.   
+128kb:Set NP6Xlite throughput update message frequency to 128KB.   
+256kb:Set NP6Xlite throughput update message frequency to 256KB.   
+512kb:Set NP6Xlite throughput update message frequency to 512KB.   
+1mb:Set NP6Xlite throughput update message frequency to 1MB.   
+2mb:Set NP6Xlite throughput update message frequency to 2MB.   
+4mb:Set NP6Xlite throughput update message frequency to 4MB.   
+8mb:Set NP6Xlite throughput update message frequency to 8MB.   
+16mb:Set NP6Xlite throughput update message frequency to 16MB.   
+32mb:Set NP6Xlite throughput update message frequency to 32MB.   
+64mb:Set NP6Xlite throughput update message frequency to 64MB.   
+128mb:Set NP6Xlite throughput update message frequency to 128MB.   
+256mb:Set NP6Xlite throughput update message frequency to 256MB.   
+512mb:Set NP6Xlite throughput update message frequency to 512MB.   
+1gb:Set NP6Xlite throughput update message frequency to 1GB.
+            ipsec_sts_timeout: Set NP6XLite IPsec STS message timeout.   
+1:Set NP6Xlite STS message timeout to 1 sec (recommended for IPSec throughput GUI).   
+2:Set NP6Xlite STS message timeout to 2 sec.   
+3:Set NP6Xlite STS message timeout to 3 sec.   
+4:Set NP6Xlite STS message timeout to 4 sec.   
+5:Set NP6Xlite STS message timeout to 5 sec (default).   
+6:Set NP6Xlite STS message timeout to 6 sec.   
+7:Set NP6Xlite STS message timeout to 7 sec.   
+8:Set NP6Xlite STS message timeout to 8 sec.   
+9:Set NP6Xlite STS message timeout to 9 sec.   
+10:Set NP6Xlite STS message timeout to 10 sec.
+            hpe: HPE configuration.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
+            fp_anomaly: NP6XLITE IPv4 anomaly protection. The trap-to-host forwards anomaly sessions to the CPU.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
             vdom: Virtual domain name.
             error_mode: Override client-level error_mode. "raise" raises exceptions, "return" returns error dict, "print" prints errors.
             error_format: Override client-level error_format. "detailed" provides full context, "simple" is concise, "code_only" returns just status code.
@@ -269,9 +349,36 @@ class Np6xlite(CRUDEndpoint, MetadataMixin):
             - post(): Create new object
             - set(): Intelligent create or update
         """
+        # Apply normalization for table fields (supports flexible input formats)
+        if hpe is not None:
+            hpe = normalize_table_field(
+                hpe,
+                mkey="name",
+                required_fields=['name'],
+                field_name="hpe",
+                example="[{'name': 'value'}]",
+            )
+        if fp_anomaly is not None:
+            fp_anomaly = normalize_table_field(
+                fp_anomaly,
+                mkey="name",
+                required_fields=['name'],
+                field_name="fp_anomaly",
+                example="[{'name': 'value'}]",
+            )
+        
         # Build payload using helper function
         payload_data = build_api_payload(
             api_type="cmdb",
+            name=name,
+            fastpath=fastpath,
+            per_session_accounting=per_session_accounting,
+            session_timeout_interval=session_timeout_interval,
+            ipsec_inner_fragment=ipsec_inner_fragment,
+            ipsec_throughput_msg_frequency=ipsec_throughput_msg_frequency,
+            ipsec_sts_timeout=ipsec_sts_timeout,
+            hpe=hpe,
+            fp_anomaly=fp_anomaly,
             data=payload_dict,
         )
         

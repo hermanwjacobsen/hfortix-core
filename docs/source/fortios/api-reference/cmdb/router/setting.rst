@@ -41,7 +41,7 @@ Method Reference
 ----------------
 
 ``get()``
-^^^^^^^
+^^^^^^^^^
 
 .. code-block:: python
 
@@ -58,7 +58,7 @@ Select all entries in a CLI table.
 
 
 ``put()``
-^^^^^^^
+^^^^^^^^^
 
 .. code-block:: python
 

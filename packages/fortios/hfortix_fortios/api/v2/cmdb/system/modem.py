@@ -226,6 +226,52 @@ class Modem(CRUDEndpoint, MetadataMixin):
     def put(
         self,
         payload_dict: dict[str, Any] | None = None,
+        status: Literal["enable", "disable"] | None = None,
+        pin_init: str | None = None,
+        network_init: str | None = None,
+        lockdown_lac: str | None = None,
+        mode: Literal["standalone", "redundant"] | None = None,
+        auto_dial: Literal["enable", "disable"] | None = None,
+        dial_on_demand: Literal["enable", "disable"] | None = None,
+        idle_timer: int | None = None,
+        redial: Literal["none", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10"] | None = None,
+        reset: int | None = None,
+        holddown_timer: int | None = None,
+        connect_timeout: int | None = None,
+        interface: str | None = None,
+        wireless_port: int | None = None,
+        dont_send_CR1: Literal["enable", "disable"] | None = None,
+        phone1: str | None = None,
+        dial_cmd1: str | None = None,
+        username1: str | None = None,
+        passwd1: str | None = None,
+        extra_init1: str | None = None,
+        peer_modem1: Literal["generic", "actiontec", "ascend_TNT"] | None = None,
+        ppp_echo_request1: Literal["enable", "disable"] | None = None,
+        authtype1: Literal["pap", "chap", "mschap", "mschapv2"] | None = None,
+        dont_send_CR2: Literal["enable", "disable"] | None = None,
+        phone2: str | None = None,
+        dial_cmd2: str | None = None,
+        username2: str | None = None,
+        passwd2: str | None = None,
+        extra_init2: str | None = None,
+        peer_modem2: Literal["generic", "actiontec", "ascend_TNT"] | None = None,
+        ppp_echo_request2: Literal["enable", "disable"] | None = None,
+        authtype2: Literal["pap", "chap", "mschap", "mschapv2"] | None = None,
+        dont_send_CR3: Literal["enable", "disable"] | None = None,
+        phone3: str | None = None,
+        dial_cmd3: str | None = None,
+        username3: str | None = None,
+        passwd3: str | None = None,
+        extra_init3: str | None = None,
+        peer_modem3: Literal["generic", "actiontec", "ascend_TNT"] | None = None,
+        ppp_echo_request3: Literal["enable", "disable"] | None = None,
+        altmode: Literal["enable", "disable"] | None = None,
+        authtype3: Literal["pap", "chap", "mschap", "mschapv2"] | None = None,
+        traffic_check: Literal["enable", "disable"] | None = None,
+        action: Literal["dial", "stop", "none"] | None = None,
+        distance: int | None = None,
+        priority: int | None = None,
         q_action: Literal["move"] | None = None,
         q_before: str | None = None,
         q_after: str | None = None,
@@ -241,6 +287,111 @@ class Modem(CRUDEndpoint, MetadataMixin):
 
         Args:
             payload_dict: Object data as dict. Must include name (primary key).
+            status: Enable/disable Modem support (equivalent to bringing an interface up or down).   
+enable:Enable setting.   
+disable:Disable setting.
+            pin_init: AT command to set the PIN (AT+PIN=<pin>).
+            network_init: AT command to set the Network name/type (AT+COPS=<mode>,[<format>,<oper>[,<AcT>]]).
+            lockdown_lac: Allow connection only to the specified Location Area Code (LAC).
+            mode: Set MODEM operation mode to redundant or standalone.   
+standalone:Standalone.   
+redundant:Redundant for an interface.
+            auto_dial: Enable/disable auto-dial after a reboot or disconnection.   
+enable:Enable setting.   
+disable:Disable setting.
+            dial_on_demand: Enable/disable to dial the modem when packets are routed to the modem interface.   
+enable:Enable setting.   
+disable:Disable setting.
+            idle_timer: MODEM connection idle time (1 - 9999 min, default = 5).
+            redial: Redial limit (1 - 10 attempts, none = redial forever).   
+none:Forever.   
+1:One attempt.   
+2:Two attempts.   
+3:Three attempts.   
+4:Four attempts.   
+5:Five attempts.   
+6:Six attempts.   
+7:Seven attempts.   
+8:Eight attempts.   
+9:Nine attempts.   
+10:Ten attempts.
+            reset: Number of dial attempts before resetting modem (0 = never reset).
+            holddown_timer: Hold down timer in seconds (1 - 60 sec).
+            connect_timeout: Connection completion timeout (30 - 255 sec, default = 90).
+            interface: Name of redundant interface.
+            wireless_port: Enter wireless port number: 0 for default, 1 for first port, and so on (0 - 4294967295).
+            dont_send_CR1: Do not send CR when connected (ISP1).   
+enable:Enable setting.   
+disable:Disable setting.
+            phone1: Phone number to connect to the dialup account (must not contain spaces, and should include standard special characters).
+            dial_cmd1: Dial command (this is often an ATD or ATDT command).
+            username1: User name to access the specified dialup account.
+            passwd1: Password to access the specified dialup account.
+            extra_init1: Extra initialization string to ISP 1.
+            peer_modem1: Specify peer MODEM type for phone1.   
+generic:All other modem type.   
+actiontec:ActionTec modem.   
+ascend_TNT:Ascend TNT modem.
+            ppp_echo_request1: Enable/disable PPP echo-request to ISP 1.   
+enable:Enable setting.   
+disable:Disable setting.
+            authtype1: Allowed authentication types for ISP 1.   
+pap:PAP   
+chap:CHAP   
+mschap:MSCHAP   
+mschapv2:MSCHAPv2
+            dont_send_CR2: Do not send CR when connected (ISP2).   
+enable:Enable setting.   
+disable:Disable setting.
+            phone2: Phone number to connect to the dialup account (must not contain spaces, and should include standard special characters).
+            dial_cmd2: Dial command (this is often an ATD or ATDT command).
+            username2: User name to access the specified dialup account.
+            passwd2: Password to access the specified dialup account.
+            extra_init2: Extra initialization string to ISP 2.
+            peer_modem2: Specify peer MODEM type for phone2.   
+generic:All other modem type.   
+actiontec:ActionTec modem.   
+ascend_TNT:Ascend TNT modem.
+            ppp_echo_request2: Enable/disable PPP echo-request to ISP 2.   
+enable:Enable setting.   
+disable:Disable setting.
+            authtype2: Allowed authentication types for ISP 2.   
+pap:PAP   
+chap:CHAP   
+mschap:MSCHAP   
+mschapv2:MSCHAPv2
+            dont_send_CR3: Do not send CR when connected (ISP3).   
+enable:Enable setting.   
+disable:Disable setting.
+            phone3: Phone number to connect to the dialup account (must not contain spaces, and should include standard special characters).
+            dial_cmd3: Dial command (this is often an ATD or ATDT command).
+            username3: User name to access the specified dialup account.
+            passwd3: Password to access the specified dialup account.
+            extra_init3: Extra initialization string to ISP 3.
+            peer_modem3: Specify peer MODEM type for phone3.   
+generic:All other modem type.   
+actiontec:ActionTec modem.   
+ascend_TNT:Ascend TNT modem.
+            ppp_echo_request3: Enable/disable PPP echo-request to ISP 3.   
+enable:Enable setting.   
+disable:Disable setting.
+            altmode: Enable/disable altmode for installations using PPP in China.   
+enable:Enable setting.   
+disable:Disable setting.
+            authtype3: Allowed authentication types for ISP 3.   
+pap:PAP   
+chap:CHAP   
+mschap:MSCHAP   
+mschapv2:MSCHAPv2
+            traffic_check: Enable/disable traffic-check.   
+enable:Enable setting.   
+disable:Disable setting.
+            action: Dial up/stop MODEM.   
+dial:Dial up number.   
+stop:Stop dialup.   
+none:No action.
+            distance: Distance of learned routes (1 - 255, default = 1).
+            priority: Priority of learned routes (1 - 65535, default = 1).
             vdom: Virtual domain name.
             error_mode: Override client-level error_mode. "raise" raises exceptions, "return" returns error dict, "print" prints errors.
             error_format: Override client-level error_format. "detailed" provides full context, "simple" is concise, "code_only" returns just status code.
@@ -270,8 +421,57 @@ class Modem(CRUDEndpoint, MetadataMixin):
             - set(): Intelligent create or update
         """
         # Build payload using helper function
+        # Note: auto_normalize=False because this endpoint has unitary fields
+        # (like 'interface') that would be incorrectly converted to list format
         payload_data = build_api_payload(
             api_type="cmdb",
+            auto_normalize=False,
+            status=status,
+            pin_init=pin_init,
+            network_init=network_init,
+            lockdown_lac=lockdown_lac,
+            mode=mode,
+            auto_dial=auto_dial,
+            dial_on_demand=dial_on_demand,
+            idle_timer=idle_timer,
+            redial=redial,
+            reset=reset,
+            holddown_timer=holddown_timer,
+            connect_timeout=connect_timeout,
+            interface=interface,
+            wireless_port=wireless_port,
+            dont_send_CR1=dont_send_CR1,
+            phone1=phone1,
+            dial_cmd1=dial_cmd1,
+            username1=username1,
+            passwd1=passwd1,
+            extra_init1=extra_init1,
+            peer_modem1=peer_modem1,
+            ppp_echo_request1=ppp_echo_request1,
+            authtype1=authtype1,
+            dont_send_CR2=dont_send_CR2,
+            phone2=phone2,
+            dial_cmd2=dial_cmd2,
+            username2=username2,
+            passwd2=passwd2,
+            extra_init2=extra_init2,
+            peer_modem2=peer_modem2,
+            ppp_echo_request2=ppp_echo_request2,
+            authtype2=authtype2,
+            dont_send_CR3=dont_send_CR3,
+            phone3=phone3,
+            dial_cmd3=dial_cmd3,
+            username3=username3,
+            passwd3=passwd3,
+            extra_init3=extra_init3,
+            peer_modem3=peer_modem3,
+            ppp_echo_request3=ppp_echo_request3,
+            altmode=altmode,
+            authtype3=authtype3,
+            traffic_check=traffic_check,
+            action=action,
+            distance=distance,
+            priority=priority,
             data=payload_dict,
         )
         

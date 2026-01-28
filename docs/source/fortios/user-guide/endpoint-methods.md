@@ -1,168 +1,235 @@
 # Endpoint Methods
 
-Understanding the difference between convenience wrapper methods and low-level API endpoint methods.
+Understanding the available HTTP methods for FortiOS API endpoints.
 
-```{note}
-**TL;DR**: Use **convenience wrappers** (``get()``, ``create()``, etc.) for common tasks. 
-Use **API endpoints** (``.get()``, ``.post()``, etc.) when you need direct API access.
-```
+## Available HTTP Methods
 
-## Two Approaches to the FortiOS API
+HFortix provides direct access to FortiOS REST API through standard HTTP methods. Each endpoint may support one or more of the following methods depending on the FortiOS API capabilities:
 
-HFortix provides two ways to interact with FortiOS:
+### Standard CRUD Methods
 
-### 1. Convenience Wrappers (High-Level, Recommended)
+- **`.get()`** - HTTP GET - Retrieve resources (list all or get specific by mkey)
+- **`.post()`** - HTTP POST - Create new resources
+- **`.put()`** - HTTP PUT - Update existing resources  
+- **`.delete()`** - HTTP DELETE - Delete resources
+- **`.set()`** - HTTP PUT - Set/replace entire configuration (available on some endpoints)
 
-Object-oriented wrappers with intuitive methods:
-
-- ``get()`` - Retrieve all resources (no parameters) or a specific resource (with ID parameter)
-- ``create()`` - Create a new resource
-- ``update()`` - Update an existing resource
-- ``delete()`` - Delete a resource
-- Plus helpers: ``exists()``, ``clone()``, ``get_by_name()``
-
-**Example:**
+### Method Usage
 
 ```python
-fgt = FortiOS(host='192.168.1.99', token='token')
+from hfortix_fortios import FortiOS
 
-# High-level wrapper methods - simple and intuitive
-policies = fgt.firewall.policy.get()
-policy = fgt.firewall.policy.get(policyid=1)
-fgt.firewall.policy.create(name='Allow-Web', srcintf=['port1'], ...)
-fgt.firewall.policy.update(policyid=1, comments='Updated')
-fgt.firewall.policy.delete(policyid=1)
-```
+fgt = FortiOS(host='192.168.1.99', api_token='your-token')
 
-### 2. API Endpoints (Low-Level)
+# GET - Retrieve all resources
+addresses = fgt.api.cmdb.firewall.address.get()
 
-Direct HTTP method access to the FortiOS REST API:
+# GET - Retrieve specific resource by mkey
+address = fgt.api.cmdb.firewall.address.get(mkey='webserver')
 
-- ``.get()`` - HTTP GET request
-- ``.post()`` - HTTP POST request
-- ``.put()`` - HTTP PUT request
-- ``.delete()`` - HTTP DELETE request
-
-**Example:**
-
-```python
-fgt = FortiOS(host='192.168.1.99', token='token')
-
-# Low-level API methods - direct HTTP access
-policies = fgt.api.cmdb.firewall.policy.get()
-policy = fgt.api.cmdb.firewall.policy.get(mkey=1)
-fgt.api.cmdb.firewall.policy.post(json={...})
-fgt.api.cmdb.firewall.policy.put(mkey=1, json={...})
-fgt.api.cmdb.firewall.policy.delete(mkey=1)
-```
-
-## When to Use Each
-
-### Use Convenience Wrappers When:
-
-- ✅ Creating firewall policies, schedules, services, shapers
-- ✅ You want simple, readable code
-- ✅ You need helper methods (``exists()``, ``clone()``, ``get_by_name()``)
-- ✅ You're new to FortiOS API
-- ✅ Field transformation is needed (e.g., ``srcintf=['port1']`` → ``[{'name': 'port1'}]``)
-
-### Use API Endpoints When:
-
-- ✅ Working with endpoints that don't have wrappers
-- ✅ You need complete control over the API request
-- ✅ Accessing monitor or log APIs
-- ✅ Using advanced filtering or parameters
-- ✅ Building custom automation tools
-
-## Method Comparison
-
-### Convenience Wrapper Methods
-
-```python
-# List all resources
-resources = fgt.firewall.policy.get()
-
-# Get specific resource
-resource = fgt.firewall.policy.get(policyid=1)
-
-# Create resource
-resource = fgt.firewall.policy.create(
-    name='test',
-    srcintf=['port1'],
-    dstintf=['port2'],
-    ...
-)
-
-# Update resource
-fgt.firewall.policy.update(policyid=1, comments='Updated')
-
-# Delete resource
-fgt.firewall.policy.delete(policyid=1)
-
-# Helper methods
-exists = fgt.firewall.policy.exists(policyid=1)
-policy = fgt.firewall.policy.get_by_name('test')
-cloned = fgt.firewall.policy.clone(policyid=1, new_name='test2')
-```
-
-### API Endpoint Methods
-
-```python
-# HTTP GET - retrieve all
-response = fgt.api.cmdb.firewall.policy.get()
-
-# HTTP GET - retrieve specific (using mkey parameter)
-response = fgt.api.cmdb.firewall.policy.get(mkey=1)
-
-# HTTP POST - create
-response = fgt.api.cmdb.firewall.policy.post(
-    json={
-        'name': 'test',
-        'srcintf': [{'name': 'port1'}],
-        'dstintf': [{'name': 'port2'}],
-        ...
+# POST - Create new resource
+result = fgt.api.cmdb.firewall.address.post(
+    payload_dict={
+        'name': 'webserver',
+        'subnet': '192.168.1.100 255.255.255.255',
+        'comment': 'Production web server'
     }
 )
 
-# HTTP PUT - update
-response = fgt.api.cmdb.firewall.policy.put(
-    mkey=1,
-    json={'comments': 'Updated'}
+# PUT - Update existing resource
+result = fgt.api.cmdb.firewall.address.put(
+    mkey='webserver',
+    payload_dict={
+        'comment': 'Updated comment'
+    }
 )
 
-# HTTP DELETE - delete
-response = fgt.api.cmdb.firewall.policy.delete(mkey=1)
+# DELETE - Remove resource
+result = fgt.api.cmdb.firewall.address.delete(mkey='webserver')
+
+# SET - Replace entire configuration (when available)
+result = fgt.api.cmdb.system.settings.set(
+    payload_dict={
+        'opmode': 'nat',
+        'inspection_mode': 'proxy',
+        # ... full configuration
+    }
+)
 ```
 
-## Key Differences
+## Method Availability
 
-| Feature | Convenience Wrappers | API Endpoints |
-|---------|---------------------|---------------|
-| **Method Names** | ``get()``, ``create()``, ``update()``, ``delete()`` | ``.get()``, ``.post()``, ``.put()``, ``.delete()`` |
-| **ID Parameter** | ``policyid=1``, ``name='test'`` | ``mkey=1`` |
-| **Field Format** | Simple: ``srcintf=['port1']`` | API format: ``srcintf=[{'name': 'port1'}]`` |
-| **Helper Methods** | ``exists()``, ``clone()``, ``get_by_name()`` | Not available |
-| **Coverage** | Common objects (policies, schedules, services) | All 750+ endpoints |
-| **Ease of Use** | ⭐⭐⭐⭐⭐ Beginner-friendly | ⭐⭐⭐ Requires API knowledge |
+Not all endpoints support all methods. The available methods depend on the FortiOS API design:
 
-## Available Convenience Wrappers
+| Endpoint Type | GET | POST | PUT | DELETE | SET |
+| ------------- | --- | ---- | --- | ------ | --- |
+| **CMDB Table** (e.g., firewall.address) | ✅ | ✅ | ✅ | ✅ | ❌ |
+| **CMDB Global** (e.g., system.global) | ✅ | ❌ | ✅ | ❌ | ✅ |
+| **Monitor** (e.g., system.status) | ✅ | ✅ | ❌ | ❌ | ❌ |
+| **Log** (e.g., disk.event) | ✅ | ❌ | ❌ | ❌ | ❌ |
 
-- **Firewall Policy** - ``fgt.firewall.policy.*``
-- **Schedule Recurring** - ``fgt.firewall.schedule_recurring.*``
-- **Schedule Onetime** - ``fgt.firewall.schedule_onetime.*``
-- **Schedule Group** - ``fgt.firewall.schedule_group.*``
-- **Service Custom** - ``fgt.firewall.service_custom.*``
-- **Service Group** - ``fgt.firewall.service_group.*``
-- **Service Category** - ``fgt.firewall.service_category.*``
-- **Traffic Shaper** - ``fgt.firewall.traffic_shaper.*``
-- **Per-IP Shaper** - ``fgt.firewall.shaper_per_ip.*``
-- **IP/MAC Binding Setting** - ``fgt.firewall.ipmac_binding_setting.*``
-- **IP/MAC Binding Table** - ``fgt.firewall.ipmac_binding_table.*``
+## Common Parameters
 
-See :doc:`/fortios/convenience-wrappers/index` for complete documentation.
+### GET Method
+
+```python
+# List all with filtering
+addresses = fgt.api.cmdb.firewall.address.get(
+    filter=['type==ipmask'],
+    count=10,
+    start=0
+)
+
+# Get specific by mkey
+address = fgt.api.cmdb.firewall.address.get(mkey='webserver')
+
+# With VDOM
+address = fgt.api.cmdb.firewall.address.get(
+    mkey='webserver',
+    vdom='root'
+)
+```
+
+### POST Method
+
+```python
+# Create with payload_dict
+result = fgt.api.cmdb.firewall.policy.post(
+    payload_dict={
+        'name': 'Allow-Web',
+        'srcintf': [{'name': 'port1'}],
+        'dstintf': [{'name': 'port2'}],
+        'srcaddr': [{'name': 'all'}],
+        'dstaddr': [{'name': 'webserver'}],
+        'service': [{'name': 'HTTP'}, {'name': 'HTTPS'}],
+        'action': 'accept'
+    }
+)
+
+# Create with keyword arguments (Pydantic models where available)
+result = fgt.api.cmdb.firewall.address.post(
+    name='testserver',
+    subnet='10.0.1.5 255.255.255.255',
+    comment='Test server'
+)
+```
+
+### PUT Method
+
+```python
+# Update with mkey and payload_dict
+result = fgt.api.cmdb.firewall.address.put(
+    mkey='webserver',
+    payload_dict={
+        'comment': 'Updated web server',
+        'color': 3
+    }
+)
+
+# Update with keyword arguments
+result = fgt.api.cmdb.firewall.address.put(
+    mkey='webserver',
+    comment='Updated comment',
+    color=3
+)
+```
+
+### DELETE Method
+
+```python
+# Delete by mkey
+result = fgt.api.cmdb.firewall.address.delete(mkey='webserver')
+
+# Delete with VDOM
+result = fgt.api.cmdb.firewall.address.delete(
+    mkey='webserver',
+    vdom='root'
+)
+```
+
+### SET Method
+
+```python
+# Replace entire configuration
+result = fgt.api.cmdb.system.global.set(
+    payload_dict={
+        'hostname': 'firewall-01',
+        'timezone': 'America/New_York',
+        'admin_sport': 443,
+        # ... complete configuration
+    }
+)
+```
+
+## Response Objects
+
+All methods return `FortiObject` or `FortiObjectList` instances:
+
+```python
+# Single object response (POST, PUT, DELETE)
+result = fgt.api.cmdb.firewall.address.post(...)
+print(result.status_code)  # 200
+print(result.revision)     # Configuration revision
+print(result.raw)         # Full API envelope
+
+# List response (GET without mkey)
+addresses = fgt.api.cmdb.firewall.address.get()
+for addr in addresses:
+    print(addr.name)
+    print(addr.subnet)
+
+# Single object response (GET with mkey)
+address = fgt.api.cmdb.firewall.address.get(mkey='webserver')
+print(address.name)
+print(address.subnet)
+```
+
+## Using the request() Method
+
+For maximum flexibility, use the low-level `request()` method:
+
+```python
+# Direct request - copy JSON from FortiGate GUI
+response = fgt.request(
+    method='POST',
+    path='/api/v2/cmdb/firewall/address',
+    data={
+        'name': 'webserver',
+        'subnet': '192.168.1.100 255.255.255.255',
+        'comment': 'Production web server'
+    }
+)
+```
+
+## Monitor API Methods
+
+Monitor endpoints typically only support GET and POST:
+
+```python
+# GET - Retrieve monitoring data
+status = fgt.api.monitor.system.status.get()
+interfaces = fgt.api.monitor.system.interface.list()
+
+# POST - Trigger actions
+result = fgt.api.monitor.system.config.backup.post()
+```
+
+## Error Handling
+
+```python
+from hfortix_core.exceptions import HTTPError, NotFoundError
+
+try:
+    address = fgt.api.cmdb.firewall.address.get(mkey='nonexistent')
+except NotFoundError:
+    print("Address not found")
+except HTTPError as e:
+    print(f"Error: {e.status_code} - {e.message}")
+```
 
 ## See Also
 
-- [Convenience Wrappers](/fortios/convenience-wrappers/index.rst) - High-level wrapper documentation
-- [API Reference](/fortios/api-reference/index.rst) - Low-level API endpoint documentation
-- [Quick Start Guide](/fortios/getting-started/quickstart.md) - Getting started tutorial
+- [API Reference](/fortios/api-reference/index.rst) - Complete endpoint documentation (1,219 endpoints)
+- [Custom Wrappers Guide](/fortios/guides/custom-wrappers.md) - Create your own convenience wrappers
+- [FortiOS Client](/fortios/user-guide/client.rst) - Client configuration and usage
+- [Error Handling](/fortios/user-guide/error-handling.md) - Error handling patterns

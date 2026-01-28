@@ -53,7 +53,7 @@ Method Reference
 ----------------
 
 ``get()``
-^^^^^^^
+^^^^^^^^^
 
 .. code-block:: python
 
@@ -73,7 +73,7 @@ Select a specific entry from a CLI table.
 
 
 ``post()``
-^^^^^^^^
+^^^^^^^^^^
 
 .. code-block:: python
 
@@ -92,7 +92,7 @@ Create object(s) in this table.
 
 
 ``put()``
-^^^^^^^
+^^^^^^^^^
 
 .. code-block:: python
 
@@ -112,7 +112,7 @@ Update this specific resource.
 
 
 ``delete()``
-^^^^^^^^^^
+^^^^^^^^^^^^
 
 .. code-block:: python
 

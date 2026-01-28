@@ -54,10 +54,17 @@ DEPRECATED_FIELDS = {
 
 # Field types mapping
 FIELD_TYPES = {
+    "status": "option",  # Enable/disable HPE status monitoring.   
+enable:Enable setti
+    "interval": "integer",  # HPE status check interval (1 - 60 seconds, default = 1 secon
+    "multipliers": "string",  # HPE type interval multipliers (12 integers from <1> to <255>
 }
 
 # Field descriptions (help text from FortiOS API)
 FIELD_DESCRIPTIONS = {
+    "status": "Enable/disable HPE status monitoring.    enable:Enable setting.    disable:Disable setting.",
+    "interval": "HPE status check interval (1 - 60 seconds, default = 1 second).",
+    "multipliers": "HPE type interval multipliers (12 integers from <1> to <255>, default = 4, 4, 4, 4, 8, 8, 8, 8, 8, 8, 8, 8). An event log is generated after every (interval * multiplier)seconds  as configured for any HPE type when drops occur for that HPE type. An attack log is generated after every (4 * multiplier) number of continuous event logs. ",
 }
 
 # Field constraints (string lengths, integer ranges)
@@ -70,6 +77,10 @@ NESTED_SCHEMAS = {
 
 
 # Valid enum values from API documentation
+VALID_BODY_STATUS = [
+    "enable",
+    "disable",
+]
 VALID_QUERY_ACTION = ["default", "schema"]
 
 # ============================================================================
@@ -116,6 +127,15 @@ def validate_monitoring_npu_hpe_post(
         return (False, error)
 
     # Step 2: Validate enum values using central function
+    if "status" in payload:
+        is_valid, error = _validate_enum_field(
+            "status",
+            payload["status"],
+            VALID_BODY_STATUS,
+            FIELD_DESCRIPTIONS
+        )
+        if not is_valid:
+            return (False, error)
 
     return (True, None)
 
@@ -131,6 +151,15 @@ def validate_monitoring_npu_hpe_put(
 ) -> tuple[bool, str | None]:
     """Validate PUT request to update monitoring/npu_hpe."""
     # Validate enum values using central function
+    if "status" in payload:
+        is_valid, error = _validate_enum_field(
+            "status",
+            payload["status"],
+            VALID_BODY_STATUS,
+            FIELD_DESCRIPTIONS
+        )
+        if not is_valid:
+            return (False, error)
 
     return (True, None)
 
@@ -179,7 +208,7 @@ SCHEMA_INFO = {
     "category": "cmdb",
     "api_path": "monitoring/npu-hpe",
     "help": "Configuration for monitoring/npu_hpe",
-    "total_fields": 0,
+    "total_fields": 3,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,
 }

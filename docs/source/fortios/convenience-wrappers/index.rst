@@ -1,123 +1,74 @@
-Convenience Wrappers
-====================
+Custom Wrappers
+===============
 
-.. danger::
-   **DEPRECATED IN v0.5.0 - REMOVED**
+.. note::
+   **Looking for convenience wrappers?**
    
-   All convenience wrappers have been **REMOVED** in v0.5.0.
+   Built-in convenience wrappers were removed in v0.5.0, but you can easily create your own!
    
-   **Migration Required:**
-   
-   - ❌ ``fgt.firewall.policy.create()`` - NO LONGER EXISTS
-   - ✅ ``fgt.api.cmdb.firewall.policy.create()`` - Use direct API method
-   - ✅ ``fgt.request(method='POST', path='/api/v2/cmdb/firewall/policy', data={...})`` - Use request() method
-   
-   See :doc:`/fortios/getting-started/quickstart` for updated examples.
+   See :doc:`/fortios/guides/custom-wrappers` to learn how to create custom wrappers, aliases, 
+   and helper functions tailored to your specific needs.
 
-Why Were They Removed?
-----------------------
+Creating Your Own Wrappers
+---------------------------
 
-Convenience wrappers were removed in v0.5.0 for the following reasons:
+HFortix provides direct API access, giving you the flexibility to create custom wrappers
+that match your organization's specific requirements. This approach offers:
 
-1. **Maintenance Burden** - Required manual updates for every FortiOS schema change
-2. **API Drift** - Wrapper behavior could diverge from actual FortiOS API behavior
-3. **Limited Coverage** - Only covered ~20 endpoints out of 1,219 total
-4. **Type Safety Issues** - Harder to maintain accurate type hints for translations
-5. **Zero-Translation Alternative** - The ``request()`` method provides a better workflow
+- **No maintenance burden** - You control what you need
+- **Perfect fit** - Tailored to your exact use cases  
+- **Full flexibility** - Add your own validation, business logic, and patterns
+- **Type safety** - Create strongly-typed interfaces for your workflows
 
-Migration Guide
----------------
+Quick Example
+-------------
 
-Old convenience wrapper code:
+Here's a simple custom wrapper example:
 
 .. code-block:: python
 
-   # v0.4.0 - NO LONGER WORKS
-   fgt.firewall.policy.create(
-       name='Allow-Web',
-       srcintf=['port1'],
-       dstintf=['port2'],
-       srcaddr=['all'],
-       dstaddr=['all'],
-       service=['HTTP', 'HTTPS'],
-       action='accept'
+   from hfortix_fortios import FortiOS
+   
+   class MyFortiGate(FortiOS):
+       """Custom FortiGate client with shortcuts."""
+       
+       @property
+       def addresses(self):
+           """Quick access to firewall addresses."""
+           return self.api.cmdb.firewall.address
+       
+       @property  
+       def policies(self):
+           """Quick access to firewall policies."""
+           return self.api.cmdb.firewall.policy
+   
+   # Usage
+   fgt = MyFortiGate(host="192.168.1.99", api_token="your-token")
+   
+   # Much shorter!
+   address = fgt.addresses.create(
+       name="server",
+       subnet="10.0.1.5 255.255.255.255"
    )
+   policies = fgt.policies.list()
 
-New direct API code (v0.5.0+):
+Learn More
+----------
 
-.. code-block:: python
+:doc:`/fortios/guides/custom-wrappers`
+   Complete guide to creating custom wrappers, aliases, and helper functions.
+   Includes examples for simple aliases, validation wrappers, async operations,
+   and domain-specific wrappers.
 
-   # v0.5.0 - Direct API method
-   fgt.api.cmdb.firewall.policy.create(
-       name='Allow-Web',
-       srcintf=[{'name': 'port1'}],
-       dstintf=[{'name': 'port2'}],
-       srcaddr=[{'name': 'all'}],
-       dstaddr=[{'name': 'all'}],
-       service=[{'name': 'HTTP'}, {'name': 'HTTPS'}],
-       action='accept'
-   )
+:doc:`/fortios/api-reference/index`
+   Complete API reference with 1,219 endpoints to build your wrappers on.
 
-   # Or use request() method (copy JSON from FortiGate GUI):
-   fgt.request(
-       method='POST',
-       path='/api/v2/cmdb/firewall/policy',
-       data={
-           'name': 'Allow-Web',
-           'srcintf': [{'name': 'port1'}],
-           'dstintf': [{'name': 'port2'}],
-           'srcaddr': [{'name': 'all'}],
-           'dstaddr': [{'name': 'all'}],
-           'service': [{'name': 'HTTP'}, {'name': 'HTTPS'}],
-           'action': 'accept'
-       }
-   )
-
-Previously Available Wrappers (v0.4.0)
----------------------------------------
-
-The following wrappers existed in v0.4.0 but are **REMOVED** in v0.5.0:
-
-Firewall & Objects
-~~~~~~~~~~~~~~~~~~
-
-- ``fgt.firewall.policy`` - Firewall policies (use ``fgt.api.cmdb.firewall.policy`` now)
-- ``fgt.firewall.schedule`` - Schedules (use ``fgt.api.cmdb.firewall.schedule.*`` now)
-- ``fgt.firewall.service`` - Custom services (use ``fgt.api.cmdb.firewall.service.custom`` now)
-- ``fgt.firewall.shaper`` - Traffic shapers (use ``fgt.api.cmdb.firewall.shaper.*`` now)
-- ``fgt.firewall.ipmac_binding`` - IP/MAC bindings (use ``fgt.api.cmdb.firewall.ipmacbinding.table`` now)
-
-For the complete list of 1,219 available endpoints, see :doc:`/fortios/api-reference/index`.
-
-Direct API Access (Recommended)
---------------------------------
-
-Instead of convenience wrappers, use direct API access:
-
-**API Endpoint Methods:**
-
-- ``create(name=..., **params)`` - Create resource with parameters
-- ``update(mkey=..., **params)`` - Update resource by key
-- ``delete(mkey=...)`` - Delete resource by key
-- ``get(mkey=None, **params)`` - Get one resource or list all
-- ``exists(mkey=...)`` - Check if resource exists
-
-**request() Method (Zero-Translation):**
-
-The ``request()`` method lets you copy JSON directly from FortiGate GUI and use it in Python:
-
-.. code-block:: python
-
-   # Copy JSON from FortiGate GUI, paste here - zero translation needed
-   fgt.request(
-       method='POST',
-       path='/api/v2/cmdb/firewall/policy',
-       data={...}  # Exact JSON from GUI
-   )
+:doc:`/fortios/getting-started/quickstart`
+   Get started with the direct API methods.
 
 See Also
 --------
 
-- :doc:`/fortios/getting-started/quickstart` - Updated quick start guide for v0.5.0
-- :doc:`/fortios/api-reference/index` - Complete endpoint reference (1,219 endpoints)
-- :doc:`/fortios/user-guide/endpoint-methods` - Endpoint methods guide
+- :doc:`/fortios/guides/fmg-proxy` - FortiManager proxy for managing multiple devices
+- :doc:`/fortios/user-guide/index` - Core concepts and patterns
+- :doc:`/fortios/api-reference/index` - Complete API documentation

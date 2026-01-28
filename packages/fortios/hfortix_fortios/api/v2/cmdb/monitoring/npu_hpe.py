@@ -226,6 +226,9 @@ class NpuHpe(CRUDEndpoint, MetadataMixin):
     def put(
         self,
         payload_dict: dict[str, Any] | None = None,
+        status: Literal["enable", "disable"] | None = None,
+        interval: int | None = None,
+        multipliers: str | None = None,
         q_action: Literal["move"] | None = None,
         q_before: str | None = None,
         q_after: str | None = None,
@@ -241,6 +244,15 @@ class NpuHpe(CRUDEndpoint, MetadataMixin):
 
         Args:
             payload_dict: Object data as dict. Must include name (primary key).
+            status: Enable/disable HPE status monitoring.   
+enable:Enable setting.   
+disable:Disable setting.
+            interval: HPE status check interval (1 - 60 seconds, default = 1 second).
+            multipliers: HPE type interval multipliers (12 integers from <1> to <255>, default = 4, 4, 4, 4, 8, 8, 8, 8, 8, 8, 8, 8).
+An event log is generated after every (interval * multiplier)seconds 
+as configured for any HPE type when drops occur for that HPE type.
+An attack log is generated after every (4 * multiplier) number of continuous event logs.
+
             vdom: Virtual domain name.
             error_mode: Override client-level error_mode. "raise" raises exceptions, "return" returns error dict, "print" prints errors.
             error_format: Override client-level error_format. "detailed" provides full context, "simple" is concise, "code_only" returns just status code.
@@ -272,6 +284,9 @@ class NpuHpe(CRUDEndpoint, MetadataMixin):
         # Build payload using helper function
         payload_data = build_api_payload(
             api_type="cmdb",
+            status=status,
+            interval=interval,
+            multipliers=multipliers,
             data=payload_dict,
         )
         

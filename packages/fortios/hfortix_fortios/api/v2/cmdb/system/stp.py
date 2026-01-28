@@ -226,6 +226,12 @@ class Stp(CRUDEndpoint, MetadataMixin):
     def put(
         self,
         payload_dict: dict[str, Any] | None = None,
+        switch_priority: Literal["0", "4096", "8192", "12288", "16384", "20480", "24576", "28672", "32768", "36864", "40960", "45056", "49152", "53248", "57344"] | None = None,
+        hello_time: int | None = None,
+        forward_delay: int | None = None,
+        max_age: int | None = None,
+        max_hops: int | None = None,
+        list: str | None = None,
         q_action: Literal["move"] | None = None,
         q_before: str | None = None,
         q_after: str | None = None,
@@ -241,6 +247,27 @@ class Stp(CRUDEndpoint, MetadataMixin):
 
         Args:
             payload_dict: Object data as dict. Must include name (primary key).
+            switch_priority: STP switch priority; the lower the number the higher the priority (select from 0, 4096, 8192, 12288, 16384, 20480, 24576, 28672, 32768, 36864, 40960, 45056, 49152, 53248, and 57344).   
+0:0   
+4096:4096   
+8192:8192   
+12288:12288   
+16384:16384   
+20480:20480   
+24576:24576   
+28672:28672   
+32768:32768   
+36864:36864   
+40960:40960   
+45056:45056   
+49152:49152   
+53248:53248   
+57344:57344
+            hello_time: Hello time (1 - 10 sec, default = 2).
+            forward_delay: Forward delay (4 - 30 sec, default = 15).
+            max_age: Maximum packet age (6 - 40 sec, default = 20).
+            max_hops: Maximum number of hops (1 - 40, default = 20).
+            list: Display STP status.
             vdom: Virtual domain name.
             error_mode: Override client-level error_mode. "raise" raises exceptions, "return" returns error dict, "print" prints errors.
             error_format: Override client-level error_format. "detailed" provides full context, "simple" is concise, "code_only" returns just status code.
@@ -272,6 +299,12 @@ class Stp(CRUDEndpoint, MetadataMixin):
         # Build payload using helper function
         payload_data = build_api_payload(
             api_type="cmdb",
+            switch_priority=switch_priority,
+            hello_time=hello_time,
+            forward_delay=forward_delay,
+            max_age=max_age,
+            max_hops=max_hops,
+            list=list,
             data=payload_dict,
         )
         

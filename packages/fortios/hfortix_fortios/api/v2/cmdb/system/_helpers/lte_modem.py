@@ -54,10 +54,36 @@ DEPRECATED_FIELDS = {
 
 # Field types mapping
 FIELD_TYPES = {
+    "status": "option",  # Enable/disable USB LTE/WIMAX device.   
+enable:Enable USB LT
+    "extra-init": "string",  # Extra initialization string for USB LTE/WIMAX devices.
+    "pdptype": "option",  # Packet Data Protocol (PDP) context type.   
+IPv4:Only IPv4.
+    "authtype": "option",  # Authentication type for PDP-IP packet data calls.   
+none:Us
+    "username": "string",  # Authentication username for PDP-IP packet data calls.
+    "passwd": "string",  # Authentication password for PDP-IP packet data calls.
+    "apn": "string",  # Login APN string for PDP-IP packet data calls.
+    "modem-port": "integer",  # Modem port index (0 - 20).
+    "mode": "option",  # Modem operation mode.   
+standalone:Standalone modem operati
+    "holddown-timer": "integer",  # Hold down timer (10 - 60 sec).
+    "interface": "string",  # The interface that the modem is acting as a redundant interf
 }
 
 # Field descriptions (help text from FortiOS API)
 FIELD_DESCRIPTIONS = {
+    "status": "Enable/disable USB LTE/WIMAX device.    enable:Enable USB LTE/WIMA device.    disable:Disable USB LTE/WIMA device.",
+    "extra-init": "Extra initialization string for USB LTE/WIMAX devices.",
+    "pdptype": "Packet Data Protocol (PDP) context type.    IPv4:Only IPv4.",
+    "authtype": "Authentication type for PDP-IP packet data calls.    none:Username and password not required.    pap:Use PAP authentication.    chap:Use CHAP authentication.",
+    "username": "Authentication username for PDP-IP packet data calls.",
+    "passwd": "Authentication password for PDP-IP packet data calls.",
+    "apn": "Login APN string for PDP-IP packet data calls.",
+    "modem-port": "Modem port index (0 - 20).",
+    "mode": "Modem operation mode.    standalone:Standalone modem operation mode.    redundant:Redundant modem operation mode where the modem is used as a backup interface.",
+    "holddown-timer": "Hold down timer (10 - 60 sec).",
+    "interface": "The interface that the modem is acting as a redundant interface for.",
 }
 
 # Field constraints (string lengths, integer ranges)
@@ -70,6 +96,22 @@ NESTED_SCHEMAS = {
 
 
 # Valid enum values from API documentation
+VALID_BODY_STATUS = [
+    "enable",
+    "disable",
+]
+VALID_BODY_PDPTYPE = [
+    "IPv4",
+]
+VALID_BODY_AUTHTYPE = [
+    "none",
+    "pap",
+    "chap",
+]
+VALID_BODY_MODE = [
+    "standalone",
+    "redundant",
+]
 VALID_QUERY_ACTION = ["default", "schema"]
 
 # ============================================================================
@@ -116,6 +158,42 @@ def validate_system_lte_modem_post(
         return (False, error)
 
     # Step 2: Validate enum values using central function
+    if "status" in payload:
+        is_valid, error = _validate_enum_field(
+            "status",
+            payload["status"],
+            VALID_BODY_STATUS,
+            FIELD_DESCRIPTIONS
+        )
+        if not is_valid:
+            return (False, error)
+    if "pdptype" in payload:
+        is_valid, error = _validate_enum_field(
+            "pdptype",
+            payload["pdptype"],
+            VALID_BODY_PDPTYPE,
+            FIELD_DESCRIPTIONS
+        )
+        if not is_valid:
+            return (False, error)
+    if "authtype" in payload:
+        is_valid, error = _validate_enum_field(
+            "authtype",
+            payload["authtype"],
+            VALID_BODY_AUTHTYPE,
+            FIELD_DESCRIPTIONS
+        )
+        if not is_valid:
+            return (False, error)
+    if "mode" in payload:
+        is_valid, error = _validate_enum_field(
+            "mode",
+            payload["mode"],
+            VALID_BODY_MODE,
+            FIELD_DESCRIPTIONS
+        )
+        if not is_valid:
+            return (False, error)
 
     return (True, None)
 
@@ -131,6 +209,42 @@ def validate_system_lte_modem_put(
 ) -> tuple[bool, str | None]:
     """Validate PUT request to update system/lte_modem."""
     # Validate enum values using central function
+    if "status" in payload:
+        is_valid, error = _validate_enum_field(
+            "status",
+            payload["status"],
+            VALID_BODY_STATUS,
+            FIELD_DESCRIPTIONS
+        )
+        if not is_valid:
+            return (False, error)
+    if "pdptype" in payload:
+        is_valid, error = _validate_enum_field(
+            "pdptype",
+            payload["pdptype"],
+            VALID_BODY_PDPTYPE,
+            FIELD_DESCRIPTIONS
+        )
+        if not is_valid:
+            return (False, error)
+    if "authtype" in payload:
+        is_valid, error = _validate_enum_field(
+            "authtype",
+            payload["authtype"],
+            VALID_BODY_AUTHTYPE,
+            FIELD_DESCRIPTIONS
+        )
+        if not is_valid:
+            return (False, error)
+    if "mode" in payload:
+        is_valid, error = _validate_enum_field(
+            "mode",
+            payload["mode"],
+            VALID_BODY_MODE,
+            FIELD_DESCRIPTIONS
+        )
+        if not is_valid:
+            return (False, error)
 
     return (True, None)
 
@@ -179,7 +293,7 @@ SCHEMA_INFO = {
     "category": "cmdb",
     "api_path": "system/lte-modem",
     "help": "Configuration for system/lte_modem",
-    "total_fields": 0,
+    "total_fields": 11,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,
 }

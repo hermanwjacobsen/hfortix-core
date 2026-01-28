@@ -3,13 +3,11 @@ Topic Guides
 
 Advanced topics, patterns, and techniques for working with HFortix.
 
-.. note::
-   **Looking for convenience wrapper guides?** Individual wrapper documentation with examples
-   is now located at :doc:`/fortios/convenience-wrappers/index`.
-
 .. toctree::
    :maxdepth: 1
 
+   fmg-proxy
+   custom-wrappers
    audit-logging
    handler-protocol-system
    observability
@@ -23,6 +21,19 @@ Overview
 --------
 
 Topic guides provide detailed, task-oriented documentation for advanced features and patterns.
+
+Key Topics
+----------
+
+**FortiManager Proxy** *(New in v0.5.0)*
+   Route FortiOS API calls through FortiManager to manage multiple FortiGate devices.
+   Connect to FortiManager once and execute operations on any managed device using
+   the same FortiOS API syntax. Supports multiple ADOMs and VDOMs.
+
+**Creating Custom Wrappers** *(New in v0.5.146)*
+   Learn how to create your own convenience wrappers, aliases, and helper functions
+   tailored to your specific needs. Includes examples for simple aliases, domain-specific
+   wrappers, validation wrappers, async operations, and complete custom modules.
 
 Advanced Topics
 ---------------
@@ -74,5 +85,5 @@ See Also
 --------
 
 - :doc:`/fortios/user-guide/index` - Core concepts and essential features
-- :doc:`/fortios/api-reference/convenience-wrappers` - API reference for wrappers
-- :doc:`/fortios/examples/index` - Practical code examples
+- :doc:`/fortios/api-reference/index` - Complete API reference
+- :doc:`/fortios/getting-started/quickstart` - Quick start guide

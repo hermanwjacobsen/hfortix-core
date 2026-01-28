@@ -54,10 +54,26 @@ DEPRECATED_FIELDS = {
 
 # Field types mapping
 FIELD_TYPES = {
+    "id": "integer",  # ID.
+    "vendor": "string",  # MODEM vendor name.
+    "model": "string",  # MODEM model name.
+    "vendor-id": "string",  # USB vendor ID in hexadecimal format (0000-ffff).
+    "product-id": "string",  # USB product ID in hexadecimal format (0000-ffff).
+    "class-id": "string",  # USB interface class in hexadecimal format (00-ff).
+    "init-string": "string",  # Init string in hexadecimal format (even length).
+    "modeswitch-string": "string",  # USB modeswitch arguments. For example: '-v 1410 -p 9030 -V 1
 }
 
 # Field descriptions (help text from FortiOS API)
 FIELD_DESCRIPTIONS = {
+    "id": "ID.",
+    "vendor": "MODEM vendor name.",
+    "model": "MODEM model name.",
+    "vendor-id": "USB vendor ID in hexadecimal format (0000-ffff).",
+    "product-id": "USB product ID in hexadecimal format (0000-ffff).",
+    "class-id": "USB interface class in hexadecimal format (00-ff).",
+    "init-string": "Init string in hexadecimal format (even length).",
+    "modeswitch-string": "USB modeswitch arguments. For example: '-v 1410 -p 9030 -V 1410 -P 9032 -u 3'.",
 }
 
 # Field constraints (string lengths, integer ranges)
@@ -179,7 +195,7 @@ SCHEMA_INFO = {
     "category": "cmdb",
     "api_path": "system.3g-modem/custom",
     "help": "Configuration for system/modem3g/custom",
-    "total_fields": 0,
+    "total_fields": 8,
     "required_fields_count": 0,
     "fields_with_defaults_count": 0,
 }
