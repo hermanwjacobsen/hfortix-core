@@ -267,11 +267,13 @@ Python client library for Fortinet products including FortiOS, FortiManager, and
   - Convenience methods: `.clone()`, `.rename()`, `.add_member()`, `.remove_member()`
   - See `docs/fortios/wrappers/SCHEDULE_WRAPPERS.md` for complete guide
 
-- 🔗 **IP/MAC Binding Wrappers**: Complete IP/MAC binding management
-  - **Binding Table** (`fgt.firewall.ipmacbinding_table`) - Manage IP/MAC binding entries
-  - **Binding Settings** (`fgt.firewall.ipmacbinding_setting`) - Configure binding behavior
-  - Full validation: IP addresses, MAC addresses, sequence numbers
-  - Convenience methods: `.enable()`, `.disable()`, `.exists()`
+**Features from v0.3.39 (December 30, 2025):**
+
+- 🔗 **Custom Wrapper Examples**: Build your own convenience wrappers
+  - IP/MAC binding examples in documentation
+  - Traffic shaper wrapper patterns
+  - Schedule management patterns
+  - See [Custom Wrappers Guide](https://hfortix.readthedocs.io/en/latest/fortios/guides/custom-wrappers.html)
 
 - 🚀 **Automated Release Workflow**: New `make release` target for streamlined releases
   - Automated version bumping and CHANGELOG updates
@@ -280,30 +282,12 @@ Python client library for Fortinet products including FortiOS, FortiManager, and
 
 **Features from v0.3.38 (December 29, 2025):**
 
-- 🚦 **Traffic Shaper Convenience Wrappers**: Production-ready wrappers for traffic shaping
-  - **Per-IP Shaper** (`fgt.firewall.shaper_per_ip`) - Bandwidth and session limits per source IP
-  - **Traffic Shaper** (`fgt.firewall.traffic_shaper`) - Shared traffic shaper with guaranteed/maximum bandwidth
-  - Full parameter support with comprehensive validation
-  - ⚠️ **Important:** Rename operations not supported (FortiOS API limitation - name is immutable primary key)
-  - See `docs/fortios/wrappers/SHAPER_WRAPPERS.md` for complete guide and examples
+- � **Documentation Updates**: Comprehensive guide updates
+  - Custom wrapper patterns and examples
+  - FortiManager proxy documentation
+  - API method reference (.get, .post, .put, .delete, .set)
 
 **Features from v0.3.34 (December 25, 2025):**
-
-- 📋 **Schedule Convenience Methods**: All schedule types now have consistent convenience methods
-  - `get_by_name()` - Get schedule data directly (not full API response)
-  - `rename()` - Rename a schedule in one call
-  - `clone()` - Clone schedule with optional modifications
-  - Response helpers: `get_mkey()`, `is_success()`, `get_results()`
-  - Available for: `schedule_onetime`, `schedule_recurring`, `schedule_group`
-  - See `SCHEDULE_CONVENIENCE_METHODS.md` and `examples/schedule_convenience_demo.py`
-
-- 🔗 **IP/MAC Binding Convenience Wrapper**: New helper class for firewall IP/MAC binding
-  - CRUD operations: `create()`, `update()`, `delete()`, `get()`, `get_all()`
-  - Convenience methods: `exists()`, `enable()`, `disable()`
-  - Full validation: IP addresses, MAC addresses, status values, name length
-  - Comprehensive test suite: `examples/ipmacbinding_test_suite.py` (19 pytest tests)
-
-- � **Circuit Breaker Auto-Retry**: Optional automatic retry when circuit opens
   - New parameters: `circuit_breaker_auto_retry`, `circuit_breaker_max_retries`, `circuit_breaker_retry_delay`
   - Useful for production scripts requiring resilience
   - Fail-fast behavior preserved by default
@@ -596,17 +580,13 @@ See [examples/fortiobject_autocomplete_demo.py](examples/fortiobject_autocomplet
 
 ### Additional Features
 
-- **Convenience Wrappers**: High-level wrappers for common operations (policies, schedules, services, shapers, SSH/SSL proxy, wildcard FQDN)
-  - ⚠️ **Note**: Some FortiOS API endpoints have limitations:
-    - **SSH/SSL Proxy**: See [SSH/SSL Proxy Limitations](docs/fortios/wrappers/SSH_SSL_PROXY_WRAPPERS.md#fortios-api-limitations)
-    - **Wildcard FQDN**: Create/Update/Delete operations not supported via API (use CLI). Read operations work normally.
-  - SSH/SSL proxy wrappers document all known API restrictions
-  - Test coverage: 67 comprehensive tests across SSH/SSL proxy features + 38 tests for wildcard FQDN (12 passing read tests)
+- **Custom Wrappers**: Build your own convenience wrappers for common operations (see [Custom Wrappers Guide](https://hfortix.readthedocs.io/en/latest/fortios/guides/custom-wrappers.html))
+- **FortiManager Proxy**: Route API calls through FortiManager to manage multiple devices
 - **Automatic Retry Logic**: Built-in retry mechanism with exponential backoff for transient failures
 - **HTTP/2 Support**: Modern HTTP client with connection multiplexing for improved performance
 - **Circuit Breaker**: Prevents cascade failures with automatic recovery
-- **Simplified APIs**: Auto-conversion for common patterns (e.g., address group members)
 - **Performance Testing**: Built-in utility to test and optimize your FortiGate performance
+- **Full Type Safety**: Complete type hints with .pyi stubs for IDE autocomplete
 
 ## 📁 Project Structure
 
@@ -639,21 +619,19 @@ hfortix/
 ### Getting Started
 
 - **[QUICKSTART.md](QUICKSTART.md)** - Quick reference guide with examples
+- **[ReadTheDocs](https://hfortix.readthedocs.io/)** - Complete online documentation
 - **[docs/SECURITY.md](docs/SECURITY.md)** - Security best practices and audit results
 
 ### Feature Guides
 
-#### Convenience Wrappers (Start Here!)
-- **[docs/fortios/wrappers/CONVENIENCE_WRAPPERS.md](docs/fortios/wrappers/CONVENIENCE_WRAPPERS.md)** - **Overview of all convenience wrappers** (policies, shapers, schedules, services, SSH/SSL proxy) with common patterns and examples
-- **[docs/fortios/wrappers/FIREWALL_POLICY_WRAPPER.md](docs/fortios/wrappers/FIREWALL_POLICY_WRAPPER.md)** - Detailed firewall policy API reference (150+ parameters)
-- **[docs/fortios/wrappers/SHAPER_WRAPPERS.md](docs/fortios/wrappers/SHAPER_WRAPPERS.md)** - Detailed traffic shaper API reference (per-IP and traffic shapers)
-- **[docs/fortios/wrappers/SCHEDULE_WRAPPERS.md](docs/fortios/wrappers/SCHEDULE_WRAPPERS.md)** - Schedule management reference (onetime, recurring, groups)
-- **[docs/fortios/wrappers/SSH_SSL_PROXY_WRAPPERS.md](docs/fortios/wrappers/SSH_SSL_PROXY_WRAPPERS.md)** - SSH/SSL proxy configuration with **FortiOS API limitations** documented
-- **[docs/fortios/ERROR_HANDLING_CONFIG.md](docs/fortios/ERROR_HANDLING_CONFIG.md)** - Configurable error handling for wrappers
+#### Core Guides
+- **[Custom Wrappers Guide](https://hfortix.readthedocs.io/en/latest/fortios/guides/custom-wrappers.html)** - Create your own convenience wrappers with examples
+- **[FortiManager Proxy Guide](https://hfortix.readthedocs.io/en/latest/fortios/guides/fmg-proxy.html)** - Manage multiple devices through FortiManager
+- **[Endpoint Methods](https://hfortix.readthedocs.io/en/latest/fortios/user-guide/endpoint-methods.html)** - Available HTTP methods (.get, .post, .put, .delete, .set)
+- **[docs/fortios/ERROR_HANDLING_CONFIG.md](docs/fortios/ERROR_HANDLING_CONFIG.md)** - Configurable error handling
 
 #### Framework & Advanced Features
 - **[docs/fortios/VALIDATION_GUIDE.md](docs/fortios/VALIDATION_GUIDE.md)** - Using the validation framework (832 validators)
-- **[docs/archive/BUILDER_PATTERN_GUIDE.md](docs/archive/BUILDER_PATTERN_GUIDE.md)** - Builder pattern implementation details
 - **[docs/fortios/ASYNC_GUIDE.md](docs/fortios/ASYNC_GUIDE.md)** - Async/await patterns and best practices
 - **[docs/fortios/FILTERING_GUIDE.md](docs/fortios/FILTERING_GUIDE.md)** - FortiOS filtering with 50+ examples
 - **[docs/fortios/PERFORMANCE_TESTING.md](docs/fortios/PERFORMANCE_TESTING.md)** - Performance testing and optimization
@@ -665,6 +643,7 @@ hfortix/
 
 ### API Reference
 
+- **[API Reference](https://hfortix.readthedocs.io/en/latest/fortios/api-reference/index.html)** - Complete API endpoint reference (1,219 endpoints)
 - **[docs/fortios/ENDPOINT_METHODS.md](docs/fortios/ENDPOINT_METHODS.md)** - Complete API method reference
 - **[API_COVERAGE.md](API_COVERAGE.md)** - Detailed API implementation status
 - **[CHANGELOG.md](CHANGELOG.md)** - Complete version history
