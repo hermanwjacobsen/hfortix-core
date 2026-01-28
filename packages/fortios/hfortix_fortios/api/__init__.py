@@ -81,17 +81,16 @@ class API:
             - Example: fgt.api.service.system.get()
 
         utils: Utility functions for testing and diagnostics
-
+        
             - Performance testing and benchmarking
             - Connection pool validation
             - Device profiling and recommendations
             - Example: fgt.api.utils.performance_test()
 
     HTTP Method Guidelines:
-        - **POST**: Create new configuration objects (returns 404 if already
-        exists)
-        - **PUT**: Update existing configuration objects (returns 404 if not
-        found)
+    
+        - **POST**: Create new configuration objects (returns 404 if already exists)
+        - **PUT**: Update existing configuration objects (returns 404 if not found)
         - **GET**: Retrieve data (config, monitoring, logs) - read-only
         - **DELETE**: Remove configuration objects (returns 404 if not found)
 

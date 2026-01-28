@@ -112,24 +112,74 @@ fmg = FortiManagerProxy(
     adom="root"
 )
 
-# Create a proxy client for a specific device
-fgt = fmg.proxy(device="firewall-01", vdom="root")
+# Login (or use context manager for auto login/logout)
+fmg.login()
 
-# Use normal FortiOS API - routed through FortiManager!
-address = fgt.api.cmdb.firewall.address.post(
-    name="webserver",
-    subnet="192.168.1.100 255.255.255.255",
-    comment="Managed via FMG"
-)
+try:
+    # Create a proxy client for a specific device
+    fgt = fmg.proxy(device="firewall-01", vdom="root")
 
-# Manage multiple devices
-fw1 = fmg.proxy(device="firewall-01")
-fw2 = fmg.proxy(device="firewall-02")
-fw1.api.cmdb.firewall.address.post(name="test", subnet="10.1.0.0 255.255.255.0")
-fw2.api.cmdb.firewall.address.post(name="test", subnet="10.2.0.0 255.255.255.0")
+    # Use normal FortiOS API - routed through FortiManager!
+    address = fgt.api.cmdb.firewall.address.post(
+        name="webserver",
+        subnet="192.168.1.100 255.255.255.255",
+        comment="Managed via FMG"
+    )
+
+    # Manage multiple devices
+    fw1 = fmg.proxy(device="firewall-01")
+    fw2 = fmg.proxy(device="firewall-02")
+    fw1.api.cmdb.firewall.address.post(name="test", subnet="10.1.0.0 255.255.255.0")
+    fw2.api.cmdb.firewall.address.post(name="test", subnet="10.2.0.0 255.255.255.0")
+finally:
+    fmg.logout()
 ```
 
 See [FortiManager Proxy Guide](/fortios/guides/fmg-proxy.md) for more details.
+
+## Using FortiProxy
+
+HFortix also supports FortiProxy devices using the same API:
+
+```python
+from hfortix_fortios import FortiOS
+
+# Connect to FortiProxy (same as FortiGate)
+fproxy = FortiOS(
+    host="fortiproxy.example.com",
+    token="your-api-token",
+    verify=True
+)
+
+# Configure web filter profile
+profile = fproxy.api.cmdb.webfilter.profile.post(
+    name="corporate-policy",
+    comment="Corporate web filtering",
+    web={
+        "urlfilter-table": 1,
+        "content-header-list": 1,
+        "blocklist": "enable"
+    }
+)
+
+# Apply to firewall policy
+policy = fproxy.api.cmdb.firewall.policy.post(
+    name="Web-Filter-Policy",
+    srcintf=[{"name": "port1"}],
+    dstintf=[{"name": "port2"}],
+    srcaddr=[{"name": "all"}],
+    dstaddr=[{"name": "all"}],
+    service=[{"name": "HTTP"}, {"name": "HTTPS"}],
+    action="accept",
+    webfilter_profile="corporate-policy"
+)
+
+# Monitor proxy statistics
+stats = fproxy.api.monitor.web_proxy.stats.get()
+print(f"Active sessions: {stats.get('sessions', 0)}")
+```
+
+**Note**: FortiProxy uses the same FortiOS API, so all endpoints work identically.
 
 ## Flexible Interface
 

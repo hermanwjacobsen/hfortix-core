@@ -36,6 +36,62 @@ address = fgt.api.cmdb.firewall.address.post(
     subnet="192.168.1.100 255.255.255.255",
     comment="Production web server"
 )
+
+# Session is automatically established on first API call
+# Or manually login/logout:
+fmg.login()
+
+# ... perform operations ...
+
+fmg.logout()
+```
+
+### Manual Session Management
+
+By default, FortiManager sessions are managed automatically. For explicit control:
+
+```python
+from hfortix_fortios import FortiManagerProxy
+
+# Create connection (no session yet)
+fmg = FortiManagerProxy(
+    host="fortimanager.example.com",
+    username="admin",
+    password="password",
+    adom="root"
+)
+
+# Explicitly login
+fmg.login()
+
+try:
+    # Create proxy clients and perform operations
+    fgt = fmg.proxy(device="firewall-01", vdom="root")
+    fgt.api.cmdb.firewall.address.post(
+        name="webserver",
+        subnet="192.168.1.100 255.255.255.255"
+    )
+finally:
+    # Always logout when done
+    fmg.logout()
+```
+
+**Context Manager** (Recommended):
+
+```python
+# Automatic login/logout with context manager
+with FortiManagerProxy(
+    host="fortimanager.example.com",
+    username="admin",
+    password="password",
+    adom="root"
+) as fmg:
+    fgt = fmg.proxy(device="firewall-01", vdom="root")
+    fgt.api.cmdb.firewall.address.post(
+        name="webserver",
+        subnet="192.168.1.100 255.255.255.255"
+    )
+    # logout() called automatically on exit
 ```
 
 ### Using Different ADOMs

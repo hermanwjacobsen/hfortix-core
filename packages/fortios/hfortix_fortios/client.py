@@ -979,9 +979,9 @@ class FortiOS:
         Args:
             config: Dictionary containing the API request configuration
                 with:
+                
                 - method: HTTP method (GET, POST, PUT, DELETE)
-                - url: Full API URL path
-                    (e.g., "/api/v2/cmdb/firewall/address")
+                - url: Full API URL path (e.g., "/api/v2/cmdb/firewall/address")
                 - params: Optional query parameters dict
                 - data: Optional request body for POST/PUT
 
@@ -1570,11 +1570,9 @@ class FortiOS:
         It ensures that all network connections and sessions are closed.
 
         Usage:
-
-            - Call `await fgt.aclose()` when you are done with the client in
-            async mode.
-            - Prefer using the async context manager (`async with`) for
-            automatic cleanup.
+        
+        - Call `await fgt.aclose()` when you are done with the client in async mode.
+        - Prefer using the async context manager (`async with`) for automatic cleanup.
 
         Example:
             >>> fgt = FortiOS("192.0.2.10", token="...", mode="async")
