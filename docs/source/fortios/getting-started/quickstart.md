@@ -70,9 +70,9 @@ interfaces = fgt.api.cmdb.system.interface.get()
 
 ```python
 # Create a firewall address
-result = fgt.api.cmdb.firewall.address.create(
+result = fgt.api.cmdb.firewall.address.post(
     name='web-server',
-    subnet='192.0.2.100/32',
+    subnet='192.0.2.100 255.255.255.255',
     comment='Production web server'
 )
 
@@ -83,9 +83,9 @@ print(f"Created: {result}")
 
 ```python
 # Update the address
-result = fgt.api.cmdb.firewall.address.update(
-    name='web-server',
-    comment='Updated web server address'
+result = fgt.api.cmdb.firewall.address.put(
+    mkey='web-server',
+    payload_dict={'comment': 'Updated web server address'}
 )
 ```
 
@@ -93,70 +93,70 @@ result = fgt.api.cmdb.firewall.address.update(
 
 ```python
 # Delete the address
-result = fgt.api.cmdb.firewall.address.delete(name='web-server')
+result = fgt.api.cmdb.firewall.address.delete(mkey='web-server')
 print("Address deleted successfully")
 ```
 
-## Using Convenience Wrappers
+## Using FortiManager Proxy
 
-HFortix provides high-level wrappers for common tasks:
+Manage multiple FortiGate devices through FortiManager:
 
 ```python
-# Create a firewall policy (simplified)
-policy = fgt.firewall.policy.create(
-    name='Allow-Web-Traffic',
-    srcintf=['port1'],
-    dstintf=['port2'],
-    srcaddr=['all'],
-    dstaddr=['web-server'],
-    service=['HTTP', 'HTTPS'],
-    action='accept',
-    nat=True
+from hfortix_fortios import FortiManagerProxy
+
+# Connect to FortiManager
+fmg = FortiManagerProxy(
+    host="fortimanager.example.com",
+    username="admin",
+    password="password",
+    adom="root"
 )
 
-# Create a schedule
-schedule = fgt.firewall.schedule_recurring.create(
-    name='business-hours',
-    day=['monday', 'tuesday', 'wednesday', 'thursday', 'friday'],
-    start='08:00',
-    end='18:00'
+# Create a proxy client for a specific device
+fgt = fmg.proxy(device="firewall-01", vdom="root")
+
+# Use normal FortiOS API - routed through FortiManager!
+address = fgt.api.cmdb.firewall.address.post(
+    name="webserver",
+    subnet="192.168.1.100 255.255.255.255",
+    comment="Managed via FMG"
 )
 
-# Create a custom service
-service = fgt.firewall.service_custom.create(
-    name='custom-app',
-    protocol='TCP',
-    tcp_portrange='8080-8090',
-    comment='Custom application service'
-)
+# Manage multiple devices
+fw1 = fmg.proxy(device="firewall-01")
+fw2 = fmg.proxy(device="firewall-02")
+fw1.api.cmdb.firewall.address.post(name="test", subnet="10.1.0.0 255.255.255.0")
+fw2.api.cmdb.firewall.address.post(name="test", subnet="10.2.0.0 255.255.255.0")
 ```
 
-## Dual-Pattern Interface
+See [FortiManager Proxy Guide](/fortios/guides/fmg-proxy.md) for more details.
+
+## Flexible Interface
 
 HFortix supports both dictionary and keyword-based syntax:
 
 ```python
 # Method 1: Keyword arguments (recommended for readability)
-fgt.api.cmdb.firewall.address.create(
+fgt.api.cmdb.firewall.address.post(
     name='server-1',
-    subnet='10.0.1.100/32',
+    subnet='10.0.1.100 255.255.255.255',
     comment='Server'
 )
 
-# Method 2: Dictionary (good for templates/configs)
+# Method 2: Dictionary with payload_dict
 config = {
     'name': 'server-1',
-    'subnet': '10.0.1.100/32',
+    'subnet': '10.0.1.100 255.255.255.255',
     'comment': 'Server'
 }
-fgt.api.cmdb.firewall.address.create(data_dict=config)
+fgt.api.cmdb.firewall.address.post(payload_dict=config)
 
-# Method 3: Mixed (template + overrides)
-base_config = load_from_file('template.json')
-fgt.api.cmdb.firewall.address.create(
-    data_dict=base_config,
-    name='server-2',  # Override template value
-    comment='Custom comment'
+# Method 3: Using request() for zero-translation
+# Copy JSON directly from FortiGate GUI!
+fgt.request(
+    method='POST',
+    path='/api/v2/cmdb/firewall/address',
+    data=config
 )
 ```
 
@@ -165,22 +165,18 @@ fgt.api.cmdb.firewall.address.create(
 Always wrap API calls in try-except blocks:
 
 ```python
-from hfortix import (
-    APIError,
-    ResourceNotFoundError,
-    DuplicateEntryError,
-    EntryInUseError
-)
+from hfortix_core.exceptions import HTTPError, NotFoundError
 
 try:
-    result = fgt.api.cmdb.firewall.address.create(
+    result = fgt.api.cmdb.firewall.address.post(
         name='test-addr',
-        subnet='10.0.0.1/32'
+        subnet='10.0.0.1 255.255.255.255'
     )
-except DuplicateEntryError:
-    print("Address already exists!")
-except APIError as e:
-    print(f"API Error: {e.message}")
+except HTTPError as e:
+    if e.status_code == 424:
+        print("Address already exists!")
+    else:
+        print(f"API Error {e.status_code}: {e.message}")
 except Exception as e:
     print(f"Unexpected error: {e}")
 ```
@@ -223,11 +219,11 @@ sessions = fgt.api.monitor.firewall.session.get()
 
 Now that you're up and running, explore more:
 
-- **[User Guide](/fortios/user-guide/fortios-overview.md)** - Comprehensive documentation
+- **[FortiManager Proxy](/fortios/guides/fmg-proxy.md)** - Manage multiple devices through FortiManager
+- **[Custom Wrappers](/fortios/guides/custom-wrappers.md)** - Create your own convenience wrappers
+- **[Endpoint Methods](/fortios/user-guide/endpoint-methods.md)** - Learn about .get(), .post(), .put(), .delete(), .set()
 - **[Error Handling](/fortios/user-guide/error-handling.md)** - Advanced error handling patterns
-- **[Validation](/fortios/user-guide/validation.md)** - Input validation
-- **[Examples](/fortios/examples/index.md)** - More code examples
-- **[API Reference](/fortios/api-reference/index.rst)** - Complete API documentation
+- **[API Reference](/fortios/api-reference/index.rst)** - Complete API documentation (1,219 endpoints)
 
 ## Getting Help
 
