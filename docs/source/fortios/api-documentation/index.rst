@@ -1,53 +1,43 @@
 API Documentation
 =================
 
-Complete API documentation for FortiOS including high-level convenience wrappers and low-level endpoint reference.
+Complete API documentation for FortiOS with 1,219 endpoints across CMDB, Monitor, Log, and Service categories.
 
-Choose Your Interface
----------------------
+API Interface
+-------------
 
-.. grid:: 2
+.. grid:: 1
     :gutter: 3
-
-    .. grid-item-card:: 🎯 Convenience Wrappers
-        :link: /fortios/convenience-wrappers/index
-        :link-type: doc
-
-        **Start here!** High-level wrappers with intuitive methods.
-        
-        Use ``get()``, ``create()``, ``update()``, ``delete()``
 
     .. grid-item-card:: 📚 API Reference
         :link: /fortios/api-reference/index
         :link-type: doc
 
-        Low-level endpoint documentation (1,219 endpoints).
+        Complete endpoint documentation (1,219 endpoints).
         
-        Direct HTTP methods: GET, POST, PUT, DELETE
+        Direct HTTP methods: .get(), .post(), .put(), .delete(), .set()
 
-Quick Comparison
-----------------
+API Usage Patterns
+------------------
 
-**Convenience Wrappers** - High-level, Pythonic interface:
+**Direct API Access** - Use the typed endpoint methods:
 
 .. code-block:: python
 
-   # Simple and intuitive
-   fgt.firewall.policy.create(
+   # Create a firewall policy
+   fgt.api.cmdb.firewall.policy.post(
        name='Allow-Web',
-       srcintf=['port1'],
-       dstintf=['port2'],
-       service=['HTTP', 'HTTPS'],
+       srcintf=[{'name': 'port1'}],
+       dstintf=[{'name': 'port2'}],
+       service=[{'name': 'HTTP'}, {'name': 'HTTPS'}],
        action='accept'
    )
 
-**API Reference** - Low-level, direct API access:
-
-.. code-block:: python
-
-   # More control, requires API knowledge
-   fgt.api.cmdb.firewall.policy.post(
-       json={
+   # Or use request() for zero-translation
+   fgt.request(
+       method='POST',
+       path='/api/v2/cmdb/firewall/policy',
+       data={
            'name': 'Allow-Web',
            'srcintf': [{'name': 'port1'}],
            'dstintf': [{'name': 'port2'}],
@@ -56,36 +46,48 @@ Quick Comparison
        }
    )
 
+**Custom Wrappers** - Build your own convenience abstractions:
+
+.. code-block:: python
+
+   # Create your own wrapper functions
+   def create_policy(fgt, name, src, dst, services):
+       return fgt.api.cmdb.firewall.policy.post(
+           name=name,
+           srcintf=[{'name': src}],
+           dstintf=[{'name': dst}],
+           service=[{'name': s} for s in services],
+           action='accept'
+       )
+
+   # Use your wrapper
+   create_policy(fgt, 'Allow-Web', 'port1', 'port2', ['HTTP', 'HTTPS'])
+
+See :doc:`/fortios/guides/custom-wrappers` for complete custom wrapper examples.
+
 Documentation Sections
 ----------------------
 
 .. toctree::
    :maxdepth: 3
 
-   ../convenience-wrappers/index
    ../api-reference/index
 
-Convenience Wrappers
---------------------
-
-High-level wrappers for common operations:
-
-- **Firewall Policies** - Create, update, delete policies with validation
-- **Schedules** - One-time, recurring, and group schedules
-- **Services** - Custom services and service groups
-- **Traffic Shapers** - Bandwidth control and QoS
-- **IP/MAC Binding** - Static IP-MAC assignments
-
-See :doc:`convenience-wrappers` for detailed documentation.
-
-API Reference
--------------
+API Endpoint Categories
+-----------------------
 
 Complete endpoint documentation organized by category:
 
-- **CMDB API** - 37 configuration categories (500+ endpoints)
-- **Monitor API** - 32 status/statistics categories (200+ endpoints)
-- **Log API** - 5 log categories
-- **Service API** - 3 service categories (21 methods)
+- **CMDB API** - 886 configuration endpoints across 37 categories
+- **Monitor API** - 295 status/statistics endpoints across 32 categories
+- **Log API** - 38 log endpoints across 5 categories
+- **Service API** - Special service endpoints
 
-See :doc:`api-reference` for complete endpoint documentation.
+See :doc:`../api-reference/index` for complete endpoint documentation.
+
+Related Documentation
+---------------------
+
+- :doc:`/fortios/guides/custom-wrappers` - Create your own convenience wrappers
+- :doc:`/fortios/user-guide/endpoint-methods` - Available HTTP methods
+- :doc:`/fortios/guides/fmg-proxy` - FortiManager proxy usage
