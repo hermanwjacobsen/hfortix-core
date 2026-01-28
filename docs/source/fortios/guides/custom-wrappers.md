@@ -42,9 +42,9 @@ class MyFortiGate(FortiOS):
 # Usage
 fgt = MyFortiGate(host="192.168.1.99", api_token="your-token")
 
-# Much shorter!
-address = fgt.addresses.create(name="server", subnet="10.0.1.5 255.255.255.255")
-policies = fgt.policies.list()
+# Much shorter! (Note: this uses the property shortcuts, not built-in methods)
+address = fgt.addresses.post(name="server", subnet="10.0.1.5 255.255.255.255")
+policies = fgt.policies.get()
 ```
 
 ## Wrapper Functions
@@ -73,7 +73,7 @@ def create_address_group(
     Returns:
         API response with created group details
     """
-    return fgt.api.cmdb.firewall.addrgrp.create(
+    return fgt.api.cmdb.firewall.addrgrp.post(
         name=name,
         member=[{"name": m} for m in members],
         comment=comment
@@ -127,7 +127,7 @@ class FirewallManager:
         if allow_https:
             services.append({"name": "HTTPS"})
         
-        return self.policies.create(
+        return self.policies.post(
             name=name,
             srcintf=[{"name": z} for z in source_zones],
             dstintf=[{"name": z} for z in dest_zones],
@@ -213,7 +213,7 @@ class AsyncFirewallManager:
     ) -> List[dict]:
         """Create multiple addresses concurrently."""
         tasks = [
-            self.fgt.api.cmdb.firewall.address.create(**addr)
+            self.fgt.api.cmdb.firewall.address.post(**addr)
             for addr in addresses
         ]
         return await asyncio.gather(*tasks)
@@ -290,21 +290,21 @@ class BranchOfficeManager:
         results = {}
         
         # Create address object
-        results['address'] = self.fgt.api.cmdb.firewall.address.create(
+        results['address'] = self.fgt.api.cmdb.firewall.address.post(
             name=f"{branch.name}-subnet",
             subnet=branch.subnet,
             comment=f"{branch.name} branch office network"
         )
         
         # Create address group
-        results['group'] = self.fgt.api.cmdb.firewall.addrgrp.create(
+        results['group'] = self.fgt.api.cmdb.firewall.addrgrp.post(
             name=f"{branch.name}-networks",
             member=[{"name": f"{branch.name}-subnet"}],
             comment=f"{branch.name} branch networks"
         )
         
         # Create policy
-        results['policy'] = self.fgt.api.cmdb.firewall.policy.create(
+        results['policy'] = self.fgt.api.cmdb.firewall.policy.post(
             name=f"{branch.name}-to-HQ",
             srcintf=[{"name": "vpn-tunnel"}],
             dstintf=[{"name": "internal"}],
@@ -381,7 +381,7 @@ class ValidatedFirewallManager:
                 raise
         
         # Create if validation passes
-        return self.fgt.api.cmdb.firewall.address.create(
+        return self.fgt.api.cmdb.firewall.address.post(
             name=name,
             subnet=subnet,
             comment=comment
@@ -453,7 +453,7 @@ class FortiOSHelper:
         **kwargs
     ) -> Dict[str, Any]:
         """Create a simple any-to-any policy with specified services."""
-        return self.pol.create(
+        return self.pol.post(
             name=name,
             srcintf=[{"name": src_zone}],
             dstintf=[{"name": dst_zone}],
@@ -475,7 +475,7 @@ class FortiOSHelper:
 # Usage
 with FortiOSHelper(host="192.168.1.99", api_token="your-token") as fgt:
     # Use shortcuts
-    addr = fgt.addr.create(name="test", subnet="10.0.0.1 255.255.255.255")
+    addr = fgt.addr.post(name="test", subnet="10.0.0.1 255.255.255.255")
     
     # Use helpers
     policy = fgt.create_simple_policy(

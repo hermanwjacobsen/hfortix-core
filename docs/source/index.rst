@@ -74,14 +74,14 @@ Quick Example - FortiOS
    fgt = FortiOS("192.168.1.99", token="your_token_here")
 
    # Create firewall address - Direct API method
-   fgt.api.cmdb.firewall.address.create(
+   fgt.api.cmdb.firewall.address.post(
        name='web-server',
        subnet='192.0.2.100/32',
        comment='Production web server'
    )
 
    # Create firewall policy - Direct API method
-   fgt.api.cmdb.firewall.policy.create(
+   fgt.api.cmdb.firewall.policy.post(
        name='Allow-Web',
        srcintf=[{'name': 'internal'}],
        dstintf=[{'name': 'wan1'}],

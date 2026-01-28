@@ -31,7 +31,7 @@ fmg = FortiManagerProxy(
 fgt = fmg.proxy(device="firewall-01", vdom="root")
 
 # Use normal FortiOS API syntax
-address = fgt.api.cmdb.firewall.address.create(
+address = fgt.api.cmdb.firewall.address.post(
     name="webserver",
     subnet="192.168.1.100 255.255.255.255",
     comment="Production web server"
@@ -61,7 +61,7 @@ The proxied client supports all standard FortiOS API methods:
 
 ```python
 # Create resources
-policy = fgt.api.cmdb.firewall.policy.create(
+policy = fgt.api.cmdb.firewall.policy.post(
     name="Allow-Web",
     srcintf=[{"name": "port1"}],
     dstintf=[{"name": "port2"}],
@@ -142,15 +142,15 @@ fmg = FortiManagerProxy(
 
 # Device 1
 fw1 = fmg.proxy(adom="production", device="firewall-01", vdom="root")
-fw1.api.cmdb.firewall.address.create(name="test1", subnet="10.1.0.0 255.255.255.0")
+fw1.api.cmdb.firewall.address.post(name="test1", subnet="10.1.0.0 255.255.255.0")
 
 # Device 2
 fw2 = fmg.proxy(adom="production", device="firewall-02", vdom="root")
-fw2.api.cmdb.firewall.address.create(name="test2", subnet="10.2.0.0 255.255.255.0")
+fw2.api.cmdb.firewall.address.post(name="test2", subnet="10.2.0.0 255.255.255.0")
 
 # Device 3 in different ADOM
 fw3 = fmg.proxy(adom="development", device="firewall-dev", vdom="root")
-fw3.api.cmdb.firewall.address.create(name="test3", subnet="10.3.0.0 255.255.255.0")
+fw3.api.cmdb.firewall.address.post(name="test3", subnet="10.3.0.0 255.255.255.0")
 ```
 
 ## Error Handling
@@ -161,7 +161,7 @@ Handle errors the same way as direct FortiOS connections:
 from hfortix_core.exceptions import HTTPError
 
 try:
-    fgt.api.cmdb.firewall.address.create(
+    fgt.api.cmdb.firewall.address.post(
         name="duplicate",
         subnet="192.168.1.0 255.255.255.0"
     )
