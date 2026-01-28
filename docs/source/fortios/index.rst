@@ -6,23 +6,35 @@ Complete Python SDK for FortiOS/FortiGate automation with 100% API coverage (1,2
 .. grid:: 2
     :gutter: 3
 
-    .. grid-item-card:: 🚀 Getting Started
+    .. grid-item-card:: ⚡ Quick Start
         :link: getting-started/quickstart
         :link-type: doc
 
-        Install and connect to your FortiGate in minutes.
+        Get up and running in 5 minutes - install, connect, and make your first API calls.
 
-    .. grid-item-card:: 📖 User Guide
+    .. grid-item-card:: 🎨 Custom Wrappers
+        :link: guides/custom-wrappers
+        :link-type: doc
+
+        Build your own convenience wrappers - aliases, validation, domain-specific abstractions.
+
+    .. grid-item-card:: � User Guide
         :link: user-guide/index
         :link-type: doc
 
         Learn core concepts and patterns.
 
-    .. grid-item-card:: 📚 API Documentation
+    .. grid-item-card:: � API Documentation
         :link: api-documentation/index
         :link-type: doc
 
         Complete endpoint reference and API patterns.
+
+    .. grid-item-card:: � FortiManager Proxy
+        :link: guides/fmg-proxy
+        :link-type: doc
+
+        Manage multiple FortiGates through FortiManager with seamless API routing.
 
     .. grid-item-card:: 📋 Topic Guides
         :link: guides/index
