@@ -1,6 +1,6 @@
 # HFortix - Quick Reference (v0.5.130)
 
-⚠️ **Breaking Changes in v0.5.0**: Convenience wrappers have been removed. Use direct API access via `fgt.api.*` instead.
+⚠️ **Breaking Changes in v0.5.0**: Built-in convenience wrappers have been removed. Use direct API access via `fgt.api.*` instead. You can [create your own custom wrappers](https://hfortix.readthedocs.io/en/latest/fortios/guides/custom-wrappers.html) if needed.
 
 ✨ **New in v0.5.130**: Context-aware field name conversion, comprehensive system monitor endpoint tests (22 tests across 11 files)!
 
