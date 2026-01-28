@@ -1,5 +1,53 @@
 # [Unreleased]
 
+# [0.5.147] - 2026-01-28
+
+### Documentation
+
+- **README: Major Simplification**: Drastically shortened README from 2,337 lines to ~360 lines (85% reduction)
+  - Removed extensive version history (available in CHANGELOG.md)
+  - Removed detailed feature descriptions (available on ReadTheDocs)
+  - Focused on essential quick start, installation, and examples
+  - Added prominent ReadTheDocs links throughout
+  - Better GitHub presentation for new users
+
+- **README: Enhanced Content**: Added missing important features while keeping it concise
+  - **Beta status warning** with version and status information
+  - **FortiObject response access patterns** showing attribute vs dictionary access, single object returns, nested support
+  - **Authentication options** with 3 methods: API key, username/password, environment variables
+  - **Advanced features section** with Pydantic models, action methods (move/clone/exists), read-only mode, operation tracking
+  - **Enhanced documentation links** including QUICKSTART.md, ASYNC_GUIDE.md, PERFORMANCE_TESTING.md, SECURITY.md
+  - **Installation options** showing meta-package alternatives (`hfortix[fortios]`, `hfortix[all]`)
+  - **Expanded Key Capabilities** listing 9 specific advanced features with Pydantic model count
+
+- **README: API Coverage Clarity**: Improved table to distinguish endpoint coverage from response field types
+  - Added "Endpoint Coverage" column showing 100% across all categories
+  - Renamed "Type Coverage" to "Response Field Types" for clarity
+  - Clear explanation that all 1,348 endpoints are functional
+  - Autocomplete availability clearly indicated per category
+
+- **README: Code Examples**: All examples now use synchronous code (no async)
+  - Simpler for beginners to understand
+  - Async support mentioned in features but not demonstrated
+  - Authentication examples with environment variables
+  - FortiManager proxy example updated to synchronous
+
+- **TODO.md Updates**:
+  - Updated version references from v0.5.130 to v0.5.146+
+  - Added recent improvements section (v0.5.146, v0.5.145, v0.5.130)
+  - Added FortiManager Batch Operations planning section
+  - FortiManager multi-device batch API design documented (~3 weeks effort)
+
+### Changed
+
+- **Version Bumped**: All packages updated to 0.5.147
+  - `hfortix-core`: 0.5.146 → 0.5.147
+  - `hfortix-fortios`: 0.5.146 → 0.5.147
+  - `hfortix` (meta): 0.5.146 → 0.5.147
+  - Updated all internal dependencies to reference 0.5.147
+
+# [0.5.146] - 2026-01-24
+
 ### Fixed
 
 - **Generator: Module Alias Resolution in Type Stubs**: Fixed critical bug where module aliases in category `__init__.py` files were not being resolved correctly when generating `.pyi` type stub files.
