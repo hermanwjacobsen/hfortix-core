@@ -1,14 +1,10 @@
-# HFortix - Quick Reference (v0.5.130)
+# HFortix - Quick Reference (v0.5.148)
 
 ⚠️ **Breaking Changes in v0.5.0**: Built-in convenience wrappers have been removed. Use direct API access via `fgt.api.*` instead. You can [create your own custom wrappers](https://hfortix.readthedocs.io/en/latest/fortios/guides/custom-wrappers.html) if needed.
 
-✨ **New in v0.5.130**: Context-aware field name conversion, comprehensive system monitor endpoint tests (22 tests across 11 files)!
+✨ **New in v0.5.148**: Comprehensive documentation updates, improved response object documentation, FortiManager Proxy clarification!
 
-✨ **New in v0.5.129**: Schema-driven field preservation with 204 underscore fields auto-detected!
-
-✨ **New in v0.5.89**: Generator fixes for nested objects, new service/monitor/emailfilter endpoints with 52 new tests!
-
-✨ **New in v0.5.77**: FortiManager Proxy Support, Response timing properties, silent 404 for exists()!
+✨ **New in v0.5.130**: Context-aware field name conversion, comprehensive system monitor endpoint tests!
 
 ## Installation
 
@@ -441,7 +437,32 @@ See `exceptions_forti.py` for complete list of 387 error codes.
 
 ## Advanced Features
 
+### Response Object Properties
+
+All API responses return `FortiObject` instances with useful properties:
+
+```python
+result = fgt.api.cmdb.firewall.address.get()
+
+# Status information
+result.http_status_code    # HTTP status (200, 404, etc.)
+result.http_status         # 'success' or 'error'
+result.fgt_revision_changed  # True if config actually changed (useful for PUT)
+
+# Response timing
+result.serial              # Device serial number
+result.vdom                # VDOM name
+result.build               # FortiOS build number
+
+# Data access methods
+result.dict                # Returns dict (same data)
+result.json                # Returns pretty-printed JSON string
+result.raw                 # Returns full response envelope with metadata
+```
+
 ### FortiManager Proxy (NEW in v0.5.77!)
+
+> **Note:** This is the FortiManager Proxy feature, which routes FortiOS API calls through FortiManager to managed FortiGate devices. This is different from FortiProxy (the web proxy product).
 
 Route FortiOS API calls through FortiManager to managed devices:
 

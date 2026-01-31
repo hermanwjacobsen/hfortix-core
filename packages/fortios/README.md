@@ -40,10 +40,10 @@ fgt = FortiOS(
     verify=False
 )
 
-# Get system status (Monitor endpoint - GET)
+# Get system status (Monitor endpoint - use dict access for untyped fields)
 status = fgt.api.monitor.system.status.get()
-print(f"Hostname: {status.hostname}")
-print(f"Version: {status.version}")
+print(f"Hostname: {status['hostname']}")
+print(f"Model: {status['model']}")
 
 # Create a firewall address (CMDB endpoint - POST)
 fgt.api.cmdb.firewall.address.post(
@@ -316,11 +316,10 @@ fgt.api.cmdb.vpn.ipsec.phase2_interface.post(
 ### System Monitoring
 
 ```python
-# Get system status
+# Get system status (use dict access for untyped Monitor fields)
 status = fgt.api.monitor.system.status.get()
-print(f"FortiOS {status.version} build {status.build}")
-print(f"Serial: {status.serial}")
-print(f"Hostname: {status.hostname}")
+print(f"Hostname: {status['hostname']}")
+print(f"Model: {status['model']} ({status['model_number']})")
 
 # Get resource usage
 resources = fgt.api.monitor.system.resource.usage.get()

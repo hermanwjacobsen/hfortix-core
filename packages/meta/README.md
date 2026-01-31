@@ -66,10 +66,10 @@ fgt = FortiOS(
     verify=False
 )
 
-# Get system status (Monitor endpoint - GET)
+# Get system status (Monitor endpoint - use dict access for untyped fields)
 status = fgt.api.monitor.system.status.get()
-print(f"Hostname: {status.hostname}")
-print(f"Version: {status.version}")
+print(f"Hostname: {status['hostname']}")
+print(f"Model: {status['model']}")
 
 # Create a firewall address (CMDB endpoint - POST)
 fgt.api.cmdb.firewall.address.post(

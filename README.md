@@ -19,9 +19,9 @@ from hfortix_fortios import FortiOS
 # Connect to FortiGate
 fgt = FortiOS(host="192.168.1.99", token="your-api-token")
 
-# Get system status
+# Get system status (Monitor endpoint - use dict access for untyped fields)
 status = fgt.api.monitor.system.status.get()
-print(f"Hostname: {status['hostname']}, Version: {status['version']}")
+print(f"Hostname: {status['hostname']}, Model: {status['model']}")
 
 # Create firewall address
 fgt.api.cmdb.firewall.address.post(
@@ -64,9 +64,9 @@ print(addr.subnet)  # Full autocomplete ✅
 print(addr['subnet'])  # Also works
 
 # Convert to dict/JSON
-print(addr.dict)      # or addr.to_dict()
-print(addr.json)      # Alias for .dict
-print(addr.raw)       # Raw API response with metadata
+print(addr.dict)      # Dictionary representation
+print(addr.json)      # Pretty-printed JSON string
+print(addr.raw)       # Full API envelope with metadata
 
 # Query by mkey returns SINGLE object (not list)
 addr = fgt.api.cmdb.firewall.address.get(name="server1")
@@ -78,7 +78,7 @@ for member in group.member:
     print(member.name)  # FortiObjects all the way down
 ```
 
-> **Note**: Monitor and Log endpoints may have incomplete response field documentation due to FortiOS API schema limitations. Use `.json` or `.raw` to inspect the full response, then access fields via dictionary notation: `response['field_name']`. Field names match FNDN documentation with hyphens (`-`) converted to underscores (`_`).
+> **Note**: Monitor and Log endpoints have incomplete response field types due to FortiOS API schema limitations. Attribute access (e.g., `status.hostname`) works at runtime but may show type errors in your IDE. Use dictionary access (`status['hostname']`) to avoid IDE warnings, or use `.json`/`.raw` to inspect the full response. Field names match FNDN documentation with hyphens (`-`) converted to underscores (`_`).
 
 ### ✅ Modern Python Features
 - **Async/await support** for concurrent operations
@@ -104,9 +104,9 @@ for member in group.member:
 ## Current Status
 
 > **⚠️ BETA STATUS**  
-> Version 0.5.147 is production-ready but remains in beta until v1.0 with comprehensive test coverage.
+> Version 0.5.148 is production-ready but remains in beta until v1.0 with comprehensive test coverage.
 
-**Version**: 0.5.147 (Released: January 28, 2026)  
+**Version**: 0.5.148 (Released: January 31, 2026)  
 **FortiOS Coverage**: 7.6.5 (1,348 endpoints)  
 **Package Size**: ~30 MB (with type stubs)  
 **Status**: Production Ready ✅
@@ -217,7 +217,7 @@ fmg.login(device="fw-branch-01", adom="production")
 # Use same API as FortiOS
 addresses = fmg.api.cmdb.firewall.address.get()
 
-# Monitor operations
+# Monitor operations (use dict access for untyped fields)
 status = fmg.api.monitor.system.status.get()
 print(status['hostname'])
 
@@ -337,16 +337,16 @@ operations = fgt_tracked.get_operations()
 - **Changelog**: [CHANGELOG.md](CHANGELOG.md)
 - **License**: Proprietary (see [LICENSE](LICENSE))
 
-## Latest Release (v0.5.147)
+## Latest Release (v0.5.148)
 
-**January 28, 2026**
+**January 31, 2026**
 
-- ✅ Major README simplification (2,337 → 360 lines, 85% reduction)
-- ✅ Enhanced documentation with authentication options and FortiObject examples
-- ✅ Added missing advanced features (Pydantic models, action methods, read-only mode)
-- ✅ Clarified API coverage with separate endpoint vs. response field type columns
-- ✅ Added environment variable authentication support
-- ✅ Improved documentation links (QUICKSTART.md, ASYNC_GUIDE.md, etc.)
+- ✅ Comprehensive documentation audit (fixed api_key→token, HTTPError→APIError, etc.)
+- ✅ New Response Objects documentation with full property reference
+- ✅ Added .dict, .json, .raw examples to quickstart
+- ✅ Clarified FortiProxy vs FortiManager Proxy
+- ✅ Fixed method names in docs (.list/.update → .get/.put)
+- ✅ Updated all code examples to use attribute access
 
 See [CHANGELOG.md](CHANGELOG.md) for complete version history.
 
