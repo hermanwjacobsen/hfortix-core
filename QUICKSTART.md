@@ -462,7 +462,7 @@ result.raw                 # Returns full response envelope with metadata
 
 ### FortiManager Proxy (NEW in v0.5.77!)
 
-> **Note:** This is the FortiManager Proxy feature, which routes FortiOS API calls through FortiManager to managed FortiGate devices. This is different from FortiProxy (the web proxy product).
+> **Note:** FortiManager Proxy routes FortiOS API calls through FortiManager to managed FortiGate devices.
 
 Route FortiOS API calls through FortiManager to managed devices:
 

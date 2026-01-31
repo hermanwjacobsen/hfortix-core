@@ -344,7 +344,6 @@ operations = fgt_tracked.get_operations()
 - ✅ Comprehensive documentation audit (fixed api_key→token, HTTPError→APIError, etc.)
 - ✅ New Response Objects documentation with full property reference
 - ✅ Added .dict, .json, .raw examples to quickstart
-- ✅ Clarified FortiProxy vs FortiManager Proxy
 - ✅ Fixed method names in docs (.list/.update → .get/.put)
 - ✅ Updated all code examples to use attribute access
 

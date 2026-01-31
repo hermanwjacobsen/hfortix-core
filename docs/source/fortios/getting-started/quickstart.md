@@ -201,50 +201,6 @@ finally:
 
 See [FortiManager Proxy Guide](/fortios/guides/fmg-proxy.md) for more details.
 
-## FortiProxy Appliances
-
-FortiProxy is Fortinet's dedicated web proxy appliance. It uses the same FortiOS-based API,
-so HFortix works with FortiProxy devices using the standard `FortiOS` client:
-
-```python
-from hfortix_fortios import FortiOS
-
-# Connect to FortiProxy (same client as FortiGate)
-fproxy = FortiOS(
-    host="fortiproxy.example.com",
-    token="your-api-token",
-    verify=True
-)
-
-# Configure web filter profile
-profile = fproxy.api.cmdb.webfilter.profile.post(
-    name="corporate-policy",
-    comment="Corporate web filtering"
-)
-
-# Apply to firewall policy
-policy = fproxy.api.cmdb.firewall.policy.post(
-    name="Web-Filter-Policy",
-    srcintf=['port1'],
-    dstintf=['port2'],
-    srcaddr=['all'],
-    dstaddr=['all'],
-    service=['HTTP', 'HTTPS'],
-    action="accept",
-    webfilter_profile="corporate-policy"
-)
-
-# Monitor proxy statistics
-stats = fproxy.api.monitor.web_proxy.stats.get()
-print(f"Active sessions: {stats.sessions}")
-```
-
-```{note}
-**FortiProxy vs FortiManager Proxy** - Don't confuse these:
-- **FortiProxy**: Fortinet's web proxy *appliance* (a product)
-- **FortiManager Proxy**: Using FortiManager to *manage* FortiGate devices remotely
-```
-
 ## Flexible Interface
 
 HFortix supports both dictionary and keyword-based syntax:
