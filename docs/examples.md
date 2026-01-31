@@ -440,11 +440,11 @@ Monitor endpoints provide **real-time operational data** (read-only).
 ### System Status
 
 ```python
-# System status
+# System status (use dict access - Monitor fields may not have type hints)
 status = fgt.api.monitor.system.status.get()
-print(f"Version: {status['version']}")
-print(f"Serial: {status['serial']}")
-print(f"Uptime: {status.get('uptime', 'N/A')} seconds")
+print(f"Hostname: {status['hostname']}")
+print(f"Model: {status['model']}")
+print(f"Log Disk Status: {status.get('log_disk_status', 'N/A')}")
 
 # Resource usage
 resources = fgt.api.monitor.system.resource.usage.get()
