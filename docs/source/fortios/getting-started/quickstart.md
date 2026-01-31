@@ -23,7 +23,8 @@ pip install hfortix[fortios]
 Create a file named `test_hfortix.py`:
 
 ```python
-from hfortix import FortiOS, APIError
+from hfortix_fortios import FortiOS
+from hfortix_core.exceptions import APIError
 
 # Initialize the client
 fgt = FortiOS(
@@ -39,10 +40,14 @@ try:
     
     # Display first few addresses
     for addr in addresses[:5]:
-        print(f"  - {addr['name']}: {addr.get('subnet', 'N/A')}")
+        # Access fields as attributes (recommended)
+        print(f"  - {addr.name}: {addr.subnet}")
+        
+        # Or use dict-style access for dynamic keys
+        # print(f"  - {addr['name']}: {addr.get('subnet', 'N/A')}")
         
 except APIError as e:
-    print(f"Error: {e.message} (Code: {e.error_code})")
+    print(f"Error: {e}")
 ```
 
 Run it:
@@ -76,7 +81,7 @@ result = fgt.api.cmdb.firewall.address.post(
     comment='Production web server'
 )
 
-print(f"Created: {result}")
+print(f"Created: {result.name} (status: {result.http_status_code})")
 ```
 
 ### Update a Resource
@@ -176,7 +181,7 @@ policy = fproxy.api.cmdb.firewall.policy.post(
 
 # Monitor proxy statistics
 stats = fproxy.api.monitor.web_proxy.stats.get()
-print(f"Active sessions: {stats.get('sessions', 0)}")
+print(f"Active sessions: {stats.sessions}")
 ```
 
 **Note**: FortiProxy uses the same FortiOS API, so all endpoints work identically.
@@ -254,8 +259,8 @@ Access real-time monitoring data:
 ```python
 # Get system status
 status = fgt.api.monitor.system.status.get()
-print(f"Hostname: {status['hostname']}")
-print(f"Version: {status['version']}")
+print(f"Hostname: {status.hostname}")
+print(f"Version: {status.version}")
 
 # Get firewall policy statistics
 stats = fgt.api.monitor.firewall.policy.get()
