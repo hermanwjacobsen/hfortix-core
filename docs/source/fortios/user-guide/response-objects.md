@@ -76,13 +76,37 @@ When using FortiManager proxy, additional properties are available:
 | `fmg_id` | `int` | FortiManager request ID |
 | `fmg_raw` | `dict` | Raw FortiManager response |
 
-### Raw Data Access
+### Data Conversion Properties
 
 | Property/Method | Type | Description |
 |-----------------|------|-------------|
-| `raw` | `dict` | Full API response envelope |
-| `to_dict()` | `dict` | Convert object to dictionary |
-| `get_full(field)` | `Any` | Get raw field value (not flattened) |
+| `dict` | `dict` | Object data as dictionary |
+| `json` | `str` | Object data as pretty-printed JSON string |
+| `raw` | `dict` | Full API response envelope (includes metadata) |
+| `to_dict()` | `dict` | Alias for `dict` property |
+| `get_full(field)` | `Any` | Get raw field value (not auto-flattened) |
+
+**Example:**
+
+```python
+address = fgt.api.cmdb.firewall.address.get(mkey='webserver')
+
+# As dictionary - for programmatic access
+data = address.dict
+data['name']  # 'webserver'
+
+# As JSON - for display/logging
+print(address.json)
+# {
+#   "name": "webserver",
+#   "subnet": "192.168.1.100 255.255.255.255",
+#   "comment": "Production server"
+# }
+
+# Raw envelope - for debugging/metadata
+address.raw
+# {'http_status': 200, 'status': 'success', 'vdom': 'root', 'results': {...}}
+```
 
 ## Understanding `fgt_revision_changed`
 
@@ -245,17 +269,25 @@ if addresses.fgt_limit_reached:
 ## Converting to Dict/JSON
 
 ```python
-# Single object to dict
+# Single object
 address = fgt.api.cmdb.firewall.address.get(mkey='webserver')
-data = address.to_dict()
 
-# To JSON
-import json
-json_str = json.dumps(address.to_dict(), indent=2)
+# Using properties (recommended)
+data = address.dict           # Dictionary
+json_str = address.json       # Pretty-printed JSON string
+envelope = address.raw        # Full API envelope with metadata
+
+# Using methods (equivalent)
+data = address.to_dict()      # Same as .dict
 
 # List to dicts
 addresses = fgt.api.cmdb.firewall.address.get()
-all_data = [addr.to_dict() for addr in addresses]
+all_data = [addr.dict for addr in addresses]
+
+# Export to file
+with open('addresses.json', 'w') as f:
+    import json
+    json.dump([addr.dict for addr in addresses], f, indent=2)
 ```
 
 ## See Also

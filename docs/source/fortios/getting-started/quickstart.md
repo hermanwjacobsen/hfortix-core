@@ -102,9 +102,68 @@ result = fgt.api.cmdb.firewall.address.delete(mkey='web-server')
 print("Address deleted successfully")
 ```
 
-## Using FortiManager Proxy
+## Working with Responses
 
-Manage multiple FortiGate devices through FortiManager:
+All API methods return `FortiObject` instances with multiple ways to access data:
+
+### Attribute Access (Recommended)
+
+```python
+# Get a firewall address
+address = fgt.api.cmdb.firewall.address.get(mkey='web-server')
+
+# Access fields as attributes
+print(address.name)     # 'web-server'
+print(address.subnet)   # '192.0.2.100 255.255.255.255'
+print(address.comment)  # 'Production web server'
+```
+
+### Response Metadata
+
+```python
+result = fgt.api.cmdb.firewall.address.post(
+    name='test-server',
+    subnet='10.0.0.1 255.255.255.255'
+)
+
+# Check HTTP status
+print(result.http_status_code)  # 200
+print(result.http_status)       # 'success'
+
+# Check if configuration actually changed
+if result.fgt_revision_changed:
+    print(f"Config modified! Revision: {result.fgt_revision}")
+else:
+    print("No change - object already exists with same values")
+```
+
+### Converting to Dict/JSON
+
+```python
+address = fgt.api.cmdb.firewall.address.get(mkey='web-server')
+
+# Get as dictionary
+data = address.dict
+print(data['name'])  # 'web-server'
+
+# Get as JSON string (pretty-printed)
+print(address.json)
+# {
+#   "name": "web-server",
+#   "subnet": "192.0.2.100 255.255.255.255",
+#   ...
+# }
+
+# Get full API envelope (includes metadata)
+print(address.raw)
+# {'http_status': 200, 'status': 'success', 'vdom': 'root', 'results': {...}}
+```
+
+See [Response Objects](/fortios/user-guide/response-objects.md) for complete documentation.
+
+## Managing FortiGates via FortiManager
+
+Use `FortiManagerProxy` to manage multiple FortiGate devices through FortiManager's centralized management:
 
 ```python
 from hfortix_fortios import FortiManagerProxy
@@ -131,7 +190,7 @@ try:
         comment="Managed via FMG"
     )
 
-    # Manage multiple devices
+    # Manage multiple devices from one connection
     fw1 = fmg.proxy(device="firewall-01")
     fw2 = fmg.proxy(device="firewall-02")
     fw1.api.cmdb.firewall.address.post(name="test", subnet="10.1.0.0 255.255.255.0")
@@ -142,14 +201,15 @@ finally:
 
 See [FortiManager Proxy Guide](/fortios/guides/fmg-proxy.md) for more details.
 
-## Using FortiProxy
+## FortiProxy Appliances
 
-HFortix also supports FortiProxy devices using the same API:
+FortiProxy is Fortinet's dedicated web proxy appliance. It uses the same FortiOS-based API,
+so HFortix works with FortiProxy devices using the standard `FortiOS` client:
 
 ```python
 from hfortix_fortios import FortiOS
 
-# Connect to FortiProxy (same as FortiGate)
+# Connect to FortiProxy (same client as FortiGate)
 fproxy = FortiOS(
     host="fortiproxy.example.com",
     token="your-api-token",
@@ -159,22 +219,17 @@ fproxy = FortiOS(
 # Configure web filter profile
 profile = fproxy.api.cmdb.webfilter.profile.post(
     name="corporate-policy",
-    comment="Corporate web filtering",
-    web={
-        "urlfilter-table": 1,
-        "content-header-list": 1,
-        "blocklist": "enable"
-    }
+    comment="Corporate web filtering"
 )
 
 # Apply to firewall policy
 policy = fproxy.api.cmdb.firewall.policy.post(
     name="Web-Filter-Policy",
-    srcintf=[{"name": "port1"}],
-    dstintf=[{"name": "port2"}],
-    srcaddr=[{"name": "all"}],
-    dstaddr=[{"name": "all"}],
-    service=[{"name": "HTTP"}, {"name": "HTTPS"}],
+    srcintf=['port1'],
+    dstintf=['port2'],
+    srcaddr=['all'],
+    dstaddr=['all'],
+    service=['HTTP', 'HTTPS'],
     action="accept",
     webfilter_profile="corporate-policy"
 )
@@ -184,7 +239,11 @@ stats = fproxy.api.monitor.web_proxy.stats.get()
 print(f"Active sessions: {stats.sessions}")
 ```
 
-**Note**: FortiProxy uses the same FortiOS API, so all endpoints work identically.
+```{note}
+**FortiProxy vs FortiManager Proxy** - Don't confuse these:
+- **FortiProxy**: Fortinet's web proxy *appliance* (a product)
+- **FortiManager Proxy**: Using FortiManager to *manage* FortiGate devices remotely
+```
 
 ## Flexible Interface
 
