@@ -9,6 +9,7 @@ Comprehensive guide to using HFortix for FortiOS/FortiGate automation.
    client
    fortios-overview
    endpoint-methods
+   response-objects
    error-handling
    async-usage
 
@@ -25,8 +26,12 @@ The User Guide covers core concepts and essential features of HFortix:
    Introduction to the FortiOS API architecture, usage patterns, and best practices.
 
 **Endpoint Methods**
-   Understanding the difference between convenience wrapper methods (``list()``, ``create()``, etc.)
-   and low-level API endpoint methods (``.get()``, ``.post()``, etc.).
+   Understanding the low-level API endpoint methods (``.get()``, ``.post()``, ``.put()``, 
+   ``.delete()``) for interacting with FortiOS.
+
+**Response Objects**
+   Understanding ``FortiObject`` and ``FortiObjectList`` response types, including metadata
+   properties like ``fgt_revision_changed`` for detecting actual configuration changes.
 
 **Error Handling**
    Configurable error handling modes, exception types, and best practices for robust
