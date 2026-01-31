@@ -146,8 +146,8 @@ class FirewallManager:
         """Disable multiple policies at once."""
         results = []
         for policy_id in policy_ids:
-            result = self.policies.update(
-                mkey=policy_id,
+            result = self.policies.put(
+                policyid=policy_id,
                 status="disable"
             )
             results.append(result)
@@ -155,7 +155,7 @@ class FirewallManager:
     
     def find_policies_by_address(self, address_name: str) -> List[dict]:
         """Find all policies using a specific address."""
-        all_policies = self.policies.list().results
+        all_policies = self.policies.get().results
         
         matching = []
         for policy in all_policies:
@@ -221,10 +221,10 @@ class AsyncFirewallManager:
     async def get_all_objects(self) -> dict:
         """Fetch multiple object types concurrently."""
         tasks = {
-            'addresses': self.fgt.api.cmdb.firewall.address.list(),
-            'groups': self.fgt.api.cmdb.firewall.addrgrp.list(),
-            'services': self.fgt.api.cmdb.firewall.service.custom.list(),
-            'policies': self.fgt.api.cmdb.firewall.policy.list(),
+            'addresses': self.fgt.api.cmdb.firewall.address.get(),
+            'groups': self.fgt.api.cmdb.firewall.addrgrp.get(),
+            'services': self.fgt.api.cmdb.firewall.service.custom.get(),
+            'policies': self.fgt.api.cmdb.firewall.policy.get(),
         }
         
         results = {}
@@ -337,7 +337,7 @@ Add custom validation before API calls:
 
 ```python
 from hfortix_fortios import FortiOS
-from hfortix_core.exceptions import HTTPError
+from hfortix_core.exceptions import APIError, ResourceNotFoundError
 import ipaddress
 
 class ValidatedFirewallManager:
@@ -376,9 +376,10 @@ class ValidatedFirewallManager:
         try:
             existing = self.fgt.api.cmdb.firewall.address.get(mkey=name)
             raise ValueError(f"Address '{name}' already exists")
-        except HTTPError as e:
-            if e.status_code != 404:
-                raise
+        except ResourceNotFoundError:
+            pass  # Address doesn't exist, we can create it
+        except APIError as e:
+            raise  # Re-raise other API errors
         
         # Create if validation passes
         return self.fgt.api.cmdb.firewall.address.post(

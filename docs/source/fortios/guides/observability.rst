@@ -197,7 +197,7 @@ Microservices Example
        )
        
        # Now you can correlate across your entire stack
-       result = fgt.api.cmdb.firewall.address.create(
+       result = fgt.api.cmdb.firewall.address.post(
            name="test-host",
            subnet="10.0.0.1/32"
        )

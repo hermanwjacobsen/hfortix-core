@@ -2,13 +2,9 @@
 
 Guide to managing schedules (recurring, onetime, and groups).
 
-```{note}
-This content will be migrated from `docs/fortios/wrappers/SCHEDULE_WRAPPERS.md`
-```
-
 ## Overview
 
-HFortix provides wrappers for three types of schedules:
+HFortix provides direct API access for three types of schedules:
 - **Recurring** - Regular schedules (daily, weekly)
 - **Onetime** - Single occurrence schedules
 - **Groups** - Collections of schedules
@@ -23,26 +19,22 @@ from hfortix import FortiOS
 fgt = FortiOS(host='192.168.1.99', token='token')
 
 # Business hours schedule
-schedule = fgt.firewall.schedule_recurring.create(
+schedule = fgt.api.cmdb.firewall.schedule.recurring.post(
     name='business-hours',
-    day=['monday', 'tuesday', 'wednesday', 'thursday', 'friday'],
+    day='monday tuesday wednesday thursday friday',
     start='08:00',
     end='18:00'
 )
 
-# Clone and modify
-extended = fgt.firewall.schedule_recurring.clone(
-    name='business-hours',
-    new_name='extended-hours',
-    end='20:00'
-)
+# Get all recurring schedules
+schedules = fgt.api.cmdb.firewall.schedule.recurring.get()
 ```
 
 ### Onetime Schedule
 
 ```python
 # Maintenance window
-maintenance = fgt.firewall.schedule_onetime.create(
+maintenance = fgt.api.cmdb.firewall.schedule.onetime.post(
     name='maintenance-window',
     start='2025-12-31 22:00',
     end='2026-01-01 02:00'
@@ -52,10 +44,16 @@ maintenance = fgt.firewall.schedule_onetime.create(
 ### Schedule Group
 
 ```python
-# Group multiple schedules
-group = fgt.firewall.schedule_group.create(
+# Group multiple schedules - simple list format (auto-converted)
+group = fgt.api.cmdb.firewall.schedule.group.post(
     name='all-business-hours',
-    member=['business-hours', 'extended-hours']
+    member=['business-hours', 'extended-hours']  # Converted to [{"name": "..."}]
+)
+
+# Or explicit dict format
+group = fgt.api.cmdb.firewall.schedule.group.post(
+    name='all-business-hours',
+    member=[{"name": "business-hours"}, {"name": "extended-hours"}]
 )
 ```
 
@@ -72,5 +70,4 @@ Detailed documentation including:
 ## Temporary Reference
 
 For now, see:
-- [Convenience Wrappers API Reference](/fortios/api-reference/convenience-wrappers.rst)
-- Current docs: `docs/fortios/wrappers/SCHEDULE_WRAPPERS.md` in repository
+- [API Documentation](/fortios/api-documentation/index.rst)

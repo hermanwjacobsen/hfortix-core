@@ -63,21 +63,21 @@ Quick Example
     # Connect to FortiGate
     fgt = FortiOS(host="192.168.1.99", token="your-api-token")
 
-    # Create firewall address - Direct API method
-    fgt.api.cmdb.firewall.address.create(
+    # Create firewall address
+    fgt.api.cmdb.firewall.address.post(
         name="web-server",
         subnet="10.0.1.100/32",
         comment="Production web server"
     )
 
-    # Create firewall policy - Direct API method
-    fgt.api.cmdb.firewall.policy.create(
+    # Create firewall policy - simple list format (auto-converted)
+    fgt.api.cmdb.firewall.policy.post(
         name="Allow-Web-Traffic",
-        srcintf=[{"name": "internal"}],
-        dstintf=[{"name": "wan1"}],
-        srcaddr=[{"name": "all"}],
-        dstaddr=[{"name": "web-server"}],
-        service=[{"name": "HTTP"}, {"name": "HTTPS"}],
+        srcintf=["internal"],      # Converted to [{"name": "internal"}]
+        dstintf=["wan1"],          # Converted to [{"name": "wan1"}]
+        srcaddr=["all"],           # Converted to [{"name": "all"}]
+        dstaddr=["web-server"],    # Converted to [{"name": "web-server"}]
+        service=["HTTP", "HTTPS"], # Converted to [{"name": "..."}]
         action="accept",
         nat="enable"
     )

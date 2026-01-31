@@ -22,27 +22,27 @@ from hfortix import FortiOS
 fgt = FortiOS(host='192.168.1.99', token='token')
 
 # Simple filter
-addresses = fgt.api.cmdb.firewall.address.list(
+addresses = fgt.api.cmdb.firewall.address.get(
     filter='name==web-server'
 )
 
 # Complex filter with AND
-policies = fgt.api.cmdb.firewall.policy.list(
+policies = fgt.api.cmdb.firewall.policy.get(
     filter='srcintf==port1&action==accept'
 )
 
 # OR operator
-policies = fgt.api.cmdb.firewall.policy.list(
+policies = fgt.api.cmdb.firewall.policy.get(
     filter='srcintf==port1|srcintf==port2'
 )
 
 # Contains
-addresses = fgt.api.cmdb.firewall.address.list(
+addresses = fgt.api.cmdb.firewall.address.get(
     filter='name=@server'
 )
 
 # Limit results
-addresses = fgt.api.cmdb.firewall.address.list(
+addresses = fgt.api.cmdb.firewall.address.get(
     filter='subnet=@192.168',
     count=10
 )

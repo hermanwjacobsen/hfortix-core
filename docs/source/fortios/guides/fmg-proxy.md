@@ -128,16 +128,16 @@ policy = fgt.api.cmdb.firewall.policy.post(
 )
 
 # Read resources
-policies = fgt.api.cmdb.firewall.policy.list()
+policies = fgt.api.cmdb.firewall.policy.get()
 
 # Update resources
-fgt.api.cmdb.firewall.policy.update(
-    mkey=42,
+fgt.api.cmdb.firewall.policy.put(
+    policyid=42,
     status="disable"
 )
 
 # Delete resources
-fgt.api.cmdb.firewall.policy.delete(mkey=42)
+fgt.api.cmdb.firewall.policy.delete(policyid=42)
 ```
 
 ### Monitor Operations
@@ -147,10 +147,10 @@ fgt.api.cmdb.firewall.policy.delete(mkey=42)
 status = fgt.api.monitor.system.status.get()
 
 # Interface stats
-interfaces = fgt.api.monitor.system.interface.list()
+interfaces = fgt.api.monitor.system.interface.get()
 
 # Session info
-sessions = fgt.api.monitor.firewall.session.list()
+sessions = fgt.api.monitor.firewall.session.get()
 ```
 
 ### Low-Level Request Method
@@ -214,15 +214,15 @@ fw3.api.cmdb.firewall.address.post(name="test3", subnet="10.3.0.0 255.255.255.0"
 Handle errors the same way as direct FortiOS connections:
 
 ```python
-from hfortix_core.exceptions import HTTPError
+from hfortix_core.exceptions import APIError
 
 try:
     fgt.api.cmdb.firewall.address.post(
         name="duplicate",
         subnet="192.168.1.0 255.255.255.0"
     )
-except HTTPError as e:
-    print(f"Error: {e.status_code} - {e.message}")
+except APIError as e:
+    print(f"Error: {e.http_status} - {e}")
 ```
 
 ## Best Practices

@@ -1,14 +1,14 @@
 # Firewall Policy Management
 
-Complete guide to managing firewall policies using the convenience wrapper.
+Complete guide to managing firewall policies using direct API access.
 
 ```{note}
-This content will be migrated from `docs/fortios/wrappers/FIREWALL_POLICY_WRAPPER.md`
+v0.5.0 removed convenience wrappers. Use `fgt.api.cmdb.firewall.policy.*` methods instead.
 ```
 
 ## Overview
 
-The firewall policy wrapper provides simplified syntax for managing FortiGate firewall policies with support for 150+ parameters.
+HFortix provides full type-safe access to FortiGate firewall policies with support for 150+ parameters.
 
 ## Quick Example
 
@@ -18,24 +18,24 @@ from hfortix import FortiOS
 fgt = FortiOS(host='192.168.1.99', token='token')
 
 # Create firewall policy
-policy = fgt.firewall.policy.create(
+policy = fgt.api.cmdb.firewall.policy.post(
     name='Allow-Web-Traffic',
-    srcintf=['port1'],
-    dstintf=['port2'],
-    srcaddr=['internal-network'],
-    dstaddr=['web-server'],
-    service=['HTTP', 'HTTPS'],
+    srcintf=[{"name": "port1"}],
+    dstintf=[{"name": "port2"}],
+    srcaddr=[{"name": "internal-network"}],
+    dstaddr=[{"name": "web-server"}],
+    service=[{"name": "HTTP"}, {"name": "HTTPS"}],
     action='accept',
     schedule='always',
-    nat=True
+    nat='enable'
 )
 
 # Check if policy exists
-if fgt.firewall.policy.exists(policyid='1'):
+if fgt.api.cmdb.firewall.policy.exists(policyid='1'):
     print("Policy exists!")
 
 # Clone policy
-new_policy = fgt.firewall.policy.clone(
+new_policy = fgt.api.cmdb.firewall.policy.clone(
     policyid='1',
     new_name='Allow-Web-Traffic-Copy'
 )
@@ -54,5 +54,4 @@ Detailed documentation including:
 ## Temporary Reference
 
 For now, see:
-- [Convenience Wrappers API Reference](/fortios/api-reference/convenience-wrappers.rst)
-- Current docs: `docs/fortios/wrappers/FIREWALL_POLICY_WRAPPER.md` in repository
+- [API Documentation](/fortios/api-documentation/index.rst)

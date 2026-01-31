@@ -244,7 +244,7 @@ status = fgt_monitor.api.monitor.system.status.get()
 policies = fgt_monitor.api.cmdb.firewall.policy.get()
 
 # Write operations - will fail with permission error
-# fgt_monitor.api.cmdb.firewall.address.create(...)  # PermissionError
+# fgt_monitor.api.cmdb.firewall.address.post(...)  # PermissionError
 ```
 
 ## Trusted Hosts (Security Best Practice)

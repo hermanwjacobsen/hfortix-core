@@ -17,7 +17,7 @@ pip install hfortix-fortios
 from hfortix_fortios import FortiOS
 
 # Connect to FortiGate
-fgt = FortiOS(host="192.168.1.99", api_key="your-api-key")
+fgt = FortiOS(host="192.168.1.99", token="your-api-token")
 
 # Get system status
 status = fgt.api.monitor.system.status.get()
@@ -154,8 +154,8 @@ pip install hfortix-fortios[minimal]
 ```python
 from hfortix_fortios import FortiOS
 
-# Option 1: API Key (recommended)
-fgt = FortiOS(host="192.168.1.99", api_key="your-api-key")
+# Option 1: API Token (recommended)
+fgt = FortiOS(host="192.168.1.99", token="your-api-token")
 
 # Option 2: Username/Password (session-based)
 fgt = FortiOS(host="192.168.1.99", username="admin", password="password")
@@ -174,7 +174,7 @@ fgt.close()
 from hfortix_fortios import FortiOS
 
 # Connect to FortiGate
-fgt = FortiOS(host="192.168.1.99", api_key="key")
+fgt = FortiOS(host="192.168.1.99", token="your-api-token")
 
 # Create
 fgt.api.cmdb.firewall.address.post(
@@ -230,16 +230,16 @@ fmg.close()
 
 ```python
 from hfortix_core.exceptions import (
-    FortiHTTPError,
-    ResourceNotFound,
+    APIError,
+    ResourceNotFoundError,
     ValidationError
 )
 
 try:
     addr = fgt.api.cmdb.firewall.address.get(name="notfound")
-except ResourceNotFound as e:
+except ResourceNotFoundError as e:
     print(f"Address not found: {e}")
-except FortiHTTPError as e:
+except APIError as e:
     print(f"HTTP {e.http_status}: {e.message}")
 ```
 
@@ -274,11 +274,11 @@ fgt.api.cmdb.firewall.address.clone(
 )
 
 # Read-only mode (safe testing)
-fgt_readonly = FortiOS(host="...", api_key="...", read_only=True)
+fgt_readonly = FortiOS(host="...", token="...", read_only=True)
 # All write operations will raise exceptions
 
 # Track operations (audit logging)
-fgt_tracked = FortiOS(host="...", api_key="...", track_operations=True)
+fgt_tracked = FortiOS(host="...", token="...", track_operations=True)
 operations = fgt_tracked.get_operations()
 ```
 

@@ -52,7 +52,7 @@ Basic Exception Handling
    fgt = FortiOS(host='192.168.1.99', token='your-token')
 
    try:
-       fgt.api.cmdb.firewall.address.create(
+       fgt.api.cmdb.firewall.address.post(
            name='test-server',
            subnet='10.0.0.1/32'
        )
@@ -92,10 +92,10 @@ FortiOS-Specific Errors
 
    # Handle duplicate entries
    try:
-       fgt.api.cmdb.firewall.address.create(name='existing', ...)
+       fgt.api.cmdb.firewall.address.post(name='existing', subnet='10.0.0.1/32')
    except DuplicateEntryError:
        # Update instead
-       fgt.api.cmdb.firewall.address.update(name='existing', ...)
+       fgt.api.cmdb.firewall.address.put(name='existing', comment='Updated')
 
    # Handle in-use objects
    try:
@@ -131,7 +131,10 @@ All exceptions include helpful attributes:
 .. code-block:: python
 
    try:
-       result = fgt.api.cmdb.firewall.address.create(...)
+       result = fgt.api.cmdb.firewall.address.post(
+           name='test',
+           subnet='10.0.0.1/32'
+       )
    except APIError as e:
        print(f"Message: {e.message}")
        print(f"Error Code: {e.error_code}")

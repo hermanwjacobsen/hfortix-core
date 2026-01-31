@@ -65,7 +65,7 @@ Basic File Logging
    fgt = FortiOS("192.168.1.99", token="your-token", audit_handler=handler)
 
    # All operations now automatically logged
-   fgt.api.cmdb.firewall.address.create(name="test", subnet="10.0.0.1/32")
+   fgt.api.cmdb.firewall.address.post(name="test", subnet="10.0.0.1/32")
 
 **Result**: Every API call logged to ``/var/log/fortinet-audit.jsonl`` in JSON Lines format:
 
@@ -343,7 +343,7 @@ Audit logging failures **never** break API operations:
 .. code-block:: python
 
    # If syslog server is down, operation still succeeds
-   fgt.api.cmdb.firewall.address.create(...)  # ✅ Succeeds
+   fgt.api.cmdb.firewall.address.post(...)  # ✅ Succeeds
 
    # Error logged but doesn't raise exception
    # ERROR: Audit handler failed: Connection refused

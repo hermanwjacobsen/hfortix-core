@@ -111,19 +111,19 @@ from hfortix_fortios import FortiOS
 fgt = FortiOS(host="192.168.1.99", token="your-token")
 
 # Create firewall address
-fgt.api.cmdb.firewall.address.create(
+fgt.api.cmdb.firewall.address.post(
     name="web-server",
     subnet="10.0.1.100/32"
 )
 
-# Create policy with convenience wrapper
-fgt.firewall.policy.create(
+# Create firewall policy - simple list format (auto-converted to dicts)
+fgt.api.cmdb.firewall.policy.post(
     name="Allow-Web",
-    srcintf=["internal"],
-    dstintf=["wan1"],
-    srcaddr=["all"],
-    dstaddr=["web-server"],
-    service=["HTTP", "HTTPS"],
+    srcintf=["internal"],      # Converted to [{"name": "internal"}]
+    dstintf=["wan1"],          # Converted to [{"name": "wan1"}]
+    srcaddr=["all"],           # Converted to [{"name": "all"}]
+    dstaddr=["web-server"],    # Converted to [{"name": "web-server"}]
+    service=["HTTP", "HTTPS"], # Converted to [{"name": "HTTP"}, {"name": "HTTPS"}]
     action="accept"
 )
 ```

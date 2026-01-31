@@ -101,7 +101,7 @@ Basic Exception Handling
    fgt = FortiOS(host='192.168.1.99', token='your-token')
 
    try:
-       result = fgt.api.cmdb.firewall.address.create(
+       result = fgt.api.cmdb.firewall.address.post(
            name='test-server',
            subnet='10.0.0.1/32'
        )
