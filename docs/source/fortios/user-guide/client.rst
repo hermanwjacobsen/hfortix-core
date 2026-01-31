@@ -71,16 +71,6 @@ The ``api`` namespace provides access to:
 - ``api.monitor`` - Monitoring and status (295 endpoints)  
 - ``api.log`` - Log queries (38 endpoints with full parameterization)
 
-.. warning::
-   **v0.5.0 BREAKING CHANGE**
-   
-   The ``firewall`` namespace with convenience wrappers has been **REMOVED** in v0.5.0.
-   Use direct API methods instead:
-   
-   - ❌ ``fgt.firewall.policy.create()`` - NO LONGER EXISTS
-   - ✅ ``fgt.api.cmdb.firewall.policy.create()`` - Use this instead
-   - ✅ ``fgt.request(method='POST', path='/api/v2/cmdb/firewall/policy', data={...})`` - Or use request()
-
 Examples
 --------
 
@@ -93,13 +83,13 @@ Using CMDB API
    addresses = fgt.api.cmdb.firewall.address.get()
 
    # Create firewall address
-   fgt.api.cmdb.firewall.address.create(
+   fgt.api.cmdb.firewall.address.post(
        name='web-server',
        subnet='10.0.1.100/32'
    )
 
    # Update firewall address
-   fgt.api.cmdb.firewall.address.update(
+   fgt.api.cmdb.firewall.address.put(
        name='web-server',
        comment='Production server'
    )
@@ -121,30 +111,29 @@ Using Monitor API
    # Get interface statistics
    stats = fgt.api.monitor.system.interface.get()
 
-Using Convenience Wrappers
-^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Using Direct API Methods
+^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. code-block:: python
 
-   # Create firewall policy (simplified)
-   policy = fgt.firewall.policy.create(
+   # Create firewall policy (using post)
+   policy = fgt.api.cmdb.firewall.policy.post(
        name='Allow-Web',
-       srcintf=['internal'],
-       dstintf=['wan1'],
-       srcaddr=['all'],
-       dstaddr=['web-server'],
-       service=['HTTP', 'HTTPS'],
+       srcintf=[{"name": "internal"}],
+       dstintf=[{"name": "wan1"}],
+       srcaddr=[{"name": "all"}],
+       dstaddr=[{"name": "web-server"}],
+       service=[{"name": "HTTP"}, {"name": "HTTPS"}],
        action='accept'
    )
 
    # Check if policy exists
-   if fgt.firewall.policy.exists(policyid='1'):
+   if fgt.api.cmdb.firewall.policy.exists(policyid='1'):
        print("Policy exists!")
 
 See Also
 --------
 
-- :doc:`/fortios/api-reference/convenience-wrappers` - High-level convenience wrappers
 - :doc:`/fortios/api-reference/cmdb/index` - CMDB API reference
 - :doc:`/fortios/api-reference/monitor/index` - Monitor API reference
 - :doc:`/fortios/user-guide/fortios-overview` - User guide

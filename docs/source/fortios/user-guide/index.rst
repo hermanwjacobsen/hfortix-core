@@ -53,6 +53,5 @@ Quick Links
 -----------
 
 - :doc:`/fortios/getting-started/quickstart` - Get started in 5 minutes
-- :doc:`/fortios/convenience-wrappers/index` - High-level wrappers
 - :doc:`/fortios/guides/index` - Topic-specific guides
 - :doc:`/fortios/examples/index` - Code examples

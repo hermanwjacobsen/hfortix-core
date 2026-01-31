@@ -73,7 +73,7 @@ Any class with a ``log_operation(operation: dict)`` method can be an audit handl
    fgt = FortiOS("192.168.1.99", token="token", audit_handler=handler)
 
    # Now all firewall policy changes trigger Slack notifications
-   fgt.api.cmdb.firewall.policy.create(name="Block-Malware", ...)
+   fgt.api.cmdb.firewall.policy.post(name="Block-Malware", ...)
    # → Slack: "🔥 Firewall changed by admin: create Block-Malware"
 
 Operation Dictionary Format
@@ -295,7 +295,7 @@ Track handler reliability and troubleshoot issues:
    fgt = FortiOS("192.168.1.99", token="token", audit_handler=handler)
 
    # Perform operations...
-   fgt.api.cmdb.firewall.policy.create(...)
+   fgt.api.cmdb.firewall.policy.post(...)
 
    # Check error summary
    summary = handler.error_summary
@@ -595,7 +595,7 @@ Mock Handlers for Testing
    mock = MockHandler()
    fgt = FortiOS("192.168.1.99", token="token", audit_handler=mock)
 
-   fgt.api.cmdb.firewall.policy.create(...)
+   fgt.api.cmdb.firewall.policy.post(...)
 
    # Verify behavior
    creates = mock.get_operations(action='create')

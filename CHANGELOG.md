@@ -1,5 +1,36 @@
 # [Unreleased]
 
+# [0.5.148] - 2026-01-31
+
+### Documentation
+
+- **ReadTheDocs: Comprehensive Documentation Audit**: Fixed inconsistencies across all documentation
+  - Corrected authentication parameter: `api_key` → `token` throughout all docs
+  - Fixed exception class names: `HTTPError`/`NotFoundError` → `APIError`/`ResourceNotFoundError`
+  - Fixed method names: `.create()`/`.update()`/`.list()` → `.post()`/`.put()`/`.get()`
+  - Fixed result property: `result.status_code` → `result.http_status_code`
+  - Fixed exception attribute: `e.status_code` → `e.http_status`
+  - Updated list field examples to show both formats: `['HTTP', 'HTTPS']` (recommended) and `[{"name": "HTTP"}]`
+
+- **Removed Deprecated Documentation**: Cleaned up outdated convenience wrapper documentation
+  - Removed `docs/source/fortios/api-reference/convenience-wrappers.rst`
+  - Removed `docs/source/fortios/convenience-wrappers/` directory
+  - Updated all references that pointed to deprecated convenience methods
+
+- **Updated Example Files**: All code examples now use correct API patterns
+  - `custom-wrappers.md`: Fixed error handling with `ResourceNotFoundError`
+  - `fmg-proxy.md`: Fixed error handling with `APIError`
+  - `endpoint-methods.md`: Fixed result property access
+  - Multiple guide files updated with correct exception handling
+
+### Changed
+
+- **Version Bumped**: All packages updated to 0.5.148
+  - `hfortix-core`: 0.5.147 → 0.5.148
+  - `hfortix-fortios`: 0.5.147 → 0.5.148
+  - `hfortix` (meta): 0.5.147 → 0.5.148
+  - Updated root pyproject.toml from 0.5.141 → 0.5.148
+
 # [0.5.147] - 2026-01-28
 
 ### Documentation

@@ -215,18 +215,17 @@ fgt.request(
 Always wrap API calls in try-except blocks:
 
 ```python
-from hfortix_core.exceptions import HTTPError, NotFoundError
+from hfortix_core.exceptions import APIError, DuplicateEntryError
 
 try:
     result = fgt.api.cmdb.firewall.address.post(
         name='test-addr',
         subnet='10.0.0.1 255.255.255.255'
     )
-except HTTPError as e:
-    if e.status_code == 424:
-        print("Address already exists!")
-    else:
-        print(f"API Error {e.status_code}: {e.message}")
+except DuplicateEntryError:
+    print("Address already exists!")
+except APIError as e:
+    print(f"API Error {e.http_status}: {e.message}")
 except Exception as e:
     print(f"Unexpected error: {e}")
 ```

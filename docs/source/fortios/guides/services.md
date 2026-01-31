@@ -4,7 +4,7 @@ Guide to managing custom services, service groups, and service categories.
 
 ## Overview
 
-HFortix provides wrappers for three types of service objects:
+HFortix provides direct API access for three types of service objects:
 - **Custom Services** - User-defined services
 - **Service Groups** - Collections of services
 - **Service Categories** - Service categorization
@@ -19,17 +19,17 @@ from hfortix import FortiOS
 fgt = FortiOS(host='192.168.1.99', token='token')
 
 # Create custom TCP service
-service = fgt.firewall.service_custom.create(
+service = fgt.api.cmdb.firewall.service.custom.post(
     name='custom-app',
-    protocol='TCP',
+    protocol='TCP/UDP/SCTP',
     tcp_portrange='8080-8090',
     comment='Custom application service'
 )
 
 # Create UDP service
-dns_service = fgt.firewall.service_custom.create(
+dns_service = fgt.api.cmdb.firewall.service.custom.post(
     name='custom-dns',
-    protocol='UDP',
+    protocol='TCP/UDP/SCTP',
     udp_portrange='5353',
     comment='Custom DNS service'
 )
@@ -38,10 +38,10 @@ dns_service = fgt.firewall.service_custom.create(
 ### Service Group
 
 ```python
-# Create service group
-web_services = fgt.firewall.service_group.create(
+# Create service group - simple list format (auto-converted)
+web_services = fgt.api.cmdb.firewall.service.group.post(
     name='web-services',
-    member=['HTTP', 'HTTPS', 'custom-app'],
+    member=['HTTP', 'HTTPS', 'custom-app'],  # Converted to [{"name": "..."}]
     comment='All web-related services'
 )
 ```
@@ -50,7 +50,7 @@ web_services = fgt.firewall.service_group.create(
 
 ```python
 # Manage service categories
-categories = fgt.firewall.service_category.get()
+categories = fgt.api.cmdb.firewall.service.category.get()
 ```
 
 ## Coming Soon
@@ -66,4 +66,4 @@ Detailed documentation including:
 ## Temporary Reference
 
 For now, see:
-- [Convenience Wrappers API Reference](/fortios/api-reference/convenience-wrappers.rst)
+- [API Documentation](/fortios/api-documentation/index.rst)

@@ -24,7 +24,7 @@ fgt = FortiOS(host='192.168.1.99', token='token')
 
 # Validation happens automatically
 try:
-    fgt.api.cmdb.firewall.address.create(
+    fgt.api.cmdb.firewall.address.post(
         name='a' * 100,  # Too long
         subnet='192.168.1.1/32'
     )
@@ -34,10 +34,14 @@ except ValidationError as e:
 
 # Invalid enum value
 try:
-    fgt.firewall.policy.create(
+    fgt.api.cmdb.firewall.policy.post(
         name='test',
         action='invalid-action',  # Must be 'accept' or 'deny'
-        ...
+        srcintf=[{"name": "internal"}],
+        dstintf=[{"name": "wan1"}],
+        srcaddr=[{"name": "all"}],
+        dstaddr=[{"name": "all"}],
+        service=[{"name": "ALL"}]
     )
 except ValidationError as e:
     print(f"Invalid action: {e.message}")

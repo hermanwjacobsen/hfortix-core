@@ -120,13 +120,13 @@ All FortiOS endpoints follow consistent patterns:
    fgt.api.cmdb.firewall.address.get(name="web-server")
 
    # Create object
-   fgt.api.cmdb.firewall.address.create(
+   fgt.api.cmdb.firewall.address.post(
        name="web-server",
        subnet="10.0.1.100/32"
    )
 
    # Update object
-   fgt.api.cmdb.firewall.address.update(
+   fgt.api.cmdb.firewall.address.put(
        name="web-server",
        comment="Updated comment"
    )
@@ -163,7 +163,7 @@ All FortiOS endpoints follow consistent patterns:
 .. code-block:: python
 
    # Execute service operation
-   fgt.api.service.system.backup.create(
+   fgt.api.service.system.backup.post(
        scope="global",
        password="backup-password"
    )
@@ -183,33 +183,33 @@ All endpoints support async/await by adding ``_async`` suffix:
 
    asyncio.run(get_status())
 
-Convenience Wrappers
---------------------
+Direct API Methods
+------------------
 
-For common tasks, use the convenience wrappers which provide simplified interfaces:
+Use the direct API methods which provide type-safe access to all endpoints:
 
 .. code-block:: python
 
-   # Firewall policy wrapper
-   fgt.firewall.policy.create(
+   # Firewall policy using post()
+   fgt.api.cmdb.firewall.policy.post(
        name="Allow-Web",
-       srcintf=["internal"],
-       dstintf=["wan1"],
-       srcaddr=["all"],
-       dstaddr=["web-server"],
-       service=["HTTP", "HTTPS"],
+       srcintf=[{"name": "internal"}],
+       dstintf=[{"name": "wan1"}],
+       srcaddr=[{"name": "all"}],
+       dstaddr=[{"name": "web-server"}],
+       service=[{"name": "HTTP"}, {"name": "HTTPS"}],
        action="accept"
    )
 
-   # Schedule wrapper
-   fgt.firewall.schedule.recurring.create(
+   # Recurring schedule using post()
+   fgt.api.cmdb.firewall.schedule.recurring.post(
        name="business-hours",
        day=["monday", "tuesday", "wednesday", "thursday", "friday"],
        start="08:00",
        end="18:00"
    )
 
-See :doc:`/fortios/api-reference/convenience-wrappers` for all available wrappers.
+See :doc:`/fortios/user-guide/endpoint-methods` for details on all available methods.
 
 Navigation
 ----------

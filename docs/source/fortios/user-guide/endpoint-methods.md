@@ -168,9 +168,9 @@ All methods return `FortiObject` or `FortiObjectList` instances:
 ```python
 # Single object response (POST, PUT, DELETE)
 result = fgt.api.cmdb.firewall.address.post(...)
-print(result.status_code)  # 200
-print(result.revision)     # Configuration revision
-print(result.raw)         # Full API envelope
+print(result.http_status_code)  # 200
+print(result.revision)          # Configuration revision
+print(result.raw)               # Full API envelope
 
 # List response (GET without mkey)
 addresses = fgt.api.cmdb.firewall.address.get()
@@ -208,7 +208,7 @@ Monitor endpoints typically only support GET and POST:
 ```python
 # GET - Retrieve monitoring data
 status = fgt.api.monitor.system.status.get()
-interfaces = fgt.api.monitor.system.interface.list()
+interfaces = fgt.api.monitor.system.interface.get()
 
 # POST - Trigger actions
 result = fgt.api.monitor.system.config.backup.post()
@@ -217,14 +217,14 @@ result = fgt.api.monitor.system.config.backup.post()
 ## Error Handling
 
 ```python
-from hfortix_core.exceptions import HTTPError, NotFoundError
+from hfortix_core.exceptions import APIError, ResourceNotFoundError
 
 try:
-    address = fgt.api.cmdb.firewall.address.get(mkey='nonexistent')
-except NotFoundError:
+    address = fgt.api.cmdb.firewall.address.get(name='nonexistent')
+except ResourceNotFoundError:
     print("Address not found")
-except HTTPError as e:
-    print(f"Error: {e.status_code} - {e.message}")
+except APIError as e:
+    print(f"Error: {e.http_status} - {e.message}")
 ```
 
 ## See Also
