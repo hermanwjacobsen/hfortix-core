@@ -2,7 +2,7 @@ API Reference
 =============
 
 Complete low-level API documentation for all 1,219 FortiOS endpoints (886 CMDB + 295 Monitor + 38 Log).
-These endpoints use standard methods (get, create, update, delete) for direct API access.
+These endpoints use standard HTTP methods (``.get()``, ``.post()``, ``.put()``, ``.delete()``) for direct API access.
 
 CMDB API (Configuration)
 -------------------------
