@@ -274,11 +274,11 @@ try:
         verify=False
     )
     
-    # Test with a simple API call
+    # Test with a simple API call (use dict access - Monitor fields may not have type hints)
     status = fgt.api.monitor.system.status.get()
     print(f"✅ Connected to {status['hostname']}")
-    print(f"   FortiOS Version: {status['version']}")
-    print(f"   Serial Number: {status['serial']}")
+    print(f"   Model: {status['model']}")
+    print(f"   Model Number: {status['model_number']}")
     
 except APIError as e:
     print(f"❌ Authentication failed: {e.message}")
