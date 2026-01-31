@@ -316,10 +316,10 @@ fgt_optimized = FortiOS(
 Access real-time monitoring data:
 
 ```python
-# Get system status
+# Get system status (use dict access - Monitor fields may not have type hints)
 status = fgt.api.monitor.system.status.get()
-print(f"Hostname: {status.hostname}")
-print(f"Version: {status.version}")
+print(f"Hostname: {status['hostname']}")
+print(f"Model: {status['model']}")
 
 # Get firewall policy statistics
 stats = fgt.api.monitor.firewall.policy.get()
