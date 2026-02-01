@@ -39,7 +39,6 @@ from typing import TYPE_CHECKING, Any, Literal, Union
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
-    from hfortix_fortios.models import FortiObject
 
 # Import helper functions from central _helpers module
 from hfortix_fortios._helpers import (
@@ -93,7 +92,7 @@ class FctemsOverride(CRUDEndpoint, MetadataMixin):
         vdom: str | bool | None = None,
         error_mode: Literal["raise", "return", "print"] | None = None,
         error_format: Literal["detailed", "simple", "code_only"] | None = None,
-    ):  # type: ignore[no-untyped-def]
+    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """
         Retrieve endpoint_control/fctems_override configuration.
 
@@ -122,8 +121,8 @@ class FctemsOverride(CRUDEndpoint, MetadataMixin):
             error_format: Override client-level error_format. "detailed" provides full context, "simple" is concise, "code_only" returns just status code.
 
         Returns:
-            FortiObject instance or list of FortiObject instances. Returns Coroutine if using async client.
-            Use .dict, .json, or .raw properties to access as dictionary.
+            API response as dictionary. Returns Coroutine if using async client.
+            Access results via dictionary keys (e.g., result['results'], result['http_status']).
             
             Response structure:
                 - http_method: GET
@@ -262,7 +261,7 @@ class FctemsOverride(CRUDEndpoint, MetadataMixin):
         vdom: str | bool | None = None,
         error_mode: Literal["raise", "return", "print"] | None = None,
         error_format: Literal["detailed", "simple", "code_only"] | None = None,
-    ):  # type: ignore[no-untyped-def]
+    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """
         Update existing endpoint_control/fctems_override object.
 
@@ -299,7 +298,7 @@ class FctemsOverride(CRUDEndpoint, MetadataMixin):
             error_format: Override client-level error_format. "detailed" provides full context, "simple" is concise, "code_only" returns just status code.
 
         Returns:
-            FortiObject instance. Use .dict, .json, or .raw to access as dictionary.
+            API response as dictionary. Returns Coroutine if using async client.
 
         Raises:
             ValueError: If ems-id is missing from payload
@@ -322,14 +321,9 @@ class FctemsOverride(CRUDEndpoint, MetadataMixin):
             - post(): Create new object
             - set(): Intelligent create or update
         """
-        # Apply normalization for multi-value option fields (space-separated strings)
-        
         # Build payload using helper function
-        # Note: auto_normalize=False because this endpoint has unitary fields
-        # (like 'interface') that would be incorrectly converted to list format
         payload_data = build_api_payload(
             api_type="cmdb",
-            auto_normalize=False,
             ems_id=ems_id,
             status=status,
             name=name,
@@ -424,7 +418,7 @@ class FctemsOverride(CRUDEndpoint, MetadataMixin):
         vdom: str | bool | None = None,
         error_mode: Literal["raise", "return", "print"] | None = None,
         error_format: Literal["detailed", "simple", "code_only"] | None = None,
-    ):  # type: ignore[no-untyped-def]
+    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """
         Create new endpoint_control/fctems_override object.
 
@@ -461,7 +455,7 @@ class FctemsOverride(CRUDEndpoint, MetadataMixin):
             error_format: Override client-level error_format. "detailed" provides full context, "simple" is concise, "code_only" returns just status code.
 
         Returns:
-            FortiObject instance with created object. Use .dict, .json, or .raw to access as dictionary.
+            API response as dictionary. Returns Coroutine if using async client.
 
         Examples:
             >>> # Create using individual parameters
@@ -486,14 +480,9 @@ class FctemsOverride(CRUDEndpoint, MetadataMixin):
             - put(): Update existing object
             - set(): Intelligent create or update
         """
-        # Apply normalization for multi-value option fields (space-separated strings)
-        
         # Build payload using helper function
-        # Note: auto_normalize=False because this endpoint has unitary fields
-        # (like 'interface') that would be incorrectly converted to list format
         payload_data = build_api_payload(
             api_type="cmdb",
-            auto_normalize=False,
             ems_id=ems_id,
             status=status,
             name=name,
@@ -557,7 +546,7 @@ class FctemsOverride(CRUDEndpoint, MetadataMixin):
         vdom: str | bool | None = None,
         error_mode: Literal["raise", "return", "print"] | None = None,
         error_format: Literal["detailed", "simple", "code_only"] | None = None,
-    ):  # type: ignore[no-untyped-def]
+    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """
         Delete endpoint_control/fctems_override object.
 
@@ -570,7 +559,7 @@ class FctemsOverride(CRUDEndpoint, MetadataMixin):
             error_format: Override client-level error_format. "detailed" provides full context, "simple" is concise, "code_only" returns just status code.
 
         Returns:
-            FortiObject instance. Use .dict, .json, or .raw to access as dictionary
+            API response as dictionary. Returns Coroutine if using async client.
 
         Raises:
             ValueError: If ems-id is not provided
@@ -732,7 +721,7 @@ class FctemsOverride(CRUDEndpoint, MetadataMixin):
             **kwargs: Additional parameters passed to PUT or POST
 
         Returns:
-            FortiObject instance. Use .dict, .json, or .raw to access as dictionary
+            API response as dictionary. Returns Coroutine if using async client.
 
         Raises:
             ValueError: If ems-id is missing from payload
@@ -767,14 +756,9 @@ class FctemsOverride(CRUDEndpoint, MetadataMixin):
             - put(): Update existing object
             - exists(): Check existence manually
         """
-        # Apply normalization for multi-value option fields (space-separated strings)
-        
         # Build payload using helper function
-        # Note: auto_normalize=False because this endpoint has unitary fields
-        # (like 'interface') that would be incorrectly converted to list format
         payload_data = build_api_payload(
             api_type="cmdb",
-            auto_normalize=False,
             ems_id=ems_id,
             status=status,
             name=name,

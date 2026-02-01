@@ -39,7 +39,6 @@ from typing import TYPE_CHECKING, Any, Literal, Union
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
-    from hfortix_fortios.models import FortiObject
 
 # Import helper functions from central _helpers module
 from hfortix_fortios._helpers import (
@@ -47,7 +46,6 @@ from hfortix_fortios._helpers import (
     build_cmdb_payload,  # Keep for backward compatibility / manual usage
     is_success,
     quote_path_param,  # URL encoding for path parameters
-    normalize_table_field,  # For table field normalization
 )
 # Import metadata mixin for schema introspection
 from hfortix_fortios._helpers.metadata_mixin import MetadataMixin
@@ -60,23 +58,6 @@ class Snmp(CRUDEndpoint, MetadataMixin):
     
     # Configure metadata mixin to use this endpoint's helper module
     _helper_module_name = "snmp"
-    
-    # ========================================================================
-    # Table Fields Metadata (for normalization)
-    # Auto-generated from schema - supports flexible input formats
-    # ========================================================================
-    _TABLE_FIELDS = {
-        "community": {
-            "mkey": "id",
-            "required_fields": ['id', 'name'],
-            "example": "[{'id': 1, 'name': 'value'}]",
-        },
-        "user": {
-            "mkey": "name",
-            "required_fields": ['name', 'auth-pwd', 'priv-pwd'],
-            "example": "[{'name': 'value', 'auth-pwd': 'value', 'priv-pwd': 'value'}]",
-        },
-    }
     
     # ========================================================================
     # Capabilities (from schema metadata)
@@ -111,7 +92,7 @@ class Snmp(CRUDEndpoint, MetadataMixin):
         vdom: str | bool | None = None,
         error_mode: Literal["raise", "return", "print"] | None = None,
         error_format: Literal["detailed", "simple", "code_only"] | None = None,
-    ):  # type: ignore[no-untyped-def]
+    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """
         Retrieve wireless_controller/snmp configuration.
 
@@ -139,8 +120,8 @@ class Snmp(CRUDEndpoint, MetadataMixin):
             error_format: Override client-level error_format. "detailed" provides full context, "simple" is concise, "code_only" returns just status code.
 
         Returns:
-            FortiObject instance or list of FortiObject instances. Returns Coroutine if using async client.
-            Use .dict, .json, or .raw properties to access as dictionary.
+            API response as dictionary. Returns Coroutine if using async client.
+            Access results via dictionary keys (e.g., result['results'], result['http_status']).
             
             Response structure:
                 - http_method: GET
@@ -257,7 +238,7 @@ class Snmp(CRUDEndpoint, MetadataMixin):
         vdom: str | bool | None = None,
         error_mode: Literal["raise", "return", "print"] | None = None,
         error_format: Literal["detailed", "simple", "code_only"] | None = None,
-    ):  # type: ignore[no-untyped-def]
+    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """
         Update existing wireless_controller/snmp object.
 
@@ -270,19 +251,13 @@ class Snmp(CRUDEndpoint, MetadataMixin):
             trap_high_cpu_threshold: CPU usage when trap is sent.
             trap_high_mem_threshold: Memory usage when trap is sent.
             community: SNMP Community Configuration.
-                Default format: [{'id': 1, 'name': 'value'}]
-                Required format: List of dicts with keys: id, name
-                  (String format not allowed due to multiple required fields)
             user: SNMP User Configuration.
-                Default format: [{'name': 'value', 'auth-pwd': 'value', 'priv-pwd': 'value'}]
-                Required format: List of dicts with keys: name, auth-pwd, priv-pwd
-                  (String format not allowed due to multiple required fields)
             vdom: Virtual domain name.
             error_mode: Override client-level error_mode. "raise" raises exceptions, "return" returns error dict, "print" prints errors.
             error_format: Override client-level error_format. "detailed" provides full context, "simple" is concise, "code_only" returns just status code.
 
         Returns:
-            FortiObject instance. Use .dict, .json, or .raw to access as dictionary.
+            API response as dictionary. Returns Coroutine if using async client.
 
         Raises:
             ValueError: If name is missing from payload
@@ -305,24 +280,6 @@ class Snmp(CRUDEndpoint, MetadataMixin):
             - post(): Create new object
             - set(): Intelligent create or update
         """
-        # Apply normalization for table fields (supports flexible input formats)
-        if community is not None:
-            community = normalize_table_field(
-                community,
-                mkey="id",
-                required_fields=['id', 'name'],
-                field_name="community",
-                example="[{'id': 1, 'name': 'value'}]",
-            )
-        if user is not None:
-            user = normalize_table_field(
-                user,
-                mkey="name",
-                required_fields=['name', 'auth-pwd', 'priv-pwd'],
-                field_name="user",
-                example="[{'name': 'value', 'auth-pwd': 'value', 'priv-pwd': 'value'}]",
-            )
-        
         # Build payload using helper function
         payload_data = build_api_payload(
             api_type="cmdb",

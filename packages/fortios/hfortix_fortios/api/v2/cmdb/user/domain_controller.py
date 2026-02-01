@@ -39,7 +39,6 @@ from typing import TYPE_CHECKING, Any, Literal, Union
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
-    from hfortix_fortios.models import FortiObject
 
 # Import helper functions from central _helpers module
 from hfortix_fortios._helpers import (
@@ -47,7 +46,6 @@ from hfortix_fortios._helpers import (
     build_cmdb_payload,  # Keep for backward compatibility / manual usage
     is_success,
     quote_path_param,  # URL encoding for path parameters
-    normalize_table_field,  # For table field normalization
 )
 # Import metadata mixin for schema introspection
 from hfortix_fortios._helpers.metadata_mixin import MetadataMixin
@@ -60,23 +58,6 @@ class DomainController(CRUDEndpoint, MetadataMixin):
     
     # Configure metadata mixin to use this endpoint's helper module
     _helper_module_name = "domain_controller"
-    
-    # ========================================================================
-    # Table Fields Metadata (for normalization)
-    # Auto-generated from schema - supports flexible input formats
-    # ========================================================================
-    _TABLE_FIELDS = {
-        "extra_server": {
-            "mkey": "id",
-            "required_fields": ['id', 'ip-address', 'source-ip-address'],
-            "example": "[{'id': 1, 'ip-address': '192.168.1.10', 'source-ip-address': '192.168.1.10'}]",
-        },
-        "ldap_server": {
-            "mkey": "name",
-            "required_fields": ['name'],
-            "example": "[{'name': 'value'}]",
-        },
-    }
     
     # ========================================================================
     # Capabilities (from schema metadata)
@@ -111,7 +92,7 @@ class DomainController(CRUDEndpoint, MetadataMixin):
         vdom: str | bool | None = None,
         error_mode: Literal["raise", "return", "print"] | None = None,
         error_format: Literal["detailed", "simple", "code_only"] | None = None,
-    ):  # type: ignore[no-untyped-def]
+    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """
         Retrieve user/domain_controller configuration.
 
@@ -140,8 +121,8 @@ class DomainController(CRUDEndpoint, MetadataMixin):
             error_format: Override client-level error_format. "detailed" provides full context, "simple" is concise, "code_only" returns just status code.
 
         Returns:
-            FortiObject instance or list of FortiObject instances. Returns Coroutine if using async client.
-            Use .dict, .json, or .raw properties to access as dictionary.
+            API response as dictionary. Returns Coroutine if using async client.
+            Access results via dictionary keys (e.g., result['results'], result['http_status']).
             
             Response structure:
                 - http_method: GET
@@ -280,7 +261,7 @@ class DomainController(CRUDEndpoint, MetadataMixin):
         vdom: str | bool | None = None,
         error_mode: Literal["raise", "return", "print"] | None = None,
         error_format: Literal["detailed", "simple", "code_only"] | None = None,
-    ):  # type: ignore[no-untyped-def]
+    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """
         Update existing user/domain_controller object.
 
@@ -302,17 +283,9 @@ class DomainController(CRUDEndpoint, MetadataMixin):
             interface_select_method: Specify how to select outgoing interface to reach server.
             interface: Specify outgoing interface to reach server.
             extra_server: Extra servers.
-                Default format: [{'id': 1, 'ip-address': '192.168.1.10', 'source-ip-address': '192.168.1.10'}]
-                Required format: List of dicts with keys: id, ip-address, source-ip-address
-                  (String format not allowed due to multiple required fields)
             domain_name: Domain DNS name.
             replication_port: Port to be used for communication with the domain controller for replication service. Port number 0 indicates automatic discovery.
             ldap_server: LDAP server name(s).
-                Default format: [{'name': 'value'}]
-                Supported formats:
-                  - Single string: "value" → [{'name': 'value'}]
-                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
-                  - List of dicts: [{'name': 'value'}] (recommended)
             change_detection: Enable/disable detection of a configuration change in the Active Directory server.
             change_detection_period: Minutes to detect a configuration change in the Active Directory server (5 - 10080 minutes (7 days), default = 60).
             dns_srv_lookup: Enable/disable DNS service lookup.
@@ -325,7 +298,7 @@ class DomainController(CRUDEndpoint, MetadataMixin):
             error_format: Override client-level error_format. "detailed" provides full context, "simple" is concise, "code_only" returns just status code.
 
         Returns:
-            FortiObject instance. Use .dict, .json, or .raw to access as dictionary.
+            API response as dictionary. Returns Coroutine if using async client.
 
         Raises:
             ValueError: If name is missing from payload
@@ -348,30 +321,9 @@ class DomainController(CRUDEndpoint, MetadataMixin):
             - post(): Create new object
             - set(): Intelligent create or update
         """
-        # Apply normalization for table fields (supports flexible input formats)
-        if extra_server is not None:
-            extra_server = normalize_table_field(
-                extra_server,
-                mkey="id",
-                required_fields=['id', 'ip-address', 'source-ip-address'],
-                field_name="extra_server",
-                example="[{'id': 1, 'ip-address': '192.168.1.10', 'source-ip-address': '192.168.1.10'}]",
-            )
-        if ldap_server is not None:
-            ldap_server = normalize_table_field(
-                ldap_server,
-                mkey="name",
-                required_fields=['name'],
-                field_name="ldap_server",
-                example="[{'name': 'value'}]",
-            )
-        
         # Build payload using helper function
-        # Note: auto_normalize=False because this endpoint has unitary fields
-        # (like 'interface') that would be incorrectly converted to list format
         payload_data = build_api_payload(
             api_type="cmdb",
-            auto_normalize=False,
             name=name,
             ad_mode=ad_mode,
             hostname=hostname,
@@ -466,7 +418,7 @@ class DomainController(CRUDEndpoint, MetadataMixin):
         vdom: str | bool | None = None,
         error_mode: Literal["raise", "return", "print"] | None = None,
         error_format: Literal["detailed", "simple", "code_only"] | None = None,
-    ):  # type: ignore[no-untyped-def]
+    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """
         Create new user/domain_controller object.
 
@@ -488,17 +440,9 @@ class DomainController(CRUDEndpoint, MetadataMixin):
             interface_select_method: Specify how to select outgoing interface to reach server.
             interface: Specify outgoing interface to reach server.
             extra_server: Extra servers.
-                Default format: [{'id': 1, 'ip-address': '192.168.1.10', 'source-ip-address': '192.168.1.10'}]
-                Required format: List of dicts with keys: id, ip-address, source-ip-address
-                  (String format not allowed due to multiple required fields)
             domain_name: Domain DNS name.
             replication_port: Port to be used for communication with the domain controller for replication service. Port number 0 indicates automatic discovery.
             ldap_server: LDAP server name(s).
-                Default format: [{'name': 'value'}]
-                Supported formats:
-                  - Single string: "value" → [{'name': 'value'}]
-                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
-                  - List of dicts: [{'name': 'value'}] (recommended)
             change_detection: Enable/disable detection of a configuration change in the Active Directory server.
             change_detection_period: Minutes to detect a configuration change in the Active Directory server (5 - 10080 minutes (7 days), default = 60).
             dns_srv_lookup: Enable/disable DNS service lookup.
@@ -511,7 +455,7 @@ class DomainController(CRUDEndpoint, MetadataMixin):
             error_format: Override client-level error_format. "detailed" provides full context, "simple" is concise, "code_only" returns just status code.
 
         Returns:
-            FortiObject instance with created object. Use .dict, .json, or .raw to access as dictionary.
+            API response as dictionary. Returns Coroutine if using async client.
 
         Examples:
             >>> # Create using individual parameters
@@ -536,30 +480,9 @@ class DomainController(CRUDEndpoint, MetadataMixin):
             - put(): Update existing object
             - set(): Intelligent create or update
         """
-        # Apply normalization for table fields (supports flexible input formats)
-        if extra_server is not None:
-            extra_server = normalize_table_field(
-                extra_server,
-                mkey="id",
-                required_fields=['id', 'ip-address', 'source-ip-address'],
-                field_name="extra_server",
-                example="[{'id': 1, 'ip-address': '192.168.1.10', 'source-ip-address': '192.168.1.10'}]",
-            )
-        if ldap_server is not None:
-            ldap_server = normalize_table_field(
-                ldap_server,
-                mkey="name",
-                required_fields=['name'],
-                field_name="ldap_server",
-                example="[{'name': 'value'}]",
-            )
-        
         # Build payload using helper function
-        # Note: auto_normalize=False because this endpoint has unitary fields
-        # (like 'interface') that would be incorrectly converted to list format
         payload_data = build_api_payload(
             api_type="cmdb",
-            auto_normalize=False,
             name=name,
             ad_mode=ad_mode,
             hostname=hostname,
@@ -623,7 +546,7 @@ class DomainController(CRUDEndpoint, MetadataMixin):
         vdom: str | bool | None = None,
         error_mode: Literal["raise", "return", "print"] | None = None,
         error_format: Literal["detailed", "simple", "code_only"] | None = None,
-    ):  # type: ignore[no-untyped-def]
+    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """
         Delete user/domain_controller object.
 
@@ -636,7 +559,7 @@ class DomainController(CRUDEndpoint, MetadataMixin):
             error_format: Override client-level error_format. "detailed" provides full context, "simple" is concise, "code_only" returns just status code.
 
         Returns:
-            FortiObject instance. Use .dict, .json, or .raw to access as dictionary
+            API response as dictionary. Returns Coroutine if using async client.
 
         Raises:
             ValueError: If name is not provided
@@ -798,7 +721,7 @@ class DomainController(CRUDEndpoint, MetadataMixin):
             **kwargs: Additional parameters passed to PUT or POST
 
         Returns:
-            FortiObject instance. Use .dict, .json, or .raw to access as dictionary
+            API response as dictionary. Returns Coroutine if using async client.
 
         Raises:
             ValueError: If name is missing from payload
@@ -833,30 +756,9 @@ class DomainController(CRUDEndpoint, MetadataMixin):
             - put(): Update existing object
             - exists(): Check existence manually
         """
-        # Apply normalization for table fields (supports flexible input formats)
-        if extra_server is not None:
-            extra_server = normalize_table_field(
-                extra_server,
-                mkey="id",
-                required_fields=['id', 'ip-address', 'source-ip-address'],
-                field_name="extra_server",
-                example="[{'id': 1, 'ip-address': '192.168.1.10', 'source-ip-address': '192.168.1.10'}]",
-            )
-        if ldap_server is not None:
-            ldap_server = normalize_table_field(
-                ldap_server,
-                mkey="name",
-                required_fields=['name'],
-                field_name="ldap_server",
-                example="[{'name': 'value'}]",
-            )
-        
         # Build payload using helper function
-        # Note: auto_normalize=False because this endpoint has unitary fields
-        # (like 'interface') that would be incorrectly converted to list format
         payload_data = build_api_payload(
             api_type="cmdb",
-            auto_normalize=False,
             name=name,
             ad_mode=ad_mode,
             hostname=hostname,

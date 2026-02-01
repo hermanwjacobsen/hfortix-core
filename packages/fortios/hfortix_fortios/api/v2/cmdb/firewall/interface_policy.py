@@ -39,7 +39,6 @@ from typing import TYPE_CHECKING, Any, Literal, Union
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
-    from hfortix_fortios.models import FortiObject
 
 # Import helper functions from central _helpers module
 from hfortix_fortios._helpers import (
@@ -47,7 +46,6 @@ from hfortix_fortios._helpers import (
     build_cmdb_payload,  # Keep for backward compatibility / manual usage
     is_success,
     quote_path_param,  # URL encoding for path parameters
-    normalize_table_field,  # For table field normalization
 )
 # Import metadata mixin for schema introspection
 from hfortix_fortios._helpers.metadata_mixin import MetadataMixin
@@ -60,28 +58,6 @@ class InterfacePolicy(CRUDEndpoint, MetadataMixin):
     
     # Configure metadata mixin to use this endpoint's helper module
     _helper_module_name = "interface_policy"
-    
-    # ========================================================================
-    # Table Fields Metadata (for normalization)
-    # Auto-generated from schema - supports flexible input formats
-    # ========================================================================
-    _TABLE_FIELDS = {
-        "srcaddr": {
-            "mkey": "name",
-            "required_fields": ['name'],
-            "example": "[{'name': 'value'}]",
-        },
-        "dstaddr": {
-            "mkey": "name",
-            "required_fields": ['name'],
-            "example": "[{'name': 'value'}]",
-        },
-        "service": {
-            "mkey": "name",
-            "required_fields": ['name'],
-            "example": "[{'name': 'value'}]",
-        },
-    }
     
     # ========================================================================
     # Capabilities (from schema metadata)
@@ -116,7 +92,7 @@ class InterfacePolicy(CRUDEndpoint, MetadataMixin):
         vdom: str | bool | None = None,
         error_mode: Literal["raise", "return", "print"] | None = None,
         error_format: Literal["detailed", "simple", "code_only"] | None = None,
-    ):  # type: ignore[no-untyped-def]
+    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """
         Retrieve firewall/interface_policy configuration.
 
@@ -145,8 +121,8 @@ class InterfacePolicy(CRUDEndpoint, MetadataMixin):
             error_format: Override client-level error_format. "detailed" provides full context, "simple" is concise, "code_only" returns just status code.
 
         Returns:
-            FortiObject instance or list of FortiObject instances. Returns Coroutine if using async client.
-            Use .dict, .json, or .raw properties to access as dictionary.
+            API response as dictionary. Returns Coroutine if using async client.
+            Access results via dictionary keys (e.g., result['results'], result['http_status']).
             
             Response structure:
                 - http_method: GET
@@ -285,7 +261,7 @@ class InterfacePolicy(CRUDEndpoint, MetadataMixin):
         vdom: str | bool | None = None,
         error_mode: Literal["raise", "return", "print"] | None = None,
         error_format: Literal["detailed", "simple", "code_only"] | None = None,
-    ):  # type: ignore[no-untyped-def]
+    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """
         Update existing firewall/interface_policy object.
 
@@ -300,23 +276,8 @@ class InterfacePolicy(CRUDEndpoint, MetadataMixin):
             logtraffic: Logging type to be used in this policy (Options: all | utm | disable, Default: utm).
             interface: Monitored interface name from available interfaces.
             srcaddr: Address object to limit traffic monitoring to network traffic sent from the specified address or range.
-                Default format: [{'name': 'value'}]
-                Supported formats:
-                  - Single string: "value" → [{'name': 'value'}]
-                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
-                  - List of dicts: [{'name': 'value'}] (recommended)
             dstaddr: Address object to limit traffic monitoring to network traffic sent to the specified address or range.
-                Default format: [{'name': 'value'}]
-                Supported formats:
-                  - Single string: "value" → [{'name': 'value'}]
-                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
-                  - List of dicts: [{'name': 'value'}] (recommended)
             service: Service object from available options.
-                Default format: [{'name': 'value'}]
-                Supported formats:
-                  - Single string: "value" → [{'name': 'value'}]
-                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
-                  - List of dicts: [{'name': 'value'}] (recommended)
             application_list_status: Enable/disable application control.
             application_list: Application list name.
             ips_sensor_status: Enable/disable IPS.
@@ -337,7 +298,7 @@ class InterfacePolicy(CRUDEndpoint, MetadataMixin):
             error_format: Override client-level error_format. "detailed" provides full context, "simple" is concise, "code_only" returns just status code.
 
         Returns:
-            FortiObject instance. Use .dict, .json, or .raw to access as dictionary.
+            API response as dictionary. Returns Coroutine if using async client.
 
         Raises:
             ValueError: If policyid is missing from payload
@@ -360,38 +321,9 @@ class InterfacePolicy(CRUDEndpoint, MetadataMixin):
             - post(): Create new object
             - set(): Intelligent create or update
         """
-        # Apply normalization for table fields (supports flexible input formats)
-        if srcaddr is not None:
-            srcaddr = normalize_table_field(
-                srcaddr,
-                mkey="name",
-                required_fields=['name'],
-                field_name="srcaddr",
-                example="[{'name': 'value'}]",
-            )
-        if dstaddr is not None:
-            dstaddr = normalize_table_field(
-                dstaddr,
-                mkey="name",
-                required_fields=['name'],
-                field_name="dstaddr",
-                example="[{'name': 'value'}]",
-            )
-        if service is not None:
-            service = normalize_table_field(
-                service,
-                mkey="name",
-                required_fields=['name'],
-                field_name="service",
-                example="[{'name': 'value'}]",
-            )
-        
         # Build payload using helper function
-        # Note: auto_normalize=False because this endpoint has unitary fields
-        # (like 'interface') that would be incorrectly converted to list format
         payload_data = build_api_payload(
             api_type="cmdb",
-            auto_normalize=False,
             policyid=policyid,
             uuid=uuid,
             status=status,
@@ -486,7 +418,7 @@ class InterfacePolicy(CRUDEndpoint, MetadataMixin):
         vdom: str | bool | None = None,
         error_mode: Literal["raise", "return", "print"] | None = None,
         error_format: Literal["detailed", "simple", "code_only"] | None = None,
-    ):  # type: ignore[no-untyped-def]
+    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """
         Create new firewall/interface_policy object.
 
@@ -501,23 +433,8 @@ class InterfacePolicy(CRUDEndpoint, MetadataMixin):
             logtraffic: Logging type to be used in this policy (Options: all | utm | disable, Default: utm).
             interface: Monitored interface name from available interfaces.
             srcaddr: Address object to limit traffic monitoring to network traffic sent from the specified address or range.
-                Default format: [{'name': 'value'}]
-                Supported formats:
-                  - Single string: "value" → [{'name': 'value'}]
-                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
-                  - List of dicts: [{'name': 'value'}] (recommended)
             dstaddr: Address object to limit traffic monitoring to network traffic sent to the specified address or range.
-                Default format: [{'name': 'value'}]
-                Supported formats:
-                  - Single string: "value" → [{'name': 'value'}]
-                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
-                  - List of dicts: [{'name': 'value'}] (recommended)
             service: Service object from available options.
-                Default format: [{'name': 'value'}]
-                Supported formats:
-                  - Single string: "value" → [{'name': 'value'}]
-                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
-                  - List of dicts: [{'name': 'value'}] (recommended)
             application_list_status: Enable/disable application control.
             application_list: Application list name.
             ips_sensor_status: Enable/disable IPS.
@@ -538,7 +455,7 @@ class InterfacePolicy(CRUDEndpoint, MetadataMixin):
             error_format: Override client-level error_format. "detailed" provides full context, "simple" is concise, "code_only" returns just status code.
 
         Returns:
-            FortiObject instance with created object. Use .dict, .json, or .raw to access as dictionary.
+            API response as dictionary. Returns Coroutine if using async client.
 
         Examples:
             >>> # Create using individual parameters
@@ -563,38 +480,9 @@ class InterfacePolicy(CRUDEndpoint, MetadataMixin):
             - put(): Update existing object
             - set(): Intelligent create or update
         """
-        # Apply normalization for table fields (supports flexible input formats)
-        if srcaddr is not None:
-            srcaddr = normalize_table_field(
-                srcaddr,
-                mkey="name",
-                required_fields=['name'],
-                field_name="srcaddr",
-                example="[{'name': 'value'}]",
-            )
-        if dstaddr is not None:
-            dstaddr = normalize_table_field(
-                dstaddr,
-                mkey="name",
-                required_fields=['name'],
-                field_name="dstaddr",
-                example="[{'name': 'value'}]",
-            )
-        if service is not None:
-            service = normalize_table_field(
-                service,
-                mkey="name",
-                required_fields=['name'],
-                field_name="service",
-                example="[{'name': 'value'}]",
-            )
-        
         # Build payload using helper function
-        # Note: auto_normalize=False because this endpoint has unitary fields
-        # (like 'interface') that would be incorrectly converted to list format
         payload_data = build_api_payload(
             api_type="cmdb",
-            auto_normalize=False,
             policyid=policyid,
             uuid=uuid,
             status=status,
@@ -658,7 +546,7 @@ class InterfacePolicy(CRUDEndpoint, MetadataMixin):
         vdom: str | bool | None = None,
         error_mode: Literal["raise", "return", "print"] | None = None,
         error_format: Literal["detailed", "simple", "code_only"] | None = None,
-    ):  # type: ignore[no-untyped-def]
+    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """
         Delete firewall/interface_policy object.
 
@@ -671,7 +559,7 @@ class InterfacePolicy(CRUDEndpoint, MetadataMixin):
             error_format: Override client-level error_format. "detailed" provides full context, "simple" is concise, "code_only" returns just status code.
 
         Returns:
-            FortiObject instance. Use .dict, .json, or .raw to access as dictionary
+            API response as dictionary. Returns Coroutine if using async client.
 
         Raises:
             ValueError: If policyid is not provided
@@ -833,7 +721,7 @@ class InterfacePolicy(CRUDEndpoint, MetadataMixin):
             **kwargs: Additional parameters passed to PUT or POST
 
         Returns:
-            FortiObject instance. Use .dict, .json, or .raw to access as dictionary
+            API response as dictionary. Returns Coroutine if using async client.
 
         Raises:
             ValueError: If policyid is missing from payload
@@ -868,38 +756,9 @@ class InterfacePolicy(CRUDEndpoint, MetadataMixin):
             - put(): Update existing object
             - exists(): Check existence manually
         """
-        # Apply normalization for table fields (supports flexible input formats)
-        if srcaddr is not None:
-            srcaddr = normalize_table_field(
-                srcaddr,
-                mkey="name",
-                required_fields=['name'],
-                field_name="srcaddr",
-                example="[{'name': 'value'}]",
-            )
-        if dstaddr is not None:
-            dstaddr = normalize_table_field(
-                dstaddr,
-                mkey="name",
-                required_fields=['name'],
-                field_name="dstaddr",
-                example="[{'name': 'value'}]",
-            )
-        if service is not None:
-            service = normalize_table_field(
-                service,
-                mkey="name",
-                required_fields=['name'],
-                field_name="service",
-                example="[{'name': 'value'}]",
-            )
-        
         # Build payload using helper function
-        # Note: auto_normalize=False because this endpoint has unitary fields
-        # (like 'interface') that would be incorrectly converted to list format
         payload_data = build_api_payload(
             api_type="cmdb",
-            auto_normalize=False,
             policyid=policyid,
             uuid=uuid,
             status=status,

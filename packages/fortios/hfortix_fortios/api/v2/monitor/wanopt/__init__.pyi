@@ -10,24 +10,12 @@ if TYPE_CHECKING:
     from .peer_stats import PeerStats
     from .webcache import Webcache
 
-__all__ = [
-    "Wanopt",
-]
-
 
 class Wanopt:
-    """WANOPT API category.
-    
-    All endpoints return FortiObject instances with:
-    - Attribute access: response.field
-    - Dictionary access: response["field"]
-    - Convert to dict: response.dict or response.json
-    """
-    
+    """Type stub for Wanopt."""
+
     history: History
     peer_stats: PeerStats
     webcache: Webcache
 
-    def __init__(self, client: IHTTPClient, vdom: str | None = None) -> None:
-        """Initialize wanopt category with HTTP client."""
-        ...
+    def __init__(self, client: IHTTPClient) -> None: ...

@@ -2,11 +2,7 @@
 
 from typing import TYPE_CHECKING
 
-from .disk import Disk as Disk
-from .fortianalyzer import Fortianalyzer as Fortianalyzer
-from .forticloud import Forticloud as Forticloud
-from .memory import Memory as Memory
-from .search import Search as Search
+from .FortiOS 7 import Fortios7 as Fortios7
 
 if TYPE_CHECKING:
     from hfortix_core.http.interface import IHTTPClient
@@ -22,10 +18,6 @@ class Log:
     - forticloud: Logs from FortiCloud
     - search: Log search operations
     """
-    disk: Disk
-    fortianalyzer: Fortianalyzer
-    forticloud: Forticloud
-    memory: Memory
-    search: Search
+    FortiOS 7: Fortios7
 
     def __init__(self, client: IHTTPClient) -> None: ...

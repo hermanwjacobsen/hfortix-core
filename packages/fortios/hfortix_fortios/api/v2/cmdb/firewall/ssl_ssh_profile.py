@@ -39,7 +39,6 @@ from typing import TYPE_CHECKING, Any, Literal, Union
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
-    from hfortix_fortios.models import FortiObject
 
 # Import helper functions from central _helpers module
 from hfortix_fortios._helpers import (
@@ -47,7 +46,6 @@ from hfortix_fortios._helpers import (
     build_cmdb_payload,  # Keep for backward compatibility / manual usage
     is_success,
     quote_path_param,  # URL encoding for path parameters
-    normalize_table_field,  # For table field normalization
 )
 # Import metadata mixin for schema introspection
 from hfortix_fortios._helpers.metadata_mixin import MetadataMixin
@@ -60,33 +58,6 @@ class SslSshProfile(CRUDEndpoint, MetadataMixin):
     
     # Configure metadata mixin to use this endpoint's helper module
     _helper_module_name = "ssl_ssh_profile"
-    
-    # ========================================================================
-    # Table Fields Metadata (for normalization)
-    # Auto-generated from schema - supports flexible input formats
-    # ========================================================================
-    _TABLE_FIELDS = {
-        "ssl_exempt": {
-            "mkey": "id",
-            "required_fields": ['type'],
-            "example": "[{'type': 'fortiguard-category'}]",
-        },
-        "ech_outer_sni": {
-            "mkey": "name",
-            "required_fields": ['name', 'sni'],
-            "example": "[{'name': 'value', 'sni': 'value'}]",
-        },
-        "server_cert": {
-            "mkey": "name",
-            "required_fields": ['name'],
-            "example": "[{'name': 'value'}]",
-        },
-        "ssl_server": {
-            "mkey": "id",
-            "required_fields": ['ip'],
-            "example": "[{'ip': '192.168.1.10'}]",
-        },
-    }
     
     # ========================================================================
     # Capabilities (from schema metadata)
@@ -121,7 +92,7 @@ class SslSshProfile(CRUDEndpoint, MetadataMixin):
         vdom: str | bool | None = None,
         error_mode: Literal["raise", "return", "print"] | None = None,
         error_format: Literal["detailed", "simple", "code_only"] | None = None,
-    ):  # type: ignore[no-untyped-def]
+    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """
         Retrieve firewall/ssl_ssh_profile configuration.
 
@@ -150,8 +121,8 @@ class SslSshProfile(CRUDEndpoint, MetadataMixin):
             error_format: Override client-level error_format. "detailed" provides full context, "simple" is concise, "code_only" returns just status code.
 
         Returns:
-            FortiObject instance or list of FortiObject instances. Returns Coroutine if using async client.
-            Use .dict, .json, or .raw properties to access as dictionary.
+            API response as dictionary. Returns Coroutine if using async client.
+            Access results via dictionary keys (e.g., result['results'], result['http_status']).
             
             Response structure:
                 - http_method: GET
@@ -295,7 +266,7 @@ class SslSshProfile(CRUDEndpoint, MetadataMixin):
         vdom: str | bool | None = None,
         error_mode: Literal["raise", "return", "print"] | None = None,
         error_format: Literal["detailed", "simple", "code_only"] | None = None,
-    ):  # type: ignore[no-untyped-def]
+    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """
         Update existing firewall/ssl_ssh_profile object.
 
@@ -316,31 +287,13 @@ class SslSshProfile(CRUDEndpoint, MetadataMixin):
             allowlist: Enable/disable exempting servers by FortiGuard allowlist.
             block_blocklisted_certificates: Enable/disable blocking SSL-based botnet communication by FortiGuard certificate blocklist.
             ssl_exempt: Servers to exempt from SSL inspection.
-                Default format: [{'type': 'fortiguard-category'}]
-                Supported formats:
-                  - Single string: "value" → [{'id': 'value'}]
-                  - List of strings: ["val1", "val2"] → [{'id': 'val1'}, ...]
-                  - List of dicts: [{'type': 'fortiguard-category'}] (recommended)
             ech_outer_sni: ClientHelloOuter SNIs to be blocked.
-                Default format: [{'name': 'value', 'sni': 'value'}]
-                Required format: List of dicts with keys: name, sni
-                  (String format not allowed due to multiple required fields)
             server_cert_mode: Re-sign or replace the server's certificate.
             use_ssl_server: Enable/disable the use of SSL server table for SSL offloading.
             caname: CA certificate used by SSL Inspection.
             untrusted_caname: Untrusted CA certificate used by SSL Inspection.
             server_cert: Certificate used by SSL Inspection to replace server certificate.
-                Default format: [{'name': 'value'}]
-                Supported formats:
-                  - Single string: "value" → [{'name': 'value'}]
-                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
-                  - List of dicts: [{'name': 'value'}] (recommended)
             ssl_server: SSL server settings used for client certificate request.
-                Default format: [{'ip': '192.168.1.10'}]
-                Supported formats:
-                  - Single string: "value" → [{'id': 'value'}]
-                  - List of strings: ["val1", "val2"] → [{'id': 'val1'}, ...]
-                  - List of dicts: [{'ip': '192.168.1.10'}] (recommended)
             ssl_exemption_ip_rating: Enable/disable IP based URL rating.
             ssl_exemption_log: Enable/disable logging of SSL exemptions.
             ssl_anomaly_log: Enable/disable logging of SSL anomalies.
@@ -355,7 +308,7 @@ class SslSshProfile(CRUDEndpoint, MetadataMixin):
             error_format: Override client-level error_format. "detailed" provides full context, "simple" is concise, "code_only" returns just status code.
 
         Returns:
-            FortiObject instance. Use .dict, .json, or .raw to access as dictionary.
+            API response as dictionary. Returns Coroutine if using async client.
 
         Raises:
             ValueError: If name is missing from payload
@@ -378,40 +331,6 @@ class SslSshProfile(CRUDEndpoint, MetadataMixin):
             - post(): Create new object
             - set(): Intelligent create or update
         """
-        # Apply normalization for table fields (supports flexible input formats)
-        if ssl_exempt is not None:
-            ssl_exempt = normalize_table_field(
-                ssl_exempt,
-                mkey="id",
-                required_fields=['type'],
-                field_name="ssl_exempt",
-                example="[{'type': 'fortiguard-category'}]",
-            )
-        if ech_outer_sni is not None:
-            ech_outer_sni = normalize_table_field(
-                ech_outer_sni,
-                mkey="name",
-                required_fields=['name', 'sni'],
-                field_name="ech_outer_sni",
-                example="[{'name': 'value', 'sni': 'value'}]",
-            )
-        if server_cert is not None:
-            server_cert = normalize_table_field(
-                server_cert,
-                mkey="name",
-                required_fields=['name'],
-                field_name="server_cert",
-                example="[{'name': 'value'}]",
-            )
-        if ssl_server is not None:
-            ssl_server = normalize_table_field(
-                ssl_server,
-                mkey="id",
-                required_fields=['ip'],
-                field_name="ssl_server",
-                example="[{'ip': '192.168.1.10'}]",
-            )
-        
         # Build payload using helper function
         payload_data = build_api_payload(
             api_type="cmdb",
@@ -519,7 +438,7 @@ class SslSshProfile(CRUDEndpoint, MetadataMixin):
         vdom: str | bool | None = None,
         error_mode: Literal["raise", "return", "print"] | None = None,
         error_format: Literal["detailed", "simple", "code_only"] | None = None,
-    ):  # type: ignore[no-untyped-def]
+    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """
         Create new firewall/ssl_ssh_profile object.
 
@@ -540,31 +459,13 @@ class SslSshProfile(CRUDEndpoint, MetadataMixin):
             allowlist: Enable/disable exempting servers by FortiGuard allowlist.
             block_blocklisted_certificates: Enable/disable blocking SSL-based botnet communication by FortiGuard certificate blocklist.
             ssl_exempt: Servers to exempt from SSL inspection.
-                Default format: [{'type': 'fortiguard-category'}]
-                Supported formats:
-                  - Single string: "value" → [{'id': 'value'}]
-                  - List of strings: ["val1", "val2"] → [{'id': 'val1'}, ...]
-                  - List of dicts: [{'type': 'fortiguard-category'}] (recommended)
             ech_outer_sni: ClientHelloOuter SNIs to be blocked.
-                Default format: [{'name': 'value', 'sni': 'value'}]
-                Required format: List of dicts with keys: name, sni
-                  (String format not allowed due to multiple required fields)
             server_cert_mode: Re-sign or replace the server's certificate.
             use_ssl_server: Enable/disable the use of SSL server table for SSL offloading.
             caname: CA certificate used by SSL Inspection.
             untrusted_caname: Untrusted CA certificate used by SSL Inspection.
             server_cert: Certificate used by SSL Inspection to replace server certificate.
-                Default format: [{'name': 'value'}]
-                Supported formats:
-                  - Single string: "value" → [{'name': 'value'}]
-                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
-                  - List of dicts: [{'name': 'value'}] (recommended)
             ssl_server: SSL server settings used for client certificate request.
-                Default format: [{'ip': '192.168.1.10'}]
-                Supported formats:
-                  - Single string: "value" → [{'id': 'value'}]
-                  - List of strings: ["val1", "val2"] → [{'id': 'val1'}, ...]
-                  - List of dicts: [{'ip': '192.168.1.10'}] (recommended)
             ssl_exemption_ip_rating: Enable/disable IP based URL rating.
             ssl_exemption_log: Enable/disable logging of SSL exemptions.
             ssl_anomaly_log: Enable/disable logging of SSL anomalies.
@@ -579,7 +480,7 @@ class SslSshProfile(CRUDEndpoint, MetadataMixin):
             error_format: Override client-level error_format. "detailed" provides full context, "simple" is concise, "code_only" returns just status code.
 
         Returns:
-            FortiObject instance with created object. Use .dict, .json, or .raw to access as dictionary.
+            API response as dictionary. Returns Coroutine if using async client.
 
         Examples:
             >>> # Create using individual parameters
@@ -604,40 +505,6 @@ class SslSshProfile(CRUDEndpoint, MetadataMixin):
             - put(): Update existing object
             - set(): Intelligent create or update
         """
-        # Apply normalization for table fields (supports flexible input formats)
-        if ssl_exempt is not None:
-            ssl_exempt = normalize_table_field(
-                ssl_exempt,
-                mkey="id",
-                required_fields=['type'],
-                field_name="ssl_exempt",
-                example="[{'type': 'fortiguard-category'}]",
-            )
-        if ech_outer_sni is not None:
-            ech_outer_sni = normalize_table_field(
-                ech_outer_sni,
-                mkey="name",
-                required_fields=['name', 'sni'],
-                field_name="ech_outer_sni",
-                example="[{'name': 'value', 'sni': 'value'}]",
-            )
-        if server_cert is not None:
-            server_cert = normalize_table_field(
-                server_cert,
-                mkey="name",
-                required_fields=['name'],
-                field_name="server_cert",
-                example="[{'name': 'value'}]",
-            )
-        if ssl_server is not None:
-            ssl_server = normalize_table_field(
-                ssl_server,
-                mkey="id",
-                required_fields=['ip'],
-                field_name="ssl_server",
-                example="[{'ip': '192.168.1.10'}]",
-            )
-        
         # Build payload using helper function
         payload_data = build_api_payload(
             api_type="cmdb",
@@ -709,7 +576,7 @@ class SslSshProfile(CRUDEndpoint, MetadataMixin):
         vdom: str | bool | None = None,
         error_mode: Literal["raise", "return", "print"] | None = None,
         error_format: Literal["detailed", "simple", "code_only"] | None = None,
-    ):  # type: ignore[no-untyped-def]
+    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """
         Delete firewall/ssl_ssh_profile object.
 
@@ -722,7 +589,7 @@ class SslSshProfile(CRUDEndpoint, MetadataMixin):
             error_format: Override client-level error_format. "detailed" provides full context, "simple" is concise, "code_only" returns just status code.
 
         Returns:
-            FortiObject instance. Use .dict, .json, or .raw to access as dictionary
+            API response as dictionary. Returns Coroutine if using async client.
 
         Raises:
             ValueError: If name is not provided
@@ -894,7 +761,7 @@ class SslSshProfile(CRUDEndpoint, MetadataMixin):
             **kwargs: Additional parameters passed to PUT or POST
 
         Returns:
-            FortiObject instance. Use .dict, .json, or .raw to access as dictionary
+            API response as dictionary. Returns Coroutine if using async client.
 
         Raises:
             ValueError: If name is missing from payload
@@ -929,40 +796,6 @@ class SslSshProfile(CRUDEndpoint, MetadataMixin):
             - put(): Update existing object
             - exists(): Check existence manually
         """
-        # Apply normalization for table fields (supports flexible input formats)
-        if ssl_exempt is not None:
-            ssl_exempt = normalize_table_field(
-                ssl_exempt,
-                mkey="id",
-                required_fields=['type'],
-                field_name="ssl_exempt",
-                example="[{'type': 'fortiguard-category'}]",
-            )
-        if ech_outer_sni is not None:
-            ech_outer_sni = normalize_table_field(
-                ech_outer_sni,
-                mkey="name",
-                required_fields=['name', 'sni'],
-                field_name="ech_outer_sni",
-                example="[{'name': 'value', 'sni': 'value'}]",
-            )
-        if server_cert is not None:
-            server_cert = normalize_table_field(
-                server_cert,
-                mkey="name",
-                required_fields=['name'],
-                field_name="server_cert",
-                example="[{'name': 'value'}]",
-            )
-        if ssl_server is not None:
-            ssl_server = normalize_table_field(
-                ssl_server,
-                mkey="id",
-                required_fields=['ip'],
-                field_name="ssl_server",
-                example="[{'ip': '192.168.1.10'}]",
-            )
-        
         # Build payload using helper function
         payload_data = build_api_payload(
             api_type="cmdb",

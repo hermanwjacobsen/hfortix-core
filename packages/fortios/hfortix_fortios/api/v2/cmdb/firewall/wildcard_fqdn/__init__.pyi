@@ -9,25 +9,11 @@ if TYPE_CHECKING:
     from .custom import Custom
     from .group import Group
 
-__all__ = [
-    "Custom",
-    "Group",
-    "WildcardFqdn",
-]
-
 
 class WildcardFqdn:
-    """WILDCARD_FQDN API category.
-    
-    All endpoints return FortiObject instances with:
-    - Attribute access: response.field
-    - Dictionary access: response["field"]
-    - Convert to dict: response.dict or response.json
-    """
-    
+    """Type stub for WildcardFqdn."""
+
     custom: Custom
     group: Group
 
-    def __init__(self, client: IHTTPClient, vdom: str | None = None) -> None:
-        """Initialize wildcard_fqdn category with HTTP client."""
-        ...
+    def __init__(self, client: IHTTPClient) -> None: ...

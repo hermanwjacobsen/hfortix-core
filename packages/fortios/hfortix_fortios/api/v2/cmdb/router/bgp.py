@@ -39,7 +39,6 @@ from typing import TYPE_CHECKING, Any, Literal, Union
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
-    from hfortix_fortios.models import FortiObject
 
 # Import helper functions from central _helpers module
 from hfortix_fortios._helpers import (
@@ -47,7 +46,6 @@ from hfortix_fortios._helpers import (
     build_cmdb_payload,  # Keep for backward compatibility / manual usage
     is_success,
     quote_path_param,  # URL encoding for path parameters
-    normalize_table_field,  # For table field normalization
 )
 # Import metadata mixin for schema introspection
 from hfortix_fortios._helpers.metadata_mixin import MetadataMixin
@@ -60,83 +58,6 @@ class Bgp(CRUDEndpoint, MetadataMixin):
     
     # Configure metadata mixin to use this endpoint's helper module
     _helper_module_name = "bgp"
-    
-    # ========================================================================
-    # Table Fields Metadata (for normalization)
-    # Auto-generated from schema - supports flexible input formats
-    # ========================================================================
-    _TABLE_FIELDS = {
-        "confederation_peers": {
-            "mkey": "peer",
-            "required_fields": ['peer'],
-            "example": "[{'peer': 'value'}]",
-        },
-        "aggregate_address": {
-            "mkey": "id",
-            "required_fields": ['id', 'prefix'],
-            "example": "[{'id': 1, 'prefix': 'value'}]",
-        },
-        "aggregate_address6": {
-            "mkey": "id",
-            "required_fields": ['id', 'prefix6'],
-            "example": "[{'id': 1, 'prefix6': 'value'}]",
-        },
-        "neighbor": {
-            "mkey": "ip",
-            "required_fields": ['ip', 'remote-as'],
-            "example": "[{'ip': '192.168.1.10', 'remote-as': 'value'}]",
-        },
-        "neighbor_group": {
-            "mkey": "name",
-            "required_fields": ['name', 'remote-as', 'remote-as-filter'],
-            "example": "[{'name': 'value', 'remote-as': 'value', 'remote-as-filter': 'value'}]",
-        },
-        "neighbor_range": {
-            "mkey": "id",
-            "required_fields": ['prefix', 'neighbor-group'],
-            "example": "[{'prefix': 'value', 'neighbor-group': 'value'}]",
-        },
-        "neighbor_range6": {
-            "mkey": "id",
-            "required_fields": ['prefix6', 'neighbor-group'],
-            "example": "[{'prefix6': 'value', 'neighbor-group': 'value'}]",
-        },
-        "network": {
-            "mkey": "id",
-            "required_fields": ['id', 'prefix'],
-            "example": "[{'id': 1, 'prefix': 'value'}]",
-        },
-        "network6": {
-            "mkey": "id",
-            "required_fields": ['id', 'prefix6'],
-            "example": "[{'id': 1, 'prefix6': 'value'}]",
-        },
-        "redistribute": {
-            "mkey": "name",
-            "required_fields": ['name'],
-            "example": "[{'name': 'value'}]",
-        },
-        "redistribute6": {
-            "mkey": "name",
-            "required_fields": ['name'],
-            "example": "[{'name': 'value'}]",
-        },
-        "admin_distance": {
-            "mkey": "id",
-            "required_fields": ['id', 'neighbour-prefix', 'distance'],
-            "example": "[{'id': 1, 'neighbour-prefix': 'value', 'distance': 1}]",
-        },
-        "vrf": {
-            "mkey": "vrf",
-            "required_fields": ['vrf'],
-            "example": "[{'vrf': 'value'}]",
-        },
-        "vrf6": {
-            "mkey": "vrf",
-            "required_fields": ['vrf'],
-            "example": "[{'vrf': 'value'}]",
-        },
-    }
     
     # ========================================================================
     # Capabilities (from schema metadata)
@@ -171,7 +92,7 @@ class Bgp(CRUDEndpoint, MetadataMixin):
         vdom: str | bool | None = None,
         error_mode: Literal["raise", "return", "print"] | None = None,
         error_format: Literal["detailed", "simple", "code_only"] | None = None,
-    ):  # type: ignore[no-untyped-def]
+    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """
         Retrieve router/bgp configuration.
 
@@ -199,8 +120,8 @@ class Bgp(CRUDEndpoint, MetadataMixin):
             error_format: Override client-level error_format. "detailed" provides full context, "simple" is concise, "code_only" returns just status code.
 
         Returns:
-            FortiObject instance or list of FortiObject instances. Returns Coroutine if using async client.
-            Use .dict, .json, or .raw properties to access as dictionary.
+            API response as dictionary. Returns Coroutine if using async client.
+            Access results via dictionary keys (e.g., result['results'], result['http_status']).
             
             Response structure:
                 - http_method: GET
@@ -377,7 +298,7 @@ class Bgp(CRUDEndpoint, MetadataMixin):
         vdom: str | bool | None = None,
         error_mode: Literal["raise", "return", "print"] | None = None,
         error_format: Literal["detailed", "simple", "code_only"] | None = None,
-    ):  # type: ignore[no-untyped-def]
+    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """
         Update existing router/bgp object.
 
@@ -416,11 +337,6 @@ class Bgp(CRUDEndpoint, MetadataMixin):
             cluster_id: Route reflector cluster ID.
             confederation_identifier: Confederation identifier.
             confederation_peers: Confederation peers.
-                Default format: [{'peer': 'value'}]
-                Supported formats:
-                  - Single string: "value" → [{'peer': 'value'}]
-                  - List of strings: ["val1", "val2"] → [{'peer': 'val1'}, ...]
-                  - List of dicts: [{'peer': 'value'}] (recommended)
             dampening_route_map: Criteria for dampening.
             dampening_reachability_half_life: Reachability half-life time for penalty (min).
             dampening_reuse: Threshold to reuse routes.
@@ -444,71 +360,24 @@ class Bgp(CRUDEndpoint, MetadataMixin):
             additional_path_select_vpnv6: Number of additional paths to be selected for each VPNv6 NLRI.
             cross_family_conditional_adv: Enable/disable cross address family conditional advertisement.
             aggregate_address: BGP aggregate address table.
-                Default format: [{'id': 1, 'prefix': 'value'}]
-                Required format: List of dicts with keys: id, prefix
-                  (String format not allowed due to multiple required fields)
             aggregate_address6: BGP IPv6 aggregate address table.
-                Default format: [{'id': 1, 'prefix6': 'value'}]
-                Required format: List of dicts with keys: id, prefix6
-                  (String format not allowed due to multiple required fields)
             neighbor: BGP neighbor table.
-                Default format: [{'ip': '192.168.1.10', 'remote-as': 'value'}]
-                Required format: List of dicts with keys: ip, remote-as
-                  (String format not allowed due to multiple required fields)
             neighbor_group: BGP neighbor group table.
-                Default format: [{'name': 'value', 'remote-as': 'value', 'remote-as-filter': 'value'}]
-                Required format: List of dicts with keys: name, remote-as, remote-as-filter
-                  (String format not allowed due to multiple required fields)
             neighbor_range: BGP neighbor range table.
-                Default format: [{'prefix': 'value', 'neighbor-group': 'value'}]
-                Required format: List of dicts with keys: prefix, neighbor-group
-                  (String format not allowed due to multiple required fields)
             neighbor_range6: BGP IPv6 neighbor range table.
-                Default format: [{'prefix6': 'value', 'neighbor-group': 'value'}]
-                Required format: List of dicts with keys: prefix6, neighbor-group
-                  (String format not allowed due to multiple required fields)
             network: BGP network table.
-                Default format: [{'id': 1, 'prefix': 'value'}]
-                Required format: List of dicts with keys: id, prefix
-                  (String format not allowed due to multiple required fields)
             network6: BGP IPv6 network table.
-                Default format: [{'id': 1, 'prefix6': 'value'}]
-                Required format: List of dicts with keys: id, prefix6
-                  (String format not allowed due to multiple required fields)
             redistribute: BGP IPv4 redistribute table.
-                Default format: [{'name': 'value'}]
-                Supported formats:
-                  - Single string: "value" → [{'name': 'value'}]
-                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
-                  - List of dicts: [{'name': 'value'}] (recommended)
             redistribute6: BGP IPv6 redistribute table.
-                Default format: [{'name': 'value'}]
-                Supported formats:
-                  - Single string: "value" → [{'name': 'value'}]
-                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
-                  - List of dicts: [{'name': 'value'}] (recommended)
             admin_distance: Administrative distance modifications.
-                Default format: [{'id': 1, 'neighbour-prefix': 'value', 'distance': 1}]
-                Required format: List of dicts with keys: id, neighbour-prefix, distance
-                  (String format not allowed due to multiple required fields)
             vrf: BGP VRF leaking table.
-                Default format: [{'vrf': 'value'}]
-                Supported formats:
-                  - Single string: "value" → [{'vrf': 'value'}]
-                  - List of strings: ["val1", "val2"] → [{'vrf': 'val1'}, ...]
-                  - List of dicts: [{'vrf': 'value'}] (recommended)
             vrf6: BGP IPv6 VRF leaking table.
-                Default format: [{'vrf': 'value'}]
-                Supported formats:
-                  - Single string: "value" → [{'vrf': 'value'}]
-                  - List of strings: ["val1", "val2"] → [{'vrf': 'val1'}, ...]
-                  - List of dicts: [{'vrf': 'value'}] (recommended)
             vdom: Virtual domain name.
             error_mode: Override client-level error_mode. "raise" raises exceptions, "return" returns error dict, "print" prints errors.
             error_format: Override client-level error_format. "detailed" provides full context, "simple" is concise, "code_only" returns just status code.
 
         Returns:
-            FortiObject instance. Use .dict, .json, or .raw to access as dictionary.
+            API response as dictionary. Returns Coroutine if using async client.
 
         Raises:
             ValueError: If name is missing from payload
@@ -531,120 +400,6 @@ class Bgp(CRUDEndpoint, MetadataMixin):
             - post(): Create new object
             - set(): Intelligent create or update
         """
-        # Apply normalization for table fields (supports flexible input formats)
-        if confederation_peers is not None:
-            confederation_peers = normalize_table_field(
-                confederation_peers,
-                mkey="peer",
-                required_fields=['peer'],
-                field_name="confederation_peers",
-                example="[{'peer': 'value'}]",
-            )
-        if aggregate_address is not None:
-            aggregate_address = normalize_table_field(
-                aggregate_address,
-                mkey="id",
-                required_fields=['id', 'prefix'],
-                field_name="aggregate_address",
-                example="[{'id': 1, 'prefix': 'value'}]",
-            )
-        if aggregate_address6 is not None:
-            aggregate_address6 = normalize_table_field(
-                aggregate_address6,
-                mkey="id",
-                required_fields=['id', 'prefix6'],
-                field_name="aggregate_address6",
-                example="[{'id': 1, 'prefix6': 'value'}]",
-            )
-        if neighbor is not None:
-            neighbor = normalize_table_field(
-                neighbor,
-                mkey="ip",
-                required_fields=['ip', 'remote-as'],
-                field_name="neighbor",
-                example="[{'ip': '192.168.1.10', 'remote-as': 'value'}]",
-            )
-        if neighbor_group is not None:
-            neighbor_group = normalize_table_field(
-                neighbor_group,
-                mkey="name",
-                required_fields=['name', 'remote-as', 'remote-as-filter'],
-                field_name="neighbor_group",
-                example="[{'name': 'value', 'remote-as': 'value', 'remote-as-filter': 'value'}]",
-            )
-        if neighbor_range is not None:
-            neighbor_range = normalize_table_field(
-                neighbor_range,
-                mkey="id",
-                required_fields=['prefix', 'neighbor-group'],
-                field_name="neighbor_range",
-                example="[{'prefix': 'value', 'neighbor-group': 'value'}]",
-            )
-        if neighbor_range6 is not None:
-            neighbor_range6 = normalize_table_field(
-                neighbor_range6,
-                mkey="id",
-                required_fields=['prefix6', 'neighbor-group'],
-                field_name="neighbor_range6",
-                example="[{'prefix6': 'value', 'neighbor-group': 'value'}]",
-            )
-        if network is not None:
-            network = normalize_table_field(
-                network,
-                mkey="id",
-                required_fields=['id', 'prefix'],
-                field_name="network",
-                example="[{'id': 1, 'prefix': 'value'}]",
-            )
-        if network6 is not None:
-            network6 = normalize_table_field(
-                network6,
-                mkey="id",
-                required_fields=['id', 'prefix6'],
-                field_name="network6",
-                example="[{'id': 1, 'prefix6': 'value'}]",
-            )
-        if redistribute is not None:
-            redistribute = normalize_table_field(
-                redistribute,
-                mkey="name",
-                required_fields=['name'],
-                field_name="redistribute",
-                example="[{'name': 'value'}]",
-            )
-        if redistribute6 is not None:
-            redistribute6 = normalize_table_field(
-                redistribute6,
-                mkey="name",
-                required_fields=['name'],
-                field_name="redistribute6",
-                example="[{'name': 'value'}]",
-            )
-        if admin_distance is not None:
-            admin_distance = normalize_table_field(
-                admin_distance,
-                mkey="id",
-                required_fields=['id', 'neighbour-prefix', 'distance'],
-                field_name="admin_distance",
-                example="[{'id': 1, 'neighbour-prefix': 'value', 'distance': 1}]",
-            )
-        if vrf is not None:
-            vrf = normalize_table_field(
-                vrf,
-                mkey="vrf",
-                required_fields=['vrf'],
-                field_name="vrf",
-                example="[{'vrf': 'value'}]",
-            )
-        if vrf6 is not None:
-            vrf6 = normalize_table_field(
-                vrf6,
-                mkey="vrf",
-                required_fields=['vrf'],
-                field_name="vrf6",
-                example="[{'vrf': 'value'}]",
-            )
-        
         # Build payload using helper function
         payload_data = build_api_payload(
             api_type="cmdb",

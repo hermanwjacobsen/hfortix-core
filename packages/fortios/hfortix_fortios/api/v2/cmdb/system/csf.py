@@ -39,7 +39,6 @@ from typing import TYPE_CHECKING, Any, Literal, Union
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
-    from hfortix_fortios.models import FortiObject
 
 # Import helper functions from central _helpers module
 from hfortix_fortios._helpers import (
@@ -47,7 +46,6 @@ from hfortix_fortios._helpers import (
     build_cmdb_payload,  # Keep for backward compatibility / manual usage
     is_success,
     quote_path_param,  # URL encoding for path parameters
-    normalize_table_field,  # For table field normalization
 )
 # Import metadata mixin for schema introspection
 from hfortix_fortios._helpers.metadata_mixin import MetadataMixin
@@ -60,23 +58,6 @@ class Csf(CRUDEndpoint, MetadataMixin):
     
     # Configure metadata mixin to use this endpoint's helper module
     _helper_module_name = "csf"
-    
-    # ========================================================================
-    # Table Fields Metadata (for normalization)
-    # Auto-generated from schema - supports flexible input formats
-    # ========================================================================
-    _TABLE_FIELDS = {
-        "trusted_list": {
-            "mkey": "name",
-            "required_fields": ['name'],
-            "example": "[{'name': 'value'}]",
-        },
-        "fabric_connector": {
-            "mkey": "serial",
-            "required_fields": ['serial'],
-            "example": "[{'serial': 'value'}]",
-        },
-    }
     
     # ========================================================================
     # Capabilities (from schema metadata)
@@ -110,7 +91,7 @@ class Csf(CRUDEndpoint, MetadataMixin):
         payload_dict: dict[str, Any] | None = None,
         error_mode: Literal["raise", "return", "print"] | None = None,
         error_format: Literal["detailed", "simple", "code_only"] | None = None,
-    ):  # type: ignore[no-untyped-def]
+    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """
         Retrieve system/csf configuration.
 
@@ -137,8 +118,8 @@ class Csf(CRUDEndpoint, MetadataMixin):
             error_format: Override client-level error_format. "detailed" provides full context, "simple" is concise, "code_only" returns just status code.
 
         Returns:
-            FortiObject instance or list of FortiObject instances. Returns Coroutine if using async client.
-            Use .dict, .json, or .raw properties to access as dictionary.
+            API response as dictionary. Returns Coroutine if using async client.
+            Access results via dictionary keys (e.g., result['results'], result['http_status']).
             
             Response structure:
                 - http_method: GET
@@ -272,7 +253,7 @@ class Csf(CRUDEndpoint, MetadataMixin):
         q_scope: str | None = None,
         error_mode: Literal["raise", "return", "print"] | None = None,
         error_format: Literal["detailed", "simple", "code_only"] | None = None,
-    ):  # type: ignore[no-untyped-def]
+    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """
         Update existing system/csf object.
 
@@ -301,17 +282,7 @@ class Csf(CRUDEndpoint, MetadataMixin):
             fabric_object_unification: Fabric CMDB Object Unification.
             saml_configuration_sync: SAML setting configuration synchronization.
             trusted_list: Pre-authorized and blocked security fabric nodes.
-                Default format: [{'name': 'value'}]
-                Supported formats:
-                  - Single string: "value" → [{'name': 'value'}]
-                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
-                  - List of dicts: [{'name': 'value'}] (recommended)
             fabric_connector: Fabric connector configuration.
-                Default format: [{'serial': 'value'}]
-                Supported formats:
-                  - Single string: "value" → [{'serial': 'value'}]
-                  - List of strings: ["val1", "val2"] → [{'serial': 'val1'}, ...]
-                  - List of dicts: [{'serial': 'value'}] (recommended)
             forticloud_account_enforcement: Fabric FortiCloud account unification.
             file_mgmt: Enable/disable Security Fabric daemon file management.
             file_quota: Maximum amount of memory that can be used by the daemon files (in bytes).
@@ -320,7 +291,7 @@ class Csf(CRUDEndpoint, MetadataMixin):
             error_format: Override client-level error_format. "detailed" provides full context, "simple" is concise, "code_only" returns just status code.
 
         Returns:
-            FortiObject instance. Use .dict, .json, or .raw to access as dictionary.
+            API response as dictionary. Returns Coroutine if using async client.
 
         Raises:
             ValueError: If name is missing from payload
@@ -343,30 +314,9 @@ class Csf(CRUDEndpoint, MetadataMixin):
             - post(): Create new object
             - set(): Intelligent create or update
         """
-        # Apply normalization for table fields (supports flexible input formats)
-        if trusted_list is not None:
-            trusted_list = normalize_table_field(
-                trusted_list,
-                mkey="name",
-                required_fields=['name'],
-                field_name="trusted_list",
-                example="[{'name': 'value'}]",
-            )
-        if fabric_connector is not None:
-            fabric_connector = normalize_table_field(
-                fabric_connector,
-                mkey="serial",
-                required_fields=['serial'],
-                field_name="fabric_connector",
-                example="[{'serial': 'value'}]",
-            )
-        
         # Build payload using helper function
-        # Note: auto_normalize=False because this endpoint has unitary fields
-        # (like 'interface') that would be incorrectly converted to list format
         payload_data = build_api_payload(
             api_type="cmdb",
-            auto_normalize=False,
             status=status,
             uid=uid,
             upstream=upstream,

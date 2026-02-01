@@ -39,7 +39,6 @@ from typing import TYPE_CHECKING, Any, Literal, Union
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
-    from hfortix_fortios.models import FortiObject
 
 # Import helper functions from central _helpers module
 from hfortix_fortios._helpers import (
@@ -47,7 +46,6 @@ from hfortix_fortios._helpers import (
     build_cmdb_payload,  # Keep for backward compatibility / manual usage
     is_success,
     quote_path_param,  # URL encoding for path parameters
-    normalize_table_field,  # For table field normalization
 )
 # Import metadata mixin for schema introspection
 from hfortix_fortios._helpers.metadata_mixin import MetadataMixin
@@ -60,23 +58,6 @@ class Radius(CRUDEndpoint, MetadataMixin):
     
     # Configure metadata mixin to use this endpoint's helper module
     _helper_module_name = "radius"
-    
-    # ========================================================================
-    # Table Fields Metadata (for normalization)
-    # Auto-generated from schema - supports flexible input formats
-    # ========================================================================
-    _TABLE_FIELDS = {
-        "class_": {
-            "mkey": "name",
-            "required_fields": ['name'],
-            "example": "[{'name': 'value'}]",
-        },
-        "accounting_server": {
-            "mkey": "id",
-            "required_fields": ['server', 'secret', 'interface'],
-            "example": "[{'server': '192.168.1.10', 'secret': 'value', 'interface': 'value'}]",
-        },
-    }
     
     # ========================================================================
     # Capabilities (from schema metadata)
@@ -111,7 +92,7 @@ class Radius(CRUDEndpoint, MetadataMixin):
         vdom: str | bool | None = None,
         error_mode: Literal["raise", "return", "print"] | None = None,
         error_format: Literal["detailed", "simple", "code_only"] | None = None,
-    ):  # type: ignore[no-untyped-def]
+    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """
         Retrieve user/radius configuration.
 
@@ -140,8 +121,8 @@ class Radius(CRUDEndpoint, MetadataMixin):
             error_format: Override client-level error_format. "detailed" provides full context, "simple" is concise, "code_only" returns just status code.
 
         Returns:
-            FortiObject instance or list of FortiObject instances. Returns Coroutine if using async client.
-            Use .dict, .json, or .raw properties to access as dictionary.
+            API response as dictionary. Returns Coroutine if using async client.
+            Access results via dictionary keys (e.g., result['results'], result['http_status']).
             
             Response structure:
                 - http_method: GET
@@ -318,7 +299,7 @@ class Radius(CRUDEndpoint, MetadataMixin):
         vdom: str | bool | None = None,
         error_mode: Literal["raise", "return", "print"] | None = None,
         error_format: Literal["detailed", "simple", "code_only"] | None = None,
-    ):  # type: ignore[no-untyped-def]
+    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """
         Update existing user/radius object.
 
@@ -388,15 +369,12 @@ class Radius(CRUDEndpoint, MetadataMixin):
             rsso_ep_one_ip_only: Enable/disable the replacement of old IP addresses with new ones for the same endpoint on RADIUS accounting Start messages.
             delimiter: Configure delimiter to be used for separating profile group names in the SSO attribute (default = plus character "+").
             accounting_server: Additional accounting servers.
-                Default format: [{'server': '192.168.1.10', 'secret': 'value', 'interface': 'value'}]
-                Required format: List of dicts with keys: server, secret, interface
-                  (String format not allowed due to multiple required fields)
             vdom: Virtual domain name.
             error_mode: Override client-level error_mode. "raise" raises exceptions, "return" returns error dict, "print" prints errors.
             error_format: Override client-level error_format. "detailed" provides full context, "simple" is concise, "code_only" returns just status code.
 
         Returns:
-            FortiObject instance. Use .dict, .json, or .raw to access as dictionary.
+            API response as dictionary. Returns Coroutine if using async client.
 
         Raises:
             ValueError: If name is missing from payload
@@ -419,32 +397,9 @@ class Radius(CRUDEndpoint, MetadataMixin):
             - post(): Create new object
             - set(): Intelligent create or update
         """
-        # Apply normalization for table fields (supports flexible input formats)
-        if class_ is not None:
-            class_ = normalize_table_field(
-                class_,
-                mkey="name",
-                required_fields=['name'],
-                field_name="class_",
-                example="[{'name': 'value'}]",
-            )
-        if accounting_server is not None:
-            accounting_server = normalize_table_field(
-                accounting_server,
-                mkey="id",
-                required_fields=['server', 'secret', 'interface'],
-                field_name="accounting_server",
-                example="[{'server': '192.168.1.10', 'secret': 'value', 'interface': 'value'}]",
-            )
-        
-        # Apply normalization for multi-value option fields (space-separated strings)
-        
         # Build payload using helper function
-        # Note: auto_normalize=False because this endpoint has unitary fields
-        # (like 'interface') that would be incorrectly converted to list format
         payload_data = build_api_payload(
             api_type="cmdb",
-            auto_normalize=False,
             name=name,
             server=server,
             secret=secret,
@@ -615,7 +570,7 @@ class Radius(CRUDEndpoint, MetadataMixin):
         vdom: str | bool | None = None,
         error_mode: Literal["raise", "return", "print"] | None = None,
         error_format: Literal["detailed", "simple", "code_only"] | None = None,
-    ):  # type: ignore[no-untyped-def]
+    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """
         Create new user/radius object.
 
@@ -685,15 +640,12 @@ class Radius(CRUDEndpoint, MetadataMixin):
             rsso_ep_one_ip_only: Enable/disable the replacement of old IP addresses with new ones for the same endpoint on RADIUS accounting Start messages.
             delimiter: Configure delimiter to be used for separating profile group names in the SSO attribute (default = plus character "+").
             accounting_server: Additional accounting servers.
-                Default format: [{'server': '192.168.1.10', 'secret': 'value', 'interface': 'value'}]
-                Required format: List of dicts with keys: server, secret, interface
-                  (String format not allowed due to multiple required fields)
             vdom: Virtual domain name. Use True for global, string for specific VDOM.
             error_mode: Override client-level error_mode. "raise" raises exceptions, "return" returns error dict, "print" prints errors.
             error_format: Override client-level error_format. "detailed" provides full context, "simple" is concise, "code_only" returns just status code.
 
         Returns:
-            FortiObject instance with created object. Use .dict, .json, or .raw to access as dictionary.
+            API response as dictionary. Returns Coroutine if using async client.
 
         Examples:
             >>> # Create using individual parameters
@@ -718,32 +670,9 @@ class Radius(CRUDEndpoint, MetadataMixin):
             - put(): Update existing object
             - set(): Intelligent create or update
         """
-        # Apply normalization for table fields (supports flexible input formats)
-        if class_ is not None:
-            class_ = normalize_table_field(
-                class_,
-                mkey="name",
-                required_fields=['name'],
-                field_name="class_",
-                example="[{'name': 'value'}]",
-            )
-        if accounting_server is not None:
-            accounting_server = normalize_table_field(
-                accounting_server,
-                mkey="id",
-                required_fields=['server', 'secret', 'interface'],
-                field_name="accounting_server",
-                example="[{'server': '192.168.1.10', 'secret': 'value', 'interface': 'value'}]",
-            )
-        
-        # Apply normalization for multi-value option fields (space-separated strings)
-        
         # Build payload using helper function
-        # Note: auto_normalize=False because this endpoint has unitary fields
-        # (like 'interface') that would be incorrectly converted to list format
         payload_data = build_api_payload(
             api_type="cmdb",
-            auto_normalize=False,
             name=name,
             server=server,
             secret=secret,
@@ -845,7 +774,7 @@ class Radius(CRUDEndpoint, MetadataMixin):
         vdom: str | bool | None = None,
         error_mode: Literal["raise", "return", "print"] | None = None,
         error_format: Literal["detailed", "simple", "code_only"] | None = None,
-    ):  # type: ignore[no-untyped-def]
+    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """
         Delete user/radius object.
 
@@ -858,7 +787,7 @@ class Radius(CRUDEndpoint, MetadataMixin):
             error_format: Override client-level error_format. "detailed" provides full context, "simple" is concise, "code_only" returns just status code.
 
         Returns:
-            FortiObject instance. Use .dict, .json, or .raw to access as dictionary
+            API response as dictionary. Returns Coroutine if using async client.
 
         Raises:
             ValueError: If name is not provided
@@ -1096,7 +1025,7 @@ class Radius(CRUDEndpoint, MetadataMixin):
             **kwargs: Additional parameters passed to PUT or POST
 
         Returns:
-            FortiObject instance. Use .dict, .json, or .raw to access as dictionary
+            API response as dictionary. Returns Coroutine if using async client.
 
         Raises:
             ValueError: If name is missing from payload
@@ -1131,32 +1060,9 @@ class Radius(CRUDEndpoint, MetadataMixin):
             - put(): Update existing object
             - exists(): Check existence manually
         """
-        # Apply normalization for table fields (supports flexible input formats)
-        if class_ is not None:
-            class_ = normalize_table_field(
-                class_,
-                mkey="name",
-                required_fields=['name'],
-                field_name="class_",
-                example="[{'name': 'value'}]",
-            )
-        if accounting_server is not None:
-            accounting_server = normalize_table_field(
-                accounting_server,
-                mkey="id",
-                required_fields=['server', 'secret', 'interface'],
-                field_name="accounting_server",
-                example="[{'server': '192.168.1.10', 'secret': 'value', 'interface': 'value'}]",
-            )
-        
-        # Apply normalization for multi-value option fields (space-separated strings)
-        
         # Build payload using helper function
-        # Note: auto_normalize=False because this endpoint has unitary fields
-        # (like 'interface') that would be incorrectly converted to list format
         payload_data = build_api_payload(
             api_type="cmdb",
-            auto_normalize=False,
             name=name,
             server=server,
             secret=secret,

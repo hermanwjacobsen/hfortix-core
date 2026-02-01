@@ -39,7 +39,6 @@ from typing import TYPE_CHECKING, Any, Literal, Union
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
-    from hfortix_fortios.models import FortiObject
 
 # Import helper functions from central _helpers module
 from hfortix_fortios._helpers import (
@@ -47,7 +46,6 @@ from hfortix_fortios._helpers import (
     build_cmdb_payload,  # Keep for backward compatibility / manual usage
     is_success,
     quote_path_param,  # URL encoding for path parameters
-    normalize_table_field,  # For table field normalization
 )
 # Import metadata mixin for schema introspection
 from hfortix_fortios._helpers.metadata_mixin import MetadataMixin
@@ -60,23 +58,6 @@ class ApiUser(CRUDEndpoint, MetadataMixin):
     
     # Configure metadata mixin to use this endpoint's helper module
     _helper_module_name = "api_user"
-    
-    # ========================================================================
-    # Table Fields Metadata (for normalization)
-    # Auto-generated from schema - supports flexible input formats
-    # ========================================================================
-    _TABLE_FIELDS = {
-        "vdom": {
-            "mkey": "name",
-            "required_fields": ['name'],
-            "example": "[{'name': 'value'}]",
-        },
-        "trusthost": {
-            "mkey": "id",
-            "required_fields": ['id'],
-            "example": "[{'id': 1}]",
-        },
-    }
     
     # ========================================================================
     # Capabilities (from schema metadata)
@@ -111,7 +92,7 @@ class ApiUser(CRUDEndpoint, MetadataMixin):
         vdom: str | bool | None = None,
         error_mode: Literal["raise", "return", "print"] | None = None,
         error_format: Literal["detailed", "simple", "code_only"] | None = None,
-    ):  # type: ignore[no-untyped-def]
+    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """
         Retrieve system/api_user configuration.
 
@@ -140,8 +121,8 @@ class ApiUser(CRUDEndpoint, MetadataMixin):
             error_format: Override client-level error_format. "detailed" provides full context, "simple" is concise, "code_only" returns just status code.
 
         Returns:
-            FortiObject instance or list of FortiObject instances. Returns Coroutine if using async client.
-            Use .dict, .json, or .raw properties to access as dictionary.
+            API response as dictionary. Returns Coroutine if using async client.
+            Access results via dictionary keys (e.g., result['results'], result['http_status']).
             
             Response structure:
                 - http_method: GET
@@ -265,7 +246,7 @@ class ApiUser(CRUDEndpoint, MetadataMixin):
         vdom: str | bool | None = None,
         error_mode: Literal["raise", "return", "print"] | None = None,
         error_format: Literal["detailed", "simple", "code_only"] | None = None,
-    ):  # type: ignore[no-untyped-def]
+    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """
         Update existing system/api_user object.
 
@@ -278,27 +259,17 @@ class ApiUser(CRUDEndpoint, MetadataMixin):
             api_key: Admin user password.
             accprofile: Admin user access profile.
             vdom: Virtual domains.
-                Default format: [{'name': 'value'}]
-                Supported formats:
-                  - Single string: "value" → [{'name': 'value'}]
-                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
-                  - List of dicts: [{'name': 'value'}] (recommended)
             schedule: Schedule name.
             cors_allow_origin: Value for Access-Control-Allow-Origin on API responses. Avoid using '*' if possible.
             peer_auth: Enable/disable peer authentication.
             peer_group: Peer group name.
             trusthost: Trusthost.
-                Default format: [{'id': 1}]
-                Supported formats:
-                  - Single string: "value" → [{'id': 'value'}]
-                  - List of strings: ["val1", "val2"] → [{'id': 'val1'}, ...]
-                  - List of dicts: [{'id': 1}] (recommended)
             vdom: Virtual domain name.
             error_mode: Override client-level error_mode. "raise" raises exceptions, "return" returns error dict, "print" prints errors.
             error_format: Override client-level error_format. "detailed" provides full context, "simple" is concise, "code_only" returns just status code.
 
         Returns:
-            FortiObject instance. Use .dict, .json, or .raw to access as dictionary.
+            API response as dictionary. Returns Coroutine if using async client.
 
         Raises:
             ValueError: If name is missing from payload
@@ -321,24 +292,6 @@ class ApiUser(CRUDEndpoint, MetadataMixin):
             - post(): Create new object
             - set(): Intelligent create or update
         """
-        # Apply normalization for table fields (supports flexible input formats)
-        if vdom is not None:
-            vdom = normalize_table_field(
-                vdom,
-                mkey="name",
-                required_fields=['name'],
-                field_name="vdom",
-                example="[{'name': 'value'}]",
-            )
-        if trusthost is not None:
-            trusthost = normalize_table_field(
-                trusthost,
-                mkey="id",
-                required_fields=['id'],
-                field_name="trusthost",
-                example="[{'id': 1}]",
-            )
-        
         # Build payload using helper function
         payload_data = build_api_payload(
             api_type="cmdb",
@@ -406,7 +359,7 @@ class ApiUser(CRUDEndpoint, MetadataMixin):
         vdom: str | bool | None = None,
         error_mode: Literal["raise", "return", "print"] | None = None,
         error_format: Literal["detailed", "simple", "code_only"] | None = None,
-    ):  # type: ignore[no-untyped-def]
+    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """
         Create new system/api_user object.
 
@@ -419,27 +372,17 @@ class ApiUser(CRUDEndpoint, MetadataMixin):
             api_key: Admin user password.
             accprofile: Admin user access profile.
             vdom: Virtual domains.
-                Default format: [{'name': 'value'}]
-                Supported formats:
-                  - Single string: "value" → [{'name': 'value'}]
-                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
-                  - List of dicts: [{'name': 'value'}] (recommended)
             schedule: Schedule name.
             cors_allow_origin: Value for Access-Control-Allow-Origin on API responses. Avoid using '*' if possible.
             peer_auth: Enable/disable peer authentication.
             peer_group: Peer group name.
             trusthost: Trusthost.
-                Default format: [{'id': 1}]
-                Supported formats:
-                  - Single string: "value" → [{'id': 'value'}]
-                  - List of strings: ["val1", "val2"] → [{'id': 'val1'}, ...]
-                  - List of dicts: [{'id': 1}] (recommended)
             vdom: Virtual domain name. Use True for global, string for specific VDOM.
             error_mode: Override client-level error_mode. "raise" raises exceptions, "return" returns error dict, "print" prints errors.
             error_format: Override client-level error_format. "detailed" provides full context, "simple" is concise, "code_only" returns just status code.
 
         Returns:
-            FortiObject instance with created object. Use .dict, .json, or .raw to access as dictionary.
+            API response as dictionary. Returns Coroutine if using async client.
 
         Examples:
             >>> # Create using individual parameters
@@ -464,24 +407,6 @@ class ApiUser(CRUDEndpoint, MetadataMixin):
             - put(): Update existing object
             - set(): Intelligent create or update
         """
-        # Apply normalization for table fields (supports flexible input formats)
-        if vdom is not None:
-            vdom = normalize_table_field(
-                vdom,
-                mkey="name",
-                required_fields=['name'],
-                field_name="vdom",
-                example="[{'name': 'value'}]",
-            )
-        if trusthost is not None:
-            trusthost = normalize_table_field(
-                trusthost,
-                mkey="id",
-                required_fields=['id'],
-                field_name="trusthost",
-                example="[{'id': 1}]",
-            )
-        
         # Build payload using helper function
         payload_data = build_api_payload(
             api_type="cmdb",
@@ -533,7 +458,7 @@ class ApiUser(CRUDEndpoint, MetadataMixin):
         vdom: str | bool | None = None,
         error_mode: Literal["raise", "return", "print"] | None = None,
         error_format: Literal["detailed", "simple", "code_only"] | None = None,
-    ):  # type: ignore[no-untyped-def]
+    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """
         Delete system/api_user object.
 
@@ -546,7 +471,7 @@ class ApiUser(CRUDEndpoint, MetadataMixin):
             error_format: Override client-level error_format. "detailed" provides full context, "simple" is concise, "code_only" returns just status code.
 
         Returns:
-            FortiObject instance. Use .dict, .json, or .raw to access as dictionary
+            API response as dictionary. Returns Coroutine if using async client.
 
         Raises:
             ValueError: If name is not provided
@@ -678,7 +603,7 @@ class ApiUser(CRUDEndpoint, MetadataMixin):
             **kwargs: Additional parameters passed to PUT or POST
 
         Returns:
-            FortiObject instance. Use .dict, .json, or .raw to access as dictionary
+            API response as dictionary. Returns Coroutine if using async client.
 
         Raises:
             ValueError: If name is missing from payload
@@ -713,24 +638,6 @@ class ApiUser(CRUDEndpoint, MetadataMixin):
             - put(): Update existing object
             - exists(): Check existence manually
         """
-        # Apply normalization for table fields (supports flexible input formats)
-        if vdom is not None:
-            vdom = normalize_table_field(
-                vdom,
-                mkey="name",
-                required_fields=['name'],
-                field_name="vdom",
-                example="[{'name': 'value'}]",
-            )
-        if trusthost is not None:
-            trusthost = normalize_table_field(
-                trusthost,
-                mkey="id",
-                required_fields=['id'],
-                field_name="trusthost",
-                example="[{'id': 1}]",
-            )
-        
         # Build payload using helper function
         payload_data = build_api_payload(
             api_type="cmdb",

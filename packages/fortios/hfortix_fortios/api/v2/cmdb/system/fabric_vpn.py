@@ -39,7 +39,6 @@ from typing import TYPE_CHECKING, Any, Literal, Union
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
-    from hfortix_fortios.models import FortiObject
 
 # Import helper functions from central _helpers module
 from hfortix_fortios._helpers import (
@@ -47,7 +46,6 @@ from hfortix_fortios._helpers import (
     build_cmdb_payload,  # Keep for backward compatibility / manual usage
     is_success,
     quote_path_param,  # URL encoding for path parameters
-    normalize_table_field,  # For table field normalization
 )
 # Import metadata mixin for schema introspection
 from hfortix_fortios._helpers.metadata_mixin import MetadataMixin
@@ -60,23 +58,6 @@ class FabricVpn(CRUDEndpoint, MetadataMixin):
     
     # Configure metadata mixin to use this endpoint's helper module
     _helper_module_name = "fabric_vpn"
-    
-    # ========================================================================
-    # Table Fields Metadata (for normalization)
-    # Auto-generated from schema - supports flexible input formats
-    # ========================================================================
-    _TABLE_FIELDS = {
-        "overlays": {
-            "mkey": "name",
-            "required_fields": ['name'],
-            "example": "[{'name': 'value'}]",
-        },
-        "advertised_subnets": {
-            "mkey": "id",
-            "required_fields": ['prefix', 'access'],
-            "example": "[{'prefix': 'value', 'access': 'inbound'}]",
-        },
-    }
     
     # ========================================================================
     # Capabilities (from schema metadata)
@@ -110,7 +91,7 @@ class FabricVpn(CRUDEndpoint, MetadataMixin):
         payload_dict: dict[str, Any] | None = None,
         error_mode: Literal["raise", "return", "print"] | None = None,
         error_format: Literal["detailed", "simple", "code_only"] | None = None,
-    ):  # type: ignore[no-untyped-def]
+    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """
         Retrieve system/fabric_vpn configuration.
 
@@ -137,8 +118,8 @@ class FabricVpn(CRUDEndpoint, MetadataMixin):
             error_format: Override client-level error_format. "detailed" provides full context, "simple" is concise, "code_only" returns just status code.
 
         Returns:
-            FortiObject instance or list of FortiObject instances. Returns Coroutine if using async client.
-            Use .dict, .json, or .raw properties to access as dictionary.
+            API response as dictionary. Returns Coroutine if using async client.
+            Access results via dictionary keys (e.g., result['results'], result['http_status']).
             
             Response structure:
                 - http_method: GET
@@ -260,7 +241,7 @@ class FabricVpn(CRUDEndpoint, MetadataMixin):
         q_scope: str | None = None,
         error_mode: Literal["raise", "return", "print"] | None = None,
         error_format: Literal["detailed", "simple", "code_only"] | None = None,
-    ):  # type: ignore[no-untyped-def]
+    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """
         Update existing system/fabric_vpn object.
 
@@ -274,15 +255,7 @@ class FabricVpn(CRUDEndpoint, MetadataMixin):
             policy_rule: Policy creation rule.
             vpn_role: Fabric VPN role.
             overlays: Local overlay interfaces table.
-                Default format: [{'name': 'value'}]
-                Supported formats:
-                  - Single string: "value" → [{'name': 'value'}]
-                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
-                  - List of dicts: [{'name': 'value'}] (recommended)
             advertised_subnets: Local advertised subnets.
-                Default format: [{'prefix': 'value', 'access': 'inbound'}]
-                Required format: List of dicts with keys: prefix, access
-                  (String format not allowed due to multiple required fields)
             loopback_address_block: IPv4 address and subnet mask for hub's loopback address, syntax: X.X.X.X/24.
             loopback_interface: Loopback interface.
             loopback_advertised_subnet: Loopback advertised subnet reference.
@@ -294,7 +267,7 @@ class FabricVpn(CRUDEndpoint, MetadataMixin):
             error_format: Override client-level error_format. "detailed" provides full context, "simple" is concise, "code_only" returns just status code.
 
         Returns:
-            FortiObject instance. Use .dict, .json, or .raw to access as dictionary.
+            API response as dictionary. Returns Coroutine if using async client.
 
         Raises:
             ValueError: If name is missing from payload
@@ -317,24 +290,6 @@ class FabricVpn(CRUDEndpoint, MetadataMixin):
             - post(): Create new object
             - set(): Intelligent create or update
         """
-        # Apply normalization for table fields (supports flexible input formats)
-        if overlays is not None:
-            overlays = normalize_table_field(
-                overlays,
-                mkey="name",
-                required_fields=['name'],
-                field_name="overlays",
-                example="[{'name': 'value'}]",
-            )
-        if advertised_subnets is not None:
-            advertised_subnets = normalize_table_field(
-                advertised_subnets,
-                mkey="id",
-                required_fields=['prefix', 'access'],
-                field_name="advertised_subnets",
-                example="[{'prefix': 'value', 'access': 'inbound'}]",
-            )
-        
         # Build payload using helper function
         payload_data = build_api_payload(
             api_type="cmdb",

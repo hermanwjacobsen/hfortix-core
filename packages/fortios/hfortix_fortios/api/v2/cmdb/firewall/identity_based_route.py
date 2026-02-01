@@ -39,7 +39,6 @@ from typing import TYPE_CHECKING, Any, Literal, Union
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
-    from hfortix_fortios.models import FortiObject
 
 # Import helper functions from central _helpers module
 from hfortix_fortios._helpers import (
@@ -47,7 +46,6 @@ from hfortix_fortios._helpers import (
     build_cmdb_payload,  # Keep for backward compatibility / manual usage
     is_success,
     quote_path_param,  # URL encoding for path parameters
-    normalize_table_field,  # For table field normalization
 )
 # Import metadata mixin for schema introspection
 from hfortix_fortios._helpers.metadata_mixin import MetadataMixin
@@ -60,18 +58,6 @@ class IdentityBasedRoute(CRUDEndpoint, MetadataMixin):
     
     # Configure metadata mixin to use this endpoint's helper module
     _helper_module_name = "identity_based_route"
-    
-    # ========================================================================
-    # Table Fields Metadata (for normalization)
-    # Auto-generated from schema - supports flexible input formats
-    # ========================================================================
-    _TABLE_FIELDS = {
-        "rule": {
-            "mkey": "id",
-            "required_fields": ['id', 'device', 'groups'],
-            "example": "[{'id': 1, 'device': 'value', 'groups': 'value'}]",
-        },
-    }
     
     # ========================================================================
     # Capabilities (from schema metadata)
@@ -106,7 +92,7 @@ class IdentityBasedRoute(CRUDEndpoint, MetadataMixin):
         vdom: str | bool | None = None,
         error_mode: Literal["raise", "return", "print"] | None = None,
         error_format: Literal["detailed", "simple", "code_only"] | None = None,
-    ):  # type: ignore[no-untyped-def]
+    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """
         Retrieve firewall/identity_based_route configuration.
 
@@ -135,8 +121,8 @@ class IdentityBasedRoute(CRUDEndpoint, MetadataMixin):
             error_format: Override client-level error_format. "detailed" provides full context, "simple" is concise, "code_only" returns just status code.
 
         Returns:
-            FortiObject instance or list of FortiObject instances. Returns Coroutine if using async client.
-            Use .dict, .json, or .raw properties to access as dictionary.
+            API response as dictionary. Returns Coroutine if using async client.
+            Access results via dictionary keys (e.g., result['results'], result['http_status']).
             
             Response structure:
                 - http_method: GET
@@ -254,7 +240,7 @@ class IdentityBasedRoute(CRUDEndpoint, MetadataMixin):
         vdom: str | bool | None = None,
         error_mode: Literal["raise", "return", "print"] | None = None,
         error_format: Literal["detailed", "simple", "code_only"] | None = None,
-    ):  # type: ignore[no-untyped-def]
+    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """
         Update existing firewall/identity_based_route object.
 
@@ -265,15 +251,12 @@ class IdentityBasedRoute(CRUDEndpoint, MetadataMixin):
             name: Name.
             comments: Comments.
             rule: Rule.
-                Default format: [{'id': 1, 'device': 'value', 'groups': 'value'}]
-                Required format: List of dicts with keys: id, device, groups
-                  (String format not allowed due to multiple required fields)
             vdom: Virtual domain name.
             error_mode: Override client-level error_mode. "raise" raises exceptions, "return" returns error dict, "print" prints errors.
             error_format: Override client-level error_format. "detailed" provides full context, "simple" is concise, "code_only" returns just status code.
 
         Returns:
-            FortiObject instance. Use .dict, .json, or .raw to access as dictionary.
+            API response as dictionary. Returns Coroutine if using async client.
 
         Raises:
             ValueError: If name is missing from payload
@@ -296,16 +279,6 @@ class IdentityBasedRoute(CRUDEndpoint, MetadataMixin):
             - post(): Create new object
             - set(): Intelligent create or update
         """
-        # Apply normalization for table fields (supports flexible input formats)
-        if rule is not None:
-            rule = normalize_table_field(
-                rule,
-                mkey="id",
-                required_fields=['id', 'device', 'groups'],
-                field_name="rule",
-                example="[{'id': 1, 'device': 'value', 'groups': 'value'}]",
-            )
-        
         # Build payload using helper function
         payload_data = build_api_payload(
             api_type="cmdb",
@@ -361,7 +334,7 @@ class IdentityBasedRoute(CRUDEndpoint, MetadataMixin):
         vdom: str | bool | None = None,
         error_mode: Literal["raise", "return", "print"] | None = None,
         error_format: Literal["detailed", "simple", "code_only"] | None = None,
-    ):  # type: ignore[no-untyped-def]
+    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """
         Create new firewall/identity_based_route object.
 
@@ -372,15 +345,12 @@ class IdentityBasedRoute(CRUDEndpoint, MetadataMixin):
             name: Name.
             comments: Comments.
             rule: Rule.
-                Default format: [{'id': 1, 'device': 'value', 'groups': 'value'}]
-                Required format: List of dicts with keys: id, device, groups
-                  (String format not allowed due to multiple required fields)
             vdom: Virtual domain name. Use True for global, string for specific VDOM.
             error_mode: Override client-level error_mode. "raise" raises exceptions, "return" returns error dict, "print" prints errors.
             error_format: Override client-level error_format. "detailed" provides full context, "simple" is concise, "code_only" returns just status code.
 
         Returns:
-            FortiObject instance with created object. Use .dict, .json, or .raw to access as dictionary.
+            API response as dictionary. Returns Coroutine if using async client.
 
         Examples:
             >>> # Create using individual parameters
@@ -405,16 +375,6 @@ class IdentityBasedRoute(CRUDEndpoint, MetadataMixin):
             - put(): Update existing object
             - set(): Intelligent create or update
         """
-        # Apply normalization for table fields (supports flexible input formats)
-        if rule is not None:
-            rule = normalize_table_field(
-                rule,
-                mkey="id",
-                required_fields=['id', 'device', 'groups'],
-                field_name="rule",
-                example="[{'id': 1, 'device': 'value', 'groups': 'value'}]",
-            )
-        
         # Build payload using helper function
         payload_data = build_api_payload(
             api_type="cmdb",
@@ -460,7 +420,7 @@ class IdentityBasedRoute(CRUDEndpoint, MetadataMixin):
         vdom: str | bool | None = None,
         error_mode: Literal["raise", "return", "print"] | None = None,
         error_format: Literal["detailed", "simple", "code_only"] | None = None,
-    ):  # type: ignore[no-untyped-def]
+    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """
         Delete firewall/identity_based_route object.
 
@@ -473,7 +433,7 @@ class IdentityBasedRoute(CRUDEndpoint, MetadataMixin):
             error_format: Override client-level error_format. "detailed" provides full context, "simple" is concise, "code_only" returns just status code.
 
         Returns:
-            FortiObject instance. Use .dict, .json, or .raw to access as dictionary
+            API response as dictionary. Returns Coroutine if using async client.
 
         Raises:
             ValueError: If name is not provided
@@ -593,7 +553,7 @@ class IdentityBasedRoute(CRUDEndpoint, MetadataMixin):
             **kwargs: Additional parameters passed to PUT or POST
 
         Returns:
-            FortiObject instance. Use .dict, .json, or .raw to access as dictionary
+            API response as dictionary. Returns Coroutine if using async client.
 
         Raises:
             ValueError: If name is missing from payload
@@ -628,16 +588,6 @@ class IdentityBasedRoute(CRUDEndpoint, MetadataMixin):
             - put(): Update existing object
             - exists(): Check existence manually
         """
-        # Apply normalization for table fields (supports flexible input formats)
-        if rule is not None:
-            rule = normalize_table_field(
-                rule,
-                mkey="id",
-                required_fields=['id', 'device', 'groups'],
-                field_name="rule",
-                example="[{'id': 1, 'device': 'value', 'groups': 'value'}]",
-            )
-        
         # Build payload using helper function
         payload_data = build_api_payload(
             api_type="cmdb",

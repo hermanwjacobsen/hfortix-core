@@ -10,27 +10,12 @@ if TYPE_CHECKING:
     from .download_eval import DownloadEval
     from .upload import Upload
 
-__all__ = [
-    "Download",
-    "DownloadEval",
-    "Upload",
-    "Vmlicense",
-]
-
 
 class Vmlicense:
-    """VMLICENSE API category.
-    
-    All endpoints return FortiObject instances with:
-    - Attribute access: response.field
-    - Dictionary access: response["field"]
-    - Convert to dict: response.dict or response.json
-    """
-    
+    """Type stub for Vmlicense."""
+
     download: Download
     download_eval: DownloadEval
     upload: Upload
 
-    def __init__(self, client: IHTTPClient, vdom: str | None = None) -> None:
-        """Initialize vmlicense category with HTTP client."""
-        ...
+    def __init__(self, client: IHTTPClient) -> None: ...

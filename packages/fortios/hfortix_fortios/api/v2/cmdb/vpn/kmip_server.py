@@ -39,7 +39,6 @@ from typing import TYPE_CHECKING, Any, Literal, Union
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
-    from hfortix_fortios.models import FortiObject
 
 # Import helper functions from central _helpers module
 from hfortix_fortios._helpers import (
@@ -47,7 +46,6 @@ from hfortix_fortios._helpers import (
     build_cmdb_payload,  # Keep for backward compatibility / manual usage
     is_success,
     quote_path_param,  # URL encoding for path parameters
-    normalize_table_field,  # For table field normalization
 )
 # Import metadata mixin for schema introspection
 from hfortix_fortios._helpers.metadata_mixin import MetadataMixin
@@ -60,18 +58,6 @@ class KmipServer(CRUDEndpoint, MetadataMixin):
     
     # Configure metadata mixin to use this endpoint's helper module
     _helper_module_name = "kmip_server"
-    
-    # ========================================================================
-    # Table Fields Metadata (for normalization)
-    # Auto-generated from schema - supports flexible input formats
-    # ========================================================================
-    _TABLE_FIELDS = {
-        "server_list": {
-            "mkey": "id",
-            "required_fields": ['server', 'port'],
-            "example": "[{'server': '192.168.1.10', 'port': 1}]",
-        },
-    }
     
     # ========================================================================
     # Capabilities (from schema metadata)
@@ -106,7 +92,7 @@ class KmipServer(CRUDEndpoint, MetadataMixin):
         vdom: str | bool | None = None,
         error_mode: Literal["raise", "return", "print"] | None = None,
         error_format: Literal["detailed", "simple", "code_only"] | None = None,
-    ):  # type: ignore[no-untyped-def]
+    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """
         Retrieve vpn/kmip_server configuration.
 
@@ -135,8 +121,8 @@ class KmipServer(CRUDEndpoint, MetadataMixin):
             error_format: Override client-level error_format. "detailed" provides full context, "simple" is concise, "code_only" returns just status code.
 
         Returns:
-            FortiObject instance or list of FortiObject instances. Returns Coroutine if using async client.
-            Use .dict, .json, or .raw properties to access as dictionary.
+            API response as dictionary. Returns Coroutine if using async client.
+            Access results via dictionary keys (e.g., result['results'], result['http_status']).
             
             Response structure:
                 - http_method: GET
@@ -261,7 +247,7 @@ class KmipServer(CRUDEndpoint, MetadataMixin):
         vdom: str | bool | None = None,
         error_mode: Literal["raise", "return", "print"] | None = None,
         error_format: Literal["detailed", "simple", "code_only"] | None = None,
-    ):  # type: ignore[no-untyped-def]
+    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """
         Update existing vpn/kmip_server object.
 
@@ -271,9 +257,6 @@ class KmipServer(CRUDEndpoint, MetadataMixin):
             payload_dict: Object data as dict. Must include name (primary key).
             name: KMIP server entry name.
             server_list: KMIP server list.
-                Default format: [{'server': '192.168.1.10', 'port': 1}]
-                Required format: List of dicts with keys: server, port
-                  (String format not allowed due to multiple required fields)
             username: User name to use for connectivity to the KMIP server.
             password: Password to use for connectivity to the KMIP server.
             ssl_min_proto_version: Minimum supported protocol version for SSL/TLS connections (default is to follow system global setting).
@@ -287,7 +270,7 @@ class KmipServer(CRUDEndpoint, MetadataMixin):
             error_format: Override client-level error_format. "detailed" provides full context, "simple" is concise, "code_only" returns just status code.
 
         Returns:
-            FortiObject instance. Use .dict, .json, or .raw to access as dictionary.
+            API response as dictionary. Returns Coroutine if using async client.
 
         Raises:
             ValueError: If name is missing from payload
@@ -310,22 +293,9 @@ class KmipServer(CRUDEndpoint, MetadataMixin):
             - post(): Create new object
             - set(): Intelligent create or update
         """
-        # Apply normalization for table fields (supports flexible input formats)
-        if server_list is not None:
-            server_list = normalize_table_field(
-                server_list,
-                mkey="id",
-                required_fields=['server', 'port'],
-                field_name="server_list",
-                example="[{'server': '192.168.1.10', 'port': 1}]",
-            )
-        
         # Build payload using helper function
-        # Note: auto_normalize=False because this endpoint has unitary fields
-        # (like 'interface') that would be incorrectly converted to list format
         payload_data = build_api_payload(
             api_type="cmdb",
-            auto_normalize=False,
             name=name,
             server_list=server_list,
             username=username,
@@ -392,7 +362,7 @@ class KmipServer(CRUDEndpoint, MetadataMixin):
         vdom: str | bool | None = None,
         error_mode: Literal["raise", "return", "print"] | None = None,
         error_format: Literal["detailed", "simple", "code_only"] | None = None,
-    ):  # type: ignore[no-untyped-def]
+    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """
         Create new vpn/kmip_server object.
 
@@ -402,9 +372,6 @@ class KmipServer(CRUDEndpoint, MetadataMixin):
             payload_dict: Complete object data as dict. Alternative to individual parameters.
             name: KMIP server entry name.
             server_list: KMIP server list.
-                Default format: [{'server': '192.168.1.10', 'port': 1}]
-                Required format: List of dicts with keys: server, port
-                  (String format not allowed due to multiple required fields)
             username: User name to use for connectivity to the KMIP server.
             password: Password to use for connectivity to the KMIP server.
             ssl_min_proto_version: Minimum supported protocol version for SSL/TLS connections (default is to follow system global setting).
@@ -418,7 +385,7 @@ class KmipServer(CRUDEndpoint, MetadataMixin):
             error_format: Override client-level error_format. "detailed" provides full context, "simple" is concise, "code_only" returns just status code.
 
         Returns:
-            FortiObject instance with created object. Use .dict, .json, or .raw to access as dictionary.
+            API response as dictionary. Returns Coroutine if using async client.
 
         Examples:
             >>> # Create using individual parameters
@@ -443,22 +410,9 @@ class KmipServer(CRUDEndpoint, MetadataMixin):
             - put(): Update existing object
             - set(): Intelligent create or update
         """
-        # Apply normalization for table fields (supports flexible input formats)
-        if server_list is not None:
-            server_list = normalize_table_field(
-                server_list,
-                mkey="id",
-                required_fields=['server', 'port'],
-                field_name="server_list",
-                example="[{'server': '192.168.1.10', 'port': 1}]",
-            )
-        
         # Build payload using helper function
-        # Note: auto_normalize=False because this endpoint has unitary fields
-        # (like 'interface') that would be incorrectly converted to list format
         payload_data = build_api_payload(
             api_type="cmdb",
-            auto_normalize=False,
             name=name,
             server_list=server_list,
             username=username,
@@ -508,7 +462,7 @@ class KmipServer(CRUDEndpoint, MetadataMixin):
         vdom: str | bool | None = None,
         error_mode: Literal["raise", "return", "print"] | None = None,
         error_format: Literal["detailed", "simple", "code_only"] | None = None,
-    ):  # type: ignore[no-untyped-def]
+    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """
         Delete vpn/kmip_server object.
 
@@ -521,7 +475,7 @@ class KmipServer(CRUDEndpoint, MetadataMixin):
             error_format: Override client-level error_format. "detailed" provides full context, "simple" is concise, "code_only" returns just status code.
 
         Returns:
-            FortiObject instance. Use .dict, .json, or .raw to access as dictionary
+            API response as dictionary. Returns Coroutine if using async client.
 
         Raises:
             ValueError: If name is not provided
@@ -655,7 +609,7 @@ class KmipServer(CRUDEndpoint, MetadataMixin):
             **kwargs: Additional parameters passed to PUT or POST
 
         Returns:
-            FortiObject instance. Use .dict, .json, or .raw to access as dictionary
+            API response as dictionary. Returns Coroutine if using async client.
 
         Raises:
             ValueError: If name is missing from payload
@@ -690,22 +644,9 @@ class KmipServer(CRUDEndpoint, MetadataMixin):
             - put(): Update existing object
             - exists(): Check existence manually
         """
-        # Apply normalization for table fields (supports flexible input formats)
-        if server_list is not None:
-            server_list = normalize_table_field(
-                server_list,
-                mkey="id",
-                required_fields=['server', 'port'],
-                field_name="server_list",
-                example="[{'server': '192.168.1.10', 'port': 1}]",
-            )
-        
         # Build payload using helper function
-        # Note: auto_normalize=False because this endpoint has unitary fields
-        # (like 'interface') that would be incorrectly converted to list format
         payload_data = build_api_payload(
             api_type="cmdb",
-            auto_normalize=False,
             name=name,
             server_list=server_list,
             username=username,

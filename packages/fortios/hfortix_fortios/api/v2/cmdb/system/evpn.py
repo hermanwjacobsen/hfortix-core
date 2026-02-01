@@ -39,7 +39,6 @@ from typing import TYPE_CHECKING, Any, Literal, Union
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
-    from hfortix_fortios.models import FortiObject
 
 # Import helper functions from central _helpers module
 from hfortix_fortios._helpers import (
@@ -47,7 +46,6 @@ from hfortix_fortios._helpers import (
     build_cmdb_payload,  # Keep for backward compatibility / manual usage
     is_success,
     quote_path_param,  # URL encoding for path parameters
-    normalize_table_field,  # For table field normalization
 )
 # Import metadata mixin for schema introspection
 from hfortix_fortios._helpers.metadata_mixin import MetadataMixin
@@ -60,23 +58,6 @@ class Evpn(CRUDEndpoint, MetadataMixin):
     
     # Configure metadata mixin to use this endpoint's helper module
     _helper_module_name = "evpn"
-    
-    # ========================================================================
-    # Table Fields Metadata (for normalization)
-    # Auto-generated from schema - supports flexible input formats
-    # ========================================================================
-    _TABLE_FIELDS = {
-        "import_rt": {
-            "mkey": "route-target",
-            "required_fields": ['route-target'],
-            "example": "[{'route-target': 'value'}]",
-        },
-        "export_rt": {
-            "mkey": "route-target",
-            "required_fields": ['route-target'],
-            "example": "[{'route-target': 'value'}]",
-        },
-    }
     
     # ========================================================================
     # Capabilities (from schema metadata)
@@ -111,7 +92,7 @@ class Evpn(CRUDEndpoint, MetadataMixin):
         vdom: str | bool | None = None,
         error_mode: Literal["raise", "return", "print"] | None = None,
         error_format: Literal["detailed", "simple", "code_only"] | None = None,
-    ):  # type: ignore[no-untyped-def]
+    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """
         Retrieve system/evpn configuration.
 
@@ -140,8 +121,8 @@ class Evpn(CRUDEndpoint, MetadataMixin):
             error_format: Override client-level error_format. "detailed" provides full context, "simple" is concise, "code_only" returns just status code.
 
         Returns:
-            FortiObject instance or list of FortiObject instances. Returns Coroutine if using async client.
-            Use .dict, .json, or .raw properties to access as dictionary.
+            API response as dictionary. Returns Coroutine if using async client.
+            Access results via dictionary keys (e.g., result['results'], result['http_status']).
             
             Response structure:
                 - http_method: GET
@@ -262,7 +243,7 @@ class Evpn(CRUDEndpoint, MetadataMixin):
         vdom: str | bool | None = None,
         error_mode: Literal["raise", "return", "print"] | None = None,
         error_format: Literal["detailed", "simple", "code_only"] | None = None,
-    ):  # type: ignore[no-untyped-def]
+    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """
         Update existing system/evpn object.
 
@@ -273,17 +254,7 @@ class Evpn(CRUDEndpoint, MetadataMixin):
             id: ID.
             rd: Route Distinguisher: AA:NN|A.B.C.D:NN.
             import_rt: List of import route targets.
-                Default format: [{'route-target': 'value'}]
-                Supported formats:
-                  - Single string: "value" → [{'route-target': 'value'}]
-                  - List of strings: ["val1", "val2"] → [{'route-target': 'val1'}, ...]
-                  - List of dicts: [{'route-target': 'value'}] (recommended)
             export_rt: List of export route targets.
-                Default format: [{'route-target': 'value'}]
-                Supported formats:
-                  - Single string: "value" → [{'route-target': 'value'}]
-                  - List of strings: ["val1", "val2"] → [{'route-target': 'val1'}, ...]
-                  - List of dicts: [{'route-target': 'value'}] (recommended)
             ip_local_learning: Enable/disable IP address local learning.
             arp_suppression: Enable/disable ARP suppression.
             vdom: Virtual domain name.
@@ -291,7 +262,7 @@ class Evpn(CRUDEndpoint, MetadataMixin):
             error_format: Override client-level error_format. "detailed" provides full context, "simple" is concise, "code_only" returns just status code.
 
         Returns:
-            FortiObject instance. Use .dict, .json, or .raw to access as dictionary.
+            API response as dictionary. Returns Coroutine if using async client.
 
         Raises:
             ValueError: If id is missing from payload
@@ -314,24 +285,6 @@ class Evpn(CRUDEndpoint, MetadataMixin):
             - post(): Create new object
             - set(): Intelligent create or update
         """
-        # Apply normalization for table fields (supports flexible input formats)
-        if import_rt is not None:
-            import_rt = normalize_table_field(
-                import_rt,
-                mkey="route-target",
-                required_fields=['route-target'],
-                field_name="import_rt",
-                example="[{'route-target': 'value'}]",
-            )
-        if export_rt is not None:
-            export_rt = normalize_table_field(
-                export_rt,
-                mkey="route-target",
-                required_fields=['route-target'],
-                field_name="export_rt",
-                example="[{'route-target': 'value'}]",
-            )
-        
         # Build payload using helper function
         payload_data = build_api_payload(
             api_type="cmdb",
@@ -393,7 +346,7 @@ class Evpn(CRUDEndpoint, MetadataMixin):
         vdom: str | bool | None = None,
         error_mode: Literal["raise", "return", "print"] | None = None,
         error_format: Literal["detailed", "simple", "code_only"] | None = None,
-    ):  # type: ignore[no-untyped-def]
+    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """
         Create new system/evpn object.
 
@@ -404,17 +357,7 @@ class Evpn(CRUDEndpoint, MetadataMixin):
             id: ID.
             rd: Route Distinguisher: AA:NN|A.B.C.D:NN.
             import_rt: List of import route targets.
-                Default format: [{'route-target': 'value'}]
-                Supported formats:
-                  - Single string: "value" → [{'route-target': 'value'}]
-                  - List of strings: ["val1", "val2"] → [{'route-target': 'val1'}, ...]
-                  - List of dicts: [{'route-target': 'value'}] (recommended)
             export_rt: List of export route targets.
-                Default format: [{'route-target': 'value'}]
-                Supported formats:
-                  - Single string: "value" → [{'route-target': 'value'}]
-                  - List of strings: ["val1", "val2"] → [{'route-target': 'val1'}, ...]
-                  - List of dicts: [{'route-target': 'value'}] (recommended)
             ip_local_learning: Enable/disable IP address local learning.
             arp_suppression: Enable/disable ARP suppression.
             vdom: Virtual domain name. Use True for global, string for specific VDOM.
@@ -422,7 +365,7 @@ class Evpn(CRUDEndpoint, MetadataMixin):
             error_format: Override client-level error_format. "detailed" provides full context, "simple" is concise, "code_only" returns just status code.
 
         Returns:
-            FortiObject instance with created object. Use .dict, .json, or .raw to access as dictionary.
+            API response as dictionary. Returns Coroutine if using async client.
 
         Examples:
             >>> # Create using individual parameters
@@ -447,24 +390,6 @@ class Evpn(CRUDEndpoint, MetadataMixin):
             - put(): Update existing object
             - set(): Intelligent create or update
         """
-        # Apply normalization for table fields (supports flexible input formats)
-        if import_rt is not None:
-            import_rt = normalize_table_field(
-                import_rt,
-                mkey="route-target",
-                required_fields=['route-target'],
-                field_name="import_rt",
-                example="[{'route-target': 'value'}]",
-            )
-        if export_rt is not None:
-            export_rt = normalize_table_field(
-                export_rt,
-                mkey="route-target",
-                required_fields=['route-target'],
-                field_name="export_rt",
-                example="[{'route-target': 'value'}]",
-            )
-        
         # Build payload using helper function
         payload_data = build_api_payload(
             api_type="cmdb",
@@ -513,7 +438,7 @@ class Evpn(CRUDEndpoint, MetadataMixin):
         vdom: str | bool | None = None,
         error_mode: Literal["raise", "return", "print"] | None = None,
         error_format: Literal["detailed", "simple", "code_only"] | None = None,
-    ):  # type: ignore[no-untyped-def]
+    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """
         Delete system/evpn object.
 
@@ -526,7 +451,7 @@ class Evpn(CRUDEndpoint, MetadataMixin):
             error_format: Override client-level error_format. "detailed" provides full context, "simple" is concise, "code_only" returns just status code.
 
         Returns:
-            FortiObject instance. Use .dict, .json, or .raw to access as dictionary
+            API response as dictionary. Returns Coroutine if using async client.
 
         Raises:
             ValueError: If id is not provided
@@ -652,7 +577,7 @@ class Evpn(CRUDEndpoint, MetadataMixin):
             **kwargs: Additional parameters passed to PUT or POST
 
         Returns:
-            FortiObject instance. Use .dict, .json, or .raw to access as dictionary
+            API response as dictionary. Returns Coroutine if using async client.
 
         Raises:
             ValueError: If id is missing from payload
@@ -687,24 +612,6 @@ class Evpn(CRUDEndpoint, MetadataMixin):
             - put(): Update existing object
             - exists(): Check existence manually
         """
-        # Apply normalization for table fields (supports flexible input formats)
-        if import_rt is not None:
-            import_rt = normalize_table_field(
-                import_rt,
-                mkey="route-target",
-                required_fields=['route-target'],
-                field_name="import_rt",
-                example="[{'route-target': 'value'}]",
-            )
-        if export_rt is not None:
-            export_rt = normalize_table_field(
-                export_rt,
-                mkey="route-target",
-                required_fields=['route-target'],
-                field_name="export_rt",
-                example="[{'route-target': 'value'}]",
-            )
-        
         # Build payload using helper function
         payload_data = build_api_payload(
             api_type="cmdb",

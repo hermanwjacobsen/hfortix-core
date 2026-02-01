@@ -39,7 +39,6 @@ from typing import TYPE_CHECKING, Any, Literal, Union
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
-    from hfortix_fortios.models import FortiObject
 
 # Import helper functions from central _helpers module
 from hfortix_fortios._helpers import (
@@ -47,7 +46,6 @@ from hfortix_fortios._helpers import (
     build_cmdb_payload,  # Keep for backward compatibility / manual usage
     is_success,
     quote_path_param,  # URL encoding for path parameters
-    normalize_table_field,  # For table field normalization
 )
 # Import metadata mixin for schema introspection
 from hfortix_fortios._helpers.metadata_mixin import MetadataMixin
@@ -60,23 +58,6 @@ class NacPolicy(CRUDEndpoint, MetadataMixin):
     
     # Configure metadata mixin to use this endpoint's helper module
     _helper_module_name = "nac_policy"
-    
-    # ========================================================================
-    # Table Fields Metadata (for normalization)
-    # Auto-generated from schema - supports flexible input formats
-    # ========================================================================
-    _TABLE_FIELDS = {
-        "severity": {
-            "mkey": "severity-num",
-            "required_fields": ['severity-num'],
-            "example": "[{'severity-num': 1}]",
-        },
-        "switch_group": {
-            "mkey": "name",
-            "required_fields": ['name'],
-            "example": "[{'name': 'value'}]",
-        },
-    }
     
     # ========================================================================
     # Capabilities (from schema metadata)
@@ -111,7 +92,7 @@ class NacPolicy(CRUDEndpoint, MetadataMixin):
         vdom: str | bool | None = None,
         error_mode: Literal["raise", "return", "print"] | None = None,
         error_format: Literal["detailed", "simple", "code_only"] | None = None,
-    ):  # type: ignore[no-untyped-def]
+    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """
         Retrieve user/nac_policy configuration.
 
@@ -140,8 +121,8 @@ class NacPolicy(CRUDEndpoint, MetadataMixin):
             error_format: Override client-level error_format. "detailed" provides full context, "simple" is concise, "code_only" returns just status code.
 
         Returns:
-            FortiObject instance or list of FortiObject instances. Returns Coroutine if using async client.
-            Use .dict, .json, or .raw properties to access as dictionary.
+            API response as dictionary. Returns Coroutine if using async client.
+            Access results via dictionary keys (e.g., result['results'], result['http_status']).
             
             Response structure:
                 - http_method: GET
@@ -282,7 +263,7 @@ class NacPolicy(CRUDEndpoint, MetadataMixin):
         vdom: str | bool | None = None,
         error_mode: Literal["raise", "return", "print"] | None = None,
         error_format: Literal["detailed", "simple", "code_only"] | None = None,
-    ):  # type: ignore[no-untyped-def]
+    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """
         Update existing user/nac_policy object.
 
@@ -311,18 +292,8 @@ class NacPolicy(CRUDEndpoint, MetadataMixin):
             ems_tag: NAC policy matching EMS tag.
             fortivoice_tag: NAC policy matching FortiVoice tag.
             severity: NAC policy matching devices vulnerability severity lists.
-                Default format: [{'severity-num': 1}]
-                Supported formats:
-                  - Single string: "value" → [{'severity-num': 'value'}]
-                  - List of strings: ["val1", "val2"] → [{'severity-num': 'val1'}, ...]
-                  - List of dicts: [{'severity-num': 1}] (recommended)
             switch_fortilink: FortiLink interface for which this NAC policy belongs to.
             switch_group: List of managed FortiSwitch groups on which NAC policy can be applied.
-                Default format: [{'name': 'value'}]
-                Supported formats:
-                  - Single string: "value" → [{'name': 'value'}]
-                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
-                  - List of dicts: [{'name': 'value'}] (recommended)
             switch_mac_policy: Switch MAC policy action to be applied on the matched NAC policy.
             firewall_address: Dynamic firewall address to associate MAC which match this policy.
             ssid_policy: SSID policy to be applied on the matched NAC policy.
@@ -331,7 +302,7 @@ class NacPolicy(CRUDEndpoint, MetadataMixin):
             error_format: Override client-level error_format. "detailed" provides full context, "simple" is concise, "code_only" returns just status code.
 
         Returns:
-            FortiObject instance. Use .dict, .json, or .raw to access as dictionary.
+            API response as dictionary. Returns Coroutine if using async client.
 
         Raises:
             ValueError: If name is missing from payload
@@ -354,30 +325,9 @@ class NacPolicy(CRUDEndpoint, MetadataMixin):
             - post(): Create new object
             - set(): Intelligent create or update
         """
-        # Apply normalization for table fields (supports flexible input formats)
-        if severity is not None:
-            severity = normalize_table_field(
-                severity,
-                mkey="severity-num",
-                required_fields=['severity-num'],
-                field_name="severity",
-                example="[{'severity-num': 1}]",
-            )
-        if switch_group is not None:
-            switch_group = normalize_table_field(
-                switch_group,
-                mkey="name",
-                required_fields=['name'],
-                field_name="switch_group",
-                example="[{'name': 'value'}]",
-            )
-        
         # Build payload using helper function
-        # Note: auto_normalize=False because this endpoint has unitary fields
-        # (like 'interface') that would be incorrectly converted to list format
         payload_data = build_api_payload(
             api_type="cmdb",
-            auto_normalize=False,
             name=name,
             description=description,
             category=category,
@@ -476,7 +426,7 @@ class NacPolicy(CRUDEndpoint, MetadataMixin):
         vdom: str | bool | None = None,
         error_mode: Literal["raise", "return", "print"] | None = None,
         error_format: Literal["detailed", "simple", "code_only"] | None = None,
-    ):  # type: ignore[no-untyped-def]
+    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """
         Create new user/nac_policy object.
 
@@ -505,18 +455,8 @@ class NacPolicy(CRUDEndpoint, MetadataMixin):
             ems_tag: NAC policy matching EMS tag.
             fortivoice_tag: NAC policy matching FortiVoice tag.
             severity: NAC policy matching devices vulnerability severity lists.
-                Default format: [{'severity-num': 1}]
-                Supported formats:
-                  - Single string: "value" → [{'severity-num': 'value'}]
-                  - List of strings: ["val1", "val2"] → [{'severity-num': 'val1'}, ...]
-                  - List of dicts: [{'severity-num': 1}] (recommended)
             switch_fortilink: FortiLink interface for which this NAC policy belongs to.
             switch_group: List of managed FortiSwitch groups on which NAC policy can be applied.
-                Default format: [{'name': 'value'}]
-                Supported formats:
-                  - Single string: "value" → [{'name': 'value'}]
-                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
-                  - List of dicts: [{'name': 'value'}] (recommended)
             switch_mac_policy: Switch MAC policy action to be applied on the matched NAC policy.
             firewall_address: Dynamic firewall address to associate MAC which match this policy.
             ssid_policy: SSID policy to be applied on the matched NAC policy.
@@ -525,7 +465,7 @@ class NacPolicy(CRUDEndpoint, MetadataMixin):
             error_format: Override client-level error_format. "detailed" provides full context, "simple" is concise, "code_only" returns just status code.
 
         Returns:
-            FortiObject instance with created object. Use .dict, .json, or .raw to access as dictionary.
+            API response as dictionary. Returns Coroutine if using async client.
 
         Examples:
             >>> # Create using individual parameters
@@ -550,30 +490,9 @@ class NacPolicy(CRUDEndpoint, MetadataMixin):
             - put(): Update existing object
             - set(): Intelligent create or update
         """
-        # Apply normalization for table fields (supports flexible input formats)
-        if severity is not None:
-            severity = normalize_table_field(
-                severity,
-                mkey="severity-num",
-                required_fields=['severity-num'],
-                field_name="severity",
-                example="[{'severity-num': 1}]",
-            )
-        if switch_group is not None:
-            switch_group = normalize_table_field(
-                switch_group,
-                mkey="name",
-                required_fields=['name'],
-                field_name="switch_group",
-                example="[{'name': 'value'}]",
-            )
-        
         # Build payload using helper function
-        # Note: auto_normalize=False because this endpoint has unitary fields
-        # (like 'interface') that would be incorrectly converted to list format
         payload_data = build_api_payload(
             api_type="cmdb",
-            auto_normalize=False,
             name=name,
             description=description,
             category=category,
@@ -639,7 +558,7 @@ class NacPolicy(CRUDEndpoint, MetadataMixin):
         vdom: str | bool | None = None,
         error_mode: Literal["raise", "return", "print"] | None = None,
         error_format: Literal["detailed", "simple", "code_only"] | None = None,
-    ):  # type: ignore[no-untyped-def]
+    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """
         Delete user/nac_policy object.
 
@@ -652,7 +571,7 @@ class NacPolicy(CRUDEndpoint, MetadataMixin):
             error_format: Override client-level error_format. "detailed" provides full context, "simple" is concise, "code_only" returns just status code.
 
         Returns:
-            FortiObject instance. Use .dict, .json, or .raw to access as dictionary
+            API response as dictionary. Returns Coroutine if using async client.
 
         Raises:
             ValueError: If name is not provided
@@ -818,7 +737,7 @@ class NacPolicy(CRUDEndpoint, MetadataMixin):
             **kwargs: Additional parameters passed to PUT or POST
 
         Returns:
-            FortiObject instance. Use .dict, .json, or .raw to access as dictionary
+            API response as dictionary. Returns Coroutine if using async client.
 
         Raises:
             ValueError: If name is missing from payload
@@ -853,30 +772,9 @@ class NacPolicy(CRUDEndpoint, MetadataMixin):
             - put(): Update existing object
             - exists(): Check existence manually
         """
-        # Apply normalization for table fields (supports flexible input formats)
-        if severity is not None:
-            severity = normalize_table_field(
-                severity,
-                mkey="severity-num",
-                required_fields=['severity-num'],
-                field_name="severity",
-                example="[{'severity-num': 1}]",
-            )
-        if switch_group is not None:
-            switch_group = normalize_table_field(
-                switch_group,
-                mkey="name",
-                required_fields=['name'],
-                field_name="switch_group",
-                example="[{'name': 'value'}]",
-            )
-        
         # Build payload using helper function
-        # Note: auto_normalize=False because this endpoint has unitary fields
-        # (like 'interface') that would be incorrectly converted to list format
         payload_data = build_api_payload(
             api_type="cmdb",
-            auto_normalize=False,
             name=name,
             description=description,
             category=category,

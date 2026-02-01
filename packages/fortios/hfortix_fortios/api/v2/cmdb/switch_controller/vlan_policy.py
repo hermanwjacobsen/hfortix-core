@@ -39,7 +39,6 @@ from typing import TYPE_CHECKING, Any, Literal, Union
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
-    from hfortix_fortios.models import FortiObject
 
 # Import helper functions from central _helpers module
 from hfortix_fortios._helpers import (
@@ -47,7 +46,6 @@ from hfortix_fortios._helpers import (
     build_cmdb_payload,  # Keep for backward compatibility / manual usage
     is_success,
     quote_path_param,  # URL encoding for path parameters
-    normalize_table_field,  # For table field normalization
 )
 # Import metadata mixin for schema introspection
 from hfortix_fortios._helpers.metadata_mixin import MetadataMixin
@@ -60,23 +58,6 @@ class VlanPolicy(CRUDEndpoint, MetadataMixin):
     
     # Configure metadata mixin to use this endpoint's helper module
     _helper_module_name = "vlan_policy"
-    
-    # ========================================================================
-    # Table Fields Metadata (for normalization)
-    # Auto-generated from schema - supports flexible input formats
-    # ========================================================================
-    _TABLE_FIELDS = {
-        "allowed_vlans": {
-            "mkey": "vlan-name",
-            "required_fields": ['vlan-name'],
-            "example": "[{'vlan-name': 'value'}]",
-        },
-        "untagged_vlans": {
-            "mkey": "vlan-name",
-            "required_fields": ['vlan-name'],
-            "example": "[{'vlan-name': 'value'}]",
-        },
-    }
     
     # ========================================================================
     # Capabilities (from schema metadata)
@@ -111,7 +92,7 @@ class VlanPolicy(CRUDEndpoint, MetadataMixin):
         vdom: str | bool | None = None,
         error_mode: Literal["raise", "return", "print"] | None = None,
         error_format: Literal["detailed", "simple", "code_only"] | None = None,
-    ):  # type: ignore[no-untyped-def]
+    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """
         Retrieve switch_controller/vlan_policy configuration.
 
@@ -140,8 +121,8 @@ class VlanPolicy(CRUDEndpoint, MetadataMixin):
             error_format: Override client-level error_format. "detailed" provides full context, "simple" is concise, "code_only" returns just status code.
 
         Returns:
-            FortiObject instance or list of FortiObject instances. Returns Coroutine if using async client.
-            Use .dict, .json, or .raw properties to access as dictionary.
+            API response as dictionary. Returns Coroutine if using async client.
+            Access results via dictionary keys (e.g., result['results'], result['http_status']).
             
             Response structure:
                 - http_method: GET
@@ -264,7 +245,7 @@ class VlanPolicy(CRUDEndpoint, MetadataMixin):
         vdom: str | bool | None = None,
         error_mode: Literal["raise", "return", "print"] | None = None,
         error_format: Literal["detailed", "simple", "code_only"] | None = None,
-    ):  # type: ignore[no-untyped-def]
+    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """
         Update existing switch_controller/vlan_policy object.
 
@@ -277,17 +258,7 @@ class VlanPolicy(CRUDEndpoint, MetadataMixin):
             fortilink: FortiLink interface for which this VLAN policy belongs to.
             vlan: Native VLAN to be applied when using this VLAN policy.
             allowed_vlans: Allowed VLANs to be applied when using this VLAN policy.
-                Default format: [{'vlan-name': 'value'}]
-                Supported formats:
-                  - Single string: "value" → [{'vlan-name': 'value'}]
-                  - List of strings: ["val1", "val2"] → [{'vlan-name': 'val1'}, ...]
-                  - List of dicts: [{'vlan-name': 'value'}] (recommended)
             untagged_vlans: Untagged VLANs to be applied when using this VLAN policy.
-                Default format: [{'vlan-name': 'value'}]
-                Supported formats:
-                  - Single string: "value" → [{'vlan-name': 'value'}]
-                  - List of strings: ["val1", "val2"] → [{'vlan-name': 'val1'}, ...]
-                  - List of dicts: [{'vlan-name': 'value'}] (recommended)
             allowed_vlans_all: Enable/disable all defined VLANs when using this VLAN policy.
             discard_mode: Discard mode to be applied when using this VLAN policy.
             vdom: Virtual domain name.
@@ -295,7 +266,7 @@ class VlanPolicy(CRUDEndpoint, MetadataMixin):
             error_format: Override client-level error_format. "detailed" provides full context, "simple" is concise, "code_only" returns just status code.
 
         Returns:
-            FortiObject instance. Use .dict, .json, or .raw to access as dictionary.
+            API response as dictionary. Returns Coroutine if using async client.
 
         Raises:
             ValueError: If name is missing from payload
@@ -318,24 +289,6 @@ class VlanPolicy(CRUDEndpoint, MetadataMixin):
             - post(): Create new object
             - set(): Intelligent create or update
         """
-        # Apply normalization for table fields (supports flexible input formats)
-        if allowed_vlans is not None:
-            allowed_vlans = normalize_table_field(
-                allowed_vlans,
-                mkey="vlan-name",
-                required_fields=['vlan-name'],
-                field_name="allowed_vlans",
-                example="[{'vlan-name': 'value'}]",
-            )
-        if untagged_vlans is not None:
-            untagged_vlans = normalize_table_field(
-                untagged_vlans,
-                mkey="vlan-name",
-                required_fields=['vlan-name'],
-                field_name="untagged_vlans",
-                example="[{'vlan-name': 'value'}]",
-            )
-        
         # Build payload using helper function
         payload_data = build_api_payload(
             api_type="cmdb",
@@ -401,7 +354,7 @@ class VlanPolicy(CRUDEndpoint, MetadataMixin):
         vdom: str | bool | None = None,
         error_mode: Literal["raise", "return", "print"] | None = None,
         error_format: Literal["detailed", "simple", "code_only"] | None = None,
-    ):  # type: ignore[no-untyped-def]
+    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """
         Create new switch_controller/vlan_policy object.
 
@@ -414,17 +367,7 @@ class VlanPolicy(CRUDEndpoint, MetadataMixin):
             fortilink: FortiLink interface for which this VLAN policy belongs to.
             vlan: Native VLAN to be applied when using this VLAN policy.
             allowed_vlans: Allowed VLANs to be applied when using this VLAN policy.
-                Default format: [{'vlan-name': 'value'}]
-                Supported formats:
-                  - Single string: "value" → [{'vlan-name': 'value'}]
-                  - List of strings: ["val1", "val2"] → [{'vlan-name': 'val1'}, ...]
-                  - List of dicts: [{'vlan-name': 'value'}] (recommended)
             untagged_vlans: Untagged VLANs to be applied when using this VLAN policy.
-                Default format: [{'vlan-name': 'value'}]
-                Supported formats:
-                  - Single string: "value" → [{'vlan-name': 'value'}]
-                  - List of strings: ["val1", "val2"] → [{'vlan-name': 'val1'}, ...]
-                  - List of dicts: [{'vlan-name': 'value'}] (recommended)
             allowed_vlans_all: Enable/disable all defined VLANs when using this VLAN policy.
             discard_mode: Discard mode to be applied when using this VLAN policy.
             vdom: Virtual domain name. Use True for global, string for specific VDOM.
@@ -432,7 +375,7 @@ class VlanPolicy(CRUDEndpoint, MetadataMixin):
             error_format: Override client-level error_format. "detailed" provides full context, "simple" is concise, "code_only" returns just status code.
 
         Returns:
-            FortiObject instance with created object. Use .dict, .json, or .raw to access as dictionary.
+            API response as dictionary. Returns Coroutine if using async client.
 
         Examples:
             >>> # Create using individual parameters
@@ -457,24 +400,6 @@ class VlanPolicy(CRUDEndpoint, MetadataMixin):
             - put(): Update existing object
             - set(): Intelligent create or update
         """
-        # Apply normalization for table fields (supports flexible input formats)
-        if allowed_vlans is not None:
-            allowed_vlans = normalize_table_field(
-                allowed_vlans,
-                mkey="vlan-name",
-                required_fields=['vlan-name'],
-                field_name="allowed_vlans",
-                example="[{'vlan-name': 'value'}]",
-            )
-        if untagged_vlans is not None:
-            untagged_vlans = normalize_table_field(
-                untagged_vlans,
-                mkey="vlan-name",
-                required_fields=['vlan-name'],
-                field_name="untagged_vlans",
-                example="[{'vlan-name': 'value'}]",
-            )
-        
         # Build payload using helper function
         payload_data = build_api_payload(
             api_type="cmdb",
@@ -525,7 +450,7 @@ class VlanPolicy(CRUDEndpoint, MetadataMixin):
         vdom: str | bool | None = None,
         error_mode: Literal["raise", "return", "print"] | None = None,
         error_format: Literal["detailed", "simple", "code_only"] | None = None,
-    ):  # type: ignore[no-untyped-def]
+    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """
         Delete switch_controller/vlan_policy object.
 
@@ -538,7 +463,7 @@ class VlanPolicy(CRUDEndpoint, MetadataMixin):
             error_format: Override client-level error_format. "detailed" provides full context, "simple" is concise, "code_only" returns just status code.
 
         Returns:
-            FortiObject instance. Use .dict, .json, or .raw to access as dictionary
+            API response as dictionary. Returns Coroutine if using async client.
 
         Raises:
             ValueError: If name is not provided
@@ -668,7 +593,7 @@ class VlanPolicy(CRUDEndpoint, MetadataMixin):
             **kwargs: Additional parameters passed to PUT or POST
 
         Returns:
-            FortiObject instance. Use .dict, .json, or .raw to access as dictionary
+            API response as dictionary. Returns Coroutine if using async client.
 
         Raises:
             ValueError: If name is missing from payload
@@ -703,24 +628,6 @@ class VlanPolicy(CRUDEndpoint, MetadataMixin):
             - put(): Update existing object
             - exists(): Check existence manually
         """
-        # Apply normalization for table fields (supports flexible input formats)
-        if allowed_vlans is not None:
-            allowed_vlans = normalize_table_field(
-                allowed_vlans,
-                mkey="vlan-name",
-                required_fields=['vlan-name'],
-                field_name="allowed_vlans",
-                example="[{'vlan-name': 'value'}]",
-            )
-        if untagged_vlans is not None:
-            untagged_vlans = normalize_table_field(
-                untagged_vlans,
-                mkey="vlan-name",
-                required_fields=['vlan-name'],
-                field_name="untagged_vlans",
-                example="[{'vlan-name': 'value'}]",
-            )
-        
         # Build payload using helper function
         payload_data = build_api_payload(
             api_type="cmdb",

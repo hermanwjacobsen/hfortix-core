@@ -39,7 +39,6 @@ from typing import TYPE_CHECKING, Any, Literal, Union
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
-    from hfortix_fortios.models import FortiObject
 
 # Import helper functions from central _helpers module
 from hfortix_fortios._helpers import (
@@ -47,7 +46,6 @@ from hfortix_fortios._helpers import (
     build_cmdb_payload,  # Keep for backward compatibility / manual usage
     is_success,
     quote_path_param,  # URL encoding for path parameters
-    normalize_table_field,  # For table field normalization
 )
 # Import metadata mixin for schema introspection
 from hfortix_fortios._helpers.metadata_mixin import MetadataMixin
@@ -60,28 +58,6 @@ class WidsProfile(CRUDEndpoint, MetadataMixin):
     
     # Configure metadata mixin to use this endpoint's helper module
     _helper_module_name = "wids_profile"
-    
-    # ========================================================================
-    # Table Fields Metadata (for normalization)
-    # Auto-generated from schema - supports flexible input formats
-    # ========================================================================
-    _TABLE_FIELDS = {
-        "ap_scan_channel_list_2G_5G": {
-            "mkey": "chan",
-            "required_fields": ['chan'],
-            "example": "[{'chan': 'value'}]",
-        },
-        "ap_scan_channel_list_6G": {
-            "mkey": "chan",
-            "required_fields": ['chan'],
-            "example": "[{'chan': 'value'}]",
-        },
-        "ap_bgscan_disable_schedules": {
-            "mkey": "name",
-            "required_fields": ['name'],
-            "example": "[{'name': 'value'}]",
-        },
-    }
     
     # ========================================================================
     # Capabilities (from schema metadata)
@@ -116,7 +92,7 @@ class WidsProfile(CRUDEndpoint, MetadataMixin):
         vdom: str | bool | None = None,
         error_mode: Literal["raise", "return", "print"] | None = None,
         error_format: Literal["detailed", "simple", "code_only"] | None = None,
-    ):  # type: ignore[no-untyped-def]
+    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """
         Retrieve wireless_controller/wids_profile configuration.
 
@@ -145,8 +121,8 @@ class WidsProfile(CRUDEndpoint, MetadataMixin):
             error_format: Override client-level error_format. "detailed" provides full context, "simple" is concise, "code_only" returns just status code.
 
         Returns:
-            FortiObject instance or list of FortiObject instances. Returns Coroutine if using async client.
-            Use .dict, .json, or .raw properties to access as dictionary.
+            API response as dictionary. Returns Coroutine if using async client.
+            Access results via dictionary keys (e.g., result['results'], result['http_status']).
             
             Response structure:
                 - http_method: GET
@@ -371,7 +347,7 @@ class WidsProfile(CRUDEndpoint, MetadataMixin):
         vdom: str | bool | None = None,
         error_mode: Literal["raise", "return", "print"] | None = None,
         error_format: Literal["detailed", "simple", "code_only"] | None = None,
-    ):  # type: ignore[no-untyped-def]
+    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """
         Update existing wireless_controller/wids_profile object.
 
@@ -384,28 +360,13 @@ class WidsProfile(CRUDEndpoint, MetadataMixin):
             sensor_mode: Scan nearby WiFi stations (default = disable).
             ap_scan: Enable/disable rogue AP detection.
             ap_scan_channel_list_2G_5G: Selected ap scan channel list for 2.4G and 5G bands.
-                Default format: [{'chan': 'value'}]
-                Supported formats:
-                  - Single string: "value" → [{'chan': 'value'}]
-                  - List of strings: ["val1", "val2"] → [{'chan': 'val1'}, ...]
-                  - List of dicts: [{'chan': 'value'}] (recommended)
             ap_scan_channel_list_6G: Selected ap scan channel list for 6G band.
-                Default format: [{'chan': 'value'}]
-                Supported formats:
-                  - Single string: "value" → [{'chan': 'value'}]
-                  - List of strings: ["val1", "val2"] → [{'chan': 'val1'}, ...]
-                  - List of dicts: [{'chan': 'value'}] (recommended)
             ap_bgscan_period: Period between background scans (10 - 3600 sec, default = 600).
             ap_bgscan_intv: Period between successive channel scans (1 - 600 sec, default = 3).
             ap_bgscan_duration: Listen time on scanning a channel (10 - 1000 msec, default = 30).
             ap_bgscan_idle: Wait time for channel inactivity before scanning this channel (0 - 1000 msec, default = 20).
             ap_bgscan_report_intv: Period between background scan reports (15 - 600 sec, default = 30).
             ap_bgscan_disable_schedules: Firewall schedules for turning off FortiAP radio background scan. Background scan will be disabled when at least one of the schedules is valid. Separate multiple schedule names with a space.
-                Default format: [{'name': 'value'}]
-                Supported formats:
-                  - Single string: "value" → [{'name': 'value'}]
-                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
-                  - List of dicts: [{'name': 'value'}] (recommended)
             ap_fgscan_report_intv: Period between foreground scan reports (15 - 600 sec, default = 15).
             ap_scan_passive: Enable/disable passive scanning. Enable means do not send probe request on any channels (default = disable).
             ap_scan_threshold: Minimum signal level/threshold in dBm required for the AP to report detected rogue AP (-95 to -20, default = -90).
@@ -509,7 +470,7 @@ class WidsProfile(CRUDEndpoint, MetadataMixin):
             error_format: Override client-level error_format. "detailed" provides full context, "simple" is concise, "code_only" returns just status code.
 
         Returns:
-            FortiObject instance. Use .dict, .json, or .raw to access as dictionary.
+            API response as dictionary. Returns Coroutine if using async client.
 
         Raises:
             ValueError: If name is missing from payload
@@ -532,32 +493,6 @@ class WidsProfile(CRUDEndpoint, MetadataMixin):
             - post(): Create new object
             - set(): Intelligent create or update
         """
-        # Apply normalization for table fields (supports flexible input formats)
-        if ap_scan_channel_list_2G_5G is not None:
-            ap_scan_channel_list_2G_5G = normalize_table_field(
-                ap_scan_channel_list_2G_5G,
-                mkey="chan",
-                required_fields=['chan'],
-                field_name="ap_scan_channel_list_2G_5G",
-                example="[{'chan': 'value'}]",
-            )
-        if ap_scan_channel_list_6G is not None:
-            ap_scan_channel_list_6G = normalize_table_field(
-                ap_scan_channel_list_6G,
-                mkey="chan",
-                required_fields=['chan'],
-                field_name="ap_scan_channel_list_6G",
-                example="[{'chan': 'value'}]",
-            )
-        if ap_bgscan_disable_schedules is not None:
-            ap_bgscan_disable_schedules = normalize_table_field(
-                ap_bgscan_disable_schedules,
-                mkey="name",
-                required_fields=['name'],
-                field_name="ap_bgscan_disable_schedules",
-                example="[{'name': 'value'}]",
-            )
-        
         # Build payload using helper function
         payload_data = build_api_payload(
             api_type="cmdb",
@@ -827,7 +762,7 @@ class WidsProfile(CRUDEndpoint, MetadataMixin):
         vdom: str | bool | None = None,
         error_mode: Literal["raise", "return", "print"] | None = None,
         error_format: Literal["detailed", "simple", "code_only"] | None = None,
-    ):  # type: ignore[no-untyped-def]
+    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """
         Create new wireless_controller/wids_profile object.
 
@@ -840,28 +775,13 @@ class WidsProfile(CRUDEndpoint, MetadataMixin):
             sensor_mode: Scan nearby WiFi stations (default = disable).
             ap_scan: Enable/disable rogue AP detection.
             ap_scan_channel_list_2G_5G: Selected ap scan channel list for 2.4G and 5G bands.
-                Default format: [{'chan': 'value'}]
-                Supported formats:
-                  - Single string: "value" → [{'chan': 'value'}]
-                  - List of strings: ["val1", "val2"] → [{'chan': 'val1'}, ...]
-                  - List of dicts: [{'chan': 'value'}] (recommended)
             ap_scan_channel_list_6G: Selected ap scan channel list for 6G band.
-                Default format: [{'chan': 'value'}]
-                Supported formats:
-                  - Single string: "value" → [{'chan': 'value'}]
-                  - List of strings: ["val1", "val2"] → [{'chan': 'val1'}, ...]
-                  - List of dicts: [{'chan': 'value'}] (recommended)
             ap_bgscan_period: Period between background scans (10 - 3600 sec, default = 600).
             ap_bgscan_intv: Period between successive channel scans (1 - 600 sec, default = 3).
             ap_bgscan_duration: Listen time on scanning a channel (10 - 1000 msec, default = 30).
             ap_bgscan_idle: Wait time for channel inactivity before scanning this channel (0 - 1000 msec, default = 20).
             ap_bgscan_report_intv: Period between background scan reports (15 - 600 sec, default = 30).
             ap_bgscan_disable_schedules: Firewall schedules for turning off FortiAP radio background scan. Background scan will be disabled when at least one of the schedules is valid. Separate multiple schedule names with a space.
-                Default format: [{'name': 'value'}]
-                Supported formats:
-                  - Single string: "value" → [{'name': 'value'}]
-                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
-                  - List of dicts: [{'name': 'value'}] (recommended)
             ap_fgscan_report_intv: Period between foreground scan reports (15 - 600 sec, default = 15).
             ap_scan_passive: Enable/disable passive scanning. Enable means do not send probe request on any channels (default = disable).
             ap_scan_threshold: Minimum signal level/threshold in dBm required for the AP to report detected rogue AP (-95 to -20, default = -90).
@@ -965,7 +885,7 @@ class WidsProfile(CRUDEndpoint, MetadataMixin):
             error_format: Override client-level error_format. "detailed" provides full context, "simple" is concise, "code_only" returns just status code.
 
         Returns:
-            FortiObject instance with created object. Use .dict, .json, or .raw to access as dictionary.
+            API response as dictionary. Returns Coroutine if using async client.
 
         Examples:
             >>> # Create using individual parameters
@@ -990,32 +910,6 @@ class WidsProfile(CRUDEndpoint, MetadataMixin):
             - put(): Update existing object
             - set(): Intelligent create or update
         """
-        # Apply normalization for table fields (supports flexible input formats)
-        if ap_scan_channel_list_2G_5G is not None:
-            ap_scan_channel_list_2G_5G = normalize_table_field(
-                ap_scan_channel_list_2G_5G,
-                mkey="chan",
-                required_fields=['chan'],
-                field_name="ap_scan_channel_list_2G_5G",
-                example="[{'chan': 'value'}]",
-            )
-        if ap_scan_channel_list_6G is not None:
-            ap_scan_channel_list_6G = normalize_table_field(
-                ap_scan_channel_list_6G,
-                mkey="chan",
-                required_fields=['chan'],
-                field_name="ap_scan_channel_list_6G",
-                example="[{'chan': 'value'}]",
-            )
-        if ap_bgscan_disable_schedules is not None:
-            ap_bgscan_disable_schedules = normalize_table_field(
-                ap_bgscan_disable_schedules,
-                mkey="name",
-                required_fields=['name'],
-                field_name="ap_bgscan_disable_schedules",
-                example="[{'name': 'value'}]",
-            )
-        
         # Build payload using helper function
         payload_data = build_api_payload(
             api_type="cmdb",
@@ -1168,7 +1062,7 @@ class WidsProfile(CRUDEndpoint, MetadataMixin):
         vdom: str | bool | None = None,
         error_mode: Literal["raise", "return", "print"] | None = None,
         error_format: Literal["detailed", "simple", "code_only"] | None = None,
-    ):  # type: ignore[no-untyped-def]
+    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """
         Delete wireless_controller/wids_profile object.
 
@@ -1181,7 +1075,7 @@ class WidsProfile(CRUDEndpoint, MetadataMixin):
             error_format: Override client-level error_format. "detailed" provides full context, "simple" is concise, "code_only" returns just status code.
 
         Returns:
-            FortiObject instance. Use .dict, .json, or .raw to access as dictionary
+            API response as dictionary. Returns Coroutine if using async client.
 
         Raises:
             ValueError: If name is not provided
@@ -1515,7 +1409,7 @@ class WidsProfile(CRUDEndpoint, MetadataMixin):
             **kwargs: Additional parameters passed to PUT or POST
 
         Returns:
-            FortiObject instance. Use .dict, .json, or .raw to access as dictionary
+            API response as dictionary. Returns Coroutine if using async client.
 
         Raises:
             ValueError: If name is missing from payload
@@ -1550,32 +1444,6 @@ class WidsProfile(CRUDEndpoint, MetadataMixin):
             - put(): Update existing object
             - exists(): Check existence manually
         """
-        # Apply normalization for table fields (supports flexible input formats)
-        if ap_scan_channel_list_2G_5G is not None:
-            ap_scan_channel_list_2G_5G = normalize_table_field(
-                ap_scan_channel_list_2G_5G,
-                mkey="chan",
-                required_fields=['chan'],
-                field_name="ap_scan_channel_list_2G_5G",
-                example="[{'chan': 'value'}]",
-            )
-        if ap_scan_channel_list_6G is not None:
-            ap_scan_channel_list_6G = normalize_table_field(
-                ap_scan_channel_list_6G,
-                mkey="chan",
-                required_fields=['chan'],
-                field_name="ap_scan_channel_list_6G",
-                example="[{'chan': 'value'}]",
-            )
-        if ap_bgscan_disable_schedules is not None:
-            ap_bgscan_disable_schedules = normalize_table_field(
-                ap_bgscan_disable_schedules,
-                mkey="name",
-                required_fields=['name'],
-                field_name="ap_bgscan_disable_schedules",
-                example="[{'name': 'value'}]",
-            )
-        
         # Build payload using helper function
         payload_data = build_api_payload(
             api_type="cmdb",

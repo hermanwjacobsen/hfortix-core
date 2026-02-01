@@ -39,7 +39,6 @@ from typing import TYPE_CHECKING, Any, Literal, Union
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
-    from hfortix_fortios.models import FortiObject
 
 # Import helper functions from central _helpers module
 from hfortix_fortios._helpers import (
@@ -47,7 +46,6 @@ from hfortix_fortios._helpers import (
     build_cmdb_payload,  # Keep for backward compatibility / manual usage
     is_success,
     quote_path_param,  # URL encoding for path parameters
-    normalize_table_field,  # For table field normalization
 )
 # Import metadata mixin for schema introspection
 from hfortix_fortios._helpers.metadata_mixin import MetadataMixin
@@ -60,43 +58,6 @@ class Server(CRUDEndpoint, MetadataMixin):
     
     # Configure metadata mixin to use this endpoint's helper module
     _helper_module_name = "server"
-    
-    # ========================================================================
-    # Table Fields Metadata (for normalization)
-    # Auto-generated from schema - supports flexible input formats
-    # ========================================================================
-    _TABLE_FIELDS = {
-        "ip_range": {
-            "mkey": "id",
-            "required_fields": ['id', 'start-ip', 'end-ip'],
-            "example": "[{'id': 1, 'start-ip': '192.168.1.10', 'end-ip': '192.168.1.10'}]",
-        },
-        "tftp_server": {
-            "mkey": "tftp-server",
-            "required_fields": ['tftp-server'],
-            "example": "[{'tftp-server': 'value'}]",
-        },
-        "options": {
-            "mkey": "id",
-            "required_fields": ['id', 'code'],
-            "example": "[{'id': 1, 'code': 1}]",
-        },
-        "vci_string": {
-            "mkey": "vci-string",
-            "required_fields": ['vci-string'],
-            "example": "[{'vci-string': 'value'}]",
-        },
-        "exclude_range": {
-            "mkey": "id",
-            "required_fields": ['id', 'start-ip', 'end-ip'],
-            "example": "[{'id': 1, 'start-ip': '192.168.1.10', 'end-ip': '192.168.1.10'}]",
-        },
-        "reserved_address": {
-            "mkey": "id",
-            "required_fields": ['id', 'ip', 'mac'],
-            "example": "[{'id': 1, 'ip': '192.168.1.10', 'mac': 'value'}]",
-        },
-    }
     
     # ========================================================================
     # Capabilities (from schema metadata)
@@ -131,7 +92,7 @@ class Server(CRUDEndpoint, MetadataMixin):
         vdom: str | bool | None = None,
         error_mode: Literal["raise", "return", "print"] | None = None,
         error_format: Literal["detailed", "simple", "code_only"] | None = None,
-    ):  # type: ignore[no-untyped-def]
+    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """
         Retrieve system/dhcp/server configuration.
 
@@ -160,8 +121,8 @@ class Server(CRUDEndpoint, MetadataMixin):
             error_format: Override client-level error_format. "detailed" provides full context, "simple" is concise, "code_only" returns just status code.
 
         Returns:
-            FortiObject instance or list of FortiObject instances. Returns Coroutine if using async client.
-            Use .dict, .json, or .raw properties to access as dictionary.
+            API response as dictionary. Returns Coroutine if using async client.
+            Access results via dictionary keys (e.g., result['results'], result['http_status']).
             
             Response structure:
                 - http_method: GET
@@ -328,7 +289,7 @@ class Server(CRUDEndpoint, MetadataMixin):
         vdom: str | bool | None = None,
         error_mode: Literal["raise", "return", "print"] | None = None,
         error_format: Literal["detailed", "simple", "code_only"] | None = None,
-    ):  # type: ignore[no-untyped-def]
+    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """
         Update existing system/dhcp/server object.
 
@@ -362,22 +323,11 @@ class Server(CRUDEndpoint, MetadataMixin):
             netmask: Netmask assigned by the DHCP server.
             interface: DHCP server can assign IP configurations to clients connected to this interface.
             ip_range: DHCP IP range configuration.
-                Default format: [{'id': 1, 'start-ip': '192.168.1.10', 'end-ip': '192.168.1.10'}]
-                Required format: List of dicts with keys: id, start-ip, end-ip
-                  (String format not allowed due to multiple required fields)
             timezone_option: Options for the DHCP server to set the client's time zone.
             timezone: Select the time zone to be assigned to DHCP clients.
             tftp_server: One or more hostnames or IP addresses of the TFTP servers in quotes separated by spaces.
-                Default format: [{'tftp-server': 'value'}]
-                Supported formats:
-                  - Single string: "value" → [{'tftp-server': 'value'}]
-                  - List of strings: ["val1", "val2"] → [{'tftp-server': 'val1'}, ...]
-                  - List of dicts: [{'tftp-server': 'value'}] (recommended)
             filename: Name of the boot file on the TFTP server.
             options: DHCP options.
-                Default format: [{'id': 1, 'code': 1}]
-                Required format: List of dicts with keys: id, code
-                  (String format not allowed due to multiple required fields)
             server_type: DHCP server can be a normal DHCP server or an IPsec DHCP server.
             ip_mode: Method used to assign client IP.
             conflicted_ip_timeout: Time in seconds to wait after a conflicted IP address is removed from the DHCP range before it can be reused.
@@ -395,27 +345,16 @@ class Server(CRUDEndpoint, MetadataMixin):
             ddns_ttl: TTL.
             vci_match: Enable/disable vendor class identifier (VCI) matching. When enabled only DHCP requests with a matching VCI are served.
             vci_string: One or more VCI strings in quotes separated by spaces.
-                Default format: [{'vci-string': 'value'}]
-                Supported formats:
-                  - Single string: "value" → [{'vci-string': 'value'}]
-                  - List of strings: ["val1", "val2"] → [{'vci-string': 'val1'}, ...]
-                  - List of dicts: [{'vci-string': 'value'}] (recommended)
             exclude_range: Exclude one or more ranges of IP addresses from being assigned to clients.
-                Default format: [{'id': 1, 'start-ip': '192.168.1.10', 'end-ip': '192.168.1.10'}]
-                Required format: List of dicts with keys: id, start-ip, end-ip
-                  (String format not allowed due to multiple required fields)
             shared_subnet: Enable/disable shared subnet.
             relay_agent: Relay agent IP.
             reserved_address: Options for the DHCP server to assign IP settings to specific MAC addresses.
-                Default format: [{'id': 1, 'ip': '192.168.1.10', 'mac': 'value'}]
-                Required format: List of dicts with keys: id, ip, mac
-                  (String format not allowed due to multiple required fields)
             vdom: Virtual domain name.
             error_mode: Override client-level error_mode. "raise" raises exceptions, "return" returns error dict, "print" prints errors.
             error_format: Override client-level error_format. "detailed" provides full context, "simple" is concise, "code_only" returns just status code.
 
         Returns:
-            FortiObject instance. Use .dict, .json, or .raw to access as dictionary.
+            API response as dictionary. Returns Coroutine if using async client.
 
         Raises:
             ValueError: If id is missing from payload
@@ -438,62 +377,9 @@ class Server(CRUDEndpoint, MetadataMixin):
             - post(): Create new object
             - set(): Intelligent create or update
         """
-        # Apply normalization for table fields (supports flexible input formats)
-        if ip_range is not None:
-            ip_range = normalize_table_field(
-                ip_range,
-                mkey="id",
-                required_fields=['id', 'start-ip', 'end-ip'],
-                field_name="ip_range",
-                example="[{'id': 1, 'start-ip': '192.168.1.10', 'end-ip': '192.168.1.10'}]",
-            )
-        if tftp_server is not None:
-            tftp_server = normalize_table_field(
-                tftp_server,
-                mkey="tftp-server",
-                required_fields=['tftp-server'],
-                field_name="tftp_server",
-                example="[{'tftp-server': 'value'}]",
-            )
-        if options is not None:
-            options = normalize_table_field(
-                options,
-                mkey="id",
-                required_fields=['id', 'code'],
-                field_name="options",
-                example="[{'id': 1, 'code': 1}]",
-            )
-        if vci_string is not None:
-            vci_string = normalize_table_field(
-                vci_string,
-                mkey="vci-string",
-                required_fields=['vci-string'],
-                field_name="vci_string",
-                example="[{'vci-string': 'value'}]",
-            )
-        if exclude_range is not None:
-            exclude_range = normalize_table_field(
-                exclude_range,
-                mkey="id",
-                required_fields=['id', 'start-ip', 'end-ip'],
-                field_name="exclude_range",
-                example="[{'id': 1, 'start-ip': '192.168.1.10', 'end-ip': '192.168.1.10'}]",
-            )
-        if reserved_address is not None:
-            reserved_address = normalize_table_field(
-                reserved_address,
-                mkey="id",
-                required_fields=['id', 'ip', 'mac'],
-                field_name="reserved_address",
-                example="[{'id': 1, 'ip': '192.168.1.10', 'mac': 'value'}]",
-            )
-        
         # Build payload using helper function
-        # Note: auto_normalize=False because this endpoint has unitary fields
-        # (like 'interface') that would be incorrectly converted to list format
         payload_data = build_api_payload(
             api_type="cmdb",
-            auto_normalize=False,
             id=id,
             status=status,
             lease_time=lease_time,
@@ -644,7 +530,7 @@ class Server(CRUDEndpoint, MetadataMixin):
         vdom: str | bool | None = None,
         error_mode: Literal["raise", "return", "print"] | None = None,
         error_format: Literal["detailed", "simple", "code_only"] | None = None,
-    ):  # type: ignore[no-untyped-def]
+    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """
         Create new system/dhcp/server object.
 
@@ -678,22 +564,11 @@ class Server(CRUDEndpoint, MetadataMixin):
             netmask: Netmask assigned by the DHCP server.
             interface: DHCP server can assign IP configurations to clients connected to this interface.
             ip_range: DHCP IP range configuration.
-                Default format: [{'id': 1, 'start-ip': '192.168.1.10', 'end-ip': '192.168.1.10'}]
-                Required format: List of dicts with keys: id, start-ip, end-ip
-                  (String format not allowed due to multiple required fields)
             timezone_option: Options for the DHCP server to set the client's time zone.
             timezone: Select the time zone to be assigned to DHCP clients.
             tftp_server: One or more hostnames or IP addresses of the TFTP servers in quotes separated by spaces.
-                Default format: [{'tftp-server': 'value'}]
-                Supported formats:
-                  - Single string: "value" → [{'tftp-server': 'value'}]
-                  - List of strings: ["val1", "val2"] → [{'tftp-server': 'val1'}, ...]
-                  - List of dicts: [{'tftp-server': 'value'}] (recommended)
             filename: Name of the boot file on the TFTP server.
             options: DHCP options.
-                Default format: [{'id': 1, 'code': 1}]
-                Required format: List of dicts with keys: id, code
-                  (String format not allowed due to multiple required fields)
             server_type: DHCP server can be a normal DHCP server or an IPsec DHCP server.
             ip_mode: Method used to assign client IP.
             conflicted_ip_timeout: Time in seconds to wait after a conflicted IP address is removed from the DHCP range before it can be reused.
@@ -711,27 +586,16 @@ class Server(CRUDEndpoint, MetadataMixin):
             ddns_ttl: TTL.
             vci_match: Enable/disable vendor class identifier (VCI) matching. When enabled only DHCP requests with a matching VCI are served.
             vci_string: One or more VCI strings in quotes separated by spaces.
-                Default format: [{'vci-string': 'value'}]
-                Supported formats:
-                  - Single string: "value" → [{'vci-string': 'value'}]
-                  - List of strings: ["val1", "val2"] → [{'vci-string': 'val1'}, ...]
-                  - List of dicts: [{'vci-string': 'value'}] (recommended)
             exclude_range: Exclude one or more ranges of IP addresses from being assigned to clients.
-                Default format: [{'id': 1, 'start-ip': '192.168.1.10', 'end-ip': '192.168.1.10'}]
-                Required format: List of dicts with keys: id, start-ip, end-ip
-                  (String format not allowed due to multiple required fields)
             shared_subnet: Enable/disable shared subnet.
             relay_agent: Relay agent IP.
             reserved_address: Options for the DHCP server to assign IP settings to specific MAC addresses.
-                Default format: [{'id': 1, 'ip': '192.168.1.10', 'mac': 'value'}]
-                Required format: List of dicts with keys: id, ip, mac
-                  (String format not allowed due to multiple required fields)
             vdom: Virtual domain name. Use True for global, string for specific VDOM.
             error_mode: Override client-level error_mode. "raise" raises exceptions, "return" returns error dict, "print" prints errors.
             error_format: Override client-level error_format. "detailed" provides full context, "simple" is concise, "code_only" returns just status code.
 
         Returns:
-            FortiObject instance with created object. Use .dict, .json, or .raw to access as dictionary.
+            API response as dictionary. Returns Coroutine if using async client.
 
         Examples:
             >>> # Create using individual parameters
@@ -756,62 +620,9 @@ class Server(CRUDEndpoint, MetadataMixin):
             - put(): Update existing object
             - set(): Intelligent create or update
         """
-        # Apply normalization for table fields (supports flexible input formats)
-        if ip_range is not None:
-            ip_range = normalize_table_field(
-                ip_range,
-                mkey="id",
-                required_fields=['id', 'start-ip', 'end-ip'],
-                field_name="ip_range",
-                example="[{'id': 1, 'start-ip': '192.168.1.10', 'end-ip': '192.168.1.10'}]",
-            )
-        if tftp_server is not None:
-            tftp_server = normalize_table_field(
-                tftp_server,
-                mkey="tftp-server",
-                required_fields=['tftp-server'],
-                field_name="tftp_server",
-                example="[{'tftp-server': 'value'}]",
-            )
-        if options is not None:
-            options = normalize_table_field(
-                options,
-                mkey="id",
-                required_fields=['id', 'code'],
-                field_name="options",
-                example="[{'id': 1, 'code': 1}]",
-            )
-        if vci_string is not None:
-            vci_string = normalize_table_field(
-                vci_string,
-                mkey="vci-string",
-                required_fields=['vci-string'],
-                field_name="vci_string",
-                example="[{'vci-string': 'value'}]",
-            )
-        if exclude_range is not None:
-            exclude_range = normalize_table_field(
-                exclude_range,
-                mkey="id",
-                required_fields=['id', 'start-ip', 'end-ip'],
-                field_name="exclude_range",
-                example="[{'id': 1, 'start-ip': '192.168.1.10', 'end-ip': '192.168.1.10'}]",
-            )
-        if reserved_address is not None:
-            reserved_address = normalize_table_field(
-                reserved_address,
-                mkey="id",
-                required_fields=['id', 'ip', 'mac'],
-                field_name="reserved_address",
-                example="[{'id': 1, 'ip': '192.168.1.10', 'mac': 'value'}]",
-            )
-        
         # Build payload using helper function
-        # Note: auto_normalize=False because this endpoint has unitary fields
-        # (like 'interface') that would be incorrectly converted to list format
         payload_data = build_api_payload(
             api_type="cmdb",
-            auto_normalize=False,
             id=id,
             status=status,
             lease_time=lease_time,
@@ -903,7 +714,7 @@ class Server(CRUDEndpoint, MetadataMixin):
         vdom: str | bool | None = None,
         error_mode: Literal["raise", "return", "print"] | None = None,
         error_format: Literal["detailed", "simple", "code_only"] | None = None,
-    ):  # type: ignore[no-untyped-def]
+    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """
         Delete system/dhcp/server object.
 
@@ -916,7 +727,7 @@ class Server(CRUDEndpoint, MetadataMixin):
             error_format: Override client-level error_format. "detailed" provides full context, "simple" is concise, "code_only" returns just status code.
 
         Returns:
-            FortiObject instance. Use .dict, .json, or .raw to access as dictionary
+            API response as dictionary. Returns Coroutine if using async client.
 
         Raises:
             ValueError: If id is not provided
@@ -1134,7 +945,7 @@ class Server(CRUDEndpoint, MetadataMixin):
             **kwargs: Additional parameters passed to PUT or POST
 
         Returns:
-            FortiObject instance. Use .dict, .json, or .raw to access as dictionary
+            API response as dictionary. Returns Coroutine if using async client.
 
         Raises:
             ValueError: If id is missing from payload
@@ -1169,62 +980,9 @@ class Server(CRUDEndpoint, MetadataMixin):
             - put(): Update existing object
             - exists(): Check existence manually
         """
-        # Apply normalization for table fields (supports flexible input formats)
-        if ip_range is not None:
-            ip_range = normalize_table_field(
-                ip_range,
-                mkey="id",
-                required_fields=['id', 'start-ip', 'end-ip'],
-                field_name="ip_range",
-                example="[{'id': 1, 'start-ip': '192.168.1.10', 'end-ip': '192.168.1.10'}]",
-            )
-        if tftp_server is not None:
-            tftp_server = normalize_table_field(
-                tftp_server,
-                mkey="tftp-server",
-                required_fields=['tftp-server'],
-                field_name="tftp_server",
-                example="[{'tftp-server': 'value'}]",
-            )
-        if options is not None:
-            options = normalize_table_field(
-                options,
-                mkey="id",
-                required_fields=['id', 'code'],
-                field_name="options",
-                example="[{'id': 1, 'code': 1}]",
-            )
-        if vci_string is not None:
-            vci_string = normalize_table_field(
-                vci_string,
-                mkey="vci-string",
-                required_fields=['vci-string'],
-                field_name="vci_string",
-                example="[{'vci-string': 'value'}]",
-            )
-        if exclude_range is not None:
-            exclude_range = normalize_table_field(
-                exclude_range,
-                mkey="id",
-                required_fields=['id', 'start-ip', 'end-ip'],
-                field_name="exclude_range",
-                example="[{'id': 1, 'start-ip': '192.168.1.10', 'end-ip': '192.168.1.10'}]",
-            )
-        if reserved_address is not None:
-            reserved_address = normalize_table_field(
-                reserved_address,
-                mkey="id",
-                required_fields=['id', 'ip', 'mac'],
-                field_name="reserved_address",
-                example="[{'id': 1, 'ip': '192.168.1.10', 'mac': 'value'}]",
-            )
-        
         # Build payload using helper function
-        # Note: auto_normalize=False because this endpoint has unitary fields
-        # (like 'interface') that would be incorrectly converted to list format
         payload_data = build_api_payload(
             api_type="cmdb",
-            auto_normalize=False,
             id=id,
             status=status,
             lease_time=lease_time,

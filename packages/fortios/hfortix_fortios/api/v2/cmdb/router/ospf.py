@@ -39,7 +39,6 @@ from typing import TYPE_CHECKING, Any, Literal, Union
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
-    from hfortix_fortios.models import FortiObject
 
 # Import helper functions from central _helpers module
 from hfortix_fortios._helpers import (
@@ -47,7 +46,6 @@ from hfortix_fortios._helpers import (
     build_cmdb_payload,  # Keep for backward compatibility / manual usage
     is_success,
     quote_path_param,  # URL encoding for path parameters
-    normalize_table_field,  # For table field normalization
 )
 # Import metadata mixin for schema introspection
 from hfortix_fortios._helpers.metadata_mixin import MetadataMixin
@@ -60,53 +58,6 @@ class Ospf(CRUDEndpoint, MetadataMixin):
     
     # Configure metadata mixin to use this endpoint's helper module
     _helper_module_name = "ospf"
-    
-    # ========================================================================
-    # Table Fields Metadata (for normalization)
-    # Auto-generated from schema - supports flexible input formats
-    # ========================================================================
-    _TABLE_FIELDS = {
-        "area": {
-            "mkey": "id",
-            "required_fields": ['id'],
-            "example": "[{'id': 1}]",
-        },
-        "ospf_interface": {
-            "mkey": "name",
-            "required_fields": ['interface'],
-            "example": "[{'interface': 'value'}]",
-        },
-        "network": {
-            "mkey": "id",
-            "required_fields": ['prefix', 'area'],
-            "example": "[{'prefix': 'value', 'area': '192.168.1.10'}]",
-        },
-        "neighbor": {
-            "mkey": "id",
-            "required_fields": ['ip'],
-            "example": "[{'ip': '192.168.1.10'}]",
-        },
-        "passive_interface": {
-            "mkey": "name",
-            "required_fields": ['name'],
-            "example": "[{'name': 'value'}]",
-        },
-        "summary_address": {
-            "mkey": "id",
-            "required_fields": ['prefix'],
-            "example": "[{'prefix': 'value'}]",
-        },
-        "distribute_list": {
-            "mkey": "id",
-            "required_fields": ['access-list', 'protocol'],
-            "example": "[{'access-list': 'value', 'protocol': 'connected'}]",
-        },
-        "redistribute": {
-            "mkey": "name",
-            "required_fields": ['name'],
-            "example": "[{'name': 'value'}]",
-        },
-    }
     
     # ========================================================================
     # Capabilities (from schema metadata)
@@ -141,7 +92,7 @@ class Ospf(CRUDEndpoint, MetadataMixin):
         vdom: str | bool | None = None,
         error_mode: Literal["raise", "return", "print"] | None = None,
         error_format: Literal["detailed", "simple", "code_only"] | None = None,
-    ):  # type: ignore[no-untyped-def]
+    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """
         Retrieve router/ospf configuration.
 
@@ -169,8 +120,8 @@ class Ospf(CRUDEndpoint, MetadataMixin):
             error_format: Override client-level error_format. "detailed" provides full context, "simple" is concise, "code_only" returns just status code.
 
         Returns:
-            FortiObject instance or list of FortiObject instances. Returns Coroutine if using async client.
-            Use .dict, .json, or .raw properties to access as dictionary.
+            API response as dictionary. Returns Coroutine if using async client.
+            Access results via dictionary keys (e.g., result['results'], result['http_status']).
             
             Response structure:
                 - http_method: GET
@@ -314,7 +265,7 @@ class Ospf(CRUDEndpoint, MetadataMixin):
         vdom: str | bool | None = None,
         error_mode: Literal["raise", "return", "print"] | None = None,
         error_format: Literal["detailed", "simple", "code_only"] | None = None,
-    ):  # type: ignore[no-untyped-def]
+    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """
         Update existing router/ospf object.
 
@@ -348,55 +299,19 @@ class Ospf(CRUDEndpoint, MetadataMixin):
             restart_period: Graceful restart period.
             restart_on_topology_change: Enable/disable continuing graceful restart upon topology change.
             area: OSPF area configuration.
-                Default format: [{'id': 1}]
-                Supported formats:
-                  - Single string: "value" → [{'id': 'value'}]
-                  - List of strings: ["val1", "val2"] → [{'id': 'val1'}, ...]
-                  - List of dicts: [{'id': 1}] (recommended)
             ospf_interface: OSPF interface configuration.
-                Default format: [{'interface': 'value'}]
-                Supported formats:
-                  - Single string: "value" → [{'name': 'value'}]
-                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
-                  - List of dicts: [{'interface': 'value'}] (recommended)
             network: OSPF network configuration.
-                Default format: [{'prefix': 'value', 'area': '192.168.1.10'}]
-                Required format: List of dicts with keys: prefix, area
-                  (String format not allowed due to multiple required fields)
             neighbor: OSPF neighbor configuration are used when OSPF runs on non-broadcast media.
-                Default format: [{'ip': '192.168.1.10'}]
-                Supported formats:
-                  - Single string: "value" → [{'id': 'value'}]
-                  - List of strings: ["val1", "val2"] → [{'id': 'val1'}, ...]
-                  - List of dicts: [{'ip': '192.168.1.10'}] (recommended)
             passive_interface: Passive interface configuration.
-                Default format: [{'name': 'value'}]
-                Supported formats:
-                  - Single string: "value" → [{'name': 'value'}]
-                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
-                  - List of dicts: [{'name': 'value'}] (recommended)
             summary_address: IP address summary configuration.
-                Default format: [{'prefix': 'value'}]
-                Supported formats:
-                  - Single string: "value" → [{'id': 'value'}]
-                  - List of strings: ["val1", "val2"] → [{'id': 'val1'}, ...]
-                  - List of dicts: [{'prefix': 'value'}] (recommended)
             distribute_list: Distribute list configuration.
-                Default format: [{'access-list': 'value', 'protocol': 'connected'}]
-                Required format: List of dicts with keys: access-list, protocol
-                  (String format not allowed due to multiple required fields)
             redistribute: Redistribute configuration.
-                Default format: [{'name': 'value'}]
-                Supported formats:
-                  - Single string: "value" → [{'name': 'value'}]
-                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
-                  - List of dicts: [{'name': 'value'}] (recommended)
             vdom: Virtual domain name.
             error_mode: Override client-level error_mode. "raise" raises exceptions, "return" returns error dict, "print" prints errors.
             error_format: Override client-level error_format. "detailed" provides full context, "simple" is concise, "code_only" returns just status code.
 
         Returns:
-            FortiObject instance. Use .dict, .json, or .raw to access as dictionary.
+            API response as dictionary. Returns Coroutine if using async client.
 
         Raises:
             ValueError: If name is missing from payload
@@ -419,72 +334,6 @@ class Ospf(CRUDEndpoint, MetadataMixin):
             - post(): Create new object
             - set(): Intelligent create or update
         """
-        # Apply normalization for table fields (supports flexible input formats)
-        if area is not None:
-            area = normalize_table_field(
-                area,
-                mkey="id",
-                required_fields=['id'],
-                field_name="area",
-                example="[{'id': 1}]",
-            )
-        if ospf_interface is not None:
-            ospf_interface = normalize_table_field(
-                ospf_interface,
-                mkey="name",
-                required_fields=['interface'],
-                field_name="ospf_interface",
-                example="[{'interface': 'value'}]",
-            )
-        if network is not None:
-            network = normalize_table_field(
-                network,
-                mkey="id",
-                required_fields=['prefix', 'area'],
-                field_name="network",
-                example="[{'prefix': 'value', 'area': '192.168.1.10'}]",
-            )
-        if neighbor is not None:
-            neighbor = normalize_table_field(
-                neighbor,
-                mkey="id",
-                required_fields=['ip'],
-                field_name="neighbor",
-                example="[{'ip': '192.168.1.10'}]",
-            )
-        if passive_interface is not None:
-            passive_interface = normalize_table_field(
-                passive_interface,
-                mkey="name",
-                required_fields=['name'],
-                field_name="passive_interface",
-                example="[{'name': 'value'}]",
-            )
-        if summary_address is not None:
-            summary_address = normalize_table_field(
-                summary_address,
-                mkey="id",
-                required_fields=['prefix'],
-                field_name="summary_address",
-                example="[{'prefix': 'value'}]",
-            )
-        if distribute_list is not None:
-            distribute_list = normalize_table_field(
-                distribute_list,
-                mkey="id",
-                required_fields=['access-list', 'protocol'],
-                field_name="distribute_list",
-                example="[{'access-list': 'value', 'protocol': 'connected'}]",
-            )
-        if redistribute is not None:
-            redistribute = normalize_table_field(
-                redistribute,
-                mkey="name",
-                required_fields=['name'],
-                field_name="redistribute",
-                example="[{'name': 'value'}]",
-            )
-        
         # Build payload using helper function
         payload_data = build_api_payload(
             api_type="cmdb",

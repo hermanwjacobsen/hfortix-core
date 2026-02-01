@@ -39,7 +39,6 @@ from typing import TYPE_CHECKING, Any, Literal, Union
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
-    from hfortix_fortios.models import FortiObject
 
 # Import helper functions from central _helpers module
 from hfortix_fortios._helpers import (
@@ -47,7 +46,6 @@ from hfortix_fortios._helpers import (
     build_cmdb_payload,  # Keep for backward compatibility / manual usage
     is_success,
     quote_path_param,  # URL encoding for path parameters
-    normalize_table_field,  # For table field normalization
 )
 # Import metadata mixin for schema introspection
 from hfortix_fortios._helpers.metadata_mixin import MetadataMixin
@@ -60,33 +58,6 @@ class StandaloneCluster(CRUDEndpoint, MetadataMixin):
     
     # Configure metadata mixin to use this endpoint's helper module
     _helper_module_name = "standalone_cluster"
-    
-    # ========================================================================
-    # Table Fields Metadata (for normalization)
-    # Auto-generated from schema - supports flexible input formats
-    # ========================================================================
-    _TABLE_FIELDS = {
-        "cluster_peer": {
-            "mkey": "sync-id",
-            "required_fields": ['sync-id'],
-            "example": "[{'sync-id': 1}]",
-        },
-        "monitor_interface": {
-            "mkey": "name",
-            "required_fields": ['name'],
-            "example": "[{'name': 'value'}]",
-        },
-        "pingsvr_monitor_interface": {
-            "mkey": "name",
-            "required_fields": ['name'],
-            "example": "[{'name': 'value'}]",
-        },
-        "monitor_prefix": {
-            "mkey": "id",
-            "required_fields": ['id', 'vdom'],
-            "example": "[{'id': 1, 'vdom': 'value'}]",
-        },
-    }
     
     # ========================================================================
     # Capabilities (from schema metadata)
@@ -120,7 +91,7 @@ class StandaloneCluster(CRUDEndpoint, MetadataMixin):
         payload_dict: dict[str, Any] | None = None,
         error_mode: Literal["raise", "return", "print"] | None = None,
         error_format: Literal["detailed", "simple", "code_only"] | None = None,
-    ):  # type: ignore[no-untyped-def]
+    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """
         Retrieve system/standalone_cluster configuration.
 
@@ -147,8 +118,8 @@ class StandaloneCluster(CRUDEndpoint, MetadataMixin):
             error_format: Override client-level error_format. "detailed" provides full context, "simple" is concise, "code_only" returns just status code.
 
         Returns:
-            FortiObject instance or list of FortiObject instances. Returns Coroutine if using async client.
-            Use .dict, .json, or .raw properties to access as dictionary.
+            API response as dictionary. Returns Coroutine if using async client.
+            Access results via dictionary keys (e.g., result['results'], result['http_status']).
             
             Response structure:
                 - http_method: GET
@@ -269,7 +240,7 @@ class StandaloneCluster(CRUDEndpoint, MetadataMixin):
         q_scope: str | None = None,
         error_mode: Literal["raise", "return", "print"] | None = None,
         error_format: Literal["detailed", "simple", "code_only"] | None = None,
-    ):  # type: ignore[no-untyped-def]
+    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """
         Update existing system/standalone_cluster object.
 
@@ -285,34 +256,16 @@ class StandaloneCluster(CRUDEndpoint, MetadataMixin):
             psksecret: Pre-shared secret for session synchronization (ASCII string or hexadecimal encoded with a leading 0x).
             asymmetric_traffic_control: Asymmetric traffic control mode.
             cluster_peer: Configure FortiGate Session Life Support Protocol (FGSP) session synchronization.
-                Default format: [{'sync-id': 1}]
-                Supported formats:
-                  - Single string: "value" → [{'sync-id': 'value'}]
-                  - List of strings: ["val1", "val2"] → [{'sync-id': 'val1'}, ...]
-                  - List of dicts: [{'sync-id': 1}] (recommended)
             monitor_interface: Configure a list of interfaces on which to monitor itself. Monitoring is performed on the status of the interface.
-                Default format: [{'name': 'value'}]
-                Supported formats:
-                  - Single string: "value" → [{'name': 'value'}]
-                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
-                  - List of dicts: [{'name': 'value'}] (recommended)
             pingsvr_monitor_interface: List of pingsvr monitor interface to check for remote IP monitoring.
-                Default format: [{'name': 'value'}]
-                Supported formats:
-                  - Single string: "value" → [{'name': 'value'}]
-                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
-                  - List of dicts: [{'name': 'value'}] (recommended)
             monitor_prefix: Configure a list of routing prefixes to monitor.
-                Default format: [{'id': 1, 'vdom': 'value'}]
-                Required format: List of dicts with keys: id, vdom
-                  (String format not allowed due to multiple required fields)
             helper_traffic_bounce: Enable/disable helper related traffic bounce.
             utm_traffic_bounce: Enable/disable UTM related traffic bounce.
             error_mode: Override client-level error_mode. "raise" raises exceptions, "return" returns error dict, "print" prints errors.
             error_format: Override client-level error_format. "detailed" provides full context, "simple" is concise, "code_only" returns just status code.
 
         Returns:
-            FortiObject instance. Use .dict, .json, or .raw to access as dictionary.
+            API response as dictionary. Returns Coroutine if using async client.
 
         Raises:
             ValueError: If name is missing from payload
@@ -335,40 +288,6 @@ class StandaloneCluster(CRUDEndpoint, MetadataMixin):
             - post(): Create new object
             - set(): Intelligent create or update
         """
-        # Apply normalization for table fields (supports flexible input formats)
-        if cluster_peer is not None:
-            cluster_peer = normalize_table_field(
-                cluster_peer,
-                mkey="sync-id",
-                required_fields=['sync-id'],
-                field_name="cluster_peer",
-                example="[{'sync-id': 1}]",
-            )
-        if monitor_interface is not None:
-            monitor_interface = normalize_table_field(
-                monitor_interface,
-                mkey="name",
-                required_fields=['name'],
-                field_name="monitor_interface",
-                example="[{'name': 'value'}]",
-            )
-        if pingsvr_monitor_interface is not None:
-            pingsvr_monitor_interface = normalize_table_field(
-                pingsvr_monitor_interface,
-                mkey="name",
-                required_fields=['name'],
-                field_name="pingsvr_monitor_interface",
-                example="[{'name': 'value'}]",
-            )
-        if monitor_prefix is not None:
-            monitor_prefix = normalize_table_field(
-                monitor_prefix,
-                mkey="id",
-                required_fields=['id', 'vdom'],
-                field_name="monitor_prefix",
-                example="[{'id': 1, 'vdom': 'value'}]",
-            )
-        
         # Build payload using helper function
         payload_data = build_api_payload(
             api_type="cmdb",

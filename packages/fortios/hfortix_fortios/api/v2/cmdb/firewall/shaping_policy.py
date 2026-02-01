@@ -39,7 +39,6 @@ from typing import TYPE_CHECKING, Any, Literal, Union
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
-    from hfortix_fortios.models import FortiObject
 
 # Import helper functions from central _helpers module
 from hfortix_fortios._helpers import (
@@ -47,7 +46,6 @@ from hfortix_fortios._helpers import (
     build_cmdb_payload,  # Keep for backward compatibility / manual usage
     is_success,
     quote_path_param,  # URL encoding for path parameters
-    normalize_table_field,  # For table field normalization
 )
 # Import metadata mixin for schema introspection
 from hfortix_fortios._helpers.metadata_mixin import MetadataMixin
@@ -60,128 +58,6 @@ class ShapingPolicy(CRUDEndpoint, MetadataMixin):
     
     # Configure metadata mixin to use this endpoint's helper module
     _helper_module_name = "shaping_policy"
-    
-    # ========================================================================
-    # Table Fields Metadata (for normalization)
-    # Auto-generated from schema - supports flexible input formats
-    # ========================================================================
-    _TABLE_FIELDS = {
-        "srcaddr": {
-            "mkey": "name",
-            "required_fields": ['name'],
-            "example": "[{'name': 'value'}]",
-        },
-        "dstaddr": {
-            "mkey": "name",
-            "required_fields": ['name'],
-            "example": "[{'name': 'value'}]",
-        },
-        "srcaddr6": {
-            "mkey": "name",
-            "required_fields": ['name'],
-            "example": "[{'name': 'value'}]",
-        },
-        "dstaddr6": {
-            "mkey": "name",
-            "required_fields": ['name'],
-            "example": "[{'name': 'value'}]",
-        },
-        "internet_service_name": {
-            "mkey": "name",
-            "required_fields": ['name'],
-            "example": "[{'name': 'value'}]",
-        },
-        "internet_service_group": {
-            "mkey": "name",
-            "required_fields": ['name'],
-            "example": "[{'name': 'value'}]",
-        },
-        "internet_service_custom": {
-            "mkey": "name",
-            "required_fields": ['name'],
-            "example": "[{'name': 'value'}]",
-        },
-        "internet_service_custom_group": {
-            "mkey": "name",
-            "required_fields": ['name'],
-            "example": "[{'name': 'value'}]",
-        },
-        "internet_service_fortiguard": {
-            "mkey": "name",
-            "required_fields": ['name'],
-            "example": "[{'name': 'value'}]",
-        },
-        "internet_service_src_name": {
-            "mkey": "name",
-            "required_fields": ['name'],
-            "example": "[{'name': 'value'}]",
-        },
-        "internet_service_src_group": {
-            "mkey": "name",
-            "required_fields": ['name'],
-            "example": "[{'name': 'value'}]",
-        },
-        "internet_service_src_custom": {
-            "mkey": "name",
-            "required_fields": ['name'],
-            "example": "[{'name': 'value'}]",
-        },
-        "internet_service_src_custom_group": {
-            "mkey": "name",
-            "required_fields": ['name'],
-            "example": "[{'name': 'value'}]",
-        },
-        "internet_service_src_fortiguard": {
-            "mkey": "name",
-            "required_fields": ['name'],
-            "example": "[{'name': 'value'}]",
-        },
-        "service": {
-            "mkey": "name",
-            "required_fields": ['name'],
-            "example": "[{'name': 'value'}]",
-        },
-        "users": {
-            "mkey": "name",
-            "required_fields": ['name'],
-            "example": "[{'name': 'value'}]",
-        },
-        "groups": {
-            "mkey": "name",
-            "required_fields": ['name'],
-            "example": "[{'name': 'value'}]",
-        },
-        "application": {
-            "mkey": "id",
-            "required_fields": ['id'],
-            "example": "[{'id': 1}]",
-        },
-        "app_category": {
-            "mkey": "id",
-            "required_fields": ['id'],
-            "example": "[{'id': 1}]",
-        },
-        "app_group": {
-            "mkey": "name",
-            "required_fields": ['name'],
-            "example": "[{'name': 'value'}]",
-        },
-        "url_category": {
-            "mkey": "id",
-            "required_fields": ['id'],
-            "example": "[{'id': 1}]",
-        },
-        "srcintf": {
-            "mkey": "name",
-            "required_fields": ['name'],
-            "example": "[{'name': 'value'}]",
-        },
-        "dstintf": {
-            "mkey": "name",
-            "required_fields": ['name'],
-            "example": "[{'name': 'value'}]",
-        },
-    }
     
     # ========================================================================
     # Capabilities (from schema metadata)
@@ -216,7 +92,7 @@ class ShapingPolicy(CRUDEndpoint, MetadataMixin):
         vdom: str | bool | None = None,
         error_mode: Literal["raise", "return", "print"] | None = None,
         error_format: Literal["detailed", "simple", "code_only"] | None = None,
-    ):  # type: ignore[no-untyped-def]
+    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """
         Retrieve firewall/shaping_policy configuration.
 
@@ -245,8 +121,8 @@ class ShapingPolicy(CRUDEndpoint, MetadataMixin):
             error_format: Override client-level error_format. "detailed" provides full context, "simple" is concise, "code_only" returns just status code.
 
         Returns:
-            FortiObject instance or list of FortiObject instances. Returns Coroutine if using async client.
-            Use .dict, .json, or .raw properties to access as dictionary.
+            API response as dictionary. Returns Coroutine if using async client.
+            Access results via dictionary keys (e.g., result['results'], result['http_status']).
             
             Response structure:
                 - http_method: GET
@@ -407,7 +283,7 @@ class ShapingPolicy(CRUDEndpoint, MetadataMixin):
         vdom: str | bool | None = None,
         error_mode: Literal["raise", "return", "print"] | None = None,
         error_format: Literal["detailed", "simple", "code_only"] | None = None,
-    ):  # type: ignore[no-untyped-def]
+    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """
         Update existing firewall/shaping_policy object.
 
@@ -423,146 +299,31 @@ class ShapingPolicy(CRUDEndpoint, MetadataMixin):
             ip_version: Apply this traffic shaping policy to IPv4 or IPv6 traffic.
             traffic_type: Traffic type.
             srcaddr: IPv4 source address and address group names.
-                Default format: [{'name': 'value'}]
-                Supported formats:
-                  - Single string: "value" → [{'name': 'value'}]
-                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
-                  - List of dicts: [{'name': 'value'}] (recommended)
             dstaddr: IPv4 destination address and address group names.
-                Default format: [{'name': 'value'}]
-                Supported formats:
-                  - Single string: "value" → [{'name': 'value'}]
-                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
-                  - List of dicts: [{'name': 'value'}] (recommended)
             srcaddr6: IPv6 source address and address group names.
-                Default format: [{'name': 'value'}]
-                Supported formats:
-                  - Single string: "value" → [{'name': 'value'}]
-                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
-                  - List of dicts: [{'name': 'value'}] (recommended)
             dstaddr6: IPv6 destination address and address group names.
-                Default format: [{'name': 'value'}]
-                Supported formats:
-                  - Single string: "value" → [{'name': 'value'}]
-                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
-                  - List of dicts: [{'name': 'value'}] (recommended)
             internet_service: Enable/disable use of Internet Services for this policy. If enabled, destination address and service are not used.
             internet_service_name: Internet Service ID.
-                Default format: [{'name': 'value'}]
-                Supported formats:
-                  - Single string: "value" → [{'name': 'value'}]
-                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
-                  - List of dicts: [{'name': 'value'}] (recommended)
             internet_service_group: Internet Service group name.
-                Default format: [{'name': 'value'}]
-                Supported formats:
-                  - Single string: "value" → [{'name': 'value'}]
-                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
-                  - List of dicts: [{'name': 'value'}] (recommended)
             internet_service_custom: Custom Internet Service name.
-                Default format: [{'name': 'value'}]
-                Supported formats:
-                  - Single string: "value" → [{'name': 'value'}]
-                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
-                  - List of dicts: [{'name': 'value'}] (recommended)
             internet_service_custom_group: Custom Internet Service group name.
-                Default format: [{'name': 'value'}]
-                Supported formats:
-                  - Single string: "value" → [{'name': 'value'}]
-                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
-                  - List of dicts: [{'name': 'value'}] (recommended)
             internet_service_fortiguard: FortiGuard Internet Service name.
-                Default format: [{'name': 'value'}]
-                Supported formats:
-                  - Single string: "value" → [{'name': 'value'}]
-                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
-                  - List of dicts: [{'name': 'value'}] (recommended)
             internet_service_src: Enable/disable use of Internet Services in source for this policy. If enabled, source address is not used.
             internet_service_src_name: Internet Service source name.
-                Default format: [{'name': 'value'}]
-                Supported formats:
-                  - Single string: "value" → [{'name': 'value'}]
-                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
-                  - List of dicts: [{'name': 'value'}] (recommended)
             internet_service_src_group: Internet Service source group name.
-                Default format: [{'name': 'value'}]
-                Supported formats:
-                  - Single string: "value" → [{'name': 'value'}]
-                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
-                  - List of dicts: [{'name': 'value'}] (recommended)
             internet_service_src_custom: Custom Internet Service source name.
-                Default format: [{'name': 'value'}]
-                Supported formats:
-                  - Single string: "value" → [{'name': 'value'}]
-                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
-                  - List of dicts: [{'name': 'value'}] (recommended)
             internet_service_src_custom_group: Custom Internet Service source group name.
-                Default format: [{'name': 'value'}]
-                Supported formats:
-                  - Single string: "value" → [{'name': 'value'}]
-                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
-                  - List of dicts: [{'name': 'value'}] (recommended)
             internet_service_src_fortiguard: FortiGuard Internet Service source name.
-                Default format: [{'name': 'value'}]
-                Supported formats:
-                  - Single string: "value" → [{'name': 'value'}]
-                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
-                  - List of dicts: [{'name': 'value'}] (recommended)
             service: Service and service group names.
-                Default format: [{'name': 'value'}]
-                Supported formats:
-                  - Single string: "value" → [{'name': 'value'}]
-                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
-                  - List of dicts: [{'name': 'value'}] (recommended)
             schedule: Schedule name.
             users: Apply this traffic shaping policy to individual users that have authenticated with the FortiGate.
-                Default format: [{'name': 'value'}]
-                Supported formats:
-                  - Single string: "value" → [{'name': 'value'}]
-                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
-                  - List of dicts: [{'name': 'value'}] (recommended)
             groups: Apply this traffic shaping policy to user groups that have authenticated with the FortiGate.
-                Default format: [{'name': 'value'}]
-                Supported formats:
-                  - Single string: "value" → [{'name': 'value'}]
-                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
-                  - List of dicts: [{'name': 'value'}] (recommended)
             application: IDs of one or more applications that this shaper applies application control traffic shaping to.
-                Default format: [{'id': 1}]
-                Supported formats:
-                  - Single string: "value" → [{'id': 'value'}]
-                  - List of strings: ["val1", "val2"] → [{'id': 'val1'}, ...]
-                  - List of dicts: [{'id': 1}] (recommended)
             app_category: IDs of one or more application categories that this shaper applies application control traffic shaping to.
-                Default format: [{'id': 1}]
-                Supported formats:
-                  - Single string: "value" → [{'id': 'value'}]
-                  - List of strings: ["val1", "val2"] → [{'id': 'val1'}, ...]
-                  - List of dicts: [{'id': 1}] (recommended)
             app_group: One or more application group names.
-                Default format: [{'name': 'value'}]
-                Supported formats:
-                  - Single string: "value" → [{'name': 'value'}]
-                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
-                  - List of dicts: [{'name': 'value'}] (recommended)
             url_category: IDs of one or more FortiGuard Web Filtering categories that this shaper applies traffic shaping to.
-                Default format: [{'id': 1}]
-                Supported formats:
-                  - Single string: "value" → [{'id': 'value'}]
-                  - List of strings: ["val1", "val2"] → [{'id': 'val1'}, ...]
-                  - List of dicts: [{'id': 1}] (recommended)
             srcintf: One or more incoming (ingress) interfaces.
-                Default format: [{'name': 'value'}]
-                Supported formats:
-                  - Single string: "value" → [{'name': 'value'}]
-                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
-                  - List of dicts: [{'name': 'value'}] (recommended)
             dstintf: One or more outgoing (egress) interfaces.
-                Default format: [{'name': 'value'}]
-                Supported formats:
-                  - Single string: "value" → [{'name': 'value'}]
-                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
-                  - List of dicts: [{'name': 'value'}] (recommended)
             tos_mask: Non-zero bit positions are used for comparison while zero bit positions are ignored.
             tos: ToS (Type of Service) value used for comparison.
             tos_negate: Enable negated TOS match.
@@ -581,7 +342,7 @@ class ShapingPolicy(CRUDEndpoint, MetadataMixin):
             error_format: Override client-level error_format. "detailed" provides full context, "simple" is concise, "code_only" returns just status code.
 
         Returns:
-            FortiObject instance. Use .dict, .json, or .raw to access as dictionary.
+            API response as dictionary. Returns Coroutine if using async client.
 
         Raises:
             ValueError: If id is missing from payload
@@ -604,192 +365,6 @@ class ShapingPolicy(CRUDEndpoint, MetadataMixin):
             - post(): Create new object
             - set(): Intelligent create or update
         """
-        # Apply normalization for table fields (supports flexible input formats)
-        if srcaddr is not None:
-            srcaddr = normalize_table_field(
-                srcaddr,
-                mkey="name",
-                required_fields=['name'],
-                field_name="srcaddr",
-                example="[{'name': 'value'}]",
-            )
-        if dstaddr is not None:
-            dstaddr = normalize_table_field(
-                dstaddr,
-                mkey="name",
-                required_fields=['name'],
-                field_name="dstaddr",
-                example="[{'name': 'value'}]",
-            )
-        if srcaddr6 is not None:
-            srcaddr6 = normalize_table_field(
-                srcaddr6,
-                mkey="name",
-                required_fields=['name'],
-                field_name="srcaddr6",
-                example="[{'name': 'value'}]",
-            )
-        if dstaddr6 is not None:
-            dstaddr6 = normalize_table_field(
-                dstaddr6,
-                mkey="name",
-                required_fields=['name'],
-                field_name="dstaddr6",
-                example="[{'name': 'value'}]",
-            )
-        if internet_service_name is not None:
-            internet_service_name = normalize_table_field(
-                internet_service_name,
-                mkey="name",
-                required_fields=['name'],
-                field_name="internet_service_name",
-                example="[{'name': 'value'}]",
-            )
-        if internet_service_group is not None:
-            internet_service_group = normalize_table_field(
-                internet_service_group,
-                mkey="name",
-                required_fields=['name'],
-                field_name="internet_service_group",
-                example="[{'name': 'value'}]",
-            )
-        if internet_service_custom is not None:
-            internet_service_custom = normalize_table_field(
-                internet_service_custom,
-                mkey="name",
-                required_fields=['name'],
-                field_name="internet_service_custom",
-                example="[{'name': 'value'}]",
-            )
-        if internet_service_custom_group is not None:
-            internet_service_custom_group = normalize_table_field(
-                internet_service_custom_group,
-                mkey="name",
-                required_fields=['name'],
-                field_name="internet_service_custom_group",
-                example="[{'name': 'value'}]",
-            )
-        if internet_service_fortiguard is not None:
-            internet_service_fortiguard = normalize_table_field(
-                internet_service_fortiguard,
-                mkey="name",
-                required_fields=['name'],
-                field_name="internet_service_fortiguard",
-                example="[{'name': 'value'}]",
-            )
-        if internet_service_src_name is not None:
-            internet_service_src_name = normalize_table_field(
-                internet_service_src_name,
-                mkey="name",
-                required_fields=['name'],
-                field_name="internet_service_src_name",
-                example="[{'name': 'value'}]",
-            )
-        if internet_service_src_group is not None:
-            internet_service_src_group = normalize_table_field(
-                internet_service_src_group,
-                mkey="name",
-                required_fields=['name'],
-                field_name="internet_service_src_group",
-                example="[{'name': 'value'}]",
-            )
-        if internet_service_src_custom is not None:
-            internet_service_src_custom = normalize_table_field(
-                internet_service_src_custom,
-                mkey="name",
-                required_fields=['name'],
-                field_name="internet_service_src_custom",
-                example="[{'name': 'value'}]",
-            )
-        if internet_service_src_custom_group is not None:
-            internet_service_src_custom_group = normalize_table_field(
-                internet_service_src_custom_group,
-                mkey="name",
-                required_fields=['name'],
-                field_name="internet_service_src_custom_group",
-                example="[{'name': 'value'}]",
-            )
-        if internet_service_src_fortiguard is not None:
-            internet_service_src_fortiguard = normalize_table_field(
-                internet_service_src_fortiguard,
-                mkey="name",
-                required_fields=['name'],
-                field_name="internet_service_src_fortiguard",
-                example="[{'name': 'value'}]",
-            )
-        if service is not None:
-            service = normalize_table_field(
-                service,
-                mkey="name",
-                required_fields=['name'],
-                field_name="service",
-                example="[{'name': 'value'}]",
-            )
-        if users is not None:
-            users = normalize_table_field(
-                users,
-                mkey="name",
-                required_fields=['name'],
-                field_name="users",
-                example="[{'name': 'value'}]",
-            )
-        if groups is not None:
-            groups = normalize_table_field(
-                groups,
-                mkey="name",
-                required_fields=['name'],
-                field_name="groups",
-                example="[{'name': 'value'}]",
-            )
-        if application is not None:
-            application = normalize_table_field(
-                application,
-                mkey="id",
-                required_fields=['id'],
-                field_name="application",
-                example="[{'id': 1}]",
-            )
-        if app_category is not None:
-            app_category = normalize_table_field(
-                app_category,
-                mkey="id",
-                required_fields=['id'],
-                field_name="app_category",
-                example="[{'id': 1}]",
-            )
-        if app_group is not None:
-            app_group = normalize_table_field(
-                app_group,
-                mkey="name",
-                required_fields=['name'],
-                field_name="app_group",
-                example="[{'name': 'value'}]",
-            )
-        if url_category is not None:
-            url_category = normalize_table_field(
-                url_category,
-                mkey="id",
-                required_fields=['id'],
-                field_name="url_category",
-                example="[{'id': 1}]",
-            )
-        if srcintf is not None:
-            srcintf = normalize_table_field(
-                srcintf,
-                mkey="name",
-                required_fields=['name'],
-                field_name="srcintf",
-                example="[{'name': 'value'}]",
-            )
-        if dstintf is not None:
-            dstintf = normalize_table_field(
-                dstintf,
-                mkey="name",
-                required_fields=['name'],
-                field_name="dstintf",
-                example="[{'name': 'value'}]",
-            )
-        
         # Build payload using helper function
         payload_data = build_api_payload(
             api_type="cmdb",
@@ -931,7 +506,7 @@ class ShapingPolicy(CRUDEndpoint, MetadataMixin):
         vdom: str | bool | None = None,
         error_mode: Literal["raise", "return", "print"] | None = None,
         error_format: Literal["detailed", "simple", "code_only"] | None = None,
-    ):  # type: ignore[no-untyped-def]
+    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """
         Create new firewall/shaping_policy object.
 
@@ -947,146 +522,31 @@ class ShapingPolicy(CRUDEndpoint, MetadataMixin):
             ip_version: Apply this traffic shaping policy to IPv4 or IPv6 traffic.
             traffic_type: Traffic type.
             srcaddr: IPv4 source address and address group names.
-                Default format: [{'name': 'value'}]
-                Supported formats:
-                  - Single string: "value" → [{'name': 'value'}]
-                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
-                  - List of dicts: [{'name': 'value'}] (recommended)
             dstaddr: IPv4 destination address and address group names.
-                Default format: [{'name': 'value'}]
-                Supported formats:
-                  - Single string: "value" → [{'name': 'value'}]
-                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
-                  - List of dicts: [{'name': 'value'}] (recommended)
             srcaddr6: IPv6 source address and address group names.
-                Default format: [{'name': 'value'}]
-                Supported formats:
-                  - Single string: "value" → [{'name': 'value'}]
-                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
-                  - List of dicts: [{'name': 'value'}] (recommended)
             dstaddr6: IPv6 destination address and address group names.
-                Default format: [{'name': 'value'}]
-                Supported formats:
-                  - Single string: "value" → [{'name': 'value'}]
-                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
-                  - List of dicts: [{'name': 'value'}] (recommended)
             internet_service: Enable/disable use of Internet Services for this policy. If enabled, destination address and service are not used.
             internet_service_name: Internet Service ID.
-                Default format: [{'name': 'value'}]
-                Supported formats:
-                  - Single string: "value" → [{'name': 'value'}]
-                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
-                  - List of dicts: [{'name': 'value'}] (recommended)
             internet_service_group: Internet Service group name.
-                Default format: [{'name': 'value'}]
-                Supported formats:
-                  - Single string: "value" → [{'name': 'value'}]
-                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
-                  - List of dicts: [{'name': 'value'}] (recommended)
             internet_service_custom: Custom Internet Service name.
-                Default format: [{'name': 'value'}]
-                Supported formats:
-                  - Single string: "value" → [{'name': 'value'}]
-                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
-                  - List of dicts: [{'name': 'value'}] (recommended)
             internet_service_custom_group: Custom Internet Service group name.
-                Default format: [{'name': 'value'}]
-                Supported formats:
-                  - Single string: "value" → [{'name': 'value'}]
-                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
-                  - List of dicts: [{'name': 'value'}] (recommended)
             internet_service_fortiguard: FortiGuard Internet Service name.
-                Default format: [{'name': 'value'}]
-                Supported formats:
-                  - Single string: "value" → [{'name': 'value'}]
-                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
-                  - List of dicts: [{'name': 'value'}] (recommended)
             internet_service_src: Enable/disable use of Internet Services in source for this policy. If enabled, source address is not used.
             internet_service_src_name: Internet Service source name.
-                Default format: [{'name': 'value'}]
-                Supported formats:
-                  - Single string: "value" → [{'name': 'value'}]
-                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
-                  - List of dicts: [{'name': 'value'}] (recommended)
             internet_service_src_group: Internet Service source group name.
-                Default format: [{'name': 'value'}]
-                Supported formats:
-                  - Single string: "value" → [{'name': 'value'}]
-                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
-                  - List of dicts: [{'name': 'value'}] (recommended)
             internet_service_src_custom: Custom Internet Service source name.
-                Default format: [{'name': 'value'}]
-                Supported formats:
-                  - Single string: "value" → [{'name': 'value'}]
-                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
-                  - List of dicts: [{'name': 'value'}] (recommended)
             internet_service_src_custom_group: Custom Internet Service source group name.
-                Default format: [{'name': 'value'}]
-                Supported formats:
-                  - Single string: "value" → [{'name': 'value'}]
-                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
-                  - List of dicts: [{'name': 'value'}] (recommended)
             internet_service_src_fortiguard: FortiGuard Internet Service source name.
-                Default format: [{'name': 'value'}]
-                Supported formats:
-                  - Single string: "value" → [{'name': 'value'}]
-                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
-                  - List of dicts: [{'name': 'value'}] (recommended)
             service: Service and service group names.
-                Default format: [{'name': 'value'}]
-                Supported formats:
-                  - Single string: "value" → [{'name': 'value'}]
-                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
-                  - List of dicts: [{'name': 'value'}] (recommended)
             schedule: Schedule name.
             users: Apply this traffic shaping policy to individual users that have authenticated with the FortiGate.
-                Default format: [{'name': 'value'}]
-                Supported formats:
-                  - Single string: "value" → [{'name': 'value'}]
-                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
-                  - List of dicts: [{'name': 'value'}] (recommended)
             groups: Apply this traffic shaping policy to user groups that have authenticated with the FortiGate.
-                Default format: [{'name': 'value'}]
-                Supported formats:
-                  - Single string: "value" → [{'name': 'value'}]
-                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
-                  - List of dicts: [{'name': 'value'}] (recommended)
             application: IDs of one or more applications that this shaper applies application control traffic shaping to.
-                Default format: [{'id': 1}]
-                Supported formats:
-                  - Single string: "value" → [{'id': 'value'}]
-                  - List of strings: ["val1", "val2"] → [{'id': 'val1'}, ...]
-                  - List of dicts: [{'id': 1}] (recommended)
             app_category: IDs of one or more application categories that this shaper applies application control traffic shaping to.
-                Default format: [{'id': 1}]
-                Supported formats:
-                  - Single string: "value" → [{'id': 'value'}]
-                  - List of strings: ["val1", "val2"] → [{'id': 'val1'}, ...]
-                  - List of dicts: [{'id': 1}] (recommended)
             app_group: One or more application group names.
-                Default format: [{'name': 'value'}]
-                Supported formats:
-                  - Single string: "value" → [{'name': 'value'}]
-                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
-                  - List of dicts: [{'name': 'value'}] (recommended)
             url_category: IDs of one or more FortiGuard Web Filtering categories that this shaper applies traffic shaping to.
-                Default format: [{'id': 1}]
-                Supported formats:
-                  - Single string: "value" → [{'id': 'value'}]
-                  - List of strings: ["val1", "val2"] → [{'id': 'val1'}, ...]
-                  - List of dicts: [{'id': 1}] (recommended)
             srcintf: One or more incoming (ingress) interfaces.
-                Default format: [{'name': 'value'}]
-                Supported formats:
-                  - Single string: "value" → [{'name': 'value'}]
-                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
-                  - List of dicts: [{'name': 'value'}] (recommended)
             dstintf: One or more outgoing (egress) interfaces.
-                Default format: [{'name': 'value'}]
-                Supported formats:
-                  - Single string: "value" → [{'name': 'value'}]
-                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
-                  - List of dicts: [{'name': 'value'}] (recommended)
             tos_mask: Non-zero bit positions are used for comparison while zero bit positions are ignored.
             tos: ToS (Type of Service) value used for comparison.
             tos_negate: Enable negated TOS match.
@@ -1105,7 +565,7 @@ class ShapingPolicy(CRUDEndpoint, MetadataMixin):
             error_format: Override client-level error_format. "detailed" provides full context, "simple" is concise, "code_only" returns just status code.
 
         Returns:
-            FortiObject instance with created object. Use .dict, .json, or .raw to access as dictionary.
+            API response as dictionary. Returns Coroutine if using async client.
 
         Examples:
             >>> # Create using individual parameters
@@ -1130,192 +590,6 @@ class ShapingPolicy(CRUDEndpoint, MetadataMixin):
             - put(): Update existing object
             - set(): Intelligent create or update
         """
-        # Apply normalization for table fields (supports flexible input formats)
-        if srcaddr is not None:
-            srcaddr = normalize_table_field(
-                srcaddr,
-                mkey="name",
-                required_fields=['name'],
-                field_name="srcaddr",
-                example="[{'name': 'value'}]",
-            )
-        if dstaddr is not None:
-            dstaddr = normalize_table_field(
-                dstaddr,
-                mkey="name",
-                required_fields=['name'],
-                field_name="dstaddr",
-                example="[{'name': 'value'}]",
-            )
-        if srcaddr6 is not None:
-            srcaddr6 = normalize_table_field(
-                srcaddr6,
-                mkey="name",
-                required_fields=['name'],
-                field_name="srcaddr6",
-                example="[{'name': 'value'}]",
-            )
-        if dstaddr6 is not None:
-            dstaddr6 = normalize_table_field(
-                dstaddr6,
-                mkey="name",
-                required_fields=['name'],
-                field_name="dstaddr6",
-                example="[{'name': 'value'}]",
-            )
-        if internet_service_name is not None:
-            internet_service_name = normalize_table_field(
-                internet_service_name,
-                mkey="name",
-                required_fields=['name'],
-                field_name="internet_service_name",
-                example="[{'name': 'value'}]",
-            )
-        if internet_service_group is not None:
-            internet_service_group = normalize_table_field(
-                internet_service_group,
-                mkey="name",
-                required_fields=['name'],
-                field_name="internet_service_group",
-                example="[{'name': 'value'}]",
-            )
-        if internet_service_custom is not None:
-            internet_service_custom = normalize_table_field(
-                internet_service_custom,
-                mkey="name",
-                required_fields=['name'],
-                field_name="internet_service_custom",
-                example="[{'name': 'value'}]",
-            )
-        if internet_service_custom_group is not None:
-            internet_service_custom_group = normalize_table_field(
-                internet_service_custom_group,
-                mkey="name",
-                required_fields=['name'],
-                field_name="internet_service_custom_group",
-                example="[{'name': 'value'}]",
-            )
-        if internet_service_fortiguard is not None:
-            internet_service_fortiguard = normalize_table_field(
-                internet_service_fortiguard,
-                mkey="name",
-                required_fields=['name'],
-                field_name="internet_service_fortiguard",
-                example="[{'name': 'value'}]",
-            )
-        if internet_service_src_name is not None:
-            internet_service_src_name = normalize_table_field(
-                internet_service_src_name,
-                mkey="name",
-                required_fields=['name'],
-                field_name="internet_service_src_name",
-                example="[{'name': 'value'}]",
-            )
-        if internet_service_src_group is not None:
-            internet_service_src_group = normalize_table_field(
-                internet_service_src_group,
-                mkey="name",
-                required_fields=['name'],
-                field_name="internet_service_src_group",
-                example="[{'name': 'value'}]",
-            )
-        if internet_service_src_custom is not None:
-            internet_service_src_custom = normalize_table_field(
-                internet_service_src_custom,
-                mkey="name",
-                required_fields=['name'],
-                field_name="internet_service_src_custom",
-                example="[{'name': 'value'}]",
-            )
-        if internet_service_src_custom_group is not None:
-            internet_service_src_custom_group = normalize_table_field(
-                internet_service_src_custom_group,
-                mkey="name",
-                required_fields=['name'],
-                field_name="internet_service_src_custom_group",
-                example="[{'name': 'value'}]",
-            )
-        if internet_service_src_fortiguard is not None:
-            internet_service_src_fortiguard = normalize_table_field(
-                internet_service_src_fortiguard,
-                mkey="name",
-                required_fields=['name'],
-                field_name="internet_service_src_fortiguard",
-                example="[{'name': 'value'}]",
-            )
-        if service is not None:
-            service = normalize_table_field(
-                service,
-                mkey="name",
-                required_fields=['name'],
-                field_name="service",
-                example="[{'name': 'value'}]",
-            )
-        if users is not None:
-            users = normalize_table_field(
-                users,
-                mkey="name",
-                required_fields=['name'],
-                field_name="users",
-                example="[{'name': 'value'}]",
-            )
-        if groups is not None:
-            groups = normalize_table_field(
-                groups,
-                mkey="name",
-                required_fields=['name'],
-                field_name="groups",
-                example="[{'name': 'value'}]",
-            )
-        if application is not None:
-            application = normalize_table_field(
-                application,
-                mkey="id",
-                required_fields=['id'],
-                field_name="application",
-                example="[{'id': 1}]",
-            )
-        if app_category is not None:
-            app_category = normalize_table_field(
-                app_category,
-                mkey="id",
-                required_fields=['id'],
-                field_name="app_category",
-                example="[{'id': 1}]",
-            )
-        if app_group is not None:
-            app_group = normalize_table_field(
-                app_group,
-                mkey="name",
-                required_fields=['name'],
-                field_name="app_group",
-                example="[{'name': 'value'}]",
-            )
-        if url_category is not None:
-            url_category = normalize_table_field(
-                url_category,
-                mkey="id",
-                required_fields=['id'],
-                field_name="url_category",
-                example="[{'id': 1}]",
-            )
-        if srcintf is not None:
-            srcintf = normalize_table_field(
-                srcintf,
-                mkey="name",
-                required_fields=['name'],
-                field_name="srcintf",
-                example="[{'name': 'value'}]",
-            )
-        if dstintf is not None:
-            dstintf = normalize_table_field(
-                dstintf,
-                mkey="name",
-                required_fields=['name'],
-                field_name="dstintf",
-                example="[{'name': 'value'}]",
-            )
-        
         # Build payload using helper function
         payload_data = build_api_payload(
             api_type="cmdb",
@@ -1404,7 +678,7 @@ class ShapingPolicy(CRUDEndpoint, MetadataMixin):
         vdom: str | bool | None = None,
         error_mode: Literal["raise", "return", "print"] | None = None,
         error_format: Literal["detailed", "simple", "code_only"] | None = None,
-    ):  # type: ignore[no-untyped-def]
+    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """
         Delete firewall/shaping_policy object.
 
@@ -1417,7 +691,7 @@ class ShapingPolicy(CRUDEndpoint, MetadataMixin):
             error_format: Override client-level error_format. "detailed" provides full context, "simple" is concise, "code_only" returns just status code.
 
         Returns:
-            FortiObject instance. Use .dict, .json, or .raw to access as dictionary
+            API response as dictionary. Returns Coroutine if using async client.
 
         Raises:
             ValueError: If id is not provided
@@ -1623,7 +897,7 @@ class ShapingPolicy(CRUDEndpoint, MetadataMixin):
             **kwargs: Additional parameters passed to PUT or POST
 
         Returns:
-            FortiObject instance. Use .dict, .json, or .raw to access as dictionary
+            API response as dictionary. Returns Coroutine if using async client.
 
         Raises:
             ValueError: If id is missing from payload
@@ -1658,192 +932,6 @@ class ShapingPolicy(CRUDEndpoint, MetadataMixin):
             - put(): Update existing object
             - exists(): Check existence manually
         """
-        # Apply normalization for table fields (supports flexible input formats)
-        if srcaddr is not None:
-            srcaddr = normalize_table_field(
-                srcaddr,
-                mkey="name",
-                required_fields=['name'],
-                field_name="srcaddr",
-                example="[{'name': 'value'}]",
-            )
-        if dstaddr is not None:
-            dstaddr = normalize_table_field(
-                dstaddr,
-                mkey="name",
-                required_fields=['name'],
-                field_name="dstaddr",
-                example="[{'name': 'value'}]",
-            )
-        if srcaddr6 is not None:
-            srcaddr6 = normalize_table_field(
-                srcaddr6,
-                mkey="name",
-                required_fields=['name'],
-                field_name="srcaddr6",
-                example="[{'name': 'value'}]",
-            )
-        if dstaddr6 is not None:
-            dstaddr6 = normalize_table_field(
-                dstaddr6,
-                mkey="name",
-                required_fields=['name'],
-                field_name="dstaddr6",
-                example="[{'name': 'value'}]",
-            )
-        if internet_service_name is not None:
-            internet_service_name = normalize_table_field(
-                internet_service_name,
-                mkey="name",
-                required_fields=['name'],
-                field_name="internet_service_name",
-                example="[{'name': 'value'}]",
-            )
-        if internet_service_group is not None:
-            internet_service_group = normalize_table_field(
-                internet_service_group,
-                mkey="name",
-                required_fields=['name'],
-                field_name="internet_service_group",
-                example="[{'name': 'value'}]",
-            )
-        if internet_service_custom is not None:
-            internet_service_custom = normalize_table_field(
-                internet_service_custom,
-                mkey="name",
-                required_fields=['name'],
-                field_name="internet_service_custom",
-                example="[{'name': 'value'}]",
-            )
-        if internet_service_custom_group is not None:
-            internet_service_custom_group = normalize_table_field(
-                internet_service_custom_group,
-                mkey="name",
-                required_fields=['name'],
-                field_name="internet_service_custom_group",
-                example="[{'name': 'value'}]",
-            )
-        if internet_service_fortiguard is not None:
-            internet_service_fortiguard = normalize_table_field(
-                internet_service_fortiguard,
-                mkey="name",
-                required_fields=['name'],
-                field_name="internet_service_fortiguard",
-                example="[{'name': 'value'}]",
-            )
-        if internet_service_src_name is not None:
-            internet_service_src_name = normalize_table_field(
-                internet_service_src_name,
-                mkey="name",
-                required_fields=['name'],
-                field_name="internet_service_src_name",
-                example="[{'name': 'value'}]",
-            )
-        if internet_service_src_group is not None:
-            internet_service_src_group = normalize_table_field(
-                internet_service_src_group,
-                mkey="name",
-                required_fields=['name'],
-                field_name="internet_service_src_group",
-                example="[{'name': 'value'}]",
-            )
-        if internet_service_src_custom is not None:
-            internet_service_src_custom = normalize_table_field(
-                internet_service_src_custom,
-                mkey="name",
-                required_fields=['name'],
-                field_name="internet_service_src_custom",
-                example="[{'name': 'value'}]",
-            )
-        if internet_service_src_custom_group is not None:
-            internet_service_src_custom_group = normalize_table_field(
-                internet_service_src_custom_group,
-                mkey="name",
-                required_fields=['name'],
-                field_name="internet_service_src_custom_group",
-                example="[{'name': 'value'}]",
-            )
-        if internet_service_src_fortiguard is not None:
-            internet_service_src_fortiguard = normalize_table_field(
-                internet_service_src_fortiguard,
-                mkey="name",
-                required_fields=['name'],
-                field_name="internet_service_src_fortiguard",
-                example="[{'name': 'value'}]",
-            )
-        if service is not None:
-            service = normalize_table_field(
-                service,
-                mkey="name",
-                required_fields=['name'],
-                field_name="service",
-                example="[{'name': 'value'}]",
-            )
-        if users is not None:
-            users = normalize_table_field(
-                users,
-                mkey="name",
-                required_fields=['name'],
-                field_name="users",
-                example="[{'name': 'value'}]",
-            )
-        if groups is not None:
-            groups = normalize_table_field(
-                groups,
-                mkey="name",
-                required_fields=['name'],
-                field_name="groups",
-                example="[{'name': 'value'}]",
-            )
-        if application is not None:
-            application = normalize_table_field(
-                application,
-                mkey="id",
-                required_fields=['id'],
-                field_name="application",
-                example="[{'id': 1}]",
-            )
-        if app_category is not None:
-            app_category = normalize_table_field(
-                app_category,
-                mkey="id",
-                required_fields=['id'],
-                field_name="app_category",
-                example="[{'id': 1}]",
-            )
-        if app_group is not None:
-            app_group = normalize_table_field(
-                app_group,
-                mkey="name",
-                required_fields=['name'],
-                field_name="app_group",
-                example="[{'name': 'value'}]",
-            )
-        if url_category is not None:
-            url_category = normalize_table_field(
-                url_category,
-                mkey="id",
-                required_fields=['id'],
-                field_name="url_category",
-                example="[{'id': 1}]",
-            )
-        if srcintf is not None:
-            srcintf = normalize_table_field(
-                srcintf,
-                mkey="name",
-                required_fields=['name'],
-                field_name="srcintf",
-                example="[{'name': 'value'}]",
-            )
-        if dstintf is not None:
-            dstintf = normalize_table_field(
-                dstintf,
-                mkey="name",
-                required_fields=['name'],
-                field_name="dstintf",
-                example="[{'name': 'value'}]",
-            )
-        
         # Build payload using helper function
         payload_data = build_api_payload(
             api_type="cmdb",

@@ -39,7 +39,6 @@ from typing import TYPE_CHECKING, Any, Literal, Union
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
-    from hfortix_fortios.models import FortiObject
 
 # Import helper functions from central _helpers module
 from hfortix_fortios._helpers import (
@@ -47,7 +46,6 @@ from hfortix_fortios._helpers import (
     build_cmdb_payload,  # Keep for backward compatibility / manual usage
     is_success,
     quote_path_param,  # URL encoding for path parameters
-    normalize_table_field,  # For table field normalization
 )
 # Import metadata mixin for schema introspection
 from hfortix_fortios._helpers.metadata_mixin import MetadataMixin
@@ -60,28 +58,6 @@ class SaasApplication(CRUDEndpoint, MetadataMixin):
     
     # Configure metadata mixin to use this endpoint's helper module
     _helper_module_name = "saas_application"
-    
-    # ========================================================================
-    # Table Fields Metadata (for normalization)
-    # Auto-generated from schema - supports flexible input formats
-    # ========================================================================
-    _TABLE_FIELDS = {
-        "domains": {
-            "mkey": "domain",
-            "required_fields": ['domain'],
-            "example": "[{'domain': 'value'}]",
-        },
-        "output_attributes": {
-            "mkey": "name",
-            "required_fields": ['name'],
-            "example": "[{'name': 'value'}]",
-        },
-        "input_attributes": {
-            "mkey": "name",
-            "required_fields": ['name'],
-            "example": "[{'name': 'value'}]",
-        },
-    }
     
     # ========================================================================
     # Capabilities (from schema metadata)
@@ -116,7 +92,7 @@ class SaasApplication(CRUDEndpoint, MetadataMixin):
         vdom: str | bool | None = None,
         error_mode: Literal["raise", "return", "print"] | None = None,
         error_format: Literal["detailed", "simple", "code_only"] | None = None,
-    ):  # type: ignore[no-untyped-def]
+    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """
         Retrieve casb/saas_application configuration.
 
@@ -145,8 +121,8 @@ class SaasApplication(CRUDEndpoint, MetadataMixin):
             error_format: Override client-level error_format. "detailed" provides full context, "simple" is concise, "code_only" returns just status code.
 
         Returns:
-            FortiObject instance or list of FortiObject instances. Returns Coroutine if using async client.
-            Use .dict, .json, or .raw properties to access as dictionary.
+            API response as dictionary. Returns Coroutine if using async client.
+            Access results via dictionary keys (e.g., result['results'], result['http_status']).
             
             Response structure:
                 - http_method: GET
@@ -270,7 +246,7 @@ class SaasApplication(CRUDEndpoint, MetadataMixin):
         vdom: str | bool | None = None,
         error_mode: Literal["raise", "return", "print"] | None = None,
         error_format: Literal["detailed", "simple", "code_only"] | None = None,
-    ):  # type: ignore[no-untyped-def]
+    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """
         Update existing casb/saas_application object.
 
@@ -285,29 +261,14 @@ class SaasApplication(CRUDEndpoint, MetadataMixin):
             casb_name: SaaS application signature name.
             description: SaaS application description.
             domains: SaaS application domain list.
-                Default format: [{'domain': 'value'}]
-                Supported formats:
-                  - Single string: "value" → [{'domain': 'value'}]
-                  - List of strings: ["val1", "val2"] → [{'domain': 'val1'}, ...]
-                  - List of dicts: [{'domain': 'value'}] (recommended)
             output_attributes: SaaS application output attributes.
-                Default format: [{'name': 'value'}]
-                Supported formats:
-                  - Single string: "value" → [{'name': 'value'}]
-                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
-                  - List of dicts: [{'name': 'value'}] (recommended)
             input_attributes: SaaS application input attributes.
-                Default format: [{'name': 'value'}]
-                Supported formats:
-                  - Single string: "value" → [{'name': 'value'}]
-                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
-                  - List of dicts: [{'name': 'value'}] (recommended)
             vdom: Virtual domain name.
             error_mode: Override client-level error_mode. "raise" raises exceptions, "return" returns error dict, "print" prints errors.
             error_format: Override client-level error_format. "detailed" provides full context, "simple" is concise, "code_only" returns just status code.
 
         Returns:
-            FortiObject instance. Use .dict, .json, or .raw to access as dictionary.
+            API response as dictionary. Returns Coroutine if using async client.
 
         Raises:
             ValueError: If name is missing from payload
@@ -330,32 +291,6 @@ class SaasApplication(CRUDEndpoint, MetadataMixin):
             - post(): Create new object
             - set(): Intelligent create or update
         """
-        # Apply normalization for table fields (supports flexible input formats)
-        if domains is not None:
-            domains = normalize_table_field(
-                domains,
-                mkey="domain",
-                required_fields=['domain'],
-                field_name="domains",
-                example="[{'domain': 'value'}]",
-            )
-        if output_attributes is not None:
-            output_attributes = normalize_table_field(
-                output_attributes,
-                mkey="name",
-                required_fields=['name'],
-                field_name="output_attributes",
-                example="[{'name': 'value'}]",
-            )
-        if input_attributes is not None:
-            input_attributes = normalize_table_field(
-                input_attributes,
-                mkey="name",
-                required_fields=['name'],
-                field_name="input_attributes",
-                example="[{'name': 'value'}]",
-            )
-        
         # Build payload using helper function
         payload_data = build_api_payload(
             api_type="cmdb",
@@ -423,7 +358,7 @@ class SaasApplication(CRUDEndpoint, MetadataMixin):
         vdom: str | bool | None = None,
         error_mode: Literal["raise", "return", "print"] | None = None,
         error_format: Literal["detailed", "simple", "code_only"] | None = None,
-    ):  # type: ignore[no-untyped-def]
+    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """
         Create new casb/saas_application object.
 
@@ -438,29 +373,14 @@ class SaasApplication(CRUDEndpoint, MetadataMixin):
             casb_name: SaaS application signature name.
             description: SaaS application description.
             domains: SaaS application domain list.
-                Default format: [{'domain': 'value'}]
-                Supported formats:
-                  - Single string: "value" → [{'domain': 'value'}]
-                  - List of strings: ["val1", "val2"] → [{'domain': 'val1'}, ...]
-                  - List of dicts: [{'domain': 'value'}] (recommended)
             output_attributes: SaaS application output attributes.
-                Default format: [{'name': 'value'}]
-                Supported formats:
-                  - Single string: "value" → [{'name': 'value'}]
-                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
-                  - List of dicts: [{'name': 'value'}] (recommended)
             input_attributes: SaaS application input attributes.
-                Default format: [{'name': 'value'}]
-                Supported formats:
-                  - Single string: "value" → [{'name': 'value'}]
-                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
-                  - List of dicts: [{'name': 'value'}] (recommended)
             vdom: Virtual domain name. Use True for global, string for specific VDOM.
             error_mode: Override client-level error_mode. "raise" raises exceptions, "return" returns error dict, "print" prints errors.
             error_format: Override client-level error_format. "detailed" provides full context, "simple" is concise, "code_only" returns just status code.
 
         Returns:
-            FortiObject instance with created object. Use .dict, .json, or .raw to access as dictionary.
+            API response as dictionary. Returns Coroutine if using async client.
 
         Examples:
             >>> # Create using individual parameters
@@ -485,32 +405,6 @@ class SaasApplication(CRUDEndpoint, MetadataMixin):
             - put(): Update existing object
             - set(): Intelligent create or update
         """
-        # Apply normalization for table fields (supports flexible input formats)
-        if domains is not None:
-            domains = normalize_table_field(
-                domains,
-                mkey="domain",
-                required_fields=['domain'],
-                field_name="domains",
-                example="[{'domain': 'value'}]",
-            )
-        if output_attributes is not None:
-            output_attributes = normalize_table_field(
-                output_attributes,
-                mkey="name",
-                required_fields=['name'],
-                field_name="output_attributes",
-                example="[{'name': 'value'}]",
-            )
-        if input_attributes is not None:
-            input_attributes = normalize_table_field(
-                input_attributes,
-                mkey="name",
-                required_fields=['name'],
-                field_name="input_attributes",
-                example="[{'name': 'value'}]",
-            )
-        
         # Build payload using helper function
         payload_data = build_api_payload(
             api_type="cmdb",
@@ -562,7 +456,7 @@ class SaasApplication(CRUDEndpoint, MetadataMixin):
         vdom: str | bool | None = None,
         error_mode: Literal["raise", "return", "print"] | None = None,
         error_format: Literal["detailed", "simple", "code_only"] | None = None,
-    ):  # type: ignore[no-untyped-def]
+    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """
         Delete casb/saas_application object.
 
@@ -575,7 +469,7 @@ class SaasApplication(CRUDEndpoint, MetadataMixin):
             error_format: Override client-level error_format. "detailed" provides full context, "simple" is concise, "code_only" returns just status code.
 
         Returns:
-            FortiObject instance. Use .dict, .json, or .raw to access as dictionary
+            API response as dictionary. Returns Coroutine if using async client.
 
         Raises:
             ValueError: If name is not provided
@@ -707,7 +601,7 @@ class SaasApplication(CRUDEndpoint, MetadataMixin):
             **kwargs: Additional parameters passed to PUT or POST
 
         Returns:
-            FortiObject instance. Use .dict, .json, or .raw to access as dictionary
+            API response as dictionary. Returns Coroutine if using async client.
 
         Raises:
             ValueError: If name is missing from payload
@@ -742,32 +636,6 @@ class SaasApplication(CRUDEndpoint, MetadataMixin):
             - put(): Update existing object
             - exists(): Check existence manually
         """
-        # Apply normalization for table fields (supports flexible input formats)
-        if domains is not None:
-            domains = normalize_table_field(
-                domains,
-                mkey="domain",
-                required_fields=['domain'],
-                field_name="domains",
-                example="[{'domain': 'value'}]",
-            )
-        if output_attributes is not None:
-            output_attributes = normalize_table_field(
-                output_attributes,
-                mkey="name",
-                required_fields=['name'],
-                field_name="output_attributes",
-                example="[{'name': 'value'}]",
-            )
-        if input_attributes is not None:
-            input_attributes = normalize_table_field(
-                input_attributes,
-                mkey="name",
-                required_fields=['name'],
-                field_name="input_attributes",
-                example="[{'name': 'value'}]",
-            )
-        
         # Build payload using helper function
         payload_data = build_api_payload(
             api_type="cmdb",

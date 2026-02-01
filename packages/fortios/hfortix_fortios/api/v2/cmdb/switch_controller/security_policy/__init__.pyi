@@ -9,25 +9,11 @@ if TYPE_CHECKING:
     from .local_access import LocalAccess
     from .x802_1x import X8021x
 
-__all__ = [
-    "LocalAccess",
-    "X8021x",
-    "SecurityPolicy",
-]
-
 
 class SecurityPolicy:
-    """SECURITY_POLICY API category.
-    
-    All endpoints return FortiObject instances with:
-    - Attribute access: response.field
-    - Dictionary access: response["field"]
-    - Convert to dict: response.dict or response.json
-    """
-    
+    """Type stub for SecurityPolicy."""
+
     local_access: LocalAccess
     x802_1x: X8021x
 
-    def __init__(self, client: IHTTPClient, vdom: str | None = None) -> None:
-        """Initialize security_policy category with HTTP client."""
-        ...
+    def __init__(self, client: IHTTPClient) -> None: ...

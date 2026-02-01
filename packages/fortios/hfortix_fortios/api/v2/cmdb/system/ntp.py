@@ -39,7 +39,6 @@ from typing import TYPE_CHECKING, Any, Literal, Union
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
-    from hfortix_fortios.models import FortiObject
 
 # Import helper functions from central _helpers module
 from hfortix_fortios._helpers import (
@@ -47,7 +46,6 @@ from hfortix_fortios._helpers import (
     build_cmdb_payload,  # Keep for backward compatibility / manual usage
     is_success,
     quote_path_param,  # URL encoding for path parameters
-    normalize_table_field,  # For table field normalization
 )
 # Import metadata mixin for schema introspection
 from hfortix_fortios._helpers.metadata_mixin import MetadataMixin
@@ -60,23 +58,6 @@ class Ntp(CRUDEndpoint, MetadataMixin):
     
     # Configure metadata mixin to use this endpoint's helper module
     _helper_module_name = "ntp"
-    
-    # ========================================================================
-    # Table Fields Metadata (for normalization)
-    # Auto-generated from schema - supports flexible input formats
-    # ========================================================================
-    _TABLE_FIELDS = {
-        "ntpserver": {
-            "mkey": "id",
-            "required_fields": ['id', 'server', 'key', 'key-id', 'interface'],
-            "example": "[{'id': 1, 'server': '192.168.1.10', 'key': 'value', 'key-id': 1, 'interface': 'value'}]",
-        },
-        "interface": {
-            "mkey": "interface-name",
-            "required_fields": ['interface-name'],
-            "example": "[{'interface-name': 'value'}]",
-        },
-    }
     
     # ========================================================================
     # Capabilities (from schema metadata)
@@ -110,7 +91,7 @@ class Ntp(CRUDEndpoint, MetadataMixin):
         payload_dict: dict[str, Any] | None = None,
         error_mode: Literal["raise", "return", "print"] | None = None,
         error_format: Literal["detailed", "simple", "code_only"] | None = None,
-    ):  # type: ignore[no-untyped-def]
+    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """
         Retrieve system/ntp configuration.
 
@@ -137,8 +118,8 @@ class Ntp(CRUDEndpoint, MetadataMixin):
             error_format: Override client-level error_format. "detailed" provides full context, "simple" is concise, "code_only" returns just status code.
 
         Returns:
-            FortiObject instance or list of FortiObject instances. Returns Coroutine if using async client.
-            Use .dict, .json, or .raw properties to access as dictionary.
+            API response as dictionary. Returns Coroutine if using async client.
+            Access results via dictionary keys (e.g., result['results'], result['http_status']).
             
             Response structure:
                 - http_method: GET
@@ -258,7 +239,7 @@ class Ntp(CRUDEndpoint, MetadataMixin):
         q_scope: str | None = None,
         error_mode: Literal["raise", "return", "print"] | None = None,
         error_format: Literal["detailed", "simple", "code_only"] | None = None,
-    ):  # type: ignore[no-untyped-def]
+    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """
         Update existing system/ntp object.
 
@@ -270,9 +251,6 @@ class Ntp(CRUDEndpoint, MetadataMixin):
             type: Use the FortiGuard NTP server or any other available NTP Server.
             syncinterval: NTP synchronization interval (1 - 1440 min).
             ntpserver: Configure the FortiGate to connect to any available third-party NTP server.
-                Default format: [{'id': 1, 'server': '192.168.1.10', 'key': 'value', 'key-id': 1, 'interface': 'value'}]
-                Required format: List of dicts with keys: id, server, key, key-id, interface
-                  (String format not allowed due to multiple required fields)
             source_ip: Source IP address for communication to the NTP server.
             source_ip6: Source IPv6 address for communication to the NTP server.
             server_mode: Enable/disable FortiGate NTP Server Mode. Your FortiGate becomes an NTP server for other devices on your network. The FortiGate relays NTP requests to its configured NTP server.
@@ -281,16 +259,11 @@ class Ntp(CRUDEndpoint, MetadataMixin):
             key: Key for authentication.
             key_id: Key ID for authentication.
             interface: FortiGate interface(s) with NTP server mode enabled. Devices on your network can contact these interfaces for NTP services.
-                Default format: [{'interface-name': 'value'}]
-                Supported formats:
-                  - Single string: "value" → [{'interface-name': 'value'}]
-                  - List of strings: ["val1", "val2"] → [{'interface-name': 'val1'}, ...]
-                  - List of dicts: [{'interface-name': 'value'}] (recommended)
             error_mode: Override client-level error_mode. "raise" raises exceptions, "return" returns error dict, "print" prints errors.
             error_format: Override client-level error_format. "detailed" provides full context, "simple" is concise, "code_only" returns just status code.
 
         Returns:
-            FortiObject instance. Use .dict, .json, or .raw to access as dictionary.
+            API response as dictionary. Returns Coroutine if using async client.
 
         Raises:
             ValueError: If name is missing from payload
@@ -313,24 +286,6 @@ class Ntp(CRUDEndpoint, MetadataMixin):
             - post(): Create new object
             - set(): Intelligent create or update
         """
-        # Apply normalization for table fields (supports flexible input formats)
-        if ntpserver is not None:
-            ntpserver = normalize_table_field(
-                ntpserver,
-                mkey="id",
-                required_fields=['id', 'server', 'key', 'key-id', 'interface'],
-                field_name="ntpserver",
-                example="[{'id': 1, 'server': '192.168.1.10', 'key': 'value', 'key-id': 1, 'interface': 'value'}]",
-            )
-        if interface is not None:
-            interface = normalize_table_field(
-                interface,
-                mkey="interface-name",
-                required_fields=['interface-name'],
-                field_name="interface",
-                example="[{'interface-name': 'value'}]",
-            )
-        
         # Build payload using helper function
         payload_data = build_api_payload(
             api_type="cmdb",

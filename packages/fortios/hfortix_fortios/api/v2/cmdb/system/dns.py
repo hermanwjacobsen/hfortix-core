@@ -39,7 +39,6 @@ from typing import TYPE_CHECKING, Any, Literal, Union
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
-    from hfortix_fortios.models import FortiObject
 
 # Import helper functions from central _helpers module
 from hfortix_fortios._helpers import (
@@ -47,7 +46,6 @@ from hfortix_fortios._helpers import (
     build_cmdb_payload,  # Keep for backward compatibility / manual usage
     is_success,
     quote_path_param,  # URL encoding for path parameters
-    normalize_table_field,  # For table field normalization
 )
 # Import metadata mixin for schema introspection
 from hfortix_fortios._helpers.metadata_mixin import MetadataMixin
@@ -60,23 +58,6 @@ class Dns(CRUDEndpoint, MetadataMixin):
     
     # Configure metadata mixin to use this endpoint's helper module
     _helper_module_name = "dns"
-    
-    # ========================================================================
-    # Table Fields Metadata (for normalization)
-    # Auto-generated from schema - supports flexible input formats
-    # ========================================================================
-    _TABLE_FIELDS = {
-        "server_hostname": {
-            "mkey": "hostname",
-            "required_fields": ['hostname'],
-            "example": "[{'hostname': 'value'}]",
-        },
-        "domain": {
-            "mkey": "domain",
-            "required_fields": ['domain'],
-            "example": "[{'domain': 'value'}]",
-        },
-    }
     
     # ========================================================================
     # Capabilities (from schema metadata)
@@ -110,7 +91,7 @@ class Dns(CRUDEndpoint, MetadataMixin):
         payload_dict: dict[str, Any] | None = None,
         error_mode: Literal["raise", "return", "print"] | None = None,
         error_format: Literal["detailed", "simple", "code_only"] | None = None,
-    ):  # type: ignore[no-untyped-def]
+    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """
         Retrieve system/dns configuration.
 
@@ -137,8 +118,8 @@ class Dns(CRUDEndpoint, MetadataMixin):
             error_format: Override client-level error_format. "detailed" provides full context, "simple" is concise, "code_only" returns just status code.
 
         Returns:
-            FortiObject instance or list of FortiObject instances. Returns Coroutine if using async client.
-            Use .dict, .json, or .raw properties to access as dictionary.
+            API response as dictionary. Returns Coroutine if using async client.
+            Access results via dictionary keys (e.g., result['results'], result['http_status']).
             
             Response structure:
                 - http_method: GET
@@ -274,7 +255,7 @@ class Dns(CRUDEndpoint, MetadataMixin):
         q_scope: str | None = None,
         error_mode: Literal["raise", "return", "print"] | None = None,
         error_format: Literal["detailed", "simple", "code_only"] | None = None,
-    ):  # type: ignore[no-untyped-def]
+    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """
         Update existing system/dns object.
 
@@ -287,17 +268,7 @@ class Dns(CRUDEndpoint, MetadataMixin):
             protocol: DNS transport protocols.
             ssl_certificate: Name of local certificate for SSL connections.
             server_hostname: DNS server host name list.
-                Default format: [{'hostname': 'value'}]
-                Supported formats:
-                  - Single string: "value" → [{'hostname': 'value'}]
-                  - List of strings: ["val1", "val2"] → [{'hostname': 'val1'}, ...]
-                  - List of dicts: [{'hostname': 'value'}] (recommended)
             domain: Search suffix list for hostname lookup.
-                Default format: [{'domain': 'value'}]
-                Supported formats:
-                  - Single string: "value" → [{'domain': 'value'}]
-                  - List of strings: ["val1", "val2"] → [{'domain': 'val1'}, ...]
-                  - List of dicts: [{'domain': 'value'}] (recommended)
             ip6_primary: Primary DNS server IPv6 address.
             ip6_secondary: Secondary DNS server IPv6 address.
             timeout: DNS query timeout interval in seconds (1 - 10).
@@ -324,7 +295,7 @@ class Dns(CRUDEndpoint, MetadataMixin):
             error_format: Override client-level error_format. "detailed" provides full context, "simple" is concise, "code_only" returns just status code.
 
         Returns:
-            FortiObject instance. Use .dict, .json, or .raw to access as dictionary.
+            API response as dictionary. Returns Coroutine if using async client.
 
         Raises:
             ValueError: If name is missing from payload
@@ -347,32 +318,9 @@ class Dns(CRUDEndpoint, MetadataMixin):
             - post(): Create new object
             - set(): Intelligent create or update
         """
-        # Apply normalization for table fields (supports flexible input formats)
-        if server_hostname is not None:
-            server_hostname = normalize_table_field(
-                server_hostname,
-                mkey="hostname",
-                required_fields=['hostname'],
-                field_name="server_hostname",
-                example="[{'hostname': 'value'}]",
-            )
-        if domain is not None:
-            domain = normalize_table_field(
-                domain,
-                mkey="domain",
-                required_fields=['domain'],
-                field_name="domain",
-                example="[{'domain': 'value'}]",
-            )
-        
-        # Apply normalization for multi-value option fields (space-separated strings)
-        
         # Build payload using helper function
-        # Note: auto_normalize=False because this endpoint has unitary fields
-        # (like 'interface') that would be incorrectly converted to list format
         payload_data = build_api_payload(
             api_type="cmdb",
-            auto_normalize=False,
             primary=primary,
             secondary=secondary,
             protocol=protocol,

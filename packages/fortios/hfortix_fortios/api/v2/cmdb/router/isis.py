@@ -39,7 +39,6 @@ from typing import TYPE_CHECKING, Any, Literal, Union
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
-    from hfortix_fortios.models import FortiObject
 
 # Import helper functions from central _helpers module
 from hfortix_fortios._helpers import (
@@ -47,7 +46,6 @@ from hfortix_fortios._helpers import (
     build_cmdb_payload,  # Keep for backward compatibility / manual usage
     is_success,
     quote_path_param,  # URL encoding for path parameters
-    normalize_table_field,  # For table field normalization
 )
 # Import metadata mixin for schema introspection
 from hfortix_fortios._helpers.metadata_mixin import MetadataMixin
@@ -60,43 +58,6 @@ class Isis(CRUDEndpoint, MetadataMixin):
     
     # Configure metadata mixin to use this endpoint's helper module
     _helper_module_name = "isis"
-    
-    # ========================================================================
-    # Table Fields Metadata (for normalization)
-    # Auto-generated from schema - supports flexible input formats
-    # ========================================================================
-    _TABLE_FIELDS = {
-        "isis_net": {
-            "mkey": "id",
-            "required_fields": ['id'],
-            "example": "[{'id': 1}]",
-        },
-        "isis_interface": {
-            "mkey": "name",
-            "required_fields": ['name'],
-            "example": "[{'name': 'value'}]",
-        },
-        "summary_address": {
-            "mkey": "id",
-            "required_fields": ['prefix'],
-            "example": "[{'prefix': 'value'}]",
-        },
-        "summary_address6": {
-            "mkey": "id",
-            "required_fields": ['prefix6'],
-            "example": "[{'prefix6': 'value'}]",
-        },
-        "redistribute": {
-            "mkey": "protocol",
-            "required_fields": ['protocol'],
-            "example": "[{'protocol': 'value'}]",
-        },
-        "redistribute6": {
-            "mkey": "protocol",
-            "required_fields": ['protocol'],
-            "example": "[{'protocol': 'value'}]",
-        },
-    }
     
     # ========================================================================
     # Capabilities (from schema metadata)
@@ -131,7 +92,7 @@ class Isis(CRUDEndpoint, MetadataMixin):
         vdom: str | bool | None = None,
         error_mode: Literal["raise", "return", "print"] | None = None,
         error_format: Literal["detailed", "simple", "code_only"] | None = None,
-    ):  # type: ignore[no-untyped-def]
+    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """
         Retrieve router/isis configuration.
 
@@ -159,8 +120,8 @@ class Isis(CRUDEndpoint, MetadataMixin):
             error_format: Override client-level error_format. "detailed" provides full context, "simple" is concise, "code_only" returns just status code.
 
         Returns:
-            FortiObject instance or list of FortiObject instances. Returns Coroutine if using async client.
-            Use .dict, .json, or .raw properties to access as dictionary.
+            API response as dictionary. Returns Coroutine if using async client.
+            Access results via dictionary keys (e.g., result['results'], result['http_status']).
             
             Response structure:
                 - http_method: GET
@@ -312,7 +273,7 @@ class Isis(CRUDEndpoint, MetadataMixin):
         vdom: str | bool | None = None,
         error_mode: Literal["raise", "return", "print"] | None = None,
         error_format: Literal["detailed", "simple", "code_only"] | None = None,
-    ):  # type: ignore[no-untyped-def]
+    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """
         Update existing router/isis object.
 
@@ -356,47 +317,17 @@ class Isis(CRUDEndpoint, MetadataMixin):
             redistribute6_l2: Enable/disable redistribution of level 2 IPv6 routes into level 1.
             redistribute6_l2_list: Access-list for IPv6 route redistribution from l2 to l1.
             isis_net: IS-IS net configuration.
-                Default format: [{'id': 1}]
-                Supported formats:
-                  - Single string: "value" → [{'id': 'value'}]
-                  - List of strings: ["val1", "val2"] → [{'id': 'val1'}, ...]
-                  - List of dicts: [{'id': 1}] (recommended)
             isis_interface: IS-IS interface configuration.
-                Default format: [{'name': 'value'}]
-                Supported formats:
-                  - Single string: "value" → [{'name': 'value'}]
-                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
-                  - List of dicts: [{'name': 'value'}] (recommended)
             summary_address: IS-IS summary addresses.
-                Default format: [{'prefix': 'value'}]
-                Supported formats:
-                  - Single string: "value" → [{'id': 'value'}]
-                  - List of strings: ["val1", "val2"] → [{'id': 'val1'}, ...]
-                  - List of dicts: [{'prefix': 'value'}] (recommended)
             summary_address6: IS-IS IPv6 summary address.
-                Default format: [{'prefix6': 'value'}]
-                Supported formats:
-                  - Single string: "value" → [{'id': 'value'}]
-                  - List of strings: ["val1", "val2"] → [{'id': 'val1'}, ...]
-                  - List of dicts: [{'prefix6': 'value'}] (recommended)
             redistribute: IS-IS redistribute protocols.
-                Default format: [{'protocol': 'value'}]
-                Supported formats:
-                  - Single string: "value" → [{'protocol': 'value'}]
-                  - List of strings: ["val1", "val2"] → [{'protocol': 'val1'}, ...]
-                  - List of dicts: [{'protocol': 'value'}] (recommended)
             redistribute6: IS-IS IPv6 redistribution for routing protocols.
-                Default format: [{'protocol': 'value'}]
-                Supported formats:
-                  - Single string: "value" → [{'protocol': 'value'}]
-                  - List of strings: ["val1", "val2"] → [{'protocol': 'val1'}, ...]
-                  - List of dicts: [{'protocol': 'value'}] (recommended)
             vdom: Virtual domain name.
             error_mode: Override client-level error_mode. "raise" raises exceptions, "return" returns error dict, "print" prints errors.
             error_format: Override client-level error_format. "detailed" provides full context, "simple" is concise, "code_only" returns just status code.
 
         Returns:
-            FortiObject instance. Use .dict, .json, or .raw to access as dictionary.
+            API response as dictionary. Returns Coroutine if using async client.
 
         Raises:
             ValueError: If name is missing from payload
@@ -419,58 +350,6 @@ class Isis(CRUDEndpoint, MetadataMixin):
             - post(): Create new object
             - set(): Intelligent create or update
         """
-        # Apply normalization for table fields (supports flexible input formats)
-        if isis_net is not None:
-            isis_net = normalize_table_field(
-                isis_net,
-                mkey="id",
-                required_fields=['id'],
-                field_name="isis_net",
-                example="[{'id': 1}]",
-            )
-        if isis_interface is not None:
-            isis_interface = normalize_table_field(
-                isis_interface,
-                mkey="name",
-                required_fields=['name'],
-                field_name="isis_interface",
-                example="[{'name': 'value'}]",
-            )
-        if summary_address is not None:
-            summary_address = normalize_table_field(
-                summary_address,
-                mkey="id",
-                required_fields=['prefix'],
-                field_name="summary_address",
-                example="[{'prefix': 'value'}]",
-            )
-        if summary_address6 is not None:
-            summary_address6 = normalize_table_field(
-                summary_address6,
-                mkey="id",
-                required_fields=['prefix6'],
-                field_name="summary_address6",
-                example="[{'prefix6': 'value'}]",
-            )
-        if redistribute is not None:
-            redistribute = normalize_table_field(
-                redistribute,
-                mkey="protocol",
-                required_fields=['protocol'],
-                field_name="redistribute",
-                example="[{'protocol': 'value'}]",
-            )
-        if redistribute6 is not None:
-            redistribute6 = normalize_table_field(
-                redistribute6,
-                mkey="protocol",
-                required_fields=['protocol'],
-                field_name="redistribute6",
-                example="[{'protocol': 'value'}]",
-            )
-        
-        # Apply normalization for multi-value option fields (space-separated strings)
-        
         # Build payload using helper function
         payload_data = build_api_payload(
             api_type="cmdb",

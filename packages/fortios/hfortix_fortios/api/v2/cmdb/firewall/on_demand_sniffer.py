@@ -39,7 +39,6 @@ from typing import TYPE_CHECKING, Any, Literal, Union
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
-    from hfortix_fortios.models import FortiObject
 
 # Import helper functions from central _helpers module
 from hfortix_fortios._helpers import (
@@ -47,7 +46,6 @@ from hfortix_fortios._helpers import (
     build_cmdb_payload,  # Keep for backward compatibility / manual usage
     is_success,
     quote_path_param,  # URL encoding for path parameters
-    normalize_table_field,  # For table field normalization
 )
 # Import metadata mixin for schema introspection
 from hfortix_fortios._helpers.metadata_mixin import MetadataMixin
@@ -60,28 +58,6 @@ class OnDemandSniffer(CRUDEndpoint, MetadataMixin):
     
     # Configure metadata mixin to use this endpoint's helper module
     _helper_module_name = "on_demand_sniffer"
-    
-    # ========================================================================
-    # Table Fields Metadata (for normalization)
-    # Auto-generated from schema - supports flexible input formats
-    # ========================================================================
-    _TABLE_FIELDS = {
-        "hosts": {
-            "mkey": "host",
-            "required_fields": ['host'],
-            "example": "[{'host': 'value'}]",
-        },
-        "ports": {
-            "mkey": "port",
-            "required_fields": ['port'],
-            "example": "[{'port': 1}]",
-        },
-        "protocols": {
-            "mkey": "protocol",
-            "required_fields": ['protocol'],
-            "example": "[{'protocol': 1}]",
-        },
-    }
     
     # ========================================================================
     # Capabilities (from schema metadata)
@@ -116,7 +92,7 @@ class OnDemandSniffer(CRUDEndpoint, MetadataMixin):
         vdom: str | bool | None = None,
         error_mode: Literal["raise", "return", "print"] | None = None,
         error_format: Literal["detailed", "simple", "code_only"] | None = None,
-    ):  # type: ignore[no-untyped-def]
+    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """
         Retrieve firewall/on_demand_sniffer configuration.
 
@@ -145,8 +121,8 @@ class OnDemandSniffer(CRUDEndpoint, MetadataMixin):
             error_format: Override client-level error_format. "detailed" provides full context, "simple" is concise, "code_only" returns just status code.
 
         Returns:
-            FortiObject instance or list of FortiObject instances. Returns Coroutine if using async client.
-            Use .dict, .json, or .raw properties to access as dictionary.
+            API response as dictionary. Returns Coroutine if using async client.
+            Access results via dictionary keys (e.g., result['results'], result['http_status']).
             
             Response structure:
                 - http_method: GET
@@ -269,7 +245,7 @@ class OnDemandSniffer(CRUDEndpoint, MetadataMixin):
         vdom: str | bool | None = None,
         error_mode: Literal["raise", "return", "print"] | None = None,
         error_format: Literal["detailed", "simple", "code_only"] | None = None,
-    ):  # type: ignore[no-untyped-def]
+    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """
         Update existing firewall/on_demand_sniffer object.
 
@@ -281,23 +257,8 @@ class OnDemandSniffer(CRUDEndpoint, MetadataMixin):
             interface: Interface name that on-demand packet sniffer will take place.
             max_packet_count: Maximum number of packets to capture per on-demand packet sniffer.
             hosts: IPv4 or IPv6 hosts to filter in this traffic sniffer.
-                Default format: [{'host': 'value'}]
-                Supported formats:
-                  - Single string: "value" → [{'host': 'value'}]
-                  - List of strings: ["val1", "val2"] → [{'host': 'val1'}, ...]
-                  - List of dicts: [{'host': 'value'}] (recommended)
             ports: Ports to filter for in this traffic sniffer.
-                Default format: [{'port': 1}]
-                Supported formats:
-                  - Single string: "value" → [{'port': 'value'}]
-                  - List of strings: ["val1", "val2"] → [{'port': 'val1'}, ...]
-                  - List of dicts: [{'port': 1}] (recommended)
             protocols: Protocols to filter in this traffic sniffer.
-                Default format: [{'protocol': 1}]
-                Supported formats:
-                  - Single string: "value" → [{'protocol': 'value'}]
-                  - List of strings: ["val1", "val2"] → [{'protocol': 'val1'}, ...]
-                  - List of dicts: [{'protocol': 1}] (recommended)
             non_ip_packet: Include non-IP packets.
             advanced_filter: Advanced freeform filter that will be used over existing filter settings if set. Can only be used by super admin.
             vdom: Virtual domain name.
@@ -305,7 +266,7 @@ class OnDemandSniffer(CRUDEndpoint, MetadataMixin):
             error_format: Override client-level error_format. "detailed" provides full context, "simple" is concise, "code_only" returns just status code.
 
         Returns:
-            FortiObject instance. Use .dict, .json, or .raw to access as dictionary.
+            API response as dictionary. Returns Coroutine if using async client.
 
         Raises:
             ValueError: If name is missing from payload
@@ -328,38 +289,9 @@ class OnDemandSniffer(CRUDEndpoint, MetadataMixin):
             - post(): Create new object
             - set(): Intelligent create or update
         """
-        # Apply normalization for table fields (supports flexible input formats)
-        if hosts is not None:
-            hosts = normalize_table_field(
-                hosts,
-                mkey="host",
-                required_fields=['host'],
-                field_name="hosts",
-                example="[{'host': 'value'}]",
-            )
-        if ports is not None:
-            ports = normalize_table_field(
-                ports,
-                mkey="port",
-                required_fields=['port'],
-                field_name="ports",
-                example="[{'port': 1}]",
-            )
-        if protocols is not None:
-            protocols = normalize_table_field(
-                protocols,
-                mkey="protocol",
-                required_fields=['protocol'],
-                field_name="protocols",
-                example="[{'protocol': 1}]",
-            )
-        
         # Build payload using helper function
-        # Note: auto_normalize=False because this endpoint has unitary fields
-        # (like 'interface') that would be incorrectly converted to list format
         payload_data = build_api_payload(
             api_type="cmdb",
-            auto_normalize=False,
             name=name,
             interface=interface,
             max_packet_count=max_packet_count,
@@ -422,7 +354,7 @@ class OnDemandSniffer(CRUDEndpoint, MetadataMixin):
         vdom: str | bool | None = None,
         error_mode: Literal["raise", "return", "print"] | None = None,
         error_format: Literal["detailed", "simple", "code_only"] | None = None,
-    ):  # type: ignore[no-untyped-def]
+    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """
         Create new firewall/on_demand_sniffer object.
 
@@ -434,23 +366,8 @@ class OnDemandSniffer(CRUDEndpoint, MetadataMixin):
             interface: Interface name that on-demand packet sniffer will take place.
             max_packet_count: Maximum number of packets to capture per on-demand packet sniffer.
             hosts: IPv4 or IPv6 hosts to filter in this traffic sniffer.
-                Default format: [{'host': 'value'}]
-                Supported formats:
-                  - Single string: "value" → [{'host': 'value'}]
-                  - List of strings: ["val1", "val2"] → [{'host': 'val1'}, ...]
-                  - List of dicts: [{'host': 'value'}] (recommended)
             ports: Ports to filter for in this traffic sniffer.
-                Default format: [{'port': 1}]
-                Supported formats:
-                  - Single string: "value" → [{'port': 'value'}]
-                  - List of strings: ["val1", "val2"] → [{'port': 'val1'}, ...]
-                  - List of dicts: [{'port': 1}] (recommended)
             protocols: Protocols to filter in this traffic sniffer.
-                Default format: [{'protocol': 1}]
-                Supported formats:
-                  - Single string: "value" → [{'protocol': 'value'}]
-                  - List of strings: ["val1", "val2"] → [{'protocol': 'val1'}, ...]
-                  - List of dicts: [{'protocol': 1}] (recommended)
             non_ip_packet: Include non-IP packets.
             advanced_filter: Advanced freeform filter that will be used over existing filter settings if set. Can only be used by super admin.
             vdom: Virtual domain name. Use True for global, string for specific VDOM.
@@ -458,7 +375,7 @@ class OnDemandSniffer(CRUDEndpoint, MetadataMixin):
             error_format: Override client-level error_format. "detailed" provides full context, "simple" is concise, "code_only" returns just status code.
 
         Returns:
-            FortiObject instance with created object. Use .dict, .json, or .raw to access as dictionary.
+            API response as dictionary. Returns Coroutine if using async client.
 
         Examples:
             >>> # Create using individual parameters
@@ -483,38 +400,9 @@ class OnDemandSniffer(CRUDEndpoint, MetadataMixin):
             - put(): Update existing object
             - set(): Intelligent create or update
         """
-        # Apply normalization for table fields (supports flexible input formats)
-        if hosts is not None:
-            hosts = normalize_table_field(
-                hosts,
-                mkey="host",
-                required_fields=['host'],
-                field_name="hosts",
-                example="[{'host': 'value'}]",
-            )
-        if ports is not None:
-            ports = normalize_table_field(
-                ports,
-                mkey="port",
-                required_fields=['port'],
-                field_name="ports",
-                example="[{'port': 1}]",
-            )
-        if protocols is not None:
-            protocols = normalize_table_field(
-                protocols,
-                mkey="protocol",
-                required_fields=['protocol'],
-                field_name="protocols",
-                example="[{'protocol': 1}]",
-            )
-        
         # Build payload using helper function
-        # Note: auto_normalize=False because this endpoint has unitary fields
-        # (like 'interface') that would be incorrectly converted to list format
         payload_data = build_api_payload(
             api_type="cmdb",
-            auto_normalize=False,
             name=name,
             interface=interface,
             max_packet_count=max_packet_count,
@@ -562,7 +450,7 @@ class OnDemandSniffer(CRUDEndpoint, MetadataMixin):
         vdom: str | bool | None = None,
         error_mode: Literal["raise", "return", "print"] | None = None,
         error_format: Literal["detailed", "simple", "code_only"] | None = None,
-    ):  # type: ignore[no-untyped-def]
+    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """
         Delete firewall/on_demand_sniffer object.
 
@@ -575,7 +463,7 @@ class OnDemandSniffer(CRUDEndpoint, MetadataMixin):
             error_format: Override client-level error_format. "detailed" provides full context, "simple" is concise, "code_only" returns just status code.
 
         Returns:
-            FortiObject instance. Use .dict, .json, or .raw to access as dictionary
+            API response as dictionary. Returns Coroutine if using async client.
 
         Raises:
             ValueError: If name is not provided
@@ -705,7 +593,7 @@ class OnDemandSniffer(CRUDEndpoint, MetadataMixin):
             **kwargs: Additional parameters passed to PUT or POST
 
         Returns:
-            FortiObject instance. Use .dict, .json, or .raw to access as dictionary
+            API response as dictionary. Returns Coroutine if using async client.
 
         Raises:
             ValueError: If name is missing from payload
@@ -740,38 +628,9 @@ class OnDemandSniffer(CRUDEndpoint, MetadataMixin):
             - put(): Update existing object
             - exists(): Check existence manually
         """
-        # Apply normalization for table fields (supports flexible input formats)
-        if hosts is not None:
-            hosts = normalize_table_field(
-                hosts,
-                mkey="host",
-                required_fields=['host'],
-                field_name="hosts",
-                example="[{'host': 'value'}]",
-            )
-        if ports is not None:
-            ports = normalize_table_field(
-                ports,
-                mkey="port",
-                required_fields=['port'],
-                field_name="ports",
-                example="[{'port': 1}]",
-            )
-        if protocols is not None:
-            protocols = normalize_table_field(
-                protocols,
-                mkey="protocol",
-                required_fields=['protocol'],
-                field_name="protocols",
-                example="[{'protocol': 1}]",
-            )
-        
         # Build payload using helper function
-        # Note: auto_normalize=False because this endpoint has unitary fields
-        # (like 'interface') that would be incorrectly converted to list format
         payload_data = build_api_payload(
             api_type="cmdb",
-            auto_normalize=False,
             name=name,
             interface=interface,
             max_packet_count=max_packet_count,

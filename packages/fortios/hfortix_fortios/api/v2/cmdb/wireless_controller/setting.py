@@ -39,7 +39,6 @@ from typing import TYPE_CHECKING, Any, Literal, Union
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
-    from hfortix_fortios.models import FortiObject
 
 # Import helper functions from central _helpers module
 from hfortix_fortios._helpers import (
@@ -47,7 +46,6 @@ from hfortix_fortios._helpers import (
     build_cmdb_payload,  # Keep for backward compatibility / manual usage
     is_success,
     quote_path_param,  # URL encoding for path parameters
-    normalize_table_field,  # For table field normalization
 )
 # Import metadata mixin for schema introspection
 from hfortix_fortios._helpers.metadata_mixin import MetadataMixin
@@ -60,23 +58,6 @@ class Setting(CRUDEndpoint, MetadataMixin):
     
     # Configure metadata mixin to use this endpoint's helper module
     _helper_module_name = "setting"
-    
-    # ========================================================================
-    # Table Fields Metadata (for normalization)
-    # Auto-generated from schema - supports flexible input formats
-    # ========================================================================
-    _TABLE_FIELDS = {
-        "offending_ssid": {
-            "mkey": "id",
-            "required_fields": ['ssid-pattern'],
-            "example": "[{'ssid-pattern': 'value'}]",
-        },
-        "darrp_optimize_schedules": {
-            "mkey": "name",
-            "required_fields": ['name'],
-            "example": "[{'name': 'value'}]",
-        },
-    }
     
     # ========================================================================
     # Capabilities (from schema metadata)
@@ -111,7 +92,7 @@ class Setting(CRUDEndpoint, MetadataMixin):
         vdom: str | bool | None = None,
         error_mode: Literal["raise", "return", "print"] | None = None,
         error_format: Literal["detailed", "simple", "code_only"] | None = None,
-    ):  # type: ignore[no-untyped-def]
+    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """
         Retrieve wireless_controller/setting configuration.
 
@@ -139,8 +120,8 @@ class Setting(CRUDEndpoint, MetadataMixin):
             error_format: Override client-level error_format. "detailed" provides full context, "simple" is concise, "code_only" returns just status code.
 
         Returns:
-            FortiObject instance or list of FortiObject instances. Returns Coroutine if using async client.
-            Use .dict, .json, or .raw properties to access as dictionary.
+            API response as dictionary. Returns Coroutine if using async client.
+            Access results via dictionary keys (e.g., result['results'], result['http_status']).
             
             Response structure:
                 - http_method: GET
@@ -266,7 +247,7 @@ class Setting(CRUDEndpoint, MetadataMixin):
         vdom: str | bool | None = None,
         error_mode: Literal["raise", "return", "print"] | None = None,
         error_format: Literal["detailed", "simple", "code_only"] | None = None,
-    ):  # type: ignore[no-untyped-def]
+    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """
         Update existing wireless_controller/setting object.
 
@@ -282,11 +263,6 @@ class Setting(CRUDEndpoint, MetadataMixin):
             phishing_ssid_detect: Enable/disable phishing SSID detection.
             fake_ssid_action: Actions taken for detected fake SSID.
             offending_ssid: Configure offending SSID.
-                Default format: [{'ssid-pattern': 'value'}]
-                Supported formats:
-                  - Single string: "value" → [{'id': 'value'}]
-                  - List of strings: ["val1", "val2"] → [{'id': 'val1'}, ...]
-                  - List of dicts: [{'ssid-pattern': 'value'}] (recommended)
             device_weight: Upper limit of confidence of device for identification (0 - 255, default = 1, 0 = disable).
             device_holdoff: Lower limit of creation time of device for identification in minutes (0 - 60, default = 5).
             device_idle: Upper limit of idle time of device for identification in minutes (0 - 14400, default = 1440).
@@ -294,17 +270,12 @@ class Setting(CRUDEndpoint, MetadataMixin):
             rolling_wtp_upgrade: Enable/disable rolling WTP upgrade (default = disable).
             darrp_optimize: Time for running Distributed Automatic Radio Resource Provisioning (DARRP) optimizations (0 - 86400 sec, default = 86400, 0 = disable).
             darrp_optimize_schedules: Firewall schedules for DARRP running time. DARRP will run periodically based on darrp-optimize within the schedules. Separate multiple schedule names with a space.
-                Default format: [{'name': 'value'}]
-                Supported formats:
-                  - Single string: "value" → [{'name': 'value'}]
-                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
-                  - List of dicts: [{'name': 'value'}] (recommended)
             vdom: Virtual domain name.
             error_mode: Override client-level error_mode. "raise" raises exceptions, "return" returns error dict, "print" prints errors.
             error_format: Override client-level error_format. "detailed" provides full context, "simple" is concise, "code_only" returns just status code.
 
         Returns:
-            FortiObject instance. Use .dict, .json, or .raw to access as dictionary.
+            API response as dictionary. Returns Coroutine if using async client.
 
         Raises:
             ValueError: If name is missing from payload
@@ -327,26 +298,6 @@ class Setting(CRUDEndpoint, MetadataMixin):
             - post(): Create new object
             - set(): Intelligent create or update
         """
-        # Apply normalization for table fields (supports flexible input formats)
-        if offending_ssid is not None:
-            offending_ssid = normalize_table_field(
-                offending_ssid,
-                mkey="id",
-                required_fields=['ssid-pattern'],
-                field_name="offending_ssid",
-                example="[{'ssid-pattern': 'value'}]",
-            )
-        if darrp_optimize_schedules is not None:
-            darrp_optimize_schedules = normalize_table_field(
-                darrp_optimize_schedules,
-                mkey="name",
-                required_fields=['name'],
-                field_name="darrp_optimize_schedules",
-                example="[{'name': 'value'}]",
-            )
-        
-        # Apply normalization for multi-value option fields (space-separated strings)
-        
         # Build payload using helper function
         payload_data = build_api_payload(
             api_type="cmdb",

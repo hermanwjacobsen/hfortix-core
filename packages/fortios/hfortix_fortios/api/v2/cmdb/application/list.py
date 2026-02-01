@@ -39,7 +39,6 @@ from typing import TYPE_CHECKING, Any, Literal, Union
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
-    from hfortix_fortios.models import FortiObject
 
 # Import helper functions from central _helpers module
 from hfortix_fortios._helpers import (
@@ -47,7 +46,6 @@ from hfortix_fortios._helpers import (
     build_cmdb_payload,  # Keep for backward compatibility / manual usage
     is_success,
     quote_path_param,  # URL encoding for path parameters
-    normalize_table_field,  # For table field normalization
 )
 # Import metadata mixin for schema introspection
 from hfortix_fortios._helpers.metadata_mixin import MetadataMixin
@@ -60,23 +58,6 @@ class List(CRUDEndpoint, MetadataMixin):
     
     # Configure metadata mixin to use this endpoint's helper module
     _helper_module_name = "list"
-    
-    # ========================================================================
-    # Table Fields Metadata (for normalization)
-    # Auto-generated from schema - supports flexible input formats
-    # ========================================================================
-    _TABLE_FIELDS = {
-        "entries": {
-            "mkey": "id",
-            "required_fields": ['id'],
-            "example": "[{'id': 1}]",
-        },
-        "default_network_services": {
-            "mkey": "id",
-            "required_fields": ['id', 'port'],
-            "example": "[{'id': 1, 'port': 1}]",
-        },
-    }
     
     # ========================================================================
     # Capabilities (from schema metadata)
@@ -111,7 +92,7 @@ class List(CRUDEndpoint, MetadataMixin):
         vdom: str | bool | None = None,
         error_mode: Literal["raise", "return", "print"] | None = None,
         error_format: Literal["detailed", "simple", "code_only"] | None = None,
-    ):  # type: ignore[no-untyped-def]
+    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """
         Retrieve application/list configuration.
 
@@ -140,8 +121,8 @@ class List(CRUDEndpoint, MetadataMixin):
             error_format: Override client-level error_format. "detailed" provides full context, "simple" is concise, "code_only" returns just status code.
 
         Returns:
-            FortiObject instance or list of FortiObject instances. Returns Coroutine if using async client.
-            Use .dict, .json, or .raw properties to access as dictionary.
+            API response as dictionary. Returns Coroutine if using async client.
+            Access results via dictionary keys (e.g., result['results'], result['http_status']).
             
             Response structure:
                 - http_method: GET
@@ -273,7 +254,7 @@ class List(CRUDEndpoint, MetadataMixin):
         vdom: str | bool | None = None,
         error_mode: Literal["raise", "return", "print"] | None = None,
         error_format: Literal["detailed", "simple", "code_only"] | None = None,
-    ):  # type: ignore[no-untyped-def]
+    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """
         Update existing application/list object.
 
@@ -296,22 +277,14 @@ class List(CRUDEndpoint, MetadataMixin):
             deep_app_inspection: Enable/disable deep application inspection.
             options: Basic application protocol signatures allowed by default.
             entries: Application list entries.
-                Default format: [{'id': 1}]
-                Supported formats:
-                  - Single string: "value" → [{'id': 'value'}]
-                  - List of strings: ["val1", "val2"] → [{'id': 'val1'}, ...]
-                  - List of dicts: [{'id': 1}] (recommended)
             control_default_network_services: Enable/disable enforcement of protocols over selected ports.
             default_network_services: Default network service entries.
-                Default format: [{'id': 1, 'port': 1}]
-                Required format: List of dicts with keys: id, port
-                  (String format not allowed due to multiple required fields)
             vdom: Virtual domain name.
             error_mode: Override client-level error_mode. "raise" raises exceptions, "return" returns error dict, "print" prints errors.
             error_format: Override client-level error_format. "detailed" provides full context, "simple" is concise, "code_only" returns just status code.
 
         Returns:
-            FortiObject instance. Use .dict, .json, or .raw to access as dictionary.
+            API response as dictionary. Returns Coroutine if using async client.
 
         Raises:
             ValueError: If name is missing from payload
@@ -334,26 +307,6 @@ class List(CRUDEndpoint, MetadataMixin):
             - post(): Create new object
             - set(): Intelligent create or update
         """
-        # Apply normalization for table fields (supports flexible input formats)
-        if entries is not None:
-            entries = normalize_table_field(
-                entries,
-                mkey="id",
-                required_fields=['id'],
-                field_name="entries",
-                example="[{'id': 1}]",
-            )
-        if default_network_services is not None:
-            default_network_services = normalize_table_field(
-                default_network_services,
-                mkey="id",
-                required_fields=['id', 'port'],
-                field_name="default_network_services",
-                example="[{'id': 1, 'port': 1}]",
-            )
-        
-        # Apply normalization for multi-value option fields (space-separated strings)
-        
         # Build payload using helper function
         payload_data = build_api_payload(
             api_type="cmdb",
@@ -437,7 +390,7 @@ class List(CRUDEndpoint, MetadataMixin):
         vdom: str | bool | None = None,
         error_mode: Literal["raise", "return", "print"] | None = None,
         error_format: Literal["detailed", "simple", "code_only"] | None = None,
-    ):  # type: ignore[no-untyped-def]
+    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """
         Create new application/list object.
 
@@ -460,22 +413,14 @@ class List(CRUDEndpoint, MetadataMixin):
             deep_app_inspection: Enable/disable deep application inspection.
             options: Basic application protocol signatures allowed by default.
             entries: Application list entries.
-                Default format: [{'id': 1}]
-                Supported formats:
-                  - Single string: "value" → [{'id': 'value'}]
-                  - List of strings: ["val1", "val2"] → [{'id': 'val1'}, ...]
-                  - List of dicts: [{'id': 1}] (recommended)
             control_default_network_services: Enable/disable enforcement of protocols over selected ports.
             default_network_services: Default network service entries.
-                Default format: [{'id': 1, 'port': 1}]
-                Required format: List of dicts with keys: id, port
-                  (String format not allowed due to multiple required fields)
             vdom: Virtual domain name. Use True for global, string for specific VDOM.
             error_mode: Override client-level error_mode. "raise" raises exceptions, "return" returns error dict, "print" prints errors.
             error_format: Override client-level error_format. "detailed" provides full context, "simple" is concise, "code_only" returns just status code.
 
         Returns:
-            FortiObject instance with created object. Use .dict, .json, or .raw to access as dictionary.
+            API response as dictionary. Returns Coroutine if using async client.
 
         Examples:
             >>> # Create using individual parameters
@@ -500,26 +445,6 @@ class List(CRUDEndpoint, MetadataMixin):
             - put(): Update existing object
             - set(): Intelligent create or update
         """
-        # Apply normalization for table fields (supports flexible input formats)
-        if entries is not None:
-            entries = normalize_table_field(
-                entries,
-                mkey="id",
-                required_fields=['id'],
-                field_name="entries",
-                example="[{'id': 1}]",
-            )
-        if default_network_services is not None:
-            default_network_services = normalize_table_field(
-                default_network_services,
-                mkey="id",
-                required_fields=['id', 'port'],
-                field_name="default_network_services",
-                example="[{'id': 1, 'port': 1}]",
-            )
-        
-        # Apply normalization for multi-value option fields (space-separated strings)
-        
         # Build payload using helper function
         payload_data = build_api_payload(
             api_type="cmdb",
@@ -579,7 +504,7 @@ class List(CRUDEndpoint, MetadataMixin):
         vdom: str | bool | None = None,
         error_mode: Literal["raise", "return", "print"] | None = None,
         error_format: Literal["detailed", "simple", "code_only"] | None = None,
-    ):  # type: ignore[no-untyped-def]
+    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """
         Delete application/list object.
 
@@ -592,7 +517,7 @@ class List(CRUDEndpoint, MetadataMixin):
             error_format: Override client-level error_format. "detailed" provides full context, "simple" is concise, "code_only" returns just status code.
 
         Returns:
-            FortiObject instance. Use .dict, .json, or .raw to access as dictionary
+            API response as dictionary. Returns Coroutine if using async client.
 
         Raises:
             ValueError: If name is not provided
@@ -740,7 +665,7 @@ class List(CRUDEndpoint, MetadataMixin):
             **kwargs: Additional parameters passed to PUT or POST
 
         Returns:
-            FortiObject instance. Use .dict, .json, or .raw to access as dictionary
+            API response as dictionary. Returns Coroutine if using async client.
 
         Raises:
             ValueError: If name is missing from payload
@@ -775,26 +700,6 @@ class List(CRUDEndpoint, MetadataMixin):
             - put(): Update existing object
             - exists(): Check existence manually
         """
-        # Apply normalization for table fields (supports flexible input formats)
-        if entries is not None:
-            entries = normalize_table_field(
-                entries,
-                mkey="id",
-                required_fields=['id'],
-                field_name="entries",
-                example="[{'id': 1}]",
-            )
-        if default_network_services is not None:
-            default_network_services = normalize_table_field(
-                default_network_services,
-                mkey="id",
-                required_fields=['id', 'port'],
-                field_name="default_network_services",
-                example="[{'id': 1, 'port': 1}]",
-            )
-        
-        # Apply normalization for multi-value option fields (space-separated strings)
-        
         # Build payload using helper function
         payload_data = build_api_payload(
             api_type="cmdb",

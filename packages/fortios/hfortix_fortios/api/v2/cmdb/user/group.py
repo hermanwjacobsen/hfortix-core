@@ -39,7 +39,6 @@ from typing import TYPE_CHECKING, Any, Literal, Union
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
-    from hfortix_fortios.models import FortiObject
 
 # Import helper functions from central _helpers module
 from hfortix_fortios._helpers import (
@@ -47,7 +46,6 @@ from hfortix_fortios._helpers import (
     build_cmdb_payload,  # Keep for backward compatibility / manual usage
     is_success,
     quote_path_param,  # URL encoding for path parameters
-    normalize_table_field,  # For table field normalization
 )
 # Import metadata mixin for schema introspection
 from hfortix_fortios._helpers.metadata_mixin import MetadataMixin
@@ -60,28 +58,6 @@ class Group(CRUDEndpoint, MetadataMixin):
     
     # Configure metadata mixin to use this endpoint's helper module
     _helper_module_name = "group"
-    
-    # ========================================================================
-    # Table Fields Metadata (for normalization)
-    # Auto-generated from schema - supports flexible input formats
-    # ========================================================================
-    _TABLE_FIELDS = {
-        "member": {
-            "mkey": "name",
-            "required_fields": ['name'],
-            "example": "[{'name': 'value'}]",
-        },
-        "match": {
-            "mkey": "id",
-            "required_fields": ['id', 'server-name', 'group-name'],
-            "example": "[{'id': 1, 'server-name': 'value', 'group-name': 'value'}]",
-        },
-        "guest": {
-            "mkey": "id",
-            "required_fields": ['id'],
-            "example": "[{'id': 1}]",
-        },
-    }
     
     # ========================================================================
     # Capabilities (from schema metadata)
@@ -116,7 +92,7 @@ class Group(CRUDEndpoint, MetadataMixin):
         vdom: str | bool | None = None,
         error_mode: Literal["raise", "return", "print"] | None = None,
         error_format: Literal["detailed", "simple", "code_only"] | None = None,
-    ):  # type: ignore[no-untyped-def]
+    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """
         Retrieve user/group configuration.
 
@@ -145,8 +121,8 @@ class Group(CRUDEndpoint, MetadataMixin):
             error_format: Override client-level error_format. "detailed" provides full context, "simple" is concise, "code_only" returns just status code.
 
         Returns:
-            FortiObject instance or list of FortiObject instances. Returns Coroutine if using async client.
-            Use .dict, .json, or .raw properties to access as dictionary.
+            API response as dictionary. Returns Coroutine if using async client.
+            Access results via dictionary keys (e.g., result['results'], result['http_status']).
             
             Response structure:
                 - http_method: GET
@@ -285,7 +261,7 @@ class Group(CRUDEndpoint, MetadataMixin):
         vdom: str | bool | None = None,
         error_mode: Literal["raise", "return", "print"] | None = None,
         error_format: Literal["detailed", "simple", "code_only"] | None = None,
-    ):  # type: ignore[no-untyped-def]
+    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """
         Update existing user/group object.
 
@@ -302,15 +278,7 @@ class Group(CRUDEndpoint, MetadataMixin):
             http_digest_realm: Realm attribute for MD5-digest authentication.
             sso_attribute_value: RADIUS attribute value.
             member: Names of users, peers, LDAP severs, RADIUS servers or external idp servers to add to the user group.
-                Default format: [{'name': 'value'}]
-                Supported formats:
-                  - Single string: "value" → [{'name': 'value'}]
-                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
-                  - List of dicts: [{'name': 'value'}] (recommended)
             match: Group matches.
-                Default format: [{'id': 1, 'server-name': 'value', 'group-name': 'value'}]
-                Required format: List of dicts with keys: id, server-name, group-name
-                  (String format not allowed due to multiple required fields)
             user_id: Guest user ID type.
             password: Guest user password type.
             user_name: Enable/disable the guest user name entry.
@@ -325,17 +293,12 @@ class Group(CRUDEndpoint, MetadataMixin):
             max_accounts: Maximum number of guest accounts that can be created for this group (0 means unlimited).
             multiple_guest_add: Enable/disable addition of multiple guests.
             guest: Guest User.
-                Default format: [{'id': 1}]
-                Supported formats:
-                  - Single string: "value" → [{'id': 'value'}]
-                  - List of strings: ["val1", "val2"] → [{'id': 'val1'}, ...]
-                  - List of dicts: [{'id': 1}] (recommended)
             vdom: Virtual domain name.
             error_mode: Override client-level error_mode. "raise" raises exceptions, "return" returns error dict, "print" prints errors.
             error_format: Override client-level error_format. "detailed" provides full context, "simple" is concise, "code_only" returns just status code.
 
         Returns:
-            FortiObject instance. Use .dict, .json, or .raw to access as dictionary.
+            API response as dictionary. Returns Coroutine if using async client.
 
         Raises:
             ValueError: If name is missing from payload
@@ -358,32 +321,6 @@ class Group(CRUDEndpoint, MetadataMixin):
             - post(): Create new object
             - set(): Intelligent create or update
         """
-        # Apply normalization for table fields (supports flexible input formats)
-        if member is not None:
-            member = normalize_table_field(
-                member,
-                mkey="name",
-                required_fields=['name'],
-                field_name="member",
-                example="[{'name': 'value'}]",
-            )
-        if match is not None:
-            match = normalize_table_field(
-                match,
-                mkey="id",
-                required_fields=['id', 'server-name', 'group-name'],
-                field_name="match",
-                example="[{'id': 1, 'server-name': 'value', 'group-name': 'value'}]",
-            )
-        if guest is not None:
-            guest = normalize_table_field(
-                guest,
-                mkey="id",
-                required_fields=['id'],
-                field_name="guest",
-                example="[{'id': 1}]",
-            )
-        
         # Build payload using helper function
         payload_data = build_api_payload(
             api_type="cmdb",
@@ -481,7 +418,7 @@ class Group(CRUDEndpoint, MetadataMixin):
         vdom: str | bool | None = None,
         error_mode: Literal["raise", "return", "print"] | None = None,
         error_format: Literal["detailed", "simple", "code_only"] | None = None,
-    ):  # type: ignore[no-untyped-def]
+    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """
         Create new user/group object.
 
@@ -498,15 +435,7 @@ class Group(CRUDEndpoint, MetadataMixin):
             http_digest_realm: Realm attribute for MD5-digest authentication.
             sso_attribute_value: RADIUS attribute value.
             member: Names of users, peers, LDAP severs, RADIUS servers or external idp servers to add to the user group.
-                Default format: [{'name': 'value'}]
-                Supported formats:
-                  - Single string: "value" → [{'name': 'value'}]
-                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
-                  - List of dicts: [{'name': 'value'}] (recommended)
             match: Group matches.
-                Default format: [{'id': 1, 'server-name': 'value', 'group-name': 'value'}]
-                Required format: List of dicts with keys: id, server-name, group-name
-                  (String format not allowed due to multiple required fields)
             user_id: Guest user ID type.
             password: Guest user password type.
             user_name: Enable/disable the guest user name entry.
@@ -521,17 +450,12 @@ class Group(CRUDEndpoint, MetadataMixin):
             max_accounts: Maximum number of guest accounts that can be created for this group (0 means unlimited).
             multiple_guest_add: Enable/disable addition of multiple guests.
             guest: Guest User.
-                Default format: [{'id': 1}]
-                Supported formats:
-                  - Single string: "value" → [{'id': 'value'}]
-                  - List of strings: ["val1", "val2"] → [{'id': 'val1'}, ...]
-                  - List of dicts: [{'id': 1}] (recommended)
             vdom: Virtual domain name. Use True for global, string for specific VDOM.
             error_mode: Override client-level error_mode. "raise" raises exceptions, "return" returns error dict, "print" prints errors.
             error_format: Override client-level error_format. "detailed" provides full context, "simple" is concise, "code_only" returns just status code.
 
         Returns:
-            FortiObject instance with created object. Use .dict, .json, or .raw to access as dictionary.
+            API response as dictionary. Returns Coroutine if using async client.
 
         Examples:
             >>> # Create using individual parameters
@@ -556,32 +480,6 @@ class Group(CRUDEndpoint, MetadataMixin):
             - put(): Update existing object
             - set(): Intelligent create or update
         """
-        # Apply normalization for table fields (supports flexible input formats)
-        if member is not None:
-            member = normalize_table_field(
-                member,
-                mkey="name",
-                required_fields=['name'],
-                field_name="member",
-                example="[{'name': 'value'}]",
-            )
-        if match is not None:
-            match = normalize_table_field(
-                match,
-                mkey="id",
-                required_fields=['id', 'server-name', 'group-name'],
-                field_name="match",
-                example="[{'id': 1, 'server-name': 'value', 'group-name': 'value'}]",
-            )
-        if guest is not None:
-            guest = normalize_table_field(
-                guest,
-                mkey="id",
-                required_fields=['id'],
-                field_name="guest",
-                example="[{'id': 1}]",
-            )
-        
         # Build payload using helper function
         payload_data = build_api_payload(
             api_type="cmdb",
@@ -648,7 +546,7 @@ class Group(CRUDEndpoint, MetadataMixin):
         vdom: str | bool | None = None,
         error_mode: Literal["raise", "return", "print"] | None = None,
         error_format: Literal["detailed", "simple", "code_only"] | None = None,
-    ):  # type: ignore[no-untyped-def]
+    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """
         Delete user/group object.
 
@@ -661,7 +559,7 @@ class Group(CRUDEndpoint, MetadataMixin):
             error_format: Override client-level error_format. "detailed" provides full context, "simple" is concise, "code_only" returns just status code.
 
         Returns:
-            FortiObject instance. Use .dict, .json, or .raw to access as dictionary
+            API response as dictionary. Returns Coroutine if using async client.
 
         Raises:
             ValueError: If name is not provided
@@ -823,7 +721,7 @@ class Group(CRUDEndpoint, MetadataMixin):
             **kwargs: Additional parameters passed to PUT or POST
 
         Returns:
-            FortiObject instance. Use .dict, .json, or .raw to access as dictionary
+            API response as dictionary. Returns Coroutine if using async client.
 
         Raises:
             ValueError: If name is missing from payload
@@ -858,32 +756,6 @@ class Group(CRUDEndpoint, MetadataMixin):
             - put(): Update existing object
             - exists(): Check existence manually
         """
-        # Apply normalization for table fields (supports flexible input formats)
-        if member is not None:
-            member = normalize_table_field(
-                member,
-                mkey="name",
-                required_fields=['name'],
-                field_name="member",
-                example="[{'name': 'value'}]",
-            )
-        if match is not None:
-            match = normalize_table_field(
-                match,
-                mkey="id",
-                required_fields=['id', 'server-name', 'group-name'],
-                field_name="match",
-                example="[{'id': 1, 'server-name': 'value', 'group-name': 'value'}]",
-            )
-        if guest is not None:
-            guest = normalize_table_field(
-                guest,
-                mkey="id",
-                required_fields=['id'],
-                field_name="guest",
-                example="[{'id': 1}]",
-            )
-        
         # Build payload using helper function
         payload_data = build_api_payload(
             api_type="cmdb",

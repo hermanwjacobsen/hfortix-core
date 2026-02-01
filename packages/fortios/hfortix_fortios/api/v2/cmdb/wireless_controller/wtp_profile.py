@@ -39,7 +39,6 @@ from typing import TYPE_CHECKING, Any, Literal, Union
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
-    from hfortix_fortios.models import FortiObject
 
 # Import helper functions from central _helpers module
 from hfortix_fortios._helpers import (
@@ -47,7 +46,6 @@ from hfortix_fortios._helpers import (
     build_cmdb_payload,  # Keep for backward compatibility / manual usage
     is_success,
     quote_path_param,  # URL encoding for path parameters
-    normalize_table_field,  # For table field normalization
 )
 # Import metadata mixin for schema introspection
 from hfortix_fortios._helpers.metadata_mixin import MetadataMixin
@@ -60,28 +58,6 @@ class WtpProfile(CRUDEndpoint, MetadataMixin):
     
     # Configure metadata mixin to use this endpoint's helper module
     _helper_module_name = "wtp_profile"
-    
-    # ========================================================================
-    # Table Fields Metadata (for normalization)
-    # Auto-generated from schema - supports flexible input formats
-    # ========================================================================
-    _TABLE_FIELDS = {
-        "led_schedules": {
-            "mkey": "name",
-            "required_fields": ['name'],
-            "example": "[{'name': 'value'}]",
-        },
-        "deny_mac_list": {
-            "mkey": "id",
-            "required_fields": ['id'],
-            "example": "[{'id': 1}]",
-        },
-        "split_tunneling_acl": {
-            "mkey": "id",
-            "required_fields": ['dest-ip'],
-            "example": "[{'dest-ip': 'value'}]",
-        },
-    }
     
     # ========================================================================
     # Capabilities (from schema metadata)
@@ -116,7 +92,7 @@ class WtpProfile(CRUDEndpoint, MetadataMixin):
         vdom: str | bool | None = None,
         error_mode: Literal["raise", "return", "print"] | None = None,
         error_format: Literal["detailed", "simple", "code_only"] | None = None,
-    ):  # type: ignore[no-untyped-def]
+    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """
         Retrieve wireless_controller/wtp_profile configuration.
 
@@ -145,8 +121,8 @@ class WtpProfile(CRUDEndpoint, MetadataMixin):
             error_format: Override client-level error_format. "detailed" provides full context, "simple" is concise, "code_only" returns just status code.
 
         Returns:
-            FortiObject instance or list of FortiObject instances. Returns Coroutine if using async client.
-            Use .dict, .json, or .raw properties to access as dictionary.
+            API response as dictionary. Returns Coroutine if using async client.
+            Access results via dictionary keys (e.g., result['results'], result['http_status']).
             
             Response structure:
                 - http_method: GET
@@ -339,7 +315,7 @@ class WtpProfile(CRUDEndpoint, MetadataMixin):
         vdom: str | bool | None = None,
         error_mode: Literal["raise", "return", "print"] | None = None,
         error_format: Literal["detailed", "simple", "code_only"] | None = None,
-    ):  # type: ignore[no-untyped-def]
+    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """
         Update existing wireless_controller/wtp_profile object.
 
@@ -365,11 +341,6 @@ class WtpProfile(CRUDEndpoint, MetadataMixin):
             energy_efficient_ethernet: Enable/disable use of energy efficient Ethernet on WTP.
             led_state: Enable/disable use of LEDs on WTP (default = enable).
             led_schedules: Recurring firewall schedules for illuminating LEDs on the FortiAP. If led-state is enabled, LEDs will be visible when at least one of the schedules is valid. Separate multiple schedule names with a space.
-                Default format: [{'name': 'value'}]
-                Supported formats:
-                  - Single string: "value" → [{'name': 'value'}]
-                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
-                  - List of dicts: [{'name': 'value'}] (recommended)
             dtls_policy: WTP data channel DTLS policy (default = clear-text).
             dtls_in_kernel: Enable/disable data channel DTLS in kernel.
             max_clients: Maximum number of stations (STAs) supported by the WTP (default = 0, meaning no client limitation).
@@ -377,11 +348,6 @@ class WtpProfile(CRUDEndpoint, MetadataMixin):
             handoff_sta_thresh: Threshold value for AP handoff.
             handoff_roaming: Enable/disable client load balancing during roaming to avoid roaming delay (default = enable).
             deny_mac_list: List of MAC addresses that are denied access to this WTP, FortiAP, or AP.
-                Default format: [{'id': 1}]
-                Supported formats:
-                  - Single string: "value" → [{'id': 'value'}]
-                  - List of strings: ["val1", "val2"] → [{'id': 'val1'}, ...]
-                  - List of dicts: [{'id': 1}] (recommended)
             ap_country: Country in which this WTP, FortiAP, or AP will operate (default = NA, automatically use the country configured for the current VDOM).
             ip_fragment_preventing: Method(s) by which IP fragmentation is prevented for control and data packets through CAPWAP tunnel (default = tcp-mss-adjust).
             tun_mtu_uplink: The maximum transmission unit (MTU) of uplink CAPWAP tunnel (576 - 1500 bytes or 0; 0 means the local MTU of FortiAP; default = 0).
@@ -389,11 +355,6 @@ class WtpProfile(CRUDEndpoint, MetadataMixin):
             split_tunneling_acl_path: Split tunneling ACL path is local/tunnel.
             split_tunneling_acl_local_ap_subnet: Enable/disable automatically adding local subnetwork of FortiAP to split-tunneling ACL (default = disable).
             split_tunneling_acl: Split tunneling ACL filter list.
-                Default format: [{'dest-ip': 'value'}]
-                Supported formats:
-                  - Single string: "value" → [{'id': 'value'}]
-                  - List of strings: ["val1", "val2"] → [{'id': 'val1'}, ...]
-                  - List of dicts: [{'dest-ip': 'value'}] (recommended)
             allowaccess: Control management access to the managed WTP, FortiAP, or AP. Separate entries with a space.
             login_passwd_change: Change or reset the administrator password of a managed WTP, FortiAP or AP (yes, default, or no, default = no).
             login_passwd: Set the managed WTP, FortiAP, or AP's administrator password.
@@ -445,7 +406,7 @@ class WtpProfile(CRUDEndpoint, MetadataMixin):
             error_format: Override client-level error_format. "detailed" provides full context, "simple" is concise, "code_only" returns just status code.
 
         Returns:
-            FortiObject instance. Use .dict, .json, or .raw to access as dictionary.
+            API response as dictionary. Returns Coroutine if using async client.
 
         Raises:
             ValueError: If name is missing from payload
@@ -468,40 +429,9 @@ class WtpProfile(CRUDEndpoint, MetadataMixin):
             - post(): Create new object
             - set(): Intelligent create or update
         """
-        # Apply normalization for table fields (supports flexible input formats)
-        if led_schedules is not None:
-            led_schedules = normalize_table_field(
-                led_schedules,
-                mkey="name",
-                required_fields=['name'],
-                field_name="led_schedules",
-                example="[{'name': 'value'}]",
-            )
-        if deny_mac_list is not None:
-            deny_mac_list = normalize_table_field(
-                deny_mac_list,
-                mkey="id",
-                required_fields=['id'],
-                field_name="deny_mac_list",
-                example="[{'id': 1}]",
-            )
-        if split_tunneling_acl is not None:
-            split_tunneling_acl = normalize_table_field(
-                split_tunneling_acl,
-                mkey="id",
-                required_fields=['dest-ip'],
-                field_name="split_tunneling_acl",
-                example="[{'dest-ip': 'value'}]",
-            )
-        
-        # Apply normalization for multi-value option fields (space-separated strings)
-        
         # Build payload using helper function
-        # Note: auto_normalize=False because this endpoint has unitary fields
-        # (like 'interface') that would be incorrectly converted to list format
         payload_data = build_api_payload(
             api_type="cmdb",
-            auto_normalize=False,
             name=name,
             comment=comment,
             platform=platform,
@@ -704,7 +634,7 @@ class WtpProfile(CRUDEndpoint, MetadataMixin):
         vdom: str | bool | None = None,
         error_mode: Literal["raise", "return", "print"] | None = None,
         error_format: Literal["detailed", "simple", "code_only"] | None = None,
-    ):  # type: ignore[no-untyped-def]
+    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """
         Create new wireless_controller/wtp_profile object.
 
@@ -730,11 +660,6 @@ class WtpProfile(CRUDEndpoint, MetadataMixin):
             energy_efficient_ethernet: Enable/disable use of energy efficient Ethernet on WTP.
             led_state: Enable/disable use of LEDs on WTP (default = enable).
             led_schedules: Recurring firewall schedules for illuminating LEDs on the FortiAP. If led-state is enabled, LEDs will be visible when at least one of the schedules is valid. Separate multiple schedule names with a space.
-                Default format: [{'name': 'value'}]
-                Supported formats:
-                  - Single string: "value" → [{'name': 'value'}]
-                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
-                  - List of dicts: [{'name': 'value'}] (recommended)
             dtls_policy: WTP data channel DTLS policy (default = clear-text).
             dtls_in_kernel: Enable/disable data channel DTLS in kernel.
             max_clients: Maximum number of stations (STAs) supported by the WTP (default = 0, meaning no client limitation).
@@ -742,11 +667,6 @@ class WtpProfile(CRUDEndpoint, MetadataMixin):
             handoff_sta_thresh: Threshold value for AP handoff.
             handoff_roaming: Enable/disable client load balancing during roaming to avoid roaming delay (default = enable).
             deny_mac_list: List of MAC addresses that are denied access to this WTP, FortiAP, or AP.
-                Default format: [{'id': 1}]
-                Supported formats:
-                  - Single string: "value" → [{'id': 'value'}]
-                  - List of strings: ["val1", "val2"] → [{'id': 'val1'}, ...]
-                  - List of dicts: [{'id': 1}] (recommended)
             ap_country: Country in which this WTP, FortiAP, or AP will operate (default = NA, automatically use the country configured for the current VDOM).
             ip_fragment_preventing: Method(s) by which IP fragmentation is prevented for control and data packets through CAPWAP tunnel (default = tcp-mss-adjust).
             tun_mtu_uplink: The maximum transmission unit (MTU) of uplink CAPWAP tunnel (576 - 1500 bytes or 0; 0 means the local MTU of FortiAP; default = 0).
@@ -754,11 +674,6 @@ class WtpProfile(CRUDEndpoint, MetadataMixin):
             split_tunneling_acl_path: Split tunneling ACL path is local/tunnel.
             split_tunneling_acl_local_ap_subnet: Enable/disable automatically adding local subnetwork of FortiAP to split-tunneling ACL (default = disable).
             split_tunneling_acl: Split tunneling ACL filter list.
-                Default format: [{'dest-ip': 'value'}]
-                Supported formats:
-                  - Single string: "value" → [{'id': 'value'}]
-                  - List of strings: ["val1", "val2"] → [{'id': 'val1'}, ...]
-                  - List of dicts: [{'dest-ip': 'value'}] (recommended)
             allowaccess: Control management access to the managed WTP, FortiAP, or AP. Separate entries with a space.
             login_passwd_change: Change or reset the administrator password of a managed WTP, FortiAP or AP (yes, default, or no, default = no).
             login_passwd: Set the managed WTP, FortiAP, or AP's administrator password.
@@ -810,7 +725,7 @@ class WtpProfile(CRUDEndpoint, MetadataMixin):
             error_format: Override client-level error_format. "detailed" provides full context, "simple" is concise, "code_only" returns just status code.
 
         Returns:
-            FortiObject instance with created object. Use .dict, .json, or .raw to access as dictionary.
+            API response as dictionary. Returns Coroutine if using async client.
 
         Examples:
             >>> # Create using individual parameters
@@ -835,40 +750,9 @@ class WtpProfile(CRUDEndpoint, MetadataMixin):
             - put(): Update existing object
             - set(): Intelligent create or update
         """
-        # Apply normalization for table fields (supports flexible input formats)
-        if led_schedules is not None:
-            led_schedules = normalize_table_field(
-                led_schedules,
-                mkey="name",
-                required_fields=['name'],
-                field_name="led_schedules",
-                example="[{'name': 'value'}]",
-            )
-        if deny_mac_list is not None:
-            deny_mac_list = normalize_table_field(
-                deny_mac_list,
-                mkey="id",
-                required_fields=['id'],
-                field_name="deny_mac_list",
-                example="[{'id': 1}]",
-            )
-        if split_tunneling_acl is not None:
-            split_tunneling_acl = normalize_table_field(
-                split_tunneling_acl,
-                mkey="id",
-                required_fields=['dest-ip'],
-                field_name="split_tunneling_acl",
-                example="[{'dest-ip': 'value'}]",
-            )
-        
-        # Apply normalization for multi-value option fields (space-separated strings)
-        
         # Build payload using helper function
-        # Note: auto_normalize=False because this endpoint has unitary fields
-        # (like 'interface') that would be incorrectly converted to list format
         payload_data = build_api_payload(
             api_type="cmdb",
-            auto_normalize=False,
             name=name,
             comment=comment,
             platform=platform,
@@ -986,7 +870,7 @@ class WtpProfile(CRUDEndpoint, MetadataMixin):
         vdom: str | bool | None = None,
         error_mode: Literal["raise", "return", "print"] | None = None,
         error_format: Literal["detailed", "simple", "code_only"] | None = None,
-    ):  # type: ignore[no-untyped-def]
+    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """
         Delete wireless_controller/wtp_profile object.
 
@@ -999,7 +883,7 @@ class WtpProfile(CRUDEndpoint, MetadataMixin):
             error_format: Override client-level error_format. "detailed" provides full context, "simple" is concise, "code_only" returns just status code.
 
         Returns:
-            FortiObject instance. Use .dict, .json, or .raw to access as dictionary
+            API response as dictionary. Returns Coroutine if using async client.
 
         Raises:
             ValueError: If name is not provided
@@ -1269,7 +1153,7 @@ class WtpProfile(CRUDEndpoint, MetadataMixin):
             **kwargs: Additional parameters passed to PUT or POST
 
         Returns:
-            FortiObject instance. Use .dict, .json, or .raw to access as dictionary
+            API response as dictionary. Returns Coroutine if using async client.
 
         Raises:
             ValueError: If name is missing from payload
@@ -1304,40 +1188,9 @@ class WtpProfile(CRUDEndpoint, MetadataMixin):
             - put(): Update existing object
             - exists(): Check existence manually
         """
-        # Apply normalization for table fields (supports flexible input formats)
-        if led_schedules is not None:
-            led_schedules = normalize_table_field(
-                led_schedules,
-                mkey="name",
-                required_fields=['name'],
-                field_name="led_schedules",
-                example="[{'name': 'value'}]",
-            )
-        if deny_mac_list is not None:
-            deny_mac_list = normalize_table_field(
-                deny_mac_list,
-                mkey="id",
-                required_fields=['id'],
-                field_name="deny_mac_list",
-                example="[{'id': 1}]",
-            )
-        if split_tunneling_acl is not None:
-            split_tunneling_acl = normalize_table_field(
-                split_tunneling_acl,
-                mkey="id",
-                required_fields=['dest-ip'],
-                field_name="split_tunneling_acl",
-                example="[{'dest-ip': 'value'}]",
-            )
-        
-        # Apply normalization for multi-value option fields (space-separated strings)
-        
         # Build payload using helper function
-        # Note: auto_normalize=False because this endpoint has unitary fields
-        # (like 'interface') that would be incorrectly converted to list format
         payload_data = build_api_payload(
             api_type="cmdb",
-            auto_normalize=False,
             name=name,
             comment=comment,
             platform=platform,

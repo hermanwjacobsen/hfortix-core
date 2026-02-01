@@ -13,24 +13,10 @@ if TYPE_CHECKING:
     from .certificate import Certificate
     from .ipsec import Ipsec
 
-__all__ = [
-    "KmipServer",
-    "L2tp",
-    "Pptp",
-    "Qkd",
-    "Vpn",
-]
-
 
 class Vpn:
-    """VPN API category.
-    
-    All endpoints return FortiObject instances with:
-    - Attribute access: response.field
-    - Dictionary access: response["field"]
-    - Convert to dict: response.dict or response.json
-    """
-    
+    """Type stub for Vpn."""
+
     certificate: Certificate
     ipsec: Ipsec
     kmip_server: KmipServer
@@ -38,6 +24,4 @@ class Vpn:
     pptp: Pptp
     qkd: Qkd
 
-    def __init__(self, client: IHTTPClient, vdom: str | None = None) -> None:
-        """Initialize vpn category with HTTP client."""
-        ...
+    def __init__(self, client: IHTTPClient) -> None: ...

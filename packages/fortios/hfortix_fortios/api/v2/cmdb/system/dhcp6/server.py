@@ -39,7 +39,6 @@ from typing import TYPE_CHECKING, Any, Literal, Union
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
-    from hfortix_fortios.models import FortiObject
 
 # Import helper functions from central _helpers module
 from hfortix_fortios._helpers import (
@@ -47,7 +46,6 @@ from hfortix_fortios._helpers import (
     build_cmdb_payload,  # Keep for backward compatibility / manual usage
     is_success,
     quote_path_param,  # URL encoding for path parameters
-    normalize_table_field,  # For table field normalization
 )
 # Import metadata mixin for schema introspection
 from hfortix_fortios._helpers.metadata_mixin import MetadataMixin
@@ -60,28 +58,6 @@ class Server(CRUDEndpoint, MetadataMixin):
     
     # Configure metadata mixin to use this endpoint's helper module
     _helper_module_name = "server"
-    
-    # ========================================================================
-    # Table Fields Metadata (for normalization)
-    # Auto-generated from schema - supports flexible input formats
-    # ========================================================================
-    _TABLE_FIELDS = {
-        "options": {
-            "mkey": "id",
-            "required_fields": ['id', 'code'],
-            "example": "[{'id': 1, 'code': 1}]",
-        },
-        "prefix_range": {
-            "mkey": "id",
-            "required_fields": ['id', 'start-prefix', 'end-prefix', 'prefix-length'],
-            "example": "[{'id': 1, 'start-prefix': 'value', 'end-prefix': 'value', 'prefix-length': 1}]",
-        },
-        "ip_range": {
-            "mkey": "id",
-            "required_fields": ['id', 'start-ip', 'end-ip'],
-            "example": "[{'id': 1, 'start-ip': 'value', 'end-ip': 'value'}]",
-        },
-    }
     
     # ========================================================================
     # Capabilities (from schema metadata)
@@ -116,7 +92,7 @@ class Server(CRUDEndpoint, MetadataMixin):
         vdom: str | bool | None = None,
         error_mode: Literal["raise", "return", "print"] | None = None,
         error_format: Literal["detailed", "simple", "code_only"] | None = None,
-    ):  # type: ignore[no-untyped-def]
+    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """
         Retrieve system/dhcp6/server configuration.
 
@@ -145,8 +121,8 @@ class Server(CRUDEndpoint, MetadataMixin):
             error_format: Override client-level error_format. "detailed" provides full context, "simple" is concise, "code_only" returns just status code.
 
         Returns:
-            FortiObject instance or list of FortiObject instances. Returns Coroutine if using async client.
-            Use .dict, .json, or .raw properties to access as dictionary.
+            API response as dictionary. Returns Coroutine if using async client.
+            Access results via dictionary keys (e.g., result['results'], result['http_status']).
             
             Response structure:
                 - http_method: GET
@@ -282,7 +258,7 @@ class Server(CRUDEndpoint, MetadataMixin):
         vdom: str | bool | None = None,
         error_mode: Literal["raise", "return", "print"] | None = None,
         error_format: Literal["detailed", "simple", "code_only"] | None = None,
-    ):  # type: ignore[no-untyped-def]
+    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """
         Update existing system/dhcp6/server object.
 
@@ -305,27 +281,18 @@ class Server(CRUDEndpoint, MetadataMixin):
             interface: DHCP server can assign IP configurations to clients connected to this interface.
             delegated_prefix_route: Enable/disable automatically adding of routing for delegated prefix.
             options: DHCPv6 options.
-                Default format: [{'id': 1, 'code': 1}]
-                Required format: List of dicts with keys: id, code
-                  (String format not allowed due to multiple required fields)
             upstream_interface: Interface name from where delegated information is provided.
             delegated_prefix_iaid: IAID of obtained delegated-prefix from the upstream interface.
             ip_mode: Method used to assign client IP.
             prefix_mode: Assigning a prefix from a DHCPv6 client or RA.
             prefix_range: DHCP prefix configuration.
-                Default format: [{'id': 1, 'start-prefix': 'value', 'end-prefix': 'value', 'prefix-length': 1}]
-                Required format: List of dicts with keys: id, start-prefix, end-prefix, prefix-length
-                  (String format not allowed due to multiple required fields)
             ip_range: DHCP IP range configuration.
-                Default format: [{'id': 1, 'start-ip': 'value', 'end-ip': 'value'}]
-                Required format: List of dicts with keys: id, start-ip, end-ip
-                  (String format not allowed due to multiple required fields)
             vdom: Virtual domain name.
             error_mode: Override client-level error_mode. "raise" raises exceptions, "return" returns error dict, "print" prints errors.
             error_format: Override client-level error_format. "detailed" provides full context, "simple" is concise, "code_only" returns just status code.
 
         Returns:
-            FortiObject instance. Use .dict, .json, or .raw to access as dictionary.
+            API response as dictionary. Returns Coroutine if using async client.
 
         Raises:
             ValueError: If id is missing from payload
@@ -348,38 +315,9 @@ class Server(CRUDEndpoint, MetadataMixin):
             - post(): Create new object
             - set(): Intelligent create or update
         """
-        # Apply normalization for table fields (supports flexible input formats)
-        if options is not None:
-            options = normalize_table_field(
-                options,
-                mkey="id",
-                required_fields=['id', 'code'],
-                field_name="options",
-                example="[{'id': 1, 'code': 1}]",
-            )
-        if prefix_range is not None:
-            prefix_range = normalize_table_field(
-                prefix_range,
-                mkey="id",
-                required_fields=['id', 'start-prefix', 'end-prefix', 'prefix-length'],
-                field_name="prefix_range",
-                example="[{'id': 1, 'start-prefix': 'value', 'end-prefix': 'value', 'prefix-length': 1}]",
-            )
-        if ip_range is not None:
-            ip_range = normalize_table_field(
-                ip_range,
-                mkey="id",
-                required_fields=['id', 'start-ip', 'end-ip'],
-                field_name="ip_range",
-                example="[{'id': 1, 'start-ip': 'value', 'end-ip': 'value'}]",
-            )
-        
         # Build payload using helper function
-        # Note: auto_normalize=False because this endpoint has unitary fields
-        # (like 'interface') that would be incorrectly converted to list format
         payload_data = build_api_payload(
             api_type="cmdb",
-            auto_normalize=False,
             id=id,
             status=status,
             rapid_commit=rapid_commit,
@@ -468,7 +406,7 @@ class Server(CRUDEndpoint, MetadataMixin):
         vdom: str | bool | None = None,
         error_mode: Literal["raise", "return", "print"] | None = None,
         error_format: Literal["detailed", "simple", "code_only"] | None = None,
-    ):  # type: ignore[no-untyped-def]
+    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """
         Create new system/dhcp6/server object.
 
@@ -491,27 +429,18 @@ class Server(CRUDEndpoint, MetadataMixin):
             interface: DHCP server can assign IP configurations to clients connected to this interface.
             delegated_prefix_route: Enable/disable automatically adding of routing for delegated prefix.
             options: DHCPv6 options.
-                Default format: [{'id': 1, 'code': 1}]
-                Required format: List of dicts with keys: id, code
-                  (String format not allowed due to multiple required fields)
             upstream_interface: Interface name from where delegated information is provided.
             delegated_prefix_iaid: IAID of obtained delegated-prefix from the upstream interface.
             ip_mode: Method used to assign client IP.
             prefix_mode: Assigning a prefix from a DHCPv6 client or RA.
             prefix_range: DHCP prefix configuration.
-                Default format: [{'id': 1, 'start-prefix': 'value', 'end-prefix': 'value', 'prefix-length': 1}]
-                Required format: List of dicts with keys: id, start-prefix, end-prefix, prefix-length
-                  (String format not allowed due to multiple required fields)
             ip_range: DHCP IP range configuration.
-                Default format: [{'id': 1, 'start-ip': 'value', 'end-ip': 'value'}]
-                Required format: List of dicts with keys: id, start-ip, end-ip
-                  (String format not allowed due to multiple required fields)
             vdom: Virtual domain name. Use True for global, string for specific VDOM.
             error_mode: Override client-level error_mode. "raise" raises exceptions, "return" returns error dict, "print" prints errors.
             error_format: Override client-level error_format. "detailed" provides full context, "simple" is concise, "code_only" returns just status code.
 
         Returns:
-            FortiObject instance with created object. Use .dict, .json, or .raw to access as dictionary.
+            API response as dictionary. Returns Coroutine if using async client.
 
         Examples:
             >>> # Create using individual parameters
@@ -536,38 +465,9 @@ class Server(CRUDEndpoint, MetadataMixin):
             - put(): Update existing object
             - set(): Intelligent create or update
         """
-        # Apply normalization for table fields (supports flexible input formats)
-        if options is not None:
-            options = normalize_table_field(
-                options,
-                mkey="id",
-                required_fields=['id', 'code'],
-                field_name="options",
-                example="[{'id': 1, 'code': 1}]",
-            )
-        if prefix_range is not None:
-            prefix_range = normalize_table_field(
-                prefix_range,
-                mkey="id",
-                required_fields=['id', 'start-prefix', 'end-prefix', 'prefix-length'],
-                field_name="prefix_range",
-                example="[{'id': 1, 'start-prefix': 'value', 'end-prefix': 'value', 'prefix-length': 1}]",
-            )
-        if ip_range is not None:
-            ip_range = normalize_table_field(
-                ip_range,
-                mkey="id",
-                required_fields=['id', 'start-ip', 'end-ip'],
-                field_name="ip_range",
-                example="[{'id': 1, 'start-ip': 'value', 'end-ip': 'value'}]",
-            )
-        
         # Build payload using helper function
-        # Note: auto_normalize=False because this endpoint has unitary fields
-        # (like 'interface') that would be incorrectly converted to list format
         payload_data = build_api_payload(
             api_type="cmdb",
-            auto_normalize=False,
             id=id,
             status=status,
             rapid_commit=rapid_commit,
@@ -628,7 +528,7 @@ class Server(CRUDEndpoint, MetadataMixin):
         vdom: str | bool | None = None,
         error_mode: Literal["raise", "return", "print"] | None = None,
         error_format: Literal["detailed", "simple", "code_only"] | None = None,
-    ):  # type: ignore[no-untyped-def]
+    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """
         Delete system/dhcp6/server object.
 
@@ -641,7 +541,7 @@ class Server(CRUDEndpoint, MetadataMixin):
             error_format: Override client-level error_format. "detailed" provides full context, "simple" is concise, "code_only" returns just status code.
 
         Returns:
-            FortiObject instance. Use .dict, .json, or .raw to access as dictionary
+            API response as dictionary. Returns Coroutine if using async client.
 
         Raises:
             ValueError: If id is not provided
@@ -797,7 +697,7 @@ class Server(CRUDEndpoint, MetadataMixin):
             **kwargs: Additional parameters passed to PUT or POST
 
         Returns:
-            FortiObject instance. Use .dict, .json, or .raw to access as dictionary
+            API response as dictionary. Returns Coroutine if using async client.
 
         Raises:
             ValueError: If id is missing from payload
@@ -832,38 +732,9 @@ class Server(CRUDEndpoint, MetadataMixin):
             - put(): Update existing object
             - exists(): Check existence manually
         """
-        # Apply normalization for table fields (supports flexible input formats)
-        if options is not None:
-            options = normalize_table_field(
-                options,
-                mkey="id",
-                required_fields=['id', 'code'],
-                field_name="options",
-                example="[{'id': 1, 'code': 1}]",
-            )
-        if prefix_range is not None:
-            prefix_range = normalize_table_field(
-                prefix_range,
-                mkey="id",
-                required_fields=['id', 'start-prefix', 'end-prefix', 'prefix-length'],
-                field_name="prefix_range",
-                example="[{'id': 1, 'start-prefix': 'value', 'end-prefix': 'value', 'prefix-length': 1}]",
-            )
-        if ip_range is not None:
-            ip_range = normalize_table_field(
-                ip_range,
-                mkey="id",
-                required_fields=['id', 'start-ip', 'end-ip'],
-                field_name="ip_range",
-                example="[{'id': 1, 'start-ip': 'value', 'end-ip': 'value'}]",
-            )
-        
         # Build payload using helper function
-        # Note: auto_normalize=False because this endpoint has unitary fields
-        # (like 'interface') that would be incorrectly converted to list format
         payload_data = build_api_payload(
             api_type="cmdb",
-            auto_normalize=False,
             id=id,
             status=status,
             rapid_commit=rapid_commit,

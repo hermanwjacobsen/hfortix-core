@@ -39,7 +39,6 @@ from typing import TYPE_CHECKING, Any, Literal, Union
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
-    from hfortix_fortios.models import FortiObject
 
 # Import helper functions from central _helpers module
 from hfortix_fortios._helpers import (
@@ -47,7 +46,6 @@ from hfortix_fortios._helpers import (
     build_cmdb_payload,  # Keep for backward compatibility / manual usage
     is_success,
     quote_path_param,  # URL encoding for path parameters
-    normalize_table_field,  # For table field normalization
 )
 # Import metadata mixin for schema introspection
 from hfortix_fortios._helpers.metadata_mixin import MetadataMixin
@@ -60,23 +58,6 @@ class Vxlan(CRUDEndpoint, MetadataMixin):
     
     # Configure metadata mixin to use this endpoint's helper module
     _helper_module_name = "vxlan"
-    
-    # ========================================================================
-    # Table Fields Metadata (for normalization)
-    # Auto-generated from schema - supports flexible input formats
-    # ========================================================================
-    _TABLE_FIELDS = {
-        "remote_ip": {
-            "mkey": "ip",
-            "required_fields": ['ip'],
-            "example": "[{'ip': '192.168.1.10'}]",
-        },
-        "remote_ip6": {
-            "mkey": "ip6",
-            "required_fields": ['ip6'],
-            "example": "[{'ip6': 'value'}]",
-        },
-    }
     
     # ========================================================================
     # Capabilities (from schema metadata)
@@ -111,7 +92,7 @@ class Vxlan(CRUDEndpoint, MetadataMixin):
         vdom: str | bool | None = None,
         error_mode: Literal["raise", "return", "print"] | None = None,
         error_format: Literal["detailed", "simple", "code_only"] | None = None,
-    ):  # type: ignore[no-untyped-def]
+    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """
         Retrieve system/vxlan configuration.
 
@@ -140,8 +121,8 @@ class Vxlan(CRUDEndpoint, MetadataMixin):
             error_format: Override client-level error_format. "detailed" provides full context, "simple" is concise, "code_only" returns just status code.
 
         Returns:
-            FortiObject instance or list of FortiObject instances. Returns Coroutine if using async client.
-            Use .dict, .json, or .raw properties to access as dictionary.
+            API response as dictionary. Returns Coroutine if using async client.
+            Access results via dictionary keys (e.g., result['results'], result['http_status']).
             
             Response structure:
                 - http_method: GET
@@ -268,7 +249,7 @@ class Vxlan(CRUDEndpoint, MetadataMixin):
         vdom: str | bool | None = None,
         error_mode: Literal["raise", "return", "print"] | None = None,
         error_format: Literal["detailed", "simple", "code_only"] | None = None,
-    ):  # type: ignore[no-untyped-def]
+    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """
         Update existing system/vxlan object.
 
@@ -281,18 +262,8 @@ class Vxlan(CRUDEndpoint, MetadataMixin):
             vni: VXLAN network ID.
             ip_version: IP version to use for the VXLAN interface and so for communication over the VXLAN. IPv4 or IPv6 unicast or multicast.
             remote_ip: IPv4 address of the VXLAN interface on the device at the remote end of the VXLAN.
-                Default format: [{'ip': '192.168.1.10'}]
-                Supported formats:
-                  - Single string: "value" → [{'ip': 'value'}]
-                  - List of strings: ["val1", "val2"] → [{'ip': 'val1'}, ...]
-                  - List of dicts: [{'ip': '192.168.1.10'}] (recommended)
             local_ip: IPv4 address to use as the source address for egress VXLAN packets.
             remote_ip6: IPv6 IP address of the VXLAN interface on the device at the remote end of the VXLAN.
-                Default format: [{'ip6': 'value'}]
-                Supported formats:
-                  - Single string: "value" → [{'ip6': 'value'}]
-                  - List of strings: ["val1", "val2"] → [{'ip6': 'val1'}, ...]
-                  - List of dicts: [{'ip6': 'value'}] (recommended)
             local_ip6: IPv6 address to use as the source address for egress VXLAN packets.
             dstport: VXLAN destination port (1 - 65535, default = 4789).
             multicast_ttl: VXLAN multicast TTL (1-255, default = 0).
@@ -303,7 +274,7 @@ class Vxlan(CRUDEndpoint, MetadataMixin):
             error_format: Override client-level error_format. "detailed" provides full context, "simple" is concise, "code_only" returns just status code.
 
         Returns:
-            FortiObject instance. Use .dict, .json, or .raw to access as dictionary.
+            API response as dictionary. Returns Coroutine if using async client.
 
         Raises:
             ValueError: If name is missing from payload
@@ -326,30 +297,9 @@ class Vxlan(CRUDEndpoint, MetadataMixin):
             - post(): Create new object
             - set(): Intelligent create or update
         """
-        # Apply normalization for table fields (supports flexible input formats)
-        if remote_ip is not None:
-            remote_ip = normalize_table_field(
-                remote_ip,
-                mkey="ip",
-                required_fields=['ip'],
-                field_name="remote_ip",
-                example="[{'ip': '192.168.1.10'}]",
-            )
-        if remote_ip6 is not None:
-            remote_ip6 = normalize_table_field(
-                remote_ip6,
-                mkey="ip6",
-                required_fields=['ip6'],
-                field_name="remote_ip6",
-                example="[{'ip6': 'value'}]",
-            )
-        
         # Build payload using helper function
-        # Note: auto_normalize=False because this endpoint has unitary fields
-        # (like 'interface') that would be incorrectly converted to list format
         payload_data = build_api_payload(
             api_type="cmdb",
-            auto_normalize=False,
             name=name,
             interface=interface,
             vni=vni,
@@ -420,7 +370,7 @@ class Vxlan(CRUDEndpoint, MetadataMixin):
         vdom: str | bool | None = None,
         error_mode: Literal["raise", "return", "print"] | None = None,
         error_format: Literal["detailed", "simple", "code_only"] | None = None,
-    ):  # type: ignore[no-untyped-def]
+    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """
         Create new system/vxlan object.
 
@@ -433,18 +383,8 @@ class Vxlan(CRUDEndpoint, MetadataMixin):
             vni: VXLAN network ID.
             ip_version: IP version to use for the VXLAN interface and so for communication over the VXLAN. IPv4 or IPv6 unicast or multicast.
             remote_ip: IPv4 address of the VXLAN interface on the device at the remote end of the VXLAN.
-                Default format: [{'ip': '192.168.1.10'}]
-                Supported formats:
-                  - Single string: "value" → [{'ip': 'value'}]
-                  - List of strings: ["val1", "val2"] → [{'ip': 'val1'}, ...]
-                  - List of dicts: [{'ip': '192.168.1.10'}] (recommended)
             local_ip: IPv4 address to use as the source address for egress VXLAN packets.
             remote_ip6: IPv6 IP address of the VXLAN interface on the device at the remote end of the VXLAN.
-                Default format: [{'ip6': 'value'}]
-                Supported formats:
-                  - Single string: "value" → [{'ip6': 'value'}]
-                  - List of strings: ["val1", "val2"] → [{'ip6': 'val1'}, ...]
-                  - List of dicts: [{'ip6': 'value'}] (recommended)
             local_ip6: IPv6 address to use as the source address for egress VXLAN packets.
             dstport: VXLAN destination port (1 - 65535, default = 4789).
             multicast_ttl: VXLAN multicast TTL (1-255, default = 0).
@@ -455,7 +395,7 @@ class Vxlan(CRUDEndpoint, MetadataMixin):
             error_format: Override client-level error_format. "detailed" provides full context, "simple" is concise, "code_only" returns just status code.
 
         Returns:
-            FortiObject instance with created object. Use .dict, .json, or .raw to access as dictionary.
+            API response as dictionary. Returns Coroutine if using async client.
 
         Examples:
             >>> # Create using individual parameters
@@ -480,30 +420,9 @@ class Vxlan(CRUDEndpoint, MetadataMixin):
             - put(): Update existing object
             - set(): Intelligent create or update
         """
-        # Apply normalization for table fields (supports flexible input formats)
-        if remote_ip is not None:
-            remote_ip = normalize_table_field(
-                remote_ip,
-                mkey="ip",
-                required_fields=['ip'],
-                field_name="remote_ip",
-                example="[{'ip': '192.168.1.10'}]",
-            )
-        if remote_ip6 is not None:
-            remote_ip6 = normalize_table_field(
-                remote_ip6,
-                mkey="ip6",
-                required_fields=['ip6'],
-                field_name="remote_ip6",
-                example="[{'ip6': 'value'}]",
-            )
-        
         # Build payload using helper function
-        # Note: auto_normalize=False because this endpoint has unitary fields
-        # (like 'interface') that would be incorrectly converted to list format
         payload_data = build_api_payload(
             api_type="cmdb",
-            auto_normalize=False,
             name=name,
             interface=interface,
             vni=vni,
@@ -555,7 +474,7 @@ class Vxlan(CRUDEndpoint, MetadataMixin):
         vdom: str | bool | None = None,
         error_mode: Literal["raise", "return", "print"] | None = None,
         error_format: Literal["detailed", "simple", "code_only"] | None = None,
-    ):  # type: ignore[no-untyped-def]
+    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """
         Delete system/vxlan object.
 
@@ -568,7 +487,7 @@ class Vxlan(CRUDEndpoint, MetadataMixin):
             error_format: Override client-level error_format. "detailed" provides full context, "simple" is concise, "code_only" returns just status code.
 
         Returns:
-            FortiObject instance. Use .dict, .json, or .raw to access as dictionary
+            API response as dictionary. Returns Coroutine if using async client.
 
         Raises:
             ValueError: If name is not provided
@@ -706,7 +625,7 @@ class Vxlan(CRUDEndpoint, MetadataMixin):
             **kwargs: Additional parameters passed to PUT or POST
 
         Returns:
-            FortiObject instance. Use .dict, .json, or .raw to access as dictionary
+            API response as dictionary. Returns Coroutine if using async client.
 
         Raises:
             ValueError: If name is missing from payload
@@ -741,30 +660,9 @@ class Vxlan(CRUDEndpoint, MetadataMixin):
             - put(): Update existing object
             - exists(): Check existence manually
         """
-        # Apply normalization for table fields (supports flexible input formats)
-        if remote_ip is not None:
-            remote_ip = normalize_table_field(
-                remote_ip,
-                mkey="ip",
-                required_fields=['ip'],
-                field_name="remote_ip",
-                example="[{'ip': '192.168.1.10'}]",
-            )
-        if remote_ip6 is not None:
-            remote_ip6 = normalize_table_field(
-                remote_ip6,
-                mkey="ip6",
-                required_fields=['ip6'],
-                field_name="remote_ip6",
-                example="[{'ip6': 'value'}]",
-            )
-        
         # Build payload using helper function
-        # Note: auto_normalize=False because this endpoint has unitary fields
-        # (like 'interface') that would be incorrectly converted to list format
         payload_data = build_api_payload(
             api_type="cmdb",
-            auto_normalize=False,
             name=name,
             interface=interface,
             vni=vni,

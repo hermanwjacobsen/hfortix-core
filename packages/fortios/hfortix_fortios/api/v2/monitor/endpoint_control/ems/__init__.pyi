@@ -13,26 +13,10 @@ if TYPE_CHECKING:
     from .unverify_cert import UnverifyCert
     from .verify_cert import VerifyCert
 
-__all__ = [
-    "CertStatus",
-    "MalwareHash",
-    "Status",
-    "StatusSummary",
-    "UnverifyCert",
-    "VerifyCert",
-    "Ems",
-]
-
 
 class Ems:
-    """EMS API category.
-    
-    All endpoints return FortiObject instances with:
-    - Attribute access: response.field
-    - Dictionary access: response["field"]
-    - Convert to dict: response.dict or response.json
-    """
-    
+    """Type stub for Ems."""
+
     cert_status: CertStatus
     malware_hash: MalwareHash
     status: Status
@@ -40,6 +24,4 @@ class Ems:
     unverify_cert: UnverifyCert
     verify_cert: VerifyCert
 
-    def __init__(self, client: IHTTPClient, vdom: str | None = None) -> None:
-        """Initialize ems category with HTTP client."""
-        ...
+    def __init__(self, client: IHTTPClient) -> None: ...

@@ -39,7 +39,6 @@ from typing import TYPE_CHECKING, Any, Literal, Union
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
-    from hfortix_fortios.models import FortiObject
 
 # Import helper functions from central _helpers module
 from hfortix_fortios._helpers import (
@@ -47,7 +46,6 @@ from hfortix_fortios._helpers import (
     build_cmdb_payload,  # Keep for backward compatibility / manual usage
     is_success,
     quote_path_param,  # URL encoding for path parameters
-    normalize_table_field,  # For table field normalization
 )
 # Import metadata mixin for schema introspection
 from hfortix_fortios._helpers.metadata_mixin import MetadataMixin
@@ -60,18 +58,6 @@ class Exchange(CRUDEndpoint, MetadataMixin):
     
     # Configure metadata mixin to use this endpoint's helper module
     _helper_module_name = "exchange"
-    
-    # ========================================================================
-    # Table Fields Metadata (for normalization)
-    # Auto-generated from schema - supports flexible input formats
-    # ========================================================================
-    _TABLE_FIELDS = {
-        "kdc_ip": {
-            "mkey": "ipv4",
-            "required_fields": ['ipv4'],
-            "example": "[{'ipv4': 'value'}]",
-        },
-    }
     
     # ========================================================================
     # Capabilities (from schema metadata)
@@ -106,7 +92,7 @@ class Exchange(CRUDEndpoint, MetadataMixin):
         vdom: str | bool | None = None,
         error_mode: Literal["raise", "return", "print"] | None = None,
         error_format: Literal["detailed", "simple", "code_only"] | None = None,
-    ):  # type: ignore[no-untyped-def]
+    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """
         Retrieve user/exchange configuration.
 
@@ -135,8 +121,8 @@ class Exchange(CRUDEndpoint, MetadataMixin):
             error_format: Override client-level error_format. "detailed" provides full context, "simple" is concise, "code_only" returns just status code.
 
         Returns:
-            FortiObject instance or list of FortiObject instances. Returns Coroutine if using async client.
-            Use .dict, .json, or .raw properties to access as dictionary.
+            API response as dictionary. Returns Coroutine if using async client.
+            Access results via dictionary keys (e.g., result['results'], result['http_status']).
             
             Response structure:
                 - http_method: GET
@@ -265,7 +251,7 @@ class Exchange(CRUDEndpoint, MetadataMixin):
         vdom: str | bool | None = None,
         error_mode: Literal["raise", "return", "print"] | None = None,
         error_format: Literal["detailed", "simple", "code_only"] | None = None,
-    ):  # type: ignore[no-untyped-def]
+    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """
         Update existing user/exchange object.
 
@@ -287,17 +273,12 @@ class Exchange(CRUDEndpoint, MetadataMixin):
             ssl_min_proto_version: Minimum SSL/TLS protocol version for HTTPS transport (default is to follow system global setting).
             auto_discover_kdc: Enable/disable automatic discovery of KDC IP addresses.
             kdc_ip: KDC IPv4 addresses for Kerberos authentication.
-                Default format: [{'ipv4': 'value'}]
-                Supported formats:
-                  - Single string: "value" → [{'ipv4': 'value'}]
-                  - List of strings: ["val1", "val2"] → [{'ipv4': 'val1'}, ...]
-                  - List of dicts: [{'ipv4': 'value'}] (recommended)
             vdom: Virtual domain name.
             error_mode: Override client-level error_mode. "raise" raises exceptions, "return" returns error dict, "print" prints errors.
             error_format: Override client-level error_format. "detailed" provides full context, "simple" is concise, "code_only" returns just status code.
 
         Returns:
-            FortiObject instance. Use .dict, .json, or .raw to access as dictionary.
+            API response as dictionary. Returns Coroutine if using async client.
 
         Raises:
             ValueError: If name is missing from payload
@@ -320,16 +301,6 @@ class Exchange(CRUDEndpoint, MetadataMixin):
             - post(): Create new object
             - set(): Intelligent create or update
         """
-        # Apply normalization for table fields (supports flexible input formats)
-        if kdc_ip is not None:
-            kdc_ip = normalize_table_field(
-                kdc_ip,
-                mkey="ipv4",
-                required_fields=['ipv4'],
-                field_name="kdc_ip",
-                example="[{'ipv4': 'value'}]",
-            )
-        
         # Build payload using helper function
         payload_data = build_api_payload(
             api_type="cmdb",
@@ -407,7 +378,7 @@ class Exchange(CRUDEndpoint, MetadataMixin):
         vdom: str | bool | None = None,
         error_mode: Literal["raise", "return", "print"] | None = None,
         error_format: Literal["detailed", "simple", "code_only"] | None = None,
-    ):  # type: ignore[no-untyped-def]
+    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """
         Create new user/exchange object.
 
@@ -429,17 +400,12 @@ class Exchange(CRUDEndpoint, MetadataMixin):
             ssl_min_proto_version: Minimum SSL/TLS protocol version for HTTPS transport (default is to follow system global setting).
             auto_discover_kdc: Enable/disable automatic discovery of KDC IP addresses.
             kdc_ip: KDC IPv4 addresses for Kerberos authentication.
-                Default format: [{'ipv4': 'value'}]
-                Supported formats:
-                  - Single string: "value" → [{'ipv4': 'value'}]
-                  - List of strings: ["val1", "val2"] → [{'ipv4': 'val1'}, ...]
-                  - List of dicts: [{'ipv4': 'value'}] (recommended)
             vdom: Virtual domain name. Use True for global, string for specific VDOM.
             error_mode: Override client-level error_mode. "raise" raises exceptions, "return" returns error dict, "print" prints errors.
             error_format: Override client-level error_format. "detailed" provides full context, "simple" is concise, "code_only" returns just status code.
 
         Returns:
-            FortiObject instance with created object. Use .dict, .json, or .raw to access as dictionary.
+            API response as dictionary. Returns Coroutine if using async client.
 
         Examples:
             >>> # Create using individual parameters
@@ -464,16 +430,6 @@ class Exchange(CRUDEndpoint, MetadataMixin):
             - put(): Update existing object
             - set(): Intelligent create or update
         """
-        # Apply normalization for table fields (supports flexible input formats)
-        if kdc_ip is not None:
-            kdc_ip = normalize_table_field(
-                kdc_ip,
-                mkey="ipv4",
-                required_fields=['ipv4'],
-                field_name="kdc_ip",
-                example="[{'ipv4': 'value'}]",
-            )
-        
         # Build payload using helper function
         payload_data = build_api_payload(
             api_type="cmdb",
@@ -530,7 +486,7 @@ class Exchange(CRUDEndpoint, MetadataMixin):
         vdom: str | bool | None = None,
         error_mode: Literal["raise", "return", "print"] | None = None,
         error_format: Literal["detailed", "simple", "code_only"] | None = None,
-    ):  # type: ignore[no-untyped-def]
+    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """
         Delete user/exchange object.
 
@@ -543,7 +499,7 @@ class Exchange(CRUDEndpoint, MetadataMixin):
             error_format: Override client-level error_format. "detailed" provides full context, "simple" is concise, "code_only" returns just status code.
 
         Returns:
-            FortiObject instance. Use .dict, .json, or .raw to access as dictionary
+            API response as dictionary. Returns Coroutine if using async client.
 
         Raises:
             ValueError: If name is not provided
@@ -685,7 +641,7 @@ class Exchange(CRUDEndpoint, MetadataMixin):
             **kwargs: Additional parameters passed to PUT or POST
 
         Returns:
-            FortiObject instance. Use .dict, .json, or .raw to access as dictionary
+            API response as dictionary. Returns Coroutine if using async client.
 
         Raises:
             ValueError: If name is missing from payload
@@ -720,16 +676,6 @@ class Exchange(CRUDEndpoint, MetadataMixin):
             - put(): Update existing object
             - exists(): Check existence manually
         """
-        # Apply normalization for table fields (supports flexible input formats)
-        if kdc_ip is not None:
-            kdc_ip = normalize_table_field(
-                kdc_ip,
-                mkey="ipv4",
-                required_fields=['ipv4'],
-                field_name="kdc_ip",
-                example="[{'ipv4': 'value'}]",
-            )
-        
         # Build payload using helper function
         payload_data = build_api_payload(
             api_type="cmdb",

@@ -39,7 +39,6 @@ from typing import TYPE_CHECKING, Any, Literal, Union
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
-    from hfortix_fortios.models import FortiObject
 
 # Import helper functions from central _helpers module
 from hfortix_fortios._helpers import (
@@ -47,7 +46,6 @@ from hfortix_fortios._helpers import (
     build_cmdb_payload,  # Keep for backward compatibility / manual usage
     is_success,
     quote_path_param,  # URL encoding for path parameters
-    normalize_table_field,  # For table field normalization
 )
 # Import metadata mixin for schema introspection
 from hfortix_fortios._helpers.metadata_mixin import MetadataMixin
@@ -60,18 +58,6 @@ class BlockAllowList(CRUDEndpoint, MetadataMixin):
     
     # Configure metadata mixin to use this endpoint's helper module
     _helper_module_name = "block_allow_list"
-    
-    # ========================================================================
-    # Table Fields Metadata (for normalization)
-    # Auto-generated from schema - supports flexible input formats
-    # ========================================================================
-    _TABLE_FIELDS = {
-        "entries": {
-            "mkey": "id",
-            "required_fields": ['status', 'id', 'type', 'action', 'addr-type', 'ip4-subnet', 'ip6-subnet', 'pattern-type', 'pattern'],
-            "example": "[{'status': 'enable', 'id': 1, 'type': 'ip', 'action': 'reject', 'addr-type': 'ipv4', 'ip4-subnet': 'value', 'ip6-subnet': 'value', 'pattern-type': 'wildcard', 'pattern': 'value'}]",
-        },
-    }
     
     # ========================================================================
     # Capabilities (from schema metadata)
@@ -106,7 +92,7 @@ class BlockAllowList(CRUDEndpoint, MetadataMixin):
         vdom: str | bool | None = None,
         error_mode: Literal["raise", "return", "print"] | None = None,
         error_format: Literal["detailed", "simple", "code_only"] | None = None,
-    ):  # type: ignore[no-untyped-def]
+    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """
         Retrieve emailfilter/block_allow_list configuration.
 
@@ -135,8 +121,8 @@ class BlockAllowList(CRUDEndpoint, MetadataMixin):
             error_format: Override client-level error_format. "detailed" provides full context, "simple" is concise, "code_only" returns just status code.
 
         Returns:
-            FortiObject instance or list of FortiObject instances. Returns Coroutine if using async client.
-            Use .dict, .json, or .raw properties to access as dictionary.
+            API response as dictionary. Returns Coroutine if using async client.
+            Access results via dictionary keys (e.g., result['results'], result['http_status']).
             
             Response structure:
                 - http_method: GET
@@ -255,7 +241,7 @@ class BlockAllowList(CRUDEndpoint, MetadataMixin):
         vdom: str | bool | None = None,
         error_mode: Literal["raise", "return", "print"] | None = None,
         error_format: Literal["detailed", "simple", "code_only"] | None = None,
-    ):  # type: ignore[no-untyped-def]
+    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """
         Update existing emailfilter/block_allow_list object.
 
@@ -267,15 +253,12 @@ class BlockAllowList(CRUDEndpoint, MetadataMixin):
             name: Name of table.
             comment: Optional comments.
             entries: Anti-spam block/allow entries.
-                Default format: [{'status': 'enable', 'id': 1, 'type': 'ip', 'action': 'reject', 'addr-type': 'ipv4', 'ip4-subnet': 'value', 'ip6-subnet': 'value', 'pattern-type': 'wildcard', 'pattern': 'value'}]
-                Required format: List of dicts with keys: status, id, type, action, addr-type, ip4-subnet, ip6-subnet, pattern-type, pattern
-                  (String format not allowed due to multiple required fields)
             vdom: Virtual domain name.
             error_mode: Override client-level error_mode. "raise" raises exceptions, "return" returns error dict, "print" prints errors.
             error_format: Override client-level error_format. "detailed" provides full context, "simple" is concise, "code_only" returns just status code.
 
         Returns:
-            FortiObject instance. Use .dict, .json, or .raw to access as dictionary.
+            API response as dictionary. Returns Coroutine if using async client.
 
         Raises:
             ValueError: If id is missing from payload
@@ -298,16 +281,6 @@ class BlockAllowList(CRUDEndpoint, MetadataMixin):
             - post(): Create new object
             - set(): Intelligent create or update
         """
-        # Apply normalization for table fields (supports flexible input formats)
-        if entries is not None:
-            entries = normalize_table_field(
-                entries,
-                mkey="id",
-                required_fields=['status', 'id', 'type', 'action', 'addr-type', 'ip4-subnet', 'ip6-subnet', 'pattern-type', 'pattern'],
-                field_name="entries",
-                example="[{'status': 'enable', 'id': 1, 'type': 'ip', 'action': 'reject', 'addr-type': 'ipv4', 'ip4-subnet': 'value', 'ip6-subnet': 'value', 'pattern-type': 'wildcard', 'pattern': 'value'}]",
-            )
-        
         # Build payload using helper function
         payload_data = build_api_payload(
             api_type="cmdb",
@@ -365,7 +338,7 @@ class BlockAllowList(CRUDEndpoint, MetadataMixin):
         vdom: str | bool | None = None,
         error_mode: Literal["raise", "return", "print"] | None = None,
         error_format: Literal["detailed", "simple", "code_only"] | None = None,
-    ):  # type: ignore[no-untyped-def]
+    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """
         Create new emailfilter/block_allow_list object.
 
@@ -377,15 +350,12 @@ class BlockAllowList(CRUDEndpoint, MetadataMixin):
             name: Name of table.
             comment: Optional comments.
             entries: Anti-spam block/allow entries.
-                Default format: [{'status': 'enable', 'id': 1, 'type': 'ip', 'action': 'reject', 'addr-type': 'ipv4', 'ip4-subnet': 'value', 'ip6-subnet': 'value', 'pattern-type': 'wildcard', 'pattern': 'value'}]
-                Required format: List of dicts with keys: status, id, type, action, addr-type, ip4-subnet, ip6-subnet, pattern-type, pattern
-                  (String format not allowed due to multiple required fields)
             vdom: Virtual domain name. Use True for global, string for specific VDOM.
             error_mode: Override client-level error_mode. "raise" raises exceptions, "return" returns error dict, "print" prints errors.
             error_format: Override client-level error_format. "detailed" provides full context, "simple" is concise, "code_only" returns just status code.
 
         Returns:
-            FortiObject instance with created object. Use .dict, .json, or .raw to access as dictionary.
+            API response as dictionary. Returns Coroutine if using async client.
 
         Examples:
             >>> # Create using individual parameters
@@ -410,16 +380,6 @@ class BlockAllowList(CRUDEndpoint, MetadataMixin):
             - put(): Update existing object
             - set(): Intelligent create or update
         """
-        # Apply normalization for table fields (supports flexible input formats)
-        if entries is not None:
-            entries = normalize_table_field(
-                entries,
-                mkey="id",
-                required_fields=['status', 'id', 'type', 'action', 'addr-type', 'ip4-subnet', 'ip6-subnet', 'pattern-type', 'pattern'],
-                field_name="entries",
-                example="[{'status': 'enable', 'id': 1, 'type': 'ip', 'action': 'reject', 'addr-type': 'ipv4', 'ip4-subnet': 'value', 'ip6-subnet': 'value', 'pattern-type': 'wildcard', 'pattern': 'value'}]",
-            )
-        
         # Build payload using helper function
         payload_data = build_api_payload(
             api_type="cmdb",
@@ -466,7 +426,7 @@ class BlockAllowList(CRUDEndpoint, MetadataMixin):
         vdom: str | bool | None = None,
         error_mode: Literal["raise", "return", "print"] | None = None,
         error_format: Literal["detailed", "simple", "code_only"] | None = None,
-    ):  # type: ignore[no-untyped-def]
+    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """
         Delete emailfilter/block_allow_list object.
 
@@ -479,7 +439,7 @@ class BlockAllowList(CRUDEndpoint, MetadataMixin):
             error_format: Override client-level error_format. "detailed" provides full context, "simple" is concise, "code_only" returns just status code.
 
         Returns:
-            FortiObject instance. Use .dict, .json, or .raw to access as dictionary
+            API response as dictionary. Returns Coroutine if using async client.
 
         Raises:
             ValueError: If id is not provided
@@ -601,7 +561,7 @@ class BlockAllowList(CRUDEndpoint, MetadataMixin):
             **kwargs: Additional parameters passed to PUT or POST
 
         Returns:
-            FortiObject instance. Use .dict, .json, or .raw to access as dictionary
+            API response as dictionary. Returns Coroutine if using async client.
 
         Raises:
             ValueError: If id is missing from payload
@@ -636,16 +596,6 @@ class BlockAllowList(CRUDEndpoint, MetadataMixin):
             - put(): Update existing object
             - exists(): Check existence manually
         """
-        # Apply normalization for table fields (supports flexible input formats)
-        if entries is not None:
-            entries = normalize_table_field(
-                entries,
-                mkey="id",
-                required_fields=['status', 'id', 'type', 'action', 'addr-type', 'ip4-subnet', 'ip6-subnet', 'pattern-type', 'pattern'],
-                field_name="entries",
-                example="[{'status': 'enable', 'id': 1, 'type': 'ip', 'action': 'reject', 'addr-type': 'ipv4', 'ip4-subnet': 'value', 'ip6-subnet': 'value', 'pattern-type': 'wildcard', 'pattern': 'value'}]",
-            )
-        
         # Build payload using helper function
         payload_data = build_api_payload(
             api_type="cmdb",

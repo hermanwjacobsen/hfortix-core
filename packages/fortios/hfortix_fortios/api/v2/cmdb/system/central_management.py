@@ -39,7 +39,6 @@ from typing import TYPE_CHECKING, Any, Literal, Union
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
-    from hfortix_fortios.models import FortiObject
 
 # Import helper functions from central _helpers module
 from hfortix_fortios._helpers import (
@@ -47,7 +46,6 @@ from hfortix_fortios._helpers import (
     build_cmdb_payload,  # Keep for backward compatibility / manual usage
     is_success,
     quote_path_param,  # URL encoding for path parameters
-    normalize_table_field,  # For table field normalization
 )
 # Import metadata mixin for schema introspection
 from hfortix_fortios._helpers.metadata_mixin import MetadataMixin
@@ -60,18 +58,6 @@ class CentralManagement(CRUDEndpoint, MetadataMixin):
     
     # Configure metadata mixin to use this endpoint's helper module
     _helper_module_name = "central_management"
-    
-    # ========================================================================
-    # Table Fields Metadata (for normalization)
-    # Auto-generated from schema - supports flexible input formats
-    # ========================================================================
-    _TABLE_FIELDS = {
-        "server_list": {
-            "mkey": "id",
-            "required_fields": ['server-type', 'server-address', 'server-address6', 'fqdn'],
-            "example": "[{'server-type': 'update', 'server-address': '192.168.1.10', 'server-address6': 'value', 'fqdn': 'value'}]",
-        },
-    }
     
     # ========================================================================
     # Capabilities (from schema metadata)
@@ -105,7 +91,7 @@ class CentralManagement(CRUDEndpoint, MetadataMixin):
         payload_dict: dict[str, Any] | None = None,
         error_mode: Literal["raise", "return", "print"] | None = None,
         error_format: Literal["detailed", "simple", "code_only"] | None = None,
-    ):  # type: ignore[no-untyped-def]
+    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """
         Retrieve system/central_management configuration.
 
@@ -132,8 +118,8 @@ class CentralManagement(CRUDEndpoint, MetadataMixin):
             error_format: Override client-level error_format. "detailed" provides full context, "simple" is concise, "code_only" returns just status code.
 
         Returns:
-            FortiObject instance or list of FortiObject instances. Returns Coroutine if using async client.
-            Use .dict, .json, or .raw properties to access as dictionary.
+            API response as dictionary. Returns Coroutine if using async client.
+            Access results via dictionary keys (e.g., result['results'], result['http_status']).
             
             Response structure:
                 - http_method: GET
@@ -264,7 +250,7 @@ class CentralManagement(CRUDEndpoint, MetadataMixin):
         q_scope: str | None = None,
         error_mode: Literal["raise", "return", "print"] | None = None,
         error_format: Literal["detailed", "simple", "code_only"] | None = None,
-    ):  # type: ignore[no-untyped-def]
+    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """
         Update existing system/central_management object.
 
@@ -289,9 +275,6 @@ class CentralManagement(CRUDEndpoint, MetadataMixin):
             ca_cert: CA certificate to be used by FGFM protocol.
             vdom: Virtual domain (VDOM) name to use when communicating with FortiManager.
             server_list: Additional severs that the FortiGate can use for updates (for AV, IPS, updates) and ratings (for web filter and antispam ratings) servers.
-                Default format: [{'server-type': 'update', 'server-address': '192.168.1.10', 'server-address6': 'value', 'fqdn': 'value'}]
-                Required format: List of dicts with keys: server-type, server-address, server-address6, fqdn
-                  (String format not allowed due to multiple required fields)
             fmg_update_port: Port used to communicate with FortiManager that is acting as a FortiGuard update server.
             fmg_update_http_header: Enable/disable inclusion of HTTP header in update request.
             include_default_servers: Enable/disable inclusion of public FortiGuard servers in the override server list.
@@ -303,7 +286,7 @@ class CentralManagement(CRUDEndpoint, MetadataMixin):
             error_format: Override client-level error_format. "detailed" provides full context, "simple" is concise, "code_only" returns just status code.
 
         Returns:
-            FortiObject instance. Use .dict, .json, or .raw to access as dictionary.
+            API response as dictionary. Returns Coroutine if using async client.
 
         Raises:
             ValueError: If name is missing from payload
@@ -326,22 +309,9 @@ class CentralManagement(CRUDEndpoint, MetadataMixin):
             - post(): Create new object
             - set(): Intelligent create or update
         """
-        # Apply normalization for table fields (supports flexible input formats)
-        if server_list is not None:
-            server_list = normalize_table_field(
-                server_list,
-                mkey="id",
-                required_fields=['server-type', 'server-address', 'server-address6', 'fqdn'],
-                field_name="server_list",
-                example="[{'server-type': 'update', 'server-address': '192.168.1.10', 'server-address6': 'value', 'fqdn': 'value'}]",
-            )
-        
         # Build payload using helper function
-        # Note: auto_normalize=False because this endpoint has unitary fields
-        # (like 'interface') that would be incorrectly converted to list format
         payload_data = build_api_payload(
             api_type="cmdb",
-            auto_normalize=False,
             mode=mode,
             type=type,
             fortigate_cloud_sso_default_profile=fortigate_cloud_sso_default_profile,

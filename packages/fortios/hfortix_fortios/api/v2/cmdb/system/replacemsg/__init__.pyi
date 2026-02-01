@@ -19,32 +19,10 @@ if TYPE_CHECKING:
     from .traffic_quota import TrafficQuota
     from .utm import Utm
 
-__all__ = [
-    "Admin",
-    "Alertmail",
-    "Auth",
-    "Automation",
-    "FortiguardWf",
-    "Http",
-    "Mail",
-    "NacQuar",
-    "Spam",
-    "Sslvpn",
-    "TrafficQuota",
-    "Utm",
-    "Replacemsg",
-]
-
 
 class Replacemsg:
-    """REPLACEMSG API category.
-    
-    All endpoints return FortiObject instances with:
-    - Attribute access: response.field
-    - Dictionary access: response["field"]
-    - Convert to dict: response.dict or response.json
-    """
-    
+    """Type stub for Replacemsg."""
+
     admin: Admin
     alertmail: Alertmail
     auth: Auth
@@ -58,6 +36,4 @@ class Replacemsg:
     traffic_quota: TrafficQuota
     utm: Utm
 
-    def __init__(self, client: IHTTPClient, vdom: str | None = None) -> None:
-        """Initialize replacemsg category with HTTP client."""
-        ...
+    def __init__(self, client: IHTTPClient) -> None: ...

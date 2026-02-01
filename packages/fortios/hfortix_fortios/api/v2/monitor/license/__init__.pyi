@@ -12,30 +12,14 @@ if TYPE_CHECKING:
     from .status import Status
     from .database import Database
 
-__all__ = [
-    "FortianalyzerStatus",
-    "ForticareOrgList",
-    "ForticareResellers",
-    "Status",
-    "License",
-]
-
 
 class License:
-    """LICENSE API category.
-    
-    All endpoints return FortiObject instances with:
-    - Attribute access: response.field
-    - Dictionary access: response["field"]
-    - Convert to dict: response.dict or response.json
-    """
-    
+    """Type stub for License."""
+
     database: Database
     fortianalyzer_status: FortianalyzerStatus
     forticare_org_list: ForticareOrgList
     forticare_resellers: ForticareResellers
     status: Status
 
-    def __init__(self, client: IHTTPClient, vdom: str | None = None) -> None:
-        """Initialize license category with HTTP client."""
-        ...
+    def __init__(self, client: IHTTPClient) -> None: ...

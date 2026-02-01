@@ -39,7 +39,6 @@ from typing import TYPE_CHECKING, Any, Literal, Union
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
-    from hfortix_fortios.models import FortiObject
 
 # Import helper functions from central _helpers module
 from hfortix_fortios._helpers import (
@@ -47,7 +46,6 @@ from hfortix_fortios._helpers import (
     build_cmdb_payload,  # Keep for backward compatibility / manual usage
     is_success,
     quote_path_param,  # URL encoding for path parameters
-    normalize_table_field,  # For table field normalization
 )
 # Import metadata mixin for schema introspection
 from hfortix_fortios._helpers.metadata_mixin import MetadataMixin
@@ -60,23 +58,6 @@ class SwitchInterface(CRUDEndpoint, MetadataMixin):
     
     # Configure metadata mixin to use this endpoint's helper module
     _helper_module_name = "switch_interface"
-    
-    # ========================================================================
-    # Table Fields Metadata (for normalization)
-    # Auto-generated from schema - supports flexible input formats
-    # ========================================================================
-    _TABLE_FIELDS = {
-        "span_source_port": {
-            "mkey": "interface-name",
-            "required_fields": ['interface-name'],
-            "example": "[{'interface-name': 'value'}]",
-        },
-        "member": {
-            "mkey": "interface-name",
-            "required_fields": ['interface-name'],
-            "example": "[{'interface-name': 'value'}]",
-        },
-    }
     
     # ========================================================================
     # Capabilities (from schema metadata)
@@ -111,7 +92,7 @@ class SwitchInterface(CRUDEndpoint, MetadataMixin):
         vdom: str | bool | None = None,
         error_mode: Literal["raise", "return", "print"] | None = None,
         error_format: Literal["detailed", "simple", "code_only"] | None = None,
-    ):  # type: ignore[no-untyped-def]
+    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """
         Retrieve system/switch_interface configuration.
 
@@ -140,8 +121,8 @@ class SwitchInterface(CRUDEndpoint, MetadataMixin):
             error_format: Override client-level error_format. "detailed" provides full context, "simple" is concise, "code_only" returns just status code.
 
         Returns:
-            FortiObject instance or list of FortiObject instances. Returns Coroutine if using async client.
-            Use .dict, .json, or .raw properties to access as dictionary.
+            API response as dictionary. Returns Coroutine if using async client.
+            Access results via dictionary keys (e.g., result['results'], result['http_status']).
             
             Response structure:
                 - http_method: GET
@@ -265,7 +246,7 @@ class SwitchInterface(CRUDEndpoint, MetadataMixin):
         vdom: str | bool | None = None,
         error_mode: Literal["raise", "return", "print"] | None = None,
         error_format: Literal["detailed", "simple", "code_only"] | None = None,
-    ):  # type: ignore[no-untyped-def]
+    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """
         Update existing system/switch_interface object.
 
@@ -277,17 +258,7 @@ class SwitchInterface(CRUDEndpoint, MetadataMixin):
             vdom: VDOM that the software switch belongs to.
             span_dest_port: SPAN destination port name. All traffic on the SPAN source ports is echoed to the SPAN destination port.
             span_source_port: Physical interface name. Port spanning echoes all traffic on the SPAN source ports to the SPAN destination port.
-                Default format: [{'interface-name': 'value'}]
-                Supported formats:
-                  - Single string: "value" → [{'interface-name': 'value'}]
-                  - List of strings: ["val1", "val2"] → [{'interface-name': 'val1'}, ...]
-                  - List of dicts: [{'interface-name': 'value'}] (recommended)
             member: Names of the interfaces that belong to the virtual switch.
-                Default format: [{'interface-name': 'value'}]
-                Supported formats:
-                  - Single string: "value" → [{'interface-name': 'value'}]
-                  - List of strings: ["val1", "val2"] → [{'interface-name': 'val1'}, ...]
-                  - List of dicts: [{'interface-name': 'value'}] (recommended)
             type: Type of switch based on functionality: switch for normal functionality, or hub to duplicate packets to all port members.
             intra_switch_policy: Allow any traffic between switch interfaces or require firewall policies to allow traffic between switch interfaces.
             mac_ttl: Duration for which MAC addresses are held in the ARP table (300 - 8640000 sec, default = 300).
@@ -298,7 +269,7 @@ class SwitchInterface(CRUDEndpoint, MetadataMixin):
             error_format: Override client-level error_format. "detailed" provides full context, "simple" is concise, "code_only" returns just status code.
 
         Returns:
-            FortiObject instance. Use .dict, .json, or .raw to access as dictionary.
+            API response as dictionary. Returns Coroutine if using async client.
 
         Raises:
             ValueError: If name is missing from payload
@@ -321,24 +292,6 @@ class SwitchInterface(CRUDEndpoint, MetadataMixin):
             - post(): Create new object
             - set(): Intelligent create or update
         """
-        # Apply normalization for table fields (supports flexible input formats)
-        if span_source_port is not None:
-            span_source_port = normalize_table_field(
-                span_source_port,
-                mkey="interface-name",
-                required_fields=['interface-name'],
-                field_name="span_source_port",
-                example="[{'interface-name': 'value'}]",
-            )
-        if member is not None:
-            member = normalize_table_field(
-                member,
-                mkey="interface-name",
-                required_fields=['interface-name'],
-                field_name="member",
-                example="[{'interface-name': 'value'}]",
-            )
-        
         # Build payload using helper function
         payload_data = build_api_payload(
             api_type="cmdb",
@@ -406,7 +359,7 @@ class SwitchInterface(CRUDEndpoint, MetadataMixin):
         vdom: str | bool | None = None,
         error_mode: Literal["raise", "return", "print"] | None = None,
         error_format: Literal["detailed", "simple", "code_only"] | None = None,
-    ):  # type: ignore[no-untyped-def]
+    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """
         Create new system/switch_interface object.
 
@@ -418,17 +371,7 @@ class SwitchInterface(CRUDEndpoint, MetadataMixin):
             vdom: VDOM that the software switch belongs to.
             span_dest_port: SPAN destination port name. All traffic on the SPAN source ports is echoed to the SPAN destination port.
             span_source_port: Physical interface name. Port spanning echoes all traffic on the SPAN source ports to the SPAN destination port.
-                Default format: [{'interface-name': 'value'}]
-                Supported formats:
-                  - Single string: "value" → [{'interface-name': 'value'}]
-                  - List of strings: ["val1", "val2"] → [{'interface-name': 'val1'}, ...]
-                  - List of dicts: [{'interface-name': 'value'}] (recommended)
             member: Names of the interfaces that belong to the virtual switch.
-                Default format: [{'interface-name': 'value'}]
-                Supported formats:
-                  - Single string: "value" → [{'interface-name': 'value'}]
-                  - List of strings: ["val1", "val2"] → [{'interface-name': 'val1'}, ...]
-                  - List of dicts: [{'interface-name': 'value'}] (recommended)
             type: Type of switch based on functionality: switch for normal functionality, or hub to duplicate packets to all port members.
             intra_switch_policy: Allow any traffic between switch interfaces or require firewall policies to allow traffic between switch interfaces.
             mac_ttl: Duration for which MAC addresses are held in the ARP table (300 - 8640000 sec, default = 300).
@@ -439,7 +382,7 @@ class SwitchInterface(CRUDEndpoint, MetadataMixin):
             error_format: Override client-level error_format. "detailed" provides full context, "simple" is concise, "code_only" returns just status code.
 
         Returns:
-            FortiObject instance with created object. Use .dict, .json, or .raw to access as dictionary.
+            API response as dictionary. Returns Coroutine if using async client.
 
         Examples:
             >>> # Create using individual parameters
@@ -464,24 +407,6 @@ class SwitchInterface(CRUDEndpoint, MetadataMixin):
             - put(): Update existing object
             - set(): Intelligent create or update
         """
-        # Apply normalization for table fields (supports flexible input formats)
-        if span_source_port is not None:
-            span_source_port = normalize_table_field(
-                span_source_port,
-                mkey="interface-name",
-                required_fields=['interface-name'],
-                field_name="span_source_port",
-                example="[{'interface-name': 'value'}]",
-            )
-        if member is not None:
-            member = normalize_table_field(
-                member,
-                mkey="interface-name",
-                required_fields=['interface-name'],
-                field_name="member",
-                example="[{'interface-name': 'value'}]",
-            )
-        
         # Build payload using helper function
         payload_data = build_api_payload(
             api_type="cmdb",
@@ -533,7 +458,7 @@ class SwitchInterface(CRUDEndpoint, MetadataMixin):
         vdom: str | bool | None = None,
         error_mode: Literal["raise", "return", "print"] | None = None,
         error_format: Literal["detailed", "simple", "code_only"] | None = None,
-    ):  # type: ignore[no-untyped-def]
+    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """
         Delete system/switch_interface object.
 
@@ -546,7 +471,7 @@ class SwitchInterface(CRUDEndpoint, MetadataMixin):
             error_format: Override client-level error_format. "detailed" provides full context, "simple" is concise, "code_only" returns just status code.
 
         Returns:
-            FortiObject instance. Use .dict, .json, or .raw to access as dictionary
+            API response as dictionary. Returns Coroutine if using async client.
 
         Raises:
             ValueError: If name is not provided
@@ -678,7 +603,7 @@ class SwitchInterface(CRUDEndpoint, MetadataMixin):
             **kwargs: Additional parameters passed to PUT or POST
 
         Returns:
-            FortiObject instance. Use .dict, .json, or .raw to access as dictionary
+            API response as dictionary. Returns Coroutine if using async client.
 
         Raises:
             ValueError: If name is missing from payload
@@ -713,24 +638,6 @@ class SwitchInterface(CRUDEndpoint, MetadataMixin):
             - put(): Update existing object
             - exists(): Check existence manually
         """
-        # Apply normalization for table fields (supports flexible input formats)
-        if span_source_port is not None:
-            span_source_port = normalize_table_field(
-                span_source_port,
-                mkey="interface-name",
-                required_fields=['interface-name'],
-                field_name="span_source_port",
-                example="[{'interface-name': 'value'}]",
-            )
-        if member is not None:
-            member = normalize_table_field(
-                member,
-                mkey="interface-name",
-                required_fields=['interface-name'],
-                field_name="member",
-                example="[{'interface-name': 'value'}]",
-            )
-        
         # Build payload using helper function
         payload_data = build_api_payload(
             api_type="cmdb",

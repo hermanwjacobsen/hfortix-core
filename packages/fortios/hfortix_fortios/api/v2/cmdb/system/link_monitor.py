@@ -39,7 +39,6 @@ from typing import TYPE_CHECKING, Any, Literal, Union
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
-    from hfortix_fortios.models import FortiObject
 
 # Import helper functions from central _helpers module
 from hfortix_fortios._helpers import (
@@ -47,7 +46,6 @@ from hfortix_fortios._helpers import (
     build_cmdb_payload,  # Keep for backward compatibility / manual usage
     is_success,
     quote_path_param,  # URL encoding for path parameters
-    normalize_table_field,  # For table field normalization
 )
 # Import metadata mixin for schema introspection
 from hfortix_fortios._helpers.metadata_mixin import MetadataMixin
@@ -60,28 +58,6 @@ class LinkMonitor(CRUDEndpoint, MetadataMixin):
     
     # Configure metadata mixin to use this endpoint's helper module
     _helper_module_name = "link_monitor"
-    
-    # ========================================================================
-    # Table Fields Metadata (for normalization)
-    # Auto-generated from schema - supports flexible input formats
-    # ========================================================================
-    _TABLE_FIELDS = {
-        "server": {
-            "mkey": "address",
-            "required_fields": ['address'],
-            "example": "[{'address': 'value'}]",
-        },
-        "route": {
-            "mkey": "subnet",
-            "required_fields": ['subnet'],
-            "example": "[{'subnet': 'value'}]",
-        },
-        "server_list": {
-            "mkey": "id",
-            "required_fields": ['id', 'dst'],
-            "example": "[{'id': 1, 'dst': 'value'}]",
-        },
-    }
     
     # ========================================================================
     # Capabilities (from schema metadata)
@@ -116,7 +92,7 @@ class LinkMonitor(CRUDEndpoint, MetadataMixin):
         vdom: str | bool | None = None,
         error_mode: Literal["raise", "return", "print"] | None = None,
         error_format: Literal["detailed", "simple", "code_only"] | None = None,
-    ):  # type: ignore[no-untyped-def]
+    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """
         Retrieve system/link_monitor configuration.
 
@@ -145,8 +121,8 @@ class LinkMonitor(CRUDEndpoint, MetadataMixin):
             error_format: Override client-level error_format. "detailed" provides full context, "simple" is concise, "code_only" returns just status code.
 
         Returns:
-            FortiObject instance or list of FortiObject instances. Returns Coroutine if using async client.
-            Use .dict, .json, or .raw properties to access as dictionary.
+            API response as dictionary. Returns Coroutine if using async client.
+            Access results via dictionary keys (e.g., result['results'], result['http_status']).
             
             Response structure:
                 - http_method: GET
@@ -295,7 +271,7 @@ class LinkMonitor(CRUDEndpoint, MetadataMixin):
         vdom: str | bool | None = None,
         error_mode: Literal["raise", "return", "print"] | None = None,
         error_format: Literal["detailed", "simple", "code_only"] | None = None,
-    ):  # type: ignore[no-untyped-def]
+    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """
         Update existing system/link_monitor object.
 
@@ -309,21 +285,11 @@ class LinkMonitor(CRUDEndpoint, MetadataMixin):
             server_config: Mode of server configuration.
             server_type: Server type (static or dynamic).
             server: IP address of the server(s) to be monitored.
-                Default format: [{'address': 'value'}]
-                Supported formats:
-                  - Single string: "value" → [{'address': 'value'}]
-                  - List of strings: ["val1", "val2"] → [{'address': 'val1'}, ...]
-                  - List of dicts: [{'address': 'value'}] (recommended)
             protocol: Protocols used to monitor the server.
             port: Port number of the traffic to be used to monitor the server.
             gateway_ip: Gateway IP address used to probe the server.
             gateway_ip6: Gateway IPv6 address used to probe the server.
             route: Subnet to monitor.
-                Default format: [{'subnet': 'value'}]
-                Supported formats:
-                  - Single string: "value" → [{'subnet': 'value'}]
-                  - List of strings: ["val1", "val2"] → [{'subnet': 'val1'}, ...]
-                  - List of dicts: [{'subnet': 'value'}] (recommended)
             source_ip: Source IP address used in packet to the server.
             source_ip6: Source IPv6 address used in packet to the server.
             http_get: If you are monitoring an HTML server you can send an HTTP-GET request with a custom string. Use this option to define the string.
@@ -347,15 +313,12 @@ class LinkMonitor(CRUDEndpoint, MetadataMixin):
             class_id: Traffic class ID.
             service_detection: Only use monitor to read quality values. If enabled, static routes and cascade interfaces will not be updated.
             server_list: Servers for link-monitor to monitor.
-                Default format: [{'id': 1, 'dst': 'value'}]
-                Required format: List of dicts with keys: id, dst
-                  (String format not allowed due to multiple required fields)
             vdom: Virtual domain name.
             error_mode: Override client-level error_mode. "raise" raises exceptions, "return" returns error dict, "print" prints errors.
             error_format: Override client-level error_format. "detailed" provides full context, "simple" is concise, "code_only" returns just status code.
 
         Returns:
-            FortiObject instance. Use .dict, .json, or .raw to access as dictionary.
+            API response as dictionary. Returns Coroutine if using async client.
 
         Raises:
             ValueError: If name is missing from payload
@@ -378,40 +341,9 @@ class LinkMonitor(CRUDEndpoint, MetadataMixin):
             - post(): Create new object
             - set(): Intelligent create or update
         """
-        # Apply normalization for table fields (supports flexible input formats)
-        if server is not None:
-            server = normalize_table_field(
-                server,
-                mkey="address",
-                required_fields=['address'],
-                field_name="server",
-                example="[{'address': 'value'}]",
-            )
-        if route is not None:
-            route = normalize_table_field(
-                route,
-                mkey="subnet",
-                required_fields=['subnet'],
-                field_name="route",
-                example="[{'subnet': 'value'}]",
-            )
-        if server_list is not None:
-            server_list = normalize_table_field(
-                server_list,
-                mkey="id",
-                required_fields=['id', 'dst'],
-                field_name="server_list",
-                example="[{'id': 1, 'dst': 'value'}]",
-            )
-        
-        # Apply normalization for multi-value option fields (space-separated strings)
-        
         # Build payload using helper function
-        # Note: auto_normalize=False because this endpoint has unitary fields
-        # (like 'interface') that would be incorrectly converted to list format
         payload_data = build_api_payload(
             api_type="cmdb",
-            auto_normalize=False,
             name=name,
             addr_mode=addr_mode,
             srcintf=srcintf,
@@ -526,7 +458,7 @@ class LinkMonitor(CRUDEndpoint, MetadataMixin):
         vdom: str | bool | None = None,
         error_mode: Literal["raise", "return", "print"] | None = None,
         error_format: Literal["detailed", "simple", "code_only"] | None = None,
-    ):  # type: ignore[no-untyped-def]
+    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """
         Create new system/link_monitor object.
 
@@ -540,21 +472,11 @@ class LinkMonitor(CRUDEndpoint, MetadataMixin):
             server_config: Mode of server configuration.
             server_type: Server type (static or dynamic).
             server: IP address of the server(s) to be monitored.
-                Default format: [{'address': 'value'}]
-                Supported formats:
-                  - Single string: "value" → [{'address': 'value'}]
-                  - List of strings: ["val1", "val2"] → [{'address': 'val1'}, ...]
-                  - List of dicts: [{'address': 'value'}] (recommended)
             protocol: Protocols used to monitor the server.
             port: Port number of the traffic to be used to monitor the server.
             gateway_ip: Gateway IP address used to probe the server.
             gateway_ip6: Gateway IPv6 address used to probe the server.
             route: Subnet to monitor.
-                Default format: [{'subnet': 'value'}]
-                Supported formats:
-                  - Single string: "value" → [{'subnet': 'value'}]
-                  - List of strings: ["val1", "val2"] → [{'subnet': 'val1'}, ...]
-                  - List of dicts: [{'subnet': 'value'}] (recommended)
             source_ip: Source IP address used in packet to the server.
             source_ip6: Source IPv6 address used in packet to the server.
             http_get: If you are monitoring an HTML server you can send an HTTP-GET request with a custom string. Use this option to define the string.
@@ -578,15 +500,12 @@ class LinkMonitor(CRUDEndpoint, MetadataMixin):
             class_id: Traffic class ID.
             service_detection: Only use monitor to read quality values. If enabled, static routes and cascade interfaces will not be updated.
             server_list: Servers for link-monitor to monitor.
-                Default format: [{'id': 1, 'dst': 'value'}]
-                Required format: List of dicts with keys: id, dst
-                  (String format not allowed due to multiple required fields)
             vdom: Virtual domain name. Use True for global, string for specific VDOM.
             error_mode: Override client-level error_mode. "raise" raises exceptions, "return" returns error dict, "print" prints errors.
             error_format: Override client-level error_format. "detailed" provides full context, "simple" is concise, "code_only" returns just status code.
 
         Returns:
-            FortiObject instance with created object. Use .dict, .json, or .raw to access as dictionary.
+            API response as dictionary. Returns Coroutine if using async client.
 
         Examples:
             >>> # Create using individual parameters
@@ -611,40 +530,9 @@ class LinkMonitor(CRUDEndpoint, MetadataMixin):
             - put(): Update existing object
             - set(): Intelligent create or update
         """
-        # Apply normalization for table fields (supports flexible input formats)
-        if server is not None:
-            server = normalize_table_field(
-                server,
-                mkey="address",
-                required_fields=['address'],
-                field_name="server",
-                example="[{'address': 'value'}]",
-            )
-        if route is not None:
-            route = normalize_table_field(
-                route,
-                mkey="subnet",
-                required_fields=['subnet'],
-                field_name="route",
-                example="[{'subnet': 'value'}]",
-            )
-        if server_list is not None:
-            server_list = normalize_table_field(
-                server_list,
-                mkey="id",
-                required_fields=['id', 'dst'],
-                field_name="server_list",
-                example="[{'id': 1, 'dst': 'value'}]",
-            )
-        
-        # Apply normalization for multi-value option fields (space-separated strings)
-        
         # Build payload using helper function
-        # Note: auto_normalize=False because this endpoint has unitary fields
-        # (like 'interface') that would be incorrectly converted to list format
         payload_data = build_api_payload(
             api_type="cmdb",
-            auto_normalize=False,
             name=name,
             addr_mode=addr_mode,
             srcintf=srcintf,
@@ -718,7 +606,7 @@ class LinkMonitor(CRUDEndpoint, MetadataMixin):
         vdom: str | bool | None = None,
         error_mode: Literal["raise", "return", "print"] | None = None,
         error_format: Literal["detailed", "simple", "code_only"] | None = None,
-    ):  # type: ignore[no-untyped-def]
+    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """
         Delete system/link_monitor object.
 
@@ -731,7 +619,7 @@ class LinkMonitor(CRUDEndpoint, MetadataMixin):
             error_format: Override client-level error_format. "detailed" provides full context, "simple" is concise, "code_only" returns just status code.
 
         Returns:
-            FortiObject instance. Use .dict, .json, or .raw to access as dictionary
+            API response as dictionary. Returns Coroutine if using async client.
 
         Raises:
             ValueError: If name is not provided
@@ -913,7 +801,7 @@ class LinkMonitor(CRUDEndpoint, MetadataMixin):
             **kwargs: Additional parameters passed to PUT or POST
 
         Returns:
-            FortiObject instance. Use .dict, .json, or .raw to access as dictionary
+            API response as dictionary. Returns Coroutine if using async client.
 
         Raises:
             ValueError: If name is missing from payload
@@ -948,40 +836,9 @@ class LinkMonitor(CRUDEndpoint, MetadataMixin):
             - put(): Update existing object
             - exists(): Check existence manually
         """
-        # Apply normalization for table fields (supports flexible input formats)
-        if server is not None:
-            server = normalize_table_field(
-                server,
-                mkey="address",
-                required_fields=['address'],
-                field_name="server",
-                example="[{'address': 'value'}]",
-            )
-        if route is not None:
-            route = normalize_table_field(
-                route,
-                mkey="subnet",
-                required_fields=['subnet'],
-                field_name="route",
-                example="[{'subnet': 'value'}]",
-            )
-        if server_list is not None:
-            server_list = normalize_table_field(
-                server_list,
-                mkey="id",
-                required_fields=['id', 'dst'],
-                field_name="server_list",
-                example="[{'id': 1, 'dst': 'value'}]",
-            )
-        
-        # Apply normalization for multi-value option fields (space-separated strings)
-        
         # Build payload using helper function
-        # Note: auto_normalize=False because this endpoint has unitary fields
-        # (like 'interface') that would be incorrectly converted to list format
         payload_data = build_api_payload(
             api_type="cmdb",
-            auto_normalize=False,
             name=name,
             addr_mode=addr_mode,
             srcintf=srcintf,

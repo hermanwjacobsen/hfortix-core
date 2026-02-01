@@ -28,25 +28,10 @@ if TYPE_CHECKING:
     from .tacacs_plus_accounting3 import TacacsPlusAccounting3
     from .webtrends import Webtrends
 
-__all__ = [
-    "CustomField",
-    "Eventfilter",
-    "GuiDisplay",
-    "Setting",
-    "ThreatWeight",
-    "Log",
-]
-
 
 class Log:
-    """LOG API category.
-    
-    All endpoints return FortiObject instances with:
-    - Attribute access: response.field
-    - Dictionary access: response["field"]
-    - Convert to dict: response.dict or response.json
-    """
-    
+    """Type stub for Log."""
+
     disk: Disk
     fortianalyzer: Fortianalyzer
     fortianalyzer2: Fortianalyzer2
@@ -69,6 +54,4 @@ class Log:
     setting: Setting
     threat_weight: ThreatWeight
 
-    def __init__(self, client: IHTTPClient, vdom: str | None = None) -> None:
-        """Initialize log category with HTTP client."""
-        ...
+    def __init__(self, client: IHTTPClient) -> None: ...

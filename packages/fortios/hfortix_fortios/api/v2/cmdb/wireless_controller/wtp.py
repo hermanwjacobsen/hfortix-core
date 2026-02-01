@@ -39,7 +39,6 @@ from typing import TYPE_CHECKING, Any, Literal, Union
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
-    from hfortix_fortios.models import FortiObject
 
 # Import helper functions from central _helpers module
 from hfortix_fortios._helpers import (
@@ -47,7 +46,6 @@ from hfortix_fortios._helpers import (
     build_cmdb_payload,  # Keep for backward compatibility / manual usage
     is_success,
     quote_path_param,  # URL encoding for path parameters
-    normalize_table_field,  # For table field normalization
 )
 # Import metadata mixin for schema introspection
 from hfortix_fortios._helpers.metadata_mixin import MetadataMixin
@@ -60,18 +58,6 @@ class Wtp(CRUDEndpoint, MetadataMixin):
     
     # Configure metadata mixin to use this endpoint's helper module
     _helper_module_name = "wtp"
-    
-    # ========================================================================
-    # Table Fields Metadata (for normalization)
-    # Auto-generated from schema - supports flexible input formats
-    # ========================================================================
-    _TABLE_FIELDS = {
-        "split_tunneling_acl": {
-            "mkey": "id",
-            "required_fields": ['dest-ip'],
-            "example": "[{'dest-ip': 'value'}]",
-        },
-    }
     
     # ========================================================================
     # Capabilities (from schema metadata)
@@ -106,7 +92,7 @@ class Wtp(CRUDEndpoint, MetadataMixin):
         vdom: str | bool | None = None,
         error_mode: Literal["raise", "return", "print"] | None = None,
         error_format: Literal["detailed", "simple", "code_only"] | None = None,
-    ):  # type: ignore[no-untyped-def]
+    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """
         Retrieve wireless_controller/wtp configuration.
 
@@ -135,8 +121,8 @@ class Wtp(CRUDEndpoint, MetadataMixin):
             error_format: Override client-level error_format. "detailed" provides full context, "simple" is concise, "code_only" returns just status code.
 
         Returns:
-            FortiObject instance or list of FortiObject instances. Returns Coroutine if using async client.
-            Use .dict, .json, or .raw properties to access as dictionary.
+            API response as dictionary. Returns Coroutine if using async client.
+            Access results via dictionary keys (e.g., result['results'], result['http_status']).
             
             Response structure:
                 - http_method: GET
@@ -298,7 +284,7 @@ class Wtp(CRUDEndpoint, MetadataMixin):
         vdom: str | bool | None = None,
         error_mode: Literal["raise", "return", "print"] | None = None,
         error_format: Literal["detailed", "simple", "code_only"] | None = None,
-    ):  # type: ignore[no-untyped-def]
+    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """
         Update existing wireless_controller/wtp object.
 
@@ -335,11 +321,6 @@ class Wtp(CRUDEndpoint, MetadataMixin):
             split_tunneling_acl_path: Split tunneling ACL path is local/tunnel.
             split_tunneling_acl_local_ap_subnet: Enable/disable automatically adding local subnetwork of FortiAP to split-tunneling ACL (default = disable).
             split_tunneling_acl: Split tunneling ACL filter list.
-                Default format: [{'dest-ip': 'value'}]
-                Supported formats:
-                  - Single string: "value" → [{'id': 'value'}]
-                  - List of strings: ["val1", "val2"] → [{'id': 'val1'}, ...]
-                  - List of dicts: [{'dest-ip': 'value'}] (recommended)
             override_lan: Enable to override the WTP profile LAN port setting.
             lan: WTP LAN port mapping.
             override_allowaccess: Enable to override the WTP profile management access configuration.
@@ -363,7 +344,7 @@ class Wtp(CRUDEndpoint, MetadataMixin):
             error_format: Override client-level error_format. "detailed" provides full context, "simple" is concise, "code_only" returns just status code.
 
         Returns:
-            FortiObject instance. Use .dict, .json, or .raw to access as dictionary.
+            API response as dictionary. Returns Coroutine if using async client.
 
         Raises:
             ValueError: If wtp-id is missing from payload
@@ -386,24 +367,9 @@ class Wtp(CRUDEndpoint, MetadataMixin):
             - post(): Create new object
             - set(): Intelligent create or update
         """
-        # Apply normalization for table fields (supports flexible input formats)
-        if split_tunneling_acl is not None:
-            split_tunneling_acl = normalize_table_field(
-                split_tunneling_acl,
-                mkey="id",
-                required_fields=['dest-ip'],
-                field_name="split_tunneling_acl",
-                example="[{'dest-ip': 'value'}]",
-            )
-        
-        # Apply normalization for multi-value option fields (space-separated strings)
-        
         # Build payload using helper function
-        # Note: auto_normalize=False because this endpoint has unitary fields
-        # (like 'interface') that would be incorrectly converted to list format
         payload_data = build_api_payload(
             api_type="cmdb",
-            auto_normalize=False,
             wtp_id=wtp_id,
             index=index,
             uuid=uuid,
@@ -544,7 +510,7 @@ class Wtp(CRUDEndpoint, MetadataMixin):
         vdom: str | bool | None = None,
         error_mode: Literal["raise", "return", "print"] | None = None,
         error_format: Literal["detailed", "simple", "code_only"] | None = None,
-    ):  # type: ignore[no-untyped-def]
+    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """
         Create new wireless_controller/wtp object.
 
@@ -581,11 +547,6 @@ class Wtp(CRUDEndpoint, MetadataMixin):
             split_tunneling_acl_path: Split tunneling ACL path is local/tunnel.
             split_tunneling_acl_local_ap_subnet: Enable/disable automatically adding local subnetwork of FortiAP to split-tunneling ACL (default = disable).
             split_tunneling_acl: Split tunneling ACL filter list.
-                Default format: [{'dest-ip': 'value'}]
-                Supported formats:
-                  - Single string: "value" → [{'id': 'value'}]
-                  - List of strings: ["val1", "val2"] → [{'id': 'val1'}, ...]
-                  - List of dicts: [{'dest-ip': 'value'}] (recommended)
             override_lan: Enable to override the WTP profile LAN port setting.
             lan: WTP LAN port mapping.
             override_allowaccess: Enable to override the WTP profile management access configuration.
@@ -609,7 +570,7 @@ class Wtp(CRUDEndpoint, MetadataMixin):
             error_format: Override client-level error_format. "detailed" provides full context, "simple" is concise, "code_only" returns just status code.
 
         Returns:
-            FortiObject instance with created object. Use .dict, .json, or .raw to access as dictionary.
+            API response as dictionary. Returns Coroutine if using async client.
 
         Examples:
             >>> # Create using individual parameters
@@ -634,24 +595,9 @@ class Wtp(CRUDEndpoint, MetadataMixin):
             - put(): Update existing object
             - set(): Intelligent create or update
         """
-        # Apply normalization for table fields (supports flexible input formats)
-        if split_tunneling_acl is not None:
-            split_tunneling_acl = normalize_table_field(
-                split_tunneling_acl,
-                mkey="id",
-                required_fields=['dest-ip'],
-                field_name="split_tunneling_acl",
-                example="[{'dest-ip': 'value'}]",
-            )
-        
-        # Apply normalization for multi-value option fields (space-separated strings)
-        
         # Build payload using helper function
-        # Note: auto_normalize=False because this endpoint has unitary fields
-        # (like 'interface') that would be incorrectly converted to list format
         payload_data = build_api_payload(
             api_type="cmdb",
-            auto_normalize=False,
             wtp_id=wtp_id,
             index=index,
             uuid=uuid,
@@ -738,7 +684,7 @@ class Wtp(CRUDEndpoint, MetadataMixin):
         vdom: str | bool | None = None,
         error_mode: Literal["raise", "return", "print"] | None = None,
         error_format: Literal["detailed", "simple", "code_only"] | None = None,
-    ):  # type: ignore[no-untyped-def]
+    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """
         Delete wireless_controller/wtp object.
 
@@ -751,7 +697,7 @@ class Wtp(CRUDEndpoint, MetadataMixin):
             error_format: Override client-level error_format. "detailed" provides full context, "simple" is concise, "code_only" returns just status code.
 
         Returns:
-            FortiObject instance. Use .dict, .json, or .raw to access as dictionary
+            API response as dictionary. Returns Coroutine if using async client.
 
         Raises:
             ValueError: If wtp-id is not provided
@@ -959,7 +905,7 @@ class Wtp(CRUDEndpoint, MetadataMixin):
             **kwargs: Additional parameters passed to PUT or POST
 
         Returns:
-            FortiObject instance. Use .dict, .json, or .raw to access as dictionary
+            API response as dictionary. Returns Coroutine if using async client.
 
         Raises:
             ValueError: If wtp-id is missing from payload
@@ -994,24 +940,9 @@ class Wtp(CRUDEndpoint, MetadataMixin):
             - put(): Update existing object
             - exists(): Check existence manually
         """
-        # Apply normalization for table fields (supports flexible input formats)
-        if split_tunneling_acl is not None:
-            split_tunneling_acl = normalize_table_field(
-                split_tunneling_acl,
-                mkey="id",
-                required_fields=['dest-ip'],
-                field_name="split_tunneling_acl",
-                example="[{'dest-ip': 'value'}]",
-            )
-        
-        # Apply normalization for multi-value option fields (space-separated strings)
-        
         # Build payload using helper function
-        # Note: auto_normalize=False because this endpoint has unitary fields
-        # (like 'interface') that would be incorrectly converted to list format
         payload_data = build_api_payload(
             api_type="cmdb",
-            auto_normalize=False,
             wtp_id=wtp_id,
             index=index,
             uuid=uuid,

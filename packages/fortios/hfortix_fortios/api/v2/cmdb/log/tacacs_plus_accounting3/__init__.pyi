@@ -9,25 +9,11 @@ if TYPE_CHECKING:
     from .filter import Filter
     from .setting import Setting
 
-__all__ = [
-    "Filter",
-    "Setting",
-    "TacacsPlusAccounting3",
-]
-
 
 class TacacsPlusAccounting3:
-    """TACACS_PLUS_ACCOUNTING3 API category.
-    
-    All endpoints return FortiObject instances with:
-    - Attribute access: response.field
-    - Dictionary access: response["field"]
-    - Convert to dict: response.dict or response.json
-    """
-    
+    """Type stub for TacacsPlusAccounting3."""
+
     filter: Filter
     setting: Setting
 
-    def __init__(self, client: IHTTPClient, vdom: str | None = None) -> None:
-        """Initialize tacacs_plus_accounting3 category with HTTP client."""
-        ...
+    def __init__(self, client: IHTTPClient) -> None: ...

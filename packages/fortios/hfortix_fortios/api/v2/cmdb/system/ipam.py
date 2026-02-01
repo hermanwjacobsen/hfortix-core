@@ -39,7 +39,6 @@ from typing import TYPE_CHECKING, Any, Literal, Union
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
-    from hfortix_fortios.models import FortiObject
 
 # Import helper functions from central _helpers module
 from hfortix_fortios._helpers import (
@@ -47,7 +46,6 @@ from hfortix_fortios._helpers import (
     build_cmdb_payload,  # Keep for backward compatibility / manual usage
     is_success,
     quote_path_param,  # URL encoding for path parameters
-    normalize_table_field,  # For table field normalization
 )
 # Import metadata mixin for schema introspection
 from hfortix_fortios._helpers.metadata_mixin import MetadataMixin
@@ -60,23 +58,6 @@ class Ipam(CRUDEndpoint, MetadataMixin):
     
     # Configure metadata mixin to use this endpoint's helper module
     _helper_module_name = "ipam"
-    
-    # ========================================================================
-    # Table Fields Metadata (for normalization)
-    # Auto-generated from schema - supports flexible input formats
-    # ========================================================================
-    _TABLE_FIELDS = {
-        "pools": {
-            "mkey": "name",
-            "required_fields": ['name', 'subnet'],
-            "example": "[{'name': 'value', 'subnet': 'value'}]",
-        },
-        "rules": {
-            "mkey": "name",
-            "required_fields": ['name', 'device', 'interface', 'pool'],
-            "example": "[{'name': 'value', 'device': 'value', 'interface': 'value', 'pool': 'value'}]",
-        },
-    }
     
     # ========================================================================
     # Capabilities (from schema metadata)
@@ -110,7 +91,7 @@ class Ipam(CRUDEndpoint, MetadataMixin):
         payload_dict: dict[str, Any] | None = None,
         error_mode: Literal["raise", "return", "print"] | None = None,
         error_format: Literal["detailed", "simple", "code_only"] | None = None,
-    ):  # type: ignore[no-untyped-def]
+    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """
         Retrieve system/ipam configuration.
 
@@ -137,8 +118,8 @@ class Ipam(CRUDEndpoint, MetadataMixin):
             error_format: Override client-level error_format. "detailed" provides full context, "simple" is concise, "code_only" returns just status code.
 
         Returns:
-            FortiObject instance or list of FortiObject instances. Returns Coroutine if using async client.
-            Use .dict, .json, or .raw properties to access as dictionary.
+            API response as dictionary. Returns Coroutine if using async client.
+            Access results via dictionary keys (e.g., result['results'], result['http_status']).
             
             Response structure:
                 - http_method: GET
@@ -255,7 +236,7 @@ class Ipam(CRUDEndpoint, MetadataMixin):
         q_scope: str | None = None,
         error_mode: Literal["raise", "return", "print"] | None = None,
         error_format: Literal["detailed", "simple", "code_only"] | None = None,
-    ):  # type: ignore[no-untyped-def]
+    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
         """
         Update existing system/ipam object.
 
@@ -271,18 +252,12 @@ class Ipam(CRUDEndpoint, MetadataMixin):
             manage_lan_extension_addresses: Enable/disable default management of FortiExtender LAN extension interface addresses.
             manage_ssid_addresses: Enable/disable default management of FortiAP SSID addresses.
             pools: Configure IPAM pools.
-                Default format: [{'name': 'value', 'subnet': 'value'}]
-                Required format: List of dicts with keys: name, subnet
-                  (String format not allowed due to multiple required fields)
             rules: Configure IPAM allocation rules.
-                Default format: [{'name': 'value', 'device': 'value', 'interface': 'value', 'pool': 'value'}]
-                Required format: List of dicts with keys: name, device, interface, pool
-                  (String format not allowed due to multiple required fields)
             error_mode: Override client-level error_mode. "raise" raises exceptions, "return" returns error dict, "print" prints errors.
             error_format: Override client-level error_format. "detailed" provides full context, "simple" is concise, "code_only" returns just status code.
 
         Returns:
-            FortiObject instance. Use .dict, .json, or .raw to access as dictionary.
+            API response as dictionary. Returns Coroutine if using async client.
 
         Raises:
             ValueError: If name is missing from payload
@@ -305,24 +280,6 @@ class Ipam(CRUDEndpoint, MetadataMixin):
             - post(): Create new object
             - set(): Intelligent create or update
         """
-        # Apply normalization for table fields (supports flexible input formats)
-        if pools is not None:
-            pools = normalize_table_field(
-                pools,
-                mkey="name",
-                required_fields=['name', 'subnet'],
-                field_name="pools",
-                example="[{'name': 'value', 'subnet': 'value'}]",
-            )
-        if rules is not None:
-            rules = normalize_table_field(
-                rules,
-                mkey="name",
-                required_fields=['name', 'device', 'interface', 'pool'],
-                field_name="rules",
-                example="[{'name': 'value', 'device': 'value', 'interface': 'value', 'pool': 'value'}]",
-            )
-        
         # Build payload using helper function
         payload_data = build_api_payload(
             api_type="cmdb",

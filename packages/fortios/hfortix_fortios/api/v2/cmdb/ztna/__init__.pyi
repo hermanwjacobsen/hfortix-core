@@ -12,31 +12,14 @@ if TYPE_CHECKING:
     from .web_portal_bookmark import WebPortalBookmark
     from .web_proxy import WebProxy
 
-__all__ = [
-    "ReverseConnector",
-    "TrafficForwardProxy",
-    "WebPortal",
-    "WebPortalBookmark",
-    "WebProxy",
-    "Ztna",
-]
-
 
 class Ztna:
-    """ZTNA API category.
-    
-    All endpoints return FortiObject instances with:
-    - Attribute access: response.field
-    - Dictionary access: response["field"]
-    - Convert to dict: response.dict or response.json
-    """
-    
+    """Type stub for Ztna."""
+
     reverse_connector: ReverseConnector
     traffic_forward_proxy: TrafficForwardProxy
     web_portal: WebPortal
     web_portal_bookmark: WebPortalBookmark
     web_proxy: WebProxy
 
-    def __init__(self, client: IHTTPClient, vdom: str | None = None) -> None:
-        """Initialize ztna category with HTTP client."""
-        ...
+    def __init__(self, client: IHTTPClient) -> None: ...
