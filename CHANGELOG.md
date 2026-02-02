@@ -1,3 +1,15 @@
+# [0.5.153] - 2026-02-02
+
+### Fixed
+
+- **Type Stubs (.pyi) for Transaction Feature**: Added complete type hints for IDE support
+  - Added `transaction.pyi` with full `Transaction` class signatures
+  - Updated `client.pyi` with `transaction()`, `transactional()`, and `list_transactions()` method signatures
+  - Updated `__init__.pyi` to export `Transaction` and `TransactionError` classes
+  - **Impact**: Fixes IDE autocomplete, type checking, and IntelliSense for transaction feature
+  - **Resolves**: "FortiOS has no attribute 'transaction'" type errors in VS Code, PyCharm, and mypy
+  - **Note**: Only `hfortix-fortios` package updated (0.5.153), core and meta packages remain at 0.5.152
+
 # [0.5.152] - 2026-02-02
 
 ### Added
