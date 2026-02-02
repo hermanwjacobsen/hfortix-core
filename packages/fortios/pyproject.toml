@@ -20,8 +20,8 @@ classifiers = [
     "Programming Language :: Python :: 3.12",
 ]
 dependencies = [
-    "hfortix-core>=0.5.152",
-    "hfortix>=0.5.152",
+    "hfortix-core>=0.5.153",
+    "hfortix>=0.5.153",
     "pydantic>=2.0",
     "httpx>=0.24.0",
 ]
