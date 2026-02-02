@@ -119,7 +119,7 @@ Key Features
 ------------
 
 **Complete API Coverage**
-    All 1,219 FortiOS 7.6.5 API endpoints: 886 CMDB + 295 Monitor + 38 Log endpoints.
+    All 1,348 FortiOS 7.6.5 API endpoints: 561 CMDB + 490 Monitor + 286 Log + 11 Service endpoints.
 
 **Dual Interface Patterns**
     Use dict-style or kwargs-style - choose what fits your workflow.
@@ -132,6 +132,9 @@ Key Features
 
 **Production Ready**
     Circuit breaker pattern, automatic retries, connection pooling, comprehensive validation.
+
+**Comprehensive Testing**
+    1,447 schema validator tests (100% endpoint coverage), 80+ live integration tests, CI/CD ready.
 
 **Developer Friendly**
     100% type hints with .pyi stubs, extensive documentation, rich error messages, validation framework.
@@ -151,13 +154,16 @@ API Categories
 The FortiOS API is organized into four main types:
 
 **CMDB (Configuration)**
-    886 endpoints for managing firewall configuration: addresses, policies, routes, VPN, system settings, etc.
+    561 endpoints for managing firewall configuration: addresses, policies, routes, VPN, system settings, etc.
 
 **Monitor (Status/Stats)**
-    295 endpoints for real-time monitoring: system status, interface stats, routing tables, VPN status, etc.
+    490 endpoints for real-time monitoring: system status, interface stats, routing tables, VPN status, etc.
 
 **Log (Historical Data)**
-    38 endpoints for accessing historical logs and events with full parameterization support.
+    286 endpoints for accessing historical logs and events with full parameterization support.
+
+**Service (Operations)**
+    11 endpoints for service-level operations and special actions.
 
 See :doc:`/fortios/api-reference/index` for complete category listing.
 

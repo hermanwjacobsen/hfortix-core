@@ -329,6 +329,9 @@ class HTTPClient(BaseHTTPClient):
         self._last_response: Optional[dict[str, Any]] = None
         self._last_response_time: Optional[float] = None
 
+        # Transaction support (FortiOS 6.4.0+)
+        self._active_transaction_id: Optional[int] = None
+
         # Set token if provided
         if token:
             self._client.headers["Authorization"] = f"Bearer {token}"
@@ -544,6 +547,30 @@ class HTTPClient(BaseHTTPClient):
             ],
             "last_failure_time": self._circuit_breaker["last_failure_time"],
         }
+
+    def set_transaction(self, transaction_id: Optional[int]) -> None:
+        """
+        Set active transaction ID for automatic header injection.
+        
+        When a transaction ID is set, all subsequent requests will automatically
+        include the 'X-TRANSACTION-ID' header required by FortiOS batch transactions.
+        
+        Args:
+            transaction_id: Transaction ID to use (None to clear)
+            
+        Examples:
+            >>> # Start transaction
+            >>> client.set_transaction(19)
+            >>> # All requests now include X-TRANSACTION-ID: 19
+            >>> 
+            >>> # Clear transaction
+            >>> client.set_transaction(None)
+        """
+        self._active_transaction_id = transaction_id
+        logger.debug(
+            "Transaction ID %s",
+            f"set to {transaction_id}" if transaction_id else "cleared"
+        )
 
     def inspect_last_request(self) -> dict[str, Any]:
         """
@@ -1119,18 +1146,27 @@ class HTTPClient(BaseHTTPClient):
                 self._last_request = {
                     "method": method.upper(),
                     "endpoint": full_path,
+                    "url": url,
                     "params": params,
                     "data": data,
                     "timestamp": time.time(),
                 }
 
                 try:
+                    # Build headers for this request
+                    request_headers = {}
+                    
+                    # Add transaction ID header if active
+                    if self._active_transaction_id is not None:
+                        request_headers['X-TRANSACTION-ID'] = str(self._active_transaction_id)
+                    
                     # Make request with httpx client
                     res = self._client.request(
                         method=method,
                         url=url,
                         json=data if data else None,
                         params=params if params else None,
+                        headers=request_headers if request_headers else None,
                     )
 
                     # Store response details for debugging
