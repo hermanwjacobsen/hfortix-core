@@ -10,12 +10,27 @@ if TYPE_CHECKING:
     from .profile import Profile
     from .youtube_key import YoutubeKey
 
+__all__ = [
+    "Keyword",
+    "Profile",
+    "YoutubeKey",
+    "Videofilter",
+]
+
 
 class Videofilter:
-    """Type stub for Videofilter."""
-
+    """VIDEOFILTER API category.
+    
+    All endpoints return FortiObject instances with:
+    - Attribute access: response.field
+    - Dictionary access: response["field"]
+    - Convert to dict: response.dict or response.json
+    """
+    
     keyword: Keyword
     profile: Profile
     youtube_key: YoutubeKey
 
-    def __init__(self, client: IHTTPClient) -> None: ...
+    def __init__(self, client: IHTTPClient, vdom: str | None = None) -> None:
+        """Initialize videofilter category with HTTP client."""
+        ...

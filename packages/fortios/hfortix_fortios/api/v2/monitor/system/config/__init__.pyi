@@ -11,13 +11,29 @@ if TYPE_CHECKING:
     from .restore_status import RestoreStatus
     from .usb_filelist import UsbFilelist
 
+__all__ = [
+    "Backup",
+    "Restore",
+    "RestoreStatus",
+    "UsbFilelist",
+    "Config",
+]
+
 
 class Config:
-    """Type stub for Config."""
-
+    """CONFIG API category.
+    
+    All endpoints return FortiObject instances with:
+    - Attribute access: response.field
+    - Dictionary access: response["field"]
+    - Convert to dict: response.dict or response.json
+    """
+    
     backup: Backup
     restore: Restore
     restore_status: RestoreStatus
     usb_filelist: UsbFilelist
 
-    def __init__(self, client: IHTTPClient) -> None: ...
+    def __init__(self, client: IHTTPClient, vdom: str | None = None) -> None:
+        """Initialize config category with HTTP client."""
+        ...

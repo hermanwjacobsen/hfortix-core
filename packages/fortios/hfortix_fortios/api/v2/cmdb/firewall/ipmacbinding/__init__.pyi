@@ -9,11 +9,25 @@ if TYPE_CHECKING:
     from .setting import Setting
     from .table import Table
 
+__all__ = [
+    "Setting",
+    "Table",
+    "Ipmacbinding",
+]
+
 
 class Ipmacbinding:
-    """Type stub for Ipmacbinding."""
-
+    """IPMACBINDING API category.
+    
+    All endpoints return FortiObject instances with:
+    - Attribute access: response.field
+    - Dictionary access: response["field"]
+    - Convert to dict: response.dict or response.json
+    """
+    
     setting: Setting
     table: Table
 
-    def __init__(self, client: IHTTPClient) -> None: ...
+    def __init__(self, client: IHTTPClient, vdom: str | None = None) -> None:
+        """Initialize ipmacbinding category with HTTP client."""
+        ...

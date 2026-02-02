@@ -9,11 +9,25 @@ if TYPE_CHECKING:
     from .get_test_connect import GetTestConnect
     from .test_connect import TestConnect
 
+__all__ = [
+    "GetTestConnect",
+    "TestConnect",
+    "Radius",
+]
+
 
 class Radius:
-    """Type stub for Radius."""
-
+    """RADIUS API category.
+    
+    All endpoints return FortiObject instances with:
+    - Attribute access: response.field
+    - Dictionary access: response["field"]
+    - Convert to dict: response.dict or response.json
+    """
+    
     get_test_connect: GetTestConnect
     test_connect: TestConnect
 
-    def __init__(self, client: IHTTPClient) -> None: ...
+    def __init__(self, client: IHTTPClient, vdom: str | None = None) -> None:
+        """Initialize radius category with HTTP client."""
+        ...

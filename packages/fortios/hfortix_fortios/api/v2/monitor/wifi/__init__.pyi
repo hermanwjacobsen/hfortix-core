@@ -28,10 +28,29 @@ if TYPE_CHECKING:
     from .ssid import Ssid
     from .vlan_probe import VlanProbe
 
+__all__ = [
+    "ApChannels",
+    "ApNames",
+    "ApStatus",
+    "InterferingAp",
+    "MatchedDevices",
+    "Meta",
+    "StationCapability",
+    "Statistics",
+    "UnassociatedDevices",
+    "Wifi",
+]
+
 
 class Wifi:
-    """Type stub for Wifi."""
-
+    """WIFI API category.
+    
+    All endpoints return FortiObject instances with:
+    - Attribute access: response.field
+    - Dictionary access: response["field"]
+    - Convert to dict: response.dict or response.json
+    """
+    
     ap_profile: ApProfile
     client: Client
     euclid: Euclid
@@ -54,4 +73,6 @@ class Wifi:
     statistics: Statistics
     unassociated_devices: UnassociatedDevices
 
-    def __init__(self, client: IHTTPClient) -> None: ...
+    def __init__(self, client: IHTTPClient, vdom: str | None = None) -> None:
+        """Initialize wifi category with HTTP client."""
+        ...

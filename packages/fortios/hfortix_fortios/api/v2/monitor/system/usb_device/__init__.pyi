@@ -8,10 +8,23 @@ if TYPE_CHECKING:
     from hfortix_core.http.interface import IHTTPClient
     from .eject import Eject
 
+__all__ = [
+    "Eject",
+    "UsbDevice",
+]
+
 
 class UsbDevice:
-    """Type stub for UsbDevice."""
-
+    """USB_DEVICE API category.
+    
+    All endpoints return FortiObject instances with:
+    - Attribute access: response.field
+    - Dictionary access: response["field"]
+    - Convert to dict: response.dict or response.json
+    """
+    
     eject: Eject
 
-    def __init__(self, client: IHTTPClient) -> None: ...
+    def __init__(self, client: IHTTPClient, vdom: str | None = None) -> None:
+        """Initialize usb_device category with HTTP client."""
+        ...

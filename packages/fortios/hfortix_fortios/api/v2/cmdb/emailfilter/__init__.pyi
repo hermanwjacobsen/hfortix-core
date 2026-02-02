@@ -15,10 +15,28 @@ if TYPE_CHECKING:
     from .options import Options
     from .profile import Profile
 
+__all__ = [
+    "BlockAllowList",
+    "Bword",
+    "Dnsbl",
+    "Fortishield",
+    "Iptrust",
+    "Mheader",
+    "Options",
+    "Profile",
+    "Emailfilter",
+]
+
 
 class Emailfilter:
-    """Type stub for Emailfilter."""
-
+    """EMAILFILTER API category.
+    
+    All endpoints return FortiObject instances with:
+    - Attribute access: response.field
+    - Dictionary access: response["field"]
+    - Convert to dict: response.dict or response.json
+    """
+    
     block_allow_list: BlockAllowList
     bword: Bword
     dnsbl: Dnsbl
@@ -28,4 +46,6 @@ class Emailfilter:
     options: Options
     profile: Profile
 
-    def __init__(self, client: IHTTPClient) -> None: ...
+    def __init__(self, client: IHTTPClient, vdom: str | None = None) -> None:
+        """Initialize emailfilter category with HTTP client."""
+        ...

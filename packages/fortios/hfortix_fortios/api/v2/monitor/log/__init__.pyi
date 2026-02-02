@@ -22,10 +22,28 @@ if TYPE_CHECKING:
     from .policy_archive import PolicyArchive
     from .stats import Stats
 
+__all__ = [
+    "CurrentDiskUsage",
+    "FeatureSet",
+    "Fortianalyzer",
+    "FortianalyzerQueue",
+    "ForticloudReportList",
+    "HistoricDailyRemoteLogs",
+    "HourlyDiskUsage",
+    "LocalReportList",
+    "Log",
+]
+
 
 class Log:
-    """Type stub for Log."""
-
+    """LOG API category.
+    
+    All endpoints return FortiObject instances with:
+    - Attribute access: response.field
+    - Dictionary access: response["field"]
+    - Convert to dict: response.dict or response.json
+    """
+    
     av_archive: AvArchive
     device: Device
     forticloud: Forticloud
@@ -42,4 +60,6 @@ class Log:
     hourly_disk_usage: HourlyDiskUsage
     local_report_list: LocalReportList
 
-    def __init__(self, client: IHTTPClient) -> None: ...
+    def __init__(self, client: IHTTPClient, vdom: str | None = None) -> None:
+        """Initialize log category with HTTP client."""
+        ...

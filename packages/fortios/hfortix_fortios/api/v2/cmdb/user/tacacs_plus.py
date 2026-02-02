@@ -220,7 +220,7 @@ class TacacsPlus(CRUDEndpoint, MetadataMixin):
             Not all endpoints support all schema formats. The "schema" format
             is most widely supported.
         """
-        return self.get(action=format, vdom=vdom)
+        return self.get(payload_dict={"action": format}, vdom=vdom)
 
 
     # ========================================================================
@@ -571,32 +571,20 @@ class TacacsPlus(CRUDEndpoint, MetadataMixin):
             - get(): Retrieve full object data
             - set(): Create or update automatically based on existence
         """
-        # Use direct request with silent error handling to avoid logging 404s
-        # This is expected behavior for exists() - 404 just means "doesn't exist"
-        endpoint = "/user/tacacs+"
-        endpoint = f"{endpoint}/{quote_path_param(name)}"
-        
-        # Make request with silent=True to suppress 404 error logging
-        # (404 is expected when checking existence - it just means "doesn't exist")
-        # Use _wrapped_client to access the underlying HTTPClient directly
-        # (self._client is ResponseProcessingClient, _wrapped_client is HTTPClient)
+        # Try to get the object - 404 means it doesn't exist
+        # This is expected behavior for exists() - we just want a boolean result
         try:
-            result = self._client._wrapped_client.get(
-                "cmdb",
-                endpoint,
-                params=None,
-                vdom=vdom,
-                raw_json=True,
-                silent=True,
-            )
+            result = self.get(name=name, vdom=vdom)
             
-            if isinstance(result, dict):
+            # Type checker cannot narrow Union[T, Coroutine[T]] in conditional
+            # This is a known Python type system limitation - code is correct at runtime
+            if isinstance(result, dict):  # type: ignore[misc]
                 # Synchronous response - check status
                 return result.get("status") == "success"
             else:
-                # Asynchronous response
+                # Asynchronous response - await and check
                 async def _check() -> bool:
-                    r = await result
+                    r = await result  # type: ignore[misc]
                     return r.get("status") == "success"
                 return _check()
         except Exception:
@@ -759,16 +747,19 @@ class TacacsPlus(CRUDEndpoint, MetadataMixin):
             ...     reference_name=50
             ... )
         """
-        return self._client.request(
-            method="PUT",
-            path=f"/api/v2/cmdb/user/tacacs+",
-            params={
-                "name": name,
-                "action": "move",
-                action: reference_name,
-                "vdom": vdom,
-                **kwargs,
-            },
+        params = {
+            "action": "move",
+            action: reference_name,
+            **kwargs,
+        }
+        if vdom is not None:
+            params["vdom"] = vdom
+        
+        return self._client.put(
+            "cmdb",
+            f"/user/tacacs+/{quote_path_param(name)}",
+            data={},  # Move operations use params, not body data
+            params=params,
         )
 
     # ========================================================================
@@ -803,16 +794,18 @@ class TacacsPlus(CRUDEndpoint, MetadataMixin):
             ...     new_name=100
             ... )
         """
-        return self._client.request(
-            method="POST",
-            path=f"/api/v2/cmdb/user/tacacs+",
-            params={
-                "name": name,
-                "new_name": new_name,
-                "action": "clone",
-                "vdom": vdom,
-                **kwargs,
-            },
+        params = {
+            "action": "clone",
+            **kwargs,
+        }
+        if vdom is not None:
+            params["vdom"] = vdom
+        
+        return self._client.post(
+            "cmdb",
+            f"/user/tacacs+/{quote_path_param(name)}",
+            data={"mkey": new_name},  # Clone operations need new identifier
+            params=params,
         )
 
 

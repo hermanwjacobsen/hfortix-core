@@ -46,10 +46,53 @@ if TYPE_CHECKING:
     from .qos import Qos
     from .security_policy import SecurityPolicy
 
+__all__ = [
+    "CustomCommand",
+    "DynamicPortPolicy",
+    "FlowTracking",
+    "FortilinkSettings",
+    "Global",
+    "IgmpSnooping",
+    "IpSourceGuardLog",
+    "LldpProfile",
+    "LldpSettings",
+    "Location",
+    "MacPolicy",
+    "ManagedSwitch",
+    "NetworkMonitorSettings",
+    "RemoteLog",
+    "Sflow",
+    "SnmpCommunity",
+    "SnmpSysinfo",
+    "SnmpTrapThreshold",
+    "SnmpUser",
+    "StormControl",
+    "StormControlPolicy",
+    "StpInstance",
+    "StpSettings",
+    "SwitchGroup",
+    "SwitchInterfaceTag",
+    "SwitchLog",
+    "SwitchProfile",
+    "System",
+    "TrafficPolicy",
+    "TrafficSniffer",
+    "VirtualPortPool",
+    "VlanPolicy",
+    "X8021xSettings",
+    "SwitchController",
+]
+
 
 class SwitchController:
-    """Type stub for SwitchController."""
-
+    """SWITCH_CONTROLLER API category.
+    
+    All endpoints return FortiObject instances with:
+    - Attribute access: response.field
+    - Dictionary access: response["field"]
+    - Convert to dict: response.dict or response.json
+    """
+    
     acl: Acl
     auto_config: AutoConfig
     initial_config: InitialConfig
@@ -90,4 +133,6 @@ class SwitchController:
     vlan_policy: VlanPolicy
     x802_1x_settings: X8021xSettings
 
-    def __init__(self, client: IHTTPClient) -> None: ...
+    def __init__(self, client: IHTTPClient, vdom: str | None = None) -> None:
+        """Initialize switch_controller category with HTTP client."""
+        ...

@@ -11,13 +11,29 @@ if TYPE_CHECKING:
     from .scan import Scan
     from .status import Status
 
+__all__ = [
+    "Connect",
+    "List",
+    "Scan",
+    "Status",
+    "Network",
+]
+
 
 class Network:
-    """Type stub for Network."""
-
+    """NETWORK API category.
+    
+    All endpoints return FortiObject instances with:
+    - Attribute access: response.field
+    - Dictionary access: response["field"]
+    - Convert to dict: response.dict or response.json
+    """
+    
     connect: Connect
     list: List
     scan: Scan
     status: Status
 
-    def __init__(self, client: IHTTPClient) -> None: ...
+    def __init__(self, client: IHTTPClient, vdom: str | None = None) -> None:
+        """Initialize network category with HTTP client."""
+        ...

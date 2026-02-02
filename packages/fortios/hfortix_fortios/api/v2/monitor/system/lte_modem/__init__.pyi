@@ -10,12 +10,27 @@ if TYPE_CHECKING:
     from .upgrade import Upgrade
     from .upload import Upload
 
+__all__ = [
+    "Status",
+    "Upgrade",
+    "Upload",
+    "LteModem",
+]
+
 
 class LteModem:
-    """Type stub for LteModem."""
-
+    """LTE_MODEM API category.
+    
+    All endpoints return FortiObject instances with:
+    - Attribute access: response.field
+    - Dictionary access: response["field"]
+    - Convert to dict: response.dict or response.json
+    """
+    
     status: Status
     upgrade: Upgrade
     upload: Upload
 
-    def __init__(self, client: IHTTPClient) -> None: ...
+    def __init__(self, client: IHTTPClient, vdom: str | None = None) -> None:
+        """Initialize lte_modem category with HTTP client."""
+        ...

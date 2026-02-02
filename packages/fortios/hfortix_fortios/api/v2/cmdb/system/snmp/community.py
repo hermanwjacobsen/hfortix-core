@@ -39,6 +39,7 @@ from typing import TYPE_CHECKING, Any, Literal, Union
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
+    from hfortix_fortios.models import FortiObject, FortiObjectList
 
 # Import helper functions from central _helpers module
 from hfortix_fortios._helpers import (
@@ -46,6 +47,7 @@ from hfortix_fortios._helpers import (
     build_cmdb_payload,  # Keep for backward compatibility / manual usage
     is_success,
     quote_path_param,  # URL encoding for path parameters
+    normalize_table_field,  # For table field normalization
 )
 # Import metadata mixin for schema introspection
 from hfortix_fortios._helpers.metadata_mixin import MetadataMixin
@@ -58,6 +60,28 @@ class Community(CRUDEndpoint, MetadataMixin):
     
     # Configure metadata mixin to use this endpoint's helper module
     _helper_module_name = "community"
+    
+    # ========================================================================
+    # Table Fields Metadata (for normalization)
+    # Auto-generated from schema - supports flexible input formats
+    # ========================================================================
+    _TABLE_FIELDS = {
+        "hosts": {
+            "mkey": "id",
+            "required_fields": ['id', 'ip', 'interface'],
+            "example": "[{'id': 1, 'ip': '192.168.1.10', 'interface': 'value'}]",
+        },
+        "hosts6": {
+            "mkey": "id",
+            "required_fields": ['id', 'ipv6', 'interface'],
+            "example": "[{'id': 1, 'ipv6': 'value', 'interface': 'value'}]",
+        },
+        "vdoms": {
+            "mkey": "name",
+            "required_fields": ['name'],
+            "example": "[{'name': 'value'}]",
+        },
+    }
     
     # ========================================================================
     # Capabilities (from schema metadata)
@@ -80,9 +104,11 @@ class Community(CRUDEndpoint, MetadataMixin):
     # ========================================================================
     # GET Method
     # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # Note: Endpoint-specific parameters intentionally extend the protocol's **kwargs
+    #       to provide autocomplete. Type checkers may report signature mismatch.
     # ========================================================================
     
-    def get(
+    def get(  # type: ignore[override]
         self,
         id: int | None = None,
         filter: list[str] | None = None,
@@ -91,7 +117,7 @@ class Community(CRUDEndpoint, MetadataMixin):
         payload_dict: dict[str, Any] | None = None,
         error_mode: Literal["raise", "return", "print"] | None = None,
         error_format: Literal["detailed", "simple", "code_only"] | None = None,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ) -> Union[FortiObject, FortiObjectList, Coroutine[Any, Any, Union[FortiObject, FortiObjectList]]]:
         """
         Retrieve system/snmp/community configuration.
 
@@ -178,14 +204,14 @@ class Community(CRUDEndpoint, MetadataMixin):
             endpoint = "/system.snmp/community"
             unwrap_single = False
         
-        return self._client.get(
+        return self._client.get(  # type: ignore[return-value]
             "cmdb", endpoint, params=params, vdom=False, unwrap_single=unwrap_single
         )
 
     def get_schema(
         self,
         format: str = "schema",
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ) -> Union[FortiObject, FortiObjectList, Coroutine[Any, Any, Union[FortiObject, FortiObjectList]]]:
         """
         Get schema/metadata for this endpoint.
         
@@ -215,15 +241,17 @@ class Community(CRUDEndpoint, MetadataMixin):
             Not all endpoints support all schema formats. The "schema" format
             is most widely supported.
         """
-        return self.get(action=format)
+        return self.get(payload_dict={"action": format})
 
 
     # ========================================================================
     # PUT Method
     # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # Note: Field-specific parameters intentionally extend the protocol's **kwargs
+    #       to provide autocomplete. Type checkers may report signature mismatch.
     # ========================================================================
     
-    def put(
+    def put(  # type: ignore[override]
         self,
         payload_dict: dict[str, Any] | None = None,
         id: int | None = None,
@@ -250,7 +278,7 @@ class Community(CRUDEndpoint, MetadataMixin):
         q_scope: str | None = None,
         error_mode: Literal["raise", "return", "print"] | None = None,
         error_format: Literal["detailed", "simple", "code_only"] | None = None,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ) -> Union[FortiObject, Coroutine[Any, Any, FortiObject]]:
         """
         Update existing system/snmp/community object.
 
@@ -262,7 +290,13 @@ class Community(CRUDEndpoint, MetadataMixin):
             name: Community name.
             status: Enable/disable this SNMP community.
             hosts: Configure IPv4 SNMP managers (hosts).
+                Default format: [{'id': 1, 'ip': '192.168.1.10', 'interface': 'value'}]
+                Required format: List of dicts with keys: id, ip, interface
+                  (String format not allowed due to multiple required fields)
             hosts6: Configure IPv6 SNMP managers.
+                Default format: [{'id': 1, 'ipv6': 'value', 'interface': 'value'}]
+                Required format: List of dicts with keys: id, ipv6, interface
+                  (String format not allowed due to multiple required fields)
             query_v1_status: Enable/disable SNMP v1 queries.
             query_v1_port: SNMP v1 query port (default = 161).
             query_v2c_status: Enable/disable SNMP v2c queries.
@@ -276,6 +310,11 @@ class Community(CRUDEndpoint, MetadataMixin):
             events: SNMP trap events.
             mib_view: SNMP access control MIB view.
             vdoms: SNMP access control VDOMs.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
             error_mode: Override client-level error_mode. "raise" raises exceptions, "return" returns error dict, "print" prints errors.
             error_format: Override client-level error_format. "detailed" provides full context, "simple" is concise, "code_only" returns just status code.
 
@@ -303,6 +342,34 @@ class Community(CRUDEndpoint, MetadataMixin):
             - post(): Create new object
             - set(): Intelligent create or update
         """
+        # Apply normalization for table fields (supports flexible input formats)
+        if hosts is not None:
+            hosts = normalize_table_field(
+                hosts,
+                mkey="id",
+                required_fields=['id', 'ip', 'interface'],
+                field_name="hosts",
+                example="[{'id': 1, 'ip': '192.168.1.10', 'interface': 'value'}]",
+            )
+        if hosts6 is not None:
+            hosts6 = normalize_table_field(
+                hosts6,
+                mkey="id",
+                required_fields=['id', 'ipv6', 'interface'],
+                field_name="hosts6",
+                example="[{'id': 1, 'ipv6': 'value', 'interface': 'value'}]",
+            )
+        if vdoms is not None:
+            vdoms = normalize_table_field(
+                vdoms,
+                mkey="name",
+                required_fields=['name'],
+                field_name="vdoms",
+                example="[{'name': 'value'}]",
+            )
+        
+        # Apply normalization for multi-value option fields (space-separated strings)
+        
         # Build payload using helper function
         payload_data = build_api_payload(
             api_type="cmdb",
@@ -353,15 +420,17 @@ class Community(CRUDEndpoint, MetadataMixin):
         if q_scope is not None:
             params["scope"] = q_scope
         
-        return self._client.put(
+        return self._client.put(  # type: ignore[return-value]
             "cmdb", endpoint, data=payload_data, params=params, vdom=False        )
 
     # ========================================================================
     # POST Method
     # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # Note: Field-specific parameters intentionally extend the protocol's **kwargs
+    #       to provide autocomplete. Type checkers may report signature mismatch.
     # ========================================================================
     
-    def post(
+    def post(  # type: ignore[override]
         self,
         payload_dict: dict[str, Any] | None = None,
         id: int | None = None,
@@ -387,7 +456,7 @@ class Community(CRUDEndpoint, MetadataMixin):
         q_scope: str | None = None,
         error_mode: Literal["raise", "return", "print"] | None = None,
         error_format: Literal["detailed", "simple", "code_only"] | None = None,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ) -> Union[FortiObject, Coroutine[Any, Any, FortiObject]]:
         """
         Create new system/snmp/community object.
 
@@ -399,7 +468,13 @@ class Community(CRUDEndpoint, MetadataMixin):
             name: Community name.
             status: Enable/disable this SNMP community.
             hosts: Configure IPv4 SNMP managers (hosts).
+                Default format: [{'id': 1, 'ip': '192.168.1.10', 'interface': 'value'}]
+                Required format: List of dicts with keys: id, ip, interface
+                  (String format not allowed due to multiple required fields)
             hosts6: Configure IPv6 SNMP managers.
+                Default format: [{'id': 1, 'ipv6': 'value', 'interface': 'value'}]
+                Required format: List of dicts with keys: id, ipv6, interface
+                  (String format not allowed due to multiple required fields)
             query_v1_status: Enable/disable SNMP v1 queries.
             query_v1_port: SNMP v1 query port (default = 161).
             query_v2c_status: Enable/disable SNMP v2c queries.
@@ -413,6 +488,11 @@ class Community(CRUDEndpoint, MetadataMixin):
             events: SNMP trap events.
             mib_view: SNMP access control MIB view.
             vdoms: SNMP access control VDOMs.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
             error_mode: Override client-level error_mode. "raise" raises exceptions, "return" returns error dict, "print" prints errors.
             error_format: Override client-level error_format. "detailed" provides full context, "simple" is concise, "code_only" returns just status code.
 
@@ -442,6 +522,34 @@ class Community(CRUDEndpoint, MetadataMixin):
             - put(): Update existing object
             - set(): Intelligent create or update
         """
+        # Apply normalization for table fields (supports flexible input formats)
+        if hosts is not None:
+            hosts = normalize_table_field(
+                hosts,
+                mkey="id",
+                required_fields=['id', 'ip', 'interface'],
+                field_name="hosts",
+                example="[{'id': 1, 'ip': '192.168.1.10', 'interface': 'value'}]",
+            )
+        if hosts6 is not None:
+            hosts6 = normalize_table_field(
+                hosts6,
+                mkey="id",
+                required_fields=['id', 'ipv6', 'interface'],
+                field_name="hosts6",
+                example="[{'id': 1, 'ipv6': 'value', 'interface': 'value'}]",
+            )
+        if vdoms is not None:
+            vdoms = normalize_table_field(
+                vdoms,
+                mkey="name",
+                required_fields=['name'],
+                field_name="vdoms",
+                example="[{'name': 'value'}]",
+            )
+        
+        # Apply normalization for multi-value option fields (space-separated strings)
+        
         # Build payload using helper function
         payload_data = build_api_payload(
             api_type="cmdb",
@@ -487,21 +595,23 @@ class Community(CRUDEndpoint, MetadataMixin):
         if q_scope is not None:
             params["scope"] = q_scope
         
-        return self._client.post(
+        return self._client.post(  # type: ignore[return-value]
             "cmdb", endpoint, data=payload_data, params=params, vdom=False        )
 
     # ========================================================================
     # DELETE Method
     # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # Note: Identifier parameters intentionally extend the protocol's **kwargs
+    #       to provide autocomplete. Type checkers may report signature mismatch.
     # ========================================================================
     
-    def delete(
+    def delete(  # type: ignore[override]
         self,
         id: int | None = None,
         q_scope: str | None = None,
         error_mode: Literal["raise", "return", "print"] | None = None,
         error_format: Literal["detailed", "simple", "code_only"] | None = None,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ) -> Union[FortiObject, Coroutine[Any, Any, FortiObject]]:
         """
         Delete system/snmp/community object.
 
@@ -539,7 +649,7 @@ class Community(CRUDEndpoint, MetadataMixin):
         if q_scope is not None:
             params["scope"] = q_scope
         
-        return self._client.delete(
+        return self._client.delete(  # type: ignore[return-value]
             "cmdb", endpoint, params=params, vdom=False        )
 
     def exists(
@@ -572,34 +682,27 @@ class Community(CRUDEndpoint, MetadataMixin):
             - get(): Retrieve full object data
             - set(): Create or update automatically based on existence
         """
-        # Use direct request with silent error handling to avoid logging 404s
-        # This is expected behavior for exists() - 404 just means "doesn't exist"
+        # Use direct GET request to check existence
+        # 404 responses are expected and just mean "doesn't exist"
         endpoint = "/system.snmp/community"
         endpoint = f"{endpoint}/{quote_path_param(id)}"
         
-        # Make request with silent=True to suppress 404 error logging
-        # (404 is expected when checking existence - it just means "doesn't exist")
-        # Use _wrapped_client to access the underlying HTTPClient directly
-        # (self._client is ResponseProcessingClient, _wrapped_client is HTTPClient)
         try:
-            result = self._client._wrapped_client.get(
-                "cmdb",
-                endpoint,
-                params=None,
-                vdom=False,
-                raw_json=True,
-                silent=True,
-            )
+            result = self.get(id=id)
             
-            if isinstance(result, dict):
-                # Synchronous response - check status
-                return result.get("status") == "success"
-            else:
-                # Asynchronous response
+            # Check if result is a coroutine (async) or direct response (sync)
+            # Note: Type checkers can't narrow Union[T, Coroutine[T]] in conditionals
+            if hasattr(result, '__await__'):
+                # Async response - return coroutine that checks status
                 async def _check() -> bool:
-                    r = await result
-                    return r.get("status") == "success"
+                    r = await result  # type: ignore[misc]
+                    response = r.raw if hasattr(r, 'raw') else r
+                    return is_success(response)
                 return _check()
+            else:
+                # Sync response - check status directly
+                response = result.raw if hasattr(result, 'raw') else result  # type: ignore[union-attr]
+                return is_success(response)
         except Exception:
             # Any error (404, network, etc.) means we can't confirm existence
             return False
@@ -629,7 +732,7 @@ class Community(CRUDEndpoint, MetadataMixin):
         error_mode: Literal["raise", "return", "print"] | None = None,
         error_format: Literal["detailed", "simple", "code_only"] | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ) -> Union[FortiObject, Coroutine[Any, Any, FortiObject]]:
         """
         Create or update system/snmp/community object (intelligent operation).
 
@@ -694,6 +797,34 @@ class Community(CRUDEndpoint, MetadataMixin):
             - put(): Update existing object
             - exists(): Check existence manually
         """
+        # Apply normalization for table fields (supports flexible input formats)
+        if hosts is not None:
+            hosts = normalize_table_field(
+                hosts,
+                mkey="id",
+                required_fields=['id', 'ip', 'interface'],
+                field_name="hosts",
+                example="[{'id': 1, 'ip': '192.168.1.10', 'interface': 'value'}]",
+            )
+        if hosts6 is not None:
+            hosts6 = normalize_table_field(
+                hosts6,
+                mkey="id",
+                required_fields=['id', 'ipv6', 'interface'],
+                field_name="hosts6",
+                example="[{'id': 1, 'ipv6': 'value', 'interface': 'value'}]",
+            )
+        if vdoms is not None:
+            vdoms = normalize_table_field(
+                vdoms,
+                mkey="name",
+                required_fields=['name'],
+                field_name="vdoms",
+                example="[{'name': 'value'}]",
+            )
+        
+        # Apply normalization for multi-value option fields (space-separated strings)
+        
         # Build payload using helper function
         payload_data = build_api_payload(
             api_type="cmdb",
@@ -740,7 +871,7 @@ class Community(CRUDEndpoint, MetadataMixin):
         action: Literal["before", "after"],
         reference_id: int,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ) -> Union[FortiObject, Coroutine[Any, Any, FortiObject]]:
         """
         Move system/snmp/community object to a new position.
         
@@ -763,16 +894,17 @@ class Community(CRUDEndpoint, MetadataMixin):
             ...     reference_id=50
             ... )
         """
-        return self._client.request(
-            method="PUT",
-            path=f"/api/v2/cmdb/system.snmp/community",
-            params={
-                "id": id,
-                "action": "move",
-                action: reference_id,
-                **kwargs,
-            },
-        )
+        # Build params for move operation
+        params = {
+            "id": id,
+            "action": "move",
+            action: reference_id,
+            **kwargs,
+        }
+        
+        endpoint = "/system.snmp/community"
+        return self._client.put(  # type: ignore[return-value]
+            "cmdb", endpoint, data={}, params=params, vdom=False        )
 
     # ========================================================================
     # Action: Clone
@@ -783,7 +915,7 @@ class Community(CRUDEndpoint, MetadataMixin):
         id: int,
         new_id: int,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ) -> Union[FortiObject, Coroutine[Any, Any, FortiObject]]:
         """
         Clone system/snmp/community object.
         
@@ -804,15 +936,18 @@ class Community(CRUDEndpoint, MetadataMixin):
             ...     new_id=100
             ... )
         """
-        return self._client.request(
-            method="POST",
-            path=f"/api/v2/cmdb/system.snmp/community",
-            params={
-                "id": id,
-                "new_id": new_id,
-                "action": "clone",
-                **kwargs,
-            },
-        )
+        # Build params for clone operation  
+        params = {
+            "id": id,
+            "new_id": new_id,
+            "action": "clone",
+            **kwargs,
+        }
+        
+        endpoint = "/system.snmp/community"
+        return self._client.post(  # type: ignore[return-value]
+            "cmdb", endpoint, data={}, params=params, vdom=False        )
+
+
 
 

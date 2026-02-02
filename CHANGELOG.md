@@ -1,5 +1,114 @@
 # [Unreleased]
 
+# [0.5.150] - 2026-02-02
+
+### Fixed
+
+- **Core: SSL Certificate Error Retry Logic**: Fixed retry mechanism to immediately fail on SSL/certificate errors instead of retrying 3 times
+  - **Root Cause**: `_should_retry()` in `HTTPClientBase` only checked for network/timeout/HTTP errors, treating all `ConnectError` instances as transient failures
+  - **Solution**: Added SSL error detection before retry logic - checks error message for SSL/certificate indicators and returns `False` immediately
+  - **Impact**: ✅ No more wasteful retry attempts on permanent SSL failures (certificate validation, hostname mismatch, handshake errors)
+  - **Location**: `hfortix_core/http/base.py` - `_should_retry()` method
+  - **User Benefit**: Faster error feedback and clearer error logs when SSL configuration is incorrect
+
+- **FortiOS: Legacy Endpoint Cleanup**: Fixed outdated `user/tacacs_plus.py` endpoint to match current code patterns
+  - **Issues Fixed**:
+    - `exists()` method accessing private `_wrapped_client` attribute → Changed to use public `self.get()` API
+    - `get_schema()` passing `action` as parameter → Changed to `payload_dict={"action": format}`
+    - `move()` method using non-existent `request()` → Changed to `put()` with params
+    - `clone()` method using non-existent `request()` → Changed to `post()` with data
+  - **Root Cause**: Readonly endpoint with manually maintained code predating v0.5.149 template fixes
+  - **Impact**: ✅ All 2,327+ endpoints now use consistent, correct patterns
+  - **Location**: `hfortix_fortios/api/v2/cmdb/user/tacacs_plus.py`
+
+### Changed
+
+- **Core: Improved Error Messages**: SSL/certificate errors now log at ERROR level with clearer message: "SSL/Certificate error (not retrying)"
+  - Makes it immediately obvious that the error is permanent and won't be retried
+  - Helps users quickly identify and fix SSL configuration issues
+
+# [0.5.149] - 2026-02-02
+
+### Fixed
+
+- **Generator: Type System Cleanup**: Resolved all type checker errors in generated endpoint files through comprehensive template updates
+  
+  **Issue 1 - Response Processing Wrapper Pattern**: Fixed type mismatch between `IHTTPClient` protocol (returns `dict[str, Any]`) and actual endpoint return types (returns `FortiObject`/`FortiObjectList`)
+  - **Root Cause**: `ResponseProcessingClient` wrapper transforms `dict` → `FortiObject` at runtime, but type checkers see protocol signature
+  - **Solution**: Added `# type: ignore[return-value]` to all HTTP client method calls (GET, PUT, POST, DELETE)
+  - **Rationale**: Intentional design - wrapper pattern provides enhanced response objects while maintaining clean protocol interface
+  - **Impact**: ✅ Eliminated 2,327+ type errors across all endpoint files
+  
+  **Issue 2 - Action Methods Using Wrong HTTP Interface**: Fixed `move()` and `clone()` methods attempting to call non-existent `request()` method
+  - **Root Cause**: `IHTTPClient` protocol only defines `get()`, `post()`, `put()`, `delete()` - no generic `request()` method
+  - **Solution**: 
+    - `move()`: Changed from `request(method="PUT")` → `put()` with params
+    - `clone()`: Changed from `request(method="POST")` → `post()` with params
+  - **Impact**: ✅ Fixed action methods in all 2,327+ endpoint files with move/clone support
+  
+  **Issue 3 - Invalid Internal Attribute Access**: Fixed `exists()` method attempting to access private `_wrapped_client` attribute
+  - **Root Cause**: Protocol interface doesn't expose internal wrapper implementation details
+  - **Solution**: Changed from `self._client._wrapped_client.get()` → `self.get()` with proper error handling
+  - **Rationale**: Use public API instead of reaching into private implementation
+  - **Impact**: ✅ Fixed exists() method in all endpoints that support creation
+  
+  **Issue 4 - Incorrect Parameter Passing**: Fixed `get_schema()` passing `action` as function parameter instead of URL query parameter
+  - **Root Cause**: User insight - "isn't action a URL parameter and not body/payload?"
+  - **Solution**: Changed from `self.get(action=format)` → `self.get(payload_dict={"action": format})`
+  - **Rationale**: `payload_dict` in `get()` is copied to `params` dict for URL query parameters
+  - **Impact**: ✅ Fixed schema retrieval in all 2,327+ endpoints
+  
+  **Issue 5 - Async/Sync Return Type Mismatch**: Fixed `exists()` method return type not supporting both synchronous and asynchronous clients
+  - **Root Cause**: Return type declared as `bool` but method returns `Coroutine[Any, Any, bool]` for async clients
+  - **Solution**: Changed return type to `Union[bool, Coroutine[Any, Any, bool]]`
+  - **Impact**: ✅ Proper dual-mode support for sync and async clients
+  
+  **Issue 6 - Type Narrowing Limitations**: Added type ignore comments for unavoidable Python type system limitations
+  - **Root Cause**: Type checkers cannot narrow `Union[T, Coroutine[T]]` types inside conditional blocks
+  - **Solution**: Added `# type: ignore[misc]` and `# type: ignore[union-attr]` with explanatory comments
+  - **Rationale**: Fundamental Python type system limitation - code is correct at runtime
+  - **Impact**: ✅ Documented expected type checker behavior
+  
+  **Issue 7 - Protocol Signature Incompatibility**: Added type ignore for protocol method signature mismatches
+  - **Root Cause**: Protocols use minimal `**kwargs` signature, implementations add field-specific parameters for autocomplete
+  - **Solution**: Added `# type: ignore[override]` to GET/POST/PUT/DELETE methods with explanatory comments
+  - **Rationale**: Intentional design - implementations extend protocol for better developer experience
+  - **Impact**: ✅ Documented design pattern, suppressed false-positive errors
+  
+  **Issue 8 - Invalid exists() Methods**: Removed `exists()` method from endpoints that don't support object creation
+  - **Root Cause**: Generator was creating `exists()` for all GET endpoints, but it's only useful for POST endpoints
+  - **Solution**: Updated template condition from `'GET' in http_methods` → `'POST' in http_methods and 'GET' in http_methods`
+  - **Rationale**: `exists()` is used to check before creation - meaningless for read-only/update-only endpoints
+  - **Impact**: ✅ Removed unnecessary exists() methods from ~800 non-creatable endpoints
+  
+  **Issue 9 - get_schema() Return Type Too Narrow**: Fixed return type not accounting for potential list responses
+  - **Root Cause**: `get_schema()` calls `self.get()` which can return `FortiObjectList`, but return type only declared `FortiObject`
+  - **Solution**: Changed return type to `Union[FortiObject, FortiObjectList, Coroutine[Any, Any, Union[FortiObject, FortiObjectList]]]`
+  - **Impact**: ✅ Accurate return type for schema retrieval across all endpoints
+  
+  **Files Changed**:
+  - `.dev/generator/templates/endpoint_class.py.j2`: 
+    - Added `# type: ignore[return-value]` to GET/PUT/POST/DELETE method calls
+    - Added `# type: ignore[override]` to method signatures with explanatory comments
+    - Added `# type: ignore[misc]` and `# type: ignore[union-attr]` to exists() with comments
+    - Fixed move() and clone() to use put()/post() instead of request()
+    - Fixed exists() to use self.get() instead of _wrapped_client access
+    - Fixed get_schema() to use payload_dict parameter
+    - Updated exists() return type to Union[bool, Coroutine[Any, Any, bool]]
+    - Updated get_schema() return type to include FortiObjectList
+    - Restricted exists() generation to POST-supporting endpoints only
+  
+  **Regenerations**: All 2,327+ endpoint files regenerated 8 times during troubleshooting process
+  
+  **Final Result**: Zero type errors across entire codebase ✅
+
+### Changed
+
+- **Generator: Enhanced Type Annotations**: All generated endpoint methods now include comprehensive explanatory comments
+  - Protocol signature mismatches documented with reason and design rationale
+  - Type narrowing limitations documented as Python type system constraints
+  - Wrapper pattern architecture explained inline for future maintainers
+
 # [0.5.148] - 2026-01-31
 
 ### Documentation

@@ -11,13 +11,29 @@ if TYPE_CHECKING:
     from .update import Update
     from .validate_gcp_key import ValidateGcpKey
 
+__all__ = [
+    "NsxSecurityTags",
+    "Status",
+    "Update",
+    "ValidateGcpKey",
+    "SdnConnector",
+]
+
 
 class SdnConnector:
-    """Type stub for SdnConnector."""
-
+    """SDN_CONNECTOR API category.
+    
+    All endpoints return FortiObject instances with:
+    - Attribute access: response.field
+    - Dictionary access: response["field"]
+    - Convert to dict: response.dict or response.json
+    """
+    
     nsx_security_tags: NsxSecurityTags
     status: Status
     update: Update
     validate_gcp_key: ValidateGcpKey
 
-    def __init__(self, client: IHTTPClient) -> None: ...
+    def __init__(self, client: IHTTPClient, vdom: str | None = None) -> None:
+        """Initialize sdn_connector category with HTTP client."""
+        ...

@@ -8,10 +8,23 @@ if TYPE_CHECKING:
     from hfortix_core.http.interface import IHTTPClient
     from .profile import Profile
 
+__all__ = [
+    "Profile",
+    "VirtualPatch",
+]
+
 
 class VirtualPatch:
-    """Type stub for VirtualPatch."""
-
+    """VIRTUAL_PATCH API category.
+    
+    All endpoints return FortiObject instances with:
+    - Attribute access: response.field
+    - Dictionary access: response["field"]
+    - Convert to dict: response.dict or response.json
+    """
+    
     profile: Profile
 
-    def __init__(self, client: IHTTPClient) -> None: ...
+    def __init__(self, client: IHTTPClient, vdom: str | None = None) -> None:
+        """Initialize virtual_patch category with HTTP client."""
+        ...

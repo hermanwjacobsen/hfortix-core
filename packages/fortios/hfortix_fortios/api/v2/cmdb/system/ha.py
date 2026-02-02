@@ -39,6 +39,7 @@ from typing import TYPE_CHECKING, Any, Literal, Union
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
+    from hfortix_fortios.models import FortiObject, FortiObjectList
 
 # Import helper functions from central _helpers module
 from hfortix_fortios._helpers import (
@@ -46,6 +47,7 @@ from hfortix_fortios._helpers import (
     build_cmdb_payload,  # Keep for backward compatibility / manual usage
     is_success,
     quote_path_param,  # URL encoding for path parameters
+    normalize_table_field,  # For table field normalization
 )
 # Import metadata mixin for schema introspection
 from hfortix_fortios._helpers.metadata_mixin import MetadataMixin
@@ -58,6 +60,38 @@ class Ha(CRUDEndpoint, MetadataMixin):
     
     # Configure metadata mixin to use this endpoint's helper module
     _helper_module_name = "ha"
+    
+    # ========================================================================
+    # Table Fields Metadata (for normalization)
+    # Auto-generated from schema - supports flexible input formats
+    # ========================================================================
+    _TABLE_FIELDS = {
+        "auto_virtual_mac_interface": {
+            "mkey": "interface-name",
+            "required_fields": ['interface-name'],
+            "example": "[{'interface-name': 'value'}]",
+        },
+        "backup_hbdev": {
+            "mkey": "name",
+            "required_fields": ['name'],
+            "example": "[{'name': 'value'}]",
+        },
+        "ha_mgmt_interfaces": {
+            "mkey": "id",
+            "required_fields": ['interface'],
+            "example": "[{'interface': 'value'}]",
+        },
+        "unicast_peers": {
+            "mkey": "id",
+            "required_fields": ['id'],
+            "example": "[{'id': 1}]",
+        },
+        "vcluster": {
+            "mkey": "vcluster-id",
+            "required_fields": ['vcluster-id'],
+            "example": "[{'vcluster-id': 1}]",
+        },
+    }
     
     # ========================================================================
     # Capabilities (from schema metadata)
@@ -80,9 +114,11 @@ class Ha(CRUDEndpoint, MetadataMixin):
     # ========================================================================
     # GET Method
     # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # Note: Endpoint-specific parameters intentionally extend the protocol's **kwargs
+    #       to provide autocomplete. Type checkers may report signature mismatch.
     # ========================================================================
     
-    def get(
+    def get(  # type: ignore[override]
         self,
         name: str | None = None,
         filter: list[str] | None = None,
@@ -91,7 +127,7 @@ class Ha(CRUDEndpoint, MetadataMixin):
         payload_dict: dict[str, Any] | None = None,
         error_mode: Literal["raise", "return", "print"] | None = None,
         error_format: Literal["detailed", "simple", "code_only"] | None = None,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ) -> Union[FortiObject, FortiObjectList, Coroutine[Any, Any, Union[FortiObject, FortiObjectList]]]:
         """
         Retrieve system/ha configuration.
 
@@ -173,14 +209,14 @@ class Ha(CRUDEndpoint, MetadataMixin):
             endpoint = "/system/ha"
             unwrap_single = False
         
-        return self._client.get(
+        return self._client.get(  # type: ignore[return-value]
             "cmdb", endpoint, params=params, vdom=False, unwrap_single=unwrap_single
         )
 
     def get_schema(
         self,
         format: str = "schema",
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ) -> Union[FortiObject, FortiObjectList, Coroutine[Any, Any, Union[FortiObject, FortiObjectList]]]:
         """
         Get schema/metadata for this endpoint.
         
@@ -210,15 +246,17 @@ class Ha(CRUDEndpoint, MetadataMixin):
             Not all endpoints support all schema formats. The "schema" format
             is most widely supported.
         """
-        return self.get(action=format)
+        return self.get(payload_dict={"action": format})
 
 
     # ========================================================================
     # PUT Method
     # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # Note: Field-specific parameters intentionally extend the protocol's **kwargs
+    #       to provide autocomplete. Type checkers may report signature mismatch.
     # ========================================================================
     
-    def put(
+    def put(  # type: ignore[override]
         self,
         payload_dict: dict[str, Any] | None = None,
         group_id: int | None = None,
@@ -308,7 +346,7 @@ class Ha(CRUDEndpoint, MetadataMixin):
         q_scope: str | None = None,
         error_mode: Literal["raise", "return", "print"] | None = None,
         error_format: Literal["detailed", "simple", "code_only"] | None = None,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ) -> Union[FortiObject, Coroutine[Any, Any, FortiObject]]:
         """
         Update existing system/ha object.
 
@@ -324,7 +362,17 @@ class Ha(CRUDEndpoint, MetadataMixin):
             key: Key.
             hbdev: Heartbeat interfaces. Must be the same for all members.
             auto_virtual_mac_interface: The physical interface that will be assigned an auto-generated virtual MAC address.
+                Default format: [{'interface-name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'interface-name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'interface-name': 'val1'}, ...]
+                  - List of dicts: [{'interface-name': 'value'}] (recommended)
             backup_hbdev: Backup heartbeat interfaces. Must be the same for all members.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
             unicast_hb: Enable/disable unicast heartbeat.
             unicast_hb_peerip: Unicast heartbeat peer IP.
             unicast_hb_netmask: Unicast heartbeat netmask.
@@ -356,6 +404,11 @@ class Ha(CRUDEndpoint, MetadataMixin):
             standalone_mgmt_vdom: Enable/disable standalone management VDOM.
             ha_mgmt_status: Enable to reserve interfaces to manage individual cluster units.
             ha_mgmt_interfaces: Reserve interfaces to manage individual cluster units.
+                Default format: [{'interface': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'id': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'id': 'val1'}, ...]
+                  - List of dicts: [{'interface': 'value'}] (recommended)
             ha_eth_type: HA heartbeat packet Ethertype (4-digit hex).
             hc_eth_type: Transparent mode HA heartbeat packet Ethertype (4-digit hex).
             l2ep_eth_type: Telnet session HA heartbeat packet Ethertype (4-digit hex).
@@ -364,6 +417,11 @@ class Ha(CRUDEndpoint, MetadataMixin):
             unicast_status: Enable/disable unicast connection.
             unicast_gateway: Default route gateway for unicast interface.
             unicast_peers: Number of unicast peers.
+                Default format: [{'id': 1}]
+                Supported formats:
+                  - Single string: "value" → [{'id': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'id': 'val1'}, ...]
+                  - List of dicts: [{'id': 1}] (recommended)
             schedule: Type of A-A load balancing. Use none if you have external load balancers.
             weight: Weight-round-robin weight for each cluster unit. Syntax <priority> <weight>.
             cpu_threshold: Dynamic weighted load balancing CPU usage weight and high and low thresholds.
@@ -384,6 +442,11 @@ class Ha(CRUDEndpoint, MetadataMixin):
             pingserver_flip_timeout: Time to wait in minutes before renegotiating after a remote IP monitoring failover.
             vcluster_status: Enable/disable virtual cluster for virtual clustering.
             vcluster: Virtual cluster table.
+                Default format: [{'vcluster-id': 1}]
+                Supported formats:
+                  - Single string: "value" → [{'vcluster-id': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'vcluster-id': 'val1'}, ...]
+                  - List of dicts: [{'vcluster-id': 1}] (recommended)
             ha_direct: Enable/disable using ha-mgmt interface for syslog, remote authentication (RADIUS), FortiAnalyzer, FortiSandbox, sFlow, and Netflow.
             ssd_failover: Enable/disable automatic HA failover on SSD disk failure.
             memory_compatible_mode: Enable/disable memory compatible mode.
@@ -424,6 +487,50 @@ class Ha(CRUDEndpoint, MetadataMixin):
             - post(): Create new object
             - set(): Intelligent create or update
         """
+        # Apply normalization for table fields (supports flexible input formats)
+        if auto_virtual_mac_interface is not None:
+            auto_virtual_mac_interface = normalize_table_field(
+                auto_virtual_mac_interface,
+                mkey="interface-name",
+                required_fields=['interface-name'],
+                field_name="auto_virtual_mac_interface",
+                example="[{'interface-name': 'value'}]",
+            )
+        if backup_hbdev is not None:
+            backup_hbdev = normalize_table_field(
+                backup_hbdev,
+                mkey="name",
+                required_fields=['name'],
+                field_name="backup_hbdev",
+                example="[{'name': 'value'}]",
+            )
+        if ha_mgmt_interfaces is not None:
+            ha_mgmt_interfaces = normalize_table_field(
+                ha_mgmt_interfaces,
+                mkey="id",
+                required_fields=['interface'],
+                field_name="ha_mgmt_interfaces",
+                example="[{'interface': 'value'}]",
+            )
+        if unicast_peers is not None:
+            unicast_peers = normalize_table_field(
+                unicast_peers,
+                mkey="id",
+                required_fields=['id'],
+                field_name="unicast_peers",
+                example="[{'id': 1}]",
+            )
+        if vcluster is not None:
+            vcluster = normalize_table_field(
+                vcluster,
+                mkey="vcluster-id",
+                required_fields=['vcluster-id'],
+                field_name="vcluster",
+                example="[{'vcluster-id': 1}]",
+            )
+        
+        # Apply normalization for multi-value option fields (space-separated strings)
+        
         # Build payload using helper function
         payload_data = build_api_payload(
             api_type="cmdb",
@@ -535,7 +642,7 @@ class Ha(CRUDEndpoint, MetadataMixin):
         if q_scope is not None:
             params["scope"] = q_scope
         
-        return self._client.put(
+        return self._client.put(  # type: ignore[return-value]
             "cmdb", endpoint, data=payload_data, params=params, vdom=False        )
 
 
@@ -552,7 +659,7 @@ class Ha(CRUDEndpoint, MetadataMixin):
         action: Literal["before", "after"],
         reference_name: str,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ) -> Union[FortiObject, Coroutine[Any, Any, FortiObject]]:
         """
         Move system/ha object to a new position.
         
@@ -575,16 +682,17 @@ class Ha(CRUDEndpoint, MetadataMixin):
             ...     reference_name="object2"
             ... )
         """
-        return self._client.request(
-            method="PUT",
-            path=f"/api/v2/cmdb/system/ha",
-            params={
-                "name": name,
-                "action": "move",
-                action: reference_name,
-                **kwargs,
-            },
-        )
+        # Build params for move operation
+        params = {
+            "name": name,
+            "action": "move",
+            action: reference_name,
+            **kwargs,
+        }
+        
+        endpoint = "/system/ha"
+        return self._client.put(  # type: ignore[return-value]
+            "cmdb", endpoint, data={}, params=params, vdom=False        )
 
     # ========================================================================
     # Action: Clone
@@ -595,7 +703,7 @@ class Ha(CRUDEndpoint, MetadataMixin):
         name: str,
         new_name: str,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ) -> Union[FortiObject, Coroutine[Any, Any, FortiObject]]:
         """
         Clone system/ha object.
         
@@ -616,68 +724,18 @@ class Ha(CRUDEndpoint, MetadataMixin):
             ...     new_name="new-from-template"
             ... )
         """
-        return self._client.request(
-            method="POST",
-            path=f"/api/v2/cmdb/system/ha",
-            params={
-                "name": name,
-                "new_name": new_name,
-                "action": "clone",
-                **kwargs,
-            },
-        )
-
-    # ========================================================================
-    # Helper: Check Existence
-    # ========================================================================
-    
-    def exists(
-        self,
-        name: str,
-    ) -> bool:
-        """
-        Check if system/ha object exists.
+        # Build params for clone operation  
+        params = {
+            "name": name,
+            "new_name": new_name,
+            "action": "clone",
+            **kwargs,
+        }
         
-        Args:
-            name: Name to check
-            
-        Returns:
-            True if object exists, False otherwise
-            
-        Example:
-            >>> # Check before creating
-            >>> if not fgt.api.cmdb.system_ha.exists(name="myobj"):
-            ...     fgt.api.cmdb.system_ha.post(payload_dict=data)
-        """
-        # Use direct request with silent error handling to avoid logging 404s
-        # This is expected behavior for exists() - 404 just means "doesn't exist"
         endpoint = "/system/ha"
-        endpoint = f"{endpoint}/{quote_path_param(name)}"
-        
-        # Make request with silent=True to suppress 404 error logging
-        # (404 is expected when checking existence - it just means "doesn't exist")
-        # Use _wrapped_client to access the underlying HTTPClient directly
-        # (self._client is ResponseProcessingClient, _wrapped_client is HTTPClient)
-        try:
-            result = self._client._wrapped_client.get(
-                "cmdb",
-                endpoint,
-                params=None,
-                vdom=False,
-                raw_json=True,
-                silent=True,
-            )
-            
-            if isinstance(result, dict):
-                # Synchronous response - check status
-                return result.get("status") == "success"
-            else:
-                # Asynchronous response
-                async def _check() -> bool:
-                    r = await result
-                    return r.get("status") == "success"
-                return _check()
-        except Exception:
-            # Any error (404, network, etc.) means we can't confirm existence
-            return False
+        return self._client.post(  # type: ignore[return-value]
+            "cmdb", endpoint, data={}, params=params, vdom=False        )
+
+
+
 

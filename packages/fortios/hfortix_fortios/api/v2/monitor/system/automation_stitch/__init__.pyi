@@ -10,12 +10,27 @@ if TYPE_CHECKING:
     from .test import Test
     from .webhook import Webhook
 
+__all__ = [
+    "Stats",
+    "Test",
+    "Webhook",
+    "AutomationStitch",
+]
+
 
 class AutomationStitch:
-    """Type stub for AutomationStitch."""
-
+    """AUTOMATION_STITCH API category.
+    
+    All endpoints return FortiObject instances with:
+    - Attribute access: response.field
+    - Dictionary access: response["field"]
+    - Convert to dict: response.dict or response.json
+    """
+    
     stats: Stats
     test: Test
     webhook: Webhook
 
-    def __init__(self, client: IHTTPClient) -> None: ...
+    def __init__(self, client: IHTTPClient, vdom: str | None = None) -> None:
+        """Initialize automation_stitch category with HTTP client."""
+        ...

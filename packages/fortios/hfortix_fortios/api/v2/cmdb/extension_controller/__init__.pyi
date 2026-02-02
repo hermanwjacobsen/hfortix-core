@@ -13,10 +13,26 @@ if TYPE_CHECKING:
     from .fortigate import Fortigate
     from .fortigate_profile import FortigateProfile
 
+__all__ = [
+    "Dataplan",
+    "Extender",
+    "ExtenderProfile",
+    "ExtenderVap",
+    "Fortigate",
+    "FortigateProfile",
+    "ExtensionController",
+]
+
 
 class ExtensionController:
-    """Type stub for ExtensionController."""
-
+    """EXTENSION_CONTROLLER API category.
+    
+    All endpoints return FortiObject instances with:
+    - Attribute access: response.field
+    - Dictionary access: response["field"]
+    - Convert to dict: response.dict or response.json
+    """
+    
     dataplan: Dataplan
     extender: Extender
     extender_profile: ExtenderProfile
@@ -24,4 +40,6 @@ class ExtensionController:
     fortigate: Fortigate
     fortigate_profile: FortigateProfile
 
-    def __init__(self, client: IHTTPClient) -> None: ...
+    def __init__(self, client: IHTTPClient, vdom: str | None = None) -> None:
+        """Initialize extension_controller category with HTTP client."""
+        ...

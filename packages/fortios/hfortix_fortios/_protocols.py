@@ -9,15 +9,17 @@ Note: The generated .pyi stub files provide the actual type hints with
 endpoint-specific field signatures. These protocols serve as a base
 structure that the stubs override.
 
-Since v0.5.71, all API methods return FortiObject/FortiObjectList instances.
-Use the .raw property to access the full API envelope.
+All API methods return FortiObject/FortiObjectList instances via the
+ResponseProcessingClient wrapper. Use the .raw property to access the
+full API envelope.
 """
 
 from __future__ import annotations
 
-from typing import TYPE_CHECKING, Any, Protocol
+from typing import TYPE_CHECKING, Any, Literal, Protocol, Union
 
 if TYPE_CHECKING:
+    from collections.abc import Coroutine
     from hfortix_fortios.models import FortiObject, FortiObjectList
 
 
@@ -28,25 +30,29 @@ class GetProtocol(Protocol):
     The generated .pyi stub files provide endpoint-specific overloads
     with proper return types (FortiObject vs FortiObjectList).
     
+    Returns FortiObject/FortiObjectList via ResponseProcessingClient.
     Access the full API envelope via .raw property on the returned object.
     """
 
     def get(
         self,
+        name: str | None = None,
         filter: list[str] | None = None,
         count: int | None = None,
         start: int | None = None,
         payload_dict: dict[str, Any] | None = None,
         vdom: str | bool | None = None,
+        error_mode: Literal["raise", "return", "print"] | None = None,
+        error_format: Literal["detailed", "simple", "code_only"] | None = None,
         **kwargs: Any,
-    ) -> FortiObject | FortiObjectList: ...
+    ) -> Union[FortiObject, FortiObjectList, Coroutine[Any, Any, Union[FortiObject, FortiObjectList]]]: ...
 
 
 class PostProtocol(Protocol):
     """
     Protocol defining signature for POST (create) operations.
 
-    Returns FortiObject (MutationResponse).
+    Returns FortiObject (MutationResponse) via ResponseProcessingClient.
     Access the full API envelope via .raw property.
     """
 
@@ -54,15 +60,17 @@ class PostProtocol(Protocol):
         self,
         payload_dict: dict[str, Any] | None = None,
         vdom: str | bool | None = None,
+        error_mode: Literal["raise", "return", "print"] | None = None,
+        error_format: Literal["detailed", "simple", "code_only"] | None = None,
         **kwargs: Any,
-    ) -> FortiObject: ...
+    ) -> Union[FortiObject, Coroutine[Any, Any, FortiObject]]: ...
 
 
 class PutProtocol(Protocol):
     """
     Protocol defining signature for PUT (update) operations.
 
-    Returns FortiObject (MutationResponse).
+    Returns FortiObject (MutationResponse) via ResponseProcessingClient.
     Access the full API envelope via .raw property.
     """
 
@@ -70,15 +78,17 @@ class PutProtocol(Protocol):
         self,
         payload_dict: dict[str, Any] | None = None,
         vdom: str | bool | None = None,
+        error_mode: Literal["raise", "return", "print"] | None = None,
+        error_format: Literal["detailed", "simple", "code_only"] | None = None,
         **kwargs: Any,
-    ) -> FortiObject: ...
+    ) -> Union[FortiObject, Coroutine[Any, Any, FortiObject]]: ...
 
 
 class DeleteProtocol(Protocol):
     """
     Protocol defining signature for DELETE operations.
 
-    Returns FortiObject (MutationResponse).
+    Returns FortiObject (MutationResponse) via ResponseProcessingClient.
     Access the full API envelope via .raw property.
     """
 
@@ -86,8 +96,10 @@ class DeleteProtocol(Protocol):
         self,
         name: str | None = None,
         vdom: str | bool | None = None,
+        error_mode: Literal["raise", "return", "print"] | None = None,
+        error_format: Literal["detailed", "simple", "code_only"] | None = None,
         **kwargs: Any,
-    ) -> FortiObject: ...
+    ) -> Union[FortiObject, Coroutine[Any, Any, FortiObject]]: ...
 
 
 class CRUDEndpoint(

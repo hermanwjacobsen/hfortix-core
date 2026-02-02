@@ -24,10 +24,37 @@ if TYPE_CHECKING:
     from .icon import Icon
     from .qos_map import QosMap
 
+__all__ = [
+    "Anqp3gppCellular",
+    "AnqpIpAddressType",
+    "AnqpNaiRealm",
+    "AnqpNetworkAuthType",
+    "AnqpRoamingConsortium",
+    "AnqpVenueName",
+    "AnqpVenueUrl",
+    "H2qpAdviceOfCharge",
+    "H2qpConnCapability",
+    "H2qpOperatorName",
+    "H2qpOsuProvider",
+    "H2qpOsuProviderNai",
+    "H2qpTermsAndConditions",
+    "H2qpWanMetric",
+    "HsProfile",
+    "Icon",
+    "QosMap",
+    "Hotspot20",
+]
+
 
 class Hotspot20:
-    """Type stub for Hotspot20."""
-
+    """HOTSPOT20 API category.
+    
+    All endpoints return FortiObject instances with:
+    - Attribute access: response.field
+    - Dictionary access: response["field"]
+    - Convert to dict: response.dict or response.json
+    """
+    
     anqp_3gpp_cellular: Anqp3gppCellular
     anqp_ip_address_type: AnqpIpAddressType
     anqp_nai_realm: AnqpNaiRealm
@@ -46,4 +73,6 @@ class Hotspot20:
     icon: Icon
     qos_map: QosMap
 
-    def __init__(self, client: IHTTPClient) -> None: ...
+    def __init__(self, client: IHTTPClient, vdom: str | None = None) -> None:
+        """Initialize hotspot20 category with HTTP client."""
+        ...

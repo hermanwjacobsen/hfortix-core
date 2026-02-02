@@ -39,6 +39,7 @@ from typing import TYPE_CHECKING, Any, Literal, Union
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
+    from hfortix_fortios.models import FortiObject, FortiObjectList
 
 # Import helper functions from central _helpers module
 from hfortix_fortios._helpers import (
@@ -46,6 +47,7 @@ from hfortix_fortios._helpers import (
     build_cmdb_payload,  # Keep for backward compatibility / manual usage
     is_success,
     quote_path_param,  # URL encoding for path parameters
+    normalize_table_field,  # For table field normalization
 )
 # Import metadata mixin for schema introspection
 from hfortix_fortios._helpers.metadata_mixin import MetadataMixin
@@ -58,6 +60,43 @@ class Vip6(CRUDEndpoint, MetadataMixin):
     
     # Configure metadata mixin to use this endpoint's helper module
     _helper_module_name = "vip6"
+    
+    # ========================================================================
+    # Table Fields Metadata (for normalization)
+    # Auto-generated from schema - supports flexible input formats
+    # ========================================================================
+    _TABLE_FIELDS = {
+        "src_filter": {
+            "mkey": "range",
+            "required_fields": ['range'],
+            "example": "[{'range': 'value'}]",
+        },
+        "realservers": {
+            "mkey": "id",
+            "required_fields": ['ip'],
+            "example": "[{'ip': '192.168.1.10'}]",
+        },
+        "ssl_certificate": {
+            "mkey": "name",
+            "required_fields": ['name'],
+            "example": "[{'name': 'value'}]",
+        },
+        "ssl_cipher_suites": {
+            "mkey": "priority",
+            "required_fields": ['cipher'],
+            "example": "[{'cipher': 'TLS-AES-128-GCM-SHA256'}]",
+        },
+        "ssl_server_cipher_suites": {
+            "mkey": "priority",
+            "required_fields": ['cipher'],
+            "example": "[{'cipher': 'TLS-AES-128-GCM-SHA256'}]",
+        },
+        "monitor": {
+            "mkey": "name",
+            "required_fields": ['name'],
+            "example": "[{'name': 'value'}]",
+        },
+    }
     
     # ========================================================================
     # Capabilities (from schema metadata)
@@ -80,9 +119,11 @@ class Vip6(CRUDEndpoint, MetadataMixin):
     # ========================================================================
     # GET Method
     # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # Note: Endpoint-specific parameters intentionally extend the protocol's **kwargs
+    #       to provide autocomplete. Type checkers may report signature mismatch.
     # ========================================================================
     
-    def get(
+    def get(  # type: ignore[override]
         self,
         name: str | None = None,
         filter: list[str] | None = None,
@@ -92,7 +133,7 @@ class Vip6(CRUDEndpoint, MetadataMixin):
         vdom: str | bool | None = None,
         error_mode: Literal["raise", "return", "print"] | None = None,
         error_format: Literal["detailed", "simple", "code_only"] | None = None,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ) -> Union[FortiObject, FortiObjectList, Coroutine[Any, Any, Union[FortiObject, FortiObjectList]]]:
         """
         Retrieve firewall/vip6 configuration.
 
@@ -180,7 +221,7 @@ class Vip6(CRUDEndpoint, MetadataMixin):
             endpoint = "/firewall/vip6"
             unwrap_single = False
         
-        return self._client.get(
+        return self._client.get(  # type: ignore[return-value]
             "cmdb", endpoint, params=params, vdom=vdom, unwrap_single=unwrap_single
         )
 
@@ -188,7 +229,7 @@ class Vip6(CRUDEndpoint, MetadataMixin):
         self,
         vdom: str | None = None,
         format: str = "schema",
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ) -> Union[FortiObject, FortiObjectList, Coroutine[Any, Any, Union[FortiObject, FortiObjectList]]]:
         """
         Get schema/metadata for this endpoint.
         
@@ -219,15 +260,17 @@ class Vip6(CRUDEndpoint, MetadataMixin):
             Not all endpoints support all schema formats. The "schema" format
             is most widely supported.
         """
-        return self.get(action=format, vdom=vdom)
+        return self.get(payload_dict={"action": format}, vdom=vdom)
 
 
     # ========================================================================
     # PUT Method
     # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # Note: Field-specific parameters intentionally extend the protocol's **kwargs
+    #       to provide autocomplete. Type checkers may report signature mismatch.
     # ========================================================================
     
-    def put(
+    def put(  # type: ignore[override]
         self,
         payload_dict: dict[str, Any] | None = None,
         name: str | None = None,
@@ -320,7 +363,7 @@ class Vip6(CRUDEndpoint, MetadataMixin):
         vdom: str | bool | None = None,
         error_mode: Literal["raise", "return", "print"] | None = None,
         error_format: Literal["detailed", "simple", "code_only"] | None = None,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ) -> Union[FortiObject, Coroutine[Any, Any, FortiObject]]:
         """
         Update existing firewall/vip6 object.
 
@@ -334,6 +377,11 @@ class Vip6(CRUDEndpoint, MetadataMixin):
             comment: Comment.
             type: Configure a static NAT server load balance VIP or access proxy.
             src_filter: Source IP6 filter (x:x:x:x:x:x:x:x/x). Separate addresses with spaces.
+                Default format: [{'range': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'range': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'range': 'val1'}, ...]
+                  - List of dicts: [{'range': 'value'}] (recommended)
             src_vip_filter: Enable/disable use of 'src-filter' to match destinations for the reverse SNAT rule.
             extip: IPv6 address or address range on the external interface that you want to map to an address or address range on the destination network.
             mappedip: Mapped IPv6 address range in the format startIP-endIP.
@@ -358,6 +406,11 @@ class Vip6(CRUDEndpoint, MetadataMixin):
             user_agent_detect: Enable/disable detecting device type by HTTP user-agent if no client certificate is provided.
             client_cert: Enable/disable requesting client certificate.
             realservers: Select the real servers that this server load balancing VIP will distribute traffic to.
+                Default format: [{'ip': '192.168.1.10'}]
+                Supported formats:
+                  - Single string: "value" → [{'id': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'id': 'val1'}, ...]
+                  - List of dicts: [{'ip': '192.168.1.10'}] (recommended)
             http_cookie_domain_from_host: Enable/disable use of HTTP cookie domain from host field in HTTP.
             http_cookie_domain: Domain that HTTP cookie persistence should apply to.
             http_cookie_path: Limit HTTP cookie persistence to the specified path.
@@ -373,12 +426,27 @@ class Vip6(CRUDEndpoint, MetadataMixin):
             websphere_server: Enable to add an HTTP header to indicate SSL offloading for a WebSphere server.
             ssl_mode: Apply SSL offloading between the client and the FortiGate (half) or from the client to the FortiGate and from the FortiGate to the server (full).
             ssl_certificate: Name of the certificate to use for SSL handshake.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
             ssl_dh_bits: Number of bits to use in the Diffie-Hellman exchange for RSA encryption of SSL sessions.
             ssl_algorithm: Permitted encryption algorithms for SSL sessions according to encryption strength.
             ssl_cipher_suites: SSL/TLS cipher suites acceptable from a client, ordered by priority.
+                Default format: [{'cipher': 'TLS-AES-128-GCM-SHA256'}]
+                Supported formats:
+                  - Single string: "value" → [{'priority': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'priority': 'val1'}, ...]
+                  - List of dicts: [{'cipher': 'TLS-AES-128-GCM-SHA256'}] (recommended)
             ssl_server_renegotiation: Enable/disable secure renegotiation to comply with RFC 5746.
             ssl_server_algorithm: Permitted encryption algorithms for the server side of SSL full mode sessions according to encryption strength.
             ssl_server_cipher_suites: SSL/TLS cipher suites to offer to a server, ordered by priority.
+                Default format: [{'cipher': 'TLS-AES-128-GCM-SHA256'}]
+                Supported formats:
+                  - Single string: "value" → [{'priority': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'priority': 'val1'}, ...]
+                  - List of dicts: [{'cipher': 'TLS-AES-128-GCM-SHA256'}] (recommended)
             ssl_pfs: Select the cipher suites that can be used for SSL perfect forward secrecy (PFS). Applies to both client and server sessions.
             ssl_min_version: Lowest SSL/TLS version acceptable from a client.
             ssl_max_version: Highest SSL/TLS version acceptable from a client.
@@ -407,6 +475,11 @@ class Vip6(CRUDEndpoint, MetadataMixin):
             ssl_hsts_age: Number of seconds the client should honor the HSTS setting.
             ssl_hsts_include_subdomains: Indicate that HSTS header applies to all subdomains.
             monitor: Name of the health check monitor to use when polling to determine a virtual server's connectivity status.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
             max_embryonic_connections: Maximum number of incomplete connections.
             embedded_ipv4_address: Enable/disable use of the lower 32 bits of the external IPv6 address as mapped IPv4 address.
             ipv4_mappedip: Range of mapped IP addresses. Specify the start IP address followed by a space and the end IP address.
@@ -439,6 +512,56 @@ class Vip6(CRUDEndpoint, MetadataMixin):
             - post(): Create new object
             - set(): Intelligent create or update
         """
+        # Apply normalization for table fields (supports flexible input formats)
+        if src_filter is not None:
+            src_filter = normalize_table_field(
+                src_filter,
+                mkey="range",
+                required_fields=['range'],
+                field_name="src_filter",
+                example="[{'range': 'value'}]",
+            )
+        if realservers is not None:
+            realservers = normalize_table_field(
+                realservers,
+                mkey="id",
+                required_fields=['ip'],
+                field_name="realservers",
+                example="[{'ip': '192.168.1.10'}]",
+            )
+        if ssl_certificate is not None:
+            ssl_certificate = normalize_table_field(
+                ssl_certificate,
+                mkey="name",
+                required_fields=['name'],
+                field_name="ssl_certificate",
+                example="[{'name': 'value'}]",
+            )
+        if ssl_cipher_suites is not None:
+            ssl_cipher_suites = normalize_table_field(
+                ssl_cipher_suites,
+                mkey="priority",
+                required_fields=['cipher'],
+                field_name="ssl_cipher_suites",
+                example="[{'cipher': 'TLS-AES-128-GCM-SHA256'}]",
+            )
+        if ssl_server_cipher_suites is not None:
+            ssl_server_cipher_suites = normalize_table_field(
+                ssl_server_cipher_suites,
+                mkey="priority",
+                required_fields=['cipher'],
+                field_name="ssl_server_cipher_suites",
+                example="[{'cipher': 'TLS-AES-128-GCM-SHA256'}]",
+            )
+        if monitor is not None:
+            monitor = normalize_table_field(
+                monitor,
+                mkey="name",
+                required_fields=['name'],
+                field_name="monitor",
+                example="[{'name': 'value'}]",
+            )
+        
         # Build payload using helper function
         payload_data = build_api_payload(
             api_type="cmdb",
@@ -554,15 +677,17 @@ class Vip6(CRUDEndpoint, MetadataMixin):
         if q_scope is not None:
             params["scope"] = q_scope
         
-        return self._client.put(
+        return self._client.put(  # type: ignore[return-value]
             "cmdb", endpoint, data=payload_data, params=params, vdom=vdom        )
 
     # ========================================================================
     # POST Method
     # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # Note: Field-specific parameters intentionally extend the protocol's **kwargs
+    #       to provide autocomplete. Type checkers may report signature mismatch.
     # ========================================================================
     
-    def post(
+    def post(  # type: ignore[override]
         self,
         payload_dict: dict[str, Any] | None = None,
         name: str | None = None,
@@ -654,7 +779,7 @@ class Vip6(CRUDEndpoint, MetadataMixin):
         vdom: str | bool | None = None,
         error_mode: Literal["raise", "return", "print"] | None = None,
         error_format: Literal["detailed", "simple", "code_only"] | None = None,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ) -> Union[FortiObject, Coroutine[Any, Any, FortiObject]]:
         """
         Create new firewall/vip6 object.
 
@@ -668,6 +793,11 @@ class Vip6(CRUDEndpoint, MetadataMixin):
             comment: Comment.
             type: Configure a static NAT server load balance VIP or access proxy.
             src_filter: Source IP6 filter (x:x:x:x:x:x:x:x/x). Separate addresses with spaces.
+                Default format: [{'range': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'range': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'range': 'val1'}, ...]
+                  - List of dicts: [{'range': 'value'}] (recommended)
             src_vip_filter: Enable/disable use of 'src-filter' to match destinations for the reverse SNAT rule.
             extip: IPv6 address or address range on the external interface that you want to map to an address or address range on the destination network.
             mappedip: Mapped IPv6 address range in the format startIP-endIP.
@@ -692,6 +822,11 @@ class Vip6(CRUDEndpoint, MetadataMixin):
             user_agent_detect: Enable/disable detecting device type by HTTP user-agent if no client certificate is provided.
             client_cert: Enable/disable requesting client certificate.
             realservers: Select the real servers that this server load balancing VIP will distribute traffic to.
+                Default format: [{'ip': '192.168.1.10'}]
+                Supported formats:
+                  - Single string: "value" → [{'id': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'id': 'val1'}, ...]
+                  - List of dicts: [{'ip': '192.168.1.10'}] (recommended)
             http_cookie_domain_from_host: Enable/disable use of HTTP cookie domain from host field in HTTP.
             http_cookie_domain: Domain that HTTP cookie persistence should apply to.
             http_cookie_path: Limit HTTP cookie persistence to the specified path.
@@ -707,12 +842,27 @@ class Vip6(CRUDEndpoint, MetadataMixin):
             websphere_server: Enable to add an HTTP header to indicate SSL offloading for a WebSphere server.
             ssl_mode: Apply SSL offloading between the client and the FortiGate (half) or from the client to the FortiGate and from the FortiGate to the server (full).
             ssl_certificate: Name of the certificate to use for SSL handshake.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
             ssl_dh_bits: Number of bits to use in the Diffie-Hellman exchange for RSA encryption of SSL sessions.
             ssl_algorithm: Permitted encryption algorithms for SSL sessions according to encryption strength.
             ssl_cipher_suites: SSL/TLS cipher suites acceptable from a client, ordered by priority.
+                Default format: [{'cipher': 'TLS-AES-128-GCM-SHA256'}]
+                Supported formats:
+                  - Single string: "value" → [{'priority': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'priority': 'val1'}, ...]
+                  - List of dicts: [{'cipher': 'TLS-AES-128-GCM-SHA256'}] (recommended)
             ssl_server_renegotiation: Enable/disable secure renegotiation to comply with RFC 5746.
             ssl_server_algorithm: Permitted encryption algorithms for the server side of SSL full mode sessions according to encryption strength.
             ssl_server_cipher_suites: SSL/TLS cipher suites to offer to a server, ordered by priority.
+                Default format: [{'cipher': 'TLS-AES-128-GCM-SHA256'}]
+                Supported formats:
+                  - Single string: "value" → [{'priority': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'priority': 'val1'}, ...]
+                  - List of dicts: [{'cipher': 'TLS-AES-128-GCM-SHA256'}] (recommended)
             ssl_pfs: Select the cipher suites that can be used for SSL perfect forward secrecy (PFS). Applies to both client and server sessions.
             ssl_min_version: Lowest SSL/TLS version acceptable from a client.
             ssl_max_version: Highest SSL/TLS version acceptable from a client.
@@ -741,6 +891,11 @@ class Vip6(CRUDEndpoint, MetadataMixin):
             ssl_hsts_age: Number of seconds the client should honor the HSTS setting.
             ssl_hsts_include_subdomains: Indicate that HSTS header applies to all subdomains.
             monitor: Name of the health check monitor to use when polling to determine a virtual server's connectivity status.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
             max_embryonic_connections: Maximum number of incomplete connections.
             embedded_ipv4_address: Enable/disable use of the lower 32 bits of the external IPv6 address as mapped IPv4 address.
             ipv4_mappedip: Range of mapped IP addresses. Specify the start IP address followed by a space and the end IP address.
@@ -775,6 +930,56 @@ class Vip6(CRUDEndpoint, MetadataMixin):
             - put(): Update existing object
             - set(): Intelligent create or update
         """
+        # Apply normalization for table fields (supports flexible input formats)
+        if src_filter is not None:
+            src_filter = normalize_table_field(
+                src_filter,
+                mkey="range",
+                required_fields=['range'],
+                field_name="src_filter",
+                example="[{'range': 'value'}]",
+            )
+        if realservers is not None:
+            realservers = normalize_table_field(
+                realservers,
+                mkey="id",
+                required_fields=['ip'],
+                field_name="realservers",
+                example="[{'ip': '192.168.1.10'}]",
+            )
+        if ssl_certificate is not None:
+            ssl_certificate = normalize_table_field(
+                ssl_certificate,
+                mkey="name",
+                required_fields=['name'],
+                field_name="ssl_certificate",
+                example="[{'name': 'value'}]",
+            )
+        if ssl_cipher_suites is not None:
+            ssl_cipher_suites = normalize_table_field(
+                ssl_cipher_suites,
+                mkey="priority",
+                required_fields=['cipher'],
+                field_name="ssl_cipher_suites",
+                example="[{'cipher': 'TLS-AES-128-GCM-SHA256'}]",
+            )
+        if ssl_server_cipher_suites is not None:
+            ssl_server_cipher_suites = normalize_table_field(
+                ssl_server_cipher_suites,
+                mkey="priority",
+                required_fields=['cipher'],
+                field_name="ssl_server_cipher_suites",
+                example="[{'cipher': 'TLS-AES-128-GCM-SHA256'}]",
+            )
+        if monitor is not None:
+            monitor = normalize_table_field(
+                monitor,
+                mkey="name",
+                required_fields=['name'],
+                field_name="monitor",
+                example="[{'name': 'value'}]",
+            )
+        
         # Build payload using helper function
         payload_data = build_api_payload(
             api_type="cmdb",
@@ -885,22 +1090,24 @@ class Vip6(CRUDEndpoint, MetadataMixin):
         if q_scope is not None:
             params["scope"] = q_scope
         
-        return self._client.post(
+        return self._client.post(  # type: ignore[return-value]
             "cmdb", endpoint, data=payload_data, params=params, vdom=vdom        )
 
     # ========================================================================
     # DELETE Method
     # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # Note: Identifier parameters intentionally extend the protocol's **kwargs
+    #       to provide autocomplete. Type checkers may report signature mismatch.
     # ========================================================================
     
-    def delete(
+    def delete(  # type: ignore[override]
         self,
         name: str | None = None,
         q_scope: str | None = None,
         vdom: str | bool | None = None,
         error_mode: Literal["raise", "return", "print"] | None = None,
         error_format: Literal["detailed", "simple", "code_only"] | None = None,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ) -> Union[FortiObject, Coroutine[Any, Any, FortiObject]]:
         """
         Delete firewall/vip6 object.
 
@@ -939,7 +1146,7 @@ class Vip6(CRUDEndpoint, MetadataMixin):
         if q_scope is not None:
             params["scope"] = q_scope
         
-        return self._client.delete(
+        return self._client.delete(  # type: ignore[return-value]
             "cmdb", endpoint, params=params, vdom=vdom        )
 
     def exists(
@@ -974,34 +1181,27 @@ class Vip6(CRUDEndpoint, MetadataMixin):
             - get(): Retrieve full object data
             - set(): Create or update automatically based on existence
         """
-        # Use direct request with silent error handling to avoid logging 404s
-        # This is expected behavior for exists() - 404 just means "doesn't exist"
+        # Use direct GET request to check existence
+        # 404 responses are expected and just mean "doesn't exist"
         endpoint = "/firewall/vip6"
         endpoint = f"{endpoint}/{quote_path_param(name)}"
         
-        # Make request with silent=True to suppress 404 error logging
-        # (404 is expected when checking existence - it just means "doesn't exist")
-        # Use _wrapped_client to access the underlying HTTPClient directly
-        # (self._client is ResponseProcessingClient, _wrapped_client is HTTPClient)
         try:
-            result = self._client._wrapped_client.get(
-                "cmdb",
-                endpoint,
-                params=None,
-                vdom=vdom,
-                raw_json=True,
-                silent=True,
-            )
+            result = self.get(name=name, vdom=vdom)
             
-            if isinstance(result, dict):
-                # Synchronous response - check status
-                return result.get("status") == "success"
-            else:
-                # Asynchronous response
+            # Check if result is a coroutine (async) or direct response (sync)
+            # Note: Type checkers can't narrow Union[T, Coroutine[T]] in conditionals
+            if hasattr(result, '__await__'):
+                # Async response - return coroutine that checks status
                 async def _check() -> bool:
-                    r = await result
-                    return r.get("status") == "success"
+                    r = await result  # type: ignore[misc]
+                    response = r.raw if hasattr(r, 'raw') else r
+                    return is_success(response)
                 return _check()
+            else:
+                # Sync response - check status directly
+                response = result.raw if hasattr(result, 'raw') else result  # type: ignore[union-attr]
+                return is_success(response)
         except Exception:
             # Any error (404, network, etc.) means we can't confirm existence
             return False
@@ -1097,7 +1297,7 @@ class Vip6(CRUDEndpoint, MetadataMixin):
         error_mode: Literal["raise", "return", "print"] | None = None,
         error_format: Literal["detailed", "simple", "code_only"] | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ) -> Union[FortiObject, Coroutine[Any, Any, FortiObject]]:
         """
         Create or update firewall/vip6 object (intelligent operation).
 
@@ -1228,6 +1428,56 @@ class Vip6(CRUDEndpoint, MetadataMixin):
             - put(): Update existing object
             - exists(): Check existence manually
         """
+        # Apply normalization for table fields (supports flexible input formats)
+        if src_filter is not None:
+            src_filter = normalize_table_field(
+                src_filter,
+                mkey="range",
+                required_fields=['range'],
+                field_name="src_filter",
+                example="[{'range': 'value'}]",
+            )
+        if realservers is not None:
+            realservers = normalize_table_field(
+                realservers,
+                mkey="id",
+                required_fields=['ip'],
+                field_name="realservers",
+                example="[{'ip': '192.168.1.10'}]",
+            )
+        if ssl_certificate is not None:
+            ssl_certificate = normalize_table_field(
+                ssl_certificate,
+                mkey="name",
+                required_fields=['name'],
+                field_name="ssl_certificate",
+                example="[{'name': 'value'}]",
+            )
+        if ssl_cipher_suites is not None:
+            ssl_cipher_suites = normalize_table_field(
+                ssl_cipher_suites,
+                mkey="priority",
+                required_fields=['cipher'],
+                field_name="ssl_cipher_suites",
+                example="[{'cipher': 'TLS-AES-128-GCM-SHA256'}]",
+            )
+        if ssl_server_cipher_suites is not None:
+            ssl_server_cipher_suites = normalize_table_field(
+                ssl_server_cipher_suites,
+                mkey="priority",
+                required_fields=['cipher'],
+                field_name="ssl_server_cipher_suites",
+                example="[{'cipher': 'TLS-AES-128-GCM-SHA256'}]",
+            )
+        if monitor is not None:
+            monitor = normalize_table_field(
+                monitor,
+                mkey="name",
+                required_fields=['name'],
+                field_name="monitor",
+                example="[{'name': 'value'}]",
+            )
+        
         # Build payload using helper function
         payload_data = build_api_payload(
             api_type="cmdb",
@@ -1340,7 +1590,7 @@ class Vip6(CRUDEndpoint, MetadataMixin):
         reference_name: str,
         vdom: str | bool | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ) -> Union[FortiObject, Coroutine[Any, Any, FortiObject]]:
         """
         Move firewall/vip6 object to a new position.
         
@@ -1364,17 +1614,18 @@ class Vip6(CRUDEndpoint, MetadataMixin):
             ...     reference_name=50
             ... )
         """
-        return self._client.request(
-            method="PUT",
-            path=f"/api/v2/cmdb/firewall/vip6",
-            params={
-                "name": name,
-                "action": "move",
-                action: reference_name,
-                "vdom": vdom,
-                **kwargs,
-            },
-        )
+        # Build params for move operation
+        params = {
+            "name": name,
+            "action": "move",
+            action: reference_name,
+            "vdom": vdom,
+            **kwargs,
+        }
+        
+        endpoint = "/firewall/vip6"
+        return self._client.put(  # type: ignore[return-value]
+            "cmdb", endpoint, data={}, params=params, vdom=vdom        )
 
     # ========================================================================
     # Action: Clone
@@ -1386,7 +1637,7 @@ class Vip6(CRUDEndpoint, MetadataMixin):
         new_name: str,
         vdom: str | bool | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ) -> Union[FortiObject, Coroutine[Any, Any, FortiObject]]:
         """
         Clone firewall/vip6 object.
         
@@ -1408,16 +1659,19 @@ class Vip6(CRUDEndpoint, MetadataMixin):
             ...     new_name=100
             ... )
         """
-        return self._client.request(
-            method="POST",
-            path=f"/api/v2/cmdb/firewall/vip6",
-            params={
-                "name": name,
-                "new_name": new_name,
-                "action": "clone",
-                "vdom": vdom,
-                **kwargs,
-            },
-        )
+        # Build params for clone operation  
+        params = {
+            "name": name,
+            "new_name": new_name,
+            "action": "clone",
+            "vdom": vdom,
+            **kwargs,
+        }
+        
+        endpoint = "/firewall/vip6"
+        return self._client.post(  # type: ignore[return-value]
+            "cmdb", endpoint, data={}, params=params, vdom=vdom        )
+
+
 
 

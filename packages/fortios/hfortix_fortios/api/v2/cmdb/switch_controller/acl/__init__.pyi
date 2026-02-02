@@ -9,11 +9,25 @@ if TYPE_CHECKING:
     from .group import Group
     from .ingress import Ingress
 
+__all__ = [
+    "Group",
+    "Ingress",
+    "Acl",
+]
+
 
 class Acl:
-    """Type stub for Acl."""
-
+    """ACL API category.
+    
+    All endpoints return FortiObject instances with:
+    - Attribute access: response.field
+    - Dictionary access: response["field"]
+    - Convert to dict: response.dict or response.json
+    """
+    
     group: Group
     ingress: Ingress
 
-    def __init__(self, client: IHTTPClient) -> None: ...
+    def __init__(self, client: IHTTPClient, vdom: str | None = None) -> None:
+        """Initialize acl category with HTTP client."""
+        ...

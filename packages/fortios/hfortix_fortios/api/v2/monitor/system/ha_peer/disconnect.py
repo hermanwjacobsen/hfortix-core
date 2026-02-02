@@ -39,6 +39,7 @@ from typing import TYPE_CHECKING, Any, Literal, Union
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
+    from hfortix_fortios.models import FortiObject, FortiObjectList
 
 # Import helper functions from central _helpers module
 from hfortix_fortios._helpers import (
@@ -82,9 +83,11 @@ class Disconnect(CRUDEndpoint, MetadataMixin):
     # ========================================================================
     # POST Method
     # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # Note: Field-specific parameters intentionally extend the protocol's **kwargs
+    #       to provide autocomplete. Type checkers may report signature mismatch.
     # ========================================================================
     
-    def post(
+    def post(  # type: ignore[override]
         self,
         payload_dict: dict[str, Any] | None = None,
         serial_no: str | None = None,
@@ -94,7 +97,7 @@ class Disconnect(CRUDEndpoint, MetadataMixin):
         vdom: str | bool | None = None,
         error_mode: Literal["raise", "return", "print"] | None = None,
         error_format: Literal["detailed", "simple", "code_only"] | None = None,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ) -> Union[FortiObject, Coroutine[Any, Any, FortiObject]]:
         """
         Create new system/ha_peer/disconnect object.
 
@@ -157,8 +160,10 @@ class Disconnect(CRUDEndpoint, MetadataMixin):
             )
 
         endpoint = "/system/ha-peer/disconnect"
-        return self._client.post(
+        return self._client.post(  # type: ignore[return-value]
             "monitor", endpoint, data=payload_data, vdom=vdom        )
+
+
 
 
 

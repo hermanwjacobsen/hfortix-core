@@ -9,11 +9,25 @@ if TYPE_CHECKING:
     from .start import Start
     from .stop import Stop
 
+__all__ = [
+    "Start",
+    "Stop",
+    "DebugFlow",
+]
+
 
 class DebugFlow:
-    """Type stub for DebugFlow."""
-
+    """DEBUG_FLOW API category.
+    
+    All endpoints return FortiObject instances with:
+    - Attribute access: response.field
+    - Dictionary access: response["field"]
+    - Convert to dict: response.dict or response.json
+    """
+    
     start: Start
     stop: Stop
 
-    def __init__(self, client: IHTTPClient) -> None: ...
+    def __init__(self, client: IHTTPClient, vdom: str | None = None) -> None:
+        """Initialize debug_flow category with HTTP client."""
+        ...

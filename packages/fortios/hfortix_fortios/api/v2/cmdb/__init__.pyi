@@ -4,7 +4,6 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING
 
-
 if TYPE_CHECKING:
     from hfortix_core.http.interface import IHTTPClient
     from . import alertemail
@@ -45,10 +44,116 @@ if TYPE_CHECKING:
     from . import wireless_controller
     from . import ztna
 
+__all__ = [
+    "CMDB",
+    "CMDBDictMode",
+    "CMDBObjectMode",
+]
 
+class CMDBDictMode:
+    """CMDB API category for dict response mode.
+    
+    This class is returned when the client is instantiated with response_mode="dict" (default).
+    All endpoints return dict/TypedDict responses by default.
+    """
+    
+    alertemail: alertemail.Alertemail  # No mode classes yet
+    antivirus: antivirus.Antivirus  # No mode classes yet
+    application: application.Application  # No mode classes yet
+    authentication: authentication.Authentication  # No mode classes yet
+    automation: automation.Automation  # No mode classes yet
+    casb: casb.Casb  # No mode classes yet
+    certificate: certificate.Certificate  # No mode classes yet
+    diameter_filter: diameter_filter.DiameterFilter  # No mode classes yet
+    dlp: dlp.Dlp  # No mode classes yet
+    dnsfilter: dnsfilter.Dnsfilter  # No mode classes yet
+    emailfilter: emailfilter.Emailfilter  # No mode classes yet
+    endpoint_control: endpoint_control.EndpointControl  # No mode classes yet
+    ethernet_oam: ethernet_oam.EthernetOam  # No mode classes yet
+    extension_controller: extension_controller.ExtensionController  # No mode classes yet
+    file_filter: file_filter.FileFilter  # No mode classes yet
+    firewall: firewall.Firewall  # No mode classes yet
+    ftp_proxy: ftp_proxy.FtpProxy  # No mode classes yet
+    icap: icap.Icap  # No mode classes yet
+    ips: ips.Ips  # No mode classes yet
+    log: log.Log  # No mode classes yet
+    monitoring: monitoring.Monitoring  # No mode classes yet
+    report: report.Report  # No mode classes yet
+    router: router.Router  # No mode classes yet
+    rule: rule.Rule  # No mode classes yet
+    sctp_filter: sctp_filter.SctpFilter  # No mode classes yet
+    switch_controller: switch_controller.SwitchController  # No mode classes yet
+    system: system.System  # No mode classes yet
+    user: user.User  # No mode classes yet
+    videofilter: videofilter.Videofilter  # No mode classes yet
+    virtual_patch: virtual_patch.VirtualPatch  # No mode classes yet
+    voip: voip.Voip  # No mode classes yet
+    vpn: vpn.Vpn  # No mode classes yet
+    waf: waf.Waf  # No mode classes yet
+    web_proxy: web_proxy.WebProxy  # No mode classes yet
+    webfilter: webfilter.Webfilter  # No mode classes yet
+    wireless_controller: wireless_controller.WirelessController  # No mode classes yet
+    ztna: ztna.Ztna  # No mode classes yet
+
+    def __init__(self, client: IHTTPClient) -> None:
+        """Initialize CMDB category with HTTP client."""
+        ...
+
+
+class CMDBObjectMode:
+    """CMDB API category for object response mode.
+    
+    This class is returned when the client is instantiated with response_mode="object".
+    All endpoints return FortiObject responses by default.
+    """
+    
+    alertemail: alertemail.Alertemail  # No mode classes yet
+    antivirus: antivirus.Antivirus  # No mode classes yet
+    application: application.Application  # No mode classes yet
+    authentication: authentication.Authentication  # No mode classes yet
+    automation: automation.Automation  # No mode classes yet
+    casb: casb.Casb  # No mode classes yet
+    certificate: certificate.Certificate  # No mode classes yet
+    diameter_filter: diameter_filter.DiameterFilter  # No mode classes yet
+    dlp: dlp.Dlp  # No mode classes yet
+    dnsfilter: dnsfilter.Dnsfilter  # No mode classes yet
+    emailfilter: emailfilter.Emailfilter  # No mode classes yet
+    endpoint_control: endpoint_control.EndpointControl  # No mode classes yet
+    ethernet_oam: ethernet_oam.EthernetOam  # No mode classes yet
+    extension_controller: extension_controller.ExtensionController  # No mode classes yet
+    file_filter: file_filter.FileFilter  # No mode classes yet
+    firewall: firewall.Firewall  # No mode classes yet
+    ftp_proxy: ftp_proxy.FtpProxy  # No mode classes yet
+    icap: icap.Icap  # No mode classes yet
+    ips: ips.Ips  # No mode classes yet
+    log: log.Log  # No mode classes yet
+    monitoring: monitoring.Monitoring  # No mode classes yet
+    report: report.Report  # No mode classes yet
+    router: router.Router  # No mode classes yet
+    rule: rule.Rule  # No mode classes yet
+    sctp_filter: sctp_filter.SctpFilter  # No mode classes yet
+    switch_controller: switch_controller.SwitchController  # No mode classes yet
+    system: system.System  # No mode classes yet
+    user: user.User  # No mode classes yet
+    videofilter: videofilter.Videofilter  # No mode classes yet
+    virtual_patch: virtual_patch.VirtualPatch  # No mode classes yet
+    voip: voip.Voip  # No mode classes yet
+    vpn: vpn.Vpn  # No mode classes yet
+    waf: waf.Waf  # No mode classes yet
+    web_proxy: web_proxy.WebProxy  # No mode classes yet
+    webfilter: webfilter.Webfilter  # No mode classes yet
+    wireless_controller: wireless_controller.WirelessController  # No mode classes yet
+    ztna: ztna.Ztna  # No mode classes yet
+
+    def __init__(self, client: IHTTPClient) -> None:
+        """Initialize CMDB category with HTTP client."""
+        ...
+
+
+# Base class for backwards compatibility
 class CMDB:
-    """Type stub for CMDB."""
-
+    """CMDB API category."""
+    
     alertemail: alertemail.Alertemail
     antivirus: antivirus.Antivirus
     application: application.Application
@@ -87,4 +192,6 @@ class CMDB:
     wireless_controller: wireless_controller.WirelessController
     ztna: ztna.Ztna
 
-    def __init__(self, client: IHTTPClient) -> None: ...
+    def __init__(self, client: IHTTPClient) -> None:
+        """Initialize CMDB category with HTTP client."""
+        ...

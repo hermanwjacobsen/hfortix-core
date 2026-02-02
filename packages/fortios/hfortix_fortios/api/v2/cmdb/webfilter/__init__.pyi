@@ -21,10 +21,34 @@ if TYPE_CHECKING:
     from .search_engine import SearchEngine
     from .urlfilter import Urlfilter
 
+__all__ = [
+    "Content",
+    "ContentHeader",
+    "Fortiguard",
+    "FtgdLocalCat",
+    "FtgdLocalRating",
+    "FtgdLocalRisk",
+    "FtgdRiskLevel",
+    "IpsUrlfilterCacheSetting",
+    "IpsUrlfilterSetting",
+    "IpsUrlfilterSetting6",
+    "Override",
+    "Profile",
+    "SearchEngine",
+    "Urlfilter",
+    "Webfilter",
+]
+
 
 class Webfilter:
-    """Type stub for Webfilter."""
-
+    """WEBFILTER API category.
+    
+    All endpoints return FortiObject instances with:
+    - Attribute access: response.field
+    - Dictionary access: response["field"]
+    - Convert to dict: response.dict or response.json
+    """
+    
     content: Content
     content_header: ContentHeader
     fortiguard: Fortiguard
@@ -40,4 +64,6 @@ class Webfilter:
     search_engine: SearchEngine
     urlfilter: Urlfilter
 
-    def __init__(self, client: IHTTPClient) -> None: ...
+    def __init__(self, client: IHTTPClient, vdom: str | None = None) -> None:
+        """Initialize webfilter category with HTTP client."""
+        ...

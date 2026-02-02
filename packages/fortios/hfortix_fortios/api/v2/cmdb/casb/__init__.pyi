@@ -11,13 +11,29 @@ if TYPE_CHECKING:
     from .saas_application import SaasApplication
     from .user_activity import UserActivity
 
+__all__ = [
+    "AttributeMatch",
+    "Profile",
+    "SaasApplication",
+    "UserActivity",
+    "Casb",
+]
+
 
 class Casb:
-    """Type stub for Casb."""
-
+    """CASB API category.
+    
+    All endpoints return FortiObject instances with:
+    - Attribute access: response.field
+    - Dictionary access: response["field"]
+    - Convert to dict: response.dict or response.json
+    """
+    
     attribute_match: AttributeMatch
     profile: Profile
     saas_application: SaasApplication
     user_activity: UserActivity
 
-    def __init__(self, client: IHTTPClient) -> None: ...
+    def __init__(self, client: IHTTPClient, vdom: str | None = None) -> None:
+        """Initialize casb category with HTTP client."""
+        ...
