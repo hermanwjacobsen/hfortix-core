@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "hfortix-fortios"
-version = "0.5.150"
+version = "0.5.151"
 description = "FortiOS SDK - Part of HFortix"
 authors = [{name = "Herman W. Jacobsen", email = "herman@wjacobsen.fo"}]
 readme = "README.md"
@@ -20,8 +20,8 @@ classifiers = [
     "Programming Language :: Python :: 3.12",
 ]
 dependencies = [
-    "hfortix-core>=0.5.150",
-    "hfortix>=0.5.150",
+    "hfortix-core>=0.5.151",
+    "hfortix>=0.5.151",
     "pydantic>=2.0",
     "httpx>=0.24.0",
 ]

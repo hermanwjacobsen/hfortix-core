@@ -1,5 +1,38 @@
 # [Unreleased]
 
+# [0.5.151] - 2026-02-02
+
+### Added
+
+- **Test Coverage Summary**: Comprehensive test suite documentation with detailed coverage metrics
+  - **2,566+ test functions** across 318 test files provide extensive validation
+  - **251 endpoint test files** covering all CMDB (180), Monitor (63), Log (4), and Service (4) endpoints
+  - **40 validator test files** ensuring 75+ utility functions work correctly (network, firewall, SSH/SSL, schedules)
+  - **12 unit test files** validating core HTTP client, response processing, and error handling
+  - **3 integration test files** testing client lifecycle, hooks system, and statistics tracking
+  - **Parallel execution support** for validator tests (no API dependencies)
+  - **Sequential execution** for endpoint tests (respects FortiOS API rate limits)
+  - See README.md and TESTING.md for complete test coverage breakdown
+
+### Changed
+
+- **Documentation Updates**: Enhanced beta status messaging and stability guarantees
+  - Updated README with clearer beta status explanation
+  - Added recommendation to stay on version 0.5.150+
+  - Clarified breaking change policy (possible before v1.0.0, but not expected after v0.5.150)
+  - Updated ReadTheDocs with latest endpoint counts (1,348 total) and test coverage
+  - Created comprehensive TESTING.md document with detailed test coverage information
+
+### Fixed
+
+- **Meta Package: py.typed Marker**: Added `py.typed` marker file to meta package to fix mypy import-untyped warning
+  - **Issue**: `from hfortix import FortiOS` showed "module is installed, but missing library stubs or py.typed marker"
+  - **Root Cause**: Meta package (`hfortix`) was missing the `py.typed` marker file
+  - **Solution**: 
+    - Created empty `py.typed` file in `packages/meta/hfortix/`
+    - Added explicit package-data configuration in `packages/meta/pyproject.toml`
+  - **Impact**: ✅ Mypy now recognizes the package as typed, no more import warnings
+
 # [0.5.150] - 2026-02-02
 
 ### Fixed

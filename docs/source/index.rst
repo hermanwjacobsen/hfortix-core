@@ -26,42 +26,39 @@ HFortix - Python SDK for Fortinet Products
       :link: fortios/index
       :link-type: doc
 
-      Complete FortiOS API client with 1,219 endpoints (886 CMDB + 295 Monitor + 38 Log).
-      **Available Now** - v0.5.146 Beta
+      Complete FortiOS API client with 1,348 endpoints (561 CMDB + 490 Monitor + 286 Log + 11 Service).
+      **Available Now** - v0.5.151 Beta
 
    .. grid-item-card:: ⚙️ Core Framework
       :link: core/index
       :link-type: doc
 
       Foundation HTTP client and exception handling.
-      **Available Now** - v0.5.146 Beta
+      **Available Now** - v0.5.151 Beta
 
 Key Features
 ------------
 
 ✨ **Complete API Coverage**
-   100% coverage of FortiOS 7.6.5 API (1,219 endpoints: 886 CMDB + 295 Monitor + 38 Log)
+   100% coverage of FortiOS 7.6.5 API (1,348 endpoints: 561 CMDB + 490 Monitor + 286 Log + 11 Service)
 
 🎯 **Fully Typed**
-   Complete type hints with .pyi stubs for excellent IDE support. 100% coverage for CMDB endpoints; some Monitor/Log endpoints may have incomplete response fields due to FortiOS schema documentation limitations.
+   Complete type hints with .pyi stubs for excellent IDE support. 100% type coverage for CMDB endpoints; partial coverage for Monitor/Log endpoints.
 
 ⚡ **Modern & Fast**
    Async/await support with httpx, HTTP/2, connection pooling, and circuit breakers
 
 🛡️ **Production Ready**
-   Comprehensive error handling, validation, retry logic, and structured logging
+   Comprehensive error handling, validation, retry logic, rate limiting, and 2,566+ test functions across 318 test files
 
 🔄 **Flexible Interface**
-   Dual-pattern syntax supporting both dictionary and keyword arguments
+   Simple list format auto-converts to FortiOS dict format - use ``["internal"]`` instead of ``[{"name": "internal"}]``
 
-🎨 **Direct API Access** *(New in v0.5.0)*
-   Use ``request()`` method for zero-translation workflow - copy JSON from FortiGate GUI, paste into Python
-
-🔍 **Enhanced Debugging**
-   Connection pool monitoring, request inspection, debug sessions, and performance profiling
-
-📊 **Advanced Observability**
-   Structured logging, multi-tenant support, request tracing, and SIEM integration
+� **Enhanced Developer Experience**
+   - FortiObject responses with attribute access (``addr.subnet`` instead of ``addr['subnet']``)
+   - Multiple response formats (``.dict``, ``.json``, ``.raw``)
+   - Built-in validation and error handling
+   - FortiManager proxy support for managing multiple devices
 
 Quick Example - FortiOS
 -----------------------
@@ -71,43 +68,29 @@ Quick Example - FortiOS
    from hfortix_fortios import FortiOS
 
    # Connect to FortiGate
-   fgt = FortiOS("192.168.1.99", token="your_token_here")
+   fgt = FortiOS(host="192.168.1.99", token="your-api-token")
 
-   # Create firewall address - Direct API method
+   # Create firewall address
    fgt.api.cmdb.firewall.address.post(
-       name='web-server',
-       subnet='192.0.2.100/32',
-       comment='Production web server'
+       name="web-server",
+       subnet="10.0.1.100/32",
+       comment="Production web server"
    )
 
-   # Create firewall policy - Direct API method
+   # Create firewall policy - simple list format (auto-converted)
    fgt.api.cmdb.firewall.policy.post(
-       name='Allow-Web',
-       srcintf=[{'name': 'internal'}],
-       dstintf=[{'name': 'wan1'}],
-       srcaddr=[{'name': 'all'}],
-       dstaddr=[{'name': 'web-server'}],
-       service=[{'name': 'HTTPS'}],
-       action='accept',
-       nat='enable'
+       name="Allow-Web-Traffic",
+       srcintf=["internal"],      # Converted to [{"name": "internal"}]
+       dstintf=["wan1"],          # Converted to [{"name": "wan1"}]
+       srcaddr=["all"],           # Converted to [{"name": "all"}]
+       dstaddr=["web-server"],    # Converted to [{"name": "web-server"}]
+       service=["HTTP", "HTTPS"], # Converted to [{"name": "..."}]
+       action="accept",
+       nat="enable"
    )
 
-   # Or use request() for zero-translation workflow
-   # Copy JSON from FortiGate GUI, paste here:
-   fgt.request(
-       method='POST',
-       path='/api/v2/cmdb/firewall/policy',
-       data={
-           'name': 'Allow-Web',
-           'srcintf': [{'name': 'internal'}],
-           'dstintf': [{'name': 'wan1'}],
-           'srcaddr': [{'name': 'all'}],
-           'dstaddr': [{'name': 'web-server'}],
-           'service': [{'name': 'HTTPS'}],
-           'action': 'accept',
-           'nat': 'enable'
-       }
-   )
+   # Close connection
+   fgt.close()
 
 See :doc:`/fortios/getting-started/quickstart` for more examples.
 
@@ -147,7 +130,7 @@ Documentation
 Coverage Status
 ---------------
 
-**FortiOS 7.6.5 API Coverage (December 2025)**
+**FortiOS 7.6.5 API Coverage (February 2026)**
 
 .. grid:: 2
    :gutter: 2
@@ -155,36 +138,58 @@ Coverage Status
    .. grid-item-card:: CMDB API
       :class-header: bg-success text-white
 
-      886 endpoints
+      561 endpoints
       ^^^^^^^^^^^^^^^^^^^
-      **100% coverage** - Configuration database management
+      **100% coverage** - Configuration database management (100% type coverage)
       
-      🔷 v0.5.0 Beta
+      🔷 v0.5.151 Beta
 
    .. grid-item-card:: Monitor API
       :class-header: bg-success text-white
 
-      295 endpoints
+      490 endpoints
       ^^^^^^^^^^^^^^^^^^^
-      **100% coverage** - Real-time monitoring and statistics
+      **100% coverage** - Real-time monitoring and statistics (partial type coverage)
       
-      🔷 v0.5.0 Beta
+      🔷 v0.5.151 Beta
 
    .. grid-item-card:: Log API
       :class-header: bg-success text-white
 
-      38 endpoints
+      286 endpoints
       ^^^^^^^^^^^^^^^^^^
-      **100% coverage** - Log retrieval with full parameterization
+      **100% coverage** - Log retrieval with full parameterization (partial type coverage)
       
-      🔷 v0.5.0 Beta
+      🔷 v0.5.151 Beta
 
-**Overall: 1,219 API methods across all categories (100% coverage)** 🎉
+   .. grid-item-card:: Service API
+      :class-header: bg-success text-white
 
-- **886 CMDB endpoints** - Configuration database management
-- **295 Monitor endpoints** - Real-time monitoring and statistics
-- **38 Log endpoints** - Log retrieval and analysis
-- **100% auto-generated** - Complete swagger coverage with fallback
+      11 endpoints
+      ^^^^^^^^^^^^^^^^^^
+      **100% coverage** - Service operations (100% type coverage)
+      
+      🔷 v0.5.151 Beta
+
+**Overall: 1,348 API methods across all categories (100% coverage)** 🎉
+
+- **561 CMDB endpoints** - Configuration database management (100% typed)
+- **490 Monitor endpoints** - Real-time monitoring and statistics (partial types)
+- **286 Log endpoints** - Log retrieval and analysis (partial types)
+- **11 Service endpoints** - Service operations (100% typed)
+- **100% auto-generated** - Complete schema coverage with intelligent generation
+
+Test Coverage
+-------------
+
+**Comprehensive test suite with 2,566+ test functions across 318 test files:**
+
+- ✅ **251 endpoint test files** covering all 1,348 FortiOS API endpoints
+- ✅ **40 validator test files** ensuring 75+ utility functions work correctly
+- ✅ **12 unit test files** validating core HTTP client, response processing, and error handling
+- ✅ **3 integration test files** testing client lifecycle, hooks system, and statistics tracking
+- 🔬 **Parallel execution** support for validator tests (no API dependencies)
+- 🎯 **Sequential execution** for endpoint tests (respects FortiOS API rate limits)
 
 Package Status
 --------------
@@ -198,17 +203,17 @@ Package Status
      - Status
      - Description
    * - ``hfortix`` (meta)
-     - 0.5.0
+     - 0.5.151
      - Beta
      - Meta package - installs all available packages
    * - ``hfortix-core``
-     - 0.5.0
+     - 0.5.151
      - Beta
      - HTTP client, error handling, circuit breaker, observability
    * - ``hfortix-fortios``
-     - 0.5.0
+     - 0.5.151
      - Beta
-     - FortiOS/FortiGate SDK - 1,219 endpoints (886 CMDB + 295 Monitor + 38 Log)
+     - FortiOS/FortiGate SDK - 1,348 endpoints (561 CMDB + 490 Monitor + 286 Log + 11 Service)
 
 Community & Support
 -------------------

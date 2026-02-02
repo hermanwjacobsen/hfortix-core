@@ -1,7 +1,7 @@
 FortiOS
 =======
 
-Complete Python SDK for FortiOS/FortiGate automation with 100% API coverage (1,219 endpoints: 886 CMDB + 295 Monitor + 38 Log).
+Complete Python SDK for FortiOS/FortiGate automation with 100% API coverage (1,348 endpoints: 561 CMDB + 490 Monitor + 286 Log + 11 Service).
 
 .. grid:: 2
     :gutter: 3
