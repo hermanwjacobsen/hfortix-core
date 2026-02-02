@@ -1,10 +1,10 @@
-API Documentation
+Methods and Usage
 =================
 
-Complete API documentation for FortiOS with 1,219 endpoints across CMDB, Monitor, Log, and Service categories.
+Learn how to use the FortiOS SDK methods to interact with 1,348 endpoints across CMDB, Monitor, Log, and Service categories.
 
-API Interface
--------------
+Available Methods
+-----------------
 
 .. grid:: 1
     :gutter: 3
@@ -13,12 +13,12 @@ API Interface
         :link: /fortios/api-reference/index
         :link-type: doc
 
-        Complete endpoint documentation (1,219 endpoints).
+        Complete endpoint documentation (1,348 endpoints).
         
         Direct HTTP methods: .get(), .post(), .put(), .delete(), .set()
 
-API Usage Patterns
-------------------
+Usage Patterns
+--------------
 
 **Direct API Access** - Use the typed endpoint methods:
 

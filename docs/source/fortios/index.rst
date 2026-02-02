@@ -24,11 +24,17 @@ Complete Python SDK for FortiOS/FortiGate automation with 100% API coverage (1,3
 
         Learn core concepts and patterns.
 
-    .. grid-item-card:: � API Documentation
+    .. grid-item-card:: � Methods and Usage
         :link: api-documentation/index
         :link-type: doc
 
-        Complete endpoint reference and API patterns.
+        Learn how to use SDK methods - usage patterns and examples.
+
+    .. grid-item-card:: �📚 API Reference
+        :link: api-reference/index
+        :link-type: doc
+
+        Complete endpoint reference - 1,348 endpoints across CMDB, Monitor, Log, and Service.
 
     .. grid-item-card:: � FortiManager Proxy
         :link: guides/fmg-proxy
