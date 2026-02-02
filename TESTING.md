@@ -1,45 +1,83 @@
 # HFortix Test Coverage
 
-**Comprehensive test suite with 2,566+ test functions across 318 test files**
+**Comprehensive test suite with 1,447+ schema validator tests and extensive live integration testing**
 
 ## Overview
 
-The HFortix project maintains extensive test coverage across all layers of the SDK, from low-level HTTP client operations to high-level API endpoint functionality. This document provides a detailed breakdown of our test organization and coverage.
+The HFortix project maintains extensive test coverage across all layers of the SDK, from generated code validation to live API integration testing. This document provides a detailed breakdown of our test organization and coverage.
 
 ## Test Suite Statistics
 
 | Metric | Count |
 |--------|-------|
-| **Total Test Files** | 318 |
-| **Total Test Functions** | 2,566+ |
-| **Total Test Classes** | 24 |
-| **API Endpoint Files Tested** | 251 |
-| **Source Files Covered** | 2,405+ |
+| **Schema Validator Test Files** | 786 files (1,348 endpoints) |
+| **Schema Validator Tests** | 1,447 tests |
+| **Live Integration Test Files** | 80+ files |
+| **Total API Endpoints Covered** | 1,348 (FortiOS 7.6.5) |
+| **Execution Time (Schema)** | ~5 seconds (parallel) |
+| **Test Documentation** | `.tests/README.md`, `.tests/INDEX.md`, `.tests/TESTCOVERAGE.md` |
+
+## Quick Start
+
+See `.tests/README.md` for complete usage instructions.
+
+```bash
+# Run all tests
+cd .tests && python3 run_all_tests.py
+
+# Schema validators only (fast, no API)
+cd .tests && python3 run_all_tests.py --schema-only
+
+# Live integration tests
+cd .tests && python3 run_all_tests.py --live-only --live-client=fgt
+```
 
 ## Test Categories
 
-### 1. Live Endpoint Tests (251 files)
+### 1. Schema Validators (786 files, 1,447 tests)
 
-Real API endpoint integration tests organized by FortiOS API category:
+Automated tests for all generated endpoint validator functions - **no API calls required**.
 
-| Category | Test Files | Description |
-|----------|-----------|-------------|
-| **CMDB (Configuration)** | 180 | Configuration database endpoints (firewall, system, user, etc.) |
-| **Monitor (Status)** | 63 | Monitoring and status endpoints (real-time stats, diagnostics) |
-| **Log (Query)** | 4 | Log query endpoints (disk, memory, FortiCloud, FortiAnalyzer) |
-| **Service (Operations)** | 4 | Service operation endpoints (special actions) |
+| Category | Test Files | Coverage |
+|----------|-----------|----------|
+| **CMDB (Configuration)** | 561 | 100% of generated CMDB endpoints |
+| **Monitor (Status)** | 490 | 100% of generated Monitor endpoints |
+| **Log (Query)** | 286 | 100% of generated Log endpoints |
+| **Service (Operations)** | 11 | 100% of generated Service endpoints |
+| **Total** | **1,348** | **100% of FortiOS 7.6.5 endpoints** |
 
-**Location**: `.tests/live/endpoints/`
+**Location**: `.tests/schema-validators/api/`
 
-**Examples**:
-- `cmdb/firewall_address.py` - Firewall address object CRUD operations
-- `cmdb/antivirus.py` - Antivirus profile management
-- `monitor/system.py` - System monitoring endpoints
-- `log/disk.py` - Disk log queries
+**What's Tested**:
+- Validator function imports (1,348 tests)
+- Required field validation (99 tests)
+- Generated code syntax and structure
+- Type checking for parameters
+- **API Request Inspection** - `http_api_request` and `fmg_api_request` properties (8 tests)
 
-**Coverage**: Tests all 1,348 FortiOS 7.6.5 API endpoints
+**Special Test Files**:
+- `test_api_request_properties.py` - Validates HTTP/FMG API request inspection properties (8 comprehensive tests covering FortiObject, FortiObjectList, ContentResponse)
+- `example_api_request_inspection.py` - Demonstrates request inspection feature with practical GET/POST examples
 
-### 2. Validator & Helper Tests (40 files, 75+ functions)
+**Execution**: Fast (~5 seconds), parallel, offline
+
+### 2. Live Integration Tests (80+ files)
+
+Real API integration tests against live FortiGate/FortiManager devices.
+
+**Location**: `.tests/live/`
+
+**Coverage Areas**:
+- **Endpoints** (`endpoints/`) - CMDB, Monitor, Log, Service API tests
+- **Clients** (`integration/`, `fmgproxy/`) - FortiGate direct & FortiManager proxy
+- **Unit Tests** (`unit/`) - HTTP client, response processing, error handling (13 files)
+- **Validators** (`validators/`) - Validator components, formatters, caching (40+ files)
+
+**Execution**: Sequential (respects API rate limits), requires live device access
+
+### 3. Validator & Helper Component Tests (40+ files, 75+ functions)
+
+**Location**: `.tests/live/validators/`
 
 Unit tests for all validation and helper utility functions:
 

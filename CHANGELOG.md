@@ -1,4 +1,88 @@
-# [Unreleased]
+# [0.5.152] - 2026-02-02
+
+### Added
+
+- **FortiOS Batch Transactions**: Atomic configuration changes with commit/rollback support (FortiOS 6.4.0+)
+  - **Feature**: Group multiple API operations into a single atomic transaction
+  - **Patterns**:
+    - **Context Manager**: `with fgt.transaction() as txn:` - auto-commit on success, auto-abort on exception
+    - **Decorator**: `@fgt.transactional()` - wrap entire functions in transactions
+    - **Manual Control**: `txn.start()`, `txn.commit()`, `txn.abort()` for fine-grained control
+  - **Methods**:
+    - `fgt.transaction(timeout=60, auto_commit=True, auto_abort=True)` - Create transaction context manager
+    - `fgt.transactional(timeout=60)` - Decorator for transactional functions
+    - `fgt.list_transactions()` - List active transactions (FortiOS 7.4.1+)
+    - `txn.show()` - Preview cached commands before commit (FortiOS 7.4.1+)
+    - `txn.commit()` - Apply all changes atomically
+    - `txn.abort()` / `txn.rollback()` - Discard all pending changes
+  - **Properties**: `txn.transaction_id`, `txn.is_active`, `txn.is_committed`, `txn.is_aborted`
+  - **Use Cases**:
+    - **Atomic configuration**: All changes succeed or fail together
+    - **Safe rollback**: Undo complex multi-step changes on error
+    - **Bulk operations**: Create/update/delete many objects efficiently
+    - **Migration**: Move configuration between VDOMs or devices safely
+  - **Example - Context Manager**:
+    ```python
+    with fgt.transaction() as txn:
+        fgt.api.cmdb.system.interface.post({...})
+        fgt.api.cmdb.firewall.address.post({...})
+        fgt.api.cmdb.firewall.policy.post({...})
+    # Auto-commits on success, auto-aborts on exception
+    ```
+  - **Example - Decorator**:
+    ```python
+    @fgt.transactional(timeout=120)
+    def setup_infrastructure():
+        fgt.api.cmdb.system.interface.post({...})
+        fgt.api.cmdb.firewall.address.post({...})
+        return {"status": "success"}
+    
+    setup_infrastructure()  # Runs in transaction
+    ```
+  - **Example - Manual Control**:
+    ```python
+    with fgt.transaction(auto_commit=False) as txn:
+        fgt.api.cmdb.firewall.policy.post({...})
+        if validation_passes():
+            txn.commit()
+        else:
+            txn.abort()
+    ```
+  - **Error Handling**: Raises `TransactionError` for nested transactions or invalid operations
+  - **Limitations**: One transaction per connection, scoped to single VDOM, timeout enforced
+  - **Documentation**: See `docs/fortios/TRANSACTIONS.md` for complete guide with patterns and best practices
+  - **Tests**: Comprehensive test suite in `.tests/live/txn/test_transactions.py` (10 tests, all passing)
+  - **Files Added**: 
+    - `packages/fortios/hfortix_fortios/transaction.py` (459 lines)
+    - HTTP client modified for automatic X-TRANSACTION-ID header injection
+    - FortiOS client extended with transaction methods
+
+- **HTTP API Request Inspection**: New `http_api_request` and `fmg_api_request` properties on all response objects
+  - **Feature**: All `FortiObject`, `FortiObjectList`, and `ContentResponse` instances now include complete HTTP request details
+  - **Access via**: 
+    - `result.http_api_request` - Returns dictionary with method, url, endpoint, params, data, and timestamp
+    - `result.fmg_api_request` - Alias for FortiManager proxy connections (same data, clearer naming)
+  - **Use cases**:
+    - **Debugging**: See exactly what request was sent to FortiGate/FortiManager (URL, params, data)
+    - **Audit logging**: Include full request context in application logs
+    - **Troubleshooting**: Verify filters, parameters were constructed correctly
+    - **Documentation**: Generate API examples from actual requests
+    - **Testing**: Validate request construction in unit tests
+  - **Works with**: All API operations (GET, POST, PUT, DELETE), both direct FortiGate and FortiManager proxy clients
+  - **Example - Direct FortiGate**:
+    ```python
+    result = fgt.api.cmdb.firewall.policy.get(filter='srcaddr==internal')
+    print(result.http_api_request)
+    # {'method': 'GET', 'url': 'https://...', 'params': {...}, ...}
+    ```
+  - **Example - FortiManager Proxy**:
+    ```python
+    result = fmg.devices['FGT-01'].api.cmdb.firewall.policy.get()
+    print(result.fmg_api_request)  # Clearer naming for FMG proxy
+    # {'method': 'POST', 'url': 'https://fmg.../jsonrpc', 'data': {...}, ...}
+    ```
+  - **Documentation**: See `docs/fortios/HTTP_API_REQUEST.md` for complete guide and examples
+  - **Tests **: Comprehensive test suite in `.tests/schema-validators/test_api_request_properties.py`
 
 ### Fixed
 
@@ -17,15 +101,15 @@
 
 ### Added
 
-- **Test Coverage Summary**: Comprehensive test suite documentation with detailed coverage metrics
-  - **2,566+ test functions** across 318 test files provide extensive validation
-  - **251 endpoint test files** covering all CMDB (180), Monitor (63), Log (4), and Service (4) endpoints
-  - **40 validator test files** ensuring 75+ utility functions work correctly (network, firewall, SSH/SSL, schedules)
-  - **12 unit test files** validating core HTTP client, response processing, and error handling
-  - **3 integration test files** testing client lifecycle, hooks system, and statistics tracking
-  - **Parallel execution support** for validator tests (no API dependencies)
-  - **Sequential execution** for endpoint tests (respects FortiOS API rate limits)
-  - See README.md and TESTING.md for complete test coverage breakdown
+- **Comprehensive Test Suite**: Complete test infrastructure with schema validators and live integration tests
+  - **1,447 schema validator tests** across 786 files covering 100% of 1,348 generated endpoints
+  - **80+ live integration test files** for real API testing with FortiGate/FortiManager
+  - **Unified test runner** (`.tests/run_all_tests.py`) supporting both offline and live testing
+  - **Fast execution**: Schema validators run in ~5 seconds with parallel execution (no API calls)
+  - **Complete documentation**: `.tests/README.md`, `.tests/INDEX.md`, `.tests/TESTCOVERAGE.md`
+  - **CI/CD ready**: Offline tests for every commit, full integration tests for releases
+  - **Coverage breakdown**: CMDB (561), Monitor (490), Log (286), Service (11) endpoint validators
+  - See `TESTING.md` and `.tests/` directory for complete test coverage details
 
 ### Changed
 

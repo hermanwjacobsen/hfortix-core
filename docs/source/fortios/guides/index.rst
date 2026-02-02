@@ -6,6 +6,8 @@ Advanced topics, patterns, and techniques for working with HFortix.
 .. toctree::
    :maxdepth: 1
 
+   transactions
+   api-request-inspection
    fmg-proxy
    custom-wrappers
    audit-logging
@@ -24,6 +26,18 @@ Topic guides provide detailed, task-oriented documentation for advanced features
 
 Key Topics
 ----------
+
+**Batch Transactions** *(New in v0.5.152)*
+   Atomic configuration changes with automatic commit/rollback support (FortiOS 6.4.0+).
+   Group multiple API operations into a single transaction with context manager and
+   decorator patterns. All changes succeed together or rollback on error. Includes
+   manual control, timeout configuration, and transaction inspection (7.4.1+).
+
+**API Request Inspection** *(New in v0.5.152)*
+   Debug and audit API interactions by inspecting HTTP requests and responses.
+   Access complete request details including method, URL, headers, body, status,
+   and timing. Essential for debugging, audit logging, performance analysis, and
+   learning the API. Includes integration examples for logging and monitoring.
 
 **FortiManager Proxy** *(New in v0.5.0)*
    Route FortiOS API calls through FortiManager to manage multiple FortiGate devices.

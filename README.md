@@ -80,6 +80,57 @@ for member in group.member:
 
 > **Note**: Monitor and Log endpoints have incomplete response field types due to FortiOS API schema limitations. Attribute access (e.g., `status.hostname`) works at runtime but may show type errors in your IDE. Use dictionary access (`status['hostname']`) to avoid IDE warnings, or use `.json`/`.raw` to inspect the full response. Field names match FNDN documentation with hyphens (`-`) converted to underscores (`_`).
 
+### ✅ Batch Transactions (FortiOS 6.4.0+)
+```python
+# Atomic configuration changes with automatic commit/rollback
+with fgt.transaction() as txn:
+    # All changes in this block are atomic
+    fgt.api.cmdb.system.interface.post({...})
+    fgt.api.cmdb.firewall.address.post({...})
+    fgt.api.cmdb.firewall.policy.post({...})
+    # Auto-commits on success, auto-aborts on exception
+
+# Decorator pattern for reusable transactional functions
+@fgt.transactional(timeout=120)
+def setup_infrastructure():
+    fgt.api.cmdb.system.interface.post({...})
+    fgt.api.cmdb.firewall.address.post({...})
+    return {"status": "success"}
+
+setup_infrastructure()  # Runs in transaction
+
+# Manual control for complex scenarios
+with fgt.transaction(auto_commit=False) as txn:
+    fgt.api.cmdb.firewall.policy.post({...})
+    if validation_passes():
+        txn.commit()  # Apply changes
+    else:
+        txn.rollback()  # Undo everything
+
+# See docs/fortios/TRANSACTIONS.md for complete guide
+```
+
+### ✅ API Request Inspection
+```python
+# See exactly what request was made
+result = fgt.api.cmdb.firewall.policy.get(filter='srcaddr==internal')
+print(result.http_api_request)
+# {
+#     'method': 'GET',
+#     'url': 'https://192.168.1.99/api/v2/cmdb/firewall/policy',
+#     'params': {'filter': 'srcaddr==internal', 'vdom': 'root'},
+#     'data': None,
+#     'timestamp': 1706889600.123
+# }
+
+# For FortiManager proxy, use fmg_api_request (alias for http_api_request)
+result = fmg.devices['FGT-01'].api.cmdb.firewall.policy.get()
+print(result.fmg_api_request)  # Shows FMG proxy request details
+
+# Use cases: debugging, audit logging, troubleshooting
+# See docs/fortios/API_REQUEST_INSPECTION.md for complete guide
+```
+
 ### ✅ Modern Python Features
 - **Async/await support** for concurrent operations
 - **Synchronous API** for simple scripts
@@ -94,6 +145,13 @@ for member in group.member:
 - **Circuit breaker** pattern for resilience
 - **Request/response debugging** tools
 
+### ✅ Comprehensive Testing
+- **1,447 schema validator tests** - 100% coverage of all 1,348 endpoints (offline, ~5s execution)
+- **80+ live integration tests** - Real API testing with FortiGate/FortiManager
+- **Unit tests** - HTTP client, response processing, error handling
+- **CI/CD ready** - Fast offline tests for every commit
+- See `TESTING.md` and `.tests/` for details
+
 ### ✅ Developer Experience
 - **No string manipulation** - everything is a method call
 - **IDE autocomplete** for all endpoints and parameters
@@ -104,11 +162,11 @@ for member in group.member:
 ## Current Status
 
 > **⚠️ BETA STATUS**  
-> Version 0.5.151 is production-ready but remains in beta until v1.0.0. Breaking changes are possible before v1.0.0, however after v0.5.150 breaking changes are not expected at this time (if any). The SDK is stable and suitable for production use with comprehensive test coverage.
+> Version 0.5.152 is production-ready but remains in beta until v1.0.0. Breaking changes are possible before v1.0.0, however after v0.5.150 breaking changes are not expected at this time (if any). The SDK is stable and suitable for production use with comprehensive test coverage.
 > 
 > **Recommended**: Stay on version 0.5.150+ for maximum stability.
 
-**Version**: 0.5.151 (Released: February 2, 2026)  
+**Version**: 0.5.152 (Released: February 2, 2026)  
 **FortiOS Coverage**: 7.6.5 (1,348 endpoints)  
 **Package Size**: ~30 MB (with type stubs)  
 **Status**: Production Ready ✅
@@ -145,6 +203,8 @@ for member in group.member:
 
 - [Quick Start Guide](https://hfortix.readthedocs.io/en/latest/fortios/getting-started/quickstart.html) / [QUICKSTART.md](QUICKSTART.md)
 - [API Reference](https://hfortix.readthedocs.io/en/latest/fortios/api-documentation/)
+- **[Batch Transactions](docs/fortios/TRANSACTIONS.md)** - Atomic configuration changes with commit/rollback
+- **[API Request Inspection](docs/fortios/API_REQUEST_INSPECTION.md)** - Debug and audit API interactions
 - [FortiManager Proxy](https://hfortix.readthedocs.io/en/latest/fortios/guides/fmg-proxy.html)
 - [Custom Wrappers Guide](https://hfortix.readthedocs.io/en/latest/fortios/guides/custom-wrappers.html)
 - [Error Handling](https://hfortix.readthedocs.io/en/latest/fortios/guides/error-handling.html)
@@ -366,14 +426,24 @@ operations = fgt_tracked.get_operations()
 - **Changelog**: [CHANGELOG.md](CHANGELOG.md)
 - **License**: Proprietary (see [LICENSE](LICENSE))
 
-## Latest Release (v0.5.151)
+## Latest Release (v0.5.152)
 
 **February 2, 2026**
 
-- ✅ Added comprehensive test coverage documentation (2,566+ tests across 318 files)
-- ✅ Added `py.typed` marker to meta package for mypy support
-- ✅ Updated documentation with test coverage summary
-- ✅ Enhanced beta status messaging with stability guarantees
+### New Features
+
+- ✅ **Batch Transactions** - Atomic configuration changes with commit/rollback (FortiOS 6.4.0+)
+  - Context manager pattern: `with fgt.transaction() as txn:`
+  - Decorator pattern: `@fgt.transactional()`
+  - Manual control: `txn.commit()`, `txn.rollback()`
+  - Transaction inspection: `txn.show()`, `fgt.list_transactions()` (FortiOS 7.4.1+)
+  - See [TRANSACTIONS.md](docs/fortios/TRANSACTIONS.md) for complete guide
+
+- ✅ **API Request Inspection** - Debug and audit API interactions
+  - Access via `result.http_api_request` and `result.fmg_api_request`
+  - Complete request/response details for debugging
+  - Audit logging and performance analysis
+  - See [API_REQUEST_INSPECTION.md](docs/fortios/API_REQUEST_INSPECTION.md) for guide
 
 See [CHANGELOG.md](CHANGELOG.md) for complete version history.
 
