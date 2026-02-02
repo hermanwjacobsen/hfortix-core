@@ -4,7 +4,7 @@ Modern Python SDK for Fortinet Products.
 
 ## What is HFortix?
 
-HFortix is a comprehensive, fully-typed Python SDK for automating Fortinet security infrastructure. It provides a unified interface to interact with FortiOS, FortiManager, and FortiAnalyzer through their REST APIs.
+HFortix is a comprehensive, fully-typed Python SDK for automating Fortinet security infrastructure. Currently focused on FortiOS/FortiGate, with plans to expand to FortiManager and FortiAnalyzer.
 
 ## Supported Products
 
@@ -21,25 +21,9 @@ Complete FortiOS 7.6.5 API client with:
 
 **[Get Started with FortiOS →](/fortios/getting-started/quickstart.md)**
 
-### FortiManager (Coming Soon)
+### FortiManager & FortiAnalyzer (Coming Soon)
 
-Centralized management platform client:
-- ⏳ Device management
-- ⏳ Policy packages
-- ⏳ Configuration templates
-- ⏳ Multi-device operations
-
-**[FortiManager Docs →](/fortimanager/index.rst)**
-
-### FortiAnalyzer (Coming Soon)
-
-Analytics and logging platform client:
-- ⏳ Log queries and analysis
-- ⏳ Report generation
-- ⏳ Event correlation
-- ⏳ Compliance reporting
-
-**[FortiAnalyzer Docs →](/fortianalyzer/index.rst)**
+Additional Fortinet product support is planned for future releases.
 
 ## Architecture
 
@@ -48,9 +32,7 @@ HFortix uses a modular architecture:
 ```
 hfortix (meta-package)
 ├── hfortix-core          # Shared HTTP client, exceptions, utilities
-├── hfortix-fortios       # FortiOS API client (1,348 endpoints)
-├── hfortix-fortimanager  # (coming soon)
-└── hfortix-fortianalyzer # (coming soon)
+└── hfortix-fortios       # FortiOS API client (1,348 endpoints)
 ```
 
 ## Key Features
@@ -120,25 +102,24 @@ pip install hfortix-fortios
 ```python
 from hfortix_fortios import FortiOS
 
-# Connect
-fgt = FortiOS(host="192.168.1.99", token="your-token")
+# Connect with context manager (automatic cleanup)
+with FortiOS(host="192.168.1.99", token="your-token") as fgt:
+    # Create firewall address
+    fgt.api.cmdb.firewall.address.post(
+        name="web-server",
+        subnet="10.0.1.100/32"
+    )
 
-# Create firewall address
-fgt.api.cmdb.firewall.address.post(
-    name="web-server",
-    subnet="10.0.1.100/32"
-)
-
-# Create firewall policy - simple list format (auto-converted to dicts)
-fgt.api.cmdb.firewall.policy.post(
-    name="Allow-Web",
-    srcintf=["internal"],      # Converted to [{"name": "internal"}]
-    dstintf=["wan1"],          # Converted to [{"name": "wan1"}]
-    srcaddr=["all"],           # Converted to [{"name": "all"}]
-    dstaddr=["web-server"],    # Converted to [{"name": "web-server"}]
-    service=["HTTP", "HTTPS"], # Converted to [{"name": "HTTP"}, {"name": "HTTPS"}]
-    action="accept"
-)
+    # Create firewall policy - simple list format (auto-converted)
+    fgt.api.cmdb.firewall.policy.post(
+        name="Allow-Web",
+        srcintf=["internal"],      # Converted to [{"name": "internal"}]
+        dstintf=["wan1"],          # Converted to [{"name": "wan1"}]
+        srcaddr=["all"],           # Converted to [{"name": "all"}]
+        dstaddr=["web-server"],    # Converted to [{"name": "web-server"}]
+        service=["HTTP", "HTTPS"], # Converted to [{"name": "..."}]
+        action="accept"
+    )
 ```
 
 ## Community

@@ -67,30 +67,26 @@ Quick Example - FortiOS
 
    from hfortix_fortios import FortiOS
 
-   # Connect to FortiGate
-   fgt = FortiOS(host="192.168.1.99", token="your-api-token")
+   # Connect with context manager (automatic cleanup)
+   with FortiOS(host="192.168.1.99", token="your-api-token") as fgt:
+       # Create firewall address
+       fgt.api.cmdb.firewall.address.post(
+           name="web-server",
+           subnet="10.0.1.100/32",
+           comment="Production web server"
+       )
 
-   # Create firewall address
-   fgt.api.cmdb.firewall.address.post(
-       name="web-server",
-       subnet="10.0.1.100/32",
-       comment="Production web server"
-   )
-
-   # Create firewall policy - simple list format (auto-converted)
-   fgt.api.cmdb.firewall.policy.post(
-       name="Allow-Web-Traffic",
-       srcintf=["internal"],      # Converted to [{"name": "internal"}]
-       dstintf=["wan1"],          # Converted to [{"name": "wan1"}]
-       srcaddr=["all"],           # Converted to [{"name": "all"}]
-       dstaddr=["web-server"],    # Converted to [{"name": "web-server"}]
-       service=["HTTP", "HTTPS"], # Converted to [{"name": "..."}]
-       action="accept",
-       nat="enable"
-   )
-
-   # Close connection
-   fgt.close()
+       # Create firewall policy - simple list format (auto-converted)
+       fgt.api.cmdb.firewall.policy.post(
+           name="Allow-Web-Traffic",
+           srcintf=["internal"],      # Converted to [{"name": "internal"}]
+           dstintf=["wan1"],          # Converted to [{"name": "wan1"}]
+           srcaddr=["all"],           # Converted to [{"name": "all"}]
+           dstaddr=["web-server"],    # Converted to [{"name": "web-server"}]
+           service=["HTTP", "HTTPS"], # Converted to [{"name": "..."}]
+           action="accept",
+           nat="enable"
+       )
 
 See :doc:`/fortios/getting-started/quickstart` for more examples.
 
@@ -178,18 +174,6 @@ Coverage Status
 - **286 Log endpoints** - Log retrieval and analysis (partial types)
 - **11 Service endpoints** - Service operations (100% typed)
 - **100% auto-generated** - Complete schema coverage with intelligent generation
-
-Test Coverage
--------------
-
-**Comprehensive test suite with 2,566+ test functions across 318 test files:**
-
-- ✅ **251 endpoint test files** covering all 1,348 FortiOS API endpoints
-- ✅ **40 validator test files** ensuring 75+ utility functions work correctly
-- ✅ **12 unit test files** validating core HTTP client, response processing, and error handling
-- ✅ **3 integration test files** testing client lifecycle, hooks system, and statistics tracking
-- 🔬 **Parallel execution** support for validator tests (no API dependencies)
-- 🎯 **Sequential execution** for endpoint tests (respects FortiOS API rate limits)
 
 Package Status
 --------------

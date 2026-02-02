@@ -52,19 +52,6 @@ pip install hfortix-fortianalyzer
 ```bash
 # FortiOS with all extras
 pip install hfortix[fortios]
-
-# Development dependencies
-pip install hfortix[dev]
-```
-
-## Development Installation
-
-Clone and install from source:
-
-```bash
-git clone https://github.com/hermanwjacobsen/hfortix.git
-cd hfortix
-pip install -e ".[dev]"
 ```
 
 ## Verifying Installation
@@ -77,14 +64,6 @@ print(hfortix.__version__)
 from hfortix_fortios import FortiOS
 from hfortix_core import FortinetError
 ```
-
-## Next Steps
-
-Choose your product to get started:
-
-- **[FortiOS/FortiGate](/fortios/getting-started/quickstart.md)** - Firewall automation
-- **[FortiManager](/fortimanager/index.rst)** - Centralized management (coming soon)
-- **[FortiAnalyzer](/fortianalyzer/index.rst)** - Analytics platform (coming soon)
 
 ## Upgrading
 
@@ -105,6 +84,8 @@ pip uninstall hfortix hfortix-core hfortix-fortios
 
 ## Next Steps
 
-- [Quickstart Guide](/getting-started/quickstart.md) - Get started in 5 minutes
-- [Authentication](/getting-started/authentication.md) - Set up API access
-- [User Guide](/user-guide/fortios-overview.md) - Comprehensive documentation
+Choose your product to get started:
+
+- **[FortiOS/FortiGate Quickstart](/fortios/getting-started/quickstart.md)** - Get started in 5 minutes
+- **[Authentication Guide](/fortios/getting-started/authentication.md)** - Set up API access
+- **[FortiOS User Guide](/fortios/user-guide/index.rst)** - Comprehensive documentation

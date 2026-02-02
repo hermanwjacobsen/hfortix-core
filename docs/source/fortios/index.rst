@@ -82,22 +82,27 @@ Quick Example
         nat="enable"
     )
 
-    # Or use request() for zero-translation workflow
-    # Copy JSON from FortiGate GUI, paste here:
-    fgt.request(
-        method="POST",
-        path="/api/v2/cmdb/firewall/policy",
-        data={
-            "name": "Allow-Web-Traffic",
-            "srcintf": [{"name": "internal"}],
-            "dstintf": [{"name": "wan1"}],
-            "srcaddr": [{"name": "all"}],
-            "dstaddr": [{"name": "web-server"}],
-            "service": [{"name": "HTTP"}, {"name": "HTTPS"}],
-            "action": "accept",
-            "nat": "enable"
-        }
-    )
+    # Close connection when done
+    fgt.close()
+
+**Or use context manager for automatic cleanup:**
+
+.. code-block:: python
+
+    from hfortix_fortios import FortiOS
+
+    # Context manager automatically closes connection
+    with FortiOS(host="192.168.1.99", token="your-api-token") as fgt:
+        # Create resources
+        fgt.api.cmdb.firewall.address.post(
+            name="web-server",
+            subnet="10.0.1.100/32"
+        )
+        
+        # Query data
+        addresses = fgt.api.cmdb.firewall.address.get()
+        
+    # Connection automatically closed after with block
 
     # Get system status
     status = fgt.api.monitor.system.status.get()
