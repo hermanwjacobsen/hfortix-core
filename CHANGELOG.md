@@ -1,5 +1,18 @@
 # [Unreleased]
 
+### Fixed
+
+- **Generator: FIELD_TYPES Comment Escaping**: Fixed syntax errors in generated validator files caused by improper help text truncation
+  - **Issue**: Generator template was truncating field help text to 60 characters inside Python comments without escaping special characters
+  - **Symptoms**: Syntax errors in 16 validator files (e.g., `enable:Enable setti` broken mid-sentence, unescaped quotes/colons)
+  - **Root Cause**: Template `.dev/generator/templates/validator.py.j2` used `field.help[:60]` before escaping, causing invalid Python syntax when truncation split words or exposed special characters
+  - **Solution**: 
+    - Properly escape special characters BEFORE truncating: `|replace('\r', '')|replace('\n', ' ')|replace('\\', '\\\\')|replace('"', '\\"')`
+    - Increased comment length limit from 60 to 80 characters for better readability
+    - Applied same escaping pattern already used in `FIELD_DESCRIPTIONS` section
+  - **Impact**: ✅ All 1,447 schema validator tests now passing (was 16 failures)
+  - **Files Regenerated**: 7 validator helper files in `cmdb/monitoring/` and `cmdb/system/` categories
+
 # [0.5.151] - 2026-02-02
 
 ### Added
