@@ -39,6 +39,7 @@ from typing import TYPE_CHECKING, Any, Literal, Union
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
+    from hfortix_fortios.models import FortiObject, FortiObjectList
 
 # Import helper functions from central _helpers module
 from hfortix_fortios._helpers import (
@@ -46,6 +47,7 @@ from hfortix_fortios._helpers import (
     build_cmdb_payload,  # Keep for backward compatibility / manual usage
     is_success,
     quote_path_param,  # URL encoding for path parameters
+    normalize_table_field,  # For table field normalization
 )
 # Import metadata mixin for schema introspection
 from hfortix_fortios._helpers.metadata_mixin import MetadataMixin
@@ -58,6 +60,23 @@ class AccessProxy6(CRUDEndpoint, MetadataMixin):
     
     # Configure metadata mixin to use this endpoint's helper module
     _helper_module_name = "access_proxy6"
+    
+    # ========================================================================
+    # Table Fields Metadata (for normalization)
+    # Auto-generated from schema - supports flexible input formats
+    # ========================================================================
+    _TABLE_FIELDS = {
+        "api_gateway": {
+            "mkey": "id",
+            "required_fields": ['url-map', 'service', 'url-map-type', 'h2-support', 'application'],
+            "example": "[{'url-map': 'value', 'service': 'http', 'url-map-type': 'sub-string', 'h2-support': 'enable', 'application': 'value'}]",
+        },
+        "api_gateway6": {
+            "mkey": "id",
+            "required_fields": ['url-map', 'service', 'url-map-type', 'h2-support', 'application'],
+            "example": "[{'url-map': 'value', 'service': 'http', 'url-map-type': 'sub-string', 'h2-support': 'enable', 'application': 'value'}]",
+        },
+    }
     
     # ========================================================================
     # Capabilities (from schema metadata)
@@ -80,9 +99,11 @@ class AccessProxy6(CRUDEndpoint, MetadataMixin):
     # ========================================================================
     # GET Method
     # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # Note: Endpoint-specific parameters intentionally extend the protocol's **kwargs
+    #       to provide autocomplete. Type checkers may report signature mismatch.
     # ========================================================================
     
-    def get(
+    def get(  # type: ignore[override]
         self,
         name: str | None = None,
         filter: list[str] | None = None,
@@ -92,7 +113,7 @@ class AccessProxy6(CRUDEndpoint, MetadataMixin):
         vdom: str | bool | None = None,
         error_mode: Literal["raise", "return", "print"] | None = None,
         error_format: Literal["detailed", "simple", "code_only"] | None = None,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ) -> Union[FortiObject, FortiObjectList, Coroutine[Any, Any, Union[FortiObject, FortiObjectList]]]:
         """
         Retrieve firewall/access_proxy6 configuration.
 
@@ -180,7 +201,7 @@ class AccessProxy6(CRUDEndpoint, MetadataMixin):
             endpoint = "/firewall/access-proxy6"
             unwrap_single = False
         
-        return self._client.get(
+        return self._client.get(  # type: ignore[return-value]
             "cmdb", endpoint, params=params, vdom=vdom, unwrap_single=unwrap_single
         )
 
@@ -188,7 +209,7 @@ class AccessProxy6(CRUDEndpoint, MetadataMixin):
         self,
         vdom: str | None = None,
         format: str = "schema",
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ) -> Union[FortiObject, FortiObjectList, Coroutine[Any, Any, Union[FortiObject, FortiObjectList]]]:
         """
         Get schema/metadata for this endpoint.
         
@@ -219,15 +240,17 @@ class AccessProxy6(CRUDEndpoint, MetadataMixin):
             Not all endpoints support all schema formats. The "schema" format
             is most widely supported.
         """
-        return self.get(action=format, vdom=vdom)
+        return self.get(payload_dict={"action": format}, vdom=vdom)
 
 
     # ========================================================================
     # PUT Method
     # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # Note: Field-specific parameters intentionally extend the protocol's **kwargs
+    #       to provide autocomplete. Type checkers may report signature mismatch.
     # ========================================================================
     
-    def put(
+    def put(  # type: ignore[override]
         self,
         payload_dict: dict[str, Any] | None = None,
         name: str | None = None,
@@ -250,7 +273,7 @@ class AccessProxy6(CRUDEndpoint, MetadataMixin):
         vdom: str | bool | None = None,
         error_mode: Literal["raise", "return", "print"] | None = None,
         error_format: Literal["detailed", "simple", "code_only"] | None = None,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ) -> Union[FortiObject, Coroutine[Any, Any, FortiObject]]:
         """
         Update existing firewall/access_proxy6 object.
 
@@ -270,7 +293,13 @@ class AccessProxy6(CRUDEndpoint, MetadataMixin):
             svr_pool_server_max_concurrent_request: Maximum number of concurrent requests that servers in server pool could handle (default = unlimited).
             decrypted_traffic_mirror: Decrypted traffic mirror.
             api_gateway: Set IPv4 API Gateway.
+                Default format: [{'url-map': 'value', 'service': 'http', 'url-map-type': 'sub-string', 'h2-support': 'enable', 'application': 'value'}]
+                Required format: List of dicts with keys: url-map, service, url-map-type, h2-support, application
+                  (String format not allowed due to multiple required fields)
             api_gateway6: Set IPv6 API Gateway.
+                Default format: [{'url-map': 'value', 'service': 'http', 'url-map-type': 'sub-string', 'h2-support': 'enable', 'application': 'value'}]
+                Required format: List of dicts with keys: url-map, service, url-map-type, h2-support, application
+                  (String format not allowed due to multiple required fields)
             vdom: Virtual domain name.
             error_mode: Override client-level error_mode. "raise" raises exceptions, "return" returns error dict, "print" prints errors.
             error_format: Override client-level error_format. "detailed" provides full context, "simple" is concise, "code_only" returns just status code.
@@ -299,6 +328,24 @@ class AccessProxy6(CRUDEndpoint, MetadataMixin):
             - post(): Create new object
             - set(): Intelligent create or update
         """
+        # Apply normalization for table fields (supports flexible input formats)
+        if api_gateway is not None:
+            api_gateway = normalize_table_field(
+                api_gateway,
+                mkey="id",
+                required_fields=['url-map', 'service', 'url-map-type', 'h2-support', 'application'],
+                field_name="api_gateway",
+                example="[{'url-map': 'value', 'service': 'http', 'url-map-type': 'sub-string', 'h2-support': 'enable', 'application': 'value'}]",
+            )
+        if api_gateway6 is not None:
+            api_gateway6 = normalize_table_field(
+                api_gateway6,
+                mkey="id",
+                required_fields=['url-map', 'service', 'url-map-type', 'h2-support', 'application'],
+                field_name="api_gateway6",
+                example="[{'url-map': 'value', 'service': 'http', 'url-map-type': 'sub-string', 'h2-support': 'enable', 'application': 'value'}]",
+            )
+        
         # Build payload using helper function
         payload_data = build_api_payload(
             api_type="cmdb",
@@ -344,15 +391,17 @@ class AccessProxy6(CRUDEndpoint, MetadataMixin):
         if q_scope is not None:
             params["scope"] = q_scope
         
-        return self._client.put(
+        return self._client.put(  # type: ignore[return-value]
             "cmdb", endpoint, data=payload_data, params=params, vdom=vdom        )
 
     # ========================================================================
     # POST Method
     # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # Note: Field-specific parameters intentionally extend the protocol's **kwargs
+    #       to provide autocomplete. Type checkers may report signature mismatch.
     # ========================================================================
     
-    def post(
+    def post(  # type: ignore[override]
         self,
         payload_dict: dict[str, Any] | None = None,
         name: str | None = None,
@@ -374,7 +423,7 @@ class AccessProxy6(CRUDEndpoint, MetadataMixin):
         vdom: str | bool | None = None,
         error_mode: Literal["raise", "return", "print"] | None = None,
         error_format: Literal["detailed", "simple", "code_only"] | None = None,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ) -> Union[FortiObject, Coroutine[Any, Any, FortiObject]]:
         """
         Create new firewall/access_proxy6 object.
 
@@ -394,7 +443,13 @@ class AccessProxy6(CRUDEndpoint, MetadataMixin):
             svr_pool_server_max_concurrent_request: Maximum number of concurrent requests that servers in server pool could handle (default = unlimited).
             decrypted_traffic_mirror: Decrypted traffic mirror.
             api_gateway: Set IPv4 API Gateway.
+                Default format: [{'url-map': 'value', 'service': 'http', 'url-map-type': 'sub-string', 'h2-support': 'enable', 'application': 'value'}]
+                Required format: List of dicts with keys: url-map, service, url-map-type, h2-support, application
+                  (String format not allowed due to multiple required fields)
             api_gateway6: Set IPv6 API Gateway.
+                Default format: [{'url-map': 'value', 'service': 'http', 'url-map-type': 'sub-string', 'h2-support': 'enable', 'application': 'value'}]
+                Required format: List of dicts with keys: url-map, service, url-map-type, h2-support, application
+                  (String format not allowed due to multiple required fields)
             vdom: Virtual domain name. Use True for global, string for specific VDOM.
             error_mode: Override client-level error_mode. "raise" raises exceptions, "return" returns error dict, "print" prints errors.
             error_format: Override client-level error_format. "detailed" provides full context, "simple" is concise, "code_only" returns just status code.
@@ -425,6 +480,24 @@ class AccessProxy6(CRUDEndpoint, MetadataMixin):
             - put(): Update existing object
             - set(): Intelligent create or update
         """
+        # Apply normalization for table fields (supports flexible input formats)
+        if api_gateway is not None:
+            api_gateway = normalize_table_field(
+                api_gateway,
+                mkey="id",
+                required_fields=['url-map', 'service', 'url-map-type', 'h2-support', 'application'],
+                field_name="api_gateway",
+                example="[{'url-map': 'value', 'service': 'http', 'url-map-type': 'sub-string', 'h2-support': 'enable', 'application': 'value'}]",
+            )
+        if api_gateway6 is not None:
+            api_gateway6 = normalize_table_field(
+                api_gateway6,
+                mkey="id",
+                required_fields=['url-map', 'service', 'url-map-type', 'h2-support', 'application'],
+                field_name="api_gateway6",
+                example="[{'url-map': 'value', 'service': 'http', 'url-map-type': 'sub-string', 'h2-support': 'enable', 'application': 'value'}]",
+            )
+        
         # Build payload using helper function
         payload_data = build_api_payload(
             api_type="cmdb",
@@ -465,22 +538,24 @@ class AccessProxy6(CRUDEndpoint, MetadataMixin):
         if q_scope is not None:
             params["scope"] = q_scope
         
-        return self._client.post(
+        return self._client.post(  # type: ignore[return-value]
             "cmdb", endpoint, data=payload_data, params=params, vdom=vdom        )
 
     # ========================================================================
     # DELETE Method
     # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # Note: Identifier parameters intentionally extend the protocol's **kwargs
+    #       to provide autocomplete. Type checkers may report signature mismatch.
     # ========================================================================
     
-    def delete(
+    def delete(  # type: ignore[override]
         self,
         name: str | None = None,
         q_scope: str | None = None,
         vdom: str | bool | None = None,
         error_mode: Literal["raise", "return", "print"] | None = None,
         error_format: Literal["detailed", "simple", "code_only"] | None = None,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ) -> Union[FortiObject, Coroutine[Any, Any, FortiObject]]:
         """
         Delete firewall/access_proxy6 object.
 
@@ -519,7 +594,7 @@ class AccessProxy6(CRUDEndpoint, MetadataMixin):
         if q_scope is not None:
             params["scope"] = q_scope
         
-        return self._client.delete(
+        return self._client.delete(  # type: ignore[return-value]
             "cmdb", endpoint, params=params, vdom=vdom        )
 
     def exists(
@@ -554,34 +629,27 @@ class AccessProxy6(CRUDEndpoint, MetadataMixin):
             - get(): Retrieve full object data
             - set(): Create or update automatically based on existence
         """
-        # Use direct request with silent error handling to avoid logging 404s
-        # This is expected behavior for exists() - 404 just means "doesn't exist"
+        # Use direct GET request to check existence
+        # 404 responses are expected and just mean "doesn't exist"
         endpoint = "/firewall/access-proxy6"
         endpoint = f"{endpoint}/{quote_path_param(name)}"
         
-        # Make request with silent=True to suppress 404 error logging
-        # (404 is expected when checking existence - it just means "doesn't exist")
-        # Use _wrapped_client to access the underlying HTTPClient directly
-        # (self._client is ResponseProcessingClient, _wrapped_client is HTTPClient)
         try:
-            result = self._client._wrapped_client.get(
-                "cmdb",
-                endpoint,
-                params=None,
-                vdom=vdom,
-                raw_json=True,
-                silent=True,
-            )
+            result = self.get(name=name, vdom=vdom)
             
-            if isinstance(result, dict):
-                # Synchronous response - check status
-                return result.get("status") == "success"
-            else:
-                # Asynchronous response
+            # Check if result is a coroutine (async) or direct response (sync)
+            # Note: Type checkers can't narrow Union[T, Coroutine[T]] in conditionals
+            if hasattr(result, '__await__'):
+                # Async response - return coroutine that checks status
                 async def _check() -> bool:
-                    r = await result
-                    return r.get("status") == "success"
+                    r = await result  # type: ignore[misc]
+                    response = r.raw if hasattr(r, 'raw') else r
+                    return is_success(response)
                 return _check()
+            else:
+                # Sync response - check status directly
+                response = result.raw if hasattr(result, 'raw') else result  # type: ignore[union-attr]
+                return is_success(response)
         except Exception:
             # Any error (404, network, etc.) means we can't confirm existence
             return False
@@ -607,7 +675,7 @@ class AccessProxy6(CRUDEndpoint, MetadataMixin):
         error_mode: Literal["raise", "return", "print"] | None = None,
         error_format: Literal["detailed", "simple", "code_only"] | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ) -> Union[FortiObject, Coroutine[Any, Any, FortiObject]]:
         """
         Create or update firewall/access_proxy6 object (intelligent operation).
 
@@ -668,6 +736,24 @@ class AccessProxy6(CRUDEndpoint, MetadataMixin):
             - put(): Update existing object
             - exists(): Check existence manually
         """
+        # Apply normalization for table fields (supports flexible input formats)
+        if api_gateway is not None:
+            api_gateway = normalize_table_field(
+                api_gateway,
+                mkey="id",
+                required_fields=['url-map', 'service', 'url-map-type', 'h2-support', 'application'],
+                field_name="api_gateway",
+                example="[{'url-map': 'value', 'service': 'http', 'url-map-type': 'sub-string', 'h2-support': 'enable', 'application': 'value'}]",
+            )
+        if api_gateway6 is not None:
+            api_gateway6 = normalize_table_field(
+                api_gateway6,
+                mkey="id",
+                required_fields=['url-map', 'service', 'url-map-type', 'h2-support', 'application'],
+                field_name="api_gateway6",
+                example="[{'url-map': 'value', 'service': 'http', 'url-map-type': 'sub-string', 'h2-support': 'enable', 'application': 'value'}]",
+            )
+        
         # Build payload using helper function
         payload_data = build_api_payload(
             api_type="cmdb",
@@ -710,7 +796,7 @@ class AccessProxy6(CRUDEndpoint, MetadataMixin):
         reference_name: str,
         vdom: str | bool | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ) -> Union[FortiObject, Coroutine[Any, Any, FortiObject]]:
         """
         Move firewall/access_proxy6 object to a new position.
         
@@ -734,17 +820,18 @@ class AccessProxy6(CRUDEndpoint, MetadataMixin):
             ...     reference_name=50
             ... )
         """
-        return self._client.request(
-            method="PUT",
-            path=f"/api/v2/cmdb/firewall/access-proxy6",
-            params={
-                "name": name,
-                "action": "move",
-                action: reference_name,
-                "vdom": vdom,
-                **kwargs,
-            },
-        )
+        # Build params for move operation
+        params = {
+            "name": name,
+            "action": "move",
+            action: reference_name,
+            "vdom": vdom,
+            **kwargs,
+        }
+        
+        endpoint = "/firewall/access-proxy6"
+        return self._client.put(  # type: ignore[return-value]
+            "cmdb", endpoint, data={}, params=params, vdom=vdom        )
 
     # ========================================================================
     # Action: Clone
@@ -756,7 +843,7 @@ class AccessProxy6(CRUDEndpoint, MetadataMixin):
         new_name: str,
         vdom: str | bool | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ) -> Union[FortiObject, Coroutine[Any, Any, FortiObject]]:
         """
         Clone firewall/access_proxy6 object.
         
@@ -778,16 +865,19 @@ class AccessProxy6(CRUDEndpoint, MetadataMixin):
             ...     new_name=100
             ... )
         """
-        return self._client.request(
-            method="POST",
-            path=f"/api/v2/cmdb/firewall/access-proxy6",
-            params={
-                "name": name,
-                "new_name": new_name,
-                "action": "clone",
-                "vdom": vdom,
-                **kwargs,
-            },
-        )
+        # Build params for clone operation  
+        params = {
+            "name": name,
+            "new_name": new_name,
+            "action": "clone",
+            "vdom": vdom,
+            **kwargs,
+        }
+        
+        endpoint = "/firewall/access-proxy6"
+        return self._client.post(  # type: ignore[return-value]
+            "cmdb", endpoint, data={}, params=params, vdom=vdom        )
+
+
 
 

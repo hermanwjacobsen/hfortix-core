@@ -16,10 +16,29 @@ if TYPE_CHECKING:
     from .paths_statistics import PathsStatistics
     from .soft_reset_neighbor import SoftResetNeighbor
 
+__all__ = [
+    "ClearSoftIn",
+    "ClearSoftOut",
+    "Neighbors",
+    "Neighbors6",
+    "NeighborsStatistics",
+    "Paths",
+    "Paths6",
+    "PathsStatistics",
+    "SoftResetNeighbor",
+    "Bgp",
+]
+
 
 class Bgp:
-    """Type stub for Bgp."""
-
+    """BGP API category.
+    
+    All endpoints return FortiObject instances with:
+    - Attribute access: response.field
+    - Dictionary access: response["field"]
+    - Convert to dict: response.dict or response.json
+    """
+    
     clear_soft_in: ClearSoftIn
     clear_soft_out: ClearSoftOut
     neighbors: Neighbors
@@ -30,4 +49,6 @@ class Bgp:
     paths_statistics: PathsStatistics
     soft_reset_neighbor: SoftResetNeighbor
 
-    def __init__(self, client: IHTTPClient) -> None: ...
+    def __init__(self, client: IHTTPClient, vdom: str | None = None) -> None:
+        """Initialize bgp category with HTTP client."""
+        ...

@@ -11,13 +11,29 @@ if TYPE_CHECKING:
     from .quarantine import Quarantine
     from .settings import Settings
 
+__all__ = [
+    "ExemptList",
+    "Profile",
+    "Quarantine",
+    "Settings",
+    "Antivirus",
+]
+
 
 class Antivirus:
-    """Type stub for Antivirus."""
-
+    """ANTIVIRUS API category.
+    
+    All endpoints return FortiObject instances with:
+    - Attribute access: response.field
+    - Dictionary access: response["field"]
+    - Convert to dict: response.dict or response.json
+    """
+    
     exempt_list: ExemptList
     profile: Profile
     quarantine: Quarantine
     settings: Settings
 
-    def __init__(self, client: IHTTPClient) -> None: ...
+    def __init__(self, client: IHTTPClient, vdom: str | None = None) -> None:
+        """Initialize antivirus category with HTTP client."""
+        ...

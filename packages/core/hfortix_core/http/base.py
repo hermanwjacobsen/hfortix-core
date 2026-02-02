@@ -401,6 +401,26 @@ class BaseHTTPClient:
         if attempt >= self._max_retries:
             return False
 
+        # Don't retry SSL/certificate errors - these are permanent failures
+        # that won't resolve with retries
+        if isinstance(error, (httpx.ConnectError, httpx.NetworkError)):
+            error_msg = str(error).lower()
+            ssl_indicators = [
+                "certificate_verify_failed",
+                "ssl:",
+                "certificate",
+                "cert verification",
+                "handshake",
+                "certificate is not valid",
+            ]
+            if any(indicator in error_msg for indicator in ssl_indicators):
+                logger.error(
+                    "SSL/Certificate error (not retrying) for %s: %s",
+                    endpoint,
+                    error,
+                )
+                return False
+
         # Retry on connection errors and timeouts
         if isinstance(error, (httpx.ConnectError, httpx.NetworkError)):
             self._record_retry("connection_error", endpoint)

@@ -39,6 +39,7 @@ from typing import TYPE_CHECKING, Any, Literal, Union
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
+    from hfortix_fortios.models import FortiObject, FortiObjectList
 
 # Import helper functions from central _helpers module
 from hfortix_fortios._helpers import (
@@ -46,6 +47,7 @@ from hfortix_fortios._helpers import (
     build_cmdb_payload,  # Keep for backward compatibility / manual usage
     is_success,
     quote_path_param,  # URL encoding for path parameters
+    normalize_table_field,  # For table field normalization
 )
 # Import metadata mixin for schema introspection
 from hfortix_fortios._helpers.metadata_mixin import MetadataMixin
@@ -58,6 +60,18 @@ class Saml(CRUDEndpoint, MetadataMixin):
     
     # Configure metadata mixin to use this endpoint's helper module
     _helper_module_name = "saml"
+    
+    # ========================================================================
+    # Table Fields Metadata (for normalization)
+    # Auto-generated from schema - supports flexible input formats
+    # ========================================================================
+    _TABLE_FIELDS = {
+        "service_providers": {
+            "mkey": "name",
+            "required_fields": ['name', 'prefix', 'sp-entity-id', 'sp-single-sign-on-url'],
+            "example": "[{'name': 'value', 'prefix': 'value', 'sp-entity-id': 'value', 'sp-single-sign-on-url': 'value'}]",
+        },
+    }
     
     # ========================================================================
     # Capabilities (from schema metadata)
@@ -80,9 +94,11 @@ class Saml(CRUDEndpoint, MetadataMixin):
     # ========================================================================
     # GET Method
     # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # Note: Endpoint-specific parameters intentionally extend the protocol's **kwargs
+    #       to provide autocomplete. Type checkers may report signature mismatch.
     # ========================================================================
     
-    def get(
+    def get(  # type: ignore[override]
         self,
         name: str | None = None,
         filter: list[str] | None = None,
@@ -91,7 +107,7 @@ class Saml(CRUDEndpoint, MetadataMixin):
         payload_dict: dict[str, Any] | None = None,
         error_mode: Literal["raise", "return", "print"] | None = None,
         error_format: Literal["detailed", "simple", "code_only"] | None = None,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ) -> Union[FortiObject, FortiObjectList, Coroutine[Any, Any, Union[FortiObject, FortiObjectList]]]:
         """
         Retrieve system/saml configuration.
 
@@ -173,14 +189,14 @@ class Saml(CRUDEndpoint, MetadataMixin):
             endpoint = "/system/saml"
             unwrap_single = False
         
-        return self._client.get(
+        return self._client.get(  # type: ignore[return-value]
             "cmdb", endpoint, params=params, vdom=False, unwrap_single=unwrap_single
         )
 
     def get_schema(
         self,
         format: str = "schema",
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ) -> Union[FortiObject, FortiObjectList, Coroutine[Any, Any, Union[FortiObject, FortiObjectList]]]:
         """
         Get schema/metadata for this endpoint.
         
@@ -210,15 +226,17 @@ class Saml(CRUDEndpoint, MetadataMixin):
             Not all endpoints support all schema formats. The "schema" format
             is most widely supported.
         """
-        return self.get(action=format)
+        return self.get(payload_dict={"action": format})
 
 
     # ========================================================================
     # PUT Method
     # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # Note: Field-specific parameters intentionally extend the protocol's **kwargs
+    #       to provide autocomplete. Type checkers may report signature mismatch.
     # ========================================================================
     
-    def put(
+    def put(  # type: ignore[override]
         self,
         payload_dict: dict[str, Any] | None = None,
         status: Literal["enable", "disable"] | None = None,
@@ -246,7 +264,7 @@ class Saml(CRUDEndpoint, MetadataMixin):
         q_scope: str | None = None,
         error_mode: Literal["raise", "return", "print"] | None = None,
         error_format: Literal["detailed", "simple", "code_only"] | None = None,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ) -> Union[FortiObject, Coroutine[Any, Any, FortiObject]]:
         """
         Update existing system/saml object.
 
@@ -273,6 +291,9 @@ class Saml(CRUDEndpoint, MetadataMixin):
             tolerance: Tolerance to the range of time when the assertion is valid (in minutes).
             life: Length of the range of time when the assertion is valid (in minutes).
             service_providers: Authorized service providers.
+                Default format: [{'name': 'value', 'prefix': 'value', 'sp-entity-id': 'value', 'sp-single-sign-on-url': 'value'}]
+                Required format: List of dicts with keys: name, prefix, sp-entity-id, sp-single-sign-on-url
+                  (String format not allowed due to multiple required fields)
             error_mode: Override client-level error_mode. "raise" raises exceptions, "return" returns error dict, "print" prints errors.
             error_format: Override client-level error_format. "detailed" provides full context, "simple" is concise, "code_only" returns just status code.
 
@@ -300,6 +321,16 @@ class Saml(CRUDEndpoint, MetadataMixin):
             - post(): Create new object
             - set(): Intelligent create or update
         """
+        # Apply normalization for table fields (supports flexible input formats)
+        if service_providers is not None:
+            service_providers = normalize_table_field(
+                service_providers,
+                mkey="name",
+                required_fields=['name', 'prefix', 'sp-entity-id', 'sp-single-sign-on-url'],
+                field_name="service_providers",
+                example="[{'name': 'value', 'prefix': 'value', 'sp-entity-id': 'value', 'sp-single-sign-on-url': 'value'}]",
+            )
+        
         # Build payload using helper function
         payload_data = build_api_payload(
             api_type="cmdb",
@@ -349,7 +380,7 @@ class Saml(CRUDEndpoint, MetadataMixin):
         if q_scope is not None:
             params["scope"] = q_scope
         
-        return self._client.put(
+        return self._client.put(  # type: ignore[return-value]
             "cmdb", endpoint, data=payload_data, params=params, vdom=False        )
 
 
@@ -366,7 +397,7 @@ class Saml(CRUDEndpoint, MetadataMixin):
         action: Literal["before", "after"],
         reference_name: str,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ) -> Union[FortiObject, Coroutine[Any, Any, FortiObject]]:
         """
         Move system/saml object to a new position.
         
@@ -389,16 +420,17 @@ class Saml(CRUDEndpoint, MetadataMixin):
             ...     reference_name="object2"
             ... )
         """
-        return self._client.request(
-            method="PUT",
-            path=f"/api/v2/cmdb/system/saml",
-            params={
-                "name": name,
-                "action": "move",
-                action: reference_name,
-                **kwargs,
-            },
-        )
+        # Build params for move operation
+        params = {
+            "name": name,
+            "action": "move",
+            action: reference_name,
+            **kwargs,
+        }
+        
+        endpoint = "/system/saml"
+        return self._client.put(  # type: ignore[return-value]
+            "cmdb", endpoint, data={}, params=params, vdom=False        )
 
     # ========================================================================
     # Action: Clone
@@ -409,7 +441,7 @@ class Saml(CRUDEndpoint, MetadataMixin):
         name: str,
         new_name: str,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ) -> Union[FortiObject, Coroutine[Any, Any, FortiObject]]:
         """
         Clone system/saml object.
         
@@ -430,68 +462,18 @@ class Saml(CRUDEndpoint, MetadataMixin):
             ...     new_name="new-from-template"
             ... )
         """
-        return self._client.request(
-            method="POST",
-            path=f"/api/v2/cmdb/system/saml",
-            params={
-                "name": name,
-                "new_name": new_name,
-                "action": "clone",
-                **kwargs,
-            },
-        )
-
-    # ========================================================================
-    # Helper: Check Existence
-    # ========================================================================
-    
-    def exists(
-        self,
-        name: str,
-    ) -> bool:
-        """
-        Check if system/saml object exists.
+        # Build params for clone operation  
+        params = {
+            "name": name,
+            "new_name": new_name,
+            "action": "clone",
+            **kwargs,
+        }
         
-        Args:
-            name: Name to check
-            
-        Returns:
-            True if object exists, False otherwise
-            
-        Example:
-            >>> # Check before creating
-            >>> if not fgt.api.cmdb.system_saml.exists(name="myobj"):
-            ...     fgt.api.cmdb.system_saml.post(payload_dict=data)
-        """
-        # Use direct request with silent error handling to avoid logging 404s
-        # This is expected behavior for exists() - 404 just means "doesn't exist"
         endpoint = "/system/saml"
-        endpoint = f"{endpoint}/{quote_path_param(name)}"
-        
-        # Make request with silent=True to suppress 404 error logging
-        # (404 is expected when checking existence - it just means "doesn't exist")
-        # Use _wrapped_client to access the underlying HTTPClient directly
-        # (self._client is ResponseProcessingClient, _wrapped_client is HTTPClient)
-        try:
-            result = self._client._wrapped_client.get(
-                "cmdb",
-                endpoint,
-                params=None,
-                vdom=False,
-                raw_json=True,
-                silent=True,
-            )
-            
-            if isinstance(result, dict):
-                # Synchronous response - check status
-                return result.get("status") == "success"
-            else:
-                # Asynchronous response
-                async def _check() -> bool:
-                    r = await result
-                    return r.get("status") == "success"
-                return _check()
-        except Exception:
-            # Any error (404, network, etc.) means we can't confirm existence
-            return False
+        return self._client.post(  # type: ignore[return-value]
+            "cmdb", endpoint, data={}, params=params, vdom=False        )
+
+
+
 

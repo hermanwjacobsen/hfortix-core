@@ -39,6 +39,7 @@ from typing import TYPE_CHECKING, Any, Literal, Union
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
+    from hfortix_fortios.models import FortiObject, FortiObjectList
 
 # Import helper functions from central _helpers module
 from hfortix_fortios._helpers import (
@@ -46,6 +47,7 @@ from hfortix_fortios._helpers import (
     build_cmdb_payload,  # Keep for backward compatibility / manual usage
     is_success,
     quote_path_param,  # URL encoding for path parameters
+    normalize_table_field,  # For table field normalization
 )
 # Import metadata mixin for schema introspection
 from hfortix_fortios._helpers.metadata_mixin import MetadataMixin
@@ -58,6 +60,48 @@ class Phase1(CRUDEndpoint, MetadataMixin):
     
     # Configure metadata mixin to use this endpoint's helper module
     _helper_module_name = "phase1"
+    
+    # ========================================================================
+    # Table Fields Metadata (for normalization)
+    # Auto-generated from schema - supports flexible input formats
+    # ========================================================================
+    _TABLE_FIELDS = {
+        "certificate": {
+            "mkey": "name",
+            "required_fields": ['name'],
+            "example": "[{'name': 'value'}]",
+        },
+        "internal_domain_list": {
+            "mkey": "domain-name",
+            "required_fields": ['domain-name'],
+            "example": "[{'domain-name': 'value'}]",
+        },
+        "dns_suffix_search": {
+            "mkey": "dns-suffix",
+            "required_fields": ['dns-suffix'],
+            "example": "[{'dns-suffix': 'value'}]",
+        },
+        "ipv4_exclude_range": {
+            "mkey": "id",
+            "required_fields": ['id', 'start-ip', 'end-ip'],
+            "example": "[{'id': 1, 'start-ip': '192.168.1.10', 'end-ip': '192.168.1.10'}]",
+        },
+        "ipv6_exclude_range": {
+            "mkey": "id",
+            "required_fields": ['id', 'start-ip', 'end-ip'],
+            "example": "[{'id': 1, 'start-ip': 'value', 'end-ip': 'value'}]",
+        },
+        "backup_gateway": {
+            "mkey": "address",
+            "required_fields": ['address'],
+            "example": "[{'address': 'value'}]",
+        },
+        "remote_gw_ztna_tags": {
+            "mkey": "name",
+            "required_fields": ['name'],
+            "example": "[{'name': 'value'}]",
+        },
+    }
     
     # ========================================================================
     # Capabilities (from schema metadata)
@@ -80,9 +124,11 @@ class Phase1(CRUDEndpoint, MetadataMixin):
     # ========================================================================
     # GET Method
     # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # Note: Endpoint-specific parameters intentionally extend the protocol's **kwargs
+    #       to provide autocomplete. Type checkers may report signature mismatch.
     # ========================================================================
     
-    def get(
+    def get(  # type: ignore[override]
         self,
         name: str | None = None,
         filter: list[str] | None = None,
@@ -92,7 +138,7 @@ class Phase1(CRUDEndpoint, MetadataMixin):
         vdom: str | bool | None = None,
         error_mode: Literal["raise", "return", "print"] | None = None,
         error_format: Literal["detailed", "simple", "code_only"] | None = None,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ) -> Union[FortiObject, FortiObjectList, Coroutine[Any, Any, Union[FortiObject, FortiObjectList]]]:
         """
         Retrieve vpn/ipsec/phase1 configuration.
 
@@ -180,7 +226,7 @@ class Phase1(CRUDEndpoint, MetadataMixin):
             endpoint = "/vpn.ipsec/phase1"
             unwrap_single = False
         
-        return self._client.get(
+        return self._client.get(  # type: ignore[return-value]
             "cmdb", endpoint, params=params, vdom=vdom, unwrap_single=unwrap_single
         )
 
@@ -188,7 +234,7 @@ class Phase1(CRUDEndpoint, MetadataMixin):
         self,
         vdom: str | None = None,
         format: str = "schema",
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ) -> Union[FortiObject, FortiObjectList, Coroutine[Any, Any, Union[FortiObject, FortiObjectList]]]:
         """
         Get schema/metadata for this endpoint.
         
@@ -219,15 +265,17 @@ class Phase1(CRUDEndpoint, MetadataMixin):
             Not all endpoints support all schema formats. The "schema" format
             is most widely supported.
         """
-        return self.get(action=format, vdom=vdom)
+        return self.get(payload_dict={"action": format}, vdom=vdom)
 
 
     # ========================================================================
     # PUT Method
     # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # Note: Field-specific parameters intentionally extend the protocol's **kwargs
+    #       to provide autocomplete. Type checkers may report signature mismatch.
     # ========================================================================
     
-    def put(
+    def put(  # type: ignore[override]
         self,
         payload_dict: dict[str, Any] | None = None,
         name: str | None = None,
@@ -399,7 +447,7 @@ class Phase1(CRUDEndpoint, MetadataMixin):
         vdom: str | bool | None = None,
         error_mode: Literal["raise", "return", "print"] | None = None,
         error_format: Literal["detailed", "simple", "code_only"] | None = None,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ) -> Union[FortiObject, Coroutine[Any, Any, FortiObject]]:
         """
         Update existing vpn/ipsec/phase1 object.
 
@@ -416,6 +464,11 @@ class Phase1(CRUDEndpoint, MetadataMixin):
             remotegw_ddns: Domain name of remote gateway. For example, name.ddns.com.
             keylife: Time to wait in seconds before phase 1 encryption key expires.
             certificate: Names of up to 4 signed personal certificates.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
             authmethod: Authentication method.
             authmethod_remote: Authentication method (remote side).
             mode: ID protection mode used to establish a secure channel.
@@ -438,10 +491,23 @@ class Phase1(CRUDEndpoint, MetadataMixin):
             ipv4_dns_server2: IPv4 DNS server 2.
             ipv4_dns_server3: IPv4 DNS server 3.
             internal_domain_list: One or more internal domain names in quotes separated by spaces.
+                Default format: [{'domain-name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'domain-name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'domain-name': 'val1'}, ...]
+                  - List of dicts: [{'domain-name': 'value'}] (recommended)
             dns_suffix_search: One or more DNS domain name suffixes in quotes separated by spaces.
+                Default format: [{'dns-suffix': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'dns-suffix': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'dns-suffix': 'val1'}, ...]
+                  - List of dicts: [{'dns-suffix': 'value'}] (recommended)
             ipv4_wins_server1: WINS server 1.
             ipv4_wins_server2: WINS server 2.
             ipv4_exclude_range: Configuration Method IPv4 exclude ranges.
+                Default format: [{'id': 1, 'start-ip': '192.168.1.10', 'end-ip': '192.168.1.10'}]
+                Required format: List of dicts with keys: id, start-ip, end-ip
+                  (String format not allowed due to multiple required fields)
             ipv4_split_include: IPv4 split-include subnets.
             split_include_service: Split-include services.
             ipv4_name: IPv4 address name.
@@ -452,6 +518,9 @@ class Phase1(CRUDEndpoint, MetadataMixin):
             ipv6_dns_server2: IPv6 DNS server 2.
             ipv6_dns_server3: IPv6 DNS server 3.
             ipv6_exclude_range: Configuration method IPv6 exclude ranges.
+                Default format: [{'id': 1, 'start-ip': 'value', 'end-ip': 'value'}]
+                Required format: List of dicts with keys: id, start-ip, end-ip
+                  (String format not allowed due to multiple required fields)
             ipv6_split_include: IPv6 split-include subnets.
             ipv6_name: IPv6 address name.
             ip_delay_interval: IP address reuse delay interval in seconds (0 - 28800).
@@ -465,6 +534,11 @@ class Phase1(CRUDEndpoint, MetadataMixin):
             client_auto_negotiate: Enable/disable allowing the VPN client to bring up the tunnel when there is no traffic.
             client_keep_alive: Enable/disable allowing the VPN client to keep the tunnel up when there is no traffic.
             backup_gateway: Instruct unity clients about the backup gateway address(es).
+                Default format: [{'address': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'address': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'address': 'val1'}, ...]
+                  - List of dicts: [{'address': 'value'}] (recommended)
             proposal: Phase1 proposal.
             add_route: Enable/disable control addition of a route to peer destination selector.
             add_gw_route: Enable/disable automatically add a route to the remote gateway.
@@ -562,6 +636,11 @@ class Phase1(CRUDEndpoint, MetadataMixin):
             remote_gw_end_ip: Last IPv4 address in the range.
             remote_gw_country: IPv4 addresses associated to a specific country.
             remote_gw_ztna_tags: IPv4 ZTNA posture tags.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
             remote_gw6_match: Set type of IPv6 remote gateway address matching.
             remote_gw6_subnet: IPv6 address and prefix.
             remote_gw6_start_ip: First IPv6 address in the range.
@@ -597,9 +676,72 @@ class Phase1(CRUDEndpoint, MetadataMixin):
             - post(): Create new object
             - set(): Intelligent create or update
         """
+        # Apply normalization for table fields (supports flexible input formats)
+        if certificate is not None:
+            certificate = normalize_table_field(
+                certificate,
+                mkey="name",
+                required_fields=['name'],
+                field_name="certificate",
+                example="[{'name': 'value'}]",
+            )
+        if internal_domain_list is not None:
+            internal_domain_list = normalize_table_field(
+                internal_domain_list,
+                mkey="domain-name",
+                required_fields=['domain-name'],
+                field_name="internal_domain_list",
+                example="[{'domain-name': 'value'}]",
+            )
+        if dns_suffix_search is not None:
+            dns_suffix_search = normalize_table_field(
+                dns_suffix_search,
+                mkey="dns-suffix",
+                required_fields=['dns-suffix'],
+                field_name="dns_suffix_search",
+                example="[{'dns-suffix': 'value'}]",
+            )
+        if ipv4_exclude_range is not None:
+            ipv4_exclude_range = normalize_table_field(
+                ipv4_exclude_range,
+                mkey="id",
+                required_fields=['id', 'start-ip', 'end-ip'],
+                field_name="ipv4_exclude_range",
+                example="[{'id': 1, 'start-ip': '192.168.1.10', 'end-ip': '192.168.1.10'}]",
+            )
+        if ipv6_exclude_range is not None:
+            ipv6_exclude_range = normalize_table_field(
+                ipv6_exclude_range,
+                mkey="id",
+                required_fields=['id', 'start-ip', 'end-ip'],
+                field_name="ipv6_exclude_range",
+                example="[{'id': 1, 'start-ip': 'value', 'end-ip': 'value'}]",
+            )
+        if backup_gateway is not None:
+            backup_gateway = normalize_table_field(
+                backup_gateway,
+                mkey="address",
+                required_fields=['address'],
+                field_name="backup_gateway",
+                example="[{'address': 'value'}]",
+            )
+        if remote_gw_ztna_tags is not None:
+            remote_gw_ztna_tags = normalize_table_field(
+                remote_gw_ztna_tags,
+                mkey="name",
+                required_fields=['name'],
+                field_name="remote_gw_ztna_tags",
+                example="[{'name': 'value'}]",
+            )
+        
+        # Apply normalization for multi-value option fields (space-separated strings)
+        
         # Build payload using helper function
+        # Note: auto_normalize=False because this endpoint has unitary fields
+        # (like 'interface') that would be incorrectly converted to list format
         payload_data = build_api_payload(
             api_type="cmdb",
+            auto_normalize=False,
             name=name,
             type=type,
             interface=interface,
@@ -791,15 +933,17 @@ class Phase1(CRUDEndpoint, MetadataMixin):
         if q_scope is not None:
             params["scope"] = q_scope
         
-        return self._client.put(
+        return self._client.put(  # type: ignore[return-value]
             "cmdb", endpoint, data=payload_data, params=params, vdom=vdom        )
 
     # ========================================================================
     # POST Method
     # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # Note: Field-specific parameters intentionally extend the protocol's **kwargs
+    #       to provide autocomplete. Type checkers may report signature mismatch.
     # ========================================================================
     
-    def post(
+    def post(  # type: ignore[override]
         self,
         payload_dict: dict[str, Any] | None = None,
         name: str | None = None,
@@ -970,7 +1114,7 @@ class Phase1(CRUDEndpoint, MetadataMixin):
         vdom: str | bool | None = None,
         error_mode: Literal["raise", "return", "print"] | None = None,
         error_format: Literal["detailed", "simple", "code_only"] | None = None,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ) -> Union[FortiObject, Coroutine[Any, Any, FortiObject]]:
         """
         Create new vpn/ipsec/phase1 object.
 
@@ -987,6 +1131,11 @@ class Phase1(CRUDEndpoint, MetadataMixin):
             remotegw_ddns: Domain name of remote gateway. For example, name.ddns.com.
             keylife: Time to wait in seconds before phase 1 encryption key expires.
             certificate: Names of up to 4 signed personal certificates.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
             authmethod: Authentication method.
             authmethod_remote: Authentication method (remote side).
             mode: ID protection mode used to establish a secure channel.
@@ -1009,10 +1158,23 @@ class Phase1(CRUDEndpoint, MetadataMixin):
             ipv4_dns_server2: IPv4 DNS server 2.
             ipv4_dns_server3: IPv4 DNS server 3.
             internal_domain_list: One or more internal domain names in quotes separated by spaces.
+                Default format: [{'domain-name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'domain-name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'domain-name': 'val1'}, ...]
+                  - List of dicts: [{'domain-name': 'value'}] (recommended)
             dns_suffix_search: One or more DNS domain name suffixes in quotes separated by spaces.
+                Default format: [{'dns-suffix': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'dns-suffix': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'dns-suffix': 'val1'}, ...]
+                  - List of dicts: [{'dns-suffix': 'value'}] (recommended)
             ipv4_wins_server1: WINS server 1.
             ipv4_wins_server2: WINS server 2.
             ipv4_exclude_range: Configuration Method IPv4 exclude ranges.
+                Default format: [{'id': 1, 'start-ip': '192.168.1.10', 'end-ip': '192.168.1.10'}]
+                Required format: List of dicts with keys: id, start-ip, end-ip
+                  (String format not allowed due to multiple required fields)
             ipv4_split_include: IPv4 split-include subnets.
             split_include_service: Split-include services.
             ipv4_name: IPv4 address name.
@@ -1023,6 +1185,9 @@ class Phase1(CRUDEndpoint, MetadataMixin):
             ipv6_dns_server2: IPv6 DNS server 2.
             ipv6_dns_server3: IPv6 DNS server 3.
             ipv6_exclude_range: Configuration method IPv6 exclude ranges.
+                Default format: [{'id': 1, 'start-ip': 'value', 'end-ip': 'value'}]
+                Required format: List of dicts with keys: id, start-ip, end-ip
+                  (String format not allowed due to multiple required fields)
             ipv6_split_include: IPv6 split-include subnets.
             ipv6_name: IPv6 address name.
             ip_delay_interval: IP address reuse delay interval in seconds (0 - 28800).
@@ -1036,6 +1201,11 @@ class Phase1(CRUDEndpoint, MetadataMixin):
             client_auto_negotiate: Enable/disable allowing the VPN client to bring up the tunnel when there is no traffic.
             client_keep_alive: Enable/disable allowing the VPN client to keep the tunnel up when there is no traffic.
             backup_gateway: Instruct unity clients about the backup gateway address(es).
+                Default format: [{'address': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'address': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'address': 'val1'}, ...]
+                  - List of dicts: [{'address': 'value'}] (recommended)
             proposal: Phase1 proposal.
             add_route: Enable/disable control addition of a route to peer destination selector.
             add_gw_route: Enable/disable automatically add a route to the remote gateway.
@@ -1133,6 +1303,11 @@ class Phase1(CRUDEndpoint, MetadataMixin):
             remote_gw_end_ip: Last IPv4 address in the range.
             remote_gw_country: IPv4 addresses associated to a specific country.
             remote_gw_ztna_tags: IPv4 ZTNA posture tags.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
             remote_gw6_match: Set type of IPv6 remote gateway address matching.
             remote_gw6_subnet: IPv6 address and prefix.
             remote_gw6_start_ip: First IPv6 address in the range.
@@ -1170,9 +1345,72 @@ class Phase1(CRUDEndpoint, MetadataMixin):
             - put(): Update existing object
             - set(): Intelligent create or update
         """
+        # Apply normalization for table fields (supports flexible input formats)
+        if certificate is not None:
+            certificate = normalize_table_field(
+                certificate,
+                mkey="name",
+                required_fields=['name'],
+                field_name="certificate",
+                example="[{'name': 'value'}]",
+            )
+        if internal_domain_list is not None:
+            internal_domain_list = normalize_table_field(
+                internal_domain_list,
+                mkey="domain-name",
+                required_fields=['domain-name'],
+                field_name="internal_domain_list",
+                example="[{'domain-name': 'value'}]",
+            )
+        if dns_suffix_search is not None:
+            dns_suffix_search = normalize_table_field(
+                dns_suffix_search,
+                mkey="dns-suffix",
+                required_fields=['dns-suffix'],
+                field_name="dns_suffix_search",
+                example="[{'dns-suffix': 'value'}]",
+            )
+        if ipv4_exclude_range is not None:
+            ipv4_exclude_range = normalize_table_field(
+                ipv4_exclude_range,
+                mkey="id",
+                required_fields=['id', 'start-ip', 'end-ip'],
+                field_name="ipv4_exclude_range",
+                example="[{'id': 1, 'start-ip': '192.168.1.10', 'end-ip': '192.168.1.10'}]",
+            )
+        if ipv6_exclude_range is not None:
+            ipv6_exclude_range = normalize_table_field(
+                ipv6_exclude_range,
+                mkey="id",
+                required_fields=['id', 'start-ip', 'end-ip'],
+                field_name="ipv6_exclude_range",
+                example="[{'id': 1, 'start-ip': 'value', 'end-ip': 'value'}]",
+            )
+        if backup_gateway is not None:
+            backup_gateway = normalize_table_field(
+                backup_gateway,
+                mkey="address",
+                required_fields=['address'],
+                field_name="backup_gateway",
+                example="[{'address': 'value'}]",
+            )
+        if remote_gw_ztna_tags is not None:
+            remote_gw_ztna_tags = normalize_table_field(
+                remote_gw_ztna_tags,
+                mkey="name",
+                required_fields=['name'],
+                field_name="remote_gw_ztna_tags",
+                example="[{'name': 'value'}]",
+            )
+        
+        # Apply normalization for multi-value option fields (space-separated strings)
+        
         # Build payload using helper function
+        # Note: auto_normalize=False because this endpoint has unitary fields
+        # (like 'interface') that would be incorrectly converted to list format
         payload_data = build_api_payload(
             api_type="cmdb",
+            auto_normalize=False,
             name=name,
             type=type,
             interface=interface,
@@ -1359,22 +1597,24 @@ class Phase1(CRUDEndpoint, MetadataMixin):
         if q_scope is not None:
             params["scope"] = q_scope
         
-        return self._client.post(
+        return self._client.post(  # type: ignore[return-value]
             "cmdb", endpoint, data=payload_data, params=params, vdom=vdom        )
 
     # ========================================================================
     # DELETE Method
     # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # Note: Identifier parameters intentionally extend the protocol's **kwargs
+    #       to provide autocomplete. Type checkers may report signature mismatch.
     # ========================================================================
     
-    def delete(
+    def delete(  # type: ignore[override]
         self,
         name: str | None = None,
         q_scope: str | None = None,
         vdom: str | bool | None = None,
         error_mode: Literal["raise", "return", "print"] | None = None,
         error_format: Literal["detailed", "simple", "code_only"] | None = None,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ) -> Union[FortiObject, Coroutine[Any, Any, FortiObject]]:
         """
         Delete vpn/ipsec/phase1 object.
 
@@ -1413,7 +1653,7 @@ class Phase1(CRUDEndpoint, MetadataMixin):
         if q_scope is not None:
             params["scope"] = q_scope
         
-        return self._client.delete(
+        return self._client.delete(  # type: ignore[return-value]
             "cmdb", endpoint, params=params, vdom=vdom        )
 
     def exists(
@@ -1448,34 +1688,27 @@ class Phase1(CRUDEndpoint, MetadataMixin):
             - get(): Retrieve full object data
             - set(): Create or update automatically based on existence
         """
-        # Use direct request with silent error handling to avoid logging 404s
-        # This is expected behavior for exists() - 404 just means "doesn't exist"
+        # Use direct GET request to check existence
+        # 404 responses are expected and just mean "doesn't exist"
         endpoint = "/vpn.ipsec/phase1"
         endpoint = f"{endpoint}/{quote_path_param(name)}"
         
-        # Make request with silent=True to suppress 404 error logging
-        # (404 is expected when checking existence - it just means "doesn't exist")
-        # Use _wrapped_client to access the underlying HTTPClient directly
-        # (self._client is ResponseProcessingClient, _wrapped_client is HTTPClient)
         try:
-            result = self._client._wrapped_client.get(
-                "cmdb",
-                endpoint,
-                params=None,
-                vdom=vdom,
-                raw_json=True,
-                silent=True,
-            )
+            result = self.get(name=name, vdom=vdom)
             
-            if isinstance(result, dict):
-                # Synchronous response - check status
-                return result.get("status") == "success"
-            else:
-                # Asynchronous response
+            # Check if result is a coroutine (async) or direct response (sync)
+            # Note: Type checkers can't narrow Union[T, Coroutine[T]] in conditionals
+            if hasattr(result, '__await__'):
+                # Async response - return coroutine that checks status
                 async def _check() -> bool:
-                    r = await result
-                    return r.get("status") == "success"
+                    r = await result  # type: ignore[misc]
+                    response = r.raw if hasattr(r, 'raw') else r
+                    return is_success(response)
                 return _check()
+            else:
+                # Sync response - check status directly
+                response = result.raw if hasattr(result, 'raw') else result  # type: ignore[union-attr]
+                return is_success(response)
         except Exception:
             # Any error (404, network, etc.) means we can't confirm existence
             return False
@@ -1650,7 +1883,7 @@ class Phase1(CRUDEndpoint, MetadataMixin):
         error_mode: Literal["raise", "return", "print"] | None = None,
         error_format: Literal["detailed", "simple", "code_only"] | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ) -> Union[FortiObject, Coroutine[Any, Any, FortiObject]]:
         """
         Create or update vpn/ipsec/phase1 object (intelligent operation).
 
@@ -1860,9 +2093,72 @@ class Phase1(CRUDEndpoint, MetadataMixin):
             - put(): Update existing object
             - exists(): Check existence manually
         """
+        # Apply normalization for table fields (supports flexible input formats)
+        if certificate is not None:
+            certificate = normalize_table_field(
+                certificate,
+                mkey="name",
+                required_fields=['name'],
+                field_name="certificate",
+                example="[{'name': 'value'}]",
+            )
+        if internal_domain_list is not None:
+            internal_domain_list = normalize_table_field(
+                internal_domain_list,
+                mkey="domain-name",
+                required_fields=['domain-name'],
+                field_name="internal_domain_list",
+                example="[{'domain-name': 'value'}]",
+            )
+        if dns_suffix_search is not None:
+            dns_suffix_search = normalize_table_field(
+                dns_suffix_search,
+                mkey="dns-suffix",
+                required_fields=['dns-suffix'],
+                field_name="dns_suffix_search",
+                example="[{'dns-suffix': 'value'}]",
+            )
+        if ipv4_exclude_range is not None:
+            ipv4_exclude_range = normalize_table_field(
+                ipv4_exclude_range,
+                mkey="id",
+                required_fields=['id', 'start-ip', 'end-ip'],
+                field_name="ipv4_exclude_range",
+                example="[{'id': 1, 'start-ip': '192.168.1.10', 'end-ip': '192.168.1.10'}]",
+            )
+        if ipv6_exclude_range is not None:
+            ipv6_exclude_range = normalize_table_field(
+                ipv6_exclude_range,
+                mkey="id",
+                required_fields=['id', 'start-ip', 'end-ip'],
+                field_name="ipv6_exclude_range",
+                example="[{'id': 1, 'start-ip': 'value', 'end-ip': 'value'}]",
+            )
+        if backup_gateway is not None:
+            backup_gateway = normalize_table_field(
+                backup_gateway,
+                mkey="address",
+                required_fields=['address'],
+                field_name="backup_gateway",
+                example="[{'address': 'value'}]",
+            )
+        if remote_gw_ztna_tags is not None:
+            remote_gw_ztna_tags = normalize_table_field(
+                remote_gw_ztna_tags,
+                mkey="name",
+                required_fields=['name'],
+                field_name="remote_gw_ztna_tags",
+                example="[{'name': 'value'}]",
+            )
+        
+        # Apply normalization for multi-value option fields (space-separated strings)
+        
         # Build payload using helper function
+        # Note: auto_normalize=False because this endpoint has unitary fields
+        # (like 'interface') that would be incorrectly converted to list format
         payload_data = build_api_payload(
             api_type="cmdb",
+            auto_normalize=False,
             name=name,
             type=type,
             interface=interface,
@@ -2051,7 +2347,7 @@ class Phase1(CRUDEndpoint, MetadataMixin):
         reference_name: str,
         vdom: str | bool | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ) -> Union[FortiObject, Coroutine[Any, Any, FortiObject]]:
         """
         Move vpn/ipsec/phase1 object to a new position.
         
@@ -2075,17 +2371,18 @@ class Phase1(CRUDEndpoint, MetadataMixin):
             ...     reference_name=50
             ... )
         """
-        return self._client.request(
-            method="PUT",
-            path=f"/api/v2/cmdb/vpn.ipsec/phase1",
-            params={
-                "name": name,
-                "action": "move",
-                action: reference_name,
-                "vdom": vdom,
-                **kwargs,
-            },
-        )
+        # Build params for move operation
+        params = {
+            "name": name,
+            "action": "move",
+            action: reference_name,
+            "vdom": vdom,
+            **kwargs,
+        }
+        
+        endpoint = "/vpn.ipsec/phase1"
+        return self._client.put(  # type: ignore[return-value]
+            "cmdb", endpoint, data={}, params=params, vdom=vdom        )
 
     # ========================================================================
     # Action: Clone
@@ -2097,7 +2394,7 @@ class Phase1(CRUDEndpoint, MetadataMixin):
         new_name: str,
         vdom: str | bool | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ) -> Union[FortiObject, Coroutine[Any, Any, FortiObject]]:
         """
         Clone vpn/ipsec/phase1 object.
         
@@ -2119,16 +2416,19 @@ class Phase1(CRUDEndpoint, MetadataMixin):
             ...     new_name=100
             ... )
         """
-        return self._client.request(
-            method="POST",
-            path=f"/api/v2/cmdb/vpn.ipsec/phase1",
-            params={
-                "name": name,
-                "new_name": new_name,
-                "action": "clone",
-                "vdom": vdom,
-                **kwargs,
-            },
-        )
+        # Build params for clone operation  
+        params = {
+            "name": name,
+            "new_name": new_name,
+            "action": "clone",
+            "vdom": vdom,
+            **kwargs,
+        }
+        
+        endpoint = "/vpn.ipsec/phase1"
+        return self._client.post(  # type: ignore[return-value]
+            "cmdb", endpoint, data={}, params=params, vdom=vdom        )
+
+
 
 

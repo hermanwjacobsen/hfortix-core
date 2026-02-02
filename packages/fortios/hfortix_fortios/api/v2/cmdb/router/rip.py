@@ -39,6 +39,7 @@ from typing import TYPE_CHECKING, Any, Literal, Union
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
+    from hfortix_fortios.models import FortiObject, FortiObjectList
 
 # Import helper functions from central _helpers module
 from hfortix_fortios._helpers import (
@@ -46,6 +47,7 @@ from hfortix_fortios._helpers import (
     build_cmdb_payload,  # Keep for backward compatibility / manual usage
     is_success,
     quote_path_param,  # URL encoding for path parameters
+    normalize_table_field,  # For table field normalization
 )
 # Import metadata mixin for schema introspection
 from hfortix_fortios._helpers.metadata_mixin import MetadataMixin
@@ -58,6 +60,53 @@ class Rip(CRUDEndpoint, MetadataMixin):
     
     # Configure metadata mixin to use this endpoint's helper module
     _helper_module_name = "rip"
+    
+    # ========================================================================
+    # Table Fields Metadata (for normalization)
+    # Auto-generated from schema - supports flexible input formats
+    # ========================================================================
+    _TABLE_FIELDS = {
+        "distance": {
+            "mkey": "id",
+            "required_fields": ['id', 'distance'],
+            "example": "[{'id': 1, 'distance': 1}]",
+        },
+        "distribute_list": {
+            "mkey": "id",
+            "required_fields": ['id', 'direction', 'listname'],
+            "example": "[{'id': 1, 'direction': 'in', 'listname': 'value'}]",
+        },
+        "neighbor": {
+            "mkey": "id",
+            "required_fields": ['ip'],
+            "example": "[{'ip': '192.168.1.10'}]",
+        },
+        "network": {
+            "mkey": "id",
+            "required_fields": ['id'],
+            "example": "[{'id': 1}]",
+        },
+        "offset_list": {
+            "mkey": "id",
+            "required_fields": ['id', 'direction', 'access-list', 'offset'],
+            "example": "[{'id': 1, 'direction': 'in', 'access-list': 'value', 'offset': 1}]",
+        },
+        "passive_interface": {
+            "mkey": "name",
+            "required_fields": ['name'],
+            "example": "[{'name': 'value'}]",
+        },
+        "redistribute": {
+            "mkey": "name",
+            "required_fields": ['name'],
+            "example": "[{'name': 'value'}]",
+        },
+        "interface": {
+            "mkey": "name",
+            "required_fields": ['name'],
+            "example": "[{'name': 'value'}]",
+        },
+    }
     
     # ========================================================================
     # Capabilities (from schema metadata)
@@ -80,9 +129,11 @@ class Rip(CRUDEndpoint, MetadataMixin):
     # ========================================================================
     # GET Method
     # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # Note: Endpoint-specific parameters intentionally extend the protocol's **kwargs
+    #       to provide autocomplete. Type checkers may report signature mismatch.
     # ========================================================================
     
-    def get(
+    def get(  # type: ignore[override]
         self,
         name: str | None = None,
         filter: list[str] | None = None,
@@ -92,7 +143,7 @@ class Rip(CRUDEndpoint, MetadataMixin):
         vdom: str | bool | None = None,
         error_mode: Literal["raise", "return", "print"] | None = None,
         error_format: Literal["detailed", "simple", "code_only"] | None = None,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ) -> Union[FortiObject, FortiObjectList, Coroutine[Any, Any, Union[FortiObject, FortiObjectList]]]:
         """
         Retrieve router/rip configuration.
 
@@ -175,7 +226,7 @@ class Rip(CRUDEndpoint, MetadataMixin):
             endpoint = "/router/rip"
             unwrap_single = False
         
-        return self._client.get(
+        return self._client.get(  # type: ignore[return-value]
             "cmdb", endpoint, params=params, vdom=vdom, unwrap_single=unwrap_single
         )
 
@@ -183,7 +234,7 @@ class Rip(CRUDEndpoint, MetadataMixin):
         self,
         vdom: str | None = None,
         format: str = "schema",
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ) -> Union[FortiObject, FortiObjectList, Coroutine[Any, Any, Union[FortiObject, FortiObjectList]]]:
         """
         Get schema/metadata for this endpoint.
         
@@ -214,15 +265,17 @@ class Rip(CRUDEndpoint, MetadataMixin):
             Not all endpoints support all schema formats. The "schema" format
             is most widely supported.
         """
-        return self.get(action=format, vdom=vdom)
+        return self.get(payload_dict={"action": format}, vdom=vdom)
 
 
     # ========================================================================
     # PUT Method
     # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # Note: Field-specific parameters intentionally extend the protocol's **kwargs
+    #       to provide autocomplete. Type checkers may report signature mismatch.
     # ========================================================================
     
-    def put(
+    def put(  # type: ignore[override]
         self,
         payload_dict: dict[str, Any] | None = None,
         default_information_originate: Literal["enable", "disable"] | None = None,
@@ -247,7 +300,7 @@ class Rip(CRUDEndpoint, MetadataMixin):
         vdom: str | bool | None = None,
         error_mode: Literal["raise", "return", "print"] | None = None,
         error_format: Literal["detailed", "simple", "code_only"] | None = None,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ) -> Union[FortiObject, Coroutine[Any, Any, FortiObject]]:
         """
         Update existing router/rip object.
 
@@ -259,17 +312,51 @@ class Rip(CRUDEndpoint, MetadataMixin):
             default_metric: Default metric.
             max_out_metric: Maximum metric allowed to output(0 means 'not set').
             distance: Distance.
+                Default format: [{'id': 1, 'distance': 1}]
+                Required format: List of dicts with keys: id, distance
+                  (String format not allowed due to multiple required fields)
             distribute_list: Distribute list.
+                Default format: [{'id': 1, 'direction': 'in', 'listname': 'value'}]
+                Required format: List of dicts with keys: id, direction, listname
+                  (String format not allowed due to multiple required fields)
             neighbor: Neighbor.
+                Default format: [{'ip': '192.168.1.10'}]
+                Supported formats:
+                  - Single string: "value" → [{'id': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'id': 'val1'}, ...]
+                  - List of dicts: [{'ip': '192.168.1.10'}] (recommended)
             network: Network.
+                Default format: [{'id': 1}]
+                Supported formats:
+                  - Single string: "value" → [{'id': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'id': 'val1'}, ...]
+                  - List of dicts: [{'id': 1}] (recommended)
             offset_list: Offset list.
+                Default format: [{'id': 1, 'direction': 'in', 'access-list': 'value', 'offset': 1}]
+                Required format: List of dicts with keys: id, direction, access-list, offset
+                  (String format not allowed due to multiple required fields)
             passive_interface: Passive interface configuration.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
             redistribute: Redistribute configuration.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
             update_timer: Update timer in seconds.
             timeout_timer: Timeout timer in seconds.
             garbage_timer: Garbage timer in seconds.
             version: RIP version.
             interface: RIP interface configuration.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
             vdom: Virtual domain name.
             error_mode: Override client-level error_mode. "raise" raises exceptions, "return" returns error dict, "print" prints errors.
             error_format: Override client-level error_format. "detailed" provides full context, "simple" is concise, "code_only" returns just status code.
@@ -298,6 +385,72 @@ class Rip(CRUDEndpoint, MetadataMixin):
             - post(): Create new object
             - set(): Intelligent create or update
         """
+        # Apply normalization for table fields (supports flexible input formats)
+        if distance is not None:
+            distance = normalize_table_field(
+                distance,
+                mkey="id",
+                required_fields=['id', 'distance'],
+                field_name="distance",
+                example="[{'id': 1, 'distance': 1}]",
+            )
+        if distribute_list is not None:
+            distribute_list = normalize_table_field(
+                distribute_list,
+                mkey="id",
+                required_fields=['id', 'direction', 'listname'],
+                field_name="distribute_list",
+                example="[{'id': 1, 'direction': 'in', 'listname': 'value'}]",
+            )
+        if neighbor is not None:
+            neighbor = normalize_table_field(
+                neighbor,
+                mkey="id",
+                required_fields=['ip'],
+                field_name="neighbor",
+                example="[{'ip': '192.168.1.10'}]",
+            )
+        if network is not None:
+            network = normalize_table_field(
+                network,
+                mkey="id",
+                required_fields=['id'],
+                field_name="network",
+                example="[{'id': 1}]",
+            )
+        if offset_list is not None:
+            offset_list = normalize_table_field(
+                offset_list,
+                mkey="id",
+                required_fields=['id', 'direction', 'access-list', 'offset'],
+                field_name="offset_list",
+                example="[{'id': 1, 'direction': 'in', 'access-list': 'value', 'offset': 1}]",
+            )
+        if passive_interface is not None:
+            passive_interface = normalize_table_field(
+                passive_interface,
+                mkey="name",
+                required_fields=['name'],
+                field_name="passive_interface",
+                example="[{'name': 'value'}]",
+            )
+        if redistribute is not None:
+            redistribute = normalize_table_field(
+                redistribute,
+                mkey="name",
+                required_fields=['name'],
+                field_name="redistribute",
+                example="[{'name': 'value'}]",
+            )
+        if interface is not None:
+            interface = normalize_table_field(
+                interface,
+                mkey="name",
+                required_fields=['name'],
+                field_name="interface",
+                example="[{'name': 'value'}]",
+            )
+        
         # Build payload using helper function
         payload_data = build_api_payload(
             api_type="cmdb",
@@ -343,7 +496,7 @@ class Rip(CRUDEndpoint, MetadataMixin):
         if q_scope is not None:
             params["scope"] = q_scope
         
-        return self._client.put(
+        return self._client.put(  # type: ignore[return-value]
             "cmdb", endpoint, data=payload_data, params=params, vdom=vdom        )
 
 
@@ -361,7 +514,7 @@ class Rip(CRUDEndpoint, MetadataMixin):
         reference_name: str,
         vdom: str | bool | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ) -> Union[FortiObject, Coroutine[Any, Any, FortiObject]]:
         """
         Move router/rip object to a new position.
         
@@ -385,17 +538,18 @@ class Rip(CRUDEndpoint, MetadataMixin):
             ...     reference_name="object2"
             ... )
         """
-        return self._client.request(
-            method="PUT",
-            path=f"/api/v2/cmdb/router/rip",
-            params={
-                "name": name,
-                "action": "move",
-                action: reference_name,
-                "vdom": vdom,
-                **kwargs,
-            },
-        )
+        # Build params for move operation
+        params = {
+            "name": name,
+            "action": "move",
+            action: reference_name,
+            "vdom": vdom,
+            **kwargs,
+        }
+        
+        endpoint = "/router/rip"
+        return self._client.put(  # type: ignore[return-value]
+            "cmdb", endpoint, data={}, params=params, vdom=vdom        )
 
     # ========================================================================
     # Action: Clone
@@ -407,7 +561,7 @@ class Rip(CRUDEndpoint, MetadataMixin):
         new_name: str,
         vdom: str | bool | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ) -> Union[FortiObject, Coroutine[Any, Any, FortiObject]]:
         """
         Clone router/rip object.
         
@@ -429,71 +583,19 @@ class Rip(CRUDEndpoint, MetadataMixin):
             ...     new_name="new-from-template"
             ... )
         """
-        return self._client.request(
-            method="POST",
-            path=f"/api/v2/cmdb/router/rip",
-            params={
-                "name": name,
-                "new_name": new_name,
-                "action": "clone",
-                "vdom": vdom,
-                **kwargs,
-            },
-        )
-
-    # ========================================================================
-    # Helper: Check Existence
-    # ========================================================================
-    
-    def exists(
-        self,
-        name: str,
-        vdom: str | bool | None = None,
-    ) -> bool:
-        """
-        Check if router/rip object exists.
+        # Build params for clone operation  
+        params = {
+            "name": name,
+            "new_name": new_name,
+            "action": "clone",
+            "vdom": vdom,
+            **kwargs,
+        }
         
-        Args:
-            name: Name to check
-            vdom: Virtual domain name
-            
-        Returns:
-            True if object exists, False otherwise
-            
-        Example:
-            >>> # Check before creating
-            >>> if not fgt.api.cmdb.router_rip.exists(name="myobj"):
-            ...     fgt.api.cmdb.router_rip.post(payload_dict=data)
-        """
-        # Use direct request with silent error handling to avoid logging 404s
-        # This is expected behavior for exists() - 404 just means "doesn't exist"
         endpoint = "/router/rip"
-        endpoint = f"{endpoint}/{quote_path_param(name)}"
-        
-        # Make request with silent=True to suppress 404 error logging
-        # (404 is expected when checking existence - it just means "doesn't exist")
-        # Use _wrapped_client to access the underlying HTTPClient directly
-        # (self._client is ResponseProcessingClient, _wrapped_client is HTTPClient)
-        try:
-            result = self._client._wrapped_client.get(
-                "cmdb",
-                endpoint,
-                params=None,
-                vdom=vdom,
-                raw_json=True,
-                silent=True,
-            )
-            
-            if isinstance(result, dict):
-                # Synchronous response - check status
-                return result.get("status") == "success"
-            else:
-                # Asynchronous response
-                async def _check() -> bool:
-                    r = await result
-                    return r.get("status") == "success"
-                return _check()
-        except Exception:
-            # Any error (404, network, etc.) means we can't confirm existence
-            return False
+        return self._client.post(  # type: ignore[return-value]
+            "cmdb", endpoint, data={}, params=params, vdom=vdom        )
+
+
+
 

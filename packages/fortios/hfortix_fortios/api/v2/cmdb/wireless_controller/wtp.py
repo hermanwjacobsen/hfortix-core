@@ -39,6 +39,7 @@ from typing import TYPE_CHECKING, Any, Literal, Union
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
+    from hfortix_fortios.models import FortiObject, FortiObjectList
 
 # Import helper functions from central _helpers module
 from hfortix_fortios._helpers import (
@@ -46,6 +47,7 @@ from hfortix_fortios._helpers import (
     build_cmdb_payload,  # Keep for backward compatibility / manual usage
     is_success,
     quote_path_param,  # URL encoding for path parameters
+    normalize_table_field,  # For table field normalization
 )
 # Import metadata mixin for schema introspection
 from hfortix_fortios._helpers.metadata_mixin import MetadataMixin
@@ -58,6 +60,18 @@ class Wtp(CRUDEndpoint, MetadataMixin):
     
     # Configure metadata mixin to use this endpoint's helper module
     _helper_module_name = "wtp"
+    
+    # ========================================================================
+    # Table Fields Metadata (for normalization)
+    # Auto-generated from schema - supports flexible input formats
+    # ========================================================================
+    _TABLE_FIELDS = {
+        "split_tunneling_acl": {
+            "mkey": "id",
+            "required_fields": ['dest-ip'],
+            "example": "[{'dest-ip': 'value'}]",
+        },
+    }
     
     # ========================================================================
     # Capabilities (from schema metadata)
@@ -80,9 +94,11 @@ class Wtp(CRUDEndpoint, MetadataMixin):
     # ========================================================================
     # GET Method
     # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # Note: Endpoint-specific parameters intentionally extend the protocol's **kwargs
+    #       to provide autocomplete. Type checkers may report signature mismatch.
     # ========================================================================
     
-    def get(
+    def get(  # type: ignore[override]
         self,
         wtp_id: str | None = None,
         filter: list[str] | None = None,
@@ -92,7 +108,7 @@ class Wtp(CRUDEndpoint, MetadataMixin):
         vdom: str | bool | None = None,
         error_mode: Literal["raise", "return", "print"] | None = None,
         error_format: Literal["detailed", "simple", "code_only"] | None = None,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ) -> Union[FortiObject, FortiObjectList, Coroutine[Any, Any, Union[FortiObject, FortiObjectList]]]:
         """
         Retrieve wireless_controller/wtp configuration.
 
@@ -180,7 +196,7 @@ class Wtp(CRUDEndpoint, MetadataMixin):
             endpoint = "/wireless-controller/wtp"
             unwrap_single = False
         
-        return self._client.get(
+        return self._client.get(  # type: ignore[return-value]
             "cmdb", endpoint, params=params, vdom=vdom, unwrap_single=unwrap_single
         )
 
@@ -188,7 +204,7 @@ class Wtp(CRUDEndpoint, MetadataMixin):
         self,
         vdom: str | None = None,
         format: str = "schema",
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ) -> Union[FortiObject, FortiObjectList, Coroutine[Any, Any, Union[FortiObject, FortiObjectList]]]:
         """
         Get schema/metadata for this endpoint.
         
@@ -219,15 +235,17 @@ class Wtp(CRUDEndpoint, MetadataMixin):
             Not all endpoints support all schema formats. The "schema" format
             is most widely supported.
         """
-        return self.get(action=format, vdom=vdom)
+        return self.get(payload_dict={"action": format}, vdom=vdom)
 
 
     # ========================================================================
     # PUT Method
     # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # Note: Field-specific parameters intentionally extend the protocol's **kwargs
+    #       to provide autocomplete. Type checkers may report signature mismatch.
     # ========================================================================
     
-    def put(
+    def put(  # type: ignore[override]
         self,
         payload_dict: dict[str, Any] | None = None,
         wtp_id: str | None = None,
@@ -284,7 +302,7 @@ class Wtp(CRUDEndpoint, MetadataMixin):
         vdom: str | bool | None = None,
         error_mode: Literal["raise", "return", "print"] | None = None,
         error_format: Literal["detailed", "simple", "code_only"] | None = None,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ) -> Union[FortiObject, Coroutine[Any, Any, FortiObject]]:
         """
         Update existing wireless_controller/wtp object.
 
@@ -321,6 +339,11 @@ class Wtp(CRUDEndpoint, MetadataMixin):
             split_tunneling_acl_path: Split tunneling ACL path is local/tunnel.
             split_tunneling_acl_local_ap_subnet: Enable/disable automatically adding local subnetwork of FortiAP to split-tunneling ACL (default = disable).
             split_tunneling_acl: Split tunneling ACL filter list.
+                Default format: [{'dest-ip': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'id': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'id': 'val1'}, ...]
+                  - List of dicts: [{'dest-ip': 'value'}] (recommended)
             override_lan: Enable to override the WTP profile LAN port setting.
             lan: WTP LAN port mapping.
             override_allowaccess: Enable to override the WTP profile management access configuration.
@@ -367,9 +390,24 @@ class Wtp(CRUDEndpoint, MetadataMixin):
             - post(): Create new object
             - set(): Intelligent create or update
         """
+        # Apply normalization for table fields (supports flexible input formats)
+        if split_tunneling_acl is not None:
+            split_tunneling_acl = normalize_table_field(
+                split_tunneling_acl,
+                mkey="id",
+                required_fields=['dest-ip'],
+                field_name="split_tunneling_acl",
+                example="[{'dest-ip': 'value'}]",
+            )
+        
+        # Apply normalization for multi-value option fields (space-separated strings)
+        
         # Build payload using helper function
+        # Note: auto_normalize=False because this endpoint has unitary fields
+        # (like 'interface') that would be incorrectly converted to list format
         payload_data = build_api_payload(
             api_type="cmdb",
+            auto_normalize=False,
             wtp_id=wtp_id,
             index=index,
             uuid=uuid,
@@ -446,15 +484,17 @@ class Wtp(CRUDEndpoint, MetadataMixin):
         if q_scope is not None:
             params["scope"] = q_scope
         
-        return self._client.put(
+        return self._client.put(  # type: ignore[return-value]
             "cmdb", endpoint, data=payload_data, params=params, vdom=vdom        )
 
     # ========================================================================
     # POST Method
     # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # Note: Field-specific parameters intentionally extend the protocol's **kwargs
+    #       to provide autocomplete. Type checkers may report signature mismatch.
     # ========================================================================
     
-    def post(
+    def post(  # type: ignore[override]
         self,
         payload_dict: dict[str, Any] | None = None,
         wtp_id: str | None = None,
@@ -510,7 +550,7 @@ class Wtp(CRUDEndpoint, MetadataMixin):
         vdom: str | bool | None = None,
         error_mode: Literal["raise", "return", "print"] | None = None,
         error_format: Literal["detailed", "simple", "code_only"] | None = None,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ) -> Union[FortiObject, Coroutine[Any, Any, FortiObject]]:
         """
         Create new wireless_controller/wtp object.
 
@@ -547,6 +587,11 @@ class Wtp(CRUDEndpoint, MetadataMixin):
             split_tunneling_acl_path: Split tunneling ACL path is local/tunnel.
             split_tunneling_acl_local_ap_subnet: Enable/disable automatically adding local subnetwork of FortiAP to split-tunneling ACL (default = disable).
             split_tunneling_acl: Split tunneling ACL filter list.
+                Default format: [{'dest-ip': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'id': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'id': 'val1'}, ...]
+                  - List of dicts: [{'dest-ip': 'value'}] (recommended)
             override_lan: Enable to override the WTP profile LAN port setting.
             lan: WTP LAN port mapping.
             override_allowaccess: Enable to override the WTP profile management access configuration.
@@ -595,9 +640,24 @@ class Wtp(CRUDEndpoint, MetadataMixin):
             - put(): Update existing object
             - set(): Intelligent create or update
         """
+        # Apply normalization for table fields (supports flexible input formats)
+        if split_tunneling_acl is not None:
+            split_tunneling_acl = normalize_table_field(
+                split_tunneling_acl,
+                mkey="id",
+                required_fields=['dest-ip'],
+                field_name="split_tunneling_acl",
+                example="[{'dest-ip': 'value'}]",
+            )
+        
+        # Apply normalization for multi-value option fields (space-separated strings)
+        
         # Build payload using helper function
+        # Note: auto_normalize=False because this endpoint has unitary fields
+        # (like 'interface') that would be incorrectly converted to list format
         payload_data = build_api_payload(
             api_type="cmdb",
+            auto_normalize=False,
             wtp_id=wtp_id,
             index=index,
             uuid=uuid,
@@ -669,22 +729,24 @@ class Wtp(CRUDEndpoint, MetadataMixin):
         if q_scope is not None:
             params["scope"] = q_scope
         
-        return self._client.post(
+        return self._client.post(  # type: ignore[return-value]
             "cmdb", endpoint, data=payload_data, params=params, vdom=vdom        )
 
     # ========================================================================
     # DELETE Method
     # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # Note: Identifier parameters intentionally extend the protocol's **kwargs
+    #       to provide autocomplete. Type checkers may report signature mismatch.
     # ========================================================================
     
-    def delete(
+    def delete(  # type: ignore[override]
         self,
         wtp_id: str | None = None,
         q_scope: str | None = None,
         vdom: str | bool | None = None,
         error_mode: Literal["raise", "return", "print"] | None = None,
         error_format: Literal["detailed", "simple", "code_only"] | None = None,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ) -> Union[FortiObject, Coroutine[Any, Any, FortiObject]]:
         """
         Delete wireless_controller/wtp object.
 
@@ -723,7 +785,7 @@ class Wtp(CRUDEndpoint, MetadataMixin):
         if q_scope is not None:
             params["scope"] = q_scope
         
-        return self._client.delete(
+        return self._client.delete(  # type: ignore[return-value]
             "cmdb", endpoint, params=params, vdom=vdom        )
 
     def exists(
@@ -758,34 +820,27 @@ class Wtp(CRUDEndpoint, MetadataMixin):
             - get(): Retrieve full object data
             - set(): Create or update automatically based on existence
         """
-        # Use direct request with silent error handling to avoid logging 404s
-        # This is expected behavior for exists() - 404 just means "doesn't exist"
+        # Use direct GET request to check existence
+        # 404 responses are expected and just mean "doesn't exist"
         endpoint = "/wireless-controller/wtp"
         endpoint = f"{endpoint}/{quote_path_param(wtp_id)}"
         
-        # Make request with silent=True to suppress 404 error logging
-        # (404 is expected when checking existence - it just means "doesn't exist")
-        # Use _wrapped_client to access the underlying HTTPClient directly
-        # (self._client is ResponseProcessingClient, _wrapped_client is HTTPClient)
         try:
-            result = self._client._wrapped_client.get(
-                "cmdb",
-                endpoint,
-                params=None,
-                vdom=vdom,
-                raw_json=True,
-                silent=True,
-            )
+            result = self.get(wtp_id=wtp_id, vdom=vdom)
             
-            if isinstance(result, dict):
-                # Synchronous response - check status
-                return result.get("status") == "success"
-            else:
-                # Asynchronous response
+            # Check if result is a coroutine (async) or direct response (sync)
+            # Note: Type checkers can't narrow Union[T, Coroutine[T]] in conditionals
+            if hasattr(result, '__await__'):
+                # Async response - return coroutine that checks status
                 async def _check() -> bool:
-                    r = await result
-                    return r.get("status") == "success"
+                    r = await result  # type: ignore[misc]
+                    response = r.raw if hasattr(r, 'raw') else r
+                    return is_success(response)
                 return _check()
+            else:
+                # Sync response - check status directly
+                response = result.raw if hasattr(result, 'raw') else result  # type: ignore[union-attr]
+                return is_success(response)
         except Exception:
             # Any error (404, network, etc.) means we can't confirm existence
             return False
@@ -845,7 +900,7 @@ class Wtp(CRUDEndpoint, MetadataMixin):
         error_mode: Literal["raise", "return", "print"] | None = None,
         error_format: Literal["detailed", "simple", "code_only"] | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ) -> Union[FortiObject, Coroutine[Any, Any, FortiObject]]:
         """
         Create or update wireless_controller/wtp object (intelligent operation).
 
@@ -940,9 +995,24 @@ class Wtp(CRUDEndpoint, MetadataMixin):
             - put(): Update existing object
             - exists(): Check existence manually
         """
+        # Apply normalization for table fields (supports flexible input formats)
+        if split_tunneling_acl is not None:
+            split_tunneling_acl = normalize_table_field(
+                split_tunneling_acl,
+                mkey="id",
+                required_fields=['dest-ip'],
+                field_name="split_tunneling_acl",
+                example="[{'dest-ip': 'value'}]",
+            )
+        
+        # Apply normalization for multi-value option fields (space-separated strings)
+        
         # Build payload using helper function
+        # Note: auto_normalize=False because this endpoint has unitary fields
+        # (like 'interface') that would be incorrectly converted to list format
         payload_data = build_api_payload(
             api_type="cmdb",
+            auto_normalize=False,
             wtp_id=wtp_id,
             index=index,
             uuid=uuid,
@@ -1016,7 +1086,7 @@ class Wtp(CRUDEndpoint, MetadataMixin):
         reference_wtp_id: str,
         vdom: str | bool | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ) -> Union[FortiObject, Coroutine[Any, Any, FortiObject]]:
         """
         Move wireless_controller/wtp object to a new position.
         
@@ -1040,17 +1110,18 @@ class Wtp(CRUDEndpoint, MetadataMixin):
             ...     reference_wtp_id=50
             ... )
         """
-        return self._client.request(
-            method="PUT",
-            path=f"/api/v2/cmdb/wireless-controller/wtp",
-            params={
-                "wtp-id": wtp_id,
-                "action": "move",
-                action: reference_wtp_id,
-                "vdom": vdom,
-                **kwargs,
-            },
-        )
+        # Build params for move operation
+        params = {
+            "wtp-id": wtp_id,
+            "action": "move",
+            action: reference_wtp_id,
+            "vdom": vdom,
+            **kwargs,
+        }
+        
+        endpoint = "/wireless-controller/wtp"
+        return self._client.put(  # type: ignore[return-value]
+            "cmdb", endpoint, data={}, params=params, vdom=vdom        )
 
     # ========================================================================
     # Action: Clone
@@ -1062,7 +1133,7 @@ class Wtp(CRUDEndpoint, MetadataMixin):
         new_wtp_id: str,
         vdom: str | bool | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ) -> Union[FortiObject, Coroutine[Any, Any, FortiObject]]:
         """
         Clone wireless_controller/wtp object.
         
@@ -1084,16 +1155,19 @@ class Wtp(CRUDEndpoint, MetadataMixin):
             ...     new_wtp_id=100
             ... )
         """
-        return self._client.request(
-            method="POST",
-            path=f"/api/v2/cmdb/wireless-controller/wtp",
-            params={
-                "wtp-id": wtp_id,
-                "new_wtp-id": new_wtp_id,
-                "action": "clone",
-                "vdom": vdom,
-                **kwargs,
-            },
-        )
+        # Build params for clone operation  
+        params = {
+            "wtp-id": wtp_id,
+            "new_wtp-id": new_wtp_id,
+            "action": "clone",
+            "vdom": vdom,
+            **kwargs,
+        }
+        
+        endpoint = "/wireless-controller/wtp"
+        return self._client.post(  # type: ignore[return-value]
+            "cmdb", endpoint, data={}, params=params, vdom=vdom        )
+
+
 
 

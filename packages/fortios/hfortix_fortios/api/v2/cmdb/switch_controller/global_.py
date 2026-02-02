@@ -39,6 +39,7 @@ from typing import TYPE_CHECKING, Any, Literal, Union
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
+    from hfortix_fortios.models import FortiObject, FortiObjectList
 
 # Import helper functions from central _helpers module
 from hfortix_fortios._helpers import (
@@ -46,6 +47,7 @@ from hfortix_fortios._helpers import (
     build_cmdb_payload,  # Keep for backward compatibility / manual usage
     is_success,
     quote_path_param,  # URL encoding for path parameters
+    normalize_table_field,  # For table field normalization
 )
 # Import metadata mixin for schema introspection
 from hfortix_fortios._helpers.metadata_mixin import MetadataMixin
@@ -58,6 +60,23 @@ class Global(CRUDEndpoint, MetadataMixin):
     
     # Configure metadata mixin to use this endpoint's helper module
     _helper_module_name = "global_"
+    
+    # ========================================================================
+    # Table Fields Metadata (for normalization)
+    # Auto-generated from schema - supports flexible input formats
+    # ========================================================================
+    _TABLE_FIELDS = {
+        "disable_discovery": {
+            "mkey": "name",
+            "required_fields": ['name'],
+            "example": "[{'name': 'value'}]",
+        },
+        "custom_command": {
+            "mkey": "command-entry",
+            "required_fields": ['command-name'],
+            "example": "[{'command-name': 'value'}]",
+        },
+    }
     
     # ========================================================================
     # Capabilities (from schema metadata)
@@ -80,9 +99,11 @@ class Global(CRUDEndpoint, MetadataMixin):
     # ========================================================================
     # GET Method
     # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # Note: Endpoint-specific parameters intentionally extend the protocol's **kwargs
+    #       to provide autocomplete. Type checkers may report signature mismatch.
     # ========================================================================
     
-    def get(
+    def get(  # type: ignore[override]
         self,
         name: str | None = None,
         filter: list[str] | None = None,
@@ -92,7 +113,7 @@ class Global(CRUDEndpoint, MetadataMixin):
         vdom: str | bool | None = None,
         error_mode: Literal["raise", "return", "print"] | None = None,
         error_format: Literal["detailed", "simple", "code_only"] | None = None,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ) -> Union[FortiObject, FortiObjectList, Coroutine[Any, Any, Union[FortiObject, FortiObjectList]]]:
         """
         Retrieve switch_controller/global_ configuration.
 
@@ -175,7 +196,7 @@ class Global(CRUDEndpoint, MetadataMixin):
             endpoint = "/switch-controller/global"
             unwrap_single = False
         
-        return self._client.get(
+        return self._client.get(  # type: ignore[return-value]
             "cmdb", endpoint, params=params, vdom=vdom, unwrap_single=unwrap_single
         )
 
@@ -183,7 +204,7 @@ class Global(CRUDEndpoint, MetadataMixin):
         self,
         vdom: str | None = None,
         format: str = "schema",
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ) -> Union[FortiObject, FortiObjectList, Coroutine[Any, Any, Union[FortiObject, FortiObjectList]]]:
         """
         Get schema/metadata for this endpoint.
         
@@ -214,15 +235,17 @@ class Global(CRUDEndpoint, MetadataMixin):
             Not all endpoints support all schema formats. The "schema" format
             is most widely supported.
         """
-        return self.get(action=format, vdom=vdom)
+        return self.get(payload_dict={"action": format}, vdom=vdom)
 
 
     # ========================================================================
     # PUT Method
     # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # Note: Field-specific parameters intentionally extend the protocol's **kwargs
+    #       to provide autocomplete. Type checkers may report signature mismatch.
     # ========================================================================
     
-    def put(
+    def put(  # type: ignore[override]
         self,
         payload_dict: dict[str, Any] | None = None,
         mac_aging_interval: int | None = None,
@@ -259,7 +282,7 @@ class Global(CRUDEndpoint, MetadataMixin):
         vdom: str | bool | None = None,
         error_mode: Literal["raise", "return", "print"] | None = None,
         error_format: Literal["detailed", "simple", "code_only"] | None = None,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ) -> Union[FortiObject, Coroutine[Any, Any, FortiObject]]:
         """
         Update existing switch_controller/global_ object.
 
@@ -273,6 +296,11 @@ class Global(CRUDEndpoint, MetadataMixin):
             vlan_optimization: FortiLink VLAN optimization.
             vlan_identity: Identity of the VLAN. Commonly used for RADIUS Tunnel-Private-Group-Id.
             disable_discovery: Prevent this FortiSwitch from discovering.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
             mac_retention_period: Time in hours after which an inactive MAC is removed from client DB (0 = aged out based on mac-aging-interval).
             default_virtual_switch_vlan: Default VLAN for ports when added to the virtual-switch.
             dhcp_server_access_list: Enable/disable DHCP snooping server access list.
@@ -290,6 +318,11 @@ class Global(CRUDEndpoint, MetadataMixin):
             quarantine_mode: Quarantine mode.
             update_user_device: Control which sources update the device user list.
             custom_command: List of custom commands to be pushed to all FortiSwitches in the VDOM.
+                Default format: [{'command-name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'command-entry': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'command-entry': 'val1'}, ...]
+                  - List of dicts: [{'command-name': 'value'}] (recommended)
             fips_enforce: Enable/disable enforcement of FIPS on managed FortiSwitch devices.
             firmware_provision_on_authorization: Enable/disable automatic provisioning of latest firmware on authorization.
             switch_on_deauth: No-operation/Factory-reset the managed FortiSwitch on deauthorization.
@@ -322,6 +355,26 @@ class Global(CRUDEndpoint, MetadataMixin):
             - post(): Create new object
             - set(): Intelligent create or update
         """
+        # Apply normalization for table fields (supports flexible input formats)
+        if disable_discovery is not None:
+            disable_discovery = normalize_table_field(
+                disable_discovery,
+                mkey="name",
+                required_fields=['name'],
+                field_name="disable_discovery",
+                example="[{'name': 'value'}]",
+            )
+        if custom_command is not None:
+            custom_command = normalize_table_field(
+                custom_command,
+                mkey="command-entry",
+                required_fields=['command-name'],
+                field_name="custom_command",
+                example="[{'command-name': 'value'}]",
+            )
+        
+        # Apply normalization for multi-value option fields (space-separated strings)
+        
         # Build payload using helper function
         payload_data = build_api_payload(
             api_type="cmdb",
@@ -379,7 +432,7 @@ class Global(CRUDEndpoint, MetadataMixin):
         if q_scope is not None:
             params["scope"] = q_scope
         
-        return self._client.put(
+        return self._client.put(  # type: ignore[return-value]
             "cmdb", endpoint, data=payload_data, params=params, vdom=vdom        )
 
 
@@ -397,7 +450,7 @@ class Global(CRUDEndpoint, MetadataMixin):
         reference_name: str,
         vdom: str | bool | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ) -> Union[FortiObject, Coroutine[Any, Any, FortiObject]]:
         """
         Move switch_controller/global_ object to a new position.
         
@@ -421,17 +474,18 @@ class Global(CRUDEndpoint, MetadataMixin):
             ...     reference_name="object2"
             ... )
         """
-        return self._client.request(
-            method="PUT",
-            path=f"/api/v2/cmdb/switch-controller/global",
-            params={
-                "name": name,
-                "action": "move",
-                action: reference_name,
-                "vdom": vdom,
-                **kwargs,
-            },
-        )
+        # Build params for move operation
+        params = {
+            "name": name,
+            "action": "move",
+            action: reference_name,
+            "vdom": vdom,
+            **kwargs,
+        }
+        
+        endpoint = "/switch-controller/global"
+        return self._client.put(  # type: ignore[return-value]
+            "cmdb", endpoint, data={}, params=params, vdom=vdom        )
 
     # ========================================================================
     # Action: Clone
@@ -443,7 +497,7 @@ class Global(CRUDEndpoint, MetadataMixin):
         new_name: str,
         vdom: str | bool | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ) -> Union[FortiObject, Coroutine[Any, Any, FortiObject]]:
         """
         Clone switch_controller/global_ object.
         
@@ -465,71 +519,19 @@ class Global(CRUDEndpoint, MetadataMixin):
             ...     new_name="new-from-template"
             ... )
         """
-        return self._client.request(
-            method="POST",
-            path=f"/api/v2/cmdb/switch-controller/global",
-            params={
-                "name": name,
-                "new_name": new_name,
-                "action": "clone",
-                "vdom": vdom,
-                **kwargs,
-            },
-        )
-
-    # ========================================================================
-    # Helper: Check Existence
-    # ========================================================================
-    
-    def exists(
-        self,
-        name: str,
-        vdom: str | bool | None = None,
-    ) -> bool:
-        """
-        Check if switch_controller/global_ object exists.
+        # Build params for clone operation  
+        params = {
+            "name": name,
+            "new_name": new_name,
+            "action": "clone",
+            "vdom": vdom,
+            **kwargs,
+        }
         
-        Args:
-            name: Name to check
-            vdom: Virtual domain name
-            
-        Returns:
-            True if object exists, False otherwise
-            
-        Example:
-            >>> # Check before creating
-            >>> if not fgt.api.cmdb.switch_controller_global.exists(name="myobj"):
-            ...     fgt.api.cmdb.switch_controller_global.post(payload_dict=data)
-        """
-        # Use direct request with silent error handling to avoid logging 404s
-        # This is expected behavior for exists() - 404 just means "doesn't exist"
         endpoint = "/switch-controller/global"
-        endpoint = f"{endpoint}/{quote_path_param(name)}"
-        
-        # Make request with silent=True to suppress 404 error logging
-        # (404 is expected when checking existence - it just means "doesn't exist")
-        # Use _wrapped_client to access the underlying HTTPClient directly
-        # (self._client is ResponseProcessingClient, _wrapped_client is HTTPClient)
-        try:
-            result = self._client._wrapped_client.get(
-                "cmdb",
-                endpoint,
-                params=None,
-                vdom=vdom,
-                raw_json=True,
-                silent=True,
-            )
-            
-            if isinstance(result, dict):
-                # Synchronous response - check status
-                return result.get("status") == "success"
-            else:
-                # Asynchronous response
-                async def _check() -> bool:
-                    r = await result
-                    return r.get("status") == "success"
-                return _check()
-        except Exception:
-            # Any error (404, network, etc.) means we can't confirm existence
-            return False
+        return self._client.post(  # type: ignore[return-value]
+            "cmdb", endpoint, data={}, params=params, vdom=vdom        )
+
+
+
 

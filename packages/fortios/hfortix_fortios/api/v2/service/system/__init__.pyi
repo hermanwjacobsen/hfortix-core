@@ -10,12 +10,27 @@ if TYPE_CHECKING:
     from .fabric_time_in_sync import FabricTimeInSync
     from .psirt_vulnerabilities import PsirtVulnerabilities
 
+__all__ = [
+    "FabricAdminLockoutExistsOnFirmwareUpdate",
+    "FabricTimeInSync",
+    "PsirtVulnerabilities",
+    "System",
+]
+
 
 class System:
-    """Type stub for System."""
-
+    """SYSTEM API category.
+    
+    All endpoints return FortiObject instances with:
+    - Attribute access: response.field
+    - Dictionary access: response["field"]
+    - Convert to dict: response.dict or response.json
+    """
+    
     fabric_admin_lockout_exists_on_firmware_update: FabricAdminLockoutExistsOnFirmwareUpdate
     fabric_time_in_sync: FabricTimeInSync
     psirt_vulnerabilities: PsirtVulnerabilities
 
-    def __init__(self, client: IHTTPClient) -> None: ...
+    def __init__(self, client: IHTTPClient, vdom: str | None = None) -> None:
+        """Initialize system category with HTTP client."""
+        ...

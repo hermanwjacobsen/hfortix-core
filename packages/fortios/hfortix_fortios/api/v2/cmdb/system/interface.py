@@ -39,6 +39,7 @@ from typing import TYPE_CHECKING, Any, Literal, Union
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
+    from hfortix_fortios.models import FortiObject, FortiObjectList
 
 # Import helper functions from central _helpers module
 from hfortix_fortios._helpers import (
@@ -46,6 +47,7 @@ from hfortix_fortios._helpers import (
     build_cmdb_payload,  # Keep for backward compatibility / manual usage
     is_success,
     quote_path_param,  # URL encoding for path parameters
+    normalize_table_field,  # For table field normalization
 )
 # Import metadata mixin for schema introspection
 from hfortix_fortios._helpers.metadata_mixin import MetadataMixin
@@ -58,6 +60,53 @@ class Interface(CRUDEndpoint, MetadataMixin):
     
     # Configure metadata mixin to use this endpoint's helper module
     _helper_module_name = "interface"
+    
+    # ========================================================================
+    # Table Fields Metadata (for normalization)
+    # Auto-generated from schema - supports flexible input formats
+    # ========================================================================
+    _TABLE_FIELDS = {
+        "client_options": {
+            "mkey": "id",
+            "required_fields": ['id', 'code'],
+            "example": "[{'id': 1, 'code': 1}]",
+        },
+        "fail_alert_interfaces": {
+            "mkey": "name",
+            "required_fields": ['name'],
+            "example": "[{'name': 'value'}]",
+        },
+        "member": {
+            "mkey": "interface-name",
+            "required_fields": ['interface-name'],
+            "example": "[{'interface-name': 'value'}]",
+        },
+        "security_groups": {
+            "mkey": "name",
+            "required_fields": ['name'],
+            "example": "[{'name': 'value'}]",
+        },
+        "vrrp": {
+            "mkey": "vrid",
+            "required_fields": ['vrid', 'vrip'],
+            "example": "[{'vrid': 1, 'vrip': '192.168.1.10'}]",
+        },
+        "secondaryip": {
+            "mkey": "id",
+            "required_fields": ['id'],
+            "example": "[{'id': 1}]",
+        },
+        "dhcp_snooping_server_list": {
+            "mkey": "name",
+            "required_fields": ['name'],
+            "example": "[{'name': 'value'}]",
+        },
+        "tagging": {
+            "mkey": "name",
+            "required_fields": ['name'],
+            "example": "[{'name': 'value'}]",
+        },
+    }
     
     # ========================================================================
     # Capabilities (from schema metadata)
@@ -80,9 +129,11 @@ class Interface(CRUDEndpoint, MetadataMixin):
     # ========================================================================
     # GET Method
     # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # Note: Endpoint-specific parameters intentionally extend the protocol's **kwargs
+    #       to provide autocomplete. Type checkers may report signature mismatch.
     # ========================================================================
     
-    def get(
+    def get(  # type: ignore[override]
         self,
         name: str | None = None,
         filter: list[str] | None = None,
@@ -92,7 +143,7 @@ class Interface(CRUDEndpoint, MetadataMixin):
         vdom: str | bool | None = None,
         error_mode: Literal["raise", "return", "print"] | None = None,
         error_format: Literal["detailed", "simple", "code_only"] | None = None,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ) -> Union[FortiObject, FortiObjectList, Coroutine[Any, Any, Union[FortiObject, FortiObjectList]]]:
         """
         Retrieve system/interface configuration.
 
@@ -180,7 +231,7 @@ class Interface(CRUDEndpoint, MetadataMixin):
             endpoint = "/system/interface"
             unwrap_single = False
         
-        return self._client.get(
+        return self._client.get(  # type: ignore[return-value]
             "cmdb", endpoint, params=params, vdom=vdom, unwrap_single=unwrap_single
         )
 
@@ -188,7 +239,7 @@ class Interface(CRUDEndpoint, MetadataMixin):
         self,
         vdom: str | None = None,
         format: str = "schema",
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ) -> Union[FortiObject, FortiObjectList, Coroutine[Any, Any, Union[FortiObject, FortiObjectList]]]:
         """
         Get schema/metadata for this endpoint.
         
@@ -219,15 +270,17 @@ class Interface(CRUDEndpoint, MetadataMixin):
             Not all endpoints support all schema formats. The "schema" format
             is most widely supported.
         """
-        return self.get(action=format, vdom=vdom)
+        return self.get(payload_dict={"action": format}, vdom=vdom)
 
 
     # ========================================================================
     # PUT Method
     # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # Note: Field-specific parameters intentionally extend the protocol's **kwargs
+    #       to provide autocomplete. Type checkers may report signature mismatch.
     # ========================================================================
     
-    def put(
+    def put(  # type: ignore[override]
         self,
         payload_dict: dict[str, Any] | None = None,
         name: str | None = None,
@@ -458,7 +511,7 @@ class Interface(CRUDEndpoint, MetadataMixin):
         vdom: str | bool | None = None,
         error_mode: Literal["raise", "return", "print"] | None = None,
         error_format: Literal["detailed", "simple", "code_only"] | None = None,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ) -> Union[FortiObject, Coroutine[Any, Any, FortiObject]]:
         """
         Update existing system/interface object.
 
@@ -474,6 +527,9 @@ class Interface(CRUDEndpoint, MetadataMixin):
             switch_controller_source_ip: Source IP address used in FortiLink over L3 connections.
             mode: Addressing mode (static, DHCP, PPPoE).
             client_options: DHCP client options.
+                Default format: [{'id': 1, 'code': 1}]
+                Required format: List of dicts with keys: id, code
+                  (String format not allowed due to multiple required fields)
             distance: Distance for routes learned through PPPoE or DHCP, lower distance indicates preferred route.
             priority: Priority of learned routes.
             dhcp_relay_interface_select_method: Specify how to select outgoing interface to reach server.
@@ -504,6 +560,11 @@ class Interface(CRUDEndpoint, MetadataMixin):
             fail_alert_method: Select link-failed-signal or link-down method to alert about a failed link.
             fail_action_on_extender: Action on FortiExtender when interface fail.
             fail_alert_interfaces: Names of the FortiGate interfaces to which the link failure alert is sent.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
             dhcp_client_identifier: DHCP client identifier.
             dhcp_renew_time: DHCP renew time in seconds (300-604800), 0 means use the renew time provided by the server.
             ipunnumbered: Unnumbered IP used for PPPoE interfaces for which no unique local address is provided.
@@ -597,6 +658,11 @@ class Interface(CRUDEndpoint, MetadataMixin):
             forward_domain: Transparent mode forward domain.
             remote_ip: Remote IP address of tunnel.
             member: Physical interfaces that belong to the aggregate or redundant interface.
+                Default format: [{'interface-name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'interface-name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'interface-name': 'val1'}, ...]
+                  - List of dicts: [{'interface-name': 'value'}] (recommended)
             lacp_mode: LACP mode.
             lacp_ha_secondary: LACP HA secondary member.
             system_id_type: Method in which system ID is generated.
@@ -626,6 +692,11 @@ class Interface(CRUDEndpoint, MetadataMixin):
             auth_portal_addr: Address of captive portal.
             security_exempt_list: Name of security-exempt-list.
             security_groups: User groups that can authenticate with the captive portal.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
             ike_saml_server: Configure IKE authentication SAML server.
             device_identification: Enable/disable passively gathering of device identity information about the devices on the network connected to this interface.
             exclude_signatures: Exclude IOT or OT application signatures.
@@ -641,11 +712,19 @@ class Interface(CRUDEndpoint, MetadataMixin):
             monitor_bandwidth: Enable monitoring bandwidth on this interface.
             vrrp_virtual_mac: Enable/disable use of virtual MAC for VRRP.
             vrrp: VRRP configuration.
+                Default format: [{'vrid': 1, 'vrip': '192.168.1.10'}]
+                Required format: List of dicts with keys: vrid, vrip
+                  (String format not allowed due to multiple required fields)
             phy_setting: PHY settings
             role: Interface role.
             snmp_index: Permanent SNMP Index of the interface.
             secondary_IP: Enable/disable adding a secondary IP to this interface.
             secondaryip: Second IP address of interface.
+                Default format: [{'id': 1}]
+                Supported formats:
+                  - Single string: "value" → [{'id': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'id': 'val1'}, ...]
+                  - List of dicts: [{'id': 1}] (recommended)
             preserve_session_route: Enable/disable preservation of session route when dirty.
             auto_auth_extension_device: Enable/disable automatic authorization of dedicated Fortinet extension device on this interface.
             ap_discover: Enable/disable automatic registration of unknown FortiAP devices.
@@ -667,6 +746,11 @@ class Interface(CRUDEndpoint, MetadataMixin):
             switch_controller_dhcp_snooping_verify_mac: Switch controller DHCP snooping verify MAC.
             switch_controller_dhcp_snooping_option82: Switch controller DHCP snooping option82.
             dhcp_snooping_server_list: Configure DHCP server access list.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
             switch_controller_arp_inspection: Enable/disable/Monitor FortiSwitch ARP inspection.
             switch_controller_learning_limit: Limit the number of dynamic MAC addresses on this VLAN (1 - 128, 0 = no limit, default).
             switch_controller_nac: Integrated FortiLink settings for managed FortiSwitch.
@@ -680,6 +764,11 @@ class Interface(CRUDEndpoint, MetadataMixin):
             swc_first_create: Initial create for switch-controller VLANs.
             color: Color of icon on the GUI.
             tagging: Config object tagging.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
             eap_supplicant: Enable/disable EAP-Supplicant.
             eap_method: EAP method.
             eap_identity: EAP identity.
@@ -717,9 +806,80 @@ class Interface(CRUDEndpoint, MetadataMixin):
             - post(): Create new object
             - set(): Intelligent create or update
         """
+        # Apply normalization for table fields (supports flexible input formats)
+        if client_options is not None:
+            client_options = normalize_table_field(
+                client_options,
+                mkey="id",
+                required_fields=['id', 'code'],
+                field_name="client_options",
+                example="[{'id': 1, 'code': 1}]",
+            )
+        if fail_alert_interfaces is not None:
+            fail_alert_interfaces = normalize_table_field(
+                fail_alert_interfaces,
+                mkey="name",
+                required_fields=['name'],
+                field_name="fail_alert_interfaces",
+                example="[{'name': 'value'}]",
+            )
+        if member is not None:
+            member = normalize_table_field(
+                member,
+                mkey="interface-name",
+                required_fields=['interface-name'],
+                field_name="member",
+                example="[{'interface-name': 'value'}]",
+            )
+        if security_groups is not None:
+            security_groups = normalize_table_field(
+                security_groups,
+                mkey="name",
+                required_fields=['name'],
+                field_name="security_groups",
+                example="[{'name': 'value'}]",
+            )
+        if vrrp is not None:
+            vrrp = normalize_table_field(
+                vrrp,
+                mkey="vrid",
+                required_fields=['vrid', 'vrip'],
+                field_name="vrrp",
+                example="[{'vrid': 1, 'vrip': '192.168.1.10'}]",
+            )
+        if secondaryip is not None:
+            secondaryip = normalize_table_field(
+                secondaryip,
+                mkey="id",
+                required_fields=['id'],
+                field_name="secondaryip",
+                example="[{'id': 1}]",
+            )
+        if dhcp_snooping_server_list is not None:
+            dhcp_snooping_server_list = normalize_table_field(
+                dhcp_snooping_server_list,
+                mkey="name",
+                required_fields=['name'],
+                field_name="dhcp_snooping_server_list",
+                example="[{'name': 'value'}]",
+            )
+        if tagging is not None:
+            tagging = normalize_table_field(
+                tagging,
+                mkey="name",
+                required_fields=['name'],
+                field_name="tagging",
+                example="[{'name': 'value'}]",
+            )
+        
+        # Apply normalization for multi-value option fields (space-separated strings)
+        
         # Build payload using helper function
+        # Note: auto_normalize=False because this endpoint has unitary fields
+        # (like 'interface') that would be incorrectly converted to list format
         payload_data = build_api_payload(
             api_type="cmdb",
+            auto_normalize=False,
             name=name,
             vrf=vrf,
             cli_conn_status=cli_conn_status,
@@ -970,15 +1130,17 @@ class Interface(CRUDEndpoint, MetadataMixin):
         if q_scope is not None:
             params["scope"] = q_scope
         
-        return self._client.put(
+        return self._client.put(  # type: ignore[return-value]
             "cmdb", endpoint, data=payload_data, params=params, vdom=vdom        )
 
     # ========================================================================
     # POST Method
     # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # Note: Field-specific parameters intentionally extend the protocol's **kwargs
+    #       to provide autocomplete. Type checkers may report signature mismatch.
     # ========================================================================
     
-    def post(
+    def post(  # type: ignore[override]
         self,
         payload_dict: dict[str, Any] | None = None,
         name: str | None = None,
@@ -1208,7 +1370,7 @@ class Interface(CRUDEndpoint, MetadataMixin):
         vdom: str | bool | None = None,
         error_mode: Literal["raise", "return", "print"] | None = None,
         error_format: Literal["detailed", "simple", "code_only"] | None = None,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ) -> Union[FortiObject, Coroutine[Any, Any, FortiObject]]:
         """
         Create new system/interface object.
 
@@ -1224,6 +1386,9 @@ class Interface(CRUDEndpoint, MetadataMixin):
             switch_controller_source_ip: Source IP address used in FortiLink over L3 connections.
             mode: Addressing mode (static, DHCP, PPPoE).
             client_options: DHCP client options.
+                Default format: [{'id': 1, 'code': 1}]
+                Required format: List of dicts with keys: id, code
+                  (String format not allowed due to multiple required fields)
             distance: Distance for routes learned through PPPoE or DHCP, lower distance indicates preferred route.
             priority: Priority of learned routes.
             dhcp_relay_interface_select_method: Specify how to select outgoing interface to reach server.
@@ -1254,6 +1419,11 @@ class Interface(CRUDEndpoint, MetadataMixin):
             fail_alert_method: Select link-failed-signal or link-down method to alert about a failed link.
             fail_action_on_extender: Action on FortiExtender when interface fail.
             fail_alert_interfaces: Names of the FortiGate interfaces to which the link failure alert is sent.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
             dhcp_client_identifier: DHCP client identifier.
             dhcp_renew_time: DHCP renew time in seconds (300-604800), 0 means use the renew time provided by the server.
             ipunnumbered: Unnumbered IP used for PPPoE interfaces for which no unique local address is provided.
@@ -1347,6 +1517,11 @@ class Interface(CRUDEndpoint, MetadataMixin):
             forward_domain: Transparent mode forward domain.
             remote_ip: Remote IP address of tunnel.
             member: Physical interfaces that belong to the aggregate or redundant interface.
+                Default format: [{'interface-name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'interface-name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'interface-name': 'val1'}, ...]
+                  - List of dicts: [{'interface-name': 'value'}] (recommended)
             lacp_mode: LACP mode.
             lacp_ha_secondary: LACP HA secondary member.
             system_id_type: Method in which system ID is generated.
@@ -1376,6 +1551,11 @@ class Interface(CRUDEndpoint, MetadataMixin):
             auth_portal_addr: Address of captive portal.
             security_exempt_list: Name of security-exempt-list.
             security_groups: User groups that can authenticate with the captive portal.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
             ike_saml_server: Configure IKE authentication SAML server.
             device_identification: Enable/disable passively gathering of device identity information about the devices on the network connected to this interface.
             exclude_signatures: Exclude IOT or OT application signatures.
@@ -1391,11 +1571,19 @@ class Interface(CRUDEndpoint, MetadataMixin):
             monitor_bandwidth: Enable monitoring bandwidth on this interface.
             vrrp_virtual_mac: Enable/disable use of virtual MAC for VRRP.
             vrrp: VRRP configuration.
+                Default format: [{'vrid': 1, 'vrip': '192.168.1.10'}]
+                Required format: List of dicts with keys: vrid, vrip
+                  (String format not allowed due to multiple required fields)
             phy_setting: PHY settings
             role: Interface role.
             snmp_index: Permanent SNMP Index of the interface.
             secondary_IP: Enable/disable adding a secondary IP to this interface.
             secondaryip: Second IP address of interface.
+                Default format: [{'id': 1}]
+                Supported formats:
+                  - Single string: "value" → [{'id': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'id': 'val1'}, ...]
+                  - List of dicts: [{'id': 1}] (recommended)
             preserve_session_route: Enable/disable preservation of session route when dirty.
             auto_auth_extension_device: Enable/disable automatic authorization of dedicated Fortinet extension device on this interface.
             ap_discover: Enable/disable automatic registration of unknown FortiAP devices.
@@ -1417,6 +1605,11 @@ class Interface(CRUDEndpoint, MetadataMixin):
             switch_controller_dhcp_snooping_verify_mac: Switch controller DHCP snooping verify MAC.
             switch_controller_dhcp_snooping_option82: Switch controller DHCP snooping option82.
             dhcp_snooping_server_list: Configure DHCP server access list.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
             switch_controller_arp_inspection: Enable/disable/Monitor FortiSwitch ARP inspection.
             switch_controller_learning_limit: Limit the number of dynamic MAC addresses on this VLAN (1 - 128, 0 = no limit, default).
             switch_controller_nac: Integrated FortiLink settings for managed FortiSwitch.
@@ -1430,6 +1623,11 @@ class Interface(CRUDEndpoint, MetadataMixin):
             swc_first_create: Initial create for switch-controller VLANs.
             color: Color of icon on the GUI.
             tagging: Config object tagging.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
             eap_supplicant: Enable/disable EAP-Supplicant.
             eap_method: EAP method.
             eap_identity: EAP identity.
@@ -1469,9 +1667,80 @@ class Interface(CRUDEndpoint, MetadataMixin):
             - put(): Update existing object
             - set(): Intelligent create or update
         """
+        # Apply normalization for table fields (supports flexible input formats)
+        if client_options is not None:
+            client_options = normalize_table_field(
+                client_options,
+                mkey="id",
+                required_fields=['id', 'code'],
+                field_name="client_options",
+                example="[{'id': 1, 'code': 1}]",
+            )
+        if fail_alert_interfaces is not None:
+            fail_alert_interfaces = normalize_table_field(
+                fail_alert_interfaces,
+                mkey="name",
+                required_fields=['name'],
+                field_name="fail_alert_interfaces",
+                example="[{'name': 'value'}]",
+            )
+        if member is not None:
+            member = normalize_table_field(
+                member,
+                mkey="interface-name",
+                required_fields=['interface-name'],
+                field_name="member",
+                example="[{'interface-name': 'value'}]",
+            )
+        if security_groups is not None:
+            security_groups = normalize_table_field(
+                security_groups,
+                mkey="name",
+                required_fields=['name'],
+                field_name="security_groups",
+                example="[{'name': 'value'}]",
+            )
+        if vrrp is not None:
+            vrrp = normalize_table_field(
+                vrrp,
+                mkey="vrid",
+                required_fields=['vrid', 'vrip'],
+                field_name="vrrp",
+                example="[{'vrid': 1, 'vrip': '192.168.1.10'}]",
+            )
+        if secondaryip is not None:
+            secondaryip = normalize_table_field(
+                secondaryip,
+                mkey="id",
+                required_fields=['id'],
+                field_name="secondaryip",
+                example="[{'id': 1}]",
+            )
+        if dhcp_snooping_server_list is not None:
+            dhcp_snooping_server_list = normalize_table_field(
+                dhcp_snooping_server_list,
+                mkey="name",
+                required_fields=['name'],
+                field_name="dhcp_snooping_server_list",
+                example="[{'name': 'value'}]",
+            )
+        if tagging is not None:
+            tagging = normalize_table_field(
+                tagging,
+                mkey="name",
+                required_fields=['name'],
+                field_name="tagging",
+                example="[{'name': 'value'}]",
+            )
+        
+        # Apply normalization for multi-value option fields (space-separated strings)
+        
         # Build payload using helper function
+        # Note: auto_normalize=False because this endpoint has unitary fields
+        # (like 'interface') that would be incorrectly converted to list format
         payload_data = build_api_payload(
             api_type="cmdb",
+            auto_normalize=False,
             name=name,
             vrf=vrf,
             cli_conn_status=cli_conn_status,
@@ -1717,22 +1986,24 @@ class Interface(CRUDEndpoint, MetadataMixin):
         if q_scope is not None:
             params["scope"] = q_scope
         
-        return self._client.post(
+        return self._client.post(  # type: ignore[return-value]
             "cmdb", endpoint, data=payload_data, params=params, vdom=vdom        )
 
     # ========================================================================
     # DELETE Method
     # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # Note: Identifier parameters intentionally extend the protocol's **kwargs
+    #       to provide autocomplete. Type checkers may report signature mismatch.
     # ========================================================================
     
-    def delete(
+    def delete(  # type: ignore[override]
         self,
         name: str | None = None,
         q_scope: str | None = None,
         vdom: str | bool | None = None,
         error_mode: Literal["raise", "return", "print"] | None = None,
         error_format: Literal["detailed", "simple", "code_only"] | None = None,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ) -> Union[FortiObject, Coroutine[Any, Any, FortiObject]]:
         """
         Delete system/interface object.
 
@@ -1771,7 +2042,7 @@ class Interface(CRUDEndpoint, MetadataMixin):
         if q_scope is not None:
             params["scope"] = q_scope
         
-        return self._client.delete(
+        return self._client.delete(  # type: ignore[return-value]
             "cmdb", endpoint, params=params, vdom=vdom        )
 
     def exists(
@@ -1806,34 +2077,27 @@ class Interface(CRUDEndpoint, MetadataMixin):
             - get(): Retrieve full object data
             - set(): Create or update automatically based on existence
         """
-        # Use direct request with silent error handling to avoid logging 404s
-        # This is expected behavior for exists() - 404 just means "doesn't exist"
+        # Use direct GET request to check existence
+        # 404 responses are expected and just mean "doesn't exist"
         endpoint = "/system/interface"
         endpoint = f"{endpoint}/{quote_path_param(name)}"
         
-        # Make request with silent=True to suppress 404 error logging
-        # (404 is expected when checking existence - it just means "doesn't exist")
-        # Use _wrapped_client to access the underlying HTTPClient directly
-        # (self._client is ResponseProcessingClient, _wrapped_client is HTTPClient)
         try:
-            result = self._client._wrapped_client.get(
-                "cmdb",
-                endpoint,
-                params=None,
-                vdom=vdom,
-                raw_json=True,
-                silent=True,
-            )
+            result = self.get(name=name, vdom=vdom)
             
-            if isinstance(result, dict):
-                # Synchronous response - check status
-                return result.get("status") == "success"
-            else:
-                # Asynchronous response
+            # Check if result is a coroutine (async) or direct response (sync)
+            # Note: Type checkers can't narrow Union[T, Coroutine[T]] in conditionals
+            if hasattr(result, '__await__'):
+                # Async response - return coroutine that checks status
                 async def _check() -> bool:
-                    r = await result
-                    return r.get("status") == "success"
+                    r = await result  # type: ignore[misc]
+                    response = r.raw if hasattr(r, 'raw') else r
+                    return is_success(response)
                 return _check()
+            else:
+                # Sync response - check status directly
+                response = result.raw if hasattr(result, 'raw') else result  # type: ignore[union-attr]
+                return is_success(response)
         except Exception:
             # Any error (404, network, etc.) means we can't confirm existence
             return False
@@ -2067,7 +2331,7 @@ class Interface(CRUDEndpoint, MetadataMixin):
         error_mode: Literal["raise", "return", "print"] | None = None,
         error_format: Literal["detailed", "simple", "code_only"] | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ) -> Union[FortiObject, Coroutine[Any, Any, FortiObject]]:
         """
         Create or update system/interface object (intelligent operation).
 
@@ -2336,9 +2600,80 @@ class Interface(CRUDEndpoint, MetadataMixin):
             - put(): Update existing object
             - exists(): Check existence manually
         """
+        # Apply normalization for table fields (supports flexible input formats)
+        if client_options is not None:
+            client_options = normalize_table_field(
+                client_options,
+                mkey="id",
+                required_fields=['id', 'code'],
+                field_name="client_options",
+                example="[{'id': 1, 'code': 1}]",
+            )
+        if fail_alert_interfaces is not None:
+            fail_alert_interfaces = normalize_table_field(
+                fail_alert_interfaces,
+                mkey="name",
+                required_fields=['name'],
+                field_name="fail_alert_interfaces",
+                example="[{'name': 'value'}]",
+            )
+        if member is not None:
+            member = normalize_table_field(
+                member,
+                mkey="interface-name",
+                required_fields=['interface-name'],
+                field_name="member",
+                example="[{'interface-name': 'value'}]",
+            )
+        if security_groups is not None:
+            security_groups = normalize_table_field(
+                security_groups,
+                mkey="name",
+                required_fields=['name'],
+                field_name="security_groups",
+                example="[{'name': 'value'}]",
+            )
+        if vrrp is not None:
+            vrrp = normalize_table_field(
+                vrrp,
+                mkey="vrid",
+                required_fields=['vrid', 'vrip'],
+                field_name="vrrp",
+                example="[{'vrid': 1, 'vrip': '192.168.1.10'}]",
+            )
+        if secondaryip is not None:
+            secondaryip = normalize_table_field(
+                secondaryip,
+                mkey="id",
+                required_fields=['id'],
+                field_name="secondaryip",
+                example="[{'id': 1}]",
+            )
+        if dhcp_snooping_server_list is not None:
+            dhcp_snooping_server_list = normalize_table_field(
+                dhcp_snooping_server_list,
+                mkey="name",
+                required_fields=['name'],
+                field_name="dhcp_snooping_server_list",
+                example="[{'name': 'value'}]",
+            )
+        if tagging is not None:
+            tagging = normalize_table_field(
+                tagging,
+                mkey="name",
+                required_fields=['name'],
+                field_name="tagging",
+                example="[{'name': 'value'}]",
+            )
+        
+        # Apply normalization for multi-value option fields (space-separated strings)
+        
         # Build payload using helper function
+        # Note: auto_normalize=False because this endpoint has unitary fields
+        # (like 'interface') that would be incorrectly converted to list format
         payload_data = build_api_payload(
             api_type="cmdb",
+            auto_normalize=False,
             name=name,
             vrf=vrf,
             cli_conn_status=cli_conn_status,
@@ -2586,7 +2921,7 @@ class Interface(CRUDEndpoint, MetadataMixin):
         reference_name: str,
         vdom: str | bool | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ) -> Union[FortiObject, Coroutine[Any, Any, FortiObject]]:
         """
         Move system/interface object to a new position.
         
@@ -2610,17 +2945,18 @@ class Interface(CRUDEndpoint, MetadataMixin):
             ...     reference_name=50
             ... )
         """
-        return self._client.request(
-            method="PUT",
-            path=f"/api/v2/cmdb/system/interface",
-            params={
-                "name": name,
-                "action": "move",
-                action: reference_name,
-                "vdom": vdom,
-                **kwargs,
-            },
-        )
+        # Build params for move operation
+        params = {
+            "name": name,
+            "action": "move",
+            action: reference_name,
+            "vdom": vdom,
+            **kwargs,
+        }
+        
+        endpoint = "/system/interface"
+        return self._client.put(  # type: ignore[return-value]
+            "cmdb", endpoint, data={}, params=params, vdom=vdom        )
 
     # ========================================================================
     # Action: Clone
@@ -2632,7 +2968,7 @@ class Interface(CRUDEndpoint, MetadataMixin):
         new_name: str,
         vdom: str | bool | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ) -> Union[FortiObject, Coroutine[Any, Any, FortiObject]]:
         """
         Clone system/interface object.
         
@@ -2654,16 +2990,19 @@ class Interface(CRUDEndpoint, MetadataMixin):
             ...     new_name=100
             ... )
         """
-        return self._client.request(
-            method="POST",
-            path=f"/api/v2/cmdb/system/interface",
-            params={
-                "name": name,
-                "new_name": new_name,
-                "action": "clone",
-                "vdom": vdom,
-                **kwargs,
-            },
-        )
+        # Build params for clone operation  
+        params = {
+            "name": name,
+            "new_name": new_name,
+            "action": "clone",
+            "vdom": vdom,
+            **kwargs,
+        }
+        
+        endpoint = "/system/interface"
+        return self._client.post(  # type: ignore[return-value]
+            "cmdb", endpoint, data={}, params=params, vdom=vdom        )
+
+
 
 

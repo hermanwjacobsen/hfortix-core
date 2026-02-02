@@ -39,6 +39,7 @@ from typing import TYPE_CHECKING, Any, Literal, Union
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
+    from hfortix_fortios.models import FortiObject, FortiObjectList
 
 # Import helper functions from central _helpers module
 from hfortix_fortios._helpers import (
@@ -46,6 +47,7 @@ from hfortix_fortios._helpers import (
     build_cmdb_payload,  # Keep for backward compatibility / manual usage
     is_success,
     quote_path_param,  # URL encoding for path parameters
+    normalize_table_field,  # For table field normalization
 )
 # Import metadata mixin for schema introspection
 from hfortix_fortios._helpers.metadata_mixin import MetadataMixin
@@ -58,6 +60,68 @@ class Vip(CRUDEndpoint, MetadataMixin):
     
     # Configure metadata mixin to use this endpoint's helper module
     _helper_module_name = "vip"
+    
+    # ========================================================================
+    # Table Fields Metadata (for normalization)
+    # Auto-generated from schema - supports flexible input formats
+    # ========================================================================
+    _TABLE_FIELDS = {
+        "src_filter": {
+            "mkey": "range",
+            "required_fields": ['range'],
+            "example": "[{'range': 'value'}]",
+        },
+        "service": {
+            "mkey": "name",
+            "required_fields": ['name'],
+            "example": "[{'name': 'value'}]",
+        },
+        "extaddr": {
+            "mkey": "name",
+            "required_fields": ['name'],
+            "example": "[{'name': 'value'}]",
+        },
+        "mappedip": {
+            "mkey": "range",
+            "required_fields": ['range'],
+            "example": "[{'range': 'value'}]",
+        },
+        "srcintf_filter": {
+            "mkey": "interface-name",
+            "required_fields": ['interface-name'],
+            "example": "[{'interface-name': 'value'}]",
+        },
+        "realservers": {
+            "mkey": "id",
+            "required_fields": ['type', 'address', 'ip'],
+            "example": "[{'type': 'ip', 'address': 'value', 'ip': '192.168.1.10'}]",
+        },
+        "ssl_certificate": {
+            "mkey": "name",
+            "required_fields": ['name'],
+            "example": "[{'name': 'value'}]",
+        },
+        "ssl_cipher_suites": {
+            "mkey": "priority",
+            "required_fields": ['cipher'],
+            "example": "[{'cipher': 'TLS-AES-128-GCM-SHA256'}]",
+        },
+        "ssl_server_cipher_suites": {
+            "mkey": "priority",
+            "required_fields": ['cipher'],
+            "example": "[{'cipher': 'TLS-AES-128-GCM-SHA256'}]",
+        },
+        "monitor": {
+            "mkey": "name",
+            "required_fields": ['name'],
+            "example": "[{'name': 'value'}]",
+        },
+        "gslb_public_ips": {
+            "mkey": "index",
+            "required_fields": ['index'],
+            "example": "[{'index': 1}]",
+        },
+    }
     
     # ========================================================================
     # Capabilities (from schema metadata)
@@ -80,9 +144,11 @@ class Vip(CRUDEndpoint, MetadataMixin):
     # ========================================================================
     # GET Method
     # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # Note: Endpoint-specific parameters intentionally extend the protocol's **kwargs
+    #       to provide autocomplete. Type checkers may report signature mismatch.
     # ========================================================================
     
-    def get(
+    def get(  # type: ignore[override]
         self,
         name: str | None = None,
         filter: list[str] | None = None,
@@ -92,7 +158,7 @@ class Vip(CRUDEndpoint, MetadataMixin):
         vdom: str | bool | None = None,
         error_mode: Literal["raise", "return", "print"] | None = None,
         error_format: Literal["detailed", "simple", "code_only"] | None = None,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ) -> Union[FortiObject, FortiObjectList, Coroutine[Any, Any, Union[FortiObject, FortiObjectList]]]:
         """
         Retrieve firewall/vip configuration.
 
@@ -180,7 +246,7 @@ class Vip(CRUDEndpoint, MetadataMixin):
             endpoint = "/firewall/vip"
             unwrap_single = False
         
-        return self._client.get(
+        return self._client.get(  # type: ignore[return-value]
             "cmdb", endpoint, params=params, vdom=vdom, unwrap_single=unwrap_single
         )
 
@@ -188,7 +254,7 @@ class Vip(CRUDEndpoint, MetadataMixin):
         self,
         vdom: str | None = None,
         format: str = "schema",
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ) -> Union[FortiObject, FortiObjectList, Coroutine[Any, Any, Union[FortiObject, FortiObjectList]]]:
         """
         Get schema/metadata for this endpoint.
         
@@ -219,15 +285,17 @@ class Vip(CRUDEndpoint, MetadataMixin):
             Not all endpoints support all schema formats. The "schema" format
             is most widely supported.
         """
-        return self.get(action=format, vdom=vdom)
+        return self.get(payload_dict={"action": format}, vdom=vdom)
 
 
     # ========================================================================
     # PUT Method
     # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # Note: Field-specific parameters intentionally extend the protocol's **kwargs
+    #       to provide autocomplete. Type checkers may report signature mismatch.
     # ========================================================================
     
-    def put(
+    def put(  # type: ignore[override]
         self,
         payload_dict: dict[str, Any] | None = None,
         name: str | None = None,
@@ -335,7 +403,7 @@ class Vip(CRUDEndpoint, MetadataMixin):
         vdom: str | bool | None = None,
         error_mode: Literal["raise", "return", "print"] | None = None,
         error_format: Literal["detailed", "simple", "code_only"] | None = None,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ) -> Union[FortiObject, Coroutine[Any, Any, FortiObject]]:
         """
         Update existing firewall/vip object.
 
@@ -352,10 +420,25 @@ class Vip(CRUDEndpoint, MetadataMixin):
             dns_mapping_ttl: DNS mapping TTL (Set to zero to use TTL in DNS response, default = 0).
             ldb_method: Method used to distribute sessions to real servers.
             src_filter: Source address filter. Each address must be either an IP/subnet (x.x.x.x/n) or a range (x.x.x.x-y.y.y.y). Separate addresses with spaces.
+                Default format: [{'range': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'range': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'range': 'val1'}, ...]
+                  - List of dicts: [{'range': 'value'}] (recommended)
             src_vip_filter: Enable/disable use of 'src-filter' to match destinations for the reverse SNAT rule.
             service: Service name.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
             extip: IP address or address range on the external interface that you want to map to an address or address range on the destination network.
             extaddr: External FQDN address name.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
             h2_support: Enable/disable HTTP2 support (default = enable).
             h3_support: Enable/disable HTTP3/QUIC support (default = disable).
             quic: QUIC setting.
@@ -363,6 +446,11 @@ class Vip(CRUDEndpoint, MetadataMixin):
             nat46: Enable/disable NAT46.
             add_nat46_route: Enable/disable adding NAT46 route.
             mappedip: IP address or address range on the destination network to which the external IP address is mapped.
+                Default format: [{'range': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'range': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'range': 'val1'}, ...]
+                  - List of dicts: [{'range': 'value'}] (recommended)
             mapped_addr: Mapped FQDN address name.
             extintf: Interface connected to the source network that receives the packets that will be forwarded to the destination network.
             arp_reply: Enable to respond to ARP requests for this virtual IP address. Enabled by default.
@@ -376,11 +464,19 @@ class Vip(CRUDEndpoint, MetadataMixin):
             mappedport: Port number range on the destination network to which the external port number range is mapped.
             gratuitous_arp_interval: Enable to have the VIP send gratuitous ARPs. 0=disabled. Set from 5 up to 8640000 seconds to enable.
             srcintf_filter: Interfaces to which the VIP applies. Separate the names with spaces.
+                Default format: [{'interface-name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'interface-name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'interface-name': 'val1'}, ...]
+                  - List of dicts: [{'interface-name': 'value'}] (recommended)
             portmapping_type: Port mapping type.
             empty_cert_action: Action for an empty client certificate.
             user_agent_detect: Enable/disable detecting device type by HTTP user-agent if no client certificate is provided.
             client_cert: Enable/disable requesting client certificate.
             realservers: Select the real servers that this server load balancing VIP will distribute traffic to.
+                Default format: [{'type': 'ip', 'address': 'value', 'ip': '192.168.1.10'}]
+                Required format: List of dicts with keys: type, address, ip
+                  (String format not allowed due to multiple required fields)
             http_cookie_domain_from_host: Enable/disable use of HTTP cookie domain from host field in HTTP.
             http_cookie_domain: Domain that HTTP cookie persistence should apply to.
             http_cookie_path: Limit HTTP cookie persistence to the specified path.
@@ -399,11 +495,26 @@ class Vip(CRUDEndpoint, MetadataMixin):
             websphere_server: Enable to add an HTTP header to indicate SSL offloading for a WebSphere server.
             ssl_mode: Apply SSL offloading between the client and the FortiGate (half) or from the client to the FortiGate and from the FortiGate to the server (full).
             ssl_certificate: Name of the certificate to use for SSL handshake.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
             ssl_dh_bits: Number of bits to use in the Diffie-Hellman exchange for RSA encryption of SSL sessions.
             ssl_algorithm: Permitted encryption algorithms for SSL sessions according to encryption strength.
             ssl_cipher_suites: SSL/TLS cipher suites acceptable from a client, ordered by priority.
+                Default format: [{'cipher': 'TLS-AES-128-GCM-SHA256'}]
+                Supported formats:
+                  - Single string: "value" → [{'priority': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'priority': 'val1'}, ...]
+                  - List of dicts: [{'cipher': 'TLS-AES-128-GCM-SHA256'}] (recommended)
             ssl_server_algorithm: Permitted encryption algorithms for the server side of SSL full mode sessions according to encryption strength.
             ssl_server_cipher_suites: SSL/TLS cipher suites to offer to a server, ordered by priority.
+                Default format: [{'cipher': 'TLS-AES-128-GCM-SHA256'}]
+                Supported formats:
+                  - Single string: "value" → [{'priority': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'priority': 'val1'}, ...]
+                  - List of dicts: [{'cipher': 'TLS-AES-128-GCM-SHA256'}] (recommended)
             ssl_pfs: Select the cipher suites that can be used for SSL perfect forward secrecy (PFS). Applies to both client and server sessions.
             ssl_min_version: Lowest SSL/TLS version acceptable from a client.
             ssl_max_version: Highest SSL/TLS version acceptable from a client.
@@ -433,6 +544,11 @@ class Vip(CRUDEndpoint, MetadataMixin):
             ssl_hsts_age: Number of seconds the client should honor the HSTS setting.
             ssl_hsts_include_subdomains: Indicate that HSTS header applies to all subdomains.
             monitor: Name of the health check monitor to use when polling to determine a virtual server's connectivity status.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
             max_embryonic_connections: Maximum number of incomplete connections.
             color: Color of icon on the GUI.
             ipv6_mappedip: Range of mapped IPv6 addresses. Specify the start IPv6 address followed by a space and the end IPv6 address.
@@ -441,6 +557,11 @@ class Vip(CRUDEndpoint, MetadataMixin):
             gslb_hostname: Hostname to use within the configured FortiGSLB domain.
             gslb_domain_name: Domain to use when integrating with FortiGSLB.
             gslb_public_ips: Publicly accessible IP addresses for the FortiGSLB service.
+                Default format: [{'index': 1}]
+                Supported formats:
+                  - Single string: "value" → [{'index': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'index': 'val1'}, ...]
+                  - List of dicts: [{'index': 1}] (recommended)
             vdom: Virtual domain name.
             error_mode: Override client-level error_mode. "raise" raises exceptions, "return" returns error dict, "print" prints errors.
             error_format: Override client-level error_format. "detailed" provides full context, "simple" is concise, "code_only" returns just status code.
@@ -469,6 +590,96 @@ class Vip(CRUDEndpoint, MetadataMixin):
             - post(): Create new object
             - set(): Intelligent create or update
         """
+        # Apply normalization for table fields (supports flexible input formats)
+        if src_filter is not None:
+            src_filter = normalize_table_field(
+                src_filter,
+                mkey="range",
+                required_fields=['range'],
+                field_name="src_filter",
+                example="[{'range': 'value'}]",
+            )
+        if service is not None:
+            service = normalize_table_field(
+                service,
+                mkey="name",
+                required_fields=['name'],
+                field_name="service",
+                example="[{'name': 'value'}]",
+            )
+        if extaddr is not None:
+            extaddr = normalize_table_field(
+                extaddr,
+                mkey="name",
+                required_fields=['name'],
+                field_name="extaddr",
+                example="[{'name': 'value'}]",
+            )
+        if mappedip is not None:
+            mappedip = normalize_table_field(
+                mappedip,
+                mkey="range",
+                required_fields=['range'],
+                field_name="mappedip",
+                example="[{'range': 'value'}]",
+            )
+        if srcintf_filter is not None:
+            srcintf_filter = normalize_table_field(
+                srcintf_filter,
+                mkey="interface-name",
+                required_fields=['interface-name'],
+                field_name="srcintf_filter",
+                example="[{'interface-name': 'value'}]",
+            )
+        if realservers is not None:
+            realservers = normalize_table_field(
+                realservers,
+                mkey="id",
+                required_fields=['type', 'address', 'ip'],
+                field_name="realservers",
+                example="[{'type': 'ip', 'address': 'value', 'ip': '192.168.1.10'}]",
+            )
+        if ssl_certificate is not None:
+            ssl_certificate = normalize_table_field(
+                ssl_certificate,
+                mkey="name",
+                required_fields=['name'],
+                field_name="ssl_certificate",
+                example="[{'name': 'value'}]",
+            )
+        if ssl_cipher_suites is not None:
+            ssl_cipher_suites = normalize_table_field(
+                ssl_cipher_suites,
+                mkey="priority",
+                required_fields=['cipher'],
+                field_name="ssl_cipher_suites",
+                example="[{'cipher': 'TLS-AES-128-GCM-SHA256'}]",
+            )
+        if ssl_server_cipher_suites is not None:
+            ssl_server_cipher_suites = normalize_table_field(
+                ssl_server_cipher_suites,
+                mkey="priority",
+                required_fields=['cipher'],
+                field_name="ssl_server_cipher_suites",
+                example="[{'cipher': 'TLS-AES-128-GCM-SHA256'}]",
+            )
+        if monitor is not None:
+            monitor = normalize_table_field(
+                monitor,
+                mkey="name",
+                required_fields=['name'],
+                field_name="monitor",
+                example="[{'name': 'value'}]",
+            )
+        if gslb_public_ips is not None:
+            gslb_public_ips = normalize_table_field(
+                gslb_public_ips,
+                mkey="index",
+                required_fields=['index'],
+                field_name="gslb_public_ips",
+                example="[{'index': 1}]",
+            )
+        
         # Build payload using helper function
         payload_data = build_api_payload(
             api_type="cmdb",
@@ -599,15 +810,17 @@ class Vip(CRUDEndpoint, MetadataMixin):
         if q_scope is not None:
             params["scope"] = q_scope
         
-        return self._client.put(
+        return self._client.put(  # type: ignore[return-value]
             "cmdb", endpoint, data=payload_data, params=params, vdom=vdom        )
 
     # ========================================================================
     # POST Method
     # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # Note: Field-specific parameters intentionally extend the protocol's **kwargs
+    #       to provide autocomplete. Type checkers may report signature mismatch.
     # ========================================================================
     
-    def post(
+    def post(  # type: ignore[override]
         self,
         payload_dict: dict[str, Any] | None = None,
         name: str | None = None,
@@ -714,7 +927,7 @@ class Vip(CRUDEndpoint, MetadataMixin):
         vdom: str | bool | None = None,
         error_mode: Literal["raise", "return", "print"] | None = None,
         error_format: Literal["detailed", "simple", "code_only"] | None = None,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ) -> Union[FortiObject, Coroutine[Any, Any, FortiObject]]:
         """
         Create new firewall/vip object.
 
@@ -731,10 +944,25 @@ class Vip(CRUDEndpoint, MetadataMixin):
             dns_mapping_ttl: DNS mapping TTL (Set to zero to use TTL in DNS response, default = 0).
             ldb_method: Method used to distribute sessions to real servers.
             src_filter: Source address filter. Each address must be either an IP/subnet (x.x.x.x/n) or a range (x.x.x.x-y.y.y.y). Separate addresses with spaces.
+                Default format: [{'range': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'range': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'range': 'val1'}, ...]
+                  - List of dicts: [{'range': 'value'}] (recommended)
             src_vip_filter: Enable/disable use of 'src-filter' to match destinations for the reverse SNAT rule.
             service: Service name.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
             extip: IP address or address range on the external interface that you want to map to an address or address range on the destination network.
             extaddr: External FQDN address name.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
             h2_support: Enable/disable HTTP2 support (default = enable).
             h3_support: Enable/disable HTTP3/QUIC support (default = disable).
             quic: QUIC setting.
@@ -742,6 +970,11 @@ class Vip(CRUDEndpoint, MetadataMixin):
             nat46: Enable/disable NAT46.
             add_nat46_route: Enable/disable adding NAT46 route.
             mappedip: IP address or address range on the destination network to which the external IP address is mapped.
+                Default format: [{'range': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'range': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'range': 'val1'}, ...]
+                  - List of dicts: [{'range': 'value'}] (recommended)
             mapped_addr: Mapped FQDN address name.
             extintf: Interface connected to the source network that receives the packets that will be forwarded to the destination network.
             arp_reply: Enable to respond to ARP requests for this virtual IP address. Enabled by default.
@@ -755,11 +988,19 @@ class Vip(CRUDEndpoint, MetadataMixin):
             mappedport: Port number range on the destination network to which the external port number range is mapped.
             gratuitous_arp_interval: Enable to have the VIP send gratuitous ARPs. 0=disabled. Set from 5 up to 8640000 seconds to enable.
             srcintf_filter: Interfaces to which the VIP applies. Separate the names with spaces.
+                Default format: [{'interface-name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'interface-name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'interface-name': 'val1'}, ...]
+                  - List of dicts: [{'interface-name': 'value'}] (recommended)
             portmapping_type: Port mapping type.
             empty_cert_action: Action for an empty client certificate.
             user_agent_detect: Enable/disable detecting device type by HTTP user-agent if no client certificate is provided.
             client_cert: Enable/disable requesting client certificate.
             realservers: Select the real servers that this server load balancing VIP will distribute traffic to.
+                Default format: [{'type': 'ip', 'address': 'value', 'ip': '192.168.1.10'}]
+                Required format: List of dicts with keys: type, address, ip
+                  (String format not allowed due to multiple required fields)
             http_cookie_domain_from_host: Enable/disable use of HTTP cookie domain from host field in HTTP.
             http_cookie_domain: Domain that HTTP cookie persistence should apply to.
             http_cookie_path: Limit HTTP cookie persistence to the specified path.
@@ -778,11 +1019,26 @@ class Vip(CRUDEndpoint, MetadataMixin):
             websphere_server: Enable to add an HTTP header to indicate SSL offloading for a WebSphere server.
             ssl_mode: Apply SSL offloading between the client and the FortiGate (half) or from the client to the FortiGate and from the FortiGate to the server (full).
             ssl_certificate: Name of the certificate to use for SSL handshake.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
             ssl_dh_bits: Number of bits to use in the Diffie-Hellman exchange for RSA encryption of SSL sessions.
             ssl_algorithm: Permitted encryption algorithms for SSL sessions according to encryption strength.
             ssl_cipher_suites: SSL/TLS cipher suites acceptable from a client, ordered by priority.
+                Default format: [{'cipher': 'TLS-AES-128-GCM-SHA256'}]
+                Supported formats:
+                  - Single string: "value" → [{'priority': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'priority': 'val1'}, ...]
+                  - List of dicts: [{'cipher': 'TLS-AES-128-GCM-SHA256'}] (recommended)
             ssl_server_algorithm: Permitted encryption algorithms for the server side of SSL full mode sessions according to encryption strength.
             ssl_server_cipher_suites: SSL/TLS cipher suites to offer to a server, ordered by priority.
+                Default format: [{'cipher': 'TLS-AES-128-GCM-SHA256'}]
+                Supported formats:
+                  - Single string: "value" → [{'priority': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'priority': 'val1'}, ...]
+                  - List of dicts: [{'cipher': 'TLS-AES-128-GCM-SHA256'}] (recommended)
             ssl_pfs: Select the cipher suites that can be used for SSL perfect forward secrecy (PFS). Applies to both client and server sessions.
             ssl_min_version: Lowest SSL/TLS version acceptable from a client.
             ssl_max_version: Highest SSL/TLS version acceptable from a client.
@@ -812,6 +1068,11 @@ class Vip(CRUDEndpoint, MetadataMixin):
             ssl_hsts_age: Number of seconds the client should honor the HSTS setting.
             ssl_hsts_include_subdomains: Indicate that HSTS header applies to all subdomains.
             monitor: Name of the health check monitor to use when polling to determine a virtual server's connectivity status.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
             max_embryonic_connections: Maximum number of incomplete connections.
             color: Color of icon on the GUI.
             ipv6_mappedip: Range of mapped IPv6 addresses. Specify the start IPv6 address followed by a space and the end IPv6 address.
@@ -820,6 +1081,11 @@ class Vip(CRUDEndpoint, MetadataMixin):
             gslb_hostname: Hostname to use within the configured FortiGSLB domain.
             gslb_domain_name: Domain to use when integrating with FortiGSLB.
             gslb_public_ips: Publicly accessible IP addresses for the FortiGSLB service.
+                Default format: [{'index': 1}]
+                Supported formats:
+                  - Single string: "value" → [{'index': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'index': 'val1'}, ...]
+                  - List of dicts: [{'index': 1}] (recommended)
             vdom: Virtual domain name. Use True for global, string for specific VDOM.
             error_mode: Override client-level error_mode. "raise" raises exceptions, "return" returns error dict, "print" prints errors.
             error_format: Override client-level error_format. "detailed" provides full context, "simple" is concise, "code_only" returns just status code.
@@ -850,6 +1116,96 @@ class Vip(CRUDEndpoint, MetadataMixin):
             - put(): Update existing object
             - set(): Intelligent create or update
         """
+        # Apply normalization for table fields (supports flexible input formats)
+        if src_filter is not None:
+            src_filter = normalize_table_field(
+                src_filter,
+                mkey="range",
+                required_fields=['range'],
+                field_name="src_filter",
+                example="[{'range': 'value'}]",
+            )
+        if service is not None:
+            service = normalize_table_field(
+                service,
+                mkey="name",
+                required_fields=['name'],
+                field_name="service",
+                example="[{'name': 'value'}]",
+            )
+        if extaddr is not None:
+            extaddr = normalize_table_field(
+                extaddr,
+                mkey="name",
+                required_fields=['name'],
+                field_name="extaddr",
+                example="[{'name': 'value'}]",
+            )
+        if mappedip is not None:
+            mappedip = normalize_table_field(
+                mappedip,
+                mkey="range",
+                required_fields=['range'],
+                field_name="mappedip",
+                example="[{'range': 'value'}]",
+            )
+        if srcintf_filter is not None:
+            srcintf_filter = normalize_table_field(
+                srcintf_filter,
+                mkey="interface-name",
+                required_fields=['interface-name'],
+                field_name="srcintf_filter",
+                example="[{'interface-name': 'value'}]",
+            )
+        if realservers is not None:
+            realservers = normalize_table_field(
+                realservers,
+                mkey="id",
+                required_fields=['type', 'address', 'ip'],
+                field_name="realservers",
+                example="[{'type': 'ip', 'address': 'value', 'ip': '192.168.1.10'}]",
+            )
+        if ssl_certificate is not None:
+            ssl_certificate = normalize_table_field(
+                ssl_certificate,
+                mkey="name",
+                required_fields=['name'],
+                field_name="ssl_certificate",
+                example="[{'name': 'value'}]",
+            )
+        if ssl_cipher_suites is not None:
+            ssl_cipher_suites = normalize_table_field(
+                ssl_cipher_suites,
+                mkey="priority",
+                required_fields=['cipher'],
+                field_name="ssl_cipher_suites",
+                example="[{'cipher': 'TLS-AES-128-GCM-SHA256'}]",
+            )
+        if ssl_server_cipher_suites is not None:
+            ssl_server_cipher_suites = normalize_table_field(
+                ssl_server_cipher_suites,
+                mkey="priority",
+                required_fields=['cipher'],
+                field_name="ssl_server_cipher_suites",
+                example="[{'cipher': 'TLS-AES-128-GCM-SHA256'}]",
+            )
+        if monitor is not None:
+            monitor = normalize_table_field(
+                monitor,
+                mkey="name",
+                required_fields=['name'],
+                field_name="monitor",
+                example="[{'name': 'value'}]",
+            )
+        if gslb_public_ips is not None:
+            gslb_public_ips = normalize_table_field(
+                gslb_public_ips,
+                mkey="index",
+                required_fields=['index'],
+                field_name="gslb_public_ips",
+                example="[{'index': 1}]",
+            )
+        
         # Build payload using helper function
         payload_data = build_api_payload(
             api_type="cmdb",
@@ -975,22 +1331,24 @@ class Vip(CRUDEndpoint, MetadataMixin):
         if q_scope is not None:
             params["scope"] = q_scope
         
-        return self._client.post(
+        return self._client.post(  # type: ignore[return-value]
             "cmdb", endpoint, data=payload_data, params=params, vdom=vdom        )
 
     # ========================================================================
     # DELETE Method
     # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # Note: Identifier parameters intentionally extend the protocol's **kwargs
+    #       to provide autocomplete. Type checkers may report signature mismatch.
     # ========================================================================
     
-    def delete(
+    def delete(  # type: ignore[override]
         self,
         name: str | None = None,
         q_scope: str | None = None,
         vdom: str | bool | None = None,
         error_mode: Literal["raise", "return", "print"] | None = None,
         error_format: Literal["detailed", "simple", "code_only"] | None = None,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ) -> Union[FortiObject, Coroutine[Any, Any, FortiObject]]:
         """
         Delete firewall/vip object.
 
@@ -1029,7 +1387,7 @@ class Vip(CRUDEndpoint, MetadataMixin):
         if q_scope is not None:
             params["scope"] = q_scope
         
-        return self._client.delete(
+        return self._client.delete(  # type: ignore[return-value]
             "cmdb", endpoint, params=params, vdom=vdom        )
 
     def exists(
@@ -1064,34 +1422,27 @@ class Vip(CRUDEndpoint, MetadataMixin):
             - get(): Retrieve full object data
             - set(): Create or update automatically based on existence
         """
-        # Use direct request with silent error handling to avoid logging 404s
-        # This is expected behavior for exists() - 404 just means "doesn't exist"
+        # Use direct GET request to check existence
+        # 404 responses are expected and just mean "doesn't exist"
         endpoint = "/firewall/vip"
         endpoint = f"{endpoint}/{quote_path_param(name)}"
         
-        # Make request with silent=True to suppress 404 error logging
-        # (404 is expected when checking existence - it just means "doesn't exist")
-        # Use _wrapped_client to access the underlying HTTPClient directly
-        # (self._client is ResponseProcessingClient, _wrapped_client is HTTPClient)
         try:
-            result = self._client._wrapped_client.get(
-                "cmdb",
-                endpoint,
-                params=None,
-                vdom=vdom,
-                raw_json=True,
-                silent=True,
-            )
+            result = self.get(name=name, vdom=vdom)
             
-            if isinstance(result, dict):
-                # Synchronous response - check status
-                return result.get("status") == "success"
-            else:
-                # Asynchronous response
+            # Check if result is a coroutine (async) or direct response (sync)
+            # Note: Type checkers can't narrow Union[T, Coroutine[T]] in conditionals
+            if hasattr(result, '__await__'):
+                # Async response - return coroutine that checks status
                 async def _check() -> bool:
-                    r = await result
-                    return r.get("status") == "success"
+                    r = await result  # type: ignore[misc]
+                    response = r.raw if hasattr(r, 'raw') else r
+                    return is_success(response)
                 return _check()
+            else:
+                # Sync response - check status directly
+                response = result.raw if hasattr(result, 'raw') else result  # type: ignore[union-attr]
+                return is_success(response)
         except Exception:
             # Any error (404, network, etc.) means we can't confirm existence
             return False
@@ -1202,7 +1553,7 @@ class Vip(CRUDEndpoint, MetadataMixin):
         error_mode: Literal["raise", "return", "print"] | None = None,
         error_format: Literal["detailed", "simple", "code_only"] | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ) -> Union[FortiObject, Coroutine[Any, Any, FortiObject]]:
         """
         Create or update firewall/vip object (intelligent operation).
 
@@ -1348,6 +1699,96 @@ class Vip(CRUDEndpoint, MetadataMixin):
             - put(): Update existing object
             - exists(): Check existence manually
         """
+        # Apply normalization for table fields (supports flexible input formats)
+        if src_filter is not None:
+            src_filter = normalize_table_field(
+                src_filter,
+                mkey="range",
+                required_fields=['range'],
+                field_name="src_filter",
+                example="[{'range': 'value'}]",
+            )
+        if service is not None:
+            service = normalize_table_field(
+                service,
+                mkey="name",
+                required_fields=['name'],
+                field_name="service",
+                example="[{'name': 'value'}]",
+            )
+        if extaddr is not None:
+            extaddr = normalize_table_field(
+                extaddr,
+                mkey="name",
+                required_fields=['name'],
+                field_name="extaddr",
+                example="[{'name': 'value'}]",
+            )
+        if mappedip is not None:
+            mappedip = normalize_table_field(
+                mappedip,
+                mkey="range",
+                required_fields=['range'],
+                field_name="mappedip",
+                example="[{'range': 'value'}]",
+            )
+        if srcintf_filter is not None:
+            srcintf_filter = normalize_table_field(
+                srcintf_filter,
+                mkey="interface-name",
+                required_fields=['interface-name'],
+                field_name="srcintf_filter",
+                example="[{'interface-name': 'value'}]",
+            )
+        if realservers is not None:
+            realservers = normalize_table_field(
+                realservers,
+                mkey="id",
+                required_fields=['type', 'address', 'ip'],
+                field_name="realservers",
+                example="[{'type': 'ip', 'address': 'value', 'ip': '192.168.1.10'}]",
+            )
+        if ssl_certificate is not None:
+            ssl_certificate = normalize_table_field(
+                ssl_certificate,
+                mkey="name",
+                required_fields=['name'],
+                field_name="ssl_certificate",
+                example="[{'name': 'value'}]",
+            )
+        if ssl_cipher_suites is not None:
+            ssl_cipher_suites = normalize_table_field(
+                ssl_cipher_suites,
+                mkey="priority",
+                required_fields=['cipher'],
+                field_name="ssl_cipher_suites",
+                example="[{'cipher': 'TLS-AES-128-GCM-SHA256'}]",
+            )
+        if ssl_server_cipher_suites is not None:
+            ssl_server_cipher_suites = normalize_table_field(
+                ssl_server_cipher_suites,
+                mkey="priority",
+                required_fields=['cipher'],
+                field_name="ssl_server_cipher_suites",
+                example="[{'cipher': 'TLS-AES-128-GCM-SHA256'}]",
+            )
+        if monitor is not None:
+            monitor = normalize_table_field(
+                monitor,
+                mkey="name",
+                required_fields=['name'],
+                field_name="monitor",
+                example="[{'name': 'value'}]",
+            )
+        if gslb_public_ips is not None:
+            gslb_public_ips = normalize_table_field(
+                gslb_public_ips,
+                mkey="index",
+                required_fields=['index'],
+                field_name="gslb_public_ips",
+                example="[{'index': 1}]",
+            )
+        
         # Build payload using helper function
         payload_data = build_api_payload(
             api_type="cmdb",
@@ -1475,7 +1916,7 @@ class Vip(CRUDEndpoint, MetadataMixin):
         reference_name: str,
         vdom: str | bool | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ) -> Union[FortiObject, Coroutine[Any, Any, FortiObject]]:
         """
         Move firewall/vip object to a new position.
         
@@ -1499,17 +1940,18 @@ class Vip(CRUDEndpoint, MetadataMixin):
             ...     reference_name=50
             ... )
         """
-        return self._client.request(
-            method="PUT",
-            path=f"/api/v2/cmdb/firewall/vip",
-            params={
-                "name": name,
-                "action": "move",
-                action: reference_name,
-                "vdom": vdom,
-                **kwargs,
-            },
-        )
+        # Build params for move operation
+        params = {
+            "name": name,
+            "action": "move",
+            action: reference_name,
+            "vdom": vdom,
+            **kwargs,
+        }
+        
+        endpoint = "/firewall/vip"
+        return self._client.put(  # type: ignore[return-value]
+            "cmdb", endpoint, data={}, params=params, vdom=vdom        )
 
     # ========================================================================
     # Action: Clone
@@ -1521,7 +1963,7 @@ class Vip(CRUDEndpoint, MetadataMixin):
         new_name: str,
         vdom: str | bool | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ) -> Union[FortiObject, Coroutine[Any, Any, FortiObject]]:
         """
         Clone firewall/vip object.
         
@@ -1543,16 +1985,19 @@ class Vip(CRUDEndpoint, MetadataMixin):
             ...     new_name=100
             ... )
         """
-        return self._client.request(
-            method="POST",
-            path=f"/api/v2/cmdb/firewall/vip",
-            params={
-                "name": name,
-                "new_name": new_name,
-                "action": "clone",
-                "vdom": vdom,
-                **kwargs,
-            },
-        )
+        # Build params for clone operation  
+        params = {
+            "name": name,
+            "new_name": new_name,
+            "action": "clone",
+            "vdom": vdom,
+            **kwargs,
+        }
+        
+        endpoint = "/firewall/vip"
+        return self._client.post(  # type: ignore[return-value]
+            "cmdb", endpoint, data={}, params=params, vdom=vdom        )
+
+
 
 

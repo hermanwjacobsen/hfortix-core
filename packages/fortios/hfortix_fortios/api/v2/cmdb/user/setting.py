@@ -39,6 +39,7 @@ from typing import TYPE_CHECKING, Any, Literal, Union
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
+    from hfortix_fortios.models import FortiObject, FortiObjectList
 
 # Import helper functions from central _helpers module
 from hfortix_fortios._helpers import (
@@ -46,6 +47,7 @@ from hfortix_fortios._helpers import (
     build_cmdb_payload,  # Keep for backward compatibility / manual usage
     is_success,
     quote_path_param,  # URL encoding for path parameters
+    normalize_table_field,  # For table field normalization
 )
 # Import metadata mixin for schema introspection
 from hfortix_fortios._helpers.metadata_mixin import MetadataMixin
@@ -58,6 +60,23 @@ class Setting(CRUDEndpoint, MetadataMixin):
     
     # Configure metadata mixin to use this endpoint's helper module
     _helper_module_name = "setting"
+    
+    # ========================================================================
+    # Table Fields Metadata (for normalization)
+    # Auto-generated from schema - supports flexible input formats
+    # ========================================================================
+    _TABLE_FIELDS = {
+        "auth_ports": {
+            "mkey": "id",
+            "required_fields": ['id'],
+            "example": "[{'id': 1}]",
+        },
+        "cors_allowed_origins": {
+            "mkey": "name",
+            "required_fields": ['name'],
+            "example": "[{'name': 'value'}]",
+        },
+    }
     
     # ========================================================================
     # Capabilities (from schema metadata)
@@ -80,9 +99,11 @@ class Setting(CRUDEndpoint, MetadataMixin):
     # ========================================================================
     # GET Method
     # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # Note: Endpoint-specific parameters intentionally extend the protocol's **kwargs
+    #       to provide autocomplete. Type checkers may report signature mismatch.
     # ========================================================================
     
-    def get(
+    def get(  # type: ignore[override]
         self,
         name: str | None = None,
         filter: list[str] | None = None,
@@ -92,7 +113,7 @@ class Setting(CRUDEndpoint, MetadataMixin):
         vdom: str | bool | None = None,
         error_mode: Literal["raise", "return", "print"] | None = None,
         error_format: Literal["detailed", "simple", "code_only"] | None = None,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ) -> Union[FortiObject, FortiObjectList, Coroutine[Any, Any, Union[FortiObject, FortiObjectList]]]:
         """
         Retrieve user/setting configuration.
 
@@ -175,7 +196,7 @@ class Setting(CRUDEndpoint, MetadataMixin):
             endpoint = "/user/setting"
             unwrap_single = False
         
-        return self._client.get(
+        return self._client.get(  # type: ignore[return-value]
             "cmdb", endpoint, params=params, vdom=vdom, unwrap_single=unwrap_single
         )
 
@@ -183,7 +204,7 @@ class Setting(CRUDEndpoint, MetadataMixin):
         self,
         vdom: str | None = None,
         format: str = "schema",
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ) -> Union[FortiObject, FortiObjectList, Coroutine[Any, Any, Union[FortiObject, FortiObjectList]]]:
         """
         Get schema/metadata for this endpoint.
         
@@ -214,15 +235,17 @@ class Setting(CRUDEndpoint, MetadataMixin):
             Not all endpoints support all schema formats. The "schema" format
             is most widely supported.
         """
-        return self.get(action=format, vdom=vdom)
+        return self.get(payload_dict={"action": format}, vdom=vdom)
 
 
     # ========================================================================
     # PUT Method
     # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # Note: Field-specific parameters intentionally extend the protocol's **kwargs
+    #       to provide autocomplete. Type checkers may report signature mismatch.
     # ========================================================================
     
-    def put(
+    def put(  # type: ignore[override]
         self,
         payload_dict: dict[str, Any] | None = None,
         auth_type: Literal["http", "https", "ftp", "telnet"] | list[str] | None = None,
@@ -256,7 +279,7 @@ class Setting(CRUDEndpoint, MetadataMixin):
         vdom: str | bool | None = None,
         error_mode: Literal["raise", "return", "print"] | None = None,
         error_format: Literal["detailed", "simple", "code_only"] | None = None,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ) -> Union[FortiObject, Coroutine[Any, Any, FortiObject]]:
         """
         Update existing user/setting object.
 
@@ -282,12 +305,22 @@ class Setting(CRUDEndpoint, MetadataMixin):
             auth_lockout_duration: Lockout period in seconds after too many login failures.
             per_policy_disclaimer: Enable/disable per policy disclaimer.
             auth_ports: Set up non-standard ports for authentication with HTTP, HTTPS, FTP, and TELNET.
+                Default format: [{'id': 1}]
+                Supported formats:
+                  - Single string: "value" → [{'id': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'id': 'val1'}, ...]
+                  - List of dicts: [{'id': 1}] (recommended)
             auth_ssl_min_proto_version: Minimum supported protocol version for SSL/TLS connections (default is to follow system global setting).
             auth_ssl_max_proto_version: Maximum supported protocol version for SSL/TLS connections (default is no limit).
             auth_ssl_sigalgs: Set signature algorithms related to HTTPS authentication (affects TLS version <= 1.2 only, default is to enable all).
             default_user_password_policy: Default password policy to apply to all local users unless otherwise specified, as defined in config user password-policy.
             cors: Enable/disable allowed origins white list for CORS.
             cors_allowed_origins: Allowed origins white list for CORS.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
             vdom: Virtual domain name.
             error_mode: Override client-level error_mode. "raise" raises exceptions, "return" returns error dict, "print" prints errors.
             error_format: Override client-level error_format. "detailed" provides full context, "simple" is concise, "code_only" returns just status code.
@@ -316,6 +349,26 @@ class Setting(CRUDEndpoint, MetadataMixin):
             - post(): Create new object
             - set(): Intelligent create or update
         """
+        # Apply normalization for table fields (supports flexible input formats)
+        if auth_ports is not None:
+            auth_ports = normalize_table_field(
+                auth_ports,
+                mkey="id",
+                required_fields=['id'],
+                field_name="auth_ports",
+                example="[{'id': 1}]",
+            )
+        if cors_allowed_origins is not None:
+            cors_allowed_origins = normalize_table_field(
+                cors_allowed_origins,
+                mkey="name",
+                required_fields=['name'],
+                field_name="cors_allowed_origins",
+                example="[{'name': 'value'}]",
+            )
+        
+        # Apply normalization for multi-value option fields (space-separated strings)
+        
         # Build payload using helper function
         payload_data = build_api_payload(
             api_type="cmdb",
@@ -370,7 +423,7 @@ class Setting(CRUDEndpoint, MetadataMixin):
         if q_scope is not None:
             params["scope"] = q_scope
         
-        return self._client.put(
+        return self._client.put(  # type: ignore[return-value]
             "cmdb", endpoint, data=payload_data, params=params, vdom=vdom        )
 
 
@@ -388,7 +441,7 @@ class Setting(CRUDEndpoint, MetadataMixin):
         reference_name: str,
         vdom: str | bool | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ) -> Union[FortiObject, Coroutine[Any, Any, FortiObject]]:
         """
         Move user/setting object to a new position.
         
@@ -412,17 +465,18 @@ class Setting(CRUDEndpoint, MetadataMixin):
             ...     reference_name="object2"
             ... )
         """
-        return self._client.request(
-            method="PUT",
-            path=f"/api/v2/cmdb/user/setting",
-            params={
-                "name": name,
-                "action": "move",
-                action: reference_name,
-                "vdom": vdom,
-                **kwargs,
-            },
-        )
+        # Build params for move operation
+        params = {
+            "name": name,
+            "action": "move",
+            action: reference_name,
+            "vdom": vdom,
+            **kwargs,
+        }
+        
+        endpoint = "/user/setting"
+        return self._client.put(  # type: ignore[return-value]
+            "cmdb", endpoint, data={}, params=params, vdom=vdom        )
 
     # ========================================================================
     # Action: Clone
@@ -434,7 +488,7 @@ class Setting(CRUDEndpoint, MetadataMixin):
         new_name: str,
         vdom: str | bool | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ) -> Union[FortiObject, Coroutine[Any, Any, FortiObject]]:
         """
         Clone user/setting object.
         
@@ -456,71 +510,19 @@ class Setting(CRUDEndpoint, MetadataMixin):
             ...     new_name="new-from-template"
             ... )
         """
-        return self._client.request(
-            method="POST",
-            path=f"/api/v2/cmdb/user/setting",
-            params={
-                "name": name,
-                "new_name": new_name,
-                "action": "clone",
-                "vdom": vdom,
-                **kwargs,
-            },
-        )
-
-    # ========================================================================
-    # Helper: Check Existence
-    # ========================================================================
-    
-    def exists(
-        self,
-        name: str,
-        vdom: str | bool | None = None,
-    ) -> bool:
-        """
-        Check if user/setting object exists.
+        # Build params for clone operation  
+        params = {
+            "name": name,
+            "new_name": new_name,
+            "action": "clone",
+            "vdom": vdom,
+            **kwargs,
+        }
         
-        Args:
-            name: Name to check
-            vdom: Virtual domain name
-            
-        Returns:
-            True if object exists, False otherwise
-            
-        Example:
-            >>> # Check before creating
-            >>> if not fgt.api.cmdb.user_setting.exists(name="myobj"):
-            ...     fgt.api.cmdb.user_setting.post(payload_dict=data)
-        """
-        # Use direct request with silent error handling to avoid logging 404s
-        # This is expected behavior for exists() - 404 just means "doesn't exist"
         endpoint = "/user/setting"
-        endpoint = f"{endpoint}/{quote_path_param(name)}"
-        
-        # Make request with silent=True to suppress 404 error logging
-        # (404 is expected when checking existence - it just means "doesn't exist")
-        # Use _wrapped_client to access the underlying HTTPClient directly
-        # (self._client is ResponseProcessingClient, _wrapped_client is HTTPClient)
-        try:
-            result = self._client._wrapped_client.get(
-                "cmdb",
-                endpoint,
-                params=None,
-                vdom=vdom,
-                raw_json=True,
-                silent=True,
-            )
-            
-            if isinstance(result, dict):
-                # Synchronous response - check status
-                return result.get("status") == "success"
-            else:
-                # Asynchronous response
-                async def _check() -> bool:
-                    r = await result
-                    return r.get("status") == "success"
-                return _check()
-        except Exception:
-            # Any error (404, network, etc.) means we can't confirm existence
-            return False
+        return self._client.post(  # type: ignore[return-value]
+            "cmdb", endpoint, data={}, params=params, vdom=vdom        )
+
+
+
 

@@ -39,6 +39,7 @@ from typing import TYPE_CHECKING, Any, Literal, Union
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
+    from hfortix_fortios.models import FortiObject, FortiObjectList
 
 # Import helper functions from central _helpers module
 from hfortix_fortios._helpers import (
@@ -46,6 +47,7 @@ from hfortix_fortios._helpers import (
     build_cmdb_payload,  # Keep for backward compatibility / manual usage
     is_success,
     quote_path_param,  # URL encoding for path parameters
+    normalize_table_field,  # For table field normalization
 )
 # Import metadata mixin for schema introspection
 from hfortix_fortios._helpers.metadata_mixin import MetadataMixin
@@ -58,6 +60,33 @@ class StandaloneCluster(CRUDEndpoint, MetadataMixin):
     
     # Configure metadata mixin to use this endpoint's helper module
     _helper_module_name = "standalone_cluster"
+    
+    # ========================================================================
+    # Table Fields Metadata (for normalization)
+    # Auto-generated from schema - supports flexible input formats
+    # ========================================================================
+    _TABLE_FIELDS = {
+        "cluster_peer": {
+            "mkey": "sync-id",
+            "required_fields": ['sync-id'],
+            "example": "[{'sync-id': 1}]",
+        },
+        "monitor_interface": {
+            "mkey": "name",
+            "required_fields": ['name'],
+            "example": "[{'name': 'value'}]",
+        },
+        "pingsvr_monitor_interface": {
+            "mkey": "name",
+            "required_fields": ['name'],
+            "example": "[{'name': 'value'}]",
+        },
+        "monitor_prefix": {
+            "mkey": "id",
+            "required_fields": ['id', 'vdom'],
+            "example": "[{'id': 1, 'vdom': 'value'}]",
+        },
+    }
     
     # ========================================================================
     # Capabilities (from schema metadata)
@@ -80,9 +109,11 @@ class StandaloneCluster(CRUDEndpoint, MetadataMixin):
     # ========================================================================
     # GET Method
     # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # Note: Endpoint-specific parameters intentionally extend the protocol's **kwargs
+    #       to provide autocomplete. Type checkers may report signature mismatch.
     # ========================================================================
     
-    def get(
+    def get(  # type: ignore[override]
         self,
         name: str | None = None,
         filter: list[str] | None = None,
@@ -91,7 +122,7 @@ class StandaloneCluster(CRUDEndpoint, MetadataMixin):
         payload_dict: dict[str, Any] | None = None,
         error_mode: Literal["raise", "return", "print"] | None = None,
         error_format: Literal["detailed", "simple", "code_only"] | None = None,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ) -> Union[FortiObject, FortiObjectList, Coroutine[Any, Any, Union[FortiObject, FortiObjectList]]]:
         """
         Retrieve system/standalone_cluster configuration.
 
@@ -173,14 +204,14 @@ class StandaloneCluster(CRUDEndpoint, MetadataMixin):
             endpoint = "/system/standalone-cluster"
             unwrap_single = False
         
-        return self._client.get(
+        return self._client.get(  # type: ignore[return-value]
             "cmdb", endpoint, params=params, vdom=False, unwrap_single=unwrap_single
         )
 
     def get_schema(
         self,
         format: str = "schema",
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ) -> Union[FortiObject, FortiObjectList, Coroutine[Any, Any, Union[FortiObject, FortiObjectList]]]:
         """
         Get schema/metadata for this endpoint.
         
@@ -210,15 +241,17 @@ class StandaloneCluster(CRUDEndpoint, MetadataMixin):
             Not all endpoints support all schema formats. The "schema" format
             is most widely supported.
         """
-        return self.get(action=format)
+        return self.get(payload_dict={"action": format})
 
 
     # ========================================================================
     # PUT Method
     # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # Note: Field-specific parameters intentionally extend the protocol's **kwargs
+    #       to provide autocomplete. Type checkers may report signature mismatch.
     # ========================================================================
     
-    def put(
+    def put(  # type: ignore[override]
         self,
         payload_dict: dict[str, Any] | None = None,
         standalone_group_id: int | None = None,
@@ -240,7 +273,7 @@ class StandaloneCluster(CRUDEndpoint, MetadataMixin):
         q_scope: str | None = None,
         error_mode: Literal["raise", "return", "print"] | None = None,
         error_format: Literal["detailed", "simple", "code_only"] | None = None,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ) -> Union[FortiObject, Coroutine[Any, Any, FortiObject]]:
         """
         Update existing system/standalone_cluster object.
 
@@ -256,9 +289,27 @@ class StandaloneCluster(CRUDEndpoint, MetadataMixin):
             psksecret: Pre-shared secret for session synchronization (ASCII string or hexadecimal encoded with a leading 0x).
             asymmetric_traffic_control: Asymmetric traffic control mode.
             cluster_peer: Configure FortiGate Session Life Support Protocol (FGSP) session synchronization.
+                Default format: [{'sync-id': 1}]
+                Supported formats:
+                  - Single string: "value" → [{'sync-id': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'sync-id': 'val1'}, ...]
+                  - List of dicts: [{'sync-id': 1}] (recommended)
             monitor_interface: Configure a list of interfaces on which to monitor itself. Monitoring is performed on the status of the interface.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
             pingsvr_monitor_interface: List of pingsvr monitor interface to check for remote IP monitoring.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
             monitor_prefix: Configure a list of routing prefixes to monitor.
+                Default format: [{'id': 1, 'vdom': 'value'}]
+                Required format: List of dicts with keys: id, vdom
+                  (String format not allowed due to multiple required fields)
             helper_traffic_bounce: Enable/disable helper related traffic bounce.
             utm_traffic_bounce: Enable/disable UTM related traffic bounce.
             error_mode: Override client-level error_mode. "raise" raises exceptions, "return" returns error dict, "print" prints errors.
@@ -288,6 +339,40 @@ class StandaloneCluster(CRUDEndpoint, MetadataMixin):
             - post(): Create new object
             - set(): Intelligent create or update
         """
+        # Apply normalization for table fields (supports flexible input formats)
+        if cluster_peer is not None:
+            cluster_peer = normalize_table_field(
+                cluster_peer,
+                mkey="sync-id",
+                required_fields=['sync-id'],
+                field_name="cluster_peer",
+                example="[{'sync-id': 1}]",
+            )
+        if monitor_interface is not None:
+            monitor_interface = normalize_table_field(
+                monitor_interface,
+                mkey="name",
+                required_fields=['name'],
+                field_name="monitor_interface",
+                example="[{'name': 'value'}]",
+            )
+        if pingsvr_monitor_interface is not None:
+            pingsvr_monitor_interface = normalize_table_field(
+                pingsvr_monitor_interface,
+                mkey="name",
+                required_fields=['name'],
+                field_name="pingsvr_monitor_interface",
+                example="[{'name': 'value'}]",
+            )
+        if monitor_prefix is not None:
+            monitor_prefix = normalize_table_field(
+                monitor_prefix,
+                mkey="id",
+                required_fields=['id', 'vdom'],
+                field_name="monitor_prefix",
+                example="[{'id': 1, 'vdom': 'value'}]",
+            )
+        
         # Build payload using helper function
         payload_data = build_api_payload(
             api_type="cmdb",
@@ -331,7 +416,7 @@ class StandaloneCluster(CRUDEndpoint, MetadataMixin):
         if q_scope is not None:
             params["scope"] = q_scope
         
-        return self._client.put(
+        return self._client.put(  # type: ignore[return-value]
             "cmdb", endpoint, data=payload_data, params=params, vdom=False        )
 
 
@@ -348,7 +433,7 @@ class StandaloneCluster(CRUDEndpoint, MetadataMixin):
         action: Literal["before", "after"],
         reference_name: str,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ) -> Union[FortiObject, Coroutine[Any, Any, FortiObject]]:
         """
         Move system/standalone_cluster object to a new position.
         
@@ -371,16 +456,17 @@ class StandaloneCluster(CRUDEndpoint, MetadataMixin):
             ...     reference_name="object2"
             ... )
         """
-        return self._client.request(
-            method="PUT",
-            path=f"/api/v2/cmdb/system/standalone-cluster",
-            params={
-                "name": name,
-                "action": "move",
-                action: reference_name,
-                **kwargs,
-            },
-        )
+        # Build params for move operation
+        params = {
+            "name": name,
+            "action": "move",
+            action: reference_name,
+            **kwargs,
+        }
+        
+        endpoint = "/system/standalone-cluster"
+        return self._client.put(  # type: ignore[return-value]
+            "cmdb", endpoint, data={}, params=params, vdom=False        )
 
     # ========================================================================
     # Action: Clone
@@ -391,7 +477,7 @@ class StandaloneCluster(CRUDEndpoint, MetadataMixin):
         name: str,
         new_name: str,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ) -> Union[FortiObject, Coroutine[Any, Any, FortiObject]]:
         """
         Clone system/standalone_cluster object.
         
@@ -412,68 +498,18 @@ class StandaloneCluster(CRUDEndpoint, MetadataMixin):
             ...     new_name="new-from-template"
             ... )
         """
-        return self._client.request(
-            method="POST",
-            path=f"/api/v2/cmdb/system/standalone-cluster",
-            params={
-                "name": name,
-                "new_name": new_name,
-                "action": "clone",
-                **kwargs,
-            },
-        )
-
-    # ========================================================================
-    # Helper: Check Existence
-    # ========================================================================
-    
-    def exists(
-        self,
-        name: str,
-    ) -> bool:
-        """
-        Check if system/standalone_cluster object exists.
+        # Build params for clone operation  
+        params = {
+            "name": name,
+            "new_name": new_name,
+            "action": "clone",
+            **kwargs,
+        }
         
-        Args:
-            name: Name to check
-            
-        Returns:
-            True if object exists, False otherwise
-            
-        Example:
-            >>> # Check before creating
-            >>> if not fgt.api.cmdb.system_standalone_cluster.exists(name="myobj"):
-            ...     fgt.api.cmdb.system_standalone_cluster.post(payload_dict=data)
-        """
-        # Use direct request with silent error handling to avoid logging 404s
-        # This is expected behavior for exists() - 404 just means "doesn't exist"
         endpoint = "/system/standalone-cluster"
-        endpoint = f"{endpoint}/{quote_path_param(name)}"
-        
-        # Make request with silent=True to suppress 404 error logging
-        # (404 is expected when checking existence - it just means "doesn't exist")
-        # Use _wrapped_client to access the underlying HTTPClient directly
-        # (self._client is ResponseProcessingClient, _wrapped_client is HTTPClient)
-        try:
-            result = self._client._wrapped_client.get(
-                "cmdb",
-                endpoint,
-                params=None,
-                vdom=False,
-                raw_json=True,
-                silent=True,
-            )
-            
-            if isinstance(result, dict):
-                # Synchronous response - check status
-                return result.get("status") == "success"
-            else:
-                # Asynchronous response
-                async def _check() -> bool:
-                    r = await result
-                    return r.get("status") == "success"
-                return _check()
-        except Exception:
-            # Any error (404, network, etc.) means we can't confirm existence
-            return False
+        return self._client.post(  # type: ignore[return-value]
+            "cmdb", endpoint, data={}, params=params, vdom=False        )
+
+
+
 

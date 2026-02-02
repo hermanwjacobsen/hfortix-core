@@ -39,6 +39,7 @@ from typing import TYPE_CHECKING, Any, Literal, Union
 if TYPE_CHECKING:
     from collections.abc import Coroutine
     from hfortix_core.http.interface import IHTTPClient
+    from hfortix_fortios.models import FortiObject, FortiObjectList
 
 # Import helper functions from central _helpers module
 from hfortix_fortios._helpers import (
@@ -46,6 +47,7 @@ from hfortix_fortios._helpers import (
     build_cmdb_payload,  # Keep for backward compatibility / manual usage
     is_success,
     quote_path_param,  # URL encoding for path parameters
+    normalize_table_field,  # For table field normalization
 )
 # Import metadata mixin for schema introspection
 from hfortix_fortios._helpers.metadata_mixin import MetadataMixin
@@ -58,6 +60,63 @@ class Policy(CRUDEndpoint, MetadataMixin):
     
     # Configure metadata mixin to use this endpoint's helper module
     _helper_module_name = "policy"
+    
+    # ========================================================================
+    # Table Fields Metadata (for normalization)
+    # Auto-generated from schema - supports flexible input formats
+    # ========================================================================
+    _TABLE_FIELDS = {
+        "input_device": {
+            "mkey": "name",
+            "required_fields": ['name'],
+            "example": "[{'name': 'value'}]",
+        },
+        "src": {
+            "mkey": "subnet",
+            "required_fields": ['subnet'],
+            "example": "[{'subnet': 'value'}]",
+        },
+        "srcaddr": {
+            "mkey": "name",
+            "required_fields": ['name'],
+            "example": "[{'name': 'value'}]",
+        },
+        "dst": {
+            "mkey": "subnet",
+            "required_fields": ['subnet'],
+            "example": "[{'subnet': 'value'}]",
+        },
+        "dstaddr": {
+            "mkey": "name",
+            "required_fields": ['name'],
+            "example": "[{'name': 'value'}]",
+        },
+        "internet_service_id": {
+            "mkey": "id",
+            "required_fields": ['id'],
+            "example": "[{'id': 1}]",
+        },
+        "internet_service_custom": {
+            "mkey": "name",
+            "required_fields": ['name'],
+            "example": "[{'name': 'value'}]",
+        },
+        "internet_service_fortiguard": {
+            "mkey": "name",
+            "required_fields": ['name'],
+            "example": "[{'name': 'value'}]",
+        },
+        "users": {
+            "mkey": "name",
+            "required_fields": ['name'],
+            "example": "[{'name': 'value'}]",
+        },
+        "groups": {
+            "mkey": "name",
+            "required_fields": ['name'],
+            "example": "[{'name': 'value'}]",
+        },
+    }
     
     # ========================================================================
     # Capabilities (from schema metadata)
@@ -80,9 +139,11 @@ class Policy(CRUDEndpoint, MetadataMixin):
     # ========================================================================
     # GET Method
     # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # Note: Endpoint-specific parameters intentionally extend the protocol's **kwargs
+    #       to provide autocomplete. Type checkers may report signature mismatch.
     # ========================================================================
     
-    def get(
+    def get(  # type: ignore[override]
         self,
         seq_num: int | None = None,
         filter: list[str] | None = None,
@@ -92,7 +153,7 @@ class Policy(CRUDEndpoint, MetadataMixin):
         vdom: str | bool | None = None,
         error_mode: Literal["raise", "return", "print"] | None = None,
         error_format: Literal["detailed", "simple", "code_only"] | None = None,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ) -> Union[FortiObject, FortiObjectList, Coroutine[Any, Any, Union[FortiObject, FortiObjectList]]]:
         """
         Retrieve router/policy configuration.
 
@@ -180,7 +241,7 @@ class Policy(CRUDEndpoint, MetadataMixin):
             endpoint = "/router/policy"
             unwrap_single = False
         
-        return self._client.get(
+        return self._client.get(  # type: ignore[return-value]
             "cmdb", endpoint, params=params, vdom=vdom, unwrap_single=unwrap_single
         )
 
@@ -188,7 +249,7 @@ class Policy(CRUDEndpoint, MetadataMixin):
         self,
         vdom: str | None = None,
         format: str = "schema",
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ) -> Union[FortiObject, FortiObjectList, Coroutine[Any, Any, Union[FortiObject, FortiObjectList]]]:
         """
         Get schema/metadata for this endpoint.
         
@@ -219,15 +280,17 @@ class Policy(CRUDEndpoint, MetadataMixin):
             Not all endpoints support all schema formats. The "schema" format
             is most widely supported.
         """
-        return self.get(action=format, vdom=vdom)
+        return self.get(payload_dict={"action": format}, vdom=vdom)
 
 
     # ========================================================================
     # PUT Method
     # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # Note: Field-specific parameters intentionally extend the protocol's **kwargs
+    #       to provide autocomplete. Type checkers may report signature mismatch.
     # ========================================================================
     
-    def put(
+    def put(  # type: ignore[override]
         self,
         payload_dict: dict[str, Any] | None = None,
         seq_num: int | None = None,
@@ -263,7 +326,7 @@ class Policy(CRUDEndpoint, MetadataMixin):
         vdom: str | bool | None = None,
         error_mode: Literal["raise", "return", "print"] | None = None,
         error_format: Literal["detailed", "simple", "code_only"] | None = None,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ) -> Union[FortiObject, Coroutine[Any, Any, FortiObject]]:
         """
         Update existing router/policy object.
 
@@ -273,12 +336,37 @@ class Policy(CRUDEndpoint, MetadataMixin):
             payload_dict: Object data as dict. Must include seq-num (primary key).
             seq_num: Sequence number(1-65535).
             input_device: Incoming interface name.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
             input_device_negate: Enable/disable negation of input device match.
             src: Source IP and mask (x.x.x.x/x).
+                Default format: [{'subnet': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'subnet': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'subnet': 'val1'}, ...]
+                  - List of dicts: [{'subnet': 'value'}] (recommended)
             srcaddr: Source address name.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
             src_negate: Enable/disable negating source address match.
             dst: Destination IP and mask (x.x.x.x/x).
+                Default format: [{'subnet': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'subnet': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'subnet': 'val1'}, ...]
+                  - List of dicts: [{'subnet': 'value'}] (recommended)
             dstaddr: Destination address name.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
             dst_negate: Enable/disable negating destination address match.
             action: Action of the policy route.
             protocol: Protocol number (0 - 255).
@@ -293,10 +381,35 @@ class Policy(CRUDEndpoint, MetadataMixin):
             status: Enable/disable this policy route.
             comments: Optional comments.
             internet_service_id: Destination Internet Service ID.
+                Default format: [{'id': 1}]
+                Supported formats:
+                  - Single string: "value" → [{'id': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'id': 'val1'}, ...]
+                  - List of dicts: [{'id': 1}] (recommended)
             internet_service_custom: Custom Destination Internet Service name.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
             internet_service_fortiguard: FortiGuard Destination Internet Service name.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
             users: List of users.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
             groups: List of user groups.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
             vdom: Virtual domain name.
             error_mode: Override client-level error_mode. "raise" raises exceptions, "return" returns error dict, "print" prints errors.
             error_format: Override client-level error_format. "detailed" provides full context, "simple" is concise, "code_only" returns just status code.
@@ -325,9 +438,94 @@ class Policy(CRUDEndpoint, MetadataMixin):
             - post(): Create new object
             - set(): Intelligent create or update
         """
+        # Apply normalization for table fields (supports flexible input formats)
+        if input_device is not None:
+            input_device = normalize_table_field(
+                input_device,
+                mkey="name",
+                required_fields=['name'],
+                field_name="input_device",
+                example="[{'name': 'value'}]",
+            )
+        if src is not None:
+            src = normalize_table_field(
+                src,
+                mkey="subnet",
+                required_fields=['subnet'],
+                field_name="src",
+                example="[{'subnet': 'value'}]",
+            )
+        if srcaddr is not None:
+            srcaddr = normalize_table_field(
+                srcaddr,
+                mkey="name",
+                required_fields=['name'],
+                field_name="srcaddr",
+                example="[{'name': 'value'}]",
+            )
+        if dst is not None:
+            dst = normalize_table_field(
+                dst,
+                mkey="subnet",
+                required_fields=['subnet'],
+                field_name="dst",
+                example="[{'subnet': 'value'}]",
+            )
+        if dstaddr is not None:
+            dstaddr = normalize_table_field(
+                dstaddr,
+                mkey="name",
+                required_fields=['name'],
+                field_name="dstaddr",
+                example="[{'name': 'value'}]",
+            )
+        if internet_service_id is not None:
+            internet_service_id = normalize_table_field(
+                internet_service_id,
+                mkey="id",
+                required_fields=['id'],
+                field_name="internet_service_id",
+                example="[{'id': 1}]",
+            )
+        if internet_service_custom is not None:
+            internet_service_custom = normalize_table_field(
+                internet_service_custom,
+                mkey="name",
+                required_fields=['name'],
+                field_name="internet_service_custom",
+                example="[{'name': 'value'}]",
+            )
+        if internet_service_fortiguard is not None:
+            internet_service_fortiguard = normalize_table_field(
+                internet_service_fortiguard,
+                mkey="name",
+                required_fields=['name'],
+                field_name="internet_service_fortiguard",
+                example="[{'name': 'value'}]",
+            )
+        if users is not None:
+            users = normalize_table_field(
+                users,
+                mkey="name",
+                required_fields=['name'],
+                field_name="users",
+                example="[{'name': 'value'}]",
+            )
+        if groups is not None:
+            groups = normalize_table_field(
+                groups,
+                mkey="name",
+                required_fields=['name'],
+                field_name="groups",
+                example="[{'name': 'value'}]",
+            )
+        
         # Build payload using helper function
+        # Note: auto_normalize=False because this endpoint has unitary fields
+        # (like 'interface') that would be incorrectly converted to list format
         payload_data = build_api_payload(
             api_type="cmdb",
+            auto_normalize=False,
             seq_num=seq_num,
             input_device=input_device,
             input_device_negate=input_device_negate,
@@ -383,15 +581,17 @@ class Policy(CRUDEndpoint, MetadataMixin):
         if q_scope is not None:
             params["scope"] = q_scope
         
-        return self._client.put(
+        return self._client.put(  # type: ignore[return-value]
             "cmdb", endpoint, data=payload_data, params=params, vdom=vdom        )
 
     # ========================================================================
     # POST Method
     # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # Note: Field-specific parameters intentionally extend the protocol's **kwargs
+    #       to provide autocomplete. Type checkers may report signature mismatch.
     # ========================================================================
     
-    def post(
+    def post(  # type: ignore[override]
         self,
         payload_dict: dict[str, Any] | None = None,
         seq_num: int | None = None,
@@ -426,7 +626,7 @@ class Policy(CRUDEndpoint, MetadataMixin):
         vdom: str | bool | None = None,
         error_mode: Literal["raise", "return", "print"] | None = None,
         error_format: Literal["detailed", "simple", "code_only"] | None = None,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ) -> Union[FortiObject, Coroutine[Any, Any, FortiObject]]:
         """
         Create new router/policy object.
 
@@ -436,12 +636,37 @@ class Policy(CRUDEndpoint, MetadataMixin):
             payload_dict: Complete object data as dict. Alternative to individual parameters.
             seq_num: Sequence number(1-65535).
             input_device: Incoming interface name.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
             input_device_negate: Enable/disable negation of input device match.
             src: Source IP and mask (x.x.x.x/x).
+                Default format: [{'subnet': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'subnet': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'subnet': 'val1'}, ...]
+                  - List of dicts: [{'subnet': 'value'}] (recommended)
             srcaddr: Source address name.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
             src_negate: Enable/disable negating source address match.
             dst: Destination IP and mask (x.x.x.x/x).
+                Default format: [{'subnet': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'subnet': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'subnet': 'val1'}, ...]
+                  - List of dicts: [{'subnet': 'value'}] (recommended)
             dstaddr: Destination address name.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
             dst_negate: Enable/disable negating destination address match.
             action: Action of the policy route.
             protocol: Protocol number (0 - 255).
@@ -456,10 +681,35 @@ class Policy(CRUDEndpoint, MetadataMixin):
             status: Enable/disable this policy route.
             comments: Optional comments.
             internet_service_id: Destination Internet Service ID.
+                Default format: [{'id': 1}]
+                Supported formats:
+                  - Single string: "value" → [{'id': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'id': 'val1'}, ...]
+                  - List of dicts: [{'id': 1}] (recommended)
             internet_service_custom: Custom Destination Internet Service name.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
             internet_service_fortiguard: FortiGuard Destination Internet Service name.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
             users: List of users.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
             groups: List of user groups.
+                Default format: [{'name': 'value'}]
+                Supported formats:
+                  - Single string: "value" → [{'name': 'value'}]
+                  - List of strings: ["val1", "val2"] → [{'name': 'val1'}, ...]
+                  - List of dicts: [{'name': 'value'}] (recommended)
             vdom: Virtual domain name. Use True for global, string for specific VDOM.
             error_mode: Override client-level error_mode. "raise" raises exceptions, "return" returns error dict, "print" prints errors.
             error_format: Override client-level error_format. "detailed" provides full context, "simple" is concise, "code_only" returns just status code.
@@ -490,9 +740,94 @@ class Policy(CRUDEndpoint, MetadataMixin):
             - put(): Update existing object
             - set(): Intelligent create or update
         """
+        # Apply normalization for table fields (supports flexible input formats)
+        if input_device is not None:
+            input_device = normalize_table_field(
+                input_device,
+                mkey="name",
+                required_fields=['name'],
+                field_name="input_device",
+                example="[{'name': 'value'}]",
+            )
+        if src is not None:
+            src = normalize_table_field(
+                src,
+                mkey="subnet",
+                required_fields=['subnet'],
+                field_name="src",
+                example="[{'subnet': 'value'}]",
+            )
+        if srcaddr is not None:
+            srcaddr = normalize_table_field(
+                srcaddr,
+                mkey="name",
+                required_fields=['name'],
+                field_name="srcaddr",
+                example="[{'name': 'value'}]",
+            )
+        if dst is not None:
+            dst = normalize_table_field(
+                dst,
+                mkey="subnet",
+                required_fields=['subnet'],
+                field_name="dst",
+                example="[{'subnet': 'value'}]",
+            )
+        if dstaddr is not None:
+            dstaddr = normalize_table_field(
+                dstaddr,
+                mkey="name",
+                required_fields=['name'],
+                field_name="dstaddr",
+                example="[{'name': 'value'}]",
+            )
+        if internet_service_id is not None:
+            internet_service_id = normalize_table_field(
+                internet_service_id,
+                mkey="id",
+                required_fields=['id'],
+                field_name="internet_service_id",
+                example="[{'id': 1}]",
+            )
+        if internet_service_custom is not None:
+            internet_service_custom = normalize_table_field(
+                internet_service_custom,
+                mkey="name",
+                required_fields=['name'],
+                field_name="internet_service_custom",
+                example="[{'name': 'value'}]",
+            )
+        if internet_service_fortiguard is not None:
+            internet_service_fortiguard = normalize_table_field(
+                internet_service_fortiguard,
+                mkey="name",
+                required_fields=['name'],
+                field_name="internet_service_fortiguard",
+                example="[{'name': 'value'}]",
+            )
+        if users is not None:
+            users = normalize_table_field(
+                users,
+                mkey="name",
+                required_fields=['name'],
+                field_name="users",
+                example="[{'name': 'value'}]",
+            )
+        if groups is not None:
+            groups = normalize_table_field(
+                groups,
+                mkey="name",
+                required_fields=['name'],
+                field_name="groups",
+                example="[{'name': 'value'}]",
+            )
+        
         # Build payload using helper function
+        # Note: auto_normalize=False because this endpoint has unitary fields
+        # (like 'interface') that would be incorrectly converted to list format
         payload_data = build_api_payload(
             api_type="cmdb",
+            auto_normalize=False,
             seq_num=seq_num,
             input_device=input_device,
             input_device_negate=input_device_negate,
@@ -543,22 +878,24 @@ class Policy(CRUDEndpoint, MetadataMixin):
         if q_scope is not None:
             params["scope"] = q_scope
         
-        return self._client.post(
+        return self._client.post(  # type: ignore[return-value]
             "cmdb", endpoint, data=payload_data, params=params, vdom=vdom        )
 
     # ========================================================================
     # DELETE Method
     # Type hints provided by CRUDEndpoint protocol (no local @overload needed)
+    # Note: Identifier parameters intentionally extend the protocol's **kwargs
+    #       to provide autocomplete. Type checkers may report signature mismatch.
     # ========================================================================
     
-    def delete(
+    def delete(  # type: ignore[override]
         self,
         seq_num: int | None = None,
         q_scope: str | None = None,
         vdom: str | bool | None = None,
         error_mode: Literal["raise", "return", "print"] | None = None,
         error_format: Literal["detailed", "simple", "code_only"] | None = None,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ) -> Union[FortiObject, Coroutine[Any, Any, FortiObject]]:
         """
         Delete router/policy object.
 
@@ -597,7 +934,7 @@ class Policy(CRUDEndpoint, MetadataMixin):
         if q_scope is not None:
             params["scope"] = q_scope
         
-        return self._client.delete(
+        return self._client.delete(  # type: ignore[return-value]
             "cmdb", endpoint, params=params, vdom=vdom        )
 
     def exists(
@@ -632,34 +969,27 @@ class Policy(CRUDEndpoint, MetadataMixin):
             - get(): Retrieve full object data
             - set(): Create or update automatically based on existence
         """
-        # Use direct request with silent error handling to avoid logging 404s
-        # This is expected behavior for exists() - 404 just means "doesn't exist"
+        # Use direct GET request to check existence
+        # 404 responses are expected and just mean "doesn't exist"
         endpoint = "/router/policy"
         endpoint = f"{endpoint}/{quote_path_param(seq_num)}"
         
-        # Make request with silent=True to suppress 404 error logging
-        # (404 is expected when checking existence - it just means "doesn't exist")
-        # Use _wrapped_client to access the underlying HTTPClient directly
-        # (self._client is ResponseProcessingClient, _wrapped_client is HTTPClient)
         try:
-            result = self._client._wrapped_client.get(
-                "cmdb",
-                endpoint,
-                params=None,
-                vdom=vdom,
-                raw_json=True,
-                silent=True,
-            )
+            result = self.get(seq_num=seq_num, vdom=vdom)
             
-            if isinstance(result, dict):
-                # Synchronous response - check status
-                return result.get("status") == "success"
-            else:
-                # Asynchronous response
+            # Check if result is a coroutine (async) or direct response (sync)
+            # Note: Type checkers can't narrow Union[T, Coroutine[T]] in conditionals
+            if hasattr(result, '__await__'):
+                # Async response - return coroutine that checks status
                 async def _check() -> bool:
-                    r = await result
-                    return r.get("status") == "success"
+                    r = await result  # type: ignore[misc]
+                    response = r.raw if hasattr(r, 'raw') else r
+                    return is_success(response)
                 return _check()
+            else:
+                # Sync response - check status directly
+                response = result.raw if hasattr(result, 'raw') else result  # type: ignore[union-attr]
+                return is_success(response)
         except Exception:
             # Any error (404, network, etc.) means we can't confirm existence
             return False
@@ -698,7 +1028,7 @@ class Policy(CRUDEndpoint, MetadataMixin):
         error_mode: Literal["raise", "return", "print"] | None = None,
         error_format: Literal["detailed", "simple", "code_only"] | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ) -> Union[FortiObject, Coroutine[Any, Any, FortiObject]]:
         """
         Create or update router/policy object (intelligent operation).
 
@@ -772,9 +1102,94 @@ class Policy(CRUDEndpoint, MetadataMixin):
             - put(): Update existing object
             - exists(): Check existence manually
         """
+        # Apply normalization for table fields (supports flexible input formats)
+        if input_device is not None:
+            input_device = normalize_table_field(
+                input_device,
+                mkey="name",
+                required_fields=['name'],
+                field_name="input_device",
+                example="[{'name': 'value'}]",
+            )
+        if src is not None:
+            src = normalize_table_field(
+                src,
+                mkey="subnet",
+                required_fields=['subnet'],
+                field_name="src",
+                example="[{'subnet': 'value'}]",
+            )
+        if srcaddr is not None:
+            srcaddr = normalize_table_field(
+                srcaddr,
+                mkey="name",
+                required_fields=['name'],
+                field_name="srcaddr",
+                example="[{'name': 'value'}]",
+            )
+        if dst is not None:
+            dst = normalize_table_field(
+                dst,
+                mkey="subnet",
+                required_fields=['subnet'],
+                field_name="dst",
+                example="[{'subnet': 'value'}]",
+            )
+        if dstaddr is not None:
+            dstaddr = normalize_table_field(
+                dstaddr,
+                mkey="name",
+                required_fields=['name'],
+                field_name="dstaddr",
+                example="[{'name': 'value'}]",
+            )
+        if internet_service_id is not None:
+            internet_service_id = normalize_table_field(
+                internet_service_id,
+                mkey="id",
+                required_fields=['id'],
+                field_name="internet_service_id",
+                example="[{'id': 1}]",
+            )
+        if internet_service_custom is not None:
+            internet_service_custom = normalize_table_field(
+                internet_service_custom,
+                mkey="name",
+                required_fields=['name'],
+                field_name="internet_service_custom",
+                example="[{'name': 'value'}]",
+            )
+        if internet_service_fortiguard is not None:
+            internet_service_fortiguard = normalize_table_field(
+                internet_service_fortiguard,
+                mkey="name",
+                required_fields=['name'],
+                field_name="internet_service_fortiguard",
+                example="[{'name': 'value'}]",
+            )
+        if users is not None:
+            users = normalize_table_field(
+                users,
+                mkey="name",
+                required_fields=['name'],
+                field_name="users",
+                example="[{'name': 'value'}]",
+            )
+        if groups is not None:
+            groups = normalize_table_field(
+                groups,
+                mkey="name",
+                required_fields=['name'],
+                field_name="groups",
+                example="[{'name': 'value'}]",
+            )
+        
         # Build payload using helper function
+        # Note: auto_normalize=False because this endpoint has unitary fields
+        # (like 'interface') that would be incorrectly converted to list format
         payload_data = build_api_payload(
             api_type="cmdb",
+            auto_normalize=False,
             seq_num=seq_num,
             input_device=input_device,
             input_device_negate=input_device_negate,
@@ -827,7 +1242,7 @@ class Policy(CRUDEndpoint, MetadataMixin):
         reference_seq_num: int,
         vdom: str | bool | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ) -> Union[FortiObject, Coroutine[Any, Any, FortiObject]]:
         """
         Move router/policy object to a new position.
         
@@ -851,17 +1266,18 @@ class Policy(CRUDEndpoint, MetadataMixin):
             ...     reference_seq_num=50
             ... )
         """
-        return self._client.request(
-            method="PUT",
-            path=f"/api/v2/cmdb/router/policy",
-            params={
-                "seq-num": seq_num,
-                "action": "move",
-                action: reference_seq_num,
-                "vdom": vdom,
-                **kwargs,
-            },
-        )
+        # Build params for move operation
+        params = {
+            "seq-num": seq_num,
+            "action": "move",
+            action: reference_seq_num,
+            "vdom": vdom,
+            **kwargs,
+        }
+        
+        endpoint = "/router/policy"
+        return self._client.put(  # type: ignore[return-value]
+            "cmdb", endpoint, data={}, params=params, vdom=vdom        )
 
     # ========================================================================
     # Action: Clone
@@ -873,7 +1289,7 @@ class Policy(CRUDEndpoint, MetadataMixin):
         new_seq_num: int,
         vdom: str | bool | None = None,
         **kwargs: Any,
-    ) -> Union[dict[str, Any], Coroutine[Any, Any, dict[str, Any]]]:
+    ) -> Union[FortiObject, Coroutine[Any, Any, FortiObject]]:
         """
         Clone router/policy object.
         
@@ -895,16 +1311,19 @@ class Policy(CRUDEndpoint, MetadataMixin):
             ...     new_seq_num=100
             ... )
         """
-        return self._client.request(
-            method="POST",
-            path=f"/api/v2/cmdb/router/policy",
-            params={
-                "seq-num": seq_num,
-                "new_seq-num": new_seq_num,
-                "action": "clone",
-                "vdom": vdom,
-                **kwargs,
-            },
-        )
+        # Build params for clone operation  
+        params = {
+            "seq-num": seq_num,
+            "new_seq-num": new_seq_num,
+            "action": "clone",
+            "vdom": vdom,
+            **kwargs,
+        }
+        
+        endpoint = "/router/policy"
+        return self._client.post(  # type: ignore[return-value]
+            "cmdb", endpoint, data={}, params=params, vdom=vdom        )
+
+
 
 

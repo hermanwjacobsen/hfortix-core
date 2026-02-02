@@ -14,10 +14,22 @@ if TYPE_CHECKING:
     from .fortiguard import Fortiguard
     from .lldp import Lldp
 
+__all__ = [
+    "Arp",
+    "ReverseIpLookup",
+    "Network",
+]
+
 
 class Network:
-    """Type stub for Network."""
-
+    """NETWORK API category.
+    
+    All endpoints return FortiObject instances with:
+    - Attribute access: response.field
+    - Dictionary access: response["field"]
+    - Convert to dict: response.dict or response.json
+    """
+    
     ddns: Ddns
     debug_flow: DebugFlow
     dns: Dns
@@ -26,4 +38,6 @@ class Network:
     arp: Arp
     reverse_ip_lookup: ReverseIpLookup
 
-    def __init__(self, client: IHTTPClient) -> None: ...
+    def __init__(self, client: IHTTPClient, vdom: str | None = None) -> None:
+        """Initialize network category with HTTP client."""
+        ...

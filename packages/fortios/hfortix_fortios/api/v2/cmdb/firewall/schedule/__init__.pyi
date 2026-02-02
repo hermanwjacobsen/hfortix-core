@@ -10,12 +10,27 @@ if TYPE_CHECKING:
     from .onetime import Onetime
     from .recurring import Recurring
 
+__all__ = [
+    "Group",
+    "Onetime",
+    "Recurring",
+    "Schedule",
+]
+
 
 class Schedule:
-    """Type stub for Schedule."""
-
+    """SCHEDULE API category.
+    
+    All endpoints return FortiObject instances with:
+    - Attribute access: response.field
+    - Dictionary access: response["field"]
+    - Convert to dict: response.dict or response.json
+    """
+    
     group: Group
     onetime: Onetime
     recurring: Recurring
 
-    def __init__(self, client: IHTTPClient) -> None: ...
+    def __init__(self, client: IHTTPClient, vdom: str | None = None) -> None:
+        """Initialize schedule category with HTTP client."""
+        ...

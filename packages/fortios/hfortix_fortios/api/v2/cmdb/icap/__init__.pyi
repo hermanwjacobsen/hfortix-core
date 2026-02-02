@@ -10,12 +10,27 @@ if TYPE_CHECKING:
     from .server import Server
     from .server_group import ServerGroup
 
+__all__ = [
+    "Profile",
+    "Server",
+    "ServerGroup",
+    "Icap",
+]
+
 
 class Icap:
-    """Type stub for Icap."""
-
+    """ICAP API category.
+    
+    All endpoints return FortiObject instances with:
+    - Attribute access: response.field
+    - Dictionary access: response["field"]
+    - Convert to dict: response.dict or response.json
+    """
+    
     profile: Profile
     server: Server
     server_group: ServerGroup
 
-    def __init__(self, client: IHTTPClient) -> None: ...
+    def __init__(self, client: IHTTPClient, vdom: str | None = None) -> None:
+        """Initialize icap category with HTTP client."""
+        ...
