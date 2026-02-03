@@ -1,6 +1,12 @@
 Utilities
 =========
 
+Key Normalization
+-----------------
+
+.. autofunction:: hfortix_core.utils.normalize_keys
+   :no-index:
+
 Deprecation Warnings
 --------------------
 
@@ -9,6 +15,14 @@ Deprecation Warnings
 
 .. autofunction:: hfortix_core.warn_deprecated_field
    :no-index:
+
+Caching Internals
+-----------------
+
+.. autoclass:: hfortix_core.cache.CacheEntry
+   :members:
+   :undoc-members:
+   :show-inheritance:
 
 Formatting Module
 -----------------

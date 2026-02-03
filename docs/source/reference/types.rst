@@ -9,6 +9,21 @@ Response Types
    :undoc-members:
    :show-inheritance:
 
+.. autoclass:: hfortix_core.types.RawAPIResponse
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+.. autoclass:: hfortix_core.types.MutationResponse
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+.. autoclass:: hfortix_core.types.MutationResponseFull
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 .. autoclass:: hfortix_core.ListResponse
    :members:
    :undoc-members:
