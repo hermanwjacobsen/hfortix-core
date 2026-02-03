@@ -238,17 +238,6 @@ if optional_result.get("status") == "error":
     print("Optional rule failed, continuing...")
 ```
 
-## Implementation Status
-
-Currently implemented for:
-- ✅ `FirewallPolicy.create()`
-
-TODO: Apply to all convenience wrapper methods:
-- `FirewallPolicy.update()`
-- `FirewallPolicy.delete()`
-- `FirewallPolicy.get()`
-- Other convenience wrappers as they are created
-
 ## Important Notes
 
 1. **Only affects convenience wrappers**: Direct API calls (e.g., `fgt.api.cmdb.firewall.policy.post()`) are not affected by these settings

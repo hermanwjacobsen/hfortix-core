@@ -4,8 +4,8 @@
 
 hfortix includes a comprehensive validation framework with **1,348 auto-generated validators** covering all FortiOS 7.6.5 API endpoints across all API types (CMDB, Monitor, Log, Service).
 
-**Version:** 0.5.45  
-**Last Updated:** January 2026  
+**Version:** 0.5.154  
+**Last Updated:** February 2026  
 **Coverage:** 77 categories, 1,348 validation modules
 
 ---
@@ -629,60 +629,13 @@ def create_policy(name: str, action: str, **kwargs):
 
 ### Current Limitations
 
-⚠️ **Required Field Validation NOT Implemented**
-- Validators don't currently check for required fields
-- Planned for next release (v0.3.22)
-- Example: Policy requires name, srcintf, dstintf, srcaddr, dstaddr, action
-
 ⚠️ **Relationship Validation NOT Implemented**
-- Cross-field validation not available
+- Cross-field validation not available yet
 - Example: NAT enabled should require poolname/natip
-- Planned for future release
 
 ⚠️ **No Automatic Validation in API Methods**
 - Current validators are constants only
 - You must manually validate before API calls
-- Auto-validation in convenience wrappers planned
-
-### Planned Enhancements (v0.3.22+)
-
-📋 **Required Field Validation**
-```python
-# Planned for next release
-from hfortix_fortios.api.v2.cmdb.firewall._helpers import policy
-
-# Check required fields
-missing = policy.validate_required_fields({
-    'name': 'test',
-    'srcintf': ['port1']
-    # Missing: dstintf, srcaddr, dstaddr, action, schedule, service
-})
-
-if missing:
-    raise ValueError(f"Missing required fields: {', '.join(missing)}")
-```
-
-📋 **Relationship Validation**
-```python
-# Planned for future release
-from hfortix_fortios.api.v2.cmdb.firewall._helpers import policy
-
-# Validate cross-field dependencies
-errors = policy.validate_relationships({
-    'nat': 'enable',  # NAT is enabled
-    # Missing poolname - should error
-})
-```
-
-📋 **Automatic Validation in Wrappers**
-```python
-# Planned for future release
-# Validation happens automatically
-fgt.api.cmdb.firewall.policy.post(
-    name="test",
-    action="invalid"  # Raises ValidationError automatically
-)
-```
 
 ---
 

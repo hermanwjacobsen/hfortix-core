@@ -1,9 +1,9 @@
 # FortiOS API Coverage
 
-**SDK Version:** 0.5.45  
+**SDK Version:** 0.5.154  
 **FortiOS Version:** 7.6.5  
 **Schema Version:** 1.7.0  
-**Last Updated:** January 2026
+**Last Updated:** February 2026
 
 ---
 

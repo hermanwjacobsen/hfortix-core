@@ -2,7 +2,7 @@
 
 Complete Python SDK for FortiOS/FortiGate with 100% API coverage (1,348 endpoints).
 
-> **Version 0.5.45** - Production-ready FortiOS client, beta until v1.0 with comprehensive unit tests.
+> **Version 0.5.154** - Production-ready FortiOS client with comprehensive type safety and async support.
 
 ## Package Overview
 
