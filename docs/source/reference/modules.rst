@@ -57,12 +57,18 @@ Caching
 Logging
 -------
 
+Handlers
+^^^^^^^^
+
 .. autoclass:: hfortix_core.RequestLogger
    :members:
    :undoc-members:
    :show-inheritance:
 
 .. autofunction:: hfortix_core.log_operation
+
+Formatters
+^^^^^^^^^^
 
 .. autoclass:: hfortix_core.StructuredFormatter
    :members:
@@ -74,8 +80,24 @@ Logging
    :undoc-members:
    :show-inheritance:
 
+Protocols & Types
+^^^^^^^^^^^^^^^^^
+
+.. autoclass:: hfortix_core.logging.LogFormatter
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+.. autoclass:: hfortix_core.logging.LogRecord
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 Debugging
 ---------
+
+Session & Handlers
+^^^^^^^^^^^^^^^^^^
 
 .. autoclass:: hfortix_core.DebugSession
    :members:
@@ -83,9 +105,31 @@ Debugging
    :show-inheritance:
 
 .. autofunction:: hfortix_core.debug_timer
+
+Formatters & Utilities
+^^^^^^^^^^^^^^^^^^^^^^^
+
 .. autofunction:: hfortix_core.format_connection_stats
 .. autofunction:: hfortix_core.format_request_info
 .. autofunction:: hfortix_core.print_debug_info
+
+Protocols & Types
+^^^^^^^^^^^^^^^^^
+
+.. autoclass:: hfortix_core.debug.DebugFormatter
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+.. autoclass:: hfortix_core.debug.DebugInfo
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+.. autoclass:: hfortix_core.debug.SessionSummary
+   :members:
+   :undoc-members:
+   :show-inheritance:
 
 Formatting
 ----------
