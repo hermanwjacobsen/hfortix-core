@@ -51,13 +51,45 @@ toctree_maxdepth = 3
 
 # Performance optimizations
 import multiprocessing
-num_cores = max(1, multiprocessing.cpu_count() - 1)
+import os
+
+# Use all available cores for parallel processing
+num_cores = multiprocessing.cpu_count()
 parallel_read = num_cores
 parallel_write = num_cores
 
+# Skip expensive operations during build
 autodoc_member_order = 'bysource'
 autodoc_typehints = 'description'
 autodoc_typehints_format = 'short'
+
+# Speed up autosummary
+autosummary_generate = True
+autosummary_imported_members = False
+
+# Reduce memory usage
+keep_warnings = 10  # Only keep last 10 warnings
+
+# Disable slow features for ReadTheDocs builds
+if os.environ.get('READTHEDOCS') == 'True':
+    # Skip intersphinx inventory loading (slow)
+    intersphinx_timeout = 5
+    # Optimize navigation for large doc sets
+    html_theme_options = {
+        'navigation_depth': 4,  # Keep full depth
+        'collapse_navigation': False,  # Keep expanded so users can see content
+        'sticky_navigation': True,
+        'includehidden': True,
+        'titles_only': False,  # Show full navigation (not just titles)
+    }
+else:
+    html_theme_options = {
+        'navigation_depth': 4,
+        'collapse_navigation': False,
+        'sticky_navigation': True,
+        'includehidden': True,
+        'titles_only': False,
+    }
 
 # -- Options for HTML output -------------------------------------------------
 
@@ -65,13 +97,7 @@ html_theme = 'sphinx_rtd_theme'
 html_static_path = ['_static']
 html_css_files = ['custom.css']
 
-html_theme_options = {
-    'navigation_depth': 4,
-    'collapse_navigation': False,
-    'sticky_navigation': True,
-    'includehidden': True,
-    'titles_only': False,
-}
+# html_theme_options defined above based on environment
 
 html_context = {
     'display_github': True,
@@ -88,12 +114,9 @@ intersphinx_mapping = {
     'httpx': ('https://www.python-httpx.org', None),
 }
 
-# -- Autosummary settings ----------------------------------------------------
+# Autosummary and Napoleon settings defined above
 
-autosummary_generate = True
-autosummary_imported_members = False
-
-# -- Napoleon settings -------------------------------------------------------
+# -- Napoleon settings (full configuration) ----------------------------------
 
 napoleon_google_docstring = True
 napoleon_numpy_docstring = True
