@@ -1,10 +1,10 @@
-# HFortix - Quick Reference (v0.5.148)
+# HFortix - Quick Reference (v0.5.154)
 
-⚠️ **Breaking Changes in v0.5.0**: Built-in convenience wrappers have been removed. Use direct API access via `fgt.api.*` instead. You can [create your own custom wrappers](https://hfortix.readthedocs.io/en/latest/fortios/guides/custom-wrappers.html) if needed.
+✨ **New in v0.5.154**: Enhanced PyPI metadata!
+
+✨ **New in v0.5.152**: Batch Transactions with commit/rollback, HTTP API Request Inspection for debugging and audit logging!
 
 ✨ **New in v0.5.148**: Comprehensive documentation updates, improved response object documentation, FortiManager Proxy clarification!
-
-✨ **New in v0.5.130**: Context-aware field name conversion, comprehensive system monitor endpoint tests!
 
 ## Installation
 
@@ -19,7 +19,7 @@ pip install hfortix-fortios  # FortiOS/FortiGate client only
 pip install hfortix-core     # Core exceptions and HTTP framework only
 ```
 
-**Note:** Version 0.5.x introduces auto-generated endpoints with full type stubs and removes convenience wrappers.
+**Note:** Version 0.5.x introduces auto-generated endpoints with full type stubs. See [CHANGELOG.md](CHANGELOG.md) for version history.
 
 ### From Source
 
@@ -158,7 +158,7 @@ fgt_fast = FortiOS(
     read_timeout=60.0      # 1 minute to read
 )
 
-# Optimized settings based on performance testing (NEW in v0.3.17!)
+# Optimized settings based on performance testing (v0.3.17+)
 # Run performance test first to get device-specific recommendations
 results = fgt_dev.api.utils.performance_test()
 
@@ -460,7 +460,7 @@ result.json                # Returns pretty-printed JSON string
 result.raw                 # Returns full response envelope with metadata
 ```
 
-### FortiManager Proxy (NEW in v0.5.77!)
+### FortiManager Proxy (v0.5.77+)
 
 > **Note:** FortiManager Proxy routes FortiOS API calls through FortiManager to managed FortiGate devices.
 

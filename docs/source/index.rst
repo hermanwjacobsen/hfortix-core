@@ -27,14 +27,14 @@ HFortix - Python SDK for Fortinet Products
       :link-type: doc
 
       Complete FortiOS API client with 1,348 endpoints (561 CMDB + 490 Monitor + 286 Log + 11 Service).
-      **Available Now** - v0.5.151 Beta
+      **Available Now** - v0.5.154 Beta
 
    .. grid-item-card:: ⚙️ Core Framework
       :link: core/index
       :link-type: doc
 
       Foundation HTTP client and exception handling.
-      **Available Now** - v0.5.151 Beta
+      **Available Now** - v0.5.154 Beta
 
 Key Features
 ------------
@@ -49,12 +49,18 @@ Key Features
    Async/await support with httpx, HTTP/2, connection pooling, and circuit breakers
 
 🛡️ **Production Ready**
-   Comprehensive error handling, validation, retry logic, rate limiting, and 2,566+ test functions across 318 test files
+   Comprehensive error handling, validation, retry logic, rate limiting, and 1,447+ schema validator tests
 
 🔄 **Flexible Interface**
    Simple list format auto-converts to FortiOS dict format - use ``["internal"]`` instead of ``[{"name": "internal"}]``
 
-� **Enhanced Developer Experience**
+🔄 **Batch Transactions** (v0.5.152+)
+   Atomic configuration changes with automatic commit/rollback support (FortiOS 6.4.0+)
+
+🔍 **API Request Inspection** (v0.5.152+)
+   Debug and audit API interactions with ``http_api_request`` and ``fmg_api_request`` properties
+
+📦 **Enhanced Developer Experience**
    - FortiObject responses with attribute access (``addr.subnet`` instead of ``addr['subnet']``)
    - Multiple response formats (``.dict``, ``.json``, ``.raw``)
    - Built-in validation and error handling
@@ -138,7 +144,7 @@ Coverage Status
       ^^^^^^^^^^^^^^^^^^^
       **100% coverage** - Configuration database management (100% type coverage)
       
-      🔷 v0.5.151 Beta
+      🔷 v0.5.154 Beta
 
    .. grid-item-card:: Monitor API
       :class-header: bg-success text-white
@@ -147,7 +153,7 @@ Coverage Status
       ^^^^^^^^^^^^^^^^^^^
       **100% coverage** - Real-time monitoring and statistics (partial type coverage)
       
-      🔷 v0.5.151 Beta
+      🔷 v0.5.154 Beta
 
    .. grid-item-card:: Log API
       :class-header: bg-success text-white
@@ -156,7 +162,7 @@ Coverage Status
       ^^^^^^^^^^^^^^^^^^
       **100% coverage** - Log retrieval with full parameterization (partial type coverage)
       
-      🔷 v0.5.151 Beta
+      🔷 v0.5.154 Beta
 
    .. grid-item-card:: Service API
       :class-header: bg-success text-white
@@ -165,7 +171,7 @@ Coverage Status
       ^^^^^^^^^^^^^^^^^^
       **100% coverage** - Service operations (100% type coverage)
       
-      🔷 v0.5.151 Beta
+      🔷 v0.5.154 Beta
 
 **Overall: 1,348 API methods across all categories (100% coverage)** 🎉
 
@@ -187,15 +193,15 @@ Package Status
      - Status
      - Description
    * - ``hfortix`` (meta)
-     - 0.5.151
+     - 0.5.154
      - Beta
      - Meta package - installs all available packages
    * - ``hfortix-core``
-     - 0.5.151
+     - 0.5.154
      - Beta
      - HTTP client, error handling, circuit breaker, observability
    * - ``hfortix-fortios``
-     - 0.5.151
+     - 0.5.154
      - Beta
      - FortiOS/FortiGate SDK - 1,348 endpoints (561 CMDB + 490 Monitor + 286 Log + 11 Service)
 

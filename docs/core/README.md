@@ -2,7 +2,7 @@
 
 Core foundation for all HFortix packages - exceptions, HTTP client framework, and shared utilities.
 
-> **⚠️ Version 0.4.0 - BETA STATUS**: Production-ready but in beta until v1.0 with comprehensive unit tests.
+> **Version 0.5.154** - Production-ready core library with comprehensive type safety and async support.
 
 ## 📦 Package Overview
 
@@ -47,9 +47,6 @@ from hfortix_core import (
 - Request correlation IDs for distributed tracing
 - Rich metadata (http_status, error_code, timestamp, etc.)
 
-**Documentation:**
-- Coming soon: `EXCEPTIONS.md` - Complete exception hierarchy and error handling guide
-
 ### HTTP Client Framework
 
 Production-grade HTTP client with enterprise features:
@@ -86,10 +83,6 @@ async with HTTPClientAsync(
 - Per-endpoint custom timeouts
 - Structured logging for observability
 
-**Documentation:**
-- Coming soon: `HTTP_CLIENT.md` - HTTP client configuration and usage
-- Coming soon: `RETRY_LOGIC.md` - Retry mechanisms and circuit breaker patterns
-
 ## 🔗 Related Documentation
 
 - **[Main Documentation](../README.md)** - HFortix documentation index
@@ -118,5 +111,5 @@ This is core infrastructure used by all HFortix packages. Changes here affect al
 
 ## 📝 Status
 
-**Version:** 0.4.0  
-**Status:** Beta - Functional and production-ready, pending comprehensive unit tests for v1.0
+**Version:** 0.5.154  
+**Status:** Production-ready - Fully functional with comprehensive type safety and async support

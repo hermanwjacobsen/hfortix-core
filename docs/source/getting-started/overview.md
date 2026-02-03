@@ -16,8 +16,10 @@ Complete FortiOS 7.6.5 API client with:
 - ✅ Full async support
 - ✅ Automatic key normalization (hyphens → underscores)
 - ✅ Comprehensive validation and error handling
-- ✅ 2,566+ test functions across 318 test files
-- ✅ Production-ready with extensive test coverage
+- ✅ 1,447+ schema validator tests (100% endpoint coverage)
+- ✅ Batch transactions with commit/rollback (v0.5.152+)
+- ✅ API request inspection for debugging and auditing (v0.5.152+)
+- ✅ Beta status until v1.0.0, production-ready and stable
 
 **[Get Started with FortiOS →](/fortios/getting-started/quickstart.md)**
 
@@ -58,13 +60,15 @@ async def get_status():
     return status
 ```
 
-### Production Ready
+### Production Ready (Beta until v1.0.0)
 
 - Circuit breaker pattern
 - Automatic retries
 - Connection pooling
 - Comprehensive error handling
 - Validation framework
+- Batch transactions (v0.5.152+)
+- API request inspection (v0.5.152+)
 
 ### Developer Friendly
 
@@ -77,12 +81,12 @@ async def get_status():
 ### Test Coverage
 
 Comprehensive test suite ensures reliability:
-- **2,566+ test functions** across 318 test files
-- **251 endpoint test files** covering all 1,348 FortiOS API endpoints
-- **40 validator test files** ensuring 75+ utility functions work correctly
-- **12 unit test files** validating core HTTP client and response processing
-- **3 integration test files** testing client lifecycle and hooks
-- Parallel execution for validator tests
+- **1,447 schema validator tests** - 100% coverage of all 1,348 endpoints (offline, fast execution)
+- **80+ live integration tests** - Real API testing with FortiGate/FortiManager
+- **40 validator test files** - ensuring 75+ utility functions work correctly
+- **Unit tests** - HTTP client, response processing, error handling
+- **Integration tests** - Client lifecycle, hooks system, statistics tracking
+- Parallel execution for validator tests (no API calls)
 - Sequential execution for endpoint tests (respects API rate limits)
 
 ## Installation

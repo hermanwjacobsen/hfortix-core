@@ -2,7 +2,7 @@
 
 ## Overview
 
-The convenience wrappers (e.g., `fgt.api.cmdb.firewall.policy.post()`) now support configurable error handling with two independent settings:
+The HFortix FortiOS client (e.g., `fgt.api.cmdb.firewall.policy.post()`) supports configurable error handling with two independent settings:
 
 1. **error_mode**: Controls whether the program stops or continues when errors occur
 2. **error_format**: Controls how much detail is included in error messages
@@ -240,7 +240,7 @@ if optional_result.get("status") == "error":
 
 ## Important Notes
 
-1. **Only affects convenience wrappers**: Direct API calls (e.g., `fgt.api.cmdb.firewall.policy.post()`) are not affected by these settings
+1. **Affects all API calls**: These settings apply to all API methods (`.get()`, `.post()`, `.put()`, `.delete()`)
 2. **Backward compatible**: Default is `error_mode="raise"` which matches current behavior
 3. **Per-call override**: Can always override the instance default for specific calls
 4. **Type safety**: Return type includes both success dict and error dict when using `error_mode="return"`
