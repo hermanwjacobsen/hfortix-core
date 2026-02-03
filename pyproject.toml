@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "hfortix-core"
-version = "0.5.154"
+version = "0.5.155"
 description = "Core foundation for HFortix - Fully-typed Fortinet SDK with async support and type safety"
 authors = [{name = "Herman W. Jacobsen", email = "herman@wjacobsen.fo"}]
 maintainers = [{name = "Herman W. Jacobsen", email = "herman@wjacobsen.fo"}]
