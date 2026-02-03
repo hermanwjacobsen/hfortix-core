@@ -1,298 +1,119 @@
-# HFortix
-
-Complete Python SDK for Fortinet Products - Modular, type-safe, production-ready.
+# HFortix - Fortinet Python SDK
 
 [![PyPI version](https://badge.fury.io/py/hfortix.svg)](https://pypi.org/project/hfortix/)
 [![Python 3.10+](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/downloads/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-> **⚠️ BETA STATUS - Version 0.5.132 (January 21, 2026)**
->
-> **Status**: Production-ready but in beta until v1.0 with comprehensive unit tests.
+> **Meta-package for the HFortix ecosystem** - Convenient installation for Fortinet automation in Python.
 
-**Version:** 0.5.132
-**Status:** Beta (100% auto-generated, production-ready)
+## 📦 Package Structure
 
-## Overview
+This is a **meta-package** that provides convenient installation patterns. The actual functionality is in these packages:
 
-HFortix is a modular Python SDK that provides comprehensive, production-ready clients for Fortinet products. Starting with FortiOS/FortiGate, with future support planned for FortiManager, FortiAnalyzer, and more.
+| Package           | Repository                                                                 | Description                              |
+| ----------------- | -------------------------------------------------------------------------- | ---------------------------------------- |
+| **hfortix-core**  | [hfortix-core](https://github.com/hermanwjacobsen/hfortix-core)           | Core HTTP client and shared utilities    |
+| **hfortix-fortios** | [hfortix-fortios](https://github.com/hermanwjacobsen/hfortix-fortios) | FortiOS/FortiGate API client (8,000+ endpoints) |
 
-**Version 0.5.32** features major improvements to object response mode, auto-normalization for list fields, and enhanced IDE support with 15,000+ parameters having enum autocomplete.
+## 🚀 Installation Options
 
-This is a **meta-package** that provides convenient installation patterns for the HFortix ecosystem.
+### Everything (Recommended)
 
-## Installation
-
-### Minimal Installation (Core Only)
-```bash
-pip install hfortix
-```
-Installs only `hfortix-core` - the shared foundation (exceptions, HTTP client, type definitions).
-
-### FortiOS/FortiGate Support
-```bash
-pip install hfortix[fortios]
-```
-Installs `hfortix-core` + `hfortix-fortios` - Everything needed for FortiGate/FortiOS.
-
-### Complete Installation
 ```bash
 pip install hfortix[all]
 ```
+
 Installs all current and future Fortinet product packages.
+
+### FortiOS/FortiGate Only
+
+```bash
+pip install hfortix[fortios]
+```
+
+Installs `hfortix-core` + `hfortix-fortios`.
+
+### Core Only
+
+```bash
+pip install hfortix
+```
+
+Installs only `hfortix-core` - the shared foundation.
 
 ### Individual Packages
 
-You can also install product packages directly:
-
 ```bash
-# Just FortiOS (includes core automatically)
-pip install hfortix-fortios
-
-# Just the core framework
-pip install hfortix-core
+# Install specific packages directly
+pip install hfortix-fortios  # Automatically includes hfortix-core
+pip install hfortix-core     # Just the core utilities
 ```
 
-## Quick Start
-
-### FortiOS/FortiGate
+## 💡 Quick Start
 
 ```python
-from hfortix_fortios import FortiOS
+from hfortix_fortios import FortiOSClient
 
 # Connect to FortiGate
-fgt = FortiOS(
+client = FortiOSClient(
     host="192.168.1.99",
-    token="your-api-token",
-    verify=False
+    token="your-api-token"
 )
 
-# Get system status (Monitor endpoint - use dict access for untyped fields)
-status = fgt.api.monitor.system.status.get()
-print(f"Hostname: {status['hostname']}")
-print(f"Model: {status['model']}")
+# Get firewall policies
+policies = client.api.v2.cmdb.firewall.policy.get()
 
-# Create a firewall address (CMDB endpoint - POST)
-fgt.api.cmdb.firewall.address.post(
-    name="web-server",
-    subnet="192.168.1.100 255.255.255.255",
-    comment="Production web server"
-)
-
-# Update an existing address (CMDB endpoint - PUT)
-fgt.api.cmdb.firewall.address.put(
-    name="web-server",
-    subnet="192.168.1.101 255.255.255.255"
-)
-
-# Delete an address (CMDB endpoint - DELETE)
-fgt.api.cmdb.firewall.address.delete(name="web-server")
+for policy in policies:
+    print(f"Policy {policy.policyid}: {policy.name}")
 ```
 
-### FortiManager Proxy
+## 📚 Documentation
 
-Route FortiOS API calls through FortiManager to managed devices:
+| Package           | Documentation Link                                                   |
+| ----------------- | -------------------------------------------------------------------- |
+| **hfortix-fortios** | [FortiOS Documentation](https://github.com/hermanwjacobsen/hfortix-fortios) |
+| **hfortix-core**  | [Core API Reference](https://github.com/hermanwjacobsen/hfortix-core) |
 
-```python
-from hfortix_fortios import FortiManagerProxy
+## ✨ Features
 
-# Connect to FortiManager
-fmg = FortiManagerProxy(
-    host="fortimanager.example.com",
-    username="admin",
-    password="password",
-    adom="root",
-    verify=False
-)
+### Comprehensive Coverage
 
-# Get a proxied FortiOS connection to a managed device
-fgt = fmg.get_device("fw01")
+- 8,000+ FortiOS API endpoints
+- Full type hints and IDE autocomplete
+- Auto-generated from official FortiOS schemas
 
-# Use the same API as direct FortiOS!
-addresses = fgt.api.cmdb.firewall.address.get()
-fgt.api.cmdb.firewall.address.post(
-    name="Server-01",
-    subnet="10.0.1.10 255.255.255.255"
-)
+### Developer Experience
 
-# Clean up
-fmg.logout()
-```
+- Pythonic API design
+- Extensive inline documentation
+- Type-safe request/response models
 
-## Package Structure
+### Production Ready
 
-HFortix uses a modular architecture:
+- Transaction support
+- Error handling and retries
+- Async/await support
+- Rate limiting
 
-```text
-hfortix (meta-package)
-├── hfortix-core          # Shared foundation
-│   ├── Exception system (403+ error codes)
-│   ├── HTTP client framework (sync & async)
-│   ├── fmt module (13 formatting utilities)
-│   ├── Type definitions (TypedDict, Protocols)
-│   └── Debug utilities
-│
-└── hfortix-fortios       # FortiOS/FortiGate client
-    ├── Complete API coverage (1,348 endpoints)
-    ├── 2,129 endpoint files with type stubs
-    ├── Auto-generated validators
-    └── FortiObject response wrapper
-```
+## 📋 Requirements
 
-**Future Packages:**
-- `hfortix-fortimanager` - FortiManager API client
-- `hfortix-fortianalyzer` - FortiAnalyzer API client
-- `hfortix-fortiswitch` - FortiSwitch API client
-- And more...
+- Python 3.10 or higher
+- FortiOS 7.0+ (for FortiGate devices)
 
-## Key Features
+## 📄 License
 
-### 🎯 Modular Design
+MIT License - see [LICENSE](LICENSE) for details.
 
-Install only what you need:
-- Minimal footprint with `hfortix-core`
-- Product-specific packages when needed
-- Shared infrastructure across all products
+## 🔗 Related Projects
 
-### ⚡ Complete FortiOS Support
+- [hfortix-core](https://github.com/hermanwjacobsen/hfortix-core) - Core HTTP client
+- [hfortix-fortios](https://github.com/hermanwjacobsen/hfortix-fortios) - FortiOS automation
 
-**API Coverage (FortiOS 7.6.5 - Schema v1.7.0):**
-- **1,348 total endpoints** (100% auto-generated)
-- 561 CMDB endpoints (configuration management)
-- 490 Monitor endpoints (real-time data)
-- 286 Log endpoints (disk, memory, FortiAnalyzer, FortiCloud)
-- 11 Service endpoints (sniffer, security rating, system)
+## 💬 Support
 
-**Features:**
-- Complete `.pyi` type stubs (2,129 files) for perfect IDE autocomplete
-- Schema-based validation for all parameters
-- Auto-generated tests for all endpoints
-- Automatic key normalization (hyphens → underscores)
+- 🐛 [Report Issues](https://github.com/hermanwjacobsen/hfortix-fortios/issues)
+- 💬 [Discussions](https://github.com/hermanwjacobsen/hfortix-fortios/discussions)
 
-### 🏢 Enterprise Features
+---
 
-- **Async/Await Support**: Full async implementation with context managers
-- **Error Handling**: 403+ specific error codes with comprehensive exception hierarchy
-- **HTTP/2 Support**: Connection multiplexing for better performance
-- **Automatic Retry**: Handles transient failures intelligently
-- **Circuit Breaker**: Prevents cascade failures with automatic recovery
-- **Type Safety**: Full type hints with IDE autocomplete
-- **Read-Only Mode**: Safe testing without accidental changes
-- **Operation Tracking**: Audit logging for all API calls
-- **Performance Testing**: Built-in tools to optimize device communication
-- **Formatting Utilities**: `fmt` module with 13 data conversion functions
-
-## Import Patterns
-
-### Recommended (New in v0.4.0-dev1)
-```python
-# Product packages
-from hfortix_fortios import FortiOS
-
-# Core exceptions
-from hfortix_core import (
-    APIError,
-    ResourceNotFoundError,
-    DuplicateEntryError
-)
-```
-
-### Legacy (Still Supported)
-```python
-from hfortix import FortiOS
-from hfortix.FortiOS import FortiOS
-```
-
-## Migration from v0.4.x
-
-**Changes in v0.5.0:**
-- Direct API access via `fgt.api.cmdb.*`, `fgt.api.monitor.*`, `fgt.api.log.*`
-
-**Old (v0.4.x):**
-```python
-from hfortix_fortios.firewall import FirewallAddress
-addr = FirewallAddress(fgt)
-result = addr.create(name="test", subnet="10.0.0.1/32")
-```
-
-**New (v0.5.0+):**
-```python
-# Uses standard REST methods: .get(), .post(), .put(), .delete()
-result = fgt.api.cmdb.firewall.address.post(
-    name="test",
-    subnet="10.0.0.1 255.255.255.255"
-)
-```
-
-All endpoints use REST verbs (`.get()`, `.post()`, `.put()`, `.delete()`) and return FortiObject with attribute access.
-
-## Documentation
-
-**Getting Started:**
-- [Quick Start Guide](https://github.com/hermanwjacobsen/hfortix/blob/main/QUICKSTART.md) - Installation and basic usage
-- [Async Guide](https://github.com/hermanwjacobsen/hfortix/blob/main/docs/fortios/ASYNC_GUIDE.md) - Async/await patterns
-- [API Reference](https://github.com/hermanwjacobsen/hfortix/blob/main/docs/fortios/ENDPOINT_METHODS.md) - Complete method reference
-
-**Convenience Wrappers:**
-- [Overview](https://github.com/hermanwjacobsen/hfortix/blob/main/docs/fortios/wrappers/CONVENIENCE_WRAPPERS.md) - All wrappers
-- [Service Management](https://github.com/hermanwjacobsen/hfortix/blob/main/docs/fortios/wrappers/CONVENIENCE_WRAPPERS.md#service-management)
-- [Schedules](https://github.com/hermanwjacobsen/hfortix/blob/main/docs/fortios/wrappers/SCHEDULE_WRAPPERS.md)
-- [Traffic Shaping](https://github.com/hermanwjacobsen/hfortix/blob/main/docs/fortios/wrappers/SHAPER_WRAPPERS.md)
-
-**Advanced Topics:**
-- [Validation Guide](https://github.com/hermanwjacobsen/hfortix/blob/main/docs/fortios/VALIDATION_GUIDE.md) - Using validators
-- [Error Handling](https://github.com/hermanwjacobsen/hfortix/blob/main/docs/fortios/ERROR_HANDLING_CONFIG.md) - Exception system
-- [Performance Testing](https://github.com/hermanwjacobsen/hfortix/blob/main/docs/fortios/PERFORMANCE_TESTING.md) - Optimization
-
-**Project Info:**
-- [Changelog](https://github.com/hermanwjacobsen/hfortix/blob/main/CHANGELOG.md) - Version history
-- [GitHub Repository](https://github.com/hermanwjacobsen/hfortix) - Complete docs
-
-## Requirements
-
-- Python 3.10+
-- FortiOS 7.0+ (tested with 7.6.5)
-
-## Development Status
-
-**Beta** - All APIs are functional and tested against live Fortinet devices. The package remains in beta status until version 1.0.0 with comprehensive unit test coverage.
-
-**Current Test Coverage:**
-- 226 test files for FortiOS
-- 75%+ pass rate
-- ~50% of endpoints have dedicated tests
-- All implementations validated against FortiOS 7.6.5
-
-## Why Modular?
-
-**Benefits of the split package architecture:**
-
-1. **Smaller Dependencies**: Install only what you need
-2. **Faster Updates**: Product packages can be updated independently
-3. **Better Organization**: Clear separation of concerns
-4. **Easier Maintenance**: Focused development per product
-5. **Future Flexibility**: Easy to add new Fortinet products
-
-## Version History
-
-- **v0.4.0-dev1** (Current): Package split - modular architecture
-- **v0.3.39**: Convenience wrappers (services, schedules, shaping, IP/MAC binding)
-- **v0.3.38**: Firewall policy wrapper with 150+ parameters
-- **v0.3.x**: Async support, error handling, performance tools
-- **v0.1.x-v0.2.x**: Initial FortiOS API implementation
-
-## License
-
-Proprietary - See LICENSE file
-
-## Support
-
-- 📖 [Documentation](https://github.com/hermanwjacobsen/hfortix)
-- 🐛 [Report Issues](https://github.com/hermanwjacobsen/hfortix/issues)
-- 💬 [Discussions](https://github.com/hermanwjacobsen/hfortix/discussions)
-
-## Author
-
-**Herman W. Jacobsen**
-- Email: herman@wjacobsen.fo
-- LinkedIn: [linkedin.com/in/hermanwjacobsen](https://www.linkedin.com/in/hermanwjacobsen/)
-- GitHub: [@hermanwjacobsen](https://github.com/hermanwjacobsen)
+**Author**: Herman W. Jacobsen | [LinkedIn](https://www.linkedin.com/in/hermanwjacobsen/) | [GitHub](https://github.com/hermanwjacobsen)

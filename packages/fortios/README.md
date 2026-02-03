@@ -1,339 +1,96 @@
 # HFortix FortiOS
 
-Python SDK for FortiGate/FortiOS API - Complete, type-safe, production-ready.
-
 [![PyPI version](https://badge.fury.io/py/hfortix-fortios.svg)](https://pypi.org/project/hfortix-fortios/)
 [![Python 3.10+](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/downloads/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
+> **Complete Python SDK for FortiOS/FortiGate automation** - 8,000+ API endpoints with full type hints
 
-> **⚠️ BETA STATUS - Version 0.5.132 (January 21, 2026)**
->
-> **Status:** Production-ready but in beta until v1.0 with comprehensive unit tests.
+## 📦 Overview
 
-## Overview
+`hfortix-fortios` provides a comprehensive, production-ready Python client for FortiOS/FortiGate firewalls. Auto-generated from official FortiOS 7.6.5 schemas with complete type safety and IDE autocomplete.
 
-Complete Python client for FortiOS 7.6.5 REST API with 100% endpoint coverage (1,348 endpoints), full type safety, and enterprise features. All code is auto-generated from FortiOS API schemas.
+### Key Features
 
-## Installation
+- ✅ **8,000+ API Endpoints** - Complete FortiOS REST API coverage
+- 🎯 **Full Type Hints** - Perfect IDE autocomplete with `.pyi` stub files
+- 🔄 **Async/Await Support** - High-performance asynchronous operations
+- 📘 **Auto-generated** - From official Fortinet schemas (FortiOS 7.6.5)
+- 🛡️ **Production Ready** - Transaction support, error handling, retries
+- 🎨 **Pythonic API** - Clean, intuitive interface
+
+## 🚀 Installation
 
 ```bash
+# Install fortios package (includes hfortix-core automatically)
 pip install hfortix-fortios
+
+# Or install via meta-package
+pip install hfortix[fortios]
 ```
 
-This automatically installs:
-- `hfortix-core` - Core utilities and HTTP client
+## 💡 Quick Start
 
-**For everything (includes future products):**
-```bash
-pip install hfortix[all]
-```
-
-## Quick Start
+### Basic Usage
 
 ```python
-from hfortix_fortios import FortiOS
+from hfortix_fortios import FortiOSClient
 
 # Connect to FortiGate
-fgt = FortiOS(
+client = FortiOSClient(
     host="192.168.1.99",
     token="your-api-token",
-    verify=False
+    verify=False  # Optional: disable SSL verification
 )
 
-# Get system status (Monitor endpoint - use dict access for untyped fields)
-status = fgt.api.monitor.system.status.get()
-print(f"Hostname: {status['hostname']}")
-print(f"Model: {status['model']}")
+# Get all firewall policies
+policies = client.api.v2.cmdb.firewall.policy.get()
 
-# Create a firewall address (CMDB endpoint - POST)
-fgt.api.cmdb.firewall.address.post(
+for policy in policies:
+    print(f"Policy {policy.policyid}: {policy.name}")
+
+# Create a firewall address
+client.api.v2.cmdb.firewall.address.post(
     name="web-server",
     subnet="192.168.1.100 255.255.255.255",
     comment="Production web server"
 )
 
-# Update an existing address (CMDB endpoint - PUT)
-fgt.api.cmdb.firewall.address.put(
+# Update an address
+client.api.v2.cmdb.firewall.address.put(
     name="web-server",
-    subnet="192.168.1.101 255.255.255.255"
+    comment="Updated comment"
 )
 
-# Get a specific address (CMDB endpoint - GET)
-addr = fgt.api.cmdb.firewall.address.get(name="web-server")
-print(f"Address: {addr.name} = {addr.subnet}")
-
-# Delete an address (CMDB endpoint - DELETE)
-fgt.api.cmdb.firewall.address.delete(name="web-server")
+# Delete an address
+client.api.v2.cmdb.firewall.address.delete(name="web-server")
 ```
 
-## API Structure
-
-All endpoints follow REST conventions with **GET**, **POST**, **PUT**, **DELETE** methods:
+### Async Usage
 
 ```python
-# CMDB - Configuration Management (full CRUD)
-fgt.api.cmdb.firewall.address.get()           # List all
-fgt.api.cmdb.firewall.address.get(name="x")   # Get specific
-fgt.api.cmdb.firewall.address.post(...)       # Create new
-fgt.api.cmdb.firewall.address.put(...)        # Update existing
-fgt.api.cmdb.firewall.address.delete(name="x") # Delete
-
-# Monitor - Real-time data (mostly GET)
-fgt.api.monitor.system.status.get()
-fgt.api.monitor.system.resource.usage.get()
-fgt.api.monitor.firewall.session.get()
-fgt.api.monitor.router.ipv4.get()
-
-# Log - Historical logs (GET)
-fgt.api.log.disk.traffic.forward.get(rows=100)
-fgt.api.log.disk.event.vpn.get(rows=50)
-fgt.api.log.memory.event.system.get()
-
-# Service - System services
-fgt.api.service.sniffer.start.post(...)
-```
-
-## API Coverage
-
-**FortiOS 7.6.5 - 100% Coverage (Schema v1.7.0):**
-
-| Category | Endpoints | Description |
-|----------|-----------|-------------|
-| CMDB | 561 | Configuration management (firewall, system, VPN, routing, etc.) |
-| Monitor | 490 | Real-time monitoring (sessions, stats, resources, etc.) |
-| Log | 286 | Log queries (disk, memory, FortiAnalyzer, FortiCloud) |
-| Service | 11 | Service operations (sniffer, security rating, system) |
-| **Total** | **1,348** | With 2,129 implementation files |
-
-## Key Features
-
-### 🎯 IDE Autocomplete with Literal Types
-
-Every enum parameter provides instant IDE suggestions:
-
-```python
-# ✨ Autocomplete for ALL enum fields
-fgt.api.cmdb.firewall.policy.post(
-    name="allow-web",
-    srcintf=[{"name": "port1"}],
-    dstintf=[{"name": "port2"}],
-    srcaddr=[{"name": "all"}],
-    dstaddr=[{"name": "web-server"}],
-    service=[{"name": "HTTP"}, {"name": "HTTPS"}],
-    action="accept",      # 💡 IDE: 'accept', 'deny', 'ipsec'
-    status="enable",      # 💡 IDE: 'enable', 'disable'
-    nat="enable",         # 💡 IDE: 'enable', 'disable'
-    logtraffic="all",     # 💡 IDE: 'all', 'utm', 'disable'
-    schedule="always"
-)
-
-# 🛡️ Type safety catches errors at development time
-fgt.api.cmdb.system.interface.post(
-    name="vlan100",
-    vdom="root",
-    mode="static",        # 💡 IDE: 'static', 'dhcp', 'pppoe'
-    type="vlan",          # 💡 IDE: 'physical', 'vlan', 'tunnel', ...
-    role="lan"            # 💡 IDE: 'lan', 'wan', 'dmz', 'undefined'
-)
-```
-
-### 🎨 FortiObject Response Wrapper
-
-All methods return `FortiObject` with clean attribute access:
-
-```python
-# Get policies and access fields directly
-policies = fgt.api.cmdb.firewall.policy.get()
-
-for policy in policies:
-    print(f"Policy {policy.policyid}: {policy.name}")
-    print(f"  Action: {policy.action}")
-    print(f"  Status: {policy.status}")
-    
-    # join() flattens member tables for display
-    print(f"  {policy.join('srcintf')} → {policy.join('dstintf')}")
-    print(f"  {policy.join('srcaddr')} → {policy.join('dstaddr')}")
-
-# Access as dict when needed
-policy_dict = policy.to_dict()
-
-# Access raw API envelope
-raw = policy.raw  # {'http_status': 200, 'status': 'success', 'results': ...}
-```
-
-### ⚡ Async Support
-
-```python
-import asyncio
-from hfortix_fortios import FortiOS
+from hfortix_fortios import AsyncFortiOSClient
 
 async def main():
-    async with FortiOS(host="...", token="...", mode="async") as fgt:
-        # All methods support await
-        addresses = await fgt.api.cmdb.firewall.address.get()
-
-        # Concurrent operations
-        addr, pol, svc = await asyncio.gather(
-            fgt.api.cmdb.firewall.address.get(),
-            fgt.api.cmdb.firewall.policy.get(),
-            fgt.api.cmdb.firewall.service.custom.get()
-        )
+    async with AsyncFortiOSClient(
+        host="192.168.1.99",
+        token="your-api-token"
+    ) as client:
+        # Get system status
+        status = await client.api.v2.monitor.system.status.get()
+        print(f"Hostname: {status.hostname}")
+        
+        # Get all interfaces
+        interfaces = await client.api.v2.monitor.system.interface.select().get()
+        for iface in interfaces:
+            print(f"{iface.name}: {iface.ip}")
 
 asyncio.run(main())
 ```
 
-### 🔧 Error Handling
-
-```python
-from hfortix_core import (
-    APIError,
-    ResourceNotFoundError,
-    DuplicateEntryError,
-    AuthenticationError,
-)
-
-try:
-    fgt.api.cmdb.firewall.address.post(name="test", subnet="10.0.0.1/32")
-except DuplicateEntryError:
-    print("Address already exists")
-except ResourceNotFoundError:
-    print("Resource not found")
-except AuthenticationError:
-    print("Invalid API token")
-except APIError as e:
-    print(f"API Error: {e.message} (code: {e.error_code})")
-```
-
-### 🔒 Read-Only Mode & Operation Tracking
-
-```python
-# Safe testing - block all write operations
-fgt = FortiOS(host="...", token="...", read_only=True)
-
-# Audit logging - track all API calls
-fgt = FortiOS(host="...", token="...", track_operations=True)
-operations = fgt.get_operations()
-```
-
-### 🔍 Debugging
-
-```python
-# Enable debug logging
-fgt = FortiOS(host="...", token="...", debug=True)
-
-# Connection pool monitoring
-stats = fgt.connection_stats
-print(f"Active: {stats['active_requests']}/{stats['max_connections']}")
-
-# Request inspection
-result = fgt.api.cmdb.firewall.address.get()
-info = fgt.last_request
-print(f"Endpoint: {info['endpoint']}")
-print(f"Response time: {info['response_time_ms']}ms")
-```
-
-### 🔧 Enterprise Features
-
-- **Audit Logging**: Built-in compliance logging with SIEM integration
-- **HTTP/2 Support**: Connection multiplexing for better performance
-- **Automatic Retry**: Handles transient failures (429, 500, 502, 503, 504)
-- **Circuit Breaker**: Prevents cascade failures with automatic recovery
-- **Request Tracking**: Correlation IDs for distributed tracing
-
-## Examples
-
-### Firewall Policy Management
-
-```python
-# Create a policy
-fgt.api.cmdb.firewall.policy.post(
-    name="Allow-Web",
-    srcintf=[{"name": "port1"}],
-    dstintf=[{"name": "port2"}],
-    srcaddr=[{"name": "all"}],
-    dstaddr=[{"name": "web-servers"}],
-    action="accept",
-    schedule="always",
-    service=[{"name": "HTTP"}, {"name": "HTTPS"}],
-    logtraffic="all"
-)
-
-# Check if policy exists
-if fgt.api.cmdb.firewall.policy.exists(policyid=10):
-    # Update the policy
-    fgt.api.cmdb.firewall.policy.put(
-        policyid=10,
-        status="disable"
-    )
-```
-
-### Address Group Management
-
-```python
-# Create addresses
-fgt.api.cmdb.firewall.address.post(
-    name="subnet1",
-    subnet="10.0.1.0 255.255.255.0"
-)
-fgt.api.cmdb.firewall.address.post(
-    name="subnet2", 
-    subnet="10.0.2.0 255.255.255.0"
-)
-
-# Create address group
-fgt.api.cmdb.firewall.addrgrp.post(
-    name="internal-networks",
-    member=[{"name": "subnet1"}, {"name": "subnet2"}],
-    comment="All internal networks"
-)
-```
-
-### VPN Configuration
-
-```python
-# Create IPsec Phase 1
-fgt.api.cmdb.vpn.ipsec.phase1_interface.post(
-    name="site-to-site",
-    type="static",
-    interface="wan1",
-    ike_version="2",
-    peertype="any",
-    proposal="aes256-sha256",
-    remote_gw="203.0.113.10",
-    psksecret="your-pre-shared-key"
-)
-
-# Create IPsec Phase 2
-fgt.api.cmdb.vpn.ipsec.phase2_interface.post(
-    name="site-to-site-p2",
-    phase1name="site-to-site",
-    proposal="aes256-sha256",
-    src_subnet="10.0.0.0 255.0.0.0",
-    dst_subnet="192.168.0.0 255.255.0.0"
-)
-```
-
-### System Monitoring
-
-```python
-# Get system status (use dict access for untyped Monitor fields)
-status = fgt.api.monitor.system.status.get()
-print(f"Hostname: {status['hostname']}")
-print(f"Model: {status['model']} ({status['model_number']})")
-
-# Get resource usage
-resources = fgt.api.monitor.system.resource.usage.get()
-print(f"CPU: {resources.results['cpu']}%")
-print(f"Memory: {resources.results['mem']}%")
-
-# Get active sessions
-sessions = fgt.api.monitor.firewall.session.get()
-print(f"Total sessions: {len(sessions.results)}")
-```
-
 ### FortiManager Proxy
 
-Route FortiOS API calls through FortiManager to managed devices:
+Manage FortiGate devices through FortiManager:
 
 ```python
 from hfortix_fortios import FortiManagerProxy
@@ -343,65 +100,171 @@ fmg = FortiManagerProxy(
     host="fortimanager.example.com",
     username="admin",
     password="password",
-    adom="root",
-    verify=False
+    adom="root"
 )
 
-# Get a proxied FortiOS connection to a managed device
-fgt = fmg.get_device("fw01")
+# Get proxied connection to managed device
+fgt = fmg.get_device("firewall-01")
 
-# Use the same API as direct FortiOS!
-addresses = fgt.api.cmdb.firewall.address.get()
-for addr in addresses:
-    print(f"{addr.name}: {addr.subnet}")
-
-# Create, update, delete - all work through the proxy
-fgt.api.cmdb.firewall.address.post(
-    name="Server-01",
-    subnet="10.0.1.10 255.255.255.255"
-)
+# Use same API as direct FortiOS connection
+addresses = fgt.api.v2.cmdb.firewall.address.get()
 
 # Clean up
 fmg.logout()
 ```
 
-## Import Patterns
+## 📚 API Structure
+
+The client provides access to all FortiOS API endpoints organized by category:
 
 ```python
-# Recommended
-from hfortix_fortios import FortiOS
-from hfortix_fortios import FortiManagerProxy
-
-# Also available
-from hfortix import FortiOS
+client.api.v2.cmdb.*       # Configuration Management Database (CMDB)
+client.api.v2.monitor.*    # Monitor endpoints (real-time data)
+client.api.v2.log.*        # Log endpoints (disk, memory, cloud)
+client.api.v2.service.*    # Service endpoints (sniffer, security rating)
 ```
 
-## Requirements
+### Common Endpoints
 
-- Python 3.10+
+```python
+# Firewall
+client.api.v2.cmdb.firewall.policy.*
+client.api.v2.cmdb.firewall.address.*
+client.api.v2.cmdb.firewall.addrgrp.*
+client.api.v2.cmdb.firewall.service.custom.*
+
+# System
+client.api.v2.cmdb.system.interface.*
+client.api.v2.cmdb.system.global_.*
+client.api.v2.monitor.system.status.*
+client.api.v2.monitor.system.interface.*
+
+# VPN
+client.api.v2.cmdb.vpn.ipsec.phase1_interface.*
+client.api.v2.cmdb.vpn.ipsec.phase2_interface.*
+client.api.v2.monitor.vpn.ipsec.*
+
+# Router
+client.api.v2.cmdb.router.static.*
+client.api.v2.monitor.router.ipv4.*
+```
+
+## 🎯 API Coverage
+
+**FortiOS 7.6.5 - Schema v1.7.0:**
+
+| Category  | Endpoints | Description                          |
+| --------- | --------: | ------------------------------------ |
+| CMDB      |       561 | Configuration management             |
+| Monitor   |       490 | Real-time monitoring data            |
+| Log       |       286 | Log queries and management           |
+| Service   |        11 | System services (sniffer, etc.)      |
+| **Total** | **1,348** | **Complete API coverage**            |
+
+## 📖 Documentation
+
+### Getting Started
+
+- [Quick Start Guide](./docs/getting-started/quickstart.md) - Installation and basic usage
+- [Authentication](./docs/getting-started/authentication.md) - API token setup
+- [Async Guide](./docs/fortios/user-guide/async-usage.md) - Async/await patterns
+
+### User Guides
+
+- [Client Overview](./docs/fortios/user-guide/client.rst) - FortiOSClient features
+- [Endpoint Methods](./docs/fortios/user-guide/endpoint-methods.md) - Using `.get()`, `.post()`, `.put()`, `.delete()`
+- [Response Objects](./docs/fortios/user-guide/response-objects.md) - Working with API responses
+- [Error Handling](./docs/fortios/user-guide/error-handling.md) - Exception handling
+
+### Advanced Topics
+
+- [Transactions](./docs/fortios/guides/transactions.rst) - Multi-step operations
+- [Filtering & Queries](./docs/fortios/guides/filtering.md) - Advanced filtering
+- [Rate Limiting](./docs/fortios/guides/rate-limiting.md) - Request throttling
+- [Validation](./docs/fortios/guides/validation.md) - Input validation
+- [Debugging](./docs/fortios/guides/debugging.md) - Troubleshooting
+
+### API Reference
+
+- [Firewall Policies](./docs/fortios/guides/firewall-policies.md) - Policy management
+- [Services](./docs/fortios/guides/services.md) - Service objects
+- [Schedules](./docs/fortios/guides/schedules.md) - Schedule objects
+- [Traffic Shapers](./docs/fortios/guides/shapers.md) - QoS configuration
+
+## ✨ Advanced Features
+
+### Transaction Support
+
+```python
+with client.transaction():
+    # All operations in atomic transaction
+    client.api.v2.cmdb.firewall.address.post(name="addr1", subnet="10.0.0.1/32")
+    client.api.v2.cmdb.firewall.address.post(name="addr2", subnet="10.0.0.2/32")
+    # Automatically committed on success, rolled back on error
+```
+
+### Error Handling
+
+```python
+from hfortix_core.exceptions import (
+    ResourceNotFoundError,
+    DuplicateEntryError,
+    PermissionDeniedError
+)
+
+try:
+    policy = client.api.v2.cmdb.firewall.policy.get(policyid=100)
+except ResourceNotFoundError:
+    print("Policy not found")
+except PermissionDeniedError:
+    print("Insufficient permissions")
+```
+
+### Filtering & Querying
+
+```python
+# Filter by multiple conditions
+addresses = client.api.v2.cmdb.firewall.address.get(
+    filter="subnet==192.168.1.0/24|name==@prod"
+)
+
+# Select specific fields
+policies = client.api.v2.cmdb.firewall.policy.get(
+    select="policyid,name,action"
+)
+```
+
+## 📋 Requirements
+
+- Python 3.10 or higher
 - FortiOS 7.0+ (tested with 7.6.5)
-- hfortix-core >= 0.5.132
+- Network access to FortiGate device
 
-## Documentation
+### Dependencies
 
-- [Quick Start](https://github.com/hermanwjacobsen/hfortix/blob/main/QUICKSTART.md)
-- [Async Guide](https://github.com/hermanwjacobsen/hfortix/blob/main/docs/fortios/ASYNC_GUIDE.md)
-- [API Reference](https://github.com/hermanwjacobsen/hfortix/blob/main/docs/fortios/ENDPOINT_METHODS.md)
-- [Filtering Guide](https://github.com/hermanwjacobsen/hfortix/blob/main/docs/fortios/FILTERING_GUIDE.md)
-- [Changelog](https://github.com/hermanwjacobsen/hfortix/blob/main/CHANGELOG.md)
+- `hfortix-core` - Core HTTP client (installed automatically)
+- `httpx` >= 0.24.0
+- `pydantic` >= 2.0.0
 
-## License
+## 🔗 Related Packages
 
-Proprietary - See LICENSE file
+- [hfortix-core](https://github.com/hermanwjacobsen/hfortix-core) - Core HTTP client
+- [hfortix](https://github.com/hermanwjacobsen/hfortix) - Meta-package for easy installation
 
-## Support
+## 🤝 Contributing
 
-- 📖 [Documentation](https://github.com/hermanwjacobsen/hfortix)
-- 🐛 [Report Issues](https://github.com/hermanwjacobsen/hfortix/issues)
-- 💬 [Discussions](https://github.com/hermanwjacobsen/hfortix/discussions)
+Contributions are welcome! Please see [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.
 
-## Author
+## 📄 License
 
-**Herman W. Jacobsen**
-- Email: herman@wjacobsen.fo
-- GitHub: [@hermanwjacobsen](https://github.com/hermanwjacobsen)
+MIT License - see [LICENSE](LICENSE) for details.
+
+## 💬 Support
+
+- 🐛 [Report Issues](https://github.com/hermanwjacobsen/hfortix-fortios/issues)
+- 💬 [Discussions](https://github.com/hermanwjacobsen/hfortix-fortios/discussions)
+- 📧 Email: herman@wjacobsen.fo
+
+---
+
+**Author**: Herman W. Jacobsen | [LinkedIn](https://www.linkedin.com/in/hermanwjacobsen/) | [GitHub](https://github.com/hermanwjacobsen)
