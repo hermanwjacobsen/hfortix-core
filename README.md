@@ -4,7 +4,10 @@
 
 [![PyPI version](https://badge.fury.io/py/hfortix.svg)](https://pypi.org/project/hfortix/)
 [![Python 3.10+](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/downloads/)
-[![License: Proprietary](https://img.shields.io/badge/License-Proprietary-blue.svg)](LICENSE)
+[![Documentation](https://img.shields.io/badge/docs-ReadTheDocs-blue.svg)](https://hfortix.readthedocs.io/)
+[![Downloads](https://static.pepy.tech/badge/hfortix)](https://pepy.tech/project/hfortix)
+[![Type Hints](https://img.shields.io/badge/type--hints-100%25-brightgreen.svg)](https://www.python.org/dev/peps/pep-0484/)
+[![Async Support](https://img.shields.io/badge/async-supported-green.svg)](https://docs.python.org/3/library/asyncio.html)
 [![Typing: Typed](https://img.shields.io/badge/typing-typed-green.svg)](https://peps.python.org/pep-0561/)
 
 ## Quick Start
@@ -459,7 +462,7 @@ hfortix/
 
 ## Contributing
 
-This is a proprietary project. For feature requests or bug reports, please open an issue on GitHub.
+For feature requests or bug reports, please [open an issue](https://github.com/hermanwjacobsen/hfortix/issues) on GitHub.
 
 ---
 
