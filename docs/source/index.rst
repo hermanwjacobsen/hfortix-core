@@ -6,7 +6,7 @@ HFortix-Core Documentation
    :caption: Contents:
 
    quickstart
-   api/index
+   reference/index
 
 Welcome to HFortix-Core
 -----------------------
