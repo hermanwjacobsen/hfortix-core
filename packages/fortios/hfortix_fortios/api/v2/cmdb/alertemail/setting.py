@@ -506,8 +506,4 @@ class Setting(CRUDEndpoint, MetadataMixin):
         
         endpoint = "/alertemail/setting"
         return self._client.post(  # type: ignore[return-value]
-            "cmdb", endpoint, data={}, params=params, vdom=vdom        )
-
-
-
-
+            "cmdb", endpoint, data={}, params=params, vdom=vdom)
