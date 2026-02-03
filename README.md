@@ -1,6 +1,8 @@
-# HFortix - Fortinet Python SDK
+# HFortix - FortiGate & FortiOS Automation Library
 
-**Fully-typed Python SDK for Fortinet FortiOS, FortiManager, and FortiAnalyzer**
+**Type-safe Python SDK for FortiGate firewall automation, FortiOS REST API client, and FortiManager integration**
+
+Automate FortiGate configuration, monitoring, and management with a modern Python library featuring complete type safety, async support, and 1,348+ FortiOS API endpoints.
 
 [![PyPI version](https://badge.fury.io/py/hfortix.svg)](https://pypi.org/project/hfortix/)
 [![Python 3.10+](https://img.shields.io/badge/python-3.10+-blue.svg)](https://www.python.org/downloads/)
