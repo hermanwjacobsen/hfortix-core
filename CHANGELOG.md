@@ -1,3 +1,22 @@
+# [0.5.154] - 2026-02-02
+
+### Improved
+
+- **Enhanced PyPI Metadata**: Improved package discoverability and classification
+  - **Keywords**: Added comprehensive search terms including `network-automation`, `network-administration`, `network-as-code`, `devops`, `netops`, `network-security`, `infrastructure-as-code`, `configuration-management`
+  - **Classifiers**: Added audience and topic classifications
+    - Audience: `Information Technology`, `Telecommunications Industry`
+    - Topics: `Networking :: Monitoring`, `Systems Administration`
+    - Language: `Natural Language :: English`
+    - Compatibility: `Programming Language :: Python :: 3 :: Only`, `Operating System :: OS Independent`
+    - Frameworks: `AsyncIO`, `Pydantic`, `Typed`
+    - License: `Other/Proprietary License`
+  - **Project URLs**: Added direct links to documentation, bug tracker, changelog, and source code
+  - **Maintainer**: Added maintainer field for better package management
+  - **Descriptions**: Enhanced package descriptions to highlight key features (type safety, async support, endpoint coverage)
+  - **Impact**: Better search results on PyPI, clearer package purpose, easier navigation to resources
+  - **Packages Updated**: All packages (hfortix-core, hfortix-fortios, hfortix) bumped to 0.5.154
+
 # [0.5.153] - 2026-02-02
 
 ### Fixed
