@@ -52,4 +52,4 @@ Changelog = "https://github.com/hermanwjacobsen/hfortix/blob/main/CHANGELOG.md"
 Download = "https://pypi.org/project/hfortix-core/#files"
 
 [tool.setuptools.packages.find]
-where = ["src"]
+where = ["."]
