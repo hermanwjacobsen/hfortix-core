@@ -5,7 +5,7 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "hfortix-fortios"
 version = "0.5.154"
-description = "Fully-typed FortiOS SDK with 1,348+ endpoints, complete type safety, async support, and transaction management"
+description = "Type-safe Python client for FortiGate automation and FortiOS REST API - 1,348+ endpoints with async support and atomic transactions"
 authors = [{name = "Herman W. Jacobsen", email = "herman@wjacobsen.fo"}]
 maintainers = [{name = "Herman W. Jacobsen", email = "herman@wjacobsen.fo"}]
 readme = "README.md"
