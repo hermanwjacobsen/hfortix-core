@@ -60,3 +60,6 @@ Documentation = "https://hfortix.readthedocs.io/en/latest/fortios/"
 Changelog = "https://github.com/hermanwjacobsen/hfortix/blob/main/CHANGELOG.md"
 "Source Code" = "https://github.com/hermanwjacobsen/hfortix"
 Download = "https://pypi.org/project/hfortix-fortios/#files"
+
+[tool.setuptools.packages.find]
+where = ["src"]

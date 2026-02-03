@@ -68,25 +68,17 @@ example_*.py
 htmlcov/
 .tox/
 *.log
-.tests/
-
-
 
 # Jupyter Notebook
 .ipynb_checkpoints
 
-# Local test files and internal development
-.dev/
-dev/
-# Schema files (generated, not for version control)
-schema/
+# Root-level dev and schema folders only (old structure - no longer used)
+# DO NOT ignore packages/*/dev/ or packages/*/dev/schema/ (new structure)
+/dev/
+/schema/
 
-# Development tools (local only, not for public release)
-Makefile
-.editorconfig
+# Development notes (local only, not for public release)
 DEVELOPER_NOTES.md
-CONTRIBUTING.md
-SECURITY.md
 QUICK_WINS_SUMMARY.md
 
 # Credentials and secrets
@@ -112,17 +104,10 @@ test_error_handling.py
 test_results*.log
 raw_json*.log
 
-# Development cache
-
-# Sphinx documentation build output
-docs/build/
-docs/source/_build/
-docs/source/generated/
+# Sphinx documentation build output (new structure: packages/*/docs/)
+packages/*/docs/build/
+packages/*/docs/source/_build/
+packages/*/docs/source/generated/
 .mypy_cache/
 
 # NOTE: Do NOT ignore .github/ (workflows, templates, etc.)
-
-examples/
-Examples/
-.github/prompts/
-.tests/
