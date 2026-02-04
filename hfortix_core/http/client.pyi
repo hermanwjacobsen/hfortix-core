@@ -75,6 +75,7 @@ class HTTPClient:
         params: Optional[dict[str, Any]] = None,
         vdom: Optional[Union[str, bool]] = None,
         raw_json: bool = False,
+        silent: bool = False,
     ) -> HTTPResponse:
         """Make GET request."""
         ...
