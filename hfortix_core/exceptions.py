@@ -400,6 +400,27 @@ class RateLimitError(RetryableError):
         super().__init__(message, **kwargs)
 
 
+class RateLimitExceededError(RateLimitError):
+    """Rate limiter rejected request - limit exceeded (strategy='raise')"""
+
+    def __init__(self, message="Rate limit exceeded - request rejected", **kwargs):
+        super().__init__(message, **kwargs)
+
+
+class RateLimitQueueFullError(RateLimitError):
+    """Rate limiter queue is full - cannot queue request (queue_overflow='raise')"""
+
+    def __init__(self, message="Rate limit queue is full - request rejected", **kwargs):
+        super().__init__(message, **kwargs)
+
+
+class RateLimitQueueTimeoutError(RateLimitError):
+    """Request timed out waiting in rate limit queue"""
+
+    def __init__(self, message="Request timed out in rate limit queue", **kwargs):
+        super().__init__(message, **kwargs)
+
+
 class ServerError(RetryableError):
     """HTTP 500 - Internal server error"""
 
@@ -422,6 +443,20 @@ class CircuitBreakerOpenError(RetryableError):
     """Circuit breaker is open - service appears to be down"""
 
     def __init__(self, message="Circuit breaker is open", **kwargs):
+        super().__init__(message, **kwargs)
+
+
+class CircuitBreakerError(FortinetError):
+    """Base class for circuit breaker specific errors"""
+
+    def __init__(self, message="Circuit breaker error", **kwargs):
+        super().__init__(message)
+
+
+class CircuitBreakerTimeoutError(CircuitBreakerError):
+    """Circuit breaker test calls timed out in half-open state"""
+
+    def __init__(self, message="Circuit breaker test calls timed out", **kwargs):
         super().__init__(message, **kwargs)
 
 
@@ -1355,9 +1390,14 @@ __all__ = [
     "ResourceNotFoundError",
     "MethodNotAllowedError",
     "RateLimitError",
+    "RateLimitExceededError",
+    "RateLimitQueueFullError",
+    "RateLimitQueueTimeoutError",
     "ServerError",
     "ServiceUnavailableError",
     "CircuitBreakerOpenError",
+    "CircuitBreakerError",
+    "CircuitBreakerTimeoutError",
     "TimeoutError",
     # FortiOS-specific exceptions
     "DuplicateEntryError",

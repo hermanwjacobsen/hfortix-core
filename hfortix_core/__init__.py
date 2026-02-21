@@ -23,7 +23,7 @@ from .deprecation import (
     check_deprecated_fields,
     warn_deprecated_field,
 )
-from .http import HTTPClientFMG
+from .http import HTTPClientJSONRPC, HTTPClientFMG  # HTTPClientFMG is backward compat alias
 from .exceptions import (
     APIError,
     AuthenticationError,
@@ -54,6 +54,11 @@ from .logging import (
     StructuredFormatter,
     TextFormatter,
     log_operation,
+)
+from .ratelimit import RateLimitStats
+from .session import (
+    CloudSession,
+    TokenInfo,
 )
 from .types import (
     APIResponse,
@@ -120,5 +125,11 @@ __all__ = [
     "format_request_info",
     "print_debug_info",
     # HTTP clients
-    "HTTPClientFMG",
+    "HTTPClientJSONRPC",
+    "HTTPClientFMG",  # Backward compatibility alias
+    # Session management
+    "CloudSession",
+    "TokenInfo",
+    # Rate limiting
+    "RateLimitStats",
 ]

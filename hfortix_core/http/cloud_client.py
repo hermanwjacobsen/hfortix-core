@@ -10,7 +10,7 @@ from __future__ import annotations
 
 import logging
 import time
-from typing import TYPE_CHECKING, Any, Optional, TypeAlias
+from typing import TYPE_CHECKING, Any, Callable, Optional, TypeAlias
 
 if TYPE_CHECKING:
     from collections.abc import Coroutine
@@ -86,6 +86,23 @@ class CloudHTTPClient(BaseHTTPClient):
         audit_handler: Optional[Any] = None,
         audit_callback: Optional[Any] = None,
         user_context: Optional[dict[str, Any]] = None,
+        token_callback: Optional[Callable[[], str]] = None,
+        rate_limit_calls_per_min: Optional[int] = None,
+        rate_limit_calls_per_5min: Optional[int] = None,
+        rate_limit_calls_per_hour: Optional[int] = None,
+        rate_limit_errors_per_min: Optional[int] = None,
+        rate_limit_errors_per_5min: Optional[int] = None,
+        rate_limit_errors_per_hour: Optional[int] = None,
+        # NEW: Rate limiting enforcement parameters
+        rate_limit: bool = False,
+        rate_limit_strategy: str = "queue",
+        rate_limit_max_requests: int = 100,
+        rate_limit_window_seconds: float = 60.0,
+        rate_limit_queue_size: int = 100,
+        rate_limit_queue_timeout: float = 30.0,
+        rate_limit_queue_overflow: str = "block",
+        circuit_breaker: bool = False,
+        circuit_breaker_half_open_calls: int = 3,
     ) -> None:
         """
         Initialize Cloud HTTP client.
@@ -110,6 +127,17 @@ class CloudHTTPClient(BaseHTTPClient):
             audit_handler: Handler for audit logging (implements AuditHandler protocol)
             audit_callback: Custom callback function for audit logging (alternative to audit_handler)
             user_context: Optional dict with user/application context to include in audit logs
+            token_callback: Optional callback to get fresh token before each request (returns str)
+                           Useful with CloudSession to ensure token is valid before each request
+            rate_limit: Enable rate limiting enforcement (default: False)
+            rate_limit_strategy: 'queue' or 'reject' (default: 'queue')
+            rate_limit_max_requests: Max requests per window (default: 100)
+            rate_limit_window_seconds: Time window in seconds (default: 60.0)
+            rate_limit_queue_size: Max queue size (default: 100)
+            rate_limit_queue_timeout: Max wait time in queue (default: 30.0)
+            rate_limit_queue_overflow: 'block' or 'drop' on overflow (default: 'block')
+            circuit_breaker: Enable circuit breaker (default: False)
+            circuit_breaker_half_open_calls: Calls to test in half-open state (default: 3)
 
         Raises:
             ValueError: If oauth_token is empty or invalid parameters
@@ -132,21 +160,36 @@ class CloudHTTPClient(BaseHTTPClient):
             adaptive_retry=adaptive_retry,
             retry_strategy=retry_strategy,
             retry_jitter=retry_jitter,
+            read_only=read_only,
+            audit_handler=audit_handler,
+            audit_callback=audit_callback,
+            user_context=user_context,
+            rate_limit_calls_per_min=rate_limit_calls_per_min,
+            rate_limit_calls_per_5min=rate_limit_calls_per_5min,
+            rate_limit_calls_per_hour=rate_limit_calls_per_hour,
+            rate_limit_errors_per_min=rate_limit_errors_per_min,
+            rate_limit_errors_per_5min=rate_limit_errors_per_5min,
+            rate_limit_errors_per_hour=rate_limit_errors_per_hour,
+            # NEW: Pass rate limiting parameters
+            rate_limit=rate_limit,
+            rate_limit_strategy=rate_limit_strategy,
+            rate_limit_max_requests=rate_limit_max_requests,
+            rate_limit_window_seconds=rate_limit_window_seconds,
+            rate_limit_queue_size=rate_limit_queue_size,
+            rate_limit_queue_timeout=rate_limit_queue_timeout,
+            rate_limit_queue_overflow=rate_limit_queue_overflow,
+            circuit_breaker=circuit_breaker,
+            circuit_breaker_half_open_calls=circuit_breaker_half_open_calls,
         )
 
         self._oauth_token = oauth_token
+        self._token_callback = token_callback
         self._user_agent = user_agent or "hfortix-cloud/1.0"
         self._session: Optional[httpx.Client] = None
         
-        # Read-only mode and operation tracking
-        self._read_only = read_only
+        # Operation tracking (read_only and audit already set in parent)
         self._track_operations = track_operations
         self._operations: list[dict[str, Any]] = [] if track_operations else []
-        
-        # Audit logging
-        self._audit_handler = audit_handler
-        self._audit_callback = audit_callback
-        self._user_context = user_context or {}
         
         # Connection pool monitoring
         self._active_requests = 0
@@ -158,6 +201,21 @@ class CloudHTTPClient(BaseHTTPClient):
         self._last_request: Optional[dict[str, Any]] = None
         self._last_response: Optional[dict[str, Any]] = None
         self._last_response_time: Optional[float] = None
+    
+    def _refresh_token_if_needed(self) -> None:
+        """
+        Call token_callback to get fresh token if callback is configured.
+        
+        This is called before each request to ensure token is valid.
+        Used with CloudSession.ensure_token_valid() to auto-refresh expiring tokens.
+        """
+        if self._token_callback:
+            fresh_token = self._token_callback()
+            if fresh_token != self._oauth_token:
+                self._oauth_token = fresh_token
+                # Update session headers if session exists
+                if self._session:
+                    self._session.headers["Authorization"] = f"Bearer {fresh_token}"
 
     def _get_session(self) -> httpx.Client:
         """
@@ -291,6 +349,9 @@ class CloudHTTPClient(BaseHTTPClient):
             httpx.TimeoutException: If request times out
             httpx.RequestError: For network errors
         """
+        # Refresh token if callback configured (CloudSession integration)
+        self._refresh_token_if_needed()
+        
         session = self._get_session()
 
         # Build query string if params provided
@@ -309,6 +370,9 @@ class CloudHTTPClient(BaseHTTPClient):
         # Track active requests
         self._active_requests += 1
         self._total_requests += 1
+        
+        # Track rate limit statistics
+        self._rate_stats.record_call()
 
         try:
             # Measure response time
@@ -396,6 +460,9 @@ class CloudHTTPClient(BaseHTTPClient):
             httpx.TimeoutException: If request times out
             httpx.RequestError: For network errors
         """
+        # Refresh token if callback configured (CloudSession integration)
+        self._refresh_token_if_needed()
+        
         session = self._get_session()
 
         # Build query string if params provided
@@ -413,6 +480,9 @@ class CloudHTTPClient(BaseHTTPClient):
         # Track active requests
         self._active_requests += 1
         self._total_requests += 1
+        
+        # Track rate limit statistics
+        self._rate_stats.record_call()
 
         try:
             # Read-only mode: simulate write operations
@@ -556,6 +626,9 @@ class CloudHTTPClient(BaseHTTPClient):
             httpx.TimeoutException: If request times out
             httpx.RequestError: For network errors
         """
+        # Refresh token if callback configured (CloudSession integration)
+        self._refresh_token_if_needed()
+        
         session = self._get_session()
 
         url = path
@@ -571,6 +644,9 @@ class CloudHTTPClient(BaseHTTPClient):
         # Track active requests
         self._active_requests += 1
         self._total_requests += 1
+        
+        # Track rate limit statistics
+        self._rate_stats.record_call()
 
         try:
             # Read-only mode: simulate write operations
@@ -685,6 +761,9 @@ class CloudHTTPClient(BaseHTTPClient):
             httpx.TimeoutException: If request times out
             httpx.RequestError: For network errors
         """
+        # Refresh token if callback configured (CloudSession integration)
+        self._refresh_token_if_needed()
+        
         session = self._get_session()
 
         url = path
@@ -700,6 +779,9 @@ class CloudHTTPClient(BaseHTTPClient):
         # Track active requests
         self._active_requests += 1
         self._total_requests += 1
+        
+        # Track rate limit statistics
+        self._rate_stats.record_call()
 
         try:
             # Read-only mode: simulate write operations

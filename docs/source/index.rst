@@ -6,6 +6,8 @@ HFortix-Core Documentation
    :caption: Contents:
 
    overview
+   session
+   ratelimit
    modules
    exceptions
    types

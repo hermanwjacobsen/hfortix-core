@@ -86,6 +86,21 @@ class AsyncHTTPClient(BaseHTTPClient):
         audit_handler: Optional[Any] = None,
         audit_callback: Optional[Any] = None,
         user_context: Optional[dict[str, Any]] = None,
+        rate_limit_calls_per_min: Optional[int] = None,
+        rate_limit_calls_per_5min: Optional[int] = None,
+        rate_limit_calls_per_hour: Optional[int] = None,
+        rate_limit_errors_per_min: Optional[int] = None,
+        rate_limit_errors_per_5min: Optional[int] = None,
+        rate_limit_errors_per_hour: Optional[int] = None,
+        rate_limit: bool = False,
+        rate_limit_strategy: str = "queue",
+        rate_limit_max_requests: int = 100,
+        rate_limit_window_seconds: float = 60.0,
+        rate_limit_queue_size: int = 100,
+        rate_limit_queue_timeout: float = 30.0,
+        rate_limit_queue_overflow: str = "block",
+        circuit_breaker: bool = False,
+        circuit_breaker_half_open_calls: int = 3,
     ) -> None:
         """
         Initialize async HTTP client
@@ -165,6 +180,46 @@ class AsyncHTTPClient(BaseHTTPClient):
             include in audit logs.
                          Example: {"username": "admin", "app": "automation",
                          "ticket": "CHG-12345"}
+            rate_limit: Enable rate limiting with token bucket algorithm
+                       (default: False). When enabled, enforces request limits
+                       with configurable queue and overflow strategies. Zero
+                       overhead when disabled.
+            rate_limit_strategy: Rate limiting strategy (default: "queue").
+                                Currently only "queue" is supported - uses
+                                token bucket algorithm with FIFO queue for
+                                overflow handling.
+            rate_limit_max_requests: Maximum requests allowed per window
+                                    (default: 100). Controls token bucket
+                                    capacity and refill rate (tokens/second =
+                                    max_requests/window_seconds).
+            rate_limit_window_seconds: Time window in seconds for rate limit
+                                      (default: 60.0). Tokens refill at
+                                      max_requests/window_seconds per second.
+            rate_limit_queue_size: Maximum requests to queue when rate limit
+                                  exceeded (default: 100). Set to 0 to disable
+                                  queuing (requests dropped immediately with
+                                  clear message).
+            rate_limit_queue_timeout: Maximum seconds to wait in queue
+                                     (default: 30.0). Raises
+                                     RateLimitQueueTimeoutError if exceeded.
+            rate_limit_queue_overflow: Queue overflow strategy (default:
+                                      "block"):
+                - "block": Block/wait until space available (respects
+                queue_timeout)
+                - "drop_oldest": Remove oldest queued request, add new one
+                (FIFO eviction)
+                - "drop_newest": Reject new request, keep existing queue
+            circuit_breaker: Enable circuit breaker pattern (default: False).
+                            When enabled, opens circuit after threshold
+                            failures to prevent cascading failures. Requires
+                            successful test requests in half-open state before
+                            closing. BREAKING CHANGE: Previously always
+                            enabled, now opt-in for zero overhead.
+            circuit_breaker_half_open_calls: Number of successful requests
+                                            required in half-open state before
+                                            closing circuit (default: 3).
+                                            Prevents premature closing on
+                                            transient recovery.
 
         Raises:
             ValueError: If parameters are invalid or both token and
@@ -196,12 +251,47 @@ class AsyncHTTPClient(BaseHTTPClient):
             adaptive_retry=adaptive_retry,
             retry_strategy=retry_strategy,
             retry_jitter=retry_jitter,
+            read_only=read_only,
+            audit_handler=audit_handler,
+            audit_callback=audit_callback,
+            user_context=user_context,
+            rate_limit_calls_per_min=rate_limit_calls_per_min,
+            rate_limit_calls_per_5min=rate_limit_calls_per_5min,
+            rate_limit_calls_per_hour=rate_limit_calls_per_hour,
+            rate_limit_errors_per_min=rate_limit_errors_per_min,
+            rate_limit_errors_per_5min=rate_limit_errors_per_5min,
+            rate_limit_errors_per_hour=rate_limit_errors_per_hour,
+            rate_limit=rate_limit,
+            rate_limit_strategy=rate_limit_strategy,
+            rate_limit_max_requests=rate_limit_max_requests,
+            rate_limit_window_seconds=rate_limit_window_seconds,
+            rate_limit_queue_size=rate_limit_queue_size,
+            rate_limit_queue_timeout=rate_limit_queue_timeout,
+            rate_limit_queue_overflow=rate_limit_queue_overflow,
+            circuit_breaker=circuit_breaker,
+            circuit_breaker_half_open_calls=circuit_breaker_half_open_calls,
         )
 
         # Store circuit breaker auto-retry settings
         self._circuit_breaker_auto_retry = circuit_breaker_auto_retry
         self._circuit_breaker_max_retries = circuit_breaker_max_retries
         self._circuit_breaker_retry_delay = circuit_breaker_retry_delay
+
+        # Initialize async rate limiter if enabled
+        if self._rate_limit_enabled and self._rate_limit_config:
+            from hfortix_core.async_rate_limiter import AsyncRateLimiter
+
+            self._rate_limiter = AsyncRateLimiter(
+                max_requests=self._rate_limit_config["max_requests"],
+                window_seconds=self._rate_limit_config["window_seconds"],
+                strategy=self._rate_limit_config["strategy"],
+                queue_size=self._rate_limit_config["queue_size"],
+                queue_timeout=self._rate_limit_config["queue_timeout"],
+                queue_overflow=self._rate_limit_config["queue_overflow"],
+            )
+            logger.info("Async rate limiter initialized")
+        else:
+            self._rate_limiter = None
 
         # Store connection pool settings for monitoring
         self._max_connections = max_connections
@@ -238,15 +328,9 @@ class AsyncHTTPClient(BaseHTTPClient):
         self._using_token_auth = token is not None
         self._login_task: Optional[asyncio.Task] = None  # Track login task
 
-        # Read-only mode and operation tracking
-        self._read_only = read_only
+        # Read-only mode and operation tracking (read_only already set in parent)
         self._track_operations = track_operations
         self._operations: list[dict[str, Any]] = [] if track_operations else []
-
-        # Audit logging
-        self._audit_handler = audit_handler
-        self._audit_callback = audit_callback
-        self._user_context = user_context or {}
 
         # Connection pool monitoring
         self._active_requests = 0
@@ -580,168 +664,6 @@ class AsyncHTTPClient(BaseHTTPClient):
                 )
                 response.raise_for_status()
 
-    def _log_audit(
-        self,
-        method: str,
-        endpoint: str,
-        api_type: str,
-        path: str,
-        data: Optional[dict[str, Any]],
-        params: Optional[dict[str, Any]],
-        status_code: int,
-        success: bool,
-        duration_ms: int,
-        request_id: str,
-        error: Optional[str] = None,
-    ) -> None:
-        """
-        Log API operation to audit handlers (sync for async client)
-
-        Note: This is intentionally synchronous to avoid async complexity
-        in audit logging. If async audit is needed, use audit_callback
-        with async function.
-
-        Args:
-            method: HTTP method
-            endpoint: Full API endpoint
-            api_type: API type (cmdb, monitor, etc.)
-            path: Relative path
-            data: Request data (will be sanitized)
-            params: Request params (will be sanitized)
-            status_code: HTTP status code
-            success: Whether operation succeeded
-            duration_ms: Duration in milliseconds
-            request_id: Request ID
-            error: Error message if failed
-        """
-        # Skip if no audit handler or callback configured
-        if not self._audit_handler and not self._audit_callback:
-            return
-
-        try:
-            from datetime import datetime, timezone
-
-            # Determine action from method and path
-            action = self._infer_action(method, path)
-
-            # Extract object type and name from path
-            object_type, object_name = self._extract_object_info(path, data)
-
-            # Build operation dict
-            operation: dict[str, Any] = {
-                "timestamp": datetime.now(timezone.utc).isoformat(),
-                "request_id": request_id,
-                "method": method.upper(),
-                "endpoint": endpoint,
-                "api_type": api_type,
-                "path": path,
-                "vdom": params.get("vdom") if params else None,
-                "action": action,
-                "object_type": object_type,
-                "object_name": object_name,
-                "data": self._sanitize_data(data) if data else None,
-                "params": self._sanitize_data(params) if params else None,
-                "status_code": status_code,
-                "success": success,
-                "duration_ms": duration_ms,
-                "host": self._url.replace("https://", "").replace(
-                    "http://", ""
-                ),
-                "read_only_mode": self._read_only
-                and method in ("POST", "PUT", "DELETE"),
-            }
-
-            # Add error if present
-            if error:
-                operation["error"] = error
-
-            # Add user context if provided
-            if self._user_context:
-                operation["user_context"] = self._user_context
-
-            # Call audit handler if configured
-            if self._audit_handler:
-                try:
-                    self._audit_handler.log_operation(operation)
-                except Exception as e:
-                    logger.error(
-                        f"Audit handler failed: {e}",
-                        extra={
-                            "error": str(e),
-                            "request_id": request_id,
-                        },
-                        exc_info=True,
-                    )
-
-            # Call audit callback if configured
-            if self._audit_callback:
-                try:
-                    self._audit_callback(operation)
-                except Exception as e:
-                    logger.error(
-                        f"Audit callback failed: {e}",
-                        extra={
-                            "error": str(e),
-                            "request_id": request_id,
-                        },
-                        exc_info=True,
-                    )
-
-        except Exception as e:
-            # Don't let audit failures break API operations
-            logger.error(
-                f"Audit logging failed: {e}",
-                extra={"error": str(e), "request_id": request_id},
-                exc_info=True,
-            )
-
-    @staticmethod
-    def _infer_action(method: str, path: str) -> str:
-        """Infer high-level action from method and path"""
-        method = method.upper()
-
-        if method == "GET":
-            parts = path.strip("/").split("/")
-            if len(parts) > 0 and parts[-1] and not parts[-1].startswith("?"):
-                return "read"
-            return "list"
-        elif method == "POST":
-            return "create"
-        elif method == "PUT":
-            return "update"
-        elif method == "DELETE":
-            return "delete"
-        else:
-            return "unknown"
-
-    @staticmethod
-    def _extract_object_info(
-        path: str, data: Optional[dict[str, Any]]
-    ) -> tuple[str, Optional[str]]:
-        """
-        Extract object type and name from path and data
-
-        Returns:
-            Tuple of (object_type, object_name)
-        """
-        path = path.strip("/")
-        object_type = path.replace("/", ".")
-        object_name = None
-
-        parts = path.split("/")
-        if len(parts) > 0:
-            last_part = parts[-1]
-            if last_part and not last_part.startswith("?"):
-                object_name = last_part
-
-        if data:
-            if "name" in data:
-                object_name = str(data["name"])
-            elif "mkey" in data:
-                object_name = str(data["mkey"])
-
-        return object_type, object_name
-
     async def request(
         self,
         method: str,
@@ -792,20 +714,42 @@ class AsyncHTTPClient(BaseHTTPClient):
         full_path = f"/api/v2/{api_type}/{path}"
         endpoint_key = f"{api_type}/{path}"
 
-        # Check circuit breaker
+        # Rate limiting enforcement (if enabled, zero overhead if disabled)
+        if self._rate_limiter is not None:
+            # Acquire permission to make request (may block/drop/raise based on strategy)
+            acquired = await self._rate_limiter.acquire()
+            if not acquired:
+                # Request was dropped (strategy="drop" or queue overflow="drop")
+                logger.warning(
+                    "Request dropped by rate limiter",
+                    extra=self._log_context(
+                        request_id=request_id,
+                        method=method,
+                        endpoint=full_path,
+                    ),
+                )
+                # Return empty response to avoid breaking code expecting dict
+                return {"status": "error", "message": "Rate limit exceeded - request dropped"}
+
         try:
-            await self._check_circuit_breaker(endpoint_key)
-        except RuntimeError:
-            logger.error(
-                "Circuit breaker blocked request",
-                extra=self._log_context(
-                    request_id=request_id,
-                    method=method,
-                    endpoint=full_path,
-                    circuit_state=self._circuit_breaker["state"],
-                ),
-            )
-            raise
+            # Check circuit breaker
+            try:
+                await self._check_circuit_breaker(endpoint_key)
+            except RuntimeError:
+                logger.error(
+                    "Circuit breaker blocked request",
+                    extra=self._log_context(
+                        request_id=request_id,
+                        method=method,
+                        endpoint=full_path,
+                        circuit_state=self._circuit_breaker["state"],
+                    ),
+                )
+                raise
+        finally:
+            # Always release rate limiter (even if circuit breaker raised)
+            if self._rate_limiter is not None:
+                await self._rate_limiter.release()
 
         # Get endpoint-specific timeout if configured
         endpoint_timeout = self._get_endpoint_timeout(endpoint_key)
@@ -827,6 +771,9 @@ class AsyncHTTPClient(BaseHTTPClient):
 
         # Track total requests
         self._retry_stats["total_requests"] += 1
+        
+        # Track rate limit statistics
+        self._rate_stats.record_call()
 
         # Retry loop with exponential backoff
         last_error = None
@@ -985,6 +932,10 @@ class AsyncHTTPClient(BaseHTTPClient):
         # If we've exhausted all retries
         if last_error:
             self._retry_stats["failed_requests"] += 1
+            
+            # Track rate limit error
+            self._rate_stats.record_error()
+            
             logger.error(
                 "Async request failed after all retries",
                 extra=self._log_context(

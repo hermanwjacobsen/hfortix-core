@@ -17,6 +17,8 @@ from urllib.parse import quote
 
 import httpx
 
+from hfortix_core.ratelimit import RateLimitStats
+
 logger = logging.getLogger("hfortix.http.base")
 
 # Type alias for API responses
@@ -47,6 +49,7 @@ class BaseHTTPClient:
         max_retries: int = 3,
         connect_timeout: float = 10.0,
         read_timeout: float = 300.0,
+        # Legacy circuit breaker params (deprecated, use circuit_breaker=True instead)
         circuit_breaker_threshold: int = 5,
         circuit_breaker_timeout: float = 60.0,
         max_connections: int = 100,
@@ -54,21 +57,87 @@ class BaseHTTPClient:
         adaptive_retry: bool = False,
         retry_strategy: str = "exponential",
         retry_jitter: bool = False,
+        read_only: bool = False,
+        audit_handler: Optional[Any] = None,
+        audit_callback: Optional[Any] = None,
+        user_context: Optional[dict[str, Any]] = None,
+        rate_limit_calls_per_min: Optional[int] = None,
+        rate_limit_calls_per_5min: Optional[int] = None,
+        rate_limit_calls_per_hour: Optional[int] = None,
+        rate_limit_errors_per_min: Optional[int] = None,
+        rate_limit_errors_per_5min: Optional[int] = None,
+        rate_limit_errors_per_hour: Optional[int] = None,
+        # Rate limiting enforcement (NEW)
+        rate_limit: bool = False,
+        rate_limit_strategy: str = "queue",
+        rate_limit_max_requests: int = 100,
+        rate_limit_window_seconds: float = 60.0,
+        rate_limit_queue_size: int = 100,
+        rate_limit_queue_timeout: float = 30.0,
+        rate_limit_queue_overflow: str = "block",
+        # Circuit breaker (NEW - replaces always-on behavior)
+        circuit_breaker: bool = False,
+        circuit_breaker_half_open_calls: int = 3,
     ) -> None:
         """Initialize base HTTP client with shared configuration
 
         Args:
+            url: Base URL for the API (required)
+            verify: Enable SSL certificate verification (default: True)
+            vdom: Virtual domain name (optional)
+            max_retries: Maximum retry attempts (default: 3)
+            connect_timeout: Connection timeout in seconds (default: 10.0)
+            read_timeout: Read timeout in seconds (default: 300.0)
+            circuit_breaker_threshold: DEPRECATED - use circuit_breaker=True
+            circuit_breaker_timeout: DEPRECATED - use circuit_breaker=True
+            max_connections: Maximum concurrent connections (default: 100)
+            max_keepalive_connections: Maximum keepalive connections (default: 20)
             adaptive_retry: Enable adaptive retry with backpressure detection
-            (default: False)
-                          When enabled, monitors response times and adjusts
-                          retry delays
-                          based on FortiGate health signals.
+                          (default: False). Monitors response times and adjusts
+                          retry delays based on FortiGate health signals.
             retry_strategy: Retry backoff strategy - 'exponential' (default)
                           or 'linear'. Exponential: 1s, 2s, 4s, 8s, 16s, 30s.
                           Linear: 1s, 2s, 3s, 4s, 5s.
             retry_jitter: Add random jitter (0-25% of delay) to retry delays
                          to prevent thundering herd problem when multiple
                          clients retry simultaneously (default: False).
+            read_only: Enable read-only mode - simulate write operations
+                      without executing (default: False)
+            audit_handler: Handler for audit logging (implements AuditHandler
+                          protocol). Essential for compliance.
+            audit_callback: Custom callback function for audit logging.
+                           Alternative to audit_handler.
+            user_context: Optional dict with user/application context to
+                         include in audit logs.
+            rate_limit_calls_per_min: Track calls per minute (tracking only)
+            rate_limit_calls_per_5min: Track calls per 5 minutes (tracking only)
+            rate_limit_calls_per_hour: Track calls per hour (tracking only)
+            rate_limit_errors_per_min: Track errors per minute (tracking only)
+            rate_limit_errors_per_5min: Track errors per 5 minutes (tracking only)
+            rate_limit_errors_per_hour: Track errors per hour (tracking only)
+            
+            # Rate Limiting Enforcement (NEW - default disabled)
+            rate_limit: Enable rate limiting enforcement (default: False).
+                       When enabled, enforces request rate limits with queue.
+            rate_limit_strategy: How to handle rate limit exceeded:
+                               "queue" - Queue requests (default)
+                               "drop" - Drop requests silently
+                               "raise" - Raise RateLimitExceededError
+            rate_limit_max_requests: Max requests per window (default: 100)
+            rate_limit_window_seconds: Time window in seconds (default: 60.0)
+            rate_limit_queue_size: Max queued requests (default: 100)
+            rate_limit_queue_timeout: Max wait time in queue (default: 30.0)
+            rate_limit_queue_overflow: What to do when queue is full:
+                                     "block" - Wait for space (default)
+                                     "drop" - Drop request silently
+                                     "raise" - Raise RateLimitQueueFullError
+            
+            # Circuit Breaker (NEW - default disabled, breaking change)
+            circuit_breaker: Enable circuit breaker (default: False).
+                           When disabled, no overhead. When enabled, trips
+                           open after consecutive failures to protect service.
+            circuit_breaker_half_open_calls: Test calls in half-open state
+                                            (default: 3)
         """
         # Validate parameters
         if not url:
@@ -93,6 +162,30 @@ class BaseHTTPClient:
             raise ValueError(
                 "retry_strategy must be 'exponential' or 'linear'"
             )
+        
+        # Validate new rate limiting parameters
+        if rate_limit:
+            if rate_limit_strategy not in ("queue", "drop", "raise"):
+                raise ValueError(
+                    "rate_limit_strategy must be 'queue', 'drop', or 'raise'"
+                )
+            if rate_limit_max_requests <= 0:
+                raise ValueError("rate_limit_max_requests must be > 0")
+            if rate_limit_window_seconds <= 0:
+                raise ValueError("rate_limit_window_seconds must be > 0")
+            if rate_limit_queue_size < 0:
+                raise ValueError("rate_limit_queue_size must be >= 0")
+            if rate_limit_queue_timeout <= 0:
+                raise ValueError("rate_limit_queue_timeout must be > 0")
+            if rate_limit_queue_overflow not in ("block", "drop", "raise"):
+                raise ValueError(
+                    "rate_limit_queue_overflow must be 'block', 'drop', or 'raise'"
+                )
+        
+        # Validate circuit breaker parameters
+        if circuit_breaker:
+            if circuit_breaker_half_open_calls <= 0:
+                raise ValueError("circuit_breaker_half_open_calls must be > 0")
 
         # Auto-adjust keepalive connections if needed (don't error)
         # httpx and other libraries allow these to be independent, but we'll
@@ -125,14 +218,55 @@ class BaseHTTPClient:
             "last_retry_time": None,
         }
 
-        # Initialize circuit breaker state
-        self._circuit_breaker: dict[str, Any] = {
-            "consecutive_failures": 0,
-            "last_failure_time": None,
-            "state": "closed",  # closed, open, half_open
-            "failure_threshold": circuit_breaker_threshold,
-            "timeout": circuit_breaker_timeout,
-        }
+        # Circuit breaker - now configurable (default disabled)
+        self._circuit_breaker_enabled = circuit_breaker
+        # Initialize circuit breaker dict (always present for backward compatibility)
+        self._circuit_breaker: dict[str, Any] = {}
+        
+        if circuit_breaker:
+            # Initialize circuit breaker state (only when enabled)
+            self._circuit_breaker = {
+                "consecutive_failures": 0,
+                "last_failure_time": None,
+                "state": "closed",  # closed, open, half_open
+                "failure_threshold": circuit_breaker_threshold,
+                "timeout": circuit_breaker_timeout,
+                "half_open_calls": circuit_breaker_half_open_calls,
+                "half_open_successes": 0,
+            }
+            logger.info(
+                f"Circuit breaker enabled: threshold={circuit_breaker_threshold}, "
+                f"timeout={circuit_breaker_timeout}s, half_open_calls={circuit_breaker_half_open_calls}"
+            )
+        else:
+            # Keep a minimal dict for backward compatibility with get_circuit_breaker_state()
+            self._circuit_breaker = {
+                "state": "disabled",
+                "consecutive_failures": 0,
+                "last_failure_time": None,
+                "failure_threshold": circuit_breaker_threshold,
+                "timeout": circuit_breaker_timeout,
+            }
+
+        # Rate limiting - now with enforcement (default disabled, zero overhead)
+        self._rate_limit_enabled = rate_limit
+        self._rate_limiter: Optional[Any] = None  # Will be initialized in subclasses (sync vs async)
+        self._rate_limit_config: Optional[dict[str, Any]] = None
+        
+        if rate_limit:
+            # Store config for subclass initialization
+            self._rate_limit_config = {
+                "max_requests": rate_limit_max_requests,
+                "window_seconds": rate_limit_window_seconds,
+                "strategy": rate_limit_strategy,
+                "queue_size": rate_limit_queue_size,
+                "queue_timeout": rate_limit_queue_timeout,
+                "queue_overflow": rate_limit_queue_overflow,
+            }
+            logger.info(
+                f"Rate limiting enabled: {rate_limit_max_requests} req/{rate_limit_window_seconds}s, "
+                f"strategy={rate_limit_strategy}, queue_size={rate_limit_queue_size}"
+            )
 
         # Initialize per-endpoint timeout configuration
         self._endpoint_timeouts: dict[str, httpx.Timeout] = {}
@@ -147,6 +281,22 @@ class BaseHTTPClient:
         self._baseline_response_time = 0.5
         # Endpoint is slow if 3x baseline
         self._slowdown_multiplier = 3.0
+
+        # Read-only mode and audit logging
+        self._read_only = read_only
+        self._audit_handler = audit_handler
+        self._audit_callback = audit_callback
+        self._user_context = user_context or {}
+
+        # Rate limit tracking (informational only, no enforcement)
+        self._rate_stats = RateLimitStats(
+            calls_per_min=rate_limit_calls_per_min,
+            calls_per_5min=rate_limit_calls_per_5min,
+            calls_per_hour=rate_limit_calls_per_hour,
+            errors_per_min=rate_limit_errors_per_min,
+            errors_per_5min=rate_limit_errors_per_5min,
+            errors_per_hour=rate_limit_errors_per_hour,
+        )
 
     # ========================================================================
     # Shared Utility Methods
@@ -335,6 +485,10 @@ class BaseHTTPClient:
 
     def _check_circuit_breaker(self, endpoint: str) -> None:
         """Check circuit breaker state before making request"""
+        # Skip if circuit breaker is disabled (zero overhead)
+        if not self._circuit_breaker_enabled:
+            return
+            
         if self._circuit_breaker["state"] == "open":
             elapsed = time.time() - (
                 self._circuit_breaker["last_failure_time"] or 0
@@ -353,27 +507,54 @@ class BaseHTTPClient:
                 )
             else:
                 self._circuit_breaker["state"] = "half_open"
+                self._circuit_breaker["half_open_successes"] = 0
                 logger.info("Circuit breaker transitioning to HALF_OPEN state")
 
     def _record_circuit_breaker_success(self) -> None:
         """Record successful request in circuit breaker"""
+        # Skip if circuit breaker is disabled (zero overhead)
+        if not self._circuit_breaker_enabled:
+            return
+            
         if self._circuit_breaker["state"] == "half_open":
-            self._circuit_breaker["state"] = "closed"
-            self._circuit_breaker["consecutive_failures"] = 0
-            logger.info("Circuit breaker CLOSED after successful request")
+            # Count successful calls in half-open state
+            self._circuit_breaker["half_open_successes"] += 1
+            required = self._circuit_breaker.get("half_open_calls", 3)
+            
+            if self._circuit_breaker["half_open_successes"] >= required:
+                # Enough successful test calls - close the circuit
+                self._circuit_breaker["state"] = "closed"
+                self._circuit_breaker["consecutive_failures"] = 0
+                self._circuit_breaker["half_open_successes"] = 0
+                logger.info(
+                    f"Circuit breaker CLOSED after {required} successful test calls"
+                )
         elif self._circuit_breaker["state"] == "closed":
             self._circuit_breaker["consecutive_failures"] = 0
 
     def _record_circuit_breaker_failure(self, endpoint: str) -> None:
         """Record failed request in circuit breaker"""
+        # Skip if circuit breaker is disabled (zero overhead)
+        if not self._circuit_breaker_enabled:
+            return
+            
         self._circuit_breaker["consecutive_failures"] += 1
         self._circuit_breaker["last_failure_time"] = time.time()
 
         failures = self._circuit_breaker["consecutive_failures"]
         threshold = self._circuit_breaker["failure_threshold"]
 
-        if failures >= threshold and self._circuit_breaker["state"] != "open":
+        # If in half-open and failure occurs, immediately reopen
+        if self._circuit_breaker["state"] == "half_open":
             self._circuit_breaker["state"] = "open"
+            self._circuit_breaker["half_open_successes"] = 0
+            logger.error(
+                "Circuit breaker REOPENED after failure in half-open state for endpoint %s",
+                endpoint,
+            )
+        elif failures >= threshold and self._circuit_breaker["state"] != "open":
+            self._circuit_breaker["state"] = "open"
+            self._circuit_breaker["half_open_successes"] = 0
             logger.error(
                 (
                     "Circuit breaker OPENED after %d consecutive "
@@ -667,6 +848,77 @@ class BaseHTTPClient:
 
         return metrics
 
+    def get_connection_stats(self) -> dict[str, Any]:
+        """
+        Get HTTP connection pool statistics (base implementation)
+        
+        Base class provides minimal stats. Child classes override this
+        to provide detailed connection pool metrics.
+        
+        Returns:
+            Dictionary with basic connection statistics:
+                - circuit_breaker_state: Current circuit breaker state
+                - consecutive_failures: Number of consecutive failures
+                - last_failure_time: Timestamp of last failure
+                
+        Note:
+            Child classes (HTTPClient, AsyncHTTPClient, etc.) override this
+            to include additional metrics like active_requests, pool_exhaustion, etc.
+            
+        Example:
+            >>> stats = client.get_connection_stats()
+            >>> if stats['circuit_breaker_state'] == 'open':
+            ...     print("Circuit breaker is open!")
+        """
+        return {
+            "circuit_breaker_state": self._circuit_breaker["state"],
+            "consecutive_failures": self._circuit_breaker[
+                "consecutive_failures"
+            ],
+            "last_failure_time": self._circuit_breaker["last_failure_time"],
+        }
+
+    def get_rate_limit_status(self) -> dict[str, Any]:
+        """
+        Get current rate limit tracking status
+        
+        Returns detailed rate limit statistics including:
+        - Call counts in different time windows (last min, 5min, hour)
+        - Error counts in different time windows
+        - Total calls and errors since client creation
+        - Configured limits
+        - Whether current usage is within limits
+        
+        Returns:
+            Dictionary with rate limit statistics:
+                - calls_last_min: API calls in last 60 seconds
+                - calls_last_5min: API calls in last 300 seconds
+                - calls_last_hour: API calls in last 3600 seconds
+                - errors_last_min: Errors in last 60 seconds
+                - errors_last_5min: Errors in last 300 seconds
+                - errors_last_hour: Errors in last 3600 seconds
+                - total_calls: Total API calls since creation
+                - total_errors: Total errors since creation
+                - limits: Dict of configured limits
+                - within_limits: Boolean, True if all limits respected
+                
+        Note:
+            This is for monitoring only - does NOT enforce rate limits.
+            Configure limits via rate_limit_* parameters in __init__().
+            
+        Example:
+            >>> client = HTTPClient(
+            ...     url="...",
+            ...     token="...",
+            ...     rate_limit_calls_per_min=100,
+            ...     rate_limit_calls_per_hour=1000
+            ... )
+            >>> status = client.get_rate_limit_status()
+            >>> print(f"Calls/min: {status['calls_last_min']}/100")
+            >>> print(f"Within limits: {status['within_limits']}")
+        """
+        return self._rate_stats.get_status()
+
     # ========================================================================
     # Validation Helper Methods
     # ========================================================================
@@ -694,6 +946,182 @@ class BaseHTTPClient:
             raise TypeError(
                 f"data must be a dictionary, got {type(data).__name__}"
             )
+
+    # ========================================================================
+    # Audit Logging Methods
+    # ========================================================================
+
+    def _log_audit(
+        self,
+        method: str,
+        endpoint: str,
+        api_type: str,
+        path: str,
+        data: Optional[dict[str, Any]],
+        params: Optional[dict[str, Any]],
+        status_code: int,
+        success: bool,
+        duration_ms: int,
+        request_id: str,
+        error: Optional[str] = None,
+    ) -> None:
+        """
+        Log API operation to audit handlers
+
+        Args:
+            method: HTTP method
+            endpoint: Full API endpoint
+            api_type: API type (cmdb, monitor, etc.)
+            path: Relative path
+            data: Request data (will be sanitized)
+            params: Request params (will be sanitized)
+            status_code: HTTP status code
+            success: Whether operation succeeded
+            duration_ms: Duration in milliseconds
+            request_id: Request ID
+            error: Error message if failed
+        """
+        # Skip if no audit handler or callback configured
+        if not self._audit_handler and not self._audit_callback:
+            return
+
+        try:
+            from datetime import datetime, timezone
+
+            # Determine action from method and path
+            action = self._infer_action(method, path)
+
+            # Extract object type and name from path
+            object_type, object_name = self._extract_object_info(path, data)
+
+            # Build operation dict
+            operation: dict[str, Any] = {
+                "timestamp": datetime.now(timezone.utc).isoformat(),
+                "request_id": request_id,
+                "method": method.upper(),
+                "endpoint": endpoint,
+                "api_type": api_type,
+                "path": path,
+                "vdom": params.get("vdom") if params else self._vdom,
+                "action": action,
+                "object_type": object_type,
+                "object_name": object_name,
+                "data": self._sanitize_data(data) if data else None,
+                "params": self._sanitize_data(params) if params else None,
+                "status_code": status_code,
+                "success": success,
+                "duration_ms": duration_ms,
+                "host": self._url.replace("https://", "").replace(
+                    "http://", ""
+                ),
+                "read_only_mode": self._read_only
+                and method in ("POST", "PUT", "DELETE"),
+            }
+
+            # Add error if present
+            if error:
+                operation["error"] = error
+
+            # Add user context if provided
+            if self._user_context:
+                operation["user_context"] = self._user_context
+
+            # Call audit handler if configured
+            if self._audit_handler:
+                try:
+                    self._audit_handler.log_operation(operation)
+                except Exception as e:
+                    logger.error(
+                        f"Audit handler failed: {e}",
+                        extra={
+                            "error": str(e),
+                            "request_id": request_id,
+                        },
+                        exc_info=True,
+                    )
+
+            # Call audit callback if configured
+            if self._audit_callback:
+                try:
+                    self._audit_callback(operation)
+                except Exception as e:
+                    logger.error(
+                        f"Audit callback failed: {e}",
+                        extra={
+                            "error": str(e),
+                            "request_id": request_id,
+                        },
+                        exc_info=True,
+                    )
+
+        except Exception as e:
+            # Don't let audit logging break the main request flow
+            logger.error(
+                f"Audit logging failed: {e}",
+                extra={"error": str(e), "request_id": request_id},
+                exc_info=True,
+            )
+
+    @staticmethod
+    def _infer_action(method: str, path: str) -> str:
+        """Infer high-level action from method and path"""
+        method = method.upper()
+
+        if method == "GET":
+            # Heuristic: if path ends with a specific name, it's a read,
+            # otherwise it's a list
+            parts = path.strip("/").split("/")
+            if len(parts) > 0 and parts[-1] and not parts[-1].startswith("?"):
+                # Has a trailing identifier
+                return "read"
+            return "list"
+        elif method == "POST":
+            return "create"
+        elif method == "PUT":
+            return "update"
+        elif method == "DELETE":
+            return "delete"
+        else:
+            return "unknown"
+
+    @staticmethod
+    def _extract_object_info(
+        path: str, data: Optional[dict[str, Any]]
+    ) -> tuple[str, Optional[str]]:
+        """
+        Extract object type and name from path and data
+
+        Returns:
+            Tuple of (object_type, object_name)
+        """
+        # Clean path
+        path = path.strip("/")
+
+        # Object type is the full path with dots instead of slashes
+        # e.g., "firewall/address" -> "firewall.address"
+        object_type = path.replace("/", ".")
+
+        # Try to extract object name from:
+        # 1. Last path component (if it looks like a name)
+        # 2. 'name' field in data
+        # 3. 'mkey' field in data
+        object_name = None
+
+        parts = path.split("/")
+        if len(parts) > 0:
+            last_part = parts[-1]
+            # If last part doesn't look like an endpoint, use it as name
+            if last_part and not last_part.startswith("?"):
+                object_name = last_part
+
+        # Override with data if available
+        if data:
+            if "name" in data:
+                object_name = str(data["name"])
+            elif "mkey" in data:
+                object_name = str(data["mkey"])
+
+        return object_type, object_name
 
     @staticmethod
     def _validate_vdom(vdom: Optional[Union[str, bool]]) -> None:

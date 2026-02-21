@@ -8,6 +8,21 @@ all HFortix packages.
 Key Features
 ------------
 
+**CloudSession - Multi-Service OAuth Management**
+   Centralized OAuth token management for multiple FortiCloud services with:
+   
+   - Automatic token sharing and client_id auto-detection
+   - Background token refresh with configurable intervals
+   - **Pluggable storage backends** (Redis, PostgreSQL, MySQL, SQLite, File, Memcached)
+   - **Lifecycle hooks** for monitoring, metrics, and custom behaviors
+   - Distributed token sharing across multiple servers
+   - Thread-safe concurrent access
+   - Comprehensive logging at DEBUG/INFO/WARNING levels
+
+**Rate Limit Tracking**
+   Monitor API call rates across multiple time windows (last minute, 5 minutes, hour) for both
+   calls and errors. Informational only - no enforcement.
+
 **HTTP Client Framework**
    Production-ready HTTP clients with retry logic, circuit breakers, connection pooling, and both
    synchronous and asynchronous support for FortiOS and FortiManager APIs.
@@ -47,6 +62,10 @@ HFortix-Core is organized into functional modules:
 
    * - Module
      - Purpose
+   * - **Session Management**
+     - CloudSession for multi-service OAuth, TokenInfo dataclass
+   * - **Rate Limiting**
+     - RateLimitStats for tracking API call rates across time windows
    * - **HTTP Clients**
      - Base HTTP client, FortiOS client, FortiManager client, async client, protocol interface
    * - **Audit Logging**
@@ -69,8 +88,43 @@ HFortix-Core is organized into functional modules:
 Usage
 -----
 
-HFortix-Core is typically used as a dependency by higher-level packages like ``hfortix-fortios``
-and ``hfortix-fortimanager``. However, you can use it directly for custom integrations:
+HFortix-Core is typically used as a dependency by higher-level packages like ``hfortix-fortios``,
+``hfortix-forticare``, and ``hfortix-fortiztp``. However, you can use it directly for custom integrations:
+
+**CloudSession - Multi-Service OAuth**
+
+.. code-block:: python
+
+   from hfortix_core.session import CloudSession
+   from hfortix_forticare import FortiCare
+   from hfortix_fortiztp import FortiZTP
+   
+   # Manage tokens for multiple services
+   with CloudSession(api_id="...", password="...") as session:
+       fc = FortiCare(session=session)    # Uses "assetmanagement" client_id
+       fz = FortiZTP(session=session)     # Uses "fortiztp" client_id
+       
+       # Both share the session, each with their own token
+       products = fc.api.products.list.post()
+       devices = fz.devices.get()
+
+**Rate Limit Tracking**
+
+.. code-block:: python
+
+   from hfortix_forticare import FortiCare
+   
+   # Configure rate limits
+   fc = FortiCare(
+       api_id="...",
+       password="...",
+       rate_limit_calls_per_min=100,
+       rate_limit_calls_per_hour=1000
+   )
+   
+   # Check status
+   status = fc.get_rate_limit_status()
+   print(f"Calls: {status['calls_last_hour']}/{status['limits']['calls_per_hour']}")
 
 **Direct HTTP Client Usage**
 
