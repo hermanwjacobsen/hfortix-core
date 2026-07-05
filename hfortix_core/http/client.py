@@ -107,8 +107,8 @@ class HTTPClient(BaseHTTPClient):
         connect_timeout: float = 10.0,
         read_timeout: float = 300.0,
         user_agent: Optional[str] = None,
-        circuit_breaker_threshold: int = 10,
-        circuit_breaker_timeout: float = 30.0,
+        circuit_breaker_threshold: int = 5,
+        circuit_breaker_timeout: float = 60.0,
         circuit_breaker_auto_retry: bool = False,
         circuit_breaker_max_retries: int = 3,
         circuit_breaker_retry_delay: float = 5.0,
@@ -165,9 +165,9 @@ class HTTPClient(BaseHTTPClient):
                        multi-team environments
                        and troubleshooting in production.
             circuit_breaker_threshold: Number of consecutive failures before
-            opening circuit (default: 10)
+            opening circuit (default: 5)
             circuit_breaker_timeout: Seconds to wait before transitioning to
-            half-open (default: 30.0)
+            half-open (default: 60.0)
             circuit_breaker_auto_retry: Enable automatic retry when circuit
             breaker opens (default: False).
                        When enabled, waits circuit_breaker_retry_delay seconds
@@ -234,6 +234,13 @@ class HTTPClient(BaseHTTPClient):
             ValueError: If parameters are invalid or both token and
             username/password provided
         """
+        # URL normalization: accept bare hostnames or IPs without scheme.
+        # e.g., "192.168.1.1" → "https://192.168.1.1"
+        #       "192.168.1.1:8443" → "https://192.168.1.1:8443"
+        url = url.strip()
+        if not url.startswith(("http://", "https://")):
+            url = f"https://{url}"
+
         # Validate authentication parameters
         if token and (username or password):
             raise ValueError(
@@ -281,8 +288,16 @@ class HTTPClient(BaseHTTPClient):
             # NEW: Pass circuit breaker parameters
             circuit_breaker=circuit_breaker,
             circuit_breaker_half_open_calls=circuit_breaker_half_open_calls,
+            circuit_breaker_auto_retry=circuit_breaker_auto_retry,
+            circuit_breaker_max_retries=circuit_breaker_max_retries,
+            circuit_breaker_retry_delay=circuit_breaker_retry_delay,
         )
         
+        # Apply the same keepalive cap that BaseHTTPClient applies to its local
+        # copy, so that self._max_keepalive_connections and httpx.Limits both
+        # reflect the adjusted value.
+        max_keepalive_connections = min(max_keepalive_connections, max_connections)
+
         # Initialize synchronous rate limiter if enabled
         if self._rate_limit_enabled and self._rate_limit_config:
             from hfortix_core.rate_limiter import RateLimiter
@@ -297,11 +312,6 @@ class HTTPClient(BaseHTTPClient):
             logger.info("Synchronous rate limiter initialized")
         else:
             self._rate_limiter = None
-
-        # Store circuit breaker auto-retry settings
-        self._circuit_breaker_auto_retry = circuit_breaker_auto_retry
-        self._circuit_breaker_max_retries = circuit_breaker_max_retries
-        self._circuit_breaker_retry_delay = circuit_breaker_retry_delay
 
         # Store connection pool settings for monitoring
         self._max_connections = max_connections
@@ -363,7 +373,7 @@ class HTTPClient(BaseHTTPClient):
 
         # Read-only mode and operation tracking (read_only already set in parent)
         self._track_operations = track_operations
-        self._operations: list[dict[str, Any]] = [] if track_operations else []
+        self._operations: list[dict[str, Any]] = []
 
         # Connection pool monitoring
         self._active_requests = 0
@@ -479,7 +489,7 @@ class HTTPClient(BaseHTTPClient):
                 self._client.headers["X-CSRFTOKEN"] = csrf_token
                 # Track session creation time
                 self._session_created_at = time.time()
-                self._session_last_activity = time.time()
+                self._session_last_activity = time.perf_counter()
                 logger.info("Successfully authenticated via username/password")
             else:
                 # If still HTML in response, authentication likely failed
@@ -516,7 +526,7 @@ class HTTPClient(BaseHTTPClient):
             return False
 
         # Check if we're approaching the idle timeout threshold
-        time_since_last_activity = time.time() - self._session_last_activity
+        time_since_last_activity = time.perf_counter() - self._session_last_activity
         return time_since_last_activity >= self._session_proactive_refresh
 
     def logout(self) -> None:
@@ -588,6 +598,7 @@ class HTTPClient(BaseHTTPClient):
             "active_requests": self._active_requests,
             "total_requests": self._total_requests,
             "pool_exhaustion_count": self._pool_exhaustion_count,
+            "client_active": self._client is not None,
             "circuit_breaker_state": self._circuit_breaker["state"],
             "consecutive_failures": self._circuit_breaker[
                 "consecutive_failures"
@@ -643,6 +654,7 @@ class HTTPClient(BaseHTTPClient):
         result: dict[str, Any] = {
             "method": self._last_request.get("method"),
             "endpoint": self._last_request.get("endpoint"),
+            "url": self._last_request.get("url"),
             "params": self._last_request.get("params"),
             "response_time_ms": (
                 round(self._last_response_time * 1000, 2)
@@ -655,63 +667,6 @@ class HTTPClient(BaseHTTPClient):
             result["status_code"] = self._last_response.get("status_code")
 
         return result
-
-    def _check_circuit_breaker(self, endpoint: str) -> None:
-        """
-        Override base class circuit breaker check with optional auto-retry
-
-        Args:
-            endpoint: API endpoint being checked
-
-        Raises:
-            CircuitBreakerOpenError: If circuit breaker is open and auto-retry
-                is disabled or max retries exceeded
-        """
-        if not self._circuit_breaker_auto_retry:
-            # Use default fail-fast behavior
-            super()._check_circuit_breaker(endpoint)
-            return
-
-        # Auto-retry enabled - wait and retry when circuit breaker opens
-        retry_count = 0
-        while retry_count < self._circuit_breaker_max_retries:
-            if self._circuit_breaker["state"] == "open":
-                retry_count += 1
-                logger.info(
-                    "Circuit breaker OPEN - auto-retry %d/%d after "
-                    "%.1fs delay",
-                    retry_count,
-                    self._circuit_breaker_max_retries,
-                    self._circuit_breaker_retry_delay,
-                )
-                time.sleep(self._circuit_breaker_retry_delay)
-
-                # Check if enough time has elapsed for circuit to transition
-                elapsed = time.time() - (
-                    self._circuit_breaker["last_failure_time"] or 0
-                )
-                if elapsed >= self._circuit_breaker["timeout"]:
-                    # Timeout elapsed, transition to half_open
-                    self._circuit_breaker["state"] = "half_open"
-                    logger.info(
-                        "Circuit breaker transitioning to HALF_OPEN " "state"
-                    )
-                # If timeout not elapsed, circuit stays open but we
-                # retry anyway (the request will fail-fast again if
-                # service still down)
-                return
-            else:
-                # Circuit breaker is closed or half_open, proceed
-                return
-
-        # Max retries exceeded, raise error
-        from hfortix_core.exceptions import CircuitBreakerOpenError
-
-        raise CircuitBreakerOpenError(
-            f"Circuit breaker is OPEN for {endpoint}. "
-            f"Max retries ({self._circuit_breaker_max_retries}) exceeded. "
-            "Service appears to be down."
-        )
 
     def _handle_response_errors(
         self,
@@ -897,7 +852,7 @@ class HTTPClient(BaseHTTPClient):
             # Check circuit breaker before making request
             try:
                 self._check_circuit_breaker(endpoint_key)
-            except RuntimeError:
+            except Exception:
                 # Structured log for circuit breaker open
                 logger.error(
                     "Circuit breaker blocked request",
@@ -1009,7 +964,7 @@ class HTTPClient(BaseHTTPClient):
                 extra={
                     "request_id": request_id,
                     "time_since_last_activity": round(
-                        time.time() - (self._session_last_activity or 0), 1
+                        time.perf_counter() - (self._session_last_activity or 0), 1
                     ),
                 },
             )
@@ -1035,7 +990,7 @@ class HTTPClient(BaseHTTPClient):
                     not self._using_token_auth
                     and self._session_last_activity is not None
                 ):
-                    self._session_last_activity = time.time()
+                    self._session_last_activity = time.perf_counter()
 
                 # Track active requests and total requests
                 self._active_requests += 1
@@ -1191,20 +1146,48 @@ class HTTPClient(BaseHTTPClient):
                             json_response["http_status"] = res.status_code
                             
                     except Exception as json_err:
-                        # If JSON parsing fails, log warning and return text
-                        logger.warning(
-                            f"Failed to parse JSON response: {json_err}",
-                            extra=self._log_context(
-                                request_id=request_id,
-                                endpoint=full_path,
-                                content_type=content_type,
-                            ),
-                        )
-                        # Return text content as fallback
-                        return {
-                            "content": res.text,
-                            "http_status": res.status_code,
-                        }
+                        # JSON parsing failed — often due to invalid UTF-8 bytes
+                        # in otherwise-valid JSON (e.g., wifi client names with
+                        # special encoding). Try decoding with replacement chars
+                        # and re-parsing before giving up.
+                        import json as _json
+                        try:
+                            text_lossy = res.content.decode("utf-8", errors="replace")
+                            json_response = _json.loads(text_lossy)
+                            if isinstance(json_response, dict):
+                                if "http_status" not in json_response:
+                                    json_response["http_status"] = res.status_code
+                            else:
+                                json_response = {
+                                    "results": json_response,
+                                    "http_status": res.status_code,
+                                }
+                            logger.debug(
+                                f"Recovered JSON response using lossy UTF-8 decode: {json_err}",
+                                extra=self._log_context(
+                                    request_id=request_id,
+                                    endpoint=full_path,
+                                ),
+                            )
+                        except Exception:
+                            # Truly unparseable — return as error structure
+                            logger.warning(
+                                f"Failed to parse JSON response: {json_err}",
+                                extra=self._log_context(
+                                    request_id=request_id,
+                                    endpoint=full_path,
+                                    content_type=content_type,
+                                ),
+                            )
+                            # Use "results" key so this doesn't get misidentified
+                            # as a ContentResponse downstream
+                            return {
+                                "results": res.content.decode("utf-8", errors="replace"),
+                                "http_status": res.status_code,
+                                "http_method": method.upper(),
+                                "status": "error",
+                                "error": f"JSON parse error: {json_err}",
+                            }
                 else:
                     # Non-JSON response (e.g., file download, binary data)
                     # Return content with metadata
@@ -1218,6 +1201,15 @@ class HTTPClient(BaseHTTPClient):
                 # Restore original timeout if we changed it
                 if endpoint_timeout:
                     self._client.timeout = original_timeout
+
+                # Attach HTTP transport metadata for visibility
+                # (mirrors the _http_metadata block in JSON-RPC client)
+                json_response["_http_metadata"] = {
+                    "status_code": res.status_code,
+                    "method": method.upper(),
+                    "url": url,
+                    "response_time": round(duration * 1000, 2),  # ms
+                }
 
                 # Normalize keys: FortiOS returns hyphenated keys (tcp-portrange)
                 # but Python/TypedDict requires underscores (tcp_portrange)
@@ -1365,8 +1357,9 @@ class HTTPClient(BaseHTTPClient):
 
             raise last_error
 
-        # This should never be reached, but satisfies type checker
-        raise RuntimeError("Request loop completed without success or error")
+        # Should never reach here — the for loop always either returns or
+        # raises. Satisfy the type checker's exhaustive return analysis.
+        raise RuntimeError("Unreachable: request loop completed without return or error")
 
     def get(
         self,
@@ -1717,8 +1710,8 @@ class HTTPClient(BaseHTTPClient):
                 - data: Request payload (for POST/PUT), None otherwise
                 - status_code: HTTP response status code
                 - vdom: Virtual domain (if specified)
-                - read_only_simulated: True if operation was simulated in
-                read-only mode
+                - read_only: False for executed operations; blocked operations
+                use blocked_by_read_only: True instead
 
         Example:
             >>> client = HTTPClient(url="https://192.0.2.10", token="...",
@@ -1734,7 +1727,7 @@ class HTTPClient(BaseHTTPClient):
                 'data': {'name': 'test'},
                 'status_code': 200,
                 'vdom': 'root',
-                'read_only_simulated': False
+                'read_only': False
             }
         """
         return self._operations.copy()

@@ -70,8 +70,8 @@ class AsyncHTTPClient(BaseHTTPClient):
         connect_timeout: float = 10.0,
         read_timeout: float = 300.0,
         user_agent: Optional[str] = None,
-        circuit_breaker_threshold: int = 10,
-        circuit_breaker_timeout: float = 30.0,
+        circuit_breaker_threshold: int = 5,
+        circuit_breaker_timeout: float = 60.0,
         circuit_breaker_auto_retry: bool = False,
         circuit_breaker_max_retries: int = 3,
         circuit_breaker_retry_delay: float = 5.0,
@@ -206,9 +206,8 @@ class AsyncHTTPClient(BaseHTTPClient):
                                       "block"):
                 - "block": Block/wait until space available (respects
                 queue_timeout)
-                - "drop_oldest": Remove oldest queued request, add new one
-                (FIFO eviction)
-                - "drop_newest": Reject new request, keep existing queue
+                - "drop": Drop the new request silently (return False)
+                - "raise": Raise RateLimitQueueFullError
             circuit_breaker: Enable circuit breaker pattern (default: False).
                             When enabled, opens circuit after threshold
                             failures to prevent cascading failures. Requires
@@ -270,12 +269,24 @@ class AsyncHTTPClient(BaseHTTPClient):
             rate_limit_queue_overflow=rate_limit_queue_overflow,
             circuit_breaker=circuit_breaker,
             circuit_breaker_half_open_calls=circuit_breaker_half_open_calls,
+            circuit_breaker_auto_retry=circuit_breaker_auto_retry,
+            circuit_breaker_max_retries=circuit_breaker_max_retries,
+            circuit_breaker_retry_delay=circuit_breaker_retry_delay,
         )
 
-        # Store circuit breaker auto-retry settings
-        self._circuit_breaker_auto_retry = circuit_breaker_auto_retry
-        self._circuit_breaker_max_retries = circuit_breaker_max_retries
-        self._circuit_breaker_retry_delay = circuit_breaker_retry_delay
+        # Apply the same keepalive cap that BaseHTTPClient applies to its local
+        # copy, so that self._max_keepalive_connections and httpx.Limits both
+        # reflect the adjusted value.
+        max_keepalive_connections = min(max_keepalive_connections, max_connections)
+
+        # Async client does not implement proactive session refresh, so
+        # session_idle_timeout is accepted for API compatibility but ignored.
+        if session_idle_timeout is not None:
+            logger.warning(
+                "session_idle_timeout is not implemented for AsyncHTTPClient "
+                "and will be ignored. Use token-based authentication or call "
+                "login() manually to refresh the session."
+            )
 
         # Initialize async rate limiter if enabled
         if self._rate_limit_enabled and self._rate_limit_config:
@@ -301,7 +312,7 @@ class AsyncHTTPClient(BaseHTTPClient):
         if user_agent is None:
             from hfortix_core import __version__
 
-            user_agent = f"hfortix/{__version__} (async)"
+            user_agent = f"hfortix/{__version__}"
 
         # Initialize httpx AsyncClient
         self._client = httpx.AsyncClient(
@@ -330,7 +341,7 @@ class AsyncHTTPClient(BaseHTTPClient):
 
         # Read-only mode and operation tracking (read_only already set in parent)
         self._track_operations = track_operations
-        self._operations: list[dict[str, Any]] = [] if track_operations else []
+        self._operations: list[dict[str, Any]] = []
 
         # Connection pool monitoring
         self._active_requests = 0
@@ -389,17 +400,19 @@ class AsyncHTTPClient(BaseHTTPClient):
 
         try:
             # FortiOS login endpoint
+            from urllib.parse import urlencode
+
             login_url = f"{self._url}/logincheck"
-            login_data = {
-                "username": self._username,
-                "password": self._password,
-            }
+            login_data = urlencode(
+                {"username": self._username, "secretkey": self._password}
+            )
 
             # Make login request
             response = await self._client.post(
                 login_url,
-                data=login_data,
-                follow_redirects=False,
+                content=login_data,
+                headers={"Content-Type": "application/x-www-form-urlencoded"},
+                follow_redirects=True,
             )
 
             # Check for successful login
@@ -496,6 +509,7 @@ class AsyncHTTPClient(BaseHTTPClient):
             "active_requests": self._active_requests,
             "total_requests": self._total_requests,
             "pool_exhaustion_count": self._pool_exhaustion_count,
+            "client_active": self._client is not None,
             "circuit_breaker_state": self._circuit_breaker["state"],
             "consecutive_failures": self._circuit_breaker[
                 "consecutive_failures"
@@ -527,6 +541,7 @@ class AsyncHTTPClient(BaseHTTPClient):
         result: dict[str, Any] = {
             "method": self._last_request.get("method"),
             "endpoint": self._last_request.get("endpoint"),
+            "url": self._last_request.get("url"),
             "params": self._last_request.get("params"),
             "response_time_ms": (
                 round(self._last_response_time * 1000, 2)
@@ -704,11 +719,21 @@ class AsyncHTTPClient(BaseHTTPClient):
         url = f"{self._url}/api/v2/{api_type}/{encoded_path}"
         params = params or {}
 
-        # Handle vdom parameter
-        if vdom is not None:
+        # Handle vdom parameter:
+        # - vdom=False: Don't send vdom param (for global-only endpoints)
+        # - vdom=True: Use "global" scope
+        # - vdom=None: Use client default or "root" as fallback
+        # - vdom="string": Use specified vdom
+        if vdom is False:
+            pass
+        elif vdom is True:
+            params["vdom"] = "global"
+        elif vdom is not None:
             params["vdom"] = vdom
         elif self._vdom is not None and "vdom" not in params:
             params["vdom"] = self._vdom
+        elif "vdom" not in params:
+            params["vdom"] = "root"
 
         # Build endpoint key
         full_path = f"/api/v2/{api_type}/{path}"
@@ -735,7 +760,7 @@ class AsyncHTTPClient(BaseHTTPClient):
             # Check circuit breaker
             try:
                 await self._check_circuit_breaker(endpoint_key)
-            except RuntimeError:
+            except Exception:
                 logger.error(
                     "Circuit breaker blocked request",
                     extra=self._log_context(
@@ -787,6 +812,7 @@ class AsyncHTTPClient(BaseHTTPClient):
                 self._last_request = {
                     "method": method.upper(),
                     "endpoint": full_path,
+                    "url": url,
                     "params": params,
                     "data": data,
                     "timestamp": time.time(),
@@ -873,7 +899,25 @@ class AsyncHTTPClient(BaseHTTPClient):
                 )
 
                 # Parse JSON response
-                json_response = res.json()
+                try:
+                    json_response = res.json()
+                except Exception as json_err:
+                    # Handle invalid UTF-8 bytes in JSON (e.g., wifi client names)
+                    import json as _json
+                    try:
+                        text_lossy = res.content.decode("utf-8", errors="replace")
+                        json_response = _json.loads(text_lossy)
+                        logger.debug(
+                            f"Recovered JSON response using lossy UTF-8 decode: {json_err}",
+                        )
+                    except Exception:
+                        logger.warning(f"Failed to parse JSON response: {json_err}")
+                        json_response = {
+                            "results": res.content.decode("utf-8", errors="replace"),
+                            "http_status": res.status_code,
+                            "status": "error",
+                            "error": f"JSON parse error: {json_err}",
+                        }
                 
                 # Inject http_status into response if not present
                 # FortiOS API doesn't always include http_status in JSON body
@@ -974,7 +1018,6 @@ class AsyncHTTPClient(BaseHTTPClient):
 
             raise last_error
 
-        raise RuntimeError("Request loop completed without success or error")
 
     async def get(
         self,
@@ -1285,8 +1328,8 @@ class AsyncHTTPClient(BaseHTTPClient):
                         # Coroutine] from protocol
                         # and cannot narrow the type. This is safe and
                         # necessary for dual-mode design.
-                        await result
-                        return True
+                        response = await result  # type: ignore[misc]
+                        return response is not None
                     except ResourceNotFoundError:
                         return False
 

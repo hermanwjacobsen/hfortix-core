@@ -60,9 +60,9 @@ class CloudHTTPClient(BaseHTTPClient):
         >>> response = client.get("/ES/api/registration/v3/products/list")
         >>> client.logout()
 
-    Protocol Implementation:
-        This class implements the IHTTPClient protocol, allowing interchangeable
-        use with HTTPClient and AsyncHTTPClient.
+    Note:
+        The interface differs from HTTPClient — no vdom/api_type params, and
+        methods return a response envelope dict rather than the raw JSON body.
     """
 
     def __init__(
@@ -103,6 +103,9 @@ class CloudHTTPClient(BaseHTTPClient):
         rate_limit_queue_overflow: str = "block",
         circuit_breaker: bool = False,
         circuit_breaker_half_open_calls: int = 3,
+        circuit_breaker_auto_retry: bool = False,
+        circuit_breaker_max_retries: int = 3,
+        circuit_breaker_retry_delay: float = 5.0,
     ) -> None:
         """
         Initialize Cloud HTTP client.
@@ -130,7 +133,7 @@ class CloudHTTPClient(BaseHTTPClient):
             token_callback: Optional callback to get fresh token before each request (returns str)
                            Useful with CloudSession to ensure token is valid before each request
             rate_limit: Enable rate limiting enforcement (default: False)
-            rate_limit_strategy: 'queue' or 'reject' (default: 'queue')
+            rate_limit_strategy: 'queue', 'drop', or 'raise' (default: 'queue')
             rate_limit_max_requests: Max requests per window (default: 100)
             rate_limit_window_seconds: Time window in seconds (default: 60.0)
             rate_limit_queue_size: Max queue size (default: 100)
@@ -138,6 +141,10 @@ class CloudHTTPClient(BaseHTTPClient):
             rate_limit_queue_overflow: 'block' or 'drop' on overflow (default: 'block')
             circuit_breaker: Enable circuit breaker (default: False)
             circuit_breaker_half_open_calls: Calls to test in half-open state (default: 3)
+            circuit_breaker_auto_retry: Wait and retry instead of raising immediately when
+                                       circuit breaker is open (default: False)
+            circuit_breaker_max_retries: Max auto-retry attempts when circuit open (default: 3)
+            circuit_breaker_retry_delay: Seconds between auto-retry attempts (default: 5.0)
 
         Raises:
             ValueError: If oauth_token is empty or invalid parameters
@@ -180,27 +187,49 @@ class CloudHTTPClient(BaseHTTPClient):
             rate_limit_queue_overflow=rate_limit_queue_overflow,
             circuit_breaker=circuit_breaker,
             circuit_breaker_half_open_calls=circuit_breaker_half_open_calls,
+            circuit_breaker_auto_retry=circuit_breaker_auto_retry,
+            circuit_breaker_max_retries=circuit_breaker_max_retries,
+            circuit_breaker_retry_delay=circuit_breaker_retry_delay,
         )
 
         self._oauth_token = oauth_token
         self._token_callback = token_callback
-        self._user_agent = user_agent or "hfortix-cloud/1.0"
+        if user_agent is None:
+            from hfortix_core import __version__
+            user_agent = f"hfortix/{__version__}"
+        self._user_agent = user_agent
         self._session: Optional[httpx.Client] = None
-        
+
         # Operation tracking (read_only and audit already set in parent)
         self._track_operations = track_operations
-        self._operations: list[dict[str, Any]] = [] if track_operations else []
-        
+        self._operations: list[dict[str, Any]] = []
+
         # Connection pool monitoring
         self._active_requests = 0
         self._total_requests = 0
         self._max_connections = max_connections
         self._max_keepalive_connections = max_keepalive_connections
-        
+        self._pool_exhaustion_count = 0
+        self._pool_exhaustion_timestamps: list[float] = []
+
         # Request inspection for debugging
         self._last_request: Optional[dict[str, Any]] = None
         self._last_response: Optional[dict[str, Any]] = None
         self._last_response_time: Optional[float] = None
+
+        # Initialize synchronous rate limiter if enabled
+        if self._rate_limit_enabled and self._rate_limit_config:
+            from hfortix_core.rate_limiter import RateLimiter
+            self._rate_limiter = RateLimiter(
+                max_requests=self._rate_limit_config["max_requests"],
+                window_seconds=self._rate_limit_config["window_seconds"],
+                strategy=self._rate_limit_config["strategy"],
+                queue_size=self._rate_limit_config["queue_size"],
+                queue_timeout=self._rate_limit_config["queue_timeout"],
+                queue_overflow=self._rate_limit_config["queue_overflow"],
+            )
+        else:
+            self._rate_limiter = None
     
     def _refresh_token_if_needed(self) -> None:
         """
@@ -238,8 +267,8 @@ class CloudHTTPClient(BaseHTTPClient):
 
             # Configure connection limits
             limits = httpx.Limits(
-                max_connections=100,
-                max_keepalive_connections=20,
+                max_connections=self._max_connections,
+                max_keepalive_connections=self._max_keepalive_connections,
                 keepalive_expiry=30.0,
             )
 
@@ -273,9 +302,13 @@ class CloudHTTPClient(BaseHTTPClient):
         response_time: float,
         success: bool,
         error: Optional[str] = None,
+        request_id: Optional[str] = None,
     ) -> None:
         """
-        Log API operation to audit handlers.
+        Log API operation via the base class audit infrastructure.
+
+        Delegates to _log_audit() so all audit handlers (syslog, file,
+        stream, composite) and callbacks are called consistently.
 
         Args:
             method: HTTP method
@@ -286,42 +319,22 @@ class CloudHTTPClient(BaseHTTPClient):
             response_time: Response time in seconds
             success: Whether operation succeeded
             error: Error message if operation failed
+            request_id: Request ID (generated if not provided)
         """
-        if not self._audit_handler and not self._audit_callback:
-            return
-
-        import datetime
-
-        operation = {
-            "timestamp": datetime.datetime.now(datetime.timezone.utc).isoformat(),
-            "method": method,
-            "path": path,
-            "params": params,
-            "data": data,
-            "status_code": status_code,
-            "success": success,
-            "duration_ms": int(response_time * 1000),
-            "host": self._url,
-            "read_only_mode": self._read_only,
-            "user_context": self._user_context,
-        }
-
-        if error:
-            operation["error"] = error
-
-        # Call audit handler if provided
-        if self._audit_handler and hasattr(self._audit_handler, "log_operation"):
-            try:
-                self._audit_handler.log_operation(operation)
-            except Exception as e:
-                logger.warning(f"Audit handler failed: {e}")
-
-        # Call audit callback if provided
-        if self._audit_callback:
-            try:
-                self._audit_callback(operation)
-            except Exception as e:
-                logger.warning(f"Audit callback failed: {e}")
+        import uuid
+        self._log_audit(
+            method=method,
+            endpoint=f"{self._url}{path}",
+            api_type="cloud",
+            path=path,
+            data=data,
+            params=params,
+            status_code=status_code,
+            success=success,
+            duration_ms=int(response_time * 1000),
+            request_id=request_id or str(uuid.uuid4())[:8],
+            error=error,
+        )
 
     def get(
         self,
@@ -351,7 +364,7 @@ class CloudHTTPClient(BaseHTTPClient):
         """
         # Refresh token if callback configured (CloudSession integration)
         self._refresh_token_if_needed()
-        
+
         session = self._get_session()
 
         # Build query string if params provided
@@ -367,70 +380,109 @@ class CloudHTTPClient(BaseHTTPClient):
         # Override timeout if specified
         request_timeout = timeout if timeout is not None else self._read_timeout
 
-        # Track active requests
-        self._active_requests += 1
-        self._total_requests += 1
-        
-        # Track rate limit statistics
-        self._rate_stats.record_call()
+        # Rate limiting enforcement
+        if self._rate_limiter is not None:
+            if not self._rate_limiter.acquire():
+                logger.warning("Cloud GET %s dropped by rate limiter", path)
+                return {"status": "error", "message": "Rate limit exceeded - request dropped"}
 
         try:
-            # Measure response time
-            start_time = time.time()
-            response = session.get(url, timeout=request_timeout)
-            response_time = time.time() - start_time
-            
-            response.raise_for_status()
+            # Circuit breaker check
+            try:
+                self._check_circuit_breaker(path)
+            except Exception:
+                logger.error("Circuit breaker blocked cloud GET %s", path)
+                raise
+        finally:
+            if self._rate_limiter is not None:
+                self._rate_limiter.release()
 
-            # Store last request for debugging
-            self._last_request = {
-                "method": "GET",
-                "url": url,
-                "params": params,
-            }
-            self._last_response = {
-                "status_code": response.status_code,
-                "body": response.json(),
-            }
-            self._last_response_time = response_time
+        # Track counters
+        self._active_requests += 1
+        self._total_requests += 1
+        self._rate_stats.record_call()
 
-            # Track operation if enabled
-            if self._track_operations:
-                import datetime
-                self._operations.append({
-                    "timestamp": datetime.datetime.now(datetime.timezone.utc).isoformat(),
-                    "method": "GET",
-                    "path": path,
-                    "params": params,
-                    "data": None,
-                    "status_code": response.status_code,
-                    "read_only_simulated": False,
-                })
+        last_error: Optional[Exception] = None
+        try:
+            for attempt in range(self._max_retries + 1):
+                try:
+                    start_time = time.time()
+                    response = session.get(url, timeout=request_timeout)
+                    response_time = time.time() - start_time
 
-            # Call audit handlers if configured
-            self._log_audit_operation(
-                method="GET",
-                path=path,
-                params=params,
-                data=None,
-                status_code=response.status_code,
-                response_time=response_time,
-                success=True,
-            )
+                    response.raise_for_status()
 
-            # Return envelope with metadata
-            return {
-                "data": response.json(),
-                "http_status_code": response.status_code,
-                "response_time": response_time,
-                "request_info": {
-                    "method": "GET",
-                    "url": url,
-                    "params": params,
-                },
-            }
+                    # Record circuit breaker success
+                    self._record_circuit_breaker_success()
+
+                    # Store last request for debugging
+                    self._last_request = {
+                        "method": "GET",
+                        "endpoint": path,
+                        "url": url,
+                        "params": params,
+                        "timestamp": time.time(),
+                    }
+                    self._last_response = {
+                        "status_code": response.status_code,
+                        "body": response.json(),
+                    }
+                    self._last_response_time = response_time
+
+                    # Track operation if enabled
+                    if self._track_operations:
+                        import datetime
+                        self._operations.append({
+                            "timestamp": datetime.datetime.now(datetime.timezone.utc).isoformat(),
+                            "method": "GET",
+                            "path": path,
+                            "params": params,
+                            "data": None,
+                            "status_code": response.status_code,
+                            "read_only_simulated": False,
+                        })
+
+                    # Call audit handlers if configured
+                    self._log_audit_operation(
+                        method="GET",
+                        path=path,
+                        params=params,
+                        data=None,
+                        status_code=response.status_code,
+                        response_time=response_time,
+                        success=True,
+                    )
+
+                    # Return envelope with metadata
+                    return {
+                        "data": response.json(),
+                        "http_status_code": response.status_code,
+                        "response_time": response_time,
+                        "request_info": {
+                            "method": "GET",
+                            "url": url,
+                            "params": params,
+                        },
+                    }
+
+                except (httpx.TimeoutException, httpx.HTTPStatusError, httpx.RequestError) as e:
+                    last_error = e
+                    self._record_circuit_breaker_failure(path)
+                    if self._should_retry(e, attempt, path):
+                        delay = self._get_retry_delay(attempt, endpoint=path)
+                        logger.warning(
+                            "Cloud GET %s failed (attempt %d/%d), retrying in %.1fs: %s",
+                            path, attempt + 1, self._max_retries + 1, delay, e,
+                        )
+                        time.sleep(delay)
+                        continue
+                    raise
         finally:
             self._active_requests -= 1
+
+        # All retries exhausted
+        if last_error is not None:
+            raise last_error
 
     def post(
         self,
@@ -462,7 +514,7 @@ class CloudHTTPClient(BaseHTTPClient):
         """
         # Refresh token if callback configured (CloudSession integration)
         self._refresh_token_if_needed()
-        
+
         session = self._get_session()
 
         # Build query string if params provided
@@ -477,89 +529,20 @@ class CloudHTTPClient(BaseHTTPClient):
         # Override timeout if specified
         request_timeout = timeout if timeout is not None else self._read_timeout
 
-        # Track active requests
-        self._active_requests += 1
-        self._total_requests += 1
-        
-        # Track rate limit statistics
-        self._rate_stats.record_call()
-
-        try:
-            # Read-only mode: simulate write operations
-            if self._read_only:
-                logger.info(f"READ-ONLY: Simulating POST {url}")
-                response_time = 0.001  # Simulated
-
-                # Store last request for debugging
-                self._last_request = {
-                    "method": "POST",
-                    "url": url,
-                    "params": params,
-                    "data": data,
-                }
-                self._last_response = {
-                    "status_code": 200,
-                    "body": {"status": 0, "message": "Simulated (read-only mode)"},
-                }
-                self._last_response_time = response_time
-
-                # Track operation if enabled
-                if self._track_operations:
-                    import datetime
-                    self._operations.append({
-                        "timestamp": datetime.datetime.now(datetime.timezone.utc).isoformat(),
-                        "method": "POST",
-                        "path": path,
-                        "params": params,
-                        "data": data,
-                        "status_code": 200,
-                        "read_only_simulated": True,
-                    })
-
-                # Call audit handlers
-                self._log_audit_operation(
-                    method="POST",
-                    path=path,
-                    params=params,
-                    data=data,
-                    status_code=200,
-                    response_time=response_time,
-                    success=True,
-                )
-
-                return {
-                    "data": {"status": 0, "message": "Simulated (read-only mode)"},
-                    "http_status_code": 200,
-                    "response_time": response_time,
-                    "request_info": {
-                        "method": "POST",
-                        "url": url,
-                        "params": params,
-                        "data": data,
-                    },
-                }
-
-            # Measure response time
-            start_time = time.time()
-            response = session.post(url, json=data, timeout=request_timeout)
-            response_time = time.time() - start_time
-            
-            response.raise_for_status()
-
-            # Store last request for debugging
+        # Read-only mode: simulate write operations (no network, no CB/rate limiter)
+        if self._read_only:
+            logger.info(f"READ-ONLY: Simulating POST {url}")
+            response_time = 0.001
             self._last_request = {
                 "method": "POST",
+                "endpoint": path,
                 "url": url,
                 "params": params,
                 "data": data,
+                "timestamp": time.time(),
             }
-            self._last_response = {
-                "status_code": response.status_code,
-                "body": response.json(),
-            }
+            self._last_response = {"status_code": 200, "body": {"status": 0, "message": "Simulated (read-only mode)"}}
             self._last_response_time = response_time
-
-            # Track operation if enabled
             if self._track_operations:
                 import datetime
                 self._operations.append({
@@ -568,35 +551,91 @@ class CloudHTTPClient(BaseHTTPClient):
                     "path": path,
                     "params": params,
                     "data": data,
-                    "status_code": response.status_code,
-                    "read_only_simulated": False,
+                    "status_code": 200,
+                    "read_only_simulated": True,
                 })
+            self._log_audit_operation(method="POST", path=path, params=params, data=data, status_code=200, response_time=response_time, success=True)
+            return {"data": {"status": 0, "message": "Simulated (read-only mode)"}, "http_status_code": 200, "response_time": response_time, "request_info": {"method": "POST", "url": url, "params": params, "data": data}}
 
-            # Call audit handlers
-            self._log_audit_operation(
-                method="POST",
-                path=path,
-                params=params,
-                data=data,
-                status_code=response.status_code,
-                response_time=response_time,
-                success=True,
-            )
+        # Rate limiting enforcement
+        if self._rate_limiter is not None:
+            if not self._rate_limiter.acquire():
+                logger.warning("Cloud POST %s dropped by rate limiter", path)
+                return {"status": "error", "message": "Rate limit exceeded - request dropped"}
 
-            # Return envelope with metadata
-            return {
-                "data": response.json(),
-                "http_status_code": response.status_code,
-                "response_time": response_time,
-                "request_info": {
-                    "method": "POST",
-                    "url": url,
-                    "params": params,
-                    "data": data,
-                },
-            }
+        try:
+            try:
+                self._check_circuit_breaker(path)
+            except Exception:
+                logger.error("Circuit breaker blocked cloud POST %s", path)
+                raise
+        finally:
+            if self._rate_limiter is not None:
+                self._rate_limiter.release()
+
+        # Track counters
+        self._active_requests += 1
+        self._total_requests += 1
+        self._rate_stats.record_call()
+
+        last_error: Optional[Exception] = None
+        try:
+            for attempt in range(self._max_retries + 1):
+                try:
+                    start_time = time.time()
+                    response = session.post(url, json=data, timeout=request_timeout)
+                    response_time = time.time() - start_time
+
+                    response.raise_for_status()
+
+                    self._record_circuit_breaker_success()
+
+                    self._last_request = {
+                        "method": "POST",
+                        "endpoint": path,
+                        "url": url,
+                        "params": params,
+                        "data": data,
+                        "timestamp": time.time(),
+                    }
+                    self._last_response = {"status_code": response.status_code, "body": response.json()}
+                    self._last_response_time = response_time
+
+                    if self._track_operations:
+                        import datetime
+                        self._operations.append({
+                            "timestamp": datetime.datetime.now(datetime.timezone.utc).isoformat(),
+                            "method": "POST",
+                            "path": path,
+                            "params": params,
+                            "data": data,
+                            "status_code": response.status_code,
+                            "read_only_simulated": False,
+                        })
+
+                    self._log_audit_operation(method="POST", path=path, params=params, data=data, status_code=response.status_code, response_time=response_time, success=True)
+
+                    return {
+                        "data": response.json(),
+                        "http_status_code": response.status_code,
+                        "response_time": response_time,
+                        "request_info": {"method": "POST", "url": url, "params": params, "data": data},
+                    }
+
+                except (httpx.TimeoutException, httpx.HTTPStatusError, httpx.RequestError) as e:
+                    last_error = e
+                    self._record_circuit_breaker_failure(path)
+                    if self._should_retry(e, attempt, path):
+                        delay = self._get_retry_delay(attempt, endpoint=path)
+                        logger.warning("Cloud POST %s failed (attempt %d/%d), retrying in %.1fs: %s", path, attempt + 1, self._max_retries + 1, delay, e)
+                        time.sleep(delay)
+                        continue
+                    raise
         finally:
             self._active_requests -= 1
+
+        if last_error is not None:
+            raise last_error
 
     def put(
         self,
@@ -641,63 +680,13 @@ class CloudHTTPClient(BaseHTTPClient):
 
         request_timeout = timeout if timeout is not None else self._read_timeout
 
-        # Track active requests
-        self._active_requests += 1
-        self._total_requests += 1
-        
-        # Track rate limit statistics
-        self._rate_stats.record_call()
-
-        try:
-            # Read-only mode: simulate write operations
-            if self._read_only:
-                logger.info(f"READ-ONLY: Simulating PUT {url}")
-                response_time = 0.001
-
-                self._last_request = {"method": "PUT", "url": url, "params": params, "data": data}
-                self._last_response = {"status_code": 200, "body": {"status": 0, "message": "Simulated (read-only mode)"}}
-                self._last_response_time = response_time
-
-                if self._track_operations:
-                    import datetime
-                    self._operations.append({
-                        "timestamp": datetime.datetime.now(datetime.timezone.utc).isoformat(),
-                        "method": "PUT",
-                        "path": path,
-                        "params": params,
-                        "data": data,
-                        "status_code": 200,
-                        "read_only_simulated": True,
-                    })
-
-                self._log_audit_operation(
-                    method="PUT",
-                    path=path,
-                    params=params,
-                    data=data,
-                    status_code=200,
-                    response_time=response_time,
-                    success=True,
-                )
-
-                return {
-                    "data": {"status": 0, "message": "Simulated (read-only mode)"},
-                    "http_status_code": 200,
-                    "response_time": response_time,
-                    "request_info": {"method": "PUT", "url": url, "params": params, "data": data},
-                }
-
-            # Measure response time
-            start_time = time.time()
-            response = session.put(url, json=data, timeout=request_timeout)
-            response_time = time.time() - start_time
-            
-            response.raise_for_status()
-
-            self._last_request = {"method": "PUT", "url": url, "params": params, "data": data}
-            self._last_response = {"status_code": response.status_code, "body": response.json()}
+        # Read-only mode: simulate write operations (no network, no CB/rate limiter)
+        if self._read_only:
+            logger.info(f"READ-ONLY: Simulating PUT {url}")
+            response_time = 0.001
+            self._last_request = {"method": "PUT", "endpoint": path, "url": url, "params": params, "data": data, "timestamp": time.time()}
+            self._last_response = {"status_code": 200, "body": {"status": 0, "message": "Simulated (read-only mode)"}}
             self._last_response_time = response_time
-
             if self._track_operations:
                 import datetime
                 self._operations.append({
@@ -706,34 +695,84 @@ class CloudHTTPClient(BaseHTTPClient):
                     "path": path,
                     "params": params,
                     "data": data,
-                    "status_code": response.status_code,
-                    "read_only_simulated": False,
+                    "status_code": 200,
+                    "read_only_simulated": True,
                 })
+            self._log_audit_operation(method="PUT", path=path, params=params, data=data, status_code=200, response_time=response_time, success=True)
+            return {"data": {"status": 0, "message": "Simulated (read-only mode)"}, "http_status_code": 200, "response_time": response_time, "request_info": {"method": "PUT", "url": url, "params": params, "data": data}}
 
-            self._log_audit_operation(
-                method="PUT",
-                path=path,
-                params=params,
-                data=data,
-                status_code=response.status_code,
-                response_time=response_time,
-                success=True,
-            )
+        # Rate limiting enforcement
+        if self._rate_limiter is not None:
+            if not self._rate_limiter.acquire():
+                logger.warning("Cloud PUT %s dropped by rate limiter", path)
+                return {"status": "error", "message": "Rate limit exceeded - request dropped"}
 
-            # Return envelope with metadata
-            return {
-                "data": response.json(),
-            "http_status_code": response.status_code,
-            "response_time": response_time,
-            "request_info": {
-                "method": "PUT",
-                "url": url,
-                "params": params,
-                "data": data,
-            },
-        }
+        try:
+            try:
+                self._check_circuit_breaker(path)
+            except Exception:
+                logger.error("Circuit breaker blocked cloud PUT %s", path)
+                raise
+        finally:
+            if self._rate_limiter is not None:
+                self._rate_limiter.release()
+
+        # Track counters
+        self._active_requests += 1
+        self._total_requests += 1
+        self._rate_stats.record_call()
+
+        last_error: Optional[Exception] = None
+        try:
+            for attempt in range(self._max_retries + 1):
+                try:
+                    start_time = time.time()
+                    response = session.put(url, json=data, timeout=request_timeout)
+                    response_time = time.time() - start_time
+
+                    response.raise_for_status()
+
+                    self._record_circuit_breaker_success()
+
+                    self._last_request = {"method": "PUT", "endpoint": path, "url": url, "params": params, "data": data, "timestamp": time.time()}
+                    self._last_response = {"status_code": response.status_code, "body": response.json()}
+                    self._last_response_time = response_time
+
+                    if self._track_operations:
+                        import datetime
+                        self._operations.append({
+                            "timestamp": datetime.datetime.now(datetime.timezone.utc).isoformat(),
+                            "method": "PUT",
+                            "path": path,
+                            "params": params,
+                            "data": data,
+                            "status_code": response.status_code,
+                            "read_only_simulated": False,
+                        })
+
+                    self._log_audit_operation(method="PUT", path=path, params=params, data=data, status_code=response.status_code, response_time=response_time, success=True)
+
+                    return {
+                        "data": response.json(),
+                        "http_status_code": response.status_code,
+                        "response_time": response_time,
+                        "request_info": {"method": "PUT", "url": url, "params": params, "data": data},
+                    }
+
+                except (httpx.TimeoutException, httpx.HTTPStatusError, httpx.RequestError) as e:
+                    last_error = e
+                    self._record_circuit_breaker_failure(path)
+                    if self._should_retry(e, attempt, path):
+                        delay = self._get_retry_delay(attempt, endpoint=path)
+                        logger.warning("Cloud PUT %s failed (attempt %d/%d), retrying in %.1fs: %s", path, attempt + 1, self._max_retries + 1, delay, e)
+                        time.sleep(delay)
+                        continue
+                    raise
         finally:
             self._active_requests -= 1
+
+        if last_error is not None:
+            raise last_error
 
     def delete(
         self,
@@ -776,63 +815,13 @@ class CloudHTTPClient(BaseHTTPClient):
 
         request_timeout = timeout if timeout is not None else self._read_timeout
 
-        # Track active requests
-        self._active_requests += 1
-        self._total_requests += 1
-        
-        # Track rate limit statistics
-        self._rate_stats.record_call()
-
-        try:
-            # Read-only mode: simulate write operations
-            if self._read_only:
-                logger.info(f"READ-ONLY: Simulating DELETE {url}")
-                response_time = 0.001
-
-                self._last_request = {"method": "DELETE", "url": url, "params": params}
-                self._last_response = {"status_code": 200, "body": {"status": 0, "message": "Simulated (read-only mode)"}}
-                self._last_response_time = response_time
-
-                if self._track_operations:
-                    import datetime
-                    self._operations.append({
-                        "timestamp": datetime.datetime.now(datetime.timezone.utc).isoformat(),
-                        "method": "DELETE",
-                        "path": path,
-                        "params": params,
-                        "data": None,
-                        "status_code": 200,
-                        "read_only_simulated": True,
-                    })
-
-                self._log_audit_operation(
-                    method="DELETE",
-                    path=path,
-                    params=params,
-                    data=None,
-                    status_code=200,
-                    response_time=response_time,
-                    success=True,
-                )
-
-                return {
-                    "data": {"status": 0, "message": "Simulated (read-only mode)"},
-                    "http_status_code": 200,
-                    "response_time": response_time,
-                    "request_info": {"method": "DELETE", "url": url, "params": params},
-                }
-
-            # Measure response time
-            start_time = time.time()
-            response = session.delete(url, timeout=request_timeout)
-            response_time = time.time() - start_time
-            
-            response.raise_for_status()
-
-            self._last_request = {"method": "DELETE", "url": url, "params": params}
-            self._last_response = {"status_code": response.status_code, "body": response.json()}
+        # Read-only mode: simulate write operations (no network, no CB/rate limiter)
+        if self._read_only:
+            logger.info(f"READ-ONLY: Simulating DELETE {url}")
+            response_time = 0.001
+            self._last_request = {"method": "DELETE", "endpoint": path, "url": url, "params": params, "timestamp": time.time()}
+            self._last_response = {"status_code": 200, "body": {"status": 0, "message": "Simulated (read-only mode)"}}
             self._last_response_time = response_time
-
             if self._track_operations:
                 import datetime
                 self._operations.append({
@@ -841,33 +830,84 @@ class CloudHTTPClient(BaseHTTPClient):
                     "path": path,
                     "params": params,
                     "data": None,
-                    "status_code": response.status_code,
-                    "read_only_simulated": False,
+                    "status_code": 200,
+                    "read_only_simulated": True,
                 })
+            self._log_audit_operation(method="DELETE", path=path, params=params, data=None, status_code=200, response_time=response_time, success=True)
+            return {"data": {"status": 0, "message": "Simulated (read-only mode)"}, "http_status_code": 200, "response_time": response_time, "request_info": {"method": "DELETE", "url": url, "params": params}}
 
-            self._log_audit_operation(
-                method="DELETE",
-                path=path,
-                params=params,
-                data=None,
-                status_code=response.status_code,
-                response_time=response_time,
-                success=True,
-            )
+        # Rate limiting enforcement
+        if self._rate_limiter is not None:
+            if not self._rate_limiter.acquire():
+                logger.warning("Cloud DELETE %s dropped by rate limiter", path)
+                return {"status": "error", "message": "Rate limit exceeded - request dropped"}
 
-            # Return envelope with metadata
-            return {
-                "data": response.json(),
-                "http_status_code": response.status_code,
-                "response_time": response_time,
-                "request_info": {
-                    "method": "DELETE",
-                    "url": url,
-                    "params": params,
-                },
-            }
+        try:
+            try:
+                self._check_circuit_breaker(path)
+            except Exception:
+                logger.error("Circuit breaker blocked cloud DELETE %s", path)
+                raise
+        finally:
+            if self._rate_limiter is not None:
+                self._rate_limiter.release()
+
+        # Track counters
+        self._active_requests += 1
+        self._total_requests += 1
+        self._rate_stats.record_call()
+
+        last_error: Optional[Exception] = None
+        try:
+            for attempt in range(self._max_retries + 1):
+                try:
+                    start_time = time.time()
+                    response = session.delete(url, timeout=request_timeout)
+                    response_time = time.time() - start_time
+
+                    response.raise_for_status()
+
+                    self._record_circuit_breaker_success()
+
+                    self._last_request = {"method": "DELETE", "endpoint": path, "url": url, "params": params, "timestamp": time.time()}
+                    self._last_response = {"status_code": response.status_code, "body": response.json()}
+                    self._last_response_time = response_time
+
+                    if self._track_operations:
+                        import datetime
+                        self._operations.append({
+                            "timestamp": datetime.datetime.now(datetime.timezone.utc).isoformat(),
+                            "method": "DELETE",
+                            "path": path,
+                            "params": params,
+                            "data": None,
+                            "status_code": response.status_code,
+                            "read_only_simulated": False,
+                        })
+
+                    self._log_audit_operation(method="DELETE", path=path, params=params, data=None, status_code=response.status_code, response_time=response_time, success=True)
+
+                    return {
+                        "data": response.json(),
+                        "http_status_code": response.status_code,
+                        "response_time": response_time,
+                        "request_info": {"method": "DELETE", "url": url, "params": params},
+                    }
+
+                except (httpx.TimeoutException, httpx.HTTPStatusError, httpx.RequestError) as e:
+                    last_error = e
+                    self._record_circuit_breaker_failure(path)
+                    if self._should_retry(e, attempt, path):
+                        delay = self._get_retry_delay(attempt, endpoint=path)
+                        logger.warning("Cloud DELETE %s failed (attempt %d/%d), retrying in %.1fs: %s", path, attempt + 1, self._max_retries + 1, delay, e)
+                        time.sleep(delay)
+                        continue
+                    raise
         finally:
             self._active_requests -= 1
+
+        if last_error is not None:
+            raise last_error
 
     def get_operations(self) -> list[dict[str, Any]]:
         """
@@ -939,10 +979,15 @@ class CloudHTTPClient(BaseHTTPClient):
 
         Returns:
             Dictionary with connection pool metrics:
-                - active_requests: Number of currently active requests
-                - total_requests: Total number of requests made
+                - http2_enabled: Whether HTTP/2 is enabled
                 - max_connections: Maximum allowed connections
                 - max_keepalive_connections: Maximum keepalive connections
+                - active_requests: Number of currently active requests
+                - total_requests: Total number of requests made
+                - client_active: Whether HTTP session is initialized
+                - circuit_breaker_state: Current circuit breaker state
+                - consecutive_failures: Number of consecutive failures
+                - last_failure_time: Timestamp of last failure
 
         Example:
             >>> client = CloudHTTPClient(url="https://support.fortinet.com", oauth_token="...")
@@ -951,39 +996,62 @@ class CloudHTTPClient(BaseHTTPClient):
             Active: 2/100
         """
         return {
-            "active_requests": self._active_requests,
-            "total_requests": self._total_requests,
+            "http2_enabled": True,
             "max_connections": self._max_connections,
             "max_keepalive_connections": self._max_keepalive_connections,
+            "active_requests": self._active_requests,
+            "total_requests": self._total_requests,
+            "pool_exhaustion_count": self._pool_exhaustion_count,
+            "client_active": self._session is not None,
+            "circuit_breaker_state": self._circuit_breaker["state"],
+            "consecutive_failures": self._circuit_breaker["consecutive_failures"],
+            "last_failure_time": self._circuit_breaker["last_failure_time"],
         }
 
-    def inspect_last_request(self) -> Optional[dict[str, Any]]:
+    def inspect_last_request(self) -> dict[str, Any]:
         """
         Get detailed information about the last HTTP request/response.
 
         Useful for debugging and understanding what was sent/received.
 
         Returns:
-            Dictionary with last request details or None if no requests made:
-                - request: Request details (method, url, params, data)
-                - response: Response details (status_code, body)
-                - response_time: Response time in seconds
+            Dictionary with last request details:
+                - method: HTTP method (GET/POST/PUT/DELETE)
+                - endpoint: API endpoint path (without query string)
+                - url: Full URL with query string
+                - params: Query parameters
+                - response_time_ms: Response time in milliseconds
+                - status_code: HTTP status code (if response available)
+            Or {"error": "..."} if no requests have been made yet.
 
         Example:
             >>> client = CloudHTTPClient(url="https://support.fortinet.com", oauth_token="...")
             >>> client.get("/api/v3/products/list")
             >>> last = client.inspect_last_request()
-            >>> print(f"Last request took {last['response_time']}s")
-            Last request took 0.234s
+            >>> print(f"Last request took {last['response_time_ms']}ms")
+            Last request took 234.5ms
         """
-        if self._last_request is None:
-            return None
+        if not self._last_request:
+            return {"error": "No requests have been made yet"}
 
-        return {
-            "request": self._last_request,
-            "response": self._last_response,
-            "response_time": self._last_response_time,
+        result = {
+            "method": self._last_request.get("method"),
+            "endpoint": self._last_request.get("endpoint"),
+            "url": self._last_request.get("url"),
+            "params": self._last_request.get("params"),
+            "response_time_ms": round(self._last_response_time * 1000, 2) if self._last_response_time is not None else None,
         }
+        if self._last_response:
+            result["status_code"] = self._last_response.get("status_code")
+        return result
+
+    def close(self) -> None:
+        """
+        Close the HTTP session and clean up resources.
+
+        Alias for logout() — conforms to the standard client interface.
+        """
+        self.logout()
 
     def logout(self) -> None:
         """
