@@ -1,13 +1,21 @@
-Rate Limit Tracking
-===================
+Rate Limiting
+=============
 
 Overview
 --------
 
-The rate limit tracking system provides visibility into API call patterns across multiple time windows. It's designed for **monitoring only** - no enforcement is performed.
+HFortix-Core provides two complementary rate-limiting facilities:
 
-Key Features
-------------
+* **Tracking** (``RateLimitStats``): visibility into API call patterns
+  across multiple time windows. Informational only — it never blocks a
+  request.
+* **Enforcement** (``RateLimiter`` / ``AsyncRateLimiter``): opt-in
+  client-side throttling. Enabled by passing ``rate_limit=True`` (plus the
+  ``rate_limit_*`` tuning kwargs) to any HTTP client or ``CloudSession``
+  constructor. **Disabled by default.**
+
+Key Features (Tracking)
+-----------------------
 
 * **Multiple time windows**: Tracks last minute, last 5 minutes, and last hour
 * **Separate tracking**: Tracks calls and errors independently
@@ -15,7 +23,8 @@ Key Features
 * **Efficient implementation**: Uses ``deque`` with ``maxlen`` for memory efficiency
 * **Per-client tracking**: Each service instance has its own ``RateLimitStats``
 * **Session-wide tracking**: CloudSession tracks all calls across all services
-* **No enforcement**: Informational only - does not block requests
+* **No enforcement**: ``RateLimitStats`` itself does not block requests —
+  use the enforcement kwargs below for that
 
 Time Windows
 ------------
@@ -145,13 +154,64 @@ FortiGateCloud
 * **100 calls per second**
 * **15 errors per minute**
 
+Enforcement
+-----------
+
+Enforcement is opt-in and implemented by ``RateLimiter`` (sync) and
+``AsyncRateLimiter`` (async). All HTTP clients and ``CloudSession`` accept
+the same constructor kwargs:
+
+.. code-block:: python
+
+   from hfortix_core.http import HTTPClient
+
+   client = HTTPClient(
+       url="https://192.168.1.99",
+       token="...",
+       rate_limit=True,                # Enable enforcement (default: False)
+       rate_limit_max_requests=100,    # Allowed requests per window
+       rate_limit_window_seconds=60.0, # Window length
+       rate_limit_strategy="queue",    # "queue" | "drop" | "raise"
+       rate_limit_queue_size=100,      # Max queued requests
+       rate_limit_queue_timeout=30.0,  # Max seconds to wait in queue
+       rate_limit_queue_overflow="block",  # "block" | "drop" | "raise"
+   )
+
+Strategy behavior when the window limit is hit:
+
+* ``"queue"`` — requests wait for the next window (may raise
+  ``RateLimitQueueFullError`` / ``RateLimitQueueTimeoutError`` depending on
+  ``rate_limit_queue_overflow`` and ``rate_limit_queue_timeout``)
+* ``"drop"`` — requests are silently dropped
+* ``"raise"`` — ``RateLimitExceededError`` is raised immediately
+
+Note: the limiter is a per-window token counter, not a concurrency
+semaphore — ``RateLimiter.release()`` is intentionally a no-op; all
+accounting happens in ``acquire()``.
+
 API Reference
 -------------
 
-RateLimitStats Class
-~~~~~~~~~~~~~~~~~~~~
+RateLimitStats Class (tracking)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 .. autoclass:: hfortix_core.ratelimit.RateLimitStats
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+RateLimiter Class (enforcement, sync)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. autoclass:: hfortix_core.rate_limiter.RateLimiter
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+AsyncRateLimiter Class (enforcement, async)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. autoclass:: hfortix_core.async_rate_limiter.AsyncRateLimiter
    :members:
    :undoc-members:
    :show-inheritance:
@@ -181,7 +241,6 @@ Future Enhancements
 
 Planned features for future releases:
 
-* **Enforcement mode**: Optionally block requests when limits exceeded
 * **Adaptive throttling**: Automatically slow down when approaching limits
 * **Metrics export**: Export statistics to Prometheus, CloudWatch, etc.
 * **Historical tracking**: Store and analyze rate limit trends over time

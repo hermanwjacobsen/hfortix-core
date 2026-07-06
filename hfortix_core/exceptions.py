@@ -71,6 +71,20 @@ def _sanitize_params(params: Optional[dict]) -> Optional[dict]:
 class FortinetError(Exception):
     """Base exception for all Fortinet API errors"""
 
+    @property
+    def message(self) -> str:
+        """
+        The original error message, without added context.
+
+        Subclasses that format extra context into ``str(exception)``
+        (e.g. :class:`APIError`) store the original message separately;
+        this property always returns just that message.
+        """
+        original = getattr(self, "_original_message", None)
+        if original is not None:
+            return str(original)
+        return str(self)
+
 
 class APIError(FortinetError):
     """
@@ -403,21 +417,27 @@ class RateLimitError(RetryableError):
 class RateLimitExceededError(RateLimitError):
     """Rate limiter rejected request - limit exceeded (strategy='raise')"""
 
-    def __init__(self, message="Rate limit exceeded - request rejected", **kwargs):
+    def __init__(
+        self, message="Rate limit exceeded - request rejected", **kwargs
+    ):
         super().__init__(message, **kwargs)
 
 
 class RateLimitQueueFullError(RateLimitError):
     """Rate limiter queue is full - cannot queue request (queue_overflow='raise')"""
 
-    def __init__(self, message="Rate limit queue is full - request rejected", **kwargs):
+    def __init__(
+        self, message="Rate limit queue is full - request rejected", **kwargs
+    ):
         super().__init__(message, **kwargs)
 
 
 class RateLimitQueueTimeoutError(RateLimitError):
     """Request timed out waiting in rate limit queue"""
 
-    def __init__(self, message="Request timed out in rate limit queue", **kwargs):
+    def __init__(
+        self, message="Request timed out in rate limit queue", **kwargs
+    ):
         super().__init__(message, **kwargs)
 
 
@@ -456,7 +476,9 @@ class CircuitBreakerError(FortinetError):
 class CircuitBreakerTimeoutError(CircuitBreakerError):
     """Circuit breaker test calls timed out in half-open state"""
 
-    def __init__(self, message="Circuit breaker test calls timed out", **kwargs):
+    def __init__(
+        self, message="Circuit breaker test calls timed out", **kwargs
+    ):
         super().__init__(message, **kwargs)
 
 

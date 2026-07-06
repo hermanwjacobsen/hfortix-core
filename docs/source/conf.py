@@ -19,7 +19,7 @@ try:
     release = __version__
     version = '.'.join(__version__.split('.')[:2])
 except ImportError:
-    release = '0.5.156'
+    release = '0.5.163'
     version = '0.5'
 
 # -- General configuration ---------------------------------------------------

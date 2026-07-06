@@ -31,13 +31,16 @@ HTTPClient (Synchronous FortiOS)
    :undoc-members:
    :show-inheritance:
 
-HTTPClientFMG (Synchronous FortiManager)
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+HTTPClientJSONRPC (Synchronous JSON-RPC, FortiManager/FortiAnalyzer)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-.. autoclass:: hfortix_core.HTTPClientFMG
+.. autoclass:: hfortix_core.HTTPClientJSONRPC
    :members:
    :undoc-members:
    :show-inheritance:
+
+``hfortix_core.HTTPClientFMG`` is a backwards-compatibility alias for
+``HTTPClientJSONRPC``.
 
 AsyncHTTPClient (Asynchronous)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -46,6 +49,30 @@ AsyncHTTPClient (Asynchronous)
    :members:
    :undoc-members:
    :show-inheritance:
+
+CloudHTTPClient (FortiCloud REST)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Used by ``hfortix-forticare`` and ``hfortix-fortiztp`` for
+OAuth2-authenticated FortiCloud REST APIs.
+
+.. autoclass:: hfortix_core.http.CloudHTTPClient
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+FortiCloudAuth (OAuth2 Authentication)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. autoclass:: hfortix_core.http.FortiCloudAuth
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+get_oauth_token
+~~~~~~~~~~~~~~~
+
+.. autofunction:: hfortix_core.http.get_oauth_token
 
 Caching
 -------
@@ -272,28 +299,8 @@ AuditOperation (TypedDict)
 Request Hooks
 -------------
 
-Protocol-based hooks for intercepting and modifying API requests/responses.
-
-BeforeRequestHook (Protocol)
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-.. autoclass:: hfortix_core.hooks.BeforeRequestHook
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-AfterRequestHook (Protocol)
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-.. autoclass:: hfortix_core.hooks.AfterRequestHook
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
-RequestContext (TypedDict)
-~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-.. autoclass:: hfortix_core.hooks.RequestContext
-   :members:
-   :undoc-members:
-   :show-inheritance:
+The ``hfortix_core.hooks`` module defines protocol classes
+(``BeforeRequestHook``, ``AfterRequestHook``, ``RequestContext``) that are
+reserved for a future request-interception feature. They are **not yet
+consumed by any HTTP client** — passing hook objects to client constructors
+has no effect in the current release.

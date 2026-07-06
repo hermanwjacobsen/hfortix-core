@@ -36,13 +36,18 @@ class TTLCache(Generic[T]):
     """
     Simple TTL-based cache for readonly reference data.
 
-    Thread-safe in-memory cache with time-based expiration.
-    Designed for caching readonly reference tables that rarely change.
+    In-memory cache with time-based expiration. Designed for caching
+    readonly reference tables that rarely change.
+
+    Note:
+        This cache is NOT thread-safe. If you share an instance across
+        threads, guard access with your own lock.
 
     Example:
         >>> cache = TTLCache[dict](default_ttl=3600)  # 1 hour
-        >>> cache.set("geography/countries", country_data)
-        >>> data = cache.get("geography/countries")
+        >>> cache.set("geography/countries", {"US": "United States"})
+        >>> cache.get("geography/countries")
+        {'US': 'United States'}
     """
 
     def __init__(self, default_ttl: float = 3600):

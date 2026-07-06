@@ -171,8 +171,8 @@ class ErrorResponse(TypedDict):
     vdom: str
 
 
-CircuitBreakerState = Literal["closed", "open", "half-open"]
-"""Circuit breaker state: closed (normal), open (failing), half-open (testing)"""  # noqa: E501
+CircuitBreakerState = Literal["closed", "open", "half_open"]
+"""Circuit breaker state: closed (normal), open (failing), half_open (testing)"""  # noqa: E501
 
 
 class ConnectionStats(TypedDict):

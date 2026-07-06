@@ -19,9 +19,11 @@ Key Features
    - Thread-safe concurrent access
    - Comprehensive logging at DEBUG/INFO/WARNING levels
 
-**Rate Limit Tracking**
-   Monitor API call rates across multiple time windows (last minute, 5 minutes, hour) for both
-   calls and errors. Informational only - no enforcement.
+**Rate Limiting**
+   Track API call rates across multiple time windows (last minute, 5 minutes, hour) for both
+   calls and errors via ``RateLimitStats``. Optional client-side enforcement
+   (``RateLimiter``/``AsyncRateLimiter``) is available on all HTTP clients via the opt-in
+   ``rate_limit=True`` constructor keyword.
 
 **HTTP Client Framework**
    Production-ready HTTP clients with retry logic, circuit breakers, connection pooling, and both
@@ -30,10 +32,6 @@ Key Features
 **Enterprise Audit Logging**
    Comprehensive audit logging for compliance (SOC 2, HIPAA, PCI-DSS) with handlers for Syslog,
    files, streams, and multiple formatters (JSON, CEF, RFC 5424).
-
-**Request Hooks**
-   Protocol-based hooks for intercepting and modifying API requests/responses, enabling custom
-   validation, transformation, and logging.
 
 **Exception Hierarchy**
    Complete exception hierarchy (20+ exception types) for granular error handling including
@@ -70,8 +68,6 @@ HFortix-Core is organized into functional modules:
      - Base HTTP client, FortiOS client, FortiManager client, async client, protocol interface
    * - **Audit Logging**
      - Handlers (Syslog, File, Stream, Composite), Formatters (JSON, CEF, Syslog)
-   * - **Request Hooks**
-     - BeforeRequestHook, AfterRequestHook protocols for request/response interception
    * - **Caching**
      - TTL-based cache for readonly reference data
    * - **Logging**
@@ -140,8 +136,9 @@ HFortix-Core is typically used as a dependency by higher-level packages like ``h
        max_retries=3
    )
    
-   # Make API requests
-   response = client.get("cmdb", "/api/v2/cmdb/firewall/policy")
+   # Make API requests — the client prepends /api/v2/<api_type>/
+   # itself, so pass only the endpoint path
+   response = client.get("cmdb", "firewall/policy")
 
 **Audit Logging**
 
@@ -163,23 +160,6 @@ HFortix-Core is typically used as a dependency by higher-level packages like ``h
        token="token",
        audit_handler=audit_handler
    )
-
-**Request Hooks**
-
-.. code-block:: python
-
-   from hfortix_core.hooks import BeforeRequestHook, RequestContext
-   
-   class ValidationHook:
-       def __call__(self, context: RequestContext) -> None:
-           # Validate all firewall policy creates
-           if context['path'] == '/api/v2/cmdb/firewall/policy' and context['method'] == 'POST':
-               data = context.get('data', {})
-               if not data.get('srcaddr') or not data.get('dstaddr'):
-                   raise ValueError("Source and destination addresses required")
-   
-   # Use with FortiOS client
-   fgt = FortiOS(host="192.168.1.99", token="token", before_request_hook=ValidationHook())
 
 **Debug Session**
 
