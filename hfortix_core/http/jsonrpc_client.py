@@ -1,7 +1,8 @@
 """
-FortiManager HTTP Client
+Fortinet JSON-RPC HTTP Client
 
-HTTP client for FortiManager JSON-RPC API with session-based authentication.
+HTTP client for the FortiManager/FortiAnalyzer JSON-RPC API with
+session-based authentication.
 Shares retry logic, circuit breaker, and connection pooling with HTTPClient.
 """
 
@@ -200,7 +201,7 @@ class HTTPClientJSONRPC(BaseHTTPClient):
         super().__init__(
             url=url,
             verify=verify,
-            vdom=None,  # FMG uses ADOM, not VDOM
+            vdom=None,  # FMG/FAZ use ADOM, not VDOM
             max_retries=max_retries,
             connect_timeout=connect_timeout,
             read_timeout=read_timeout,
@@ -384,12 +385,12 @@ class HTTPClientJSONRPC(BaseHTTPClient):
     
     def login(self) -> dict[str, Any]:
         """
-        Authenticate with FortiManager using username/password.
-        
+        Authenticate with FortiManager/FortiAnalyzer using username/password.
+
         Not needed when using API key authentication.
-        
+
         Returns:
-            FMG login response dict with session and status information
+            JSON-RPC login response dict with session and status information
         
         Raises:
             RuntimeError: If authentication fails or using API key
@@ -425,7 +426,7 @@ class HTTPClientJSONRPC(BaseHTTPClient):
             ],
         }
         
-        logger.info("Logging in to FortiManager at %s", self._url)
+        logger.info("Logging in to JSON-RPC API at %s", self._url)
         
         client = self._get_http_client()
         response = client.post(self.jsonrpc_url, json=request)
@@ -439,19 +440,24 @@ class HTTPClientJSONRPC(BaseHTTPClient):
         
         if status.get("code") != 0:
             error_msg = status.get("message", "Unknown error")
-            logger.error("FMG login failed: %s", error_msg)
-            raise RuntimeError(f"FMG login failed: {error_msg}")
-        
+            logger.error("JSON-RPC login failed: %s", error_msg)
+            raise RuntimeError(f"JSON-RPC login failed: {error_msg}")
+
         self._session_token = data.get("session")
         if not self._session_token:
-            raise RuntimeError("FMG login succeeded but no session token received")
+            raise RuntimeError(
+                "JSON-RPC login succeeded but no session token received"
+            )
         
         # Track session timing
         now = time.perf_counter()
         self._session_login_time = now
         self._session_last_used = now
         
-        logger.info("Successfully logged in to FortiManager (session token: %s...)", self._session_token[:20])
+        logger.info(
+            "Successfully logged in to JSON-RPC API (session token: %s...)",
+            self._session_token[:20],
+        )
         logger.info("   Session timeout: %.0fs, Refresh threshold: %.0fs", 
                    self._session_idle_timeout, 
                    max(60.0, self._session_idle_timeout * 0.1))
@@ -459,12 +465,12 @@ class HTTPClientJSONRPC(BaseHTTPClient):
     
     def logout(self) -> dict[str, Any]:
         """
-        End FortiManager session.
-        
+        End FortiManager/FortiAnalyzer session.
+
         Not applicable when using API key authentication.
-        
+
         Returns:
-            FMG logout response dict with status information
+            JSON-RPC logout response dict with status information
         """
         if self._api_key:
             return {"status": {"code": 0, "message": "API key authentication - no logout needed"}}
@@ -483,7 +489,7 @@ class HTTPClientJSONRPC(BaseHTTPClient):
             client = self._get_http_client()
             response = client.post(self.jsonrpc_url, json=request)
             result = response.json()
-            logger.debug("Logged out from FortiManager")
+            logger.debug("Logged out from JSON-RPC API")
             return result
         except Exception as e:
             logger.debug("Logout error: %s", e)
@@ -500,7 +506,7 @@ class HTTPClientJSONRPC(BaseHTTPClient):
         verbose: int = 1,
     ) -> dict[str, Any]:
         """
-        Execute a FortiManager JSON-RPC request.
+        Execute a JSON-RPC request (FortiManager/FortiAnalyzer).
 
         Automatically handles authentication:
         - Session-based: Ensures login before request
@@ -512,7 +518,8 @@ class HTTPClientJSONRPC(BaseHTTPClient):
             verbose: Verbosity level (0 or 1)
 
         Returns:
-            FMG response dict with '_http_metadata' key added at transport layer
+            JSON-RPC response dict with '_http_metadata' key added at
+            the transport layer
 
         Raises:
             RuntimeError: If not authenticated or request fails
@@ -654,7 +661,7 @@ class HTTPClientJSONRPC(BaseHTTPClient):
 
                 data = response.json()
 
-                # Check for FMG-level errors
+                # Check for API-level errors in the JSON-RPC result
                 result = data.get("result", [{}])[0] if data.get("result") else {}
                 status = result.get("status", {})
 
@@ -668,7 +675,10 @@ class HTTPClientJSONRPC(BaseHTTPClient):
                         request["session"] = self._session_token
                         continue
 
-                    raise RuntimeError(f"FMG request failed (code {error_code}): {error_msg}")
+                    raise RuntimeError(
+                        f"JSON-RPC request failed "
+                        f"(code {error_code}): {error_msg}"
+                    )
 
                 # Success
                 duration = time.perf_counter() - start_time
@@ -685,7 +695,7 @@ class HTTPClientJSONRPC(BaseHTTPClient):
                     self._session_last_used = time.perf_counter()
 
                 logger.debug(
-                    "FMG %s %s completed in %.3fs",
+                    "JSON-RPC %s %s completed in %.3fs",
                     method,
                     endpoint,
                     duration,
